@@ -142,3 +142,165 @@ def replan_on_missed(plan: dict, missed_week: int) -> dict:
     return {"course": plan["course"], "weeks": weeks,
             "carried_sessions": len(carried),
             "total_sessions": plan["total_sessions"]}
+
+
+# --- Now features: trust receipt, today view, budget slider, check-in, plain language ---
+
+PRIVACY_STATEMENT = (
+    "Your syllabus stays on your device. No account is required to build a study plan. "
+    "All evidence and session records are stored locally and can be deleted at any time."
+)
+
+
+def format_trust_receipt(evidence_set: dict) -> dict:
+    """Surface what was fetched before planning: course, weeks, due dates, hashes."""
+    doc = evidence_set.get("document") or {}
+    items = evidence_set.get("items") or []
+    course = doc.get("course") or "Unknown course"
+    weeks = doc.get("weeks") or []
+    due_dates = [w["due"] for w in weeks if w.get("due")]
+
+    item_hashes = [it.get("sha256") for it in items if it.get("sha256")]
+    combined_hash = hashlib.sha256("".join(sorted(item_hashes)).encode()).hexdigest()[:12]
+
+    statement = (
+        f"Planned from your verified {course} syllabus: {len(weeks)} weeks, "
+        f"{len(due_dates)} scheduled deadline(s), evidence hash {combined_hash}."
+    )
+
+    return {
+        "course": course,
+        "weeks_count": len(weeks),
+        "due_dates": due_dates,
+        "items_verified": len(items),
+        "content_hash_short": combined_hash,
+        "trust_statement": statement,
+        "verified_at": evidence_set.get("assembled_at"),
+        "source_path": evidence_set.get("artifact", {}).get("ref"),
+    }
+
+
+def reflow_plan_budget(plan: dict, new_minutes_per_day: int) -> dict:
+    """Time-budget slider: re-flow session durations around real-life availability."""
+    if new_minutes_per_day <= 0:
+        raise ValueError("time budget minutes must be positive")
+
+    new_weeks = []
+    for w in plan.get("weeks") or []:
+        new_sessions = []
+        for s in w.get("sessions") or []:
+            copied = dict(s)
+            if s.get("kind") == "learn":
+                copied["minutes"] = new_minutes_per_day
+            elif s.get("kind") == "retrieve":
+                copied["minutes"] = max(10, new_minutes_per_day // 3)
+            new_sessions.append(copied)
+        new_weeks.append({**w, "sessions": new_sessions})
+
+    return {
+        "course": plan.get("course"),
+        "weeks": new_weeks,
+        "minutes_per_day": new_minutes_per_day,
+        "total_sessions": sum(len(w["sessions"]) for w in new_weeks),
+    }
+
+
+def render_today_view(plan: dict, day_index: int = 0) -> dict:
+    """Today view: one card with today's sessions, estimated time, and actionable controls."""
+    all_sessions = []
+    for w in plan.get("weeks") or []:
+        for s in w.get("sessions") or []:
+            all_sessions.append({"week": w.get("week"), **s})
+
+    # Group into pairs or take day_index
+    # By default, a day has 1 learn + 1 retrieve session (2 sessions per topic)
+    sessions_per_day = 2
+    start_idx = day_index * sessions_per_day
+    day_sessions = all_sessions[start_idx:start_idx + sessions_per_day]
+
+    total_est_minutes = sum(s.get("minutes", 0) for s in day_sessions)
+    card_title = f"Today's Sprint ({total_est_minutes} min)"
+
+    return {
+        "card_title": card_title,
+        "day_index": day_index,
+        "estimated_minutes": total_est_minutes,
+        "sessions": day_sessions,
+        "actions": [
+            {"action": "start_session", "label": "Start Today's Sprint", "style": "primary"},
+            {"action": "mark_missed", "label": "I missed this", "style": "subtle_no_guilt"},
+        ],
+        "no_guilt_hint": "Life happened? Tap 'I missed this' to seamlessly shift this block without guilt.",
+    }
+
+
+def record_daily_checkin(log: dict, week: int, session_index: int, status: str) -> dict:
+    """Daily check-in (30 seconds): done / partial / missed per session.
+
+    Streaks are tracked as 'recovered_weeks' — never broken chains.
+    """
+    valid_statuses = {"done", "partial", "missed"}
+    if status not in valid_statuses:
+        raise ValueError(f"status must be one of {valid_statuses}")
+
+    entries = list(log.get("entries") or [])
+    entries.append({
+        "week": week,
+        "session_index": session_index,
+        "status": status,
+        "timestamp": _iso(datetime.now(timezone.utc)),
+    })
+
+    # Evaluate recovered weeks: weeks where all sessions are either done or addressed
+    # Count sessions logged per week
+    by_week: dict[int, list[str]] = {}
+    for entry in entries:
+        by_week.setdefault(entry["week"], []).append(entry["status"])
+
+    completed_weeks = sum(1 for w, stats in by_week.items() if all(s == "done" for s in stats))
+    recovered_weeks = sum(1 for w, stats in by_week.items() if "missed" in stats and any(s == "done" for s in stats))
+
+    replan_recommended = status == "missed"
+    advice = (
+        "Session marked missed. Would you like to re-balance this into your upcoming schedule?"
+        if replan_recommended else "Great progress! Your streak reflects consistent effort."
+    )
+
+    return {
+        "entries": entries,
+        "total_checkins": len(entries),
+        "completed_weeks": completed_weeks,
+        "recovered_weeks": recovered_weeks,
+        "streak_metric": f"{recovered_weeks + completed_weeks} active or recovered weeks",
+        "replan_recommended": replan_recommended,
+        "supportive_message": advice,
+    }
+
+
+def plain_language_action(action_type: str, details: dict | None = None) -> str:
+    """Plain-language explanation standard: clear, jargon-free explanations for first-gen students."""
+    details = details or {}
+    if action_type == "replan":
+        missed = details.get("missed_week", "earlier")
+        target = details.get("target_week", "upcoming")
+        return f"I moved week {missed}'s sessions to week {target} because you marked them missed."
+    if action_type == "budget_slider":
+        mins = details.get("minutes", 25)
+        return f"I adjusted your study sessions to fit within {mins} minutes today."
+    if action_type == "syllabus_verified":
+        course = details.get("course", "your course")
+        return f"I checked your syllabus for {course} and confirmed all dates and topics."
+    if action_type == "practice_quiz":
+        topic = details.get("topic", "today's topic")
+        return f"Here is a quick memory check on {topic}."
+    return "Action completed smoothly."
+
+
+def format_accessible_status(decision: str) -> str:
+    """Format accessible status: color is never the only signal; always icon + words."""
+    mapping = {
+        "ALLOW_RECOMMENDATION": "[✓ ALLOW] Approved — verified from evidence",
+        "ABSTAIN": "[⚠ ABSTAIN] Need more evidence before planning",
+        "ESCALATE": "[⛔ ESCALATE] Requires student confirmation or mentor approval",
+    }
+    return mapping.get(decision, f"[{decision}] Status update")

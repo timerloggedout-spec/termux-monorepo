@@ -24,7 +24,9 @@ kinds, same stamped-evidence shape).
 | `demo.py` / `demo-script.md` | <3-min demo; writes `evidence/demo-run.json` |
 | `article.md` | Builder Center article draft (submission item 2) |
 | `examples/` | Sample syllabus + practice set (synthetic) |
-| `tests/test_studysprint.py` | 5 offline tests |
+| `tests/test_studysprint.py` | Offline gate tests |
+| `tools/resync_parity.py` | Nov 3 re-sync parity auditor (blob parity vs `timerloggedout-spec/studysprint`) |
+| `tests/test_resync_parity.py` | Parity audit + Now features tests |
 
 ## Live assets
 
@@ -42,8 +44,27 @@ kinds, same stamped-evidence shape).
 
 ```bash
 python3 demo.py
-python3 -m pytest tests/test_studysprint.py
+python3 -m pytest tests/
 ```
+
+### Nov 3 Re-sync Parity Test
+
+To verify blob parity between this monorepo's `apps/studysprint` tree and the upstream `timerloggedout-spec/studysprint` repo (or a local checkout):
+
+```bash
+# Against upstream GitHub API:
+python3 tools/resync_parity.py
+
+# Against a local checkout pair:
+python3 tools/resync_parity.py --target-dir /path/to/studysprint-checkout
+
+# Offline verification (against frozen baseline manifest):
+python3 tools/resync_parity.py --offline
+
+# Machine-readable JSON output:
+python3 tools/resync_parity.py --json
+```
+The re-sync parity script exits `0` on verified parity and `1` (non-zero) on detected drift.
 
 Receipts (sample syllabus): asserted-only -> ABSTAIN; fetched
 syllabus -> ALLOW_RECOMMENDATION + 12-session plan + quiz + re-plan;

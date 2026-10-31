@@ -39,7 +39,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "foundation"))
 
 from oracle_kernel import deterministic_oracle  # noqa: E402  (vendored, G1)
 from study_tools import (  # noqa: E402
-    build_study_plan, fetch_study_evidence, generate_quiz, replan_on_missed,
+    PRIVACY_STATEMENT, build_study_plan, fetch_study_evidence,
+    format_accessible_status, format_trust_receipt, generate_quiz,
+    plain_language_action, record_daily_checkin, reflow_plan_budget,
+    render_today_view, replan_on_missed,
 )
 
 RECEIPT_SCHEMA = "studysprint-agent-receipt/v1"
@@ -91,8 +94,24 @@ def build_strands_agent():
         """Fold a missed week's sessions into the next week."""
         return json.dumps(replan_on_missed(json.loads(plan_json), missed_week))
 
+    @tool
+    def get_today_view(plan_json: str, day_index: int = 0) -> str:
+        """Render the single today-view card for daily study loop."""
+        return json.dumps(render_today_view(json.loads(plan_json), day_index))
+
+    @tool
+    def adjust_time_budget(plan_json: str, minutes_per_day: int) -> str:
+        """Re-flow study plan sessions around available daily time budget."""
+        return json.dumps(reflow_plan_budget(json.loads(plan_json), minutes_per_day))
+
+    @tool
+    def checkin_session(log_json: str, week: int, session_index: int, status: str) -> str:
+        """Log a daily check-in (done/partial/missed) tracking recovered weeks."""
+        return json.dumps(record_daily_checkin(json.loads(log_json), week, session_index, status))
+
     return Agent(tools=[fetch_syllabus_evidence, make_plan, make_quiz,
-                        replan],
+                        replan, get_today_view, adjust_time_budget,
+                        checkin_session],
                  system_prompt="You are StudySprint: turn a verified "
                                "syllabus into a study plan a first-gen "
                                "student can trust. Never plan from a "
@@ -152,6 +171,24 @@ def run_agent(request: dict, now: datetime | None = None,
                                    "answer": q.get("a")}
                                   for q in doc.get("questions") or []]}
 
+    # Surface Now items: trust receipt, today view, accessible status, plain language
+    trust_receipt = None
+    today_view = None
+    if evidence_set and evidence_set.get("artifact", {}).get("kind") == "syllabus":
+        trust_receipt = format_trust_receipt(evidence_set)
+    if plan:
+        # If student specified minutes_per_day, re-flow budget
+        if request.get("minutes_per_day"):
+            plan = reflow_plan_budget(plan, request["minutes_per_day"])
+        today_view = render_today_view(plan, day_index=request.get("day_index", 0))
+
+    action_explanation = plain_language_action(
+        "replan" if replan else ("syllabus_verified" if plan else ("practice_quiz" if quiz else "generic")),
+        {"course": plan.get("course") if plan else None,
+         "missed_week": request.get("missed_week"),
+         "target_week": (request["missed_week"] + 1) if request.get("missed_week") is not None else None}
+    )
+
     receipt = {
         "schema": RECEIPT_SCHEMA,
         "agent_version": AGENT_VERSION,
@@ -159,11 +196,16 @@ def run_agent(request: dict, now: datetime | None = None,
         "action": request["action"],
         "decision_on_asserted_evidence": decision_asserted,
         "decision_final": decision_final,
+        "decision_accessible": format_accessible_status(decision_final),
+        "plain_language_explanation": action_explanation,
+        "trust_receipt": trust_receipt,
         "evidence_set": ({k: v for k, v in evidence_set.items()
                           if k != "document"} if evidence_set else None),
         "plan": plan,
+        "today_view": today_view,
         "quiz": quiz,
         "replan": replan,
+        "privacy": PRIVACY_STATEMENT,
         "tool_calls": {"fetch_study_evidence": 1 if evidence_set else 0},
         "strands_agent_available": build_strands_agent() is not None,
         "deployment": False,

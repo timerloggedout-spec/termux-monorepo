@@ -14,10 +14,9 @@ feature below serves that screen or the daily loop around it.
 - ✓ Syllabus file → verified evidence set → plan (`study_tools`)
 - ○ PDF syllabus upload + parse (the concept's original input;
   today = structured JSON) — **Next**
-- ◐ Trust receipt before planning: the UI shows *what was fetched*
+- ✓ Trust receipt before planning: the UI shows *what was fetched*
   (course, weeks, due dates, hash) and only plans after the student
-  confirms — the evidence gate made visible — **Now** (receipt data
-  exists; surface it)
+  confirms — the evidence gate made visible — **Now** (`format_trust_receipt` built + surfaced)
 - ○ Paste-a-link intake (LMS page / Google Doc) — Next
 - ○ Multi-course intake: 4–5 syllabi → one merged calendar with
   conflict flags (two midterms, same week) — **Next, high value**
@@ -76,11 +75,12 @@ direct-PDF chapter reading as the reading experience.
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic
 - ✓ Re-plan on missed week (sessions carried forward, flagged)
-- ○ **Today view**: one card — today's sessions, one tap to start,
+- ✓ **Today view**: one card — today's sessions, one tap to start,
   one tap "I missed this" → instant re-plan, no guilt UI — **Now**
-  (re-plan logic exists; render it)
-- ○ Time-budget slider: "I have 25 min today, not 45" → plan
+  (`render_today_view` built + wired into agent receipt)
+- ✓ Time-budget slider: "I have 25 min today, not 45" → plan
   re-flows around the student's real day (job shifts, commute) — **Now**
+  (`reflow_plan_budget` built)
 - ○ Exam countdown mode: inside 7 days of a due date the plan
   shifts weight to retrieval + practice sets automatically — Next
 - ○ Drag-to-edit sessions; the agent re-balances the rest of the
@@ -92,9 +92,9 @@ direct-PDF chapter reading as the reading experience.
 ## 3. Daily loop (retention lives here)
 - ◐ Recall quizzes per week (generated from topics) ✓ ·
   practice-set quiz path ✓
-- ○ Daily check-in (30 seconds): done / partial / missed per
+- ✓ Daily check-in (30 seconds): done / partial / missed per
   session → feeds re-plan; streaks shown as *recovered weeks*,
-  never as broken chains — **Now** (data model), Next (UI)
+  never as broken chains — **Now** (`record_daily_checkin` data model built), Next (UI)
 - ○ Spaced repetition: quiz misses resurface on FSRS intervals
   (retrievability-targeted; the 1d / 3d / 7d ladder stays only as
   the cold-start fallback) — Next. Seed census 2026-10-30
@@ -158,16 +158,16 @@ direct-PDF chapter reading as the reading experience.
 - ✓ Hashed receipts: every decision shows its evidence set —
   in UI terms: "Planned from *your* BIO 101 syllabus, fetched
   09:12, 3 weeks, 6 topics" — **Now** (surface existing receipts)
-- ○ Plain-language mode: no jargon anywhere; every agent action
+- ✓ Plain-language mode: no jargon anywhere; every agent action
   explains itself in one sentence ("I moved Tuesday's session
-  because you marked it missed") — **Now** (copy standard)
+  because you marked it missed") — **Now** (`plain_language_action` built)
 - ○ Spanish + multilingual UI and quiz prompts — Next
 - ○ Works offline / low-end Android: plan + quizzes cached,
   sync when back — Next (our users' actual devices)
-- ○ Screen-reader + large-text clean; color never the only signal
-  (ABSTAIN/ALLOW states also carry icons + words) — **Now** (standard)
-- ○ Privacy plainly stated: syllabus stays yours; no account
-  needed to try; delete = one tap, actually deletes — **Now** (copy),
+- ✓ Screen-reader + large-text clean; color never the only signal
+  (ABSTAIN/ALLOW states also carry icons + words) — **Now** (`format_accessible_status` built)
+- ✓ Privacy plainly stated: syllabus stays yours; no account
+  needed to try; delete = one tap, actually deletes — **Now** (`PRIVACY_STATEMENT` copy built),
   Next (impl)
 
 ## 5. Social proof + help

@@ -10,17 +10,22 @@
         "action": "draft",
         "decision_on_asserted_evidence": "ABSTAIN",
         "decision_final": "ABSTAIN",
+        "decision_accessible": "[\u26a0 ABSTAIN] Need more evidence before planning",
+        "plain_language_explanation": "Action completed smoothly.",
+        "trust_receipt": null,
         "evidence_set": null,
         "plan": null,
+        "today_view": null,
         "quiz": null,
         "replan": null,
+        "privacy": "Your syllabus stays on your device. No account is required to build a study plan. All evidence and session records are stored locally and can be deleted at any time.",
         "tool_calls": {
           "fetch_study_evidence": 0
         },
         "strands_agent_available": false,
         "deployment": false,
-        "generated_at": "2026-10-31T02:14:56Z",
-        "receipt_sha256": "a4172ecdfde3737c5aaa90eb32eb557f9ea6a3d96c863e11543360d30ad020ee"
+        "generated_at": "2026-10-31T05:44:15Z",
+        "receipt_sha256": "33b9d177f75c76d196354f7efb61b79e50bb2fea6d80692a82859c8b04b1b312"
       }
     },
     {
@@ -32,14 +37,30 @@
         "action": "draft",
         "decision_on_asserted_evidence": "ABSTAIN",
         "decision_final": "ALLOW_RECOMMENDATION",
+        "decision_accessible": "[\u2713 ALLOW] Approved \u2014 verified from evidence",
+        "plain_language_explanation": "I moved week 1's sessions to week 2 because you marked them missed.",
+        "trust_receipt": {
+          "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+          "weeks_count": 3,
+          "due_dates": [
+            "quiz 1",
+            "lab 1",
+            "midterm"
+          ],
+          "items_verified": 8,
+          "content_hash_short": "1991c70a2d85",
+          "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
+          "verified_at": "2026-10-31T05:44:15Z",
+          "source_path": "examples/syllabus.json"
+        },
         "evidence_set": {
           "schema": "studysprint-evidence-set/v1",
           "artifact": {
             "kind": "syllabus",
             "ref": "examples/syllabus.json"
           },
-          "assembled_at": "2026-10-31T02:14:56Z",
-          "fresh_until": "2026-10-31T02:29:56Z",
+          "assembled_at": "2026-10-31T05:44:15Z",
+          "fresh_until": "2026-10-31T05:59:15Z",
           "items": [
             {
               "claim": "syllabus.course",
@@ -47,9 +68,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "da171ec35ebfa07e4a2cf1a1e22e9be1b009b79fa04f5990659b7e6e5ba39fad"
             },
             {
@@ -58,9 +79,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "0e8ca5c02283afab21c1e59940c6307d13ab91fd66c15354652a05f40360a756"
             },
             {
@@ -72,9 +93,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "a9e10313a6ddf019e44f03f79f17381336c84e21e44f53f343e4640a2e0e8045"
             },
             {
@@ -83,9 +104,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "1251ebd726491c6b312396a4757b0bdcce70a2b3d43b51ff386b3fca479473b3"
             },
             {
@@ -97,9 +118,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "497670e8a6b78a61b51f535ede4409775ae931f3e3956bfefcb87e0659f1e835"
             },
             {
@@ -108,9 +129,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "81f4f9c814dd8a1f70fbd00d212a35dcfefb0681ef198a3c0c9dc11bc5441120"
             },
             {
@@ -122,9 +143,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "78abca5399478c1a205b1636ef8f45997fadf72d730363f61368f1579f4a00d9"
             },
             {
@@ -133,9 +154,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "42f294ce2d4d3090cfa70c1bf357e00ed1db47c33b4b8590afa33373ff7c81d2"
             }
           ],
@@ -224,6 +245,38 @@
             }
           ],
           "total_sessions": 12
+        },
+        "today_view": {
+          "card_title": "Today's Sprint (60 min)",
+          "day_index": 0,
+          "estimated_minutes": 60,
+          "sessions": [
+            {
+              "week": 1,
+              "topic": "cell structure",
+              "kind": "learn",
+              "minutes": 45
+            },
+            {
+              "week": 1,
+              "topic": "cell structure",
+              "kind": "retrieve",
+              "minutes": 15
+            }
+          ],
+          "actions": [
+            {
+              "action": "start_session",
+              "label": "Start Today's Sprint",
+              "style": "primary"
+            },
+            {
+              "action": "mark_missed",
+              "label": "I missed this",
+              "style": "subtle_no_guilt"
+            }
+          ],
+          "no_guilt_hint": "Life happened? Tap 'I missed this' to seamlessly shift this block without guilt."
         },
         "quiz": {
           "week": 1,
@@ -347,13 +400,14 @@
           "carried_sessions": 4,
           "total_sessions": 12
         },
+        "privacy": "Your syllabus stays on your device. No account is required to build a study plan. All evidence and session records are stored locally and can be deleted at any time.",
         "tool_calls": {
           "fetch_study_evidence": 1
         },
         "strands_agent_available": false,
         "deployment": false,
-        "generated_at": "2026-10-31T02:14:56Z",
-        "receipt_sha256": "8adacc284c56a8f3c1a7707a43334dc16822afb797716f872ffc0c22fa3c642d"
+        "generated_at": "2026-10-31T05:44:15Z",
+        "receipt_sha256": "92059ba51339e648388af8aa6196d82f0d7045f129ec798f457038fafa2a925a"
       }
     },
     {
@@ -365,14 +419,30 @@
         "action": "credential_mutation",
         "decision_on_asserted_evidence": "ESCALATE",
         "decision_final": "ESCALATE",
+        "decision_accessible": "[\u26d4 ESCALATE] Requires student confirmation or mentor approval",
+        "plain_language_explanation": "Action completed smoothly.",
+        "trust_receipt": {
+          "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+          "weeks_count": 3,
+          "due_dates": [
+            "quiz 1",
+            "lab 1",
+            "midterm"
+          ],
+          "items_verified": 8,
+          "content_hash_short": "1991c70a2d85",
+          "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
+          "verified_at": "2026-10-31T05:44:15Z",
+          "source_path": "examples/syllabus.json"
+        },
         "evidence_set": {
           "schema": "studysprint-evidence-set/v1",
           "artifact": {
             "kind": "syllabus",
             "ref": "examples/syllabus.json"
           },
-          "assembled_at": "2026-10-31T02:14:56Z",
-          "fresh_until": "2026-10-31T02:29:56Z",
+          "assembled_at": "2026-10-31T05:44:15Z",
+          "fresh_until": "2026-10-31T05:59:15Z",
           "items": [
             {
               "claim": "syllabus.course",
@@ -380,9 +450,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "da171ec35ebfa07e4a2cf1a1e22e9be1b009b79fa04f5990659b7e6e5ba39fad"
             },
             {
@@ -391,9 +461,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "0e8ca5c02283afab21c1e59940c6307d13ab91fd66c15354652a05f40360a756"
             },
             {
@@ -405,9 +475,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "a9e10313a6ddf019e44f03f79f17381336c84e21e44f53f343e4640a2e0e8045"
             },
             {
@@ -416,9 +486,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "1251ebd726491c6b312396a4757b0bdcce70a2b3d43b51ff386b3fca479473b3"
             },
             {
@@ -430,9 +500,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "497670e8a6b78a61b51f535ede4409775ae931f3e3956bfefcb87e0659f1e835"
             },
             {
@@ -441,9 +511,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "81f4f9c814dd8a1f70fbd00d212a35dcfefb0681ef198a3c0c9dc11bc5441120"
             },
             {
@@ -455,9 +525,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "78abca5399478c1a205b1636ef8f45997fadf72d730363f61368f1579f4a00d9"
             },
             {
@@ -466,24 +536,26 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T02:14:56Z"
+                "observed_at": "2026-10-31T05:44:15Z"
               },
-              "fresh_until": "2026-10-31T02:29:56Z",
+              "fresh_until": "2026-10-31T05:59:15Z",
               "sha256": "42f294ce2d4d3090cfa70c1bf357e00ed1db47c33b4b8590afa33373ff7c81d2"
             }
           ],
           "material": true
         },
         "plan": null,
+        "today_view": null,
         "quiz": null,
         "replan": null,
+        "privacy": "Your syllabus stays on your device. No account is required to build a study plan. All evidence and session records are stored locally and can be deleted at any time.",
         "tool_calls": {
           "fetch_study_evidence": 1
         },
         "strands_agent_available": false,
         "deployment": false,
-        "generated_at": "2026-10-31T02:14:56Z",
-        "receipt_sha256": "44e01a737f4e27520be09de8ad7e50a6dfbc63f8572cf9c5adc479d527d3b9e5"
+        "generated_at": "2026-10-31T05:44:15Z",
+        "receipt_sha256": "999962f1a437ebaf4d252f54c594e9f2142e136036aaa4d19bdbd3e8ec6d107d"
       }
     }
   ]

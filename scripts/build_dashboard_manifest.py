@@ -73,7 +73,7 @@ def main() -> None:
     parser.add_argument("--channel", choices=("production", "preview", "development"), required=True)
     parser.add_argument("--source-ref", required=True)
     parser.add_argument("--source-sha", required=True)
-    parser.add_argument("--version-prefix", default="1.0.0")
+    parser.add_argument("--version-prefix", default="1.0.1")
     args = parser.parse_args()
     manifest = build(args.root, args.channel, args.source_ref, args.source_sha, args.version_prefix)
     print(json.dumps({"version": manifest["version"], "channel": manifest["channel"], "pages": len(manifest["pages"]), "source_sha": manifest["source_sha"]}))

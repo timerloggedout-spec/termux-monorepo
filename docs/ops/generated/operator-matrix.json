@@ -4,8 +4,8 @@
     "open_prs": 152,
     "pr_classes": {
       "CANDIDATE": 69,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 77,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 78,
       "SUPERSEDE": 0
     }
   },
@@ -78,7 +78,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T07:45:37Z",
+  "generated_at": "2026-10-31T07:46:33Z",
   "issues_unlabelled": [
     308,
     343,
@@ -110,7 +110,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "1e039bcc6e"
+    "sha": "5d2f71fd32"
   },
   "prs": [
     {
@@ -182,20 +182,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "ca5131e504",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2679,
-      "title": "feat(desk): phrase stamps beside instance stamps (provider-phrases SSOT)",
-      "updated_at": "2026-10-31T07:45:25Z"
     },
     {
       "class": "CANDIDATE",
@@ -1735,12 +1721,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "bc503bf1c3",
+      "head_sha": "c32e99360f",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T07:44:33Z"
+      "updated_at": "2026-10-31T07:45:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2245,6 +2231,20 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "d24fd5e65c",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 2679,
+      "title": "feat(desk): phrase stamps beside instance stamps (provider-phrases SSOT)",
+      "updated_at": "2026-10-31T07:46:05Z"
     }
   ],
   "schema": "operator-matrix/v1",

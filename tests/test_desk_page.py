@@ -123,6 +123,9 @@ const roll = providerRollup(TRAVS);
 if ((roll.counts["Jules"] || 0) < 1) throw new Error("rollup jules");
 if ((roll.counts["Muse (in-house, pre-correction)"] || 0) !== 1) throw new Error("rollup in-house");
 if (!roll.live.some(s => s.session_id === "17326020844735872479")) throw new Error("rollup live");
+if (roll.coverage.total !== 5 || roll.coverage.none !== 5) throw new Error("coverage");
+if (!usageText({usage:{value:1, unit:"sessions", match:"activity-proxy"}}).includes("activity-proxy \u2014 not consumption")) throw new Error("proxy label");
+if (!usageText({usage:{value:42, unit:"calls", match:"exact"}}).startsWith("usage: 42 calls")) throw new Error("exact text");
 console.log("ok");
 """ % json.dumps(pack["traversals"][1])
     sim = sim.replace("TRAVSJSON", travs_json)

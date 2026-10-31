@@ -29,6 +29,12 @@ def sha256(path: Path) -> str:
 def build(root: Path, channel: str, source_ref: str, source_sha: str, version_prefix: str) -> dict:
     root = root.resolve()
     pages = sorted(p for p in root.glob("*.html") if p.is_file())
+    if not pages:
+        raise ValueError(f"{root}: no HTML pages found; refusing to emit an empty manifest")
+    ids = [page_id(page.name) for page in pages]
+    if len(ids) != len(set(ids)):
+        duplicates = sorted({page_id(name) for name in [p.name for p in pages] if ids.count(page_id(name)) > 1})
+        raise ValueError(f"duplicate page unique IDs: {duplicates}")
     for page in pages:
         html = page.read_text(encoding="utf-8")
         if 'src="./versioning.js"' not in html:

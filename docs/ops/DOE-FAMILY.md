@@ -120,6 +120,44 @@ Edges: the `rrf` reranker has no model — its `model` is `rrf`
 unrelated to provider identity and needs no mapping. The deploy
 configs themselves are unchanged by this mapping.
 
+## The entire repo is the experiment (owner, 2026-10-30)
+
+Correction of the "lab still to build" framing: there is no
+separate lab coming. The repo in production IS the experiment
+floor, and it is already running. Every selection a Scout,
+Manager, Orchestrator, or Operator surface makes among configured
+instances is a selection experiment; every model-flow hand-off
+(instance A → instance B mid-task) is a treatment transition —
+the hand-off policy is itself a factor; every Chronomancer code
+comparison is outcome measurement over time; every set of
+concurrent parallel competing builds is a set of arms. Production
+code is the task suite and the environment.
+
+The DoE discipline over this floor is instrumentation + design,
+not construction:
+
+- **Designed where deliberate:** a choice made on purpose gets
+  the campaign treatment (DESIGN record, factors, pre-registered
+  threshold) before it runs.
+- **Stamped always:** every run keys its configured instance
+  (`treatment.instance` / instance_key); hand-off transitions
+  stamp BOTH instances and the transition point.
+- **Recorded honestly:** designed runs emit EXPERIMENT-conforming
+  records; undesigned production runs are recorded as
+  OBSERVATIONAL (schema `provenance`/`confidence` carry that
+  status) — never retroactively dressed as designed.
+- **Verdicts stay disciplined:** comparisons (Chronomancer rows,
+  cohort results, selection outcomes) judge against
+  pre-registered thresholds where they exist, and report
+  descriptively where they don't.
+
+Instrumentation gaps — the actual remaining work, named: most
+production surfaces emit no experiment record today (hand-off
+transitions unstamped; Chronomancer comparisons not emitted as
+records; selection decisions logged as prose, not rows). Closing
+them is per-surface record emission under the provider-schema
+mapping rule above — surface by surface, not a new platform.
+
 ## Binding rules (from #1865 + separation spec)
 
 1. One primary home per record. Cross-surface references are citations
@@ -143,6 +181,31 @@ experiments/doe/<campaign-id>/
 
 Runner: `scripts/doe/run_pilot1.py` (deterministic, offline; re-running
 regenerates records + summary — `observed_at`/elapsed are run stamps).
+
+### ChronoMancer mapping (2026-10-30)
+
+`harmony_hub/workspace/agent/chronomancer.py` (+ CHRONOMANCER_SPEC.md)
+is a Time-Loop fork selector/executor: it scans `run_history`
+(SQLite: session_id, account, timestamp, validated) for the last
+validated run, forks the conversation at the assistant message
+preceding it, injects a validated-state summary as the new
+session's first prompt, and logs the fork back with a `time_loop`
+verdict (feeding the Bidder/ELO system). In DoE terms it is a
+sequential selection mechanism: fork-point choice = which arm's
+lineage continues; downstream `validated` = the outcome signal.
+
+Mapping: `moniker` = `chronomancer`; `role` = `fork-selector`;
+`context` = session_id + account; the fork POLICY is a factor
+(levels: fork-from-last-validated | root fork `--root`); the
+injected validated-state summary is its prompt artifact (ref =
+the injection at fork time; sha256 NOT ESTABLISHED — generated at
+runtime, not committed); tools = deepcli `branch_conversation`
+surface (`tools:chronomancer:branch`). Gaps named: `run_history`
+is local SQLite, never emitted as repo records — ChronoMancer
+rows join the experiment record only when a fork's outcome is
+written back into a campaign or ledger record; and the forked
+session's own producing instance is a separate stamp (the fork
+event and the continuation are two records, not one).
 
 ### DSPy-DoE mapping (2026-10-30)
 

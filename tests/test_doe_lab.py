@@ -87,3 +87,21 @@ def test_provider_phrases_compose_into_prompt_and_key():
         design2["provider_phrases"]["openrouter/openai/gpt-4o-mini"])
     assert text.startswith("Build the Future Now. Make it so.")
     assert text.endswith("Show me what you got. GB")
+
+
+def test_phrase_layer_wiring_changes_instance(tmp_path):
+    LR = _runner()
+    fixture = tmp_path / "phrases.json"
+    fixture.write_text(json.dumps({"providers": {"deepseek": {
+        "match": ["deepseek"], "prefixes": ["PRE "],
+        "suffixes": ["Build the Future Now. Make it so."]}}}))
+    design = json.loads((CAMP / "DESIGN.json").read_text())
+    cell = {"prompt": "prompt-a", "model": "openrouter/deepseek/x",
+            "role": "triage"}
+    plain = LR.cell_instance(CAMP, design, cell)
+    design2 = dict(design)
+    design2["phrase_layer"] = {"phrases_file": str(fixture)}
+    layered = LR.cell_instance(CAMP, design2, cell)
+    assert layered["instance_key"] != plain["instance_key"]
+    assert "phrase layer: deepseek/prefix+suffix/verbatim" in \
+        layered["system_prompt"]["ref"]

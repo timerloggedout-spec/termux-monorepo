@@ -195,6 +195,23 @@ established for a route, the design records that (lab-1: none
 established for its two OpenRouter routes — NOT ESTABLISHED,
 recorded in its DESIGN.json, not silently skipped).
 
+Data home (owner, 2026-10-31): the phrase sets live in their
+own SSOT repo — `timerloggedout-spec/provider-phrases`
+(`phrases.json`, provider-phrases/v1) — pinned into this repo
+as the `ops/phrases` git submodule (a symlink cannot cross
+repos; the pin is the link, bumped by PR). The JIT layer is
+`scripts/doe/phrase_layer.py`: given the model route it selects
+the provider set and composes the phrases between prompt
+construction and dispatch, with placement / selection / form
+(verbatim | leet) / profile as explicit parameters — i.e. as
+design factors. The runner calls it when a design sets
+`phrase_layer`; enabled-but-data-missing fails loud at plan
+time. The established leet form substitutes ONLY the vowels
+(a→4, e→3, i→1, o→0) — read off the 1337 profile's own
+suffixes and pinned by test; wider dictionary variants and the
+`d0 > DO > Do > do` casing ladder are candidate factor levels,
+NOT ESTABLISHED as precedence.
+
 ## Binding rules (from #1865 + separation spec)
 
 1. One primary home per record. Cross-surface references are citations

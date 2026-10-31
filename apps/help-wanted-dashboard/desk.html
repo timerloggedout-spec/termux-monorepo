@@ -45,7 +45,7 @@
 <nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a>
         <a href="https://timerloggedout-spec.github.io/help-wanted/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers</a><a href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/help-wanted/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/help-wanted/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/help-wanted/desk.html" aria-current="page">Desk</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
 <h1>Contribution Desk</h1>
-<p id="meta">Loading desk feed…</p>
+<p id="meta" role="status" aria-live="polite">Loading desk feed…</p>
 </header>
 <main>
 <section>
@@ -82,6 +82,13 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;"
 // ==== pure logic (node-sim tested) ====
 const STAGES=["spec","desk","builder","pr","ci","merge","sync"];
 const STAGE_STATES=["done","active","pending","gated","na"];
+function safeIntakeUrl(value){
+  try {
+    const u=new URL(String(value||""));
+    return u.protocol==="https:" && u.hostname==="github.com" &&
+      u.pathname==="/timerloggedout-spec/termux-monorepo/issues/new" ? u.href : null;
+  } catch (_) { return null; }
+}
 function stageClass(state){ return STAGE_STATES.indexOf(state)>=0 ? state : "pending"; }
 function stageLabel(stage,state){ return stage+" "+(state==="done"?"✓":state==="gated"?"⛔":state==="na"?"—":state==="active"?"…":"·"); }
 function boardRow(t){
@@ -114,28 +121,48 @@ function phrasesText(p){
   return "phrases: "+cell(ph.set)+" · "+cell(ph.placement)+" · "+cell(ph.form)+" · "+cell(ph.profile);
 }
 function providerRollup(traversals){
-  const counts={}, live=[], unknown={dispatches:0};
-  (traversals||[]).forEach(t=>{ (t.provider_usage||[]).forEach(p=>{
-    if(!p.provider){ unknown.dispatches++; return; }
-    counts[p.provider]=(counts[p.provider]||0)+1;
-    if(p.session_id) live.push({entry:t.entry, provider:p.provider, session_id:p.session_id, state:p.state});
-  });});
+  const groups=new Map(), live=[], unknown={dispatches:0};
+  const rows=Array.isArray(traversals)?traversals:[];
+  let noDispatchEntries=0;
+  rows.forEach(t=>{
+    const dispatches=Array.isArray(t.provider_usage)?t.provider_usage:[];
+    if(dispatches.length===0) noDispatchEntries++;
+    dispatches.forEach(p=>{
+      if(!p.provider) unknown.dispatches++;
+      // A configured instance—not provider/model alone—is the consumer identity.
+      const refs=p.instance_refs||{};
+      const identity=[p.provider||"provider not established",p.model||"model not established",
+        p.role||"role not established",p.moniker||"moniker not established",
+        p.context||t.entry||"context not established",
+        refs.system_prompt_ref||"prompt ref not established",
+        refs.tools_ref||"tools ref not established"];
+      const key=JSON.stringify(identity);
+      if(!groups.has(key)) groups.set(key,{identity,count:0});
+      groups.get(key).count++;
+      if(p.session_id) live.push({entry:t.entry, provider:p.provider, session_id:p.session_id, state:p.state});
+    });
+  });
   const coverage={total:0, established:0, activity:0, waived:0, fault:0, pending:0, unstamped:0, covered:0, gap:0};
-  (traversals||[]).forEach(t=>{ (t.provider_usage||[]).forEach(p=>{
+  rows.forEach(t=>{ (Array.isArray(t.provider_usage)?t.provider_usage:[]).forEach(p=>{
     coverage.total++;
     const u=p.usage, st=u&&u.status;
-    if(st==="established") coverage.established++;
-    else if(st==="activity-only") coverage.activity++;
-    else if(st==="waived") coverage.waived++;
-    else if(st==="fault") coverage.fault++;
+    if(st==="established"){
+      if(u.match==="exact" && typeof u.value==="number" && Number.isFinite(u.value)) coverage.established++;
+      else coverage.fault++;
+    } else if(st==="activity-only"){
+      if(u.match==="activity-proxy" && typeof u.value==="number" && Number.isFinite(u.value)) coverage.activity++;
+      else coverage.fault++;
+    } else if(st==="waived"){
+      if(typeof u.note==="string" && u.note.trim()) coverage.waived++;
+      else coverage.fault++;
+    } else if(st==="fault") coverage.fault++;
     else if(st==="pending") coverage.pending++;
-    else if(u==null || u.value==null) coverage.unstamped++;
-    else if(u.match==="activity-proxy") coverage.activity++;
-    else coverage.established++;
+    else if(st==null && (u==null || u.value==null)) coverage.unstamped++;
+    else coverage.fault++;
   });});
   coverage.covered=coverage.established+coverage.activity+coverage.waived;
   coverage.gap=coverage.fault+coverage.pending+coverage.unstamped;
-  return {counts, live, unknown, coverage};
+  return {groups:[...groups.values()], live, unknown, coverage, noDispatchEntries, entryCount:rows.length};
 }
 function evidenceText(ev){
   const parts=[];
@@ -165,14 +192,19 @@ function renderAll(){
   $("model").textContent=PACK.desk.model;
   $("roles").innerHTML=Object.keys(PACK.desk.roles).map(k=>"<tr><th>"+esc(k)+"</th><td>"+esc(PACK.desk.roles[k])+"</td></tr>").join("");
   $("dispatchhow").textContent=PACK.dispatch.how;
-  const a=$("intake"); a.href=PACK.dispatch.intake_url; a.textContent=PACK.dispatch.intake_label;
+  const a=$("intake");
+  const intakeUrl=safeIntakeUrl(PACK.dispatch.intake_url);
+  a.href=intakeUrl||"#";
+  a.textContent=intakeUrl?PACK.dispatch.intake_label:"Dispatch intake unavailable";
+  a.setAttribute("aria-disabled",String(!intakeUrl));
+  if(!intakeUrl) a.removeAttribute("target");
   renderBoard();
   const roll=providerRollup(PACK.traversals);
-  const counts=Object.keys(roll.counts).map(k=>"<tr><th>"+esc(k)+"</th><td>"+roll.counts[k]+" dispatch(es)</td></tr>").join("");
+  const counts=roll.groups.map(g=>"<tr><th>"+g.identity.map(esc).join(" · ")+"</th><td>"+g.count+" dispatch(es)</td></tr>").join("");
   const live=roll.live.map(s=>"<tr><th>"+esc(s.entry)+" · "+esc(s.provider)+"</th><td>session "+esc(s.session_id)+" — "+esc(s.state||"")+"</td></tr>").join("");
   const unk=roll.unknown.dispatches? "<tr><th>provider not established</th><td>"+roll.unknown.dispatches+" dispatch(es)</td></tr>" : "";
   const cov=roll.coverage;
-  $("provroll").innerHTML="<table class='st'>"+counts+unk+live+"</table><p class='dim'>Telemetry coverage: "+cov.covered+"/"+cov.total+" covered — established "+cov.established+" · activity-only "+cov.activity+" · waived "+cov.waived+"; gap "+cov.gap+" (fault "+cov.fault+" · pending "+cov.pending+" · unstamped "+cov.unstamped+"). Owner ruling: telemetry REQUIRED for all entries; pre-mandate history = waived-with-reason, fault reserved for post-mandate unstamped dispatches (QUOTA-ATTRIBUTION ruling). Grouping: provider \u2227 model@version \u2227 role \u2227 moniker \u2227 context — a model is never aggregated across versions or roles.</p>";
+  $("provroll").innerHTML="<table class='st'><tr><th>Configured instance · provider / model@version / role / moniker / context / prompt ref / tools ref</th><th>Dispatches</th></tr>"+counts+unk+live+"</table><p class='dim'>Dispatch telemetry: "+cov.covered+"/"+cov.total+" dispatch records covered — established "+cov.established+" · activity-only "+cov.activity+" · waived "+cov.waived+"; gap "+cov.gap+" (fault "+cov.fault+" · pending "+cov.pending+" · unstamped "+cov.unstamped+"). "+roll.noDispatchEntries+"/"+roll.entryCount+" entries have no dispatch yet. No-dispatch entries are shown separately, not silently counted as covered or as dispatched telemetry. Pre-mandate history requires a waiver reason; malformed post-mandate stamps are faults.</p>";
   $("prov").textContent=PACK.provenance+" "+PACK.refresh;
 }
 fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "+r.status); return r.json(); }).then(p=>{ PACK=p; renderAll(); }).catch(e=>{ $("meta").textContent="Desk feed failed to load: "+e.message; });

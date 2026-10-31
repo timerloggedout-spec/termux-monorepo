@@ -28,3 +28,13 @@
 - Video: produced by the entries lane in-lane (TTS narration of `demo-script.md` ∘ terminal frames from the real `demo.py` run ∘ ffmpeg) — PR #2595 merged `d332229ae062`.
 - Article: LIVE, PR #2593 merged `bc7ce7ae22d1`.
 - Custom thumbnail: BLOCKED (YouTube Studio phone verification) = owner-surface, not taken.
+
+## Social proof — Builder article comments (captured 2026-10-31, browser read)
+
+Article: https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk (27 likes on the article). 24 comments: 21 positive, 2 neutral questions, 1 like-exchange self-promo (excluded).
+
+Positive set (author — comment): Dhriti Gupta — "Awesome 😎" · Sanjai V — "Awesome 😎" · Henrique Guena — "great article!" · THARIGA T AIDS — "A great one" · Adharsh S — "Great" · Gaurav Sharan Kumar — "Great" · João Luiz — "great" · Vaishnavi Sakthi Jagadeeswaran — "Good" · Disha Ullody — "Good" · Suraj Takkallapelly — "Good" · jazz — "good" · Ganchi Jashoda — "good" · Bharat Kulwant — "Nice" · João Arthur Britto — "nice" · Dheovan Winata Alvian — "nice" · Manivel R — "Interesting" · Saajid Ahamed — "Interesting" · Krishna Yadav — "interesting" · Carlos Leal — "thanks" · Jeet Routh — "👍🏻" · Shivani yadav — "👍"
+
+Neutral/questions (reply candidates for the entries lane): Devesh Arya — "How can you implement it in the real World scenarios?" · Sugam sharma — "why demo is required to run locally?"
+
+Liking status: ∅ liked — Builder requires a signed-in session to like comments; this browser profile is not signed in to Builder. Owner takeover sign-in ⇒ parent lane resumes and likes all 21.

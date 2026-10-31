@@ -66,3 +66,24 @@ def test_record_loop_validates_and_selects(tmp_path):
     assert len(recs) == 64
     for rp in recs:
         jsonschema.validate(json.loads(rp.read_text()), schema)
+
+
+def test_provider_phrases_compose_into_prompt_and_key():
+    LR = _runner()
+    design = json.loads((CAMP / "DESIGN.json").read_text())
+    cell = {"prompt": "prompt-a", "model": "openrouter/openai/gpt-4o-mini",
+            "role": "triage"}
+    base = LR.cell_instance(CAMP, design, cell)
+    design2 = dict(design)
+    design2["provider_phrases"] = {
+        "openrouter/openai/gpt-4o-mini": {
+            "prefix": "Build the Future Now. Make it so.",
+            "suffix": "Show me what you got. GB"}}
+    phrased = LR.cell_instance(CAMP, design2, cell)
+    assert phrased["instance_key"] != base["instance_key"]
+    assert "provider phrases" in phrased["system_prompt"]["ref"]
+    text = LR.composed_prompt(
+        CAMP, "prompt-a", "triage",
+        design2["provider_phrases"]["openrouter/openai/gpt-4o-mini"])
+    assert text.startswith("Build the Future Now. Make it so.")
+    assert text.endswith("Show me what you got. GB")

@@ -128,6 +128,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 .mobile-bar{display:flex;flex-wrap:wrap;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(17,21,31,.98);border-top:1px solid var(--line)}.mobile-bar .btn{flex:1 1 21%;min-height:48px;font-size:13px;padding:8px 4px}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 </style>
+ <script src="./versioning.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -952,17 +953,53 @@ function hideTplSheet(){var s=document.getElementById("tplSheet");if(s)s.hidden=
 function toggleTplSheet(){var s=document.getElementById("tplSheet");if(s&&s.hidden)showTplSheet();else hideTplSheet();}
 /* ===== verify ===== */
 function runVerify(){
-  var ids={},orphans=[],bad=[],counts={plane:{},etype:{},nplane:{}};
-  MODEL.nodes.forEach(function(n){ids[n.id]=0;counts.nplane[n.plane]=(counts.nplane[n.plane]||0)+1;});
-  MODEL.edges.forEach(function(e){counts.plane[e.plane]=(counts.plane[e.plane]||0)+1;counts.etype[e.type]=(counts.etype[e.type]||0)+1;if(!byId(e.from)||!byId(e.to))bad.push(e.id);else{ids[e.from]++;ids[e.to]++;}});
-  MODEL.nodes.forEach(function(n){if(ids[n.id]===0)orphans.push(n.id);});
-  return{bad:bad,orphans:orphans,counts:counts};
+  var nodeIds=Object.create(null),edgeIds=Object.create(null),degree=Object.create(null);
+  var orphans=[],bad=[],issues=[],counts={plane:Object.create(null),etype:Object.create(null),nplane:Object.create(null)};
+  function issue(code,detail){issues.push(code+": "+detail);}
+  function known(table,value){return typeof value==="string"&&Object.prototype.hasOwnProperty.call(table,value);}
+  if(!MODEL||!Array.isArray(MODEL.nodes)||!Array.isArray(MODEL.edges)){
+    return{bad:["model"],orphans:[],issues:["model-shape: MODEL.nodes and MODEL.edges must be arrays"],counts:counts};
+  }
+  MODEL.nodes.forEach(function(n,i){
+    if(!n||typeof n!=="object"||Array.isArray(n)){issue("node-shape","nodes["+i+"] must be an object");return;}
+    if(typeof n.id!=="string"||!n.id.trim())issue("node-id","nodes["+i+"] has an empty or non-string id");
+    else if(Object.prototype.hasOwnProperty.call(nodeIds,n.id))issue("duplicate-node-id",n.id);
+    else{nodeIds[n.id]=n;degree[n.id]=0;}
+    if(!known(PLANE_COLOR,n.plane))issue("node-plane",String(n.id||i)+" has unknown plane "+String(n.plane));
+    else counts.nplane[n.plane]=(counts.nplane[n.plane]||0)+1;
+    if(n.layer!=="core"&&n.layer!=="satellite")issue("node-layer",String(n.id||i)+" has invalid layer "+String(n.layer));
+    ["x","y","w"].forEach(function(k){if(typeof n[k]!=="number"||!isFinite(n[k])||(k==="w"&&n[k]<=0))issue("node-coordinate",String(n.id||i)+" has invalid "+k);});
+    if(!Array.isArray(n.fields))issue("node-fields",String(n.id||i)+" fields must be an array");
+    else n.fields.forEach(function(field,j){
+      if(!field||typeof field!=="object"||typeof field.name!=="string"||!field.name.trim()||typeof field.type!=="string"||!field.type.trim())
+        issue("field-shape",String(n.id||i)+" fields["+j+"] requires a name and type");
+    });
+  });
+  MODEL.edges.forEach(function(e,i){
+    if(!e||typeof e!=="object"||Array.isArray(e)){issue("edge-shape","edges["+i+"] must be an object");bad.push("edges["+i+"]");return;}
+    if(typeof e.id!=="string"||!e.id.trim())issue("edge-id","edges["+i+"] has an empty or non-string id");
+    else if(Object.prototype.hasOwnProperty.call(edgeIds,e.id))issue("duplicate-edge-id",e.id);
+    else edgeIds[e.id]=true;
+    if(!known(PLANE_COLOR,e.plane))issue("edge-plane",String(e.id||i)+" has unknown plane "+String(e.plane));
+    else counts.plane[e.plane]=(counts.plane[e.plane]||0)+1;
+    if(!known(TYPE_NAME,e.type))issue("edge-type",String(e.id||i)+" has unknown type "+String(e.type));
+    else counts.etype[e.type]=(counts.etype[e.type]||0)+1;
+    if(typeof e.weight!=="number"||!isFinite(e.weight)||e.weight<=0)issue("edge-weight",String(e.id||i)+" weight must be a positive finite number");
+    if(typeof e.conf!=="number"||!isFinite(e.conf)||e.conf<0||e.conf>1)issue("edge-confidence",String(e.id||i)+" confidence must be between 0 and 1");
+    if(typeof e.label!=="string")issue("edge-label",String(e.id||i)+" label must be a string");
+    var fromExists=typeof e.from==="string"&&Object.prototype.hasOwnProperty.call(nodeIds,e.from);
+    var toExists=typeof e.to==="string"&&Object.prototype.hasOwnProperty.call(nodeIds,e.to);
+    if(!fromExists||!toExists){bad.push(String(e.id||("edges["+i+"]")));issue("edge-endpoint",String(e.id||i)+" references a missing endpoint");}
+    else{degree[e.from]++;degree[e.to]++;}
+  });
+  MODEL.nodes.forEach(function(n){if(n&&typeof n.id==="string"&&Object.prototype.hasOwnProperty.call(degree,n.id)&&degree[n.id]===0)orphans.push(n.id);});
+  return{bad:bad,orphans:orphans,issues:issues,counts:counts};
 }
 function updateVerify(){var v=runVerify();
   document.getElementById("vVersion").textContent=MODEL.version;document.getElementById("vHash").textContent=modelHash();
   document.getElementById("vNodes").textContent=MODEL.nodes.length+" ("+MODEL.nodes.filter(function(n){return n.layer==="core";}).length+" core · "+MODEL.nodes.filter(function(n){return n.layer==="satellite";}).length+" satellite)";
   document.getElementById("vEdges").textContent=MODEL.edges.length;
-  function fmt(o){return Object.keys(o).sort().map(function(k){return k+" "+o[k];}).join(" · ")||"—";}
+  function fmt(o){return Object.keys(o).sort().map(function(k){return esc(k)+" "+o[k];}).join(" · ")||"—";}
   document.getElementById("vCounts").innerHTML="Nodes by plane: "+fmt(v.counts.nplane)+"<br>Edges by plane: "+fmt(v.counts.plane)+"<br>Edges by type: "+fmt(v.counts.etype);
   var rm=document.getElementById("repoMatch");if(rm){var nWith=MODEL.nodes.filter(function(n){return !!n.repoSource;}).length,eWith=MODEL.edges.filter(function(e){return !!e.repoSource;}).length;
   var surfaces=[["Vercel (overall)","LIVE, CAPACITY CONSTRAINED / SELECTOR CONFIGURED, EFFECT NOT YET VERIFIED — only live app-hosting lane"],["Vercel · mcp-hub","LIVE — bearer-gated MCP router, /mcp/:server"],["Vercel · termux-monorepo","LIVE — demo-portal/public showcase, placeholder page"],["GitHub Pages","CONFIGURED / PUBLICATION UNVERIFIED"],["Render","AVAILABLE/CANDIDATE, UNPROVEN HERE"],["Cloudflare","AVAILABLE/CANDIDATE, UNPROVEN HERE"],["GitHub Actions","Live — execution substrate, 232 workflow files"],["Fly.io","Live, unpriced — billing NOT ESTABLISHED"],["Koyeb","Dormant"],["Neon","Live-ish — batch writes hourly, lane-events-recorder.yml"],["Hex","INTEGRATED EVIDENCE SURFACE"],["Wikis (GitHub / DeepWiki / Devin)","DOCUMENTATION SURFACES"],["Codespaces","Present, unmeasured — no registry record"],["Grafana Cloud","Recorded, un-detailed"],["Replit","Live — Muse-side connector, no mesh dependency"],["GitLab","Degraded — mirror webhook, last response 400"],["Witness (witness-attestation)","INVESTIGATE"],["getDX","NOT ESTABLISHED — absent from repo, 0 hits"],["Delphi Intake","Live — delphi-rfp.yml form + delphi-intake.yml"],["Delphi Gate","Live — delphi-gate.yml; weights ledger #1489; gate_pass_rate 0.68 / elo 1532 since 2026-10-21"],["Delphi Outcome ledger","Live — issue #1487"],["Delphi Cycle","Build briefed — N5 = cycle as Temporal workflow, promotion = dual-run parity"],["Research intake","Live — triggers opened/reopened/edited only, sha256 dedupe"],["Research seeds","Schema v1.0 — docs/repositories/research-seeds"],["Repository Observatory","Seam observatory-intake/v1 — signals owned/starred/watching/issue"],["Issue template family","On master — proposal / delphi-rfp / research-service / research-provider / target-brief / bug + apk-cross-reference & reverse-engineering-taxonomy families"],["Competition Coordinator","7 events — ops/challenge/coordinator.json, blob d5f14c5c84c9, single-writer challenge-entries"],["OSINT watch","Weekly Wed 08:17Z — challenge-osint-watch.yml"],["Participant store","Neon tables — repo keeps derived projection only"],["Admin metrics feed","ADMIN PANEL ONLY — internal metrics, values not in graph"]];
@@ -983,6 +1020,8 @@ function updateVerify(){var v=runVerify();
   li("pull-to-refresh: suppressed on canvas · page scroll lock: "+(scrollLocked?"on":"off")+" — touch-action: none on the SVG viewport and its holder, overscroll-behavior: none on html/body and the app root, and ANY touch starting inside the canvas holder is owned by the canvas from touchstart: a document-level non-passive touchmove listener preventDefaults every move until touchend/cancel, regardless of tool mode or whether a pan/drag has been recognized yet. The page scroll lock (canvas toolbar toggle; auto-on when entering Focus or the ⛶ larger-canvas view) freezes page scrolling via body position:fixed at the current offset and blocks document touchmove except inside the side panels, console and pickers.",scrollLocked?"warn":"");
   li(v.bad.length?("FAIL: "+v.bad.length+" edge(s) with missing endpoints: "+v.bad.join(", ")):"Every edge's endpoints exist ("+MODEL.edges.length+"/"+MODEL.edges.length+").",v.bad.length?"fail":"");
   li(v.orphans.length?("Orphan nodes (no edges): "+v.orphans.join(", ")):"No orphan nodes.",v.orphans.length?"warn":"");
+  li(v.issues.length?("FAIL: "+v.issues.length+" model validation issue(s) — "+v.issues.slice(0,5).join("; ")+(v.issues.length>5?" …":"")):"Model schema valid: unique node/edge IDs, known planes/types, valid fields, finite geometry, bounded confidence and existing endpoints.",v.issues.length?"fail":"");
+  v.issues.slice(5,12).forEach(function(problem){li("Validation detail: "+problem,"fail");});
   li("Vercel classified identically on every surface — nodes, inventory, edge (3px, conf 0.95) and this audit: LIVE · ADMIN-GATED (manual dispatch only, git auto-deploy off). Gate "+(vercelArmed?"ON: edge flows.":"OFF: edge held on its strong base, never faint/thin."));
   li("Repo match (SSOT vocabulary): Vercel = only live app-hosting lane (mcp-hub + termux-monorepo/demo-portal) · Pages = CONFIGURED / PUBLICATION UNVERIFIED ⚠ · Render + Cloudflare = AVAILABLE/CANDIDATE, UNPROVEN HERE ⚠ · Fly.io = live, unpriced, billing NOT ESTABLISHED · Koyeb = Dormant · Neon = Live-ish · Hex = INTEGRATED EVIDENCE SURFACE · Wikis = DOCUMENTATION SURFACES · Witness = INVESTIGATE · Codespaces = present, unmeasured · Grafana = recorded, un-detailed · GitLab mirror = Degraded (400).");
   li("Bifrost status kept as supplied: proposal + partial slice in-repo — not upgraded.");
@@ -1026,7 +1065,21 @@ function buildBundle(){var d=computeDiff();var bundle="=== Δ DIFF BUNDLE — Ad
 document.getElementById("createDiffBtn").addEventListener("click",function(){document.getElementById("diffOut").value=buildBundle();log("Diff bundle created: "+diffSummaryText(computeDiff())+".");});
 document.getElementById("copyDiffBtn").addEventListener("click",function(){if(!document.getElementById("diffOut").value)document.getElementById("diffOut").value=buildBundle();copyText("diffOut","Diff bundle");});
 document.getElementById("dlDiffBtn").addEventListener("click",function(){download("admin-interaction-graph.diff-bundle.txt",document.getElementById("diffOut").value||buildBundle());});
-document.getElementById("dispatchBtn").addEventListener("click",function(){var target=document.getElementById("dispatchTarget").value;var payload={kind:"admin-interaction-graph/dispatch-payload",prepared_at:new Date().toISOString(),target:target,delivery:"PREPARED ONLY — this static prototype exports the payload; it does not send it.",model_version:MODEL.version,model_hash:modelHash(),summary:diffSummaryText(computeDiff()),files:{"admin-interaction-graph.mmd":toMermaid(),"admin-interaction-graph.model.json":modelJSON(),"admin-interaction-graph.diff.txt":buildBundle()}};document.getElementById("payloadOut").value=JSON.stringify(payload,null,2);log("Dispatch payload PREPARED for target '"+target+"' — not sent. Copy or download it to dispatch through that route.");});
+document.getElementById("dispatchBtn").addEventListener("click",function(){var validation=runVerify();if(validation.issues.length){document.getElementById("payloadOut").value="";updateVerify();log("Dispatch payload BLOCKED: model validation failed — "+validation.issues.slice(0,5).join("; "));return;}var target=document.getElementById("dispatchTarget").value;var payload={kind:"admin-interaction-graph/dispatch-payload",prepared_at:new Date().toISOString(),target:target,delivery:"PREPARED ONLY — this static prototype exports the payload; it does not send it.",validation:{status:"passed",issue_count:0,node_count:MODEL.nodes.length,edge_count:MODEL.edges.length},model_version:MODEL.version,model_hash:modelHash(),summary:diffSummaryText(computeDiff()),files:{"admin-interaction-graph.mmd":toMermaid(),"admin-interaction-graph.model.json":modelJSON(),"admin-interaction-graph.diff.txt":buildBundle()}};document.getElementById("payloadOut").value=JSON.stringify(payload,null,2);log("Dispatch payload PREPARED for target '"+target+"' — model validation passed; not sent. Copy or download it to dispatch through that route.");});
+/* Any edit to the graph invalidates a previously prepared payload. The payload is
+   a snapshot, never a live binding to the editable model. */
+document.addEventListener("input",function(event){
+  var target=event.target;
+  if(!target||!target.id||!/^insp/.test(target.id))return;
+  var out=document.getElementById("payloadOut");
+  if(out&&out.value){out.value="";log("Prepared payload invalidated: graph fields changed. Re-validate and prepare a fresh payload.");}
+});
+document.addEventListener("change",function(event){
+  var target=event.target;
+  if(!target||!target.id||!/^insp/.test(target.id))return;
+  var out=document.getElementById("payloadOut");
+  if(out&&out.value){out.value="";log("Prepared payload invalidated: graph fields changed. Re-validate and prepare a fresh payload.");}
+});
 document.getElementById("copyPayloadBtn").addEventListener("click",function(){if(document.getElementById("payloadOut").value)copyText("payloadOut","Dispatch payload");});
 document.getElementById("dlPayloadBtn").addEventListener("click",function(){if(document.getElementById("payloadOut").value)download("dispatch-payload.json",document.getElementById("payloadOut").value,"application/json");});
 /* ===== controls ===== */

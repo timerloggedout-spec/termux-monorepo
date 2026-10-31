@@ -11,6 +11,8 @@ on:
       - "docs/ops/generated/help-wanted-status.json"
       - "docs/ops/generated/lane-matrix-status.json"
       - ".github/workflows/help-wanted-dashboard-deploy.yml"
+      - ".github/workflows/help-wanted-dashboard-preview.yml"
+      - "scripts/build_dashboard_manifest.py"
   workflow_dispatch:
     inputs:
       target:
@@ -147,6 +149,15 @@ jobs:
         run: |
           mkdir -p _tribute/data
           cp -a apps/help-wanted-dashboard/. _tribute/
+      - name: Stamp version identities and content hashes
+        run: |
+          set -euo pipefail
+          python3 scripts/build_dashboard_manifest.py \
+            --root _tribute \
+            --channel production \
+            --source-ref "${GITHUB_REF_NAME}" \
+            --source-sha "${GITHUB_SHA}" \
+            --version-prefix "1.0.1"
           if [ -f docs/ops/generated/help-wanted-status.json ]; then
             cp docs/ops/generated/help-wanted-status.json _tribute/data/status.json
           fi

@@ -76,3 +76,10 @@ Original plan text named B1 a "fork-PR approval gate" — WRONG mechanism (the p
 ## 9. Ruling — the "2500 action_required" figure (2026-10-31, desk query)
 
 Desk flagged the figure appeared in neither the withdrawn nor survives list. Ruled here: **UNVERIFIED as a total; WITHDRAWN.** Evidence (PAT-API, this lane, 2026-10-31): unbounded `status=action_required` ⇒ total_count 2500 on two reads; `created>=2026-10-30` alone ⇒ 2500; `created>=2026-10-24` ⇒ 2500; `created<2026-10-24` ⇒ 166. A subrange saturating the same value as the whole proves a cap, not a count. Correct statement for any relay: **action_required pile ≥2666 (166 pre-2026-10-24 + ≥2500 since), exact total NOT_ESTABLISHED.** Any owner summary that relayed "2500" as the total carries this correction.
+
+## 10. Owner direction 2026-10-31 — tokens in Secrets ∧ Swarm AppID confer (via desk)
+
+- Owner: "Those tokens are already in SECRETS && you can mint as necessary. Maybe make the Swarms an AppID?" ⇒ **F1 needs ∅ new provisioning to start**: stored PAT secrets (OPERATOR_GITHUB_TOKEN class, names-only) are usable TODAY for workflow PR events.
+- **Confer OPENED** desk ↦ AppID process lane: proposed Swarm App perms {contents, pull_requests, issues, actions: write; checks: write; termux-monorepo only} ∧ custody question for in-Actions minting (PEM-in-Secrets — fleet precedent: Collector minting fix, secret-name pattern `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` + app-id var — vs local-only custody vs interim PAT secrets). Identity design = AppID lane's surface; their answer routes ↦ desk ∧ this lane. This lane takes ∅ identity-design position.
+- App-token advantage (evidence): installation tokens trigger downstream runs — Publisher self-publish PR #2417 precedent ∧ PR #2635 check-runs (§8).
+- **F1 PILOT FILED #2750:** `delphi-ledger-feed-collect.yml` (default-token env L30-31 → `git push -f` L74 + `gh pr create` L75 on `delphi-ledger-feed/refresh`, the pile's sample branch family) — swap push/PR-create token ↦ stored PAT secret; this lane verifies inflow Δ on landing.

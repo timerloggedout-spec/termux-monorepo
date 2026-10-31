@@ -63,3 +63,19 @@ Worked state at landing: every current desk entry is honestly `value = null` EXC
 - Historical burn attribution (no retroactive join exists).
 - Unstamped interactive reads (dark unless the helper stamp is on).
 - Any per-entry split of a shared-bucket aggregate (mathematically ∅ from readings alone).
+
+## Telemetry requirement (owner, 2026-10-30 23:10 PT)
+
+Per-entry quota usage is REQUIRED telemetry for ALL entries. Consequences:
+
+- Stamping is mandatory at requisition time for every dispatch at/after **2026-10-30T23:10 PT**: provider + session/key + window + consumption (or the null-reason) are recorded when the draw is made, not reconstructed later.
+- `usage{}` gains a `status` field, rendered by desk-feed as the coverage strip (established/total per entry):
+
+```json
+"status": "established | activity-only | waived | fault | pending"
+```
+
+- `established` — `match = exact`, `value ≠ null`. `activity-only` — `match = activity-proxy`. `pending` — no dispatch yet.
+- `waived` — ALL of the entry's dispatches predate the mandate AND consumption is unrecoverable (provider exposes ∅ per-entry units, or the draw sat in a shared bucket with ∅ per-consumer split). `note` MUST carry the reason verbatim. D0, D1-original, D3, M4 land here at the mandate's start.
+- `fault` — ANY dispatch at/after the mandate lacks its stamp. Fault is a live, fixable state: stamping the late record (with its true window) clears it. Fault-forever is rejected as a state: it would mark mathematically unrecoverable history as a standing failure and destroy the signal.
+- Coverage counts `established + activity-only + waived` as covered; `fault` and unstamped post-mandate `pending` render as visible gaps.

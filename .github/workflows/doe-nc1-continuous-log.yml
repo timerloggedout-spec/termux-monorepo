@@ -1,0 +1,59 @@
+name: doe-nc1-continuous-log
+# nc-1 continuous population/diagnostic logging (owner order 2026-11-01).
+# DIAGNOSTIC ONLY: appends per-run population + density records to
+# experiments/doe/nc-1-notation-compliance/records/logs/. This is NOT
+# a scored run: no verdicts, no floor checks, tau/floors frozen.
+# Scored runs live in doe-nc1-eval.yml and stay gated on the Linguist
+# operator-set re-review (run-003 clearance).
+#
+# Token route: Termux Fleet Swarm app token (SEC-03 mint-before-
+# checkout, F1 pattern, issue #2750) — NOT the shared GITHUB_TOKEN
+# bucket, and NOT a VM daemon/cron. Mint failure fails loudly.
+# Single-writer: concurrency group + append-only logs + direct push.
+# Fail-soft: the logger records DEFER lines instead of failing.
+on:
+  schedule:
+    - cron: "41 7 * * *" # daily 07:41 UTC (off-peak minute)
+  workflow_dispatch:
+concurrency:
+  group: doe-nc1-continuous-log
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.swarm-token.outputs.token }}
+      - name: Append continuous population/diagnostic log records
+        run: |
+          python3 scripts/doe/nc1_continuous_log.py \
+            experiments/doe/nc-1-notation-compliance/records/layer-outputs \
+            experiments/doe/nc-1-notation-compliance/records/logs
+      - name: Commit + push log records (single-writer, append-only)
+        run: |
+          set -euo pipefail
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add experiments/doe/nc-1-notation-compliance/records/logs
+          if git diff --cached --quiet; then
+            echo "no log changes" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git commit -m "doe(nc-1): continuous population/diagnostic log append [automation]"
+          for attempt in 1 2; do
+            if git push origin HEAD:master; then break; fi
+            git pull --rebase origin master
+          done
+          git push origin HEAD:master
+          echo "log records pushed: $(git rev-parse --short HEAD)" >> "$GITHUB_STEP_SUMMARY"

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c8ae83796a3b7854b41a2364b5e314328e1446debdc904f53dcc41e3e69415d6",
-  "workflow_count": 245,
+  "source_fingerprint": "9dfb96b7ab3670d1dc4ae04d7acca9624c5b9e042f37ab4f1e2ca6b43660f5b7",
+  "workflow_count": 246,
   "workflows": [
     {
       "action_pins": [],
@@ -3757,6 +3757,25 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: repo-tracking-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "repo-tracking-collect",
+      "path": ".github/workflows/repo-tracking-collect.yml",
+      "schedules": [
+        "23 7 * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

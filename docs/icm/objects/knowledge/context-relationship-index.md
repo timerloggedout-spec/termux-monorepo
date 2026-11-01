@@ -4,7 +4,7 @@ cluster: knowledge
 universe: live
 status: verified
 entity: workspace/llm_map/context_relationships/
-verified_at: 2026-08-18
+verified_at: 2026-11-01
 ---
 
 # Context Relationship Index
@@ -53,4 +53,4 @@ Citations: `config/context_relationships/schema.json`, `config/context_relations
 
 - Process: [`../../processes/context-relationship-reconnaissance.md`](../../processes/context-relationship-reconnaissance.md)
 - Process: [`../../processes/change-and-validate.md`](../../processes/change-and-validate.md)
-- Source: [`AGENTS.md`](../../../../AGENTS.md)
+- Source: [`CLAUDE.md`](../../../../CLAUDE.md)

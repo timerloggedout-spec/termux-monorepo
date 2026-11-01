@@ -26,3 +26,17 @@ per-artifact density + stratum; evidence_hash-deduped).
   only: a change requires recorded per-window significance numbers
   in a follow-up amendment — no silent or calendar-driven change.
 - Scored gates unchanged (Linguist re-review); tau/floors frozen.
+
+## Struck clauses (owner correction, 2026-11-01 00:25 PT)
+The following clauses appeared in relayed versions of this amendment
+(main submissions eb9ab979 / e77649df) and are STRUCK — they were
+main's misread, rejected by the owner outright, and must not
+propagate:
+- STRUCK: "step-down to daily" (on evidence or otherwise).
+- STRUCK: "daily may stand if backfill lands the baseline".
+OF RECORD: cadence = statistically significant intervals, full stop.
+Frequency is set by significance (per-stratum n clearing thresholds),
+initially >1x/day (6h here), and changes only when the significance
+evidence itself changes — never by reverting to a calendar default.
+Backfill raises baseline n; it does not license any frequency
+reduction by itself.

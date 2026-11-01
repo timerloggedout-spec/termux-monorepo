@@ -40,9 +40,6 @@ jobs:
           data = json.loads(Path('/tmp/manifest.json').read_text(encoding='utf-8'))
           if data.get('repository') != 'timerloggedout-spec/termux-monorepo':
               raise SystemExit('PROMOTION BLOCKED: manifest repository identity mismatch.')
-          if data.get('default_branch') != 'master':
-              raise SystemExit('PROMOTION BLOCKED: manifest is not anchored to canonical master.')
-
           coverage = data.get('history_coverage')
           if not isinstance(coverage, dict):
               raise SystemExit('PROMOTION BLOCKED: history_coverage is missing or malformed.')

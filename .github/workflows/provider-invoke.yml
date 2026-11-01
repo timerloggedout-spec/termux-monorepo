@@ -1,0 +1,111 @@
+name: Provider invoke (inference batch)
+
+# Per-provider bounded invoke for the class-corrected inference batch:
+# one dispatch = one provider, one production-work completion, verdict +
+# completion posted to the batch evidence issue. Endpoints/secrets resolve
+# from the repo's reviewed hub sources at runtime (no hard-pinned routes).
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: "Inference provider to invoke"
+        required: true
+        type: choice
+        options:
+          - cohere
+          - sambanova
+          - zai
+          - llm7
+          - routeway
+          - unorouter
+          - siliconflow
+          - huggingface
+          - groq
+          - xkiro
+          - cerebras
+          - kilo
+          - mistral
+          - modelscope
+          - ovhcloud
+          - requesty
+          - typhoon
+          - xfyun
+          - aion
+          - sealion
+          - cloudflare
+          - nvidia
+          - felo
+          - omni
+
+permissions: {}
+
+jobs:
+  invoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Invoke provider against production work
+        id: invoke
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HF_API_TOKEN || secrets.HF_TOKEN }}
+          HUGGING_FACE_HUB_TOKEN: ${{ secrets.HUGGING_FACE_HUB_TOKEN }}
+          HF_API_TOKEN: ${{ secrets.HF_API_TOKEN }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
+          AION_API_KEY: ${{ secrets.AION_API_KEY }}
+          LLM7_API_TOKEN: ${{ secrets.LLM7_API_TOKEN }}
+          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+          MODELSCOPE_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          KILO_API_KEY: ${{ secrets.KILO_API_KEY }}
+          OVHCLOUD_API_KEY: ${{ secrets.OVHCLOUD_API_KEY }}
+          SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+          OPENTYPHOON_API_KEY: ${{ secrets.OPENTYPHOON_API_KEY }}
+          TYPHOON_API_KEY: ${{ secrets.TYPHOON_API_KEY }}
+          UNOROUTER_API_KEY: ${{ secrets.UNOROUTER_API_KEY }}
+          ROUTEWAY_API_KEY: ${{ secrets.ROUTEWAY_API_KEY }}
+          REQUESTY_API_KEY: ${{ secrets.REQUESTY_API_KEY }}
+          XKIRO_API_KEY: ${{ secrets.XKIRO_API_KEY }}
+          XFYUN_API_KEY: ${{ secrets.XFYUN_API_KEY }}
+          IFLYTEK_SPARK_API_PASSWORD: ${{ secrets.IFLYTEK_SPARK_API_PASSWORD }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+        run: |
+          set -o pipefail
+          python3 scripts/ops/provider_invoke.py \
+            --provider "${{ inputs.provider }}" \
+            --prompt-file docs/ops/tasks/inference-batch-ww3.md \
+            --out /tmp/invoke-completion.md 2>&1 | tee /tmp/invoke.log
+          grep '^INVOKE_VERDICT ' /tmp/invoke.log | tail -1 | sed 's/^INVOKE_VERDICT //' > /tmp/verdict.json
+          python3 - <<'PYEOF'
+          import json
+          v = json.load(open('/tmp/verdict.json'))
+          with open('/tmp/invoke-comment.md', 'w') as f:
+              f.write('[MUSEai]@{role:{optimizations-assurance}} INFERENCE BATCH invoke — provider **%s**: %s\n\n' % (
+                  v['provider'], '✓ INVOKE OK' if v['ok'] else '✗ ' + v['diagnosis']))
+              f.write('verdict: `%s`\n' % json.dumps(v))
+              if v['ok']:
+                  f.write('\n<details><summary>completion (production work product)</summary>\n\n')
+                  f.write(open('/tmp/invoke-completion.md').read())
+                  f.write('\n</details>\n')
+          PYEOF
+      - name: Post invoke evidence
+        run: |
+          GH_TOKEN="${{ github.token }}" gh issue comment "3141" --repo timerloggedout-spec/termux-monorepo --body-file /tmp/invoke-comment.md

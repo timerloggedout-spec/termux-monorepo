@@ -18,7 +18,11 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         cadence = Path(".github/workflows/cadence-lead-lag.yml").read_text(encoding="utf-8")
         self.assertIn("Emit incidents for lag_failure", cadence)
         self.assertIn("gh issue create", cadence)
-        self.assertIn("cron: \"12 */4 * * *\"", cadence)
+        # Scheduled cadence ownership moved to quota-dispatch-tree.yml under #1573.
+        # This workflow remains manually dispatchable and must not reintroduce a duplicate cron.
+        self.assertIn("workflow_dispatch:", cadence)
+        self.assertIn("Cadence owned by quota-dispatch-tree.yml", cadence)
+        self.assertNotIn("cron:", cadence)
 
     def test_first_fingerprint_requests_notification_and_records_run(self):
         result = reconcile_incident(

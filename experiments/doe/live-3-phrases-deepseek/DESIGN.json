@@ -149,6 +149,13 @@
    "state": "armed"
   }
  ],
+ "home_reconciliation": {
+  "canonical_home": "experiments/doe/live-3-phrases-deepseek",
+  "provenance": "jit design landed PR #2799 merged 2a9a256169a5, superseded by this campaign in PR #2805; content subsumed here, preserved in git history; removed dir held DESIGN.json+README.md only, no records, so removal loses nothing",
+  "reference_census": "code-search + firsthand greps 2026-10-31: refs to live-3-phrases-jit existed ONLY inside the two live-3 dirs; DOE-FAMILY.md, scripts/dashboards/surface_feeds.py (collect_doe), DOE-RECON = 0 refs; no active ref repointing owed",
+  "removed_dir": "experiments/doe/live-3-phrases-jit",
+  "removed_reason": "one campaign = one dir (doe-expert ruling 2026-10-31, via doe-mgr-live-builds defect directive)"
+ },
  "member_kind": "campaign",
  "moniker": "doe-mgr-phrases-jit",
  "oversight": "doe-expert (44bb4068) via doe-mgr-live-builds (28ac9715) \u2014 phrases-jit nested subset per owner restructure 2026-10-31",
@@ -176,6 +183,6 @@
   "system": "scripts/doe/phrase_layer.py JIT layer over SSOT sets from harmony_hub prompt_engine.py + profiles/1337.json"
  },
  "suite_type": "live",
- "supersedes": "experiments/doe/live-3-phrases-jit (PR #2799; generic transform screening under the seed brief)",
+ "supersedes": "experiments/doe/live-3-phrases-jit (PR #2799; generic transform screening under the seed brief) \u2014 dir REMOVED 2026-10-31, see home_reconciliation",
  "surface": "doe"
 }

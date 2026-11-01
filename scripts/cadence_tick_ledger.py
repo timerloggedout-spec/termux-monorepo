@@ -35,9 +35,47 @@ REQUIRED = ("ts", "principal", "method", "endpoint", "resource",
             "limit", "used", "remaining", "reset", "status", "counted")
 
 
+def validate_tick(tick):
+    """Return field-level audit errors for one tick; preserve valid raw evidence."""
+    if not isinstance(tick, dict):
+        return ["record must be a JSON object"]
+    missing = [key for key in REQUIRED if key not in tick]
+    if missing:
+        return [f"missing fields {missing}"]
+    errors = []
+    for key in ("ts", "principal", "method", "endpoint"):
+        if not isinstance(tick[key], str) or not tick[key].strip():
+            errors.append(f"{key} must be a non-empty string")
+    if tick.get("resource") is not None and (
+            not isinstance(tick["resource"], str) or not tick["resource"].strip()):
+        errors.append("resource must be a non-empty string or null")
+    if isinstance(tick["ts"], str):
+        try:
+            parsed = datetime.fromisoformat(tick["ts"].replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                errors.append("ts must include a timezone")
+        except ValueError:
+            errors.append("ts must be an ISO-8601 timestamp")
+    for key in ("limit", "used", "remaining", "reset", "status"):
+        value = tick[key]
+        if isinstance(value, bool) or not isinstance(value, int):
+            errors.append(f"{key} must be an integer")
+        elif value < 0:
+            errors.append(f"{key} must be non-negative")
+    if isinstance(tick["counted"], bool) is False:
+        errors.append("counted must be a boolean")
+    if all(isinstance(tick[k], int) and not isinstance(tick[k], bool)
+           for k in ("limit", "used", "remaining")):
+        if tick["remaining"] > tick["limit"]:
+            errors.append("remaining exceeds limit")
+    if "session" in tick and tick["session"] is not None and not isinstance(tick["session"], str):
+        errors.append("session must be a string or null")
+    return errors
+
+
 def load_ticks(paths):
-    """Read + validate tick files. Returns (ticks, errors)."""
-    ticks, errors = [], []
+    """Read + audit tick files. Returns (valid_ticks, errors)."""
+    ticks, errors, seen = [], [], set()
     for path in paths:
         for lineno, line in enumerate(Path(path).read_text().splitlines(), 1):
             if not line.strip():
@@ -47,10 +85,17 @@ def load_ticks(paths):
             except json.JSONDecodeError as exc:
                 errors.append(f"{path}:{lineno}: invalid JSON: {exc}")
                 continue
-            missing = [k for k in REQUIRED if k not in tick]
-            if missing:
-                errors.append(f"{path}:{lineno}: missing fields {missing}")
+            problems = validate_tick(tick)
+            if problems:
+                errors.extend(f"{path}:{lineno}: {problem}" for problem in problems)
                 continue
+            identity = tuple(tick.get(k) for k in (
+                "ts", "principal", "session", "method", "endpoint", "resource",
+                "limit", "used", "remaining", "reset", "status", "counted"))
+            if identity in seen:
+                errors.append(f"{path}:{lineno}: duplicate/replayed tick identity")
+                continue
+            seen.add(identity)
             ticks.append(tick)
     ticks.sort(key=lambda t: t["ts"])
     return ticks, errors

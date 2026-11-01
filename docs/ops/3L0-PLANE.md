@@ -128,7 +128,16 @@ missing field = `NOT ESTABLISHED`, never invented):
 Fold rules (this plane): only records with `outcome.confirmed ≠ null`
 move gate_pass_rate (EWMA α 0.2) / Elo (k=16) — v1 semantics until
 #1784 v2 lands; per-`role{moniker}` keying is the v2 target, records
-already carry the fields it needs. `usage` feeds the density
+already carry the fields it needs. **Backfill doctrine (owner,
+2026-11-01; canonical record = DoE expert):** at *every* scoring/
+weighting version change, the full intake history is re-scored under
+the new version (backfill); the backfill itself is audited ∧ improved
+as a versioned mechanism, ¬ a one-off migration; results across
+versions are compared continuously until DoE culling retires a method
+version — a retired version's scores leave the live surfaces, its
+records stay (∅ deletion). Intake records are therefore never
+rewritten by a version change: versions re-derive scores from the
+immutable intake history. `usage` feeds the density
 consideration (signal ÷ tokens, #1784). Population is verified from
 the feed/ledger, not from routing claims: scoring counts as populated
 when the 3L0 feed's observed block rests on ≥1 live-dispatch outcome

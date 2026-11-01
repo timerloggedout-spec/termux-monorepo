@@ -1,0 +1,36 @@
+name: UI surface registry
+
+on:
+  pull_request:
+    paths:
+      - "docs/ops/ui-surface-registry.json"
+      - "docs/ops/ui-surface-registry.schema.json"
+      - "scripts/validate-ui-surface-registry.py"
+      - "scripts/requirements-ui-surface-registry.txt"
+      - ".github/workflows/ui-surface-registry.yml"
+  push:
+    branches: [master]
+    paths:
+      - "docs/ops/ui-surface-registry.json"
+      - "docs/ops/ui-surface-registry.schema.json"
+      - "scripts/validate-ui-surface-registry.py"
+      - "scripts/requirements-ui-surface-registry.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate registry and evidence paths
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install validator
+        run: python -m pip install -r scripts/requirements-ui-surface-registry.txt
+      - name: Validate registry
+        run: python scripts/validate-ui-surface-registry.py

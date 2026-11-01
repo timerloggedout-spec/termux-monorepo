@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4783229803d9514941b4d6613338f313d3b675be444b38b504d9ca370039dbb4",
-  "workflow_count": 250,
+  "source_fingerprint": "c3ec829dd07fc307238211497b3a97df1c7283641b6d3b2001a43537198ec855",
+  "workflow_count": 251,
   "workflows": [
     {
       "action_pins": [],
@@ -3443,6 +3443,23 @@
       "schedules": [],
       "triggers": [
         "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "invoke"
+      ],
+      "name": "Provider invoke (inference batch)",
+      "path": ".github/workflows/provider-invoke.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

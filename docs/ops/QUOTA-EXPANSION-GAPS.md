@@ -7,7 +7,7 @@
 
 ## 0. Firsthand recounts (done by the author of this file, 2026-10-20)
 
-### 0.1 Registry — `quota_registry.json` (schema `3l0.quota-registry.v1`)
+### 0.1 Registry — `quota_registry.json` (schema `quota.registry.v2`)
 
 **Firsthand count: 26 entries.** Recorded count was 26 — **verified, matches.** Source: direct read of `~/workspace/termux-monorepo/quota_registry.json`, entries counted one by one.
 

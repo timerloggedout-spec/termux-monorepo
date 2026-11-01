@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "3501aa49b603fe4398291dbcbcb1203e2f8bbb93df22d7d3dd868480f10f2929",
+  "source_fingerprint": "a78f07c4cf4dcba95ef13f521bb55801d86fd7bcca60d96873ef1b1c49eef0c2",
   "workflow_count": 250,
   "workflows": [
     {
@@ -3407,7 +3407,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
-      "authority": "read-only-or-advisory",
+      "authority": "bounded-state-write",
       "concurrency": "group: provider-batch-${{ github.ref }} cancel-in-progress: false",
       "domain": "peer-provider-review",
       "jobs": [

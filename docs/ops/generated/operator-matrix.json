@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 379,
-    "open_prs": 169,
+    "open_prs": 168,
     "pr_classes": {
-      "CANDIDATE": 81,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 82,
+      "CANDIDATE": 80,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 34,
-      "prs": 167,
+      "prs": 166,
       "unlabelled_numbers": [
         308,
         343,
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T13:31:00Z",
+  "generated_at": "2026-11-01T13:32:37Z",
   "issues_unlabelled": [
     308,
     343,
@@ -132,7 +132,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "97e384fb85"
+    "sha": "e8d5511837"
   },
   "prs": [
     {
@@ -204,20 +204,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "ed469601e5",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3158,
-      "title": "fix(quota): planner refresh push \u2014 fetch owned branch before force-with-lease",
-      "updated_at": "2026-11-01T13:30:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -979,20 +965,6 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "68c250ff25",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T13:29:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -1768,6 +1740,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "12bd792dbd",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T13:31:58Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2401,12 +2387,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0ec0889929",
+      "head_sha": "50a6a62f1d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T13:26:29Z"
+      "updated_at": "2026-11-01T13:31:39Z"
     },
     {
       "class": "NEED_EVIDENCE",

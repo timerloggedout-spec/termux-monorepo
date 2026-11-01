@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T14:22:39Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T14:26:33Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T14:22:38Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4760` read_at=`2026-11-01T14:22:38Z`
+Sources: PR feed read_at=`2026-11-01T14:26:33Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4768` read_at=`2026-11-01T14:26:33Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknown=6
 
@@ -12,18 +12,18 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknow
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3196 `6db25e3217a7` 2026-11-01T14:19:48Z | Reader core MERGED #3102 + synced (parity 23/23) · SR module: returned to the system for balanced execution (#3050; command-dispatch re-route withdrawn, owner correction) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3179 `0ee3d20fb246` 2026-11-01T14:01:19Z | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair |
-| challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | #3183 `6800efdbf5ab` 2026-11-01T14:06:44Z | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules dispatchability LOST ∧ Gemini-CLI build leg OUT); producer-naming req unchanged |
-| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3177 `1d2734e33f79` 2026-11-01T13:59:06Z | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules dispatchability LOST + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first |
+| challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | #3183 `6800efdbf5ab` 2026-11-01T14:06:44Z | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DEGRADED (~1 concurrent cap, probe 2026-11-01T14:12Z; opportunistic single-session only) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged |
+| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3177 `1d2734e33f79` 2026-11-01T13:59:06Z | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DEGRADED (~1 concurrent cap, probe 2026-11-01T14:12Z; opportunistic single-session only) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3173 `0707fb63ec37` 2026-11-01T13:53:55Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3201 `60d02dcbadbb` 2026-11-01T14:25:32Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3197 `46f209a1b1c7` 2026-11-01T14:20:08Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | #3198 `97a600879be0` 2026-11-01T14:20:26Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | #3202 `2030c2b2b33a` 2026-11-01T14:25:43Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3172 `8f9a1d807751` 2026-11-01T13:53:03Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
@@ -61,4 +61,4 @@ Campaigns: 14 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 61/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 59/150 (extend ops/tracking/projects.json match rules)

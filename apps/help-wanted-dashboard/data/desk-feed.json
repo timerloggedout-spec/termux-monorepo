@@ -1,18 +1,18 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-11-01T11:20:25Z",
+ "generated_at": "2026-11-01T11:21:51Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
   "name": "Contribution Desk",
   "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
-  "model": "Fleet provider lanes execute all build/edit work via monorepo PRs — bench widened 2026-11-01 (owner: USE THE PROVIDERS): build {Jules via agent-jules-on-issues, Gemini dispatch} · fix {DeepSeek dispatch, CodeRabbit, Devin, command-dispatch} · device {DeepAgent via DeepCLI Agent Bridge} · review {Qodo, Devin, CodeRabbit}; Muse seats never author build code.",
+  "model": "Fleet provider lanes execute all build/edit work via monorepo PRs — bench widened 2026-11-01 (owner: USE THE PROVIDERS): build {Jules via agent-jules-on-issues, Gemini dispatch} · fix {DeepSeek dispatch, CodeRabbit, Devin, command-dispatch} · device {DeepAgent via DeepCLI Agent Bridge} · review {Qodo, Devin, CodeRabbit} · probe/batch {provider-batch — dispatchable arm; dispatches currently held per issue #2672 until its contracts job is green}; Muse seats never author build code.",
   "roles": {
    "owner": "authorization of record (direct orders only; a halt lifts only by the owner)",
    "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
    "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
    "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
-   "provider_lanes": "Build {Jules, Gemini} · fix-class {DeepSeek, CodeRabbit, Devin, command-dispatch} · device {DeepAgent / DeepCLI Agent Bridge} · review {Qodo, Devin, CodeRabbit} — providers author ALL build code via monorepo PRs (seat spec → provider PR → seat verify → desk merge). Bench widened 2026-11-01 per owner utilization order via D1 seat (was a 4-lane funnel vs the fleet's 89-model registry bench). DeepAgent = bridge-proven (158 runs, last success 2026-10-23; bridge greens include skip-exits, so per-dispatch execution is verified at PR level, never from the run color alone).",
+   "provider_lanes": "Build {Jules, Gemini} · fix-class {DeepSeek, CodeRabbit, Devin, command-dispatch} · device {DeepAgent / DeepCLI Agent Bridge} · review {Qodo, Devin, CodeRabbit} — providers author ALL build code via monorepo PRs (seat spec → provider PR → seat verify → desk merge). Probe/batch {provider-batch — 234 runs, last success 2026-10-28; dispatchable, currently held per #2672 until contracts green}. Bench recognized 2026-11-01 per owner utilization order via D1 seat (routing recognition of already-triggering surfaces, not new wiring; was a 4-lane funnel vs the fleet's 89-model registry bench). DeepAgent = bridge-proven (158 runs, last success 2026-10-23; bridge greens include skip-exits, so per-dispatch execution is verified at PR level, never from the run color alone).",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [

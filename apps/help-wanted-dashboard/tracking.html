@@ -13,6 +13,7 @@
 <header><div class="hero"><div><div class="eyebrow">Ops · repo tracking · live proof</div><h1>Tracking <span>Board</span></h1><p class="lede">Every tracked lane × project: state, last merge, next step. This page consumes the single-writer tracking feed and nothing else; a value no source holds renders as NOT ESTABLISHED, never synthesized.</p><div class="links" style="margin-top:1rem"><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/REPO-TRACKING.md">Tracking contract</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/tracking/tracking.json">Feed (ops twin)</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching tracking feed.</small></div></div></header>
 <main>
 <section aria-labelledby="board"><div class="head"><h2 id="board">Lane × project</h2><span class="note" id="board-summary">—</span></div><div class="toolbar"><input id="search" type="search" placeholder="Filter lane, project, domain"></div><div id="board-table"></div></section>
+<section aria-labelledby="doe-join"><div class="head"><h2 id="doe-join">Provider × DoE-setting join</h2><span class="note" id="join-summary">—</span></div><p class="note">Per campaign: the configured instances (provider ∧ model@version ∧ role) its records carry, from treatment.instance stamps in the same feed (doe_join block). Per-instance verdicts do not exist in the sources and are not synthesized — state shown is the campaign DESIGN status plus join coverage; a campaign with no joined instance renders NOT ESTABLISHED.</p><div id="join-block"></div></section>
 <section aria-labelledby="sources"><div class="head"><h2 id="sources">Sources &amp; gaps</h2><span class="note">Feed honesty block, verbatim</span></div><div id="sources-block"></div></section>
 <footer>Tracking Board · source: apps/help-wanted-dashboard/data/tracking-feed.json (== ops/tracking/tracking.json, schema repo-tracking/v1) · single-writer: repo-tracking-collect.yml · states are derived at generation time, never hand-edited</footer>
 </main>
@@ -27,13 +28,28 @@ function countsLine(summary){const bs=summary&&summary.by_state||{},bd=summary&&
 function trackRow(r){
   return '<tr><td>'+esc(r.lane)+'</td><td>'+esc(r.project)+'<div class="muted">'+esc(r.project_id||'')+'</div></td><td>'+esc(r.domain)+'</td><td>'+statePill(r.state)+'</td><td>'+esc(fmtMerge(r.last_merge))+(r.last_merge&&r.last_merge.title?'<div class="muted">'+esc(r.last_merge.title)+'</div>':'')+'</td><td>'+esc(r.next||'NOT ESTABLISHED')+'<div class="muted">basis: '+esc(r.next_basis||'none')+'</div></td><td class="muted">'+esc((r.evidence||[]).join(' · '))+'</td></tr>';
 }
-// ==== end pure logic ====
+function ne(v){return v===null||v===undefined||v===''?'NOT ESTABLISHED':v}
+function joinInstanceRow(camp,inst){
+  const occ=inst.occurrences||{};
+  return '<tr><td>'+esc(ne(inst.provider))+'</td><td>'+esc(ne(inst.model_at_version))+'</td><td>'+esc(ne(inst.role))+'</td><td>'+esc(ne(inst.moniker))+'</td><td>'+esc(ne(inst.context))+'</td><td class="muted">'+esc(ne(inst.prompt))+'</td><td class="muted">'+esc((inst.instance_key||'').slice(0,12))+'</td><td>plan '+esc(occ.plan??0)+' · record '+esc(occ.record??0)+' · dispatch '+esc(occ.dispatch??0)+'</td></tr>';
+}
+function campaignBlock(camp){
+  const head='<div class="head"><h2 style="font-size:1.02rem">'+esc(camp.campaign)+'</h2><span class="note">status: '+esc(ne(camp.status))+' · join: '+esc(camp.join_state)+' · records '+esc(camp.experiment_records??0)+' ('+esc(camp.experiment_records_with_instance??0)+' with instance) · moniker '+esc(ne(camp.moniker))+'</span></div>';
+  if(camp.join_state!=='joined'||!(camp.instances||[]).length)
+    return '<section>'+head+'<div class="card empty">NOT ESTABLISHED — no joined instance records yet (design-only or pre-stamp records).</div></section>';
+  return '<section>'+head+'<div class="card table-wrap"><table class="table"><thead><tr><th>Provider</th><th>Model@version</th><th>Role</th><th>Moniker</th><th>Context</th><th>Prompt ref</th><th>Instance key</th><th>Occurrences</th></tr></thead><tbody>'+camp.instances.map(i=>joinInstanceRow(camp,i)).join('')+'</tbody></table></div></section>';
+}
+// ==== end pure logic ==== 
 let feed=null;
 function render(){
   const q=$('search').value.trim().toLowerCase();
   const rows=feed&&Array.isArray(feed.rows)?feed.rows:[];
   $('board-summary').textContent=rows.length?(feed.summary.rows+' rows · '+countsLine(feed.summary)):'Feed unavailable';
   $('board-table').innerHTML=rows.length?'<div class="card table-wrap"><table class="table"><thead><tr><th>Lane</th><th>Project</th><th>Domain</th><th>State</th><th>Last merge</th><th>Next</th><th>Evidence</th></tr></thead><tbody>'+rows.filter(r=>!q||[r.lane,r.project,r.domain].join(' ').toLowerCase().includes(q)).map(trackRow).join('')+'</tbody></table></div>':'Feed unavailable; do not infer tracking state.';
+  const dj=(feed&&feed.doe_join)||null;
+  const djs=(dj&&dj.summary)||{};
+  $('join-summary').textContent=dj?(djs.campaigns+' campaigns · '+djs.campaigns_joined+' joined · '+djs.distinct_instances+' distinct instances · providers '+((djs.providers||[]).join(', ')||'—')):'Join unavailable';
+  $('join-block').innerHTML=dj?(dj.campaigns||[]).filter(camp=>!q||String(camp.campaign).toLowerCase().includes(q)).map(campaignBlock).join(''):'Join block unavailable in feed.';
   const s=(feed&&feed.sources)||{};
   const pf=s.pr_feed||{},le=s.lane_events||{};
   $('sources-block').innerHTML=feed?'<div class="card"><p>pr_feed: '+esc(pf.merged??'—')+' merged · '+esc(pf.open??'—')+' open · read '+esc(pf.read_at||'—')+'</p><p>lane_events: status '+esc(le.status||'—')+' · count '+esc(le.count??'—')+' · events in snapshot '+esc(le.events_in_snapshot??'—')+' · read '+esc(le.read_at||'—')+'</p><p class="muted">records: '+esc((s.records||[]).join(' · '))+'</p><p><strong>Gaps</strong></p><ul>'+(feed.gaps||[]).map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul><p><strong>Honesty rules</strong></p><ul>'+(feed.honesty_rules||[]).map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>':'';

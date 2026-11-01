@@ -81,6 +81,12 @@ jobs:
             --source-sha "$SOURCE_SHA" \
             --version-prefix "1.0.1"
           touch _preview/.nojekyll
+          if [ -f _preview/sitemap.xml ]; then
+            sed -i "s#https://timerloggedout-spec.github.io/tribute/#https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/tribute/#g" _preview/sitemap.xml
+          fi
+          if [ -f _preview/robots.txt ]; then
+            sed -i "s#https://timerloggedout-spec.github.io/tribute/sitemap.xml#https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/tribute/sitemap.xml#g" _preview/robots.txt
+          fi
           cp -a _preview/. "_user_site/previews/$PREVIEW_KEY/tribute/"
 
           cp production/apps/help-wanted-dashboard/matrix.html _user_site/matrix/index.html

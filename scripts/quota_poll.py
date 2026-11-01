@@ -330,7 +330,7 @@ DISPLAY_STATUSES = {"ok", "watch", "exhausted", "cap_tripped"}
 
 def readings_snapshot(public, services):
     """Convert a quota-public-status/v1|v2 projection into the dashboard
-    readings contract (3l0.quota-readings.v1).
+    readings contract (quota.readings.v2).
 
     This is the publisher step of the generated-file path: a human/agent
     downloads the probe workflow's artifact, runs this conversion, reviews
@@ -385,7 +385,7 @@ def readings_snapshot(public, services):
             "horizon": horizon,
             "observed_at": row.get("observed_at"),
         })
-    return {"schema": "3l0.quota-readings.v1", "generated_at": public.get("generated_at"),
+    return {"schema": "quota.readings.v2", "generated_at": public.get("generated_at"),
             "source": ("Converted from the quota probe's status-only public projection "
                        "(quota-public-status) through the generated-file path; not a live quota "
                        "feed. The projection withholds account values by design, so every "

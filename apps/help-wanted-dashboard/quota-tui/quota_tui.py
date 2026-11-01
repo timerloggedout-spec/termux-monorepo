@@ -4,11 +4,11 @@
 Zero-dependency (Python 3 stdlib only) terminal renderer for the quota
 panel data. Shared source of truth is the same pair the web panel uses:
 
-  * Registry  -- schema ``3l0.quota-registry.v1``
+  * Registry  -- schema ``quota.registry.v2``
                  (master: ``ops/quota/registry.json``;
                   local:  ``quota_registry.json``)
                  ALL documented services + entitlements.
-  * Readings  -- schema ``3l0.quota-readings.v1``
+  * Readings  -- schema ``quota.readings.v2``
                  (master: ``apps/help-wanted-dashboard/data/quota.json``
                   == ``docs/ops/generated/quota-status.json``;
                   local:  ``quota-panel/quota.json``)
@@ -97,8 +97,8 @@ def split_data(data: dict) -> tuple[list[dict], list[dict], dict]:
     """Split any accepted input shape into (services, readings, meta)."""
     services = data.get("services") or []
     readings = data.get("readings") or []
-    # A bare readings file: schema 3l0.quota-readings.v1
-    # A bare registry file:  schema 3l0.quota-registry.v1 (services only)
+    # A bare readings file: schema quota.readings.v2
+    # A bare registry file:  schema quota.registry.v2 (services only)
     return services, readings, data
 
 
@@ -302,7 +302,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("quota_json", nargs="?", default=None,
                     help="quota.json (readings, registry, or merged)")
     ap.add_argument("--registry", default=None,
-                    help="registry JSON (3l0.quota-registry.v1)")
+                    help="registry JSON (quota.registry.v2)")
     ap.add_argument("--once", action="store_true",
                     help="print one frame and exit")
     ap.add_argument("--no-color", action="store_true",

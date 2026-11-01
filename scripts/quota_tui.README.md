@@ -5,8 +5,8 @@ source as the web panel (`apps/help-wanted-dashboard/quota.html`):
 
 | Role | Schema | Master path | Local copy used here |
 |---|---|---|---|
-| Registry (ALL services + documented entitlements) | `3l0.quota-registry.v1` | `ops/quota/registry.json` | `../quota_registry.json` |
-| Readings (live/reported status, sparse) | `3l0.quota-readings.v1` | `apps/help-wanted-dashboard/data/quota.json` (= `docs/ops/generated/quota-status.json`) | `../quota-panel/quota.json` |
+| Registry (ALL services + documented entitlements) | `quota.registry.v2` | `ops/quota/registry.json` | `../quota_registry.json` |
+| Readings (live/reported status, sparse) | `quota.readings.v2` | `apps/help-wanted-dashboard/data/quota.json` (= `docs/ops/generated/quota-status.json`) | `../quota-panel/quota.json` |
 
 Current data (2026-10-20): **26 registry services, 3 readings**
 (`vercel.deployments` = cap_tripped, `openrouter.free_models` = exhausted,

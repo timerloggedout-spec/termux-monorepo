@@ -25,10 +25,10 @@ The hierarchy is canonical input. Geometry is derived and disposable.
 
 - The root/focal anchor occupies the center.
 - Depth maps monotonically to radius; depth 1 is the innermost ring.
-- Sibling nodes receive deterministic angular slots in stable input order unless an explicit sort key is supplied.
+- Sibling nodes receive deterministic angular intervals in stable input order; intervals are weighted by descendant leaf count so larger subtrees receive proportionally more angular space. Parent nodes sit at the center of their allocated interval.
 - Angular span may be weighted by descendant count or explicit value only when that field is present and its semantics are documented.
 - Labels are not forced onto arcs when the available arc length is insufficient. Use horizontal callouts or the synchronized semantic list.
-- The initial prototype uses a fixed illustrative data set and a deterministic equal-angle layout; no live corpus values are represented.
+- The initial prototype uses a fixed illustrative data set and a deterministic leaf-count-weighted polar layout: each sibling receives angular span proportional to the number of descendant leaves, and its center angle is derived from that interval. No live corpus values are represented.
 - The 120 px inner-radius suggestion from the supplied screenshot is a tunable experiment parameter, not a hard-coded universal rule.
 
 ## Interaction contract

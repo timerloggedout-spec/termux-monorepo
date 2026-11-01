@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T14:04:16Z",
+  "generated_at": "2026-11-01T14:05:56Z",
   "issues_unlabelled": [
     308,
     343,
@@ -129,10 +129,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "1e01ee9b95"
+    "sha": "c7b6c6f826"
   },
   "prs": [
     {
@@ -258,7 +258,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-01T13:38:01Z"
@@ -751,7 +751,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:45Z"
@@ -933,7 +933,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:22Z"
@@ -1381,7 +1381,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-01T13:37:52Z"
@@ -1731,7 +1731,7 @@
       },
       "head_sha": "d3dcccac7b",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-11-01T14:03:59Z"
@@ -1880,15 +1880,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "743cf4ba2b",
+      "head_sha": "f9f80cda73",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T14:03:09Z"
+      "updated_at": "2026-11-01T14:05:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2373,12 +2373,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d63e2f5f0b",
+      "head_sha": "136a4b0d35",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T14:03:03Z"
+      "updated_at": "2026-11-01T14:04:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2487,10 +2487,10 @@
       },
       "head_sha": "4576067c81",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 3183,
       "title": "desk-feed: D3 route \u0394 \u2014 B1\u2013B5 via DeepSeek + command-dispatch until recovery probe",
-      "updated_at": "2026-11-01T14:04:06Z"
+      "updated_at": "2026-11-01T14:04:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,1 +1,126 @@
-{"campaign_id":"live-3-phrases-jit","design":{"cells":24,"confound_note":"selection=hash varies phrase CONTENT per prompt (policy contrast); selection=first fixes content. Stamp shas allow post-hoc decomposition.","control":{"id":"unphrased","rule":"no phrase_layer call; distinct instance_key from every phrased cell (composed text is hashed)"},"execution_gate":"Dispatch rides a DeepSeek live route named by doe-expert at admission; design self-dispatches NOTHING.","factors":[{"levels":["prefix","suffix","prefix+suffix"],"name":"placement"},{"excluded":{"rotated":"in SSOT evaluation_dimensions but NOT implemented in phrase_layer._pick (falls through to first); excluded, never relabelled"},"levels":["first","hash"],"name":"selection"},{"levels":[{"cfg":{"casing":"as-written","sub_scope":"none"},"id":"verbatim"},{"cfg":{"casing":"as-written","sub_depth":0,"sub_scope":"vowels"},"id":"vowels"},{"cfg":{"casing":"lower","sub_depth":0,"sub_scope":"vowels"},"id":"lower+vowels"},{"cfg":{"casing":"upper","sub_depth":0,"sub_scope":"vowels"},"id":"upper+vowels"}],"name":"transform"}],"profile_arm":{"id":"profile-1337","rule":"profile=1337, placement=prefix+suffix implied by profile system_prefix/system_suffix; separate arm, NOT crossed with placement (profile overrides both lists)"},"selection_rule":"A cell beats control only if host-suite success/quality >= control + 0.05 over >=8 matched tasks; else no_selection and control posture stands. Pre-registered before any dispatch.","stamp":["provider","placement","selection","form","profile","transform","prefix_sha256_12","suffix_sha256_12"],"type":"full_factorial_plus_control_plus_profile_arm"},"family":"doe","gates":[{"evidence":"issue #2677 comment 6545916596 (linguist-substrate, 2026-10-31)","id":"linguist-c1c2","rule":"sub_scope consonants|all deferred to wave 2 until SSOT amendment credits harmony_hub/config/grimoire/1337_D1CT10N4RY.md as char_variants source, records the normalization note, and verifies q/v rows vs the canonical dictionary; then pin bump. Dictionary stays Linguist-canonical; consumption notifies Linguist same-turn.","state":"OPEN"},{"id":"mapping-key-delta","rule":"Any mapping-key change flags viz-dispatch-tree (4ed48ba4) before/with the PR.","state":"armed"},{"evidence":"verified 2026-10-31: issue OPEN, 3 comments (linguist notice + reply only); viz render piece LANDED PR #2679 merged a8c055a3b801 (ancestor-of-master verified) + desk-feed stamps PR #2680 merged e6d45c61f16b (NOT ESTABLISHED, pre-SSOT rows); desk per-dispatch phrases{} stamping + tribute acceptance evidence = NOT ESTABLISHED (no comment, no dispatch record)","id":"issue-2677-watch","state":"OPEN"}],"member_kind":"campaign","moniker":"doe-mgr-phrases-jit","oversight":"doe-expert (44bb4068)","status":"admitted_design_only","subject":{"pin_location":"termux-monorepo ops/phrases submodule (== SSOT head, verified 2026-10-31)","providers_established":["deepseek"],"providers_not_established":"all other routes stamp NOT ESTABLISHED, never silent-skip","ssot":"timerloggedout-spec/provider-phrases phrases.json (provider-phrases/v1)","ssot_pin":"a27b8b4eb06086ea21e17134d6f045695524386a","system":"scripts/doe/phrase_layer.py (JIT phrase layer)"},"suite_type":"live","surface":"doe","wave2_candidates":["sub_scope consonants|all x sub_depth {0,1} (post C1/C2)","selection rotated (post _pick implementation)","emoji-sequence inclusion in|out (SSOT dimension 8)","timing/when-to-use {always, per-role, per-context, profile-gated}"]}
+{
+ "campaign_id": "live-3-phrases-jit",
+ "design": {
+  "cells": 24,
+  "confound_note": "selection=hash varies phrase CONTENT per prompt (policy contrast); selection=first fixes content. Stamp shas allow post-hoc decomposition.",
+  "control": {
+   "id": "unphrased",
+   "rule": "no phrase_layer call; distinct instance_key from every phrased cell (composed text is hashed)"
+  },
+  "execution_gate": "Dispatch rides a DeepSeek live route named by doe-expert at admission; design self-dispatches NOTHING.",
+  "factors": [
+   {
+    "levels": [
+     "prefix",
+     "suffix",
+     "prefix+suffix"
+    ],
+    "name": "placement"
+   },
+   {
+    "excluded": {
+     "rotated": "in SSOT evaluation_dimensions but NOT implemented in phrase_layer._pick (falls through to first); excluded, never relabelled"
+    },
+    "levels": [
+     "first",
+     "hash"
+    ],
+    "name": "selection"
+   },
+   {
+    "levels": [
+     {
+      "cfg": {
+       "casing": "as-written",
+       "sub_scope": "none"
+      },
+      "id": "verbatim"
+     },
+     {
+      "cfg": {
+       "casing": "as-written",
+       "sub_depth": 0,
+       "sub_scope": "vowels"
+      },
+      "id": "vowels"
+     },
+     {
+      "cfg": {
+       "casing": "lower",
+       "sub_depth": 0,
+       "sub_scope": "vowels"
+      },
+      "id": "lower+vowels"
+     },
+     {
+      "cfg": {
+       "casing": "upper",
+       "sub_depth": 0,
+       "sub_scope": "vowels"
+      },
+      "id": "upper+vowels"
+     }
+    ],
+    "name": "transform"
+   }
+  ],
+  "profile_arm": {
+   "id": "profile-1337",
+   "rule": "profile=1337, placement=prefix+suffix implied by profile system_prefix/system_suffix; separate arm, NOT crossed with placement (profile overrides both lists)"
+  },
+  "selection_rule": "A cell beats control only if host-suite success/quality >= control + 0.05 over >=8 matched tasks; else no_selection and control posture stands. Pre-registered before any dispatch.",
+  "stamp": [
+   "provider",
+   "placement",
+   "selection",
+   "form",
+   "profile",
+   "transform",
+   "prefix_sha256_12",
+   "suffix_sha256_12"
+  ],
+  "type": "full_factorial_plus_control_plus_profile_arm"
+ },
+ "family": "doe",
+ "gates": [
+  {
+   "evidence": "issue #2677 comment 6545916596 (linguist-substrate, 2026-10-31)",
+   "id": "linguist-c1c2",
+   "rule": "sub_scope consonants|all deferred to wave 2 until SSOT amendment credits harmony_hub/config/grimoire/1337_D1CT10N4RY.md as char_variants source, records the normalization note, and verifies q/v rows vs the canonical dictionary; then pin bump. Dictionary stays Linguist-canonical; consumption notifies Linguist same-turn.",
+   "state": "OPEN"
+  },
+  {
+   "id": "mapping-key-delta",
+   "rule": "Any mapping-key change flags viz-dispatch-tree (4ed48ba4) before/with the PR.",
+   "state": "armed"
+  },
+  {
+   "evidence": "verified 2026-10-31: issue OPEN, 3 comments (linguist notice + reply only); viz render piece LANDED PR #2679 merged a8c055a3b801 (ancestor-of-master verified) + desk-feed stamps PR #2680 merged e6d45c61f16b (NOT ESTABLISHED, pre-SSOT rows); desk per-dispatch phrases{} stamping + tribute acceptance evidence = NOT ESTABLISHED (no comment, no dispatch record)",
+   "id": "issue-2677-watch",
+   "state": "OPEN"
+  }
+ ],
+ "member_kind": "campaign",
+ "moniker": "doe-mgr-phrases-jit",
+ "oversight": "doe-expert (44bb4068)",
+ "status": "superseded",
+ "subject": {
+  "pin_location": "termux-monorepo ops/phrases submodule (== SSOT head, verified 2026-10-31)",
+  "providers_established": [
+   "deepseek"
+  ],
+  "providers_not_established": "all other routes stamp NOT ESTABLISHED, never silent-skip",
+  "ssot": "timerloggedout-spec/provider-phrases phrases.json (provider-phrases/v1)",
+  "ssot_pin": "a27b8b4eb06086ea21e17134d6f045695524386a",
+  "system": "scripts/doe/phrase_layer.py (JIT phrase layer)"
+ },
+ "suite_type": "live",
+ "superseded_by": "live-3-phrases-deepseek",
+ "surface": "doe",
+ "wave2_candidates": [
+  "sub_scope consonants|all x sub_depth {0,1} (post C1/C2)",
+  "selection rotated (post _pick implementation)",
+  "emoji-sequence inclusion in|out (SSOT dimension 8)",
+  "timing/when-to-use {always, per-role, per-context, profile-gated}"
+ ]
+}

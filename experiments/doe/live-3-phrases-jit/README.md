@@ -1,5 +1,11 @@
 # live-3-phrases-jit — JIT phrase-layer factors (LIVE design)
 
+> SUPERSEDED 2026-10-31 by `experiments/doe/live-3-phrases-deepseek/`
+> (doe-expert work order #1, INIT++): that campaign is the
+> first-phrased campaign of record. This dir = generic screening
+> draft under the seed brief; its C1/C2 + rotated-gap findings
+> carry into the successor.
+
 First phrased live campaign. Subject: `scripts/doe/phrase_layer.py`
 (JIT layer) over SSOT `timerloggedout-spec/provider-phrases`
 `phrases.json` @ pin `a27b8b4eb060` (`ops/phrases` submodule on

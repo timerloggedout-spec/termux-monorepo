@@ -289,6 +289,16 @@ are levels, kinds are factors.
    may exceed this floor (e.g. live-1's per-cell minimums); none
    may go below it.
 
+## Definitions of record
+
+- **Swarm** (owner definition, 2026-11-01): ALL providers' inference
+  model endpoints participating in 3L0 DoE. Under DoE the swarm is
+  the experiment's *participant population* — every provider
+  inference endpoint is enrolled as arms. Seats, apps and workflows
+  are the swarm's organs, not the swarm itself. In DoE records and
+  designs, "swarm" carries this meaning only; a specific lane, app
+  or workflow is named as itself.
+
 ## Campaign layout
 
 ```text

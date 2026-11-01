@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T14:18:08Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T14:20:46Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `6ef8ceb7d9` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `97a600879b` (hygiene: queued, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 379 issues, 166 PRs. PR classes: EXTRACT 5 / CANDIDATE 80 / NEED_EVIDENCE 81 / SUPERSEDE 0.
 
@@ -127,7 +127,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `b28fe66e40` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `aa43e9d9f8` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `1c04620ff6` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `fa7399b4e6` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -172,7 +172,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `3146258e6d` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `e32168dc37` | not_reported | not_reported | clean | chore(telemetry): refresh HindSight+Provenance ingest |
 | #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

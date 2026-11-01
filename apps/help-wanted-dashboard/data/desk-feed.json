@@ -1,18 +1,18 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T11:24:05Z",
+ "generated_at": "2026-11-01T11:30:59Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
   "name": "Contribution Desk",
   "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
-  "model": "Fleet provider lanes execute all build/edit work via monorepo PRs — dispatch resolution = COMPLETE catalog (dispatch.provider_catalog, v1.3): every dispatch-capable surface classed proven / wired-unproven / triggerable, plus the registry model bench (91 records / 89 distinct providers) as inference-only reachable via provider-batch / provider-availability. Bench-wide rotation: no provider takes 2 consecutive dispatches for the same entry. Muse seats never author build code.",
+  "model": "Fleet provider lanes execute all build/edit work via monorepo PRs — dispatch resolution = COMPLETE catalog (dispatch.provider_catalog, v1.3): every dispatch-capable surface classed proven / wired-unproven / triggerable, plus the registry model bench (91 records / 89 distinct providers) as inference-only reachable via provider-batch / provider-availability. Rotation = bench-wide task-fit (dispatch.provider_catalog.rotation_rule). Muse seats never author build code.",
   "roles": {
    "owner": "authorization of record (direct orders only; a halt lifts only by the owner)",
    "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
    "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
    "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
-   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch (dispatch HELD per #2672 until contracts green), provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation bench-wide, provider + reason stamped per dispatch.",
+   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch (dispatch HELD per #2672 until contracts green), provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation = bench-wide task-fit; stamps carry provider + selection reason + bench position (catalog class).",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [
@@ -77,7 +77,7 @@
     "census_note": "Registry figures are firsthand at the census master (they supersede the 161-record / 89-model brief figures, which were an earlier snapshot: 89 = model-lane distinct providers). Run totals for high-frequency event workflows hit the Actions API 40,000 cap and are not cited; cited totals are exact-count workflows only."
    },
    "rotation_rule": {
-    "rule": "Bench-wide: no provider takes 2 consecutive dispatches for the same entry, across ALL catalog lanes (supersedes the 2026-10-31 rule, which capped repeats inside the 4-lane funnel only).",
+    "rule": "Bench-wide TASK-FIT rotation (owner FIX via main, 2026-11-01; supersedes the no-2-consecutive rule): every dispatch selects from the FULL wired bench in this catalog — the surface whose class fits the task (build / fix / review / device / probe / inference arm) — with no fixed funnel and no automatic repeat of the previous pick. Stamps carry provider + selection reason + bench position (the provider's catalog class).",
     "selection": "Task-fit across the full catalog: (1) match task class to lanes; (2) proven lanes carry production work; (3) wired-unproven / triggerable surfaces receive bounded, DoE-stamped proof dispatches instead of permanent exile — a first success promotes them to proven at the next feed refresh; (4) inference-only registry providers are selectable for inference/eval tasks via their named dispatch arm, stamped with provider + model@version; (5) every dispatch stamps provider + surface + selection reason + session/run id (telemetry gate: no stamp => no dispatch).",
     "reselection_d1": "D1 pending dispatches re-selected under the widened bench (fix seat review 2026-11-01): DeepSeek fix-pass (deepseek-termux-agent run 41301295882, success) and Gemini SR module (issue #3050, gemini-dispatch run 41301369671, success) STAND — two distinct providers, rotation-valid, both already fired. The NEXT D1 dispatch must go to a proven lane outside {DeepSeek, Gemini} for its task class (fix: CodeRabbit / Devin / command-dispatch / Jules; feature: Jules / DeepAgent-task), stamped with the reason."
    },
@@ -1887,7 +1887,7 @@
      "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
     }
    },
-   "next": "DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT.",
+   "next": "RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT.",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -1984,7 +1984,9 @@
       "tools_ref": "tools:github-actions-workflow:deepseek-termux-agent#367231371",
       "note": "system_prompt_ref = sha256[:12] of the exact dispatched task payload (1,697 chars); tools_ref = dispatching workflow id."
      },
-     "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd"
+     "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd",
+     "bench_position": "catalog class: proven build/fix — DeepSeek termux-agent (agent-endpoint arm)",
+     "selection_reason": "Staged fix-class pick under the pre-FIX funnel (D1 seat order; fired 2026-11-01, run 41301295882). Per owner FIX via main (2026-11-01) the pick is NOT automatic going forward — any re-dispatch re-selects bench-wide by task fit."
     },
     {
      "provider": "Gemini",
@@ -2011,7 +2013,9 @@
       "tools_ref": "tools:github-actions-workflow:gemini-dispatch#327943478",
       "note": "system_prompt_ref = sha256[:12] of the exact dispatched issue title+body."
      },
-     "instance_key": "challenge-entries-manager/d1-studysprint-sr-module/31f915ff0169"
+     "instance_key": "challenge-entries-manager/d1-studysprint-sr-module/31f915ff0169",
+     "bench_position": "catalog class: proven build/fix — Gemini dispatch (issue arm)",
+     "selection_reason": "Feature-class pick under the pre-FIX rotation (D1 seat order; issue #3050, run 41301369671). Per owner FIX via main (2026-11-01): NOT automatic going forward — follow-ups re-select bench-wide by task fit."
     }
    ]
   },

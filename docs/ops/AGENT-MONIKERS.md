@@ -99,6 +99,8 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet Lifecycle | `Janus · Lifecycle` | `termux-fleet-lifecycle[bot]` | epithets Patulcius / Clusius; queued alt Clotho |
 | Termux Fleet Gate | `Cerberus · Gate` | `termux-fleet-gate[bot]` | aspect the Ward; no queued alt |
 | Termux Fleet Swarm | `Myriad · Swarm` | `termux-fleet-swarm[bot]` | aspect the Host; queued alt Apis (below) |
+| Termux Fleet CrossReference | `Scalpel · CrossReference` | `termux-fleet-crossreference[bot]` | aspect the Index; queued alt Daedalus (below) |
+| Termux Fleet ApkRelease | `Porter · ApkRelease` | — (actor per AppID provisioning record) | aspect the Carrier; queued alt Charon, flagged (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -121,6 +123,59 @@ against the mythic set (owner balance rule, 2026-10-29):
 
 Collision check at issuance: `Myriad` and `Apis` appear nowhere in
 this roster or in the registration registry.
+
+**CrossReference issuance (2026-11-01, registry lane;
+provisioning started the same day by the AppID lane under owner
+GO; canonical per the marketing ranking pass,
+`Scalpel` > `Daedalus`).** One app, two member workflows —
+apk-xref-exec (live seat) and apk-xref-intake (queued swap) — so
+the identity is singular: the exec seat's tool name, the
+plain-register instrument that dissects apk internals; the
+product it leaves behind is the Index. The balance rule holds
+(plain lead, mythic queued). Family naming obeys the owner
+constraint (2026-11-01): the token `RE` appears at no layer —
+name, slug, moniker or mark, leet disguises included.
+
+- canonical: `Scalpel` (paired display `Scalpel · CrossReference`)
+- aspect: the Index
+- queued alt: `Daedalus` (mark `Daedalu5`) — draws only on a
+  registry-lane bounce/rename decision
+- leet marks: `Scalp3l` > `Sc4lpel` — mark layer only, never
+  identifiers
+- slug bounces: ∅ consumed at issuance (canonical
+  `termux-fleet-crossreference` in provisioning); ranked bounce
+  forms if ever needed: `scalp3l` > `sc4lp3l`, returning to the
+  registry lane
+- normalized form: CrossReference — `Termux Fleet CrossReference`
+  / `termux-fleet-crossreference[bot]`
+- considered and withdrawn pre-merge: `Concordance` (registry
+  solo draft, superseded by the marketing ranking pass before it
+  landed; ∅ queue)
+
+**ApkRelease issuance (2026-11-01, registry lane; canonical per
+the marketing ranking pass, `Porter` > `Charon`).** The release
+app's carrier name: plain-register and function-obvious — it
+carries apk artifacts out.
+
+- canonical: `Porter` (paired display `Porter · ApkRelease`)
+- aspect: the Carrier
+- queued alt: `Charon` (mark `Char0n`) — FLAGGED at confer
+  (marketing): death-ferryman association on an outbound surface
+  and pronunciation ambiguity (KAY-ron / SHA-ron; the
+  Cerberus/Kerberos class) ⇒ alt-only while the flag stands
+- leet marks: `Port3r` > `P0rter` — mark layer only, never
+  identifiers
+- slug bounces: ∅ consumed at issuance; ranked bounce forms if
+  ever needed: `port3r` > `p0rt3r`, returning to the registry lane
+- normalized form: ApkRelease — `Termux Fleet ApkRelease`; actor
+  per the AppID provisioning record (`ops/github-apps/PROCESS.json`)
+- seat history: `Porter` / `Charon` entered this family as
+  intake-seat confer names for CrossReference; the intake fold
+  moved the seat to this app (AppID routing, 2026-11-01)
+
+Collision check at issuance: `Scalpel`, `Daedalus`, `Porter`,
+`Charon`, the Index and the Carrier appear nowhere in this
+roster or in the registration registry.
 
 ## Rules
 

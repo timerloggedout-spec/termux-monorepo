@@ -37,7 +37,7 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 | DeepSeek CI | invoke, review | `deepseek-ci.yml` | last success 41301485914 |
 | DeepAgent bridge | device, task | `deepcli-agent-bridge.yml` | 158 runs; last success 39989289180 (2026-10-23). Greens incl. skip-exits ⇒ verify at PR level |
 | DeepAgent task | task, build | `deepagent-task.yml` | first success 41301564332 in the widening window (was 0 runs) |
-| provider-batch | inference, batch, eval | `provider-batch.yml` | 250 runs; last success 40710434190 (2026-10-28); latest-100 mixed ⇒ verify per dispatch |
+| provider-batch | inference, batch, eval | `provider-batch.yml` | 250 runs; last success 40710434190 (2026-10-28); latest-100 mixed ⇒ verify per dispatch. **DISPATCH HELD per issue #2672 until contracts job green** (arm proven, dispatch suspended) |
 | provider-availability | probe, catalog | `provider-availability.yml` | 93 runs; last success 40704824602 |
 | provider-command-dispatch | fix, review | `provider-command-dispatch.yml` + command library | 1 run ✓ 39170909023 (2026-10-18, n=1 stale — re-proof on next use) |
 | CodeRabbit | review, fix | command library + peer-review-orchestrator | default required reviewer; triggered today (Swarm census) |

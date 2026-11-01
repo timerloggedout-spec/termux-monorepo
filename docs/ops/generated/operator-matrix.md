@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T11:52:40Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T11:57:08Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `636ac17090` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `2918d965cc` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 381 issues, 167 PRs. PR classes: EXTRACT 5 / CANDIDATE 80 / NEED_EVIDENCE 82 / SUPERSEDE 0.
+**Open inventory:** 384 issues, 168 PRs. PR classes: EXTRACT 5 / CANDIDATE 80 / NEED_EVIDENCE 83 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -173,13 +173,14 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `ae74bb5665` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `aacb4a97eb` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3035 | NEED_EVIDENCE | unlabelled | `e358823bab` | not_reported | not_reported | unknown | [Draft] Independent RFP: foresight platform evaluation |
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3096 | NEED_EVIDENCE | unlabelled | `4e40a683db` | not_reported | not_reported | unstable | ops(recon): capture ingest stderr + surface collect failures on #3094 |
+| #3097 | NEED_EVIDENCE | unlabelled | `bdc637bf6b` | not_reported | not_reported | unknown | desk-feed: add D4 row — batch queued (Jules-only, window >2026-11-08) |
+| #3102 | NEED_EVIDENCE | unlabelled | `70fda9342e` | in_progress | queued | unstable | StudySprint RSVP multi-pass reader core — study_reader.py |
 
 ## Families (open)
 
@@ -188,12 +189,12 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 11 | 0 |
 | delphi | 79 | 0 |
 | mesh | 4 | 0 |
-| other | 186 | 1 |
+| other | 187 | 1 |
 | proposal | 32 | 1 |
 | providers | 13 | 0 |
 | research | 8 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 36 | 165 |
+| unlabelled | 38 | 166 |
 
-**Unlabelled open issues (36):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3068, #3077, #3094 — worked oldest-first by the issue-lifecycle lane pass.
+**Unlabelled open issues (38):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3068, #3077, #3094, #3095, #3099 — worked oldest-first by the issue-lifecycle lane pass.

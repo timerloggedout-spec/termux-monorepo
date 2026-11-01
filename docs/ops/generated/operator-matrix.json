@@ -4,8 +4,8 @@
     "open_prs": 154,
     "pr_classes": {
       "CANDIDATE": 69,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 79,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 80,
       "SUPERSEDE": 0
     }
   },
@@ -83,7 +83,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T01:17:55Z",
+  "generated_at": "2026-11-01T01:18:46Z",
   "issues_unlabelled": [
     308,
     343,
@@ -120,7 +120,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "8241215322"
+    "sha": "1972e915a0"
   },
   "prs": [
     {
@@ -192,20 +192,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "ddf5707f12",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:15:18Z"
     },
     {
       "class": "CANDIDATE",
@@ -1588,6 +1574,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "6b57bd07ee",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T01:18:14Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2265,7 +2265,7 @@
       },
       "head_sha": "ffc5a03648",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2810,
       "title": "doe(live-2): phase 1 outcome-join script + DESIGN-strata addendum (watch empty, false-S 0 cases)",
       "updated_at": "2026-11-01T01:13:32Z"

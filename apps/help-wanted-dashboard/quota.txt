@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (166 registry records)
+ QUOTA  termux-monorepo  (167 registry records)
  Snapshot generated (not observation time): 2026-11-01T13:23:25.948846+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -182,6 +182,14 @@
     limit (documented): 0 USD/month
     metric: free allowance for new organizations | window: n/a | reset: n/a
     Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ friendli (1)
+  friendli.api
+    status: No live reading
+    limit (documented): n/a USD balance (prepaid)
+    metric: Prepaid API balance (pay-as-you-go inference) | window: n/a | reset:
+    n/a
+    No live reading (live source: none published)
 --------------------------------------------------------------------------------
  g4f/AgentTools (1)
   g4f.agenttools
@@ -1232,6 +1240,8 @@
   parser; registry: deepinfra.api
   felo: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
   registry: felo.api_credits
+  friendli: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: friendli.api
   gemini: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: gemini.api_free
   groq: Manager / ChronoMancer; implemented_passive_parser; live account
@@ -1279,6 +1289,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 166 registry records | 1 alert(s) | 164 with a reported reading | 2 with No
+ 167 registry records | 1 alert(s) | 164 with a reported reading | 3 with No
  live reading
 ================================================================================

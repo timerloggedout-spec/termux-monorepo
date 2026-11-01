@@ -2808,6 +2808,24 @@
     "safety": 0.9,
     "note": "Fleet credential provisioned: NOVITA_API_KEY (repo Actions secret, 2026-11-01). Balance $0.0000 at provisioning; completions funded-out until owner top-up."
    }
+  },
+  {
+   "id": "friendli.api",
+   "provider": "friendli",
+   "lane": "model",
+   "metric": "Prepaid API balance (pay-as-you-go inference)",
+   "limit": null,
+   "unit": "USD balance (prepaid)",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://friendli.ai/docs",
+   "doc_quote": "FriendliAI serverless inference is prepaid pay-as-you-go; the $3 promo credit is card-gated and was not claimed for the fleet account.",
+   "live": "none published",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Fleet credential provisioned: FRIENDLI_API_KEY (repo Actions secret, 2026-11-01). Tier 0, $0 balance at provisioning; completions funded-out until owner top-up."
+   }
   }
  ]
 }

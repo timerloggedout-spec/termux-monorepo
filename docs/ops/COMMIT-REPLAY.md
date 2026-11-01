@@ -11,6 +11,15 @@ history = git DAG APPROVED provisional (revisit @P4). BUILD UNHELD.
 
 ## 1. Mission ∧ plane law
 
+**Purpose (owner, 2026-11-01): create NEW files written as pointers, based
+on existing infrastructure.** A new file is authored as a grecipe — an
+ordered list of gpointers into history that already exists — not as new
+content emitted token-by-token. Authorship = curation/selection/arrangement
+of existing blocks (pointer-only authorship, as in the sibling's model).
+Success metric: **LLM tokens ↓** — a recipe costs the tokens of its pointer
+list + ops, orders of magnitude below the file it materializes; the index
+itself obeys the same law (compact delta format, §3).
+
 Same method shape as Repo Replay — index → recipes/pointers → JIT compile →
 file reconstruction + surgical pointer edits — on the **GIT plane only**:
 
@@ -67,6 +76,11 @@ materialization, pointer-addressed edits) — it does ¬ re-hash blobs.
  "range": {"start_line": 0, "end_line": 0}}
 
 // gindex/v1 — single structure, three directions (sibling: two)
+// STORAGE (compact, v1.1): the JSONL carries commit records + DELTA entry
+// records {commit,path,op:A|M|D,blob,mode} vs first parent (root = full
+// set, all A). State@commit = root set + deltas along ancestry. v0's
+// full-tree-per-commit entries measured 10.36M records / 2.2GB per 1,000
+// commits — push rejected >100MB (run 41283146476) ⇒ delta format.
 {"forward": {"<commit>": {"tree": "oid", "parents": ["oid"], "ts": "iso8601",
                           "author": "...", "refs": ["master", "tag:apk-v0.1.0"]}},
  "reverse": {"<blob_oid>": ["<commit>:<path>", "... 1:N"]},

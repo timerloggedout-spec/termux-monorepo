@@ -108,6 +108,27 @@ All 5 triggerable + 3 wired-unproven lanes fired at production work; classes upd
   no dispatch run (PR merged mid-storm 11:39:39Z); re-fired on PR #3080 (comment 6557463507)
   ⇒ dispatch run 41303090873, review job SUCCESS ⇒ PROVEN.
 
+## Inference wiring — re-based (owner class correction 2026-11-01)
+
+The inference bench IS the batch universe. Wiring classes are computed on **wired INVOKE
+routes for inference providers only**; review/command surfaces (Qodo, Devin, CodeRabbit,
+peer-review lanes, gemini review/triage legs) are excluded from this batch — a triggerable
+workflow lane is not a wired provider.
+
+- **Wired-invoke: 17 / 89** — invoke endpoint present in code: provider-batch
+  `research_providers` ENDPOINTS (14: aion, cerebras, gemini→google, groq, huggingface, kilo,
+  llm7, mistral, modelscope, nvidia, ovhcloud, sambanova, siliconflow, zai) ∪ catalog
+  ENDPOINTS (16, adds felo, omni, openrouter). Blockers still apply per provider (groq =
+  Actions egress; 5 of the batch set carry gate-state blocked-by-#2672; cerebras/kilo/
+  mistral/modelscope/ovhcloud = no credential; aion = route-dead claim; nvidia = auth
+  unproven; openrouter = free layer only).
+- **Not wired: 72 / 89** — no invoke endpoint in code (registry/roster presence, hub route
+  claims, or batch membership without an endpoint key). Each carries a blocker of record in
+  `dispatch.provider_catalog.inference_wiring.not_wired`. Wiring target (owner escalation,
+  Swarm owns): an invoke route per provider, or the blocker stands as the record.
+- The lane table above keeps its own classes for *dispatch lanes*; it no longer says
+  anything about inference-provider wiring.
+
 ## Rotation rule (bench-wide)
 
 No provider takes 2 consecutive dispatches for the same entry, across **all** catalog lanes

@@ -1,10 +1,10 @@
-# Help-Wanted Oversight Dashboard
+# Tribute Oversight Dashboard
 
 Static KPI surface for the help-wanted lane.
 
 ## Live deploy
 
-See `docs/ops/HELP-WANTED-DASHBOARD.md` and workflow `help-wanted-dashboard-deploy.yml`.
+See `docs/ops/HELP-WANTED-DASHBOARD.md` and workflow `help-wanted-dashboard-deploy.yml (legacy workflow identifier)`.
 
 - **Vercel:** Actions job uses `secrets.VERCEL_TOKEN`
 - **GitHub Pages:** `gh-pages` branch → `https://timerloggedout-spec.github.io/termux-monorepo/`
@@ -26,12 +26,12 @@ Open `index.html` or serve the folder. Data: `data/status.json` (synced from `do
 
 ## Control-surface contract (v2)
 
-The dashboard is a projection of the Help-Wanted evidence plane. It must not become a second source of truth or an authorization boundary.
+The dashboard is a projection of the Tribute evidence plane. It must not become a second source of truth or an authorization boundary.
 
 The status generator records:
 
 - the source SHA/ref used to build the snapshot;
-- every Git commit touching the registered Help-Wanted lane paths;
+- every Git commit touching the registered Tribute lane paths;
 - whether that history is complete for those paths;
 - the lane-path registry itself;
 - publication surfaces and their verification expectations.

@@ -1,0 +1,40 @@
+{
+ "campaign_id": "ww-1-duckduckgo",
+ "family": "doe",
+ "member_kind": "campaign",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "admitted_design_only",
+ "moniker": "optimizations-assurance",
+ "owner_order": "Owner via main 2026-10-31: the 13 [target] webWrapper issues (#1789-#1798, #1801-#1803) execute via quota system + swarm dispatch, execution lead = optimizations-assurance (this lane), under DoE separation (spec: docs/ops/MVT-DOE-ATES-SEPARATION.md via surface-separation lane 36e3433d) with per-target environment availability assessed before dispatch; availability gates order, not standing.",
+ "subject": "webWrapper build for target duckduckgo (brief issue #1796): api-extraction wrapper to the deepCLI spec over the public no-JS endpoint https://html.duckduckgo.com, promoting the existing zero-token wrapper docs/proposals/active/arrhythmic-zero-token-search/ddg_web_wrapper.py into the Foundry registry pipeline shape.",
+ "availability_class": "cloud-only (public surface; no account, no session, no device). Assessed firsthand from brief #1796 (venue remote-service; authorization basis = public surface). First dispatch of the 13-target slate on availability order.",
+ "hypothesis": "A proven cloud build route (Jules, issues route) can deliver a deepCLI-spec api-extraction wrapper for a public no-session target within the brief probe budget (24), with observed evidence sufficient for an independent evaluator (different provider) to score it against the verdict layers; no production route before verdict.",
+ "treatment": {
+  "route": "jules-issues (agent-jules-on-issues.yml; label + dispatch comment). Route is a treatment variable: changing it mid-campaign = new cohort, never silently folded in.",
+  "builder_instance": {
+   "provider": "jules",
+   "model": "not_exposed_by_provider",
+   "system_prompt": {"ref": "prompt:optimizations-assurance:ww-1-duckduckgo-dispatch", "sha256": "847e1d0024b9404da3b9998b6af542ffff0d99a16fbf7b838da771128d7b0dae"},
+   "tools": {"ref": ".github/workflows/agent-jules-on-issues.yml", "sha256": "blob:20cbe8d50a92cca77a446893e0b177d814532680"},
+   "role": "builder",
+   "moniker": "optimizations-assurance",
+   "context": "issue #1796 + this DESIGN",
+   "instance_key": "jules|not-exposed|builder|optimizations-assurance|ww-1-duckduckgo"
+  },
+  "evaluator_instance": {
+   "provider": "gemini",
+   "model": "not_exposed_by_provider",
+   "role": "evaluator",
+   "moniker": "optimizations-assurance",
+   "note": "Evaluator != builder provider (separation spec); evaluator consumes ONLY committed evidence (PR + records), never builder self-report. Dispatched after builder evidence lands."
+  }
+ },
+ "probe_budget": {"cap": 24, "unit": "probes against target surface, per brief #1796", "overrun_rule": "exceeding the cap = design amendment / new cohort, never a silent overrun"},
+ "evidence_expectation": "observed (per brief): status/provenance/confidence in run records say observed; undesigned extra runs record as OBSERVATIONAL.",
+ "verdict_layers": ["execution status", "task outcome", "correctness", "integration", "regression", "resource cost"],
+ "thresholds": "descriptive (no pre-registered numeric pass bar in the brief beyond probe budget + observed evidence); verdict judges the layers above against this DESIGN.",
+ "quota_funding": "Quota lane build-slice (b18fae96, 2026-10-31): Jules issues route = PRIMARY build arm (~10-15 PAT calls/build, provider-side unmetered); authoring under Swarm App principal 5560920 bucket where app-authored; collectors QAC-008 (10-min freshness gate, single-flight, batched).",
+ "session_boundary": "No session exists for this target. Standing rule for the slate: session/cookie material stays in the origin-device seam; records carry account_ref only.",
+ "baseline_sha": "eda09a84bd56786a670c176240bf94b315e06d98"
+}

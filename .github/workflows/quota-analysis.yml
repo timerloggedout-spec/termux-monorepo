@@ -61,7 +61,7 @@ jobs:
           python-version: "3.12"
       - name: Install test runner
         run: python3 -m pip install -q pytest
-      - name: Allocations validator (registry coverage: pooled + excluded == registry)
+      - name: "Allocations validator (registry coverage: pooled + excluded == registry)"
         run: python3 scripts/quota_allocations.py validate
       - name: Quota battery
         run: >-

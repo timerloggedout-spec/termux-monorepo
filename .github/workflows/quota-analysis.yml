@@ -1,0 +1,87 @@
+name: quota-analysis
+
+# Automated quota analysis on the GitHub surface (owner ruling 2026-11-01:
+# this analysis lives on GitHub, for every contributor — no local checkout
+# is the proving step). Runs the full quota battery + the allocations
+# validator + the snapshot pair/completeness checks + the provider-quota
+# coverage check whenever a quota surface changes, on PRs and on master.
+# Read-only: it never writes, dispatches, or commits.
+
+on:
+  pull_request:
+    paths:
+      - "ops/quota/**"
+      - "scripts/quota_poll.py"
+      - "scripts/quota_allocations.py"
+      - "scripts/quota_allocation_planner.py"
+      - "scripts/quota_tui.py"
+      - "scripts/provider_quota_coverage.py"
+      - "tests/test_quota_*.py"
+      - "tests/test_provider_quota_coverage.py"
+      - "apps/help-wanted-dashboard/data/quota*.json"
+      - "apps/help-wanted-dashboard/data/provider-quota-coverage.json"
+      - "apps/help-wanted-dashboard/quota.txt"
+      - "docs/ops/generated/quota-status.json"
+      - "llm_api_hub/**"
+      - ".github/workflows/quota-analysis.yml"
+  push:
+    branches: [master]
+    paths:
+      - "ops/quota/**"
+      - "scripts/quota_poll.py"
+      - "scripts/quota_allocations.py"
+      - "scripts/quota_allocation_planner.py"
+      - "scripts/quota_tui.py"
+      - "scripts/provider_quota_coverage.py"
+      - "tests/test_quota_*.py"
+      - "tests/test_provider_quota_coverage.py"
+      - "apps/help-wanted-dashboard/data/quota*.json"
+      - "apps/help-wanted-dashboard/data/provider-quota-coverage.json"
+      - "apps/help-wanted-dashboard/quota.txt"
+      - "docs/ops/generated/quota-status.json"
+      - "llm_api_hub/**"
+      - ".github/workflows/quota-analysis.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quota-analysis-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: quota-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python3 -m pip install -q pytest
+      - name: "Allocations validator (registry coverage: pooled + excluded == registry)"
+        run: python3 scripts/quota_allocations.py validate
+      - name: Quota battery
+        run: >-
+          python3 -m pytest -q
+          tests/test_quota_allocations.py
+          tests/test_quota_poll.py
+          tests/test_quota_dashboard.py
+          tests/test_quota_allocation_planner.py
+          tests/test_provider_quota_coverage.py
+      - name: Snapshot pair identical + complete against the registry
+        run: |
+          cmp docs/ops/generated/quota-status.json apps/help-wanted-dashboard/data/quota.json
+          python3 - <<'PYEOF'
+          import json
+          snap = json.load(open("docs/ops/generated/quota-status.json"))
+          reg = json.load(open("ops/quota/registry.json"))
+          rows = {r["resource_id"] for r in snap["readings"]}
+          want = {s["id"] for s in reg["services"]}
+          assert rows == want, f"snapshot/registry mismatch: missing={sorted(want - rows)} extra={sorted(rows - want)}"
+          print(f"snapshot complete: {len(rows)} rows == {len(want)} registry records")
+          PYEOF
+      - name: Provider-quota coverage is current
+        run: python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json

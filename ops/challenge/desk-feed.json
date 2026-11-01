@@ -1584,7 +1584,7 @@
        "provider-availability catalog probe"
       ],
       "registry_live_field": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota)",
-      "invoke_verdict": "scope-limited credential: HUGGINGFACE_TOKEN present (canonical fleet-read token, provisioned 2026-10-27); catalog http 200, chat invoke http 403 (read-scoped token does not authorize inference). The earlier no-credential verdict was a harness artifact (invoke env mapped alias secrets only), corrected on issue #3141 c.6558827393; harness fixed in PR #3169"
+      "invoke_verdict": "funding-blocked (funded-out at completion tier): provisioning swapped in an inference-scoped fleet token (store-verified 2026-11-01T14:00Z); re-fire verdict http 402, catalog 200 (issue #3141 c.6559163109) - Inference Providers credits exhausted, scope gap CLOSED (the earlier read-scope 403 / scope-limited class is superseded). Top-up = owner card item per provisioning"
      },
      {
       "id": "kilo.free_models",
@@ -1860,7 +1860,7 @@
      }
     ],
     "gate_note": "#2672 CLOSED 2026-11-01: gate_state lifted to gate-green on the 7 key-live providers (cohere, llm7, routeway, sambanova, siliconflow, unorouter, zai) - contracts GREEN run 41308987754 (head 87453e9c = PR #3138 merge, in master history), operational_providers job executed = evidence leg run; per-provider invoke promotion proceeds at Swarm as results land.",
-    "invoke_batch_note": "INFERENCE BATCH reclass (Swarm, verdicts issue #3141, invoke surface provider-invoke.yml + scripts/ops/provider_invoke.py - runtime-resolved, no pinned routes): proven-by-invoke += cohere, sealion (sealion route-dead flag retracted - live 200). aion route-dead corrected to edge-403. Blockers of record: funding-blocked {zai, llm7, routeway, siliconflow} - capacity {sambanova} - secrets-absent in Actions store {cerebras, kilo, mistral, modelscope, ovhcloud, requesty, typhoon, xfyun} - egress-403 {groq, xkiro} - skew {nvidia} - scope-limited {cloudflare, huggingface} - timeout {unorouter}. felo/omni: no reviewed chat endpoint in repo sources (catalog-only)."
+    "invoke_batch_note": "INFERENCE BATCH reclass (Swarm, verdicts issue #3141, invoke surface provider-invoke.yml + scripts/ops/provider_invoke.py - runtime-resolved, no pinned routes): proven-by-invoke += cohere, sealion (sealion route-dead flag retracted - live 200). aion route-dead corrected to edge-403. Blockers of record: funding-blocked {zai, llm7, routeway, siliconflow, huggingface} - capacity {sambanova} - secrets-absent in Actions store {cerebras, kilo, mistral, modelscope, ovhcloud, requesty, typhoon, xfyun} - egress-403 {groq, xkiro} - skew {nvidia} - scope-limited {cloudflare} - timeout {unorouter}. felo/omni: no reviewed chat endpoint in repo sources (catalog-only)."
    },
    "inference_wiring": {
     "basis": "CORRECTED multi-surface census (fix seat, firsthand @master 2026-11-01). Supersedes the 2-surface re-base below-record: wiring = invoke code on ANY fleet surface {provider-batch ENDPOINTS, provider_model_catalog ENDPOINTS, llm_api_hub provider_extensions ENDPOINTS (PR #1471), llm_api_hub provider_protocols CHAT_ENDPOINTS, g4f-working/gpt4free route}.",

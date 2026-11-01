@@ -27,6 +27,11 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 
 from llm_api_hub.server import research_providers, provider_extensions, provider_protocols
 
+try:
+    from scripts import provider_catalog_protocols
+except Exception:  # pragma: no cover - catalog protocols are an optional resolver aid
+    provider_catalog_protocols = None
+
 NON_CHAT_HINTS = ("embed", "whisper", "tts", "rerank", "moderation", "asr", "translate")
 
 
@@ -41,12 +46,18 @@ def resolve_provider(name: str):
         return url, secrets, catalog, ""
     if name in provider_protocols.SECRET_ENV:
         secrets = provider_protocols.SECRET_ENV[name]
+        account = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+        if name == "cloudflare" and not account:
+            return None, secrets, None, "account-scope-unresolved: CLOUDFLARE_ACCOUNT_ID not present in job env"
+        catalog = None
+        if provider_catalog_protocols is not None:
+            try:
+                catalog = provider_catalog_protocols.endpoint(name, account or None)
+            except Exception:
+                catalog = None
         if name == "cloudflare":
-            account = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
-            if not account:
-                return None, secrets, None, "account-scope-unresolved: CLOUDFLARE_ACCOUNT_ID not present in job env"
-            return provider_protocols.cloudflare_chat_url(account), secrets, None, ""
-        return provider_protocols.CHAT_ENDPOINTS[name], secrets, None, ""
+            return provider_protocols.cloudflare_chat_url(account), secrets, catalog, ""
+        return provider_protocols.CHAT_ENDPOINTS[name], secrets, catalog, ""
     return None, (), None, "no reviewed chat endpoint in repo sources (catalog-only provider)"
 
 
@@ -106,7 +117,15 @@ def main() -> int:
     if model is None and catalog_url:
         status, cat = http_json("GET", catalog_url, token)
         if status == 200:
-            model = pick_model(cat)
+            if provider_catalog_protocols is not None and provider in provider_catalog_protocols.PROVIDERS:
+                try:
+                    ids = [r["id"] for r in provider_catalog_protocols.normalize_models(provider, cat)]
+                    chat = [i for i in ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
+                    model = (chat or ids or [None])[0]
+                except Exception:
+                    model = None
+            else:
+                model = pick_model(cat)
     if model is None:
         model = "default"
         verdict["model_note"] = "catalog unresolved; provider default attempted"
@@ -122,10 +141,18 @@ def main() -> int:
     if status is None:
         verdict["diagnosis"] = "transport: " + str(body.get("transport_error"))[:200]
     elif status == 200:
+        text = ""
         try:
             text = body["choices"][0]["message"]["content"]
         except Exception:
-            text = ""
+            pass
+        if not text:
+            # Cohere v2/chat shape: message.content = [{type: text, text: ...}]
+            try:
+                parts = body["message"]["content"]
+                text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+            except Exception:
+                text = ""
         if text:
             verdict["ok"] = True
             verdict["diagnosis"] = "invoke succeeded"

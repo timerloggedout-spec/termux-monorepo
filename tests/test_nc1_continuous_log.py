@@ -30,7 +30,7 @@ def test_aggregate_strata():
     assert per["chat"]["layer_verdicts"]["borderline"] == 1
     assert per["chat"]["layer_verdicts"]["score_mean"] == 0.325
     assert per["records"]["class_hints"] == {"empty-signal": 1}
-    assert "github" not in per  # absent strata omitted, not zero-filled
+    assert "github" not in per
 
 
 def test_run_appends_both_logs(tmp_path):
@@ -41,11 +41,11 @@ def test_run_appends_both_logs(tmp_path):
     logs = tmp_path / "logs"
     line = log.run(pop, logs, "2026-11-01T00:00:00Z")
     assert line["status"] == "ok" and line["population_units"] == 3
-    pop_lines = (logs / "population-log.jsonl").read_text().splitlines()
-    den_lines = (logs / "density-stats.jsonl").read_text().splitlines()
-    assert len(pop_lines) == 1 and len(den_lines) == 2
-    log.run(pop, logs, "2026-11-02T00:00:00Z")  # append-only: grows
+    assert len((logs / "population-log.jsonl").read_text().splitlines()) == 1
+    assert len((logs / "density-stats.jsonl").read_text().splitlines()) == 2
+    line2 = log.run(pop, logs, "2026-11-02T00:00:00Z")
     assert len((logs / "population-log.jsonl").read_text().splitlines()) == 2
+    assert line2["window_new_units"] == 0
 
 
 def test_defer_line_shape(tmp_path):
@@ -59,6 +59,30 @@ def test_population_hash_stable():
     assert log.population_hash(_rows()) == log.population_hash(_rows()[::-1])
 
 
+def test_backfill_and_cumulative(tmp_path):
+    pop = tmp_path / "pop"
+    pop.mkdir()
+    (pop / "shakedown-001-units.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in _rows()) + "\n")
+    ds = tmp_path / "density-stats.json"
+    ds.write_text(json.dumps({
+        "evidence_hash": "abc123", "generated_at": "2026-11-01T00:00:00Z",
+        "artifacts": [
+            {"stratum": "records", "density": 0.5, "outcome_kind": "merged"},
+            {"stratum": "records", "density": 0.7, "outcome_kind": "landed"},
+            {"stratum": "github", "density": 0.1, "outcome_kind": "merged"}]}))
+    logs = tmp_path / "logs"
+    b = log.backfill(ds, logs, "2026-11-01T00:00:00Z")
+    assert b["status"] == "ok" and b["per_stratum"]["records"]["n"] == 2
+    b2 = log.backfill(ds, logs, "2026-11-01T01:00:00Z")
+    assert b2["status"] == "skip-duplicate"
+    line = log.run(pop, logs, "2026-11-01T02:00:00Z")
+    assert line["cumulative_per_stratum_n"]["records"] == 3
+    assert line["cumulative_per_stratum_n"]["github"] == 1
+    assert line["significance"]["github"] == "NOT_ESTABLISHED (n<30)"
+    assert line["cumulative_per_stratum_n"]["records"] == 3
+
+
 if __name__ == "__main__":
     import tempfile
     test_aggregate_strata()
@@ -67,4 +91,6 @@ if __name__ == "__main__":
     with tempfile.TemporaryDirectory() as d:
         test_defer_line_shape(Path(d))
     test_population_hash_stable()
-    print("ok 4 tests")
+    with tempfile.TemporaryDirectory() as d:
+        test_backfill_and_cumulative(Path(d))
+    print("ok 5 tests")

@@ -1,34 +1,49 @@
 {
  "automation": {
+  "auto_sender": "scripts/doe/phrase_dispatch.py via the plan-emitted doe-phrase-dispatch/v1 job (existing doe-phrase-dispatch.yml remains the manual single-job leg)",
+  "budget": {
+   "daily_call_cap": 8,
+   "pool": "OpenRouter Pool-1 free tier, 50 calls/day account-wide (fleet key is_free_tier, PR #2828)",
+   "state": "dispatch/state.json (per-UTC-day counter + next dispatch no); exhausted => exit 5 before any call"
+  },
+  "canonical_instance_tuple": {
+   "context": "live-3-phrases-deepseek/<cell>",
+   "model": "<automation.model or default deepseek/deepseek-r1:free>",
+   "moniker": "doe-mgr-phrases-jit",
+   "note": "dispatcher tuple v1 accepted by phrases-jit review (supersedes job-#1 ad-hoc tools string; job #1 has no response, no comparability loss)",
+   "provider": "openrouter",
+   "role": "reviewer",
+   "system_prompt_sha256": "sha256 of the composed prompt (job.prompt_sha256)",
+   "tools": "canonical tool set [] (chat-completions, no tools) \u2014 sha256 of the empty set"
+  },
+  "cells": "ESTABLISHED Stage-1 only (fixed-anchor; placement x {verbatim, vowels} + control); leet-full BLOCKED in code (asserted: never in ACTIVE_CELLS)",
   "dispatch_workflow": ".github/workflows/doe-phrase-dispatch.yml (workflow_dispatch, master only; PR #2826, diagnosability PR #2832)",
+  "dispatcher": "scripts/doe/live3_dispatcher.py (plan: A3/cb-1 code screen + budget + cell assignment + phrase_layer composition + instance stamp; record: EXPERIMENT record + SUMMARY regeneration)",
+  "emits": "dispatch/job-NNNN-pr<pr>.json + records/dispatch-NNNN.json (EXPERIMENT) + SUMMARY.json at campaign root",
+  "exclusions": "code-enforced at plan: target PR screened vs live-1 + cb-1 campaign records + automation.extra_excluded_prs; excluded => exit 4, no job, no call",
+  "extra_excluded_prs": [],
   "job_home": "experiments/doe/live-3-phrases-deepseek/dispatch/ (composed+stamped jobs, stamp-before-dispatch)",
   "log_surface": "issue #2830 (every dispatch outcome posted: status, error class, response sha/usage)",
   "loop": "automation runs => records in records/ => live-builds relay => doe-expert review => amendments (DOE-FAMILY rule 5)",
-  "sender": "scripts/doe/phrase_dispatch.py (stdlib; key from OPENROUTER_API_KEY Actions secret only; fails loud, no retry)",
-  "rule": "DOE-FAMILY binding rule 5 (PR #2825): design ships WITH its automation",
-  "dispatcher": "scripts/doe/live3_dispatcher.py (plan: A3/cb-1 code screen + budget + cell assignment + phrase_layer composition + instance stamp; record: EXPERIMENT record + SUMMARY regeneration)",
-  "workflow": ".github/workflows/doe-live3-autodispatch.yml (workflow_dispatch: pr_number + task_path + pr_head; plan -> send -> comment -> record -> commit-back)",
-  "auto_sender": "scripts/doe/phrase_dispatch.py via the plan-emitted doe-phrase-dispatch/v1 job (existing doe-phrase-dispatch.yml remains the manual single-job leg)",
-  "cells": "ESTABLISHED Stage-1 only (fixed-anchor; placement x {verbatim, vowels} + control); leet-full BLOCKED in code (asserted: never in ACTIVE_CELLS)",
-  "exclusions": "code-enforced at plan: target PR screened vs live-1 + cb-1 campaign records + automation.extra_excluded_prs; excluded => exit 4, no job, no call",
-  "budget": {
-   "pool": "OpenRouter Pool-1 free tier, 50 calls/day account-wide (fleet key is_free_tier, PR #2828)",
-   "daily_call_cap": 8,
-   "state": "dispatch/state.json (per-UTC-day counter + next dispatch no); exhausted => exit 5 before any call"
+  "route": {
+   "active": "deepseek-ci",
+   "deepseek_ci": {
+    "prompt_delivery": "trigger comment carries the composed+stamped prompt verbatim inside a dispatch envelope; wrapper-side framing/model are surface properties (model NOT ESTABLISHED)",
+    "send_leg_amendment": "live-builds WO-A workflow send leg (their PR) reads these fields",
+    "surface": "issue_comment trigger on the target PR",
+    "trigger": "comment body contains '@deepseek' from a non-Bot author",
+    "workflow": ".github/workflows/deepseek-ci.yml"
+   },
+   "openrouter": {
+    "model": "deepseek/deepseek-r1:free",
+    "sender": "scripts/doe/phrase_dispatch.py (manual leg, dormant)",
+    "state": "dead_model_delisted"
+   }
   },
-  "extra_excluded_prs": [],
-  "emits": "dispatch/job-NNNN-pr<pr>.json + records/dispatch-NNNN.json (EXPERIMENT) + SUMMARY.json at campaign root",
-  "state": "built (WO-A, PR #2836) + unified automation{} fix (live-builds, phrases-jit review) \u2014 ROUTE PRIMARY DEAD: deepseek/deepseek-r1:free delisted (dispatch #1 record); sends 404 until doe-expert route ruling (escalation 15e67ebd); automation.model parameterizes the route model at ruling",
-  "canonical_instance_tuple": {
-   "provider": "openrouter",
-   "model": "<automation.model or default deepseek/deepseek-r1:free>",
-   "system_prompt_sha256": "sha256 of the composed prompt (job.prompt_sha256)",
-   "tools": "canonical tool set [] (chat-completions, no tools) \u2014 sha256 of the empty set",
-   "role": "reviewer",
-   "moniker": "doe-mgr-phrases-jit",
-   "context": "live-3-phrases-deepseek/<cell>",
-   "note": "dispatcher tuple v1 accepted by phrases-jit review (supersedes job-#1 ad-hoc tools string; job #1 has no response, no comparability loss)"
-  }
+  "rule": "DOE-FAMILY binding rule 5 (PR #2825): design ships WITH its automation",
+  "sender": "scripts/doe/phrase_dispatch.py (stdlib; key from OPENROUTER_API_KEY Actions secret only; fails loud, no retry)",
+  "state": "route=deepseek-ci (ALT, ruling 2026-10-31); OpenRouter leg dormant (model delisted); autodispatch plan/record stand, send leg amended by live-builds",
+  "workflow": ".github/workflows/doe-live3-autodispatch.yml (workflow_dispatch: pr_number + task_path + pr_head; plan -> send -> comment -> record -> commit-back)"
  },
  "campaign_id": "live-3-phrases-deepseek",
  "coordination": {
@@ -158,9 +173,22 @@
   "type": "full_factorial_plus_control_staged"
  },
  "dispatch": {
+  "alt_activation": {
+   "conditions": [
+    "job #1 re-issued on SAME cell + stamp (suffix-vowels, prompt sha256 3049363b2ea4f2ad64f2590ee4b81820fb31169e4125aa6ea66ab65b6b19e0c8)",
+    "A3/cb-1 exclusions unchanged",
+    "report to live-builds before any scaling"
+   ],
+   "route": "deepseek-ci comment surface",
+   "ruling": "doe-expert via live-builds 2026-10-31 (relayed escalation 15e67ebd; concurrence (a))"
+  },
   "approved_was": "doe-expert GO via live-builds c04ca48d: PRIMARY OpenRouter deepseek/deepseek-r1:free only",
-  "detail": "Dispatch #1 (job-0001, PR #2436, cell suffix-vowels) failed attempts 1+2: OpenRouter HTTP 404 \u2014 deepseek/deepseek-r1:free delisted (no provider serves it); live catalog 2026-11-01 has ZERO DeepSeek :free models and the fleet key cannot pay (402, never purchased credits). Record: records/dispatch-0001.json. Escalated to live-builds 2026-11-01 with the ALT (deepseek-ci) ask \u2014 dispatch halts until doe-expert rules; no unilateral substitution.",
-  "state": "route_primary_dead_model_delisted"
+  "route_primary_dead": {
+   "evidence": "Dispatch #1 attempts 1+2: HTTP 404 model delisted (no provider serves it); live catalog 2026-11-01 = zero DeepSeek :free models; fleet key is_free_tier + credits 0 => paid = HTTP 402. Record: records/dispatch-0001.json (PR #2835).",
+   "model": "deepseek/deepseek-r1:free",
+   "route": "openrouter"
+  },
+  "state": "alt_route_active_deepseek_ci"
  },
  "family": "doe",
  "gates": [

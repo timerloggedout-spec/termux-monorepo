@@ -184,8 +184,6 @@ jobs:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy(tribute+matrix): ${{ github.sha }}"
-s[bot]@users.noreply.github.com
-          commit_message: "deploy(matrix): ${{ github.sha }}"
       - name: User-site URLs
         run: |
           echo "https://timerloggedout-spec.github.io/tribute/ (canonical)" >> "$GITHUB_STEP_SUMMARY"

@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """live-3-phrases-deepseek dispatcher automation (rule 5, WO-A).
 
+Route of record (doe-expert ruling (a), 2026-10-31): PRIMARY
+OpenRouter deepseek/deepseek-r1:free is DEAD (model delisted +
+account paid-incapable); the ALT deepseek-ci comment surface is
+authorized. plan/record are route-agnostic; the workflow's send
+leg posts the composed prompt as the dispatch comment. The route
+model string comes from DESIGN automation.model when set.
+
 Replaces manual per-job dispatch with repo automation:
 
   plan   — screen the target PR against the A3 / cb-1 exclusions
@@ -237,6 +244,7 @@ def cmd_record(args) -> int:
             "response_sha256_12": (result.get("response_sha256")
                                    or "")[:12] or None,
             "response_chars": result.get("response_chars"),
+            "route_surface": result.get("via") or "openrouter",
             "findings_actioned": None,
         },
         "evidence_refs": [

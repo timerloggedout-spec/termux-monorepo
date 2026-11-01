@@ -154,3 +154,59 @@ def test_summary_skips_foreign_records(tmp_path):
     assert D.cmd_record(_record_args(tmp_path)) == 0
     summary = json.loads((tmp_path / "SUMMARY.json").read_text())
     assert summary["runs"] == 1  # foreign manual record not counted
+
+
+from types import SimpleNamespace as _NS
+
+
+def _rec_args(tmp_path, job, result):
+    jp = tmp_path / "job.json"; jp.write_text(json.dumps(job))
+    rp = tmp_path / "result.json"; rp.write_text(json.dumps(result))
+    sp = tmp_path / "state.json"
+    sp.write_text(json.dumps({"date": "2026-11-03", "calls": 0}))
+    return _NS(job=str(jp), result=str(rp),
+               records_dir=str(tmp_path / "records"),
+               summary=str(tmp_path / "SUMMARY.json"),
+               state=str(sp), base_sha="a" * 40)
+
+
+def _job(no):
+    return {"dispatch_no": no, "model": D.MODEL,
+            "assignment": {"cell": "control"},
+            "task": {"pr": 42, "pr_head": "a" * 40},
+            "prompt_sha256": "b" * 64, "instance_key": "c" * 64,
+            "stamped_at": "2026-11-03T00:00:00Z"}
+
+
+def test_record_carries_rev11_usage_measured(tmp_path):
+    args = _rec_args(tmp_path, _job(7),
+                     {"status": "ok", "response_chars": 5,
+                      "finished_at": "2026-11-03T00:01:00+00:00",
+                      "usage": {"total_tokens": 321,
+                                "prompt_tokens": 300,
+                                "completion_tokens": 21}})
+    assert D.cmd_record(args) == 0
+    rec = json.loads((tmp_path / "records" /
+                      "dispatch-0007.json").read_text())
+    assert rec["usage"] == {"value": 321, "unit": "tokens",
+                             "source": "openrouter/usage",
+                             "match": "exact", "status": "measured"}
+    assert rec["window"] == {"start": "2026-11-03T00:00:00Z",
+                              "end": "2026-11-03T00:01:00+00:00"}
+    jsonschema.validate(rec, SCHEMA)
+
+
+def test_record_usage_activity_only_and_not_established(tmp_path):
+    for no, result, want in (
+            (8, {"status": "ok", "response_chars": 3,
+                 "via": "github-comment"}, "activity_only"),
+            (9, {"status": "error", "error": "http 404"},
+             "not_established")):
+        args = _rec_args(tmp_path, _job(no), result)
+        assert D.cmd_record(args) == 0
+        rec = json.loads((tmp_path / "records" /
+                          f"dispatch-{no:04d}.json").read_text())
+        assert rec["usage"]["status"] == want
+        assert rec["usage"]["value"] is None
+        assert "window" not in rec
+        jsonschema.validate(rec, SCHEMA)

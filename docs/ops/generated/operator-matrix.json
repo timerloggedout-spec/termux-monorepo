@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 366,
-    "open_prs": 154,
+    "open_prs": 153,
     "pr_classes": {
-      "CANDIDATE": 69,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 80,
+      "CANDIDATE": 68,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 78,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 28,
-      "prs": 152,
+      "prs": 151,
       "unlabelled_numbers": [
         308,
         343,
@@ -83,7 +83,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T01:18:46Z",
+  "generated_at": "2026-11-01T01:21:27Z",
   "issues_unlabelled": [
     308,
     343,
@@ -120,7 +120,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "1972e915a0"
+    "sha": "3abe5833d1"
   },
   "prs": [
     {
@@ -192,6 +192,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bd5270099c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T01:20:13Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8799651cad",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2436,
+      "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Prevent path traversal and symlink hijacking in cookie loading",
+      "updated_at": "2026-10-30T07:47:41Z"
     },
     {
       "class": "CANDIDATE",
@@ -1045,20 +1073,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8799651cad",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2436,
-      "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Prevent path traversal and symlink hijacking in cookie loading",
-      "updated_at": "2026-10-30T07:47:41Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "4460c735a2",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1569,20 +1583,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "6b57bd07ee",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:18:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2269,20 +2269,6 @@
       "number": 2810,
       "title": "doe(live-2): phase 1 outcome-join script + DESIGN-strata addendum (watch empty, false-S 0 cases)",
       "updated_at": "2026-11-01T01:13:32Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "9ae3760a49",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2819,
-      "title": "doe(control-suites): EXECUTION-BRIEF ERRATA \u2014 fragment check is 15/15 FOUND; t6-MISSING claim retracted",
-      "updated_at": "2026-11-01T01:16:37Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -298,6 +298,14 @@ are levels, kinds are factors.
   are the swarm's organs, not the swarm itself. In DoE records and
   designs, "swarm" carries this meaning only; a specific lane, app
   or workflow is named as itself.
+- **Dispatch principle** (owner, 2026-11-01; dispatch-side companion
+  to the Swarm definition): dispatched work is routed and assigned
+  across comparative planes for efficiency learning. Hard-selecting
+  a single arm starves the signal — single-arm traces are
+  incomparable (no counterfactual, no cross-arm efficiency
+  estimate). Designs therefore spread dispatch across arms by
+  default (rotation, sets, factorial assignment); a single-arm run
+  is observational color, never comparative evidence.
 
 ## Campaign layout
 

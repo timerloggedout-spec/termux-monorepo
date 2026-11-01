@@ -123,8 +123,9 @@ def test_historical_backfill_promotion_gate_uses_canonical_master_and_fails_clos
     assert "history_coverage" in content
     assert "next_start_page" in content
     assert "status != 'COMPLETE'" in content
-    assert "pull-requests: read" in content
+    assert "permissions:" in content
     assert "contents: read" in content
+    assert "pull-requests:" not in content
     assert "master-staging" not in content
     assert "git push" not in content
     assert "rerun" not in content.lower()

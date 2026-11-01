@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c5a28f77047102d2ea274f6094d660ddcb00052c67b9e0fe24e615eef166d914",
+  "source_fingerprint": "3af86a01cce92b156557822f5ec11b7fbeb3457067cdcf6a767a27c85ce493ef",
   "workflow_count": 250,
   "workflows": [
     {
@@ -2325,7 +2325,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: false",
+      "concurrency": "group: user-site-pages-publisher cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "enable-pages",
@@ -2346,12 +2346,12 @@
         "peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: help-wanted-preview-${{ inputs.preview_key }} cancel-in-progress: false",
+      "concurrency": "group: user-site-pages-publisher cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "publish-preview"
       ],
-      "name": "Help-Wanted Dashboard Preview",
+      "name": "Tribute Dashboard Preview",
       "path": ".github/workflows/help-wanted-dashboard-preview.yml",
       "schedules": [],
       "triggers": [

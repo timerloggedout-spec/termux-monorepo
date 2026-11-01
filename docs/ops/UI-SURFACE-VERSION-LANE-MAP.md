@@ -169,3 +169,123 @@ The UI remains a read-only projection. If a projection conflicts with source evi
 ## Source inspection note
 
 The current Help-Wanted shell (apps/help-wanted-dashboard/index.html) contains a single flat primary navigation list. The six groups above normalize that observed inventory into a maintainable taxonomy; they are not asserted to exist as grouped DOM elements today. SHE's ten-surface model is already explicitly defined in the UI/UX control-plane contract.
+
+## 8. UI development surfaces & rendering lanes
+
+This is a **separate taxonomy** from both the six Help-Wanted header categories and the ten SHE cockpit destinations. Those describe information architecture; this section describes the user-facing modality, target device, renderer, and interaction runtime in which any product surface may be implemented.
+
+### 8.1 Surface families
+
+| Surface family | Target / experience | Representative sub-surfaces | Primary constraints |
+|---|---|---|---|
+| **Terminal UI (TUI)** | Text-mode interactive applications in terminals and terminal emulators | ASCII-only; Unicode/box-drawing; ANSI color/style; full-screen keyboard TUI; split-pane/multiplexer TUI; mixed text + graphics protocols | Terminal capabilities, width/height, color depth, Unicode/font support, input protocol, SSH latency, accessibility |
+| **Command-line interface (CLI)** | Command invocation, scripting, automation, pipelines | POSIX-style commands; interactive prompts; REPL; shell completion; machine-readable output | Stable exit codes, stdin/stdout/stderr, composability, non-interactive mode, predictable output |
+| **Web GUI** | Browser-based interactive applications | Semantic HTML/CSS; DOM; SVG; Canvas 2D; WebGL/WebGPU; responsive web; PWA | Browser support, network/offline behavior, responsive layout, accessibility, security boundaries |
+| **Desktop GUI** | Installed desktop applications | Native toolkit; Electron/Tauri; embedded webview; cross-platform desktop | OS integration, packaging, updates, window management, filesystem permissions |
+| **Mobile** | Phone and tablet applications | iOS/iPadOS; Android; native; cross-platform; hybrid; mobile web/PWA | Touch, gestures, safe areas, lifecycle, permissions, battery, offline/cache, variable viewport |
+| **eReader / e-paper** | Reading-first and low-refresh displays | EPUB reflow; fixed-layout EPUB; PDF; HTML reader; e-ink companion UI | Reflow, pagination, font scaling, grayscale/limited color, refresh latency, low-power operation, annotations and bookmarks |
+| **TV / large-screen / kiosk** | Lean-back, public, or shared-screen interaction | TV apps; 10-foot UI; signage; kiosk; controller/remote navigation | Distance legibility, focus navigation, session reset, unattended operation, restricted input |
+| **Wearable / ambient** | Glanceable, constrained personal devices | Watch UI; notification/complication; sensor display; heads-up display | Tiny viewport, short interactions, battery, sensor/privacy permissions, glanceability |
+| **Voice / audio** | Speech-first and audio-first interaction | Voice UI; spoken prompts; screen-reader-compatible audio flow; audio player; voice agent | Turn-taking, latency, interruption, transcripts, discoverability, noisy environments |
+| **XR / spatial computing** | Immersive or spatially anchored interfaces | VR; AR; MR; spatial windows; world-locked and head-locked panels; hand/controller/eye interaction | Comfort, motion sickness, tracking loss, spatial legibility, input ergonomics, safety boundaries |
+| **Print / export** | Durable, portable, or offline reading artifacts | PDF; print CSS; paginated reports; static image/export | Pagination, selectable text, metadata, contrast, archival stability |
+
+### 8.2 Rendering and implementation lanes
+
+Surface family is not a framework choice. Track the renderer/runtime independently so the same product capability can have multiple implementations.
+
+| Rendering lane | Technologies / patterns | Typical target surfaces | Engineering notes |
+|---|---|---|---|
+| **Plain text** | ASCII, UTF-8 text, line-oriented output | CLI, basic TUI, logs, eReader fallback | Lowest common denominator; preserve semantic structure without color |
+| **ANSI terminal** | ANSI/ECMA-48 control sequences, 16/256/truecolor, cursor addressing | Rich TUI, terminal dashboards | Detect capabilities; provide NO_COLOR/plain mode; avoid assuming every terminal supports every sequence |
+| **Rust terminal UI** | ratatui + crossterm or termion | Full-screen Rust TUI | Treat backend, terminal restoration, event loop, layout, and widgets as explicit dependencies |
+| **Go terminal UI** | Bubble Tea + Lip Gloss (and compatible components) | Model-driven Go TUI | Keep update/view state deterministic; degrade styles when color/TTY support is absent |
+| **Mixed terminal** | Text + ANSI + Unicode; optional sixel/Kitty/iTerm graphics where supported | Advanced terminal cockpit | Feature-detect graphics protocols; text-only fallback is mandatory |
+| **Web semantic** | HTML + CSS + DOM + JavaScript/TypeScript | Web GUI, PWA, eReader web reader | Semantic controls and progressive enhancement; keyboard and assistive technology support |
+| **Vector / 2D / GPU web** | SVG, Canvas 2D, WebGL, WebGPU | Charts, diagrams, editors, spatial previews | Choose by interaction/rendering need; keep accessible textual alternatives and data provenance |
+| **Native platform** | Swift/SwiftUI, UIKit; Kotlin/Compose, Android Views; platform desktop toolkits | Mobile, desktop, wearable | Platform lifecycle, accessibility APIs, signing and distribution are first-class |
+| **Cross-platform shell** | Tauri, Electron, React Native, Flutter, Kotlin Multiplatform | Desktop/mobile | Record shared-core vs platform-specific code and runtime version separately |
+| **Publishing / document** | EPUB 2/3, PDF, HTML, print CSS | eReader, print/export | Validate reflow, navigation landmarks, metadata, pagination and font scaling |
+| **XR runtime** | OpenXR, WebXR, platform spatial APIs; Unity/Unreal where applicable | VR, AR, MR, spatial | Record device/runtime capabilities and interaction modalities; never infer support from platform name alone |
+| **Game / real-time engine** | Unity, Unreal, Godot, custom real-time renderer | XR, simulation, visualization, kiosk | Track engine, rendering pipeline, asset bundle and device profile independently |
+
+**TUI clarification:** ASCII, ANSI, ratatui, Go Lip Gloss, and mixed terminal output are not five peer device surfaces. They are overlapping format, capability, framework, and composition lanes within the Terminal UI family. ratatui is a Rust TUI framework; Lip Gloss is a Go styling/layout library commonly paired with Bubble Tea. CLI remains a distinct command-and-pipeline interface even when it shares terminal output code with a TUI.
+
+### 8.3 Cross-surface capability dimensions
+
+Every surface implementation should declare a capability profile rather than assuming that all devices in a family behave alike:
+
+- **Input:** keyboard, pointer, touch, stylus, remote/controller, hand tracking, eye gaze, voice, switch access.
+- **Output:** text, color, vector, raster, audio, haptics, spatial overlays.
+- **Viewport:** dimensions, density, orientation, safe areas, terminal cell geometry, e-ink page geometry.
+- **Runtime:** OS, browser/engine, terminal emulator, renderer/backend, API level, XR runtime.
+- **Connectivity:** online, intermittent, offline-first, local-only, SSH/remote.
+- **Accessibility:** semantic structure, focus order, keyboard operation, screen reader, captions/transcripts, contrast, reduced motion, scalable text.
+- **Resource envelope:** memory, CPU/GPU, battery, bandwidth, thermal budget, refresh rate.
+- **Security / privacy:** permission model, data locality, session isolation, shared-device behavior, sensor consent.
+
+Capabilities should be recorded as SUPPORTED, PARTIAL, UNSUPPORTED, or UNKNOWN with evidence and tested version. UNKNOWN must not silently become SUPPORTED.
+
+### 8.4 Product capability → surface projection
+
+A capability may be projected to more than one surface, but each projection is its own implementation and conformance target.
+
+```text
+Product capability / domain contract
+├── Web GUI projection
+├── Desktop GUI projection
+├── Mobile projection
+├── TUI projection
+│   ├── Plain / ASCII fallback
+│   ├── ANSI-enhanced
+│   ├── ratatui (Rust)
+│   ├── Bubble Tea + Lip Gloss (Go)
+│   └── Mixed terminal protocols
+├── eReader / EPUB / PDF projection
+├── Voice / audio projection
+└── XR / spatial projection
+    ├── VR
+    ├── AR
+    └── MR
+```
+
+Do not force identical layouts or interactions across modalities. Share domain logic, API contracts, identity, and evidence where appropriate; adapt navigation, density, input, and presentation to the surface.
+
+### 8.5 Surface identity and versioning
+
+Each shipped projection should carry a stable surface identity and a distinct implementation/build identity:
+
+| Field | Purpose |
+|---|---|
+| `surface_id` | Stable modality/product projection, e.g. `dashboard.web`, `ops.tui.ratatui`, `reader.epub`, `spatial.xr` |
+| `surface_family` | TUI, CLI, web, desktop, mobile, eReader, TV/kiosk, wearable, voice/audio, XR, print |
+| `renderer_id` | DOM, SVG, Canvas, ANSI, ratatui, Lip Gloss/Bubble Tea, native toolkit, EPUB renderer, OpenXR/WebXR, etc. |
+| `renderer_version` | Framework/engine/runtime version used by the projection |
+| `target_profile` | OS/device/browser/terminal/eReader/XR capability profile |
+| `interaction_profile` | Keyboard, touch, pointer, remote, controller, hand, gaze, voice, mixed |
+| `accessibility_profile` | Declared and tested accessibility capabilities |
+| `domain_contract_version` | Shared product/API contract consumed by the surface |
+| `surface_schema_version` | Surface-specific view-model or serialized projection schema |
+| `build_id` + `source_sha` | Immutable build and source provenance |
+| `conformance_suite` | Tests and fixtures passed by this surface/target profile |
+
+A framework upgrade does not automatically change the domain contract. A domain schema change does not automatically imply a renderer upgrade. A new target device profile may require a new conformance run without changing either.
+
+### 8.6 Surface conformance and release gates
+
+- [ ] Surface family, renderer lane, target profile, and interaction profile are declared.
+- [ ] Plain/fallback behavior exists where the runtime may not support enhanced rendering (especially terminal color/graphics and network-dependent web features).
+- [ ] Keyboard, focus, touch/controller/remote, and assistive interaction paths are tested as applicable.
+- [ ] Layout is validated at representative viewport/cell/page sizes and orientations.
+- [ ] Offline, reconnect, low-bandwidth, and interrupted-session behavior is tested where applicable.
+- [ ] Resource and lifecycle behavior is tested on representative target hardware or a declared emulator.
+- [ ] Accessibility claims map to concrete tests and target-specific support evidence.
+- [ ] Renderer/framework/runtime versions, domain contract, surface schema, build ID, and source SHA remain separately observable.
+- [ ] Screenshots, recordings, golden terminal fixtures, EPUB/PDF samples, and XR captures are treated as derived test artifacts with source/build provenance.
+- [ ] Surface-specific failures do not get hidden by aggregate cross-platform pass rates.
+
+### 8.7 Documentation and registry ownership
+
+Maintain a machine-readable surface registry (proposed; schema and location require implementation review) that indexes each projection by `surface_id`, family, renderer, target profile, owner, domain contract, conformance suite, maturity, and support status. Link it from the UI/UX control-plane documentation and this map. Update the registry whenever a surface is introduced, retired, changes renderer, or changes its supported target profile.
+
+The current six Help-Wanted categories and ten SHE destinations remain unchanged. They are navigation structures that can link to any of these modality projections; they are not rendering lanes.

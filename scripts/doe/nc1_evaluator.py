@@ -36,6 +36,22 @@ NOT_ESTABLISHED (null + note) — never 0, never synthesized from
 reference flags (same rule at every layer would make escape
 degenerate by construction).
 
+L1 verdict feed (main, from run-002): main emits batched digests
+of intake verdicts, one row per validated handoff:
+  {"chat_id": ..., "handoff_ts": ..., "verdict": "confirm|reject",
+   "ts": ...}
+Join key = chat_id + handoff_ts. A unit joins when its
+`join_key` field equals "<chat_id>@<handoff_ts>", or when its
+source_ref embeds that pair (future layer-outputs). Corpus v1
+chat units carry seq-based source_refs and no join_key, so they
+never join — they stay implicit/none, honestly. A joined unit
+becomes explicit-class: verdict confirm -> l1_verdict "pass"
+(intake accepted, no flag), reject -> "drift" (intake flagged
+it; the flag time is the feed ts). correction_latency joins
+only when the unit also carries `corrected_at` (latency =
+corrected_at - l1_at, seconds); otherwise latency stays
+NOT_ESTABLISHED even when escape_rate is established.
+
 prose_about_notation units are excluded from binary metrics and
 from tau derivation; each arm reports its flag count on the
 class as a diagnostic (construct finding #1).
@@ -47,7 +63,8 @@ designated channel, not chat noise.
 
 Usage:
   nc1_evaluator.py <units.jsonl> <tau.json> [out.json]
-                   [--flags flags.json] [--record RECORD.json
+                   [--flags flags.json] [--l1-feed feed.jsonl]
+                   [--record RECORD.json
                     --master-sha <40hex> --run-id run-001]
 """
 from __future__ import annotations
@@ -132,6 +149,49 @@ def run_arm(units, flags, stack):
     }
 
 
+def _parse_ts(s):
+    from datetime import datetime
+    try:
+        return datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp()
+    except Exception:
+        return None
+
+
+def apply_l1_feed(units, feed_rows):
+    """Join main's batched L1 verdict feed onto units (see module
+    docstring). Mutates joined units to explicit-class and returns
+    the number of joins. Feed rows may carry chat_id + handoff_ts
+    or a composite unit_ref "chat_id@handoff_ts"."""
+    index = {}
+    for row in feed_rows:
+        key = row.get("unit_ref") or (
+            f"{row.get('chat_id')}@{row.get('handoff_ts')}"
+            if row.get("chat_id") and row.get("handoff_ts") else None)
+        if key:
+            index[key] = row
+    joins = 0
+    for u in units:
+        key = u.get("join_key")
+        if not key:
+            sr = str(u.get("source_ref", ""))
+            for k in index:
+                if k in sr:
+                    key = k
+                    break
+        row = index.get(key) if key else None
+        if not row:
+            continue
+        u["l1_verdict"] = "pass" if row["verdict"] == "confirm" else "drift"
+        u["l1_at"] = row.get("ts")
+        u["l1_evidence"] = "explicit"
+        if u.get("corrected_at") and row.get("ts"):
+            a, b = _parse_ts(row["ts"]), _parse_ts(u["corrected_at"])
+            if a is not None and b is not None and b >= a:
+                u["correction_latency_s"] = round(b - a, 1)
+        joins += 1
+    return joins
+
+
 def escape_and_latency(units, full_flags):
     explicit = [u for u in units
                 if u.get("l1_evidence") == "explicit" and u.get("l1_verdict")]
@@ -179,6 +239,11 @@ def main(argv):
              if l.strip()]
     tau = json.loads(Path(args[1]).read_text())
     overrides = json.loads(Path(opts["flags"]).read_text()) if "flags" in opts else {}
+    feed_joins = 0
+    if "l1-feed" in opts:
+        feed_rows = [json.loads(l) for l in
+                     Path(opts["l1-feed"]).read_text().splitlines() if l.strip()]
+        feed_joins = apply_l1_feed(units, feed_rows)
     for u in units:
         u["_tokens"] = features(u["text"], u["stratum"])["tokens"]
     flags = layer_flags(units, tau, overrides)
@@ -191,6 +256,7 @@ def main(argv):
         "corpus_units": len(units),
         "arms": {k: {kk: vv for kk, vv in v.items() if not kk.startswith("_")}
                  for k, v in arms.items()},
+        "l1_feed_joins": feed_joins,
         "escape_rate": esc["escape_rate"],
         "correction_latency": esc["correction_latency"],
         "escape_latency_status": esc["status"],

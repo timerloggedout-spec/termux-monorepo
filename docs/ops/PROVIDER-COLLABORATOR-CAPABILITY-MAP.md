@@ -69,6 +69,19 @@ This table is extracted from the existing `contributor_lanes` roster, filtered t
 | siliconflow | siliconFlow | catalog, inference, evaluation, benchmark, adapter | siliconflow-http | adapter-only |
 | zai | zaiCandidate | research, catalog, admission | none | not-implemented |
 
+## Build arms (dispatch routes)
+
+Provider Index build-arm coverage (owner commission 2026-10-31; registry
+records `jules.build_sessions`, `gemini.build_dispatch`,
+`deepseek.build_dispatch`). Declared capability is not execution
+evidence — every row below carries its dispatch evidence refs.
+
+| Build arm | Route / workflow ref | Dispatch mechanics | Session / delivery evidence | Availability class | Limits state |
+|---|---|---|---|---|---|
+| **Jules** | issues route — label `agent-jules-on-issues` on repo issues (Jules GitHub App) | Issue + label + dispatch comment opens a Jules session on the repo; session returns a PR | Jules API census 2026-10-31 (quota-specialist firsthand): 364 sessions on this repo — 343 COMPLETED / 15 FAILED / 4 AWAITING_USER_FEEDBACK / 2 PAUSED; exemplar session 17326020844735872479 COMPLETED, 60 activities → PR #2635 merged | live (cloud, provider-hosted) | NOT_ESTABLISHED — the Jules API exposes no quota object |
+| **Gemini** | `.github/workflows/gemini-dispatch.yml` | issues / issue_comment triggers only (no `workflow_dispatch` in file) | Run 41223286134 SUCCESS on issue #2732 (2026-10-31, swarm-verified, SWARM-OPTIMIZATION-ASSURANCE §6); last success 2026-11-01T00:40Z (DoE errata PR #2787) | live, event-bound | NOT_ESTABLISHED provider-side |
+| **DeepSeek** | `.github/workflows/deepseek-ci.yml` + deepseek-termux-agent (device route) | Event triggers + `workflow_dispatch` (CI); device route via Termux agent; reroute spec #2732 (OpenRouter cloud first — that leg is currently UNFUNDED: census balance $0.00, `deepseek-r1:free` delisted) | deepseek-ci last success 2026-11-01T00:33Z (DoE errata PR #2787); device route last success 2026-10-05 (swarm census) | CI live, event-bound; device leg device-dependent | NOT_ESTABLISHED provider-side |
+
 ## Tool scopes, MCP and evidence levels
 
 - **GitHub job permissions:** workflow `permissions` and each job's `permissions` bound the token. E.g. Gemini review job is contents read plus issues/PR write; peer-review orchestrator's collector is contents/PR read plus issues write; DeepSeek Termux Agent declares broader contents/issues/PR write and actions/checks read. A workflow's permission declaration is not proof that the job ran or its token could exercise every operation in every repository.

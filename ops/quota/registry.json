@@ -2721,6 +2721,57 @@
      "role": "main"
     }
    }
+  },
+  {
+   "id": "jules.build_sessions",
+   "provider": "google",
+   "lane": "ci",
+   "metric": "Build sessions dispatched via the issues route (label agent-jules-on-issues -> Jules sessions on repo issues)",
+   "limit": null,
+   "unit": "sessions",
+   "window": "provider-side quota not exposed",
+   "reset": "not exposed by the Jules API",
+   "zone": "UTC",
+   "source": "Firsthand census 2026-10-31 via Jules API (custom.jules helper): 364 sessions on timerloggedout-spec/termux-monorepo {COMPLETED 343, FAILED 15, AWAITING_USER_FEEDBACK 4, PAUSED 2}; exemplar session 17326020844735872479 COMPLETED (60 activities) -> PR #2635 merged. Limits state: NOT_ESTABLISHED (API exposes no quota object).",
+   "live": "Jules API session census via custom.jules helper (sessions + activities); no passive reader wired",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Build arm (Provider Index build-arm coverage, owner commission 2026-10-31): PRIMARY issues-route build arm for fleet dispatch plans; GitHub-side draw is issue/label/comment ops on github.api.user_token."
+   }
+  },
+  {
+   "id": "gemini.build_dispatch",
+   "provider": "google",
+   "lane": "ci",
+   "metric": "Build/review dispatches via gemini-dispatch workflow (issues + issue_comment triggers only; no workflow_dispatch in file)",
+   "limit": null,
+   "unit": "dispatches",
+   "window": "provider-side quota not exposed",
+   "reset": "not exposed",
+   "zone": "UTC",
+   "source": "Evidence: gemini-dispatch issues run 41223286134 SUCCESS on issue #2732 (2026-10-31, firsthand-verified by swarm lane; docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md sec.6); last success 2026-11-01T00:40Z (DoE errata PR #2787). Limits state: NOT_ESTABLISHED provider-side.",
+   "live": "Actions workflow runs for gemini-dispatch.yml; no passive reader wired",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Build arm (Provider Index build-arm coverage, owner commission 2026-10-31): SECOND issues-route arm; event-bound live."
+   }
+  },
+  {
+   "id": "deepseek.build_dispatch",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "Invoke/review dispatches via deepseek-ci workflow (event triggers + workflow_dispatch) and the deepseek-termux-agent device route",
+   "limit": null,
+   "unit": "dispatches",
+   "window": "Actions minutes (public repo) + device availability",
+   "reset": "monthly (Actions)",
+   "zone": "UTC",
+   "source": "Evidence: deepseek-ci last success 2026-11-01T00:33Z (DoE errata PR #2787, event-bound live); device route last success 2026-10-05 (workflow_dispatch subset, swarm census). Reroute spec issue #2732 (OpenRouter cloud first) - OpenRouter leg currently UNFUNDED (allocation census: balance $0.00, deepseek-r1:free delisted). Limits state: NOT_ESTABLISHED provider-side.",
+   "live": "Actions workflow runs for deepseek-ci.yml; no passive reader wired",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Build arm (Provider Index build-arm coverage, owner commission 2026-10-31): CI-shaped invoke/review arm; device leg device-dependent. Provider recorded as github because the dispatch surface is repo workflows (Actions/issues); the model provider is DeepSeek."
+   }
   }
  ]
 }

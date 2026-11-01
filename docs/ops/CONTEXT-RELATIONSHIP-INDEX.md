@@ -1,5 +1,9 @@
 # Context Relationship Index
 
+> **ICM card:** the ICM system map summarizes this index at
+> [docs/icm/objects/knowledge/context-relationship-index.md](../icm/objects/knowledge/context-relationship-index.md).
+> This file is the source/spec — where the two differ, this file wins.
+
 ## Purpose
 
 This is the durable map for **prompt/context-ingestion efficiency** and cross-time reasoning over GitHub development activity.

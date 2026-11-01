@@ -1,5 +1,10 @@
 # Deployment Lanes
 
+> **Scope note:** this file is the SSOT for Vercel deployment lanes. The
+> similarly named [docs/ops/DEPLOYMENT-LANES.md](ops/DEPLOYMENT-LANES.md) is a
+> distinct record (n8n / SHE deployment + visual-composition architecture and
+> admission rule) — not a copy of this file.
+
 Single source of truth for every Vercel project deployed from this org's
 repos. A "lane" is one Vercel project — each has exactly one Root Directory,
 so a monorepo with independent deployables needs one lane per deployable,

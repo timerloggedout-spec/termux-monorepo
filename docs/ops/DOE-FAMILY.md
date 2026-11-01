@@ -288,6 +288,16 @@ are levels, kinds are factors.
    an INCONCLUSIVE datum, never a forced verdict. Campaign rules
    may exceed this floor (e.g. live-1's per-cell minimums); none
    may go below it.
+8. **Backfill doctrine (owner, 2026-11-01): backfill is a standing
+   first-class mechanism, not a fallback.** At EVERY version change
+   of a scoring test or definition, historical records are
+   re-scored under the new version. The backfill method itself is a
+   versioned, improvable artifact, and every backfill is audited
+   (records carry their origin: live, or backfill under
+   method@version, with from/to versions and deltas). Results are
+   compared across versions continuously — version-over-version
+   comparison is an ongoing line — until DoE culling retires a
+   method version, which ends that version's comparison line.
 
 ## Definitions of record
 

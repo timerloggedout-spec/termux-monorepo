@@ -45,7 +45,7 @@ jobs:
       - name: Tests
         run: |
           pip install pytest
-          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py -q
+          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py tests/test_attribution.py -q
       - name: Ingest (Provenance + HindSight payloads, separate sinks)
         run: |
           set -euo pipefail

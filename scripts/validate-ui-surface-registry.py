@@ -30,8 +30,11 @@ def validate() -> list[str]:
     if registry.get("schema_version") != schema.get("properties", {}).get("schema_version", {}).get("const"):
         errors.append("registry schema_version does not match schema")
 
-    for issue in Draft202012Validator.check_schema(schema) if False else []:
-        errors.append(str(issue))
+    try:
+        Draft202012Validator.check_schema(schema)
+    except Exception as exc:
+        errors.append(f"invalid JSON Schema: {exc}")
+        return errors
     validator = Draft202012Validator(schema)
     for issue in sorted(validator.iter_errors(registry), key=lambda e: list(map(str, e.path))):
         location = ".".join(map(str, issue.absolute_path)) or "<root>"

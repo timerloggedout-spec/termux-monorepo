@@ -914,23 +914,21 @@
    "provider": "siliconflow",
    "evidence": "api-verified",
    "free_tier": {
-    "state": "not-established",
-    "limits": "account surface answered 401 Token is invalid - stored token dead"
+    "state": "active",
+    "limits": "key live on canonical .com platform (models 200, runs 41264932179 + provisioning reads); balance not-established - .com /v1/user/info deprecated (410); .cn is a separate platform"
    },
    "credits": {
     "available": "not-established",
     "claimed": "not-established",
     "balance": null,
-    "source": "GET /v1/user/info 401, run 41263537880"
+    "source": "chain: .cn 401 (platform mismatch, retracted) -> .com user/info 410 deprecated -> .com models 200 key-live"
    },
    "replenishment": {
     "mechanism": "not-established",
     "gate": "not-established"
    },
-   "verdict": "not-established",
-   "flags": [
-    "credential-dead"
-   ]
+   "verdict": "free",
+   "flags": []
   },
   {
    "provider": "typhoon",

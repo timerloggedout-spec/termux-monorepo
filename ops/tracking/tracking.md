@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T11:50:04Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T11:52:11Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T11:50:04Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4262` read_at=`2026-11-01T11:50:04Z`
+Sources: PR feed read_at=`2026-11-01T11:52:11Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4267` read_at=`2026-11-01T11:52:11Z`
 
 Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknown=5
 
@@ -11,9 +11,9 @@ Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknow
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3084 `d6dadc75ccf0` 2026-11-01T11:47:20Z | BATCH reader dispatch LIVE: Jules session 16575382661216894510 (issue #3082, study_reader.py) — PR ⇒ D1 verifies ⇒ desk merges ⇒ sync; VERSION/CHANGELOG settled by D1 seat at merge. RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
-| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3088 `82ff412dfa0f` 2026-11-01T11:49:42Z | BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · pick OPEN owner-held (freeze leg REMOVED 2026-11-01 — owner direct NO to manager-enacted WAF freeze) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions |
+| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3091 `a158f26e0618` 2026-11-01T11:50:51Z | BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · pick OPEN owner-held (freeze leg REMOVED 2026-11-01 — owner direct NO to manager-enacted WAF freeze) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
-| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3070 `1c9983eee4d6` 2026-11-01T11:30:39Z | deadline 2026-12-04T14:00:00-08:00 |
+| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3092 `88f907129dd0` 2026-11-01T11:51:48Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3079 `d6901e880369` 2026-11-01T11:39:39Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
@@ -59,4 +59,4 @@ Campaigns: 12 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)

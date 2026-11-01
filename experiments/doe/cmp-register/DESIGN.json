@@ -1,0 +1,40 @@
+{
+ "campaign_id": "cmp-register",
+ "family": "doe",
+ "member_kind": "register",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "open_register",
+ "moniker": "doe-expert",
+ "owner_order": "Owner 2026-11-01: comparison examples to evaluate over time; this register is their home. Entries are evaluated on accrued evidence, never on preference; a verdict requires the entry's review point + data, else the entry stays open.",
+ "method": "Observational over time with pre-named responses per entry. Fleet work generates the evidence as it runs (each skill authored/loaded, each competition routed). Designed sub-studies may be spun out per entry by amendment when observation is too slow. Verdicts use the family rule: winner is cherry-picked into the default; no_selection stays a lawful outcome.",
+ "entries": [
+  {
+   "id": "CMP-1",
+   "opened": "2026-11-01",
+   "question": "Skill packaging format: directory + SKILL.md vs single-file *.skill — which serves the fleet better over time?",
+   "arms": {
+    "skill_md": "Directory-canonical format (SKILL.md + sibling assets). Incumbent: 41 in termux-monorepo .agents/skills/*, registry docs/ops/SKILLS-INVENTORY.md; /opt/muse/skills + ~/workspace/custom-skills run on it; Agent Skills standard (Anthropic -> Linux Foundation) is this shape.",
+    "dot_skill": "Single-file *.skill package. Challenger: no fleet usage yet; appears in external ecosystems/imports."
+   },
+   "responses": ["discovery/load success + failure modes", "authoring + revision cost (incl. partial edits)", "collision/clobber incidents (evidence: the stepie-stepwise-ops salvage, 2026-10-20 — a 101-line SKILL.md extract nearly clobbered the 478-line canonical; format-shaped risk, logged for skill_md)", "cross-surface portability (which agent surfaces can consume each shape unchanged)", "asset carriage (multi-file needs: scripts, fixtures, references)"],
+   "evidence_sources": ["docs/ops/SKILLS-INVENTORY.md", "skill-quality lane outcomes", "fleet skill authoring/loading incidents as they occur", "external *.skill artifacts when imported or evaluated"],
+   "review_point": "first 10 scored observations across arms, or a *.skill adoption proposal — whichever first",
+   "status": "open"
+  },
+  {
+   "id": "CMP-2",
+   "opened": "2026-11-01",
+   "question": "New-competition routing: dedicated side chat via a Competitions Opportunity manager channel vs folding the opportunity into the existing Challenge Management oversight (9cb1c873) — which routes opportunities to action better over time?",
+   "arms": {
+    "dedicated_channel": "New Competitions Opportunity manager chat (created 2026-11-01) takes intake/evaluation; graduates entries to Challenge Management oversight.",
+    "fold_in": "Opportunity handled inside the existing oversight chat (the D-slate baseline pattern)."
+   },
+   "first_instance": ".approxination (owner, as-given 2026-11-01: 'We're competing in .approxination') — routed via the dedicated_channel arm; the D-slate history is the fold_in comparison record.",
+   "responses": ["time from opportunity-named to first action", "coordination overhead (seats touched per opportunity)", "missed-deadline / dropped-opportunity incidents", "evaluation quality (compete/skip calls vs outcomes)"],
+   "review_point": "after 3 opportunities routed via dedicated_channel, or the .approxination outcome — whichever first",
+   "status": "open"
+  }
+ ],
+ "registration": {"preregistered_in_repo": true, "recorded": "2026-11-01"}
+}

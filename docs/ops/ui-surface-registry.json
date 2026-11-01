@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "registry_version": "1.0.0",
   "status": "initial_inventory",
   "authority_note": "Evidence-backed inventory of repository paths on master as inspected 2026-11-01. Presence of a path is not proof of production deployment, release readiness, or target-platform support.",
@@ -220,5 +219,7 @@
       "confidence": "low",
       "note": "No dedicated voice/audio UI surface was confirmed in the inspected path inventory."
     }
-  ]
+  ],
+  "schema_version": "1.0.0",
+  "schema_ref": "./ui-surface-registry.schema.json"
 }

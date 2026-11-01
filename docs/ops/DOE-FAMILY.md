@@ -265,6 +265,29 @@ are levels, kinds are factors.
    adjustments land as amendments. A campaign whose automation is
    not yet built is `admitted_design_only`; manual runs taken
    anyway are OBSERVATIONAL, never designed results.
+6. **Continuous live production basis (owner, 2026-11-01): design
+   experiments around continuous live production.** Provider wiring
+   is being updated, so past route censuses go stale: routes are
+   re-verified at design time AND at dispatch time, and no design
+   may hard-pin a route (parameterize it — a dead route is a datum,
+   not a mid-run blocker). The design basis is the continuous live
+   production flow; controls are embedded in that flow only, never
+   standalone suite executions as experimental mass (strengthens
+   the live-first doctrine). Calibration anchors must be live
+   production campaigns calibrated in situ.
+7. **Dispatch evidence protocol (owner adjustment 2026-11-01, via
+   live-builds): n=3 is a FLOOR, dynamically adjusted.** Designed
+   dispatch evidence accrues in sets of 3 per trigger — same
+   trigger, fresh auto-selected instances per set, every set member
+   stamped with its instance_key plus set index and cumulative n so
+   every look stays auditable. Stop when conclusive under the
+   campaign's decision rule (unanimous or threshold met); a 2-1
+   split or spread-in-noise buys exactly one more set. Cap:
+   n=12 per trigger (4 pre-registered looks) or the campaign's
+   window/budget bound, whichever first — hitting the cap stops as
+   an INCONCLUSIVE datum, never a forced verdict. Campaign rules
+   may exceed this floor (e.g. live-1's per-cell minimums); none
+   may go below it.
 
 ## Campaign layout
 

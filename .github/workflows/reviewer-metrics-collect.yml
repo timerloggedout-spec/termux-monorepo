@@ -22,6 +22,16 @@ name: Reviewer metrics collect
 # (vars.REVIEWER_METRICS_TOKEN_SOURCE=pat forces the old path; a failed
 # mint falls back automatically). The refresh-PR step is a write and
 # stays on its existing token.
+#
+# F1 ADOPTION — Termux Fleet Swarm (issue #2750 wave, 2026-10-31): the
+# write path above is superseded — the refresh branch push + PR create
+# now run on a Swarm app token. The checkout-persisted default token
+# made every push a github-actions[bot] event, parking ~17 downstream
+# runs per push as action_required (36% of the sampled parked inflow).
+# The Swarm mint sits immediately before the refresh step and fails
+# loudly (no silent fallback that would re-park invisibly); the step
+# re-points origin at the Swarm token before fetch/push. Collection
+# reads (Collector, MIG-02) are unchanged.
 
 on:
   workflow_dispatch:
@@ -131,10 +141,19 @@ jobs:
           path: reviewer-metrics.json
           retention-days: 30
 
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        if: steps.gate.outputs.skip != 'true'
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
       - name: Open or update the metrics refresh PR
         if: steps.gate.outputs.skip != 'true'
         env:
-          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
           if cmp -s reviewer-metrics.json docs/ops/generated/reviewer-metrics.json; then
@@ -142,8 +161,8 @@ jobs:
             exit 0
           fi
           branch="reviewer-metrics/refresh"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "350898559+termux-fleet-swarm[bot]@users.noreply.github.com"
           git checkout -B "$branch"
           cp reviewer-metrics.json docs/ops/generated/reviewer-metrics.json
           git add docs/ops/generated/reviewer-metrics.json
@@ -154,6 +173,7 @@ jobs:
           # rejects the push as stale info — this step failed on every
           # run from 2026-10-26 until this fix. Fetch the branch first
           # so the lease has a current value to check against.
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git fetch origin "$branch" || true
           git push --force-with-lease origin "$branch"
           if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then

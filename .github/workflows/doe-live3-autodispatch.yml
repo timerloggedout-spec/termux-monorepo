@@ -1,0 +1,123 @@
+name: DoE live-3 auto-dispatch
+
+# Rule-5 automation for experiments/doe/live-3-phrases-deepseek
+# (WO-A). One workflow run = one designed dispatch, end to end:
+#   plan (live3_dispatcher: A3/cb-1 code screen, daily free-tier
+#   budget, cell assignment, phrase_layer composition, instance
+#   stamp) -> send (phrase_dispatch.py, OpenRouter r1:free) ->
+#   post the review comment -> record (EXPERIMENT record + SUMMARY)
+#   -> commit job + record + state back to the campaign dirs.
+# Excluded targets (exit 4) and budget exhaustion (exit 5) stop the
+# run loudly before any API call is made.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Target PR for the review dispatch'
+        required: true
+        type: string
+      task_path:
+        description: 'Committed task prompt file (the review task text)'
+        required: true
+        type: string
+      pr_head:
+        description: 'Target PR head sha (40-hex)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Plan dispatch (screen + assign + compose + stamp)
+        id: plan
+        run: |
+          python3 scripts/doe/live3_dispatcher.py plan \
+            --pr "${{ inputs.pr_number }}" \
+            --pr-head "${{ inputs.pr_head }}" \
+            --task-file "${{ inputs.task_path }}" \
+            --design experiments/doe/live-3-phrases-deepseek/DESIGN.json \
+            --phrases ops/phrases/phrases.json \
+            --live1-records experiments/doe/live-1-wave-framing/records \
+            --cb1-records experiments/doe/cb-1-chronomancer-emission/records \
+            --dispatch-dir experiments/doe/live-3-phrases-deepseek/dispatch \
+            --state experiments/doe/live-3-phrases-deepseek/dispatch/state.json
+          JOB=$(ls experiments/doe/live-3-phrases-deepseek/dispatch/job-*.json | tail -1)
+          echo "job=$JOB" >> "$GITHUB_OUTPUT"
+      - name: Send dispatch (OpenRouter)
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          mkdir -p doe-dispatch-out
+          python3 scripts/doe/phrase_dispatch.py \
+            --job "${{ steps.plan.outputs.job }}" \
+            --out doe-dispatch-out/result.json
+      - name: Post review comment
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JOB_PATH: ${{ steps.plan.outputs.job }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, subprocess
+          job = json.load(open(os.environ["JOB_PATH"]))
+          res = json.load(open("doe-dispatch-out/result.json"))
+          text = res.get("response_text") or ""
+          body = (
+              f"[MUSEai]@{{role:{{doe-mgr-phrases-jit}}}} — "
+              f"live-3-phrases-deepseek dispatch "
+              f"#{job['dispatch_no']} · cell "
+              f"`{job['assignment']['cell']}` (stage 1, fixed-anchor) "
+              f"· route openrouter `{job['model']}` · prompt sha256 "
+              f"`{job['prompt_sha256'][:12]}` · instance "
+              f"`{str(job.get('instance_key'))[:16]}`\n\n"
+              + text[:30000]
+              + ("\n\n[truncated at 30000 chars; full response in "
+                 "the campaign record]" if len(text) > 30000 else ""))
+          open("comment.md", "w").write(body)
+          subprocess.run(["gh", "pr", "comment",
+                          str(job["task"]["pr"]),
+                          "--body-file", "comment.md"], check=True)
+          EOF
+      - name: Record + summary + commit back
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/doe/live3_dispatcher.py record \
+            --job "${{ steps.plan.outputs.job }}" \
+            --result doe-dispatch-out/result.json \
+            --records-dir experiments/doe/live-3-phrases-deepseek/records \
+            --summary experiments/doe/live-3-phrases-deepseek/SUMMARY.json \
+            --state experiments/doe/live-3-phrases-deepseek/dispatch/state.json \
+            --base-sha "${{ github.sha }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experiments/doe/live-3-phrases-deepseek/
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git commit -m "data(doe): live-3 auto-dispatch record [skip ci]"
+          for attempt in 1 2 3; do
+            git fetch origin master
+            if git rebase origin/master && git push; then
+              echo "records pushed (attempt $attempt)"
+              exit 0
+            fi
+            git rebase --abort || true
+          done
+          echo "push failed after 3 attempts"
+          exit 1

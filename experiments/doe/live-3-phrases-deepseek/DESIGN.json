@@ -192,5 +192,21 @@
  },
  "suite_type": "live",
  "supersedes": "experiments/doe/live-3-phrases-jit (PR #2799; generic transform screening under the seed brief) \u2014 dir REMOVED 2026-10-31, see home_reconciliation",
- "surface": "doe"
+ "surface": "doe",
+ "automation": {
+  "rule": "DOE-FAMILY binding rule 5 (PR #2825): design ships WITH its automation",
+  "dispatcher": "scripts/doe/live3_dispatcher.py (plan: A3/cb-1 code screen + budget + cell assignment + phrase_layer composition + instance stamp; record: EXPERIMENT record + SUMMARY regeneration)",
+  "workflow": ".github/workflows/doe-live3-autodispatch.yml (workflow_dispatch: pr_number + task_path + pr_head; plan -> send -> comment -> record -> commit-back)",
+  "sender": "scripts/doe/phrase_dispatch.py via the plan-emitted doe-phrase-dispatch/v1 job (existing doe-phrase-dispatch.yml remains the manual single-job leg)",
+  "cells": "ESTABLISHED Stage-1 only (fixed-anchor; placement x {verbatim, vowels} + control); leet-full BLOCKED in code (asserted: never in ACTIVE_CELLS)",
+  "exclusions": "code-enforced at plan: target PR screened vs live-1 + cb-1 campaign records + automation.extra_excluded_prs; excluded => exit 4, no job, no call",
+  "budget": {
+   "pool": "OpenRouter Pool-1 free tier, 50 calls/day account-wide (fleet key is_free_tier, PR #2828)",
+   "daily_call_cap": 8,
+   "state": "dispatch/state.json (per-UTC-day counter + next dispatch no); exhausted => exit 5 before any call"
+  },
+  "extra_excluded_prs": [],
+  "emits": "dispatch/job-NNNN-pr<pr>.json + records/dispatch-NNNN.json (EXPERIMENT) + SUMMARY.json at campaign root",
+  "state": "built (WO-A, live-builds + phrases-jit)"
+ }
 }

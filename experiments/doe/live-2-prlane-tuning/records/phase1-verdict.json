@@ -3,16 +3,16 @@
  "phase": 1,
  "verdict": "BASELINE_JOINED__PRIMARY_RESPONSE_CENSORED",
  "evidence": {
-  "join_complete": "793/793 snapshot rows joined; 154/154 distinct PRs read firsthand via PAT API; 0 closed_unmerged, 5 merged, 149 still_open at as-of",
+  "join_complete": "945/945 snapshot rows joined (8 snapshots); 157/157 distinct PRs read firsthand via PAT API; 0 closed_unmerged, 6 merged, 151 still_open at as-of",
   "candidate_consistency": "1/1 resolved (PR #2309 merged, gates green at head) \u2014 n=1, rate NOT_ESTABLISHED as a baseline estimate",
   "supersede_extract_consistency": "0 resolved in either lane \u2014 NOT_ESTABLISHED",
   "ne_merged_refinement": "NEED_EVIDENCE\u2192merged = 4 PRs, stratified by gates-at-merged-head: 2 evidence_arrived_post_snapshot (#2579 repo-gate arrived, #2699 undrafted+gates green) \u2227 2 merged_without_named_gate_evidence (#2283 hand-verified merge, #2128 bot feed-refresh route). NE\u2192merged alone is therefore NOT a valid false-NE signal; the phase-2 primary response must join gates-at-merge (amendment item).",
-  "censoring": "resolved fraction 5/154 = 3.2% at ~14-62h after snapshot times; the backlog is long-lived by construction (SUPERSEDE median age in covariates) so outcome-consistency cannot score any variant yet."
+  "censoring": "resolved fraction 6/157 = 3.8% at ~0-62h after snapshot times; the backlog is long-lived by construction (SUPERSEDE median age in covariates) so outcome-consistency cannot score any variant yet."
  },
  "consequences": {
   "phase_2_levels": "may be FIXED by amendment now (rule-file read done; proposal in PHASE1.md appendix) \u2014 levels do not depend on outcomes",
   "phase_2_scoring": "BLOCKED on outcome maturity for the primary response; secondary responses (distribution shift, inter-variant disagreement) remain computable at any time and carry no tuning credit",
-  "rejoin": "repeat this join at a fixed horizon: 2026-11-14 (14d after last snapshot) or when resolved fraction >= 25%, whichever first; same script + mapping, results appended as phase1-rejoin-2026-11-14 record",
-  "ask_to_steward_status": "feed v1.1 code LANDED (#2796); ask reduces to: confirm first field-carrying feed generation on next collector run"
+  "rejoin": "repeat this join at a fixed horizon: 2026-11-14 (14d after snapshot 7; 13d after snapshot 8) or when resolved fraction >= 25%, whichever first; same script + mapping, results appended as phase1-rejoin-2026-11-14 record",
+  "ask_to_steward_status": "feed v1.1 CLOSED: code LANDED (#2796) \u2227 first field-carrying generation landed 2026-11-01T01:02:29Z (commit 102db9aa480d4); snapshot 8 extracted in the phase-1 PR and replay-verified EXACT 152/152 with in-row fields"
  }
 }

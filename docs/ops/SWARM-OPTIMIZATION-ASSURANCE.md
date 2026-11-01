@@ -151,3 +151,9 @@ Possible future ww scope, recorded for the campaign record (a scope note, not a 
 ## §19 — Definition of record: Swarm (owner, 2026-11-01)
 
 **Swarm = ALL providers' inference model endpoints participating in 3L0 DoE.** The Swarm is the participating endpoint population — the full provider catalog as experiment arms under DoE. It is not this seat, not the Termux Fleet Swarm App, and not the workflows: those are its organs (dispatch, minting, evidence). Lane usage aligned: in this record and its reports, "Swarm" names the endpoint population (the endpoint census / floor counts measure exactly that population); the App, workflows, and this seat are referred to by their own names.
+
+## §20 — Dispatch principle: hard-select prohibited (owner, 2026-11-01)
+
+**Hard-select is prohibited as a dispatch pattern.** Dispatched work is routed + assigned across the Swarm's arms (task-fit rotation / tranches) so every dispatch emits **comparative signal** for 3L0/DoE efficiency learning. A single hard-selected arm yields single-plane signal — incomparable, unusable for cross-arm learning. Single-arm routing is permitted only when task constraints genuinely bind (capability/credential class), and is then recorded as a **constrained arm**, never a preference.
+
+**Application to the ww re-fire plan:** on arm recovery, probes **distribute across arms** (Jules, Gemini build_dispatch, command-dispatch, DeepSeek when restored) — not Jules alone. The wave's "Jules-gated" phrasing in §18 and the campaign issues is superseded by this section: Jules recovery unblocks the wave, but re-fire probes run as cross-arm sets with per-instance stamps ({provider, model@version, session/run, role, set index}) so the recovery itself produces comparable evidence.

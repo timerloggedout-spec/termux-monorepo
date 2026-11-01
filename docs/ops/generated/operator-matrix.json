@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 155,
+    "open_prs": 153,
     "pr_classes": {
       "CANDIDATE": 71,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 79,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 153,
+      "prs": 151,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T02:21:43Z",
+  "generated_at": "2026-11-01T02:23:01Z",
   "issues_unlabelled": [
     308,
     343,
@@ -117,12 +117,12 @@
     2830
   ],
   "master": {
-    "functional_gate": "NOT ESTABLISHED",
+    "functional_gate": "GREEN",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "success",
+      "smoke": "success"
     },
-    "sha": "b3dee9cca0"
+    "sha": "f72c3a6d5b"
   },
   "prs": [
     {
@@ -1604,15 +1604,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "f8e02c7b93",
+      "head_sha": "fa433e7db9",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T02:19:48Z"
+      "updated_at": "2026-11-01T02:22:23Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2271,34 +2271,6 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "queued"
-      },
-      "head_sha": "7f102f0ae8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2890,
-      "title": "census(quota): siliconflow probe to canonical .com models surface (user/info deprecated)",
-      "updated_at": "2026-11-01T02:20:56Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "64255cb857",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2891,
-      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T02:21:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

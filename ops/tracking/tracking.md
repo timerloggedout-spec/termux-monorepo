@@ -1,15 +1,15 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T14:32:57Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T15:24:37Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T14:32:57Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4786` read_at=`2026-11-01T14:32:57Z`
+Sources: PR feed read_at=`2026-11-01T15:24:37Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4929` read_at=`2026-11-01T15:24:37Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknown=6
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
-| challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
+| challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | NOT_ESTABLISHED | Routes after M3 or when builders idle |
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3196 `6db25e3217a7` 2026-11-01T14:19:48Z | Reader core MERGED #3102 + synced (parity 23/23) · SR module: returned to the system for balanced execution (#3050; command-dispatch re-route withdrawn, owner correction) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3179 `0ee3d20fb246` 2026-11-01T14:01:19Z | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | #3183 `6800efdbf5ab` 2026-11-01T14:06:44Z | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DEGRADED (~1 concurrent cap, probe 2026-11-01T14:12Z; opportunistic single-session only) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged |
@@ -28,7 +28,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3172 `8f9a1d807751` 2026-11-01T13:53:03Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3188 `fb315bb06e16` 2026-11-01T14:06:48Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3208 `7732e2da4abe` 2026-11-01T15:24:04Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)

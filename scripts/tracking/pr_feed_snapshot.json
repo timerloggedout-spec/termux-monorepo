@@ -1,8 +1,34 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T14:32:57Z",
+ "read_at": "2026-11-01T15:24:37Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3208,
+   "title": "feat(invoke): wire deepinfra into provider extensions + invoke workflow",
+   "merged_at": "2026-11-01T15:24:04Z",
+   "updated_at": "2026-11-01T15:24:04Z",
+   "created_at": "2026-11-01T14:58:08Z",
+   "merge_commit_sha": "7732e2da4abe596678708be1fc34304c43770da2",
+   "head_ref": "swarm/deepinfra-wire-20261101",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3208",
+   "merged": true
+  },
+  {
+   "number": 3207,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T14:33:38Z",
+   "updated_at": "2026-11-01T14:33:51Z",
+   "created_at": "2026-11-01T14:33:32Z",
+   "merge_commit_sha": "5a0d9882ec882b8b48a98c21a5e30fc595d7cc97",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3207",
+   "merged": true
+  },
   {
    "number": 3206,
    "title": "docs(dispatch): leg-2 shard-2 - nvidia skew deepens (0/5 served), unorouter timeout scoped",
@@ -1926,59 +1952,46 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3047",
    "merged": true
-  },
-  {
-   "number": 3044,
-   "title": "Record: AMD Discord joined 2026-11-01 (M1 +50 leg closed)",
-   "merged_at": "2026-11-01T10:56:32Z",
-   "updated_at": "2026-11-01T10:56:39Z",
-   "created_at": "2026-11-01T10:56:21Z",
-   "merge_commit_sha": "f44b59e323882c12c0672fec34267a12cf0c3f1d",
-   "head_ref": "challenge/amd-discord-joined-record-2026-11-01",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3044",
-   "merged": true
-  },
-  {
-   "number": 3043,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T10:37:42Z",
-   "updated_at": "2026-11-01T10:37:57Z",
-   "created_at": "2026-11-01T10:37:38Z",
-   "merge_commit_sha": "bbdea3b9b65ec376514b4bace4b5f94343501b9f",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3043",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 2914,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-01T14:31:28Z",
-   "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "281b0cb386152b61cff0ac0f1dded94092fbfae7",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
-   "merged": false
-  },
-  {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-01T14:30:51Z",
+   "updated_at": "2026-11-01T15:24:00Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "94791ce50848941dbecfd6cd37024abc77134b03",
+   "merge_commit_sha": "dd238e3566b151c70a3836f330ce1866c88f374a",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-01T15:11:07Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "9ef2451d2606d0fad56657d96c32eee583642b71",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 2914,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-01T14:35:21Z",
+   "created_at": "2026-11-01T03:19:03Z",
+   "merge_commit_sha": "c5c10929de69f7de277f44b7d283f48387d32145",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
    "merged": false
   },
   {
@@ -1987,24 +2000,11 @@
    "merged_at": null,
    "updated_at": "2026-11-01T14:26:28Z",
    "created_at": "2026-10-27T12:35:35Z",
-   "merge_commit_sha": "213898e7bf113d0532317c7de2960ed52cfa3a67",
+   "merge_commit_sha": null,
    "head_ref": "tribute-participation/auto-refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1760",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-01T14:08:03Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "955ebd26c4ac688e897bc20f1c1edab1a1bb86d5",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {

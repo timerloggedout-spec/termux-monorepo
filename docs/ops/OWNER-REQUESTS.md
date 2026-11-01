@@ -21,6 +21,7 @@ Notation: #320/#1734 — claims carry evidence refs; gaps = NOT_ESTABLISHED.
 | 11 | #1861 direction | repo | owner direction on issue #1861 | ≤2026-10-31 | issue #1861 |
 | 12 | notebooklm pool-charge | provisioning | pool charge action for notebooklm | ≤2026-10-31 | notebooklm pool |
 | 13 | action_required stock (≥2666 parked runs) | swarm (6628d41d) | per-run "Approve and run workflows" in Actions UI ∨ accept stock stays parked — forward inflow FIXED via Termux Fleet Swarm (App 5560920) + F1 adoption wave | 2026-10-31 | nothing forward; stock runs only |
+| 14 | OpenRouter top-up / DeepSeek model ruling | quota + swarm (6628d41d) | top-up ruling (balance $0.00) ∨ replacement-model ruling — `deepseek/deepseek-r1:free` DELISTED (quota lane, 2026-10-31) | 2026-10-31 | OpenRouter DeepSeek invoke/review route in desk dispatch_policy (carried as availability: unfunded until then) |
 
 ## RESOLVED
 

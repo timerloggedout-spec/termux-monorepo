@@ -59,11 +59,12 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
   unorouter, zai} · no-credential {cerebras, kilo, mistral, modelscope, ovhcloud, requesty,
   typhoon, xfyun} · egress-blocked {groq, xkiro} · route-dead {aion, sealion} · flags {cloudflare
   verify-scope, nvidia auth-unproven}. Promotion = one named single-provider batch dispatch each
-  (after flag resolution; batch currently HELD per #2672). Gate-state (Quota amendment, Swarm
-  firsthand): the 7 key-live members {cohere, sambanova, zai, llm7, routeway, unorouter,
-  siliconflow} are `blocked-by-#2672` — observation jobs gate on the red `contracts` job
-  (run 41301473553 job split), so the batch yields ∅ operational evidence regardless of
-  provider health. Blocker = the gate, ¬ the providers. Reverse gap: batch member `ollama`
+  (after flag resolution; #2672 gate LIFTED 2026-11-01, below). Gate-state (Quota amendment, Swarm
+  firsthand; LIFTED by providers-dispatch 2026-11-01): the 7 key-live members {cohere, sambanova, zai, llm7, routeway, unorouter,
+  siliconflow} were `blocked-by-#2672` — #2672 CLOSED with contracts GREEN run 41308987754
+  (head 87453e9c = PR #3138 merge, in master history; operational_providers executed), so
+  gate_state = `gate-green` on all 7 records + the provider-batch lane; the batch evidence
+  leg is unblocked and per-provider invoke promotion proceeds at Swarm. Reverse gap: batch member `ollama`
   has ∅ registry model row.
 - **Triggerable (2):** `felo`, `omni` — catalog endpoints exist, ∅ batch admission/wiring.
 - **Inference-only (63):** `github` (GitHub Models), `meta` (llama_api RETIRED, do-not-route),

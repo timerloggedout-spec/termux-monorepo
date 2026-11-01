@@ -49,11 +49,26 @@ jobs:
 
       - name: Fetch the filed request
         env:
-          GH_TOKEN: ${{ github.token }}
+          TOKEN: ${{ github.token }}
           ISSUE: ${{ inputs.issue_number }}
         run: |
-          set -euo pipefail
-          gh api "repos/${{ github.repository }}/issues/${ISSUE}" > /tmp/issue.json
+          set -uo pipefail
+          # Diagnostics ride the evidence artifact (run 41273960355
+          # failed this step in <1s with logs unreachable from the
+          # fleet's API route; never fly blind again).
+          {
+            echo "gh: $(command -v gh || echo MISSING)"; gh --version 2>&1 | head -1
+            echo "jq: $(command -v jq || echo MISSING)"; jq --version 2>&1
+            echo "curl: $(command -v curl || echo MISSING)"
+          } > /tmp/diag.txt 2>&1
+          # Read via curl + the job token directly (no gh dependency
+          # on the read path).
+          code="$(curl -sS -o /tmp/issue.json -w '%{http_code}' \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE}")"
+          echo "issue GET -> HTTP ${code}" >> /tmp/diag.txt
+          [ "${code}" = "200" ] || { cat /tmp/diag.txt; exit 1; }
           jq -e '[.labels[].name] | index("apk-xref")' /tmp/issue.json > /dev/null \
             || { echo "issue #${ISSUE} lacks the apk-xref label; refusing"; exit 1; }
           jq -r '.body // ""' /tmp/issue.json > /tmp/filing.md
@@ -147,5 +162,6 @@ jobs:
             ${{ env.WORK }}/findings.json
             ${{ env.WORK }}/findings.md
             /tmp/summary.json
+            /tmp/diag.txt
           if-no-files-found: ignore
           retention-days: 90

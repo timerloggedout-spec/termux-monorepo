@@ -24,10 +24,27 @@ ROOT = Path(__file__).resolve().parents[2]
 INVOKE = ROOT / "scripts/ops/provider_invoke.py"
 PROMPT_TEMPLATE = (
     "Produce a concise lesson work product for the FreeCodeCamp Relational "
-    "Databases v9 lesson \"{title}\": the key concepts in plain terms, one "
-    "worked example, and the lesson's check questions answered in your own "
-    "words. Format as markdown with a title line."
+    "Databases v9 lesson \"{title}\": the key concepts in plain terms and "
+    "one worked example. Format as markdown with a title line."
 )
+QUESTIONS_TEMPLATE = (
+    "FreeCodeCamp Relational Databases v9 lesson \"{title}\". Answer each "
+    "comprehension check below from the lesson content. For every question: "
+    "restate the question verbatim under a heading line \"Q<n>\", then give "
+    "the correct option (letter and full text) and a one-sentence "
+    "justification. Questions:\n{questions}"
+)
+
+
+def content_check(text: str, questions: list[str]) -> list[str]:
+    """Return the verbatim questions missing (unkeyed/unanswered) in text."""
+    missing = []
+    for i, q in enumerate(questions, 1):
+        key = f"Q{i}"
+        stem = " ".join(q.split())[:40]
+        if key not in text or stem not in " ".join(text.split()):
+            missing.append(key)
+    return missing
 WORKSHOP_TEMPLATE = (
     "Produce the complete work product for the FreeCodeCamp Relational "
     "Databases v9 workshop \"{title}\": every file the workshop builds, "
@@ -53,8 +70,13 @@ def main() -> int:
     failures = 0
     for step in unit["steps"]:
         prompt_file = out / f".prompt-{step['id']}.md"
-        template = WORKSHOP_TEMPLATE if step.get("kind") == "workshop" else PROMPT_TEMPLATE
-        prompt_file.write_text(template.format(title=step["title"]))
+        questions = step.get("questions") or []
+        if questions:
+            qs = "\n".join(f"Q{i}: {q}" for i, q in enumerate(questions, 1))
+            prompt_file.write_text(QUESTIONS_TEMPLATE.format(title=step["title"], questions=qs))
+        else:
+            template = WORKSHOP_TEMPLATE if step.get("kind") == "workshop" else PROMPT_TEMPLATE
+            prompt_file.write_text(template.format(title=step["title"]))
         artifact = out / f"{step['id']}.md"
         proc = subprocess.run(
             [sys.executable, str(INVOKE), "--provider", args.provider,
@@ -65,12 +87,19 @@ def main() -> int:
             if line.startswith("INVOKE_VERDICT "):
                 verdict = json.loads(line.split(" ", 1)[1])
         ok = proc.returncode == 0 and verdict.get("ok") is True
+        missing = []
+        if ok and questions:
+            text = artifact.read_text(errors="replace") if artifact.exists() else ""
+            missing = content_check(text, questions)
+            if missing:
+                ok = False
         if verdict.get("model"):
             model_seen = verdict["model"]
         if not ok:
             failures += 1
         artifacts.append({
             "step": step["id"], "title": step["title"], "ok": ok,
+            "content_missing": missing,
             "http": verdict.get("http"),
             "path": artifact.name,
             "sha256": hashlib.sha256(artifact.read_bytes()).hexdigest()

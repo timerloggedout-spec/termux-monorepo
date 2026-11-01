@@ -4,8 +4,8 @@
     "open_prs": 173,
     "pr_classes": {
       "CANDIDATE": 84,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 83,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:49:10Z",
+  "generated_at": "2026-11-01T23:50:07Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "c3dd735945"
+    "sha": "aab114b7a9"
   },
   "prs": [
     {
@@ -216,12 +216,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "2a6c71c9ee",
+      "head_sha": "f4b696f9cf",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3353,
-      "title": "docs(swarm): definition of record (\u00a719)",
-      "updated_at": "2026-11-01T23:48:27Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T23:42:37Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f798ba4eec",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3350,
+      "title": "fix(icm): DeepWiki harvest workflow \u2014 Swarm mint matches repo pattern (app-id)",
+      "updated_at": "2026-11-01T23:50:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -991,20 +1005,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f4b696f9cf",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T23:42:37Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1403,6 +1403,20 @@
       "number": 3247,
       "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
       "updated_at": "2026-11-01T21:10:12Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "2a6c71c9ee",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3353,
+      "title": "docs(swarm): definition of record (\u00a719)",
+      "updated_at": "2026-11-01T23:49:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2551,20 +2565,6 @@
       "number": 3342,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-01T23:44:38Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "f798ba4eec",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3350,
-      "title": "fix(icm): DeepWiki harvest workflow \u2014 Swarm mint matches repo pattern (app-id)",
-      "updated_at": "2026-11-01T23:49:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

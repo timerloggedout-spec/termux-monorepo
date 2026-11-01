@@ -2,21 +2,21 @@
  "campaign": "live-2-prlane-tuning",
  "phase": 1,
  "name": "baseline_replay_outcome_join",
- "as_of": "2026-11-01T01:05Z",
+ "as_of": "2026-11-01T01:05-01:13Z",
  "source": "PAT helper pulls API, one read per distinct PR (154) + check-runs for the 5 merged heads",
- "snapshots": 7,
- "rows_total": 793,
- "distinct_prs": 154,
+ "snapshots": 8,
+ "rows_total": 945,
+ "distinct_prs": 157,
  "outcome_census_pr_level": {
-  "still_open": 149,
-  "merged": 5
+  "still_open": 151,
+  "merged": 6
  },
- "resolved_fraction": 0.0325,
+ "resolved_fraction": 0.0382,
  "lane_x_outcome_pr_level_latest_lane": {
   "CANDIDATE": {
    "merged": 1,
    "closed_unmerged": 0,
-   "still_open": 29
+   "still_open": 30
   },
   "EXTRACT": {
    "merged": 0,
@@ -24,9 +24,9 @@
    "still_open": 28
   },
   "NEED_EVIDENCE": {
-   "merged": 4,
+   "merged": 5,
    "closed_unmerged": 0,
-   "still_open": 81
+   "still_open": 82
   },
   "SUPERSEDE": {
    "merged": 0,
@@ -38,22 +38,22 @@
   "CANDIDATE": {
    "merged": 3,
    "closed_unmerged": 0,
-   "still_open": 171
+   "still_open": 201
   },
   "EXTRACT": {
    "merged": 0,
    "closed_unmerged": 0,
-   "still_open": 175
+   "still_open": 203
   },
   "NEED_EVIDENCE": {
-   "merged": 7,
+   "merged": 8,
    "closed_unmerged": 0,
-   "still_open": 366
+   "still_open": 448
   },
   "SUPERSEDE": {
    "merged": 0,
    "closed_unmerged": 0,
-   "still_open": 71
+   "still_open": 82
   }
  },
  "per_snapshot": {
@@ -231,36 +231,61 @@
      "still_open": 11
     }
    }
+  },
+  "2026-11-01T01:02:29Z": {
+   "rows": 152,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 30
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 28
+    },
+    "NEED_EVIDENCE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 82
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 11
+    }
+   }
   }
  },
  "covariates_pr_level": {
   "CANDIDATE": {
-   "n": 30,
-   "age_days_median": 7.2,
-   "changed_files_median": 2.0,
+   "n": 31,
+   "age_days_median": 7.0,
+   "changed_files_median": 2,
    "draft_n": 0,
    "bot_author_n": 11,
-   "gates_both_pass_n": 30
+   "gates_both_pass_n": 31
   },
   "EXTRACT": {
    "n": 28,
-   "age_days_median": 6.3,
+   "age_days_median": 6.9,
    "changed_files_median": 4.0,
    "draft_n": 0,
    "bot_author_n": 28,
    "gates_both_pass_n": 24
   },
   "NEED_EVIDENCE": {
-   "n": 85,
-   "age_days_median": 2.5,
+   "n": 87,
+   "age_days_median": 3.1,
    "changed_files_median": 2,
    "draft_n": 16,
-   "bot_author_n": 47,
-   "gates_both_pass_n": 15
+   "bot_author_n": 49,
+   "gates_both_pass_n": 17
   },
   "SUPERSEDE": {
    "n": 11,
-   "age_days_median": 70.7,
+   "age_days_median": 71.3,
    "changed_files_median": 11,
    "draft_n": 2,
    "bot_author_n": 1,
@@ -272,6 +297,13 @@
    1498,
    1514,
    1540,
+   1541,
+   1569
+  ],
+  "prs_snapshots_1_7": [
+   1498,
+   1514,
+   1540,
    1569
   ],
   "outcomes": {
@@ -280,11 +312,12 @@
    "1540": "still_open",
    "1569": "still_open"
   },
-  "treatment": "excluded from NEED_EVIDENCE rates (dropped-field class, phase 0); all 4 still_open at as-of, so exclusion changes no rate here"
+  "treatment": "snapshots 1-7: excluded from NEED_EVIDENCE rates (dropped-field class, phase 0); snapshot 8: class self-describes in-row via base_ref (members 1498/1514/1540/1541/1569, all recorded NE with base_ref != master); all 5 still_open at as-of, so exclusion changes no rate here"
  },
  "feed_v11_status": {
   "code": "LANDED PR #2796 merged 7529170d5558 (2026-11-01T01:01:48Z): production_classify rows carry base_ref + mergeable_state",
-  "live_feed": "ops/ml/pr-lane-feed.json @master still the 2026-10-31T11:10:01Z v1-projection generation (0/152 rows carry the fields); first field-carrying generation = next collector run (daily 05:37Z or dispatch)"
+  "live_feed": "first field-carrying generation LANDED: feed 2026-11-01T01:02:29Z (commit 102db9aa480d4, blob 5b5b2137ec63), 152/152 rows carry both fields; extracted as snapshot 8 in this PR",
+  "snapshot8_replay": "replay with in-row base_ref/mergeable_state = EXACT 152/152 (0 mismatches, counts 30/28/83/11 reproduced), verified locally by this lane with the updated reconstruct"
  },
  "merged_detail": [
   {
@@ -316,6 +349,12 @@
    "merged_at": "2026-10-31T17:15:45Z",
    "latest_lane": "NEED_EVIDENCE",
    "title": "fix(desk): enforce telemetry identity and intake safety"
+  },
+  {
+   "number": 2797,
+   "merged_at": "2026-11-01T01:07:03Z",
+   "latest_lane": "NEED_EVIDENCE",
+   "title": "quota: schema v2 rename \u2014 quota.registry.v2 + quota.readings.v2 (owner order)"
   }
  ],
  "ne_merged_stratification": [
@@ -380,6 +419,17 @@
     ]
    },
    "classification": "evidence_arrived_post_snapshot"
+  },
+  {
+   "number": 2797,
+   "merged_at": "2026-11-01T01:07:03Z",
+   "snapshot_gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "snapshot_draft": false,
+   "gates_at_merged_head": {},
+   "classification": "merged_without_named_gate_evidence"
   }
  ]
 }

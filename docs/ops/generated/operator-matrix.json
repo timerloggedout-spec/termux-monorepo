@@ -1,6 +1,6 @@
 {
   "counts": {
-    "open_issues": 380,
+    "open_issues": 381,
     "open_prs": 171,
     "pr_classes": {
       "CANDIDATE": 83,
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 35,
+      "issues": 36,
       "prs": 169,
       "unlabelled_numbers": [
         308,
@@ -86,11 +86,12 @@
         3050,
         3094,
         3141,
-        3215
+        3215,
+        3278
       ]
     }
   },
-  "generated_at": "2026-11-01T21:46:02Z",
+  "generated_at": "2026-11-01T21:48:46Z",
   "issues_unlabelled": [
     308,
     343,
@@ -126,7 +127,8 @@
     3050,
     3094,
     3141,
-    3215
+    3215,
+    3278
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -134,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "cb263c58a7"
+    "sha": "f315f6e143"
   },
   "prs": [
     {
@@ -2526,15 +2528,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "cancelled"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "6daab2eb58",
+      "head_sha": "121036a29a",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3274,
-      "title": "chore: delete stale llm-api-hub/ fork (canonical = llm_api_hub/)",
-      "updated_at": "2026-11-01T21:45:33Z"
+      "number": 3279,
+      "title": "docs(icm): maintenance run#6 \u2014 D7 tranche-1 cards (graph-matrix, challenge-program, github-app-fleet) + checklist rider",
+      "updated_at": "2026-11-01T21:48:34Z"
     }
   ],
   "schema": "operator-matrix/v1",

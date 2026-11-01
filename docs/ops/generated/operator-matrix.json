@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T02:28:43Z",
+  "generated_at": "2026-11-01T02:29:50Z",
   "issues_unlabelled": [
     308,
     343,
@@ -119,10 +119,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "success",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "f9d243aaf6"
+    "sha": "fe86d74dfc"
   },
   "prs": [
     {
@@ -2290,15 +2290,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "in_progress"
       },
-      "head_sha": "906778cfe7",
+      "head_sha": "538790f31c",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unstable",
       "number": 2899,
       "title": "fix: enforce descending provider cost ranking",
-      "updated_at": "2026-11-01T02:27:44Z"
+      "updated_at": "2026-11-01T02:29:39Z"
     }
   ],
   "schema": "operator-matrix/v1",

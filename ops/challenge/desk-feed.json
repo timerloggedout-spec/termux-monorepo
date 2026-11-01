@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T14:16:00Z",
+ "generated_at": "2026-11-01T14:28:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2202,7 +2202,7 @@
      "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
     }
    },
-   "next": "PR #3102 (Jules reader core) → D1 verify → desk merge → studysprint sync · DeepSeek notes PR pending (run 41301295882) · Gemini SR (#3050): build leg OUT — PR not established; re-route = D1 seat call (manager rule: DeepSeek + command-dispatch only until recovery probe PASS) · freeze-hold submission 2026-11-04 23:59 PT",
+   "next": "Reader core MERGED #3102 + synced (parity 23/23) · SR module re-routed ⇒ command-dispatch on #3050 (engagement watch; merge timing = D1 hold) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -2313,7 +2313,7 @@
      "scope": "D1 StudySprint FEATURES Next #1 — spaced-repetition module study_sr.py (FSRS default via py-fsrs + SM-2 baseline selectable, receipts carry scheduler name, genanki .apkg export, tests for all new functions, VERSION 0.3.0 + CHANGELOG)",
      "via": "issue #3050 with @gemini-cli invoke in body; gemini-dispatch run 41301369671 SUCCESS",
      "session_id": null,
-     "state": "dispatched — PR pending; D1 verifies, merge timing = D1 call",
+     "state": "LEG DEAD before PR (gemini-cli build leg OUT 2026-11-01) — re-selected ⇒ command-dispatch, see stamp below",
      "usage": {
       "value": null,
       "unit": null,
@@ -2337,7 +2337,7 @@
      "bench_position": "catalog class: proven build/fix — Gemini dispatch (issue arm)",
      "selection_reason": "Feature-class pick under the pre-FIX rotation (D1 seat order; issue #3050, run 41301369671). Per owner FIX via main (2026-11-01): NOT automatic going forward — follow-ups re-select bench-wide by task fit.",
      "ts": "2026-11-01T11:19:22Z",
-     "first_pass_success": null,
+     "first_pass_success": false,
      "rework_cycles": null,
      "dispatch_to_pr_wall_time": null,
      "stalled_action_required": null,
@@ -2348,7 +2348,7 @@
      "scope": "D1 StudySprint RSVP multi-pass reader core — study_reader.py (FEATURES §1b/Next: multi-pass engine, one-tap flag model, term-emphasis hook points, plain-language receipts, tests; apps/studysprint only; VERSION/CHANGELOG held by D1 seat)",
      "via": "issue #3082 + jules label (agent-jules-on-issues run 41303193388)",
      "session_id": "16575382661216894510",
-     "state": "session COMPLETED 2026-11-01T12:22:55Z; PR #3102 OPEN (created 2026-11-01T11:56:43Z) awaiting D1 seat verification",
+     "state": "COMPLETED → PR #3102 merged ca1e3bc34d1a (D1 PASS) → studysprint sync parity 23/23",
      "usage": {
       "value": 1,
       "unit": "sessions",
@@ -2372,11 +2372,45 @@
      "bench_position": "catalog class: proven build/fix — Jules build_sessions (issue arm)",
      "selection_reason": "Re-selection rule (owner FIX 2026-11-01): D1 next dispatch OUTSIDE {DeepSeek, Gemini} ⇒ Jules = remaining proven build arm. Batch fan-out continues at PR stage via command-dispatch review lanes; provider-batch held on #2672.",
      "ts": "2026-11-01T11:44:17Z",
-     "first_pass_success": null,
-     "rework_cycles": null,
+     "first_pass_success": true,
+     "rework_cycles": 0,
      "dispatch_to_pr_wall_time": "PT12M27S",
      "stalled_action_required": false,
      "availability": "dispatch-unavailable: new session creation refused x3 (Swarm via manager, 2026-11-01 05:49 PT) until recovery probe PASS; existing sessions unaffected"
+    },
+    {
+     "provider": "Command-dispatch (Devin)",
+     "scope": "D1 SR module (study_sr.py) — re-route of #3050",
+     "via": "issue #3050 comment command 6559056722 (@devin-ai)",
+     "session_id": null,
+     "state": "DISPATCHED — engagement (bot ack/PR) watch open",
+     "ts": "2026-11-01T14:08:57Z",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "command-dispatch exposes no consumption units",
+      "window": null,
+      "match": null,
+      "note": "usage NOT ESTABLISHED",
+      "status": "pending"
+     },
+     "model": null,
+     "phrases": null,
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch",
+     "context": "D1 StudySprint SR module re-route; merge timing = D1 seat hold (may pass Nov 4)",
+     "instance_refs": {
+      "system_prompt_ref": "spec#31f915ff0169",
+      "tools_ref": null,
+      "note": "same spec as #3050 Gemini dispatch"
+     },
+     "instance_key": null,
+     "bench_position": null,
+     "selection_reason": "re-selection: Gemini-CLI build leg OUT (Swarm via manager 2026-11-01); live arms {DeepSeek, command-dispatch}; D1 seat named command-dispatch for this leg",
+     "first_pass_success": null,
+     "rework_cycles": null,
+     "dispatch_to_pr_wall_time": null,
+     "stalled_action_required": null
     }
    ]
   },

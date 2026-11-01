@@ -86,6 +86,19 @@
     "SUPERSEDE": 11
    },
    "file": "snapshots/feed-2026-10-31T111001Z.json"
+  },
+  {
+   "generated_at": "2026-11-01T01:02:29Z",
+   "commit_sha": "102db9aa480d4ac5c2d02e7407c6dffda2a8dceb",
+   "open_prs": 152,
+   "counts": {
+    "CANDIDATE": 30,
+    "EXTRACT": 28,
+    "NEED_EVIDENCE": 83,
+    "SUPERSEDE": 11
+   },
+   "file": "snapshots/feed-2026-11-01T010229Z.json",
+   "note": "first field-carrying generation (feed v1.1, PR #2796): rows carry base_ref + mergeable_state; extracted by doe-mgr-classifier-tuning in the phase-1 PR per doe-expert update 2026-10-31; replay with in-row fields = EXACT 152/152"
   }
  ]
 }

@@ -5,6 +5,9 @@
 repo `timerloggedout-spec/repo-replay`). Working name **Commit Replay** =
 provisional (project posture: ∀ decisions revisable). Status: DESIGN v0 —
 recon ✓, build sequenced §7. Owner order 2026-10-31 (via main INIT).
+Manager ruling 2026-10-31 (eef0551d, DESIGN verified firsthand): names KEPT
+(`commit-store/v1`, g*) · home KEPT monorepo for P1–P2 · bridge STRUCK (§1) ·
+history = git DAG APPROVED provisional (revisit @P4). BUILD UNHELD.
 
 ## 1. Mission ∧ plane law
 
@@ -14,8 +17,9 @@ file reconstruction + surgical pointer edits — on the **GIT plane only**:
 - Source = existing git history/objects `{commits, trees, blobs, tags, refs}`
   of the fleet repos. Session exports = ∅ here.
 - **Planes separate, forever:** `commit-store/v1` index ≁ `replay-store/v1`
-  index; never merged, never cross-populated. A future cross-plane join, if
-  ever, is an explicit bridge record keyed `(path, sha256)` — ∅ in v0.
+  index; never merged, never cross-populated. Cross-plane contact =
+  `verify()` diff ONLY — ∅ bridge, ∅ gated merge path, ever (manager ruling
+  2026-10-31, supersedes the v0 draft's gated-bridge clause).
 - Signal = evidence, never content: commit messages, check/workflow runs,
   diff stats, `cmd`-output embedded in commit/PR text ⇒ claims about
   objects. Bytes come only from git objects, oid-verified. ∅ content-theater.
@@ -127,7 +131,7 @@ blob existed + its oid, never substitute its bytes.
 - Index carries pointers/oids/metadata only — ∅ blob bytes (storage law).
 - Incremental extract never re-walks indexed history: checkpoint per ref.
 - Plane separation: ∅ session-provenance records in gindex; ∅ git oids as
-  content in replay-store (bridge = §1, gated, later).
+  content in replay-store; cross-plane = `verify()` diff only (§1).
 
 ## 7. Build order (each step: branch→PR→merge, oracle-verified SHAs)
 
@@ -151,7 +155,18 @@ workflow-side (App buckets preferred), chat-side = DESIGN/verify reads only.
 ## 8. Open items (¬ blockers)
 
 - Engine name: sibling = RevWright; this plane's engine name = TBD w/ parent
-  (working: none claimed; `Commit Replay` covers project + method).
+  (working: none claimed; `Commit Replay` covers project + method). Schema
+  names settled: `commit-store/v1` + g* KEPT (manager ruling 2026-10-31;
+  the pre-landing `git-*/v1` proposal is superseded, ∅ rename).
+- **Repo-home extraction — OPEN DECISION, revisit @P3:** home = monorepo for
+  P1–P2 (indexer workflow co-locates w/ primary subject; continuous work ∈
+  Actions). When the engine outgrows `scripts/commit_replay/`, re-evaluate
+  extraction to an own repo (sibling symmetry) — recorded, ¬ blocker.
+- **History model — revisit @P4:** history = git DAG APPROVED provisional
+  (manager ruling 2026-10-31). Open case: `edit()` recipes not yet committed
+  (uncommitted-recipe state) — decide @P4 whether a staging record under
+  `ops/commit-replay/recipes/` suffices or a pre-commit DAG overlay is
+  needed.
 - Index hosting granularity: per-subject JSONL vs single fleet file — decide
   at P1 from measured index size @P1 census.
 - GitLab mirror freshness for fill_gap validator duty — verify at P5.

@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-11-01T04:18:59.998037+00:00",
+  "generated_at": "2026-11-01T13:26:17.935761+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -1962,7 +1962,13 @@
             "unit": "dispatches",
             "window": "Actions minutes (public repo) + device availability"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "github.actions.cache",
@@ -1975,7 +1981,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-30T02:47:00.930298+00:00",
+            "observed_at": "2026-11-01T13:23:25.948846+00:00",
             "used": null
           }
         },
@@ -2016,7 +2022,13 @@
             "unit": "requests/hour/installation",
             "window": "hourly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "github.api.github_token",
@@ -2026,10 +2038,10 @@
             "window": "hourly"
           },
           "observed": {
-            "status": "ok",
+            "status": "exhausted",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-30T02:47:00.930298+00:00",
+            "observed_at": "2026-11-01T13:23:25.948846+00:00",
             "used": null
           }
         },
@@ -2791,7 +2803,13 @@
             "unit": "dispatches",
             "window": "provider-side quota not exposed"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "jules.build_sessions",
@@ -2800,7 +2818,13 @@
             "unit": "sessions",
             "window": "provider-side quota not exposed"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "gemini.api_free",
@@ -2988,7 +3012,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-30T02:47:00.930298+00:00",
+            "observed_at": "2026-11-01T13:23:25.948846+00:00",
             "used": null
           }
         },
@@ -3642,7 +3666,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-30T02:47:00.930298+00:00",
+            "observed_at": "2026-11-01T13:23:25.948846+00:00",
             "used": null
           }
         },
@@ -3657,7 +3681,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-30T02:47:00.930298+00:00",
+            "observed_at": "2026-11-01T13:23:25.948846+00:00",
             "used": null
           }
         }
@@ -4722,7 +4746,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-30T02:47:00.930298+00:00",
+            "observed_at": "2026-11-01T13:23:25.948846+00:00",
             "used": null
           }
         }
@@ -5129,7 +5153,13 @@
             "unit": "tokens (metered, public preview)",
             "window": "n/a"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "meta.muse_code",
@@ -5138,7 +5168,13 @@
             "unit": "tasks (subscription or Meta Model API PAYG)",
             "window": "monthly (subscription) / metered (PAYG)"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [

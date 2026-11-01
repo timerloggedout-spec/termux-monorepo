@@ -1915,10 +1915,12 @@
      "note": "ollama also carries a protocol CHAT_ENDPOINT (provider_protocols.py) but is not one of the 89 model-lane catalogued keys. Evidence grades differ by surface: batch/catalog/extensions/protocols = fixed invoke endpoints + secret names in code; g4f = catalogued route (see evidence)."
     },
     "not_wired": {
-     "count": 2,
+     "count": 1,
      "providers": {
-      "github": "platform + copilot (review-kind) record — not an inference invoke provider; owner decision: exclude-by-kind or open a github-models invoke record",
-      "meta": "do-not-route: llama_api RETIRED; model_api/muse_code pending MODEL_API_KEY/META_API_KEY provisioning (owner act)"
+      "meta": "do-not-route: llama_api RETIRED; model_api/muse_code pending MODEL_API_KEY/META_API_KEY provisioning (owner act — the sole remaining wiring item)"
+     },
+     "dispositions": {
+      "github": "EXCLUDED-BY-KIND (fix-seat disposition, 2026-11-01): the github record is a platform + copilot (review-kind) record, classed with the excluded review/command surfaces — not an inference bench gap. Reopen path: on owner word, open a github-models invoke record and wire it like any other provider."
      }
     },
     "excluded_surfaces": [

@@ -1,0 +1,59 @@
+name: doe-nc1-eval
+# nc-1 rule-5 automation: evaluation runs HERE, not by hand.
+# Manual scoring is OBSERVATIONAL (DOE-FAMILY binding rule 5).
+# Output = one rollup comment on the tracking issue (#2865, the
+# DESIGN's designated per-window channel) + run JSON as artifact.
+# Chat noise = 0 by construction: nothing posts to any chat.
+on:
+  workflow_dispatch:
+    inputs:
+      tau:
+        description: "prose_ratio threshold (TAU-AMENDMENT of record)"
+        default: "0.7472"
+  pull_request:
+    paths:
+      - "experiments/doe/nc-1-notation-compliance/records/corpus/**"
+      - "scripts/doe/nc1_*.py"
+permissions:
+  contents: read
+  issues: write
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: score arms on gold corpus
+        run: |
+          python3 scripts/doe/nc1_evaluator.py \
+            experiments/doe/nc-1-notation-compliance/records/corpus/units.jsonl \
+            "${{ inputs.tau || '0.7472' }}" run-output.json
+          python3 - << 'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("run-output.json"))
+          print("## nc-1 evaluator run")
+          for arm, s in d["arms"].items():
+              print(f"- {arm}: P={s['precision']} R={s['recall']} "
+                    f"tokens={s['tokens_scanned']} tp/fp/fn={s['tp']}/{s['fp']}/{s['fn']}")
+          print(f"- cull: {d['cull_analysis']}")
+          print(f"- chat_noise_events: {d['chat_noise_events']}")
+          PY
+      - name: rollup comment on tracking issue (dispatch runs only)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - << 'PY' > rollup.md
+          import json
+          d = json.load(open("run-output.json"))
+          print("[MUSEai]@{role:{doe-nc1-eval}} — evaluator run (automation, rule 5)")
+          print(f"tau={d['tau']} corpus={d['corpus_units']} detector={d['detector']}")
+          for arm, s in d["arms"].items():
+              print(f"- {arm}: P={s['precision']} R={s['recall']} tokens={s['tokens_scanned']} tp/fp/fn={s['tp']}/{s['fp']}/{s['fn']}")
+          print(f"- FULL L1 queue: {d['arms']['FULL']['l1_queue_units']} units, re-read {d['arms']['FULL']['l1_reread_tokens']} tokens")
+          print(f"- cull: {d['cull_analysis']} · chat_noise_events={d['chat_noise_events']}")
+          PY
+          gh issue comment 2865 --body-file rollup.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nc1-run-output
+          path: run-output.json

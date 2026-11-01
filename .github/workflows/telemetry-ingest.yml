@@ -54,9 +54,14 @@ jobs:
       - name: Density association stats (Provenance table + HindSight payloads)
         run: |
           set -euo pipefail
+          ok=1
           for page in 1 2 3 4 5 6; do
-            gh api "repos/${{ github.repository }}/pulls?state=all&per_page=100&page=$page&sort=created&direction=desc" > "prs-page-$page.json"
+            gh api "repos/${{ github.repository }}/pulls?state=all&per_page=100&page=$page&sort=created&direction=desc" > "prs-page-$page.json" || ok=0
           done
+          if [ "$ok" -eq 0 ]; then
+            echo "::warning::density PR fetch DEFERRED (Actions installation rate limit); committed density table stands, not zeroed (AUTOMATED-TELEMETRY-AUDIT deferred rule)"
+            exit 0
+          fi
           python3 - << 'PYEOF'
           import glob, json
           prs = []

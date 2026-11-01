@@ -48,7 +48,6 @@ jobs:
     permissions:
       contents: read
       issues: write
-      metadata: read
     timeout-minutes: 10
     steps:
       # Privileged workflow_run never checks out the triggering revision or PR code.
@@ -59,7 +58,7 @@ jobs:
       - name: Ingest pinned public source data and generate an advisory Cadence plan
         env:
           # Read-only collect-job token; used only for fixed GitHub commit metadata.
-          PROVIDER_RECON_GITHUB_TOKEN: ${{ github.token }}
+          PROVIDER_RECON_GITHUB_TOKEN: ${{ secrets.PROVIDER_RECON_TOKEN }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/provider-research

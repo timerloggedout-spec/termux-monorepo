@@ -147,6 +147,9 @@ def build(now=None) -> dict:
     if pr_snap is None:
         pr_snap = {"read_at": None, "merged": [], "open": []}
         gaps.append("pr_feed_snapshot missing: last-merge/open state NOT_ESTABLISHED")
+    elif pr_snap.get("status") not in (None, "ok"):
+        gaps.append(f"pr feed source status={pr_snap.get('status')}: "
+                    "last-merge/open state NOT_ESTABLISHED this run")
     lane_snap = _read_json("scripts/tracking/lane_events_snapshot.json")
     if lane_snap is None:
         lane_snap = {"read_at": None, "status": "missing", "events": [], "count": None}

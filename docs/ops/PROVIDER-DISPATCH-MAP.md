@@ -148,6 +148,17 @@ workflow lane is not a wired provider. Structural form: every lane now carries
 - The lane table above keeps its own classes for *dispatch lanes*; it no longer says
   anything about inference-provider wiring.
 
+## Compounding — the catalog wires itself (owner rule 2026-11-01)
+
+Every time a new endpoint is wired, it is eligible to join the process of continuing the
+wiring. The worker pool = the wired-invoke set (17 today: aion, cerebras, felo, google,
+groq, huggingface, kilo, llm7, mistral, modelscope, nvidia, omni, openrouter, ovhcloud,
+sambanova, siliconflow, zai) and grows with every landing. Packages shard across the pool
+by task-fit — no single provider or vendor (including Google: Jules + Gemini) is the
+default, sole, or consecutive builder. Each wiring PR names the providers it unlocks.
+Applied now: PKG-A's 9 join the pool as they land; PKG-B's DeepSeek holds the core-module
+shard only — g4f registration shards are claimable across the pool.
+
 ## Rotation rule (bench-wide)
 
 No provider takes 2 consecutive dispatches for the same entry, across **all** catalog lanes

@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 384,
-    "open_prs": 167,
+    "open_prs": 168,
     "pr_classes": {
-      "CANDIDATE": 81,
+      "CANDIDATE": 80,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 81,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 38,
-      "prs": 165,
+      "prs": 166,
       "unlabelled_numbers": [
         308,
         343,
@@ -93,7 +93,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T12:00:11Z",
+  "generated_at": "2026-11-01T12:02:35Z",
   "issues_unlabelled": [
     308,
     343,
@@ -137,10 +137,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "9310f90c20"
+    "sha": "75719f37c1"
   },
   "prs": [
     {
@@ -238,7 +238,7 @@
       "labels": [
         "BIUDL"
       ],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 386,
       "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
       "updated_at": "2026-08-30T11:56:02Z"
@@ -252,7 +252,7 @@
       },
       "head_sha": "53b1319d97",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 407,
       "title": "\u26a1 Bolt: optimize Bellman-Ford graph search in arbitrage engine",
       "updated_at": "2026-09-03T20:03:43Z"
@@ -266,7 +266,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-10-31T12:48:28Z"
@@ -294,7 +294,7 @@
       },
       "head_sha": "b8b624d149",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 605,
       "title": "feat(ar-18): extend dynamic capability spine with Paper2Agent research",
       "updated_at": "2026-10-23T07:40:01Z"
@@ -336,7 +336,7 @@
       },
       "head_sha": "0c5d29e473",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 829,
       "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
       "updated_at": "2026-09-25T01:08:41Z"
@@ -364,7 +364,7 @@
       },
       "head_sha": "e650476044",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1278,
       "title": "ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) \u2014 REVIEW, do not auto-merge",
       "updated_at": "2026-10-23T07:40:09Z"
@@ -378,7 +378,7 @@
       },
       "head_sha": "4d18fdff62",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1301,
       "title": "docs(telemetry): add equation registry and Wolfram verification",
       "updated_at": "2026-10-20T07:17:41Z"
@@ -406,7 +406,7 @@
       },
       "head_sha": "e17f7db4a0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1441,
       "title": "feat(triage): reconcile official quota before dispatch",
       "updated_at": "2026-10-26T23:11:16Z"
@@ -434,7 +434,7 @@
       },
       "head_sha": "d2778bcc25",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1470,
       "title": "feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
       "updated_at": "2026-10-23T13:34:11Z"
@@ -448,7 +448,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-10-31T12:48:47Z"
@@ -773,7 +773,7 @@
       },
       "head_sha": "fe37ab59ae",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1650,
       "title": "phantom-secrets-audit: comment-wake trigger + #184 ledger report",
       "updated_at": "2026-10-25T02:14:09Z"
@@ -987,20 +987,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c4c219cb3b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T11:14:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1361,7 +1347,7 @@
       },
       "head_sha": "11b61f8139",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 47,
       "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
       "updated_at": "2026-10-23T13:34:06Z"
@@ -1389,7 +1375,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -1403,7 +1389,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -1417,7 +1403,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-10-31T12:48:36Z"
@@ -1431,7 +1417,7 @@
       },
       "head_sha": "b7e4709b50",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 125,
       "title": "analyze agentic workflows and peer coordination rules",
       "updated_at": "2026-10-24T23:34:10Z"
@@ -1445,7 +1431,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -1459,7 +1445,7 @@
       },
       "head_sha": "6b3dcec308",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 390,
       "title": "docs: formalize category-theoretic notation sets and cross-domain mappings",
       "updated_at": "2026-09-03T22:51:06Z"
@@ -1473,7 +1459,7 @@
       },
       "head_sha": "4e7550f334",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 684,
       "title": "ops: unify GitHub Actions operations cadence",
       "updated_at": "2026-10-23T13:34:16Z"
@@ -1487,7 +1473,7 @@
       },
       "head_sha": "1116653009",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 740,
       "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
       "updated_at": "2026-10-25T00:44:19Z"
@@ -1501,7 +1487,7 @@
       },
       "head_sha": "4dc4f9360d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 762,
       "title": "ops: map live plugin connector surface and parity skills",
       "updated_at": "2026-09-23T09:26:30Z"
@@ -1529,7 +1515,7 @@
       },
       "head_sha": "0c6249c974",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 769,
       "title": "feat(tagging): cron multi-category GitHub tagging refresh",
       "updated_at": "2026-10-22T22:26:28Z"
@@ -1557,7 +1543,7 @@
       },
       "head_sha": "c57ef4d83c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-10-21T04:40:59Z"
@@ -1571,7 +1557,7 @@
       },
       "head_sha": "9d2bb548dd",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 990,
       "title": "feat(foresight): wire agent safety, orchestration, provenance, and gated edge lanes",
       "updated_at": "2026-10-23T07:40:13Z"
@@ -1585,7 +1571,7 @@
       },
       "head_sha": "a0248773ca",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1020,
       "title": "feat: close provider continuity and executable routing gaps",
       "updated_at": "2026-10-23T07:40:17Z"
@@ -1762,15 +1748,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "75bf54038e",
+      "head_sha": "419ea83634",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T11:59:41Z"
+      "updated_at": "2026-11-01T12:02:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1911,6 +1897,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "d7fc5e1c4f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T12:00:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2145,7 +2145,7 @@
       },
       "head_sha": "784a80e7bd",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2541,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:46:02Z"
@@ -2159,7 +2159,7 @@
       },
       "head_sha": "36107eaf9d",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2545,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:48:38Z"
@@ -2173,7 +2173,7 @@
       },
       "head_sha": "a0c507f650",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2550,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:49:52Z"
@@ -2187,7 +2187,7 @@
       },
       "head_sha": "2897d0a7a5",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2555,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:55:45Z"
@@ -2201,7 +2201,7 @@
       },
       "head_sha": "3ab9d4bd7c",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2562,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:59:17Z"
@@ -2215,7 +2215,7 @@
       },
       "head_sha": "259efcc436",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2568,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T00:08:19Z"
@@ -2243,7 +2243,7 @@
       },
       "head_sha": "cd310a869a",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2574,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T00:10:06Z"
@@ -2409,12 +2409,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "aacb4a97eb",
+      "head_sha": "f57ebee62d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T11:53:41Z"
+      "updated_at": "2026-11-01T12:01:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2485,6 +2485,20 @@
       "number": 3045,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-01T11:01:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "46dbbc0d32",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3107,
+      "title": "desk-feed: D2 queue leg closed (kickoff mechanics outside batch)",
+      "updated_at": "2026-11-01T12:02:29Z"
     }
   ],
   "schema": "operator-matrix/v1",

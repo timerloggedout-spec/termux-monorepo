@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 377,
-    "open_prs": 167,
+    "open_prs": 168,
     "pr_classes": {
       "CANDIDATE": 78,
-      "EXTRACT": 7,
+      "EXTRACT": 8,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 33,
-      "prs": 165,
+      "prs": 166,
       "unlabelled_numbers": [
         308,
         343,
@@ -88,7 +88,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T11:22:26Z",
+  "generated_at": "2026-11-01T11:23:23Z",
   "issues_unlabelled": [
     308,
     343,
@@ -130,7 +130,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "109103a688"
+    "sha": "7024cb57c3"
   },
   "prs": [
     {
@@ -210,12 +210,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "97db290e35",
+      "head_sha": "f705895070",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T11:20:54Z"
+      "updated_at": "2026-11-01T11:22:45Z"
     },
     {
       "class": "EXTRACT",
@@ -224,12 +224,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d128986b7c",
+      "head_sha": "c4c219cb3b",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2966,
-      "title": "[apk-doe] A v0.2.1",
-      "updated_at": "2026-11-01T07:21:31Z"
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T11:14:09Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "44b59ebcb2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3054,
+      "title": "desk-feed: recognize provider-batch as a dispatchable probe arm (routing recognition)",
+      "updated_at": "2026-11-01T11:23:21Z"
     },
     {
       "class": "CANDIDATE",
@@ -1013,20 +1027,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c4c219cb3b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T11:14:09Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1271,6 +1271,20 @@
       "number": 2907,
       "title": "fix: scope free-tier opportunity cost to repo work",
       "updated_at": "2026-11-01T02:39:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d128986b7c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2966,
+      "title": "[apk-doe] A v0.2.1",
+      "updated_at": "2026-11-01T07:21:31Z"
     },
     {
       "class": "CANDIDATE",
@@ -2371,12 +2385,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7270011427",
+      "head_sha": "ddbe3eb33c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T11:18:31Z"
+      "updated_at": "2026-11-01T11:22:40Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2457,10 +2471,10 @@
       },
       "head_sha": "05952c5c21",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 3053,
       "title": "index(quota): provider dispatch capability \u2014 89-provider bench classified (a/b/c/d)",
-      "updated_at": "2026-11-01T11:21:44Z"
+      "updated_at": "2026-11-01T11:23:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2469,12 +2483,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "44b59ebcb2",
+      "head_sha": "89161827da",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3054,
-      "title": "desk-feed: recognize provider-batch as a dispatchable probe arm (routing recognition)",
-      "updated_at": "2026-11-01T11:22:14Z"
+      "number": 3056,
+      "title": "docs(swarm): \u00a715 widened rotation \u2014 utilization fix, arm inventory + 2 proof dispatches",
+      "updated_at": "2026-11-01T11:23:21Z"
     }
   ],
   "schema": "operator-matrix/v1",

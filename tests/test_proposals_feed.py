@@ -89,3 +89,33 @@ def test_build_feed_shape(tmp_path):
     assert by_id["demo-pass"]["status"] == "recorded"  # verbatim from pass.json
     assert by_id["broken-pass"]["candidates"] is None
     assert any("broken-pass" in g for g in feed["gaps"])  # named, never dropped
+
+
+def test_build_feed_pass_outcome(tmp_path):
+    registry = pf.parse_registry_subset(FIXTURE)
+    passes = tmp_path / "passes"
+    scored = passes / "scored-pass" / "cycle"
+    scored.mkdir(parents=True)
+    (passes / "scored-pass" / "pass.json").write_text(json.dumps(
+        {"schema": "oracle-method-pass/v1", "pass_id": "scored-pass",
+         "status": "round_1_recorded", "candidates": [{"id": "a"}, {"id": "b"}]}))
+    (scored / "BALLOT-round1.json").write_text(json.dumps(
+        {"ballots_by_class": {"HUMAN_COLLABORATOR": 0, "MODEL_PROVIDER": 0, "LOCAL_BASELINE": 5},
+         "per_class": {"LOCAL_BASELINE": {"scores": {"a": 23.269, "b": 23.269}}}}))
+    silent = passes / "silent-pass"
+    silent.mkdir(parents=True)
+    (silent / "pass.json").write_text(json.dumps(
+        {"schema": "oracle-method-pass/v1", "pass_id": "silent-pass",
+         "status": "stated_not_run", "candidates": []}))
+    (silent / "cycle").mkdir()
+    (silent / "cycle" / "BALLOT-round1.json").write_text(json.dumps(
+        {"ballots_by_class": {"HUMAN_COLLABORATOR": 0, "MODEL_PROVIDER": 0, "LOCAL_BASELINE": 0},
+         "per_class": {}}))
+    feed = pf.build_feed(registry, tmp_path, "2026-11-01T00:00:00Z")
+    by_id = {p["id"]: p for p in feed["passes"]}
+    outcome = by_id["scored-pass"]["outcome"]
+    assert outcome["scores"] == {"a": 23.269, "b": 23.269}  # tie carried verbatim, never ranked
+    assert outcome["ballots"] == 5 and outcome["class"] == "LOCAL_BASELINE"
+    assert outcome["source"] == "cycle/BALLOT-round1.json"
+    assert by_id["silent-pass"]["outcome"] is None  # no ballots -> no outcome, absence named
+    assert any("silent-pass" in g for g in feed["gaps"])

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5a2b7a9db4324a589bb4763e25f0705f47131cd0da3696ab1fde16ced0f459f5",
-  "workflow_count": 242,
+  "source_fingerprint": "bc7129182d05251c032c50888373e92b0ffe141e15a7e831130c30ac94047d37",
+  "workflow_count": 243,
   "workflows": [
     {
       "action_pins": [],
@@ -402,6 +402,21 @@
       "schedules": [],
       "triggers": [
         "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "allocation-verification-probe",
+      "path": ".github/workflows/allocation-verification-probe.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

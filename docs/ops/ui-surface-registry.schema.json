@@ -10,7 +10,8 @@
     "registry_version",
     "status",
     "authority_note",
-    "surfaces"
+    "surfaces",
+    "schema_ref"
   ],
   "properties": {
     "schema_version": {
@@ -117,6 +118,9 @@
           }
         }
       }
+    },
+    "schema_ref": {
+      "const": "./ui-surface-registry.schema.json"
     }
   }
 }

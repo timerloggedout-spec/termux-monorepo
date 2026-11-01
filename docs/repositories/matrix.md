@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-31T10:25:43.336281Z`
+Observed: `2026-11-01T11:18:24.735381Z`
 
 ## Navigation
 
@@ -16,9 +16,9 @@ Observed: `2026-10-31T10:25:43.336281Z`
 
 ## Changes since previous snapshot
 
-- **Added (7):** `timerloggedout-spec/delphi-oracle`, `timerloggedout-spec/fleet-logs`, `timerloggedout-spec/listinglens`, `timerloggedout-spec/provider-phrases`, `timerloggedout-spec/repo-replay-data`, `timerloggedout-spec/skeleton-crew`, `timerloggedout-spec/studysprint`
-- **Removed (3):** `1canhhoa/sports-betting-toolbox`, `AhmedHazem02/fifa-world-cup-2026-prediction-agent`, `agutinbaigo28/financial-agent-api`
-- **Provenance changed (0):** —
+- **Added (1):** `timerloggedout-spec/repo-story`
+- **Removed (0):** —
+- **Provenance changed (5):** `frappe/gantt` (issue, starred → starred), `gravitee-io/gravitee-api-management` (issue, starred → starred), `timerloggedout-spec/skeleton-crew` (owned → owned, starred), `timerloggedout-spec/studysprint` (owned → owned, starred), `timerloggedout-spec/termux-monorepo` (issue, owned, starred → owned, starred)
 
 ## Owned
 
@@ -259,6 +259,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [timerloggedout-spec/PIDEA_fork](https://github.com/timerloggedout-spec/PIDEA_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ReAppzuku_fork](https://github.com/timerloggedout-spec/ReAppzuku_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion_fork](https://github.com/timerloggedout-spec/Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion_fork) | owned | ai | medium | upstream-comparison |
+| [timerloggedout-spec/repo-story](https://github.com/timerloggedout-spec/repo-story) | owned | ai | medium | — |
 | [timerloggedout-spec/repurposeflow-ai_fork](https://github.com/timerloggedout-spec/repurposeflow-ai_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ResQNet](https://github.com/timerloggedout-spec/ResQNet) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/runic_fork](https://github.com/timerloggedout-spec/runic_fork) | owned, starred | ai | medium | upstream-comparison |
@@ -434,7 +435,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [timerloggedout-spec/mathematics_in_lean_fork](https://github.com/timerloggedout-spec/mathematics_in_lean_fork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/opencode-research-papers_fork](https://github.com/timerloggedout-spec/opencode-research-papers_fork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/portals](https://github.com/timerloggedout-spec/portals) | owned | research, platform | high | upstream-comparison |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | issue, owned, starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/awesome-github-actions-security_fork](https://github.com/timerloggedout-spec/awesome-github-actions-security_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-workflows_fork](https://github.com/timerloggedout-spec/awesome-workflows_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
@@ -454,7 +455,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [timerloggedout-spec/quirk_fork](https://github.com/timerloggedout-spec/quirk_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuPlus_fork](https://github.com/timerloggedout-spec/ShizukuPlus_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuRunner_fork](https://github.com/timerloggedout-spec/ShizukuRunner_fork) | owned, starred | termux | medium | upstream-comparison |
-| [timerloggedout-spec/studysprint](https://github.com/timerloggedout-spec/studysprint) | owned | termux | medium | — |
+| [timerloggedout-spec/studysprint](https://github.com/timerloggedout-spec/studysprint) | owned, starred | termux | medium | — |
 | [timerloggedout-spec/termux-api_fork](https://github.com/timerloggedout-spec/termux-api_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/termux-app_fork](https://github.com/timerloggedout-spec/termux-app_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/termux-boot_fork](https://github.com/timerloggedout-spec/termux-boot_fork) | owned | termux | medium | upstream-comparison |
@@ -677,7 +678,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [timerloggedout-spec/Shizuku-API_fork](https://github.com/timerloggedout-spec/Shizuku-API_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Shizuku_fork](https://github.com/timerloggedout-spec/Shizuku_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuDhizuku-list_fork](https://github.com/timerloggedout-spec/ShizukuDhizuku-list_fork) | owned, starred | unclassified | medium | upstream-comparison |
-| [timerloggedout-spec/skeleton-crew](https://github.com/timerloggedout-spec/skeleton-crew) | owned | unclassified | medium | — |
+| [timerloggedout-spec/skeleton-crew](https://github.com/timerloggedout-spec/skeleton-crew) | owned, starred | unclassified | medium | — |
 | [timerloggedout-spec/SML](https://github.com/timerloggedout-spec/SML) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/snek_fork](https://github.com/timerloggedout-spec/snek_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/so4-oracle](https://github.com/timerloggedout-spec/so4-oracle) | owned | unclassified | medium | upstream-comparison |
@@ -2445,7 +2446,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [t3l3machus/PowerShell-Obfuscation-Bible](https://github.com/t3l3machus/PowerShell-Obfuscation-Bible) | starred | research, security | high | — |
 | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking) | starred | research, security, termux | high | — |
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | issue, owned, starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [2022it0489-hub/FUTURE_CS_01](https://github.com/2022it0489-hub/FUTURE_CS_01) | starred, watching | security | medium | — |
 | [alechilczenko/kimi](https://github.com/alechilczenko/kimi) | starred | security | medium | — |
@@ -2468,7 +2469,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [tokyoneon/Chimera](https://github.com/tokyoneon/Chimera) | starred | security | medium | — |
 | [twpayne/chezmoi](https://github.com/twpayne/chezmoi) | starred | security | medium | — |
 | [Vishisht16/awesome-workflows](https://github.com/Vishisht16/awesome-workflows) | starred | security | medium | workflow-candidate |
-| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | issue, starred | security, api-management | high | — |
+| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [Wbaker7702/nova-wallet-android](https://github.com/Wbaker7702/nova-wallet-android) | starred | security, termux | medium | upstream-comparison |
@@ -2538,6 +2539,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [timerloggedout-spec/quirk_fork](https://github.com/timerloggedout-spec/quirk_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuPlus_fork](https://github.com/timerloggedout-spec/ShizukuPlus_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuRunner_fork](https://github.com/timerloggedout-spec/ShizukuRunner_fork) | owned, starred | termux | medium | upstream-comparison |
+| [timerloggedout-spec/studysprint](https://github.com/timerloggedout-spec/studysprint) | owned, starred | termux | medium | — |
 | [timerloggedout-spec/Thor_fork](https://github.com/timerloggedout-spec/Thor_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/web-to-app_fork](https://github.com/timerloggedout-spec/web-to-app_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timschneeb/awesome-shizuku](https://github.com/timschneeb/awesome-shizuku) | starred | termux | medium | — |
@@ -2908,7 +2910,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [frankier/awesome-institutional-hpc](https://github.com/frankier/awesome-institutional-hpc) | starred | unclassified | medium | — |
 | [frankiethull/tabfm](https://github.com/frankiethull/tabfm) | starred | unclassified | medium | — |
 | [frankwswang/Quiqbox.jl](https://github.com/frankwswang/Quiqbox.jl) | starred | unclassified | medium | — |
-| [frappe/gantt](https://github.com/frappe/gantt) | issue, starred | unclassified | medium | — |
+| [frappe/gantt](https://github.com/frappe/gantt) | starred | unclassified | medium | — |
 | [fred4jupiter/fredbet](https://github.com/fred4jupiter/fredbet) | starred | unclassified | medium | — |
 | [FreeLanguageTools/vocabsieve](https://github.com/FreeLanguageTools/vocabsieve) | starred | unclassified | medium | — |
 | [freuk/awesome-nix-hpc](https://github.com/freuk/awesome-nix-hpc) | starred | unclassified | medium | — |
@@ -3644,6 +3646,7 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [timerloggedout-spec/shellcheck_fork](https://github.com/timerloggedout-spec/shellcheck_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Shizuku-API_fork](https://github.com/timerloggedout-spec/Shizuku-API_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuDhizuku-list_fork](https://github.com/timerloggedout-spec/ShizukuDhizuku-list_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/skeleton-crew](https://github.com/timerloggedout-spec/skeleton-crew) | owned, starred | unclassified | medium | — |
 | [timerloggedout-spec/solana-rust-sniper-bot_fork](https://github.com/timerloggedout-spec/solana-rust-sniper-bot_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/sovereign-tank_fork](https://github.com/timerloggedout-spec/sovereign-tank_fork) | owned, starred | unclassified | medium | — |
 | [timerloggedout-spec/Stellar_fork](https://github.com/timerloggedout-spec/Stellar_fork) | owned, starred | unclassified | medium | upstream-comparison |
@@ -5380,9 +5383,9 @@ Observed: `2026-10-31T10:25:43.336281Z`
 | [t3l3machus/PowerShell-Obfuscation-Bible](https://github.com/t3l3machus/PowerShell-Obfuscation-Bible) | starred | research, security | high | — |
 | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking) | starred | research, security, termux | high | — |
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | issue, owned, starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
-| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | issue, starred | security, api-management | high | — |
+| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [alphaSeclab/awesome-reverse-engineering](https://github.com/alphaSeclab/awesome-reverse-engineering) | starred | security, termux, platform | high | — |
@@ -6709,14 +6712,4 @@ Observed: `2026-10-31T10:25:43.336281Z`
 
 | Issue | Kind | Target | Declared signal | Seed |
 |---|---|---|---|---|
-| #2059 | service | gravitee-io/gravitee-api-management | starred | `github:research-seed:gravitee-io/gravitee-api-management` |
-| #2125 | provider | https://acme.example/docs | none | `research-seed:provider:acme-ai-proof` |
-| #2130 | service | frappe/gantt | none | `github:research-seed:frappe/gantt` |
-| #2131 | provider | https://quickchart.io | none | `research-seed:provider:quickchart` |
-| #2135 | provider | https://example.com/alpha2132 | none | `research-seed:provider:alpha2132` |
-| #2136 | provider | https://example.com/beta2132 | none | `research-seed:provider:beta2132` |
-| #2138 | provider | https://example.com/gamma2137 | none | `research-seed:provider:gamma2137` |
-| #2139 | provider | https://example.com/delta2137 | none | `research-seed:provider:delta2137` |
-| #2146 | service | timerloggedout-spec/termux-monorepo | owned | `github:research-seed:timerloggedout-spec/termux-monorepo` |
-| #2206 | service | MoneyBall — decision engine and cross-domain schema expansion | none | `research-seed:service:moneyball-decision-engine` |
 

@@ -1,3 +1,4 @@
+/* Cross-repo publisher consumes this shared nav for Tribute, the legacy alias, and Matrix. */
 /* Single source of truth for primary navigation across Tribute, matrix and previews. */
 (function () {
   "use strict";

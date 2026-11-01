@@ -34,7 +34,11 @@ Gated queue: YouTube (OAuth multi-secret + compliance audit; unverified = privat
 
 ## Provisioning census (a78e43e6, 2026-10-31, state-only)
 
-Meta dev app = NOT_ESTABLISHED/∅ held · IG Professional+link = NOT_ESTABLISHED · TikTok dev app = ∅ · WABA = ∅ · X dev account exists (owner-created 2026-10-29, $0 pay-per-use) PARKED, `X_OAUTH2_*` shelved. Moniker census (ac8e5e6b) pending at record time; FB Page identities already registered (Dream In Production fb-a, Receipts Count fb-b).
+Meta dev app = NOT_ESTABLISHED/∅ held · IG Professional+link = NOT_ESTABLISHED · TikTok dev app = ∅ · WABA = ∅ · X dev account exists (owner-created 2026-10-29, $0 pay-per-use) PARKED, `X_OAUTH2_*` shelved. FB Page identities already registered (Dream In Production fb-a, Receipts Count fb-b).
+
+## Moniker assignments (ac8e5e6b, PR #2778 merged 8edda5c691b6, registry 30 entries, status registering, owner_lane=social-connectors)
+
+IG `account{PluckyOnyx78}` (signup `pluckyonyx78`) · Threads `account{JollyJuniper25}` (⚠️ if Threads rides fleet IG, IG assignment governs handle, codename ¬ separately consumed; record path in Profile Registry) · TikTok `account{UrbanOnyx67}` · WhatsApp `account{OpalVale19}` (moniker = profile name of record; number = provisioning fact, ¬ registry) · Discord active `account{wh1msical_sw4n_06136}` · X ∅ assignment (parked). Persona DOB of record 1996-04-17 / bracket 25-34, surface-once. Provisioning spec relayed ⇒ a78e43e6 (Meta app+mint → IG-pro link → WABA).
 
 ## Build state (2026-10-31)
 

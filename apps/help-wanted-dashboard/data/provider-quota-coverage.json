@@ -2359,6 +2359,55 @@
       "provider": "g4f/Yqcloud",
       "quota_manager_owner": "Manager",
       "service_id": "g4f.yqcloud"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "meta",
+      "quota_manager_owner": "Manager",
+      "service_id": "meta.model_api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "meta",
+      "quota_manager_owner": "Manager",
+      "service_id": "meta.muse_code"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "meta",
+      "quota_manager_owner": "Manager",
+      "service_id": "meta.llama_api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "fleet-vm",
+      "quota_manager_owner": "Manager",
+      "service_id": "fleet.vm_webhooks"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "google",
+      "quota_manager_owner": "Manager",
+      "service_id": "jules.build_sessions"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "google",
+      "quota_manager_owner": "Manager",
+      "service_id": "gemini.build_dispatch"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "deepseek.build_dispatch"
     }
   ]
 }

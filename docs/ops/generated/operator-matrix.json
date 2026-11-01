@@ -1,9 +1,9 @@
 {
   "counts": {
-    "open_issues": 371,
-    "open_prs": 158,
+    "open_issues": 372,
+    "open_prs": 159,
     "pr_classes": {
-      "CANDIDATE": 77,
+      "CANDIDATE": 78,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 76,
       "SUPERSEDE": 0
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 184,
+      "issues": 185,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 30,
-      "prs": 156,
+      "prs": 157,
       "unlabelled_numbers": [
         308,
         343,
@@ -85,7 +85,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T08:36:28Z",
+  "generated_at": "2026-11-01T08:47:19Z",
   "issues_unlabelled": [
     308,
     343,
@@ -121,10 +121,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "in_progress"
     },
-    "sha": "d6427185ba"
+    "sha": "508319c106"
   },
   "prs": [
     {
@@ -965,6 +965,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "c7d78062d0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T09:41:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1690,20 +1704,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "a82b2991a2",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T09:36:12Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2337,12 +2337,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "dd8e401242",
+      "head_sha": "0c3ccd16c2",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T09:22:25Z"
+      "updated_at": "2026-11-01T09:47:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "7da19bc727",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3017,
+      "title": "AppID: apk-xref-exec mint swap Swarm \u2192 CrossReference (Scalpel \u00b7 App 5564430)",
+      "updated_at": "2026-11-01T09:37:49Z"
     }
   ],
   "schema": "operator-matrix/v1",

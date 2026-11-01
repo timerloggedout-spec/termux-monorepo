@@ -1,13 +1,26 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T13:22:29Z",
+ "read_at": "2026-11-01T13:23:40Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3151,
+   "title": "docs(dispatch): #2672 gate-state lift \u2014 gate-green on the 7 key-live records + provider-batch lane",
+   "merged_at": "2026-11-01T13:23:04Z",
+   "updated_at": "2026-11-01T13:23:04Z",
+   "created_at": "2026-11-01T13:22:40Z",
+   "merge_commit_sha": "f5e448de233920e62803eabe033d06303b405c2d",
+   "head_ref": "providers/gate-lift-2672",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3151",
+   "merged": true
+  },
   {
    "number": 3150,
    "title": "chore(ops): regenerate operator matrix",
    "merged_at": "2026-11-01T13:22:22Z",
-   "updated_at": "2026-11-01T13:22:26Z",
+   "updated_at": "2026-11-01T13:22:27Z",
    "created_at": "2026-11-01T13:22:17Z",
    "merge_commit_sha": "db835c88557485ef632b61eb16385be6f31a1be7",
    "head_ref": "operator-matrix/auto",
@@ -20,7 +33,7 @@
    "number": 3148,
    "title": "fix(batch): provider-invoke \u2014 catalog diagnostics in verdict + Cohere v2 catalog fallback",
    "merged_at": "2026-11-01T13:21:37Z",
-   "updated_at": "2026-11-01T13:21:37Z",
+   "updated_at": "2026-11-01T13:22:57Z",
    "created_at": "2026-11-01T13:21:23Z",
    "merge_commit_sha": "573ba74715c4977a17d038f366ca7a53ba7004f5",
    "head_ref": "swarm/provider-invoke-catalog-diag",
@@ -1939,22 +1952,22 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2971",
    "merged": true
-  },
-  {
-   "number": 2970,
-   "title": "docs(ops): OWNER-REQUESTS row 16 \u2014 ArchWiz end-state note",
-   "merged_at": "2026-11-01T05:00:06Z",
-   "updated_at": "2026-11-01T05:00:59Z",
-   "created_at": "2026-11-01T05:00:00Z",
-   "merge_commit_sha": "846c0a3c4d4cba578b29f8348dc5a3715a7f76b6",
-   "head_ref": "docs/owner-requests-row16-endstate",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2970",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 2914,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-01T13:23:39Z",
+   "created_at": "2026-11-01T03:19:03Z",
+   "merge_commit_sha": "0a625eca44000e617433ac42007a3ef216e38900",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
+   "merged": false
+  },
   {
    "number": 3149,
    "title": "index(quota): dispatch capability \u2014 #2672 gate GREEN",
@@ -1979,19 +1992,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
-   "merged": false
-  },
-  {
-   "number": 2914,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-01T13:20:21Z",
-   "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "7fa31214bdcba4e9d2358cc8c384e0571be8b8b4",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
    "merged": false
   },
   {

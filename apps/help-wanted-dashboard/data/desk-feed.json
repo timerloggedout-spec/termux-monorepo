@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T15:30:00Z",
+ "generated_at": "2026-11-01T15:40:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2225,7 +2225,7 @@
     },
     "execution_posture": "OWNER POSTURE (2026-11-01 via D1 seat): early = balanced runs across inference endpoints (executions accumulate evidence); closer to Nov 4 due date ⇒ converge on best-performing endpoint. Applies {DeepSeek notes outcome, SR, any re-runs}"
    },
-   "next": "Reader core MERGED #3102 + synced (parity 23/23) · SR module: returned to the system for balanced execution (#3050; command-dispatch re-route withdrawn, owner correction) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT",
+   "next": "Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -2302,7 +2302,7 @@
      "scope": "D1 StudySprint v0.2.0 update notes + demo-video swap (apps/studysprint README.md + article.md only; article note verbatim from the live Builder Center article)",
      "via": "deepseek-termux-agent workflow_dispatch run 41301295882 (Start agent success; Poll-for-completion step skipped, so completion is NOT ESTABLISHED from the run — the PR is the completion evidence)",
      "session_id": "41301295882",
-     "state": "dispatched — PR pending agent completion",
+     "state": "STALLED — never invoked ×2 (runs 41301295882 + 41321691938: tunnel-unresolved skip at Start; Poll skipped; ∅ work product). Re-dispatch decision (desk, posture): ∅ further re-fires into a down tunnel; task submitted to the system as issue #3215; tunnel escalated ⇒ Swarm",
      "usage": {
       "value": null,
       "unit": null,
@@ -2329,7 +2329,7 @@
      "first_pass_success": null,
      "rework_cycles": null,
      "dispatch_to_pr_wall_time": null,
-     "stalled_action_required": null
+     "stalled_action_required": true
     },
     {
      "provider": "Gemini",

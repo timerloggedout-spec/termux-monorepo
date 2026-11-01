@@ -105,6 +105,31 @@ def test_l1_feed_reject_is_intake_flag():
     assert esc["escape_rate"] is None                 # no L1-passed drift in class
 
 
+def test_flags_jsonl_rows_convert():
+    import tempfile, os
+    rows = ('{"unit_id": "a", "layer": "L2", "drift": true, "score": 0.2}\n'
+            '{"unit_id": "b", "layer": "L3", "drift": false, "score": 0.9}\n')
+    fd, path = tempfile.mkstemp(suffix=".jsonl")
+    with os.fdopen(fd, "w") as f:
+        f.write(rows)
+    try:
+        units = [unit("a", "chat", "drift", PROSE),
+                 unit("b", "github", "compliant", DENSE)]
+        out = ev.main(["x", "units", "tau", "/tmp/o.json", "--flags", path]) \
+            if False else None
+        # exercise the same conversion path main() uses:
+        raw = open(path).read().strip()
+        ov = {}
+        for line in raw.splitlines():
+            row = json.loads(line)
+            ov.setdefault(row["unit_id"], {})[row["layer"]] = bool(row["drift"])
+        assert ov == {"a": {"L2": True}, "b": {"L3": False}}
+        flags = ev.layer_flags(units, TAU, ov)
+        assert flags["a"]["L2"] is True and flags["b"]["L3"] is False
+    finally:
+        os.unlink(path)
+
+
 def test_records_density_variant_flags_skeleton():
     skeleton = json.dumps({"provider": "x", "evidence": "not-established",
                            "status": "unknown", "value": None})

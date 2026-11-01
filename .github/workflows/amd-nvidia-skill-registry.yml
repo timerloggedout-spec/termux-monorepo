@@ -7,6 +7,8 @@ on:
       - "docs/ops/*skills-registry.json"
       - "docs/ops/AMD-NVIDIA-SKILL-EXECUTION-RECEIPT.schema.json"
       - "skills/vendors/**"
+      - ".agents/skills/amd-vendor-workflows/**"
+      - ".agents/skills/nvidia-vendor-workflows/**"
       - "scripts/ci/validate_vendor_skill_registry.py"
       - "tests/test_vendor_skill_registry.py"
       - ".github/workflows/amd-nvidia-skill-registry.yml"

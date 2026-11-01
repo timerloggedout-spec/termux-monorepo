@@ -180,11 +180,9 @@ jobs:
           python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
       - name: Surface contracts failure tail (diagnostics)
         if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           { echo '[MUSEai]@{role:{optimizations-assurance}} provider-batch contracts failure tail (auto-surfaced):'; echo; echo '```'; tail -n 120 /tmp/contracts.log 2>/dev/null || echo '(no contracts log captured)'; echo '```'; } > /tmp/contracts-comment.md
-          gh issue comment 2672 --body-file /tmp/contracts-comment.md
+          GH_TOKEN="${{ github.token }}" gh issue comment 2672 --body-file /tmp/contracts-comment.md
 
   private_openrouter_quota:
     needs: contracts

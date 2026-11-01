@@ -67,6 +67,12 @@ hand-refreshed, or PR-centric.
   outputs + two snapshots (direct commit to master, lane-matrix
   precedent; schedule daily 07:23 UTC + dispatch + push on input paths).
   Anyone hand-editing an output creates a fork the next run overwrites.
+  Reads + commit run on a **Swarm App token** (own 5000/h bucket): the
+  shared `GITHUB_TOKEN` bucket (1000/h/repo) returned HTTP 403 during a
+  merge storm and degraded the 2026-11-01T04:11Z generation (fail-soft
+  recorded it in the snapshot status + feed gaps). Push triggers exclude
+  the snapshots/outputs themselves — the writer's own commits never
+  retrigger the collect.
 - **VM = sandbox:** the standing mechanism is this workflow. No VM
   cron/daemon participates.
 - **Honesty:** values no source holds render as `NOT_ESTABLISHED` or a

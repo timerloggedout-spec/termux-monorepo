@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T14:27:19Z",
+ "read_at": "2026-11-01T14:29:25Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3204,
+   "title": "docs(dispatch): RETRACT census 7,066 -> 7,046 (owner rule: census counts must be Actions)",
+   "merged_at": "2026-11-01T14:28:54Z",
+   "updated_at": "2026-11-01T14:29:04Z",
+   "created_at": "2026-11-01T14:28:31Z",
+   "merge_commit_sha": "4170e3ae626146b6865927496abd443aaf4bb2b2",
+   "head_ref": "providers/census-revert-7066",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3204",
+   "merged": true
+  },
   {
    "number": 3203,
    "title": "chore(ops): regenerate operator matrix",
@@ -1939,19 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3041",
    "merged": true
-  },
-  {
-   "number": 3040,
-   "title": "desk-feed: Repo-Story build route \u21d2 fleet swarm via Scout (Jules leg stood down)",
-   "merged_at": "2026-11-01T10:34:01Z",
-   "updated_at": "2026-11-01T10:34:01Z",
-   "created_at": "2026-11-01T10:33:13Z",
-   "merge_commit_sha": "5f6f6e6f4ea4dff2d6487c2a0d3223f07d99000b",
-   "head_ref": "desk-feed/repo-story-route-scout",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3040",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,13 +1959,26 @@
    "number": 2914,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-01T14:27:14Z",
+   "updated_at": "2026-11-01T14:29:11Z",
    "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "c32d91beecd7d7a826d3d89ad20e4f60470e4bae",
+   "merge_commit_sha": "0734cf63f84832b10114a18562265f99abb9d364",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
+   "merged": false
+  },
+  {
+   "number": 2167,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-01T14:28:07Z",
+   "created_at": "2026-10-28T19:26:06Z",
+   "merge_commit_sha": "d539269f78dcf6299306e2317d7fcc0ad9057be3",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
    "merged": false
   },
   {
@@ -1979,19 +1992,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1760",
-   "merged": false
-  },
-  {
-   "number": 2167,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-01T14:25:25Z",
-   "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "1c4d6166e618e091b1e88dd978f96ea705c4e37d",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
    "merged": false
   },
   {

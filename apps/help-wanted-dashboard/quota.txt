@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (161 registry records)
+ QUOTA  termux-monorepo  (164 registry records)
  Snapshot generated (not observation time): 2026-10-30T02:47:00.930298+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -166,7 +166,8 @@
     runs only while launched; no daemon, no systemd) | reset: n/a
     No live reading (live source: GET http://127.0.0.1:8791/health + durable log
     ~/workspace/vm-webhooks/intake.jsonl (proof 2026-10-30: signed payload 202,
-    duplicate 200, bad signature 401))
+    duplicate 200, bad signature 401; routing proof 2026-10-31: routed +
+    unrouted_flagged classes logged with delivery_target))
 --------------------------------------------------------------------------------
  fly (1)
   fly.free_tier
@@ -679,7 +680,16 @@
     reset: calendar month
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
- github (10)
+ github (11)
+  deepseek.build_dispatch
+    status: No live reading
+    limit (documented): n/a dispatches
+    metric: Invoke/review dispatches via deepseek-ci workflow (event triggers +
+    workflow_dispatch) and the deepseek-termux-agent device route | window:
+    Actions minutes (public repo) + device availability | reset: monthly
+    (Actions)
+    No live reading (live source: Actions workflow runs for deepseek-ci.yml; no
+    passive reader wired)
   github.actions.cache
     status: OK
     limit (documented): 10 GB
@@ -742,13 +752,29 @@
     metric: Copilot Free allowance | window: monthly | reset: unverified
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
- google (1)
+ google (3)
   gemini.api_free
     status: PRIVATE_PREFLIGHT
     limit (documented): n/a per-model
     metric: RPM/TPM/RPD per model, per project | window: daily (RPD) | reset:
     midnight
     Public evidence state only; no account balance or runtime admission implied.
+  gemini.build_dispatch
+    status: No live reading
+    limit (documented): n/a dispatches
+    metric: Build/review dispatches via gemini-dispatch workflow (issues +
+    issue_comment triggers only; no workflow_dispatch in file) | window:
+    provider-side quota not exposed | reset: not exposed
+    No live reading (live source: Actions workflow runs for gemini-dispatch.yml;
+    no passive reader wired)
+  jules.build_sessions
+    status: No live reading
+    limit (documented): n/a sessions
+    metric: Build sessions dispatched via the issues route (label
+    agent-jules-on-issues -> Jules sessions on repo issues) | window:
+    provider-side quota not exposed | reset: not exposed by the Jules API
+    No live reading (live source: Jules API session census via custom.jules
+    helper (sessions + activities); no passive reader wired)
 --------------------------------------------------------------------------------
  gpt4free/CLIProxyAPI/Chapito/ai-manus (1)
   g4f.vendors
@@ -1240,6 +1266,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 161 registry records | 0 alert(s) | 156 with a reported reading | 5 with No
+ 164 registry records | 0 alert(s) | 156 with a reported reading | 8 with No
  live reading
 ================================================================================

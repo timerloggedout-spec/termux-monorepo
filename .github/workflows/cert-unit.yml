@@ -1,0 +1,63 @@
+name: Cert unit (Route A)
+
+# Certifications Phase 1: one dispatch = one cert work unit (module-block).
+# Execution happens here (Swarm workflow run); artifacts upload for capture
+# into fleet-logs certifications/ by PR; platform submit/verify stays with
+# the Platforms lane. Model auto-resolves from the provider catalog.
+on:
+  workflow_dispatch:
+    inputs:
+      cert:
+        description: "Cert slug (fleet-logs path segment)"
+        required: true
+        default: l1-relational-databases-v9
+        type: string
+      unit:
+        description: "Unit id (module-block)"
+        required: true
+        type: string
+      manifest:
+        description: "Unit manifest JSON {cert, unit, steps:[{id,title}]}"
+        required: true
+        type: string
+      provider:
+        description: "Invoke provider (auto model resolution)"
+        required: false
+        default: cohere
+        type: choice
+        options:
+          - cohere
+          - sealion
+          - baseten
+
+permissions: {}
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Run cert unit
+        env:
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+          UNIT_MANIFEST: ${{ inputs.manifest }}
+        run: |
+          set -o pipefail
+          printf '%s' "$UNIT_MANIFEST" > /tmp/unit-manifest.json
+          python3 scripts/certifications/run_unit.py \
+            --manifest /tmp/unit-manifest.json \
+            --provider "${{ inputs.provider }}" \
+            --out "/tmp/cert-out/${{ inputs.unit }}" 2>&1 | tee /tmp/unit.log
+      - name: Upload unit artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: cert-${{ inputs.unit }}-${{ github.run_id }}
+          path: /tmp/cert-out/${{ inputs.unit }}

@@ -86,12 +86,16 @@ doe-expert. Remit unchanged; surfaces coordinate:
 - This campaign rides DeepSeek routes: framing HELD: `held:pattern-C-review`, ¬ a factor here
   in wave 1.
 - live-builds WO#2 (ChronoMancer competing-build, ex live-4
-  cb-1) DeepSeek-CI review arms are EXCLUDED from live-3
-  assignment until its verdict (measurement surface).
+  cb-1; queued, design-only): the exclusion of its
+  DeepSeek-CI review arms from live-3 assignment stands,
+  activating when the WO#2 design lands, until its verdict
+  (measurement surface).
 - Assignment EXCLUDES live-1-wave-framing designed PRs
   until live-1 verdict ∨ doe-expert waiver (integration
   review A3): phrasing their DeepSeek reviews would co-treat
-  live-1's review/rework responses.
+  live-1's review/rework responses. Non-designed wave PRs
+  stay eligible; their records stamp
+  `wave_pr_crossref={wave: nov, live1_designed: false}`.
 - Composition rule (pre-registered): one dispatch = one
   assignment per factor family; families meeting on one
   dispatch cross in a single stamp (framing × phrase, one

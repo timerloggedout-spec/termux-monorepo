@@ -9,8 +9,9 @@
     "A1": "repoint coordination live-4 -> live-1/WO#2 \u2014 DONE PR #2813 merged 0e023ac3e671",
     "A2": "hold renamed to held:pattern-C-review \u2014 DONE this amendment",
     "A3": "live-3 assignment excludes live-1 designed PRs until live-1 verdict or doe-expert waiver \u2014 DONE this amendment",
-    "A4": "dup-dir hygiene \u2014 VERIFIED 2026-10-31: live-3-phrases-jit DESIGN status=superseded + README pointer to live-3-phrases-deepseek; feed census of experiments/doe/*/DESIGN.json statuses: live-3 sole active = live-3-phrases-deepseek (admitted_design_only), jit superseded (full census: lab-1 admitted, pilot-1 admitted, live-1/live-2 admitted_design_only, live-4 superseded)"
+    "A4": "dup-dir hygiene \u2014 VERIFIED 2026-10-31 (formal): (i) DESIGN census \u2200 experiments/doe dirs: live-3 sole active = live-3-phrases-deepseek (admitted_design_only), jit superseded + README pointer; (ii) collector surfaces checked firsthand: collect_doe (scripts/dashboards/surface_feeds.py) derives doe-feed from doe.py AST + IMPLEMENTATION.json, NOT from campaign DESIGN dirs; doe-feed.json @master generated 2026-10-31T06:38:02Z carries ZERO live-3 entries (neither dir surfaces) => no dual-active surface exists; no pointer fix owed. If a future collector reads DESIGN dirs, sole-active follows DESIGN status."
    },
+   "formal_review_note": "Formal parent review (live-builds, 2026-10-31, vs post-#2808 blob 06c351b6) arrived after A1-A4 were closed on the relayed directive (#2813/#2814); this amendment aligns the three textual deltas: A1 WO#2 activation wording, A3 cross-ref covariate, A4 collector-surface evidence.",
    "source": "live-builds integration review 2026-10-31 (directive 1b1eb802 via doe-expert)"
   },
   "parent": "doe-mgr-live-builds (28ac9715)",
@@ -27,11 +28,11 @@
     "surface": "DeepSeek invoke/review (this campaign)"
    },
    {
-    "rule": "EXCLUDED from live-3 assignment until the WO#2 verdict lands (compares build arms on steering interventions; phrasing its reviewers adds an uncontrolled treatment on the measurement surface). Other DeepSeek review flow stays eligible. Confirmed unchanged by live-builds 2026-10-31.",
+    "rule": "EXCLUSION STANDS in substance, ACTIVATES when the WO#2 design lands (WO#2 = queued, design-only, no design landed yet): from activation until the WO#2 verdict, its DeepSeek-CI review arms are excluded from live-3 assignment (compares build arms on steering interventions; phrasing its reviewers adds an uncontrolled treatment on the measurement surface). Other DeepSeek review flow stays eligible. Confirmed unchanged by live-builds 2026-10-31.",
     "surface": "DeepSeek-CI review arms on live-builds WO#2 ChronoMancer competing-build (carried from live-4 cb-1)"
    },
    {
-    "rule": "EXCLUDED from live-3 assignment until live-1 verdict or doe-expert waiver (integration review A3, 2026-10-31): a phrased DeepSeek review of a live-1-designed PR would co-treat live-1's review/rework responses. Exclusions logged + counted, mirroring live-1 deviation discipline.",
+    "rule": "EXCLUDED from live-3 assignment until live-1 verdict or doe-expert waiver (integration review A3, 2026-10-31): a phrased DeepSeek review of a live-1-designed PR would co-treat live-1's review/rework responses. Exclusions logged + counted, mirroring live-1 deviation discipline. CROSS-REF COVARIATE: where a NON-designed wave PR (a Nov-wave PR carrying no live-1 assignment) receives a phrased live-3 review, the live-3 record stamps wave_pr_crossref={wave: nov, live1_designed: false} so any later wave-level join can covariate-adjust instead of mistaking it for a designed-unit treatment.",
     "surface": "PRs designed under live-1-wave-framing (any route)"
    }
   ],

@@ -1,8 +1,47 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T11:59:52Z",
+ "read_at": "2026-11-01T12:02:21Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3106,
+   "title": "fix(recon): repair workflow parse (drop invalid metadata perm) + dedicated recon token slot",
+   "merged_at": "2026-11-01T12:01:24Z",
+   "updated_at": "2026-11-01T12:01:49Z",
+   "created_at": "2026-11-01T12:00:46Z",
+   "merge_commit_sha": "9f030dbb0720c3662064c785b5e59bf9997e4493",
+   "head_ref": "swarm/recon-token-fix",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3106",
+   "merged": true
+  },
+  {
+   "number": 3105,
+   "title": "desk-feed: D2 WAF struck from batch queue (target \u2205 pending owner pick)",
+   "merged_at": "2026-11-01T12:01:28Z",
+   "updated_at": "2026-11-01T12:01:28Z",
+   "created_at": "2026-11-01T12:00:18Z",
+   "merge_commit_sha": "9be30617efb4da0edf2780690d2459e8aa2066d7",
+   "head_ref": "desk/d2-waf-strike",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3105",
+   "merged": true
+  },
+  {
+   "number": 3104,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T12:00:23Z",
+   "updated_at": "2026-11-01T12:01:10Z",
+   "created_at": "2026-11-01T12:00:18Z",
+   "merge_commit_sha": "52e7cccc6ff1452c25c89ea376225f341cf70d65",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3104",
+   "merged": true
+  },
   {
    "number": 3097,
    "title": "desk-feed: add D4 row \u2014 batch queued (Jules-only, window >2026-11-08)",
@@ -1913,59 +1952,59 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2927",
    "merged": true
-  },
-  {
-   "number": 2926,
-   "title": "fix(tracking): fail-soft snapshot fetch (collect run refresh failure)",
-   "merged_at": "2026-11-01T03:57:19Z",
-   "updated_at": "2026-11-01T03:57:19Z",
-   "created_at": "2026-11-01T03:56:00Z",
-   "merge_commit_sha": "eb00701f78e067053ee58490aff1fb11f7e73fb3",
-   "head_ref": "ops/repo-tracking-failsoft",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2926",
-   "merged": true
-  },
-  {
-   "number": 2925,
-   "title": "doe(ww-1): DESIGN record \u2014 duckduckgo webWrapper campaign (brief #1796)",
-   "merged_at": "2026-11-01T03:56:05Z",
-   "updated_at": "2026-11-01T03:56:05Z",
-   "created_at": "2026-11-01T03:55:18Z",
-   "merge_commit_sha": "a11681e970164400c753060f124c8c922654fa21",
-   "head_ref": "doe/ww-1-duckduckgo-design",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2925",
-   "merged": true
-  },
-  {
-   "number": 2924,
-   "title": "docs(ops): OWNER-REQUESTS row 14 \u2014 OpenRouter top-up / DeepSeek model ruling",
-   "merged_at": "2026-11-01T03:54:43Z",
-   "updated_at": "2026-11-01T03:55:04Z",
-   "created_at": "2026-11-01T03:54:35Z",
-   "merge_commit_sha": "eda09a84bd56786a670c176240bf94b315e06d98",
-   "head_ref": "docs/owner-requests-openrouter-row",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2924",
-   "merged": true
   }
  ],
  "open": [
   {
+   "number": 3107,
+   "title": "desk-feed: D2 queue leg closed (kickoff mechanics outside batch)",
+   "merged_at": null,
+   "updated_at": "2026-11-01T12:02:18Z",
+   "created_at": "2026-11-01T12:02:18Z",
+   "merge_commit_sha": "5dd68e5762dcfae53df8f58c89770106429d8b20",
+   "head_ref": "desk/d2-queue-leg-closed",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3107",
+   "merged": false
+  },
+  {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-01T11:59:41Z",
+   "updated_at": "2026-11-01T12:02:15Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "4d9d5703da9877393b1ad5fe5c0e20dc375da194",
+   "merge_commit_sha": "a8cbfc801357a125e69ababe7b4705df7b36a3cc",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
+   "merged": false
+  },
+  {
+   "number": 2914,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-01T12:01:13Z",
+   "created_at": "2026-11-01T03:19:03Z",
+   "merge_commit_sha": "42ba2810e4e4b8a4ace49b96000ecccf6c7d3d50",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-01T12:00:59Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "4404b52712d6ef6bd762994b2f7b1c7cbf4d6aa6",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -1982,19 +2021,6 @@
    "merged": false
   },
   {
-   "number": 2914,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-01T11:53:41Z",
-   "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "da2c46161edaf5802f79156ec30fb1982f69550a",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
-   "merged": false
-  },
-  {
    "number": 3063,
    "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
    "merged_at": null,
@@ -2005,19 +2031,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3063",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-01T11:14:09Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "9b11382eea4d61cd3f25fa3028af3926f22a4062",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {

@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T11:59:53Z",
+ "generated_at": "2026-11-01T12:02:21Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T11:59:52Z",
+   "read_at": "2026-11-01T12:02:21Z",
    "merged": 150,
-   "open": 167
+   "open": 168
   },
   "lane_events": {
-   "read_at": "2026-11-01T11:59:52Z",
+   "read_at": "2026-11-01T12:02:21Z",
    "status": "ok",
-   "count": 4283,
+   "count": 4286,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "in-flight": 12,
-   "active": 3,
+   "in-flight": 13,
    "landed": 1,
+   "active": 2,
    "unknown": 5
   }
  },
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -90,27 +90,28 @@
     "desk-feed traversal D1 pr=#2606",
     "open PRs: #3102"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries-d2",
    "project": "D2 Vultr Agent Rush",
    "domain": "challenges",
    "project_id": "d2-vultr",
-   "state": "active",
+   "state": "in-flight",
    "last_merge": {
-    "pr": 3091,
-    "sha": "a158f26e0618",
-    "at": "2026-11-01T11:50:51Z",
-    "title": "docs(ops): D2 promo \u2014 re-key holds until owner pick (freeze not enacted)"
+    "pr": 3105,
+    "sha": "9be30617efb4",
+    "at": "2026-11-01T12:01:28Z",
+    "title": "desk-feed: D2 WAF struck from batch queue (target \u2205 pending owner pick)"
    },
-   "next": "BATCH queued @2026-11-03T15:00Z \u00b7 fire-conditions {new repo \u2227 new AppID via 7075f9c0} \u00b7 pick OPEN owner-held (freeze leg REMOVED 2026-11-01 \u2014 owner direct NO to manager-enacted WAF freeze) \u00b7 gate D2-NOCARD open (Vultr account before the gift-code step) \u00b7 \u2205 fire pre-conditions",
+   "next": "BATCH queued @2026-11-03T15:00Z \u00b7 fire-conditions {new repo \u2227 new AppID via 7075f9c0} \u00b7 target \u2205 pending owner pick \u00b7 WAF spec STRUCK from batch queue (owner direct 2026-11-01 \u2014 WAF out of current production build lanes' scope) \u00b7 gate D2-NOCARD open (Vultr account before the gift-code step) \u00b7 \u2205 fire pre-conditions",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
-    "coordinator event D2 status=registered"
+    "coordinator event D2 status=registered",
+    "open PRs: #3107"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -124,7 +125,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -144,7 +145,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -156,7 +157,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -177,7 +178,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "challenge-entries",
@@ -191,7 +192,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "quota",
@@ -211,7 +212,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "doe",
@@ -231,7 +232,7 @@
     "doe DESIGN.json campaigns=12",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "doe-nc1",
@@ -243,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "tier-1",
@@ -255,7 +256,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "contribution-desk",
@@ -272,10 +273,10 @@
    "next": "land/close PR #3063 \u2014 viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
    "next_basis": "open-pr",
    "evidence": [
-    "desk-feed traversals=9 generated_at=2026-11-01T11:58:07Z",
+    "desk-feed traversals=9 generated_at=2026-11-01T12:00:07Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "web-design-viz",
@@ -294,7 +295,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "marketing",
@@ -313,7 +314,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "marketing-social",
@@ -325,7 +326,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "swarm",
@@ -334,17 +335,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3101,
-    "sha": "33a339b15310",
-    "at": "2026-11-01T11:56:22Z",
-    "title": "ops(recon): capture ingest stderr + surface collect failures on #3094"
+    "pr": 3106,
+    "sha": "9f030dbb0720",
+    "at": "2026-11-01T12:01:24Z",
+    "title": "fix(recon): repair workflow parse (drop invalid metadata perm) + dedicated recon token slot"
    },
    "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "providers",
@@ -364,7 +365,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "providers-phrases",
@@ -376,7 +377,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "repo-replay",
@@ -393,7 +394,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "ops",
@@ -407,7 +408,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   },
   {
    "lane": "telemetry",
@@ -421,7 +422,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T11:59:53Z"
+   "updated_at": "2026-11-01T12:02:21Z"
   }
  ],
  "doe_join": {

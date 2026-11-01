@@ -47,6 +47,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin quota/allocation-plan-refresh || true
           git checkout -B quota/allocation-plan-refresh
           git add ops/quota/allocation-plan.json
           git commit -m "quota: allocation plan refresh (automated, #1884)"

@@ -1,13 +1,39 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T12:50:26Z",
+ "read_at": "2026-11-01T12:53:57Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3136,
+   "title": "fix(desk): CORRECT meta disposition \u2014 wired-unprovisioned (routes of record #2641); only llama_api record retired",
+   "merged_at": "2026-11-01T12:53:32Z",
+   "updated_at": "2026-11-01T12:53:38Z",
+   "created_at": "2026-11-01T12:53:29Z",
+   "merge_commit_sha": "c834dde237ce6a564d0f8199067c6b72ddadfd8b",
+   "head_ref": "providers/dispatch-catalog-meta-correction",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3136",
+   "merged": true
+  },
+  {
+   "number": 3135,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T12:51:27Z",
+   "updated_at": "2026-11-01T12:51:37Z",
+   "created_at": "2026-11-01T12:51:23Z",
+   "merge_commit_sha": "f9d58f8d3bf11587cae8cba7d695e9a5f15abae8",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3135",
+   "merged": true
+  },
   {
    "number": 3134,
    "title": "chore(ops): regenerate operator matrix",
    "merged_at": "2026-11-01T12:50:20Z",
-   "updated_at": "2026-11-01T12:50:22Z",
+   "updated_at": "2026-11-01T12:50:42Z",
    "created_at": "2026-11-01T12:50:16Z",
    "merge_commit_sha": "170cf36901b5b5bd545df62ba437fb0d151fd357",
    "head_ref": "operator-matrix/auto",
@@ -1926,35 +1952,22 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2958",
    "merged": true
-  },
-  {
-   "number": 2946,
-   "title": "apk-release lane: SDK-direct build\u2192sign\u2192GitHub Release (tag apk-v*/dispatch)",
-   "merged_at": "2026-11-01T04:23:21Z",
-   "updated_at": "2026-11-01T04:36:07Z",
-   "created_at": "2026-11-01T04:22:03Z",
-   "merge_commit_sha": "5e7a33a72db1115f5cf050bae79c6a66b3013a46",
-   "head_ref": "apk-release-lane-v1",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2946",
-   "merged": true
-  },
-  {
-   "number": 2957,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T04:35:02Z",
-   "updated_at": "2026-11-01T04:35:21Z",
-   "created_at": "2026-11-01T04:34:57Z",
-   "merge_commit_sha": "41335b395f1c3cdbdac1e38417fbb29620150d00",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2957",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 2914,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-01T12:51:30Z",
+   "created_at": "2026-11-01T03:19:03Z",
+   "merge_commit_sha": "fac1c94268f7489aa2fa820506d7687d458a2dc2",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
+   "merged": false
+  },
   {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
@@ -1966,19 +1979,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
-   "merged": false
-  },
-  {
-   "number": 2914,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-01T12:23:03Z",
-   "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "77084edb27d114b0518239a6b13d4f474e34bf9f",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
    "merged": false
   },
   {

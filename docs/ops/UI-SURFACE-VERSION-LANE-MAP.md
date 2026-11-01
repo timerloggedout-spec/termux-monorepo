@@ -286,6 +286,6 @@ A framework upgrade does not automatically change the domain contract. A domain 
 
 ### 8.7 Documentation and registry ownership
 
-Maintain a machine-readable surface registry (proposed; schema and location require implementation review) that indexes each projection by `surface_id`, family, renderer, target profile, owner, domain contract, conformance suite, maturity, and support status. Link it from the UI/UX control-plane documentation and this map. Update the registry whenever a surface is introduced, retired, changes renderer, or changes its supported target profile.
+Maintain the machine-readable starter registry at `docs/ops/ui-surface-registry.json`. It indexes projections by `surface_id`, family, renderer, target profile, evidence paths, maturity, confidence, and support status. This is an initial evidence-backed inventory, not a claim that every listed implementation is production-ready or deployed. Empty evidence paths plus `maturity: proposed` mean no implementation was confirmed in the inspected repository tree; they do not prove that no prototype exists elsewhere. Extend the schema as owner, domain contract, conformance suite, build ID, and tested support evidence become available. Update the registry whenever a surface is introduced, retired, changes renderer, or changes its supported target profile.
 
 The current six Help-Wanted categories and ten SHE destinations remain unchanged. They are navigation structures that can link to any of these modality projections; they are not rendering lanes.

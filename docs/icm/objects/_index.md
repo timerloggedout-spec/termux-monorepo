@@ -19,5 +19,6 @@
 | [AuditEngine / Ethics Engine](knowledge/audit-engine.md) | knowledge | live | initiated | psychometric assessment patterns, scale/persona design, or adapting the owned AuditEngine_fork |
 | [Workspace Artifact Estate](knowledge/workspace-artifact-estate.md) | knowledge | leftover | verified | classifying nested `workspace/` Markdown, text, JSONL, generated products, or stale artifacts |
 | [Ops Records Estate](knowledge/ops-records-estate.md) | knowledge | live | initiated | classifying or routing a `docs/ops/` record — generated vs hand, snapshot vs operational |
+| [DeepWiki.com Index (Public Repo Wiki)](knowledge/deepwiki-index.md) | knowledge | live | initiated | consulting the generated public wiki for this repo, its coverage, or its harvest record |
 | [Agents Skills Estate](knowledge/agents-skills-estate.md) | knowledge | live | initiated | choosing, invoking, adding, or retiring a fleet skill under `.agents/skills/` |
 | [Change Control](governance/change-control.md) | governance | live | verified | changing tracked source/docs, proposal state, branch flow, or validation requirements |

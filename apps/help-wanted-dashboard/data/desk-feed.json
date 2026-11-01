@@ -12,7 +12,7 @@
    "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
    "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
    "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
-   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch (dispatch HELD per #2672 until contracts green), provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation = bench-wide task-fit; stamps carry provider + selection reason + bench position (catalog class).",
+   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch (dispatch; #2672 closed, contracts green), provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation = bench-wide task-fit; stamps carry provider + selection reason + bench position (catalog class).",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [
@@ -710,7 +710,7 @@
        "zai": "key-live"
       },
       "reverse_gap": "batch member ollama has no distinct registry model-provider row",
-      "promotion": "one named single-provider batch dispatch per provider + artifact naming provider/model/result; first resolve flags (provision 8 no-credential keys; move groq/xkiro to non-Actions egress; recheck aion/sealion or retire). NOTE: batch dispatches currently HELD per #2672.",
+      "promotion": "one named single-provider batch dispatch per provider + artifact naming provider/model/result; first resolve flags (provision the secrets-absent keys incl. huggingface per #3141; move groq/xkiro to non-Actions egress; aion = edge-403). NOTE: #2672 gate lifted 2026-11-01 (contracts green); first invoke batch executed as issue #3141 - cohere + sealion promoted to proven.",
       "gate_state_blocked_by_2672": [
        "cohere",
        "sambanova",
@@ -789,10 +789,10 @@
     "summary": {
      "records": 91,
      "by_class": {
-      "wired-unproven": 22,
+      "wired-unproven": 20,
       "triggerable": 2,
       "inference-only": 65,
-      "proven": 2
+      "proven": 4
      },
      "availability_covered": 16,
      "availability_secret_only": 1,
@@ -807,10 +807,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published (no rate-limit headers or usage endpoint documented)"
+      "registry_live_field": "none published (no rate-limit headers or usage endpoint documented)",
+      "invoke_verdict": "edge-403: http 403 at invoke (not route-dead); verdicts issue #3141"
      },
      {
       "id": "cerebras.free_tokens",
@@ -819,10 +820,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket"
+      "registry_live_field": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "cloudflare.workers_ai",
@@ -831,23 +833,25 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
-      "registry_live_field": "none published (no usage API); Workers AI dashboard only"
+      "registry_live_field": "none published (no usage API); Workers AI dashboard only",
+      "invoke_verdict": "scope: account-scoped route (invoke http 404, catalog 405/404); verdicts issue #3141"
      },
      {
       "id": "cohere.trial_calls",
       "provider": "cohere",
-      "class": "wired-unproven",
+      "class": "proven",
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
       "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "INVOKE OK http 200 (model c4ai-aya-expanse-32b) via provider-invoke; verdicts issue #3141"
      },
      {
       "id": "felo.api_credits",
@@ -859,7 +863,8 @@
        "provider-availability catalog probe",
        "catalog endpoint in scripts/provider_model_catalog.py; batch admission missing"
       ],
-      "registry_live_field": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After"
+      "registry_live_field": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
+      "invoke_verdict": "no reviewed chat endpoint in repo sources (catalog-only provider); verdicts issue #3141"
      },
      {
       "id": "g4f.agenttools",
@@ -1562,10 +1567,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-t"
+      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-t",
+      "invoke_verdict": "egress-403: http 403 from Actions egress; verdicts issue #3141"
      },
      {
       "id": "huggingface.inference_providers",
@@ -1574,10 +1580,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota)"
+      "registry_live_field": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota)",
+      "invoke_verdict": "secrets-absent in Actions store: HUGGINGFACE_TOKEN / HUGGING_FACE_HUB_TOKEN / HF_API_TOKEN / HF_TOKEN all absent in invoke job env; verdicts issue #3141"
      },
      {
       "id": "kilo.free_models",
@@ -1586,10 +1593,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published"
+      "registry_live_field": "none published",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "llm7.free_token",
@@ -1598,11 +1606,12 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
       "registry_live_field": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "funding-blocked: http 402 insufficient balance; verdicts issue #3141"
      },
      {
       "id": "meta.llama_api",
@@ -1644,10 +1653,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published (Admin Panel only; Admin API is Enterprise)"
+      "registry_live_field": "none published (Admin Panel only; Admin API is Enterprise)",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "modelscope.api_inference",
@@ -1656,10 +1666,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published (not established)"
+      "registry_live_field": "none published (not established)",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "nvidia.api_catalog",
@@ -1668,10 +1679,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published"
+      "registry_live_field": "none published",
+      "invoke_verdict": "skew: catalog http 200 vs invoke model http 404; verdicts issue #3141"
      },
      {
       "id": "omni.gateway",
@@ -1683,7 +1695,8 @@
        "provider-availability catalog probe",
        "catalog endpoint in scripts/provider_model_catalog.py; batch admission missing"
       ],
-      "registry_live_field": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers"
+      "registry_live_field": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
+      "invoke_verdict": "no reviewed chat endpoint in repo sources (catalog-only provider); verdicts issue #3141"
      },
      {
       "id": "openrouter.free_models",
@@ -1704,10 +1717,11 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "none published; consumption visible in the Control Panel"
+      "registry_live_field": "none published; consumption visible in the Control Panel",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "requesty.free_models",
@@ -1716,10 +1730,11 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
-      "registry_live_field": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage"
+      "registry_live_field": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "routeway.free_models",
@@ -1728,11 +1743,12 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
       "registry_live_field": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "funding-blocked: http 402 insufficient funds; verdicts issue #3141"
      },
      {
       "id": "sambanova.free_tier",
@@ -1741,23 +1757,25 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
       "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratel",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "capacity: http 429 model high demand; verdicts issue #3141"
      },
      {
       "id": "sealion.api",
       "provider": "sealion",
-      "class": "wired-unproven",
+      "class": "proven",
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
-      "registry_live_field": "none published"
+      "registry_live_field": "none published",
+      "invoke_verdict": "INVOKE OK http 200 (aisingapore/Llama-SEA-LION-v3-70B-IT) via provider-invoke; prior route-dead flag WRONG, retracted; verdicts issue #3141"
      },
      {
       "id": "siliconflow.free_models",
@@ -1766,11 +1784,12 @@
       "availability_probe": "endpoint+secret",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
       "registry_live_field": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free val",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "funding-blocked: http 402 on retry (first attempt http 200 without completion text); verdicts issue #3141"
      },
      {
       "id": "typhoon.api",
@@ -1779,10 +1798,11 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
-      "registry_live_field": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message"
+      "registry_live_field": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "unorouter.free_models",
@@ -1791,11 +1811,12 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
       "registry_live_field": "Retry-After header on HTTP 429",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "timeout: transport read timeout (~45s); verdicts issue #3141"
      },
      {
       "id": "xfyun.spark",
@@ -1804,10 +1825,11 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
-      "registry_live_field": "none published (not established)"
+      "registry_live_field": "none published (not established)",
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
      },
      {
       "id": "xkiro.free_models",
@@ -1816,10 +1838,11 @@
       "availability_probe": "not-covered",
       "batch": "wired (Quota class b, via provider-batch)",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "no availability coverage"
       ],
-      "registry_live_field": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published"
+      "registry_live_field": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
+      "invoke_verdict": "egress-403: http 403 from Actions egress; verdicts issue #3141"
      },
      {
       "id": "zai.free_models",
@@ -1828,14 +1851,16 @@
       "availability_probe": "secret-only",
       "batch": "endpoint-wired",
       "inference_route": [
-       "provider-batch (HELD per #2672)",
+       "provider-batch",
        "provider-availability catalog probe"
       ],
       "registry_live_field": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
-      "gate_state": "gate-green"
+      "gate_state": "gate-green",
+      "invoke_verdict": "funding-blocked: http 429 insufficient balance / no resource package; verdicts issue #3141"
      }
     ],
-    "gate_note": "#2672 CLOSED 2026-11-01: gate_state lifted to gate-green on the 7 key-live providers (cohere, llm7, routeway, sambanova, siliconflow, unorouter, zai) - contracts GREEN run 41308987754 (head 87453e9c = PR #3138 merge, in master history), operational_providers job executed = evidence leg run; per-provider invoke promotion proceeds at Swarm as results land."
+    "gate_note": "#2672 CLOSED 2026-11-01: gate_state lifted to gate-green on the 7 key-live providers (cohere, llm7, routeway, sambanova, siliconflow, unorouter, zai) - contracts GREEN run 41308987754 (head 87453e9c = PR #3138 merge, in master history), operational_providers job executed = evidence leg run; per-provider invoke promotion proceeds at Swarm as results land.",
+    "invoke_batch_note": "INFERENCE BATCH reclass (Swarm, verdicts issue #3141, invoke surface provider-invoke.yml + scripts/ops/provider_invoke.py - runtime-resolved, no pinned routes): proven-by-invoke += cohere, sealion (sealion route-dead flag retracted - live 200). aion route-dead corrected to edge-403. Blockers of record: funding-blocked {zai, llm7, routeway, siliconflow} - capacity {sambanova} - secrets-absent in Actions store {huggingface, cerebras, kilo, mistral, modelscope, ovhcloud, requesty, typhoon, xfyun} - egress-403 {groq, xkiro} - skew {nvidia} - scope {cloudflare} - timeout {unorouter}. felo/omni: no reviewed chat endpoint in repo sources (catalog-only)."
    },
    "inference_wiring": {
     "basis": "CORRECTED multi-surface census (fix seat, firsthand @master 2026-11-01). Supersedes the 2-surface re-base below-record: wiring = invoke code on ANY fleet surface {provider-batch ENDPOINTS, provider_model_catalog ENDPOINTS, llm_api_hub provider_extensions ENDPOINTS (PR #1471), llm_api_hub provider_protocols CHAT_ENDPOINTS, g4f-working/gpt4free route}.",
@@ -1967,7 +1992,8 @@
      "applied_now": "CORRECTED (2026-11-01): PKG-A + PKG-B stood down — their targets were already wired. The pool stands at the corrected wired set; future wiring work concerns only genuinely unwired surfaces as they appear."
     },
     "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts.",
-    "dispositions": {}
+    "dispositions": {},
+    "invoke_surface_of_record": "provider-invoke.yml + scripts/ops/provider_invoke.py (runtime-resolved, no pinned routes) - invoke-evidence surface of record since the #3141 inference batch (2026-11-01); the batch/catalog/extension surfaces remain wired transports."
    },
    "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated.",
    "app_layer": {

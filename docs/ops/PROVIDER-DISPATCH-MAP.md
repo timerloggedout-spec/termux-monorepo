@@ -101,9 +101,10 @@ All 5 triggerable + 3 wired-unproven lanes fired at production work; classes upd
 - **Fired, failed + diagnosis (class unchanged):** `gemini-interactions-smoke` — runs
   41302258314 + 41302303592 FAILURE; log-verified: Interactions API probe HTTP 404 with
   GEMINI_API_KEY configured (route/model not found, ¬ credential failure) ·
-  `provider-recon-compound` — runs 41302080198 + 41302264142 FAILURE; log-verified: collect
-  step pinned-source fetch HTTP 403 (exit 2, publish skipped); fix dispatched to Gemini
-  (issue #3077).
+  `provider-recon-compound` — batch runs FAILED (403 layer) but RESTORED: run 41304907142
+  FULL SUCCESS {contracts+collect+publish} 2026-11-01T12:06Z. Root causes: (1) parser grammar
+  vs upstream KeylessDecisionProvider registrations (fix #3085); (2) transient egress/rate
+  403 during the batch window (error-surfacing #3096 -> #3094; token pin #3110) => PROVEN.
 - **Review leg:** `gemini-review` — first attempt on PR #3079 (comment 6557428651) produced
   no dispatch run (PR merged mid-storm 11:39:39Z); re-fired on PR #3080 (comment 6557463507)
   ⇒ dispatch run 41303090873, review job SUCCESS ⇒ PROVEN.

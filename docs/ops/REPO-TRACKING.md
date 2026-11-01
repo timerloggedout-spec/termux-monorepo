@@ -38,7 +38,7 @@ hand-refreshed, or PR-centric.
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` |
 | Tests | `tests/test_repo_tracking.py` |
 
-**Feed top-level:** `{schema, generated_at, generated_by, sources{pr_feed, lane_events, records}, honesty_rules[], summary{rows, by_domain, by_state}, rows[], gaps[]}` — summary counts live under `summary{}` (viz note, PR #2941); renders read them there.
+**Feed top-level:** `{schema, generated_at, generated_by, sources{pr_feed, lane_events, records}, honesty_rules[], summary{rows, by_domain, by_state}, rows[], doe_join{summary, campaigns[]}, gaps[]}` — summary counts live under `summary{}` (viz note, PR #2941); renders read them there.
 
 **Row:** `{lane, project, domain, project_id, state, last_merge{pr, sha, at, title}, next, next_basis, evidence[], updated_at}`.
 
@@ -62,6 +62,25 @@ hand-refreshed, or PR-centric.
   (specific projects precede generic domain buckets). Unclassified
   merged PRs are counted in `gaps` — the fix is a match-rule PR to the
   seed, never a hand-edit of the outputs.
+- **provider × DoE join (`doe_join`)** — the joined view the quota
+  surface does not carry (quota page = pools, its own scope; this join
+  = which configured instances are planned/recorded/dispatched, per
+  campaign). Per campaign (dir under `experiments/doe/` with a readable
+  `DESIGN.json`): identity + `design_factors` verbatim from
+  `DESIGN.json` (context only — never a source of instance rows);
+  instance tuples collected recursively from `PLAN*.json` (planned),
+  `records/**/*.json` (recorded) and `dispatch/**/*.json`
+  (dispatched) — every `instance` dict carrying
+  provider/model/instance_key (`treatment.instance` in EXPERIMENT
+  records, `rows[].instance` in plans) — normalized to `{provider,
+  model_at_version, role, prompt (system_prompt ref#sha12), moniker,
+  context, instance_key}`, grouped by `instance_key` (DOE-FAMILY
+  doctrine: never by model alone), per-source occurrence counts.
+  `experiment_records`/`experiment_records_with_instance` count the
+  campaign's EXPERIMENT records (top-level `treatment`) and how many
+  carry an instance tuple; records without one (arm-only treatments)
+  are counted, never joined. A campaign with no instance tuple
+  anywhere is `join_state: design_only`, rendered `NOT_ESTABLISHED`.
 
 ## Rules
 

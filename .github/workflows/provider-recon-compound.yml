@@ -47,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: write
     timeout-minutes: 10
     steps:
       # Privileged workflow_run never checks out the triggering revision or PR code.
@@ -61,9 +62,19 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/provider-research
-          python3 -m scripts.model_selection_market.provider_recon --output /tmp/provider-research/provider-recon.json
-          python3 -m scripts.model_selection_market.cadence --input data/model-selection-market/cadence-seed.json --output /tmp/provider-research/cadence-plan.json
-          python3 -m scripts.model_selection_market.resource_index --registry data/model-selection-market/resource-registry.json --providers /tmp/provider-research/provider-recon.json --output /tmp/provider-research/resource-index.json
+          python3 -m scripts.model_selection_market.provider_recon --output /tmp/provider-research/provider-recon.json 2>&1 | tee -a /tmp/provider-research/ingest.log
+          python3 -m scripts.model_selection_market.cadence --input data/model-selection-market/cadence-seed.json --output /tmp/provider-research/cadence-plan.json 2>&1 | tee -a /tmp/provider-research/ingest.log
+          python3 -m scripts.model_selection_market.resource_index --registry data/model-selection-market/resource-registry.json --providers /tmp/provider-research/provider-recon.json --output /tmp/provider-research/resource-index.json 2>&1 | tee -a /tmp/provider-research/ingest.log
+      - name: Surface collect error (diagnostics)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo "provider-recon-compound collect failed in run ${{ github.run_id }} (attempt ${{ github.run_attempt }}). Captured ingest output tail:";
+            echo;
+            tail -c 3000 /tmp/provider-research/ingest.log 2>/dev/null || echo "(no ingest log captured)";
+          } > /tmp/diag.md
+          gh issue comment 3094 --body-file /tmp/diag.md
       - name: Preserve run-attempt evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

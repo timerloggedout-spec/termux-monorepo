@@ -33,7 +33,10 @@ QUESTIONS_TEMPLATE = (
     "comprehension check below from the lesson content. For every question: "
     "restate the question verbatim under a heading line \"Q<n>\", then give "
     "the correct option (letter and full text), a one-sentence justification, "
-    "and quote the lesson body evidence that supports the answer. If a "
+    "and quote the lesson body evidence that supports the answer. After "
+    "each answer, emit one line exactly of the form KEY Q<n>: followed by "
+    "the correct option text copied verbatim from the options list (no "
+    "paraphrase, no letter). If a "
     "question asks which option is NOT mentioned, select the option that is "
     "absent from the lesson body evidence. Questions:\n{questions}{context}"
 )
@@ -65,6 +68,38 @@ def content_check(text: str, questions: list[str]) -> list[str]:
         if key not in text or not _ordered_subsequence(stem_tokens, toks):
             missing.append(key)
     return missing
+def _norm(text: str) -> str:
+    return " ".join(text.strip().strip("`\"'").split()).lower()
+
+
+def parse_options(question: str) -> list[str]:
+    if " Options:" not in question:
+        return []
+    tail = question.split(" Options:", 1)[1]
+    return [o.strip() for o in tail.split("; ") if o.strip()]
+
+
+def keying_check(text: str, questions: list[str]) -> list[str]:
+    """Return Q keys whose KEY line is missing or keys a non-option text.
+
+    The prompt mandates one 'KEY Q<n>: <exact option text>' line per
+    question; a keyed text outside the manifest option set is rejected
+    (002 failure class: misquoted option keyed anyway).
+    """
+    bad = []
+    keyed = {}
+    for m in re.finditer(r"KEY\s+Q(\d+)\s*:\s*(.+)", text):
+        keyed[int(m.group(1))] = m.group(2).strip()
+    for i, q in enumerate(questions, 1):
+        options = parse_options(q)
+        if not options:
+            continue
+        got = keyed.get(i)
+        if got is None or _norm(got) not in {_norm(o) for o in options}:
+            bad.append(f"Q{i}")
+    return bad
+
+
 WORKSHOP_TEMPLATE = (
     "Produce the complete work product for the FreeCodeCamp Relational "
     "Databases v9 workshop \"{title}\": every file the workshop builds, "
@@ -127,6 +162,8 @@ def main() -> int:
         if ok and questions:
             text = artifact.read_text(errors="replace") if artifact.exists() else ""
             missing = content_check(text, questions)
+            keying_bad = keying_check(text, questions)
+            missing = missing + [f"{k}-key" for k in keying_bad]
             if missing:
                 ok = False
         if verdict.get("model"):

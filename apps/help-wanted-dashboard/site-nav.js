@@ -2,7 +2,11 @@
 (function () {
   "use strict";
   var origin = "https://timerloggedout-spec.github.io";
-  var tribute = origin + "/tribute/";
+  var path = window.location.pathname.toLowerCase();
+  var previewMatch = path.match(/^\/previews\/([a-z0-9][a-z0-9-]{0,60})\/tribute(?:\/|$)/);
+  var tribute = previewMatch
+    ? origin + "/previews/" + previewMatch[1] + "/tribute/"
+    : origin + "/tribute/";
   var links = [
     ["Marketing", origin + "/", "marketing"],
     ["Tribute", tribute, "tribute"],
@@ -35,7 +39,6 @@
     ["Project hub", origin + "/termux-monorepo/", "project-hub"],
     ["Monorepo", "https://github.com/timerloggedout-spec/termux-monorepo", "monorepo"]
   ];
-  var path = window.location.pathname.toLowerCase();
   var current = path.split("/").filter(Boolean).pop() || "index.html";
   if (current.indexOf(".") < 0) current = "index.html";
   var active = current === "index.html" && (path.indexOf("/tribute/") >= 0 || path.indexOf("/help-wanted/") >= 0)

@@ -124,7 +124,20 @@ All 5 triggerable + 3 wired-unproven lanes fired at production work; classes upd
   no dispatch run (PR merged mid-storm 11:39:39Z); re-fired on PR #3080 (comment 6557463507)
   ⇒ dispatch run 41303090873, review job SUCCESS ⇒ PROVEN.
 
-## Inference wiring — re-based (owner class correction 2026-11-01)
+## Inference wiring — CORRECTED census (2026-11-01, supersedes the re-base below)
+
+ERROR OF RECORD: the re-base counted only 2 invoke surfaces (provider-batch +
+provider_model_catalog ENDPOINTS) and classed 72 providers not-wired. Full census across
+ALL surfaces {batch, catalog, llm_api_hub provider_extensions (PR #1471), llm_api_hub
+provider_protocols, g4f-working/gpt4free}: **87/89 catalogued keys carry an invoke
+surface** — named 26 {batch/catalog 17 + extensions 7 (typhoon, unorouter, routeway,
+requesty, xkiro, xfyun, sealion) + protocols 2 (cloudflare, cohere)} + g4f family
+{60 records + composite, catalogued route; tester-working evidence 15 providers}.
+Not-wired = 2: github (review-kind record) + meta (retired/provisioning-gated) — both
+owner items. PKG-A (#3099) + PKG-B (#3100) were dispatched on the wrong census and are
+STOOD DOWN. (ollama also has a protocol endpoint; not a model-lane catalogued key.)
+
+## Inference wiring — re-based (owner class correction 2026-11-01) — SUPERSEDED, kept for the record
 
 The inference bench IS the batch universe. Wiring classes are computed on **wired INVOKE
 routes for inference providers only**; review/command surfaces (Qodo, Devin, CodeRabbit,
@@ -151,9 +164,8 @@ workflow lane is not a wired provider. Structural form: every lane now carries
 ## Compounding — the catalog wires itself (owner rule 2026-11-01)
 
 Every time a new endpoint is wired, it is eligible to join the process of continuing the
-wiring. The worker pool = the wired-invoke set (17 today: aion, cerebras, felo, google,
-groq, huggingface, kilo, llm7, mistral, modelscope, nvidia, omni, openrouter, ovhcloud,
-sambanova, siliconflow, zai) and grows with every landing. Packages shard across the pool
+wiring. The worker pool = the wired-invoke set (corrected census: 26 named providers +
+the g4f family route; see the corrected wiring census) and grows with every landing. Packages shard across the pool
 by task-fit — no single provider or vendor (including Google: Jules + Gemini) is the
 default, sole, or consecutive builder. Each wiring PR names the providers it unlocks.
 Applied now: PKG-A's 9 join the pool as they land; PKG-B's DeepSeek holds the core-module

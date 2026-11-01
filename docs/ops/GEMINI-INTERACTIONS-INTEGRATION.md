@@ -10,12 +10,12 @@ Google documents the Interactions API as the current API for new Gemini applicat
 
 ## Repository surface
 
-- llm-api-hub/server/gemini_interactions.py
+- llm_api_hub/server/gemini_interactions.py
   - OpenAI-compatible local adapter on 127.0.0.1:8788
   - outbound endpoint: Gemini /v1beta/interactions
   - credential: GEMINI_API_KEY only
   - no secret persistence or prompt/response logging
-- llm-api-hub/tests/test_gemini_interactions.py
+- llm_api_hub/tests/test_gemini_interactions.py
   - payload/state/normalization contract tests
 - .github/workflows/gemini-interactions-smoke.yml
   - manual smoke test using the repository secret
@@ -49,7 +49,7 @@ Controlled rollout:
 
 Local contract tests:
 
-    python3 -m unittest discover -s llm-api-hub/tests -p 'test_gemini_interactions.py'
+    python3 -m unittest discover -s llm_api_hub/tests -p 'test_gemini_interactions.py'
 
 Manual smoke:
 

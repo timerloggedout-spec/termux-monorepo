@@ -1,4 +1,4 @@
-# llm-api-hub routing
+# llm_api_hub routing
 
 ## Resolution order
 

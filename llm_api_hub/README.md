@@ -1,4 +1,4 @@
-# llm-api-hub — LLM API Unification Hub
+# llm_api_hub — LLM API Unification Hub
 
 **Canonical model plane for the Termux monorepo ADE.**
 
@@ -9,7 +9,7 @@ NexusCLI, kai9000 (dev skills), archwiz dispatch, and agents **must** call this 
 
 | Concern | Decision |
 |---------|----------|
-| Versioned code + schemas | **Tracked in repo** → `llm-api-hub/` at monorepo root |
+| Versioned code + schemas | **Tracked in repo** → `llm_api_hub/` at monorepo root |
 | Secrets / runtime tokens | **Dot dirs** → `~/.multi-ai-tokens/`, `~/.deepcli/`, session stores |
 | MCP server configs | May live under `~/.kai9000/mcp/` or `.mcp/` **locally**; templates stay in-repo |
 
@@ -80,7 +80,7 @@ cookies/tokens + proprietary endpoints. Hub exposes them as **virtual models**:
 ## Layout
 
 ```
-llm-api-hub/
+llm_api_hub/
   README.md
   schemas/
   server/
@@ -104,7 +104,7 @@ llm-api-hub/
 
 | Track | Location |
 |-------|----------|
-| ADE / orchestrator skills, MCP templates, workflows (dev) | monorepo: `llm-api-hub/`, `.agents/skills/`, `archwiz/` |
+| ADE / orchestrator skills, MCP templates, workflows (dev) | monorepo: `llm_api_hub/`, `.agents/skills/`, `archwiz/` |
 | Crypto-facing kai9000 + Hermes | `_1-Projects/a/kai9000-crypto/` (pointer / sparse ref) |
 
 See `docs/ADE_KAI9000_SPLIT.md`.

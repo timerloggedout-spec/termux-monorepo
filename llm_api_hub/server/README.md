@@ -1,6 +1,6 @@
-# llm-api-hub local server
+# llm_api_hub local server
 
-`llm-api-hub` is the canonical local model plane for the Termux monorepo ADE. It exposes an OpenAI-compatible `POST /v1/chat/completions` endpoint and keeps provider-specific credentials and wrapper session state outside the repository.
+`llm_api_hub` is the canonical local model plane for the Termux monorepo ADE. It exposes an OpenAI-compatible `POST /v1/chat/completions` endpoint and keeps provider-specific credentials and wrapper session state outside the repository.
 
 ## Start the server
 

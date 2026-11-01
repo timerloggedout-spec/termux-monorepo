@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "966c054082339faf917ef82380da8a46d2f606003ba42af28495bbee4a178113",
-  "workflow_count": 253,
+  "source_fingerprint": "02a082a617b51ce08ad750f7aa3d93e28722f2725c95db4e5da4b29cb5a083d1",
+  "workflow_count": 254,
   "workflows": [
     {
       "action_pins": [],
@@ -3572,6 +3572,23 @@
       "triggers": [
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: quota-analysis-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "analyze"
+      ],
+      "name": "quota-analysis",
+      "path": ".github/workflows/quota-analysis.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },

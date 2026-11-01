@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T12:18:48Z",
+ "generated_at": "2026-11-01T13:25:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2208,7 +2208,12 @@
      },
      "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd",
      "bench_position": "catalog class: proven build/fix — DeepSeek termux-agent (agent-endpoint arm)",
-     "selection_reason": "Staged fix-class pick under the pre-FIX funnel (D1 seat order; fired 2026-11-01, run 41301295882). Per owner FIX via main (2026-11-01) the pick is NOT automatic going forward — any re-dispatch re-selects bench-wide by task fit."
+     "selection_reason": "Staged fix-class pick under the pre-FIX funnel (D1 seat order; fired 2026-11-01, run 41301295882). Per owner FIX via main (2026-11-01) the pick is NOT automatic going forward — any re-dispatch re-selects bench-wide by task fit.",
+     "ts": "2026-11-01T11:18:21Z",
+     "first_pass_success": null,
+     "rework_cycles": null,
+     "dispatch_to_pr_wall_time": null,
+     "stalled_action_required": null
     },
     {
      "provider": "Gemini",
@@ -2237,7 +2242,12 @@
      },
      "instance_key": "challenge-entries-manager/d1-studysprint-sr-module/31f915ff0169",
      "bench_position": "catalog class: proven build/fix — Gemini dispatch (issue arm)",
-     "selection_reason": "Feature-class pick under the pre-FIX rotation (D1 seat order; issue #3050, run 41301369671). Per owner FIX via main (2026-11-01): NOT automatic going forward — follow-ups re-select bench-wide by task fit."
+     "selection_reason": "Feature-class pick under the pre-FIX rotation (D1 seat order; issue #3050, run 41301369671). Per owner FIX via main (2026-11-01): NOT automatic going forward — follow-ups re-select bench-wide by task fit.",
+     "ts": "2026-11-01T11:19:22Z",
+     "first_pass_success": null,
+     "rework_cycles": null,
+     "dispatch_to_pr_wall_time": null,
+     "stalled_action_required": null
     },
     {
      "provider": "Jules",
@@ -2266,7 +2276,12 @@
      },
      "instance_key": "challenge-entries-manager/d1-studysprint-reader-core/fcc968db0eed",
      "bench_position": "catalog class: proven build/fix — Jules build_sessions (issue arm)",
-     "selection_reason": "Re-selection rule (owner FIX 2026-11-01): D1 next dispatch OUTSIDE {DeepSeek, Gemini} ⇒ Jules = remaining proven build arm. Batch fan-out continues at PR stage via command-dispatch review lanes; provider-batch held on #2672."
+     "selection_reason": "Re-selection rule (owner FIX 2026-11-01): D1 next dispatch OUTSIDE {DeepSeek, Gemini} ⇒ Jules = remaining proven build arm. Batch fan-out continues at PR stage via command-dispatch review lanes; provider-batch held on #2672.",
+     "ts": "2026-11-01T11:44:17Z",
+     "first_pass_success": null,
+     "rework_cycles": null,
+     "dispatch_to_pr_wall_time": null,
+     "stalled_action_required": null
     }
    ]
   },

@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T12:00:07Z",
+ "generated_at": "2026-11-01T12:02:06Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2423,7 +2423,7 @@
    "evidence": {
     "note": "build route per D2 seat record (on owner pick): pick/spec ⇒ Desk ⇒ builder lanes ⇒ monorepo PR ⇒ sync ⇒ D2 verifies. WAF candidate-spec struck from batch queue 2026-11-01 per owner direct; spec packet remains D2 seat material, ¬ queue, ¬ pick."
    },
-   "next": "BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · target ∅ pending owner pick · WAF spec STRUCK from batch queue (owner direct 2026-11-01 — WAF out of current production build lanes' scope) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions",
+   "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick",
    "provider_usage": []
   },
   {

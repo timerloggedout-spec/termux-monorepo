@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 151,
+    "open_prs": 155,
     "pr_classes": {
       "CANDIDATE": 69,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 77,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 79,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 149,
+      "prs": 153,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T01:26:45Z",
+  "generated_at": "2026-11-01T01:34:12Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "d3319c010e"
+    "sha": "1fbb8adb00"
   },
   "prs": [
     {
@@ -194,6 +194,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3edf142316",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2836,
+      "title": "doe(live-3): dispatcher automation (rule 5, WO-A)",
+      "updated_at": "2026-11-01T01:31:28Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d07f9356ea",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2837,
+      "title": "probe(quota): OpenRouter free-counter BATCH probe \u2014 N=10 paid calls, verdict = counter delta",
+      "updated_at": "2026-11-01T01:33:16Z"
     },
     {
       "class": "CANDIDATE",
@@ -1576,15 +1604,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
+        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "876e42ee52",
+      "head_sha": "5b9d40eb7d",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:26:17Z"
+      "updated_at": "2026-11-01T01:32:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2243,6 +2271,34 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "5b51ce7d84",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2838,
+      "title": "doe(live-1): ledger auditor automation (rule 5, WO-B)",
+      "updated_at": "2026-11-01T01:33:17Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "34be2eabe4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2839,
+      "title": "probe(quota): OpenRouter free-counter LARGE probe \u2014 1 paid call, ~100k input tokens",
+      "updated_at": "2026-11-01T01:33:51Z"
     }
   ],
   "schema": "operator-matrix/v1",

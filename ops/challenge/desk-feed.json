@@ -110,8 +110,8 @@
      "surfaces": [
       "gemini-dispatch.yml"
      ],
-     "trigger": "workflow_dispatch / issue dispatch (@gemini-cli)",
-     "evidence": "D1 SR module dispatch run 41301369671 success @2026-11-01T11:19Z (issue #3050); last_success run 41301486059 @2026-11-01T11:20Z"
+     "trigger": "issues / issue_comment / pull_request events (@gemini-cli / @sparkFlux invoke) — no workflow_dispatch (#2734 open)",
+     "evidence": "D1 SR module dispatch run 41301369671 success @2026-11-01T11:19Z (issue #3050); last_success run 41301486059 @2026-11-01T11:20Z; trigger verified firsthand @master workflow file (on: issues/issue_comment/PR events only); D1 SR run 41301369671 event = issues"
     },
     {
      "id": "gemini-after-peers",
@@ -182,7 +182,8 @@
       "deepagent-task.yml"
      ],
      "trigger": "workflow_dispatch",
-     "evidence": "First success run 41301564332 @2026-11-01T11:21Z (proof dispatch in the 2026-11-01 widening window; previously 0 runs)"
+     "evidence": "First success run 41301564332 @2026-11-01T11:21Z (proof dispatch in the 2026-11-01 widening window; previously 0 runs)",
+     "caveat": "Proof run = workflow-level success: device steps skipped (reachable=false) => device execution NOT_ESTABLISHED; dispatch surface proven. DoE stamp #2735 c.6557267123."
     },
     {
      "id": "provider-batch",
@@ -633,8 +634,19 @@
      "xkiro.free_models",
      "zai.free_models"
     ],
-    "note": "provider-batch arm currently under the #2672 dispatch hold; provider-availability + openrouter probe arms remain live routes."
-   }
+    "note": "provider-batch arm currently under the #2672 dispatch hold; provider-availability + openrouter probe arms remain live routes.",
+    "batch_invoke_keys_today": [
+     "cohere",
+     "sambanova",
+     "zai",
+     "llm7",
+     "routeway",
+     "unorouter",
+     "siliconflow"
+    ],
+    "batch_excluded": "groq excluded (Actions egress) — Swarm §15, PR #3056"
+   },
+   "cross_ref": "Swarm widened rotation of record: SWARM doc §15 (PR #3056 merged 8a8dd117fdb8) — arm inventory evidence-graded; this catalog is the desk-feed mirror."
   }
  },
  "traversals": [

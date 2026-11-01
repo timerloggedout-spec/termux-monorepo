@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 380,
+    "open_issues": 381,
     "open_prs": 167,
     "pr_classes": {
       "CANDIDATE": 80,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 81,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 35,
+      "issues": 36,
       "prs": 165,
       "unlabelled_numbers": [
         308,
@@ -86,11 +86,12 @@
         3036,
         3050,
         3068,
-        3077
+        3077,
+        3094
       ]
     }
   },
-  "generated_at": "2026-11-01T11:51:48Z",
+  "generated_at": "2026-11-01T11:52:40Z",
   "issues_unlabelled": [
     308,
     343,
@@ -126,7 +127,8 @@
     3036,
     3050,
     3068,
-    3077
+    3077,
+    3094
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -134,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "88f907129d"
+    "sha": "636ac17090"
   },
   "prs": [
     {
@@ -206,20 +208,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3b35cdea7a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3092,
-      "title": "desk-feed: D4 batch queue stamp (Jules-only, window >2026-11-08, AppID flagged)",
-      "updated_at": "2026-11-01T11:51:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -2403,12 +2391,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "702a229ae5",
+      "head_sha": "ae74bb5665",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T11:50:40Z"
+      "updated_at": "2026-11-01T11:52:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2479,6 +2467,20 @@
       "number": 3045,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-01T11:01:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "4e40a683db",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3096,
+      "title": "ops(recon): capture ingest stderr + surface collect failures on #3094",
+      "updated_at": "2026-11-01T11:52:38Z"
     }
   ],
   "schema": "operator-matrix/v1",

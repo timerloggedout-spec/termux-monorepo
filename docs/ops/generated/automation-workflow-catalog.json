@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "80549a82e798bc0704e5783d8cb5354f90e95c40cae8ad5dcd1cbe7d622967a8",
+  "source_fingerprint": "ab0ce4fd9d934644b1b7cf06e78c7247511d740e65a9057ec64424e4c8cceeb5",
   "workflow_count": 250,
   "workflows": [
     {
@@ -440,7 +440,8 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "bounded-state-write",
       "concurrency": "group: apk-xref-exec-${{ inputs.issue_number }} cancel-in-progress: false",

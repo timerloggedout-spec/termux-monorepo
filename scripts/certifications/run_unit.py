@@ -31,8 +31,10 @@ QUESTIONS_TEMPLATE = (
     "FreeCodeCamp Relational Databases v9 lesson \"{title}\". Answer each "
     "comprehension check below from the lesson content. For every question: "
     "restate the question verbatim under a heading line \"Q<n>\", then give "
-    "the correct option (letter and full text) and a one-sentence "
-    "justification. Questions:\n{questions}"
+    "the correct option (letter and full text), a one-sentence justification, "
+    "and quote the lesson body evidence that supports the answer. If a "
+    "question asks which option is NOT mentioned, select the option that is "
+    "absent from the lesson body evidence. Questions:\n{questions}{context}"
 )
 
 
@@ -73,7 +75,9 @@ def main() -> int:
         questions = step.get("questions") or []
         if questions:
             qs = "\n".join(f"Q{i}: {q}" for i, q in enumerate(questions, 1))
-            prompt_file.write_text(QUESTIONS_TEMPLATE.format(title=step["title"], questions=qs))
+            ctx = step.get("context") or ""
+            ctx_block = f"\nLesson body evidence (verbatim):\n{ctx}" if ctx else ""
+            prompt_file.write_text(QUESTIONS_TEMPLATE.format(title=step["title"], questions=qs, context=ctx_block))
         else:
             template = WORKSHOP_TEMPLATE if step.get("kind") == "workshop" else PROMPT_TEMPLATE
             prompt_file.write_text(template.format(title=step["title"]))

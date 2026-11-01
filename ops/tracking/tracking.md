@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T07:13:54Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T07:27:46Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T07:13:53Z` (merged 150 · open 158) · lane-events(Neon) status=`ok` count=`3467` read_at=`2026-11-01T07:13:53Z`
+Sources: PR feed read_at=`2026-11-01T07:27:46Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3508` read_at=`2026-11-01T07:27:46Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown=9
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #2977 `2af4222a97f2` 2026-11-01T07:11:19Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #2981 `89d96ed4d47a` 2026-11-01T07:27:20Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -58,4 +58,4 @@ Campaigns: 11 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 73/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 72/150 (extend ops/tracking/projects.json match rules)

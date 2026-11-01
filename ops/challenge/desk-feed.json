@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-10-31T23:59:00Z",
+ "generated_at": "2026-11-01T08:43:48Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -345,6 +345,62 @@
    },
    "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
    "provider_usage": []
+  },
+  {
+   "entry": "Repo-Story",
+   "project": "Repo-Story — PR/repo-history narrative (I1 of record, PR #2481)",
+   "artifact_repo": "timerloggedout-spec/repo-story",
+   "status": "in-progress",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "pending",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "pending"
+   },
+   "evidence": {
+    "issue": 3018,
+    "repo_id": 1441629107,
+    "dispatch": "Fleet Swarm Desk issue trigger — issue #3018 authored by termux-fleet-swarm[bot], jules label; Jules-on-Issues run 41289807982 SUCCESS (swarm actor, ∅ parking)",
+    "basis": "SPEC v1.1 @8291d49e6eea (SPEC blob 8e4d478ee800) — Gemini Δ FOLDED (docs/GEMINI-CONCEPT-VERBATIM.md blob 3ce47d9c42a9); ∅ GitHub App",
+    "current_repo_main": "2071540fe6cb — SPEC v2 (oracle-folded) blob f0193fe43415 SUPERSEDES v1.1/v1.2 for this build (manager #3018 comment 6555675789); Delphi receipts of record = docs/ORACLE-PASS.md blob 443190cd358b",
+    "correction_comment": 6555659279,
+    "delta_comment": 6555654199,
+    "note": "Scope: GitHub Action pr_storyteller.yml [opened, synchronize] ⇒ sticky 1st comment + pre-push hook + pinned Story; artifacts extract_pr_story_context + mine_pr_evolution (coupling matrix) + chronicler prompt; features {Impact Areas, Changelogs w/ Receipts, Contextual Blame}; persistence hybrid [OPEN v2]. Repo-Story ≁ Repo Replay (owner law 2026-10-30). C8 claims gated.",
+    "oracle_pass": "Delphi Oracle pass CLOSED ⇒ SPEC v2 folded (ΔA–ΔI); C8 gate held (SPEC v2 §9)"
+   },
+   "next": "Builder PR(s) in timerloggedout-spec/repo-story per SPEC v2 @2071540fe6cb ⇒ desk provenance verify ⇒ manager 8cc20168 oversight. Jules session stamp lands when the session surfaces in the API census.",
+   "provider_usage": [
+    {
+     "provider": "Jules (Google) — issue-label route",
+     "scope": "Repo-Story build per SPEC v2 (oracle-folded; dispatch basis = corrected SPEC v1.1)",
+     "via": "issue #3018 + jules label (agent-jules-on-issues run 41289807982 SUCCESS)",
+     "session_id": null,
+     "state": "dispatched (session NOT ESTABLISHED)",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Jules API session census",
+      "window": "2026-11-01",
+      "match": null,
+      "note": "No Repo-Story session visible in the Jules API census yet; session stamp pending — consumption NOT ESTABLISHED, never estimated.",
+      "status": "pending"
+     },
+     "model": "NOT ESTABLISHED",
+     "phrases": "NOT ESTABLISHED",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "Fleet Swarm Desk issue trigger #3018 (Swarm-token authored); target timerloggedout-spec/repo-story id 1441629107",
+     "instance_refs": {
+      "system_prompt_ref": "NOT ESTABLISHED",
+      "tools_ref": "NOT ESTABLISHED",
+      "note": "Session not yet visible ⇒ prompt/tools refs cannot be hashed; ∅ fabricated."
+     },
+     "instance_key": null
+    }
+   ]
   }
  ],
  "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence."

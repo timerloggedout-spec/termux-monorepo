@@ -63,3 +63,11 @@ Use the radar as a foresight instrument, not as a prediction engine. Look for:
 - concepts that deserve a watchlist before they deserve implementation
 
 The radar must preserve uncertainty and evidence provenance.
+
+## Inspiration reference: DefTech 2015 Foresight Radar
+
+- **Reference:** https://radar.envisioning.io/deftech_2015
+- **Context:** added at the user's request, drawing on their prior work with deftech.ch.
+- **Use:** a historical/design inspiration for radar-based foresight, strategic technology scanning, and presenting relationships among technology signals. Explore whether its framing can inform the monorepo's existing H0–H3 horizon lanes and future visual exploration tools.
+- **Evidence boundary:** treat the reference as an inspiration pointer until the source itself is inspected and its structure/methodology documented. Do not infer its underlying dataset, scoring, categories, or methodology from the URL alone. Any imported claims or records must pass the existing provenance, evidence-status, confidence, and unresolved-question requirements.
+- **Implementation boundary:** this is not a new canonical radar, duplicate lane, or authorization to change the current radar schema. Prefer extending the existing foresight lane and evidence spine.

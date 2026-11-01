@@ -317,6 +317,27 @@ are levels, kinds are factors.
   default (rotation, sets, factorial assignment); a single-arm run
   is observational color, never comparative evidence.
 
+## Method versions (strategy-level, under rule 8)
+
+Registered so backfill version-comparison lines attach: at any
+version change, historical results are re-scored under the new
+version and compared continuously until culling retires a version.
+
+- **rnd v1** — randomized mixes. Mechanisms: DOE-TAXONOMY
+  generators (`full_factorial`, `taguchi_l9`); phrase-layer JIT
+  variant generation; desk rotation assignment; rule-7 sets with
+  fresh auto-selected instances. Status: active. Comparison line:
+  open.
+- **cherry-pick v1** — winners propagated into new additions;
+  evolutionary culling toward Top Performance. Mechanisms: campaign
+  verdict machinery (winner → default in live-1 and cmp-register
+  designs); cull-as-data (nc-1 evaluator); DOE-FAMILY culling
+  rules. **Guardrail (adopted 2026-11-01): exploration floor = at
+  least 1 non-winner set per trigger-window**, implemented by the
+  rule-7 mechanization (fresh instances per set + dispatch spread)
+  so winner estimates stay fresh and never decay into stale
+  hard-select. Status: active. Comparison line: open.
+
 ## Campaign layout
 
 ```text

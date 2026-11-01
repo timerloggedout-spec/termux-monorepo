@@ -253,6 +253,31 @@ def cmd_record(args) -> int:
             f"{(job.get('task') or {}).get('pr')}.json",
             "workflow artifact doe-phrase-result (dispatch result)"],
     }
+    # EXPERIMENT schema rev 1.1 slots (PR #2895, first consumer):
+    # usage is carried only with its measurement status; window and
+    # session_id appear only when both endpoints are known.
+    usage = result.get("usage") or {}
+    total = usage.get("total_tokens")
+    if isinstance(total, (int, float)) and not isinstance(total,
+                                                          bool):
+        record["usage"] = {"value": total, "unit": "tokens",
+                            "source": "openrouter/usage",
+                            "match": "exact", "status": "measured"}
+    elif ok:
+        record["usage"] = {"value": None, "unit": None,
+                            "source": result.get("via")
+                            or "openrouter",
+                            "match": None,
+                            "status": "activity_only"}
+    else:
+        record["usage"] = {"value": None, "unit": None,
+                            "source": None, "match": None,
+                            "status": "not_established"}
+    if job.get("stamped_at") and result.get("finished_at"):
+        record["window"] = {"start": job["stamped_at"],
+                            "end": result["finished_at"]}
+    if result.get("session_id"):
+        record["session_id"] = result["session_id"]
     records = Path(args.records_dir)
     records.mkdir(parents=True, exist_ok=True)
     (records / f"dispatch-{job['dispatch_no']:04d}.json").write_text(

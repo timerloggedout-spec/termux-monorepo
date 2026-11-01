@@ -10,7 +10,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 - kickoff ≔ 2026-11-03T15:00:00Z ∧ build_end ≔ 2026-11-08T22:00:00Z ∧ deadline ≔ 2026-11-08T15:00:00-08:00
 - prizes ESTABLISHED: pool $14,000 cash+credits; 1st $5,000 cash + $3,000 Vultr credits; ∀ participant $200 Vultr credits @ kickoff
 - handle ≔ Rap1dZ3nith [platform:lablab-ai]; Discord ✓ connected `wh1msical_sw4n_06136` ⇒ team create/join unblocked
-- project ≔ Web Adapter Foundry (candidate, ¬frozen — freeze = manager call): sandboxed browser-operating agent; brief ⇒ bounded adapter probe ⇒ Vultr sandbox exec ⇒ evidence envelope
+- project ≔ ∅ — Δ 2026-11-01 (owner direct via D2 seat): Web Adapter Foundry OUT as D2 production target; pick = pending owner signal via D2 seat. (WAF system itself unchanged in-repo; only D2 targeting struck.)
 - constraints: containment-first required ∧ teams 1–6 ∧ submit ON lablab ∀ judging
 - gates: D2-NOCARD open (no-card path only; card step ⇒ halt)
 - open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ pick freeze ⇒ repo (new repo per entry) ∧ team formation
@@ -22,14 +22,14 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 | beat | when | surface | status |
 |---|---|---|---|
 | ANNOUNCE-FACTS | kickoff 2026-11-03 | short post | drafted §3.0, PUBLISH ✓ per D2 seat 2026-10-31 |
-| DISCORD-INTRO | kickoff 2026-11-03 | lablab Discord | drafted §3.6 — HOLD ∅ until freeze (names candidate concept) |
-| ANNOUNCE | kickoff 2026-11-03 | X-style short post | drafted §3.1 — HOLD ∅ until freeze (names candidate) |
-| BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 — HOLD ∅ until freeze |
-| BUILD-OPEN-2 | mid-build ≈2026-11-06 | long post / Discord | drafted §3.3 — HOLD ∅ until freeze |
-| DEMO-TEASE | demo live only | short post | drafted §3.5, blocked: demo_url NOT_ESTABLISHED |
-| SUBMISSION | post-submit only | short post | drafted §3.4, blocked: submission = none |
+| DISCORD-INTRO | kickoff 2026-11-03 | lablab Discord | drafted §3.6 — OUT (WAF target struck 2026-11-01) |
+| ANNOUNCE | kickoff 2026-11-03 | X-style short post | drafted §3.1 — OUT (WAF target struck 2026-11-01) |
+| BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 — OUT (WAF target struck) |
+| BUILD-OPEN-2 | mid-build ≈2026-11-06 | long post / Discord | drafted §3.3 — OUT (WAF target struck) |
+| DEMO-TEASE | demo live only | short post | drafted §3.5 — OUT (WAF target struck); future demo beat awaits new pick |
+| SUBMISSION | post-submit only | short post | drafted §3.4 — template only, blocked: submission = none ∧ pick = ∅ |
 
-Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until freeze ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
+Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat; only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until freeze ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
 
 ## 3. Promo copy (verified vs §1; placeholders ¬ invented)
 

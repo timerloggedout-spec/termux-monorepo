@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-11-01T10:33:02Z",
+ "generated_at": "2026-11-01T10:35:23Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -354,7 +354,7 @@
    "stages": {
     "spec": "done",
     "desk": "done",
-    "builder": "pending",
+    "builder": "gated",
     "pr": "pending",
     "ci": "pending",
     "merge": "pending",
@@ -371,23 +371,24 @@
     "note": "Scope: GitHub Action pr_storyteller.yml [opened, synchronize] ⇒ sticky 1st comment + pre-push hook + pinned Story; artifacts extract_pr_story_context + mine_pr_evolution (coupling matrix) + chronicler prompt; features {Impact Areas, Changelogs w/ Receipts, Contextual Blame}; persistence hybrid [OPEN v2]. Repo-Story ≁ Repo Replay (owner law 2026-10-30). C8 claims gated. ROUTE CORRECTION (owner 2026-11-01): Jules ≠ builder of record for this entry — any Jules session/PR arising from #3018 = wrong-route output, ∅ merge as build; Jules session census shows ∅ Repo-Story session established.",
     "oracle_pass": "Delphi Oracle pass CLOSED ⇒ SPEC v2 folded (ΔA–ΔI); C8 gate held (SPEC v2 §9)",
     "build_route": "fleet swarm via Scout — Swarm lane 6628d41d-9519-4881-9063-3afe501df815 execution lead (owner correction 2026-11-01 02:31 PT)",
-    "appid": "Termux Fleet RepoStory — App 5565297, slug termux-fleet-repostory, installation 177463385 (repo-story ONLY), record PR #3038 (owner rule: new AppID + new repo at build start)"
+    "appid": "Termux Fleet RepoStory — App 5565297, slug termux-fleet-repostory, installation 177463385 (repo-story ONLY), record PR #3038 (owner rule: new AppID + new repo at build start)",
+    "dispatch_stamp": "provider Gemini (Index arm gemini.build_dispatch) via Fleet Swarm/Scout — Swarm lane stamp 2026-11-01; session_id ∅ yet (completes on first run); model@version NOT ESTABLISHED pre-run (resolved at dispatch by run-gemini-cli); machinery repo-story PR #1 merged 71df1cfc909a; build issue repo-story #2; gate = GEMINI_API_KEY provisioning for repo-story ↦ AppID lane 7075f9c0 (repo-story secret names today: TERMUX_FLEET_REPOSTORY_PRIVATE_KEY only — desk-verified)"
    },
-   "next": "Swarm lane (execution lead) dispatches via Scout ⇒ PR(s) in timerloggedout-spec/repo-story per SPEC v2.1 @6aa130f15438 ⇒ desk provenance verify ⇒ manager 8cc20168 oversight. Provider/session stamp lands when the swarm/scout dispatch surfaces.",
+   "next": "AppID lane provisions GEMINI_API_KEY for repo-story ⇒ Swarm lane fires the Gemini build arm on repo-story issue #2 ⇒ PR(s) per SPEC v2.1 @6aa130f15438 ⇒ desk stamps session_id + model@version on first run ∧ provenance-verifies PRs ⇒ manager 8cc20168 oversight.",
    "provider_usage": [
     {
-     "provider": "Fleet Swarm via Scout",
+     "provider": "Gemini — via Fleet Swarm/Scout (Index arm gemini.build_dispatch)",
      "scope": "Repo-Story build per SPEC v2.1 tidy (oracle-folded; dispatch basis = corrected SPEC v1.1)",
-     "via": "owner correction 2026-11-01 02:31 PT (manager #3018 comment 6556766183); Swarm lane 6628d41d execution lead",
+     "via": "Swarm lane 6628d41d dispatch stamp 2026-11-01; machinery repo-story PR #1 merged 71df1cfc909a; build issue repo-story #2",
      "session_id": null,
-     "state": "routed — swarm/scout dispatch pending (NOT ESTABLISHED)",
+     "state": "armed — gated on GEMINI_API_KEY provisioning for repo-story (AppID lane 7075f9c0); session NOT ESTABLISHED",
      "usage": {
       "value": null,
       "unit": null,
-      "source": "Swarm lane dispatch record",
+      "source": "Swarm lane dispatch stamp (completes on first run)",
       "window": "2026-11-01",
       "match": null,
-      "note": "No swarm/scout dispatch has surfaced yet; session stamp pending — consumption NOT ESTABLISHED, never estimated. Superseded: the #3018 Jules leg (label removed by desk 2026-11-01) — Jules is not builder of record; any Jules output from #3018 is wrong-route, ∅ merge.",
+      "note": "Selection reason (swarm stamp): Jules excluded (owner) ∧ DeepSeek arm session-bound/unfunded ⇒ Gemini = sole cloud-fit Index arm. Model@version resolved at dispatch by run-gemini-cli — NOT ESTABLISHED pre-run, ∅ fabricated. Repo-story secret names today = TERMUX_FLEET_REPOSTORY_PRIVATE_KEY only (desk-verified).",
       "status": "pending"
      },
      "model": "NOT ESTABLISHED",

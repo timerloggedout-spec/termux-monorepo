@@ -63,3 +63,8 @@ The upstream export/filter step must validate attribution, token fields, source 
 7. Existing quota and telemetry contracts remain authoritative; no poller, runtime admission rule, or scheduler is added.
 8. Static deployment navigation and page are validated before promotion.
 9. External evidence and pricing links are accepted only over HTTPS; unsafe or malformed URLs render as unavailable.
+
+
+## Ranking convention
+
+Provider comparisons are sorted by the same workload's estimated API list-price equivalent in **descending order (most expensive first)**. The first row is the highest modeled replacement cost; the cheapest row remains last. Each row is model-specific, and ranking is not a provider-wide quality or value judgment. The order is recalculated when input/output token assumptions change.

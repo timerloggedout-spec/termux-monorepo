@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
-"""Commit Replay — extract() v0 (commit-store/v1).
+"""Commit Replay — extract() v1 (commit-store/v1, compact delta format).
 
 [MUSEai]@{role:{commit-replay}} — git-plane indexer. Walks a local git
 checkout (in CI: the workflow's own checkout) and emits/updates the gindex
-JSONL: header{checkpoints} + commit records (forward) + entry records
-(commit,path,blob,mode — the raw from which reverse 1:N and path_history
-derive at query time, P2). Pointers/oids/metadata ONLY — no blob bytes.
+JSONL: header{checkpoints} + commit records (forward) + entry records.
+
+COMPACT (v1, owner: Compactify + LLMToken-down): entries are DELTAS vs the
+first parent only — {commit,path,op:A|M|D,blob,mode} — never a full tree
+per commit (v0 emitted 10.36M entries / 2.2GB for 1,000 commits and the
+push was rejected over GitHub's 100MB file limit, run 41283146476).
+State at any commit = root full-set + deltas applied along ancestry;
+path_history IS the entry stream; reverse 1:N derives at query time (P2)
+by resolving state. Pointers/oids/metadata ONLY — no blob bytes.
 
 Incremental: prior index records are carried forward; only commits absent
-from the prior index are tree-walked, newest-first, capped by
---max-commits per run (older history backfills on later runs). Output is
-deterministic (sorted records, sorted keys) and written atomically.
+from the prior index are walked, newest-first, capped by --max-commits
+per run (older history backfills on later runs). Output is deterministic
+(sorted records, sorted keys) and written atomically.
 
 Usage:
   extract.py --repo-root . --repo-name owner/name \
@@ -86,11 +92,13 @@ def main():
     a = ap.parse_args()
     root = a.repo_root
 
-    # Ref census: every branch + tag (history mass lives in backup refs).
+    # Ref census: every branch + tag, local + remote-tracking (a CI
+    # checkout carries remote branches under refs/remotes only — v0 saw
+    # just master+tag). History mass lives in backup refs.
     refs = {}
     for line in git(root, "for-each-ref",
                     "--format=%(refname) %(objectname)",
-                    "refs/heads", "refs/tags").splitlines():
+                    "refs/heads", "refs/tags", "refs/remotes").splitlines():
         if line.strip():
             name, tip = line.rsplit(" ", 1)
             refs[name] = tip
@@ -116,14 +124,35 @@ def main():
         rec = parse_commit(root, oid)
         rec["refs"] = sorted(tip_refs.get(oid, []))
         commits[oid] = rec
-        for line in git(root, "ls-tree", "-r", "-z", oid).split("\0"):
-            if not line:
-                continue
-            meta, path = line.split("\t", 1)
-            mode, typ, blob = meta.split(" ")
-            entries[(oid, path)] = {"kind": "entry", "commit": oid,
-                                    "path": path, "blob": blob,
-                                    "mode": mode, "type": typ}
+        if rec["parents"]:
+            # Delta vs first parent: name-status + raw modes/oids.
+            raw = git(root, "diff-tree", "-r", "--no-commit-id",
+                      "-z", "--raw", rec["parents"][0], oid)
+            toks = [t for t in raw.split("\0") if t]
+            i = 0
+            while i < len(toks):
+                meta = toks[i]; i += 1
+                parts = meta[1:].split()  # strip leading ':'
+                omode, nmode, oblob, nblob, status = parts[:5]
+                path = toks[i]; i += 1
+                if status.startswith(("R", "C")):
+                    i += 1  # skip source path; record target as A
+                    status = "A"
+                op = {"A": "A", "M": "M", "D": "D", "T": "M"}.get(status, "M")
+                entries[(oid, path)] = {
+                    "kind": "entry", "commit": oid, "path": path, "op": op,
+                    "blob": None if op == "D" else nblob,
+                    "mode": None if op == "D" else nmode}
+        else:
+            # Root commit: full set, all A.
+            for line in git(root, "ls-tree", "-r", "-z", oid).split("\0"):
+                if not line:
+                    continue
+                meta, path = line.split("\t", 1)
+                mode, typ, blob = meta.split(" ")
+                entries[(oid, path)] = {"kind": "entry", "commit": oid,
+                                        "path": path, "op": "A",
+                                        "blob": blob, "mode": mode}
         new += 1
 
     header = {"kind": "header", "spec": SPEC, "repo": a.repo_name,

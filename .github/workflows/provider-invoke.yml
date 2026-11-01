@@ -50,6 +50,7 @@ on:
           - nvidia
           - felo
           - omni
+          - deepinfra
 
 permissions: {}
 
@@ -100,6 +101,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: |
           set -o pipefail

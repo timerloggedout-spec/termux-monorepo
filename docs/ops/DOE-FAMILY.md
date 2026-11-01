@@ -251,6 +251,17 @@ are levels, kinds are factors.
    or relabeled as a DoE campaign result.
 3. DoE's own results come only from family campaigns' committed records.
 4. Counts are live-derived at report time.
+5. **Automation requirement (owner, 2026-10-31): a design is
+   implemented WITH its automation.** Every admitted campaign names
+   its automation in DESIGN `automation{}` — the runner/workflow
+   that executes the design, emits EXPERIMENT-conforming records to
+   the campaign's `records/`, and produces SUMMARY — so experiments
+   run as repo automation (GitHub Workflows / provider lanes),
+   never as manual per-run dispatch by a chat. The loop is:
+   automation runs → records land → doe-expert reviews → design
+   adjustments land as amendments. A campaign whose automation is
+   not yet built is `admitted_design_only`; manual runs taken
+   anyway are OBSERVATIONAL, never designed results.
 
 ## Campaign layout
 

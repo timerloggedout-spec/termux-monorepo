@@ -1,8 +1,47 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T08:49:12Z",
+ "read_at": "2026-11-01T08:50:18Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3022,
+   "title": "Rule recorded: build start => new repo + new AppID (owner, 2026-11-01)",
+   "merged_at": "2026-11-01T09:49:29Z",
+   "updated_at": "2026-11-01T09:50:11Z",
+   "created_at": "2026-11-01T09:49:19Z",
+   "merge_commit_sha": "f644dee9f8de23ca63eccf54825af2bf18075014",
+   "head_ref": "challenge/entry-anatomy-rule-2026-11-01",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3022",
+   "merged": true
+  },
+  {
+   "number": 3023,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T09:49:41Z",
+   "updated_at": "2026-11-01T09:49:46Z",
+   "created_at": "2026-11-01T09:49:36Z",
+   "merge_commit_sha": "829e34e2cbb469185362cb2ed06d1a2de6c84add",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3023",
+   "merged": true
+  },
+  {
+   "number": 3017,
+   "title": "AppID: apk-xref-exec mint swap Swarm \u2192 CrossReference (Scalpel \u00b7 App 5564430)",
+   "merged_at": "2026-11-01T09:49:37Z",
+   "updated_at": "2026-11-01T09:49:38Z",
+   "created_at": "2026-11-01T09:36:43Z",
+   "merge_commit_sha": "102e17b3ad2c911e0a019c17fd15c730f060281d",
+   "head_ref": "appid/xref-exec-mint-swap",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3017",
+   "merged": true
+  },
   {
    "number": 3021,
    "title": "desk-feed: Repo-Story row \u2014 stamp SPEC v2.1 tidy refs",
@@ -1913,45 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2861",
    "merged": true
-  },
-  {
-   "number": 2860,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T01:56:12Z",
-   "updated_at": "2026-11-01T01:56:23Z",
-   "created_at": "2026-11-01T01:56:07Z",
-   "merge_commit_sha": "5a0374b6e921abca8e299abdbe9e6fd7dbaee61a",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2860",
-   "merged": true
-  },
-  {
-   "number": 2859,
-   "title": "docs(quota): quota routes RECON \u2014 all service provider integrations",
-   "merged_at": "2026-11-01T01:55:22Z",
-   "updated_at": "2026-11-01T01:55:22Z",
-   "created_at": "2026-11-01T01:54:04Z",
-   "merge_commit_sha": "2562eb739f46365dfbe26a5de752b2ba3214608a",
-   "head_ref": "quota-gaps/quota-routes-recon-2026-10-31",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2859",
-   "merged": true
-  },
-  {
-   "number": 2858,
-   "title": "DoE live-3: dispatch #1 record correction \u2014 alt_attempt = treatment_not_administered/surface_skip",
-   "merged_at": "2026-11-01T01:53:04Z",
-   "updated_at": "2026-11-01T01:53:54Z",
-   "created_at": "2026-11-01T01:52:56Z",
-   "merge_commit_sha": "043e3f98992159e9ee1264858fb913aac30a085a",
-   "head_ref": "doe/live-3-dispatch-0001-skip-correction",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2858",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,13 +1959,26 @@
    "number": 2914,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-01T09:48:25Z",
+   "updated_at": "2026-11-01T09:50:08Z",
    "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "66f4912f84000938df9d84e977dda7e522509ddd",
+   "merge_commit_sha": "d4fbd0c5b9bb45d3b63d87f5852df600e824c412",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
+   "merged": false
+  },
+  {
+   "number": 3024,
+   "title": "chore(ops): refresh computed countdown lines",
+   "merged_at": null,
+   "updated_at": "2026-11-01T09:49:47Z",
+   "created_at": "2026-11-01T09:49:37Z",
+   "merge_commit_sha": "a7c1dcafd1fe1d501456cb04ca4086a668906769",
+   "head_ref": "chore/countdowns-refresh-202611010849",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3024",
    "merged": false
   },
   {
@@ -1979,19 +1992,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
-   "merged": false
-  },
-  {
-   "number": 3017,
-   "title": "AppID: apk-xref-exec mint swap Swarm \u2192 CrossReference (Scalpel \u00b7 App 5564430)",
-   "merged_at": null,
-   "updated_at": "2026-11-01T09:37:49Z",
-   "created_at": "2026-11-01T09:36:43Z",
-   "merge_commit_sha": "dc4820064c4c81cbcb0fc2e31293d776ab59e2e3",
-   "head_ref": "appid/xref-exec-mint-swap",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3017",
    "merged": false
   },
   {

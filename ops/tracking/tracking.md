@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T08:49:12Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T08:50:18Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T08:49:12Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3728` read_at=`2026-11-01T08:49:12Z`
+Sources: PR feed read_at=`2026-11-01T08:50:18Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3730` read_at=`2026-11-01T08:50:18Z`
 
 Rows: 22 · by_state: active=5 · closed=1 · in-flight=9 · landed=1 · unknown=6
 
@@ -28,7 +28,7 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=9 · landed=1 · unknown
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #2891 `fbd8cb72b23f` 2026-11-01T02:22:05Z | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2992 `bf65498ef010` 2026-11-01T09:07:05Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #2996 `1e5dd9513fb6` 2026-11-01T09:13:16Z | land/close PR #3017 — AppID: apk-xref-exec mint swap Swarm → CrossReference (Scalpel · App 5564430) |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3017 `102e17b3ad2c` 2026-11-01T09:49:37Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -58,4 +58,4 @@ Campaigns: 11 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)

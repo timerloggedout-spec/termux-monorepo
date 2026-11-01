@@ -1,0 +1,263 @@
+{
+ "coverage": {
+  "excluded": [
+   {
+    "reason": "agent_stack status=HOLD: no live telemetry to ingest",
+    "source_id": "agent_stack",
+    "unit_id": "llama-cpp-vulkan"
+   },
+   {
+    "reason": "agent_stack status=HOLD: no live telemetry to ingest",
+    "source_id": "agent_stack",
+    "unit_id": "copilot-usage-metrics-api"
+   }
+  ],
+  "expected_providers": 167,
+  "ingested_providers": 167,
+  "missing": []
+ },
+ "generated_at": "2026-10-31T19:01:00Z",
+ "schema": "telemetry-ingest-receipt/v1",
+ "sinks": {
+  "hindsight": {
+   "live_retain": {
+    "attempted": 0,
+    "failed": 0,
+    "ok": 0,
+    "skipped_reason": "not requested"
+   },
+   "path": "ops/telemetry/hindsight-payloads.jsonl",
+   "payloads": 306
+  },
+  "provenance": {
+   "path": "ops/telemetry/provenance-ledger.jsonl",
+   "records": 306
+  }
+ },
+ "sources": [
+  {
+   "id": "quota_registry",
+   "path": "ops/quota/registry.json",
+   "sha256": "d15df55a0762fe47b6f2cc46ae27c16bf8e98653d670d4a91b54a1eee800035f",
+   "status": "emitted",
+   "units": 155
+  },
+  {
+   "id": "cadence_providers",
+   "path": "ops/cadence/provider-onboarding.json",
+   "sha256": "118aa21b2f58d5a9cde6d62b9526c055b8342881665c3991f7b03e74762703bb",
+   "status": "emitted",
+   "units": 33
+  },
+  {
+   "id": "agent_stack",
+   "path": "config/agent_stack_integrations.json",
+   "sha256": "b47986226b326be5c30c6902ffaac4e5867ad024a25705ba61b9d71581d46533",
+   "status": "emitted",
+   "units": 20
+  },
+  {
+   "id": "g4f_providers",
+   "path": "data/g4f-working/providers.json",
+   "sha256": "b0a97b17a15d0c38a00d0dbf146ba104090a6f0833876bb4bbaf159959686157",
+   "status": "emitted",
+   "units": 60
+  },
+  {
+   "id": "reviewer_metrics",
+   "path": "docs/ops/generated/reviewer-metrics.json",
+   "sha256": "546711c71e0d3670fe07056b89bcdecf9c1b436fa0655ed8650cb4929bc7fa66",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "github_telemetry_sources",
+   "path": "ops/github-telemetry/config/sources.yaml",
+   "sha256": "f572e0f00d3efee424f4bea20c612863893fa0ec62270dda0751bac5998132bd",
+   "status": "emitted",
+   "units": 11
+  },
+  {
+   "id": "agent_telemetry_stream",
+   "path": "agent_telemetry_stream.json",
+   "sha256": "be03c6958bf7dc4775cddb13038600d87e7d391ab09a5b9918f810dfe32f7c96",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "delphi_ledgers",
+   "path": "ops/delphi/ledgers.json",
+   "sha256": "09ef847b5c5ec57f6a7a8303f22a247f99a28c4b984f5c42b56a940fe0c892be",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "challenge_coordinator",
+   "path": "ops/challenge/coordinator.json",
+   "sha256": "5c56c576638295a617c943e92d1722601b7495465b9b30b5f86e54c88e553d18",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "moneyball_plane",
+   "path": "ops/moneyball/plane.json",
+   "sha256": "9cc1bd547068d20539bf432f1671b419928af9c3c84c2e5baafc6723b6e360eb",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/3l0-feed.json",
+   "sha256": "1b0528394d853e6c146296c9b0cc24add1c9a595289f582f87a5a370a00a2c09",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/ates-feed.json",
+   "sha256": "bfa1c54a1523e21ae5f1f1ef56c7af2efca49fc37d4eb465ac07a20580b62ce6",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/challenge-admin-metrics.json",
+   "sha256": "84e4271edfb49baff350527937c5d5c3558aa3bd17d44f6621f5d3f1d24ada84",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/challenge-countdowns-feed.json",
+   "sha256": "b1244f1914b79318e4d62302ff06de2a1a3fb6b1dba4695b7da7ef923230e32c",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json",
+   "sha256": "7629ac661613acd8eed758e510f8fd809133bb734cfda74285c311111891c462",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/delphi-ledger-feed.json",
+   "sha256": "b6f62bf11069097c1086158a8c5f17876fec838ab093c1ec4e7814c5d055cefe",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/delphi-rfp-feed.json",
+   "sha256": "ab789fde5460c4b3d0ce6fb1b43cae450ec006b77f32d356d9ade49087280677",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/dispatch-tree-feed.json",
+   "sha256": "1eebc4a234d9bf18f0ad535143b0ed16cc84254f6bd8c20c06e20b1153541a47",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/doe-feed.json",
+   "sha256": "cbeb6c449994a117e732e96d9b09fdaa275067a0eddccd38ce08ec434c469a4a",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/fb-traffic.json",
+   "sha256": "6bf389102ba83f52efc6c6ad64e2704ce56bcbecdf5793b37a4b265ab7cac722",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/free-tier-value.json",
+   "sha256": "6f0ab143b5f3c3628c8fd7cc235972561575bdadde6ced4bdd85404da02f6057",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/linguist-panel-feed.json",
+   "sha256": "0a5950ceb66034b6ae6c444889027f776bf9a4823c5123228fd8878aa55b53fe",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/moneyball-feed.json",
+   "sha256": "15b0392cd2c59ddd8c8701eb0273b8da22a96c9953cd84aa597b98b0bb7eb0ec",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/mvt-feed.json",
+   "sha256": "11537fdbf7ef5837e1a74db11abb2548d62247e8a594c49f897bbbbb17521496",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/oracle-panel-feed.json",
+   "sha256": "7fe898d87feca7e954efaf003e3792e0f7ec0e9347045c6dbae071a7784c5a5a",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/pr-lane-feed.json",
+   "sha256": "3590c20d394371cecb1be2e9620b94cdc17c4f06848716c386f1e9569caac879",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/pr-lane-series.jsonl",
+   "sha256": "bffe5953703d7f85b8de0b5a52c1903ecddde62abd435fdc841d39d26278a663",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/provider-quota-coverage.json",
+   "sha256": "6e4d66e4e0024c6957727a95d83e595af8e45eb5c37d027eb18471f7ca89c04f",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/quota-allocations-feed.json",
+   "sha256": "65ace8063ada186c8d7d07941e9279439f6c775342fd5288b42c0d78a8a9ce17",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/quota.json",
+   "sha256": "43982dc582d3743018f9c3431985337a03585cff211defe3be9b7041254bb3b6",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/referral-feed.json",
+   "sha256": "5830d2068c1d9a7714f8d8511bb3c6035b8dbaddacb0c8e9652fd57b29cf22b2",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/status.json",
+   "sha256": "4b33ad1caf5700a9f21fcc4ec129c07d9c7cd2388fea3ff2ed6694cb1a4f7186",
+   "status": "emitted",
+   "units": 1
+  }
+ ]
+}

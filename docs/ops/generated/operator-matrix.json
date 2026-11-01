@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 379,
-    "open_prs": 168,
+    "open_prs": 167,
     "pr_classes": {
       "CANDIDATE": 80,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 82,
+      "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 34,
-      "prs": 166,
+      "prs": 165,
       "unlabelled_numbers": [
         308,
         343,
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T13:36:47Z",
+  "generated_at": "2026-11-01T13:42:06Z",
   "issues_unlabelled": [
     308,
     343,
@@ -132,7 +132,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "1b53f97093"
+    "sha": "a6a18d7193"
   },
   "prs": [
     {
@@ -147,7 +147,7 @@
       "mergeable_state": "unstable",
       "number": 1498,
       "title": "Antigravity CLI: collaborative use cases, provisioning proposal, offline readiness (#1497)",
-      "updated_at": "2026-10-31T21:44:48Z"
+      "updated_at": "2026-11-01T13:37:45Z"
     },
     {
       "class": "EXTRACT",
@@ -161,7 +161,7 @@
       "mergeable_state": "unstable",
       "number": 1514,
       "title": "feat(antigravity): isolated secondary operational pilot (#1497)",
-      "updated_at": "2026-10-31T12:48:15Z"
+      "updated_at": "2026-11-01T13:38:10Z"
     },
     {
       "class": "EXTRACT",
@@ -212,12 +212,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c36cf734a2",
+      "head_sha": "4a56dec0ad",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T13:35:30Z"
+      "updated_at": "2026-11-01T13:40:41Z"
     },
     {
       "class": "CANDIDATE",
@@ -275,7 +275,7 @@
       "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
-      "updated_at": "2026-10-31T12:48:28Z"
+      "updated_at": "2026-11-01T13:38:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -600,7 +600,7 @@
       "mergeable_state": "unknown",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
-      "updated_at": "2026-10-31T12:48:25Z"
+      "updated_at": "2026-11-01T13:38:04Z"
     },
     {
       "class": "CANDIDATE",
@@ -768,7 +768,7 @@
       "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
-      "updated_at": "2026-10-31T12:49:28Z"
+      "updated_at": "2026-11-01T13:38:45Z"
     },
     {
       "class": "CANDIDATE",
@@ -950,7 +950,7 @@
       "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
-      "updated_at": "2026-10-31T12:48:23Z"
+      "updated_at": "2026-11-01T13:38:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -1020,7 +1020,7 @@
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
-      "updated_at": "2026-10-31T12:48:18Z"
+      "updated_at": "2026-11-01T13:38:06Z"
     },
     {
       "class": "CANDIDATE",
@@ -1370,7 +1370,7 @@
       "mergeable_state": "dirty",
       "number": 48,
       "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
-      "updated_at": "2026-10-31T12:48:31Z"
+      "updated_at": "2026-11-01T13:37:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1412,7 +1412,7 @@
       "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
-      "updated_at": "2026-10-31T12:48:36Z"
+      "updated_at": "2026-11-01T13:37:52Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1664,7 +1664,7 @@
       "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
-      "updated_at": "2026-10-31T12:48:33Z"
+      "updated_at": "2026-11-01T13:37:54Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1959,20 +1959,6 @@
       "number": 2378,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T02:09:00Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "90b461aa09",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2473,
-      "title": "feat(cadence): tick ledger \u2014 per-request quota telemetry (QAC-009)",
-      "updated_at": "2026-10-30T09:47:59Z"
     },
     {
       "class": "NEED_EVIDENCE",

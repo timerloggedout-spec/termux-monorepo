@@ -4,7 +4,31 @@
   "job_home": "experiments/doe/live-3-phrases-deepseek/dispatch/ (composed+stamped jobs, stamp-before-dispatch)",
   "log_surface": "issue #2830 (every dispatch outcome posted: status, error class, response sha/usage)",
   "loop": "automation runs => records in records/ => live-builds relay => doe-expert review => amendments (DOE-FAMILY rule 5)",
-  "sender": "scripts/doe/phrase_dispatch.py (stdlib; key from OPENROUTER_API_KEY Actions secret only; fails loud, no retry)"
+  "sender": "scripts/doe/phrase_dispatch.py (stdlib; key from OPENROUTER_API_KEY Actions secret only; fails loud, no retry)",
+  "rule": "DOE-FAMILY binding rule 5 (PR #2825): design ships WITH its automation",
+  "dispatcher": "scripts/doe/live3_dispatcher.py (plan: A3/cb-1 code screen + budget + cell assignment + phrase_layer composition + instance stamp; record: EXPERIMENT record + SUMMARY regeneration)",
+  "workflow": ".github/workflows/doe-live3-autodispatch.yml (workflow_dispatch: pr_number + task_path + pr_head; plan -> send -> comment -> record -> commit-back)",
+  "auto_sender": "scripts/doe/phrase_dispatch.py via the plan-emitted doe-phrase-dispatch/v1 job (existing doe-phrase-dispatch.yml remains the manual single-job leg)",
+  "cells": "ESTABLISHED Stage-1 only (fixed-anchor; placement x {verbatim, vowels} + control); leet-full BLOCKED in code (asserted: never in ACTIVE_CELLS)",
+  "exclusions": "code-enforced at plan: target PR screened vs live-1 + cb-1 campaign records + automation.extra_excluded_prs; excluded => exit 4, no job, no call",
+  "budget": {
+   "pool": "OpenRouter Pool-1 free tier, 50 calls/day account-wide (fleet key is_free_tier, PR #2828)",
+   "daily_call_cap": 8,
+   "state": "dispatch/state.json (per-UTC-day counter + next dispatch no); exhausted => exit 5 before any call"
+  },
+  "extra_excluded_prs": [],
+  "emits": "dispatch/job-NNNN-pr<pr>.json + records/dispatch-NNNN.json (EXPERIMENT) + SUMMARY.json at campaign root",
+  "state": "built (WO-A, PR #2836) + unified automation{} fix (live-builds, phrases-jit review) \u2014 ROUTE PRIMARY DEAD: deepseek/deepseek-r1:free delisted (dispatch #1 record); sends 404 until doe-expert route ruling (escalation 15e67ebd); automation.model parameterizes the route model at ruling",
+  "canonical_instance_tuple": {
+   "provider": "openrouter",
+   "model": "<automation.model or default deepseek/deepseek-r1:free>",
+   "system_prompt_sha256": "sha256 of the composed prompt (job.prompt_sha256)",
+   "tools": "canonical tool set [] (chat-completions, no tools) \u2014 sha256 of the empty set",
+   "role": "reviewer",
+   "moniker": "doe-mgr-phrases-jit",
+   "context": "live-3-phrases-deepseek/<cell>",
+   "note": "dispatcher tuple v1 accepted by phrases-jit review (supersedes job-#1 ad-hoc tools string; job #1 has no response, no comparability loss)"
+  }
  },
  "campaign_id": "live-3-phrases-deepseek",
  "coordination": {
@@ -192,21 +216,5 @@
  },
  "suite_type": "live",
  "supersedes": "experiments/doe/live-3-phrases-jit (PR #2799; generic transform screening under the seed brief) \u2014 dir REMOVED 2026-10-31, see home_reconciliation",
- "surface": "doe",
- "automation": {
-  "rule": "DOE-FAMILY binding rule 5 (PR #2825): design ships WITH its automation",
-  "dispatcher": "scripts/doe/live3_dispatcher.py (plan: A3/cb-1 code screen + budget + cell assignment + phrase_layer composition + instance stamp; record: EXPERIMENT record + SUMMARY regeneration)",
-  "workflow": ".github/workflows/doe-live3-autodispatch.yml (workflow_dispatch: pr_number + task_path + pr_head; plan -> send -> comment -> record -> commit-back)",
-  "sender": "scripts/doe/phrase_dispatch.py via the plan-emitted doe-phrase-dispatch/v1 job (existing doe-phrase-dispatch.yml remains the manual single-job leg)",
-  "cells": "ESTABLISHED Stage-1 only (fixed-anchor; placement x {verbatim, vowels} + control); leet-full BLOCKED in code (asserted: never in ACTIVE_CELLS)",
-  "exclusions": "code-enforced at plan: target PR screened vs live-1 + cb-1 campaign records + automation.extra_excluded_prs; excluded => exit 4, no job, no call",
-  "budget": {
-   "pool": "OpenRouter Pool-1 free tier, 50 calls/day account-wide (fleet key is_free_tier, PR #2828)",
-   "daily_call_cap": 8,
-   "state": "dispatch/state.json (per-UTC-day counter + next dispatch no); exhausted => exit 5 before any call"
-  },
-  "extra_excluded_prs": [],
-  "emits": "dispatch/job-NNNN-pr<pr>.json + records/dispatch-NNNN.json (EXPERIMENT) + SUMMARY.json at campaign root",
-  "state": "built (WO-A, live-builds + phrases-jit)"
- }
+ "surface": "doe"
 }

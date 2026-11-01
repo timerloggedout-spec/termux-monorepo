@@ -95,3 +95,50 @@ def test_page_consumes_feed_only():
     for col in ("<th>Lane</th>", "<th>Project</th>", "<th>State</th>",
                 "<th>Last merge</th>", "<th>Next</th>"):
         assert col in html
+
+
+SIM_JOIN = r"""
+const fx=JSON.parse(require('fs').readFileSync(process.argv[2],'utf8'));
+const lab=fx.doe_join.campaigns.find(x=>x.join_state==='joined');
+const donly=fx.doe_join.campaigns.find(x=>x.join_state==='design_only');
+const labBlock=f.campaignBlock(lab);
+const nullRow=f.joinInstanceRow(lab,{provider:'p',model_at_version:null,
+  role:'r',moniker:null,context:'c',prompt:'x',
+  instance_key:'abcdef0123456789',occurrences:{plan:1}});
+console.log(JSON.stringify({
+  labRows:(labBlock.match(/<tr>/g)||[]).length-1,
+  labModel:labBlock.includes(lab.instances[0].model_at_version),
+  donlyNE:f.campaignBlock(donly).includes('NOT ESTABLISHED'),
+  nullNE:nullRow.includes('NOT ESTABLISHED'),
+  summary:fx.doe_join.summary}));
+"""
+
+
+@pytest.mark.skipif(not shutil.which("node"), reason="Node required")
+def test_doe_join_render_on_fixture(tmp_path):
+    sim = tmp_path / "simj.cjs"
+    sim.write_text(ESC_LINE + pure_block()
+                   + ";module.exports={stateLabel,statePill,fmtMerge,"
+                     "countsLine,trackRow,ne,joinInstanceRow,campaignBlock};"
+                     "const f=module.exports;\n" + SIM_JOIN)
+    out = subprocess.run(["node", str(sim), str(FIXTURE)],
+                         capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    got = json.loads(out.stdout)
+    assert got["labRows"] == 8  # lab-1: 8 joined instances at fixture gen
+    assert got["labModel"] is True
+    # design_only campaigns and null tuple fields stay NOT ESTABLISHED.
+    assert got["donlyNE"] is True and got["nullNE"] is True
+    assert got["summary"]["campaigns"] == 10
+    assert got["summary"]["campaigns_joined"] == 1
+
+
+def test_doe_join_live_thin_guards():
+    feed = json.loads(FEED.read_text())
+    dj = feed["doe_join"]
+    assert dj["summary"]["campaigns"] == len(dj["campaigns"])
+    for camp in dj["campaigns"]:
+        assert camp["join_state"] in ("joined", "design_only")
+        for inst in camp["instances"]:
+            for k in ("provider", "model_at_version", "role", "instance_key"):
+                assert k in inst  # values may be null -> NOT ESTABLISHED

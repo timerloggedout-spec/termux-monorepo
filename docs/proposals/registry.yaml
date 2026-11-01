@@ -899,3 +899,21 @@ proposals:
     related_prs: [1655, 1697, 1699, 1707]
     related_branches: []
     gates_required: [proposal-lifecycle, repo-gate]
+
+  - id: orbital-syntax-topology-lab
+    title: "Orbital Syntax — radial information topology and rapid-scan interface research"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/orbital-syntax-topology-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+    related_prs: []
+    related_branches:
+      - feat/orbital-syntax-topology-lab
+    gates_required: [repo-gate, termux-smoke]

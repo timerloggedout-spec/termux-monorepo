@@ -36,7 +36,7 @@ def main() -> int:
         raise SystemExit("dashboard versioning module does not load shared navigation")
     if 'src="./site-nav.js"' not in matrix:
         raise SystemExit("matrix page does not load shared navigation")
-    if "https://timerloggedout-spec.github.io/tribute/" not in nav:
+    if 'origin + "/tribute/"' not in nav:
         raise SystemExit("shared navigation does not use the canonical Tribute route")
     if "var previewMatch = path.match" not in nav or "/previews/" not in nav:
         raise SystemExit("shared navigation does not preserve the preview route context")

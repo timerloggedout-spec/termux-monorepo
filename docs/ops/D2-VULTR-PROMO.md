@@ -13,7 +13,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 - project ≔ ∅ — Δ 2026-11-01 (owner direct via D2 seat): Web Adapter Foundry OUT as D2 production target; pick = pending owner signal via D2 seat. (WAF system itself unchanged in-repo; only D2 targeting struck.)
 - constraints: containment-first required ∧ teams 1–6 ∧ submit ON lablab ∀ judging
 - gates: D2-NOCARD open (no-card path only; card step ⇒ halt)
-- open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ pick freeze ⇒ repo (new repo per entry) ∧ team formation
+- open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ owner pick ⇒ repo (new repo per entry) ∧ team formation
 - submission: none; demo_url = NOT_ESTABLISHED; repo_url = NOT_ESTABLISHED
 - surfaces watched by this lane: lablab event page ∧ lablab Discord ∧ project gallery @ publish (field 1617 participants @2026-10-28; projects count = OPEN TASK @ gallery publish)
 
@@ -29,7 +29,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 | DEMO-TEASE | demo live only | short post | drafted §3.5 — OUT (WAF target struck); future demo beat awaits new pick |
 | SUBMISSION | post-submit only | short post | drafted §3.4 — template only, blocked: submission = none ∧ pick = ∅ |
 
-Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat; only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until freeze ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
+Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat (RE-KEY per Desk note via D2 seat: holds keyed "until owner pick" — freeze ¬enacted ∧ ¬pending; WAF superseded #3081, target ∅); only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until owner pick ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
 
 ## 3. Promo copy (verified vs §1; placeholders ¬ invented)
 

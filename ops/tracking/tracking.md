@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T14:01:44Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T14:04:48Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T14:01:43Z` (merged 150 · open 168) · lane-events(Neon) status=`ok` count=`4674` read_at=`2026-11-01T14:01:43Z`
+Sources: PR feed read_at=`2026-11-01T14:04:48Z` (merged 150 · open 168) · lane-events(Neon) status=`ok` count=`4680` read_at=`2026-11-01T14:04:48Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=12 · landed=1 · unknown=6
 
@@ -23,12 +23,12 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=12 · landed=1 · unknow
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | #3175 `2f9c265e3e1b` 2026-11-01T13:54:27Z | land/close PR #3182 — docs(dispatch): endpoint census floor 5,337 -> 6,441 (requesty 809, routeway 288, typhoon 7) |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | #3182 `39a4c290e43e` 2026-11-01T14:02:02Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3172 `8f9a1d807751` 2026-11-01T13:53:03Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3178 `9615178fe69a` 2026-11-01T13:59:38Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3184 `1e01ee9b9500` 2026-11-01T14:03:58Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -61,4 +61,4 @@ Campaigns: 14 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 68/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 66/150 (extend ops/tracking/projects.json match rules)

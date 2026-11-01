@@ -60,8 +60,8 @@ catalogs (provider-invoke catalog mode, verdicts #3141) {unorouter 330 · deepin
 siliconflow 81 · gemini 60 · cohere 20 · sealion 12 · zai 11 · sambanova 6} (routeway
 keyed = public 288, counted once). **Owner rule: census counts MUST be Actions** —
 VM-vantage/public-docs counts are void (the groq 14 + aion 6 fold was retracted);
-groq + aion = uncountable-from-Actions (catalog 403, egress-blocked). Mistral + cerebras
-ruling-blocked no-secret; cloudflare account-scope null. Gap to 7,500+ = groq + aion via
+groq + aion = uncountable-from-Actions (catalog 403, egress-blocked). Mistral ruling-blocked no-secret; cerebras card-gated CLOSED (fleet has no
+credit card; nebius + together card-gated candidates likewise closed unregistered); cloudflare account-scope null. Gap to 7,500+ = groq + aion via
 an Actions-reachable route + net-new lands + growth.
 Census of record =
 `dispatch.provider_catalog.endpoint_census` in the desk feed.
@@ -72,7 +72,7 @@ Census of record =
   INVOKE OK at wiring time, openai/gpt-oss-120b 200 @1.8s; $1 Model APIs credit, burn-aware).
 - **Wired-unproven (23)** — invoke surface of record henceforth: `provider-invoke.yml` +
   `scripts/ops/provider_invoke.py` (runtime-resolved, no pinned routes). Per-provider invoke
-  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow, huggingface, deepinfra} · completion-blocked {novita + friendli (403 empty-body from the API, catalog-live; $0/Tier-0 class)} ·
+  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow, huggingface, deepinfra} + completion-blocked {novita + friendli} — the whole 8-provider funded-out set is PERMANENT (owner fact 2026-11-01: fleet has no credit card, no top-up path; 're-verify on top-up' framings void; swarm doc S17 / PR #3243) ·
   capacity {sambanova} · secrets-absent in Actions store {cerebras, kilo, mistral,
   modelscope, ovhcloud, requesty, typhoon, xfyun} · egress-403 {groq, xkiro} · edge-403 {aion —
   route-dead corrected} · timeout {unorouter} · skew {nvidia} · scope-limited {cloudflare} (huggingface LEFT this set 2026-11-01: provisioning swapped in an inference-scoped fleet token; re-fire = http 402 credits-exhausted ⇒ funding-blocked, #3141 c.6559163109). Promotion = one named single-provider batch dispatch each

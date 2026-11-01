@@ -824,7 +824,7 @@
        "provider-availability catalog probe"
       ],
       "registry_live_field": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket",
-      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01"
+      "invoke_verdict": "secrets-absent (Actions store, name-verified in invoke job env); verdicts issue #3141 + provisioning census 2026-11-01 Card-gated CLOSED (owner fact 2026-11-01): the fleet has no credit card, so no key path exists - closed, not pending."
      },
      {
       "id": "cloudflare.workers_ai",
@@ -1585,7 +1585,7 @@
        "provider-availability catalog probe"
       ],
       "registry_live_field": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota)",
-      "invoke_verdict": "funding-blocked (funded-out at completion tier): provisioning swapped in an inference-scoped fleet token (store-verified 2026-11-01T14:00Z); re-fire verdict http 402, catalog 200 (issue #3141 c.6559163109) - Inference Providers credits exhausted, scope gap CLOSED (the earlier read-scope 403 / scope-limited class is superseded). Top-up = owner card item per provisioning"
+      "invoke_verdict": "funding-blocked (funded-out at completion tier): provisioning swapped in an inference-scoped fleet token (store-verified 2026-11-01T14:00Z); re-fire verdict http 402, catalog 200 (issue #3141 c.6559163109) - Inference Providers credits exhausted, scope gap CLOSED (the earlier read-scope 403 / scope-limited class is superseded). Top-up = owner card item per provisioning PERMANENT funded-out (owner fact 2026-11-01, swarm doc S17 / PR #3243): the fleet has no credit card, so no top-up path exists and completions never clear on this set; catalogs still count."
      },
      {
       "id": "kilo.free_models",
@@ -1612,7 +1612,7 @@
       ],
       "registry_live_field": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
       "gate_state": "gate-green",
-      "invoke_verdict": "funding-blocked: http 402 insufficient balance; verdicts issue #3141"
+      "invoke_verdict": "funding-blocked: http 402 insufficient balance; verdicts issue #3141 PERMANENT funded-out (owner fact 2026-11-01, swarm doc S17 / PR #3243): the fleet has no credit card, so no top-up path exists and completions never clear on this set; catalogs still count."
      },
      {
       "id": "meta.llama_api",
@@ -1749,7 +1749,7 @@
       ],
       "registry_live_field": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
       "gate_state": "gate-green",
-      "invoke_verdict": "funding-blocked: http 402 insufficient funds; verdicts issue #3141"
+      "invoke_verdict": "funding-blocked: http 402 insufficient funds; verdicts issue #3141 PERMANENT funded-out (owner fact 2026-11-01, swarm doc S17 / PR #3243): the fleet has no credit card, so no top-up path exists and completions never clear on this set; catalogs still count."
      },
      {
       "id": "sambanova.free_tier",
@@ -1790,7 +1790,7 @@
       ],
       "registry_live_field": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free val",
       "gate_state": "gate-green",
-      "invoke_verdict": "funding-blocked: http 402 on retry (first attempt http 200 without completion text); funding account-wide (second model Qwen/Qwen3.8-27B also http 402, per-model shard); verdicts issue #3141"
+      "invoke_verdict": "funding-blocked: http 402 on retry (first attempt http 200 without completion text); funding account-wide (second model Qwen/Qwen3.8-27B also http 402, per-model shard); verdicts issue #3141 PERMANENT funded-out (owner fact 2026-11-01, swarm doc S17 / PR #3243): the fleet has no credit card, so no top-up path exists and completions never clear on this set; catalogs still count."
      },
      {
       "id": "typhoon.api",
@@ -1857,7 +1857,7 @@
       ],
       "registry_live_field": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
       "gate_state": "gate-green",
-      "invoke_verdict": "funding-blocked: http 429 insufficient balance / no resource package; verdicts issue #3141"
+      "invoke_verdict": "funding-blocked: http 429 insufficient balance / no resource package; verdicts issue #3141 PERMANENT funded-out (owner fact 2026-11-01, swarm doc S17 / PR #3243): the fleet has no credit card, so no top-up path exists and completions never clear on this set; catalogs still count."
      },
      {
       "id": "deepinfra.api",
@@ -1870,7 +1870,7 @@
        "provider-invoke (Actions verdicts #3141)"
       ],
       "registry_live_field": "none published",
-      "invoke_verdict": "funding-blocked (funded-out at completion tier): route+auth+catalog proven - catalog http 200, 173 models; invoke http 402 positive-balance-required (verdicts issue #3141 c.6559939019/c.6559939318)"
+      "invoke_verdict": "funding-blocked (funded-out at completion tier): route+auth+catalog proven - catalog http 200, 173 models; invoke http 402 positive-balance-required (verdicts issue #3141 c.6559939019/c.6559939318) PERMANENT funded-out (owner fact 2026-11-01, swarm doc S17 / PR #3243): the fleet has no credit card, so no top-up path exists and completions never clear on this set; catalogs still count."
      },
      {
       "id": "novita.api",
@@ -1883,7 +1883,7 @@
        "provider-invoke (Actions verdicts #3141)"
       ],
       "registry_live_field": "none published",
-      "invoke_verdict": "completion-blocked (catalog-live): catalog http 200 / 98 models from the same runner; invoke http 403 empty body @177ms from the API itself (not egress) - consistent with $0 balance, re-verify on top-up (verdicts issue #3141 c.6560102376/c.6560102443) Shard-3 sharpens the block: a catalog-external id (deepseek/deepseek-v3.1) returns 404 while the catalog-default pick returns 403 => the completion block is account-level, consistent with $0"
+      "invoke_verdict": "completion-blocked (catalog-live): catalog http 200 / 98 models from the same runner; invoke http 403 empty body @177ms from the API itself (not egress) - consistent with $0 balance (verdicts issue #3141 c.6560102376/c.6560102443) Shard-3 sharpens the block: a catalog-external id (deepseek/deepseek-v3.1) returns 404 while the catalog-default pick returns 403 => the completion block is account-level, consistent with $0 PERMANENT (owner fact 2026-11-01, PR #3243): fleet has no credit card; the earlier 're-verify on top-up' framing is void."
      },
      {
       "id": "friendli.api",
@@ -1896,7 +1896,7 @@
        "provider-invoke (Actions verdicts #3141)"
       ],
       "registry_live_field": "none published",
-      "invoke_verdict": "completion-blocked (Tier 0 / $0 class): catalog http 200 / 5 models (GLM-5.x serverless set) from the same runner; invoke http 403 empty body @64ms (not egress) - re-verify on top-up (verdicts issue #3141 c.6560345568/c.6560345635)"
+      "invoke_verdict": "completion-blocked (Tier 0 / $0 class): catalog http 200 / 5 models (GLM-5.x serverless set) from the same runner; invoke http 403 empty body @64ms (not egress). PERMANENT (owner fact 2026-11-01, PR #3243): fleet has no credit card; the earlier 're-verify on top-up' framing is void."
      },
      {
       "id": "baseten.api",
@@ -2234,7 +2234,7 @@
       "models": 20
      }
     },
-    "not_yet_counted": "uncountable-from-Actions: groq + aion (catalog 403, egress-blocked; verdicts #3141) - countable only via an Actions-reachable route. Ruling dispositions: mistral + cerebras (no secret in store, ruling-blocked per provisioning); cloudflare (account-scope, catalog null from CI). Remaining gap to the owner figure of 7,500+ = groq + aion via an Actions-reachable route + net-new lands + growth.",
+    "not_yet_counted": "uncountable-from-Actions: groq + aion (catalog 403, egress-blocked; verdicts #3141) - countable only via an Actions-reachable route. Ruling dispositions: mistral (no secret in store, ruling-blocked per provisioning); cerebras card-gated CLOSED + nebius/together card-gated candidates CLOSED unregistered (owner fact 2026-11-01: fleet has no credit card); cloudflare (account-scope, catalog null from CI). Remaining gap to the owner figure of 7,500+ = groq + aion via an Actions-reachable route + net-new lands + growth.",
     "working_evidence": "per-provider invoke verdicts = issue #3141 batch (provider-invoke surface); per-model evidence shards across the contributing pool per the compounding rule."
    }
   }

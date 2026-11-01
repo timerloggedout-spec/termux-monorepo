@@ -23,6 +23,13 @@ The repository already has:
 
 This lane does not duplicate or supersede those systems. It explores an alternative geometric encoding for selected hierarchical information.
 
+## Inspiration consideration list
+
+1. Envisioning.io — DefTech 2015 Foresight Radar: https://radar.envisioning.io/deftech_2015
+   - Added at the user's request as a strategic/design inspiration reference, connected to their prior work with deftech.ch.
+   - Consider its foresight-radar framing when exploring how to organize emerging-technology signals, categories, relationships, and time horizons. This is an inspiration prompt, not a claim that the original radar's data, methodology, or implementation has been inspected or validated for this prototype.
+   - Keep this reference distinct from technical implementation sources and from any future evidence-backed data inputs.
+
 ## External technical references
 
 1. D3 hierarchy documentation: https://d3js.org/d3-hierarchy

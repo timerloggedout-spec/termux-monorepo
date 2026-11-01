@@ -43,7 +43,7 @@ def content_check(text: str, questions: list[str]) -> list[str]:
     missing = []
     for i, q in enumerate(questions, 1):
         key = f"Q{i}"
-        stem = " ".join(q.split())[:40]
+        stem = " ".join(q.split(" Options:")[0].split())[:60]
         if key not in text or stem not in " ".join(text.split()):
             missing.append(key)
     return missing
@@ -119,9 +119,12 @@ def main() -> int:
         "artifacts": artifacts,
     }
     (out / "unit-manifest.json").write_text(json.dumps(stamp, indent=2) + "\n")
+    missing_map = {a["step"]: a["content_missing"] for a in artifacts
+                   if a.get("content_missing")}
     print("UNIT_VERDICT " + json.dumps(
         {"unit": unit["unit"], "ok": failures == 0,
-         "steps": len(artifacts), "failures": failures, "model": model_seen}))
+         "steps": len(artifacts), "failures": failures, "model": model_seen,
+         "missing": missing_map}))
     return 1 if failures else 0
 
 

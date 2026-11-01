@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T02:20:18Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T02:21:43Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `8a2269bf65` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `b3dee9cca0` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 367 issues, 155 PRs. PR classes: EXTRACT 5 / CANDIDATE 72 / NEED_EVIDENCE 78 / SUPERSEDE 0.
+**Open inventory:** 367 issues, 155 PRs. PR classes: EXTRACT 5 / CANDIDATE 71 / NEED_EVIDENCE 79 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -89,7 +89,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2757 | CANDIDATE | unlabelled | `4c1021ab0e` | success | success | unknown | feat(ci): add merged branch review audit and quota engine |
 | #2856 | CANDIDATE | unlabelled | `10e1643f67` | success | success | unknown | doe(live-3): ci_mode — stamped dispatch comment as prompt (ruling (i-a), owners' |
 | #2857 | CANDIDATE | unlabelled | `bed4bae553` | success | success | unknown | doe(live-3): deepseek-ci harvest step — mirror dispatch outcome to #2830 (ruling |
-| #2871 | CANDIDATE | unlabelled | `4239a06c4d` | success | success | unknown | doe(nc-1): gold corpus v1 (32 units, labels pre-scoring) + tau amendment 0.7472 |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -119,7 +118,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `b28fe66e40` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `f8e02c7b93` | queued | queued | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `f8e02c7b93` | in_progress | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `9553a406ce` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -167,7 +166,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2873 | NEED_EVIDENCE | unlabelled | `8302cba2d0` | not_reported | not_reported | unknown | doe(nc-1): evaluator harness + rule-5 workflow (reference-core, FULL=L1 queue) |
+| #2890 | NEED_EVIDENCE | unlabelled | `7f102f0ae8` | success | queued | unstable | census(quota): siliconflow probe to canonical .com models surface (user/info dep |
+| #2891 | NEED_EVIDENCE | unlabelled | `64255cb857` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 
 ## Families (open)
 

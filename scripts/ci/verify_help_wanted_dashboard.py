@@ -11,6 +11,8 @@ NAV = DASHBOARD / "site-nav.js"
 VERSIONING = DASHBOARD / "versioning.js"
 MATRIX = DASHBOARD / "matrix.html"
 SERVICE_WORKER = DASHBOARD / "sw.js"
+SITEMAP = DASHBOARD / "sitemap.xml"
+ROBOTS = DASHBOARD / "robots.txt"
 SNAPSHOT = ROOT / "apps/help-wanted-dashboard/data/status.json"
 
 REQUIRED_HTML = (
@@ -30,6 +32,8 @@ def main() -> int:
     versioning = VERSIONING.read_text(encoding="utf-8")
     matrix = MATRIX.read_text(encoding="utf-8")
     service_worker = SERVICE_WORKER.read_text(encoding="utf-8")
+    sitemap = SITEMAP.read_text(encoding="utf-8")
+    robots = ROBOTS.read_text(encoding="utf-8")
     required_nav = ('["Tribute", tribute, "tribute"]', '["Lane matrix", origin + "/matrix/", "matrix"]', '["Version comparison", tribute + "versioning.html", "versioning"]')
     missing_nav = [item for item in required_nav if item not in nav]
     if missing_nav:
@@ -44,6 +48,14 @@ def main() -> int:
         raise SystemExit("shared navigation does not preserve the preview route context")
     if '"./site-nav.js"' not in service_worker or 'var CACHE = "tribute-v1"' not in service_worker:
         raise SystemExit("offline shell does not cache the shared Tribute navigation")
+    nav_pages = re.findall(r'tribute \+ "([^"]+\.html)"', nav)
+    missing_pages = [name for name in nav_pages if not (DASHBOARD / name).is_file()]
+    if missing_pages:
+        raise SystemExit("shared navigation targets missing pages: " + ", ".join(missing_pages))
+    if "https://timerloggedout-spec.github.io/tribute/" not in sitemap or "/help-wanted/" in sitemap:
+        raise SystemExit("dashboard sitemap is not canonical to Tribute")
+    if "https://timerloggedout-spec.github.io/tribute/sitemap.xml" not in robots:
+        raise SystemExit("robots.txt does not reference the canonical Tribute sitemap")
     missing = [x for x in REQUIRED_HTML if x not in html]
     if missing:
         raise SystemExit("missing dashboard contract markers: " + ", ".join(missing))

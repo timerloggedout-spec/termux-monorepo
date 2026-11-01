@@ -5,6 +5,17 @@ MVT is one member, not the whole. This document is the family's
 structure record; `docs/ops/MVT-DOE-ATES-SEPARATION.md` remains the
 ownership spec for the surfaces.
 
+**Owner definition (2026-10-31, governing ∀ lanes): DoE =
+DESIGN OF EXPERIMENTS 🧪.** The repo itself is a continuous
+experiment-design surface: randomized mixes (`rnd`), 🧬
+evolutionary CULLING toward Top Performance, 🍒⛏️ cherry-picked
+slices ∧ features propagated into new additions. DoE names
+evaluative experiment campaigns over the living repo — ¬ a
+document store. Every use of "DoE" in every lane reads this way;
+the mechanisms (randomized mixes, culling, cherry-pick
+propagation) are first-class campaign operations, with culls ∧
+propagations recorded as design events in the campaign record.
+
 ## Members
 
 | Member | Kind | State | Primary home |

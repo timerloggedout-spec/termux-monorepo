@@ -53,6 +53,14 @@ Records:
 
 ### DoE — design of experiments
 
+**Owner definition (2026-10-31, governing ∀ lanes): DoE =
+DESIGN OF EXPERIMENTS 🧪.** The repo itself is a continuous
+experiment-design surface: randomized mixes (`rnd`), 🧬
+evolutionary CULLING toward Top Performance, 🍒⛏️ cherry-picked
+slices ∧ features propagated into new additions. DoE names
+evaluative experiment campaigns over the living repo — ¬ a
+document store, ¬ a dashboard label.
+
 The design discipline: which arms, which factors, which rules. Records:
 
 - `deepcli/deepcli/observatory/doe.py` — the methods library

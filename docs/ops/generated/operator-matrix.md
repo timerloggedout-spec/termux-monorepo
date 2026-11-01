@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T08:47:19Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T08:49:31Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `508319c106` (hygiene: in_progress, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `f644dee9f8` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 372 issues, 159 PRs. PR classes: EXTRACT 5 / CANDIDATE 78 / NEED_EVIDENCE 76 / SUPERSEDE 0.
+**Open inventory:** 372 issues, 160 PRs. PR classes: EXTRACT 5 / CANDIDATE 78 / NEED_EVIDENCE 77 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -170,8 +170,9 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `0c3ccd16c2` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `3054dea5e5` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3017 | NEED_EVIDENCE | unlabelled | `7da19bc727` | not_reported | not_reported | unknown | AppID: apk-xref-exec mint swap Swarm → CrossReference (Scalpel · App 5564430) |
+| #3022 | NEED_EVIDENCE | unlabelled | `6393905a47` | queued | in_progress | unstable | Rule recorded: build start => new repo + new AppID (owner, 2026-11-01) |
 
 ## Families (open)
 
@@ -186,6 +187,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 30 | 157 |
+| unlabelled | 30 | 158 |
 
 **Unlabelled open issues (30):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956 — worked oldest-first by the issue-lifecycle lane pass.

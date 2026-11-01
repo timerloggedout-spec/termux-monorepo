@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T13:23:41Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T13:25:32Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T13:23:40Z` (merged 150 · open 169) · lane-events(Neon) status=`ok` count=`4564` read_at=`2026-11-01T13:23:40Z`
+Sources: PR feed read_at=`2026-11-01T13:25:32Z` (merged 150 · open 168) · lane-events(Neon) status=`ok` count=`4571` read_at=`2026-11-01T13:25:32Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknown=5
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3147 `094f6a089917` 2026-11-01T13:21:20Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3145 `850420319c54` 2026-11-01T13:17:33Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3152 `03d2d6a15671` 2026-11-01T13:24:44Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #2995 `6b48cb3897c5` 2026-11-01T09:12:09Z | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3151 `f5e448de2339` 2026-11-01T13:23:04Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3138 `87453e9c198a` 2026-11-01T12:58:17Z | land/close PR #3149 — index(quota): dispatch capability — #2672 gate GREEN |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3149 `641b87ca1a91` 2026-11-01T13:23:58Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3148 `573ba74715c4` 2026-11-01T13:21:37Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
@@ -60,4 +60,4 @@ Campaigns: 13 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 74/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 73/150 (extend ops/tracking/projects.json match rules)

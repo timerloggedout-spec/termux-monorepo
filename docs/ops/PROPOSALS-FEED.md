@@ -20,6 +20,16 @@ exactly one feed: `apps/help-wanted-dashboard/data/proposals-feed.json`
   kiroween-delphi-concept). A pass whose record carries no status
   field renders status null with the absence named in `gaps` — a
   pass status is never inferred from the registry or the pass's age.
+- `docs/proposals/passes/<id>/cycle/BALLOT-round1.json` — when a pass
+  carries a round-1 ballot record, the feed also emits its `outcome`:
+  the per-candidate scores verbatim from the ballot class that
+  actually voted (the class named in the outcome; most ballots wins,
+  precedence LOCAL_BASELINE > HUMAN_COLLABORATOR > MODEL_PROVIDER on
+  ties), the total ballot count, and the source path. A ballot record
+  with zero ballots emits no outcome and the absence is named in
+  `gaps`. Equal scores stay equal — a tie is data; the feed never
+  ranks and no consumer may render an ordinal from the ballot's
+  internal ordering.
 
 ## Collector and refresh
 
@@ -44,3 +54,6 @@ exactly one feed: `apps/help-wanted-dashboard/data/proposals-feed.json`
 4. Counts on the page come from the feed's `counts` object, computed
    by the collector from the registry — the page computes nothing
    beyond filtering what the feed carries.
+5. A pass `outcome` is carried verbatim from the pass's own ballot
+   record — scores are never recomputed, rescaled or tie-broken by
+   the collector.

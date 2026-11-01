@@ -30,7 +30,18 @@
       "label": "Research"
     }
   ],
-  "excluded_services": [],
+  "excluded_services": [
+    {
+      "id": "meta.llama_api",
+      "date": "2026-10-31",
+      "reason": "RETIRED 2026-07-06 (registry record: limit 0, DO NOT ROUTE \u2014 kept only so dispatch never revives the retired endpoint; superseded by meta.model_api, pooled in the meta pool). Not consumable, never allocated."
+    },
+    {
+      "id": "fleet.vm_webhooks",
+      "date": "2026-10-31",
+      "reason": "The fleet's own bounded webhook intake surface (Receiver Mesh VM leg, docs/ops/VM-WEBHOOKS.md): events are intake, not consumable provider quota (registry limit null). Governed by the mesh docs, not focus allocation."
+    }
+  ],
   "pools": [
     {
       "id": "aion",
@@ -2651,6 +2662,43 @@
           "pct": 0,
           "mode": "leftover-only",
           "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "meta",
+      "services": [
+        "meta.model_api",
+        "meta.muse_code"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-31",
+          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-31 to complete registry coverage \u2014 meta.model_api + meta.muse_code landed in the registry (PR #2641) without an allocations entry (flagged by quota-specialist via PR #2939, 2026-10-31). Credentials MODEL_API_KEY / META_API_KEY are owner provisioning items (names-only); the pool stands ready and draw begins on provisioning."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-31",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-31",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-31",
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ]

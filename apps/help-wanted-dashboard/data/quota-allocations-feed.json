@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-30T10:58:17.233608+00:00",
+  "generated_at": "2026-11-01T04:18:59.998037+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -1956,6 +1956,15 @@
       "pool": "github",
       "services": [
         {
+          "service": "deepseek.build_dispatch",
+          "entitlement": {
+            "limit": null,
+            "unit": "dispatches",
+            "window": "Actions minutes (public repo) + device availability"
+          },
+          "observed": null
+        },
+        {
           "service": "github.actions.cache",
           "entitlement": {
             "limit": 10,
@@ -2775,6 +2784,24 @@
     {
       "pool": "google",
       "services": [
+        {
+          "service": "gemini.build_dispatch",
+          "entitlement": {
+            "limit": null,
+            "unit": "dispatches",
+            "window": "provider-side quota not exposed"
+          },
+          "observed": null
+        },
+        {
+          "service": "jules.build_sessions",
+          "entitlement": {
+            "limit": null,
+            "unit": "sessions",
+            "window": "provider-side quota not exposed"
+          },
+          "observed": null
+        },
         {
           "service": "gemini.api_free",
           "entitlement": {
@@ -5084,6 +5111,63 @@
           "pct": 0,
           "mode": "leftover-only",
           "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "slices": [],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "meta",
+      "services": [
+        {
+          "service": "meta.model_api",
+          "entitlement": {
+            "limit": null,
+            "unit": "tokens (metered, public preview)",
+            "window": "n/a"
+          },
+          "observed": null
+        },
+        {
+          "service": "meta.muse_code",
+          "entitlement": {
+            "limit": null,
+            "unit": "tasks (subscription or Meta Model API PAYG)",
+            "window": "monthly (subscription) / metered (PAYG)"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-31",
+          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-31 to complete registry coverage \u2014 meta.model_api + meta.muse_code landed in the registry (PR #2641) without an allocations entry (flagged by quota-specialist via PR #2939, 2026-10-31). Credentials MODEL_API_KEY / META_API_KEY are owner provisioning items (names-only); the pool stands ready and draw begins on provisioning."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-31",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-31",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-31",
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
@@ -7427,6 +7511,51 @@
     },
     {
       "pool": "pinecone",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "meta",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "meta",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "meta",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "meta",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "meta",
       "focus": "reserve",
       "mode": "reserve",
       "plan_pct": 0,

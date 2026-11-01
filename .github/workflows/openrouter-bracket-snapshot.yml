@@ -1,0 +1,25 @@
+name: openrouter-bracket-snapshot
+# [MUSEai]@{role:{quota-specialist}} FINAL probe bracket: read-only
+# snapshots of the OpenRouter free counter + credits balance. The
+# fleet's next real production paid-model request is the instrument;
+# verdicts read off this series. No synthetic calls, zero spend.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Take bracket snapshot
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python3 scripts/ops/openrouter_bracket_snapshot.py
+      - name: Upload bracket snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openrouter-bracket-${{ github.run_id }}
+          path: bracket-snapshot.json
+          retention-days: 90

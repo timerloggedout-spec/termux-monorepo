@@ -91,7 +91,7 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
     def test_public_page_and_methodology_are_linked(self):
         self.assertIn("free-tier-value.json", self.page)
         self.assertIn("FREE-TIER-USE-VALUE-BOARD.md", self.page)
-        self.assertIn("time_invested_value", self.doc)
+        self.assertIn("repo_time_investment_value", self.doc)
         self.assertIn("paid_equivalent_usd", self.doc)
         self.assertIn("billing_status=VERIFIED_NO_COST", self.doc)
 

@@ -74,6 +74,30 @@ model alone.
 - Culls and 🍒-pick propagations are design events in the campaign
   record (DOE-FAMILY doctrine), not edits to prior rows.
 
+## Backfill doctrine (owner, 2026-11-01)
+
+Applies at every **scoring version change** (any change to the
+scoring keys, their derivation, the trace contract's use, or the
+aggregation above):
+
+- **Backfill**: prior committed records are re-scored under the new
+  version; a version change never leaves older cohorts scored only
+  under a retired method while newer ones use the new.
+- **Audited ∧ improved**: each backfill is audited (records re-read,
+  deltas between versions explained in the campaign record) and the
+  scoring method is improved from what the audit shows — backfill is
+  a method-revision event, not a silent recompute.
+- **Continuous comparison**: results under successive scoring
+  versions are compared continuously (per cohort, per instance_key)
+  until **DoE culling retires a method version** — retirement is a
+  recorded culling event (DOE-FAMILY doctrine); a retired version's
+  results stay in the record, labeled with their version, never
+  overwritten in place.
+
+Canonical record for this doctrine: the DoE expert lane's family
+record (`docs/ops/DOE-FAMILY.md`); this section states its
+application to MVT/ATES intake.
+
 ## Population check (how "populated" is judged)
 
 Scoring shows populated when, for a campaign, committed records exist

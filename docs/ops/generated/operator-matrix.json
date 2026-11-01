@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 378,
-    "open_prs": 168,
+    "open_issues": 379,
+    "open_prs": 167,
     "pr_classes": {
       "CANDIDATE": 80,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 82,
+      "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 34,
-      "prs": 166,
+      "issues": 35,
+      "prs": 165,
       "unlabelled_numbers": [
         308,
         343,
@@ -85,11 +85,12 @@
         3018,
         3036,
         3050,
-        3068
+        3068,
+        3077
       ]
     }
   },
-  "generated_at": "2026-11-01T11:34:41Z",
+  "generated_at": "2026-11-01T11:40:40Z",
   "issues_unlabelled": [
     308,
     343,
@@ -124,15 +125,16 @@
     3018,
     3036,
     3050,
-    3068
+    3068,
+    3077
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "in_progress"
     },
-    "sha": "a1a698d6f4"
+    "sha": "6fb4d64341"
   },
   "prs": [
     {
@@ -212,12 +214,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "5376a88b5d",
+      "head_sha": "81ae354be3",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T11:33:41Z"
+      "updated_at": "2026-11-01T11:38:53Z"
     },
     {
       "class": "CANDIDATE",
@@ -2387,12 +2389,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "fae0cebc5d",
+      "head_sha": "327533126a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T11:32:37Z"
+      "updated_at": "2026-11-01T11:36:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2471,26 +2473,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "082370454e",
+      "head_sha": "16abbd730f",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3072,
-      "title": "desk-feed: bench-wide task-fit rotation + stamp bench positions (owner FIX via main)",
-      "updated_at": "2026-11-01T11:33:35Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "749cdfdcdb",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3074,
-      "title": "fix(cadence-onboarding): acknowledge meta unmapped + let autofix run on hard drift",
-      "updated_at": "2026-11-01T11:34:39Z"
+      "number": 3076,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-01T11:36:17Z"
     }
   ],
   "schema": "operator-matrix/v1",

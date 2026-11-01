@@ -709,7 +709,8 @@
       "count": 63,
       "providers_summary": "github (GitHub Models), meta (3 records; MODEL_API_KEY/META_API_KEY provisioning path; llama_api RETIRED do-not-route), gpt4free/CLIProxyAPI/Chapito/ai-manus, + 60 g4f/* upstreams",
       "promotion": "g4f duplicates of native APIs route via the native wired-unproven entry, no new wiring; web/session-only g4f upstreams = g4f adapter entry in provider-batch + admission; image/audio/search upstreams = media/search batch variant, not chat batch; github = GitHub Models invoke step with models-scoped token (scope NOT_ESTABLISHED)."
-     }
+     },
+     "rebase_note": "SUPERSEDED as the wiring class of record by dispatch.provider_catalog.inference_wiring (owner class correction 2026-11-01): the wired_unproven set below was classed on hub/batch route claims; the strict basis counts only invoke endpoints present in code (batch ENDPOINTS 14 + catalog ENDPOINTS 16, union 17 providers)."
     },
     "note_deepseek": "DeepSeek has no distinct model-lane provider row (only g4f/DeepSeek among the 89); its dispatch lanes are the ci-lane records deepseek.build_dispatch / deepseek.termux-agent."
    },
@@ -1809,6 +1810,216 @@
      }
     ],
     "gate_note": "7 key-live wired-unproven providers carry gate_state=blocked-by-#2672: batch observation jobs gated on contracts (red, #2672) => no operational evidence harvestable until a green contracts run; blocker is the gate, not the providers."
+   },
+   "inference_wiring": {
+    "basis": "OWNER CLASS CORRECTION (2026-11-01): the inference bench IS the batch universe; classes re-based on wired INVOKE routes for inference providers only. Review/command surfaces (Qodo, Devin, CodeRabbit, peer-review and command-dispatch lanes) are EXCLUDED from this batch — they are not inference wiring, and a triggerable workflow lane does not count as a wired provider.",
+    "wired_invoke": {
+     "count": 17,
+     "providers": {
+      "aion": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "route-dead per Quota map (404/410 on route) — endpoint in code, route unverified-live"
+      },
+      "cerebras": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "no credential provisioned"
+      },
+      "felo": {
+       "routes": [
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)",
+        "own invoke workflow"
+       ],
+       "blocker": "own-workflow invoke route (Quota triggerable class)"
+      },
+      "google": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "wired (gemini key); invoke via batch + catalog + dispatch legs"
+      },
+      "groq": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "Actions egress blocked (invoke route exists; cannot execute from Actions)"
+      },
+      "huggingface": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "none established"
+      },
+      "kilo": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "no credential provisioned"
+      },
+      "llm7": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
+      },
+      "mistral": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "no credential provisioned"
+      },
+      "modelscope": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "no credential provisioned"
+      },
+      "nvidia": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "auth unproven"
+      },
+      "omni": {
+       "routes": [
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)",
+        "own invoke workflow"
+       ],
+       "blocker": "own-workflow invoke route (Quota triggerable class)"
+      },
+      "openrouter": {
+       "routes": [
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "paid balance $0.00 — free layer only"
+      },
+      "ovhcloud": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "no credential provisioned"
+      },
+      "sambanova": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
+      },
+      "siliconflow": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
+        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+       ],
+       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
+      },
+      "zai": {
+       "routes": [
+        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)"
+       ],
+       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
+      }
+     }
+    },
+    "not_wired": {
+     "count": 72,
+     "providers": {
+      "cloudflare": "route claimed in hub/batch config (verify-scope) but no invoke endpoint in code under the strict basis",
+      "cohere": "route claimed in hub/batch config (key-live) but no invoke endpoint in code under the strict basis",
+      "g4f/AgentTools": "no invoke route wired (registry/roster presence only)",
+      "g4f/Airforce": "no invoke route wired (registry/roster presence only)",
+      "g4f/Antigravity": "no invoke route wired (registry/roster presence only)",
+      "g4f/Arena": "no invoke route wired (registry/roster presence only)",
+      "g4f/BingCreateImages": "no invoke route wired (registry/roster presence only)",
+      "g4f/BlackForestLabs_Flux1Dev": "no invoke route wired (registry/roster presence only)",
+      "g4f/BlackForestLabs_Flux1KontextDev": "no invoke route wired (registry/roster presence only)",
+      "g4f/BlackboxPro": "no invoke route wired (registry/roster presence only)",
+      "g4f/BraveSearch": "no invoke route wired (registry/roster presence only)",
+      "g4f/CachedSearch": "no invoke route wired (registry/roster presence only)",
+      "g4f/Cerebras": "no invoke route wired (registry/roster presence only)",
+      "g4f/ChatGPT": "no invoke route wired (registry/roster presence only)",
+      "g4f/Claude": "no invoke route wired (registry/roster presence only)",
+      "g4f/Cloudflare": "no invoke route wired (registry/roster presence only)",
+      "g4f/CohereForAI_C4AI_Command": "no invoke route wired (registry/roster presence only)",
+      "g4f/Copilot": "no invoke route wired (registry/roster presence only)",
+      "g4f/CopilotApp": "no invoke route wired (registry/roster presence only)",
+      "g4f/DeepInfra": "no invoke route wired (registry/roster presence only)",
+      "g4f/DeepSeek": "no invoke route wired (registry/roster presence only)",
+      "g4f/ElevenLabs": "no invoke route wired (registry/roster presence only)",
+      "g4f/G4FSpace": "no invoke route wired (registry/roster presence only)",
+      "g4f/GLM": "no invoke route wired (registry/roster presence only)",
+      "g4f/Gemini": "no invoke route wired (registry/roster presence only)",
+      "g4f/GeminiCLI": "no invoke route wired (registry/roster presence only)",
+      "g4f/GeminiPro": "no invoke route wired (registry/roster presence only)",
+      "g4f/GithubCopilot": "no invoke route wired (registry/roster presence only)",
+      "g4f/GoogleAiMode": "no invoke route wired (registry/roster presence only)",
+      "g4f/GoogleSearch": "no invoke route wired (registry/roster presence only)",
+      "g4f/Grok": "no invoke route wired (registry/roster presence only)",
+      "g4f/Groq": "no invoke route wired (registry/roster presence only)",
+      "g4f/HailuoAI": "no invoke route wired (registry/roster presence only)",
+      "g4f/HuggingChat": "no invoke route wired (registry/roster presence only)",
+      "g4f/HuggingFace": "no invoke route wired (registry/roster presence only)",
+      "g4f/HuggingFaceMedia": "no invoke route wired (registry/roster presence only)",
+      "g4f/HuggingSpace": "no invoke route wired (registry/roster presence only)",
+      "g4f/KiloCode": "no invoke route wired (registry/roster presence only)",
+      "g4f/LLM7": "no invoke route wired (registry/roster presence only)",
+      "g4f/MarkItDown": "no invoke route wired (registry/roster presence only)",
+      "g4f/MetaAI": "no invoke route wired (registry/roster presence only)",
+      "g4f/MetaAIAccount": "no invoke route wired (registry/roster presence only)",
+      "g4f/MicrosoftDesigner": "no invoke route wired (registry/roster presence only)",
+      "g4f/Nvidia": "no invoke route wired (registry/roster presence only)",
+      "g4f/Ollama": "no invoke route wired (registry/roster presence only)",
+      "g4f/OmniRoute": "no invoke route wired (registry/roster presence only)",
+      "g4f/OpenAIFM": "no invoke route wired (registry/roster presence only)",
+      "g4f/OpenRouterFree": "no invoke route wired (registry/roster presence only)",
+      "g4f/OperaAria": "no invoke route wired (registry/roster presence only)",
+      "g4f/Perplexity": "no invoke route wired (registry/roster presence only)",
+      "g4f/Pi": "no invoke route wired (registry/roster presence only)",
+      "g4f/Pollinations": "no invoke route wired (registry/roster presence only)",
+      "g4f/PollinationsAudio": "no invoke route wired (registry/roster presence only)",
+      "g4f/PollinationsImage": "no invoke route wired (registry/roster presence only)",
+      "g4f/Puter": "no invoke route wired (registry/roster presence only)",
+      "g4f/Qwen": "no invoke route wired (registry/roster presence only)",
+      "g4f/RelayRouter": "no invoke route wired (registry/roster presence only)",
+      "g4f/StabilityAI_SD35Large": "no invoke route wired (registry/roster presence only)",
+      "g4f/TeachAnything": "no invoke route wired (registry/roster presence only)",
+      "g4f/WhiteRabbitNeo": "no invoke route wired (registry/roster presence only)",
+      "g4f/You": "no invoke route wired (registry/roster presence only)",
+      "g4f/Yqcloud": "no invoke route wired (registry/roster presence only)",
+      "github": "platform + copilot (review-kind) record — not an inference invoke provider in this batch",
+      "gpt4free/CLIProxyAPI/Chapito/ai-manus": "no invoke route wired (registry/roster presence only)",
+      "meta": "do-not-route: llama_api RETIRED; model_api/muse_code pending MODEL_API_KEY/META_API_KEY provisioning",
+      "requesty": "route claimed in hub/batch config (no-credential) but no invoke endpoint in code under the strict basis",
+      "routeway": "route claimed in hub/batch config (key-live) but no invoke endpoint in code under the strict basis",
+      "sealion": "route claimed in hub/batch config (route-dead/DNS) but no invoke endpoint in code under the strict basis",
+      "typhoon": "route claimed in hub/batch config (no-credential) but no invoke endpoint in code under the strict basis",
+      "unorouter": "route claimed in hub/batch config (key-live) but no invoke endpoint in code under the strict basis",
+      "xfyun": "route claimed in hub/batch config (no-credential) but no invoke endpoint in code under the strict basis",
+      "xkiro": "route claimed in hub/batch config (Actions-egress 1010-blocked) but no invoke endpoint in code under the strict basis"
+     }
+    },
+    "excluded_surfaces": [
+     "qodo review lane",
+     "devin review lane",
+     "coderabbit command-dispatch / review lanes",
+     "peer-review orchestrator surfaces",
+     "gemini review/triage legs (review/command kind, not inference invoke)"
+    ],
+    "note": "Wiring target per owner escalation to Swarm: every not_wired provider gets an invoke route (batch endpoint or catalog endpoint) or a named blocker of record. Counts: 89 distinct providers = 17 wired-invoke + 72 not-wired."
    }
   }
  },

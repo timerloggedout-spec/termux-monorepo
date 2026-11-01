@@ -110,7 +110,7 @@ def _record_args(tmp_path, no=1):
             "dispatch_no": no, "campaign_id": D.CAMPAIGN,
             "assignment": {"cell": "control"},
             "task": {"pr": 2436, "pr_head": "c" * 40},
-            "instance_key": "k", "prompt_sha256": "p" * 64}))
+            "instance_key": "k" * 64, "prompt_sha256": "p" * 64}))
     result = tmp_path / "result.json"
     result.write_text(json.dumps({
         "status": "ok", "finished_at": "2026-11-03T00:00:00Z",
@@ -134,3 +134,23 @@ def test_record_schema_and_summary(tmp_path):
     assert rec["treatment"]["arm"] in D.ACTIVE_CELLS
     summary = json.loads((tmp_path / "SUMMARY.json").read_text())
     assert summary["runs"] == 1
+    # delta 4: the established instance is stamped from the job
+    inst = rec["treatment"]["instance"]
+    job = json.loads((tmp_path / "dispatch"
+                      / "job-0001-pr2436.json").read_text())
+    assert inst["instance_key"] == job["instance_key"]
+    assert inst["tools"]["sha256"]
+    assert inst["system_prompt"]["sha256"] == job["prompt_sha256"]
+
+
+def test_summary_skips_foreign_records(tmp_path):
+    args = _plan_args(tmp_path, 2436)
+    assert D.cmd_plan(args) == 0
+    records = tmp_path / "records"
+    records.mkdir(exist_ok=True)
+    (records / "dispatch-0001.json").write_text(json.dumps(
+        {"campaign_id": D.CAMPAIGN, "dispatch_no": 1,
+         "attempts": [], "cell": "suffix-vowels"}))
+    assert D.cmd_record(_record_args(tmp_path)) == 0
+    summary = json.loads((tmp_path / "SUMMARY.json").read_text())
+    assert summary["runs"] == 1  # foreign manual record not counted

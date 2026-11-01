@@ -82,7 +82,8 @@ def assign_cell(pr: int) -> tuple[int, str]:
     return idx, ACTIVE_CELLS[idx]
 
 
-def compose(task_text: str, cell: str, phrases_data: dict):
+def compose(task_text: str, cell: str, phrases_data: dict,
+            model: str = MODEL):
     cfg = CELL_CFG[cell]
     if cfg is None:
         return task_text, None, {"placement": None, "form": None,
@@ -92,11 +93,11 @@ def compose(task_text: str, cell: str, phrases_data: dict):
                  else "none",
                  "sub_depth": 0}
     composed, stamp = phrase_layer.apply_phrases(
-        task_text, phrases_data, MODEL, selection="first",
+        task_text, phrases_data, model, selection="first",
         placement=cfg["placement"], form="verbatim",
         transform_cfg=transform)
     if stamp is None:
-        raise RuntimeError(f"no phrase set established for {MODEL}")
+        raise RuntimeError(f"no phrase set established for {model}")
     return composed, stamp, {"placement": cfg["placement"],
                              "form": cfg["form"],
                              "transform": transform}
@@ -129,13 +130,14 @@ def cmd_plan(args) -> int:
         print(f"BUDGET: {state['calls']}/{cap} free calls used today "
               f"({today}); refusing plan")
         return 5
+    model = (design.get("automation") or {}).get("model", MODEL)
     phrases = phrase_layer.load_sets(args.phrases)
     task_text = Path(args.task_file).read_text()
     idx, cell = assign_cell(args.pr)
-    composed, stamp, cfg = compose(task_text, cell, phrases)
+    composed, stamp, cfg = compose(task_text, cell, phrases, model)
     prompt_sha = ik.sha256_text(composed)
     key = ik.instance_key(
-        provider="openrouter", model=MODEL,
+        provider="openrouter", model=model,
         system_prompt_sha256=prompt_sha,
         tools_sha256_=ik.tools_sha256([]),
         role="reviewer", moniker="doe-mgr-phrases-jit",
@@ -146,7 +148,7 @@ def cmd_plan(args) -> int:
         "campaign_id": CAMPAIGN,
         "dispatch_no": no,
         "route": "openrouter",
-        "model": MODEL,
+        "model": model,
         "role": "reviewer",
         "task": {"type": "pr_review", "pr": args.pr,
                  "pr_head": args.pr_head,
@@ -203,8 +205,23 @@ def cmd_record(args) -> int:
         "treatment": {
             "manager_policy_id":
                 "doe-mgr-phrases-jit/live-3-dispatcher/v1",
-            "provider": "openrouter", "model": MODEL,
-            "arm": cell, "instance": None},
+            "provider": "openrouter",
+            "model": job.get("model", MODEL),
+            "arm": cell,
+            "instance": {
+                "provider": "openrouter",
+                "model": job.get("model", MODEL),
+                "system_prompt": {
+                    "ref": f"experiments/doe/{CAMPAIGN}/dispatch/"
+                           f"job-{job['dispatch_no']:04d}-pr"
+                           f"{(job.get('task') or {}).get('pr')}.json",
+                    "sha256": job.get("prompt_sha256")},
+                "tools": {"ref": "tools:openrouter:chat-completions",
+                          "sha256": ik.tools_sha256([])},
+                "role": "reviewer",
+                "moniker": "doe-mgr-phrases-jit",
+                "context": f"{CAMPAIGN}/{cell}",
+                "instance_key": job.get("instance_key")}},
         "provenance": "github",
         "confidence": "high",
         "status": "passed" if ok else "failed",
@@ -237,6 +254,10 @@ def cmd_record(args) -> int:
                "runs": 0, "cells": {}, "statuses": {}}
     for p in sorted(records.glob("*.json")):
         r = json.loads(p.read_text())
+        if r.get("schema_version") != "1.0" or not str(
+                r.get("experiment_id", "")).startswith(
+                "live3-dispatch-"):
+            continue  # foreign record shapes are not ours to count
         summary["runs"] += 1
         c = (r.get("metrics") or {}).get("cell")
         summary["cells"][c] = summary["cells"].get(c, 0) + 1

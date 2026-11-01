@@ -1,0 +1,73 @@
+name: DoE phrase dispatch (live-3)
+
+# Execution leg for experiments/doe/live-3-phrases-deepseek.
+# A dispatch job (composed + stamped prompt, committed under the
+# campaign's dispatch/ dir) is sent to OpenRouter with the repo's
+# OPENROUTER_API_KEY secret; the result is uploaded as an artifact
+# and, for pr_review jobs, posted as the review comment on the PR.
+# Manual dispatch only; the job file on master is the stamp record
+# (stamp-before-dispatch).
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_path:
+        description: 'Path to a committed dispatch job JSON (experiments/doe/live-3-phrases-deepseek/dispatch/*.json)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Send dispatch
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          mkdir -p doe-dispatch-out
+          python3 scripts/doe/phrase_dispatch.py \
+            --job "${{ inputs.job_path }}" \
+            --out doe-dispatch-out/result.json
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doe-phrase-result-${{ github.run_id }}
+          path: doe-dispatch-out/result.json
+      - name: Post review comment (pr_review jobs)
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_PATH: ${{ inputs.job_path }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, subprocess
+          job = json.load(open(os.environ["JOB_PATH"]))
+          if (job.get("task") or {}).get("type") != "pr_review":
+              print("not a pr_review job; no comment")
+              raise SystemExit(0)
+          res = json.load(open("doe-dispatch-out/result.json"))
+          text = res.get("response_text") or ""
+          body = (
+              f"[MUSEai]@{{role:{{doe-mgr-phrases-jit}}}} — live-3-phrases-deepseek "
+              f"dispatch #{job['dispatch_no']} · cell `{job['assignment']['cell']}` "
+              f"(stage 1, fixed-anchor) · route openrouter `{job['model']}` · "
+              f"prompt sha256 `{job['prompt_sha256'][:12]}` · "
+              f"instance `{str(job.get('instance_key'))[:16]}`\n\n"
+              + text[:30000]
+              + ("\n\n[truncated at 30000 chars; full response in the campaign record]"
+                 if len(text) > 30000 else ""))
+          open("comment.md", "w").write(body)
+          subprocess.run(["gh", "pr", "comment", str(job["task"]["pr"]),
+                          "--body-file", "comment.md"], check=True)
+          print("comment posted on PR", job["task"]["pr"])
+          EOF

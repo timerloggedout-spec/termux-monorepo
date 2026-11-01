@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2a2d491ba789d6140ef314574338026904d3b729a70d09fa9230eb3f99894c6b",
-  "workflow_count": 235,
+  "source_fingerprint": "1f83f429fc93e0dc25a959abbac7b33f9608b855d99c6859902b7b854d30fa60",
+  "workflow_count": 236,
   "workflows": [
     {
       "action_pins": [],
@@ -2771,6 +2771,21 @@
       ],
       "name": "openrouter-free-counter-probe",
       "path": ".github/workflows/openrouter-free-counter-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "openrouter-paid-value-probe",
+      "path": ".github/workflows/openrouter-paid-value-probe.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

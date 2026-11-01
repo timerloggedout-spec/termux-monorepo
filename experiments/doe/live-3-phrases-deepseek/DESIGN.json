@@ -1,4 +1,11 @@
 {
+ "automation": {
+  "dispatch_workflow": ".github/workflows/doe-phrase-dispatch.yml (workflow_dispatch, master only; PR #2826, diagnosability PR #2832)",
+  "job_home": "experiments/doe/live-3-phrases-deepseek/dispatch/ (composed+stamped jobs, stamp-before-dispatch)",
+  "log_surface": "issue #2830 (every dispatch outcome posted: status, error class, response sha/usage)",
+  "loop": "automation runs => records in records/ => live-builds relay => doe-expert review => amendments (DOE-FAMILY rule 5)",
+  "sender": "scripts/doe/phrase_dispatch.py (stdlib; key from OPENROUTER_API_KEY Actions secret only; fails loud, no retry)"
+ },
  "campaign_id": "live-3-phrases-deepseek",
  "coordination": {
   "composition_rule": "ONE dispatch carries at most one designed assignment per factor family; where families meet on one dispatch, cells cross in a SINGLE stamp (framing_cell x phrase_cell, one assignment hash) \u2014 never two independent assignments on the same dispatch.",
@@ -127,8 +134,9 @@
   "type": "full_factorial_plus_control_staged"
  },
  "dispatch": {
-  "rule": "NO dispatch until doe-expert approves this design (approval also picks the route)",
-  "state": "blocked_on_doe_expert_approval"
+  "approved_was": "doe-expert GO via live-builds c04ca48d: PRIMARY OpenRouter deepseek/deepseek-r1:free only",
+  "detail": "Dispatch #1 (job-0001, PR #2436, cell suffix-vowels) failed attempts 1+2: OpenRouter HTTP 404 \u2014 deepseek/deepseek-r1:free delisted (no provider serves it); live catalog 2026-11-01 has ZERO DeepSeek :free models and the fleet key cannot pay (402, never purchased credits). Record: records/dispatch-0001.json. Escalated to live-builds 2026-11-01 with the ALT (deepseek-ci) ask \u2014 dispatch halts until doe-expert rules; no unilateral substitution.",
+  "state": "route_primary_dead_model_delisted"
  },
  "family": "doe",
  "gates": [

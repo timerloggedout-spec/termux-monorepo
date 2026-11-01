@@ -4,8 +4,8 @@
     "open_prs": 152,
     "pr_classes": {
       "CANDIDATE": 69,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 78,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T01:44:48Z",
+  "generated_at": "2026-11-01T01:46:06Z",
   "issues_unlabelled": [
     308,
     343,
@@ -119,10 +119,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "in_progress",
+      "smoke": "success"
     },
-    "sha": "541563497e"
+    "sha": "369d1d516d"
   },
   "prs": [
     {
@@ -194,6 +194,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "255586d91f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T01:44:16Z"
     },
     {
       "class": "CANDIDATE",
@@ -1576,20 +1590,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "255586d91f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:44:16Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2256,7 +2256,7 @@
       "mergeable_state": "unknown",
       "number": 2851,
       "title": "census(quota): OpenRouter free-roster rotation hazard \u2014 deepseek-r1:free delisted (verified)",
-      "updated_at": "2026-11-01T01:44:04Z"
+      "updated_at": "2026-11-01T01:44:57Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -80,6 +80,48 @@ The lane's own chat keeps its standing signature
 roles within the lane's oversight structure, distinct strings by
 design.
 
+## Fleet GitHub App function identities
+
+Display layer for the fleet's GitHub Apps — **function identities**,
+not lane monikers and not platform identities: each app acts on
+GitHub as its own `<slug>[bot]` actor. Provisioning facts (App IDs,
+slugs, installations, permissions, custody) are the AppID lane's
+record in `ops/github-apps/PROCESS.json`; this section carries only
+the display monikers, issued by the registry lane
+(`{role:{registration-monikers}}`). Roster display in the paired
+form `Moniker · Function`, backticked, never `@`-mentioned.
+
+| App (provisioning name) | Display moniker | Actor | Family / queue |
+|---|---|---|---|
+| Termux Fleet Collector | — (none issued; the name is the function) | `termux-fleet-collector[bot]` | — |
+| Termux Fleet Publisher | `Edict · Publisher` | `termux-fleet-publisher[bot]` | epithet Acta; queued alt Herald |
+| Termux Fleet Reviewer | `Argus · Reviewer` | `termux-fleet-reviewer[bot]` | epithet Panoptes; queued alt Themis |
+| Termux Fleet Lifecycle | `Janus · Lifecycle` | `termux-fleet-lifecycle[bot]` | epithets Patulcius / Clusius; queued alt Clotho |
+| Termux Fleet Gate | `Cerberus · Gate` | `termux-fleet-gate[bot]` | aspect the Ward; no queued alt |
+| Termux Fleet Swarm | `Myriad · Swarm` | `termux-fleet-swarm[bot]` | aspect the Host; queued alt Apis (below) |
+
+**Swarm issuance (2026-10-31, registry lane; app provisioned the
+same day — App ID 5560920, record PR #2761).** The swarm actor's
+work is mass fan-out: parallel provider/workflow dispatch against
+the action_required pile. Its name is therefore the plain-register
+common noun for a countless host, keeping the active pool balanced
+against the mythic set (owner balance rule, 2026-10-29):
+
+- canonical: `Myriad` (paired display `Myriad · Swarm`)
+- aspect: the Host
+- queued alt: `Apis` (mark `Ap1s`) — candidate only; draws on a
+  registry-lane bounce/rename decision, never improvised
+- leet marks: `Myr1ad` (single substitution, ranks first) >
+  `Myr14d` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical `termux-fleet-swarm`
+  provisioned first try); a bounce, if ever needed, returns to the
+  registry lane
+- normalized form: Swarm — `Termux Fleet Swarm` /
+  `termux-fleet-swarm[bot]`
+
+Collision check at issuance: `Myriad` and `Apis` appear nowhere in
+this roster or in the registration registry.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

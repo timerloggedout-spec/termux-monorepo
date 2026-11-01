@@ -52,6 +52,12 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("## Ranking convention", self.doc)
         self.assertIn("descending order (most expensive first)", self.doc)
 
+    def test_opportunity_cost_is_scoped_to_repository_work(self):
+        self.assertIn("Repo time invested (minutes)", self.page)
+        self.assertIn("Repo opportunity-cost rate (USD/hour)", self.page)
+        self.assertIn("repo_time_invested_value", self.doc)
+        self.assertIn("not a generic, unrelated hourly-rate scenario", self.doc)
+
     def test_missing_session_feed_is_explicit_not_synthesized(self):
         self.assertEqual(self.data["sessions"], [])
         self.assertIn("unknown", self.data["policy"]["unknown_semantics"].lower())

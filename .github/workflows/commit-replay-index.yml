@@ -1,0 +1,83 @@
+name: commit-replay-index
+
+# Commit Replay P1 indexer (contract: docs/ops/COMMIT-REPLAY.md,
+# config: config/commit-replay.json). SINGLE-WRITER for
+# ops/commit-replay/index/*.jsonl. Git plane only (commit-store/v1);
+# never touches the session plane (replay-store/v1).
+# VM = sandbox law: this workflow is the standing mechanism; no VM cron.
+# v0 scope: the primary subject is this repo itself (co-located checkout).
+# The repo-replay subject's git history joins when its index home is set
+# (its session store stays on the sibling plane regardless).
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_commits:
+        description: 'Max new commits to index this run (backfill cap)'
+        required: false
+        default: '1000'
+  schedule:
+    - cron: '41 5 * * 3'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/commit_replay/extract.py'
+      - 'config/commit-replay.json'
+
+concurrency:
+  group: commit-replay-index
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Mint BEFORE checkout (fleet F1 pattern, SEC-03): reads + commit run
+      # on the Swarm app token (own 5000/h bucket), not the shared
+      # GITHUB_TOKEN bucket (1000/h/repo).
+      - name: Mint Swarm app token (F1)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ steps.swarm-token.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-check (indexer unit tests)
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/commit_replay/extract.py
+          python3 -m pytest tests/test_commit_replay_extract.py -q || python3 tests/test_commit_replay_extract.py
+      - name: Extract (incremental gindex)
+        run: |
+          set -euo pipefail
+          git config user.name "commit-replay-index"
+          git config user.email "commit-replay-index@fleet.local"
+          python3 -B scripts/commit_replay/extract.py \
+            --repo-root . \
+            --repo-name "${{ github.repository }}" \
+            --index ops/commit-replay/index/termux-monorepo.jsonl \
+            --max-commits "${{ inputs.max_commits || '1000' }}" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Commit index to master (single-writer)
+        run: |
+          set -euo pipefail
+          git add ops/commit-replay/index/termux-monorepo.jsonl
+          if git diff --cached --quiet; then
+            echo "index unchanged — nothing to commit" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git commit -m "ops(commit-replay): gindex refresh [skip ci]"
+          git pull --rebase origin master
+          git push origin HEAD:master

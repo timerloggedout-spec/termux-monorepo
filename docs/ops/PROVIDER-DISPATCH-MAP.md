@@ -31,12 +31,12 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 | Lane | Task classes | Surface | Evidence |
 |---|---|---|---|
 | Jules | build, fix | `agent-jules-on-issues.yml` + handoff + review-auto | sessions 17326020844735872479 (PR #2635) + 7007935780300107338 (PR #2731); last success 41296280415 |
-| Gemini dispatch | build, feature, invoke | `gemini-dispatch.yml` | D1 SR run 41301369671 ✓ (issue #3050); last success 41301486059 |
+| Gemini dispatch | build, feature, invoke | `gemini-dispatch.yml` | D1 SR run 41301369671 ✓ (issue #3050, event = issues); last success 41301486059. Trigger = issues / issue_comment / PR events (@gemini-cli) — ∅ workflow_dispatch (#2734 open) |
 | Gemini after-peers | review (2nd pass) | `gemini-after-peers.yml` | 1,269 runs; last success 41299982052 |
 | DeepSeek termux-agent | fix, build | `deepseek-termux-agent.yml` | D1 fix-pass run 41301295882 ✓ |
 | DeepSeek CI | invoke, review | `deepseek-ci.yml` | last success 41301485914 |
 | DeepAgent bridge | device, task | `deepcli-agent-bridge.yml` | 158 runs; last success 39989289180 (2026-10-23). Greens incl. skip-exits ⇒ verify at PR level |
-| DeepAgent task | task, build | `deepagent-task.yml` | first success 41301564332 in the widening window (was 0 runs) |
+| DeepAgent task | task, build | `deepagent-task.yml` | first success 41301564332 in the widening window (was 0 runs; workflow-level — device steps skipped, device execution NOT_ESTABLISHED; stamp #2735) |
 | provider-batch | inference, batch, eval | `provider-batch.yml` | 250 runs; last success 40710434190 (2026-10-28); latest-100 mixed ⇒ verify per dispatch. **DISPATCH HELD per issue #2672 until contracts job green** (arm proven, dispatch suspended) |
 | provider-availability | probe, catalog | `provider-availability.yml` | 93 runs; last success 40704824602 |
 | provider-command-dispatch | fix, review | `provider-command-dispatch.yml` + command library | 1 run ✓ 39170909023 (2026-10-18, n=1 stale — re-proof on next use) |
@@ -77,6 +77,8 @@ reason + session/run id — no stamp ⇒ no dispatch (telemetry gate, 2026-10-30
 Next D1 dispatch ⇒ a proven lane outside {DeepSeek, Gemini} for its task class, reason stamped.
 
 ## Refresh
+
+Cross-ref: Swarm widened rotation of record = SWARM doc §15 (PR #3056). Batch invoke keys live today: cohere / sambanova / zai / llm7 / routeway / unorouter / siliconflow (groq excluded, Actions egress).
 
 Desk single-writer refresh pattern (feed PR). Re-census registry + workflow runs at each
 refresh; a lane's class changes only on cited run/PR evidence, never on wiring alone.

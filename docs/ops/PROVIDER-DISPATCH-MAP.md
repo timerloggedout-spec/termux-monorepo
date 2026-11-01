@@ -133,10 +133,10 @@ provider_protocols, g4f-working/gpt4free}: **87/89 catalogued keys carry an invo
 surface** — named 26 {batch/catalog 17 + extensions 7 (typhoon, unorouter, routeway,
 requesty, xkiro, xfyun, sealion) + protocols 2 (cloudflare, cohere)} + g4f family
 {60 records + composite, catalogued route; tester-working evidence 15 providers}.
-Not-wired = 1: meta (retired/provisioning-gated — the sole remaining wiring item, an
-owner provisioning act). github is DISPOSITIONED excluded-by-kind (fix seat, 2026-11-01):
-a platform+copilot review-kind record, classed with the excluded review surfaces;
-reopen = owner word → github-models invoke record. PKG-A (#3099) + PKG-B (#3100) were dispatched on the wrong census and are
+Not-wired open items = 0. 89/89 accounted: 87 wired + 2 dispositioned — github
+excluded-by-kind (review-kind record; reopen = owner word → github-models record) +
+meta RETIRED/do-not-route (standing fleet record; excluded from the wiring target,
+not a pending item). PKG-A (#3099) + PKG-B (#3100) were dispatched on the wrong census and are
 STOOD DOWN. (ollama also has a protocol endpoint; not a model-lane catalogued key.)
 
 ## Inference wiring — re-based (owner class correction 2026-11-01) — SUPERSEDED, kept for the record

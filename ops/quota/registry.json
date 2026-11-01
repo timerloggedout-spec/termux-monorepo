@@ -2686,10 +2686,40 @@
    "zone": "UTC",
    "source": "docs/ops/VM-WEBHOOKS.md",
    "doc_quote": "Bounded intake only: verify, dedupe, append the allowlisted envelope to the durable intake log; no business logic, no dispatch.",
-   "live": "GET http://127.0.0.1:8791/health + durable log ~/workspace/vm-webhooks/intake.jsonl (proof 2026-10-30: signed payload 202, duplicate 200, bad signature 401)",
+   "live": "GET http://127.0.0.1:8791/health + durable log ~/workspace/vm-webhooks/intake.jsonl (proof 2026-10-30: signed payload 202, duplicate 200, bad signature 401; routing proof 2026-10-31: routed + unrouted_flagged classes logged with delivery_target)",
    "planned_use": {
     "safety": 1.0,
     "note": "Provider-dispatch may route bounded trigger/intake tasks here (AI Studio mesh VM trigger precedent, owner-ruled 2026-10-30). Secret VM_WEBHOOK_SECRET provisioned in GitHub Actions secrets via PAT sealed-box (verified 2026-10-31T06:18:04Z; repo secrets 59 => 60), same value mirrored in local 0600 custody for the receiver process; values never in chat/files/commits. Standing/public hosting exceeds this scope \u2014 see docs/ops/VM-WEBHOOKS.md."
+   },
+   "routes": {
+    "github": {
+     "chat_id": "6920a2f6-fb87-4ec7-ae19-ca6afc3bf230",
+     "role": "connectors"
+    },
+    "vm-proof": {
+     "chat_id": "6920a2f6-fb87-4ec7-ae19-ca6afc3bf230",
+     "role": "connectors"
+    },
+    "meta": {
+     "chat_id": "628089aa-a83a-47b1-9367-9be5997a3811",
+     "role": "social-connectors"
+    },
+    "whatsapp": {
+     "chat_id": "628089aa-a83a-47b1-9367-9be5997a3811",
+     "role": "social-connectors"
+    },
+    "desk-dispatch": {
+     "chat_id": "a440bcb2-f95a-41c5-81b4-9e1728e5fd6c",
+     "role": "contribution-desk"
+    },
+    "quota": {
+     "chat_id": "b18fae96-44d8-4944-9e68-eeb8e5e86a88",
+     "role": "quota-specialist"
+    },
+    "main": {
+     "chat_id": "9a88e77a-c58d-43f4-bdd3-848a7d0420db",
+     "role": "main"
+    }
    }
   }
  ]

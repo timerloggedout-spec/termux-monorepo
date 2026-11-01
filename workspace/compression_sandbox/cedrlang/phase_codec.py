@@ -240,3 +240,98 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+# ---------------------------------------------------------------------------
+# 4th Development Lane: Conversational Steganography Cipher
+# ---------------------------------------------------------------------------
+
+ZW_CHARS: Tuple[str, str, str, str] = ("\u200b", "\u200c", "\u200d", "\ufeff")
+CHAR_TO_DIGIT: Mapping[str, int] = {c: i for i, c in enumerate(ZW_CHARS)}
+ZW_SET = frozenset(ZW_CHARS)
+
+
+class ConversationalSteganographyCipher:
+    """Pre-LLM pre-parser steganographic obfuscation cipher (4th Lane).
+
+    Encodes arbitrary payloads into deterministic Base-4 zero-width quadruplet
+    character sequences (\u200b, \u200c, \u200d, \ufeff) embedded covertly into host text.
+    Optionally applies key-stream XOR permutation for private mapping security.
+    """
+
+    @staticmethod
+    def _apply_key(data: bytes, key: Optional[str | bytes]) -> bytes:
+        if not key:
+            return data
+        key_bytes = key.encode("utf-8") if isinstance(key, str) else key
+        if not key_bytes:
+            return data
+        key_len = len(key_bytes)
+        return bytes(b ^ key_bytes[i % key_len] for i, b in enumerate(data))
+
+    @classmethod
+    def encode(
+        cls,
+        payload: str,
+        host_text: str = "",
+        secret_key: Optional[str | bytes] = None,
+    ) -> str:
+        """Encode payload string into zero-width character quadruplets embedded in host_text."""
+        if not payload:
+            return host_text
+        payload_bytes = payload.encode("utf-8")
+        cipher_bytes = cls._apply_key(payload_bytes, secret_key)
+
+        zw_chunks = []
+        for b in cipher_bytes:
+            d0 = (b >> 6) & 3
+            d1 = (b >> 4) & 3
+            d2 = (b >> 2) & 3
+            d3 = b & 3
+            zw_chunks.extend((ZW_CHARS[d0], ZW_CHARS[d1], ZW_CHARS[d2], ZW_CHARS[d3]))
+        stego_str = "".join(zw_chunks)
+
+        if not host_text:
+            return stego_str
+
+        # Embed covertly: insert after first word/whitespace or prepend/append
+        if " " in host_text:
+            parts = host_text.split(" ", 1)
+            return parts[0] + stego_str + " " + parts[1]
+        return host_text + stego_str
+
+    @classmethod
+    def decode(
+        cls,
+        stego_text: str,
+        secret_key: Optional[str | bytes] = None,
+    ) -> str:
+        """Extract zero-width quadruplets from stego_text and decode back to payload string."""
+        if not stego_text or not cls.has_stego(stego_text):
+            return ""
+
+        extracted = [c for c in stego_text if c in ZW_SET]
+        if not extracted or len(extracted) % 4 != 0:
+            return ""
+
+        raw_bytes = []
+        for i in range(0, len(extracted), 4):
+            d0 = CHAR_TO_DIGIT[extracted[i]]
+            d1 = CHAR_TO_DIGIT[extracted[i + 1]]
+            d2 = CHAR_TO_DIGIT[extracted[i + 2]]
+            d3 = CHAR_TO_DIGIT[extracted[i + 3]]
+            b = (d0 << 6) | (d1 << 4) | (d2 << 2) | d3
+            raw_bytes.append(b)
+
+        decrypted_bytes = cls._apply_key(bytes(raw_bytes), secret_key)
+        try:
+            return decrypted_bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            return ""
+
+    @classmethod
+    def has_stego(cls, text: str) -> bool:
+        """Fast-path check if text contains zero-width steganographic characters."""
+        if not text:
+            return False
+        return any(c in text for c in ZW_SET)

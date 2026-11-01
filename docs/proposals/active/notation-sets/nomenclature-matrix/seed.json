@@ -70,6 +70,13 @@
       "url": "https://doi.org/10.3969/j.issn.1000-5218.2002.05.013",
       "source_type": "scholarly_article",
       "authority": "Scholarly linguistic research; metadata discovered via SciSpace"
+    },
+    {
+      "source_id": "linguist-steganography-lane",
+      "title": "Linguist Conversational Steganography Cipher Protocol (Lane 4)",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/workspace/compression_sandbox/cedrlang/phase_codec.py",
+      "source_type": "repository_source",
+      "authority": "termux-monorepo"
     }
   ],
   "concepts": [
@@ -163,6 +170,17 @@
       "source_ids": [
         "synonyms-near-synonyms-research",
         "wolfram-worddata"
+      ]
+    },
+    {
+      "concept_id": "steganography.conversational_cipher",
+      "domain_id": "information_hiding",
+      "preferred_label": "conversational steganography cipher",
+      "definition": "A 4th development lane protocol that embeds arbitrary payloads into Base-4 zero-width quadruplet character sequences inside conversational host text with optional key-stream XOR obfuscation.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "linguist-steganography-lane"
       ]
     }
   ],
@@ -349,6 +367,45 @@
       "source_ids": [
         "synonyms-near-synonyms-research",
         "wolfram-worddata"
+      ]
+    },
+    {
+      "label_id": "lbl-stego-cipher-formal",
+      "concept_id": "steganography.conversational_cipher",
+      "text": "conversational steganography cipher",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "linguist-steganography-lane"
+      ]
+    },
+    {
+      "label_id": "lbl-stego-cipher-plain",
+      "concept_id": "steganography.conversational_cipher",
+      "text": "hidden zero-width text payload in normal messages",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "linguist-steganography-lane"
+      ]
+    },
+    {
+      "label_id": "lbl-stego-cipher-jargon",
+      "concept_id": "steganography.conversational_cipher",
+      "text": "Base-4 zero-width quadruplet encoding",
+      "label_type": "jargon",
+      "language": "en",
+      "audience": "expert",
+      "register": "technical",
+      "status": "candidate",
+      "source_ids": [
+        "linguist-steganography-lane"
       ]
     }
   ],

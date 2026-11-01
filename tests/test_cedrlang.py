@@ -161,3 +161,17 @@ def test_non_string_and_empty_inputs():
     assert decompile_doc(None) == ""
     assert compile_doc(12345) == ""
     assert decompile_doc(12345) == ""
+
+def test_steganography_lane_integration():
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+    host = "We need to transmute the code."
+    payload = "TOP_SECRET_AGENT_COMMAND"
+    stego_doc = ConversationalSteganographyCipher.encode(payload, host_text=host)
+
+    # expand should extract stego payload if present
+    expanded = expand(stego_doc)
+    assert "[Stego Decoded: TOP_SECRET_AGENT_COMMAND]" in expanded
+
+    # decompile_doc should extract stego payload if present
+    decompiled = decompile_doc(stego_doc)
+    assert "<!-- Stego Payload: TOP_SECRET_AGENT_COMMAND -->" in decompiled

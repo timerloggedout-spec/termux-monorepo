@@ -5,6 +5,8 @@ All entries are forks under `timerloggedout-spec` and registered as shallow subm
 
 ## Active submodules (2026-08-19)
 
+**Registration state (corrected 2026-10-31, GAPFIX on brief #1801):** declaration in `.gitmodules` alone does not place a template in the tree — a gitlink entry is also required. Verified @master: `Chapito` is REGISTERED (gitlink @ `91721f58d25a` of `timerloggedout-spec/Chapito`, shallow per `.gitmodules`; template files present in the fork tree: `chapito/*_chat.py` provider modules + `proxy.py` + `main.py`). `CLIProxyAPI`, `gpt4free` and `ai-manus` remain DECLARED-ONLY (`.gitmodules` entries exist; gitlinks not yet registered, so their templates are NOT available as in-repo context until registered).
+
 | Path | Upstream | Technique | Notes |
 |------|----------|-----------|-------|
 | `CLIProxyAPI` | router-for-me/CLIProxyAPI | OAuth CLI → local OpenAI/Anthropic/Gemini endpoints | High durability |

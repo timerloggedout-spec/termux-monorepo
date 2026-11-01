@@ -1,4 +1,4 @@
-name: Help-Wanted Dashboard Preview
+name: Tribute Dashboard Preview
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: help-wanted-preview-${{ inputs.preview_key }}
+  group: user-site-pages-publisher
   cancel-in-progress: false
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
           ref: master
           path: tooling
           persist-credentials: false
-      - name: Prepare preview artifact
+      - name: Prepare Tribute preview artifact
         env:
           SOURCE_REF: ${{ inputs.source_ref }}
           PREVIEW_KEY: ${{ inputs.preview_key }}
@@ -55,14 +55,14 @@ jobs:
             --source-sha "$(git -C source rev-parse HEAD)" \
             --version-prefix "1.0.1"
           printf '%s\n' "Preview key: $PREVIEW_KEY" "Requested ref: $SOURCE_REF" "Source SHA: $(git -C source rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
-          echo "PREVIEW_URL=https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/help-wanted/" >> "$GITHUB_ENV"
-      - name: Publish isolated preview without replacing production files
+          echo "PREVIEW_URL=https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/tribute/" >> "$GITHUB_ENV"
+      - name: Publish isolated Tribute preview without replacing production files
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453
         with:
           personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
           publish_dir: _preview
-          destination_dir: previews/${{ inputs.preview_key }}/help-wanted
+          destination_dir: previews/${{ inputs.preview_key }}/tribute
           publish_branch: main
           keep_files: false
           user_name: github-actions[bot]

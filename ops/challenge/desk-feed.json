@@ -1,18 +1,18 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-11-01T10:35:23Z",
+ "generated_at": "2026-11-01T11:20:25Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
   "name": "Contribution Desk",
   "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
-  "model": "termux-monorepo = the contestant under test (HQ + build/test body). Build code is produced ONLY by repo provider lanes (88 providers wired, ops/quota/registry.json) — primary Jules via agent-jules-on-issues; Gemini/DeepSeek dispatch wired; provider-command-dispatch for polish. Muse seats NEVER author build code (owner correction 2026-10-30: substituted Muse-subagent production retracted). The Desk is a UI/UX surface: it renders contribution state and routes specs; it executes nothing.",
+  "model": "Fleet provider lanes execute all build/edit work via monorepo PRs — bench widened 2026-11-01 (owner: USE THE PROVIDERS): build {Jules via agent-jules-on-issues, Gemini dispatch} · fix {DeepSeek dispatch, CodeRabbit, Devin, command-dispatch} · device {DeepAgent via DeepCLI Agent Bridge} · review {Qodo, Devin, CodeRabbit}; Muse seats never author build code.",
   "roles": {
    "owner": "authorization of record (direct orders only; a halt lifts only by the owner)",
    "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
    "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
    "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
-   "provider_lanes": "Jules / Gemini / DeepSeek / command-dispatch — author ALL build code via monorepo PRs",
+   "provider_lanes": "Build {Jules, Gemini} · fix-class {DeepSeek, CodeRabbit, Devin, command-dispatch} · device {DeepAgent / DeepCLI Agent Bridge} · review {Qodo, Devin, CodeRabbit} — providers author ALL build code via monorepo PRs (seat spec → provider PR → seat verify → desk merge). Bench widened 2026-11-01 per owner utilization order via D1 seat (was a 4-lane funnel vs the fleet's 89-model registry bench). DeepAgent = bridge-proven (158 runs, last success 2026-10-23; bridge greens include skip-exits, so per-dispatch execution is verified at PR level, never from the run color alone).",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [
@@ -105,7 +105,7 @@
      "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
     }
    },
-   "next": "Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day)",
+   "next": "DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT.",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -176,6 +176,60 @@
       "note": "Jules exposes no consumption units; activity-only per telemetry ruling #2648.",
       "status": "reported"
      }
+    },
+    {
+     "provider": "DeepSeek",
+     "scope": "D1 StudySprint v0.2.0 update notes + demo-video swap (apps/studysprint README.md + article.md only; article note verbatim from the live Builder Center article)",
+     "via": "deepseek-termux-agent workflow_dispatch run 41301295882 (Start agent success; Poll-for-completion step skipped, so completion is NOT ESTABLISHED from the run — the PR is the completion evidence)",
+     "session_id": "41301295882",
+     "state": "dispatched — PR pending agent completion",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "workflow_dispatch run record",
+      "window": "2026-11-01",
+      "match": null,
+      "note": "Agent-endpoint (device) route: run success covers dispatch + agent start only. Consumption not exposed by the route — NOT ESTABLISHED, never estimated.",
+      "status": "pending"
+     },
+     "model": "NOT ESTABLISHED",
+     "phrases": "NOT ESTABLISHED",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "Staged pass unblocked by D1 seat 2026-11-01; note text pulled verbatim from the live Builder article by desk (Gate was entries' article-note text — entries had already published it)",
+     "instance_refs": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d1-studysprint-v020-notes-deepseek#d88b4a1800bd",
+      "tools_ref": "tools:github-actions-workflow:deepseek-termux-agent#367231371",
+      "note": "system_prompt_ref = sha256[:12] of the exact dispatched task payload (1,697 chars); tools_ref = dispatching workflow id."
+     },
+     "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd"
+    },
+    {
+     "provider": "Gemini",
+     "scope": "D1 StudySprint FEATURES Next #1 — spaced-repetition module study_sr.py (FSRS default via py-fsrs + SM-2 baseline selectable, receipts carry scheduler name, genanki .apkg export, tests for all new functions, VERSION 0.3.0 + CHANGELOG)",
+     "via": "issue #3050 with @gemini-cli invoke in body; gemini-dispatch run 41301369671 SUCCESS",
+     "session_id": null,
+     "state": "dispatched — PR pending; D1 verifies, merge timing = D1 call",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "gemini-dispatch workflow run",
+      "window": "2026-11-01",
+      "match": null,
+      "note": "Gemini route exposes no per-dispatch consumption figure here — NOT ESTABLISHED. Rotation: feature-class follows Jules v0.2.0 (no provider takes 2 consecutive dispatches for the same entry).",
+      "status": "pending"
+     },
+     "model": "NOT ESTABLISHED",
+     "phrases": "NOT ESTABLISHED",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "Bench-widening utilization order (owner via D1 seat, 2026-11-01)",
+     "instance_refs": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d1-studysprint-sr-module#31f915ff0169",
+      "tools_ref": "tools:github-actions-workflow:gemini-dispatch#327943478",
+      "note": "system_prompt_ref = sha256[:12] of the exact dispatched issue title+body."
+     },
+     "instance_key": "challenge-entries-manager/d1-studysprint-sr-module/31f915ff0169"
     }
    ]
   },

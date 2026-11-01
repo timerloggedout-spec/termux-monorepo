@@ -46,6 +46,12 @@ jobs:
           PY
       - name: rollup comment on tracking issue (dispatch runs only)
         if: github.event_name == 'workflow_dispatch'
+        # A failed comment leg must never fail the scored run or
+        # starve the artifact upload (run 41264967230 defect:
+        # scoring succeeded, rollup gh-comment failed, artifact
+        # was skipped). The mgr lane re-posts the rollup from the
+        # run output when this leg fails.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -62,6 +68,7 @@ jobs:
           PY
           gh issue comment 2865 --body-file rollup.md
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: nc1-run-output
           path: |

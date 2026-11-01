@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T14:40:00Z",
+ "generated_at": "2026-11-01T14:46:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2377,7 +2377,7 @@
      "rework_cycles": 0,
      "dispatch_to_pr_wall_time": "PT12M27S",
      "stalled_action_required": false,
-     "availability": "dispatch-unavailable: new session creation refused x3 (Swarm via manager, 2026-11-01 05:49 PT) until recovery probe PASS; existing sessions unaffected"
+     "availability": "DEGRADED (Swarm probe 2026-11-01T14:12Z): ~1 concurrent cap — 1 create through, then refusals; ¬ restored. Opportunistic single-session only; primary arms = DeepSeek + command-dispatch"
     },
     {
      "provider": "Command-dispatch (Devin)",
@@ -2435,7 +2435,7 @@
     "sync": "artifact repo HEAD 59c6c3b0427d = sync commit (viz firsthand)",
     "note": "Authorship: desk-spawned Muse subagents (substituted route; retracted as provider-lane production 2026-10-30). Merge + sync facts stand."
    },
-   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules dispatchability LOST ∧ Gemini-CLI build leg OUT); producer-naming req unchanged",
+   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DEGRADED (~1 concurrent cap, probe 2026-11-01T14:12Z; opportunistic single-session only) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged",
    "provider_usage": [
     {
      "provider": "Muse — desk-spawned subagents",
@@ -2597,11 +2597,11 @@
     "sync": "pending"
    },
    "evidence": {
-    "note": "route Δ (manager relay, Swarm-verified 2026-11-01): Jules dispatchability LOST (session-create refused ×3) ∧ Gemini-CLI build leg OUT ⇒ build planning = DeepSeek + command-dispatch UNTIL recovery probe PASS; supersedes prior Jules-on-issues-only assumption; D4 seat verifies ⇒ monorepo PR/CI/merge ⇒ artifact sync ⇒ skeleton-crew; dispatch stays gated @window >2026-11-08",
+    "note": "route Δ (manager relay, Swarm-verified 2026-11-01): Jules DEGRADED (~1 concurrent cap, Swarm probe 2026-11-01T14:12Z; opportunistic single-session only) ∧ Gemini-CLI build leg OUT ⇒ build planning = DeepSeek + command-dispatch UNTIL recovery probe PASS; supersedes prior Jules-on-issues-only assumption; D4 seat verifies ⇒ monorepo PR/CI/merge ⇒ artifact sync ⇒ skeleton-crew; dispatch stays gated @window >2026-11-08",
     "batch": "spec pack verified firsthand by desk 2026-11-01: skeleton-crew@main 22a05bd0897a, BUILD-SPEC.md blob b4f45846172f (2,836B) — shape {foundation + apps/conflict-viewer + apps/stamped-report}, tasks T1 foundation -> {T2 viewer, T3 report} -> T4 integration, acceptance S1-S3 + receipt rule {command, exit_code, output sha256, code_paths}",
     "desk": "batch intake registered by desk 2026-11-01 (this row); issue draft held ready-to-fire at window"
    },
-   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules dispatchability LOST + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first",
+   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DEGRADED (~1 concurrent cap, probe 2026-11-01T14:12Z; opportunistic single-session only) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first",
    "provider_usage": []
   },
   {

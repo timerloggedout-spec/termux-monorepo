@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 170,
+    "open_prs": 171,
     "pr_classes": {
-      "CANDIDATE": 80,
+      "CANDIDATE": 82,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 84,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 168,
+      "prs": 169,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T21:09:15Z",
+  "generated_at": "2026-11-01T21:18:54Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "f9e6b7976b"
+    "sha": "2105854c7f"
   },
   "prs": [
     {
@@ -214,12 +214,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a1a85d5ff6",
+      "head_sha": "d485cad3ef",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T21:07:01Z"
+      "number": 3250,
+      "title": "feat(certifications): Route A unit runner scaffold \u2014 cert-unit workflow + run_unit.py",
+      "updated_at": "2026-11-01T21:17:52Z"
     },
     {
       "class": "CANDIDATE",
@@ -767,7 +767,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:45Z"
@@ -949,7 +949,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:22Z"
@@ -995,6 +995,20 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "220214efb5",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T21:12:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1345,6 +1359,20 @@
       "number": 3242,
       "title": "feat(quota): harden provider consumption audit",
       "updated_at": "2026-11-01T20:38:07Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0291b02e9c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3247,
+      "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
+      "updated_at": "2026-11-01T21:10:12Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1756,6 +1784,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "faff803723",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T21:18:27Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1891,20 +1933,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "f6c29db80f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T21:08:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2403,12 +2431,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "912349cca3",
+      "head_sha": "07262189dd",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T16:26:00Z"
+      "updated_at": "2026-11-01T21:10:23Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2507,20 +2535,6 @@
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-01T16:19:45Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "0291b02e9c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3247,
-      "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
-      "updated_at": "2026-11-01T21:09:04Z"
     }
   ],
   "schema": "operator-matrix/v1",

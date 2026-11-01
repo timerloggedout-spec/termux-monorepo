@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c3ec829dd07fc307238211497b3a97df1c7283641b6d3b2001a43537198ec855",
-  "workflow_count": 251,
+  "source_fingerprint": "c475183c2ca4068d12192e288b5601a7ad9a269a6f07e9b13d874c1324f22e8d",
+  "workflow_count": 253,
   "workflows": [
     {
       "action_pins": [],
@@ -1667,6 +1667,24 @@
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
+        "census"
+      ],
+      "name": "doe-cmp1-census",
+      "path": ".github/workflows/doe-cmp1-census.yml",
+      "schedules": [
+        "41 5 1 * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
         "audit"
       ],
       "name": "DoE live-1 ledger audit",
@@ -1740,6 +1758,24 @@
       "path": ".github/workflows/doe-phrase-dispatch.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "audit"
+      ],
+      "name": "doe-util1-audit",
+      "path": ".github/workflows/doe-util1-audit.yml",
+      "schedules": [
+        "23 6 * * 1"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

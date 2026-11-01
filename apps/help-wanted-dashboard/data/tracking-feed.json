@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T07:33:24Z",
+ "generated_at": "2026-11-01T08:46:57Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T07:33:23Z",
+   "read_at": "2026-11-01T08:46:56Z",
    "merged": 150,
    "open": 159
   },
   "lane_events": {
-   "read_at": "2026-11-01T07:33:23Z",
+   "read_at": "2026-11-01T08:46:56Z",
    "status": "ok",
-   "count": 3531,
+   "count": 3724,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,10 +46,10 @@
   },
   "by_state": {
    "closed": 1,
-   "unknown": 9,
+   "unknown": 6,
    "landed": 1,
-   "in-flight": 9,
-   "active": 2
+   "active": 5,
+   "in-flight": 9
   }
  },
  "rows": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -84,7 +84,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -99,7 +99,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -113,22 +113,27 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries-d4",
    "project": "D4 Kiroween (skeleton-crew)",
    "domain": "challenges",
    "project_id": "d4-kiroween",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "active",
+   "last_merge": {
+    "pr": 3013,
+    "sha": "503124a1c35f",
+    "at": "2026-11-01T09:34:45Z",
+    "title": "test(proposals): refresh stale feed pins (passes 3\u21d2derived, kiroween status, ai-studio gap)"
+   },
    "next": "deadline 2026-12-04T14:00:00-08:00",
    "next_basis": "record-deadline",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -140,7 +145,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -156,7 +161,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "challenge-entries",
@@ -170,7 +175,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "quota",
@@ -179,10 +184,10 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2967,
-    "sha": "87bc95b1e156",
-    "at": "2026-11-01T04:50:33Z",
-    "title": "apk-xref-exec: bounded rate-limit retry on the filing fetch (root cause proven from run logs)"
+    "pr": 2992,
+    "sha": "bf65498ef010",
+    "at": "2026-11-01T09:07:05Z",
+    "title": "apk-xref-exec: run on fleet Swarm app token (fix 403 rate-limit starvation)"
    },
    "next": "land/close PR #2757 \u2014 feat(ci): add merged branch review audit and quota engine",
    "next_basis": "open-pr",
@@ -190,7 +195,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "doe",
@@ -210,7 +215,7 @@
     "doe DESIGN.json campaigns=11",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "doe-nc1",
@@ -227,7 +232,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "tier-1",
@@ -239,21 +244,26 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "contribution-desk",
    "project": "Contribution Desk + desk-feed",
    "domain": "desk",
    "project_id": "desk",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "active",
+   "last_merge": {
+    "pr": 3019,
+    "sha": "55d8e68a53e6",
+    "at": "2026-11-01T09:46:35Z",
+    "title": "desk-feed: add Repo-Story traversal (corrected refs)"
+   },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [
-    "desk-feed traversals=7 generated_at=2026-10-31T23:59:00Z"
+    "desk-feed traversals=8 generated_at=2026-11-01T08:43:48Z"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "web-design-viz",
@@ -262,29 +272,34 @@
    "project_id": "webdev-viz",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2961,
-    "sha": "62072f729a36",
-    "at": "2026-11-01T04:38:58Z",
-    "title": "feat(dashboard): PWA install wiring + Tracking chrome + versioning registry repair"
+    "pr": 3012,
+    "sha": "93237772cac5",
+    "at": "2026-11-01T09:24:56Z",
+    "title": "feat(dashboard): nav-uniformity ratchet \u2014 matrix nav to canonical 29 + lock test"
    },
    "next": "land/close PR #2168 \u2014 chore(dashboards): refresh surface feeds",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "marketing",
    "project": "FB Pages MVT + challenge promo",
    "domain": "marketing",
    "project_id": "marketing-fb-mvt",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "active",
+   "last_merge": {
+    "pr": 2995,
+    "sha": "6b48cb3897c5",
+    "at": "2026-11-01T09:12:09Z",
+    "title": "Delphi evaluation: marketing strategy & tactics (doctrine pass, round 1 + evaluation)"
+   },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "marketing-social",
@@ -296,7 +311,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "swarm",
@@ -305,17 +320,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2937,
-    "sha": "ecd08b5069a1",
-    "at": "2026-11-01T04:15:02Z",
-    "title": "fix(tracking): Swarm-token reads + no self-retrigger"
+    "pr": 2996,
+    "sha": "1e5dd9513fb6",
+    "at": "2026-11-01T09:13:16Z",
+    "title": "apk-xref belt: repo URL->slug normalization (false no-artifact in findings #2993) + acquire rides the Swarm token"
    },
-   "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
+   "next": "land/close PR #3017 \u2014 AppID: apk-xref-exec mint swap Swarm \u2192 CrossReference (Scalpel \u00b7 App 5564430)",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #1470"
+    "open PRs: #3017, #1470"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "providers",
@@ -335,7 +350,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "providers-phrases",
@@ -347,7 +362,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "repo-replay",
@@ -356,15 +371,15 @@
    "project_id": "repo-replay",
    "state": "active",
    "last_merge": {
-    "pr": 2983,
-    "sha": "f7acc22fa918",
-    "at": "2026-11-01T07:29:56Z",
-    "title": "Commit Replay \u2014 COMPACTIFY: delta-entry index (fix 2.2GB push rejection) + purpose recorded"
+    "pr": 2985,
+    "sha": "d1de34243abf",
+    "at": "2026-11-01T07:34:10Z",
+    "title": "Commit Replay \u2014 scope amend (owner): ONLY pointer-reference creation, fragment units"
    },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "ops",
@@ -378,7 +393,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   },
   {
    "lane": "telemetry",
@@ -397,7 +412,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T07:33:24Z"
+   "updated_at": "2026-11-01T08:46:57Z"
   }
  ],
  "doe_join": {
@@ -579,7 +594,7 @@
     "providers": [],
     "join_state": "design_only",
     "instances": [],
-    "experiment_records": 3,
+    "experiment_records": 4,
     "experiment_records_with_instance": 0
    },
    {
@@ -671,6 +686,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 72/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

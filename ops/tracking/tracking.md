@@ -1,10 +1,10 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T07:33:24Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T08:46:57Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T07:33:23Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3531` read_at=`2026-11-01T07:33:23Z`
+Sources: PR feed read_at=`2026-11-01T08:46:56Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3724` read_at=`2026-11-01T08:46:56Z`
 
-Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown=9
+Rows: 22 · by_state: active=5 · closed=1 · in-flight=9 · landed=1 · unknown=6
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
@@ -13,23 +13,23 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | unknown | NOT_ESTABLISHED | Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day) |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | unknown | NOT_ESTABLISHED | Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step) |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
-| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | unknown | NOT_ESTABLISHED | deadline 2026-12-04T14:00:00-08:00 |
+| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3013 `503124a1c35f` 2026-11-01T09:34:45Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #3019 `55d8e68a53e6` 2026-11-01T09:46:35Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #2984 `9607c9a8cf3b` 2026-11-01T07:32:53Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |
-| marketing | `marketing` | FB Pages MVT + challenge promo | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
+| marketing | `marketing` | FB Pages MVT + challenge promo | active | #2995 `6b48cb3897c5` 2026-11-01T09:12:09Z | NOT_ESTABLISHED |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #2924 `eda09a84bd56` 2026-11-01T03:54:43Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #2891 `fbd8cb72b23f` 2026-11-01T02:22:05Z | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2967 `87bc95b1e156` 2026-11-01T04:50:33Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
-| replay | `repo-replay` | Repo Replay | active | #2983 `f7acc22fa918` 2026-11-01T07:29:56Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #2937 `ecd08b5069a1` 2026-11-01T04:15:02Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #2961 `62072f729a36` 2026-11-01T04:38:58Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2992 `bf65498ef010` 2026-11-01T09:07:05Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
+| replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #2996 `1e5dd9513fb6` 2026-11-01T09:13:16Z | land/close PR #3017 — AppID: apk-xref-exec mint swap Swarm → CrossReference (Scalpel · App 5564430) |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
@@ -58,4 +58,4 @@ Campaigns: 11 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 72/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)

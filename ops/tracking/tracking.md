@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T14:12:57Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T14:17:44Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T14:12:57Z` (merged 150 · open 167) · lane-events(Neon) status=`ok` count=`4705` read_at=`2026-11-01T14:12:57Z`
+Sources: PR feed read_at=`2026-11-01T14:17:43Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4745` read_at=`2026-11-01T14:17:43Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknown=6
 
@@ -10,7 +10,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknow
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
-| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3191 `96190ce94bf9` 2026-11-01T14:12:13Z | Reader core MERGED #3102 + synced (parity 23/23) · SR module re-routed ⇒ command-dispatch on #3050 (engagement watch; merge timing = D1 hold) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT |
+| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3194 `24a7643b3f3f` 2026-11-01T14:17:23Z | Reader core MERGED #3102 + synced (parity 23/23) · SR module: returned to the system for balanced execution (#3050; command-dispatch re-route withdrawn, owner correction) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3179 `0ee3d20fb246` 2026-11-01T14:01:19Z | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | #3183 `6800efdbf5ab` 2026-11-01T14:06:44Z | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules dispatchability LOST ∧ Gemini-CLI build leg OUT); producer-naming req unchanged |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3177 `1d2734e33f79` 2026-11-01T13:59:06Z | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules dispatchability LOST + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first |

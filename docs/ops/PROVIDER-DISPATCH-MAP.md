@@ -113,7 +113,10 @@ All 5 triggerable + 3 wired-unproven lanes fired at production work; classes upd
 The inference bench IS the batch universe. Wiring classes are computed on **wired INVOKE
 routes for inference providers only**; review/command surfaces (Qodo, Devin, CodeRabbit,
 peer-review lanes, gemini review/triage legs) are excluded from this batch — a triggerable
-workflow lane is not a wired provider.
+workflow lane is not a wired provider. Structural form: every lane now carries
+  `batch_scope` {inference-bench 9 · excluded-review-command 10 · build-or-support 6} and
+  batch accounting reads `inference_wiring` only (Desk NOTE stamp = PR #3111). #2672 gate:
+  contracts run 41303413675 FAILED 2026-11-01T11:47Z — batch observation still gated.
 
 - **Wired-invoke: 17 / 89** — invoke endpoint present in code: provider-batch
   `research_providers` ENDPOINTS (14: aion, cerebras, gemini→google, groq, huggingface, kilo,

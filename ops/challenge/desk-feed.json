@@ -1915,13 +1915,9 @@
      "note": "ollama also carries a protocol CHAT_ENDPOINT (provider_protocols.py) but is not one of the 89 model-lane catalogued keys. Evidence grades differ by surface: batch/catalog/extensions/protocols = fixed invoke endpoints + secret names in code; g4f = catalogued route (see evidence)."
     },
     "not_wired": {
-     "count": 1,
-     "providers": {
-      "meta": "do-not-route: llama_api RETIRED; model_api/muse_code pending MODEL_API_KEY/META_API_KEY provisioning (owner act — the sole remaining wiring item)"
-     },
-     "dispositions": {
-      "github": "EXCLUDED-BY-KIND (fix-seat disposition, 2026-11-01): the github record is a platform + copilot (review-kind) record, classed with the excluded review/command surfaces — not an inference bench gap. Reopen path: on owner word, open a github-models invoke record and wire it like any other provider."
-     }
+     "count": 0,
+     "providers": {},
+     "note": "No open not-wired items. 89/89 accounted: 87 wired + 2 dispositioned (github excluded-by-kind; meta retired/do-not-route)."
     },
     "excluded_surfaces": [
      "qodo review lane",
@@ -1965,7 +1961,10 @@
      "mechanics": "Pool members contribute through their wired invoke routes (generation / review / verification legs) and, where a repo build lane exists for them, build legs. Desk shards packages across the pool and stamps the shard's provider; Swarm second-pass reviews; fix seat republishes pool membership on every wiring landing.",
      "applied_now": "CORRECTED (2026-11-01): PKG-A + PKG-B stood down — their targets were already wired. The pool stands at the corrected wired set; future wiring work concerns only genuinely unwired surfaces as they appear."
     },
-    "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts."
+    "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts.",
+    "dispositions": {
+     "meta": "RETIRED / DO-NOT-ROUTE (standing fleet record; fix-seat disposition 2026-11-01): llama_api retired; the surface is excluded from the wiring target — NOT a pending owner item. Reopen only on a future owner order that provisions MODEL_API_KEY/META_API_KEY and un-retires it."
+    }
    },
    "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated.",
    "app_layer": {

@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T03:16:03Z",
+  "generated_at": "2026-11-01T03:19:03Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c951bb49ff"
+    "sha": "651eb81c12"
   },
   "prs": [
     {
@@ -977,6 +977,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "0bc0cdb26a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T03:15:22Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1207,20 +1221,6 @@
       "number": 2907,
       "title": "fix: scope free-tier opportunity cost to repo work",
       "updated_at": "2026-11-01T02:39:00Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a3c9436753",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2910,
-      "title": "feat(quota): allocation-verification LIVE INDEX on quota panel (viz)",
-      "updated_at": "2026-11-01T03:13:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1632,15 +1632,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "queued"
       },
-      "head_sha": "4d53949072",
+      "head_sha": "314ee7eceb",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T03:14:24Z"
+      "updated_at": "2026-11-01T03:18:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1781,20 +1781,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "0bc0cdb26a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T03:15:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2313,6 +2299,20 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "bfeff990d9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2913,
+      "title": "feat(quota): usage graphs per provider/model/service - usage-series pack + sibling view (viz)",
+      "updated_at": "2026-11-01T03:18:54Z"
     }
   ],
   "schema": "operator-matrix/v1",

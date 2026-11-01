@@ -47,6 +47,19 @@ that return no usage omit the slot — never fabricate zeros.
 - Bench membership is read from `ops/quota/registry.json` at score
   time (rule 6: routes re-verified, never pinned).
 
+## Backfill and versioning (owner doctrine, 2026-11-01)
+
+Backfill is a standing first-class mechanism, not a fallback. At
+every version change of a scoring test or definition, historical
+records are re-scored under the new version by the backfill method
+— itself a versioned, improvable artifact — and the backfill is
+audited. Records therefore carry an origin field: `live`, or
+`backfill` with {method, method_version, from_version, to_version}.
+Results are compared across versions continuously until DoE
+culling retires a method version, ending that version's comparison
+line. Origin is never laundered: a backfilled score is reported as
+backfilled, a live score as live.
+
 ## Populated-scoring report
 
 doe-expert reports to main when an auditor cycle first shows

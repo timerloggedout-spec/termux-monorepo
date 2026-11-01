@@ -16,6 +16,10 @@ on:
         options:
           - invoke
           - catalog
+      model:
+        description: "Optional exact model id (per-model shard); blank = first catalog chat model"
+        required: false
+        type: string
       provider:
         description: "Inference provider to invoke"
         required: true
@@ -63,6 +67,7 @@ jobs:
       - name: Invoke provider against production work
         id: invoke
         env:
+          INVOKE_MODEL: ${{ inputs.model }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
           HUGGING_FACE_HUB_TOKEN: ${{ secrets.HUGGING_FACE_HUB_TOKEN }}

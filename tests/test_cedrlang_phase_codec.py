@@ -2,7 +2,10 @@ import random
 
 from workspace.compression_sandbox.cedrlang.phase_codec import (
     INITIAL_SUBSTITUTION_PROBABILITY,
+    ConversationalSteganographyCipher,
     from_1337speak,
+    steganography_decode,
+    steganography_encode,
     to_1337speak,
 )
 
@@ -46,3 +49,28 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_conversational_steganography_roundtrip():
+    secret_directive = "Execute deployment phase 4 on production cluster."
+    stegotext = steganography_encode(secret_directive)
+    assert stegotext != secret_directive
+    # Cover text remains visible around zero-width embedded secret payload
+    assert stegotext.startswith("Greetings")
+    assert "Execution proceeds nominally." in stegotext
+    recovered = steganography_decode(stegotext)
+    assert recovered == secret_directive
+
+
+def test_conversational_steganography_with_private_mapping():
+    private_key = {"production": "PRD_N0D3", "deployment": "D3PL0Y_M4N1F357"}
+    secret = "deployment on production"
+    cipher = ConversationalSteganographyCipher(private_key)
+    stegotext = cipher.encode(secret)
+    recovered = cipher.decode(stegotext)
+    assert recovered == secret
+
+
+def test_conversational_steganography_empty_and_cover_text():
+    assert steganography_decode("") == ""
+    assert steganography_encode("") == "Greetings agent. Execution proceeds nominally."

@@ -161,3 +161,11 @@ def test_non_string_and_empty_inputs():
     assert decompile_doc(None) == ""
     assert compile_doc(12345) == ""
     assert decompile_doc(12345) == ""
+
+def test_steganography_auto_expansion():
+    from workspace.compression_sandbox.cedrlang.phase_codec import steganography_encode
+    secret = "execute build dispatch"
+    stegotext = steganography_encode(secret)
+    # expand() automatically extracts zero-width steganographic payloads and expands them
+    expanded = expand(stegotext)
+    assert secret in expanded

@@ -164,6 +164,18 @@
         "synonyms-near-synonyms-research",
         "wolfram-worddata"
       ]
+    },
+    {
+      "concept_id": "steganography.conversational_cipher",
+      "domain_id": "steganography",
+      "preferred_label": "conversational steganography cipher",
+      "definition": "A 4th development lane cipher encryption layer with private mapping support prior to the LLM Pre Parser, providing zero-width or token-substitutive payload obfuscation.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "issue-320",
+        "issue-1115"
+      ]
     }
   ],
   "labels": [
@@ -350,6 +362,33 @@
         "synonyms-near-synonyms-research",
         "wolfram-worddata"
       ]
+    },
+    {
+      "label_id": "lbl-conversational-steg-cipher-formal",
+      "concept_id": "steganography.conversational_cipher",
+      "text": "conversational steganography cipher",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-conversational-steg-cipher-plain",
+      "concept_id": "steganography.conversational_cipher",
+      "text": "hidden payload cipher for agent communication",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320",
+        "issue-1115"
+      ]
     }
   ],
   "mappings": [
@@ -375,6 +414,19 @@
       "evidence_note": "Keep related rather than exact: typeclass/monadic semantics and ordinary composition differ.",
       "source_ids": [
         "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-colloquial-to-steg-cipher",
+      "source_concept_id": "terminology.colloquial_to_formal_mapping",
+      "target_concept_id": "steganography.conversational_cipher",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.45,
+      "evidence_note": "Mapping between informal agentic communication and formal steganographic pre-parser cipher.",
+      "source_ids": [
+        "issue-320",
+        "issue-1115"
       ]
     }
   ]

@@ -1,4 +1,4 @@
-> **Non-canonical copy — retained in full (owner rule, 2026-11-01).** Canonical version: [`docs/research/FOSS-PROCUREMENT-MATRIX.md`](../research/FOSS-PROCUREMENT-MATRIX.md) — the machine-cited `procurement_contract`. The full pre-stub content of this file (blob `20d92ecaee5e2bc48d229a7b1cc419671370ca15`) is restored below; its unique material was also merged into the canonical file in PR #3259. Deletions and content-replacing stubs are prohibited — everything in this repo feeds ML pipelines; consolidation is additive pointers only.
+> **Archived copy — retained in full (owner rule, 2026-11-01).** Canonical version: [`docs/research/FOSS-PROCUREMENT-MATRIX.md`](../research/FOSS-PROCUREMENT-MATRIX.md) — the machine-cited `procurement_contract`. The full pre-stub content of this file (blob `20d92ecaee5e2bc48d229a7b1cc419671370ca15`) is restored below; its unique material was also merged into the canonical file in PR #3259. Deletions and content-replacing stubs are prohibited — everything in this repo feeds ML pipelines; consolidation is additive pointers only.
 
 # FOSS Research & Procurement Matrix
 

@@ -1,4 +1,4 @@
-> **Non-canonical copy — retained in full (owner rule, 2026-11-01).** Canonical version: [`docs/research/FORESIGHT-RADAR.md`](../research/FORESIGHT-RADAR.md) — the machine-cited `horizon_contract`. The full pre-stub content of this file (blob `cee8fd73dd241db17b95683fd39c59e126e3c8f2`) is restored below; its unique material was also merged into the canonical file in PR #3259. Deletions and content-replacing stubs are prohibited — everything in this repo feeds ML pipelines; consolidation is additive pointers only.
+> **Archived copy — retained in full (owner rule, 2026-11-01).** Canonical version: [`docs/research/FORESIGHT-RADAR.md`](../research/FORESIGHT-RADAR.md) — the machine-cited `horizon_contract`. The full pre-stub content of this file (blob `cee8fd73dd241db17b95683fd39c59e126e3c8f2`) is restored below; its unique material was also merged into the canonical file in PR #3259. Deletions and content-replacing stubs are prohibited — everything in this repo feeds ML pipelines; consolidation is additive pointers only.
 
 # FOSS / Emerging Technology Foresight Radar
 

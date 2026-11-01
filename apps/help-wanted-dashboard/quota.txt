@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (164 registry records)
- Snapshot generated (not observation time): 2026-10-30T02:47:00.930298+00:00
+ Snapshot generated (not observation time): 2026-11-01T13:23:25.948846+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -8,7 +8,9 @@
 
  ALERTS
 --------------------------------------------------------------------------------
-  No services are reporting a problem state.
+ [!! EXHAUSTED] github.api.github_token
+   limit (documented): 1000 requests/hour/repo
+   used: No live reading
 
  ALL SERVICES
 --------------------------------------------------------------------------------
@@ -158,16 +160,13 @@
 --------------------------------------------------------------------------------
  fleet-vm (1)
   fleet.vm_webhooks
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a events
     metric: VM bounded webhook intake events (Receiver Mesh VM leg: POST
     /webhook/<source>, GET /health on 127.0.0.1:8791; HMAC-SHA256 verify,
     delivery_id dedupe, allowlisted envelope only) | window: session (process
     runs only while launched; no daemon, no systemd) | reset: n/a
-    No live reading (live source: GET http://127.0.0.1:8791/health + durable log
-    ~/workspace/vm-webhooks/intake.jsonl (proof 2026-10-30: signed payload 202,
-    duplicate 200, bad signature 401; routing proof 2026-10-31: routed +
-    unrouted_flagged classes logged with delivery_target))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  fly (1)
   fly.free_tier
@@ -682,14 +681,13 @@
 --------------------------------------------------------------------------------
  github (11)
   deepseek.build_dispatch
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a dispatches
     metric: Invoke/review dispatches via deepseek-ci workflow (event triggers +
     workflow_dispatch) and the deepseek-termux-agent device route | window:
     Actions minutes (public repo) + device availability | reset: monthly
     (Actions)
-    No live reading (live source: Actions workflow runs for deepseek-ci.yml; no
-    passive reader wired)
+    Public evidence state only; no account balance or runtime admission implied.
   github.actions.cache
     status: OK
     limit (documented): 10 GB
@@ -710,15 +708,14 @@
     window: hourly | reset: x-ratelimit-reset header
     Public evidence state only; no account balance or runtime admission implied.
   github.api.app_publisher
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5000 requests/hour/installation
     metric: REST requests via GitHub App installation token (Termux Fleet
     Publisher, app 5537873, installation 176799777, WRITE:
     contents+pull_requests) | window: hourly | reset: x-ratelimit-reset header
-    No live reading (live source: GET /rate_limit (installation token via
-    scripts/github_app_token.py))
+    Public evidence state only; no account balance or runtime admission implied.
   github.api.github_token
-    status: OK
+    status: !! EXHAUSTED
     limit (documented): 1000 requests/hour/repo
     metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
     x-ratelimit-reset header
@@ -760,21 +757,19 @@
     midnight
     Public evidence state only; no account balance or runtime admission implied.
   gemini.build_dispatch
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a dispatches
     metric: Build/review dispatches via gemini-dispatch workflow (issues +
     issue_comment triggers only; no workflow_dispatch in file) | window:
     provider-side quota not exposed | reset: not exposed
-    No live reading (live source: Actions workflow runs for gemini-dispatch.yml;
-    no passive reader wired)
+    Public evidence state only; no account balance or runtime admission implied.
   jules.build_sessions
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a sessions
     metric: Build sessions dispatched via the issues route (label
     agent-jules-on-issues -> Jules sessions on repo issues) | window:
     provider-side quota not exposed | reset: not exposed by the Jules API
-    No live reading (live source: Jules API session census via custom.jules
-    helper (sessions + activities); no passive reader wired)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  gpt4free/CLIProxyAPI/Chapito/ai-manus (1)
   g4f.vendors
@@ -837,29 +832,27 @@
 --------------------------------------------------------------------------------
  meta (3)
   meta.llama_api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 0 requests
     metric: Meta Llama API (RETIRED 2026-07-06; was
     https://api.llama.com/compat/v1/, LLAMA_API_KEY) | window: n/a | reset: n/a
     (retired)
-    No live reading (live source: none (retired; superseded by meta.model_api))
+    Public evidence state only; no account balance or runtime admission implied.
   meta.model_api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a tokens (metered, public preview)
     metric: Meta Model API usage — Muse Spark / Muse Wonder / Muse Voice via
     https://api.meta.ai/v1 (Responses + Chat Completions + Messages + Files;
     OpenAI/Anthropic SDK compatible) | window: n/a | reset: unverified — no
     published rate-limit counter established 2026-10-30
-    No live reading (live source: none (no usage API established; credential
-    MODEL_API_KEY not provisioned — owner provisioning item, names-only))
+    Public evidence state only; no account balance or runtime admission implied.
   meta.muse_code
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a tasks (subscription or Meta Model API PAYG)
     metric: Muse Code CLI coding agent (terminal agent backed by Muse Spark;
     install https://dev.meta.ai/install.sh, binary `muse`) | window: monthly
     (subscription) / metered (PAYG) | reset: unverified
-    No live reading (live source: none (auth = browser sign-in or META_API_KEY /
-    muse auth set; credential not provisioned — owner item, names-only))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  mistral (1)
   mistral.free_mode
@@ -1266,6 +1259,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 164 registry records | 0 alert(s) | 156 with a reported reading | 8 with No
+ 164 registry records | 1 alert(s) | 164 with a reported reading | 0 with No
  live reading
 ================================================================================

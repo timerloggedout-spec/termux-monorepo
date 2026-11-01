@@ -238,7 +238,17 @@ def main(argv):
     units = [json.loads(l) for l in Path(args[0]).read_text().splitlines()
              if l.strip()]
     tau = json.loads(Path(args[1]).read_text())
-    overrides = json.loads(Path(opts["flags"]).read_text()) if "flags" in opts else {}
+    overrides = {}
+    if "flags" in opts:
+        raw = Path(opts["flags"]).read_text().strip()
+        try:
+            overrides = json.loads(raw)  # {unit_id: {layer: bool}} form
+        except json.JSONDecodeError:  # JSONL rows (Tier-1 delivery format)
+            for line in raw.splitlines():
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                overrides.setdefault(row["unit_id"], {})[row["layer"]] = bool(row["drift"])
     feed_joins = 0
     if "l1-feed" in opts:
         feed_rows = [json.loads(l) for l in

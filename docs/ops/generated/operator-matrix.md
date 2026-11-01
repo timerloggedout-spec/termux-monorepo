@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T11:57:08Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T12:00:11Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `2918d965cc` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `9310f90c20` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 384 issues, 168 PRs. PR classes: EXTRACT 5 / CANDIDATE 80 / NEED_EVIDENCE 83 / SUPERSEDE 0.
+**Open inventory:** 384 issues, 167 PRs. PR classes: EXTRACT 5 / CANDIDATE 81 / NEED_EVIDENCE 81 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -98,6 +98,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3034 | CANDIDATE | unlabelled | `2f5be5dbd7` | success | success | unknown | [Draft] Independent Foresight Landscape Explorer track |
 | #3037 | CANDIDATE | unlabelled | `0341bb2367` | success | success | unknown | docs(rfp): BLU View 5 mobile-first independent evaluation |
 | #3063 | CANDIDATE | unlabelled | `89202fe235` | success | success | unknown | viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema p |
+| #3102 | CANDIDATE | unlabelled | `70fda9342e` | success | success | unknown | StudySprint RSVP multi-pass reader core — study_reader.py |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -127,7 +128,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `b28fe66e40` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `17182890b2` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `75bf54038e` | in_progress | in_progress | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `fa7399b4e6` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -154,14 +155,14 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2534 | NEED_EVIDENCE | unlabelled | `6d7ebb8b88` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2536 | NEED_EVIDENCE | unlabelled | `610d5ddc63` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2539 | NEED_EVIDENCE | unlabelled | `5af9b7ac10` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2541 | NEED_EVIDENCE | unlabelled | `784a80e7bd` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2545 | NEED_EVIDENCE | unlabelled | `36107eaf9d` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2550 | NEED_EVIDENCE | unlabelled | `a0c507f650` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2555 | NEED_EVIDENCE | unlabelled | `2897d0a7a5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2562 | NEED_EVIDENCE | unlabelled | `3ab9d4bd7c` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2568 | NEED_EVIDENCE | unlabelled | `259efcc436` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #2541 | NEED_EVIDENCE | unlabelled | `784a80e7bd` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
+| #2545 | NEED_EVIDENCE | unlabelled | `36107eaf9d` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
+| #2550 | NEED_EVIDENCE | unlabelled | `a0c507f650` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
+| #2555 | NEED_EVIDENCE | unlabelled | `2897d0a7a5` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
+| #2562 | NEED_EVIDENCE | unlabelled | `3ab9d4bd7c` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
+| #2568 | NEED_EVIDENCE | unlabelled | `259efcc436` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
 | #2570 | NEED_EVIDENCE | unlabelled | `08423d2c78` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2574 | NEED_EVIDENCE | unlabelled | `cd310a869a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #2574 | NEED_EVIDENCE | unlabelled | `cd310a869a` | not_reported | not_reported | dirty | chore(ops): refresh computed countdown lines |
 | #2575 | NEED_EVIDENCE | unlabelled | `a879d9c760` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2578 | NEED_EVIDENCE | unlabelled | `56fce515d8` | not_reported | not_reported | unknown | docs: integrate AMD and NVIDIA skill workflows |
 | #2581 | NEED_EVIDENCE | unlabelled | `02496c37d4` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -179,8 +180,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3035 | NEED_EVIDENCE | unlabelled | `e358823bab` | not_reported | not_reported | unknown | [Draft] Independent RFP: foresight platform evaluation |
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3097 | NEED_EVIDENCE | unlabelled | `bdc637bf6b` | not_reported | not_reported | unknown | desk-feed: add D4 row — batch queued (Jules-only, window >2026-11-08) |
-| #3102 | NEED_EVIDENCE | unlabelled | `70fda9342e` | in_progress | queued | unstable | StudySprint RSVP multi-pass reader core — study_reader.py |
 
 ## Families (open)
 
@@ -195,6 +194,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 8 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 38 | 166 |
+| unlabelled | 38 | 165 |
 
 **Unlabelled open issues (38):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3068, #3077, #3094, #3095, #3099 — worked oldest-first by the issue-lifecycle lane pass.

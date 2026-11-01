@@ -41,6 +41,11 @@ C3 L2 sweep completes over ≥8 chats w/ ranking.
 
 ## L2 — transcript sweep (first run)
 
+Scope (owner correction 2026-10-31, via main): L2 = **intermittent
+check only** — this sweep is an on-demand instrument + the baseline
+run, ∅ standing cadence. L1 (main) = initial validation ∧ fast
+corrections.
+
 9 chats × recent assistant turns (n=32 msgs), mean compliance:
 viz-dispatch-tree 0.851 · doe-expert 0.767 · main 0.741 ·
 delphi-oracle 0.738 · database 0.688 · challenge-entries 0.653 ·
@@ -66,3 +71,21 @@ quoted-content case (entries relaying staged marketing copy verbatim
 Noise law honored: ∅ corrections posted anywhere by this test;
 rankings route ↦ main only (L1 relay-validation decides drift events,
 per nc-1).
+
+## Amendments (same day, DoE experiment owner)
+
+- Metric (PR #2866 merged c243c13e37): L3 primary = **information-
+  density effectiveness** (signal ÷ tokens, ∀ strata {chat, github,
+  docs, records}); prose_ratio = diagnostic only. Scorer emits
+  `density` = (sym + ev refs)/100w per unit; per-stratum τ.
+- Order (PR #2869 merged ae08ac31be + owner correction): validation
+  = L1 (main, intake: initial validation ∧ fast corrections) →
+  L2 (intermittent re-verification sweep; cadence = parameter) →
+  L3 (broadest layer, 4-strata coverage). Arms {L1-only, L1+L2,
+  FULL}; responses += escape_rate ∧ correction_latency.
+- Records ruling: these first-run outputs land as nc-1 records
+  labeled **instrument_shakedown** (¬ scored verdicts; gold corpus +
+  τ precede scoring) at experiments/doe/nc-1-notation-compliance/
+  records/ — 192 units {github 97, chat 32, docs 53, records 10}.
+- v2 build order (approved): claim↔ref adjacency (#1734 leg) →
+  symbol-function test → per-stratum τ.

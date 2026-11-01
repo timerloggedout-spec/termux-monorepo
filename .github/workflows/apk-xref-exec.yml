@@ -63,11 +63,29 @@ jobs:
           } > /tmp/diag.txt 2>&1
           # Read via curl + the job token directly (no gh dependency
           # on the read path).
-          code="$(curl -sS -o /tmp/issue.json -w '%{http_code}' \
-            -H "Authorization: Bearer ${TOKEN}" \
-            -H 'Accept: application/vnd.github+json' \
-            "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE}")"
-          echo "issue GET -> HTTP ${code}" >> /tmp/diag.txt
+          # Bounded retry: the repo GITHUB_TOKEN installation bucket
+          # (1,000 req/hr/repo) is shared by every fleet workflow and
+          # is chronically contended at hour boundaries — proof runs
+          # 41273960355 + 41274305340 + 41274413601 all died here on
+          # HTTP 403 rate-limit, not on workflow logic. Retry only
+          # the rate-limit class; any other non-200 is fatal at once
+          # with the response body in the diagnostics.
+          code=""
+          for attempt in 1 2 3 4 5 6 7 8; do
+            code="$(curl -sS -o /tmp/issue.json -w '%{http_code}' \
+              -H "Authorization: Bearer ${TOKEN}" \
+              -H 'Accept: application/vnd.github+json' \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE}")"
+            echo "attempt ${attempt}: issue GET -> HTTP ${code}" >> /tmp/diag.txt
+            [ "${code}" = "200" ] && break
+            if grep -qi 'rate limit' /tmp/issue.json; then
+              echo "rate-limited; backing off 45s" >> /tmp/diag.txt
+              sleep 45
+            else
+              head -c 400 /tmp/issue.json >> /tmp/diag.txt; echo >> /tmp/diag.txt
+              cat /tmp/diag.txt; exit 1
+            fi
+          done
           [ "${code}" = "200" ] || { cat /tmp/diag.txt; exit 1; }
           jq -e '[.labels[].name] | index("apk-xref")' /tmp/issue.json > /dev/null \
             || { echo "issue #${ISSUE} lacks the apk-xref label; refusing"; exit 1; }

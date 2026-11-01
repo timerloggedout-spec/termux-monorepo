@@ -362,4 +362,5 @@ jobs:
           IFLYTEK_SPARK_API_PASSWORD: ${{ secrets.IFLYTEK_SPARK_API_PASSWORD }}
           SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
           DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
+          NOVITA_API_KEY: ${{ secrets.NOVITA_API_KEY }}
         run: python3 scripts/ops/provider_operational_check.py --catalogs

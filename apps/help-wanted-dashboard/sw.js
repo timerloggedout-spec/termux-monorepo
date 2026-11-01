@@ -2,8 +2,9 @@
    Pages ∧ data feeds are LIVE: every fetch goes network-first, so an
    installed app never serves stale readings; the cache answers only
    when the network is unreachable (shell + icons + last-good page). */
-var CACHE = "help-wanted-v1";
+var CACHE = "tribute-v1";
 var SHELL = ["./", "./index.html", "./dashboard.css", "./manifest.webmanifest",
+             "./versioning.js", "./site-nav.js", "./version-manifest.json",
              "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(SHELL); })

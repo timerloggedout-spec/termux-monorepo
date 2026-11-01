@@ -1,9 +1,9 @@
 {
   "counts": {
-    "open_issues": 366,
-    "open_prs": 152,
+    "open_issues": 367,
+    "open_prs": 151,
     "pr_classes": {
-      "CANDIDATE": 70,
+      "CANDIDATE": 69,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 28,
-      "prs": 150,
+      "issues": 29,
+      "prs": 149,
       "unlabelled_numbers": [
         308,
         343,
@@ -79,11 +79,12 @@
         2734,
         2735,
         2750,
-        2758
+        2758,
+        2830
       ]
     }
   },
-  "generated_at": "2026-11-01T01:25:25Z",
+  "generated_at": "2026-11-01T01:26:45Z",
   "issues_unlabelled": [
     308,
     343,
@@ -112,7 +113,8 @@
     2734,
     2735,
     2750,
-    2758
+    2758,
+    2830
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -120,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "7c7d7cb183"
+    "sha": "d3319c010e"
   },
   "prs": [
     {
@@ -961,20 +963,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "5d08d6ff2a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:24:09Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1583,6 +1571,20 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "876e42ee52",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T01:26:17Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2241,20 +2243,6 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "deb1d67b05",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2828,
-      "title": "probe(quota): OpenRouter free-counter probe \u2014 does a paid call move the free daily counter?",
-      "updated_at": "2026-11-01T01:25:20Z"
     }
   ],
   "schema": "operator-matrix/v1",

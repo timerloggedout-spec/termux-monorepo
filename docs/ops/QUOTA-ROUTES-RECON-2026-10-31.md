@@ -37,9 +37,9 @@ The KEY-GAP class above is a credential-store fact, not a work queue — per-ite
 - **xfyun** ◐ in-flight at the provisioning lane (= iFlytek): gated on owner vault new-password entry; the pair mints together.
 - **modelscope** ⛔ parked: ∅ Google route, registration is SMS-only; GitHub-OAuth route ⇒ owner ruling pending.
 - **omni** ◐ ¬ a signup: instance decision at main (`OMNI_API_KEY`/`OMNIROUTE`/`BASE_URL`).
-- **ovhcloud** ● the only actionable item: provisioning lane attempting the free account + Public Cloud route now; card ⇒ hard stop + park.
+- **ovhcloud** ◐ attempted 2026-10-31: signup reached (auth.us.ovhcloud.com, US; ∅ card/phone pre-password), window expired awaiting owner vault new-password entry ⇒ now gated in the same class as requesty/kilo/xfyun; relaunch on credential landing, Public Cloud card-check is the decisive step after.
 
-Net: of the 9, actionable-now = 1 (ovhcloud) · in-flight on owner vault entries = 3 (requesty, kilo, xfyun) · parked/ruled = 4 (cerebras, mistral, typhoon, modelscope) · decision at main = 1 (omni).
+Net: of the 9, actionable-now = 0 · in-flight on owner vault entries = 4 (requesty, kilo, xfyun, ovhcloud) · parked/ruled = 4 (cerebras, mistral, typhoon, modelscope) · decision at main = 1 (omni).
 
 ## INFRA — route notes
 

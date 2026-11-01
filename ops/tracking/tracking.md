@@ -1,17 +1,17 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T12:02:21Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T12:06:01Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T12:02:21Z` (merged 150 · open 168) · lane-events(Neon) status=`ok` count=`4286` read_at=`2026-11-01T12:02:21Z`
+Sources: PR feed read_at=`2026-11-01T12:06:00Z` (merged 150 · open 167) · lane-events(Neon) status=`ok` count=`4292` read_at=`2026-11-01T12:06:00Z`
 
-Rows: 22 · by_state: active=2 · closed=1 · in-flight=13 · landed=1 · unknown=5
+Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknown=5
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | in-flight | #3084 `d6dadc75ccf0` 2026-11-01T11:47:20Z | BATCH reader dispatch LIVE: Jules session 16575382661216894510 (issue #3082, study_reader.py) — PR ⇒ D1 verifies ⇒ desk merges ⇒ sync; VERSION/CHANGELOG settled by D1 seat at merge. RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
-| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | in-flight | #3105 `9be30617efb4` 2026-11-01T12:01:28Z | BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · target ∅ pending owner pick · WAF spec STRUCK from batch queue (owner direct 2026-11-01 — WAF out of current production build lanes' scope) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions |
+| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3107 `8290aa4442e7` 2026-11-01T12:05:29Z | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3097 `e44e94fb9d2b` 2026-11-01T11:59:30Z | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |

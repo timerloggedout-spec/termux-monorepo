@@ -161,7 +161,9 @@ jobs:
             --source-sha "${GITHUB_SHA}" \
             --version-prefix "1.0.1"
           if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            cp docs/ops/generated/help      - name: Prepare combined user-site artifact
+            cp docs/ops/generated/help-wanted-status.json _tribute/data/status.json
+          fi
+      - name: Prepare combined user-site artifact
         run: |
           set -euo pipefail
           mkdir -p _user_site/tribute _user_site/help-wanted _user_site/matrix/data

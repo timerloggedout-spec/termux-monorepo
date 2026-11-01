@@ -27,6 +27,8 @@ REQUIRED_HTML = (
 
 def main() -> int:
     html = HTML.read_text(encoding="utf-8")
+    if "/Tribute/" in html:
+        raise SystemExit("dashboard HTML contains case-sensitive uppercase Tribute routes; use /tribute/")
     if not NAV.is_file():
         raise SystemExit("shared site-nav.js is missing")
     nav = NAV.read_text(encoding="utf-8")

@@ -30,7 +30,9 @@ PROMPT_TEMPLATE = (
 )
 QUESTIONS_TEMPLATE = (
     "FreeCodeCamp Relational Databases v9 lesson \"{title}\". Answer each "
-    "comprehension check below from the lesson content. For every question: "
+    "comprehension check below from the lesson content. Begin with a key "
+    "block: one line per question, \"KEY Q<n>: <exact option text>\". Then, "
+    "for every question: "
     "restate the question verbatim under a heading line \"Q<n>\", then give "
     "the correct option (letter and full text), a one-sentence justification, "
     "and quote the lesson body evidence that supports the answer. After "
@@ -80,7 +82,7 @@ def content_check(text: str, questions: list[str]) -> list[str]:
     return missing
 def _norm(text: str) -> str:
     cleaned = re.sub(r"[*_`]+", "", text)
-    return " ".join(cleaned.strip().strip("\"'").split()).lower().rstrip(".")
+    return " ".join(cleaned.strip().strip("\"'").split()).lower().rstrip(".;")
 
 
 def parse_options(question: str) -> list[str]:
@@ -101,6 +103,12 @@ def keying_check(text: str, questions: list[str]) -> list[str]:
     keyed = {}
     for m in re.finditer(r"KEY\s+Q(\d+)\s*:\s*(.+)", text):
         keyed[int(m.group(1))] = m.group(2).strip()
+    fallback = [m.group(1).strip() for m in
+                re.finditer(r"Correct Option\s*:\s*(.+)", text)]
+    if fallback:
+        unkeyed = [i for i in range(1, len(questions) + 1) if i not in keyed]
+        for idx, val in zip(unkeyed, fallback):
+            keyed[idx] = val
     for i, q in enumerate(questions, 1):
         options = parse_options(q)
         if not options:
@@ -149,8 +157,7 @@ def main() -> int:
         artifact = out / f"{step['id']}.md"
         invoke_cmd = [sys.executable, str(INVOKE), "--provider", args.provider,
                       "--prompt-file", str(prompt_file), "--out", str(artifact)]
-        if step.get("kind") == "quiz":
-            invoke_cmd += ["--max-tokens", "2000"]
+        invoke_cmd += ["--max-tokens", "2000" if step.get("kind") == "quiz" else "1500"]
         proc = subprocess.run(invoke_cmd, capture_output=True, text=True, timeout=600)
         verdict = {}
         for line in proc.stdout.splitlines():

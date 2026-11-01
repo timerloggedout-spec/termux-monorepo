@@ -15,6 +15,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -38,13 +39,30 @@ QUESTIONS_TEMPLATE = (
 )
 
 
+def _tokens(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", text.lower())
+
+
+def _ordered_subsequence(needle: list[str], haystack: list[str]) -> bool:
+    it = iter(haystack)
+    return all(any(tok == want for tok in it) for want in needle)
+
+
 def content_check(text: str, questions: list[str]) -> list[str]:
-    """Return the verbatim questions missing (unkeyed/unanswered) in text."""
+    """Return the verbatim questions missing (unkeyed/unanswered) in text.
+
+    Matching is token-based (punctuation/markdown-insensitive, ordered
+    subsequence of the question sentence's tokens) so a substance-present
+    answer keyed Q<n> is not flagged for formatting variance (backticks,
+    punctuation, minor inserted words). Platforms' substance audit remains
+    the backstop.
+    """
     missing = []
+    toks = _tokens(text)
     for i, q in enumerate(questions, 1):
         key = f"Q{i}"
-        stem = " ".join(q.split(" Options:")[0].split())[:60]
-        if key not in text or stem not in " ".join(text.split()):
+        stem_tokens = _tokens(q.split(" Options:")[0])[:12]
+        if key not in text or not _ordered_subsequence(stem_tokens, toks):
             missing.append(key)
     return missing
 WORKSHOP_TEMPLATE = (

@@ -2,35 +2,35 @@
 
 High-level layout of `timerloggedout-spec/termux-monorepo`.
 
-Visual overview (in-repo): `termux-ecosystem-architecture.html`  
+Visual overview (in-repo): `termux-ecosystem-architecture.html`
 (Terminal → ArchWiz / Harmonizer / DeepSeek CLI-TUI / Central Mapper / Multi-Agent → DeepSeek API, local cache, workspace).
 
-Prefer **TOOL_INDEX** + **CONCEPT_INDEX** under `archwiz/` for tool-level truth.
+Prefer **TOOL_INDEX** + **CONCEPT_INDEX** under `archwiz/` for tool-level truth, and the **ICM system map** under `docs/icm/` for component/impact truth.
 
-## Core automation & agents
+## Governance & system map
 
-### deepcli/
+- Root `CLAUDE.md` — primary collaborator entry (governance, branch rules, dual-gate validation). Root `AGENTS.md` is deleted/deprecated; the retained Linguist-surface copy is `AGENTS.hum.md`.
+- `docs/icm/` — Interpretable Context Methodology system map: shelves `objects/{governance, knowledge, operations, platform}`, processes, effects (first-order impact). Reading protocol: one card, source wins over card.
+- Root `README.md` — navigation ladder and subsystem inventory.
 
-DeepSeek-oriented CLI (sessions, streaming send, thinking mode, attach, fork, export).
+## Fleet automation
 
-- Entry: `deepcli.py`, `deepapi.py`, `deepseek_proxy.py`
-- Related: `deepcli-tui/`, `.deepcli/`, `deepseek-cli/`
+- Specialist **GitHub App identities** act on the repo, each with its own token bucket and narrow permissions: Collector, Gate (checks), Lifecycle (issues), Publisher (contents/PRs), Reviewer (reviews), Swarm (workflows), CrossReference, RepoStory.
+- **Dual-gate CI:** `agentic termux smoke` + `hygiene + portability gate` check-runs gate merges to master.
+- Provider command dispatch workflows route build/review work to model providers (Jules, DeepSeek, Gemini and others) under quota allocations (`ops/quota/`).
 
-### termux-multi-agent/
+## Provider plane
 
-Multi-agent orchestration for Termux: provision, run, patch, dashboard, Cedar MCP.
+### llm_api_hub/
 
-| Path | Role |
-|------|------|
-| `provision_agent.py` | Agent provisioning |
-| `run.py` / `run_agent.sh` | Run loop |
-| `dashboard.py` | Status / control UI |
-| `patch_files.py` | Patch application |
-| `cedar-mcp-server.js` | CedarScript MCP server |
+Canonical local model plane: OpenAI-compatible server (`server/app.py`), provider extensions/protocols, clients, schemas. Routing documented in `llm_api_hub/ROUTING.md`. (Renamed from the former `llm-api-hub/`; that directory no longer exists.)
 
-### cli-synthegration/
+### Legacy / adjacent CLI surfaces
 
-Conversation synthesis: branching, export, account/token management, metrics, Chronos, Cedar bridge.
+- `deepcli/` — DeepSeek-oriented CLI (sessions, streaming, fork, export); related `deepcli-tui/`, `.deepcli/`, `deepseek-cli/`.
+- `multi-ai-cli/` — multi-model CLI surface (session/cookie backends).
+- `termux-multi-agent/` — multi-agent orchestration for Termux (provision, run, dashboard, Cedar MCP).
+- `cli-synthegration/` — conversation synthesis: branching, export, metrics, Chronos, Cedar bridge.
 
 ### archwiz/
 
@@ -39,24 +39,35 @@ ArchWizard — indexing, provenance, recovery indices, automation cockpit.
 - Docs: `TOOL_INDEX.md`, `CONCEPT_INDEX.md`, `REFERENCE_HUB.md`, `METHODOLOGY_INDEX.md`, `PROCEDURES.md`, …
 - Role: dashboard + pipeline control
 
-## Harmonizer, multi-AI, swarm
+## Operations estate (docs/ops/)
+
+- Quota system: `ops/quota/allocations.json` SSOT, allocation planning + weekly refresh automation.
+- Provider/dispatch records, connector inventories and audits; fleet logs and AppID profile records.
+- Certifications program of record: `docs/ops/CERTIFICATIONS-PROGRAM.md` (ladder in `guides/`).
+- Dated point-in-time snapshots live under `docs/ops/archive/`; undated docs at the estate root are operational/living.
+
+## Programs
+
+- **Competitions & challenges:** challenge entries coordinated as a slate (docs/ops records + dedicated entry repos built by the fleet).
+- **Proposals system:** `docs/proposals/` — RFP packages under `active/` registered in `registry.yaml` (directory-level), evaluation records under `passes/` carrying their own PASS status.
+
+## Harmonizer, multi-AI, swarm (legacy trees)
 
 | Directory | Role |
 |-----------|------|
 | `harmonizer-prod_cli/` | Production Harmonizer CLI |
 | `harmony_hub/` | Harmony hub integration |
-| `multi-ai-cli/` | Multi-model CLI surface |
 | `commingle-swarm/` | Template / scavenge-only external clone |
 
 ## Mapping & workspace
 
 - `central_mapper_v420.py`, `mapper_graph.py`
-- `workspace/` (incl. llm_map indices)
+- `workspace/` (incl. generated llm_map indices — distinct from the hand-maintained ICM map)
 - `sandbox/`, `src/`, `bin/`, `config/`
 
 ## Notes
 
-- `refTemplates/` on `master` is largely a stub; full metadata skeleton lives on `recreate/refTemplates-skeleton`.
+- `refTemplates/` holds reference templates/metadata; treat as input material, not a live implementation path.
 - Submodules: prefer selective depth-1 updates; avoid recursive `submodule update` by default.
 
 For recovery history and prioritized actions, see the root README and `docs/RECON.md`.

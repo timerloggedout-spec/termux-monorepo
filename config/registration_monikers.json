@@ -315,6 +315,33 @@
     {
       "handling": {
         "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "PluckyOnyx78",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "Platform rendering: Instagram usernames are lowercase (letters/digits/period/underscore, <=30) - signup username = pluckyonyx78; the display name carries the canonical case, PluckyOnyx78.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "Instagram",
+      "platform_id": "instagram",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
           "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
           "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
         ],
@@ -596,6 +623,61 @@
     {
       "handling": {
         "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "JollyJuniper25",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "Platform linkage: Threads requires an Instagram account and a Threads identity follows the connected IG account. If the fleet Threads presence rides the fleet Instagram account (PluckyOnyx78), the instagram assignment governs the visible handle and this codename is NOT separately consumed - the entry exists so the platform carries a registry identity either way; the social-connectors lane records which path was taken in the Profile Registry.",
+        "Platform rendering (if separately consumed): lowercase - signup username = jollyjuniper25; display name JollyJuniper25.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "Threads",
+      "platform_id": "threads",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "UrbanOnyx67",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "Platform rendering: TikTok usernames are lowercase (letters/digits/underscore/period) - signup username = urbanonyx67; the display name carries the canonical case, UrbanOnyx67.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "TikTok",
+      "platform_id": "tiktok",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
           "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
           "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
         ],
@@ -645,6 +727,33 @@
       ],
       "role": "entrant",
       "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "OpalVale19",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "WhatsApp identity is bound to a PHONE NUMBER, not a username: the number is a provisioning fact supplied by the owner/that lane at wiring time - never invented, and never recorded in this registry. The moniker is the account's name of record; the WhatsApp profile name carries it verbatim: OpalVale19.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "WhatsApp",
+      "platform_id": "whatsapp",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
     },
     {
       "handling": {

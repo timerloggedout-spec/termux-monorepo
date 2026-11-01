@@ -646,6 +646,7 @@
     {
       "id": "github",
       "services": [
+        "deepseek.build_dispatch",
         "github.actions.cache",
         "github.actions.minutes",
         "github.api.app_collector",
@@ -1326,6 +1327,8 @@
     {
       "id": "google",
       "services": [
+        "gemini.build_dispatch",
+        "jules.build_sessions",
         "gemini.api_free"
       ],
       "allocations": [

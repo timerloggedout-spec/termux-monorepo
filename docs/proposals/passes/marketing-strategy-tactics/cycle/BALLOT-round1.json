@@ -1,0 +1,188 @@
+{
+  "schema": "delphi-cross-vote/v1",
+  "generated_at": "2026-11-01T08:04:44Z",
+  "candidates": [
+    "marketing-strategy-tactics-strict-separation",
+    "marketing-strategy-tactics-attributed-tiered",
+    "marketing-strategy-tactics-partner-forward-blend"
+  ],
+  "profiles": [
+    {
+      "candidate": "marketing-strategy-tactics-strict-separation",
+      "points": 3,
+      "evidenced": 3,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 8,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "cb1199becef7fe366aeb780be52a7cbf537e15f860a5d9068b6414ba2c9ba401"
+    },
+    {
+      "candidate": "marketing-strategy-tactics-attributed-tiered",
+      "points": 3,
+      "evidenced": 3,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 8,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "c1efb87a4b7597cc7227a78c3a3bd9a53c92ba545863a47594bdc6a4fdf20dbe"
+    },
+    {
+      "candidate": "marketing-strategy-tactics-partner-forward-blend",
+      "points": 3,
+      "evidenced": 2,
+      "unverified": 1,
+      "evidenced_ratio": 0.6666666666666666,
+      "items": 3,
+      "evidence_sources": 8,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "dbdbe24d7e994d9f53905a5a7a53d6c763d86b18f136a9015c63738d1dd9dec3"
+    }
+  ],
+  "weights": {
+    "source": "ledger weights file weights.json",
+    "role_weights": {
+      "OPERATOR": 1.4462,
+      "builder": 1.2052,
+      "reviewer": 1.2052,
+      "Scout": 0.9641,
+      "cost_auditor": 1.4462
+    }
+  },
+  "ballots": [
+    {
+      "voter": "rubric:OPERATOR",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 25,
+        "marketing-strategy-tactics-attributed-tiered": 25,
+        "marketing-strategy-tactics-partner-forward-blend": 17
+      },
+      "rationale": {
+        "marketing-strategy-tactics-strict-separation": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-attributed-tiered": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-partner-forward-blend": "evidenced_ratio 0.6666666666666666 (2/3 points evidenced); unverified 1; items 3; evidence_sources 8; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:builder",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 16,
+        "marketing-strategy-tactics-attributed-tiered": 16,
+        "marketing-strategy-tactics-partner-forward-blend": 11
+      },
+      "rationale": {
+        "marketing-strategy-tactics-strict-separation": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-attributed-tiered": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-partner-forward-blend": "evidenced_ratio 0.6666666666666666 (2/3 points evidenced); unverified 1; items 3; evidence_sources 8; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:reviewer",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 25,
+        "marketing-strategy-tactics-attributed-tiered": 25,
+        "marketing-strategy-tactics-partner-forward-blend": 17
+      },
+      "rationale": {
+        "marketing-strategy-tactics-strict-separation": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-attributed-tiered": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-partner-forward-blend": "evidenced_ratio 0.6666666666666666 (2/3 points evidenced); unverified 1; items 3; evidence_sources 8; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:Scout",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 25,
+        "marketing-strategy-tactics-attributed-tiered": 25,
+        "marketing-strategy-tactics-partner-forward-blend": 21
+      },
+      "rationale": {
+        "marketing-strategy-tactics-strict-separation": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-attributed-tiered": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-partner-forward-blend": "evidenced_ratio 0.6666666666666666 (2/3 points evidenced); unverified 1; items 3; evidence_sources 8; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:cost_auditor",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 25,
+        "marketing-strategy-tactics-attributed-tiered": 25,
+        "marketing-strategy-tactics-partner-forward-blend": 17
+      },
+      "rationale": {
+        "marketing-strategy-tactics-strict-separation": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-attributed-tiered": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 8; dependency_items 0",
+        "marketing-strategy-tactics-partner-forward-blend": "evidenced_ratio 0.6666666666666666 (2/3 points evidenced); unverified 1; items 3; evidence_sources 8; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    }
+  ],
+  "ballots_by_class": {
+    "HUMAN_COLLABORATOR": 0,
+    "MODEL_PROVIDER": 0,
+    "LOCAL_BASELINE": 5
+  },
+  "per_class": {
+    "HUMAN_COLLABORATOR": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "MODEL_PROVIDER": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "LOCAL_BASELINE": {
+      "ballots": 5,
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 23.269,
+        "marketing-strategy-tactics-attributed-tiered": 23.269,
+        "marketing-strategy-tactics-partner-forward-blend": 16.462
+      },
+      "ranking": [
+        "marketing-strategy-tactics-attributed-tiered",
+        "marketing-strategy-tactics-strict-separation",
+        "marketing-strategy-tactics-partner-forward-blend"
+      ]
+    }
+  },
+  "classes_present": [
+    "LOCAL_BASELINE"
+  ],
+  "classes_absent": [
+    "HUMAN_COLLABORATOR",
+    "MODEL_PROVIDER"
+  ],
+  "combined_ranking": null,
+  "ranked_outcome": [
+    "marketing-strategy-tactics-attributed-tiered",
+    "marketing-strategy-tactics-strict-separation",
+    "marketing-strategy-tactics-partner-forward-blend"
+  ],
+  "class_rule": "Source classes tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot."
+}

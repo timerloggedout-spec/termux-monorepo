@@ -350,6 +350,11 @@ def readings_snapshot(public, services):
     projection, never upgraded; v1 artifacts that predate the evidence
     fields are re-derived by record()'s own rule from the row's status
     and observation time.
+
+    Completeness: the snapshot carries one row per registry record.
+    Records the artifact predates are synthesized as unobserved rows by
+    the completeness guard (disclosed in the row note + a stderr warning)
+    rather than silently under-covering the registry.
     """
     if not isinstance(public, dict) or public.get("schema") not in ("quota-public-status/v1", "quota-public-status/v2"):
         raise ValueError("expected a quota-public-status/v1 or quota-public-status/v2 projection")
@@ -385,6 +390,37 @@ def readings_snapshot(public, services):
             "horizon": horizon,
             "observed_at": row.get("observed_at"),
         })
+    # Completeness guard: a converted snapshot is complete — one row per
+    # registry record (convergence procedure, docs/ops/
+    # QUOTA-PROJECTION-CONVERGENCE-2026-10-27.md). The registry can grow
+    # between the probe run and the conversion, and an artifact that
+    # predates a record otherwise under-covers silently. Synthesize the
+    # missing rows as unobserved (the same shape an unobserved artifact
+    # row converts to), disclose the synthesis in the row note, and warn
+    # on stderr so the publisher sees exactly which records had no probe
+    # observation behind them.
+    seen = {r["resource_id"] for r in rows}
+    missing = [svc for svc in services if svc["id"] not in seen]
+    for svc in missing:
+        rows.append({
+            "resource_id": svc["id"],
+            "status": "unknown",
+            "used": None,
+            "limit": svc.get("limit"),
+            "unit": svc.get("unit"),
+            "reset": None,
+            "note": ("Registry record absent from the probe artifact; converter completeness "
+                     "guard synthesized this unobserved row — no probe observation exists "
+                     "for it. No account state is published."),
+            "evidence_status": ("attributed_claim" if str(svc.get("source", "")).startswith("http")
+                                else "early_signal"),
+            "horizon": "H1",
+            "observed_at": None,
+        })
+    if missing:
+        print(f"QUOTA converter completeness guard: synthesized unobserved rows for "
+              f"{len(missing)} registry record(s) absent from the artifact: "
+              f"{', '.join(s['id'] for s in missing)}", file=sys.stderr)
     return {"schema": "quota.readings.v2", "generated_at": public.get("generated_at"),
             "source": ("Converted from the quota probe's status-only public projection "
                        "(quota-public-status) through the generated-file path; not a live quota "

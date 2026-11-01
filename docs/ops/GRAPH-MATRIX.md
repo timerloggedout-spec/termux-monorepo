@@ -87,3 +87,9 @@ Re-run `scripts/graph_matrix_census.py` (token: `GH_TOKEN`/`GITHUB_TOKEN`), refr
 > Effect on this document (annotation only — the v0 text above stays in place): every deletion-oriented phrase is **superseded-by-freeze**, including "Branch deletion is list-only", the B×P lifecycle wording "residual head = leak … before any deletion list", and the stale∧orphan branch list in census.json as any kind of removal queue. Branch lists remain census records only; branches are not content files, and branch-deletion stays HELD until main speaks to branches specifically.
 >
 > Language rule for future censuses: "stale" / "orphan" are descriptive linkage states only — they imply no pruning candidacy. Census and backlink (additive) work is unaffected by the freeze.
+
+## Signal note (2026-11-01) — branch lists = dataset signal, KEPT-AS-SIGNAL
+
+> Owner refinement via main (2026-11-01): **"list+only is a signal for the dataset."** The branch lists produced by this matrix — stale / orphan / linkage classifications, incl. the stale∧orphan list and head-residual counts in census.json — are **dataset material, retained as data permanently**: branch linkage and staleness metadata feeds dataset compilation. They are not deletion candidates and not a work queue, and no deletion semantics attach to them anywhere.
+>
+> Status conversion: branch lists move from HELD (freeze note above, "until main speaks to branches specifically") to **KEPT-AS-SIGNAL, permanently** — main has now spoken. The census keeps producing these lists as signal at each pass; nothing downstream of them is an action queue.

@@ -1,0 +1,273 @@
+{
+  "id": "marketing-strategy-tactics",
+  "title": "Fleet marketing strategy & tactics — Delphi evaluation (separation doctrine, tactics inventory, claims discipline)",
+  "kind": "research",
+  "surface": "Fleet marketing: landing (timerloggedout-spec.github.io), partners/referral surfaces, FB Pages, Builder articles + project write-ups",
+  "priority": "P1",
+  "deadline": "2026-11-10 (FB MVT decision window close — the nearest dated marketing decision)",
+  "deadline_evidence_refs": [
+    "fb:mvt-design"
+  ],
+  "related_issues": [
+    574,
+    1487,
+    1489
+  ],
+  "related_prs": [],
+  "require_plan": true,
+  "executive_request": "Owner order 2026-11-01 (via the web-design seat): execute Delphi on marketing strategy|tactics — EVALUATION ONLY. The panel frames and answers three questions: (1) the separation principle — our marketing states only our verified record; partner claims live attributed on partner surfaces/cards — sound as doctrine, and what are its failure modes? (2) The tactics inventory as practiced (landing hero/partners grid, referral programmes, FB Pages posts, Builder articles, project write-ups) — which earn their place on evidence, which are motion without signal? (3) Claims discipline — what may fleet marketing assert (merge/receipt-verified record) vs never borrow (partner benchmarks, superlatives)? Trigger: the owner found the landing hero carrying a partner’s product pitch as fleet copy; the fix instance (landing PR #16) is held for Marketing concurrence — this evaluation judges the doctrine, not the instance. Adoption/execution belongs to the owning lanes after the owner rules.",
+  "summary_points": [
+    {
+      "text": "The landing hero and benefits grid currently present a partner’s product pitch (incl. an unattributed benchmark superlative) as fleet copy; the same claim sits attributed on the partner’s grid card.",
+      "evidence_refs": [
+        "landing:hero",
+        "landing:benefits",
+        "landing:cellcog-card"
+      ]
+    },
+    {
+      "text": "Referral surfaces drift from their SSOT: the grid omits two active lanes; two listed offers are unverified on the registry’s own record.",
+      "evidence_refs": [
+        "landing:partners-grid",
+        "partners:ssot-active",
+        "partners:unverified-offers"
+      ]
+    },
+    {
+      "text": "Exactly one tactic carries a pre-set decision rule and measurements (FB MVT: 10 redemptions ∨ 2026-11-10; at last snapshot 0 redemptions); several distribution channels are claimed with handles NOT ESTABLISHED and no metrics.",
+      "evidence_refs": [
+        "fb:mvt-design",
+        "fb:mvt-snapshot",
+        "channels:unestablished"
+      ]
+    },
+    {
+      "text": "The fleet has a verified record it can state (merge-verified landings, reproduced receipts, live dashboards), and one marketing surface already passes a claims gate on exactly that basis (D0 landing, submissions=0 stated).",
+      "evidence_refs": [
+        "fleet:verified-record",
+        "d0:claims-gate"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "item": "Q1 separation doctrine: verdict + failure modes, recorded in the pass evaluation",
+      "state": "proposed",
+      "evidence": "separation:pr16"
+    },
+    {
+      "item": "Q2 tactics inventory: per-tactic earn/motion verdicts on stamped evidence",
+      "state": "proposed",
+      "evidence": "fb:mvt-snapshot"
+    },
+    {
+      "item": "Q3 claims discipline: assertable classes vs never-borrow list, recorded as the evaluation’s spec",
+      "state": "proposed",
+      "evidence": "landing:benefits"
+    }
+  ],
+  "item_prefix": "MKT",
+  "expectations": [
+    {
+      "voter": "delphi-lane (brief author)",
+      "variant": "strict-separation",
+      "expected_rank": 1,
+      "expected_score": 18
+    },
+    {
+      "voter": "delphi-lane (brief author)",
+      "variant": "attributed-tiered",
+      "expected_rank": 2,
+      "expected_score": 17
+    },
+    {
+      "voter": "delphi-lane (brief author)",
+      "variant": "partner-forward-blend",
+      "expected_rank": 3,
+      "expected_score": 7
+    }
+  ],
+  "variants": [
+    {
+      "suffix": "strict-separation",
+      "concept": "Strict separation: fleet surfaces state ONLY the merge/receipt-verified fleet record, in fleet voice. Partner claims appear nowhere in fleet copy — partners are named as participants (link live = the assertable fact) with offers stated only as the registry verifies them; unverified offers are dropped, not footnoted. Tactics survive only with measured signal against a pre-set decision rule; unmeasured tactics are killed or instrumented before further spend.",
+      "summary_points": [
+        {
+          "text": "The blur is a class, not an instance: hero + benefits both carry the partner pitch in fleet voice, and the file’s own comments claim a de-centering the data contradicts — only a doctrine (not a copy fix) prevents recurrence.",
+          "evidence_refs": [
+            "landing:hero",
+            "landing:benefits"
+          ]
+        },
+        {
+          "text": "The verified record is sufficient copy: merge-verified landings, reproduced receipts, and live dashboards already carry one surface through a claims gate with honest negatives stated (submissions=0).",
+          "evidence_refs": [
+            "fleet:verified-record",
+            "d0:claims-gate"
+          ]
+        },
+        {
+          "text": "On evidence, unmeasured tactics are motion: 0 attributed redemptions across the referral + FB surfaces at last snapshot, and three distribution channels with handles NOT ESTABLISHED.",
+          "evidence_refs": [
+            "fb:mvt-snapshot",
+            "channels:unestablished",
+            "referral:muse-program"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "item": "Hero/benefits rewritten from the verified record (PR #16 shape) and held to a claims gate on every copy change",
+          "state": "proposed",
+          "evidence": "separation:pr16"
+        },
+        {
+          "item": "Partner participation stated as fact (lane live, link tracked); offers only as verified in the registry, else omitted",
+          "state": "proposed",
+          "evidence": "partners:ssot-active"
+        },
+        {
+          "item": "Every tactic carries a metric + decision rule or is retired (MVT is the template)",
+          "state": "proposed",
+          "evidence": "fb:mvt-design"
+        }
+      ],
+      "plan": {
+        "steps": [
+          "Adopt the doctrine as the marketing claims standard (owner/manager ruling on this panel outcome).",
+          "Land PR #16 (hero/benefits from the verified record); extend the claims gate to all landing copy changes.",
+          "Reconcile the three referral layers to the SSOT (grid ∨ README ∨ PARTNERS identical active sets); drop unverified offers.",
+          "Instrument or retire each tactic: decision rules copied from the MVT pattern; unestablished channels either established + measured or removed from the inventory.",
+          "Re-run this panel on the next evidence snapshot (MVT window close 2026-11-10) as calibration."
+        ],
+        "risks": [
+          "Verification bottleneck: claims without a receipt path get understated — honest blanks may read as a thinner story than competitors’ borrowed superlatives.",
+          "Over-restriction cost: referral participation is a real resource-replenishment lane (owner standing rule, issue #574); the doctrine must separate claims, not participation.",
+          "Attribution rot: surfaces drift from the SSOT over time (already observed) — the doctrine needs the feed/check, not just the rule."
+        ],
+        "alternatives": [
+          "Attributed tiering (variant 2) if the panel judges card-level borrowing safe under labels.",
+          "Status-quo blend (variant 3) — rejected by the brief author’s priors; the panel decides."
+        ]
+      }
+    },
+    {
+      "suffix": "attributed-tiered",
+      "concept": "Attributed tiering: fleet voice states the verified record; partner claims MAY appear on fleet surfaces outside hero/brand — only as labeled, attributed partner content (the grid-card pattern generalized), with unverified offers carrying explicit NOT ESTABLISHED markers. Participation stays broad; tactics keep running while instrumented, and die at their decision rules rather than by doctrine.",
+      "summary_points": [
+        {
+          "text": "The compliant pattern already exists on the page: the CellCog card attributes its benchmark claim to the partner’s tier and snapshot — tiering generalizes the card rule instead of inventing a new one.",
+          "evidence_refs": [
+            "landing:cellcog-card",
+            "landing:partners-grid"
+          ]
+        },
+        {
+          "text": "The registry already practices honesty fields (NOT ESTABLISHED offers, third-party-reported amounts) — tiering surfaces those markers in copy instead of hiding them in config.",
+          "evidence_refs": [
+            "partners:unverified-offers"
+          ]
+        },
+        {
+          "text": "Measured tactics deserve their full run: the MVT’s decision rule fires at 10 redemptions or 2026-11-10; killing instrumented tactics mid-flight destroys the signal the fleet paid to create.",
+          "evidence_refs": [
+            "fb:mvt-design",
+            "fb:mvt-snapshot"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "item": "Hero/brand = verified record only (PR #16 lands); partner claims confined to labeled, attributed partner sections",
+          "state": "proposed",
+          "evidence": "separation:pr16"
+        },
+        {
+          "item": "Every partner claim on a fleet surface carries attribution + provenance (partner, tier, snapshot date); unverified offers carry NOT ESTABLISHED in copy",
+          "state": "proposed",
+          "evidence": "partners:unverified-offers"
+        },
+        {
+          "item": "Tactics persist while instrumented; decision rules (MVT pattern) decide continuance",
+          "state": "proposed",
+          "evidence": "fb:mvt-design"
+        }
+      ],
+      "plan": {
+        "steps": [
+          "Adopt tiering as the standard: hero/brand verified-only; partner content labeled everywhere else.",
+          "Land PR #16; add attribution markers to grid offers (Polsia/Neon NOT ESTABLISHED until verified).",
+          "Reconcile grid/README/PARTNERS to one active set (SSOT check in the referral feed).",
+          "Run tactics to their decision rules; report per-tactic signal at each window close.",
+          "Panel re-run on the 2026-11-10 snapshot for calibration."
+        ],
+        "risks": [
+          "Label fatigue: readers skim past attribution; a labeled superlative still lends the partner claim the fleet’s credibility by placement.",
+          "Boundary creep: today’s card is tomorrow’s hero — the 2026-10-27 confinement ruling already failed once at exactly this seam.",
+          "Marker debt: NOT ESTABLISHED offers may sit unverified indefinitely (Polsia pattern) — tiering tolerates what strictness would force to resolution."
+        ],
+        "alternatives": [
+          "Strict separation (variant 1) if the panel weights the boundary-creep failure mode highest.",
+          "Time-boxed tiering: markers expire — unverified offers drop automatically at the next window close unless verified."
+        ]
+      }
+    },
+    {
+      "suffix": "partner-forward-blend",
+      "concept": "Partner-forward blend (status quo): the anchor partner’s positioning may headline the landing in fleet voice; benchmarks and capability claims borrow the partner’s framing under a footer disclosure; programme breadth is itself the growth surface and restriction is treated as loss. This is the doctrine the surfaces currently practice, stated plainly so the panel can judge it.",
+      "summary_points": [
+        {
+          "text": "The blend is what the artifacts show today: hero + benefits in the anchor partner’s pitch, live since the partners block was added (2026-09-20) — continuity is its only demonstrated property.",
+          "evidence_refs": [
+            "landing:hero",
+            "landing:benefits"
+          ]
+        },
+        {
+          "text": "A footer disclosure covers the arrangement (affiliate/referral nature disclosed; programme terms apply), which the blend treats as sufficient discipline.",
+          "evidence_refs": [
+            "landing:footer-disclosure"
+          ]
+        },
+        {
+          "text": "The anchor partner’s #1 Deep Research benchmark standing is the landing’s strongest headline claim and should stay in fleet voice.",
+          "evidence_refs": [
+            "cellcog:benchmark"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "item": "Hero/benefits keep the anchor-partner pitch; PR #16 rejected",
+          "state": "proposed",
+          "evidence": "landing:hero"
+        },
+        {
+          "item": "Grid + banner + programmes continue as-is; disclosure footer is the claims control",
+          "state": "proposed",
+          "evidence": "landing:footer-disclosure"
+        },
+        {
+          "item": "Tactics continue without per-tactic decision rules; breadth is the strategy",
+          "state": "proposed",
+          "evidence": "partners:pipeline"
+        }
+      ],
+      "plan": {
+        "steps": [
+          "Reject PR #16 and record the blend as the accepted doctrine.",
+          "Keep hero/benefits copy as-is; refresh partner claims as partners publish new ones.",
+          "Continue programme expansion per the #574 standing rule."
+        ],
+        "risks": [
+          "Borrowed claims are unverifiable by the fleet: if the partner’s benchmark or pitch is wrong, the fleet owns the error in its own voice.",
+          "The owner has already ruled against the instance (PR #16 commissioned) — the blend contradicts a stated owner position.",
+          "Zero measured conversions to date (0 redemptions) means the blend’s benefit is asserted, never evidenced."
+        ],
+        "alternatives": [
+          "Any restriction (variants 1–2) if the panel finds borrowed claims indefensible on this evidence."
+        ]
+      }
+    }
+  ]
+}

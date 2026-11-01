@@ -12,16 +12,19 @@ name: apk-xref exec
 #   gh workflow run apk-xref-exec.yml -f issue_number=2273
 #
 # Note on the record comment: the findings issue is authored by the
-# fleet Swarm app token, so it DOES wake apk-xref-intake. This
+# fleet CrossReference app token, so it DOES wake apk-xref-intake. This
 # workflow therefore still
 # runs the same deterministic intake parser itself and posts the
 # record with the same hash marker the intake workflow dedupes on;
 # a later human edit re-runs intake, which then skips its duplicate.
-# Auth: fleet Swarm App installation token (SEC-03 mint step below;
-# AppID lane 2026-11-01). The job GITHUB_TOKEN's shared 1,000 req/hr
-# repo bucket chronically starved the filing fetch (runs 41273960355 +
-# 41274305340 + 41274413601 + 41274635772 = HTTP 403 rate-limit at the
-# fetch step). The Swarm installation bucket is its own 5,000 req/hr.
+# Auth: fleet CrossReference App installation token (SEC-03 mint step
+# below; AppID lane 2026-11-01 — Reverse Engineering family identity,
+# `Scalpel · CrossReference`, App 5564430; swapped off Swarm, which was
+# the 2026-11-01 bridge fix in PR #2992). The job GITHUB_TOKEN's shared
+# 1,000 req/hr repo bucket chronically starved the filing fetch (runs
+# 41273960355 + 41274305340 + 41274413601 + 41274635772 = HTTP 403
+# rate-limit at the fetch step). The CrossReference installation bucket
+# is its own 5,000 req/hr.
 
 on:
   workflow_dispatch:
@@ -45,12 +48,12 @@ jobs:
       contents: read
       issues: write
     steps:
-      - name: Mint the fleet Swarm app token
+      - name: Mint the fleet CrossReference app token
         id: mint
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
         with:
-          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
-          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          app-id: ${{ vars.TERMUX_FLEET_CROSSREFERENCE_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_CROSSREFERENCE_PRIVATE_KEY }}
           repositories: ${{ github.event.repository.name }}
 
       - name: Check out trusted default-branch control plane
@@ -109,7 +112,7 @@ jobs:
         env:
           ISSUE: ${{ inputs.issue_number }}
           # The belt's fetch sends this as Bearer for api.github.com
-          # only (env-read, never logged), so acquire rides the Swarm
+          # only (env-read, never logged), so acquire rides the CrossReference
           # bucket instead of the anonymous 60/hr egress-IP quota.
           GITHUB_TOKEN: ${{ steps.mint.outputs.token }}
         run: |

@@ -128,3 +128,30 @@ cross-validation searches it. That corpus is a working file from a
 published artifact — share reports, not corpora; use `--no-corpus`
 when an extraction must travel (feature checks then fall back to the
 structured surface: hosts, endpoints, assets, libs).
+
+## Execution workflow (Actions)
+
+`apk-xref-intake.yml` only records filings. Execution is
+`.github/workflows/apk-xref-exec.yml` (owner ENV rule: swarm
+execution runs in GitHub Actions' ephemeral runners — not on a VM,
+not on a device), dispatched per filed request issue:
+
+```
+gh workflow run apk-xref-exec.yml -f issue_number=2273
+```
+
+The runner script `ops/web_adapter_foundry/apk_xref_exec.py` parses
+the filing, then drives this belt: acquire (exit 3 = no artifact, an
+evidence outcome) → extract → clone the target repo → scan-repo →
+xref, or the no-artifact record when nothing is acquired. It files
+the findings on the Findings form (the belt's own markdown render),
+comments the verdict + findings link back on the request issue, and
+uploads a findings-only evidence artifact (extractions carry the DEX
+corpus, which does not travel).
+
+One platform subtlety: issues created with a workflow `GITHUB_TOKEN`
+do not retrigger other workflows, so the findings issue cannot wake
+`apk-xref-intake`. The exec workflow therefore runs the same
+deterministic intake parser itself and posts the record with the
+intake workflow's own hash-dedupe marker — a later human edit
+re-runs intake, which skips its duplicate.

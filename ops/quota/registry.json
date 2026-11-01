@@ -2790,6 +2790,24 @@
     "safety": 0.9,
     "note": "Fleet credential provisioned: DEEPINFRA_API_KEY (repo Actions secret, 2026-11-01). Prepaid balance $0.00 at provisioning; completions funded-out until owner top-up."
    }
+  },
+  {
+   "id": "novita.api",
+   "provider": "novita",
+   "lane": "model",
+   "metric": "Prepaid API balance (pay-as-you-go inference)",
+   "limit": null,
+   "unit": "USD balance (prepaid)",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://novita.ai/docs",
+   "doc_quote": "Novita AI is a prepaid pay-as-you-go inference API; advertised sandbox credits were not present in the fleet account at provisioning.",
+   "live": "none published",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Fleet credential provisioned: NOVITA_API_KEY (repo Actions secret, 2026-11-01). Balance $0.0000 at provisioning; completions funded-out until owner top-up."
+   }
   }
  ]
 }

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ui-surface-registry.schema.json",
+  "title": "Termux Monorepo UI Surface Registry",
+  "description": "Machine-readable inventory of UI modality projections and their repository evidence. Repository paths do not imply deployment or production readiness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_version",
+    "status",
+    "authority_note",
+    "surfaces",
+    "schema_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "registry_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "initial_inventory",
+        "maintained",
+        "deprecated"
+      ]
+    },
+    "authority_note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "surface_id",
+          "family",
+          "renderer",
+          "targets",
+          "evidence_paths",
+          "maturity",
+          "support_status",
+          "confidence"
+        ],
+        "properties": {
+          "surface_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+          },
+          "family": {
+            "enum": [
+              "cli",
+              "tui",
+              "web",
+              "desktop",
+              "mobile",
+              "ereader",
+              "tv-kiosk",
+              "wearable",
+              "voice-audio",
+              "xr",
+              "print"
+            ]
+          },
+          "renderer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "evidence_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "maturity": {
+            "enum": [
+              "proposed",
+              "prototype",
+              "integration-project-present",
+              "implemented-in-repository",
+              "released",
+              "retired"
+            ]
+          },
+          "support_status": {
+            "enum": [
+              "unknown",
+              "repository-evidence-only",
+              "partial",
+              "supported",
+              "unsupported"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "schema_ref": {
+      "const": "./ui-surface-registry.schema.json"
+    }
+  }
+}

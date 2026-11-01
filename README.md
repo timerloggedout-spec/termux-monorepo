@@ -128,6 +128,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 | Skills + adaptive WAIT | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) | Ops skill table, admission/queue stalls, evidence-led loop. |
 | Deployment lanes (Vercel / Pages) | [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md) | Live Vercel projects, Pages status, hosting identity rules. |
 | README / docs image optimize | [`docs/ops/IMAGE-ASSET-PIPELINE.md`](docs/ops/IMAGE-ASSET-PIPELINE.md) | Fail-closed resize + validate before embed. |
+| **UI surfaces & version lanes** | [`docs/ops/UI-SURFACE-VERSION-LANE-MAP.md`](docs/ops/UI-SURFACE-VERSION-LANE-MAP.md) | **Surfaces:** TUI/CLI, web, desktop, mobile, eReader, TV/kiosk, wearable, voice/audio, XR/spatial, print/export. **Nested rendering lanes:** plain/ASCII, ANSI, ratatui, Bubble Tea + Lip Gloss, mixed terminal graphics, semantic web, SVG/Canvas/WebGL/WebGPU, native/cross-platform, EPUB/PDF, XR/game engines. **Registry:** [`docs/ops/ui-surface-registry.json`](docs/ops/ui-surface-registry.json). |
 | Review safety and tracked-state debt | [`docs/CREDENTIAL-EXPOSURE.md`](docs/CREDENTIAL-EXPOSURE.md) | Credential exposure findings and safe remediation boundary. |
 
 The root README is an entry point, not a duplicate source of truth. **Primary agent entry is [`CLAUDE.md`](CLAUDE.md)** (AGENTS.md is Linguist-only after #488/#534). When this file conflicts with a maintained subsystem map, **the subsystem’s cited canonical source wins**.

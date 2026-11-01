@@ -7,6 +7,7 @@
 | [ArchWiz](operations/archwiz.md) | operations | live | verified | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface |
 | [Optional Visual Review](operations/optional-visual-review.md) | operations | live | initiated | reviewing the file-backed CCTV cards, proposing a mirror, or defining a human checkpoint |
 | [Navigation and Indexes](knowledge/navigation-and-indexes.md) | knowledge | live | verified | changing root orientation, generated-map use, or index routing |
+| [UI Surface Registry](knowledge/ui-surface-registry.md) | knowledge | live | verified | changing user-facing modality families, renderer lanes, version identity, evidence inventory, or conformance expectations |
 | [Context Relationship Index](knowledge/context-relationship-index.md) | knowledge | live | verified | reconstructing bounded source/GitHub context, querying evidence, or maintaining its canonical generated index |
 | [Provider Routing Governance](knowledge/provider-routing.md) | knowledge | live | initiated | reviewing provider-routing evidence, proposing a provider observation, or preparing later workflow work |
 | [ICM Reference Inputs](knowledge/reference-inputs.md) | knowledge | live | verified | selecting or updating an external ICM reference without treating it as repository runtime |

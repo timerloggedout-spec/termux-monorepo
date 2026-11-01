@@ -1,19 +1,19 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T11:52:11Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T11:59:53Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T11:52:11Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4267` read_at=`2026-11-01T11:52:11Z`
+Sources: PR feed read_at=`2026-11-01T11:59:52Z` (merged 150 · open 167) · lane-events(Neon) status=`ok` count=`4283` read_at=`2026-11-01T11:59:52Z`
 
-Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknown=5
+Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknown=5
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
-| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3084 `d6dadc75ccf0` 2026-11-01T11:47:20Z | BATCH reader dispatch LIVE: Jules session 16575382661216894510 (issue #3082, study_reader.py) — PR ⇒ D1 verifies ⇒ desk merges ⇒ sync; VERSION/CHANGELOG settled by D1 seat at merge. RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
+| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | in-flight | #3084 `d6dadc75ccf0` 2026-11-01T11:47:20Z | BATCH reader dispatch LIVE: Jules session 16575382661216894510 (issue #3082, study_reader.py) — PR ⇒ D1 verifies ⇒ desk merges ⇒ sync; VERSION/CHANGELOG settled by D1 seat at merge. RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3091 `a158f26e0618` 2026-11-01T11:50:51Z | BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · pick OPEN owner-held (freeze leg REMOVED 2026-11-01 — owner direct NO to manager-enacted WAF freeze) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
-| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3092 `88f907129dd0` 2026-11-01T11:51:48Z | deadline 2026-12-04T14:00:00-08:00 |
+| challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3097 `e44e94fb9d2b` 2026-11-01T11:59:30Z | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3079 `d6901e880369` 2026-11-01T11:39:39Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
@@ -28,7 +28,7 @@ Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3073 `6152f029217a` 2026-11-01T11:33:31Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3085 `fbae25c61770` 2026-11-01T11:47:02Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3101 `33a339b15310` 2026-11-01T11:56:22Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -59,4 +59,4 @@ Campaigns: 12 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)

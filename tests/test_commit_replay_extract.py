@@ -67,19 +67,32 @@ def test_extract_incremental_and_derivable():
         assert hdr["commits_indexed"] == 3
         assert set(hdr["checkpoints"]) == {
             "refs/heads/master", "refs/heads/side", "refs/tags/v0"}
-        # forward: a.txt present in all 3 commits, b.txt only in c1
-        paths = {(e["commit"], e["path"]) for e in entries}
-        assert len([p for _, p in paths if p == "a.txt"]) == 3
-        assert len([p for _, p in paths if p == "b.txt"]) == 1
-        # reverse derivable 1:N: a.txt v1 blob occurs once, path a.txt total 3
-        rev = {}
+        # delta entries: c1 root {a:A, b:A}, c2 {a:M, b:D}, c3 {c:A} = 5
+        assert len(entries) == 5, entries
+        ops = {(e["path"], e["op"]) for e in entries}
+        assert ops == {("a.txt", "A"), ("b.txt", "A"), ("a.txt", "M"),
+                       ("b.txt", "D"), ("c.txt", "A")}, ops
+        # path_history IS the entry stream: b.txt = A then D
+        b_hist = sorted(e["op"] for e in entries if e["path"] == "b.txt")
+        assert b_hist == ["A", "D"]
+        # state at master tip resolvable: apply chain root->tip deltas
+        by_commit = {}
         for e in entries:
-            rev.setdefault(e["blob"], []).append((e["commit"], e["path"]))
-        assert all(isinstance(v, list) for v in rev.values())
-        # path_history derivable: b.txt A then absent (=D at c2)
-        by_path = sorted({e["commit"] for e in entries
-                          if e["path"] == "b.txt"})
-        assert len(by_path) == 1
+            by_commit.setdefault(e["commit"], []).append(e)
+        master_tip = hdr["checkpoints"]["refs/heads/master"]
+        chain, cur = [], master_tip
+        while cur:
+            chain.append(cur)
+            ps = commits[cur]["parents"]
+            cur = ps[0] if ps else None
+        state = {}
+        for oid in reversed(chain):
+            for e in by_commit.get(oid, []):
+                if e["op"] == "D":
+                    state.pop(e["path"], None)
+                else:
+                    state[e["path"]] = e["blob"]
+        assert set(state) == {"a.txt"}, state  # b deleted, c is side-only
         # incremental: second run adds nothing, file stable in counts
         s2 = run_extract(repo, index)
         assert s2["new"] == 0 and s2["commits"] == 3, s2

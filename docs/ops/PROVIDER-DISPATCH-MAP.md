@@ -50,17 +50,16 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 
 ## Registry bench classes (Quota capability map, firsthand @master 2026-11-01)
 
-89 distinct model-lane providers = **proven 4 + wired-unproven 20 + triggerable 2 + inference-only 63**:
-
-**Endpoint scale (**7,066 provider×model endpoints**: g4f-working catalog 4,242 (60 providers, in-repo) +
+89 distinct model-lane providers = **proven 4 + wired-unproven 20 + triggerable 2 + inference-**7,046 provider×model endpoints**: g4f-working catalog 4,242 (60 providers, in-repo) +
 live public catalogs {requesty 809 · openrouter 452 · kilo gateway 384 · routeway 288 ·
-huggingface router 135 · llm7 67 · modelscope 35 · ovhcloud 22 · typhoon 7 · aion 6} + CI keyed
+huggingface router 135 · llm7 67 · modelscope 35 · ovhcloud 22 · typhoon 7} + CI keyed
 catalogs (provider-invoke catalog mode, verdicts #3141) {unorouter 330 · nvidia 85 ·
-siliconflow 81 · gemini 60 · cohere 20 · sealion 12 · zai 11 · sambanova 6} + groq 14
-(public-docs catalog, clean-vantage read; ¬ key-authenticated). Routeway keyed = public
-288, counted once. Uncountable = ∅ (mistral + cerebras ruling-blocked no-secret; cloudflare
-account-scope null). Gap to 7,500+ = net-new lands + growth.
-rom clean egress + growth.
+siliconflow 81 · gemini 60 · cohere 20 · sealion 12 · zai 11 · sambanova 6} (routeway
+keyed = public 288, counted once). **Owner rule: census counts MUST be Actions** —
+VM-vantage/public-docs counts are void (the groq 14 + aion 6 fold was retracted);
+groq + aion = uncountable-from-Actions (catalog 403, egress-blocked). Mistral + cerebras
+ruling-blocked no-secret; cloudflare account-scope null. Gap to 7,500+ = groq + aion via
+an Actions-reachable route + net-new lands + growth.
 Census of record =
 `dispatch.provider_catalog.endpoint_census` in the desk feed.
 

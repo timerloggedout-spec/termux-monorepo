@@ -2060,8 +2060,8 @@
    },
    "endpoint_census": {
     "unit": "provider x model endpoints (the dispatch-relevant unit; provider counts are NOT endpoint counts - owner correction)",
-    "verified_floor": 7066,
-    "counted_at": "2026-11-01 (public leg: providers-dispatch seat firsthand; CI leg: provider-invoke catalog mode verdicts on issue #3141, read firsthand from the ledger)",
+    "verified_floor": 7046,
+    "counted_at": "2026-11-01 (public leg: providers-dispatch seat, live catalog GETs; CI leg: provider-invoke catalog mode verdicts on issue #3141). RETRACTION (owner rule, 2026-11-01): census counts MUST be Actions - VM-vantage and public-docs counts are void; the groq 14 + aion 6 fold (PR #3202) is reverted by this record; fresh Actions verdicts #3141 c.6559265532/c.6559268666 read groq + aion catalog 403, models null",
     "sources": {
      "g4f-working catalog (data/g4f-working/providers.json @master, PR #2025)": {
       "providers": 60,
@@ -2120,17 +2120,9 @@
      },
      "CI leg - sambanova (keyed catalog, #3141)": {
       "models": 6
-     },
-     "groq (public-docs catalog, clean-vantage read via provisioning 2026-11-01)": {
-      "models": 14,
-      "note": "6 production + 8 preview, incl. 2 STT + 2 guard; NOT key-authenticated /models (key-gated from Actions egress) - counted under the same catalog-listed rule as the rest"
-     },
-     "aion (live public catalog, endpoint-verified)": {
-      "models": 6,
-      "note": "api.aionlabs.ai/v1/models read from clean egress (provisioning VM + this seat's VM, agreeing reads)"
      }
     },
-    "not_yet_counted": "∅ uncountable remaining: every catalogued provider is counted or carries a ruling disposition {mistral + cerebras: no secret in store, ruling-blocked per provisioning; cloudflare: account-scope, catalog null from CI}. Remaining gap to the owner figure of 7,500+ = net-new lands + growth.",
+    "not_yet_counted": "uncountable-from-Actions: groq + aion (catalog 403, egress-blocked; verdicts #3141) - countable only via an Actions-reachable route. Ruling dispositions: mistral + cerebras (no secret in store, ruling-blocked per provisioning); cloudflare (account-scope, catalog null from CI). Remaining gap to the owner figure of 7,500+ = groq + aion via an Actions-reachable route + net-new lands + growth.",
     "working_evidence": "per-provider invoke verdicts = issue #3141 batch (provider-invoke surface); per-model evidence shards across the contributing pool per the compounding rule."
    }
   }

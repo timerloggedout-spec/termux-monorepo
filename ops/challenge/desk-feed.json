@@ -644,7 +644,63 @@
      "unorouter",
      "siliconflow"
     ],
-    "batch_excluded": "groq excluded (Actions egress) — Swarm §15, PR #3056"
+    "batch_excluded": "groq excluded (Actions egress) — Swarm §15, PR #3056",
+    "provider_classes": {
+     "source": "Quota capability map (b18fae96), firsthand @master 2026-11-01; classes sum 2+22+2+63 = 89 distinct model-lane providers",
+     "proven": {
+      "count": 2,
+      "providers": [
+       "google",
+       "openrouter"
+      ],
+      "note": "google = Gemini router/after-peers/AI Studio, key-live. openrouter = production invoke legs; free layer active, paid layer balance $0.00, :free roster rotates."
+     },
+     "wired_unproven": {
+      "count": 22,
+      "via": "provider-batch (surface proven historically: 249 runs / 138 successes; per-provider invoke NOT_ESTABLISHED from batch artifacts)",
+      "providers": {
+       "aion": "route-dead",
+       "cerebras": "no-credential",
+       "cloudflare": "verify-scope",
+       "cohere": "key-live",
+       "groq": "Actions-egress 1010-blocked",
+       "huggingface": "key-live",
+       "kilo": "no-credential",
+       "llm7": "key-live",
+       "mistral": "no-credential",
+       "modelscope": "no-credential",
+       "nvidia": "auth unproven",
+       "ovhcloud": "no-credential",
+       "requesty": "no-credential",
+       "routeway": "key-live",
+       "sambanova": "key-live",
+       "sealion": "route-dead/DNS",
+       "siliconflow": "key-live post-errata",
+       "typhoon": "no-credential",
+       "unorouter": "key-live",
+       "xfyun": "no-credential",
+       "xkiro": "Actions-egress 1010-blocked",
+       "zai": "key-live"
+      },
+      "reverse_gap": "batch member ollama has no distinct registry model-provider row",
+      "promotion": "one named single-provider batch dispatch per provider + artifact naming provider/model/result; first resolve flags (provision 8 no-credential keys; move groq/xkiro to non-Actions egress; recheck aion/sealion or retire). NOTE: batch dispatches currently HELD per #2672."
+     },
+     "triggerable": {
+      "count": 2,
+      "providers": [
+       "felo",
+       "omni"
+      ],
+      "note": "endpoints exist in scripts/provider_model_catalog.py (MSM catalog 16); no research_providers endpoint/admission => not batch-wired. Felo also Actions-egress blocked.",
+      "promotion": "add endpoint to llm_api_hub/server/research_providers.py + research-provider-admission/v1 policy entry (+ verified secret name); then batch proof run."
+     },
+     "inference_only": {
+      "count": 63,
+      "providers_summary": "github (GitHub Models), meta (3 records; MODEL_API_KEY/META_API_KEY provisioning path; llama_api RETIRED do-not-route), gpt4free/CLIProxyAPI/Chapito/ai-manus, + 60 g4f/* upstreams",
+      "promotion": "g4f duplicates of native APIs route via the native wired-unproven entry, no new wiring; web/session-only g4f upstreams = g4f adapter entry in provider-batch + admission; image/audio/search upstreams = media/search batch variant, not chat batch; github = GitHub Models invoke step with models-scoped token (scope NOT_ESTABLISHED)."
+     }
+    },
+    "note_deepseek": "DeepSeek has no distinct model-lane provider row (only g4f/DeepSeek among the 89); its dispatch lanes are the ci-lane records deepseek.build_dispatch / deepseek.termux-agent."
    },
    "cross_ref": "Swarm widened rotation of record: SWARM doc §15 (PR #3056 merged 8a8dd117fdb8) — arm inventory evidence-graded; this catalog is the desk-feed mirror."
   }

@@ -38,6 +38,8 @@ hand-refreshed, or PR-centric.
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` |
 | Tests | `tests/test_repo_tracking.py` |
 
+**Feed top-level:** `{schema, generated_at, generated_by, sources{pr_feed, lane_events, records}, honesty_rules[], summary{rows, by_domain, by_state}, rows[], gaps[]}` — summary counts live under `summary{}` (viz note, PR #2941); renders read them there.
+
 **Row:** `{lane, project, domain, project_id, state, last_merge{pr, sha, at, title}, next, next_basis, evidence[], updated_at}`.
 
 ## Derivation (deterministic; generator code is the spec)

@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "tracking"))
-from repo_tracking import classify, derive_next, derive_state, NOT_ESTABLISHED  # noqa: E402
+from repo_tracking import (build_doe_join, classify, derive_next, derive_state,  # noqa: E402
+                           _find_instances, NOT_ESTABLISHED)
 
 PROJECTS = [
     {"id": "d1", "lane": "challenge-entries-d1", "project": "D1", "domain": "challenges",
@@ -53,6 +54,49 @@ def test_next_priority():
     fails = [{"workflow": "w", "occurred_at": "2026-10-31T00:00:00Z"}]
     assert "investigate" in derive_next(None, None, [], fails)[0]
     assert derive_next(None, None, [], [])[0] == NOT_ESTABLISHED
+
+
+def test_find_instances_nested_and_plan_shapes():
+    doc = {"treatment": {"instance": {"provider": "openrouter", "model": "m1",
+                                      "instance_key": "k1"}}}
+    out = []
+    _find_instances(doc, out)
+    assert len(out) == 1 and out[0]["instance_key"] == "k1"
+    plan = {"rows": [{"instance": {"provider": "p", "model": "m"}}, {"instance": {"ref": "x"}}]}
+    out = []
+    _find_instances(plan, out)
+    assert len(out) == 1  # ref-only dict is not an instance tuple
+
+
+def test_doe_join_tmp_tree(tmp_path=None):
+    import json as _json
+    import tempfile
+    base = Path(tempfile.mkdtemp())
+    camp = base / "experiments" / "doe" / "camp-x"
+    (camp / "records").mkdir(parents=True)
+    (camp / "DESIGN.json").write_text(_json.dumps(
+        {"campaign_id": "camp-x", "status": "admitted", "moniker": "doe-expert",
+         "factors": {"model": ["openrouter/m1"], "role": ["triage"]}}))
+    inst = {"provider": "openrouter", "model": "m1", "role": "triage",
+            "moniker": "doe-expert", "context": "camp-x", "instance_key": "abc123"}
+    (camp / "PLAN.json").write_text(_json.dumps({"rows": [{"instance": inst}, {"instance": inst}]}))
+    (camp / "records" / "r1.json").write_text(_json.dumps(
+        {"treatment": {"instance": inst}, "status": "observed"}))
+    (camp / "records" / "r2.json").write_text(_json.dumps(
+        {"treatment": {"arm": "FULL"}, "status": "observed"}))  # no instance: counted, not joined
+    camp2 = base / "experiments" / "doe" / "camp-y"
+    camp2.mkdir(parents=True)
+    (camp2 / "DESIGN.json").write_text(_json.dumps({"campaign_id": "camp-y", "status": "admitted"}))
+    join = build_doe_join(base)
+    assert join["summary"]["campaigns"] == 2
+    assert join["summary"]["campaigns_joined"] == 1
+    assert join["summary"]["distinct_instances"] == 1
+    assert join["summary"]["providers"] == ["openrouter"]
+    cx = join["campaigns"][0]
+    assert cx["join_state"] == "joined"
+    assert cx["instances"][0]["occurrences"] == {"plan": 2, "record": 1, "dispatch": 0}
+    assert cx["experiment_records"] == 2 and cx["experiment_records_with_instance"] == 1
+    assert join["campaigns"][1]["join_state"] == "design_only"
 
 
 if __name__ == "__main__":

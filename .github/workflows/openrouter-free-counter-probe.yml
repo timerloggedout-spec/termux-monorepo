@@ -1,0 +1,21 @@
+name: openrouter-free-counter-probe
+# [MUSEai]@{role:{quota-specialist}} One-shot empirical probe: does a PAID
+# OpenRouter request move the free_model_daily_requests counter?
+# Manual dispatch only; the probe makes one minimal paid call (~$0.0001).
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run free-counter probe
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python3 scripts/ops/openrouter_free_counter_probe.py
+      - name: Upload probe result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openrouter-free-counter-probe-result
+          path: probe-result.json

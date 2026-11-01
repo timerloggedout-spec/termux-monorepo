@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T14:34:00Z",
+ "generated_at": "2026-11-01T14:40:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2200,7 +2200,8 @@
      "session_state": "COMPLETED",
      "merge_sha": "2c0894d2e7d3",
      "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
-    }
+    },
+    "execution_posture": "OWNER POSTURE (2026-11-01 via D1 seat): early = balanced runs across inference endpoints (executions accumulate evidence); closer to Nov 4 due date ⇒ converge on best-performing endpoint. Applies {DeepSeek notes outcome, SR, any re-runs}"
    },
    "next": "Reader core MERGED #3102 + synced (parity 23/23) · SR module: returned to the system for balanced execution (#3050; command-dispatch re-route withdrawn, owner correction) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT",
    "provider_usage": [

@@ -1,0 +1,43 @@
+{
+ "campaign_id": "nc-1-notation-compliance",
+ "family": "doe",
+ "member_kind": "campaign",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "admitted_design_only",
+ "moniker": "doe-expert",
+ "owner_order": "Owner via main 2026-10-31: the notation-compliance detection TEST is a DoE experiment, homed in the doe-expert lane. Verdict to main on first runs.",
+ "subject": "Fleet output compliance with the notation spec (issue #320 notation sets + #1734 claim-level evidence provenance; caveman notation micro dense in all chats + GitHub surfaces).",
+ "hypothesis": "A layered detection stack catches notation drift (prose-heavy output) at high precision/recall with near-zero chat noise and low token cost, and flagging reduces drift in subsequent outputs. Each layer must earn its place or be culled.",
+ "drift_metric": {
+  "primary": "prose_ratio = prose tokens / total tokens per output unit (one chat message, GitHub comment, PR body, commit message). Prose tokens = natural-language words outside symbol spans, identifiers, code, ids and hashes. A unit is DRIFT above the pre-registered threshold tau.",
+  "secondary": ["symbol_density (notation symbols per token)", "outcome_id_presence (outcome reports carry PR# / merge SHA / issue id per spec)", "evidence_ref_presence (claims carry refs per #1734)"],
+  "tau": "set from the gold corpus distribution at evaluation build time and recorded by amendment before first scoring; never tuned on scored data."
+ },
+ "gold_corpus": "Labeled sample of real fleet outputs (chat messages + GitHub comments/PR bodies) spanning compliant and drifted units, labeled against the spec; labels + corpus snapshot committed under records/corpus/ before scoring. Known positive class: explanatory prose relays (e.g. this lane's own OpenRouter explainers, 2026-10-31) vs known compliant class: caveman-micro reports.",
+ "variants": {
+  "note": "The arms are detection-stack configurations, compared on the same gold corpus and then live. The cascade is the owner's named stack; ablations price each layer.",
+  "arms": [
+   {"id": "L3-only", "stack": "GitHub classifier over posted surfaces (Tier-1 build)"},
+   {"id": "L2-only", "stack": "transcript sweep over chat outputs (Tier-1 build)"},
+   {"id": "L3+L2", "stack": "union of both detectors, no validation"},
+   {"id": "FULL", "stack": "L3 + L2 detections => L1 main relay-validation (main confirms/rejects flags against source outputs); only L1-confirmed flags count as drift events"}
+  ],
+  "responses": ["precision", "recall", "tokens_scanned_per_confirmed_drift", "chat_noise_events (must be 0)", "downstream drift rate in flagged lanes' next outputs"]
+ },
+ "pass_cull": {
+  "pass": "FULL stack: precision >= 0.90 AND recall >= 0.80 on the gold corpus AND chat_noise_events == 0 AND cost within the noise budget.",
+  "cull": "Any layer whose removal costs < 0.03 recall while saving > 25% tokens is culled from the stack (culling toward Top Performance, owner definition). Any arm below the precision floor is culled with record.",
+  "fail": "If FULL fails precision or recall floors, verdict = no_selection; redesign recorded, no silent threshold loosening."
+ },
+ "noise_budget": {
+  "chat_noise": "approximately zero: detection NEVER posts in chats. Flags land as feed rows + one rollup comment per evaluation window on the tracking issue.",
+  "tokens": "classifier-first cascade: cheap L3/L2 passes scan everything; expensive reads only on flagged units + a fixed random sample for recall estimation. Per-window token ceiling recorded in each run record."
+ },
+ "automation": {
+  "requirement": "DOE-FAMILY binding rule 5: evaluation runs as repo automation (GitHub Workflow on corpus snapshots + live output feeds); manual scoring is OBSERVATIONAL.",
+  "builds": "L3 classifier + L2 sweep = Tier-1 lane builds (fae834fb, already tasked). Evaluator + scoring harness = this campaign. L1 = main relay-validation step.",
+  "records": "one EXPERIMENT-conforming record per evaluation run under records/; SUMMARY.json + verdict at first-runs completion, reported to main."
+ },
+ "registration": {"preregistered_in_repo": true, "recorded": "2026-10-31"}
+}

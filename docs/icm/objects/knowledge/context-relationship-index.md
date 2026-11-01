@@ -53,4 +53,5 @@ Citations: `config/context_relationships/schema.json`, `config/context_relations
 
 - Process: [`../../processes/context-relationship-reconnaissance.md`](../../processes/context-relationship-reconnaissance.md)
 - Process: [`../../processes/change-and-validate.md`](../../processes/change-and-validate.md)
+- Spec: [`docs/ops/CONTEXT-RELATIONSHIP-INDEX.md`](../../../ops/CONTEXT-RELATIONSHIP-INDEX.md) — the source/spec for this index; where the two differ, the spec wins.
 - Source: [`CLAUDE.md`](../../../../CLAUDE.md)

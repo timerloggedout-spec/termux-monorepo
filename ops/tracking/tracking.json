@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T08:50:18Z",
+ "generated_at": "2026-11-01T10:34:36Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T08:50:18Z",
+   "read_at": "2026-11-01T10:34:35Z",
    "merged": 150,
-   "open": 159
+   "open": 164
   },
   "lane_events": {
-   "read_at": "2026-11-01T08:50:18Z",
+   "read_at": "2026-11-01T10:34:35Z",
    "status": "ok",
-   "count": 3730,
+   "count": 4073,
    "events_in_snapshot": 200
   },
   "records": [
@@ -48,8 +48,8 @@
    "closed": 1,
    "unknown": 6,
    "landed": 1,
-   "active": 5,
-   "in-flight": 9
+   "active": 4,
+   "in-flight": 10
   }
  },
  "rows": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -84,7 +84,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -99,7 +99,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -113,7 +113,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -133,7 +133,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -145,7 +145,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -161,7 +161,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "challenge-entries",
@@ -175,7 +175,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "quota",
@@ -195,7 +195,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "doe",
@@ -215,7 +215,7 @@
     "doe DESIGN.json campaigns=11",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "doe-nc1",
@@ -232,7 +232,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "contribution-desk",
@@ -253,17 +253,17 @@
    "project_id": "desk",
    "state": "active",
    "last_merge": {
-    "pr": 3021,
-    "sha": "94b93165bd61",
-    "at": "2026-11-01T09:48:49Z",
-    "title": "desk-feed: Repo-Story row \u2014 stamp SPEC v2.1 tidy refs"
+    "pr": 3040,
+    "sha": "5f6f6e6f4ea4",
+    "at": "2026-11-01T10:34:01Z",
+    "title": "desk-feed: Repo-Story build route \u21d2 fleet swarm via Scout (Jules leg stood down)"
    },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [
-    "desk-feed traversals=8 generated_at=2026-11-01T08:47:52Z"
+    "desk-feed traversals=8 generated_at=2026-11-01T10:33:02Z"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "web-design-viz",
@@ -282,24 +282,26 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "marketing",
    "project": "FB Pages MVT + challenge promo",
    "domain": "marketing",
    "project_id": "marketing-fb-mvt",
-   "state": "active",
+   "state": "in-flight",
    "last_merge": {
     "pr": 2995,
     "sha": "6b48cb3897c5",
     "at": "2026-11-01T09:12:09Z",
     "title": "Delphi evaluation: marketing strategy & tactics (doctrine pass, round 1 + evaluation)"
    },
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "next": "land/close PR #3032 \u2014 fix(crg): align promotion gate with canonical master",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #3032"
+   ],
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "marketing-social",
@@ -311,7 +313,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "swarm",
@@ -330,7 +332,7 @@
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "providers",
@@ -350,7 +352,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "providers-phrases",
@@ -362,7 +364,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "repo-replay",
@@ -379,7 +381,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "ops",
@@ -393,7 +395,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   },
   {
    "lane": "telemetry",
@@ -412,7 +414,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T08:50:18Z"
+   "updated_at": "2026-11-01T10:34:36Z"
   }
  ],
  "doe_join": {
@@ -686,6 +688,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 85/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

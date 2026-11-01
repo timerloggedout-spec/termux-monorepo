@@ -20,6 +20,16 @@ Success metric: **LLM tokens ↓** — a recipe costs the tokens of its pointer
 list + ops, orders of magnitude below the file it materializes; the index
 itself obeys the same law (compact delta format, §3).
 
+**Scope — ONLY this (owner, 2026-11-01):** 🗃️ *creation from pointer
+reference*. Existing functions, classes, snippets, fragments are imported
+via ✍🏽 pointers instead of being written again. The pointer unit is the
+code fragment — function / class / snippet / fragment — addressed by
+`(commit, path, blob, range, symbol)`, not the whole file. NOT this:
+reconstruction / time-series repo rebuild — that is Repo Replay's purpose
+(session provenance plane). Here `compose`/`replay` exist only as the
+materializer that proves a pointer-created file correct (verify vs git
+oids); they are not a rebuild product.
+
 Same method shape as Repo Replay — index → recipes/pointers → JIT compile →
 file reconstruction + surgical pointer edits — on the **GIT plane only**:
 
@@ -70,9 +80,11 @@ materialization, pointer-addressed edits) — it does ¬ re-hash blobs.
  "size": 0, "commit": "oid of introducing/observed commit",
  "path": "path@commit | null (metadata, non-binding)"}
 
-// gpointer/v1 — addressable segment of history
+// gpointer/v1 — addressable segment of history; the unit is the FRAGMENT
+// (function|class|snippet|fragment), not the file (owner, 2026-11-01)
 {"repo": "owner/name", "commit": "oid", "path": "...", "blob": "oid",
  "mode": "100644|100755|120000|160000",
+ "symbol": "name|null — the function/class/fragment anchor",
  "range": {"start_line": 0, "end_line": 0}}
 
 // gindex/v1 — single structure, three directions (sibling: two)

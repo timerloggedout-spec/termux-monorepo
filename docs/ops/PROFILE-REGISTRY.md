@@ -142,9 +142,10 @@ is its at-a-glance view and is refreshed from here.
   persona, bracket 25-34) — the value directed for this signup; the as-submitted value is
   NOT_ESTABLISHED from this lane (owner-entered).
 - **Connected to lablab.ai 2026-10-30** (OAuth, this lane): lablab profile (@Rap1dZ3nith)
+- **AMD Discord JOINED 2026-11-01**: the "AMD Developer Community" server (invite discord.com/invite/pxgGQHeVjg) — owner-executed; profile card "Joined AMD Developer Community — November 1, 2026", onboarding Q1–Q3 completed (evidence: owner screenshots via venue-delegate 6401df1e, 02:53–02:54 PT). Closes the AMD League M1 "Join the AMD Discord" +50 item. Discord email-verification state: NOT_ESTABLISHED (no evidence; not inferred from the join).
   shows Discord = Connected — `wh1msical_sw4n_06136`; profile completeness 60% -> 70%.
   Unblocks: D2 team create/join + the AMD League Match-1 lablab-Discord requirement.
-  AMD Discord server join is a separate step (still open).
+  AMD Discord server join: DONE 2026-11-01 (see the AMD Discord line above).
 - Login: timerloggedout@gmail.com; login location authorized via Discord's emailed
   Verify Login link (owner-directed). Credentials held in the Secure Vault (discord.com,
   email-keyed entry) — never recorded here. A "Verify Email Address for Discord" email

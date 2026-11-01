@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 377,
-    "open_prs": 168,
+    "open_issues": 378,
+    "open_prs": 169,
     "pr_classes": {
-      "CANDIDATE": 80,
-      "EXTRACT": 5,
+      "CANDIDATE": 79,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 33,
-      "prs": 166,
+      "issues": 34,
+      "prs": 167,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,11 +84,12 @@
         2956,
         3018,
         3036,
-        3050
+        3050,
+        3068
       ]
     }
   },
-  "generated_at": "2026-11-01T11:28:07Z",
+  "generated_at": "2026-11-01T11:32:44Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,15 +123,16 @@
     2956,
     3018,
     3036,
-    3050
+    3050,
+    3068
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "68c4217971"
+    "sha": "7cee3ed246"
   },
   "prs": [
     {
@@ -202,6 +204,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "25b25c5d18",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T11:30:19Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7b49010f81",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3032,
+      "title": "fix(crg): align promotion gate with canonical master",
+      "updated_at": "2026-11-01T10:07:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -1279,20 +1309,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7b49010f81",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3032,
-      "title": "fix(crg): align promotion gate with canonical master",
-      "updated_at": "2026-11-01T10:07:50Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "2f5be5dbd7",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1321,12 +1337,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "84eb7d317c",
+      "head_sha": "89202fe235",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3058,
-      "title": "desk-feed: collapse bench wording to the standing dispatch map",
-      "updated_at": "2026-11-01T11:26:11Z"
+      "number": 3063,
+      "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
+      "updated_at": "2026-11-01T11:28:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1733,20 +1749,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "c3808493c2",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T11:27:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2385,12 +2387,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "58a5354b54",
+      "head_sha": "fae0cebc5d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T11:27:39Z"
+      "updated_at": "2026-11-01T11:32:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2401,7 +2403,7 @@
       },
       "head_sha": "9bf44e9842",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2980,
       "title": "feat(orbital): add independent radial hierarchy layout lab",
       "updated_at": "2026-11-01T09:59:36Z"
@@ -2469,26 +2471,40 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "05952c5c21",
+      "head_sha": "d9767e4b4a",
       "labels": [],
-      "mergeable_state": "clean",
-      "number": 3053,
-      "title": "index(quota): provider dispatch capability \u2014 89-provider bench classified (a/b/c/d)",
-      "updated_at": "2026-11-01T11:27:51Z"
+      "mergeable_state": "unstable",
+      "number": 3071,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-01T11:31:37Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "082370454e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3072,
+      "title": "desk-feed: bench-wide task-fit rotation + stamp bench positions (owner FIX via main)",
+      "updated_at": "2026-11-01T11:32:39Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "success"
       },
-      "head_sha": "89202fe235",
+      "head_sha": "47db217c06",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3063,
-      "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
-      "updated_at": "2026-11-01T11:27:48Z"
+      "number": 3073,
+      "title": "index(quota): dispatch capability amendment \u2014 #2672 gate-state + DeepAgent split",
+      "updated_at": "2026-11-01T11:32:00Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 156,
+    "open_prs": 158,
     "pr_classes": {
-      "CANDIDATE": 74,
+      "CANDIDATE": 76,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 154,
+      "prs": 156,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T04:17:54Z",
+  "generated_at": "2026-11-01T04:20:35Z",
   "issues_unlabelled": [
     308,
     343,
@@ -119,10 +119,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "e909f034ef"
+    "sha": "c7593d24cd"
   },
   "prs": [
     {
@@ -1237,6 +1237,34 @@
       "updated_at": "2026-11-01T02:39:00Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f374400d7c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2941,
+      "title": "feat(viz): tracking board prototype - renders tracking-feed.json only",
+      "updated_at": "2026-11-01T04:19:30Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c2f17cc70b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2943,
+      "title": "docs(tracking): feed top-level structure \u2014 summary{} placement",
+      "updated_at": "2026-11-01T04:20:13Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1646,15 +1674,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "3323459301",
+      "head_sha": "822377ebc4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T04:17:43Z"
+      "updated_at": "2026-11-01T04:19:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2307,12 +2335,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3fd81e73a5",
+      "head_sha": "aaa00643bf",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T04:16:55Z"
+      "updated_at": "2026-11-01T04:19:43Z"
     }
   ],
   "schema": "operator-matrix/v1",

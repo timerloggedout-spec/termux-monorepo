@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Usage graphs per provider, model and service - measured, activity-proxy, reconstructed and estimated series kept apart and labeled; gaps stay gaps.">
+<title>Usage Graphs · Quota · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css">
+<style>.chart{width:100%;height:auto}.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.tab{cursor:pointer}.tab[aria-selected="true"]{font-weight:700;text-decoration:underline}</style>
+</head>
+<body>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/desk.html">Desk</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<header><div class="hero"><div><div class="eyebrow">Ops · quota · usage graphs</div><h1>Usage <span>Graphs</span></h1><p class="lede">Time series grouped per provider, per model and per service. Consumption renders only where a stamped usage record matches exactly; activity counts render labeled activity-proxy, never as consumption. Missing data stays a gap — no zero-fill, no interpolation, no inferred model versions.</p><div class="links" style="margin-top:1rem"><a class="button" href="./quota.html">Quota panel · 🚦 live index</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/usage-series.json">Usage-series pack</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/QUOTA-ATTRIBUTION.md">Attribution spec</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching usage-series pack.</small></div></div></header>
+<main>
+<section aria-labelledby="graphs"><div class="head"><h2 id="graphs">Series by axis</h2><span class="note" id="graphs-summary">—</span></div>
+<div class="toolbar" role="tablist" aria-label="Axis">
+<button class="tab" role="tab" data-axis="provider" aria-selected="true">Per provider</button>
+<button class="tab" role="tab" data-axis="model" aria-selected="false">Per model</button>
+<button class="tab" role="tab" data-axis="service" aria-selected="false">Per service</button>
+</div>
+<div id="axis-note"></div>
+<div id="series-grid" class="grid grid-2"></div>
+</section>
+<footer>Usage Graphs · pack: ops/quota/usage-series.json (schema quota.usage-series/v1), built by scripts/quota_usage_series.py from the quota-usage pack, desk-feed usage stamps and the allocation plan · public readings snapshots carry no usage values by design (status-only) · plan target flow is context, never plotted as usage</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+// ==== pure logic (node-sim tested) ====
+const KIND_LABEL={measured:'measured',exact:'usage-exact','usage-exact':'usage-exact','activity-proxy':'activity-proxy — NOT consumption',reconstructed:'reconstructed',estimated:'estimated'};
+function kindLabel(k){return KIND_LABEL[k]||String(k||'unknown')}
+function median(xs){if(!xs.length)return 0;const s=[...xs].sort((a,b)=>a-b);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2}
+function chartGeom(points,w,h){
+  const pts=(points||[]).filter(p=>p&&p.t&&typeof p.v==='number').map(p=>({t:new Date(p.t).getTime(),v:p.v,ts:p.t})).filter(p=>isFinite(p.t)).sort((a,b)=>a.t-b.t);
+  if(!pts.length)return{dots:[],segs:[],minV:0,maxV:0};
+  const pad={l:8,r:8,t:10,b:14},iw=w-pad.l-pad.r,ih=h-pad.t-pad.b;
+  const minT=pts[0].t,maxT=pts[pts.length-1].t,minV=Math.min(...pts.map(p=>p.v)),maxV=Math.max(...pts.map(p=>p.v));
+  const spanT=Math.max(1,maxT-minT),spanV=Math.max(1e-9,maxV-minV);
+  const X=t=>pad.l+(spanT===1?iw/2:(t-minT)/spanT*iw),Y=v=>pad.t+ih-(spanV===0?ih/2:(v-minV)/spanV*ih);
+  const dots=pts.map(p=>({x:+X(p.t).toFixed(1),y:+Y(p.v).toFixed(1),t:p.ts,v:p.v}));
+  const steps=[];for(let i=1;i<pts.length;i++)steps.push(pts[i].t-pts[i-1].t);
+  const med=median(steps),minStep=steps.length?Math.min(...steps):0;
+  const segs=[];for(let i=1;i<dots.length;i++){const dt=pts[i].t-pts[i-1].t;const gap=minStep>0&&dt>3*minStep&&dt>med;segs.push({x1:dots[i-1].x,y1:dots[i-1].y,x2:dots[i].x,y2:dots[i].y,gap:!!gap})}
+  return{dots,segs,minV,maxV,medStep:med};
+}
+function seriesSvg(s){
+  const g=chartGeom(s.points,640,180);
+  if(!g.dots.length)return '<p class="muted">No observations on record.</p>';
+  const lines=g.segs.map(sg=>'<line x1="'+sg.x1+'" y1="'+sg.y1+'" x2="'+sg.x2+'" y2="'+sg.y2+'" stroke="currentColor" stroke-width="1.5" '+(sg.gap?'stroke-dasharray="2 5" opacity="0.55"':'')+'/>').join('');
+  const dots=g.dots.map(d=>'<circle cx="'+d.x+'" cy="'+d.y+'" r="3.2" fill="currentColor"><title>'+esc(d.t)+' · '+esc(d.v)+'</title></circle>').join('');
+  return '<svg class="chart" viewBox="0 0 640 180" role="img" aria-label="'+esc(s.title)+'">'+lines+dots+'</svg>';
+}
+// ==== end pure logic ====
+let pack=null,axis='provider';
+function render(){
+  const axes=(pack&&pack.axes)||{};
+  const list=axes[axis]||[];
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.axis===axis?'true':'false'));
+  $('graphs-summary').textContent=pack?('provider '+(axes.provider||[]).length+' series · model '+(axes.model||[]).length+' series · service '+(axes.service||[]).length+' series'):'Pack unavailable';
+  $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':'';
+  $('series-grid').innerHTML=list.length?list.map(s=>{
+    const n=(s.points||[]).length;
+    const ctx=s.context?'<p class="muted">Context: plan target flow '+esc(s.context.target_flow_per_min)+'/min ('+esc(s.context.source)+') — context only, not plotted as usage.</p>':'';
+    return '<div class="card"><div class="label">'+esc(s.title)+'<span class="chip">'+esc(kindLabel(s.kind))+'</span></div>'
+      +seriesSvg(s)
+      +'<p class="muted">'+esc(s.unit||'')+' · '+n+' point'+(n===1?'':'s')+(n===1?' — single observation, no trend implied':'')+'</p>'
+      +ctx+'<p class="muted">Source: '+esc(s.provenance||'—')+'</p></div>';
+  }).join(''):'<div class="card empty">No series on this axis yet — see the note above. Absence is the honest state; nothing is inferred.</div>';
+}
+async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+async function load(){
+  const bust=Date.now();
+  pack=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/usage-series.json?t='+bust,'./data/usage-series.json?t='+bust]);
+  if(!pack){$('freshness').textContent='Pack unavailable';$('generated').textContent='Could not fetch ops/quota/usage-series.json.';return}
+  $('freshness').textContent='Pack loaded';
+  $('generated').textContent='Schema '+(pack.schema||'—')+' · built by '+(pack.generated_by||'—');
+  render();
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{axis=b.dataset.axis;render()}));
+load();setInterval(load,60000);
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Exploratory orbital hierarchy layout lab. Illustrative data only.">
+<title>Orbital Syntax Lab — Radial Hierarchy Prototype</title>
+<style>
+:root{color-scheme:dark;--bg:#08111e;--panel:#101d30;--panel2:#14243a;--ink:#eef4ff;--muted:#a9bad0;--line:#334963;--gold:#e9bd77;--cyan:#85d8dc;--focus:#fff2a8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 35%,#172c47 0,#08111e 65%);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+header,main,footer{max-width:1180px;margin:auto;padding:1rem 1.25rem}header{display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}h1{font-size:clamp(1.35rem,3vw,2rem);margin:.15rem 0}.tag{border:1px solid var(--gold);color:var(--gold);border-radius:99px;padding:.25rem .65rem;font-size:.75rem;white-space:nowrap}
+main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.8fr);gap:1rem;align-items:start}.panel{background:#0e1a2bdc;border:1px solid var(--line);border-radius:18px;padding:1rem;box-shadow:0 16px 48px #0004}.visual{min-width:0}.visual-head,.detail-head{display:flex;justify-content:space-between;align-items:center;gap:.8rem}.visual-head p,.muted{color:var(--muted);font-size:.9rem;margin:.2rem 0}.canvas{width:100%;aspect-ratio:1;max-height:690px;display:block;margin:auto}
+svg text{font-family:ui-monospace,monospace;fill:var(--ink)}.ring{fill:none;stroke:#49617c;stroke-width:1.1;opacity:.9}.ring.alt{stroke:#b28a55;stroke-dasharray:2 5;opacity:.75}.spoke{stroke:#334963;stroke-width:1}.node{cursor:pointer;outline:none}.node circle{fill:#132b43;stroke:var(--cyan);stroke-width:2}.node text{font-size:11px;pointer-events:none}.node.selected circle{fill:#6d512d;stroke:var(--focus);stroke-width:3}.node:focus circle{stroke:var(--focus);stroke-width:4}.center-ring{fill:#12263c;stroke:var(--gold);stroke-width:2}.center-label{font-size:12px;letter-spacing:.08em;text-anchor:middle}.depth-label{font-size:10px;fill:var(--muted);letter-spacing:.08em}
+.detail{position:sticky;top:1rem}.detail h2{margin:.1rem 0 .5rem}.meta{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0}.chip{font-size:.72rem;color:var(--cyan);border:1px solid #41647a;border-radius:99px;padding:.18rem .5rem}.description{min-height:5rem}.list{display:grid;gap:.35rem;margin-top:1rem}.list button{width:100%;text-align:left;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:.55rem .7rem;cursor:pointer}.list button[aria-pressed=true]{border-color:var(--focus);background:#3a3023}.list button:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.controls{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}.controls button{background:#1c334b;color:var(--ink);border:1px solid var(--line);padding:.45rem .7rem;border-radius:8px;cursor:pointer}.legend{display:flex;flex-wrap:wrap;gap:.8rem;color:var(--muted);font-size:.8rem;margin-top:.5rem}.dot{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:var(--cyan);margin-right:.25rem}
+.note{border-left:3px solid var(--gold);padding:.6rem .8rem;color:var(--muted);font-size:.85rem;margin-top:1rem}footer{color:var(--muted);font-size:.8rem}
+@media(max-width:760px){main{grid-template-columns:1fr}.detail{position:static}.canvas{max-height:520px}header{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:no-preference){.node circle{transition:fill .15s ease,stroke-width .15s ease}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header><div><div class="eyebrow">Research prototype · SVG / polar hierarchy</div><h1>Orbital Syntax Lab</h1><div class="muted">A persistent spatial overview for nested information</div></div><span class="tag">ILLUSTRATIVE DATA · NOT LIVE</span></header>
+<main>
+<section class="panel visual" aria-labelledby="map-title">
+<div class="visual-head"><div><h2 id="map-title">Concentric hierarchy</h2><p>Select a node or use the semantic index.</p></div><span class="chip">Depth → radius</span></div>
+<svg id="orbital" class="canvas" viewBox="0 0 720 720" role="group" aria-labelledby="svg-title svg-desc">
+<title id="svg-title">Orbital hierarchy map</title><desc id="svg-desc">Illustrative nested system with three concentric rings. Each node is keyboard selectable and mirrored in a list.</desc>
+<g id="geometry"></g><g id="nodes"></g>
+<circle class="center-ring" cx="360" cy="360" r="55"></circle><text class="center-label" x="360" y="354">FOCAL</text><text class="center-label" x="360" y="372">ANCHOR</text>
+</svg>
+<div class="legend"><span><i class="dot"></i>Selectable concept</span><span>Inner → outer = hierarchy depth</span><span>Lines = illustrative grouping</span></div>
+<div class="note">Radial position is a navigation aid, not a claim about importance, certainty, or reading speed. Dense labels move to the detail panel rather than being squeezed onto arcs.</div>
+</section>
+<aside class="panel detail" aria-labelledby="detail-title">
+<div class="detail-head"><div><div class="eyebrow">Selected node</div><h2 id="detail-title">System overview</h2></div><span class="chip" id="depth">ROOT</span></div>
+<p class="description" id="description">Choose a ring node to inspect its meaning and parent group.</p>
+<div class="meta"><span class="chip" id="node-id">root</span><span class="chip" id="parent">no parent</span></div>
+<h3>Semantic index</h3><p class="muted">Equivalent text navigation for keyboard and assistive technology.</p>
+<div id="semantic-list" class="list" role="group" aria-label="Hierarchy nodes"></div>
+<div class="controls"><button id="reset" type="button">Reset selection</button><button id="zoom" type="button">Fit overview</button></div>
+</aside>
+</main>
+<footer>Prototype scope: static sample data, local rendering only, no analytics, no uploads, no remote assets. See <code>docs/ops/ORBITAL-SYNTAX-LAYOUTS.md</code>.</footer>
+<script>
+"use strict";
+const DATA=[
+{id:"ops",label:"Operations",depth:1,parent:"root",description:"Operational state, queues, and bounded execution lanes.",angle:-90},
+{id:"evidence",label:"Evidence",depth:1,parent:"root",description:"Source records, provenance, snapshots, and validation receipts.",angle:30},
+{id:"research",label:"Research",depth:1,parent:"root",description:"Hypotheses, experiments, methods, and candidate integrations.",angle:150},
+{id:"runs",label:"Runs",depth:2,parent:"ops",description:"Workflow and job observations. Queued, running, and completed remain distinct.",angle:-125},
+{id:"health",label:"Health",depth:2,parent:"ops",description:"Observed health signals and explicit unknown or unavailable states.",angle:-55},
+{id:"source",label:"Sources",depth:2,parent:"evidence",description:"Commits, pull requests, issues, and upstream source references.",angle:0},
+{id:"lineage",label:"Lineage",depth:2,parent:"evidence",description:"The path from a derived display back to its exact evidence.",angle:60},
+{id:"cohorts",label:"Cohorts",depth:2,parent:"research",description:"Comparable task groups and frozen experiment definitions.",angle:125},
+{id:"methods",label:"Methods",depth:2,parent:"research",description:"Competing measurement and visualization methods.",angle:175},
+{id:"jobs",label:"Jobs",depth:3,parent:"runs",description:"A run's individual jobs and their observed conclusions.",angle:-145},
+{id:"steps",label:"Steps",depth:3,parent:"runs",description:"Execution steps and timestamps, when available.",angle:-105},
+{id:"checks",label:"Checks",depth:3,parent:"health",description:"Validation outcomes; absence of a check is not a pass.",angle:-55},
+{id:"gaps",label:"Gaps",depth:3,parent:"health",description:"Missing evidence and unresolved provenance, never silently zero-filled.",angle:-15}
+];
+const NS="http://www.w3.org/2000/svg", center=360, radii={1:145,2:235,3:315};
+const geometry=document.getElementById("geometry"),nodes=document.getElementById("nodes"),list=document.getElementById("semantic-list");
+const byId=new Map(DATA.map(d=>[d.id,d]));let selected="root";
+function polar(angle,r){const a=(angle-90)*Math.PI/180;return [center+Math.cos(a)*r,center+Math.sin(a)*r]}
+function el(name,attrs,parent){const n=document.createElementNS(NS,name);Object.entries(attrs||{}).forEach(([k,v])=>n.setAttribute(k,String(v)));parent.appendChild(n);return n}
+function draw(){
+ [1,2,3].forEach(depth=>{el("circle",{cx:center,cy:center,r:radii[depth],class:depth%2?"ring":"ring alt"},geometry);const t=el("text",{x:center+8,y:center-radii[depth]+14,class:"depth-label"},geometry);t.textContent="DEPTH "+depth});
+ DATA.forEach(d=>{const [x,y]=polar(d.angle,radii[d.depth]);const p=byId.get(d.parent);if(p){const [px,py]=polar(p.angle,radii[p.depth]);el("line",{x1:px,y1:py,x2:x,y2:y,class:"spoke"},geometry)}});
+ DATA.forEach(d=>{const [x,y]=polar(d.angle,radii[d.depth]);const g=el("g",{class:"node",tabindex:"0",role:"button","aria-label":d.label+": "+d.description,"aria-pressed":"false","data-id":d.id,transform:"translate("+x+" "+y+")"},nodes);el("circle",{r:19},g);const text=el("text",{x:0,y:4,"text-anchor":"middle"},g);text.textContent=d.label.length>9?d.label.slice(0,8)+"…":d.label;g.addEventListener("click",()=>select(d.id));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(d.id)}})});
+ DATA.forEach(d=>{const b=document.createElement("button");b.type="button";b.dataset.id=d.id;b.textContent="Depth "+d.depth+" · "+d.label;b.addEventListener("click",()=>{select(d.id);document.querySelector('[data-id="'+d.id+'"].node')?.focus()});list.appendChild(b)});
+}
+function select(id){selected=id;const d=byId.get(id);document.querySelectorAll(".node").forEach(n=>{const yes=n.dataset.id===id;n.classList.toggle("selected",yes);n.setAttribute("aria-pressed",String(yes))});list.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.id===id)));document.getElementById("detail-title").textContent=d?.label||"System overview";document.getElementById("description").textContent=d?.description||"The center is the stable focal anchor. Choose a ring node to inspect a nested concept.";document.getElementById("depth").textContent=d?"DEPTH "+d.depth:"ROOT";document.getElementById("node-id").textContent=id;document.getElementById("parent").textContent=d?"parent: "+d.parent:"no parent"}
+document.getElementById("reset").addEventListener("click",()=>select("root"));
+document.getElementById("zoom").addEventListener("click",()=>document.getElementById("orbital").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}));
+draw();select("root");
+</script>
+</body>
+</html>

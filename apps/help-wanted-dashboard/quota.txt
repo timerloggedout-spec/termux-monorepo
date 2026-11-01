@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (167 registry records)
+ QUOTA  termux-monorepo  (168 registry records)
  Snapshot generated (not observation time): 2026-11-01T13:23:25.948846+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -68,6 +68,14 @@
     metric: Azure Functions executions (always free) | window: monthly | reset:
     calendar month
     Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ baseten (1)
+  baseten.api
+    status: No live reading
+    limit (documented): n/a USD credits (prepaid)
+    metric: Prepaid API credits (pay-as-you-go inference) | window: n/a | reset:
+    n/a
+    No live reading (live source: none published)
 --------------------------------------------------------------------------------
  cerebras (1)
   cerebras.free_tokens
@@ -1230,6 +1238,8 @@
  PROVIDER QUOTA-MANAGER COVERAGE (metadata only)
   aion: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
   registry: aion.free_tokens
+  baseten: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: baseten.api
   cerebras: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: cerebras.free_tokens
   cloudflare: Manager / ChronoMancer; official_documentation_only; no passive
@@ -1289,6 +1299,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 167 registry records | 1 alert(s) | 164 with a reported reading | 3 with No
+ 168 registry records | 1 alert(s) | 164 with a reported reading | 4 with No
  live reading
 ================================================================================

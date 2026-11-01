@@ -12,15 +12,31 @@ OUT = ROOT / "experiments/doe/util-1-provider-rotation/records"
 def bench():
     try:
         reg = json.loads(REG.read_text())
-        rows = reg if isinstance(reg, list) else reg.get("providers", [])
-        return sorted({r.get("id") or r.get("name") for r in rows if isinstance(r, dict)} - {None})
+        if isinstance(reg, list):
+            rows = reg
+        else:  # quota.registry.v2: services[]; tolerate providers[] too
+            rows = reg.get("services") or reg.get("providers") or []
+        return sorted({(r.get("provider") or r.get("id") or r.get("name"))
+                       for r in rows if isinstance(r, dict)} - {None})
     except Exception:
         return []
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     feed = json.loads(FEED.read_text()) if FEED.exists() else {}
-    dispatches = feed.get("dispatches", []) if isinstance(feed, dict) else []
+    dispatches = []
+    if isinstance(feed, dict):
+        # desk-feed/v1.3 shape: stamps live at traversals[].provider_usage[]
+        for trav in feed.get("traversals", []) or []:
+            if not isinstance(trav, dict):
+                continue
+            unit = trav.get("entry") or trav.get("id") or trav.get("name")
+            for row in trav.get("provider_usage", []) or []:
+                if isinstance(row, dict):
+                    dispatches.append({**row, "id": row.get("id") or unit})
+        # forward-compat: a future top-level dispatches list wins if present
+        if isinstance(feed.get("dispatches"), list) and feed["dispatches"]:
+            dispatches = feed["dispatches"]
     known = set(bench())
     scored, flagged = [], []
     for d in dispatches:

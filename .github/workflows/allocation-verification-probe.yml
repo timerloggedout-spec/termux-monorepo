@@ -1,0 +1,143 @@
+name: allocation-verification-probe
+# [MUSEai]@{role:{quota-specialist}} Census batch-2: read-only account
+# reads for providers with verified credential names (PR #2859 recon).
+# Manual dispatch only. No spend; keys never printed.
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: probe groq
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: groq
+          PROBE_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe cohere
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: cohere
+          PROBE_KEY: ${{ secrets.COHERE_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe sambanova
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: sambanova
+          PROBE_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe siliconflow
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: siliconflow
+          PROBE_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe zai
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: zai
+          PROBE_KEY: ${{ secrets.ZAI_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe llm7
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: llm7
+          PROBE_KEY: ${{ secrets.LLM7_API_TOKEN }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe routeway
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: routeway
+          PROBE_KEY: ${{ secrets.ROUTEWAY_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe unorouter
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: unorouter
+          PROBE_KEY: ${{ secrets.UNOROUTER_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe aion
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: aion
+          PROBE_KEY: ${{ secrets.AION_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe sealion
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: sealion
+          PROBE_KEY: ${{ secrets.SEALION_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe ollama
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: ollama
+          PROBE_KEY: ${{ secrets.OLLAMA_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe nvidia
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: nvidia
+          PROBE_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe gemini
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: gemini
+          PROBE_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe huggingface
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: huggingface
+          PROBE_KEY: ${{ secrets.HUGGINGFACE_TOKEN }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe xkiro
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: xkiro
+          PROBE_KEY: ${{ secrets.XKIRO_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe felo
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: felo
+          PROBE_KEY: ${{ secrets.FELO_AI_API }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe cloudflare
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: cloudflare
+          PROBE_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe vercel
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: vercel
+          PROBE_KEY: ${{ secrets.VERCEL_TOKEN }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe supabase
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: supabase
+          PROBE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe pinecone
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: pinecone
+          PROBE_KEY: ${{ secrets.PINECONE_API_KEY }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: probe fly
+        continue-on-error: true
+        env:
+          PROBE_PROVIDER: fly
+          PROBE_KEY: ${{ secrets.FLY_IO_ORG_TOKEN }}
+        run: python3 scripts/ops/allocation_probe.py >> rows.ndjson
+      - name: Upload probe rows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allocation-verification-probe-rows
+          path: rows.ndjson

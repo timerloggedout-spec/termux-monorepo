@@ -130,9 +130,12 @@ def test_historical_backfill_promotion_gate_uses_canonical_master_and_fails_clos
     assert "rerun" not in content.lower()
 
 
-def test_historical_backfill_promotion_gate_skips_unrelated_pull_requests():
+def test_historical_backfill_promotion_gate_uses_native_path_filters():
     content = workflow("historical-backfill-promotion-gate.yml")
 
-    assert "pulls/${PR_NUMBER}/files" in content
-    assert "steps.scope.outputs.check == 'true'" in content
-    assert "No canonical backfill/promotion inputs changed" in content
+    assert "pull_request:" in content
+    assert "paths:" in content
+    assert "archwiz/context_relationships/**" in content
+    assert "workspace/llm_map/context_relationships/**" in content
+    assert "pulls/" not in content
+    assert "workflow_dispatch:" in content

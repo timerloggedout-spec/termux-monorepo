@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T11:27:45Z",
+ "generated_at": "2026-11-01T11:31:55Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T11:27:45Z",
+   "read_at": "2026-11-01T11:31:55Z",
    "merged": 150,
    "open": 169
   },
   "lane_events": {
-   "read_at": "2026-11-01T11:27:45Z",
+   "read_at": "2026-11-01T11:31:55Z",
    "status": "ok",
-   "count": 4194,
+   "count": 4205,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "active": 4,
-   "unknown": 5,
+   "active": 5,
    "landed": 1,
+   "unknown": 4,
    "in-flight": 11
   }
  },
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,22 +89,27 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries-d2",
    "project": "D2 Vultr Agent Rush",
    "domain": "challenges",
    "project_id": "d2-vultr",
-   "state": "unknown",
-   "last_merge": null,
+   "state": "active",
+   "last_merge": {
+    "pr": 3067,
+    "sha": "aa91e23e1ab4",
+    "at": "2026-11-01T11:30:04Z",
+    "title": "docs(ops): D2 promo \u2014 WAF target OUT, project beats HOLD pending pick"
+   },
    "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -118,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -127,10 +132,10 @@
    "project_id": "d4-kiroween",
    "state": "active",
    "last_merge": {
-    "pr": 3013,
-    "sha": "503124a1c35f",
-    "at": "2026-11-01T09:34:45Z",
-    "title": "test(proposals): refresh stale feed pins (passes 3\u21d2derived, kiroween status, ai-studio gap)"
+    "pr": 3070,
+    "sha": "1c9983eee4d6",
+    "at": "2026-11-01T11:30:39Z",
+    "title": "[MUSEai]@{role:{marketing-channel}} D4 promo log: beat 2.1 published"
    },
    "next": "deadline 2026-12-04T14:00:00-08:00",
    "next_basis": "record-deadline",
@@ -138,7 +143,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -150,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -171,7 +176,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "challenge-entries",
@@ -185,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "quota",
@@ -194,18 +199,18 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2992,
-    "sha": "bf65498ef010",
-    "at": "2026-11-01T09:07:05Z",
-    "title": "apk-xref-exec: run on fleet Swarm app token (fix 403 rate-limit starvation)"
+    "pr": 3053,
+    "sha": "8e223553c6f1",
+    "at": "2026-11-01T11:31:23Z",
+    "title": "index(quota): provider dispatch capability \u2014 89-provider bench classified (a/b/c/d)"
    },
-   "next": "land/close PR #3064 \u2014 feat(desk): catalog fold \u2014 Quota per-provider bench classes (89 = 2+22+2+63)",
+   "next": "land/close PR #3073 \u2014 index(quota): dispatch capability amendment \u2014 #2672 gate-state + DeepAgent split",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=164",
-    "open PRs: #3064, #3053, #2757, #2340, #2525"
+    "open PRs: #3073, #2757, #2340, #2525, #2473"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "doe",
@@ -225,7 +230,7 @@
     "doe DESIGN.json campaigns=12",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "doe-nc1",
@@ -242,7 +247,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "tier-1",
@@ -254,7 +259,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "contribution-desk",
@@ -268,13 +273,13 @@
     "at": "2026-11-01T11:25:44Z",
     "title": "feat(desk): dispatch resolution = complete provider catalog (desk-feed v1.3)"
    },
-   "next": "land/close PR #3063 \u2014 viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
+   "next": "land/close PR #3072 \u2014 desk-feed: bench-wide task-fit rotation + stamp bench positions (owner FIX via main)",
    "next_basis": "open-pr",
    "evidence": [
     "desk-feed traversals=8 generated_at=2026-11-01T11:24:05Z",
-    "open PRs: #3063, #3058"
+    "open PRs: #3072, #3063"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "web-design-viz",
@@ -293,7 +298,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "marketing",
@@ -312,7 +317,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "marketing-social",
@@ -324,7 +329,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "swarm",
@@ -343,7 +348,7 @@
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "providers",
@@ -352,10 +357,10 @@
    "project_id": "providers-registry",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2924,
-    "sha": "eda09a84bd56",
-    "at": "2026-11-01T03:54:43Z",
-    "title": "docs(ops): OWNER-REQUESTS row 14 \u2014 OpenRouter top-up / DeepSeek model ruling"
+    "pr": 3066,
+    "sha": "05697267e440",
+    "at": "2026-11-01T11:29:45Z",
+    "title": "feat(desk): inference availability mapping \u2014 per-record invocability (the crux)"
    },
    "next": "land/close PR #2167 \u2014 chore(reviewer-metrics): regenerate provider x context map",
    "next_basis": "open-pr",
@@ -363,7 +368,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "providers-phrases",
@@ -375,7 +380,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "repo-replay",
@@ -392,7 +397,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "ops",
@@ -406,7 +411,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   },
   {
    "lane": "telemetry",
@@ -414,18 +419,13 @@
    "domain": "providers",
    "project_id": "telemetry-ingest",
    "state": "in-flight",
-   "last_merge": {
-    "pr": 2891,
-    "sha": "fbd8cb72b23f",
-    "at": "2026-11-01T02:22:05Z",
-    "title": "chore(telemetry): refresh HindSight+Provenance ingest"
-   },
+   "last_merge": null,
    "next": "land/close PR #2914 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T11:27:45Z"
+   "updated_at": "2026-11-01T11:31:55Z"
   }
  ],
  "doe_join": {
@@ -710,6 +710,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 86/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

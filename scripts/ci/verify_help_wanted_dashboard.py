@@ -10,6 +10,7 @@ HTML = DASHBOARD / "index.html"
 NAV = DASHBOARD / "site-nav.js"
 VERSIONING = DASHBOARD / "versioning.js"
 MATRIX = DASHBOARD / "matrix.html"
+SERVICE_WORKER = DASHBOARD / "sw.js"
 SNAPSHOT = ROOT / "apps/help-wanted-dashboard/data/status.json"
 
 REQUIRED_HTML = (
@@ -28,6 +29,7 @@ def main() -> int:
     nav = NAV.read_text(encoding="utf-8")
     versioning = VERSIONING.read_text(encoding="utf-8")
     matrix = MATRIX.read_text(encoding="utf-8")
+    service_worker = SERVICE_WORKER.read_text(encoding="utf-8")
     required_nav = ('["Tribute", tribute, "tribute"]', '["Lane matrix", origin + "/matrix/", "matrix"]', '["Version comparison", tribute + "versioning.html", "versioning"]')
     missing_nav = [item for item in required_nav if item not in nav]
     if missing_nav:
@@ -40,6 +42,8 @@ def main() -> int:
         raise SystemExit("shared navigation does not use the canonical Tribute route")
     if "var previewMatch = path.match" not in nav or "/previews/" not in nav:
         raise SystemExit("shared navigation does not preserve the preview route context")
+    if '"./site-nav.js"' not in service_worker or 'var CACHE = "tribute-v1"' not in service_worker:
+        raise SystemExit("offline shell does not cache the shared Tribute navigation")
     missing = [x for x in REQUIRED_HTML if x not in html]
     if missing:
         raise SystemExit("missing dashboard contract markers: " + ", ".join(missing))

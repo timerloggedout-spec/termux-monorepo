@@ -43,9 +43,11 @@ def reconstruct(row: dict) -> dict:
         "gates": row.get("gates") or {},
         # production build_pr_dict constants / defaults:
         "wholesale": False, "why": "", "keep_alive": False, "product": False,
-        # the two fields the feed projection drops (assumption leg):
-        "mergeable_state": "unknown",
-        "base": {"ref": "master"},
+        # feed v1.1 rows (snapshot 8+) carry the two fields in-row —
+        # read them when present; the recorded-gap assumptions below
+        # apply only to snapshots 1-7, whose projection dropped them.
+        "mergeable_state": row.get("mergeable_state") or "unknown",
+        "base": {"ref": row.get("base_ref") or "master"},
     }
 
 

@@ -137,6 +137,23 @@ def test_emerging_technologies_procurement_mappings():
     assert compile_doc("Concepts") == "C0nc3p7s"
     assert decompile_doc("C0nc3p7s") == "Concepts"
 
+def test_notation_matrices_mappings():
+    orig = "Evaluate tool definition quality score and agent efficiency telemetry using category theory morphism."
+    expected = "Evaluate tdqs and ates using c47_7h30ry m0rph."
+    compiled = compile_doc(orig)
+    assert compiled == expected
+
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
+
+def test_stego_auto_expand():
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+    cover = "→cmd:build|args:clean"
+    secret = "TopSecret"
+    stego_text = ConversationalSteganographyCipher.encode(secret, cover_text=cover)
+    expanded = expand(stego_text)
+    assert "TopSecret" in expanded
+
 def test_caveman_six_lines():
     # Test without max_up (default)
     res1 = caveman("success leads to update")

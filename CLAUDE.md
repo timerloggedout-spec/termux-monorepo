@@ -2,7 +2,7 @@
 
 **Primary Collaborator entry for this repository.** Load this first.
 
-Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+Root `AGENTS.md` content is folded into `CLAUDE.md` (and `AGENTS.md` deleted from root), with `AGENTS.hum.md` remaining as its human-readable twin. Do not start from `AGENTS.md`. All hard rules and routing live here and in the governance sequence below.
 
 Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
 

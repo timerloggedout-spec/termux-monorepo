@@ -21,13 +21,14 @@ paid_equivalent_usd = input_tokens × input_usd_per_million / 1,000,000 + output
 
 This is a counterfactual API list-price estimate, not cash spent or guaranteed savings. It excludes cached-token discounts, batch pricing, tools, search/grounding, taxes, subscriptions, negotiated rates, and non-token fees unless explicitly modeled.
 
-Repository time-investment opportunity cost is a separate, repo-scoped measure:
+Repository time economics are repo-scoped and keep resource valuation distinct from the economic concept of opportunity cost:
 
-- `repo_time_invested_value = repo_minutes_invested / 60 × repo_opportunity_cost_rate`
-- `potential_repo_time_value = estimated_repo_hours_recovered × repo_opportunity_cost_rate`
-- `net_repo_time_scenario = potential_repo_time_value - repo_time_invested_value`
+- `repo_time_investment_value = measured_repo_minutes_invested / 60 × documented_repo_time_valuation_rate`
+- `repo_time_opportunity_cost = value_of_best_feasible_alternative_use_forgone`
+- `potential_repo_time_value = estimated_repo_hours_recovered × documented_repo_time_valuation_rate`
+- `net_repo_time_scenario = potential_repo_time_value - repo_time_opportunity_cost`
 
-The time and rate inputs must describe work on this repository; they are not provider API prices or a generic, unrelated hourly-rate scenario. Time recovered remains a scenario until measured against a comparable baseline. Do not add repo time value to provider cost or label it realized ROI. If actual repo-time evidence is unavailable, label inputs as assumptions and do not imply the values were observed.
+Repo time investment value is the assigned value of human/agent time consumed by this repository. Opportunity cost is the value of the best feasible alternative use of those same resources that was forgone. The investment-value proxy may stand in for opportunity cost only when the selected rate is explicitly documented as the value of that foregone alternative. Time recovered remains a scenario until measured against a comparable baseline. Keep these measures separate from provider API value and observed provider cost. If actual time or alternative-use evidence is unavailable, label the relevant inputs as assumptions and keep the opportunity-cost result unavailable rather than silently substituting investment value.
 
 ## Price snapshot
 

@@ -403,7 +403,7 @@
       "gemini-interactions-smoke.yml"
      ],
      "trigger": "workflow_dispatch (model input)",
-     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure.",
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure. || Corroborated (Swarm): 3 fires, 2 models, all fail at the probe call — 404 route diagnosis stands (fleet-key route class).",
      "batch_scope": "inference-bench"
     },
     {
@@ -433,8 +433,9 @@
       "cadence-provider-onboarding.yml"
      ],
      "trigger": "workflow_dispatch / schedule / push on registry paths",
-     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes).",
-     "batch_scope": "inference-bench"
+     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes). || Diagnosis of record (Swarm): the batch failure = meta unmapped drift + check-step early-exit defeating autofix; fix #3074; success run 41302538342.",
+     "batch_scope": "inference-bench",
+     "caveat": "Check-step early-exit can defeat autofix on hard drift (fixed #3074); drift class to watch = unmapped registry providers."
     },
     {
      "id": "provider-recon-compound",
@@ -443,12 +444,12 @@
       "recon",
       "catalog"
      ],
-     "class": "triggerable",
+     "class": "proven",
      "surfaces": [
       "provider-recon-compound.yml"
      ],
      "trigger": "workflow_dispatch / workflow_run / PR paths",
-     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335).",
+     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335). || RESTORED (Swarm correction; verified firsthand by fix seat): run 41304907142 FULL SUCCESS {contracts+collect+publish} 2026-11-01T12:06Z. Root causes were TWO: (1) parser grammar vs upstream KeylessDecisionProvider string-arg registrations — fix #3085 fbae25c61770; (2) the #3080 '403 fetch' stamp was a transient egress/rate layer during the batch window (captured verbatim via error-surfacing #3096 -> #3094; token pin restored #3110). Gemini fix dispatch #3077 superseded by this in-lane fix chain => PROVEN.",
      "batch_scope": "inference-bench"
     },
     {

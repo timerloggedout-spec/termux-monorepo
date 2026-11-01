@@ -1,0 +1,409 @@
+{
+ "schema": "repo-tracking/v1",
+ "generated_at": "2026-11-01T03:50:17Z",
+ "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
+ "sources": {
+  "pr_feed": {
+   "read_at": "2026-11-01T03:49:06Z",
+   "merged": 150,
+   "open": 156
+  },
+  "lane_events": {
+   "read_at": "2026-11-01T03:49:06Z",
+   "status": "ok",
+   "count": 2877,
+   "events_in_snapshot": 200
+  },
+  "records": [
+   "ops/challenge/coordinator.json",
+   "ops/challenge/desk-feed.json",
+   "ops/quota/registry.json",
+   "experiments/doe/*/DESIGN.json",
+   "ops/tracking/projects.json (seed: identity+match only)"
+  ]
+ },
+ "honesty_rules": [
+  "State/last-merge/next are derived at generation time from the stamped snapshots + records; never copied forward, never hand-edited in the outputs.",
+  "A value no source holds renders as NOT_ESTABLISHED or a named gap, never synthesized.",
+  "lane-events failures are evidence/next hints, never a state by themselves."
+ ],
+ "summary": {
+  "rows": 22,
+  "by_domain": {
+   "challenges": 7,
+   "opportunities": 1,
+   "quota": 1,
+   "doe": 2,
+   "classifiers": 1,
+   "desk": 2,
+   "webdev-viz": 1,
+   "marketing": 2,
+   "swarm": 1,
+   "providers": 3,
+   "replay": 1
+  },
+  "by_state": {
+   "closed": 1,
+   "active": 4,
+   "unknown": 7,
+   "landed": 1,
+   "in-flight": 9
+  }
+ },
+ "rows": [
+  {
+   "lane": "challenge-entries",
+   "project": "D0 Delphi Oracle",
+   "domain": "challenges",
+   "project_id": "d0-delphi-oracle",
+   "state": "closed",
+   "last_merge": null,
+   "next": "Closed as foundation for D1 (StudySprint builds on the D0 package).",
+   "next_basis": "record",
+   "evidence": [
+    "coordinator submission=none",
+    "coordinator event D0 status=closed",
+    "desk-feed traversal D0 pr=#1702",
+    "open PRs: #1679"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries-d1",
+   "project": "D1 StudySprint (Workshop to Ship)",
+   "domain": "challenges",
+   "project_id": "d1-studysprint",
+   "state": "active",
+   "last_merge": {
+    "pr": 2781,
+    "sha": "02b07cec0c14",
+    "at": "2026-11-01T00:31:57Z",
+    "title": "D1 record: demo_url => v0.2.0 video (eFXyOYTpuvg); article updated Oct 31"
+   },
+   "next": "Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day)",
+   "next_basis": "record",
+   "evidence": [
+    "coordinator submission=none",
+    "coordinator event D1 status=active",
+    "desk-feed traversal D1 pr=#2606"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries-d2",
+   "project": "D2 Vultr Agent Rush",
+   "domain": "challenges",
+   "project_id": "d2-vultr",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
+   "next_basis": "record",
+   "evidence": [
+    "coordinator submission=none",
+    "coordinator event D2 status=registered"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries-d3",
+   "project": "D3 ListingLens (Builder.io)",
+   "domain": "challenges",
+   "project_id": "d3-listinglens",
+   "state": "landed",
+   "last_merge": null,
+   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09",
+   "next_basis": "record",
+   "evidence": [
+    "desk-feed traversal D3 pr=#2616"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries-d4",
+   "project": "D4 Kiroween (skeleton-crew)",
+   "domain": "challenges",
+   "project_id": "d4-kiroween",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "deadline 2026-12-04T14:00:00-08:00",
+   "next_basis": "record-deadline",
+   "evidence": [
+    "coordinator submission=none",
+    "coordinator event D4 status=registering"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries-d5",
+   "project": "D5 Aha! AI Builder Day",
+   "domain": "challenges",
+   "project_id": "d5-aha",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries-amd",
+   "project": "C11 AMD AI League / Academy",
+   "domain": "challenges",
+   "project_id": "c11-amd",
+   "state": "in-flight",
+   "last_merge": null,
+   "next": "Routes after M3 or when builders idle",
+   "next_basis": "record",
+   "evidence": [
+    "coordinator submission=none",
+    "coordinator event C11 status=active",
+    "open PRs: #2578, #2577"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "challenge-entries",
+   "project": "Challenge OSINT + opportunity ledger",
+   "domain": "opportunities",
+   "project_id": "challenge-osint",
+   "state": "in-flight",
+   "last_merge": null,
+   "next": "land/close PR #2907 \u2014 fix: scope free-tier opportunity cost to repo work",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #2907, #2235"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "quota",
+   "project": "Quota registry / allocations / dispatch-tree",
+   "domain": "quota",
+   "project_id": "quota-system",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 2918,
+    "sha": "d0986ee7c52b",
+    "at": "2026-11-01T03:23:50Z",
+    "title": "feat(dashboard): Quota Graphs chrome \u2014 shell nav, sitemap, Admin row"
+   },
+   "next": "land/close PR #2757 \u2014 feat(ci): add merged branch review audit and quota engine",
+   "next_basis": "open-pr",
+   "evidence": [
+    "quota registry services=161",
+    "open PRs: #2757, #2340, #2525, #2473, #2456"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "doe",
+   "project": "DoE campaigns (lab-1 / pilot-1 / live waves)",
+   "domain": "doe",
+   "project_id": "doe-campaigns",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 2905,
+    "sha": "9c5274914fd2",
+    "at": "2026-11-01T02:35:10Z",
+    "title": "doe(nc-1): run-001 + run-002 EXPERIMENT records, R6 result, SUMMARY, rollup fix"
+   },
+   "next": "land/close PR #2856 \u2014 doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
+   "next_basis": "open-pr",
+   "evidence": [
+    "doe DESIGN.json campaigns=8",
+    "open PRs: #2856, #2857, #740, #1569, #969"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "doe-nc1",
+   "project": "DoE nc-1 notation-compliance",
+   "domain": "doe",
+   "project_id": "doe-nc1",
+   "state": "active",
+   "last_merge": {
+    "pr": 2908,
+    "sha": "47b7aba1c339",
+    "at": "2026-11-01T02:41:18Z",
+    "title": "feat(notation): nc-1 wave-2 v2 features \u2014 claim<->ref adjacency + symbol-function (registry-derived)"
+   },
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "tier-1",
+   "project": "Tier-1 classifier engine",
+   "domain": "classifiers",
+   "project_id": "classifiers-tier1",
+   "state": "active",
+   "last_merge": {
+    "pr": 2796,
+    "sha": "7529170d5558",
+    "at": "2026-11-01T01:01:49Z",
+    "title": "feat(ml): pr-lane feed rows carry base_ref + mergeable_state \u2014 replay becomes exact (live-2 phase 0 gap)"
+   },
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "contribution-desk",
+   "project": "Contribution Desk + desk-feed",
+   "domain": "desk",
+   "project_id": "desk",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [
+    "desk-feed traversals=7 generated_at=2026-10-31T23:59:00Z"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "web-design-viz",
+   "project": "Fleet landing + dashboard/viz surfaces",
+   "domain": "webdev-viz",
+   "project_id": "webdev-viz",
+   "state": "in-flight",
+   "last_merge": null,
+   "next": "land/close PR #2168 \u2014 chore(dashboards): refresh surface feeds",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #2168, #2702, #2461, #1436"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "marketing",
+   "project": "FB Pages MVT + challenge promo",
+   "domain": "marketing",
+   "project_id": "marketing-fb-mvt",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "marketing-social",
+   "project": "Social connectors (Meta Pages / WhatsApp)",
+   "domain": "marketing",
+   "project_id": "social-connectors",
+   "state": "active",
+   "last_merge": {
+    "pr": 2780,
+    "sha": "f0af62ebc6e0",
+    "at": "2026-11-01T00:31:59Z",
+    "title": "docs(ops): social custom connectors RECON + build state (2026-10-31)"
+   },
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "swarm",
+   "project": "Swarm App + F1 token migration wave",
+   "domain": "swarm",
+   "project_id": "swarm-f1",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 2920,
+    "sha": "61db3120b177",
+    "at": "2026-11-01T03:49:03Z",
+    "title": "docs(ops): swarm \u2014 owner correction: DeepSeek proven, device_dependent = availability flag not rank (S6/S7)"
+   },
+   "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #1470"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "providers",
+   "project": "Provider registry / catalog / availability",
+   "domain": "providers",
+   "project_id": "providers-registry",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 2874,
+    "sha": "f4bc82e59d3b",
+    "at": "2026-11-01T02:08:28Z",
+    "title": "feat(telemetry): wire HindSight + Provenance ingest over all telemetry providers"
+   },
+   "next": "land/close PR #2167 \u2014 chore(reviewer-metrics): regenerate provider x context map",
+   "next_basis": "open-pr",
+   "evidence": [
+    "quota registry services=161",
+    "open PRs: #2167, #2899, #2330, #1852, #1612"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "providers-phrases",
+   "project": "Provider-phrases SSOT + JIT phrase layer",
+   "domain": "providers",
+   "project_id": "provider-phrases",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "repo-replay",
+   "project": "Repo Replay",
+   "domain": "replay",
+   "project_id": "repo-replay",
+   "state": "unknown",
+   "last_merge": null,
+   "next": "NOT_ESTABLISHED",
+   "next_basis": "none",
+   "evidence": [],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "ops",
+   "project": "Lane-events Neon ledger",
+   "domain": "desk",
+   "project_id": "lane-events",
+   "state": "in-flight",
+   "last_merge": null,
+   "next": "land/close PR #1614 \u2014 ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #1614"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  },
+  {
+   "lane": "telemetry",
+   "project": "HindSight + Provenance telemetry ingest",
+   "domain": "providers",
+   "project_id": "telemetry-ingest",
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 2891,
+    "sha": "fbd8cb72b23f",
+    "at": "2026-11-01T02:22:05Z",
+    "title": "chore(telemetry): refresh HindSight+Provenance ingest"
+   },
+   "next": "land/close PR #2914 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #2914, #1734, #1645, #1469, #990"
+   ],
+   "updated_at": "2026-11-01T03:50:17Z"
+  }
+ ],
+ "gaps": [
+  "merged PRs unclassified by seed match rules: 61/150 (extend ops/tracking/projects.json match rules)"
+ ]
+}

@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 383,
-    "open_prs": 169,
+    "open_prs": 168,
     "pr_classes": {
       "CANDIDATE": 79,
-      "EXTRACT": 9,
-      "NEED_EVIDENCE": 81,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 37,
-      "prs": 167,
+      "prs": 166,
       "unlabelled_numbers": [
         308,
         343,
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T12:09:03Z",
+  "generated_at": "2026-11-01T12:10:33Z",
   "issues_unlabelled": [
     308,
     343,
@@ -135,10 +135,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "bb7fea4b82"
+    "sha": "9a46d6adf7"
   },
   "prs": [
     {
@@ -218,54 +218,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "169124f971",
+      "head_sha": "dd01db1a2d",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T12:04:25Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "9c82785390",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T12:06:51Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "1fb00a2e7f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3102,
-      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
-      "updated_at": "2026-11-01T12:06:32Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8386689678",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3111,
-      "title": "desk-feed: batch class correction (review/command \u2260 inference bench)",
-      "updated_at": "2026-11-01T12:08:37Z"
+      "updated_at": "2026-11-01T12:09:34Z"
     },
     {
       "class": "CANDIDATE",
@@ -1928,6 +1886,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "f6e9bae748",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T12:09:43Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2423,10 +2395,10 @@
       },
       "head_sha": "f41250b921",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T12:08:56Z"
+      "updated_at": "2026-11-01T12:09:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2437,7 +2409,7 @@
       },
       "head_sha": "9bf44e9842",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2980,
       "title": "feat(orbital): add independent radial hierarchy layout lab",
       "updated_at": "2026-11-01T09:59:36Z"
@@ -2505,12 +2477,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "8eb0d03f6b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3102,
+      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
+      "updated_at": "2026-11-01T12:10:32Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "019c7ccaf1",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3113,
       "title": "chore(recon): refresh pinned free-provider research",
-      "updated_at": "2026-11-01T12:09:01Z"
+      "updated_at": "2026-11-01T12:09:07Z"
     }
   ],
   "schema": "operator-matrix/v1",

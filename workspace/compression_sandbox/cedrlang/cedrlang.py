@@ -95,6 +95,15 @@ MAPPINGS = [
     ("research", "r3534rch"),
     ("concepts", "c0nc3p7s"),
     ("concept", "c0nc3p7"),
+    # Notation sets and nomenclature equivalency mappings
+    ("category theory", "c47_7h30ry"),
+    ("natural transformation", "n47_7r4n5"),
+    ("homomorphism", "h0m0m0rph"),
+    ("isomorphism", "150m0rph"),
+    ("monadic bind", "m0n_b1nd"),
+    ("exponential object", "3xp_0bj"),
+    ("morphism", "m0rph"),
+    ("functor", "func70r"),
 ]
 
 def capitalize_word(w: str) -> str:
@@ -133,10 +142,10 @@ SYMBOL_REGEXES = {phrase: re.compile(re.escape(phrase), re.IGNORECASE) for phras
 INLINE_CODE_PATTERN = re.compile(r'`[^`]+`')
 HTML_TAG_PATTERN = re.compile(r'<[^>]+>')
 LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
-BOLD_PATTERN_2 = re.compile(r'\*\*([^*]+)\*\*')
-BOLD_PATTERN_1 = re.compile(r'\*([^*]+)\*')
-BOLD_PATTERN_UNDER2 = re.compile(r'__([^_]+)__')
-BOLD_PATTERN_UNDER1 = re.compile(r'_([^_]+)_')
+BOLD_PATTERN_2 = re.compile(r'(?<![a-zA-Z0-9])\*\*([^*]+)\*\*(?![a-zA-Z0-9])')
+BOLD_PATTERN_1 = re.compile(r'(?<![a-zA-Z0-9])\*([^*]+)\*(?![a-zA-Z0-9])')
+BOLD_PATTERN_UNDER2 = re.compile(r'(?<![a-zA-Z0-9])__([^_]+)__(?![a-zA-Z0-9])')
+BOLD_PATTERN_UNDER1 = re.compile(r'(?<![a-zA-Z0-9])_([^_]+)_(?![a-zA-Z0-9])')
 PATH_EXTENSIONS = (
     ".py", ".js", ".json", ".md", ".yaml", ".sh", ".txt",
     ".yml", ".db", ".jsonl", ".wasm", ".html", ".cffi",
@@ -193,16 +202,17 @@ DECOMP_DICT = {comp.lower(): human for human, comp in SORTED_MAPPINGS_DECOMP}
 DECOMP_SINGLE_REGEX = re.compile(build_trie_regex([comp for _, comp in SORTED_MAPPINGS_DECOMP]))
 FAST_CASING_COMP: Dict[str, str] = {}
 for human, comp in SORTED_MAPPINGS_COMP:
-    FAST_CASING_COMP[human.lower()] = lowercase_word(comp)
-    FAST_CASING_COMP[capitalize_word(human)] = capitalize_word(comp)
     FAST_CASING_COMP[human.upper()] = uppercase_word(comp)
-    FAST_CASING_COMP[human.capitalize()] = capitalize_word(comp)
+    FAST_CASING_COMP[human.capitalize()] = comp.capitalize()
+    FAST_CASING_COMP[capitalize_word(human)] = capitalize_word(comp)
+    FAST_CASING_COMP[human.lower()] = lowercase_word(comp)
+
 FAST_CASING_DECOMP: Dict[str, str] = {}
 for human, comp in SORTED_MAPPINGS_DECOMP:
-    FAST_CASING_DECOMP[comp.lower()] = lowercase_word(human)
-    FAST_CASING_DECOMP[capitalize_word(comp)] = capitalize_word(human)
     FAST_CASING_DECOMP[comp.upper()] = uppercase_word(human)
     FAST_CASING_DECOMP[comp.capitalize()] = capitalize_word(human)
+    FAST_CASING_DECOMP[capitalize_word(comp)] = capitalize_word(human)
+    FAST_CASING_DECOMP[comp.lower()] = lowercase_word(human)
 
 def compress(text: str, aggressive: bool = True) -> str:
     if not text:

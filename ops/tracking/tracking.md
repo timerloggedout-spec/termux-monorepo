@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T11:31:55Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T11:40:31Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T11:31:55Z` (merged 150 · open 169) · lane-events(Neon) status=`ok` count=`4205` read_at=`2026-11-01T11:31:55Z`
+Sources: PR feed read_at=`2026-11-01T11:40:30Z` (merged 150 · open 167) · lane-events(Neon) status=`ok` count=`4241` read_at=`2026-11-01T11:40:30Z`
 
 Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknown=4
 
@@ -10,13 +10,13 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknow
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
-| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3051 `ff76abef797e` 2026-11-01T11:21:21Z | DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
+| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3051 `ff76abef797e` 2026-11-01T11:21:21Z | RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3067 `aa91e23e1ab4` 2026-11-01T11:30:04Z | Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step) |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3070 `1c9983eee4d6` 2026-11-01T11:30:39Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3060 `b2813f208203` 2026-11-01T11:25:44Z | land/close PR #3072 — desk-feed: bench-wide task-fit rotation + stamp bench positions (owner FIX via main) |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3079 `d6901e880369` 2026-11-01T11:39:39Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3048 `2132e82c6797` 2026-11-01T11:16:48Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |
@@ -26,9 +26,9 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3066 `05697267e440` 2026-11-01T11:29:45Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3053 `8e223553c6f1` 2026-11-01T11:31:23Z | land/close PR #3073 — index(quota): dispatch capability amendment — #2672 gate-state + DeepAgent split |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3073 `6152f029217a` 2026-11-01T11:33:31Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3062 `0f41764f0d72` 2026-11-01T11:27:00Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3074 `cf5aa2724ed7` 2026-11-01T11:35:09Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)

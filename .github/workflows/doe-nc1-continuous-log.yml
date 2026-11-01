@@ -13,8 +13,18 @@ name: doe-nc1-continuous-log
 # Fail-soft: the logger records DEFER lines instead of failing.
 on:
   schedule:
-    - cron: "41 7 * * *" # daily 07:41 UTC (off-peak minute)
+    # Cadence amendment (owner, 2026-11-01): statistically significant
+    # intervals — every 6h at :41 initially (>1x/day). Frequency changes
+    # ONLY on significance evidence (window_new_units in the logs),
+    # never on calendar defaults; backfill raised the baseline n and
+    # does NOT license any frequency reduction (owner correction).
+    - cron: "41 1,7,13,19 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "run (default) or backfill (one-time historical baseline)"
+        required: false
+        default: "run"
 concurrency:
   group: doe-nc1-continuous-log
   cancel-in-progress: false
@@ -35,7 +45,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ steps.swarm-token.outputs.token }}
+      - name: Backfill historical baseline (dispatch mode=backfill only)
+        if: github.event.inputs.mode == 'backfill'
+        run: |
+          python3 scripts/doe/nc1_continuous_log.py backfill \
+            ops/telemetry/density-stats.json \
+            experiments/doe/nc-1-notation-compliance/records/logs
       - name: Append continuous population/diagnostic log records
+        if: github.event.inputs.mode != 'backfill'
         run: |
           python3 scripts/doe/nc1_continuous_log.py \
             experiments/doe/nc-1-notation-compliance/records/layer-outputs \

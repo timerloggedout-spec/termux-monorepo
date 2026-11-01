@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T04:28:22Z",
+ "generated_at": "2026-11-01T04:34:32Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T04:28:22Z",
+   "read_at": "2026-11-01T04:34:32Z",
    "merged": 150,
-   "open": 156
+   "open": 157
   },
   "lane_events": {
-   "read_at": "2026-11-01T04:28:22Z",
+   "read_at": "2026-11-01T04:34:32Z",
    "status": "ok",
-   "count": 3005,
+   "count": 3029,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -84,7 +84,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -99,7 +99,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -113,7 +113,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -128,7 +128,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -140,7 +140,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -156,7 +156,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "challenge-entries",
@@ -170,7 +170,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "quota",
@@ -179,10 +179,10 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2939,
-    "sha": "aa27eedebc65",
-    "at": "2026-11-01T04:17:13Z",
-    "title": "index(quota): Provider Index build-arm coverage \u2014 Jules / Gemini / DeepSeek dispatch routes"
+    "pr": 2952,
+    "sha": "79a6501de0e9",
+    "at": "2026-11-01T04:32:42Z",
+    "title": "fix(quota): complete registry coverage \u2014 meta pool + 2 exclusions (#1884)"
    },
    "next": "land/close PR #2757 \u2014 feat(ci): add merged branch review audit and quota engine",
    "next_basis": "open-pr",
@@ -190,7 +190,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "doe",
@@ -199,18 +199,18 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2948,
-    "sha": "971ff8a10299",
-    "at": "2026-11-01T04:27:47Z",
-    "title": "feat(tracking): provider x DoE-setting join (doe_join)"
+    "pr": 2954,
+    "sha": "03e9a78f05a4",
+    "at": "2026-11-01T04:34:10Z",
+    "title": "doe(apk-1): DESIGN \u2014 parallel versioning comparisons (3 provider dispatch arms)"
    },
-   "next": "land/close PR #2856 \u2014 doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
+   "next": "land/close PR #2953 \u2014 feat(viz): provider x DoE-setting join section on tracking board",
    "next_basis": "open-pr",
    "evidence": [
-    "doe DESIGN.json campaigns=10",
-    "open PRs: #2856, #2857, #740, #1569, #969"
+    "doe DESIGN.json campaigns=11",
+    "open PRs: #2953, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "doe-nc1",
@@ -227,7 +227,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "contribution-desk",
@@ -258,7 +258,7 @@
    "evidence": [
     "desk-feed traversals=7 generated_at=2026-10-31T23:59:00Z"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "web-design-viz",
@@ -277,7 +277,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "marketing",
@@ -289,7 +289,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "marketing-social",
@@ -301,7 +301,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "swarm",
@@ -320,7 +320,7 @@
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "providers",
@@ -340,7 +340,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "providers-phrases",
@@ -352,7 +352,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "repo-replay",
@@ -364,7 +364,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "ops",
@@ -378,7 +378,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   },
   {
    "lane": "telemetry",
@@ -397,12 +397,12 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T04:28:22Z"
+   "updated_at": "2026-11-01T04:34:32Z"
   }
  ],
  "doe_join": {
   "summary": {
-   "campaigns": 10,
+   "campaigns": 11,
    "campaigns_joined": 1,
    "distinct_instances": 8,
    "providers": [
@@ -410,6 +410,17 @@
    ]
   },
   "campaigns": [
+   {
+    "campaign": "apk-1-parallel-versioning",
+    "status": "admitted_design_only",
+    "moniker": "apk-release",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
    {
     "campaign": "cb-1-chronomancer-emission",
     "status": "admitted_design_only",

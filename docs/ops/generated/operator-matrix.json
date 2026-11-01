@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 157,
+    "open_prs": 156,
     "pr_classes": {
       "CANDIDATE": 74,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 78,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 155,
+      "prs": 154,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T04:27:06Z",
+  "generated_at": "2026-11-01T04:28:54Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "3cf982ac8a"
+    "sha": "bc9e46f469"
   },
   "prs": [
     {
@@ -1646,15 +1646,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "in_progress"
       },
-      "head_sha": "5bdab4e90a",
+      "head_sha": "a3df9b4852",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T04:26:32Z"
+      "updated_at": "2026-11-01T04:28:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2313,20 +2313,6 @@
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-01T04:21:48Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "e098aaac07",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2948,
-      "title": "feat(tracking): provider x DoE-setting join (doe_join)",
-      "updated_at": "2026-11-01T04:27:00Z"
     }
   ],
   "schema": "operator-matrix/v1",

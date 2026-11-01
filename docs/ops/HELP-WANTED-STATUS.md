@@ -1,9 +1,9 @@
-# Help-Wanted — Living Status & Human Review
+# Tribute — Living Status & Human Review
 
 **SSOT board (generated):** `docs/ops/generated/help-wanted-status.md`  
 **Machine:** `docs/ops/generated/help-wanted-status.json`  
 **Receipts:** `docs/ops/generated/help-wanted-evidence/*.jsonl`  
-**Public dashboard:** `apps/help-wanted-dashboard/` → Vercel **help-wanted-oversight**
+**Public dashboard:** `apps/help-wanted-dashboard/` → canonical Pages route `/tribute/`; Vercel **help-wanted-oversight** remains an implementation/deployment identifier.
 
 Regenerate:
 

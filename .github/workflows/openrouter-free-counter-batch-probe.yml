@@ -1,0 +1,21 @@
+name: openrouter-free-counter-batch-probe
+# [MUSEai]@{role:{quota-specialist}} Amendment-2 batch probe: N=10 paid
+# calls in one tight window; verdict = delta of free_model_daily_requests.
+# Manual dispatch only.
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run batch probe
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python3 scripts/ops/openrouter_free_counter_batch_probe.py
+      - name: Upload batch probe result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openrouter-free-counter-batch-probe-result
+          path: batch-probe-result.json

@@ -5,14 +5,14 @@ One job: route a planned tracked change to the controls that determine whether i
 ## Inputs
 
 - Object index: [`../_index.md`](../_index.md)
-- Repository guidance: [`../../../../AGENTS.md`](../../../../AGENTS.md)
+- Repository guidance: [`../../../../CLAUDE.md`](../../../../CLAUDE.md)
 - Proposal process: [`../../../../docs/proposals/PROCESS.md`](../../../../docs/proposals/PROCESS.md)
 - Active work registry: [`../../../../docs/proposals/registry.yaml`](../../../../docs/proposals/registry.yaml)
 
 ## Process
 
 1. Identify the active work item or register one before implementing new scope.
-2. Branch from `master-staging`, not raw `master`.
+2. Branch from `master` (a `master-staging` base only when that lane is active).
 3. Keep the change focused and cite its item ID in the commit or pull request.
 4. Run the required gates, then record any unrelated baseline failures rather than silently repairing outside scope.
 

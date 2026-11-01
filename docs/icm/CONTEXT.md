@@ -8,7 +8,7 @@ This is a **system map**, not a replacement architecture specification or an aut
 |---|---|---|
 | Static catalog aliases | [`CLAUDE.md`](CLAUDE.md) and [`AGENTS.md`](AGENTS.md) | Byte-identical stable entry points that route an edit request to one shelf. |
 | Provider-routing resource | [`routing.md`](routing.md) | Separately owned nested evidence and polling-governance route; not a static alias. |
-| Governance | [`../../AGENTS.md`](../../AGENTS.md) | Defines branch, proposal, and validation constraints. |
+| Governance | [`../../CLAUDE.md`](../../CLAUDE.md) | Defines branch, proposal, and validation constraints. |
 | Navigation | [`../../README.md`](../../README.md) | Owns the root navigation ladder and subsystem inventory. |
 | Operations | [`../../archwiz/TOOL_INDEX.md`](../../archwiz/TOOL_INDEX.md) | Owns concise ArchWiz tool roles. |
 | Stale platform context | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | Preserves archived Android execution-plane context; requires re-verification before any device work. |

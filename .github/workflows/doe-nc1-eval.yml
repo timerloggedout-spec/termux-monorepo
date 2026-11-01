@@ -1,0 +1,69 @@
+name: doe-nc1-eval
+# nc-1 rule-5 automation: scored evaluation runs HERE, not by hand.
+# Manual/local runs are OBSERVATIONAL (DOE-FAMILY binding rule 5).
+# Output = EXPERIMENT record + run JSON as artifacts, and ONE rollup
+# comment per dispatch on the tracking issue (the DESIGN's designated
+# per-window channel). Chat noise = 0 by construction: no chat posts.
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "run id (e.g. run-001)"
+        default: "run-001"
+  pull_request:
+    paths:
+      - "experiments/doe/nc-1-notation-compliance/records/corpus/**"
+      - "scripts/doe/nc1_*.py"
+permissions:
+  contents: read
+  issues: write
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: score ordered-stack arms on gold corpus
+        run: |
+          python3 scripts/doe/nc1_evaluator.py \
+            experiments/doe/nc-1-notation-compliance/records/corpus/units.jsonl \
+            experiments/doe/nc-1-notation-compliance/records/corpus/tau.json \
+            run-output.json \
+            --record "experiments/doe/nc-1-notation-compliance/records/${{ inputs.run_id || 'run-001' }}-EXPERIMENT.json" \
+            --master-sha "${{ github.sha }}" \
+            --run-id "${{ inputs.run_id || 'run-001' }}" \
+            --observed-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          python3 - << 'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("run-output.json"))
+          print("## nc-1 evaluator run (ordered stack L1->L2->L3)")
+          for arm, s in d["arms"].items():
+              print(f"- {arm}: P={s['precision']} R={s['recall_global']} "
+                    f"tokens={s['tokens_scanned']} tp/fp={s['tp']}/{s['fp']} "
+                    f"pan_flagged={s['prose_about_notation_flagged']}")
+          print(f"- escape_rate: {d['escape_rate']} ({d['escape_latency_status']})")
+          print(f"- cull: {d['cull_analysis']}")
+          print(f"- chat_noise_events: {d['chat_noise_events']}")
+          PY
+      - name: rollup comment on tracking issue (dispatch runs only)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - << 'PY' > rollup.md
+          import json
+          d = json.load(open("run-output.json"))
+          print("[MUSEai]@{role:{doe-mgr-notation-density}} — nc-1 evaluator run (automation, rule 5)")
+          print(f"mode={d['mode']} corpus={d['corpus_units']} tau={d['tau']}")
+          for arm, s in d["arms"].items():
+              print(f"- {arm}: P={s['precision']} R={s['recall_global']} tokens={s['tokens_scanned']} tp/fp={s['tp']}/{s['fp']}")
+          print(f"- escape_rate={d['escape_rate']} correction_latency={d['correction_latency']} ({d['escape_latency_status']})")
+          print(f"- cull: {d['cull_analysis']} · floors: {d['pass_floor_check']} · chat_noise_events={d['chat_noise_events']}")
+          print("- verdict = doe-expert (this comment is data, not a verdict)")
+          PY
+          gh issue comment 2865 --body-file rollup.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nc1-run-output
+          path: |
+            run-output.json
+            experiments/doe/nc-1-notation-compliance/records/*-EXPERIMENT.json

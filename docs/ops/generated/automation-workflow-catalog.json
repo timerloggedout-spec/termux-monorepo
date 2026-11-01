@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "08c7d44cc38be42458929c9803934be4427cdbc0e759401992818431159b5f54",
-  "workflow_count": 233,
+  "source_fingerprint": "2a2d491ba789d6140ef314574338026904d3b729a70d09fa9230eb3f99894c6b",
+  "workflow_count": 235,
   "workflows": [
     {
       "action_pins": [],
@@ -1575,6 +1575,21 @@
     },
     {
       "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "dispatch"
+      ],
+      "name": "DoE phrase dispatch (live-3)",
+      "path": ".github/workflows/doe-phrase-dispatch.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
@@ -2743,6 +2758,21 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "openrouter-free-counter-probe",
+      "path": ".github/workflows/openrouter-free-counter-probe.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

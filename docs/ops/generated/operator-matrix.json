@@ -4,8 +4,8 @@
     "open_prs": 164,
     "pr_classes": {
       "CANDIDATE": 79,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 80,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 79,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 186,
+      "issues": 185,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 31,
+      "issues": 32,
       "prs": 162,
       "unlabelled_numbers": [
         308,
@@ -82,11 +82,12 @@
         2758,
         2830,
         2956,
+        3018,
         3036
       ]
     }
   },
-  "generated_at": "2026-11-01T10:31:45Z",
+  "generated_at": "2026-11-01T10:34:43Z",
   "issues_unlabelled": [
     308,
     343,
@@ -118,15 +119,16 @@
     2758,
     2830,
     2956,
+    3018,
     3036
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "f9ed18e4cb"
+    "sha": "530ec503ca"
   },
   "prs": [
     {
@@ -198,6 +200,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0c5e7b7ae4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T10:33:23Z"
     },
     {
       "class": "CANDIDATE",
@@ -1715,20 +1731,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "9219bf2e2d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T10:31:21Z"
     },
     {
       "class": "NEED_EVIDENCE",

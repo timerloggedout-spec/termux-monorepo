@@ -26,6 +26,21 @@ aion `AION_API_KEY` · cloudflare `CLOUDFLARE_API_TOKEN`+`CLOUDFLARE_ACCOUNT_ID`
 - xfyun is doubly phantom: cadence onboarding names `XFYUN_API_KEY` + `IFLYTEK_SPARK_API_PASSWORD`; **both absent** from the repo store (matches the onboarding file's own recorded exception for xfyun).
 - kilo · modelscope · omni · ovhcloud · typhoon: no key, no connector, no browser session on record ⇒ no-route until provisioned.
 
+### Correction (2026-10-31, provisioning lane cross-check vs its record PR #1854 + rulings; spot-verified by this lane)
+
+The KEY-GAP class above is a credential-store fact, not a work queue — per-item dispositions of record:
+
+- **cerebras** ⛔ card-gated (terms Δ2026-07-16: $5 trial only after a payment method) ⇒ parked under the fleet card rule; ¬ gap-fillable.
+- **mistral** ⛔ owner-ruled DO NOT PROVISION (PR #1805, merged — Mistral is a webWrapper, not an API key) ⇒ ruling, ¬ gap. ∅ re-attempt.
+- **typhoon** ⛔ ¬ issuable (Together-hosted, deprecated 2025-12-31) ⇒ parked.
+- **requesty · kilo** ◐ in-flight at the provisioning lane: accounts exist/creating; harvest gated solely on owner Google vault entry.
+- **xfyun** ◐ in-flight at the provisioning lane (= iFlytek): gated on owner vault new-password entry; the pair mints together.
+- **modelscope** ⛔ parked: ∅ Google route, registration is SMS-only; GitHub-OAuth route ⇒ owner ruling pending.
+- **omni** ◐ ¬ a signup: instance decision at main (`OMNI_API_KEY`/`OMNIROUTE`/`BASE_URL`).
+- **ovhcloud** ● the only actionable item: provisioning lane attempting the free account + Public Cloud route now; card ⇒ hard stop + park.
+
+Net: of the 9, actionable-now = 1 (ovhcloud) · in-flight on owner vault entries = 3 (requesty, kilo, xfyun) · parked/ruled = 4 (cerebras, mistral, typhoon, modelscope) · decision at main = 1 (omni).
+
 ## INFRA — route notes
 
 vercel-class connector reads exist only for vercel (READY above) and neon (verified). The 15 here have no key in the store; several are reachable in principle via signed-in fleet browser sessions (dashboards), none has a provisioned API route. aws account creation is **deferred by owner order** (code readiness + explicit approval) — route recorded as owner-gated, not missing. platform201 = the owner's own platform surface (internal accounting, rides fleet).

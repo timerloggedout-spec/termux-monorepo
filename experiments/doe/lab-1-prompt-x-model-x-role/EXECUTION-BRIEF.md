@@ -6,6 +6,11 @@
 
 ## Verdict: NO-GO (defer — no named live anchor)
 
+> Correction (same day): the framing campaign of record is
+> live-1-wave-framing (PR #2809), superseding live-4 (#2802)
+> which an earlier draft of this brief cited. Audit result
+> unchanged.
+
 Per doctrine (owner, 2026-10-31): controls calibrate, live
 decides; a control earns execution **only** as a calibration
 anchor for a **named** live campaign. No current live campaign's
@@ -62,7 +67,7 @@ process blockers, and §3 is the substantive blocker.
 
 | Live campaign | Its primary response | Does lab-1 anchor it? |
 |---|---|---|
-| Dispatch framing — work-order name "live-1 framing"; landed in repo as **live-4-dispatch-framing** (PR #2802, `admitted_design_only`, owned by doe-mgr-live-builds) | Rework-free first-pass merge of Jules dispatches under framing {a = DO pattern A only, ba = B≫A}, blocked by Nov wave (D2 2026-11-03, D4 >11-08, M2/M3 gated); rule ≥12 dispatches ∧ Δ≥0.20 ∧ no block reversal | **NO.** Different arm (Jules, not OpenRouter), different task class (builds, not fragment recovery), different factor (dispatch framing, not strict/loose extraction prompt), different primary response. Lab-1's prompt effect is at most a weak directional prior; it calibrates no live-4 response, threshold, or selection rule. |
+| **live-1-wave-framing** (work-order "live-1 framing"; landed PR #2809, `admitted_design_only`, owned by doe-mgr-live-builds; supersedes the interim live-4-dispatch-framing PR #2802, now `superseded`) | First-pass gate-green of Nov-wave Jules dispatches under 2×2 framing {A-implement-only, B+A-pack (context/evidence pack)} × entry-class {greenfield, iteration} (D2 2026-11-03, D4 >11-08, M2/M3 gated); rule n≥16 ∧ ≥4/cell ∨ 2026-12-04, Δ≥0.20 | **NO.** Different arm (Jules, not OpenRouter), different task class (builds, not fragment recovery), different factor (dispatch framing/context pack, not strict/loose extraction prompt), different primary response. Lab-1's prompt effect is at most a weak directional prior; it calibrates no live-1 response, threshold, or selection rule. |
 | live-2-prlane-tuning (in repo, phase 0 PASS_WITH_RECORDED_GAP) | Outcome-consistency of a **deterministic** classifier replayed over frozen snapshots | **NO.** ∅ LLM runs in live-2; ∅ shared units, responses, or thresholds. (Name collision only: lab-1's `triage` is a prompt role line, not the pr-lane classifier — steward CHECK, PR #2789.) |
 | live-3 phrases — **live-3-phrases-deepseek** (in repo; supersedes live-3-phrases-jit PR #2799, whose DESIGN is `superseded` on master) | `findings_actioned_rate` on live DeepSeek invoke/review dispatches under placement × form × selection (18 cells + unphrased control); adopt rule Δ≥0.10 @ n≥20 | **NO.** Lab-1 declares `provider_phrases: {}` for its routes — by design it contains no phrase treatment, so it cannot calibrate phrased-vs-unphrased effects, placement, or form levels. Its unphrased OpenRouter cells are not live-3's control (different provider, host surface, tasks, response). |
 | fb-pages-mvt-1 (live, executing; verdict ≤ 2026-11-10) | Attributed redemptions/cell for FB copy angles | **NO.** ∅ shared factor, response, or surface. |
@@ -147,7 +152,7 @@ Until then: lab-1 stays `admitted_design_only`, 0 dispatched,
 
 ---
 Evidence: DESIGN.json / PLAN.json / README @master (this
-campaign dir); pilot-1 SUMMARY.json; live-2 + live-3 (jit + deepseek) + live-4
+campaign dir); pilot-1 SUMMARY.json; live-1 + live-2 + live-3 (jit + deepseek)
 DESIGN.json @master; DOE-RECON-2026-10-31.md (conclusions
 2+4, as errata-corrected); quota registry `openrouter.*`
-rows; PRs #2669 / #2674 / #2789 / #2794 / #2799 / #2802.
+rows; PRs #2669 / #2674 / #2789 / #2794 / #2799 / #2802 / #2809.

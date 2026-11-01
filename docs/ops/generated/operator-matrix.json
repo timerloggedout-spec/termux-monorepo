@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 366,
-    "open_prs": 151,
+    "open_prs": 152,
     "pr_classes": {
-      "CANDIDATE": 71,
+      "CANDIDATE": 69,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 75,
+      "NEED_EVIDENCE": 78,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 28,
-      "prs": 149,
+      "prs": 150,
       "unlabelled_numbers": [
         308,
         343,
@@ -83,7 +83,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T00:52:44Z",
+  "generated_at": "2026-11-01T01:02:36Z",
   "issues_unlabelled": [
     308,
     343,
@@ -120,7 +120,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "a6c80cdbb1"
+    "sha": "caee95bb4e"
   },
   "prs": [
     {
@@ -961,40 +961,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6605913281",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T00:33:04Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "5a2b2efdf0",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T00:13:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1602,6 +1574,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "62a666580a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T01:02:25Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1737,6 +1723,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "20621f5ec2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T01:02:08Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2241,6 +2241,20 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "aececd40fe",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 2797,
+      "title": "quota: schema v2 rename \u2014 quota.registry.v2 + quota.readings.v2 (owner order)",
+      "updated_at": "2026-11-01T01:01:46Z"
     }
   ],
   "schema": "operator-matrix/v1",

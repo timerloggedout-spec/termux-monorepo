@@ -50,15 +50,17 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 
 ## Registry bench classes (Quota capability map, firsthand @master 2026-11-01)
 
-89 distinct model-lane providers = **proven 2 + wired-unproven 22 + triggerable 2 + inference-only 63**:
+89 distinct model-lane providers = **proven 4 + wired-unproven 20 + triggerable 2 + inference-only 63**:
 
-- **Proven (2):** `google` (Gemini router/after-peers, key-live) · `openrouter` (production invoke
-  legs; free layer active, paid balance $0.00).
-- **Wired-unproven (22)** via provider-batch (surface: 249 runs / 138 successes; per-provider
-  invoke NOT_ESTABLISHED): key-live {cohere, huggingface, llm7, routeway, sambanova, siliconflow,
-  unorouter, zai} · no-credential {cerebras, kilo, mistral, modelscope, ovhcloud, requesty,
-  typhoon, xfyun} · egress-blocked {groq, xkiro} · route-dead {aion, sealion} · flags {cloudflare
-  verify-scope, nvidia auth-unproven}. Promotion = one named single-provider batch dispatch each
+- **Proven (4):** `google` (Gemini router/after-peers, key-live) · `openrouter` (production invoke
+  legs; free layer active, paid balance $0.00) · `cohere` + `sealion` (INVOKE OK via the #3141
+  inference batch; sealion's route-dead flag was WRONG — live 200, retracted).
+- **Wired-unproven (20)** — invoke surface of record henceforth: `provider-invoke.yml` +
+  `scripts/ops/provider_invoke.py` (runtime-resolved, no pinned routes). Per-provider invoke
+  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow} ·
+  capacity {sambanova} · secrets-absent in Actions store {huggingface, cerebras, kilo, mistral,
+  modelscope, ovhcloud, requesty, typhoon, xfyun} · egress-403 {groq, xkiro} · edge-403 {aion —
+  route-dead corrected} · timeout {unorouter} · skew {nvidia} · scope {cloudflare}. Promotion = one named single-provider batch dispatch each
   (after flag resolution; #2672 gate LIFTED 2026-11-01, below). Gate-state (Quota amendment, Swarm
   firsthand; LIFTED by providers-dispatch 2026-11-01): the 7 key-live members {cohere, sambanova, zai, llm7, routeway, unorouter,
   siliconflow} were `blocked-by-#2672` — #2672 CLOSED with contracts GREEN run 41308987754

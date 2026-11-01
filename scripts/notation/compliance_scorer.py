@@ -77,7 +77,12 @@ def score(text: str) -> dict:
     s_len = 1.0 - min(f["mean_sent_words"] / 28.0, 1.0)
     total = round(0.35 * s_sym + 0.25 * s_ev + 0.20 * s_glue + 0.20 * s_len, 3)
     verdict = "compliant" if total >= 0.55 else "borderline" if total >= 0.40 else "prose"
-    return {**f, "score": total, "verdict": verdict}
+    # Information-density effectiveness (nc-1 amendment, PR #2866):
+    # signal items carried per token, where signal items = evidence
+    # refs + notation glyphs (compressed connectives). prose_ratio
+    # (score/verdict above) is diagnostic only under the amendment.
+    density = round((f["sym_per_100w"] + f["ev_per_100w"]) / 100.0, 4)
+    return {**f, "score": total, "verdict": verdict, "density": density}
 
 
 def main(argv: list[str]) -> int:

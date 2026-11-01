@@ -1,0 +1,45 @@
+{
+ "record_id": "nc1-shakedown-001",
+ "campaign": "nc-1-notation-compliance",
+ "kind": "instrument_shakedown",
+ "label": "instrument_shakedown \u2014 v1 heuristic measurements, NOT scored verdicts (gold corpus + tau precede scoring, per DESIGN #2865/#2866/#2869)",
+ "recorded_at": "2026-10-31",
+ "instrument": {
+  "name": "scripts/notation/compliance_scorer.py",
+  "version": "heuristic v1 + density amendment",
+  "features": [
+   "sym_per_100w",
+   "glue_per_sent",
+   "mean_sent_words",
+   "ev_per_100w",
+   "density=(sym+ev)/100w"
+  ],
+  "builder": "tier1-classifiers-steward"
+ },
+ "units": {
+  "total": 192,
+  "strata": {
+   "github": 97,
+   "chat": 32,
+   "docs": 53,
+   "records": 10
+  },
+  "layers": {
+   "L3": 160,
+   "L2": 32
+  },
+  "drift_at_v1_tau_diagnostic_only": 22
+ },
+ "units_file": "shakedown-001-units.jsonl",
+ "findings": [
+  "C2 construct finding (DoE ruling 2026-10-31): density features alone do not separate prose-ABOUT-notation from notation-in-use; labels are stratum-relative (prose-about-notation = own gold class).",
+  "L3 stratum fact: PR bodies = prose-iest GH surface (prose_ratio mean 0.548, n=20).",
+  "Exemplar FP at v1 prose tau: 1.4% (1/74 #1884 filings); borderline-inclusive 11%.",
+  "Records-stratum density reads near-zero by construction (schema keys dominate tokens) \u2014 per-stratum tau is load-bearing.",
+  "L2 outliers concentrate in owner-facing long-form summaries + quoted content (quote/code-fence stripping = v2 feature order: claim-ref adjacency, symbol-function, per-stratum tau)."
+ ],
+ "attachments": [
+  "shakedown-001-units.jsonl",
+  "shakedown-001-scorer-output.json"
+ ]
+}

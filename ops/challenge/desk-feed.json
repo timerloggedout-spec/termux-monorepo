@@ -12,7 +12,7 @@
    "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
    "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
    "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
-   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch, provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation bench-wide, provider + reason stamped per dispatch.",
+   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch (dispatch HELD per #2672 until contracts green), provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation bench-wide, provider + reason stamped per dispatch.",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [
@@ -198,7 +198,7 @@
      ],
      "trigger": "workflow_dispatch",
      "evidence": "250 runs; last_success run 40710434190 @2026-10-28T14:53Z; latest-100 mixed 49 success / 50 failure (D1 census) — per-dispatch verification required",
-     "caveat": "This is the dispatch arm that reaches inference-only registry providers; a batch run proves the arm, not each provider in it."
+     "caveat": "DISPATCH HOLD (Desk recognition @a27cf6d1): dispatches held per issue #2672 until its contracts job is green — arm is proven, dispatch suspended until the hold lifts. This is the dispatch arm that reaches inference-only registry providers; a batch run proves the arm, not each provider in it."
     },
     {
      "id": "provider-availability",
@@ -632,7 +632,8 @@
      "xfyun.spark",
      "xkiro.free_models",
      "zai.free_models"
-    ]
+    ],
+    "note": "provider-batch arm currently under the #2672 dispatch hold; provider-availability + openrouter probe arms remain live routes."
    }
   }
  },

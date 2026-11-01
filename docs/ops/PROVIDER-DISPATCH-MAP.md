@@ -35,7 +35,7 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 | Gemini after-peers | review (2nd pass) | `gemini-after-peers.yml` | 1,269 runs; last success 41299982052 |
 | DeepSeek termux-agent | fix, build | `deepseek-termux-agent.yml` | D1 fix-pass run 41301295882 ✓ |
 | DeepSeek CI | invoke, review | `deepseek-ci.yml` | last success 41301485914 |
-| DeepAgent bridge | device, task | `deepcli-agent-bridge.yml` | 158 runs; last success 39989289180 (2026-10-23). Greens incl. skip-exits ⇒ verify at PR level |
+| DeepAgent bridge | device, task | `deepcli-agent-bridge.yml` | 158 runs; last success 39989289180 (2026-10-23). Device leg NOT_ESTABLISHED (2026-11-01 split: device steps skipped, reachable=false) — workflow-level dispatch proven, device execution unverified; verify at PR level |
 | DeepAgent task | task, build | `deepagent-task.yml` | first success 41301564332 in the widening window (was 0 runs; workflow-level — device steps skipped, device execution NOT_ESTABLISHED; stamp #2735) |
 | provider-batch | inference, batch, eval | `provider-batch.yml` | 250 runs; last success 40710434190 (2026-10-28); latest-100 mixed ⇒ verify per dispatch. **DISPATCH HELD per issue #2672 until contracts job green** (arm proven, dispatch suspended) |
 | provider-availability | probe, catalog | `provider-availability.yml` | 93 runs; last success 40704824602 |
@@ -59,7 +59,11 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
   unorouter, zai} · no-credential {cerebras, kilo, mistral, modelscope, ovhcloud, requesty,
   typhoon, xfyun} · egress-blocked {groq, xkiro} · route-dead {aion, sealion} · flags {cloudflare
   verify-scope, nvidia auth-unproven}. Promotion = one named single-provider batch dispatch each
-  (after flag resolution; batch currently HELD per #2672). Reverse gap: batch member `ollama`
+  (after flag resolution; batch currently HELD per #2672). Gate-state (Quota amendment, Swarm
+  firsthand): the 7 key-live members {cohere, sambanova, zai, llm7, routeway, unorouter,
+  siliconflow} are `blocked-by-#2672` — observation jobs gate on the red `contracts` job
+  (run 41301473553 job split), so the batch yields ∅ operational evidence regardless of
+  provider health. Blocker = the gate, ¬ the providers. Reverse gap: batch member `ollama`
   has ∅ registry model row.
 - **Triggerable (2):** `felo`, `omni` — catalog endpoints exist, ∅ batch admission/wiring.
 - **Inference-only (63):** `github` (GitHub Models), `meta` (llama_api RETIRED, do-not-route),

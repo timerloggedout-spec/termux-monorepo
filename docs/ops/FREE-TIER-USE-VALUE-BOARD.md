@@ -21,13 +21,13 @@ paid_equivalent_usd = input_tokens × input_usd_per_million / 1,000,000 + output
 
 This is a counterfactual API list-price estimate, not cash spent or guaranteed savings. It excludes cached-token discounts, batch pricing, tools, search/grounding, taxes, subscriptions, negotiated rates, and non-token fees unless explicitly modeled.
 
-Time opportunity cost is separate:
+Repository time-investment opportunity cost is a separate, repo-scoped measure:
 
-- time_invested_value = minutes_invested / 60 × chosen_hourly_rate
-- potential_time_value = estimated_hours_saved × chosen_hourly_rate
-- net_time_scenario = potential_time_value - time_invested_value
+- `repo_time_invested_value = repo_minutes_invested / 60 × repo_opportunity_cost_rate`
+- `potential_repo_time_value = estimated_repo_hours_recovered × repo_opportunity_cost_rate`
+- `net_repo_time_scenario = potential_repo_time_value - repo_time_invested_value`
 
-Time saved is a scenario input until established against a comparable baseline. Do not add it to provider cost or label it realized ROI.
+The rate and time inputs must describe work on this repository; they are not provider API prices or a generic, unrelated hourly-rate scenario. Time recovered remains a scenario until measured against a comparable baseline. Do not add repo time value to provider cost or label it realized ROI. If actual repo time evidence is unavailable, label the inputs as assumptions and do not imply the values were observed.
 
 ## Price snapshot
 

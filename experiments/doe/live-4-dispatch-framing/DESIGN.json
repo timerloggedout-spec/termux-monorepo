@@ -1,1 +1,131 @@
-{"base_sha":"2a9a256169a5105098af452423371bf30b36f16f","campaign_id":"live-4-dispatch-framing","competing_build_cb1":{"acceptance":"deterministic: all emitted records validate vs EXPERIMENT.schema.json; fork/continuation pairing count exact vs run_history fixture; re-run byte-identical (sha256 equal); run_history hash unchanged","arm_b_shaping_checklist":["task rewritten as ONE self-contained issue: full spec, acceptance tests and file scope inside the issue body (Gemini has no workflow_dispatch; nothing may assume on-demand re-dispatch)","no step depends on device routes (deepseek-termux-agent class) or on files outside the repo","steering path named in the issue (issue_comment events only) with a bounded number of steering rounds","shaping verified by doe-expert before either arm is dispatched"],"arms":[{"arm":"build-a","route":"Jules, label route (on-demand)"},{"arm":"build-b","route":"Gemini, crafted-issue route (event-bound; proven #2732 -> run 41223286134 SUCCESS)"}],"framing_held":"framing-a for BOTH arms (arm is the factor here; framing must not confound it)","review_arms":"DeepSeek-CI + command-dispatch review both PRs; they are review-arm class, never builders in cb-1","start_gate":"arm-B shaping checklist complete AND D2 wave dispatches underway; cb-1 never pre-empts the Nov wave","status":"gated_design_only","task":"ChronoMancer record emission: an emitter that reads the local run_history SQLite (harmony_hub/workspace/agent/chronomancer.py) and emits fork + continuation as TWO schema-valid EXPERIMENT records, byte-stable on re-run, run_history never mutated","verdict_rule":"winner = arm passing acceptance with fewer steering interventions (tie: lower elapsed); loser culled with record retained, winner's approach cherry-picked as the emitter-class template"},"constraints":["zero extra quota: no dispatch, run or session is created for the campaign itself","experiment rows retained (never deleted)","verdict only vs the pre-registered decision rule","blockers escalate as a specific GitHub comment + report to doe-expert, never as a silent stall"],"decision_rule":{"min_margin":0.2,"min_n":12,"text":"Evaluate when >=12 designed dispatches (>=6 per level) across >=2 blocks have records, OR the Nov wave closes 2026-12-04, whichever first. Adopt the winning framing as the default dispatch template iff its primary-rate advantage >= 0.20 AND no contributing block reverses by > 0.20; otherwise no_selection and framing-a (status quo) stays default. Winner propagates by cherry-pick: its template text lands in the dispatch docs via a follow-up PR; the loser level is culled with its records retained (owner definition: rnd + culling + cherry-pick propagation)."},"design":{"assignment":{"analysis_population":"as-assigned (intention-to-treat) primary; as-treated secondary; every deviation recorded in the dispatch record","binding":"slot k of a block takes sequence[k] at issue creation; seats MUST NOT swap, re-draw or cherry-pick; an issue created outside the sequence is OBSERVATIONAL, never re-labelled designed","rule":"pre-registered counterbalanced sequences per block (ABBA form, start level alternates by block so wave-level start is not confounded with project): D2 = [ba,a,a,ba, ba,a,a,ba]; D4 = [a,ba,ba,a, a,ba,ba,a]; M2 = [ba,a,a,ba, ba,a,a,ba]; M3 = [a,ba,ba,a, a,ba,ba,a]; slots beyond 8 repeat the block sequence; a=framing-a, ba=framing-ba"},"blocks":"project (D2 | D4 | M2 | M3); within a block, dispatches are paired in dispatch order; the dispatching seat records a pre-assignment size stratum (S|M|L, seat estimate) per task BEFORE seeing its slot assignment","eligibility":["genuine build tasks the owning seat would dispatch to Jules anyway (the campaign creates NO dispatch: zero extra quota)","excluded: urgent/incident fixes, security response, tasks whose text cannot carry the template (e.g. one-line config flips) -- exclusions logged with reason, counted, never hidden","a block yielding <2 designed dispatches contributes descriptively only"],"factor":{"framing":[{"definition":"DO pattern A only (Implement or repair, framework section 4A): issue body = templates/framing-a.md with every canonical field filled; no research phase requested.","level":"framing-a"},{"definition":"DO patterns B>>A (framework sections 4B then 4A): issue body = templates/framing-ba.md; Phase B recon (primary sources, facts/assumptions/gaps separated, gaps ranked) must land as a PR section or issue comment BEFORE implementation evidence; Phase A then implements against the recon.","level":"framing-ba"}]},"held_fixed":["arm = Jules label route for every designed dispatch (arm is NOT a factor in the main design; arm varies only in competing-build cb-1, framing held there)","identical template skeleton across levels: same field order, same acceptance-evidence demand, same stop/escalation text; levels differ ONLY in the B phase","provider phrases: NOT ESTABLISHED for the Jules route (phrases SSOT = {deepseek} only, recon 2026-10-31); stamped NOT ESTABLISHED, never silently skipped where a set exists and never invented","repo gates, review route and merge oracle unchanged"],"type":"blocked_single_factor_live","unit_of_observation":"one Jules dispatch (one issue -> one session -> one PR) = one EXPERIMENT record"},"family":"doe","instance_stamps":{"instance_key_rule":"instance_key is computed via scripts/doe/instance_key.py ONLY when provider+model+prompt+tools are all established; while model/tools are NOT ESTABLISHED the record carries treatment.instance = null and the stamp refs in metrics -- a key is never fabricated from partial tuples","mandatory_per_dispatch":"one EXPERIMENT record (docs/ops/corpus/EXPERIMENT.schema.json) in records/, named <block>-<issue_number>.json, with treatment.arm = framing-a|framing-ba and manager_policy_id = doe-mgr-live-builds/live-4/v1","stamp_fields":"system_prompt_ref = prompt:<dispatching-moniker>:<slug>#<sha256[:12] of exact dispatched title+body> (fleet convention, cf. D1 desk-feed rows); tools_ref = NOT ESTABLISHED (Jules API exposes no tool list); model = NOT ESTABLISHED (Jules exposes no model@version); phrases = NOT ESTABLISHED"},"member_kind":"campaign","moniker":"doe-mgr-live-builds","oversight":"doe-expert (44bb4068)","records_home":"experiments/doe/live-4-dispatch-framing/records/","registration":{"note":"Design + assignment sequences committed BEFORE the first designed dispatch (D2 opens 2026-11-03). No Nov-wave dispatch exists yet under this design; nothing is retro-dressed.","preregistered_in_repo":true,"recorded":"2026-10-31"},"responses":{"primary":"rework-free first-pass merge: PR merged AND repo gate green on the merged head AND 0 corrective follow-up dispatches/reopens AND acceptance evidence present in the PR as the template demands","secondary":["sessions_to_merge (Jules sessions + steering messages per issue)","review_rounds (review events per PR, incl. Gemini / DeepSeek-CI / command-dispatch review-arm participation, stamped as review not build)","elapsed_issue_to_merge","scope_excursions (changed files outside the issue's stated scope, diff-inspected)","stall_events (action_required / approval-park / failed runs attached to the dispatch)"]},"status":"admitted_design_only","subject":{"framing_source":"docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md (canonical structure ACTION+TARGET+OUTCOME+SCOPE+CONSTRAINTS+ACCEPTANCE EVIDENCE+STOP/ESCALATION; patterns A-F in section 4)","recon_basis":"docs/ops/DOE-RECON-2026-10-31.md conclusions 1-2, as corrected by PR #2787: Jules = only on-demand build arm; Gemini = event-bound, issue-taskable (#2732 proof); DeepSeek-CI = event/review; command-dispatch = review-arm class","system":"Nov-wave build dispatches to Jules via agent-jules-on-issues (issue + jules label)","wave":[{"arm":"jules","block":"D2","opens":"2026-11-03"},{"arm":"jules","block":"D4","opens":"after 2026-11-08"},{"arm":"jules","block":"M2","opens":"gated on M4","unit":"per-app issues at gate-open"},{"arm":"jules","block":"M3","opens":"gated on M4","unit":"per-app issues at gate-open"}]},"suite_type":"live","surface":"doe"}
+{
+ "base_sha": "2a9a256169a5105098af452423371bf30b36f16f",
+ "campaign_id": "live-4-dispatch-framing",
+ "competing_build_cb1": {
+  "acceptance": "deterministic: all emitted records validate vs EXPERIMENT.schema.json; fork/continuation pairing count exact vs run_history fixture; re-run byte-identical (sha256 equal); run_history hash unchanged",
+  "arm_b_shaping_checklist": [
+   "task rewritten as ONE self-contained issue: full spec, acceptance tests and file scope inside the issue body (Gemini has no workflow_dispatch; nothing may assume on-demand re-dispatch)",
+   "no step depends on device routes (deepseek-termux-agent class) or on files outside the repo",
+   "steering path named in the issue (issue_comment events only) with a bounded number of steering rounds",
+   "shaping verified by doe-expert before either arm is dispatched"
+  ],
+  "arms": [
+   {
+    "arm": "build-a",
+    "route": "Jules, label route (on-demand)"
+   },
+   {
+    "arm": "build-b",
+    "route": "Gemini, crafted-issue route (event-bound; proven #2732 -> run 41223286134 SUCCESS)"
+   }
+  ],
+  "framing_held": "framing-a for BOTH arms (arm is the factor here; framing must not confound it)",
+  "review_arms": "DeepSeek-CI + command-dispatch review both PRs; they are review-arm class, never builders in cb-1",
+  "start_gate": "arm-B shaping checklist complete AND D2 wave dispatches underway; cb-1 never pre-empts the Nov wave",
+  "status": "gated_design_only",
+  "task": "ChronoMancer record emission: an emitter that reads the local run_history SQLite (harmony_hub/workspace/agent/chronomancer.py) and emits fork + continuation as TWO schema-valid EXPERIMENT records, byte-stable on re-run, run_history never mutated",
+  "verdict_rule": "winner = arm passing acceptance with fewer steering interventions (tie: lower elapsed); loser culled with record retained, winner's approach cherry-picked as the emitter-class template"
+ },
+ "constraints": [
+  "zero extra quota: no dispatch, run or session is created for the campaign itself",
+  "experiment rows retained (never deleted)",
+  "verdict only vs the pre-registered decision rule",
+  "blockers escalate as a specific GitHub comment + report to doe-expert, never as a silent stall"
+ ],
+ "decision_rule": {
+  "min_margin": 0.2,
+  "min_n": 12,
+  "text": "Evaluate when >=12 designed dispatches (>=6 per level) across >=2 blocks have records, OR the Nov wave closes 2026-12-04, whichever first. Adopt the winning framing as the default dispatch template iff its primary-rate advantage >= 0.20 AND no contributing block reverses by > 0.20; otherwise no_selection and framing-a (status quo) stays default. Winner propagates by cherry-pick: its template text lands in the dispatch docs via a follow-up PR; the loser level is culled with its records retained (owner definition: rnd + culling + cherry-pick propagation)."
+ },
+ "design": {
+  "assignment": {
+   "analysis_population": "as-assigned (intention-to-treat) primary; as-treated secondary; every deviation recorded in the dispatch record",
+   "binding": "slot k of a block takes sequence[k] at issue creation; seats MUST NOT swap, re-draw or cherry-pick; an issue created outside the sequence is OBSERVATIONAL, never re-labelled designed",
+   "rule": "pre-registered counterbalanced sequences per block (ABBA form, start level alternates by block so wave-level start is not confounded with project): D2 = [ba,a,a,ba, ba,a,a,ba]; D4 = [a,ba,ba,a, a,ba,ba,a]; M2 = [ba,a,a,ba, ba,a,a,ba]; M3 = [a,ba,ba,a, a,ba,ba,a]; slots beyond 8 repeat the block sequence; a=framing-a, ba=framing-ba"
+  },
+  "blocks": "project (D2 | D4 | M2 | M3); within a block, dispatches are paired in dispatch order; the dispatching seat records a pre-assignment size stratum (S|M|L, seat estimate) per task BEFORE seeing its slot assignment",
+  "eligibility": [
+   "genuine build tasks the owning seat would dispatch to Jules anyway (the campaign creates NO dispatch: zero extra quota)",
+   "excluded: urgent/incident fixes, security response, tasks whose text cannot carry the template (e.g. one-line config flips) -- exclusions logged with reason, counted, never hidden",
+   "a block yielding <2 designed dispatches contributes descriptively only"
+  ],
+  "factor": {
+   "framing": [
+    {
+     "definition": "DO pattern A only (Implement or repair, framework section 4A): issue body = templates/framing-a.md with every canonical field filled; no research phase requested.",
+     "level": "framing-a"
+    },
+    {
+     "definition": "DO patterns B>>A (framework sections 4B then 4A): issue body = templates/framing-ba.md; Phase B recon (primary sources, facts/assumptions/gaps separated, gaps ranked) must land as a PR section or issue comment BEFORE implementation evidence; Phase A then implements against the recon.",
+     "level": "framing-ba"
+    }
+   ]
+  },
+  "held_fixed": [
+   "arm = Jules label route for every designed dispatch (arm is NOT a factor in the main design; arm varies only in competing-build cb-1, framing held there)",
+   "identical template skeleton across levels: same field order, same acceptance-evidence demand, same stop/escalation text; levels differ ONLY in the B phase",
+   "provider phrases: NOT ESTABLISHED for the Jules route (phrases SSOT = {deepseek} only, recon 2026-10-31); stamped NOT ESTABLISHED, never silently skipped where a set exists and never invented",
+   "repo gates, review route and merge oracle unchanged"
+  ],
+  "type": "blocked_single_factor_live",
+  "unit_of_observation": "one Jules dispatch (one issue -> one session -> one PR) = one EXPERIMENT record"
+ },
+ "family": "doe",
+ "instance_stamps": {
+  "instance_key_rule": "instance_key is computed via scripts/doe/instance_key.py ONLY when provider+model+prompt+tools are all established; while model/tools are NOT ESTABLISHED the record carries treatment.instance = null and the stamp refs in metrics -- a key is never fabricated from partial tuples",
+  "mandatory_per_dispatch": "one EXPERIMENT record (docs/ops/corpus/EXPERIMENT.schema.json) in records/, named <block>-<issue_number>.json, with treatment.arm = framing-a|framing-ba and manager_policy_id = doe-mgr-live-builds/live-4/v1",
+  "stamp_fields": "system_prompt_ref = prompt:<dispatching-moniker>:<slug>#<sha256[:12] of exact dispatched title+body> (fleet convention, cf. D1 desk-feed rows); tools_ref = NOT ESTABLISHED (Jules API exposes no tool list); model = NOT ESTABLISHED (Jules exposes no model@version); phrases = NOT ESTABLISHED"
+ },
+ "member_kind": "campaign",
+ "moniker": "doe-mgr-live-builds",
+ "oversight": "doe-expert (44bb4068)",
+ "records_home": "experiments/doe/live-4-dispatch-framing/records/",
+ "registration": {
+  "note": "Design + assignment sequences committed BEFORE the first designed dispatch (D2 opens 2026-11-03). No Nov-wave dispatch exists yet under this design; nothing is retro-dressed.",
+  "preregistered_in_repo": true,
+  "recorded": "2026-10-31"
+ },
+ "responses": {
+  "primary": "rework-free first-pass merge: PR merged AND repo gate green on the merged head AND 0 corrective follow-up dispatches/reopens AND acceptance evidence present in the PR as the template demands",
+  "secondary": [
+   "sessions_to_merge (Jules sessions + steering messages per issue)",
+   "review_rounds (review events per PR, incl. Gemini / DeepSeek-CI / command-dispatch review-arm participation, stamped as review not build)",
+   "elapsed_issue_to_merge",
+   "scope_excursions (changed files outside the issue's stated scope, diff-inspected)",
+   "stall_events (action_required / approval-park / failed runs attached to the dispatch)"
+  ]
+ },
+ "status": "superseded",
+ "subject": {
+  "framing_source": "docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md (canonical structure ACTION+TARGET+OUTCOME+SCOPE+CONSTRAINTS+ACCEPTANCE EVIDENCE+STOP/ESCALATION; patterns A-F in section 4)",
+  "recon_basis": "docs/ops/DOE-RECON-2026-10-31.md conclusions 1-2, as corrected by PR #2787: Jules = only on-demand build arm; Gemini = event-bound, issue-taskable (#2732 proof); DeepSeek-CI = event/review; command-dispatch = review-arm class",
+  "system": "Nov-wave build dispatches to Jules via agent-jules-on-issues (issue + jules label)",
+  "wave": [
+   {
+    "arm": "jules",
+    "block": "D2",
+    "opens": "2026-11-03"
+   },
+   {
+    "arm": "jules",
+    "block": "D4",
+    "opens": "after 2026-11-08"
+   },
+   {
+    "arm": "jules",
+    "block": "M2",
+    "opens": "gated on M4",
+    "unit": "per-app issues at gate-open"
+   },
+   {
+    "arm": "jules",
+    "block": "M3",
+    "opens": "gated on M4",
+    "unit": "per-app issues at gate-open"
+   }
+  ]
+ },
+ "suite_type": "live",
+ "superseded_by": "live-1-wave-framing (doe-expert INIT++ WO#1, 2026-10-31): canonical wave-framing design; this seed-minimal design is retained as record, never executed. Its CB-1 ChronoMancer section carries forward as live-1 WO#2 (queued, design-only).",
+ "surface": "doe"
+}

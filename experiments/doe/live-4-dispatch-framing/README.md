@@ -1,3 +1,5 @@
+> **SUPERSEDED by `live-1-wave-framing`** (doe-expert INIT++ WO#1, 2026-10-31) — retained as record, never executed. CB-1 carries forward as live-1 WO#2 (queued).
+
 # live-4-dispatch-framing — dispatch framing × Nov wave (LIVE design)
 
 `[MUSEai]@{role:{doe-mgr-live-builds}}` ⊂ doe-expert oversight

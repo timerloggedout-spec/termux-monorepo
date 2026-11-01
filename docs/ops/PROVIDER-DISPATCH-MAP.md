@@ -97,6 +97,30 @@ reason + session/run id — no stamp ⇒ no dispatch (telemetry gate, 2026-10-30
 (issue #3050, run 41301369671 ✓) stand — distinct providers, rotation-valid, already fired.
 Next D1 dispatch ⇒ a proven lane outside {DeepSeek, Gemini} for its task class, reason stamped.
 
+## Inference availability mapping — the crux (owner emphasis 2026-11-01)
+
+Lane names are not the resolution; **invocability** is. Per-record map for all 91 model-lane
+registry records lives in the feed at `dispatch.provider_catalog.inference_availability.records`
+(fields: id, provider, class, availability_probe, batch, inference_route, registry_live_field).
+
+- **Availability surface** = `provider-availability.yml` → `scripts/provider_availability_probe.py`
+  → `scripts/provider_model_catalog.py` (ENDPOINTS 16: aion, cerebras, felo, gemini, groq,
+  huggingface, kilo, llm7, mistral, modelscope, nvidia, omni, openrouter, ovhcloud, sambanova,
+  siliconflow; SECRETS 17 adds zai = secret-mapped, ∅ catalog endpoint).
+- **Semantics (the surface's own schema):** it proves `credential_present` + `catalog_ok` only —
+  `inference_ok` is false for scheduled probes. Bounded inference legs exist for exactly 2:
+  openrouter (real inference call on credential+catalog ok) ∧ gemini (models list +
+  generateContent-capability check). Coverage ≠ inference proof for the other 14.
+- **Batch surface** = `llm_api_hub/server/research_providers.py` ENDPOINTS (14 provider keys:
+  aion, cerebras, gemini, groq, huggingface, kilo, llm7, mistral, modelscope, nvidia, ovhcloud,
+  sambanova, siliconflow, zai) — the invoke route for the wired-unproven class; currently
+  HELD per #2672.
+- **Summary over 91 records:** by class {'wired-unproven': 22, 'triggerable': 2, 'inference-only': 65, 'proven': 2}; availability-covered
+  16 records (+1 secret-only,
+  74 not covered); batch endpoint-wired 14.
+  The remaining records (g4f family etc.) have **no wired invocable route** — inference-only
+  until the promotion wiring lands; they are named per-record in the feed, not rounded up.
+
 ## Refresh
 
 Cross-ref: Swarm widened rotation of record = SWARM doc §15 (PR #3056). Batch invoke keys live today: cohere / sambanova / zai / llm7 / routeway / unorouter / siliconflow (groq excluded, Actions egress).

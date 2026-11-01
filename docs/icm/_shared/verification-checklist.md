@@ -4,7 +4,7 @@ Use this checklist in `maintenance/03_verify/`. Record results in that stage’s
 
 ## Structure
 
-- [ ] `CLAUDE.md`, `AGENTS.md`, and `routing.md` are byte-identical in each ICM workspace that supplies all three names.
+- [ ] `CLAUDE.md` and `AGENTS.md` are byte-identical in each ICM workspace that supplies both names. (`routing.md` is a separately owned resource, not an alias: verify its links resolve and its contract is current instead.)
 - [ ] Every active working folder has a `CONTEXT.md` with explicit inputs, process, outputs, and human check.
 - [ ] No active pipeline stage is empty; each stage has a contract and an `output/.gitkeep` placeholder.
 - [ ] Factory/reference material and per-run output are structurally separate.

@@ -79,7 +79,7 @@ ci-lane dispatch records.
 |---|---|---|
 | gemini-invoke | `gemini-invoke.yml` | `workflow_call` via gemini-dispatch; invoke job SUCCESS in run 41302651335 (2026-11-01, production issue #3077) — PROVEN |
 | gemini-triage | `gemini-triage.yml` | `workflow_call` via gemini-dispatch; triage job SUCCESS in runs 41301369671 + 41302644454 (2026-11-01) — PROVEN |
-| gemini-review | `gemini-review.yml` | 26 runs, 0 successes, last failure 2026-08-20 |
+| gemini-review | `gemini-review.yml` | `workflow_call` via gemini-dispatch; review job SUCCESS in run 41303090873 (2026-11-01, PR #3080) — PROVEN (standalone history: 26 runs, 0 successes to 2026-08-20) |
 
 ## Triggerable (support / never fired)
 
@@ -104,9 +104,9 @@ All 5 triggerable + 3 wired-unproven lanes fired at production work; classes upd
   `provider-recon-compound` — runs 41302080198 + 41302264142 FAILURE; log-verified: collect
   step pinned-source fetch HTTP 403 (exit 2, publish skipped); fix dispatched to Gemini
   (issue #3077).
-- **Review leg:** `gemini-review` — @gemini-cli /review attempt on PR #3079 (comment
-  6557428651) produced no dispatch run (PR merged mid-storm 11:39:39Z); re-fire rides the PR
-  carrying this section; class stays wired-unproven until a review job runs.
+- **Review leg:** `gemini-review` — first attempt on PR #3079 (comment 6557428651) produced
+  no dispatch run (PR merged mid-storm 11:39:39Z); re-fired on PR #3080 (comment 6557463507)
+  ⇒ dispatch run 41303090873, review job SUCCESS ⇒ PROVEN.
 
 ## Rotation rule (bench-wide)
 

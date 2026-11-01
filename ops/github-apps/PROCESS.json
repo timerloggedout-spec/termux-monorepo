@@ -4,7 +4,8 @@
   "pattern": "TERMUX_FLEET_<ROLE>_* (secret <ROLE>_PRIVATE_KEY + vars <ROLE>_CLIENT_ID / <ROLE>_APP_ID); the create-github-app-token action takes the numeric APP_ID, not the client id (lesson of PR #2427)",
   "probe_app": "APP_PRIVATE_KEY stays UNPROVISIONED BY DESIGN — it belongs to the Checks:write capability-probe identity (PR #800 lineage), never conflated with the Collector",
   "swarm": "PROVISIONED 2026-10-31 (sealed-box via PAT, names-only): TERMUX_FLEET_SWARM_PRIVATE_KEY + TERMUX_FLEET_SWARM_CLIENT_ID + TERMUX_FLEET_SWARM_APP_ID; verified present by read-back (repo secrets census 61 at check)",
-  "crossreference": "PROVISIONED 2026-11-01 (sealed-box via PAT, names-only): TERMUX_FLEET_CROSSREFERENCE_PRIVATE_KEY + TERMUX_FLEET_CROSSREFERENCE_CLIENT_ID + TERMUX_FLEET_CROSSREFERENCE_APP_ID; verified present by read-back (repo secrets census 62 at check)"
+  "crossreference": "PROVISIONED 2026-11-01 (sealed-box via PAT, names-only): TERMUX_FLEET_CROSSREFERENCE_PRIVATE_KEY + TERMUX_FLEET_CROSSREFERENCE_CLIENT_ID + TERMUX_FLEET_CROSSREFERENCE_APP_ID; verified present by read-back (repo secrets census 62 at check)",
+  "repostory": "PROVISIONED 2026-11-01 on timerloggedout-spec/repo-story (sealed-box via PAT, names-only): TERMUX_FLEET_REPOSTORY_PRIVATE_KEY + TERMUX_FLEET_REPOSTORY_CLIENT_ID + TERMUX_FLEET_REPOSTORY_APP_ID; verified present by read-back (repo-story secrets census 1 at check)"
  },
  "allocation_queue": [
   {
@@ -31,7 +32,7 @@
   }
  ],
  "app_repos": {
-  "current": "no app has its own repo; collector = plain dir ops/github-apps/collector-pilot/; .gitmodules carries forks/vendors/mcp only (read 2026-10-30)",
+  "current": "no app has its own repo; collector = plain dir ops/github-apps/collector-pilot/; .gitmodules carries forks/vendors/mcp only (read 2026-10-30); FIRST per-entry case 2026-11-01: RepoStory app is installed on its own competition-entry repo (timerloggedout-spec/repo-story) under the owner build-start rule (PR #3022) — distinct from the per-app-repo proposal below, which stays undecided for the monorepo apps",
   "proposal": "per-app repo timerloggedout-spec/<app-slug> (manifest/profile/avatar/tooling/docs, no secrets) included in termux-monorepo as shallow submodule at ops/github-apps/<role>-pilot/, replacing the plain dir; owner pick at publisher creation"
  },
  "bundle_cadence_2026-10-29": {
@@ -222,9 +223,9 @@
   ],
   "fleet_position": {
    "four_roles_projection": "4 registrations of 100; 20000/h separated installation quota once all installed on termux-monorepo",
-   "owned_apps_established": 7,
+   "owned_apps_established": 8,
    "owned_apps_note": "no REST route lists an account's owned apps; other registrations are NOT ESTABLISHED via API — owner-UI census item of record",
-   "slate_live": "7 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle, Swarm, CrossReference); 35000/h separated installation quota on termux-monorepo (5000/h per app x installation)"
+   "slate_live": "8 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle, Swarm, CrossReference, RepoStory); 35000/h separated installation quota on termux-monorepo (7 apps x 5000/h) + 5000/h on repo-story (RepoStory)"
   },
   "limits": {
    "app_jwt_max_lifetime_min": 10,
@@ -288,9 +289,9 @@
  },
  "how_many_more": {
   "cap_per_owner": 100,
-  "more_on_established_floor": 93,
+  "more_on_established_floor": 92,
   "note": "other owned registrations NOT ESTABLISHED via API (no list-owned-apps REST route)",
-  "owned_established": 7
+  "owned_established": 8
  },
  "lane": "appid-process",
  "later_queue": [
@@ -519,7 +520,7 @@
    ]
   }
  },
- "updated_at": "2026-11-01T08:35Z",
+ "updated_at": "2026-11-01T10:30Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",
@@ -552,6 +553,47 @@
   "slug": "termux-fleet-crossreference",
   "verified": {
    "at": "2026-11-01T08:31Z",
+   "bucket": {
+    "limit": 5000,
+    "remaining": 5000,
+    "used": 0
+   },
+   "installations_count": 1,
+   "routes": [
+    "GET /app (App JWT)",
+    "GET /app/installations",
+    "GET /installation/repositories",
+    "GET /rate_limit (installation token)"
+   ]
+  }
+ },
+ "repostory": {
+  "app_id": 5565297,
+  "avatar": "avatar.png in repostory-pilot package; uploaded 2026-11-01; PNG 1600x1600, 628,938 B <= 1 MB cap",
+  "client_id": "Iv23lir0OJoDVeqXSaRq",
+  "events": [],
+  "installation": {
+   "account": "timerloggedout-spec",
+   "id": 177463385,
+   "repositories": [
+    "repo-story"
+   ],
+   "repository_selection": "selected"
+  },
+  "moniker": "Chronicler · RepoStory",
+  "moniker_detail": "canonical Chronicler; aspect the Annals; queued alt Clio (mark Cl1o, candidate only); leet marks Chr0nicler > Chron1cler (mark layer only); bounces chr0nicler > chron1cler not consumed; issued by registry lane 2026-11-01, docs/ops/AGENT-MONIKERS.md (PR #3027)",
+  "name": "Termux Fleet RepoStory",
+  "permissions": {
+   "contents": "write",
+   "issues": "write",
+   "metadata": "read",
+   "pull_requests": "write"
+  },
+  "public": true,
+  "role": "competition-entry-actor (Repo-Story)",
+  "slug": "termux-fleet-repostory",
+  "verified": {
+   "at": "2026-11-01T10:29Z",
    "bucket": {
     "limit": 5000,
     "remaining": 5000,

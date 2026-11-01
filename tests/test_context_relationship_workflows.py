@@ -133,6 +133,6 @@ def test_historical_backfill_promotion_gate_uses_canonical_master_and_fails_clos
 def test_historical_backfill_promotion_gate_skips_unrelated_pull_requests():
     content = workflow("historical-backfill-promotion-gate.yml")
 
-    assert "pulls/\${PR_NUMBER}/files" in content
+    assert "pulls/${PR_NUMBER}/files" in content
     assert "steps.scope.outputs.check == 'true'" in content
     assert "No canonical backfill/promotion inputs changed" in content

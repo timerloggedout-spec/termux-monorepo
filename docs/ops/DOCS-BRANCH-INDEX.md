@@ -193,6 +193,16 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 
 <!-- END:docs-branch-index -->
 
+## Master-record pointers (hand-maintained, 2026-11-01)
+
+Records on master that had no inbound links at the 2026-11-01 orphan census
+(Repo Organization · Docs lane), linked here so they are reachable. This
+section is hand-maintained and sits outside the generated table above.
+
+- **Certifications:** [CERTIFICATIONS-PROGRAM.md](CERTIFICATIONS-PROGRAM.md) — program of record.
+- **Provider / dispatch:** [PROVIDER-DISPATCH-CAPABILITY.md](PROVIDER-DISPATCH-CAPABILITY.md) · [PROVIDER-DISPATCH-MAP.md](PROVIDER-DISPATCH-MAP.md) · [CONNECTOR-INVENTORY-2026-10-28.md](CONNECTOR-INVENTORY-2026-10-28.md) · [PROVIDER-AUDIT-2026-10-28.md](PROVIDER-AUDIT-2026-10-28.md) · [PROVIDER-AND-LANE-ENUMERATION-AUDIT-2026-10-27.md](PROVIDER-AND-LANE-ENUMERATION-AUDIT-2026-10-27.md)
+- **Fleet / AppID:** [FLEET-LOGS.md](FLEET-LOGS.md) · [PROFILE-COMPLETION.md](PROFILE-COMPLETION.md) · [COLLECTOR-BOOTSTRAP.md](COLLECTOR-BOOTSTRAP.md) · pilot profiles: [collector](../../ops/github-apps/collector-pilot/PROFILE.md) · [crossreference](../../ops/github-apps/crossreference-pilot/PROFILE.md) · [gate](../../ops/github-apps/gate-pilot/PROFILE.md) · [lifecycle](../../ops/github-apps/lifecycle-pilot/PROFILE.md) · [publisher](../../ops/github-apps/publisher-pilot/PROFILE.md) · [repostory](../../ops/github-apps/repostory-pilot/PROFILE.md) · [reviewer](../../ops/github-apps/reviewer-pilot/PROFILE.md) · [swarm](../../ops/github-apps/swarm-pilot/PROFILE.md)
+
 ## How this is maintained
 
 - **CI:** `.github/workflows/docs-branch-index.yml` (schedule + `workflow_dispatch`).

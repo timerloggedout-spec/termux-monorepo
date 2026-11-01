@@ -2047,7 +2047,69 @@
     ],
     "note": "Wiring target per owner escalation to Swarm: every not_wired provider gets an invoke route (batch endpoint or catalog endpoint) or a named blocker of record. Counts: 89 distinct providers = 17 wired-invoke + 72 not-wired."
    },
-   "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated."
+   "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated.",
+   "app_layer": {
+    "note": "Fleet App layer of record (owner-ordered record via main, 2026-11-01; paths verified firsthand by fix seat @master). The fleet's historical record + the telemetry code wired into the Desk. Distinct from the inference bench: this is the IDENTITY layer (see inference_wiring note).",
+    "record": {
+     "process": "ops/github-apps/PROCESS.json (blob efbc50c26ecd, 27,940B; bundle record PR #2479)",
+     "process_doc": "docs/ops/GITHUB-APP-PROCESS.md (blob fb527f61ab91)"
+    },
+    "code": {
+     "telemetry": "scripts/github/github_app_telemetry.py (blob 6a29ff1ef139) + scripts/github/publish_github_app_telemetry.py (blob 32215bc3a8f4) (+ tests)",
+     "runner": ".github/workflows/github-app-telemetry.yml (blob 6637f7abec0e)",
+     "doc": "docs/ops/GITHUB-APP-FLEET-TELEMETRY.md (blob c454872743d1)",
+     "output": "ops/github-apps/observations/** (runs 2026-10-30 -> 2026-11-01) feeding desk-feed"
+    },
+    "telemetry_identity": {
+     "app": "Termux Fleet Collector",
+     "app_id": 5535733,
+     "slug": "termux-fleet-collector",
+     "mint": "vars TERMUX_FLEET_COLLECTOR_APP_ID / secret TERMUX_FLEET_COLLECTOR_PRIVATE_KEY (SEC-03); probe target termux-fleet-collector"
+    },
+    "slate": [
+     {
+      "app": "Termux Fleet Collector",
+      "app_id": 5535733,
+      "segment": "collection"
+     },
+     {
+      "app": "Termux Fleet Publisher",
+      "app_id": 5537873,
+      "segment": "contents/PR write"
+     },
+     {
+      "app": "Termux Fleet Reviewer",
+      "app_id": 5539430,
+      "segment": "PR reviews"
+     },
+     {
+      "app": "Termux Fleet Gate",
+      "app_id": 5539499,
+      "segment": "checks/annotations"
+     },
+     {
+      "app": "Termux Fleet Lifecycle",
+      "app_id": 5539639,
+      "segment": "issues"
+     },
+     {
+      "app": "Termux Fleet Swarm",
+      "app_id": 5560920,
+      "segment": "workflow actor"
+     },
+     {
+      "app": "Termux Fleet CrossReference",
+      "app_id": 5564430,
+      "segment": "RE/apk-xref"
+     },
+     {
+      "app": "Termux Fleet RepoStory",
+      "app_id": 5565297,
+      "segment": "repo-story repo only"
+     }
+    ],
+    "fleet_apk_note": "Fleet APK (apps/fleet-apk, com.timerloggedout.fleet) is NOT a 9th fleet app: two independent recons (2026-11-01) established no bare-Fleet GitHub App ever existed; its signing keystore was never provisioned (v0.1.0 shipped ephemeral-debug)."
+   }
   }
  },
  "traversals": [

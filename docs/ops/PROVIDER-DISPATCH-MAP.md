@@ -88,6 +88,21 @@ ci-lane dispatch records.
 2026-10-30 — the promotion arm) · `provider-recon-compound` (57 runs, last success 2026-10-27) ·
 `quota-dispatch-tree` (51 runs, last success 2026-11-01 — routing support, not a build lane).
 
+## App layer (identity, not inference)
+
+- Record: `ops/github-apps/PROCESS.json` (blob efbc50c26ecd; bundle record PR #2479) +
+  `docs/ops/GITHUB-APP-PROCESS.md`.
+- Code wired into the Desk: `scripts/github/github_app_telemetry.py` +
+  `scripts/github/publish_github_app_telemetry.py` (+ tests), runner
+  `.github/workflows/github-app-telemetry.yml`, doc `docs/ops/GITHUB-APP-FLEET-TELEMETRY.md`;
+  output `ops/github-apps/observations/**` (2026-10-30 -> 2026-11-01) feeding desk-feed.
+- Telemetry identity: **Termux Fleet Collector — App 5535733** (mints via vars
+  TERMUX_FLEET_COLLECTOR_APP_ID / secret TERMUX_FLEET_COLLECTOR_PRIVATE_KEY, SEC-03).
+- Slate: Collector 5535733 · Publisher 5537873 · Reviewer 5539430 · Gate 5539499 ·
+  Lifecycle 5539639 · Swarm 5560920 · CrossReference 5564430 · RepoStory 5565297 (repo-story only).
+- Fleet APK is NOT a 9th app (two recons, 2026-11-01: no bare-Fleet GitHub App ever existed;
+  its keystore was never provisioned — v0.1.0 shipped ephemeral-debug).
+
 ## Batch outcomes — BATCH ALL TRIGGERABLE (owner order 2026-11-01)
 
 All 5 triggerable + 3 wired-unproven lanes fired at production work; classes updated on evidence:

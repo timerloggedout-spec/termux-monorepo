@@ -1,1 +1,60 @@
-{"attempts":[{"attempt":1,"error":"NOT ESTABLISHED (result artifact not API-readable; error class established by attempt 2 on identical job+route)","run_id":41260810041,"run_url":"https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41260810041","status":"error_send_step_failed"},{"attempt":2,"error":"http 404: deepseek/deepseek-r1:free is no longer available on OpenRouter: no provider serves this model anymore (OpenRouter error body, verbatim in log comment)","log_comment":"https://github.com/timerloggedout-spec/termux-monorepo/issues/2830#issuecomment-6551765728","run_id":41261147088,"run_url":"https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41261147088","status":"error_http_404_model_unavailable"}],"campaign_id":"live-3-phrases-deepseek","cell":"suffix-vowels","dispatch_no":1,"findings_actioned":null,"findings_posted":null,"instance_key":"9dfabcd6f25fce976ebf42983a632a31866b2c0b79edbc5693e5e7621cda8027","job":"experiments/doe/live-3-phrases-deepseek/dispatch/job-0001-pr2436.json","model":"deepseek/deepseek-r1:free","outcome":"failed_route_model_delisted","prompt_sha256":"3049363b2ea4f2ad64f2590ee4b81820fb31169e4125aa6ea66ab65b6b19e0c8","recorded_at":"2026-11-01T01:30:00Z","route":"openrouter","route_evidence":{"account":"fleet OPENROUTER_API_KEY is_free_tier=true, total_credits=0, never purchased; paid calls return HTTP 402 (quota lane probe, PR #2828 merged 1ca84ff30d2d, run 41261080142)","live_catalog":"OpenRouter public /models fetched 2026-11-01T01:29Z by this lane: 452 models, DeepSeek entries = 19, ALL paid (no :free DeepSeek variant exists); deepseek/deepseek-r1:free absent"},"schema_note":"Campaign dispatch record (not an EXPERIMENT response record: no model response exists to score). findings_* stay null — a failed dispatch is an outcome, never silently retried or re-labelled.","status":"dispatch_failed","task":{"pr":2436,"pr_head":"8799651cadbe3f420cebfd2580dd8edcf2dba822","type":"pr_review"}}
+{
+ "alt_attempt": {
+  "design_amendment": "PR #2849 merged bea5d4036360 (dispatch.state=alt_route_active_deepseek_ci, automation.route fields)",
+  "outcome": "response_not_observed_measurement_gap",
+  "output_artifact": "deepseek-output (364B) \u2014 docs/ops/DEEPSEEK-CI.md: 'Output JSON is metadata only (no model text)'; model text exists only in run logs/artifacts, not on any PAT-readable surface",
+  "pr_head_after": "8799651cadbe3f420cebfd2580dd8edcf2dba822 (unchanged \u2014 no pushes, review-only respected)",
+  "prompt_delivery": "trigger comment carries the composed prompt verbatim (sha re-verified against the master job file before posting) inside a dispatch envelope with a review-only/no-push instruction",
+  "response_observed": false,
+  "route": "deepseek-ci comment surface (ALT, doe-expert ruling 2026-10-31)",
+  "run_conclusion": "success (all steps success incl. 'Run DeepSeek CI Agent'; failure diagnostics skipped)",
+  "run_id": 41262242878,
+  "surfaces_checked": [
+   "PR #2436 issue comments (18 total, latest = the trigger comment itself)",
+   "PR #2436 reviews (0)",
+   "PR #2436 review comments (0)",
+   "repo issues created in window (none by the agent)"
+  ],
+  "trigger_comment": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2436#issuecomment-6551908647"
+ },
+ "attempts": [
+  {
+   "attempt": 1,
+   "error": "NOT ESTABLISHED (result artifact not API-readable; error class established by attempt 2 on identical job+route)",
+   "run_id": 41260810041,
+   "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41260810041",
+   "status": "error_send_step_failed"
+  },
+  {
+   "attempt": 2,
+   "error": "http 404: deepseek/deepseek-r1:free is no longer available on OpenRouter: no provider serves this model anymore (OpenRouter error body, verbatim in log comment)",
+   "log_comment": "https://github.com/timerloggedout-spec/termux-monorepo/issues/2830#issuecomment-6551765728",
+   "run_id": 41261147088,
+   "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41261147088",
+   "status": "error_http_404_model_unavailable"
+  }
+ ],
+ "campaign_id": "live-3-phrases-deepseek",
+ "cell": "suffix-vowels",
+ "dispatch_no": 1,
+ "findings_actioned": null,
+ "findings_posted": 0,
+ "instance_key": "9dfabcd6f25fce976ebf42983a632a31866b2c0b79edbc5693e5e7621cda8027",
+ "job": "experiments/doe/live-3-phrases-deepseek/dispatch/job-0001-pr2436.json",
+ "model": "deepseek/deepseek-r1:free",
+ "outcome": "alt_dispatched_no_readable_response",
+ "prompt_sha256": "3049363b2ea4f2ad64f2590ee4b81820fb31169e4125aa6ea66ab65b6b19e0c8",
+ "recorded_at": "2026-11-01T01:30:00Z",
+ "route": "openrouter",
+ "route_evidence": {
+  "account": "fleet OPENROUTER_API_KEY is_free_tier=true, total_credits=0, never purchased; paid calls return HTTP 402 (quota lane probe, PR #2828 merged 1ca84ff30d2d, run 41261080142)",
+  "live_catalog": "OpenRouter public /models fetched 2026-11-01T01:29Z by this lane: 452 models, DeepSeek entries = 19, ALL paid (no :free DeepSeek variant exists); deepseek/deepseek-r1:free absent"
+ },
+ "schema_note": "Campaign dispatch record (not an EXPERIMENT response record: no model response exists to score). findings_* stay null \u2014 a failed dispatch is an outcome, never silently retried or re-labelled.",
+ "status": "dispatched_alt_response_not_observed",
+ "task": {
+  "pr": 2436,
+  "pr_head": "8799651cadbe3f420cebfd2580dd8edcf2dba822",
+  "type": "pr_review"
+ }
+}

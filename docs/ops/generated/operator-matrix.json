@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 371,
-    "open_prs": 159,
+    "open_prs": 160,
     "pr_classes": {
-      "CANDIDATE": 78,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 76,
+      "CANDIDATE": 77,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 30,
-      "prs": 157,
+      "prs": 158,
       "unlabelled_numbers": [
         308,
         343,
@@ -85,7 +85,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T08:17:20Z",
+  "generated_at": "2026-11-01T08:18:26Z",
   "issues_unlabelled": [
     308,
     343,
@@ -124,7 +124,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "5674fc33de"
+    "sha": "081d947bbf"
   },
   "prs": [
     {
@@ -196,6 +196,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "1114e05a24",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T09:17:28Z"
     },
     {
       "class": "CANDIDATE",
@@ -965,20 +979,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "26f14da48a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T09:15:21Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1289,7 +1289,7 @@
       },
       "head_sha": "2841026378",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2980,
       "title": "feat(orbital): add independent radial hierarchy layout lab",
       "updated_at": "2026-11-01T07:22:31Z"
@@ -1849,7 +1849,7 @@
       },
       "head_sha": "9f68f237e0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2324,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-01T09:15:23Z"
@@ -2351,12 +2351,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "34f30812fd",
+      "head_sha": "02def2ef19",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T07:46:30Z"
+      "updated_at": "2026-11-01T09:18:07Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "19a65902d5",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3006,
+      "title": "Proposals feed: emit pass outcomes (ballot-verbatim) + subset-parser hardening + registry house-style restore",
+      "updated_at": "2026-11-01T09:18:16Z"
     }
   ],
   "schema": "operator-matrix/v1",

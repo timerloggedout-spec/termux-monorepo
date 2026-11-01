@@ -149,3 +149,12 @@ Planning is **not** a manual ritual — it runs as repo automation
 - Collector cost accounting per workflow (feeds §4 reserve forecast).
 - Vercel rolling-window pacing (referred to Vercel Specialist with
   the derived-reserve pattern, cadence lane 2026-10-29).
+
+## Schema naming — the `3l0.` prefix (quota lane ruling, 2026-10-31)
+
+Owner question (via `viz-dispatch-tree`): why does the registry schema carry the `3l0.` prefix?
+
+- Provenance, not ownership. Founding commit `4fe260e707` (2026-10-19, PR #1280) = "quota registry + poller feeding 3L0 weights": the registry was born as the 3L0 plane's feed, and v1 keeps its birth name. Quota lane owns the schema CONTENT regardless of prefix (single SSOT, exact-string references).
+- Census @2026-10-31: the prefix survives on exactly the two oldest surfaces — `3l0.quota-registry.v1` (registry) + `3l0.quota-readings.v1` (quota-status) — while newer surfaces already carry quota-owned names (`quota-allocations/v1`, `quota-allocation-plan/v1`).
+- RULING: keep for v1. A rename now is pure churn across string-matching consumers (quota_tui.py, quota.html, desk-feed keyed on it 2026-10-31) with breakage risk and zero information gain.
+- Rule: schema names change ONLY bundled with a functional major bump. At registry/readings v2 (the readings consumer-axis work is the natural carrier), names become `quota.registry.v2` / `quota.readings.v2` via a dual-accept window (consumers accept both strings for one cycle) + one consumer-sweep PR, flagged to viz with the old→new pair before landing (mapping-key flag protocol, 2026-10-31).

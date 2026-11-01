@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T12:02:35Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T12:04:27Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `75719f37c1` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `15b7321458` (hygiene: queued, smoke: success). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 384 issues, 168 PRs. PR classes: EXTRACT 5 / CANDIDATE 80 / NEED_EVIDENCE 83 / SUPERSEDE 0.
+**Open inventory:** 384 issues, 168 PRs. PR classes: EXTRACT 5 / CANDIDATE 79 / NEED_EVIDENCE 84 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -19,22 +19,22 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
-| #386 | CANDIDATE | other | `3c2511dbab` | success | success | dirty | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
-| #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | dirty | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
-| #527 | CANDIDATE | unlabelled | `60fc3e697b` | success | success | dirty | ops: close admission and pagination stall evidence gaps |
+| #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
+| #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
+| #527 | CANDIDATE | unlabelled | `60fc3e697b` | success | success | unknown | ops: close admission and pagination stall evidence gaps |
 | #578 | CANDIDATE | unlabelled | `47868ebb21` | success | success | unknown | feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster |
-| #605 | CANDIDATE | unlabelled | `b8b624d149` | success | success | dirty | feat(ar-18): extend dynamic capability spine with Paper2Agent research |
+| #605 | CANDIDATE | unlabelled | `b8b624d149` | success | success | unknown | feat(ar-18): extend dynamic capability spine with Paper2Agent research |
 | #752 | CANDIDATE | unlabelled | `b437529907` | success | success | unknown | feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts |
 | #761 | CANDIDATE | unlabelled | `f3473cadfe` | success | success | unknown | lane: Desktop Commander fork + Android execution alternatives |
-| #829 | CANDIDATE | unlabelled | `0c5d29e473` | success | success | dirty | feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support |
+| #829 | CANDIDATE | unlabelled | `0c5d29e473` | success | success | unknown | feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support |
 | #970 | CANDIDATE | unlabelled | `4544ed8201` | success | success | unknown | Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alte |
-| #1278 | CANDIDATE | unlabelled | `e650476044` | success | success | dirty | ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) — REV |
-| #1301 | CANDIDATE | unlabelled | `4d18fdff62` | success | success | dirty | docs(telemetry): add equation registry and Wolfram verification |
+| #1278 | CANDIDATE | unlabelled | `e650476044` | success | success | unknown | ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) — REV |
+| #1301 | CANDIDATE | unlabelled | `4d18fdff62` | success | success | unknown | docs(telemetry): add equation registry and Wolfram verification |
 | #1436 | CANDIDATE | unlabelled | `db77673cf7` | success | success | unknown | feat(dashboard): salvage operational Hindsight dashboard onto current master |
-| #1441 | CANDIDATE | unlabelled | `e17f7db4a0` | success | success | dirty | feat(triage): reconcile official quota before dispatch |
+| #1441 | CANDIDATE | unlabelled | `e17f7db4a0` | success | success | unknown | feat(triage): reconcile official quota before dispatch |
 | #1469 | CANDIDATE | unlabelled | `c7f74de860` | success | success | unknown | test(observatory): restore upstream provenance PR validation |
-| #1470 | CANDIDATE | unlabelled | `d2778bcc25` | success | success | dirty | feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| #1494 | CANDIDATE | unlabelled | `8464945ec4` | success | success | dirty | 📖 Linguist: conversational steganography cipher & notation matrices |
+| #1470 | CANDIDATE | unlabelled | `d2778bcc25` | success | success | unknown | feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| #1494 | CANDIDATE | unlabelled | `8464945ec4` | success | success | unknown | 📖 Linguist: conversational steganography cipher & notation matrices |
 | #1499 | CANDIDATE | unlabelled | `0c3049a96f` | success | success | unknown | 🛡️ Sentinel: prevent parent symlink hijacking in obsidian server token read |
 | #1510 | CANDIDATE | unlabelled | `559607ff39` | success | success | unknown | ⚡ Bolt: optimize workflow catalog generation and fingerprint caching |
 | #1513 | CANDIDATE | unlabelled | `04c92a1763` | success | success | unknown | test(observatory): verify Gravitee fork upstream identity |
@@ -57,7 +57,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1632 | CANDIDATE | unlabelled | `11ad920652` | success | success | unknown | ⚡ Bolt: optimize hex moneyball export stream serialization |
 | #1640 | CANDIDATE | unlabelled | `8d4903f354` | success | success | unknown | ci: enforce explicit justification for dismissed reviews in merge readiness engi |
 | #1642 | CANDIDATE | unlabelled | `bc797513fa` | success | success | unknown | 📖 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping |
-| #1650 | CANDIDATE | unlabelled | `fe37ab59ae` | success | success | dirty | phantom-secrets-audit: comment-wake trigger + #184 ledger report |
+| #1650 | CANDIDATE | unlabelled | `fe37ab59ae` | success | success | unknown | phantom-secrets-audit: comment-wake trigger + #184 ledger report |
 | #1659 | CANDIDATE | unlabelled | `d2f37b0324` | success | success | unknown | 🛡️ Sentinel: Fix symlink traversal and umask permission exposure in DeepCLI expo |
 | #1671 | CANDIDATE | unlabelled | `276350ba12` | success | success | unknown | ⚡ Bolt: pre-compile language regexes and priority map in tribute_system1 |
 | #1677 | CANDIDATE | unlabelled | `dcd3bba490` | success | success | unknown | fix(help-wanted): fail closed on placeholder work and stale eligibility |
@@ -97,24 +97,23 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3034 | CANDIDATE | unlabelled | `2f5be5dbd7` | success | success | unknown | [Draft] Independent Foresight Landscape Explorer track |
 | #3037 | CANDIDATE | unlabelled | `0341bb2367` | success | success | unknown | docs(rfp): BLU View 5 mobile-first independent evaluation |
 | #3063 | CANDIDATE | unlabelled | `89202fe235` | success | success | unknown | viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema p |
-| #3102 | CANDIDATE | unlabelled | `70fda9342e` | success | success | unknown | StudySprint RSVP multi-pass reader core — study_reader.py |
-| #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | dirty | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
+| #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
-| #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | dirty | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
-| #92 | NEED_EVIDENCE | unlabelled | `f6935fbc15` | not_reported | not_reported | dirty | sec(workflows): harden permissions, pin SHAs, and fix prompt injection |
-| #103 | NEED_EVIDENCE | unlabelled | `da109a5469` | not_reported | not_reported | dirty | feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_C |
-| #125 | NEED_EVIDENCE | unlabelled | `b7e4709b50` | not_reported | not_reported | dirty | analyze agentic workflows and peer coordination rules |
-| #143 | NEED_EVIDENCE | unlabelled | `c154540e4b` | not_reported | not_reported | dirty | Integrate MCP Agent Mail Coordination Layer in GitHub Actions |
-| #390 | NEED_EVIDENCE | unlabelled | `6b3dcec308` | not_reported | not_reported | dirty | docs: formalize category-theoretic notation sets and cross-domain mappings |
-| #684 | NEED_EVIDENCE | unlabelled | `4e7550f334` | not_reported | not_reported | dirty | ops: unify GitHub Actions operations cadence |
-| #740 | NEED_EVIDENCE | unlabelled | `1116653009` | not_reported | not_reported | dirty | feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter |
-| #762 | NEED_EVIDENCE | unlabelled | `4dc4f9360d` | not_reported | not_reported | dirty | ops: map live plugin connector surface and parity skills |
+| #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
+| #92 | NEED_EVIDENCE | unlabelled | `f6935fbc15` | not_reported | not_reported | unknown | sec(workflows): harden permissions, pin SHAs, and fix prompt injection |
+| #103 | NEED_EVIDENCE | unlabelled | `da109a5469` | not_reported | not_reported | unknown | feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_C |
+| #125 | NEED_EVIDENCE | unlabelled | `b7e4709b50` | not_reported | not_reported | unknown | analyze agentic workflows and peer coordination rules |
+| #143 | NEED_EVIDENCE | unlabelled | `c154540e4b` | not_reported | not_reported | unknown | Integrate MCP Agent Mail Coordination Layer in GitHub Actions |
+| #390 | NEED_EVIDENCE | unlabelled | `6b3dcec308` | not_reported | not_reported | unknown | docs: formalize category-theoretic notation sets and cross-domain mappings |
+| #684 | NEED_EVIDENCE | unlabelled | `4e7550f334` | not_reported | not_reported | unknown | ops: unify GitHub Actions operations cadence |
+| #740 | NEED_EVIDENCE | unlabelled | `1116653009` | not_reported | not_reported | unknown | feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter |
+| #762 | NEED_EVIDENCE | unlabelled | `4dc4f9360d` | not_reported | not_reported | unknown | ops: map live plugin connector surface and parity skills |
 | #764 | NEED_EVIDENCE | unlabelled | `623da833f4` | not_reported | not_reported | unknown | lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap |
-| #769 | NEED_EVIDENCE | unlabelled | `0c6249c974` | not_reported | not_reported | dirty | feat(tagging): cron multi-category GitHub tagging refresh |
+| #769 | NEED_EVIDENCE | unlabelled | `0c6249c974` | not_reported | not_reported | unknown | feat(tagging): cron multi-category GitHub tagging refresh |
 | #958 | NEED_EVIDENCE | unlabelled | `8d466671a1` | failure | success | unknown | feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub |
-| #969 | NEED_EVIDENCE | unlabelled | `c57ef4d83c` | not_reported | not_reported | dirty | feat(experiment): Delphic Bayesian Oracle × Observatory lab |
-| #990 | NEED_EVIDENCE | unlabelled | `9d2bb548dd` | not_reported | not_reported | dirty | feat(foresight): wire agent safety, orchestration, provenance, and gated edge la |
-| #1020 | NEED_EVIDENCE | unlabelled | `a0248773ca` | not_reported | not_reported | dirty | feat: close provider continuity and executable routing gaps |
+| #969 | NEED_EVIDENCE | unlabelled | `c57ef4d83c` | not_reported | not_reported | unknown | feat(experiment): Delphic Bayesian Oracle × Observatory lab |
+| #990 | NEED_EVIDENCE | unlabelled | `9d2bb548dd` | not_reported | not_reported | unknown | feat(foresight): wire agent safety, orchestration, provenance, and gated edge la |
+| #1020 | NEED_EVIDENCE | unlabelled | `a0248773ca` | not_reported | not_reported | unknown | feat: close provider continuity and executable routing gaps |
 | #1274 | NEED_EVIDENCE | unlabelled | `61b2d94eb2` | not_reported | not_reported | unknown | [draft reference] planning-queue: Platform201 queue backend (not for deploy) |
 | #1495 | NEED_EVIDENCE | unlabelled | `8c8c2f3078` | not_reported | not_reported | unknown | feat(quota): full mappings, GitHub safeguards and publication visibility |
 | #1515 | NEED_EVIDENCE | unlabelled | `62492b4397` | not_reported | not_reported | unknown | feat(ates): correlate Phase C run and event evidence |
@@ -127,7 +126,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `b28fe66e40` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `419ea83634` | queued | queued | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `419ea83634` | success | queued | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `fa7399b4e6` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -138,7 +137,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `d7fc5e1c4f` | in_progress | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `d076d5b86a` | queued | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `660d086004` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -174,13 +173,14 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `f57ebee62d` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `40badfcab1` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3035 | NEED_EVIDENCE | unlabelled | `e358823bab` | not_reported | not_reported | unknown | [Draft] Independent RFP: foresight platform evaluation |
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3107 | NEED_EVIDENCE | unlabelled | `46dbbc0d32` | queued | queued | unstable | desk-feed: D2 queue leg closed (kickoff mechanics outside batch) |
+| #3102 | NEED_EVIDENCE | unlabelled | `1fb00a2e7f` | queued | in_progress | unstable | StudySprint RSVP multi-pass reader core — study_reader.py |
+| #3107 | NEED_EVIDENCE | unlabelled | `46dbbc0d32` | in_progress | success | unstable | desk-feed: D2 queue leg closed (kickoff mechanics outside batch) |
 
 ## Families (open)
 

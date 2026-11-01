@@ -3,9 +3,9 @@
     "open_issues": 384,
     "open_prs": 168,
     "pr_classes": {
-      "CANDIDATE": 80,
+      "CANDIDATE": 79,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 83,
+      "NEED_EVIDENCE": 84,
       "SUPERSEDE": 0
     }
   },
@@ -93,7 +93,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T12:02:35Z",
+  "generated_at": "2026-11-01T12:04:27Z",
   "issues_unlabelled": [
     308,
     343,
@@ -138,9 +138,9 @@
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
       "hygiene": "queued",
-      "smoke": "queued"
+      "smoke": "success"
     },
-    "sha": "75719f37c1"
+    "sha": "15b7321458"
   },
   "prs": [
     {
@@ -238,7 +238,7 @@
       "labels": [
         "BIUDL"
       ],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 386,
       "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
       "updated_at": "2026-08-30T11:56:02Z"
@@ -252,7 +252,7 @@
       },
       "head_sha": "53b1319d97",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 407,
       "title": "\u26a1 Bolt: optimize Bellman-Ford graph search in arbitrage engine",
       "updated_at": "2026-09-03T20:03:43Z"
@@ -266,7 +266,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-10-31T12:48:28Z"
@@ -294,7 +294,7 @@
       },
       "head_sha": "b8b624d149",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 605,
       "title": "feat(ar-18): extend dynamic capability spine with Paper2Agent research",
       "updated_at": "2026-10-23T07:40:01Z"
@@ -336,7 +336,7 @@
       },
       "head_sha": "0c5d29e473",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 829,
       "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
       "updated_at": "2026-09-25T01:08:41Z"
@@ -364,7 +364,7 @@
       },
       "head_sha": "e650476044",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1278,
       "title": "ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) \u2014 REVIEW, do not auto-merge",
       "updated_at": "2026-10-23T07:40:09Z"
@@ -378,7 +378,7 @@
       },
       "head_sha": "4d18fdff62",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1301,
       "title": "docs(telemetry): add equation registry and Wolfram verification",
       "updated_at": "2026-10-20T07:17:41Z"
@@ -406,7 +406,7 @@
       },
       "head_sha": "e17f7db4a0",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1441,
       "title": "feat(triage): reconcile official quota before dispatch",
       "updated_at": "2026-10-26T23:11:16Z"
@@ -434,7 +434,7 @@
       },
       "head_sha": "d2778bcc25",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1470,
       "title": "feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
       "updated_at": "2026-10-23T13:34:11Z"
@@ -448,7 +448,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-10-31T12:48:47Z"
@@ -773,7 +773,7 @@
       },
       "head_sha": "fe37ab59ae",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1650,
       "title": "phantom-secrets-audit: comment-wake trigger + #184 ledger report",
       "updated_at": "2026-10-25T02:14:09Z"
@@ -1325,20 +1325,6 @@
       "updated_at": "2026-11-01T11:28:45Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "70fda9342e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3102,
-      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
-      "updated_at": "2026-11-01T11:56:53Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1347,7 +1333,7 @@
       },
       "head_sha": "11b61f8139",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 47,
       "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
       "updated_at": "2026-10-23T13:34:06Z"
@@ -1375,7 +1361,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -1389,7 +1375,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -1403,7 +1389,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-10-31T12:48:36Z"
@@ -1417,7 +1403,7 @@
       },
       "head_sha": "b7e4709b50",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 125,
       "title": "analyze agentic workflows and peer coordination rules",
       "updated_at": "2026-10-24T23:34:10Z"
@@ -1431,7 +1417,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -1445,7 +1431,7 @@
       },
       "head_sha": "6b3dcec308",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 390,
       "title": "docs: formalize category-theoretic notation sets and cross-domain mappings",
       "updated_at": "2026-09-03T22:51:06Z"
@@ -1459,7 +1445,7 @@
       },
       "head_sha": "4e7550f334",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 684,
       "title": "ops: unify GitHub Actions operations cadence",
       "updated_at": "2026-10-23T13:34:16Z"
@@ -1473,7 +1459,7 @@
       },
       "head_sha": "1116653009",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 740,
       "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
       "updated_at": "2026-10-25T00:44:19Z"
@@ -1487,7 +1473,7 @@
       },
       "head_sha": "4dc4f9360d",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 762,
       "title": "ops: map live plugin connector surface and parity skills",
       "updated_at": "2026-09-23T09:26:30Z"
@@ -1515,7 +1501,7 @@
       },
       "head_sha": "0c6249c974",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 769,
       "title": "feat(tagging): cron multi-category GitHub tagging refresh",
       "updated_at": "2026-10-22T22:26:28Z"
@@ -1543,7 +1529,7 @@
       },
       "head_sha": "c57ef4d83c",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-10-21T04:40:59Z"
@@ -1557,7 +1543,7 @@
       },
       "head_sha": "9d2bb548dd",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 990,
       "title": "feat(foresight): wire agent safety, orchestration, provenance, and gated edge lanes",
       "updated_at": "2026-10-23T07:40:13Z"
@@ -1571,7 +1557,7 @@
       },
       "head_sha": "a0248773ca",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1020,
       "title": "feat: close provider continuity and executable routing gaps",
       "updated_at": "2026-10-23T07:40:17Z"
@@ -1748,7 +1734,7 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "success",
         "smoke": "queued"
       },
       "head_sha": "419ea83634",
@@ -1902,15 +1888,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "d7fc5e1c4f",
+      "head_sha": "d076d5b86a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T12:00:59Z"
+      "updated_at": "2026-11-01T12:04:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2409,12 +2395,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f57ebee62d",
+      "head_sha": "40badfcab1",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T12:01:13Z"
+      "updated_at": "2026-11-01T12:03:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2491,14 +2477,28 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "in_progress"
+      },
+      "head_sha": "1fb00a2e7f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3102,
+      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
+      "updated_at": "2026-11-01T12:03:39Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
       "head_sha": "46dbbc0d32",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3107,
       "title": "desk-feed: D2 queue leg closed (kickoff mechanics outside batch)",
-      "updated_at": "2026-11-01T12:02:29Z"
+      "updated_at": "2026-11-01T12:03:15Z"
     }
   ],
   "schema": "operator-matrix/v1",

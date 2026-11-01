@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 153,
+    "open_prs": 154,
     "pr_classes": {
       "CANDIDATE": 69,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 78,
+      "EXTRACT": 8,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 151,
+      "prs": 152,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T01:37:15Z",
+  "generated_at": "2026-11-01T01:41:05Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "289b8dd6cc"
+    "sha": "a2d8356d34"
   },
   "prs": [
     {
@@ -202,12 +202,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "34be2eabe4",
+      "head_sha": "f594bea768",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2839,
-      "title": "probe(quota): OpenRouter free-counter LARGE probe \u2014 1 paid call, ~100k input tokens",
-      "updated_at": "2026-11-01T01:36:28Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T01:38:44Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8799651cad",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2436,
+      "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Prevent path traversal and symlink hijacking in cookie loading",
+      "updated_at": "2026-10-30T07:47:41Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3d93bd7c7f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2844,
+      "title": "doe(live-3): automation unify + numbering fix (phrases-jit review amends on #2836)",
+      "updated_at": "2026-11-01T01:40:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -1061,20 +1089,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8799651cad",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2436,
-      "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Prevent path traversal and symlink hijacking in cookie loading",
-      "updated_at": "2026-10-30T07:47:41Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "4460c735a2",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1179,6 +1193,20 @@
       "number": 2757,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-10-31T22:20:31Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "34be2eabe4",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2839,
+      "title": "probe(quota): OpenRouter free-counter LARGE probe \u2014 1 paid call, ~100k input tokens",
+      "updated_at": "2026-11-01T01:36:28Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1590,20 +1618,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "2078ba8f5e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:36:57Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1777,7 +1791,7 @@
       },
       "head_sha": "7187890729",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 2324,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-10-30T23:40:56Z"
@@ -1833,7 +1847,7 @@
       },
       "head_sha": "529ec2dc60",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2377,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T02:08:01Z"
@@ -2141,7 +2155,7 @@
       },
       "head_sha": "02496c37d4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2581,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T01:13:11Z"
@@ -2262,15 +2276,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "c240eb71b6",
+      "head_sha": "990b45624e",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2842,
-      "title": "probe(quota): production-bracket instrument for the OpenRouter free-counter question (FINAL design)",
-      "updated_at": "2026-11-01T01:36:50Z"
+      "mergeable_state": "clean",
+      "number": 2845,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-01T01:40:21Z"
     }
   ],
   "schema": "operator-matrix/v1",

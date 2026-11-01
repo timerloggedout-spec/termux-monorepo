@@ -1,8 +1,47 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T10:37:17Z",
+ "read_at": "2026-11-01T11:13:10Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3046,
+   "title": "DoE cmp-register: comparisons evaluated over time (CMP-1, CMP-2)",
+   "merged_at": "2026-11-01T11:12:48Z",
+   "updated_at": "2026-11-01T11:12:58Z",
+   "created_at": "2026-11-01T11:12:28Z",
+   "merge_commit_sha": "d4bbf5474a57afd2474df91319d890e01bedfea4",
+   "head_ref": "doe/cmp-register-open",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3046",
+   "merged": true
+  },
+  {
+   "number": 3044,
+   "title": "Record: AMD Discord joined 2026-11-01 (M1 +50 leg closed)",
+   "merged_at": "2026-11-01T10:56:32Z",
+   "updated_at": "2026-11-01T10:56:39Z",
+   "created_at": "2026-11-01T10:56:21Z",
+   "merge_commit_sha": "f44b59e323882c12c0672fec34267a12cf0c3f1d",
+   "head_ref": "challenge/amd-discord-joined-record-2026-11-01",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3044",
+   "merged": true
+  },
+  {
+   "number": 3043,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T10:37:42Z",
+   "updated_at": "2026-11-01T10:37:57Z",
+   "created_at": "2026-11-01T10:37:38Z",
+   "merge_commit_sha": "bbdea3b9b65ec376514b4bace4b5f94343501b9f",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3043",
+   "merged": true
+  },
   {
    "number": 3042,
    "title": "desk-feed: Repo-Story row \u2014 stamp Gemini swarm dispatch (armed, key-gated)",
@@ -1913,45 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2876",
    "merged": true
-  },
-  {
-   "number": 2874,
-   "title": "feat(telemetry): wire HindSight + Provenance ingest over all telemetry providers",
-   "merged_at": "2026-11-01T02:08:28Z",
-   "updated_at": "2026-11-01T02:08:29Z",
-   "created_at": "2026-11-01T02:06:16Z",
-   "merge_commit_sha": "f4bc82e59d3bff07c66c53382757ce2f704576fc",
-   "head_ref": "telemetry-ingest/hindsight-provenance-wire",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2874",
-   "merged": true
-  },
-  {
-   "number": 2868,
-   "title": "test(notation): compliance scorer v1 + L3/L2 first-run report (report-only)",
-   "merged_at": "2026-11-01T02:08:06Z",
-   "updated_at": "2026-11-01T02:08:07Z",
-   "created_at": "2026-11-01T02:03:06Z",
-   "merge_commit_sha": "b49e725c550704f1f1ef5a102c381899580c4e7d",
-   "head_ref": "tier1/notation-compliance-test",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2868",
-   "merged": true
-  },
-  {
-   "number": 2872,
-   "title": "census(quota): allocation verification batch-2 \u2014 21 providers read (probe run 41263537880)",
-   "merged_at": "2026-11-01T02:07:38Z",
-   "updated_at": "2026-11-01T02:07:38Z",
-   "created_at": "2026-11-01T02:05:26Z",
-   "merge_commit_sha": "55e5bc3a04c91c87f8ffec9883b5044d7b04d96b",
-   "head_ref": "quota/alloc-census-b2",
-   "author": "termux-fleet-publisher[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2872",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,9 +1959,9 @@
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-01T10:37:01Z",
+   "updated_at": "2026-11-01T11:12:42Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "7c03af8ed0c7375f5477723b6a298626cb9ae6bc",
+   "merge_commit_sha": "4e8de783fe90ec0211a328f2cb0ec26ecf8ea1c7",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -1969,12 +1969,51 @@
    "merged": false
   },
   {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-01T11:02:05Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "5d9adb1e96550a33dd04c8898db16f7813e27512",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3045,
+   "title": "chore(ops): refresh computed countdown lines",
+   "merged_at": null,
+   "updated_at": "2026-11-01T11:01:04Z",
+   "created_at": "2026-11-01T11:00:38Z",
+   "merge_commit_sha": "f0d89043b648e627d2b20979c4bed34802d2cd87",
+   "head_ref": "chore/countdowns-refresh-202611011100",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3045",
+   "merged": false
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-01T11:01:03Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "4975aff374668ca80be66137548ecad4c12795fc",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
    "number": 2914,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-01T10:36:45Z",
+   "updated_at": "2026-11-01T10:39:34Z",
    "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "91e9ecd4537a98272047bcc195f649c3338c1af9",
+   "merge_commit_sha": "64a8e2cddd9765765229620aec723749e83c322c",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -2005,19 +2044,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3037",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-01T10:11:31Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "c2d1b89b7843dfeb3fd2f858dde7fea26edb2cdc",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -2083,19 +2109,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3024",
-   "merged": false
-  },
-  {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-01T09:08:28Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "15a3a8d9b1c844790db4b1be9558f8c61502add4",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
    "merged": false
   },
   {

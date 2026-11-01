@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T11:45:23Z",
+ "generated_at": "2026-11-01T11:47:55Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T11:45:22Z",
+   "read_at": "2026-11-01T11:47:54Z",
    "merged": 150,
    "open": 166
   },
   "lane_events": {
-   "read_at": "2026-11-01T11:45:22Z",
+   "read_at": "2026-11-01T11:47:54Z",
    "status": "ok",
-   "count": 4250,
+   "count": 4256,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "active": 5,
+   "active": 4,
    "landed": 1,
-   "unknown": 4,
+   "unknown": 5,
    "in-flight": 11
   }
  },
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -77,19 +77,19 @@
    "project_id": "d1-studysprint",
    "state": "active",
    "last_merge": {
-    "pr": 3051,
-    "sha": "ff76abef797e",
-    "at": "2026-11-01T11:21:21Z",
-    "title": "desk-feed: widen provider bench (owner utilization order) + stamp D1 DeepSeek/Gemini dispatches"
+    "pr": 3084,
+    "sha": "d6dadc75ccf0",
+    "at": "2026-11-01T11:47:20Z",
+    "title": "desk-feed: D1 BATCH reader dispatch stamp (Jules #3082, session 16575382661216894510)"
    },
-   "next": "RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) \u2014 PR pending agent completion \u21d2 D1 verifies \u21d2 desk merges \u21d2 sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) \u2014 PR \u21d2 D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT.",
+   "next": "BATCH reader dispatch LIVE: Jules session 16575382661216894510 (issue #3082, study_reader.py) \u2014 PR \u21d2 D1 verifies \u21d2 desk merges \u21d2 sync; VERSION/CHANGELOG settled by D1 seat at merge. RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) \u2014 PR pending agent completion \u21d2 D1 verifies \u21d2 desk merges \u21d2 sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) \u2014 PR \u21d2 D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -109,7 +109,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -143,7 +143,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -176,7 +176,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "challenge-entries",
@@ -190,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "quota",
@@ -210,7 +210,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "doe",
@@ -230,24 +230,19 @@
     "doe DESIGN.json campaigns=12",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "doe-nc1",
    "project": "DoE nc-1 notation-compliance",
    "domain": "doe",
    "project_id": "doe-nc1",
-   "state": "active",
-   "last_merge": {
-    "pr": 2908,
-    "sha": "47b7aba1c339",
-    "at": "2026-11-01T02:41:18Z",
-    "title": "feat(notation): nc-1 wave-2 v2 features \u2014 claim<->ref adjacency + symbol-function (registry-derived)"
-   },
+   "state": "unknown",
+   "last_merge": null,
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "tier-1",
@@ -259,7 +254,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "contribution-desk",
@@ -276,10 +271,10 @@
    "next": "land/close PR #3063 \u2014 viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
    "next_basis": "open-pr",
    "evidence": [
-    "desk-feed traversals=8 generated_at=2026-11-01T11:38:42Z",
+    "desk-feed traversals=8 generated_at=2026-11-01T11:46:10Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "web-design-viz",
@@ -298,7 +293,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "marketing",
@@ -317,7 +312,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "marketing-social",
@@ -329,7 +324,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "swarm",
@@ -338,17 +333,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3074,
-    "sha": "cf5aa2724ed7",
-    "at": "2026-11-01T11:35:09Z",
-    "title": "fix(cadence-onboarding): acknowledge meta unmapped + let autofix run on hard drift"
+    "pr": 3085,
+    "sha": "fbae25c61770",
+    "at": "2026-11-01T11:47:02Z",
+    "title": "fix(recon): accept KeylessDecisionProvider string-arg registrations (upstream drift)"
    },
    "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "providers",
@@ -357,10 +352,10 @@
    "project_id": "providers-registry",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3080,
-    "sha": "f75fcfa4b58d",
-    "at": "2026-11-01T11:44:41Z",
-    "title": "feat(desk): catalog batch outcomes \u2014 triage+invoke proven, failure diagnoses (BATCH ALL TRIGGERABLE)"
+    "pr": 3086,
+    "sha": "23ff2c0992ed",
+    "at": "2026-11-01T11:46:32Z",
+    "title": "fix(desk): class re-base \u2014 inference wiring on wired INVOKE routes only (owner correction)"
    },
    "next": "land/close PR #2167 \u2014 chore(reviewer-metrics): regenerate provider x context map",
    "next_basis": "open-pr",
@@ -368,7 +363,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "providers-phrases",
@@ -380,7 +375,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "repo-replay",
@@ -397,7 +392,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "ops",
@@ -411,7 +406,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   },
   {
    "lane": "telemetry",
@@ -425,7 +420,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T11:45:23Z"
+   "updated_at": "2026-11-01T11:47:55Z"
   }
  ],
  "doe_join": {
@@ -710,6 +705,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

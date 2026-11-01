@@ -73,6 +73,38 @@ def test_escape_with_explicit_l1():
     assert esc["correction_latency"] == 120
 
 
+def test_l1_feed_join_escape_and_latency():
+    units = [
+        unit("c-drift", "chat", "drift", PROSE,
+             join_key="chatX@2026-10-31T19:00:00Z",
+             corrected_at="2026-10-31T19:05:00Z"),
+        unit("c-seq", "chat", "drift", PROSE,
+             source_ref="doe-expert chat seq 37755"),  # v1 seq ref: never joins
+    ]
+    feed = [{"chat_id": "chatX", "handoff_ts": "2026-10-31T19:00:00Z",
+             "verdict": "confirm", "ts": "2026-10-31T19:01:00Z"}]
+    joins = ev.apply_l1_feed(units, feed)
+    assert joins == 1
+    assert units[0]["l1_evidence"] == "explicit"
+    assert units[0]["l1_verdict"] == "pass"          # confirm = intake passed it
+    assert units[0]["correction_latency_s"] == 240.0  # corrected_at - feed ts
+    assert units[1]["l1_evidence"] == "none"
+    flags = ev.layer_flags(units, TAU, {})
+    full = ev.run_arm(units, flags, ["L1", "L2", "L3"])
+    esc = ev.escape_and_latency(units, full["_flagged"])
+    assert esc["escape_rate"] == 1.0                  # passed at L1, caught by FULL
+    assert esc["correction_latency"] == 240.0
+
+
+def test_l1_feed_reject_is_intake_flag():
+    units = [unit("c-drift", "chat", "drift", PROSE, join_key="cY@t1")]
+    joins = ev.apply_l1_feed(units, [{"unit_ref": "cY@t1",
+                                      "verdict": "reject", "ts": "t0"}])
+    assert joins == 1 and units[0]["l1_verdict"] == "drift"
+    esc = ev.escape_and_latency(units, {})
+    assert esc["escape_rate"] is None                 # no L1-passed drift in class
+
+
 def test_records_density_variant_flags_skeleton():
     skeleton = json.dumps({"provider": "x", "evidence": "not-established",
                            "status": "unknown", "value": None})

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 171,
+    "open_prs": 170,
     "pr_classes": {
       "CANDIDATE": 82,
-      "EXTRACT": 6,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 169,
+      "prs": 168,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T21:18:54Z",
+  "generated_at": "2026-11-01T21:22:21Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "2105854c7f"
+    "sha": "7c7aee79b9"
   },
   "prs": [
     {
@@ -206,20 +206,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d485cad3ef",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3250,
-      "title": "feat(certifications): Route A unit runner scaffold \u2014 cert-unit workflow + run_unit.py",
-      "updated_at": "2026-11-01T21:17:52Z"
     },
     {
       "class": "CANDIDATE",
@@ -1785,14 +1771,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "in_progress"
+        "smoke": "queued"
       },
-      "head_sha": "faff803723",
+      "head_sha": "548d772611",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T21:18:27Z"
+      "updated_at": "2026-11-01T21:22:06Z"
     },
     {
       "class": "NEED_EVIDENCE",

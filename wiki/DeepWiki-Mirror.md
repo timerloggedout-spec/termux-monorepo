@@ -36,6 +36,22 @@ A human should review and bring generated content into this repository using one
 
 Do not store Devin API tokens, browser cookies, or exported session state in this repository. Treat agent-generated claims as discovery aids and corroborate material statements with repository source, commits, or issue/PR evidence.
 
+## Credential dependency (recorded 2026-11-01)
+
+The **DeepWiki side** of this surface — Devin's generated wiki and its indexing — depends on **`DEVIN_API_KEY`**, the repository's canonical Devin credential name (allow-listed in `.github/connectors/connector_manager.py`). Indexing writes go through the Devin v3 REST API (`scripts/agentic/devin_wiki_indexing.py` + the reconcile workflow). Owner standing note, 2026-11-01: "Devin API remains required for Wiki etc." — this dependency is standing, not incidental.
+
+Do not conflate the three Devin/DeepWiki credential surfaces:
+
+| Surface | Credential | Mechanism |
+|---|---|---|
+| Devin Wiki indexing (write) | `DEVIN_API_KEY` | v3 REST indexing API |
+| Wiki status probe (fabric) | `DEEPWIKI_TOKEN` | `remote-knowledge-fabric.yml` — `dwiki check` against the Devin MCP endpoint |
+| Local wiki generation (fabric) | `DEEPWIKI_LLM_API_KEY` | `deepwiki-rs` in the fabric workflow (+ base-url / model vars) |
+
+This dependency is **distinct from the managed mirror** described above: publishing `wiki/` to GitHub Wiki via `.github/workflows/publish-wiki.yml` needs no Devin credential — it runs on the repository's operator-token lane over reviewed content.
+
+Additional DeepWiki refreshes beyond Devin's built-in cadence are a candidate **webWrapper** vehicle (Swarm ww lead, in parallel) — recorded here as a pointer only; that work is not part of this surface.
+
 ## Page conventions
 
 - `Home.md` is the landing page.

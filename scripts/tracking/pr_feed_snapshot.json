@@ -1,8 +1,47 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T11:47:54Z",
+ "read_at": "2026-11-01T11:50:04Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3088,
+   "title": "desk-feed: D2 fire-conditions correction (freeze leg removed, pick OPEN owner-held)",
+   "merged_at": "2026-11-01T11:49:42Z",
+   "updated_at": "2026-11-01T11:49:42Z",
+   "created_at": "2026-11-01T11:48:43Z",
+   "merge_commit_sha": "82ff412dfa0fedde1d0bb6dde60445b67f9db796",
+   "head_ref": "desk/d2-fire-conditions-correction",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3088",
+   "merged": true
+  },
+  {
+   "number": 3089,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T11:49:05Z",
+   "updated_at": "2026-11-01T11:49:21Z",
+   "created_at": "2026-11-01T11:49:01Z",
+   "merge_commit_sha": "c159da34c088616bd4f83076ea01630e7a0eba66",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3089",
+   "merged": true
+  },
+  {
+   "number": 3087,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T11:48:15Z",
+   "updated_at": "2026-11-01T11:48:26Z",
+   "created_at": "2026-11-01T11:48:10Z",
+   "merge_commit_sha": "c18fc69b16feed5c04e028e2f130711d843efa6b",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3087",
+   "merged": true
+  },
   {
    "number": 3084,
    "title": "desk-feed: D1 BATCH reader dispatch stamp (Jules #3082, session 16575382661216894510)",
@@ -1913,45 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2910",
    "merged": true
-  },
-  {
-   "number": 2913,
-   "title": "feat(quota): usage graphs per provider/model/service - usage-series pack + sibling view (viz)",
-   "merged_at": "2026-11-01T03:21:20Z",
-   "updated_at": "2026-11-01T03:21:20Z",
-   "created_at": "2026-11-01T03:18:42Z",
-   "merge_commit_sha": "757751eac3f9a4e936fdf2aa906a7d742c487826",
-   "head_ref": "viz/quota-usage-graphs-axes",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2913",
-   "merged": true
-  },
-  {
-   "number": 2915,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T03:19:12Z",
-   "updated_at": "2026-11-01T03:19:49Z",
-   "created_at": "2026-11-01T03:19:08Z",
-   "merge_commit_sha": "3adc906e0a53e71e4907892774999ab96f35a28c",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2915",
-   "merged": true
-  },
-  {
-   "number": 2912,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T03:16:11Z",
-   "updated_at": "2026-11-01T03:16:32Z",
-   "created_at": "2026-11-01T03:16:07Z",
-   "merge_commit_sha": "c8fd5e00d1403afadf71ba4c79a3557a5ab5e64b",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2912",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,9 +1959,9 @@
    "number": 2914,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-01T11:47:03Z",
+   "updated_at": "2026-11-01T11:49:24Z",
    "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "3ab262fe775cdc1cda2b726948144936416fa5aa",
+   "merge_commit_sha": "a22af8ee11a50941785cabf5b7b0332fbe94b838",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],

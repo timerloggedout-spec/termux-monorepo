@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T11:47:55Z",
+ "generated_at": "2026-11-01T11:50:04Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T11:47:54Z",
+   "read_at": "2026-11-01T11:50:04Z",
    "merged": 150,
    "open": 166
   },
   "lane_events": {
-   "read_at": "2026-11-01T11:47:54Z",
+   "read_at": "2026-11-01T11:50:04Z",
    "status": "ok",
-   "count": 4256,
+   "count": 4262,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -98,18 +98,18 @@
    "project_id": "d2-vultr",
    "state": "active",
    "last_merge": {
-    "pr": 3081,
-    "sha": "e92008432bf6",
-    "at": "2026-11-01T11:44:14Z",
-    "title": "D2 record: WAF candidate superseded/out (owner framing 2026-11-01)"
+    "pr": 3088,
+    "sha": "82ff412dfa0f",
+    "at": "2026-11-01T11:49:42Z",
+    "title": "desk-feed: D2 fire-conditions correction (freeze leg removed, pick OPEN owner-held)"
    },
-   "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
+   "next": "BATCH queued @2026-11-03T15:00Z \u00b7 fire-conditions {new repo \u2227 new AppID via 7075f9c0} \u00b7 pick OPEN owner-held (freeze leg REMOVED 2026-11-01 \u2014 owner direct NO to manager-enacted WAF freeze) \u00b7 gate D2-NOCARD open (Vultr account before the gift-code step) \u00b7 \u2205 fire pre-conditions",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -143,7 +143,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -176,7 +176,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "challenge-entries",
@@ -190,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "quota",
@@ -210,7 +210,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "doe",
@@ -230,7 +230,7 @@
     "doe DESIGN.json campaigns=12",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "doe-nc1",
@@ -242,7 +242,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "tier-1",
@@ -254,7 +254,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "contribution-desk",
@@ -271,10 +271,10 @@
    "next": "land/close PR #3063 \u2014 viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
    "next_basis": "open-pr",
    "evidence": [
-    "desk-feed traversals=8 generated_at=2026-11-01T11:46:10Z",
+    "desk-feed traversals=8 generated_at=2026-11-01T11:48:13Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "web-design-viz",
@@ -293,7 +293,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "marketing",
@@ -312,7 +312,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "marketing-social",
@@ -324,7 +324,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "swarm",
@@ -343,7 +343,7 @@
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "providers",
@@ -363,7 +363,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "providers-phrases",
@@ -375,7 +375,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "repo-replay",
@@ -392,7 +392,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "ops",
@@ -406,7 +406,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   },
   {
    "lane": "telemetry",
@@ -420,7 +420,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T11:47:55Z"
+   "updated_at": "2026-11-01T11:50:04Z"
   }
  ],
  "doe_join": {

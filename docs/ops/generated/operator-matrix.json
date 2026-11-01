@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:47:56Z",
+  "generated_at": "2026-11-01T23:49:10Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "in_progress"
+      "hygiene": "in_progress",
+      "smoke": "queued"
     },
-    "sha": "2c33c4519d"
+    "sha": "c3dd735945"
   },
   "prs": [
     {
@@ -216,12 +216,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f464db0494",
+      "head_sha": "2a6c71c9ee",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3347,
-      "title": "3L0 plane: backfill doctrine in intake spec (owner 2026-11-01)",
-      "updated_at": "2026-11-01T23:46:55Z"
+      "number": 3353,
+      "title": "docs(swarm): definition of record (\u00a719)",
+      "updated_at": "2026-11-01T23:48:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -2556,15 +2556,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "ea68d494ac",
+      "head_sha": "f798ba4eec",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3350,
       "title": "fix(icm): DeepWiki harvest workflow \u2014 Swarm mint matches repo pattern (app-id)",
-      "updated_at": "2026-11-01T23:45:43Z"
+      "updated_at": "2026-11-01T23:49:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

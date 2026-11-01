@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T04:17:37Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T04:20:09Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T04:17:36Z` (merged 150 · open 156) · lane-events(Neon) status=`ok` count=`2979` read_at=`2026-11-01T04:17:36Z`
+Sources: PR feed read_at=`2026-11-01T04:20:09Z` (merged 150 · open 158) · lane-events(Neon) status=`ok` count=`2987` read_at=`2026-11-01T04:20:09Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown=9
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown
 | classifiers | `tier-1` | Tier-1 classifier engine | active | #2796 `7529170d5558` 2026-11-01T01:01:49Z | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #2935 `e9bd6a36eef8` 2026-11-01T04:11:27Z | land/close PR #2856 — doe(live-3): ci_mode — stamped dispatch comment as prompt (ruling (i-a), owners' review) |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #2942 `e0dad18eaa95` 2026-11-01T04:19:39Z | land/close PR #2856 — doe(live-3): ci_mode — stamped dispatch comment as prompt (ruling (i-a), owners' review) |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -29,8 +29,8 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2939 `aa27eedebc65` 2026-11-01T04:17:13Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #2937 `ecd08b5069a1` 2026-11-01T04:15:02Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #2168 — chore(dashboards): refresh surface feeds |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #2941 — feat(viz): tracking board prototype - renders tracking-feed.json only |
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 64/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 63/150 (extend ops/tracking/projects.json match rules)

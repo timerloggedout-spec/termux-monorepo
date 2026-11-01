@@ -53,9 +53,15 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
 
     def test_opportunity_cost_is_scoped_to_repository_work(self):
         self.assertIn("Repo time invested (minutes)", self.page)
-        self.assertIn("Repo opportunity-cost rate (USD/hour)", self.page)
-        self.assertIn("repo_time_invested_value", self.doc)
-        self.assertIn("not provider API prices or a generic, unrelated hourly-rate scenario", self.doc)
+        self.assertIn("Repo time valuation rate (USD/hour)", self.page)
+        self.assertIn('value="best-alternative"', self.page)
+        self.assertIn("alternative=$('basis').value==='best-alternative'", self.page)
+        self.assertIn("$('oppcost').textContent=alternative?money(opp):'—'", self.page)
+        self.assertIn("$('net').textContent=alternative?money(sv-opp):'—'", self.page)
+        self.assertIn("repo_time_investment_value", self.doc)
+        self.assertIn("repo_time_opportunity_cost", self.doc)
+        self.assertIn("best feasible alternative use", self.doc)
+        self.assertIn("keep the opportunity-cost result unavailable", self.doc)
 
     def test_missing_session_feed_is_explicit_not_synthesized(self):
         self.assertEqual(self.data["sessions"], [])

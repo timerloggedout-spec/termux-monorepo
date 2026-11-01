@@ -2,26 +2,27 @@
  "campaign_id": "live-3-phrases-deepseek",
  "coordination": {
   "composition_rule": "ONE dispatch carries at most one designed assignment per factor family; where families meet on one dispatch, cells cross in a SINGLE stamp (framing_cell x phrase_cell, one assignment hash) \u2014 never two independent assignments on the same dispatch.",
+  "counterpart_history": "coordination originally written vs live-4 (PR #2808); live-4 superseded by live-1 in PR #2809; this amendment re-points the counterpart. Route partition + composition rule preserved verbatim in substance, as carried in live-1 instance_stamps.phrases.",
   "future_crossing": "Any future framing factor on a DeepSeek surface (or phrase set established for a build route) triggers the composition rule above + a joint amendment by both managers before dispatch.",
   "parent": "doe-mgr-live-builds (28ac9715)",
   "reporting_line": "doe-mgr-phrases-jit -> doe-mgr-live-builds -> doe-expert",
   "route_partition": [
    {
-    "framing": "factor (live-4)",
-    "phrases": "NOT ESTABLISHED (live-4 as landed: Jules exposes no model/phrase data; SSOT={deepseek}) \u2014 phrase factor does not apply, no collision",
-    "surface": "Jules build dispatches (live-4 blocks D2/D4/M2/M3)"
+    "framing": "factor (live-1)",
+    "phrases": "NOT ESTABLISHED (live-1 DESIGN design.instance_stamps.phrases carries the composition rule; Jules exposes no phrase data; SSOT={deepseek}) \u2014 phrase factor does not apply, no collision",
+    "surface": "Jules build dispatches (live-1 blocks D2/D4/M2/M3)"
    },
    {
-    "framing": "HELD CONSTANT at framing-a (DO pattern C review/audit for review tasks), mirroring live-4 cb-1 framing-held discipline; framing is not a factor on this surface in wave 1",
+    "framing": "HELD CONSTANT (DO pattern C review/audit form for review tasks), mirroring the framing-held discipline carried from live-4 cb-1 into live-builds WO#2; framing is not a factor on this surface in wave 1",
     "phrases": "factor (live-3)",
     "surface": "DeepSeek invoke/review (this campaign)"
    },
    {
-    "rule": "EXCLUDED from live-3 assignment until cb-1 verdict lands (cb-1 compares build arms on steering interventions; phrasing its reviewers adds an uncontrolled treatment on the measurement surface). Other DeepSeek review flow stays eligible.",
-    "surface": "DeepSeek-CI review arms on live-4 competing-build cb-1"
+    "rule": "EXCLUDED from live-3 assignment until the WO#2 verdict lands (compares build arms on steering interventions; phrasing its reviewers adds an uncontrolled treatment on the measurement surface). Other DeepSeek review flow stays eligible. Confirmed unchanged by live-builds 2026-10-31.",
+    "surface": "DeepSeek-CI review arms on live-builds WO#2 ChronoMancer competing-build (carried from live-4 cb-1)"
    }
   ],
-  "sibling_design": "live-4-dispatch-framing (framing factor; Jules label route, Nov wave)"
+  "sibling_design": "live-1-wave-framing (PR #2809 merged d3c2134080c9; framing {A-implement-only | B+A-pack} x entry-class {greenfield|iteration}, Jules Nov-wave, dispatch pending doe-expert approval at its landing) \u2014 SUPERSEDES live-4-dispatch-framing (status=superseded on master, verified 2026-10-31)"
  },
  "decision_rule": {
   "adopt": "After Stage 2, adopt the best cell as the DeepSeek invoke/review default only if it beats control on actioned_rate by >=0.10 at n>=20 and does not worsen gate outcomes; else no_selection, control posture stands",

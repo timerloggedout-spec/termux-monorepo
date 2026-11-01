@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 170,
+    "open_prs": 172,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 81,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 168,
+      "prs": 170,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:30:58Z",
+  "generated_at": "2026-11-01T23:35:34Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "93b9975ef6"
+    "sha": "36da3c205c"
   },
   "prs": [
     {
@@ -214,12 +214,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "ffdc4f4d02",
+      "head_sha": "c041148328",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T23:29:22Z"
+      "updated_at": "2026-11-01T23:34:13Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a71808358f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3324,
+      "title": "docs(llm-api-hub): ARCHIVED marking on the restore note",
+      "updated_at": "2026-11-01T23:35:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -2521,6 +2535,20 @@
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-01T16:19:45Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "da39d6e528",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3325,
+      "title": "docs(wiki): amend credential record to two-surface form (DEVINdeepWiki \u2260 DeepWiki.com)",
+      "updated_at": "2026-11-01T23:35:16Z"
     }
   ],
   "schema": "operator-matrix/v1",

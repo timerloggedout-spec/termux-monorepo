@@ -1,6 +1,6 @@
 name: help-wanted-dashboard-deploy
 
-# marketing (/) ≠ Tribute (/help-wanted/) ≠ Matrix (/matrix/) ≠ project hub (/termux-monorepo/)
+# marketing (/) ≠ Tribute (/tribute/) ≠ legacy alias (/help-wanted/) ≠ Matrix (/matrix/) ≠ project hub (/termux-monorepo/)
 
 on:
   push:
@@ -21,7 +21,7 @@ on:
         default: "user-site"
 
 concurrency:
-  group: help-wanted-dashboard-deploy
+  group: user-site-pages-publisher
   cancel-in-progress: false
 
 permissions:
@@ -99,6 +99,7 @@ jobs:
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/help-wanted-dashboard/matrix.html _site/matrix.html
           cp apps/help-wanted-dashboard/dashboard.css _site/dashboard.css
+          cp apps/help-wanted-dashboard/site-nav.js _site/site-nav.js
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
           fi
@@ -159,41 +160,31 @@ jobs:
             --source-sha "${GITHUB_SHA}" \
             --version-prefix "1.0.1"
           if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            cp docs/ops/generated/help-wanted-status.json _tribute/data/status.json
-          fi
-          touch _tribute/.nojekyll
-      - name: Mirror Tribute to /help-wanted/
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
-          external_repository: timerloggedout-spec/timerloggedout-spec.github.io
-          publish_dir: _tribute
-          destination_dir: help-wanted
-          publish_branch: main
-          keep_files: true
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy(help-wanted): ${{ github.sha }}"
-      - name: Prepare Matrix subtree
+            cp docs/ops/generated/help      - name: Prepare combined user-site artifact
         run: |
-          mkdir -p _matrix/data
-          cp apps/help-wanted-dashboard/matrix.html _matrix/index.html
-          cp apps/help-wanted-dashboard/dashboard.css _matrix/dashboard.css
+          set -euo pipefail
+          mkdir -p _user_site/tribute _user_site/help-wanted _user_site/matrix/data
+          cp -a _tribute/. _user_site/tribute/
+          cp -a _tribute/. _user_site/help-wanted/
+          cp apps/help-wanted-dashboard/matrix.html _user_site/matrix/index.html
+          cp apps/help-wanted-dashboard/dashboard.css _user_site/matrix/dashboard.css
+          cp apps/help-wanted-dashboard/site-nav.js _user_site/matrix/site-nav.js
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
-            cp docs/ops/generated/lane-matrix-status.json _matrix/data/lane-matrix-status.json
+            cp docs/ops/generated/lane-matrix-status.json _user_site/matrix/data/lane-matrix-status.json
           fi
-          touch _matrix/.nojekyll
-      - name: Mirror Matrix to /matrix/
+          touch _user_site/.nojekyll _user_site/tribute/.nojekyll _user_site/help-wanted/.nojekyll _user_site/matrix/.nojekyll
+      - name: Publish all user-site routes in one commit
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
-          publish_dir: _matrix
-          destination_dir: matrix
+          publish_dir: _user_site
           publish_branch: main
           keep_files: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy(tribute+matrix): ${{ github.sha }}"
+s[bot]@users.noreply.github.com
           commit_message: "deploy(matrix): ${{ github.sha }}"
       - name: User-site URLs
         run: |

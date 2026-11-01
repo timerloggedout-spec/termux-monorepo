@@ -1,0 +1,1340 @@
+{
+ "schema": "pr-lane-feed/v1",
+ "generated_at": "2026-10-28T23:02:34Z",
+ "open_prs": 102,
+ "counts": {
+  "CANDIDATE": 23,
+  "EXTRACT": 23,
+  "NEED_EVIDENCE": 46,
+  "SUPERSEDE": 10
+ },
+ "prs": [
+  {
+   "number": 47,
+   "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 84.3,
+   "changed_files": 100,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 48,
+   "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 84.3,
+   "changed_files": 73,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 81,
+   "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 82.0,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 92,
+   "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 81.3,
+   "changed_files": 9,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 103,
+   "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 80.9,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 125,
+   "title": "analyze agentic workflows and peer coordination rules",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 80.0,
+   "changed_files": 4785,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 143,
+   "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 79.3,
+   "changed_files": 4790,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 286,
+   "title": "feat(ops): evidence-gated autonomous staging progression",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 68.2,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 386,
+   "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 61.7,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 390,
+   "title": "docs: formalize category-theoretic notation sets and cross-domain mappings",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 61.7,
+   "changed_files": 120,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 407,
+   "title": "\u26a1 Bolt: optimize Bellman-Ford graph search in arbitrage engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 59.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 527,
+   "title": "ops: close admission and pagination stall evidence gaps",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 43.6,
+   "changed_files": 27,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 578,
+   "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 41.6,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 605,
+   "title": "feat(ar-18): extend dynamic capability spine with Paper2Agent research",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 40.2,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 684,
+   "title": "ops: unify GitHub Actions operations cadence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 38.2,
+   "changed_files": 45,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 740,
+   "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 36.4,
+   "changed_files": 37,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 752,
+   "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 36.0,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 761,
+   "title": "lane: Desktop Commander fork + Android execution alternatives",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 35.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 762,
+   "title": "ops: map live plugin connector surface and parity skills",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 35.8,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 764,
+   "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 35.8,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 769,
+   "title": "feat(tagging): cron multi-category GitHub tagging refresh",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 35.6,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 829,
+   "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 33.9,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 958,
+   "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 27.9,
+   "changed_files": 49,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 969,
+   "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 27.5,
+   "changed_files": 28,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 970,
+   "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 27.5,
+   "changed_files": 19,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 990,
+   "title": "feat(foresight): wire agent safety, orchestration, provenance, and gated edge lanes",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 26.7,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1020,
+   "title": "feat: close provider continuity and executable routing gaps",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 25.4,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1274,
+   "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 9.6,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1278,
+   "title": "ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) \u2014 REVIEW, do not auto-merge",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 9.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1301,
+   "title": "docs(telemetry): add equation registry and Wolfram verification",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 8.7,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1436,
+   "title": "feat(dashboard): salvage operational Hindsight dashboard onto current master",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 7.7,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1441,
+   "title": "feat(triage): reconcile official quota before dispatch",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 7.6,
+   "changed_files": 38,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1469,
+   "title": "test(observatory): restore upstream provenance PR validation",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 7.4,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1470,
+   "title": "feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 7.4,
+   "changed_files": 44,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1494,
+   "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 7.0,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1495,
+   "title": "feat(quota): full mappings, GitHub safeguards and publication visibility",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.9,
+   "changed_files": 26,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1498,
+   "title": "Antigravity CLI: collaborative use cases, provisioning proposal, offline readiness (#1497)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.7,
+   "changed_files": 14,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1499,
+   "title": "\ud83d\udee1\ufe0f Sentinel: prevent parent symlink hijacking in obsidian server token read",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1510,
+   "title": "\u26a1 Bolt: optimize workflow catalog generation and fingerprint caching",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1513,
+   "title": "test(observatory): verify Gravitee fork upstream identity",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1514,
+   "title": "feat(antigravity): isolated secondary operational pilot (#1497)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 45,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1515,
+   "title": "feat(ates): correlate Phase C run and event evidence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1516,
+   "title": "feat(orchestration): add deterministic DAG reference primitive",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1531,
+   "title": "docs: propose Research integration and paper-wallet accounting with native tracking",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1537,
+   "title": "docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1538,
+   "title": "feat(tribute): GitLab-native discovery and bounded integration options",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 6.6,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1540,
+   "title": "feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.5,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1541,
+   "title": "feat: implement THUB-017 Research and existing MSM-005 paper accounting",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 6.5,
+   "changed_files": 49,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1543,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 6.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1553,
+   "title": "Consolidate upgrades for provider quota & PR merge readiness",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 6.0,
+   "changed_files": 0,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1556,
+   "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 6.0,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1557,
+   "title": "ops(actions): hybrid lag-as-notice Tailscale + consolidated matrix upgrade",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 5.9,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1568,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Harden DeepCLI export target symlink validation",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 5.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1569,
+   "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 5.6,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1570,
+   "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 5.6,
+   "changed_files": 0,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1582,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 5.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1599,
+   "title": "feat(ci): enforce review justification on dismissed PR reviews",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 5.0,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1607,
+   "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 5.0,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1612,
+   "title": "docs(research): map new free LLM catalogs to telemetry gates",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 4.9,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1614,
+   "title": "ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 4.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1616,
+   "title": "docs(flywheel): add capability overlap audit",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 4.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1617,
+   "title": "docs: improve Mintlify agent discoverability and record integration recon",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 4.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1626,
+   "title": "docs(rfp): add first source-backed mesh provider evidence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 4.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1627,
+   "title": "ci(context): wake page-one history coverage bootstrap",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 4.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1630,
+   "title": "fix(delphi): gate and deduplicate conversational intake",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 4.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1631,
+   "title": "\ud83d\udee1\ufe0f Sentinel: [security improvement] Harden DeepCLI export file permissions and symlink checks",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 4.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1632,
+   "title": "\u26a1 Bolt: optimize hex moneyball export stream serialization",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 4.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1640,
+   "title": "ci: enforce explicit justification for dismissed reviews in merge readiness engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 4.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1642,
+   "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 4.0,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1645,
+   "title": "fix: harden Help-Wanted telemetry and evidence audits",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 3.9,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1650,
+   "title": "phantom-secrets-audit: comment-wake trigger + #184 ledger report",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 3.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1659,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Fix symlink traversal and umask permission exposure in DeepCLI export",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 3.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1671,
+   "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 2.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1677,
+   "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "age_days": 2.0,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1679,
+   "title": "\ud83d\udcd6 Linguist: [performance improvement] conversational steganography 4th lane & BPE token density optimization",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 2.0,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1694,
+   "title": "fix(help-wanted): preserve historical audit coverage on partial refreshes",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 1.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1704,
+   "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Harden NexusCLI session export file creation and imports",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 1.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1705,
+   "title": "\ud83c\udfa8 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile viewports",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 1.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1706,
+   "title": "\u26a1 Bolt: fix actions incident deduplication test assertion",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 1.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1734,
+   "title": "feat(notation): add claim-level evidence provenance",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 1.5,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1735,
+   "title": "docs(ops): refresh maintenance status and evidence gates",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 1.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1760,
+   "title": "ops(tribute): participation refresh",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 1.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1852,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 1.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1857,
+   "title": "feat(ci): add merged branch review audit and timing quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 1.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1862,
+   "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 1.0,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1966,
+   "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 0.8,
+   "changed_files": 18,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1985,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 0.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1988,
+   "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 0.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2128,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2167,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "age_days": 0.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2168,
+   "title": "chore(dashboards): refresh surface feeds",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2175,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2181,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2182,
+   "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2183,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2186,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2187,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2190,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2235,
+   "title": "chore(osint): refresh coverage + page snapshots",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.1,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2252,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.0,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2261,
+   "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "age_days": 0.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "age_days": 0.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  }
+ ],
+ "fetch_warnings": 0
+}

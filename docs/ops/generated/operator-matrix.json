@@ -3,9 +3,9 @@
     "open_issues": 367,
     "open_prs": 156,
     "pr_classes": {
-      "CANDIDATE": 73,
+      "CANDIDATE": 74,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 78,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T03:24:50Z",
+  "generated_at": "2026-11-01T03:49:46Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "aa6d1e2d88"
+    "sha": "f2680363e3"
   },
   "prs": [
     {
@@ -963,6 +963,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "a2b61e7f57",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T03:39:14Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1627,20 +1641,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "96fafd8338",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T03:24:40Z"
     },
     {
       "class": "NEED_EVIDENCE",

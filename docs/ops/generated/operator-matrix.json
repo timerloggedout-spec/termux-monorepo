@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 377,
-    "open_prs": 168,
+    "open_prs": 167,
     "pr_classes": {
-      "CANDIDATE": 78,
-      "EXTRACT": 8,
+      "CANDIDATE": 79,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 33,
-      "prs": 166,
+      "prs": 165,
       "unlabelled_numbers": [
         308,
         343,
@@ -88,7 +88,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T11:23:23Z",
+  "generated_at": "2026-11-01T11:24:31Z",
   "issues_unlabelled": [
     308,
     343,
@@ -127,10 +127,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "7024cb57c3"
+    "sha": "403a86ed3f"
   },
   "prs": [
     {
@@ -216,34 +216,6 @@
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-11-01T11:22:45Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c4c219cb3b",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T11:14:09Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "44b59ebcb2",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3054,
-      "title": "desk-feed: recognize provider-batch as a dispatchable probe arm (routing recognition)",
-      "updated_at": "2026-11-01T11:23:21Z"
     },
     {
       "class": "CANDIDATE",
@@ -1019,6 +991,20 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c4c219cb3b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T11:14:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -2387,7 +2373,7 @@
       },
       "head_sha": "ddbe3eb33c",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-01T11:22:40Z"
@@ -2471,7 +2457,7 @@
       },
       "head_sha": "05952c5c21",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 3053,
       "title": "index(quota): provider dispatch capability \u2014 89-provider bench classified (a/b/c/d)",
       "updated_at": "2026-11-01T11:23:10Z"
@@ -2480,15 +2466,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "89161827da",
+      "head_sha": "84eb7d317c",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3056,
-      "title": "docs(swarm): \u00a715 widened rotation \u2014 utilization fix, arm inventory + 2 proof dispatches",
-      "updated_at": "2026-11-01T11:23:21Z"
+      "mergeable_state": "clean",
+      "number": 3058,
+      "title": "desk-feed: collapse bench wording to the standing dispatch map",
+      "updated_at": "2026-11-01T11:24:28Z"
     }
   ],
   "schema": "operator-matrix/v1",

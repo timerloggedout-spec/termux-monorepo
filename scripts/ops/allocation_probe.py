@@ -60,7 +60,7 @@ PROVIDERS = {
     "groq": lambda k: get("https://api.groq.com/openai/v1/models", bearer(k)),
     "cohere": lambda k: get("https://api.cohere.com/v1/models", bearer(k)),
     "sambanova": lambda k: get("https://api.sambanova.ai/v1/models", bearer(k)),
-    "siliconflow": lambda k: get("https://api.siliconflow.com/v1/user/info", bearer(k)),
+    "siliconflow": lambda k: get("https://api.siliconflow.com/v1/models", bearer(k)),
     "zai": lambda k: get("https://api.z.ai/api/paas/v4/models", bearer(k)),
     "llm7": lambda k: get("https://api.llm7.io/v1/models", bearer(k)),
     "routeway": lambda k: get("https://api.routeway.ai/v1/models", bearer(k)),

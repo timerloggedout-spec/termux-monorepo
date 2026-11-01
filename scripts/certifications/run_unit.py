@@ -28,6 +28,13 @@ PROMPT_TEMPLATE = (
     "worked example, and the lesson's check questions answered in your own "
     "words. Format as markdown with a title line."
 )
+WORKSHOP_TEMPLATE = (
+    "Produce the complete work product for the FreeCodeCamp Relational "
+    "Databases v9 workshop \"{title}\": every file the workshop builds, "
+    "each as a fenced code block headed by its file path, followed by the "
+    "commands used to create and verify it and a short verification note. "
+    "Format as markdown with a title line."
+)
 
 
 def main() -> int:
@@ -46,7 +53,8 @@ def main() -> int:
     failures = 0
     for step in unit["steps"]:
         prompt_file = out / f".prompt-{step['id']}.md"
-        prompt_file.write_text(PROMPT_TEMPLATE.format(title=step["title"]))
+        template = WORKSHOP_TEMPLATE if step.get("kind") == "workshop" else PROMPT_TEMPLATE
+        prompt_file.write_text(template.format(title=step["title"]))
         artifact = out / f"{step['id']}.md"
         proc = subprocess.run(
             [sys.executable, str(INVOKE), "--provider", args.provider,

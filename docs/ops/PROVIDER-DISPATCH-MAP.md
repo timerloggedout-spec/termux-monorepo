@@ -53,10 +53,10 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 89 distinct model-lane providers = **proven 4 + wired-unproven 20 + triggerable 2 + inference-only 63**:
 
 **Endpoint scale (owner emphasis): providers ≠ endpoints.** Verified floor 2026-11-01 =
-**5,337 provider×model endpoints**: g4f-working catalog 4,242 (60 providers, in-repo) +
-live public catalogs {openrouter 452 · kilo gateway 384 · huggingface router 135 · llm7 67 ·
-modelscope 35 · ovhcloud 22}. Key-gated catalogs (groq, mistral, cerebras, nvidia,
-siliconflow, sambanova, cohere, zai, gemini, cloudflare, routeway, aion, sealion, unorouter
+**6,441 provider×model endpoints**: g4f-working catalog 4,242 (60 providers, in-repo) +
+live public catalogs {requesty 809 · openrouter 452 · kilo gateway 384 · routeway 288 ·
+huggingface router 135 · llm7 67 · modelscope 35 · ovhcloud 22 · typhoon 7}. Key-gated catalogs (groq, mistral, cerebras, nvidia,
+siliconflow, sambanova, cohere, zai, gemini, cloudflare, aion, sealion, unorouter
 283 per provisioning) are counted CI-side where the keys live; owner figure of record =
 thousands wired + working, 7,500+ at full count. Census of record =
 `dispatch.provider_catalog.endpoint_census` in the desk feed.

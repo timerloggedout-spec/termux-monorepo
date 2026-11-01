@@ -2060,8 +2060,8 @@
    },
    "endpoint_census": {
     "unit": "provider x model endpoints (the dispatch-relevant unit; provider counts are NOT endpoint counts - owner correction)",
-    "verified_floor": 5337,
-    "counted_at": "2026-11-01 (providers-dispatch seat, firsthand: in-repo catalog read + live public catalog GETs)",
+    "verified_floor": 6441,
+    "counted_at": "2026-11-01 (providers-dispatch seat, firsthand live public catalog GETs; floor raised same day on owner 'surpass' order)",
     "sources": {
      "g4f-working catalog (data/g4f-working/providers.json @master, PR #2025)": {
       "providers": 60,
@@ -2085,9 +2085,18 @@
      },
      "ovhcloud (live public catalog)": {
       "models": 22
+     },
+     "requesty (live public catalog; invoke key absent from Actions store)": {
+      "models": 809
+     },
+     "routeway (live public catalog)": {
+      "models": 288
+     },
+     "typhoon (live public catalog)": {
+      "models": 7
      }
     },
-    "not_yet_counted": "key-gated live catalogs (groq, mistral, cerebras, nvidia, siliconflow, sambanova, cohere, zai, gemini, cloudflare, routeway, aion, sealion + extension set) and unorouter (283 models per provisioning verification 2026-10-28) - counted CI-side where the keys live (provider_model_catalog / provider-invoke runs); the floor rises as those land. Owner figure of record: thousands wired + working, 7,500+ at full catalog count.",
+    "not_yet_counted": "key-gated live catalogs (groq, mistral, cerebras, nvidia, siliconflow, sambanova, cohere, zai, gemini, cloudflare, aion, sealion + unorouter 283 per provisioning verification 2026-10-28; their public routes return no catalog) - counted CI-side where the keys live (provider_model_catalog / provider-invoke runs); the floor rises as those land. Owner figure of record: thousands wired + working, 7,500+ at full catalog count.",
     "working_evidence": "per-provider invoke verdicts = issue #3141 batch (provider-invoke surface); per-model evidence shards across the contributing pool per the compounding rule."
    }
   }

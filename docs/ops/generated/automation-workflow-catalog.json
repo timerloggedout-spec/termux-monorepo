@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "bc7129182d05251c032c50888373e92b0ffe141e15a7e831130c30ac94047d37",
-  "workflow_count": 243,
+  "source_fingerprint": "b9687f1fc0b60199ee62ed2304ef9327a6e73f0d280a9cc62f69661a4fcaccb6",
+  "workflow_count": 244,
   "workflows": [
     {
       "action_pins": [],
@@ -4101,6 +4101,25 @@
       "triggers": [
         "issues",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: telemetry-ingest cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "ingest"
+      ],
+      "name": "telemetry-ingest",
+      "path": ".github/workflows/telemetry-ingest.yml",
+      "schedules": [
+        "23 7 * * 3"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

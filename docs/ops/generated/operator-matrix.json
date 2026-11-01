@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 170,
+    "open_prs": 171,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 168,
+      "prs": 169,
       "unlabelled_numbers": [
         308,
         343,
@@ -87,11 +87,11 @@
         3094,
         3141,
         3215,
-        3278
+        3284
       ]
     }
   },
-  "generated_at": "2026-11-01T21:51:08Z",
+  "generated_at": "2026-11-01T21:54:04Z",
   "issues_unlabelled": [
     308,
     343,
@@ -128,7 +128,7 @@
     3094,
     3141,
     3215,
-    3278
+    3284
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -136,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "b2b02bf981"
+    "sha": "09d8ee9a45"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3ba8eac4b4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3286,
+      "title": "docs(icm): maintenance run#7 \u2014 D7 tranche-2 cards (ops-records-estate, agents-skills-estate)",
+      "updated_at": "2026-11-01T21:53:46Z"
     },
     {
       "class": "CANDIDATE",

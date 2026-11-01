@@ -323,20 +323,30 @@ Registered so backfill version-comparison lines attach: at any
 version change, historical results are re-scored under the new
 version and compared continuously until culling retires a version.
 
-- **rnd v1** — randomized mixes. Mechanisms: DOE-TAXONOMY
-  generators (`full_factorial`, `taguchi_l9`); phrase-layer JIT
-  variant generation; desk rotation assignment; rule-7 sets with
-  fresh auto-selected instances. Status: active. Comparison line:
-  open.
-- **cherry-pick v1** — winners propagated into new additions;
-  evolutionary culling toward Top Performance. Mechanisms: campaign
-  verdict machinery (winner → default in live-1 and cmp-register
-  designs); cull-as-data (nc-1 evaluator); DOE-FAMILY culling
-  rules. **Guardrail (adopted 2026-11-01): exploration floor = at
-  least 1 non-winner set per trigger-window**, implemented by the
-  rule-7 mechanization (fresh instances per set + dispatch spread)
-  so winner estimates stay fresh and never decay into stale
-  hard-select. Status: active. Comparison line: open.
+- **rnd v1** — randomized mixes: the variation operator of the
+  generational loop. Mechanisms: DOE-TAXONOMY generators
+  (`full_factorial`, `taguchi_l9`); phrase-layer JIT variant
+  generation; randomized assignment inside designs. In the loop,
+  rnd produces the mixes from which the next generation is drawn —
+  including re-mixing the complement (non-carried) cohort.
+  Status: active. Comparison line: open.
+- **cherry-pick v1** — generational selection operator ⛏️🧬: the
+  top-performing **% cohort** of slices/features is carried into
+  the next generation (owner definition: cherry-picked slices ∧
+  features propagated into new additions); the proportion is a
+  recorded per-design parameter. NOT dispatch-time best-arm
+  routing — that reading is retracted (correction of record,
+  2026-11-01); dispatch-time spread is governed separately by the
+  dispatch principle and rule 7. Mechanisms: campaign verdicts
+  designating the carried cohort; cull-as-data records what was
+  not carried (nc-1 evaluator); evolutionary culling toward Top
+  Performance over generations. **Guardrail (generational-%,
+  replacing the retracted per-window floor): the carry-over
+  proportion stays strictly partial — 0% = no inheritance, 100% =
+  no selection; the complement cohort persists and is re-mixed by
+  rnd in the next generation, which is what keeps winner estimates
+  fresh. Proportion changes are method-definition changes under
+  rule 8.** Status: active (restated). Comparison line: open.
 
 ## Campaign layout
 

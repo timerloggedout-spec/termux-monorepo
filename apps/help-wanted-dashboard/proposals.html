@@ -68,7 +68,22 @@ function filterProposals(feed,f){
 function facetValues(feed,key){
   return [...new Set((feed.proposals||[]).map(p=>p[key]).filter(v=>v!=null))].sort();
 }
-// ==== end pure logic ====
+function outcomeGroups(outcome){
+  const scores=(outcome&&outcome.scores)||{};
+  const byScore={};
+  Object.keys(scores).forEach(id=>{const s=scores[id];(byScore[s]=byScore[s]||[]).push(id)});
+  return Object.keys(byScore).map(Number).sort((a,b)=>b-a).map(s=>({score:s,candidates:byScore[s].sort()}));
+}
+function shortCandidate(passId,id){return id.startsWith(passId+'-')?id.slice(passId.length+1):id}
+function outcomeCell(pass){
+  const groups=outcomeGroups(pass&&pass.outcome);
+  if(!groups.length)return '—';
+  return groups.map(g=>{
+    const names=g.candidates.map(id=>esc(shortCandidate(pass.id,id))).join(' · ');
+    return g.candidates.length>1?'<strong>'+g.score.toFixed(3)+' — TIED</strong>: '+names:g.score.toFixed(3)+' — '+names;
+  }).join('<br>');
+}
+// ==== end pure logic ==== 
 let FEED=null;
 function statusPill(s){
   const cls=s==='accepted'?'pill ok':s==='executing'?'pill gold':'pill';
@@ -104,8 +119,8 @@ async function load(){
     $('f-text').addEventListener('input',render);
     render();
     const ps=FEED.passes||[];
-    $('passes').innerHTML=ps.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Pass</th><th>Status</th><th>Schema</th><th>Candidates</th></tr></thead><tbody>'+
-      ps.map(p=>'<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.id)+'</strong></a><br><span class="muted">'+esc(p.path)+'</span></td><td>'+esc(p.status||'—')+'</td><td>'+esc(p.schema||'—')+'</td><td>'+(p.candidates==null?'—':p.candidates)+'</td></tr>').join('')+
+    $('passes').innerHTML=ps.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Pass</th><th>Status</th><th>Schema</th><th>Candidates</th><th>Outcome</th></tr></thead><tbody>'+
+      ps.map(p=>'<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.id)+'</strong></a><br><span class="muted">'+esc(p.path)+'</span></td><td>'+esc(p.status||'—')+'</td><td>'+esc(p.schema||'—')+'</td><td>'+(p.candidates==null?'—':p.candidates)+'</td><td>'+outcomeCell(p)+'</td></tr>').join('')+
       '</tbody></table></div>':'<p class="empty">No pass records in the feed — nothing is shown rather than anything guessed.</p>';
     if((FEED.gaps||[]).length){$('passes').innerHTML+='<p class="muted">Feed gaps: '+FEED.gaps.map(esc).join('; ')+'</p>'}
   }catch(e){

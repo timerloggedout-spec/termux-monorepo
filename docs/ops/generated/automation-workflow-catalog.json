@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a03ed35f27fea352d230dbc5fca606cb1fe6b9b38bf707ea331fabe01692f3f0",
-  "workflow_count": 241,
+  "source_fingerprint": "d66020e516ec8c4042b0457cd5b530473bd75dc3bff201b7959296ad0ed936df",
+  "workflow_count": 242,
   "workflows": [
     {
       "action_pins": [],
@@ -2836,6 +2836,21 @@
       ],
       "name": "openrouter-free-counter-batch-probe",
       "path": ".github/workflows/openrouter-free-counter-batch-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "openrouter-free-counter-large-probe",
+      "path": ".github/workflows/openrouter-free-counter-large-probe.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

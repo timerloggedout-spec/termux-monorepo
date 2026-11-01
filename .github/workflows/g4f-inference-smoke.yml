@@ -1,0 +1,54 @@
+name: g4f inference smoke
+
+# Manual bounded inference execution over the harvested g4f-working catalog.
+# This is NOT the scheduled availability probe (catalog-only by invariant):
+# it runs only on explicit dispatch, sends one synthetic completion per
+# catalog working entry, and uploads a sanitized receipt artifact
+# (provider/model/ok/latency/error-class; no response bodies, no secrets --
+# all providers are no-auth). Never changes routing or production admission.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Max completions this run"
+        required: false
+        default: "200"
+        type: string
+      source:
+        description: "Entry source: working (verified 160), catalog (fork tester 100), universe (9588)"
+        required: false
+        default: "working"
+        type: string
+
+concurrency:
+  group: g4f-inference-smoke
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install g4f
+        run: pip install --quiet g4f aiohttp_socks
+      - name: Bounded smoke over catalog working entries
+        run: >
+          python3 scripts/ops/g4f_free_smoke.py
+          --source "${{ inputs.source }}"
+          --output g4f-inference-smoke.json
+          --limit "${{ inputs.limit }}"
+      - name: Upload sanitized receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4f-inference-smoke
+          path: g4f-inference-smoke.json
+          if-no-files-found: warn

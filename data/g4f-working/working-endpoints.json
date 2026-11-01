@@ -1,0 +1,837 @@
+{
+ "schema": "g4f-working-endpoints/v1",
+ "probed_at": "2026-11-01T15:51:00.715199+00:00",
+ "environment": "sandbox VM (proxy-mediated via aiohttp_socks; curl_cffi/Chromium-class failures are environmental \u2014 Actions re-probe via g4f-inference-smoke.yml is the second environment)",
+ "universe": {
+  "g4f_version": "8.8.16",
+  "providers_total": 160,
+  "fork_pairs_raw": 4242,
+  "fork_pairs_distinct": 4241,
+  "upstream_pairs": 8432,
+  "pairs_total": 9588,
+  "counts_by_source": {
+   "fork-catalog": 1156,
+   "upstream-g4f": 5347,
+   "both": 3085
+  }
+ },
+ "attempted": 9588,
+ "inference_ok": 160,
+ "providers_ok": {
+  "AgentTools": 1,
+  "AnyProvider": 46,
+  "BlackForestLabs_Flux1Dev": 2,
+  "CohereForAI_C4AI_Command": 6,
+  "G4FSpace": 7,
+  "Gemini": 18,
+  "HuggingSpace": 6,
+  "KiloCode": 12,
+  "Perplexity": 43,
+  "Pollinations": 1,
+  "PollinationsImage": 17,
+  "Yqcloud": 1
+ },
+ "endpoints": [
+  {
+   "provider": "AgentTools",
+   "model": "auto",
+   "latency_s": 60.1
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nemotron-3-ultra-550b-a55b",
+   "latency_s": 6.95
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+   "latency_s": 3.62
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16",
+   "latency_s": 4.84
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+   "latency_s": 1.27
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/nemotron-3-ultra",
+   "latency_s": 3.77
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "latency_s": 8.02
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+   "latency_s": 2.25
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "nvidia/nemotron-3.5-lightning:free",
+   "latency_s": 3.52
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "o3-mini",
+   "latency_s": 5.47
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "o3-mini-2025-01-31",
+   "latency_s": 4.54
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "o4-mini",
+   "latency_s": 4.07
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "o4-mini-2025-04-16",
+   "latency_s": 3.82
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/gpt-4",
+   "latency_s": 4.3
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/gpt-4.1",
+   "latency_s": 4.25
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/gpt-4.1:batch",
+   "latency_s": 4.71
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/gpt-4o-2024-05-13",
+   "latency_s": 4.7
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/gpt-4o:batch",
+   "latency_s": 4.47
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/gpt-image-1-mini",
+   "latency_s": 3.04
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/o3-mini",
+   "latency_s": 4.44
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/o3-mini:batch",
+   "latency_s": 4.47
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/o4-mini",
+   "latency_s": 4.25
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai/o4-mini:batch",
+   "latency_s": 4.28
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai:openai/gpt-4.1",
+   "latency_s": 4.09
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai:openai/o3-mini",
+   "latency_s": 4.55
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openai:openai/o4-mini",
+   "latency_s": 4.29
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openrouter/auto",
+   "latency_s": 4.13
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "openrouter/free",
+   "latency_s": 3.24
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "perplexity",
+   "latency_s": 3.94
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "perplexity/sonar",
+   "latency_s": 4.15
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "pplx_pro",
+   "latency_s": 5.34
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "r1-1776",
+   "latency_s": 5.06
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "reasoning",
+   "latency_s": 4.84
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "reflection/beam-free",
+   "latency_s": 1.28
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "sdxl-turbo",
+   "latency_s": 4.2
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mp5miql908c8738d71be:community/NamanSoni78/nemotron-3-ultra-550b-a55b",
+   "latency_s": 7.22
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-2.5-flash",
+   "latency_s": 5.32
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.1-flash-lite",
+   "latency_s": 2.75
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.5-flash",
+   "latency_s": 3.18
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.5-flash-lite",
+   "latency_s": 2.92
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.6-flash",
+   "latency_s": 2.87
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.7-flash",
+   "latency_s": 2.4
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.8-flash",
+   "latency_s": 2.61
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "srv_mve15k17fe3d549fd0b8:nvidia/nemotron-3-ultra-550b-a55b:free",
+   "latency_s": 3.55
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "stabilityai/sdxl-turbo",
+   "latency_s": 5.02
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "stealth/glyph-cluster",
+   "latency_s": 5.31
+  },
+  {
+   "provider": "AnyProvider",
+   "model": "turbo",
+   "latency_s": 5.08
+  },
+  {
+   "provider": "BlackForestLabs_Flux1Dev",
+   "model": "black-forest-labs-flux-1-dev",
+   "latency_s": 24.21
+  },
+  {
+   "provider": "BlackForestLabs_Flux1Dev",
+   "model": "flux-dev",
+   "latency_s": 49.55
+  },
+  {
+   "provider": "CohereForAI_C4AI_Command",
+   "model": "command-a",
+   "latency_s": 2.2
+  },
+  {
+   "provider": "CohereForAI_C4AI_Command",
+   "model": "command-a-03-2025",
+   "latency_s": 74.58
+  },
+  {
+   "provider": "CohereForAI_C4AI_Command",
+   "model": "command-r-08-2024",
+   "latency_s": 2.37
+  },
+  {
+   "provider": "CohereForAI_C4AI_Command",
+   "model": "command-r-plus-08-2024",
+   "latency_s": 2.58
+  },
+  {
+   "provider": "CohereForAI_C4AI_Command",
+   "model": "command-r7b-12-2024",
+   "latency_s": 2.22
+  },
+  {
+   "provider": "CohereForAI_C4AI_Command",
+   "model": "command-r7b-arabic-02-2025",
+   "latency_s": 1.35
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "auto",
+   "latency_s": 7.43
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "srv_monk1pkz433a519ff2be:openrouter/free",
+   "latency_s": 4.57
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "srv_mp5miql908c8738d71be:auto",
+   "latency_s": 6.56
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.1-flash-lite",
+   "latency_s": 3.9
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.1-flash-lite-preview",
+   "latency_s": 4.62
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-3.5-flash-lite",
+   "latency_s": 5.25
+  },
+  {
+   "provider": "G4FSpace",
+   "model": "srv_mrgy0nmbc8a86c407f17:models/gemini-flash-lite-latest",
+   "latency_s": 2.57
+  },
+  {
+   "provider": "Gemini",
+   "model": "cf41b0e0dd7d53e5",
+   "latency_s": 6.48
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-2.0",
+   "latency_s": 2.92
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-2.0-flash",
+   "latency_s": 2.71
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-2.0-flash-thinking",
+   "latency_s": 2.7
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-2.0-flash-thinking-with-apps",
+   "latency_s": 3.48
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-2.5-flash",
+   "latency_s": 2.64
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.1-flash-lite",
+   "latency_s": 2.73
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.5-flash",
+   "latency_s": 2.91
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.5-flash-lite",
+   "latency_s": 2.59
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.5-flash-lite-thinking",
+   "latency_s": 3.01
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.5-flash-thinking",
+   "latency_s": 2.28
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.5-flash-thinking-lite",
+   "latency_s": 2.64
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.6-flash",
+   "latency_s": 3.18
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.6-flash-thinking",
+   "latency_s": 2.94
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.7-flash",
+   "latency_s": 2.65
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-3.8-flash",
+   "latency_s": 2.63
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-auto",
+   "latency_s": 4.0
+  },
+  {
+   "provider": "Gemini",
+   "model": "gemini-flash-lite",
+   "latency_s": 3.21
+  },
+  {
+   "provider": "HuggingSpace",
+   "model": "command-a",
+   "latency_s": 31.48
+  },
+  {
+   "provider": "HuggingSpace",
+   "model": "command-a-03-2025",
+   "latency_s": 3.17
+  },
+  {
+   "provider": "HuggingSpace",
+   "model": "command-r",
+   "latency_s": 2.54
+  },
+  {
+   "provider": "HuggingSpace",
+   "model": "command-r-08-2024",
+   "latency_s": 3.37
+  },
+  {
+   "provider": "HuggingSpace",
+   "model": "command-r-plus-08-2024",
+   "latency_s": 2.62
+  },
+  {
+   "provider": "HuggingSpace",
+   "model": "command-r7b-12-2024",
+   "latency_s": 1.42
+  },
+  {
+   "provider": "KiloCode",
+   "model": "cohere/north-mini-code:free",
+   "latency_s": 2.03
+  },
+  {
+   "provider": "KiloCode",
+   "model": "dots-studio/dots-3-note-preview:free",
+   "latency_s": 5.3
+  },
+  {
+   "provider": "KiloCode",
+   "model": "kilo-auto/free",
+   "latency_s": 2.93
+  },
+  {
+   "provider": "KiloCode",
+   "model": "kilo-auto/small",
+   "latency_s": 1.53
+  },
+  {
+   "provider": "KiloCode",
+   "model": "liquid/lfm-2.5-2.6b:free",
+   "latency_s": 2.51
+  },
+  {
+   "provider": "KiloCode",
+   "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+   "latency_s": 2.26
+  },
+  {
+   "provider": "KiloCode",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+   "latency_s": 3.07
+  },
+  {
+   "provider": "KiloCode",
+   "model": "nvidia/nemotron-3.5-lightning:free",
+   "latency_s": 3.01
+  },
+  {
+   "provider": "KiloCode",
+   "model": "nvidia/nemotron-3.5-super-vl:free",
+   "latency_s": 3.81
+  },
+  {
+   "provider": "KiloCode",
+   "model": "openrouter/free",
+   "latency_s": 12.96
+  },
+  {
+   "provider": "KiloCode",
+   "model": "reflection/beam-free",
+   "latency_s": 3.88
+  },
+  {
+   "provider": "KiloCode",
+   "model": "stealth/glyph-cluster",
+   "latency_s": 5.07
+  },
+  {
+   "provider": "Perplexity",
+   "model": "auto",
+   "latency_s": 4.71
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude2",
+   "latency_s": 4.21
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude37sonnetthinking",
+   "latency_s": 4.52
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40opus",
+   "latency_s": 4.99
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40opus_research",
+   "latency_s": 4.53
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40opusthinking",
+   "latency_s": 4.83
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40opusthinking_labs",
+   "latency_s": 5.49
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40opusthinking_research",
+   "latency_s": 4.91
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40sonnet_research",
+   "latency_s": 5.37
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40sonnetthinking_labs",
+   "latency_s": 5.34
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude40sonnetthinking_research",
+   "latency_s": 5.41
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude41opusthinking",
+   "latency_s": 5.37
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude45sonnet",
+   "latency_s": 5.05
+  },
+  {
+   "provider": "Perplexity",
+   "model": "claude45sonnetthinking",
+   "latency_s": 5.55
+  },
+  {
+   "provider": "Perplexity",
+   "model": "comet_max_assistant",
+   "latency_s": 5.03
+  },
+  {
+   "provider": "Perplexity",
+   "model": "experimental",
+   "latency_s": 5.53
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gemini2flash",
+   "latency_s": 5.45
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt-5",
+   "latency_s": 6.35
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt-5-thinking",
+   "latency_s": 5.14
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt4",
+   "latency_s": 5.18
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt41",
+   "latency_s": 4.64
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt45",
+   "latency_s": 4.65
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt4o",
+   "latency_s": 4.42
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt5",
+   "latency_s": 4.48
+  },
+  {
+   "provider": "Perplexity",
+   "model": "gpt5_thinking",
+   "latency_s": 4.8
+  },
+  {
+   "provider": "Perplexity",
+   "model": "grok",
+   "latency_s": 4.5
+  },
+  {
+   "provider": "Perplexity",
+   "model": "grok4",
+   "latency_s": 4.43
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3",
+   "latency_s": 4.68
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3_labs",
+   "latency_s": 5.48
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3_research",
+   "latency_s": 4.95
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3mini",
+   "latency_s": 5.49
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3pro",
+   "latency_s": 4.34
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3pro_labs",
+   "latency_s": 4.93
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o3pro_research",
+   "latency_s": 4.86
+  },
+  {
+   "provider": "Perplexity",
+   "model": "o4mini",
+   "latency_s": 5.25
+  },
+  {
+   "provider": "Perplexity",
+   "model": "pplx_alpha",
+   "latency_s": 4.64
+  },
+  {
+   "provider": "Perplexity",
+   "model": "pplx_beta",
+   "latency_s": 5.03
+  },
+  {
+   "provider": "Perplexity",
+   "model": "pplx_pro",
+   "latency_s": 5.27
+  },
+  {
+   "provider": "Perplexity",
+   "model": "pplx_pro_upgraded",
+   "latency_s": 5.24
+  },
+  {
+   "provider": "Perplexity",
+   "model": "pplx_reasoning",
+   "latency_s": 5.14
+  },
+  {
+   "provider": "Perplexity",
+   "model": "r1",
+   "latency_s": 4.96
+  },
+  {
+   "provider": "Perplexity",
+   "model": "r1-1776",
+   "latency_s": 5.07
+  },
+  {
+   "provider": "Perplexity",
+   "model": "turbo",
+   "latency_s": 4.38
+  },
+  {
+   "provider": "Pollinations",
+   "model": "sana",
+   "latency_s": 3.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "claude-3-5-sonnet",
+   "latency_s": 10.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "claude-3-sonnet",
+   "latency_s": 10.02
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "claude-3.5-sonnet",
+   "latency_s": 8.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "deepseek-reasoning",
+   "latency_s": 7.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "flux-pro",
+   "latency_s": 7.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "gpt-4.1-nano",
+   "latency_s": 9.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "gpt-image",
+   "latency_s": 3.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "gptimage",
+   "latency_s": 3.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "llama-4-scout",
+   "latency_s": 8.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "mistral-small",
+   "latency_s": 6.02
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "mistral-small-3.1-24b",
+   "latency_s": 9.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "openai-fast",
+   "latency_s": 8.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "qwen-2.5-coder-32b",
+   "latency_s": 6.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "qwen-3-coder",
+   "latency_s": 9.02
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "qwen-coder",
+   "latency_s": 8.01
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "sana",
+   "latency_s": 7.38
+  },
+  {
+   "provider": "PollinationsImage",
+   "model": "sdxl-turbo",
+   "latency_s": 9.01
+  },
+  {
+   "provider": "Yqcloud",
+   "model": "gpt-4",
+   "latency_s": 13.45
+  }
+ ],
+ "production_admission_changed": false
+}

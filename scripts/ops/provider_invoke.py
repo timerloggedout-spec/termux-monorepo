@@ -61,7 +61,7 @@ def resolve_provider(name: str):
     return None, (), None, "no reviewed chat endpoint in repo sources (catalog-only provider)"
 
 
-def http_json(method: str, url: str, token: str, payload=None, timeout=45):
+def http_json(method: str, url: str, token: str, payload=None, timeout=90):
     data = json.dumps(payload).encode() if payload is not None else None
     req = urllib.request.Request(url, data=data, method=method)
     req.add_header("Authorization", f"Bearer {token}")
@@ -113,9 +113,13 @@ def main() -> int:
         return 0
     verdict["credential"] = token_name
 
+    candidates: list = []
     model = os.environ.get("INVOKE_MODEL") or None
     if model is None and catalog_url:
-        status, cat = http_json("GET", catalog_url, token)
+        if provider == "cloudflare":
+            status, cat = http_json("POST", catalog_url, token, {"page": 1, "per_page": 50})
+        else:
+            status, cat = http_json("GET", catalog_url, token)
         verdict["catalog_http"] = status
         if status != 200 and provider == "cohere":
             # v1 models catalog refused; the v2 catalog is the same key's other door.
@@ -128,45 +132,67 @@ def main() -> int:
                 try:
                     ids = [r["id"] for r in provider_catalog_protocols.normalize_models(provider, cat)]
                     chat = [i for i in ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
-                    model = (chat or ids or [None])[0]
+                    candidates = chat or ids
+                    model = (candidates or [None])[0]
                 except Exception:
                     model = None
             else:
-                model = pick_model(cat)
+                data_ids = [m.get("id") for m in cat.get("data", []) if isinstance(m, dict) and m.get("id")]
+                chat = [i for i in data_ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
+                candidates = chat or data_ids
+                model = (candidates or [None])[0]
     if model is None:
         model = "default"
         verdict["model_note"] = "catalog unresolved; provider default attempted"
     verdict["model"] = model
 
     prompt = open(args.prompt_file).read()
-    payload = {"model": model, "max_tokens": args.max_tokens,
-               "messages": [{"role": "user", "content": prompt}]}
-    t0 = time.time()
-    status, body = http_json("POST", url, token, payload)
-    verdict["latency_ms"] = int((time.time() - t0) * 1000)
-    verdict["http"] = status
-    if status is None:
-        verdict["diagnosis"] = "transport: " + str(body.get("transport_error"))[:200]
-    elif status == 200:
-        text = ""
-        try:
-            text = body["choices"][0]["message"]["content"]
-        except Exception:
-            pass
-        if not text:
-            # Cohere v2/chat shape: message.content = [{type: text, text: ...}]
+    attempts = [m for m in dict.fromkeys([model] + candidates[:2]) if m] or ["default"]
+    status, body = None, {}
+    for attempt_model in attempts:
+        verdict["model"] = attempt_model
+        for budget in (args.max_tokens, 1024):
+            payload = {"model": attempt_model, "max_tokens": budget,
+                       "messages": [{"role": "user", "content": prompt}]}
+            t0 = time.time()
+            status, body = http_json("POST", url, token, payload)
+            verdict["latency_ms"] = int((time.time() - t0) * 1000)
+            verdict["http"] = status
+            if status != 200:
+                break
+            text = ""
             try:
-                parts = body["message"]["content"]
-                text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+                text = body["choices"][0]["message"]["content"]
             except Exception:
-                text = ""
-        if text:
-            verdict["ok"] = True
-            verdict["diagnosis"] = "invoke succeeded"
-            with open(args.out, "w") as f:
-                f.write(text)
+                pass
+            if not text:
+                # Cohere v2/chat shape: message.content = [{type: text, text: ...}]
+                try:
+                    parts = body["message"]["content"]
+                    text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+                except Exception:
+                    text = ""
+            if text:
+                verdict["ok"] = True
+                verdict["diagnosis"] = "invoke succeeded"
+                with open(args.out, "w") as f:
+                    f.write(text)
+                break
+            # empty content (e.g. reasoning budget consumed it): retry once, bigger budget
+        if verdict["ok"]:
+            break
+        if status is None:
+            verdict["diagnosis"] = "transport: " + str(body.get("transport_error"))[:200]
+            break
+        if status == 404 and attempt_model != attempts[-1]:
+            continue  # catalog/serving skew: fall over to the next catalog model
+        err = body.get("error") if isinstance(body, dict) else None
+        msg = (err.get("message") if isinstance(err, dict) else None) or ""
+        if status == 200:
+            verdict["diagnosis"] = f"http 200 but no completion text at max_tokens 1024 (response shape {sorted(body.keys())})"
         else:
-            verdict["diagnosis"] = f"http 200 but no completion text in response shape {sorted(body.keys())}"
+            verdict["diagnosis"] = f"http {status}: {str(msg)[:200]}"
+        break
     else:
         err = body.get("error") if isinstance(body, dict) else None
         msg = (err.get("message") if isinstance(err, dict) else None) or ""

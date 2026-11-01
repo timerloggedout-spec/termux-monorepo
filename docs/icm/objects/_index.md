@@ -8,6 +8,7 @@
 | [ArchWiz](operations/archwiz.md) | operations | live | verified | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface |
 | [Optional Visual Review](operations/optional-visual-review.md) | operations | live | initiated | reviewing the file-backed CCTV cards, proposing a mirror, or defining a human checkpoint |
 | [Challenge and Certifications Program](operations/challenge-program.md) | operations | live | initiated | routing a challenge entry, deadline, or certification question to the program records |
+| [Self-Healing Engine (SHE)](operations/self-healing-engine.md) | operations | live | initiated | tracing how a CI/gate failure becomes an incident, recovery action, or repair PR |
 | [Navigation and Indexes](knowledge/navigation-and-indexes.md) | knowledge | live | verified | changing root orientation, generated-map use, or index routing |
 | [Context Relationship Index](knowledge/context-relationship-index.md) | knowledge | live | verified | reconstructing bounded source/GitHub context, querying evidence, or maintaining its canonical generated index |
 | [Graph Matrix](knowledge/graph-matrix.md) | knowledge | live | initiated | checking issue/PR/branch linkage, orphans, or stale and anomalously unclosed items |

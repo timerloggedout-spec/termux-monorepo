@@ -21,6 +21,7 @@ One job: route a change touching monorepo operational tooling to the smallest ca
 | [`archwiz.md`](archwiz.md) | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface | the named tool’s source and probe/test boundary |
 | [`optional-visual-review.md`](optional-visual-review.md) | reviewing initiated CCTV cards, proposing a file-backed stage mirror or human checkpoint, or scoping later publication | the canonical source artifact and the separate renderer/publication gate |
 | [`challenge-program.md`](challenge-program.md) | routing a challenge entry, deadline, or certification question | the program's own records in `docs/ops/` and its management tree |
+| [`self-healing-engine.md`](self-healing-engine.md) | tracing a failure signal into an incident, recovery plan, repair PR, or attestation | the `she/` package source and its per-module live-execution flags |
 
 ## Outputs
 

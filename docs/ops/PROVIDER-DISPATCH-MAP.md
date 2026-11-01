@@ -69,10 +69,10 @@ Census of record =
   inference batch; sealion's route-dead flag was WRONG — live 200, retracted).
 - **Wired-unproven (20)** — invoke surface of record henceforth: `provider-invoke.yml` +
   `scripts/ops/provider_invoke.py` (runtime-resolved, no pinned routes). Per-provider invoke
-  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow} ·
+  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow, huggingface} ·
   capacity {sambanova} · secrets-absent in Actions store {cerebras, kilo, mistral,
   modelscope, ovhcloud, requesty, typhoon, xfyun} · egress-403 {groq, xkiro} · edge-403 {aion —
-  route-dead corrected} · timeout {unorouter} · skew {nvidia} · scope-limited {cloudflare, huggingface — HUGGINGFACE_TOKEN present (fleet-read); catalog 200, inference 403; its #3141 no-credential verdict was a harness artifact, corrected c.6558827393}. Promotion = one named single-provider batch dispatch each
+  route-dead corrected} · timeout {unorouter} · skew {nvidia} · scope-limited {cloudflare} (huggingface LEFT this set 2026-11-01: provisioning swapped in an inference-scoped fleet token; re-fire = http 402 credits-exhausted ⇒ funding-blocked, #3141 c.6559163109). Promotion = one named single-provider batch dispatch each
   (after flag resolution; #2672 gate LIFTED 2026-11-01, below). Gate-state (Quota amendment, Swarm
   firsthand; LIFTED by providers-dispatch 2026-11-01): the 7 key-live members {cohere, sambanova, zai, llm7, routeway, unorouter,
   siliconflow} were `blocked-by-#2672` — #2672 CLOSED with contracts GREEN run 41308987754

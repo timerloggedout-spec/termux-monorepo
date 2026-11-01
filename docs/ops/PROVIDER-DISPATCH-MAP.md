@@ -50,13 +50,13 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 
 ## Registry bench classes (Quota capability map, firsthand @master 2026-11-01)
 
-90 distinct model-lane providers = **proven 4 + wired-unproven 21 + triggerable 2 + inference-only 63** (net-new: deepinfra, PR #3208):
+91 distinct model-lane providers = **proven 4 + wired-unproven 22 + triggerable 2 + inference-only 63** (net-new: deepinfra PR #3208, novita PR #3214):
 
 **Endpoint scale (owner emphasis): providers != endpoints.** Verified floor 2026-11-01 =
-**7,219 provider×model endpoints**: g4f-working catalog 4,242 (60 providers, in-repo) +
+**7,317 provider×model endpoints**: g4f-working catalog 4,242 (60 providers, in-repo) +
 live public catalogs {requesty 809 · openrouter 452 · kilo gateway 384 · routeway 288 ·
 huggingface router 135 · llm7 67 · modelscope 35 · ovhcloud 22 · typhoon 7} + CI keyed
-catalogs (provider-invoke catalog mode, verdicts #3141) {unorouter 330 · deepinfra 173 · nvidia 85 ·
+catalogs (provider-invoke catalog mode, verdicts #3141) {unorouter 330 · deepinfra 173 · novita 98 · nvidia 85 ·
 siliconflow 81 · gemini 60 · cohere 20 · sealion 12 · zai 11 · sambanova 6} (routeway
 keyed = public 288, counted once). **Owner rule: census counts MUST be Actions** —
 VM-vantage/public-docs counts are void (the groq 14 + aion 6 fold was retracted);
@@ -69,9 +69,9 @@ Census of record =
 - **Proven (4):** `google` (Gemini router/after-peers, key-live) · `openrouter` (production invoke
   legs; free layer active, paid balance $0.00) · `cohere` + `sealion` (INVOKE OK via the #3141
   inference batch; sealion's route-dead flag was WRONG — live 200, retracted).
-- **Wired-unproven (21)** — invoke surface of record henceforth: `provider-invoke.yml` +
+- **Wired-unproven (22)** — invoke surface of record henceforth: `provider-invoke.yml` +
   `scripts/ops/provider_invoke.py` (runtime-resolved, no pinned routes). Per-provider invoke
-  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow, huggingface, deepinfra} ·
+  verdicts (inference batch, issue #3141): funding-blocked {zai, llm7, routeway, siliconflow, huggingface, deepinfra} · completion-blocked {novita (403 empty-body from the API, catalog-live; consistent with $0 balance)} ·
   capacity {sambanova} · secrets-absent in Actions store {cerebras, kilo, mistral,
   modelscope, ovhcloud, requesty, typhoon, xfyun} · egress-403 {groq, xkiro} · edge-403 {aion —
   route-dead corrected} · timeout {unorouter} · skew {nvidia} · scope-limited {cloudflare} (huggingface LEFT this set 2026-11-01: provisioning swapped in an inference-scoped fleet token; re-fire = http 402 credits-exhausted ⇒ funding-blocked, #3141 c.6559163109). Promotion = one named single-provider batch dispatch each
@@ -146,11 +146,11 @@ All 5 triggerable + 3 wired-unproven lanes fired at production work; classes upd
 ERROR OF RECORD: the re-base counted only 2 invoke surfaces (provider-batch +
 provider_model_catalog ENDPOINTS) and classed 72 providers not-wired. Full census across
 ALL surfaces {batch, catalog, llm_api_hub provider_extensions (PR #1471), llm_api_hub
-provider_protocols, g4f-working/gpt4free}: **89/90 catalogued keys carry an invoke
-surface** — named 27 {batch/catalog 17 + extensions 8 (typhoon, unorouter, routeway,
-requesty, xkiro, xfyun, sealion, deepinfra — net-new PR #3208) + protocols 2 (cloudflare, cohere)} + g4f family
+provider_protocols, g4f-working/gpt4free}: **90/91 catalogued keys carry an invoke
+surface** — named 28 {batch/catalog 17 + extensions 9 (typhoon, unorouter, routeway,
+requesty, xkiro, xfyun, sealion, deepinfra + novita — net-new PRs #3208/#3214) + protocols 2 (cloudflare, cohere)} + g4f family
 {60 records + composite, catalogued route; tester-working evidence 15 providers}.
-Not-wired open items = 0. 90/90 accounted: 89 wired + github excluded-by-kind
+Not-wired open items = 0. 91/91 accounted: 90 wired + github excluded-by-kind
 (review-kind record; reopen = owner word → github-models record). Meta counts as
 WIRED-UNPROVISIONED: routes of record (PR #2641 — meta_model_api + muse_code in
 llm_providers.yaml, api.meta.ai/v1, enabled:false pending MODEL_API_KEY/META_API_KEY).

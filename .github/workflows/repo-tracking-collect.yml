@@ -24,6 +24,9 @@ on:
       - 'ops/challenge/desk-feed.json'
       - 'ops/quota/registry.json'
       - 'experiments/doe/*/DESIGN.json'
+      - 'experiments/doe/*/PLAN*.json'
+      - 'experiments/doe/*/records/**'
+      - 'experiments/doe/*/dispatch/**'
 
 concurrency:
   group: repo-tracking-collect

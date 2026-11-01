@@ -53,6 +53,7 @@ on:
           - deepinfra
           - novita
           - friendli
+          - baseten
 
 permissions: {}
 
@@ -106,6 +107,7 @@ jobs:
           DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
           NOVITA_API_KEY: ${{ secrets.NOVITA_API_KEY }}
           FRIENDLI_API_KEY: ${{ secrets.FRIENDLI_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: |
           set -o pipefail

@@ -12,6 +12,7 @@ ENDPOINTS = {
     "deepinfra": "https://api.deepinfra.com/v1/openai/models",
     "novita": "https://api.novita.ai/v3/openai/models",
     "friendli": "https://api.friendli.ai/serverless/v1/models",
+    "baseten": "https://inference.baseten.co/v1/models",
 }
 SECRETS = {provider: f"{provider.upper()}_API_KEY" for provider in ENDPOINTS}
 # Official docs explicitly allow anonymous model discovery for these gateways.
@@ -25,6 +26,7 @@ SOURCES = {
     "deepinfra": "https://deepinfra.com/docs",
     "novita": "https://novita.ai/docs",
     "friendli": "https://friendli.ai/docs",
+    "baseten": "https://docs.baseten.co",
 }
 
 

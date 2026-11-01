@@ -295,6 +295,16 @@
       ],
       "status": "static_roster_link_only",
       "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "baseten",
+      "mapping_id": "adapter:baseten",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
+        "scripts/provider_extension_catalogs.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
     }
   ]
 }

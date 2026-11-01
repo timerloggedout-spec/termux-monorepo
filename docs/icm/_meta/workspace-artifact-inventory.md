@@ -1,14 +1,14 @@
 # Workspace Artifact Inventory
 
-This is a **classification record**, not a cleanup instruction. It records the observed `workspace/` estate as of 2026-08-17 so later agents can route a specific request without treating every nested Markdown, text, JSONL, or generated map as live context.
+This is a **classification record**, not a cleanup instruction. It records the observed `workspace/` estate as of 2026-11-01 so later agents can route a specific request without treating every nested Markdown, text, JSONL, or generated map as live context.
 
 | Metric | Observed value |
 |---|---|
-| Files under `workspace/` | 897 |
-| Largest subtree | `workspace/llm_map/` with 853 files |
-| Dominant file types | 532 `.txt`, 190 `.json`, 73 `.py`, 24 `.md`, and 13 `.jsonl` files |
-| Last tracked `workspace/llm_map/` change | 2026-08-03 (`03f5a5a`) |
-| Other observed workspace subtrees | `maxc`, `cedar_forge`, `compression_sandbox`, and project task-marker folders |
+| Files under `workspace/` | 996 |
+| Largest subtree | `workspace/llm_map/` with 956 files |
+| Dominant file types | 532 `.txt`, 252 `.json`, 75 `.py`, 24 `.md`, and 67 `.jsonl` files |
+| Last tracked `workspace/llm_map/` change | 2026-11-01 (`91f4809`) |
+| Other observed workspace subtrees | `maxc`, `cedar_forge`, `compression_sandbox`, `deepcli`, `harmony_hub`, and project task-marker folders/files |
 
 ## Classification summary
 

@@ -8,7 +8,7 @@
  "moniker": "doe-expert",
  "owner_order": "Owner via main 2026-10-31: the notation-compliance detection TEST is a DoE experiment, homed in the doe-expert lane. Verdict to main on first runs.",
  "subject": "Information-density effectiveness of ALL fleet data (chat, GitHub, docs, records) under the notation spec (issue #320 + #1734). Owner scope amendment 2026-10-31 via main: the L3 metric is information-density effectiveness for all data, NOT style-only compliance. Style drift (prose-heavy output) is one low-density failure mode; redundancy, boilerplate, restatement and empty records are the same failure in other surfaces.",
- "hypothesis": "A layered detection stack catches LOW-DENSITY output (signal carried per token below threshold) at high precision/recall with near-zero chat noise and low token cost, and flagging raises density in subsequent outputs. Each layer must earn its place or be culled.",
+ "hypothesis": "An ORDERED validation stack catches LOW-DENSITY output (signal carried per token below threshold) at high precision/recall with near-zero chat noise and low token cost: L1 validates at intake (fast corrections at the relay), L2 re-verifies intermittently (catches intake escapes), L3 covers the broader GitHub layer (surfaces intake never sees). Each layer must earn its place or be culled.",
  "drift_metric": {
   "primary": "information_density = signal_units / tokens per unit, measured on ALL data surfaces (chat messages, GitHub comments/PR bodies/commits, docs, machine records/feeds). signal_units = weighted count of carried signal elements: identifiers (PR#/SHA/issue/session ids), decisions and verdicts, quantities and states, evidence refs (#1734), novel facts; minus penalties for restated signal, boilerplate and filler. A unit is DRIFT when density < tau for its surface stratum.",
   "strata": [
@@ -28,36 +28,34 @@
  },
  "gold_corpus": "Labeled sample of real fleet outputs across ALL FOUR strata (chat, GitHub, docs, records), labeled for density (signal carried vs tokens) against the spec; labels + corpus snapshot committed under records/corpus/ before scoring. Known low-density classes: explanatory prose relays; boilerplate docs sections; records with empty/absent signal fields. Known high-density class: caveman-micro reports carrying ids + outcomes + refs.",
  "variants": {
-  "note": "The arms are detection-stack configurations, compared on the same gold corpus and then live. The cascade is the owner's named stack; ablations price each layer.",
+  "note": "OWNER CORRECTION 2026-10-31 (via main): validation ORDER = L1 -> L2 (intermittent) -> L3. L1 = INITIAL validation (first touch at relay; corrections issued there, fast; main's confirm/reject sits at INTAKE, not at the end). L2 = INTERMITTENT check (periodic sweep re-verifies what intake passed). L3 = broader GH layer (GitHub + docs + records coverage). The earlier reading (detections flow L3/L2 up to a final L1) is superseded and recorded as such.",
   "arms": [
    {
-    "id": "L3-only",
-    "stack": "GitHub classifier over posted surfaces (Tier-1 build)"
+    "id": "L1-only",
+    "stack": "L1 intake validation alone"
    },
    {
-    "id": "L2-only",
-    "stack": "transcript sweep over chat outputs (Tier-1 build)"
-   },
-   {
-    "id": "L3+L2",
-    "stack": "union of both detectors, no validation"
+    "id": "L1+L2",
+    "stack": "L1 intake + L2 intermittent re-verification"
    },
    {
     "id": "FULL",
-    "stack": "L3 + L2 detections => L1 main relay-validation (main confirms/rejects flags against source outputs); only L1-confirmed flags count as drift events"
+    "stack": "L1 intake + L2 intermittent + L3 broader GH layer (ordered cascade)"
    }
   ],
   "responses": [
    "precision",
    "recall",
+   "escape_rate (drift passing L1, caught at L2/L3)",
+   "correction_latency (intake flag -> corrected output)",
    "tokens_scanned_per_confirmed_drift",
    "chat_noise_events (must be 0)",
-   "downstream drift rate in flagged lanes' next outputs"
+   "downstream density of flagged lanes' next outputs"
   ]
  },
  "pass_cull": {
   "pass": "FULL stack: precision >= 0.90 AND recall >= 0.80 on the gold corpus AND chat_noise_events == 0 AND cost within the noise budget.",
-  "cull": "Any layer whose removal costs < 0.03 recall while saving > 25% tokens is culled from the stack (culling toward Top Performance, owner definition). Any arm below the precision floor is culled with record.",
+  "cull": "Any layer whose marginal confirmed-drift yield over the preceding ordered stack is < 0.03 recall while costing > 25% additional tokens is culled from the stack (culling toward Top Performance, owner definition). Any arm below the precision floor is culled with record.",
   "fail": "If FULL fails precision or recall floors, verdict = no_selection; redesign recorded, no silent threshold loosening."
  },
  "noise_budget": {
@@ -66,16 +64,23 @@
  },
  "automation": {
   "requirement": "DOE-FAMILY binding rule 5: evaluation runs as repo automation (GitHub Workflow on corpus snapshots + live output feeds); manual scoring is OBSERVATIONAL.",
-  "builds": "L3 classifier + L2 sweep = Tier-1 lane builds (fae834fb, already tasked). Evaluator + scoring harness = this campaign. L1 = main relay-validation step.",
+  "builds": "L3 classifier + L2 sweep = Tier-1 lane builds (fae834fb, already tasked). L1 = main relay-validation at intake (confirm/reject + fast corrections). Evaluator + scoring harness = this campaign.",
   "records": "one EXPERIMENT-conforming record per evaluation run under records/; SUMMARY.json + verdict at first-runs completion, reported to main."
  },
  "registration": {
   "preregistered_in_repo": true,
   "recorded": "2026-10-31"
  },
- "scope_amendment": {
-  "date": "2026-10-31",
-  "via": "main (owner)",
-  "change": "L3 metric = information-density effectiveness, all data (chat + GH + docs + records), not style-only. Arms unchanged."
- }
+ "scope_amendment": [
+  {
+   "date": "2026-10-31",
+   "via": "main (owner)",
+   "change": "L3 metric = information-density effectiveness, all data (chat + GH + docs + records), not style-only. Arms unchanged."
+  },
+  {
+   "date": "2026-10-31",
+   "via": "main (owner correction)",
+   "change": "Arm roles/order corrected: validation ORDER = L1 (initial, at intake) -> L2 (intermittent re-verification) -> L3 (broader GH layer). Main's confirm/reject sits at intake, not only at FULL end. Arms restated as ordered-stack ablations: L1-only / L1+L2 / FULL."
+  }
+ ]
 }

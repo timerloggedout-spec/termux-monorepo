@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "registry_version": "1.0.0",
+  "status": "initial_inventory",
+  "authority_note": "Evidence-backed inventory of repository paths on master as inspected 2026-11-01. Presence of a path is not proof of production deployment, release readiness, or target-platform support.",
+  "surfaces": [
+    {
+      "surface_id": "help-wanted.web.pwa",
+      "family": "web",
+      "renderer": "semantic-html-css-javascript",
+      "targets": [
+        "browser",
+        "installable-pwa"
+      ],
+      "evidence_paths": [
+        "apps/help-wanted-dashboard/index.html",
+        "apps/help-wanted-dashboard/manifest.webmanifest",
+        "apps/help-wanted-dashboard/sw.js",
+        "apps/help-wanted-dashboard/version-manifest.json"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "help-wanted.tui.python",
+      "family": "tui",
+      "renderer": "python-terminal-text",
+      "targets": [
+        "terminal",
+        "Termux-candidate"
+      ],
+      "evidence_paths": [
+        "apps/help-wanted-dashboard/quota-tui/quota_tui.py",
+        "apps/help-wanted-dashboard/quota-tui/README.md",
+        "apps/help-wanted-dashboard/quota-tui/sample-output.txt"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "deepcli.tui.python",
+      "family": "tui",
+      "renderer": "python-terminal-text",
+      "targets": [
+        "terminal"
+      ],
+      "evidence_paths": [
+        "deepcli-tui/tui.py",
+        "deepcli-tui/workspace/reference/tui.py"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "termux-multi-agent.tui.python",
+      "family": "tui",
+      "renderer": "python-terminal-text",
+      "targets": [
+        "terminal",
+        "Termux-candidate"
+      ],
+      "evidence_paths": [
+        "termux-multi-agent/workspace/tui.py"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "medium"
+    },
+    {
+      "surface_id": "synthegration.tui.ratatui",
+      "family": "tui",
+      "renderer": "ratatui-rust",
+      "targets": [
+        "terminal"
+      ],
+      "evidence_paths": [
+        "integrations/ratatui-tokio-dashboard/Cargo.toml"
+      ],
+      "maturity": "integration-project-present",
+      "support_status": "repository-evidence-only",
+      "confidence": "medium"
+    },
+    {
+      "surface_id": "fleet.android",
+      "family": "mobile",
+      "renderer": "android-java",
+      "targets": [
+        "android"
+      ],
+      "evidence_paths": [
+        "apps/fleet-apk/AndroidManifest.xml",
+        "apps/fleet-apk/src/com/timerloggedout/fleet/MainActivity.java",
+        "apps/fleet-apk/README.md"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "listinglens.web",
+      "family": "web",
+      "renderer": "react-jsx",
+      "targets": [
+        "browser"
+      ],
+      "evidence_paths": [
+        "apps/listinglens/package.json",
+        "apps/listinglens/src/ListingStudio.jsx"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "commingle-swarm.web",
+      "family": "web",
+      "renderer": "typescript-react",
+      "targets": [
+        "browser"
+      ],
+      "evidence_paths": [
+        "commingle-swarm/web/package.json",
+        "commingle-swarm/web/src/index.tsx",
+        "commingle-swarm/web/public/manifest.json"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "historical-corpus-explorer.web",
+      "family": "web",
+      "renderer": "javascript-html",
+      "targets": [
+        "browser"
+      ],
+      "evidence_paths": [
+        "apps/historical-corpus-explorer/index.html",
+        "apps/historical-corpus-explorer/explorer.js"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "studysprint.cli-python",
+      "family": "cli",
+      "renderer": "python-cli",
+      "targets": [
+        "terminal"
+      ],
+      "evidence_paths": [
+        "apps/studysprint/README.md",
+        "apps/studysprint/agent.py",
+        "apps/studysprint/demo.py"
+      ],
+      "maturity": "implemented-in-repository",
+      "support_status": "repository-evidence-only",
+      "confidence": "high"
+    },
+    {
+      "surface_id": "reader.epub",
+      "family": "ereader",
+      "renderer": "epub",
+      "targets": [
+        "ereader",
+        "mobile-reader",
+        "browser-reader"
+      ],
+      "evidence_paths": [],
+      "maturity": "proposed",
+      "support_status": "unknown",
+      "confidence": "low",
+      "note": "No dedicated EPUB reader surface was confirmed in the inspected path inventory."
+    },
+    {
+      "surface_id": "spatial.xr",
+      "family": "xr",
+      "renderer": "openxr-webxr-or-native-spatial",
+      "targets": [
+        "vr",
+        "ar",
+        "mr"
+      ],
+      "evidence_paths": [],
+      "maturity": "proposed",
+      "support_status": "unknown",
+      "confidence": "low",
+      "note": "No dedicated XR application surface was confirmed in the inspected path inventory."
+    },
+    {
+      "surface_id": "desktop.native",
+      "family": "desktop",
+      "renderer": "native-or-cross-platform",
+      "targets": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "evidence_paths": [],
+      "maturity": "proposed",
+      "support_status": "unknown",
+      "confidence": "low",
+      "note": "No dedicated desktop GUI target was confirmed in the inspected path inventory."
+    },
+    {
+      "surface_id": "voice.audio",
+      "family": "voice-audio",
+      "renderer": "speech-audio-runtime",
+      "targets": [
+        "voice",
+        "audio"
+      ],
+      "evidence_paths": [],
+      "maturity": "proposed",
+      "support_status": "unknown",
+      "confidence": "low",
+      "note": "No dedicated voice/audio UI surface was confirmed in the inspected path inventory."
+    }
+  ]
+}

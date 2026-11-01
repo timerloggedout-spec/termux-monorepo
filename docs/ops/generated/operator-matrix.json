@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 381,
+    "open_issues": 380,
     "open_prs": 171,
     "pr_classes": {
-      "CANDIDATE": 84,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 82,
+      "CANDIDATE": 82,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 36,
+      "issues": 35,
       "prs": 169,
       "unlabelled_numbers": [
         308,
@@ -86,12 +86,11 @@
         3050,
         3094,
         3141,
-        3215,
-        3271
+        3215
       ]
     }
   },
-  "generated_at": "2026-11-01T21:40:55Z",
+  "generated_at": "2026-11-01T21:43:20Z",
   "issues_unlabelled": [
     308,
     343,
@@ -127,8 +126,7 @@
     3050,
     3094,
     3141,
-    3215,
-    3271
+    3215
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -136,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "32955add93"
+    "sha": "75218f404c"
   },
   "prs": [
     {
@@ -208,6 +206,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e050a13321",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T21:39:06Z"
     },
     {
       "class": "CANDIDATE",
@@ -977,20 +989,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e050a13321",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T21:39:06Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1375,20 +1373,6 @@
       "number": 3247,
       "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
       "updated_at": "2026-11-01T21:10:12Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "5bcf709586",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3265,
-      "title": "feat(llm_api_hub): port gemini_interactions.py + test from the llm-api-hub fork",
-      "updated_at": "2026-11-01T21:36:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2537,6 +2521,20 @@
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-01T16:19:45Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "6daab2eb58",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3274,
+      "title": "chore: delete stale llm-api-hub/ fork (canonical = llm_api_hub/)",
+      "updated_at": "2026-11-01T21:43:15Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,0 +1,51 @@
+{
+ "campaign_id": "live-2-prlane-tuning",
+ "family": "doe",
+ "member_kind": "campaign",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "admitted_design_only",
+ "moniker": "doe-expert",
+ "co_owners": ["tier1-classifiers-steward (rule-set custody + snapshot extraction)"],
+ "subject": {
+  "system": "vocab-v2 PR-lane classifier (Tier 1 estate)",
+  "rule_set": ["ml/pipelines/lanes/classify.py (classify_pr)",
+               "ml/pipelines/lanes/minesweeper_rules.py",
+               "ml/pipelines/lanes/supersede_rules.py",
+               "ml/pipelines/lanes/reasons.py"],
+  "collector": "ml/pipelines/production_classify.py",
+  "contract": "docs/ops/ML-PR-LANE-CLASSIFY.md",
+  "lanes": ["CANDIDATE", "EXTRACT", "NEED_EVIDENCE", "SUPERSEDE"]
+ },
+ "design": {
+  "type": "replay_factorial_over_frozen_snapshots",
+  "why_replay": "The live series is NON-STATIONARY (steward caveat, 2026-10-31): open-PR inflow grew 102 -> 152 in 3 days and NEED_EVIDENCE ballooned on inflow composition, not rule drift. Live-series responses confound tuning effects with inflow mix; frozen snapshots with rules as factors and current rules as control are the clean read.",
+  "snapshots": "ops/ml/pr-lane-feed.json states at the master commits behind the 7 series points (2026-10-28T23:02Z .. 2026-10-31T11:10Z; open 102..152); extraction by the steward lane from feed rows at past master commits.",
+  "phases": [
+   {"phase": 0, "name": "replay_determinism_check",
+    "rule": "current rules replayed over each snapshot must reproduce the recorded lane distribution exactly; any mismatch halts the campaign and is recorded (the replay harness, not the rules, is then the suspect)."},
+   {"phase": 1, "name": "baseline_replay",
+    "rule": "current rules (CONTROL) over all snapshots -> per-PR lane labels joined with covariates (age_days, changed_files, gates, draft, author) and eventual PR outcomes."},
+   {"phase": 2, "name": "factorial_replay",
+    "rule": "rule/threshold levels as factors over the same snapshots. Levels are fixed by a DESIGN AMENDMENT after a firsthand read of the rule files (steward co-review) — never invented in this record. Candidate factor kinds (kinds register): evidence-threshold posture, supersede aggressiveness, minesweeper sensitivity."},
+   {"phase": 3, "name": "sibling_candidate",
+    "rule": "decide.py / laya.py scoring weights (Laya = 0.7*Jev + 0.3*Kev) are the same threshold kind on a live scorer; admitted as a separate campaign if phases 0-2 validate the method."}
+  ],
+  "blocking": "stratify by covariates (age_days, changed_files, draft, author class) — inflow composition is the known confound."
+ },
+ "responses": {
+  "primary": "per-lane outcome-consistency rate on frozen windows: lane assignment vs eventual PR outcome classes (e.g. NEED_EVIDENCE PRs that merged clean with no evidence request = suspected false-NE; SUPERSEDE PRs later merged = suspected false-S).",
+  "secondary": ["inter-variant disagreement rate (the informative subset for adjudication)",
+                "lane distribution shift vs control per snapshot"]
+ },
+ "decision_rule": {
+  "text": "A variant level replaces current only if it improves primary outcome-consistency on >= 5 of 7 snapshots with no snapshot regressing beyond the recorded margin, AND the steward lane lands the rule change as its own PR (tuning never edits rules silently; the winning level propagates by cherry-pick per the owner definition).",
+  "margin": "regression margin fixed in the phase-2 amendment alongside the levels."
+ },
+ "registration": {
+  "preregistered_in_repo": true,
+  "recorded": "2026-10-31",
+  "note": "Design committed before any replay runs. Phase-2 factor levels arrive by amendment (method pre-registered here; parameters read from the rule files, not guessed)."
+ },
+ "records_home": "experiments/doe/live-2-prlane-tuning/records/"
+}

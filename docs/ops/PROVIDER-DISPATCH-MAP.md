@@ -48,6 +48,27 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
 | ECC Tools | review, audit ops | `agent-ecc-tools-ops.yml` | last success 41301536037 |
 | Scout / Delphi | build, verify | owner-named lane route | D0 of record (PR #1702; delphi-oracle @393e1f4b) |
 
+## Registry bench classes (Quota capability map, firsthand @master 2026-11-01)
+
+89 distinct model-lane providers = **proven 2 + wired-unproven 22 + triggerable 2 + inference-only 63**:
+
+- **Proven (2):** `google` (Gemini router/after-peers, key-live) · `openrouter` (production invoke
+  legs; free layer active, paid balance $0.00).
+- **Wired-unproven (22)** via provider-batch (surface: 249 runs / 138 successes; per-provider
+  invoke NOT_ESTABLISHED): key-live {cohere, huggingface, llm7, routeway, sambanova, siliconflow,
+  unorouter, zai} · no-credential {cerebras, kilo, mistral, modelscope, ovhcloud, requesty,
+  typhoon, xfyun} · egress-blocked {groq, xkiro} · route-dead {aion, sealion} · flags {cloudflare
+  verify-scope, nvidia auth-unproven}. Promotion = one named single-provider batch dispatch each
+  (after flag resolution; batch currently HELD per #2672). Reverse gap: batch member `ollama`
+  has ∅ registry model row.
+- **Triggerable (2):** `felo`, `omni` — catalog endpoints exist, ∅ batch admission/wiring.
+- **Inference-only (63):** `github` (GitHub Models), `meta` (llama_api RETIRED, do-not-route),
+  gpt4free family, + 60 `g4f/*` upstreams (duplicates route via native entries; media/search
+  upstreams need a media/search batch variant, ¬ chat batch).
+
+DeepSeek note: ∅ distinct model-lane provider row (only `g4f/DeepSeek`); its lanes are the
+ci-lane dispatch records.
+
 ## Wired-unproven
 
 | Lane | Surface | State |

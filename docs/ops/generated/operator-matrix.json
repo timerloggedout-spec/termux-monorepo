@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 379,
-    "open_prs": 167,
+    "open_prs": 168,
     "pr_classes": {
-      "CANDIDATE": 80,
+      "CANDIDATE": 81,
       "EXTRACT": 6,
       "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 34,
-      "prs": 165,
+      "prs": 166,
       "unlabelled_numbers": [
         308,
         343,
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T13:48:06Z",
+  "generated_at": "2026-11-01T13:53:56Z",
   "issues_unlabelled": [
     308,
     343,
@@ -132,7 +132,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "1f64b47ed1"
+    "sha": "0707fb63ec"
   },
   "prs": [
     {
@@ -212,12 +212,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "78fc413ec2",
+      "head_sha": "5614da6d21",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T13:45:16Z"
+      "number": 3173,
+      "title": "desk-feed: availability window stamps (Jules/Gemini OUT) + D1 Jules batch outcome (PR #3102)",
+      "updated_at": "2026-11-01T13:52:21Z"
     },
     {
       "class": "CANDIDATE",
@@ -979,6 +979,20 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "78fc413ec2",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T13:45:16Z"
     },
     {
       "class": "CANDIDATE",

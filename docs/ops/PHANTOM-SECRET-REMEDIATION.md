@@ -1,19 +1,10 @@
 # Phantom-Secret Remediation
 
-Generated 2026-10-28T22:19:17.618950+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
+Generated 2026-10-29T03:25:24.973837+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
 
-- Phantom names: **55** across **128** references
+- Phantom names: **55** across **123** references
 - compiled: 20 references
-- dead-branch: 5 references
 - provisioning: 103 references
-
-## Retired — dead fallback branches (PR #1858)
-
-Each reference below was one branch of a `||` fallback chain that also names a provisioned secret; the branch could never resolve and was removed. Behavior is unchanged — the chains resolve exactly as they did before, now without the phantom name.
-
-- `secrets.HF_API_TOKEN` — provider-batch.yml, team-mvt.yml
-- `secrets.HF_TOKEN` — provider-batch.yml
-- `secrets.HUGGING_FACE_HUB_TOKEN` — provider-batch.yml, team-mvt.yml
 
 ## Owner provisioning checklist
 

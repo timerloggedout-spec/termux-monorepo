@@ -157,10 +157,11 @@ jobs:
           # Preserve each project root config on this orphan branch too:
           # without it Vercel creates broken Git deployments on every state push.
           # These configs set git.deploymentEnabled=false; no application source is copied.
+          # Once the state branch carries these files, the workspace IS the state branch, so src and dest can be the same file (cp exits 1); skip then.
           mkdir -p apps/help-wanted-dashboard mcp-hub demo-portal/public
-          cp "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/vercel.json" apps/help-wanted-dashboard/vercel.json
-          cp "$GITHUB_WORKSPACE/mcp-hub/vercel.json" mcp-hub/vercel.json
-          cp "$GITHUB_WORKSPACE/demo-portal/public/vercel.json" demo-portal/public/vercel.json
+          [ "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/vercel.json" -ef apps/help-wanted-dashboard/vercel.json ] || cp "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/vercel.json" apps/help-wanted-dashboard/vercel.json
+          [ "$GITHUB_WORKSPACE/mcp-hub/vercel.json" -ef mcp-hub/vercel.json ] || cp "$GITHUB_WORKSPACE/mcp-hub/vercel.json" mcp-hub/vercel.json
+          [ "$GITHUB_WORKSPACE/demo-portal/public/vercel.json" -ef demo-portal/public/vercel.json ] || cp "$GITHUB_WORKSPACE/demo-portal/public/vercel.json" demo-portal/public/vercel.json
           git add state.json ledger.jsonl apps/help-wanted-dashboard/vercel.json mcp-hub/vercel.json demo-portal/public/vercel.json && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
           echo "::notice title=vercel-batch::deployed=[$(jq -r --arg s "$GITHUB_SHA" '[.last|to_entries[]|select(.value.sha==$s)|.key]|join(" ")' state.json)] failed=[${FAILED# }]"
           [ -z "$FAILED" ]

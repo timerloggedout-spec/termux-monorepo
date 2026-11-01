@@ -270,6 +270,44 @@ class QuotaPollTest(unittest.TestCase):
         self.assertEqual((row["status"], row["horizon"], row["evidence_status"]),
                          ("unknown", "H0", "confirmed"))
 
+    def test_readings_snapshot_synthesizes_rows_for_records_missing_from_artifact(self):
+        services = [{"id": "example.requests", "provider": "example", "lane": "ops",
+                     "source": "https://example.com/docs", "limit": 100, "unit": "requests"},
+                    {"id": "example.new_record", "provider": "example", "lane": "ops",
+                     "source": "https://example.com/new", "limit": None, "unit": "tokens"}]
+        stale = {"schema": "quota-public-status/v2", "generated_at": "2026-10-27T12:00:00+00:00",
+                 "readings": [{"resource_id": "example.requests", "provider": "example",
+                               "status": "unknown", "observed_at": None, "horizon": "H1",
+                               "evidence_status": "attributed_claim"}]}
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            snap = _qp.readings_snapshot(stale, services)
+        rows = {r["resource_id"]: r for r in snap["readings"]}
+        self.assertEqual(set(rows), {"example.requests", "example.new_record"})
+        synth = rows["example.new_record"]
+        self.assertEqual(synth["status"], "unknown")
+        self.assertIsNone(synth["observed_at"])
+        self.assertIsNone(synth["used"])
+        self.assertIsNone(synth["reset"])
+        self.assertIsNone(synth["limit"])  # registry documents no limit; none inferred
+        self.assertEqual((synth["horizon"], synth["evidence_status"]), ("H1", "attributed_claim"))
+        self.assertIn("completeness", synth["note"])
+        self.assertIn("example.new_record", err.getvalue())
+
+    def test_readings_snapshot_complete_artifact_synthesizes_nothing(self):
+        services = [{"id": "example.requests", "provider": "example", "lane": "ops",
+                     "source": "https://example.com/docs", "limit": 100, "unit": "requests"}]
+        full = {"schema": "quota-public-status/v2", "generated_at": "2026-10-27T12:00:00+00:00",
+                "readings": [{"resource_id": "example.requests", "provider": "example",
+                              "status": "unknown", "observed_at": None, "horizon": "H1",
+                              "evidence_status": "attributed_claim"}]}
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            snap = _qp.readings_snapshot(full, services)
+        self.assertEqual(len(snap["readings"]), 1)
+        self.assertNotIn("completeness", snap["readings"][0]["note"])
+        self.assertEqual(err.getvalue(), "")
+
     def test_readings_snapshot_rejects_non_projection_input(self):
         with self.assertRaises(ValueError):
             _qp.readings_snapshot({"schema": "quota.readings.v2", "readings": []}, [])

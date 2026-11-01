@@ -32,6 +32,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install test runner
+        run: python3 -m pip install -q pytest
       - name: Tests
         run: python3 -m pytest tests/test_quota_allocation_planner.py tests/test_quota_allocations.py -q
       - name: Recompute allocation plan

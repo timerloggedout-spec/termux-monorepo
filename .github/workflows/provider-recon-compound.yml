@@ -48,6 +48,7 @@ jobs:
     permissions:
       contents: read
       issues: write
+      metadata: read
     timeout-minutes: 10
     steps:
       # Privileged workflow_run never checks out the triggering revision or PR code.

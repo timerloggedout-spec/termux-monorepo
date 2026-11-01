@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T13:55:00Z",
+ "generated_at": "2026-11-01T14:00:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2527,7 +2527,7 @@
     "sync": "pending"
    },
    "evidence": {
-    "note": "route of record: Jules-on-issues ONLY (producer=Jules, D4 seat verifies) => monorepo PR/CI/merge => artifact sync => skeleton-crew",
+    "note": "route Δ (manager relay, Swarm-verified 2026-11-01): Jules dispatchability LOST (session-create refused ×3) ∧ Gemini-CLI build leg OUT ⇒ build planning = DeepSeek + command-dispatch UNTIL recovery probe PASS; supersedes prior Jules-on-issues-only assumption; D4 seat verifies ⇒ monorepo PR/CI/merge ⇒ artifact sync ⇒ skeleton-crew; dispatch stays gated @window >2026-11-08",
     "batch": "spec pack verified firsthand by desk 2026-11-01: skeleton-crew@main 22a05bd0897a, BUILD-SPEC.md blob b4f45846172f (2,836B) — shape {foundation + apps/conflict-viewer + apps/stamped-report}, tasks T1 foundation -> {T2 viewer, T3 report} -> T4 integration, acceptance S1-S3 + receipt rule {command, exit_code, output sha256, code_paths}",
     "desk": "batch intake registered by desk 2026-11-01 (this row); issue draft held ready-to-fire at window"
    },

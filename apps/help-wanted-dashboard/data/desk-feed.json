@@ -168,7 +168,7 @@
      ],
      "trigger": "workflow_dispatch / bridge trigger",
      "evidence": "158 runs; last_success run 39989289180 @2026-10-23T16:44Z",
-     "caveat": "Bridge greens include skip-exits: per-dispatch execution is verified at PR level, never from run color alone."
+     "caveat": "Device leg = NOT_ESTABLISHED (2026-11-01 Swarm/Quota split: proof run device steps skipped, reachable=false) — workflow-level dispatch proven, device execution unverified; bridge greens include skip-exits, verify at PR level."
     },
     {
      "id": "deepagent-task",
@@ -199,7 +199,8 @@
      ],
      "trigger": "workflow_dispatch",
      "evidence": "250 runs; last_success run 40710434190 @2026-10-28T14:53Z; latest-100 mixed 49 success / 50 failure (D1 census) — per-dispatch verification required",
-     "caveat": "DISPATCH HOLD (Desk recognition @a27cf6d1): dispatches held per issue #2672 until its contracts job is green — arm is proven, dispatch suspended until the hold lifts. This is the dispatch arm that reaches inference-only registry providers; a batch run proves the arm, not each provider in it."
+     "caveat": "DISPATCH HOLD (Desk recognition @a27cf6d1): dispatches held per issue #2672 until its contracts job is green — arm is proven, dispatch suspended until the hold lifts. This is the dispatch arm that reaches inference-only registry providers; a batch run proves the arm, not each provider in it.",
+     "gate_state": "blocked-by-#2672 (observation jobs gated on contracts job, red on master; run 41301473553 job split)"
     },
     {
      "id": "provider-availability",
@@ -683,7 +684,17 @@
        "zai": "key-live"
       },
       "reverse_gap": "batch member ollama has no distinct registry model-provider row",
-      "promotion": "one named single-provider batch dispatch per provider + artifact naming provider/model/result; first resolve flags (provision 8 no-credential keys; move groq/xkiro to non-Actions egress; recheck aion/sealion or retire). NOTE: batch dispatches currently HELD per #2672."
+      "promotion": "one named single-provider batch dispatch per provider + artifact naming provider/model/result; first resolve flags (provision 8 no-credential keys; move groq/xkiro to non-Actions egress; recheck aion/sealion or retire). NOTE: batch dispatches currently HELD per #2672.",
+      "gate_state_blocked_by_2672": [
+       "cohere",
+       "sambanova",
+       "zai",
+       "llm7",
+       "routeway",
+       "unorouter",
+       "siliconflow"
+      ],
+      "gate_note": "Quota amendment (Swarm firsthand): batch observation jobs are gated on the contracts job (needs: contracts), red on master per #2672 => batch yields no operational evidence regardless of provider health (proof: run 41301473553 job split). Blocker = the gate, not the providers; class (b) stands."
      },
      "triggerable": {
       "count": 2,
@@ -808,7 +819,8 @@
        "provider-batch (HELD per #2672)",
        "no availability coverage"
       ],
-      "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)"
+      "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
+      "gate_state": "blocked-by-#2672"
      },
      {
       "id": "felo.api_credits",
@@ -1562,7 +1574,8 @@
        "provider-batch (HELD per #2672)",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard"
+      "registry_live_field": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
+      "gate_state": "blocked-by-#2672"
      },
      {
       "id": "meta.llama_api",
@@ -1691,7 +1704,8 @@
        "provider-batch (HELD per #2672)",
        "no availability coverage"
       ],
-      "registry_live_field": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After"
+      "registry_live_field": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
+      "gate_state": "blocked-by-#2672"
      },
      {
       "id": "sambanova.free_tier",
@@ -1703,7 +1717,8 @@
        "provider-batch (HELD per #2672)",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratel"
+      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratel",
+      "gate_state": "blocked-by-#2672"
      },
      {
       "id": "sealion.api",
@@ -1727,7 +1742,8 @@
        "provider-batch (HELD per #2672)",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free val"
+      "registry_live_field": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free val",
+      "gate_state": "blocked-by-#2672"
      },
      {
       "id": "typhoon.api",
@@ -1751,7 +1767,8 @@
        "provider-batch (HELD per #2672)",
        "no availability coverage"
       ],
-      "registry_live_field": "Retry-After header on HTTP 429"
+      "registry_live_field": "Retry-After header on HTTP 429",
+      "gate_state": "blocked-by-#2672"
      },
      {
       "id": "xfyun.spark",
@@ -1787,9 +1804,11 @@
        "provider-batch (HELD per #2672)",
        "provider-availability catalog probe"
       ],
-      "registry_live_field": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)"
+      "registry_live_field": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
+      "gate_state": "blocked-by-#2672"
      }
-    ]
+    ],
+    "gate_note": "7 key-live wired-unproven providers carry gate_state=blocked-by-#2672: batch observation jobs gated on contracts (red, #2672) => no operational evidence harvestable until a green contracts run; blocker is the gate, not the providers."
    }
   }
  },

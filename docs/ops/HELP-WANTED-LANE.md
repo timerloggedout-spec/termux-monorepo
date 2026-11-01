@@ -1,9 +1,9 @@
-# Help-Wanted Lane — INTENDED PURPOSE
+# Tribute Lane — INTENDED PURPOSE
 
 **Status:** LIVE · **with Tribute** (contributor project)  
-**One sentence:** Scan FOSS help-wanted → rank → claim once → open **upstream PR** (tribute to maintainer) → follow feedback → ledger on `/help-wanted/`.
+**One sentence:** Scan FOSS opportunities → rank → claim once → open an **upstream PR** as a tribute to the maintainer → follow feedback → record the outcome on `/tribute/`.
 
-See **`HELP-WANTED-TRIBUTE.md`** for the contributor ledger contract.
+Legacy implementation contract: **`HELP-WANTED-TRIBUTE.md`** for the contributor ledger contract.
 
 ## Pipeline (complete)
 

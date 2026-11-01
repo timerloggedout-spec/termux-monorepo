@@ -1,6 +1,7 @@
-# Help-Wanted · with Tribute (Contributor project)
+# Tribute — Contributor Project
 
 **Status:** LIVE  
+**Canonical dashboard:** `https://timerloggedout-spec.github.io/tribute/` (legacy `/help-wanted/` path remains available).
 **Meaning:** Every upstream PR is a **tribute** to the maintainer’s project — real code review surface, not drive-by noise. Attribution stays with the foreign repo; we keep a ledger of what we offered.
 
 ## Contract

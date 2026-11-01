@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a version-stamped, comparable Help-Wanted dashboard artifact."""
+"""Build a version-stamped, comparable Tribute dashboard artifact."""
 from __future__ import annotations
 
 import argparse
@@ -10,11 +10,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ID_OVERRIDES = {
-    "index.html": "help-wanted-home",
+    "index.html": "tribute-home",
     "versioning.html": "version-comparison",
 }
 TITLE_OVERRIDES = {
-    "index.html": "Help-Wanted Home",
+    "index.html": "Tribute Home",
     "versioning.html": "Version Comparison",
     "3l0.html": "3L0",
     "ates.html": "ATES",
@@ -66,7 +66,7 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
         "source_sha": source_sha,
         "built_at": datetime.now(timezone.utc).isoformat(),
         "comparison": {
-            "production_manifest": "https://timerloggedout-spec.github.io/help-wanted/version-manifest.json",
+            "production_manifest": "https://timerloggedout-spec.github.io/tribute/version-manifest.json",
             "repository": "https://github.com/timerloggedout-spec/termux-monorepo",
         },
         "pages": [],

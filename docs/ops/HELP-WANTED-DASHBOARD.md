@@ -1,8 +1,10 @@
-# Help-Wanted Oversight Dashboard — Live Surfaces
+# Tribute Dashboard — Live Surfaces
 
 ## Canonical public dashboard
 
-**GitHub Pages:** https://timerloggedout-spec.github.io/help-wanted/
+The former `/help-wanted/` path remains published as a compatibility alias.
+
+**GitHub Pages:** https://timerloggedout-spec.github.io/tribute/
 
 Machine-readable discovery:
 - `/help-wanted/sitemap.xml`
@@ -21,7 +23,7 @@ https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app
 
 | Priority | URL | Notes |
 |---|---|---|
-| 1 | https://timerloggedout-spec.github.io/help-wanted/ | Canonical public static ops dashboard |
+| 1 | https://timerloggedout-spec.github.io/tribute/ | Canonical public static ops dashboard |
 | 2 | https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/ | Current READY Vercel deployment |
 | 3 | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html | HTML fallback |
 | 4 | https://timerloggedout-spec.github.io/termux-monorepo/ | Thin project hub, not dashboard twin |

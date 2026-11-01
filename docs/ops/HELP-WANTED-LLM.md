@@ -1,4 +1,4 @@
-# Help-wanted LLM selection (current)
+# Tribute LLM selection (current)
 
 ## What is NOT used
 

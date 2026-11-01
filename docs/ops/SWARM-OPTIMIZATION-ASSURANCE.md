@@ -139,3 +139,7 @@ Owner ruling (via main, 2026-11-01, 2nd widening order): the 4-lane dispatch fun
 ## §17 — Owner fact: fleet has no credit card (2026-11-01)
 
 Owner fact (2026-11-01, via provisioning): the fleet has **∅ credit card**. All "owner top-up item" framings in §16 and earlier records are RETIRED. Card-gated = closed class: no-key {nebius, together, cerebras, anthropic/openai, WABA}; funded-out PERMANENT (absent a card existing) {huggingface, deepinfra, novita, friendli, zai, llm7, routeway, siliconflow} — their catalogs still count toward the floor; completions never clear. All "re-fire on top-up" commitments are void. Live completion routes are free-tier/free-credit only: baseten (credits finite), cohere, sealion proven; unorouter remains consent-gated (free action, not card).
+
+## §18 — WebWrapper campaign scope note (owner, via main, 2026-11-01)
+
+Possible future ww scope, recorded for the campaign record (a scope note, not a dispatch): **chat interaction + additional DeepWiki refreshes** — i.e., when the ww cloud/account targets recover (Jules-gated), DeepWiki refresh beyond Devin's built-in cadence is a named candidate task class for the campaign. The wiki's standing dependency remains the Devin API (`DEVIN_API_KEY`). No dispatch is authorized by this note; the wave remains held at the builder layer until a Jules probe session completes.

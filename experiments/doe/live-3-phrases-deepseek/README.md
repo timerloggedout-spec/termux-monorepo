@@ -1,9 +1,10 @@
 # live-3-phrases-deepseek — first phrased live campaign
 
-Work order #1 (doe-expert INIT++, 2026-10-31). SUPERSEDES
-`experiments/doe/live-3-phrases-jit/` (generic transform
-screening under the seed brief) as THE first-phrased campaign;
-that dir's status is updated in the same PR.
+Work order #1 (doe-expert INIT++, 2026-10-31). THE live-3
+home: `experiments/doe/live-3-phrases-jit/` was REMOVED
+2026-10-31 (one campaign = one dir, doe-expert ruling);
+its design (PR #2799) is subsumed here, provenance in
+git history + DESIGN.json home_reconciliation.
 
 Route (one picked by doe-expert at approval; dispatch ∅ until
 then):

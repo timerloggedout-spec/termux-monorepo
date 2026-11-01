@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-11-01T08:47:52Z",
+ "generated_at": "2026-11-01T10:33:02Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -363,40 +363,42 @@
    "evidence": {
     "issue": 3018,
     "repo_id": 1441629107,
-    "dispatch": "Fleet Swarm Desk issue trigger — issue #3018 authored by termux-fleet-swarm[bot], jules label; Jules-on-Issues run 41289807982 SUCCESS (swarm actor, ∅ parking)",
+    "dispatch": "Fleet Swarm Desk issue trigger — issue #3018 authored by termux-fleet-swarm[bot]. Jules leg STOOD DOWN 2026-11-01 (owner correction; manager comment 6556766183): jules label removed by desk, labels now ∅; Jules-on-Issues run 41289807982 stands as a superseded trigger event only.",
     "basis": "SPEC v1.1 @8291d49e6eea (SPEC blob 8e4d478ee800) — Gemini Δ FOLDED (docs/GEMINI-CONCEPT-VERBATIM.md blob 3ce47d9c42a9); ∅ GitHub App",
     "current_repo_main": "6aa130f15438 — SPEC v2.1 tidy blob ad37da0b4fcb SUPERSEDES v2 for this build (manager #3018 comment 6555681387); refinement pins only {v0 clustering rule; incremental history_index}; prior v2 fold @2071540fe6cb blob f0193fe43415 (comment 6555675789), Delphi receipts docs/ORACLE-PASS.md blob 443190cd358b",
     "correction_comment": 6555659279,
     "delta_comment": 6555654199,
-    "note": "Scope: GitHub Action pr_storyteller.yml [opened, synchronize] ⇒ sticky 1st comment + pre-push hook + pinned Story; artifacts extract_pr_story_context + mine_pr_evolution (coupling matrix) + chronicler prompt; features {Impact Areas, Changelogs w/ Receipts, Contextual Blame}; persistence hybrid [OPEN v2]. Repo-Story ≁ Repo Replay (owner law 2026-10-30). C8 claims gated.",
-    "oracle_pass": "Delphi Oracle pass CLOSED ⇒ SPEC v2 folded (ΔA–ΔI); C8 gate held (SPEC v2 §9)"
+    "note": "Scope: GitHub Action pr_storyteller.yml [opened, synchronize] ⇒ sticky 1st comment + pre-push hook + pinned Story; artifacts extract_pr_story_context + mine_pr_evolution (coupling matrix) + chronicler prompt; features {Impact Areas, Changelogs w/ Receipts, Contextual Blame}; persistence hybrid [OPEN v2]. Repo-Story ≁ Repo Replay (owner law 2026-10-30). C8 claims gated. ROUTE CORRECTION (owner 2026-11-01): Jules ≠ builder of record for this entry — any Jules session/PR arising from #3018 = wrong-route output, ∅ merge as build; Jules session census shows ∅ Repo-Story session established.",
+    "oracle_pass": "Delphi Oracle pass CLOSED ⇒ SPEC v2 folded (ΔA–ΔI); C8 gate held (SPEC v2 §9)",
+    "build_route": "fleet swarm via Scout — Swarm lane 6628d41d-9519-4881-9063-3afe501df815 execution lead (owner correction 2026-11-01 02:31 PT)",
+    "appid": "Termux Fleet RepoStory — App 5565297, slug termux-fleet-repostory, installation 177463385 (repo-story ONLY), record PR #3038 (owner rule: new AppID + new repo at build start)"
    },
-   "next": "Builder PR(s) in timerloggedout-spec/repo-story per SPEC v2.1 @6aa130f15438 ⇒ desk provenance verify ⇒ manager 8cc20168 oversight. Jules session stamp lands when the session surfaces in the API census.",
+   "next": "Swarm lane (execution lead) dispatches via Scout ⇒ PR(s) in timerloggedout-spec/repo-story per SPEC v2.1 @6aa130f15438 ⇒ desk provenance verify ⇒ manager 8cc20168 oversight. Provider/session stamp lands when the swarm/scout dispatch surfaces.",
    "provider_usage": [
     {
-     "provider": "Jules (Google) — issue-label route",
+     "provider": "Fleet Swarm via Scout",
      "scope": "Repo-Story build per SPEC v2.1 tidy (oracle-folded; dispatch basis = corrected SPEC v1.1)",
-     "via": "issue #3018 + jules label (agent-jules-on-issues run 41289807982 SUCCESS)",
+     "via": "owner correction 2026-11-01 02:31 PT (manager #3018 comment 6556766183); Swarm lane 6628d41d execution lead",
      "session_id": null,
-     "state": "dispatched (session NOT ESTABLISHED)",
+     "state": "routed — swarm/scout dispatch pending (NOT ESTABLISHED)",
      "usage": {
       "value": null,
       "unit": null,
-      "source": "Jules API session census",
+      "source": "Swarm lane dispatch record",
       "window": "2026-11-01",
       "match": null,
-      "note": "No Repo-Story session visible in the Jules API census yet; session stamp pending — consumption NOT ESTABLISHED, never estimated.",
+      "note": "No swarm/scout dispatch has surfaced yet; session stamp pending — consumption NOT ESTABLISHED, never estimated. Superseded: the #3018 Jules leg (label removed by desk 2026-11-01) — Jules is not builder of record; any Jules output from #3018 is wrong-route, ∅ merge.",
       "status": "pending"
      },
      "model": "NOT ESTABLISHED",
      "phrases": "NOT ESTABLISHED",
      "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
-     "role": "contribution-desk dispatch (per-dispatch)",
-     "context": "Fleet Swarm Desk issue trigger #3018 (Swarm-token authored); target timerloggedout-spec/repo-story id 1441629107",
+     "role": "contribution-desk route correction (per-dispatch)",
+     "context": "Trigger issue #3018 (Swarm-token authored); target timerloggedout-spec/repo-story id 1441629107",
      "instance_refs": {
       "system_prompt_ref": "NOT ESTABLISHED",
       "tools_ref": "NOT ESTABLISHED",
-      "note": "Session not yet visible ⇒ prompt/tools refs cannot be hashed; ∅ fabricated."
+      "note": "Swarm/scout dispatch not yet surfaced ⇒ refs cannot be hashed; ∅ fabricated."
      },
      "instance_key": null
     }

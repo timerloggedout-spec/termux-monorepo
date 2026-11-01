@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T04:45:53Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T04:51:12Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `d492575ef9` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `bedb89b8ac` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 369 issues, 156 PRs. PR classes: EXTRACT 5 / CANDIDATE 75 / NEED_EVIDENCE 76 / SUPERSEDE 0.
+**Open inventory:** 369 issues, 157 PRs. PR classes: EXTRACT 5 / CANDIDATE 76 / NEED_EVIDENCE 76 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -93,6 +93,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2857 | CANDIDATE | unlabelled | `bed4bae553` | success | success | unknown | doe(live-3): deepseek-ci harvest step — mirror dispatch outcome to #2830 (ruling |
 | #2899 | CANDIDATE | unlabelled | `538790f31c` | success | success | unknown | fix: enforce descending provider cost ranking |
 | #2907 | CANDIDATE | unlabelled | `1990c8c171` | success | success | unknown | fix: scope free-tier opportunity cost to repo work |
+| #2966 | CANDIDATE | unlabelled | `e7e771153d` | success | success | unknown | [apk-doe] A v0.2.1 |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -183,6 +184,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 30 | 154 |
+| unlabelled | 30 | 155 |
 
 **Unlabelled open issues (30):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956 — worked oldest-first by the issue-lifecycle lane pass.

@@ -12,35 +12,35 @@
     "unit_id": "copilot-usage-metrics-api"
    }
   ],
-  "expected_providers": 167,
-  "ingested_providers": 167,
+  "expected_providers": 169,
+  "ingested_providers": 169,
   "missing": []
  },
- "generated_at": "2026-10-31T19:01:00Z",
+ "generated_at": "2026-11-01T02:20:40Z",
  "schema": "telemetry-ingest-receipt/v1",
  "sinks": {
   "hindsight": {
    "live_retain": {
-    "attempted": 0,
-    "failed": 0,
+    "attempted": 316,
+    "failed": 316,
     "ok": 0,
-    "skipped_reason": "not requested"
+    "skipped_reason": null
    },
    "path": "ops/telemetry/hindsight-payloads.jsonl",
-   "payloads": 306
+   "payloads": 316
   },
   "provenance": {
    "path": "ops/telemetry/provenance-ledger.jsonl",
-   "records": 306
+   "records": 316
   }
  },
  "sources": [
   {
    "id": "quota_registry",
    "path": "ops/quota/registry.json",
-   "sha256": "d15df55a0762fe47b6f2cc46ae27c16bf8e98653d670d4a91b54a1eee800035f",
+   "sha256": "8f0ffc281b8b1b949355a2efe6335935eaf2d492d6114cb3f4fe094639d9d4e7",
    "status": "emitted",
-   "units": 155
+   "units": 161
   },
   {
    "id": "cadence_providers",
@@ -94,7 +94,7 @@
   {
    "id": "challenge_coordinator",
    "path": "ops/challenge/coordinator.json",
-   "sha256": "5c56c576638295a617c943e92d1722601b7495465b9b30b5f86e54c88e553d18",
+   "sha256": "386a542f17a8b4ac4b66b8ad51043ddb8eca6668abc18ac1ba731d316b44a721",
    "status": "emitted",
    "units": 1
   },
@@ -156,6 +156,13 @@
   },
   {
    "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/desk-feed.json",
+   "sha256": "196c2a2288891807b5f38f6d0365db091951e6ae228bafa328ac9777a2a4545f",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/dispatch-tree-feed.json",
    "sha256": "1eebc4a234d9bf18f0ad535143b0ed16cc84254f6bd8c20c06e20b1153541a47",
    "status": "emitted",
@@ -164,14 +171,14 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/doe-feed.json",
-   "sha256": "cbeb6c449994a117e732e96d9b09fdaa275067a0eddccd38ce08ec434c469a4a",
+   "sha256": "6748ad856fc6badcdb0b278906702be637263a7d40752c8cfca2584c59412738",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/fb-traffic.json",
-   "sha256": "6bf389102ba83f52efc6c6ad64e2704ce56bcbecdf5793b37a4b265ab7cac722",
+   "sha256": "8d50fddda8c21ef46988cad6ef750897fef94cf8a34af41c437349775f0376ba",
    "status": "emitted",
    "units": 1
   },
@@ -213,35 +220,49 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/pr-lane-feed.json",
-   "sha256": "3590c20d394371cecb1be2e9620b94cdc17c4f06848716c386f1e9569caac879",
+   "sha256": "e39c2bfdd018d3d1ba1c6fe0134b5341a0ccdab1d1261787a711028ed2262c9d",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/pr-lane-series.jsonl",
-   "sha256": "bffe5953703d7f85b8de0b5a52c1903ecddde62abd435fdc841d39d26278a663",
+   "sha256": "7f361eb23e4276e0d722e2812b5f7e9a6a5f38bc3c2f4f8b77b245f1e44184ee",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/proposals-feed.json",
+   "sha256": "23c305eb66dc507f1205aceab66aeb6b840f5900e75599de0e6a28a13bee73d6",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/provider-quota-coverage.json",
-   "sha256": "6e4d66e4e0024c6957727a95d83e595af8e45eb5c37d027eb18471f7ca89c04f",
+   "sha256": "3686957c640d286e45f9b674fe923b77645b76bbbb93523b3da7486948758ea4",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/quota-allocations-feed.json",
-   "sha256": "65ace8063ada186c8d7d07941e9279439f6c775342fd5288b42c0d78a8a9ce17",
+   "sha256": "f0b817503e79b87b90210d00543b5c23099329306623c05772745cec45e8e87b",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/quota-usage.json",
+   "sha256": "c49346911210f3cbd959c9ea65680eab5d985530afc945561a889bd9d9675c7d",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/quota.json",
-   "sha256": "43982dc582d3743018f9c3431985337a03585cff211defe3be9b7041254bb3b6",
+   "sha256": "fd20cc7fbe7679182dde4c2162eab254c5fdaddb87048def133096d04f940ff3",
    "status": "emitted",
    "units": 1
   },
@@ -255,7 +276,14 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/status.json",
-   "sha256": "4b33ad1caf5700a9f21fcc4ec129c07d9c7cd2388fea3ff2ed6694cb1a4f7186",
+   "sha256": "335677c5dc662816d6c31a48a1f27cb0e564be1099fe58535ed74ed112aff8f7",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/telemetry-feed.json",
+   "sha256": "54faa9db8870d7ddd8ee6a0de4846278eb7a07710cd2ef964177271f2e7515b7",
    "status": "emitted",
    "units": 1
   }

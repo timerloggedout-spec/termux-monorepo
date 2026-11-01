@@ -92,7 +92,9 @@ def extract_urls(*texts: str) -> list[str]:
     found: list[str] = []
     seen: set[str] = set()
     for t in texts:
-        for u in URL_RE.findall(t or ""):
+        if not t or "http" not in t.lower():
+            continue
+        for u in URL_RE.findall(t):
             u = u.rstrip(".),;]")
             if u not in seen:
                 seen.add(u)

@@ -100,3 +100,10 @@ In provider quota evaluators (`scripts/provider_quota_coverage.py`), constructin
 
 **Action:**
 Replace list comprehensions in collection matching loops with single-pass iteration and early exits, and hoist immutable filter tuples to module scope.
+
+## 2026-10-28 - ISO Timestamp Fast-Path and Case-Insensitive Substring URL Pre-Filtering in Help-Wanted Automation
+**Learning:**
+In high-frequency GitHub issue and PR tracking automation (`help_wanted_followup.py` & `help_wanted_foreign_recon.py`), parsing ISO 8601 timestamps using `datetime.fromisoformat` without redundant `.replace("Z", "+00:00")` string manipulation yields significant allocation and execution time savings in Python 3.11+. Furthermore, running complex URL extraction regular expressions (`URL_RE.findall`) across hundreds of long comment bodies without checking for the existence of URL scheme indicators causes CPU overhead; checking `"http" in text.lower()` as a pre-guard eliminates regex evaluation frames on plain text comments without missing mixed-case schemes (`Https://`).
+
+**Action:**
+Fast-path ISO timestamp parsing directly with `datetime.fromisoformat` in Python 3.11+ environments, pre-compute lowercase author/user strings at module scope, and perform case-insensitive substring checks (`"http" in text.lower()`) before running URL extraction regexes over comment streams.

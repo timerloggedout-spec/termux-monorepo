@@ -28,10 +28,12 @@ name: Reviewer metrics collect
 # now run on a Swarm app token. The checkout-persisted default token
 # made every push a github-actions[bot] event, parking ~17 downstream
 # runs per push as action_required (36% of the sampled parked inflow).
-# The Swarm mint sits immediately before the refresh step and fails
-# loudly (no silent fallback that would re-park invisibly); the step
-# re-points origin at the Swarm token before fetch/push. Collection
-# reads (Collector, MIG-02) are unchanged.
+# The Swarm mint sits BEFORE checkout so the checkout-persisted
+# credential IS the Swarm token (a remote-URL swap does NOT work:
+# checkout's persisted extraheader wins over URL credentials — the
+# first family-2 attempt proved this, its pushes still parked).
+# Minting fails loudly (no silent fallback that would re-park
+# invisibly). Collection reads (Collector, MIG-02) are unchanged.
 
 on:
   workflow_dispatch:
@@ -63,10 +65,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
       - name: Check out master
         uses: actions/checkout@v4
         with:
           ref: master
+          token: ${{ steps.swarm-token.outputs.token }}
 
       - name: Freshness gate (event-driven runs only)
         id: gate
@@ -141,15 +152,6 @@ jobs:
           path: reviewer-metrics.json
           retention-days: 30
 
-      - name: Mint Swarm app token (F1, issue #2750)
-        id: swarm-token
-        if: steps.gate.outputs.skip != 'true'
-        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
-        with:
-          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
-          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
-          repositories: ${{ github.event.repository.name }}
-
       - name: Open or update the metrics refresh PR
         if: steps.gate.outputs.skip != 'true'
         env:
@@ -173,7 +175,6 @@ jobs:
           # rejects the push as stale info — this step failed on every
           # run from 2026-10-26 until this fix. Fetch the branch first
           # so the lease has a current value to check against.
-          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git fetch origin "$branch" || true
           git push --force-with-lease origin "$branch"
           if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then

@@ -2060,8 +2060,8 @@
    },
    "endpoint_census": {
     "unit": "provider x model endpoints (the dispatch-relevant unit; provider counts are NOT endpoint counts - owner correction)",
-    "verified_floor": 6441,
-    "counted_at": "2026-11-01 (providers-dispatch seat, firsthand live public catalog GETs; floor raised same day on owner 'surpass' order)",
+    "verified_floor": 7046,
+    "counted_at": "2026-11-01 (public leg: providers-dispatch seat firsthand; CI leg: provider-invoke catalog mode verdicts on issue #3141, read firsthand from the ledger)",
     "sources": {
      "g4f-working catalog (data/g4f-working/providers.json @master, PR #2025)": {
       "providers": 60,
@@ -2090,13 +2090,39 @@
       "models": 809
      },
      "routeway (live public catalog)": {
-      "models": 288
+      "models": 288,
+      "note": "CI keyed catalog read = 288 (identical figure, #3141) - counted once"
      },
      "typhoon (live public catalog)": {
       "models": 7
+     },
+     "CI leg - unorouter (keyed catalog, #3141)": {
+      "models": 330
+     },
+     "CI leg - nvidia (keyed catalog, #3141)": {
+      "models": 85,
+      "note": "catalog overstates key-servable models per the invoke skew verdict"
+     },
+     "CI leg - siliconflow (keyed catalog, #3141)": {
+      "models": 81
+     },
+     "CI leg - gemini/google (keyed catalog, #3141)": {
+      "models": 60
+     },
+     "CI leg - cohere (keyed catalog, #3141)": {
+      "models": 20
+     },
+     "CI leg - sealion (keyed catalog, #3141)": {
+      "models": 12
+     },
+     "CI leg - zai (keyed catalog, #3141)": {
+      "models": 11
+     },
+     "CI leg - sambanova (keyed catalog, #3141)": {
+      "models": 6
      }
     },
-    "not_yet_counted": "key-gated live catalogs (groq, mistral, cerebras, nvidia, siliconflow, sambanova, cohere, zai, gemini, cloudflare, aion, sealion + unorouter 283 per provisioning verification 2026-10-28; their public routes return no catalog) - counted CI-side where the keys live (provider_model_catalog / provider-invoke runs); the floor rises as those land. Owner figure of record: thousands wired + working, 7,500+ at full catalog count.",
+    "not_yet_counted": "not countable from CI (verdicts #3141): groq (catalog 403, Actions egress class - countable from any non-Actions egress) - aion (edge 403) - mistral + cerebras (no secret in store; ruling-blocked per provisioning) - cloudflare (catalog POST 404, account-scope; counted 0). Remaining gap to the owner figure of 7,500+ = groq + aion catalogs from a clean egress + public-side growth.",
     "working_evidence": "per-provider invoke verdicts = issue #3141 batch (provider-invoke surface); per-model evidence shards across the contributing pool per the compounding rule."
    }
   }

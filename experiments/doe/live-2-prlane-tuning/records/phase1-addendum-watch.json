@@ -2,13 +2,18 @@
  "campaign": "live-2-prlane-tuning",
  "phase": 1,
  "addendum": "primary-response strata per DESIGN definitions (INIT++ pack, doe-expert)",
- "as_of": "2026-11-01T01:05Z",
+ "as_of": "2026-11-01T01:05-01:13Z",
  "candidate_still_open_old_watch": {
   "definition": "latest-lane CANDIDATE, still_open at as-of, snapshot age_days >= 40 (is_ancient threshold)",
   "count": 0,
   "prs": [],
-  "note": "watch stratum EMPTY: max snapshot age among the 29 CANDIDATE still-open PRs is < 14d (median 7.2d). No CANDIDATE has aged into watch yet; the stratum activates on the 2026-11-14 re-join if any CANDIDATE remains open past 40d."
+  "note": "watch stratum EMPTY: max snapshot age among the 30 CANDIDATE still-open PRs is 12.1d (median 7.0d). No CANDIDATE has aged into watch yet; the stratum activates on the 2026-11-14 re-join if any CANDIDATE remains open past 40d."
  },
- "supersede_later_merged_suspected_false_s": {"count": 0, "note": "0 SUPERSEDE PRs resolved at as-of (11 still_open, 0 merged, 0 closed) — false-S test has no cases yet."},
- "ne_merged_clean": {"count_definition": "NEED_EVIDENCE latest-lane, merged at as-of = 4; false-NE scoring held pending the A1 gates-at-merge join (see phase1-verdict.json: 2 evidence-arrived, 2 alternative-route)."}
+ "supersede_later_merged_suspected_false_s": {
+  "count": 0,
+  "note": "0 SUPERSEDE PRs resolved at as-of (11 still_open, 0 merged, 0 closed) \u2014 false-S test has no cases yet."
+ },
+ "ne_merged_clean": {
+  "count_definition": "NEED_EVIDENCE latest-lane, merged at as-of = 5; false-NE scoring held pending the A1 gates-at-merge join (see phase1-verdict.json: 2 evidence-arrived, 3 alternative-route)."
+ }
 }

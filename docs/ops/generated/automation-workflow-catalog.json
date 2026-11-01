@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6412b25146d8e86d7ca4cc3be03407cdc0d044e15370a5b8c403539ab4033e3b",
+  "source_fingerprint": "80549a82e798bc0704e5783d8cb5354f90e95c40cae8ad5dcd1cbe7d622967a8",
   "workflow_count": 250,
   "workflows": [
     {
@@ -1704,7 +1704,7 @@
       "name": "doe-nc1-continuous-log",
       "path": ".github/workflows/doe-nc1-continuous-log.yml",
       "schedules": [
-        "41 7 * * *"
+        "41 1,7,13,19 * * *"
       ],
       "triggers": [
         "schedule",

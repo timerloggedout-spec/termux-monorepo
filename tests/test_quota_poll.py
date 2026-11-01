@@ -225,7 +225,7 @@ class QuotaPollTest(unittest.TestCase):
                     "openrouter.free_models": {"used": 3, "limit": 50}}
         now = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
         snap = _qp.readings_snapshot(_qp.public_snapshot(services, readings, now), services)
-        self.assertEqual(snap["schema"], "3l0.quota-readings.v1")
+        self.assertEqual(snap["schema"], "quota.readings.v2")
         self.assertEqual(snap["generated_at"], now.isoformat())
         self.assertIn("not a live quota feed", snap["source"])
         self.assertNotIn("714239", json.dumps(snap))
@@ -272,7 +272,7 @@ class QuotaPollTest(unittest.TestCase):
 
     def test_readings_snapshot_rejects_non_projection_input(self):
         with self.assertRaises(ValueError):
-            _qp.readings_snapshot({"schema": "3l0.quota-readings.v1", "readings": []}, [])
+            _qp.readings_snapshot({"schema": "quota.readings.v2", "readings": []}, [])
         with self.assertRaises(ValueError):
             _qp.readings_snapshot(["not-a-dict"], [])
 

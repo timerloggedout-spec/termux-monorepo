@@ -77,9 +77,9 @@ ci-lane dispatch records.
 
 | Lane | Surface | State |
 |---|---|---|
-| gemini-invoke | `gemini-invoke.yml` | `workflow_call` only, 0 runs |
-| gemini-triage | `gemini-triage.yml` | `workflow_call` only, 0 runs |
-| gemini-review | `gemini-review.yml` | 26 runs, 0 successes, last failure 2026-08-20 |
+| gemini-invoke | `gemini-invoke.yml` | `workflow_call` via gemini-dispatch; invoke job SUCCESS in run 41302651335 (2026-11-01, production issue #3077) — PROVEN |
+| gemini-triage | `gemini-triage.yml` | `workflow_call` via gemini-dispatch; triage job SUCCESS in runs 41301369671 + 41302644454 (2026-11-01) — PROVEN |
+| gemini-review | `gemini-review.yml` | `workflow_call` via gemini-dispatch; review job SUCCESS in run 41303090873 (2026-11-01, PR #3080) — PROVEN (standalone history: 26 runs, 0 successes to 2026-08-20) |
 
 ## Triggerable (support / never fired)
 
@@ -87,6 +87,26 @@ ci-lane dispatch records.
 (dispatch, 0 runs) · `cadence-provider-onboarding` (dispatch+schedule, 8 runs, last success
 2026-10-30 — the promotion arm) · `provider-recon-compound` (57 runs, last success 2026-10-27) ·
 `quota-dispatch-tree` (51 runs, last success 2026-11-01 — routing support, not a build lane).
+
+## Batch outcomes — BATCH ALL TRIGGERABLE (owner order 2026-11-01)
+
+All 5 triggerable + 3 wired-unproven lanes fired at production work; classes updated on evidence:
+
+- **Proven by the batch:** `openrouter-free-counter-batch-probe` (run 41302260322 success) ·
+  `quota-dispatch-tree` (dispatch run 41302083313 success) · `cadence-provider-onboarding`
+  (first fire 41302262147 FAILED on meta-unmapped drift; meta acknowledged in 44ad26f9; run
+  41302538342 success) · `gemini-triage` (triage job success, dispatch runs 41301369671 +
+  41302644454) · `gemini-invoke` (invoke job success, dispatch run 41302651335; production
+  spec = issue #3077).
+- **Fired, failed + diagnosis (class unchanged):** `gemini-interactions-smoke` — runs
+  41302258314 + 41302303592 FAILURE; log-verified: Interactions API probe HTTP 404 with
+  GEMINI_API_KEY configured (route/model not found, ¬ credential failure) ·
+  `provider-recon-compound` — runs 41302080198 + 41302264142 FAILURE; log-verified: collect
+  step pinned-source fetch HTTP 403 (exit 2, publish skipped); fix dispatched to Gemini
+  (issue #3077).
+- **Review leg:** `gemini-review` — first attempt on PR #3079 (comment 6557428651) produced
+  no dispatch run (PR merged mid-storm 11:39:39Z); re-fired on PR #3080 (comment 6557463507)
+  ⇒ dispatch run 41303090873, review job SUCCESS ⇒ PROVEN.
 
 ## Rotation rule (bench-wide)
 

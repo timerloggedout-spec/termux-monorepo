@@ -338,12 +338,12 @@
      "task_classes": [
       "invoke"
      ],
-     "class": "wired-unproven",
+     "class": "proven",
      "surfaces": [
       "gemini-invoke.yml"
      ],
      "trigger": "workflow_call only (via gemini-dispatch / review callers) — no direct dispatch trigger",
-     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via gemini-dispatch/review callers ⇒ class stays wired-unproven."
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via gemini-dispatch/review callers ⇒ class stays wired-unproven. || LEG FIRED (providers-dispatch-fix 2026-11-01): dispatch run 41302651335 (@gemini-cli comment 6557404319 on issue #3077) invoke job SUCCESS; production spec = provider-recon 403 fix (issue #3077) => PROVEN."
     },
     {
      "id": "gemini-triage",
@@ -351,12 +351,12 @@
      "task_classes": [
       "triage"
      ],
-     "class": "wired-unproven",
+     "class": "proven",
      "surfaces": [
       "gemini-triage.yml"
      ],
      "trigger": "workflow_call only",
-     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via callers ⇒ class stays wired-unproven."
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via callers ⇒ class stays wired-unproven. || LEG FIRED (providers-dispatch-fix 2026-11-01): dispatch run 41302644454 (issues.opened, production issue #3077) triage job SUCCESS; also triage job SUCCESS inside run 41301369671 (D1 SR issue #3050) => PROVEN."
     },
     {
      "id": "gemini-review",
@@ -364,12 +364,12 @@
      "task_classes": [
       "review"
      ],
-     "class": "wired-unproven",
+     "class": "proven",
      "surfaces": [
       "gemini-review.yml"
      ],
      "trigger": "PR events (workflow file present)",
-     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO BATCH FIRE — PR-event route only; latest runs on record are 2026-08 failures (32385555114) ⇒ class stays wired-unproven; outcome awaits a production PR-event cycle."
+     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO BATCH FIRE — PR-event route only; latest runs on record are 2026-08 failures (32385555114) ⇒ class stays wired-unproven; outcome awaits a production PR-event cycle. || LEG FIRED (providers-dispatch-fix 2026-11-01): @gemini-cli /review on PR #3080 (comment 6557463507) => dispatch run 41303090873, review job SUCCESS (sparkFlux ack 6557466464) => PROVEN. First attempt on PR #3079 (comment 6557428651) produced no dispatch run — PR merged mid-storm 11:39:39Z."
     },
     {
      "id": "gemini-interactions-smoke",
@@ -383,7 +383,7 @@
       "gemini-interactions-smoke.yml"
      ],
      "trigger": "workflow_dispatch (model input)",
-     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane)."
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure."
     },
     {
      "id": "openrouter-free-counter-batch-probe",
@@ -425,7 +425,7 @@
       "provider-recon-compound.yml"
      ],
      "trigger": "workflow_dispatch / workflow_run / PR paths",
-     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane)."
+     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335)."
     },
     {
      "id": "quota-dispatch-tree",

@@ -17,7 +17,8 @@ on:
   push:
     branches: [master]
     paths:
-      - 'scripts/tracking/**'
+      - 'scripts/tracking/repo_tracking.py'
+      - 'scripts/tracking/fetch_snapshots.py'
       - 'ops/tracking/projects.json'
       - 'ops/challenge/coordinator.json'
       - 'ops/challenge/desk-feed.json'
@@ -37,14 +38,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
     steps:
+      # Reads + commit run on a Swarm app token (own 5000/h bucket), NOT
+      # the shared GITHUB_TOKEN bucket (1000/h/repo): the 2026-11-01T04:11Z
+      # generation degraded on HTTP 403 from that bucket during a
+      # merge-triggered workflow storm (fail-soft recorded it; the feed
+      # lost last-merge/open state for that run). SEC-03 minting, F1
+      # pattern (mint BEFORE checkout; checkout persists the credential).
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
       - uses: actions/checkout@v4
         with:
           ref: master
           fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -54,6 +67,9 @@ jobs:
           python3 -m py_compile scripts/tracking/repo_tracking.py scripts/tracking/fetch_snapshots.py
           python3 -m pytest tests/test_repo_tracking.py -q || python3 tests/test_repo_tracking.py
       - name: Refresh observation snapshots (PR feed + Neon lane-events)
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: python3 -B scripts/tracking/fetch_snapshots.py
       - name: Generate the tracking surface
         run: |

@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T11:30:59Z",
+ "generated_at": "2026-11-01T11:38:42Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -343,7 +343,7 @@
       "gemini-invoke.yml"
      ],
      "trigger": "workflow_call only (via gemini-dispatch / review callers) — no direct dispatch trigger",
-     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp"
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via gemini-dispatch/review callers ⇒ class stays wired-unproven."
     },
     {
      "id": "gemini-triage",
@@ -356,7 +356,7 @@
       "gemini-triage.yml"
      ],
      "trigger": "workflow_call only",
-     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp"
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via callers ⇒ class stays wired-unproven."
     },
     {
      "id": "gemini-review",
@@ -369,7 +369,7 @@
       "gemini-review.yml"
      ],
      "trigger": "PR events (workflow file present)",
-     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run"
+     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO BATCH FIRE — PR-event route only; latest runs on record are 2026-08 failures (32385555114) ⇒ class stays wired-unproven; outcome awaits a production PR-event cycle."
     },
     {
      "id": "gemini-interactions-smoke",
@@ -383,7 +383,7 @@
       "gemini-interactions-smoke.yml"
      ],
      "trigger": "workflow_dispatch (model input)",
-     "evidence": "0 runs at census; trigger exists, never fired"
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane)."
     },
     {
      "id": "openrouter-free-counter-batch-probe",
@@ -392,12 +392,12 @@
       "probe",
       "inference"
      ],
-     "class": "triggerable",
+     "class": "proven",
      "surfaces": [
       "openrouter-free-counter-batch-probe.yml"
      ],
      "trigger": "workflow_dispatch",
-     "evidence": "0 runs at census; trigger exists, never fired"
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓✓ — workflow_dispatch runs 41302073525 + 41302260322 SUCCESS (2026-11-01) ⇒ class triggerable → proven (dispatch route fires + completes)."
     },
     {
      "id": "cadence-provider-onboarding",
@@ -406,12 +406,12 @@
       "onboarding",
       "promotion"
      ],
-     "class": "triggerable",
+     "class": "proven",
      "surfaces": [
       "cadence-provider-onboarding.yml"
      ],
      "trigger": "workflow_dispatch / schedule / push on registry paths",
-     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired"
+     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes)."
     },
     {
      "id": "provider-recon-compound",
@@ -425,7 +425,7 @@
       "provider-recon-compound.yml"
      ],
      "trigger": "workflow_dispatch / workflow_run / PR paths",
-     "evidence": "57 runs; last_success run 40556385337 @2026-10-27"
+     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane)."
     },
     {
      "id": "quota-dispatch-tree",
@@ -434,12 +434,12 @@
       "routing",
       "quota-gate"
      ],
-     "class": "triggerable",
+     "class": "proven",
      "surfaces": [
       "quota-dispatch-tree.yml"
      ],
      "trigger": "workflow events / dispatch",
-     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane"
+     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302083313 SUCCESS (2026-11-01) (+ run 41302266076 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes)."
     }
    ],
    "inference_only": {

@@ -3,13 +3,13 @@ type: object
 cluster: governance
 universe: live
 status: verified
-entity: AGENTS.md
-verified_at: 2026-08-17
+entity: CLAUDE.md
+verified_at: 2026-11-01
 ---
 
 # Change Control
 
-**Change Control** is the monorepo’s governed path from a registered work item through a `master-staging`-based feature branch, required validation, and human-reviewed integration.
+**Change Control** is the monorepo’s governed path from a registered work item through a `master`-based feature branch, required validation, and human-reviewed integration.
 
 ## Why this shape
 
@@ -17,16 +17,16 @@ The repository separates implementation from promotion so new work is traceable 
 
 ## Shape
 
-- `AGENTS.md` requires integration work to target `master-staging`, names the repository and Termux smoke gates, and requires item citations in commits or pull requests.
+- Root `CLAUDE.md` requires integration work to target `master` (a `master-staging` base only when that lane is active), names the repository and Termux smoke gates, and requires item citations in commits or pull requests.
 - The proposal process registers work, itemizes it, records review/acceptance, and couples completion to gate evidence.
 - Human-only edges include credential rotation, history rewrite, protected-branch rules, device state, and interactive provider login.
 
-Citations: `AGENTS.md:5-29`, `AGENTS.md:37-48`, `docs/proposals/PROCESS.md:1-36`, `docs/proposals/AGENTIC-PERMISSIONS.md:3-27`.
+Citations: `CLAUDE.md:42-52`, `CLAUDE.md:56-61`, `docs/proposals/PROCESS.md:1-36`, `docs/proposals/AGENTIC-PERMISSIONS.md:3-27`.
 
 ## Connected to
 
 - **owns:** the documented branch, item, evidence, and approval expectations for tracked changes.
-- **owned-by:** `AGENTS.md` and `docs/proposals/*`.
+- **owned-by:** root `CLAUDE.md` and `docs/proposals/*`.
 - **joins:** a requested edit to a scoped proposal, feature branch, validation run, and reviewable update.
 - **looks-like-but-is-not:** permission to force-push, rewrite history, rotate credentials, or change device state without explicit operator approval.
 
@@ -46,6 +46,6 @@ Citations: `AGENTS.md:5-29`, `AGENTS.md:37-48`, `docs/proposals/PROCESS.md:1-36`
 
 ## See
 
-- Source: [`AGENTS.md`](../../../../AGENTS.md)
+- Source: [`CLAUDE.md`](../../../../CLAUDE.md)
 - Source: [`docs/proposals/PROCESS.md`](../../../proposals/PROCESS.md)
 - Source: [`docs/proposals/AGENTIC-PERMISSIONS.md`](../../../proposals/AGENTIC-PERMISSIONS.md)

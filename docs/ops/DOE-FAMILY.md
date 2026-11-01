@@ -24,6 +24,7 @@ propagations recorded as design events in the campaign record.
 | Pilot 1 — context routing × CedrLang compression (#1849) | campaign | admitted (design record committed); executed — see campaign dir | `experiments/doe/pilot-1-context-routing-x-compression/` |
 | Pilot 2 — dispatch topology × quota policy (#1850) | campaign candidate | proposal only — **not admitted** (no design record, no run evidence) | issue #1850 |
 | FB Pages MVT-1 — copy angle × code-pool split (marketing-channel) | campaign | admitted 2026-10-31 — `executing_partial`: fb-a/fb-b live since 2026-10-27, fb-c `arm_not_started` (deviation recorded in-design); in-repo record post-launch, marked as such | `experiments/marketing/fb-pages-mvt-1/` |
+| util-1-provider-rotation — desk rotation bench on live production flow (rule 6 basis; owner USE-THEM-ALL) | live, implementing | window: 24 stamped dispatches ∨ 2026-12-01; auditor weekly | `experiments/doe/util-1-provider-rotation/` |
 | cmp-register — standing register of comparison examples evaluated over time (owner order 2026-11-01) | register | open — CMP-1 SKILL.md vs *.skill packaging · CMP-2 new-competition routing (dedicated opportunity channel vs fold-in; first instance .approxination) | `experiments/doe/cmp-register/` |
 | nc-1-notation-compliance — notation-drift detection stack (L3 GH classifier ∧ L2 transcript sweep ⇒ L1 main relay-validation) | campaign | admitted 2026-10-31 — design-only, **pre-registered**; owner order via main: the detection TEST is a DoE experiment homed here; Tier-1 builds L3+L2; verdict ↦ main on first runs | `experiments/doe/nc-1-notation-compliance/` |
 | live-2-prlane-tuning — classifier rule/threshold tuning (joint w/ tier1-classifiers-steward) | campaign | admitted 2026-10-31 — design-only, **pre-registered**; replay factorial over frozen pr-lane snapshots (live series = non-stationary, steward caveat); phase-2 levels by amendment after rule-file read | `experiments/doe/live-2-prlane-tuning/` |
@@ -264,16 +265,6 @@ are levels, kinds are factors.
    adjustments land as amendments. A campaign whose automation is
    not yet built is `admitted_design_only`; manual runs taken
    anyway are OBSERVATIONAL, never designed results.
-6. **Continuous live production basis (owner, 2026-11-01): design
-   experiments around continuous live production.** Provider wiring
-   is being updated, so past route censuses go stale: routes are
-   re-verified at design time AND at dispatch time, and no design
-   may hard-pin a route (parameterize it — a dead route is a datum,
-   not a mid-run blocker). The design basis is the continuous live
-   production flow; controls are embedded in that flow only, never
-   standalone suite executions as experimental mass (strengthens
-   the live-first doctrine). Calibration anchors must be live
-   production campaigns calibrated in situ.
 
 ## Campaign layout
 

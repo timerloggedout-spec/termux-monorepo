@@ -26,6 +26,7 @@ Row shape (feed: `ops/quota/allocation-verification.json`, schema `quota.allocat
 - credits: purchased balance **$0.00** (`total_credits 0`, never purchased); `total_usage 0.206466965` consumed at account level (allowance-class consumption, key-level counters 0).
 - replenishment: free allowance refills daily; paid credit resupply gates on a purchase (card) ⇒ **parked-card** for the paid layer; free layer continues underneath.
 - verdict: **layered** (free active; paid layer parked-card). Flag: `card-required` (paid layer only).
+- **Free-roster rotation hazard (verified 2026-11-01, catalog API read):** the 50/day allowance is variant-generic, but the :free ROSTER rotates — catalog = 452 models, DeepSeek 18 (ALL PAID, :free = ∅), `deepseek/deepseek-r1:free` DELISTED, total :free variants = 14. Any design pinned to a specific :free id is exposed: the repo's free-catalog snapshot (`scripts/openrouter_free_catalog.py` data) still lists r1:free = STALE, and the DeepSeek invoke/review reroute pins that id — route owners notified via the census relay. Flag: `free-roster-rotation`.
 
 ### github — `api-verified` (plan + buckets) / billing `not-established`
 - free_tier: **active** — account plan = `free` (API). API buckets per principal, all live-verified: PAT 5000/h core, per-App 5000/h per installation, `GITHUB_TOKEN` 1000/h/repo. Actions minutes on public repos = free entitlement (doc); user billing endpoints return 404 to the PAT (scope) ⇒ minutes balance **not-established**.

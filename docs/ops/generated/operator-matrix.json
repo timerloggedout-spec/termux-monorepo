@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 172,
+    "open_prs": 170,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 7,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 170,
+      "prs": 168,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:35:34Z",
+  "generated_at": "2026-11-01T23:36:58Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "36da3c205c"
+    "sha": "3ef8e49c79"
   },
   "prs": [
     {
@@ -206,34 +206,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c041148328",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T23:34:13Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a71808358f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3324,
-      "title": "docs(llm-api-hub): ARCHIVED marking on the restore note",
-      "updated_at": "2026-11-01T23:35:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -470,7 +442,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-01T22:13:01Z"
@@ -1812,6 +1784,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "aa3e3810ae",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T23:36:43Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2535,20 +2521,6 @@
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-01T16:19:45Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "da39d6e528",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3325,
-      "title": "docs(wiki): amend credential record to two-surface form (DEVINdeepWiki \u2260 DeepWiki.com)",
-      "updated_at": "2026-11-01T23:35:16Z"
     }
   ],
   "schema": "operator-matrix/v1",

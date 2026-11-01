@@ -3,9 +3,9 @@
     "open_issues": 379,
     "open_prs": 169,
     "pr_classes": {
-      "CANDIDATE": 80,
+      "CANDIDATE": 81,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 83,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T13:29:06Z",
+  "generated_at": "2026-11-01T13:31:00Z",
   "issues_unlabelled": [
     308,
     343,
@@ -132,7 +132,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "9744ca76a8"
+    "sha": "97e384fb85"
   },
   "prs": [
     {
@@ -212,12 +212,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f6bafb93c4",
+      "head_sha": "ed469601e5",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T13:27:40Z"
+      "number": 3158,
+      "title": "fix(quota): planner refresh push \u2014 fetch owned branch before force-with-lease",
+      "updated_at": "2026-11-01T13:30:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -979,6 +979,20 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "68c250ff25",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T13:29:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -2491,20 +2505,6 @@
       "number": 3113,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-01T12:09:07Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "fa18f1acdb",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3156,
-      "title": "feat(quota): promote fresh census \u2014 164-row snapshot 2026-11-01",
-      "updated_at": "2026-11-01T13:29:04Z"
     }
   ],
   "schema": "operator-matrix/v1",

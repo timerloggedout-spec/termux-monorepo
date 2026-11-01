@@ -258,14 +258,24 @@ def _claims_freellmapi(package: Any, source: str) -> list[dict[str, Any]]:
                     raise ReconError("provider platform and name must be literal strings")
                 registrations.append((platform, name, klass))
             else:
-                if args:
-                    if klass not in {"GoogleProvider", "ZhipuProvider"} or args[0] != "{" or balanced_end(i + 5, "{", "}") != ctor_end - 1:
-                        raise ReconError("unsupported provider constructor arguments")
-                    if len(args) != 5 or args[1:4] != ["timeoutMs", ":", "60_000"]:
-                        raise ReconError("unsupported dedicated provider options")
-                if klass not in imports:
-                    raise ReconError("provider constructor missing import")
-                registrations.append((klass[:-8], klass[:-8], klass))
+                if klass == "KeylessDecisionProvider":
+                    if len(args) != 3 or args[1] != ",":
+                        raise ReconError("unsupported keyless provider arguments")
+                    platform, name = string_value(args[0]), string_value(args[2])
+                    if platform is None or name is None or not platform or not name:
+                        raise ReconError("provider platform and name must be literal strings")
+                    if klass not in imports:
+                        raise ReconError("provider constructor missing import")
+                    registrations.append((platform, name, klass))
+                else:
+                    if args:
+                        if klass not in {"GoogleProvider", "ZhipuProvider"} or args[0] != "{" or balanced_end(i + 5, "{", "}") != ctor_end - 1:
+                            raise ReconError("unsupported provider constructor arguments")
+                        if len(args) != 5 or args[1:4] != ["timeoutMs", ":", "60_000"]:
+                            raise ReconError("unsupported dedicated provider options")
+                    if klass not in imports:
+                        raise ReconError("provider constructor missing import")
+                    registrations.append((klass[:-8], klass[:-8], klass))
             i = ctor_end + 2
         i += 1
     if not registrations or any(klass not in imports for _, _, klass in registrations):

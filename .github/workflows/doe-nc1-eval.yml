@@ -72,7 +72,10 @@ jobs:
           print(f"- cull: {d['cull_analysis']} · floors: {d['pass_floor_check']} · chat_noise_events={d['chat_noise_events']}")
           print("- verdict = doe-expert (this comment is data, not a verdict)")
           PY
-          gh issue comment 2865 --body-file rollup.md
+          # #2865 is a PR: `gh issue comment` refuses PR numbers in the
+          # runner (both run-001 attempts failed on this leg while the
+          # REST issues endpoint accepts PR comments). Post via gh api.
+          gh api --method POST "repos/${{ github.repository }}/issues/2865/comments" -f body=@rollup.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:

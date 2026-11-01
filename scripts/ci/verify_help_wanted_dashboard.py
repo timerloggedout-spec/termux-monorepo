@@ -38,6 +38,8 @@ def main() -> int:
         raise SystemExit("matrix page does not load shared navigation")
     if "https://timerloggedout-spec.github.io/tribute/" not in nav:
         raise SystemExit("shared navigation does not use the canonical Tribute route")
+    if "var previewMatch = path.match" not in nav or "/previews/" not in nav:
+        raise SystemExit("shared navigation does not preserve the preview route context")
     missing = [x for x in REQUIRED_HTML if x not in html]
     if missing:
         raise SystemExit("missing dashboard contract markers: " + ", ".join(missing))

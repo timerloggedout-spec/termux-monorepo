@@ -70,6 +70,27 @@
       "url": "https://doi.org/10.3969/j.issn.1000-5218.2002.05.013",
       "source_type": "scholarly_article",
       "authority": "Scholarly linguistic research; metadata discovered via SciSpace"
+    },
+    {
+      "source_id": "dummit-foote-abstract-algebra",
+      "title": "Abstract Algebra (3rd ed.), Dummit & Foote — Ch. 1–4 (groups, subgroups, quotient groups, homomorphisms)",
+      "url": "https://www.wiley.com/en-us/Abstract+Algebra%2C+3rd+Edition-p-9780471433347",
+      "source_type": "textbook",
+      "authority": "Wiley; Dummit & Foote (primary domain reference)"
+    },
+    {
+      "source_id": "fraleigh-abstract-algebra",
+      "title": "A First Course in Abstract Algebra (8th ed.), Fraleigh & Brand — Sections I–III",
+      "url": "https://www.pearson.com/en-us/subject-catalog/p/first-course-in-abstract-algebra-a/P200000003384",
+      "source_type": "textbook",
+      "authority": "Pearson; Fraleigh (primary domain reference)"
+    },
+    {
+      "source_id": "wikipedia-group-theory",
+      "title": "Group theory (Wikipedia overview)",
+      "url": "https://en.wikipedia.org/wiki/Group_theory",
+      "source_type": "encyclopedia_overview",
+      "authority": "Wikipedia (orientation only; verify normative claims against Dummit & Foote / Fraleigh)"
     }
   ],
   "concepts": [
@@ -163,6 +184,162 @@
       "source_ids": [
         "synonyms-near-synonyms-research",
         "wolfram-worddata"
+      ]
+    },
+    {
+      "concept_id": "group_theory.group",
+      "domain_id": "group_theory",
+      "preferred_label": "group",
+      "definition": "A set G with an associative binary operation, an identity element, and an inverse for every element.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.identity_element",
+      "domain_id": "group_theory",
+      "preferred_label": "identity element",
+      "definition": "The unique element e of a group with e·g = g·e = g for every element g.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.inverse",
+      "domain_id": "group_theory",
+      "preferred_label": "inverse",
+      "definition": "For an element g, the unique element g⁻¹ with g·g⁻¹ = g⁻¹·g = e.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.binary_operation",
+      "domain_id": "group_theory",
+      "preferred_label": "binary operation (group operation / composition)",
+      "definition": "The operation · : G × G → G combining two elements; written multiplicatively, additively, or as composition depending on convention.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.subgroup",
+      "domain_id": "group_theory",
+      "preferred_label": "subgroup",
+      "definition": "A subset H of a group G that is itself a group under the restricted operation (written H ≤ G).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.normal_subgroup",
+      "domain_id": "group_theory",
+      "preferred_label": "normal subgroup",
+      "definition": "A subgroup N with gNg⁻¹ = N for every g in G (written N ⊲ G); exactly the kernels of homomorphisms and the denominators of quotient groups.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.quotient_group",
+      "domain_id": "group_theory",
+      "preferred_label": "quotient group",
+      "definition": "For a normal subgroup N, the group G/N of cosets of N with operation induced from G.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.homomorphism",
+      "domain_id": "group_theory",
+      "preferred_label": "group homomorphism",
+      "definition": "A map φ: G → H with φ(ab) = φ(a)φ(b) for all a, b in G.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.isomorphism",
+      "domain_id": "group_theory",
+      "preferred_label": "group isomorphism",
+      "definition": "A bijective homomorphism; groups related by one (G ≅ H) have identical group structure.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.abelian_group",
+      "domain_id": "group_theory",
+      "preferred_label": "abelian group",
+      "definition": "A group whose operation commutes: ab = ba for all elements. 'Commutative group' is the same concept.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.group_action",
+      "domain_id": "group_theory",
+      "preferred_label": "group action",
+      "definition": "A homomorphism from G into the symmetry group of a set X; equivalently a map G × X → X compatible with the operation and identity (written G ↷ X).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.symmetry_group",
+      "domain_id": "group_theory",
+      "preferred_label": "symmetry group",
+      "definition": "The group of all structure-preserving bijections of an object or set under composition; for a set X, Sym(X).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "group_theory.category_of_groups",
+      "domain_id": "group_theory",
+      "preferred_label": "category of groups (Grp)",
+      "definition": "The category whose objects are groups and whose morphisms are group homomorphisms.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
       ]
     }
   ],
@@ -350,6 +527,580 @@
         "synonyms-near-synonyms-research",
         "wolfram-worddata"
       ]
+    },
+    {
+      "label_id": "lbl-gt-group-formal",
+      "concept_id": "group_theory.group",
+      "text": "group",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-group-plain",
+      "concept_id": "group_theory.group",
+      "text": "a set with a way to combine elements that can always be undone",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-group-symbol",
+      "concept_id": "group_theory.group",
+      "text": "(G, ·)",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-identity-element-formal",
+      "concept_id": "group_theory.identity_element",
+      "text": "identity element",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-identity-element-plain",
+      "concept_id": "group_theory.identity_element",
+      "text": "the element that changes nothing when combined",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-identity-symbol",
+      "concept_id": "group_theory.identity_element",
+      "text": "e",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-inverse-formal",
+      "concept_id": "group_theory.inverse",
+      "text": "inverse",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-inverse-plain",
+      "concept_id": "group_theory.inverse",
+      "text": "the element that undoes another element",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-inverse-symbol",
+      "concept_id": "group_theory.inverse",
+      "text": "g⁻¹",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-binary-operation-formal",
+      "concept_id": "group_theory.binary_operation",
+      "text": "binary operation (group operation / composition)",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-binary-operation-plain",
+      "concept_id": "group_theory.binary_operation",
+      "text": "the rule for combining two elements into one",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-operation-symbol",
+      "concept_id": "group_theory.binary_operation",
+      "text": "· ; ∘ (g ∘ f = apply f, then g)",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-subgroup-formal",
+      "concept_id": "group_theory.subgroup",
+      "text": "subgroup",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-subgroup-plain",
+      "concept_id": "group_theory.subgroup",
+      "text": "a smaller group living inside a bigger one, using the same rule",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-subgroup-symbol",
+      "concept_id": "group_theory.subgroup",
+      "text": "H ≤ G",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-normal-subgroup-formal",
+      "concept_id": "group_theory.normal_subgroup",
+      "text": "normal subgroup",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-normal-subgroup-plain",
+      "concept_id": "group_theory.normal_subgroup",
+      "text": "a subgroup that looks the same from every element's viewpoint (conjugation-invariant)",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-normal-symbol",
+      "concept_id": "group_theory.normal_subgroup",
+      "text": "N ⊲ G",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-quotient-group-formal",
+      "concept_id": "group_theory.quotient_group",
+      "text": "quotient group",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-quotient-group-plain",
+      "concept_id": "group_theory.quotient_group",
+      "text": "the group you get by collapsing a normal subgroup to the identity",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-quotient-symbol",
+      "concept_id": "group_theory.quotient_group",
+      "text": "G/N",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-homomorphism-formal",
+      "concept_id": "group_theory.homomorphism",
+      "text": "group homomorphism",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-homomorphism-plain",
+      "concept_id": "group_theory.homomorphism",
+      "text": "a map between groups that respects the combining rule",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-homomorphism-symbol",
+      "concept_id": "group_theory.homomorphism",
+      "text": "φ: G → H",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-isomorphism-formal",
+      "concept_id": "group_theory.isomorphism",
+      "text": "group isomorphism",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-isomorphism-plain",
+      "concept_id": "group_theory.isomorphism",
+      "text": "a perfect dictionary between two groups — same structure, different names",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-isomorphism-symbol",
+      "concept_id": "group_theory.isomorphism",
+      "text": "G ≅ H",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-abelian-group-formal",
+      "concept_id": "group_theory.abelian_group",
+      "text": "abelian group",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-abelian-group-plain",
+      "concept_id": "group_theory.abelian_group",
+      "text": "a group where the order of combining does not matter",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-group-action-formal",
+      "concept_id": "group_theory.group_action",
+      "text": "group action",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-group-action-plain",
+      "concept_id": "group_theory.group_action",
+      "text": "a group moving points of a set around, consistently with its rule",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-action-symbol",
+      "concept_id": "group_theory.group_action",
+      "text": "G ↷ X",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-symmetry-group-formal",
+      "concept_id": "group_theory.symmetry_group",
+      "text": "symmetry group",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-symmetry-group-plain",
+      "concept_id": "group_theory.symmetry_group",
+      "text": "all the ways to rearrange an object while preserving its structure",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-symmetry-symbol",
+      "concept_id": "group_theory.symmetry_group",
+      "text": "Sym(X)",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-category-of-groups-formal",
+      "concept_id": "group_theory.category_of_groups",
+      "text": "category of groups (Grp)",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-category-of-groups-plain",
+      "concept_id": "group_theory.category_of_groups",
+      "text": "the world of all groups, with homomorphisms as the arrows between them",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-grp-symbol",
+      "concept_id": "group_theory.category_of_groups",
+      "text": "Grp",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-abelian-synonym",
+      "concept_id": "group_theory.abelian_group",
+      "text": "commutative group",
+      "label_type": "alternative_synonym",
+      "language": "en",
+      "audience": "learner",
+      "register": "technical",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-identity-synonym",
+      "concept_id": "group_theory.identity_element",
+      "text": "neutral element",
+      "label_type": "alternative_synonym",
+      "language": "en",
+      "audience": "learner",
+      "register": "technical",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "label_id": "lbl-gt-operation-synonym",
+      "concept_id": "group_theory.binary_operation",
+      "text": "composition",
+      "label_type": "alternative_synonym",
+      "language": "en",
+      "audience": "learner",
+      "register": "technical",
+      "status": "candidate",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra"
+      ]
     }
   ],
   "mappings": [
@@ -374,6 +1125,62 @@
       "confidence": 0.35,
       "evidence_note": "Keep related rather than exact: typeclass/monadic semantics and ordinary composition differ.",
       "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-gt-operation-composition",
+      "source_concept_id": "group_theory.binary_operation",
+      "target_concept_id": "category_theory.composition",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.5,
+      "evidence_note": "The group operation IS composition in the one-object-category view of a group, and in Grp composition of homomorphisms is the same operation one level up. Order/direction conventions per the matrix composition rows (g ∘ f applies f first). Related, not a label synonym.",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-gt-identity-morphism",
+      "source_concept_id": "group_theory.identity_element",
+      "target_concept_id": "category_theory.morphism",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.45,
+      "evidence_note": "A group is a one-object category whose morphisms are its elements; the identity element e is its identity morphism (matrix table row 'Identity morphism/function': id_A, 1_A). Scope: the link holds for the categorical view only — e is an element, not an arrow between distinct objects.",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-gt-grp-morphism",
+      "source_concept_id": "group_theory.category_of_groups",
+      "target_concept_id": "category_theory.morphism",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.5,
+      "evidence_note": "Grp is a category; its morphisms are group homomorphisms by definition. Links the category_of_groups concept to the seeded category_theory domain; no equivalence asserted beyond the definitional one.",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-gt-group-monoid-adjacency",
+      "source_concept_id": "group_theory.group",
+      "target_concept_id": "haskell.monadic_bind",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.2,
+      "evidence_note": "MONOID ADJACENCY FLAG (not equivalence): a group is a monoid with inverses; Haskell's Monoid typeclass (like Semigroup/Monoid in FP generally) has NO inverse law, so Monoid ≠ group. No monoid concept is seeded yet; this mapping exists only to record the adjacency and block any exact_match claim. Target is the nearest seeded Haskell concept, used as an anchor, not a semantic peer.",
+      "source_ids": [
+        "dummit-foote-abstract-algebra",
+        "fraleigh-abstract-algebra",
         "issue-320"
       ]
     }

@@ -851,7 +851,7 @@
       ],
       "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
       "gate_state": "gate-green",
-      "invoke_verdict": "INVOKE OK http 200 (model c4ai-aya-expanse-32b) via provider-invoke; verdicts issue #3141 Second model proven: c4ai-aya-vision-32b INVOKE OK 200 (per-model shard, #3141) Shard: command-a-03-2025 = transport timeout (datum only; class unchanged, 2 models proven 200)"
+      "invoke_verdict": "INVOKE OK http 200 (model c4ai-aya-expanse-32b) via provider-invoke; verdicts issue #3141 Second model proven: c4ai-aya-vision-32b INVOKE OK 200 (per-model shard, #3141) Third model proven: command-a-03-2025 INVOKE OK 200 @7.1s on shard-3 re-fire (the shard-2 transport timeout was transient) => proven x3 models"
      },
      {
       "id": "felo.api_credits",
@@ -1547,7 +1547,8 @@
        "gemini-dispatch (event invoke)",
        "provider-availability bounded inference leg"
       ],
-      "registry_live_field": "none; .github/actions/gemini-quota-gate soft budgets + 429s"
+      "registry_live_field": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
+      "invoke_verdict": "class proof = Gemini router/after-peers leg (standing). provider-invoke route datum (shard-3, #3141 c.6560380231): gemini-2.5-flash = http 404 empty on the invoke endpoint vs the 60-model keyed catalog - route/model skew on this surface only; class unchanged"
      },
      {
       "id": "github.copilot.free",
@@ -1762,7 +1763,7 @@
       ],
       "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratel",
       "gate_state": "gate-green",
-      "invoke_verdict": "capacity-throttled account-wide: http 429 high demand on every shard model tried {DeepSeek-V3.1, DeepSeek-V3.2, Meta-Llama-3.3-70B-Instruct} (batch + per-model shards, issue #3141)"
+      "invoke_verdict": "capacity-throttled account-wide: http 429 high demand on every shard model tried {DeepSeek-V3.1, DeepSeek-V3.2, Meta-Llama-3.3-70B-Instruct} (batch + per-model shards, issue #3141) Shard-3 re-fire: Meta-Llama-3.3-70B-Instruct 429 high-demand again (capacity class persists)"
      },
      {
       "id": "sealion.api",
@@ -1816,7 +1817,7 @@
       ],
       "registry_live_field": "Retry-After header on HTTP 429",
       "gate_state": "gate-green",
-      "invoke_verdict": "mixed route behavior: batch attempt = transport timeout on a :free model (timeout class is :free-model-specific); shard on openai/gpt-4o-mini = http 404 'not offered here', route answers fast; verdicts issue #3141"
+      "invoke_verdict": "mixed route behavior: batch attempt = transport timeout on a :free model (timeout class is :free-model-specific); shard on openai/gpt-4o-mini = http 404 'not offered here', route answers fast; verdicts issue #3141 Shard-3: anthropic/claude-3.5-sonnet 404 'not offered here' (2nd namespace miss; per-model attempts need catalog-sample-pinned ids)"
      },
      {
       "id": "xfyun.spark",
@@ -1882,7 +1883,7 @@
        "provider-invoke (Actions verdicts #3141)"
       ],
       "registry_live_field": "none published",
-      "invoke_verdict": "completion-blocked (catalog-live): catalog http 200 / 98 models from the same runner; invoke http 403 empty body @177ms from the API itself (not egress) - consistent with $0 balance, re-verify on top-up (verdicts issue #3141 c.6560102376/c.6560102443)"
+      "invoke_verdict": "completion-blocked (catalog-live): catalog http 200 / 98 models from the same runner; invoke http 403 empty body @177ms from the API itself (not egress) - consistent with $0 balance, re-verify on top-up (verdicts issue #3141 c.6560102376/c.6560102443) Shard-3 sharpens the block: a catalog-external id (deepseek/deepseek-v3.1) returns 404 while the catalog-default pick returns 403 => the completion block is account-level, consistent with $0"
      },
      {
       "id": "friendli.api",

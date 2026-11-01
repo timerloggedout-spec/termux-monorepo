@@ -84,7 +84,7 @@ through the Role{Moniker} registry where a registered entry exists
 (Grok -> `Grok`, PR #3355; note `Grok (OPERATOR)` signings are the
 human owner's row, not the collaborator).
 
-Backfill over the 600-PR window (2026-10-27 -> 2026-11-01) ran under
+Backfill over the 599-PR window (2026-10-31T16:43Z -> 2026-11-01T23:50Z) ran under
 the backfill doctrine: origin-marked in the stats output
 (`attribution.origin = backfill{method, method_version, from, to}`)
 and audited in `ops/telemetry/attribution-backfill-audit.json`:

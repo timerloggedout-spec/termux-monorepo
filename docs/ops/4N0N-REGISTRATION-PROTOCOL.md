@@ -114,6 +114,7 @@ forms; the owning lane records it with the profile.
 | Discord | `account{wh1msical_sw4n_06136}[platform:discord]` | Discord | active | — | challenge-entries |
 | Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
+| Instagram | `account{PluckyOnyx78}[platform:instagram]` | — (pending: social-connectors) | registering | — | social-connectors |
 | Kilo | `account{RapidHarbor74}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
 | Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | registering | D4 | challenge-entries |
 | lablab.ai | `entrant{Rap1dZ3nith}[platform:lablab-ai]` | lablab.ai | active | D2 | challenge-entries |
@@ -125,8 +126,11 @@ forms; the owning lane records it with the profile.
 | Routeway | `account{LivelyZenith43}[platform:routeway]` | — (pending: account-creation) | pending | — | account-creation |
 | SeaLion | `account{RapidDune76}[platform:sea-lion]` | — (pending: account-creation) | pending | — | account-creation |
 | SiliconFlow | `account{AmberFalcon96}[platform:silicon-flow]` | — (pending: account-creation) | pending | — | account-creation |
+| Threads | `account{JollyJuniper25}[platform:threads]` | — (pending: social-connectors) | registering | — | social-connectors |
+| TikTok | `account{UrbanOnyx67}[platform:tiktok]` | — (pending: social-connectors) | registering | — | social-connectors |
 | UnoRouter | `account{BriskMeadow17}[platform:uno-router]` | — (pending: account-creation) | pending | — | account-creation |
 | Vultr | `entrant{n0nVultr}[platform:vultr]` | Vultr | pending | D2 | challenge-entries |
+| WhatsApp | `account{OpalVale19}[platform:whatsapp]` | — (pending: social-connectors) | registering | — | social-connectors |
 | xKiro | `account{OpalOnyx77}[platform:xkiro]` | — (pending: account-creation) | pending | — | account-creation |
 | ZAI | `account{JollyVale52}[platform:zai]` | — (pending: account-creation) | pending | — | account-creation |
 

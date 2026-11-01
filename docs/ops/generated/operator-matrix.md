@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T00:23:15Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T00:29:59Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `788a7b1872` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `14780b3f90` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 366 issues, 152 PRs. PR classes: EXTRACT 5 / CANDIDATE 71 / NEED_EVIDENCE 76 / SUPERSEDE 0.
 
@@ -44,7 +44,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1538 | CANDIDATE | unlabelled | `7099c7a9ff` | success | success | unknown | feat(tribute): GitLab-native discovery and bounded integration options |
 | #1543 | CANDIDATE | unlabelled | `d55580f915` | success | success | unknown | chore(recon): refresh pinned free-provider research |
 | #1553 | CANDIDATE | unlabelled | `519c656f29` | success | success | unknown | Consolidate upgrades for provider quota & PR merge readiness |
-| #1556 | CANDIDATE | unlabelled | `2177e62206` | success | success | dirty | 📖 Linguist: implement steganographic cipher lane and token efficiency analysis |
+| #1556 | CANDIDATE | unlabelled | `2177e62206` | success | success | unknown | 📖 Linguist: implement steganographic cipher lane and token efficiency analysis |
 | #1568 | CANDIDATE | unlabelled | `bd3a7aa6c5` | success | success | unknown | 🛡️ Sentinel: Harden DeepCLI export target symlink validation |
 | #1570 | CANDIDATE | unlabelled | `c851d9a575` | success | success | unknown | ⚡ Bolt: optimize decision engine selection and provider catalog secret lookup |
 | #1599 | CANDIDATE | unlabelled | `ef3093ca18` | success | success | unknown | feat(ci): enforce review justification on dismissed PR reviews |
@@ -118,7 +118,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `b28fe66e40` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `a3716b4b20` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `f079dfc98c` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `9553a406ce` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

@@ -96,7 +96,8 @@
       "agent-review-auto-jules.yml"
      ],
      "trigger": "issue + `jules` label, or @jules comment",
-     "evidence": "Sessions 17326020844735872479 (PR #2635, merged 2c0894d2e7d3) + 7007935780300107338 (PR #2731); agent-jules-on-issues last_success run 41296280415 @2026-11-01T10:10Z (firsthand PAT census 2026-11-01T11:22Z)"
+     "evidence": "Sessions 17326020844735872479 (PR #2635, merged 2c0894d2e7d3) + 7007935780300107338 (PR #2731); agent-jules-on-issues last_success run 41296280415 @2026-11-01T10:10Z (firsthand PAT census 2026-11-01T11:22Z)",
+     "batch_scope": "build-or-support"
     },
     {
      "id": "gemini-dispatch",
@@ -111,7 +112,8 @@
       "gemini-dispatch.yml"
      ],
      "trigger": "issues / issue_comment / pull_request events (@gemini-cli / @sparkFlux invoke) — no workflow_dispatch (#2734 open)",
-     "evidence": "D1 SR module dispatch run 41301369671 success @2026-11-01T11:19Z (issue #3050); last_success run 41301486059 @2026-11-01T11:20Z; trigger verified firsthand @master workflow file (on: issues/issue_comment/PR events only); D1 SR run 41301369671 event = issues"
+     "evidence": "D1 SR module dispatch run 41301369671 success @2026-11-01T11:19Z (issue #3050); last_success run 41301486059 @2026-11-01T11:20Z; trigger verified firsthand @master workflow file (on: issues/issue_comment/PR events only); D1 SR run 41301369671 event = issues",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "gemini-after-peers",
@@ -124,7 +126,8 @@
       "gemini-after-peers.yml"
      ],
      "trigger": "workflow_dispatch (pr_number + head_sha + cycle_id inputs)",
-     "evidence": "1,269 runs; last_success run 41299982052 @2026-11-01T11:00Z"
+     "evidence": "1,269 runs; last_success run 41299982052 @2026-11-01T11:00Z",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "deepseek-termux-agent",
@@ -138,7 +141,8 @@
       "deepseek-termux-agent.yml"
      ],
      "trigger": "workflow_dispatch",
-     "evidence": "D1 fix-pass run 41301295882 success @2026-11-01T11:18Z; workflow_dispatch subset 20 runs 18 success per D1 census"
+     "evidence": "D1 fix-pass run 41301295882 success @2026-11-01T11:18Z; workflow_dispatch subset 20 runs 18 success per D1 census",
+     "batch_scope": "build-or-support"
     },
     {
      "id": "deepseek-ci",
@@ -153,7 +157,8 @@
       "deepseek-ci.yml"
      ],
      "trigger": "workflow events / dispatch (deepCore router role)",
-     "evidence": "last_success run 41301485914 @2026-11-01T11:20Z"
+     "evidence": "last_success run 41301485914 @2026-11-01T11:20Z",
+     "batch_scope": "build-or-support"
     },
     {
      "id": "deepagent-bridge",
@@ -168,7 +173,8 @@
      ],
      "trigger": "workflow_dispatch / bridge trigger",
      "evidence": "158 runs; last_success run 39989289180 @2026-10-23T16:44Z",
-     "caveat": "Device leg = NOT_ESTABLISHED (2026-11-01 Swarm/Quota split: proof run device steps skipped, reachable=false) — workflow-level dispatch proven, device execution unverified; bridge greens include skip-exits, verify at PR level."
+     "caveat": "Device leg = NOT_ESTABLISHED (2026-11-01 Swarm/Quota split: proof run device steps skipped, reachable=false) — workflow-level dispatch proven, device execution unverified; bridge greens include skip-exits, verify at PR level.",
+     "batch_scope": "build-or-support"
     },
     {
      "id": "deepagent-task",
@@ -183,7 +189,8 @@
      ],
      "trigger": "workflow_dispatch",
      "evidence": "First success run 41301564332 @2026-11-01T11:21Z (proof dispatch in the 2026-11-01 widening window; previously 0 runs)",
-     "caveat": "Proof run = workflow-level success: device steps skipped (reachable=false) => device execution NOT_ESTABLISHED; dispatch surface proven. DoE stamp #2735 c.6557267123."
+     "caveat": "Proof run = workflow-level success: device steps skipped (reachable=false) => device execution NOT_ESTABLISHED; dispatch surface proven. DoE stamp #2735 c.6557267123.",
+     "batch_scope": "build-or-support"
     },
     {
      "id": "provider-batch",
@@ -200,7 +207,8 @@
      "trigger": "workflow_dispatch",
      "evidence": "250 runs; last_success run 40710434190 @2026-10-28T14:53Z; latest-100 mixed 49 success / 50 failure (D1 census) — per-dispatch verification required",
      "caveat": "DISPATCH HOLD (Desk recognition @a27cf6d1): dispatches held per issue #2672 until its contracts job is green — arm is proven, dispatch suspended until the hold lifts. This is the dispatch arm that reaches inference-only registry providers; a batch run proves the arm, not each provider in it.",
-     "gate_state": "blocked-by-#2672 (observation jobs gated on contracts job, red on master; run 41301473553 job split)"
+     "gate_state": "blocked-by-#2672 (observation jobs gated on contracts job, red on master; run 41301473553 job split)",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "provider-availability",
@@ -214,7 +222,8 @@
       "provider-availability.yml"
      ],
      "trigger": "workflow_dispatch / schedule",
-     "evidence": "93 runs; last_success run 40704824602 @2026-10-28T14:19Z"
+     "evidence": "93 runs; last_success run 40704824602 @2026-10-28T14:19Z",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "provider-command-dispatch",
@@ -230,7 +239,8 @@
      ],
      "trigger": "workflow_dispatch / PR comment commands (allowlisted, head-SHA bound)",
      "evidence": "1 run, success run 39170909023 @2026-10-18T22:08Z (n=1, stale — freshness flag; re-proof on next use)",
-     "caveat": "Generic route into the command-library providers; branch_write commands require confirm per library."
+     "caveat": "Generic route into the command-library providers; branch_write commands require confirm per library.",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "coderabbit",
@@ -245,7 +255,8 @@
       "peer-review-orchestrator.yml"
      ],
      "trigger": "@coderabbitai commands / PR events (default required peer reviewer)",
-     "evidence": "Triggered-today per Swarm census 2026-11-01; command library carries review + autofix + fix-ci + merge-conflict commands"
+     "evidence": "Triggered-today per Swarm census 2026-11-01; command library carries review + autofix + fix-ci + merge-conflict commands",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "qodo",
@@ -259,7 +270,8 @@
       "peer-review-orchestrator.yml"
      ],
      "trigger": "@qodo commands / opt-in PR review",
-     "evidence": "Triggered-today per Swarm census 2026-11-01; tracked review cycles since 2026-10-24"
+     "evidence": "Triggered-today per Swarm census 2026-11-01; tracked review cycles since 2026-10-24",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "devin",
@@ -276,7 +288,8 @@
      ],
      "trigger": "PR review app / command route; wiki reconcile on schedule + workflow_dispatch",
      "evidence": "Wiki reconcile: 778 runs, last_success run 41301566618 @2026-11-01T11:21Z. Historical dominant formal reviewer.",
-     "caveat": "Review-trigger today = NOT_ESTABLISHED per Swarm census 2026-11-01 (triggered-today set = Jules/Gemini/DeepSeek CI/Qodo/CodeRabbit); wiki surface proven today."
+     "caveat": "Review-trigger today = NOT_ESTABLISHED per Swarm census 2026-11-01 (triggered-today set = Jules/Gemini/DeepSeek CI/Qodo/CodeRabbit); wiki surface proven today.",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "cellcog-review",
@@ -289,7 +302,8 @@
       "cellcog-review.yml"
      ],
      "trigger": "pull_request / issue_comment / workflow_dispatch",
-     "evidence": "30,220 runs; last_success run 41301485944 @2026-11-01T11:20Z"
+     "evidence": "30,220 runs; last_success run 41301485944 @2026-11-01T11:20Z",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "peer-review-orchestrator",
@@ -302,7 +316,8 @@
       "peer-review-orchestrator.yml"
      ],
      "trigger": "pull_request / pull_request_target / issue_comment / pull_request_review",
-     "evidence": "last_success run 41301622846 @2026-11-01T11:22Z"
+     "evidence": "last_success run 41301622846 @2026-11-01T11:22Z",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "ecc-tools",
@@ -316,7 +331,8 @@
       "agent-ecc-tools-ops.yml"
      ],
      "trigger": "comment commands",
-     "evidence": "last_success run 41301536037 @2026-11-01T11:21Z; findings mirrored to check runs"
+     "evidence": "last_success run 41301536037 @2026-11-01T11:21Z; findings mirrored to check runs",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "scout-delphi",
@@ -330,7 +346,8 @@
       "owner-named lane route (no single workflow)"
      ],
      "trigger": "owner / manager assignment",
-     "evidence": "D0 traversal of record in this feed (PR #1702; delphi-oracle port @393e1f4b, builder != evaluator)"
+     "evidence": "D0 traversal of record in this feed (PR #1702; delphi-oracle port @393e1f4b, builder != evaluator)",
+     "batch_scope": "build-or-support"
     },
     {
      "id": "gemini-invoke",
@@ -343,7 +360,8 @@
       "gemini-invoke.yml"
      ],
      "trigger": "workflow_call only (via gemini-dispatch / review callers) — no direct dispatch trigger",
-     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via gemini-dispatch/review callers ⇒ class stays wired-unproven. || LEG FIRED (providers-dispatch-fix 2026-11-01): dispatch run 41302651335 (@gemini-cli comment 6557404319 on issue #3077) invoke job SUCCESS; production spec = provider-recon 403 fix (issue #3077) => PROVEN."
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via gemini-dispatch/review callers ⇒ class stays wired-unproven. || LEG FIRED (providers-dispatch-fix 2026-11-01): dispatch run 41302651335 (@gemini-cli comment 6557404319 on issue #3077) invoke job SUCCESS; production spec = provider-recon 403 fix (issue #3077) => PROVEN.",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "gemini-triage",
@@ -356,7 +374,8 @@
       "gemini-triage.yml"
      ],
      "trigger": "workflow_call only",
-     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via callers ⇒ class stays wired-unproven. || LEG FIRED (providers-dispatch-fix 2026-11-01): dispatch run 41302644454 (issues.opened, production issue #3077) triage job SUCCESS; also triage job SUCCESS inside run 41301369671 (D1 SR issue #3050) => PROVEN."
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO DIRECT FIRE — workflow_call only (no dispatch trigger); batch exposure only via callers ⇒ class stays wired-unproven. || LEG FIRED (providers-dispatch-fix 2026-11-01): dispatch run 41302644454 (issues.opened, production issue #3077) triage job SUCCESS; also triage job SUCCESS inside run 41301369671 (D1 SR issue #3050) => PROVEN.",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "gemini-review",
@@ -369,7 +388,8 @@
       "gemini-review.yml"
      ],
      "trigger": "PR events (workflow file present)",
-     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO BATCH FIRE — PR-event route only; latest runs on record are 2026-08 failures (32385555114) ⇒ class stays wired-unproven; outcome awaits a production PR-event cycle. || LEG FIRED (providers-dispatch-fix 2026-11-01): @gemini-cli /review on PR #3080 (comment 6557463507) => dispatch run 41303090873, review job SUCCESS (sparkFlux ack 6557466464) => PROVEN. First attempt on PR #3079 (comment 6557428651) produced no dispatch run — PR merged mid-storm 11:39:39Z."
+     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): NO BATCH FIRE — PR-event route only; latest runs on record are 2026-08 failures (32385555114) ⇒ class stays wired-unproven; outcome awaits a production PR-event cycle. || LEG FIRED (providers-dispatch-fix 2026-11-01): @gemini-cli /review on PR #3080 (comment 6557463507) => dispatch run 41303090873, review job SUCCESS (sparkFlux ack 6557466464) => PROVEN. First attempt on PR #3079 (comment 6557428651) produced no dispatch run — PR merged mid-storm 11:39:39Z.",
+     "batch_scope": "excluded-review-command"
     },
     {
      "id": "gemini-interactions-smoke",
@@ -383,7 +403,8 @@
       "gemini-interactions-smoke.yml"
      ],
      "trigger": "workflow_dispatch (model input)",
-     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure."
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure.",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "openrouter-free-counter-batch-probe",
@@ -397,7 +418,8 @@
       "openrouter-free-counter-batch-probe.yml"
      ],
      "trigger": "workflow_dispatch",
-     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓✓ — workflow_dispatch runs 41302073525 + 41302260322 SUCCESS (2026-11-01) ⇒ class triggerable → proven (dispatch route fires + completes)."
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓✓ — workflow_dispatch runs 41302073525 + 41302260322 SUCCESS (2026-11-01) ⇒ class triggerable → proven (dispatch route fires + completes).",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "cadence-provider-onboarding",
@@ -411,7 +433,8 @@
       "cadence-provider-onboarding.yml"
      ],
      "trigger": "workflow_dispatch / schedule / push on registry paths",
-     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes)."
+     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes).",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "provider-recon-compound",
@@ -425,7 +448,8 @@
       "provider-recon-compound.yml"
      ],
      "trigger": "workflow_dispatch / workflow_run / PR paths",
-     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335)."
+     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335).",
+     "batch_scope": "inference-bench"
     },
     {
      "id": "quota-dispatch-tree",
@@ -439,7 +463,8 @@
       "quota-dispatch-tree.yml"
      ],
      "trigger": "workflow events / dispatch",
-     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302083313 SUCCESS (2026-11-01) (+ run 41302266076 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes)."
+     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302083313 SUCCESS (2026-11-01) (+ run 41302266076 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes).",
+     "batch_scope": "inference-bench"
     }
    ],
    "inference_only": {
@@ -2020,7 +2045,8 @@
      "gemini review/triage legs (review/command kind, not inference invoke)"
     ],
     "note": "Wiring target per owner escalation to Swarm: every not_wired provider gets an invoke route (batch endpoint or catalog endpoint) or a named blocker of record. Counts: 89 distinct providers = 17 wired-invoke + 72 not-wired."
-   }
+   },
+   "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated."
   }
  },
  "traversals": [

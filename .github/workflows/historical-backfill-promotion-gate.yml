@@ -1,0 +1,76 @@
+name: historical backfill promotion gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: historical-backfill-promotion-gate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  require-current-backfill-complete:
+    name: require canonical master backfill completion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether this change is in the backfill promotion scope
+        id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "check=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          files="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files" --jq '.[].filename')"
+          if printf '%s\n' "$files" | grep -Eq '^(archwiz/context_relationships/|scripts/ci/validate_context_relationship_backfill\.py$|tests/test_context_relationship_backfill_validation\.py$|tests/test_context_history_coverage\.py$|workspace/llm_map/context_relationships/|\.github/workflows/context-relationship-(backfill|reconcile|publish)\.yml$)'; then
+            echo "check=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "check=false" >> "$GITHUB_OUTPUT"
+            echo "No canonical backfill/promotion inputs changed; gate is not applicable."
+          fi
+
+      - name: Inspect authoritative master corpus
+        if: steps.scope.outputs.check == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/contents/workspace/llm_map/context_relationships/manifest.json?ref=master" \
+            --jq '.content' | base64 -d > /tmp/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('/tmp/manifest.json').read_text(encoding='utf-8'))
+          if data.get('repository') != 'timerloggedout-spec/termux-monorepo':
+              raise SystemExit('PROMOTION BLOCKED: manifest repository identity mismatch.')
+          if data.get('default_branch') != 'master':
+              raise SystemExit('PROMOTION BLOCKED: manifest is not anchored to canonical master.')
+
+          coverage = data.get('history_coverage')
+          if not isinstance(coverage, dict):
+              raise SystemExit('PROMOTION BLOCKED: history_coverage is missing or malformed.')
+          status = coverage.get('status')
+          next_page = coverage.get('next_start_page')
+          observed = data.get('latest_observed_at')
+          print(f'canonical master latest_observed_at={observed}')
+          print(f'canonical master history_status={status}')
+          print(f'canonical master next_start_page={next_page}')
+
+          if status != 'COMPLETE' or next_page is not None:
+              raise SystemExit(
+                  'PROMOTION BLOCKED: canonical master historical backfill is incomplete; '
+                  f'status={status!r}, next_start_page={next_page!r}. '
+                  'Continue the bounded master backfill before promoting dependent work.'
+              )
+          print('PROMOTION ALLOWED: canonical master reports COMPLETE with next_start_page=null.')
+          PY

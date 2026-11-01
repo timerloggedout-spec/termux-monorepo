@@ -52,6 +52,8 @@ def main() -> int:
         result["finished_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
         Path(args.out).write_text(json.dumps(result, indent=1))
         print(f"dispatch {result['dispatch_no']}: status={result['status']}")
+        if result.get("error"):
+            print(f"dispatch error: {result['error']}")
         return code
 
     token = os.environ.get("OPENROUTER_API_KEY")

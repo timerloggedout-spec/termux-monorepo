@@ -62,5 +62,14 @@
  "registration": {
   "preregistered_in_repo": true,
   "recorded": "2026-11-01"
+ },
+ "automation": {
+  "cmp1_census": {
+   "runner": "experiments/doe/cmp-register/scripts/cmp1_census.py",
+   "workflow": ".github/workflows/doe-cmp1-census.yml",
+   "cadence": "monthly + workflow_dispatch",
+   "emits": "records/cmp1-census.jsonl (SKILL.md vs *.skill counts over time)"
+  },
+  "cmp2_routing_log": "manual, chat-side (low-n chat events; logged in this DESIGN's entries on each routed opportunity)"
  }
 }

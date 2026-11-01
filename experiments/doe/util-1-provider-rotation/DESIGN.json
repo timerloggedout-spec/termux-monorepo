@@ -1,0 +1,29 @@
+{
+ "campaign_id": "util-1-provider-rotation",
+ "family": "doe",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "admitted_implementing",
+ "moniker": "doe-expert",
+ "manager_chat": "28ac9715-69b2-42a8-8bac-bebbe4f51a47",
+ "owner_basis": "Owner 2026-11-01: 'USE THEM ALL' (provider utilization fix) + DOE-FAMILY rule 6 (design around continuous live production; routes re-verified, never pinned).",
+ "hypothesis": "Under the desk rotation rule (no provider takes 2 consecutive dispatches for the same entry), the build bench's arms differ measurably in first-pass success and rework; the pooled rotation beats the historical Jules-only funnel on rework-adjusted throughput.",
+ "design": {
+  "units": "Live desk dispatches (challenge-entry builds + fleet build tasks) in the window — the continuous production flow itself; no synthetic units.",
+  "factor": "provider arm as assigned by the desk rotation rule over the bench read from ops/quota/registry.json at run time (rule 6: bench never hard-pinned in this design; expected {jules, gemini, deepseek, command-dispatch} + any bench additions the registry gains).",
+  "assignment": "Desk's rotation rule assigns; this campaign observes and audits. Dispenses lacking a {provider, selection_reason, ts} stamp are OBSERVATIONAL only (rule 5).",
+  "responses": ["first_pass_success (PR merged with no rework dispatch)", "rework_cycles per unit", "dispatch_to_pr_wall_time", "action_required stalls (wiring health, per rule 6 re-verification)"],
+  "window_rule": "first 24 stamped dispatches OR 2026-12-01, whichever first; per-arm reporting only at n>=4/arm",
+  "cull_rule": "arm with first-pass success < pooled - 0.25 at n>=8 is flagged; doe-expert proposes a desk-rule amendment (the desk owns its rule; this campaign issues the verdict, not the change)",
+  "guardrails": ["no interference with desk assignment", "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)"]
+ },
+ "automation": {
+  "runner": "experiments/doe/util-1-provider-rotation/scripts/util1_auditor.py",
+  "workflow": ".github/workflows/doe-util1-audit.yml",
+  "cadence": "weekly + workflow_dispatch",
+  "reads": ["apps/help-wanted-dashboard/data/desk-feed.json dispatch stamps", "ops/quota/registry.json (bench, at run time)"],
+  "emits": "records/*.json EXPERIMENT records + records/SUMMARY.json",
+  "identity": "records carry instance_key where the dispatch stamp provides the configured-instance tuple; provider-only stamps group by provider and are marked as such"
+ },
+ "registration": {"preregistered_in_repo": true, "recorded": "2026-11-01"}
+}

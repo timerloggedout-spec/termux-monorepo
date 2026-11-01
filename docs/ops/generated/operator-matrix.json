@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 379,
-    "open_prs": 168,
+    "open_prs": 169,
     "pr_classes": {
       "CANDIDATE": 80,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 83,
+      "NEED_EVIDENCE": 84,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 34,
-      "prs": 166,
+      "prs": 167,
       "unlabelled_numbers": [
         308,
         343,
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T13:25:30Z",
+  "generated_at": "2026-11-01T13:26:59Z",
   "issues_unlabelled": [
     308,
     343,
@@ -129,10 +129,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "03d2d6a156"
+    "sha": "3667e5d07a"
   },
   "prs": [
     {
@@ -1745,7 +1745,7 @@
       },
       "head_sha": "8ea3be1546",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-11-01T13:25:04Z"
@@ -2387,12 +2387,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "5e6d4d599b",
+      "head_sha": "0ec0889929",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T13:24:53Z"
+      "updated_at": "2026-11-01T13:26:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2491,6 +2491,20 @@
       "number": 3113,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-01T12:09:07Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "fdd6c7ef10",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3154,
+      "title": "fix(quota): planner workflow installs pytest before tests",
+      "updated_at": "2026-11-01T13:26:56Z"
     }
   ],
   "schema": "operator-matrix/v1",

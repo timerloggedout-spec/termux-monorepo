@@ -101,6 +101,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet Swarm | `Myriad · Swarm` | `termux-fleet-swarm[bot]` | aspect the Host; queued alt Apis (below) |
 | Termux Fleet CrossReference | `Scalpel · CrossReference` | `termux-fleet-crossreference[bot]` | aspect the Index; queued alt Daedalus (below) |
 | Termux Fleet ApkRelease | `Porter · ApkRelease` | — (actor per AppID provisioning record) | aspect the Carrier; queued alt Charon, flagged (below) |
+| Termux Fleet RepoStory | `Chronicler · RepoStory` | `termux-fleet-repostory[bot]` | aspect the Annals; queued alt Clio (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -176,6 +177,30 @@ carries apk artifacts out.
 Collision check at issuance: `Scalpel`, `Daedalus`, `Porter`,
 `Charon`, the Index and the Carrier appear nowhere in this
 roster or in the registration registry.
+
+**RepoStory issuance (2026-11-01, registry lane; app at creation
+on the AppID lane under the owner rule of record — build start
+for a competition entry ⇒ new repo + new AppID; entry repo
+`timerloggedout-spec/repo-story`, build started).** The actor
+narrates a repository's history into a story, so its name is the
+plain-register office for narrative history-keeping; the balance
+rule holds (plain lead, mythic queued).
+
+- canonical: `Chronicler` (paired display `Chronicler · RepoStory`)
+- aspect: the Annals
+- queued alt: `Clio` (mark `Cl1o`) — the Muse of history; draws
+  only on a registry-lane bounce/rename decision
+- leet marks: `Chr0nicler` (single substitution, ranks first) >
+  `Chron1cler` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical `termux-fleet-repostory`
+  set by the AppID lane); ranked bounce forms if ever needed:
+  `chr0nicler` > `chron1cler`, returning to the registry lane
+- normalized form: RepoStory — `Termux Fleet RepoStory` /
+  `termux-fleet-repostory[bot]`; install scope = the repo-story
+  repo only (provisioning record: AppID lane)
+
+Collision check at issuance: `Chronicler`, `Clio` and the Annals
+appear nowhere in this roster or in the registration registry.
 
 ## Rules
 

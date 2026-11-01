@@ -1,6 +1,6 @@
 """Pins for the Contribution Desk page (traversal board + dispatch).
 
-The page renders ONLY data/desk-feed.json (schema desk-feed/v1.2), seeded
+The page renders ONLY data/desk-feed.json (schema desk-feed/v1.3), seeded
 by the viz lane from firsthand audits of the live record (2026-10-30)
 and refreshed by the Contribution Desk lane as traversals move.
 Integrity rules pinned here: the dashboard copy is a byte-identical
@@ -65,7 +65,7 @@ def test_no_hardcoded_evidence_in_page():
 
 def test_feed_schema_and_stage_states():
     pack = _pack()
-    assert pack["schema"] == "desk-feed/v1.2"
+    assert pack["schema"] == "desk-feed/v1.3"
     assert pack["desk"]["pipeline"] == PIPELINE
     assert pack["traversals"], "board must not be empty"
     for t in pack["traversals"]:

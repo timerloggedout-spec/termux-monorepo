@@ -1,7 +1,13 @@
 {
  "alt_attempt": {
+  "correction": {
+   "by": "live-builds mechanism finding (deepcli/ci_mode.py @master, firsthand) + ruling via live-builds 2026-10-31",
+   "fix_path": "PR #2856 (ci_mode: stamped comment \u21d2 prompt, marker-only opt-in) + PR #2857 (harvest \u21d2 mirror to #2830) \u2014 under ci_mode/workflow owners' review; verification = first harvested response on #2830 on next dispatch after owners' merge.",
+   "mechanism": "ci_mode takes the PR number ONLY from event.pull_request; an issue_comment trigger \u21d2 status='skipped: missing pr or repo' written to deepseek_output.json, workflow green, model NEVER invoked. Run 41262242878 matches a skip exactly (success, \u2205 response surfaces). Additionally ci_mode's prompt is fixed internally (diff review) \u2014 the stamped composed prompt is never consumed even on proper triggers (pre-#2856).",
+   "supersedes": "earlier reading 'response_not_observed_measurement_gap' \u2014 mechanism \u2227 outcome agree: the treatment was never administered; \u2205 model response exists."
+  },
   "design_amendment": "PR #2849 merged bea5d4036360 (dispatch.state=alt_route_active_deepseek_ci, automation.route fields)",
-  "outcome": "response_not_observed_measurement_gap",
+  "outcome": "treatment_not_administered_surface_skip",
   "output_artifact": "deepseek-output (364B) \u2014 docs/ops/DEEPSEEK-CI.md: 'Output JSON is metadata only (no model text)'; model text exists only in run logs/artifacts, not on any PAT-readable surface",
   "pr_head_after": "8799651cadbe3f420cebfd2580dd8edcf2dba822 (unchanged \u2014 no pushes, review-only respected)",
   "prompt_delivery": "trigger comment carries the composed prompt verbatim (sha re-verified against the master job file before posting) inside a dispatch envelope with a review-only/no-push instruction",
@@ -42,7 +48,7 @@
  "instance_key": "9dfabcd6f25fce976ebf42983a632a31866b2c0b79edbc5693e5e7621cda8027",
  "job": "experiments/doe/live-3-phrases-deepseek/dispatch/job-0001-pr2436.json",
  "model": "deepseek/deepseek-r1:free",
- "outcome": "alt_dispatched_no_readable_response",
+ "outcome": "alt_surface_skip_model_never_invoked",
  "prompt_sha256": "3049363b2ea4f2ad64f2590ee4b81820fb31169e4125aa6ea66ab65b6b19e0c8",
  "recorded_at": "2026-11-01T01:30:00Z",
  "route": "openrouter",
@@ -51,7 +57,7 @@
   "live_catalog": "OpenRouter public /models fetched 2026-11-01T01:29Z by this lane: 452 models, DeepSeek entries = 19, ALL paid (no :free DeepSeek variant exists); deepseek/deepseek-r1:free absent"
  },
  "schema_note": "Campaign dispatch record (not an EXPERIMENT response record: no model response exists to score). findings_* stay null \u2014 a failed dispatch is an outcome, never silently retried or re-labelled.",
- "status": "dispatched_alt_response_not_observed",
+ "status": "treatment_not_administered_surface_skip",
  "task": {
   "pr": 2436,
   "pr_head": "8799651cadbe3f420cebfd2580dd8edcf2dba822",

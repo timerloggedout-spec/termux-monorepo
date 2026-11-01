@@ -1,8 +1,8 @@
 {
  "schema": "quota-allocation-plan/v1",
- "generated_at": "2026-10-30T11:02:05Z",
+ "generated_at": "2026-11-01T13:32:49Z",
  "issue": 1884,
- "registry_records": 157,
+ "registry_records": 164,
  "pools": [
   {
    "id": "aion",
@@ -754,6 +754,7 @@
    "id": "github",
    "class": "A",
    "services": [
+    "deepseek.build_dispatch",
     "github.actions.cache",
     "github.actions.minutes",
     "github.api.app_collector",
@@ -1448,6 +1449,8 @@
    "id": "google",
    "class": "B",
    "services": [
+    "gemini.build_dispatch",
+    "jules.build_sessions",
     "gemini.api_free"
    ],
    "limit": null,
@@ -3079,6 +3082,52 @@
      "mode": "standing",
      "priority": 99,
      "flow_per_min": 46.2962962962963
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "meta",
+   "class": "B",
+   "services": [
+    "meta.model_api",
+    "meta.muse_code"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
     }
    ],
    "lane_slices": [],

@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T07:44:50Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T07:45:56Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `b88694239c` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `69dc34240b` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 369 issues, 160 PRs. PR classes: EXTRACT 5 / CANDIDATE 78 / NEED_EVIDENCE 77 / SUPERSEDE 0.
+**Open inventory:** 369 issues, 159 PRs. PR classes: EXTRACT 5 / CANDIDATE 78 / NEED_EVIDENCE 76 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -135,7 +135,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2324 | NEED_EVIDENCE | unlabelled | `d0bec5ef27` | not_reported | not_reported | unstable | chore(proposals): refresh proposals-feed.json |
+| #2324 | NEED_EVIDENCE | unlabelled | `d0bec5ef27` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `660d086004` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -172,7 +172,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2914 | NEED_EVIDENCE | unlabelled | `0ed392a338` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #2989 | NEED_EVIDENCE | unlabelled | `820e7b39a9` | not_reported | not_reported | unstable | chore(linguist): refresh linguist-panel-feed.json |
 
 ## Families (open)
 
@@ -187,6 +186,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 30 | 158 |
+| unlabelled | 30 | 157 |
 
 **Unlabelled open issues (30):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956 — worked oldest-first by the issue-lifecycle lane pass.

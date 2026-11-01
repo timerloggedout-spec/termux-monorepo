@@ -54,37 +54,46 @@ def _int_list(value: str) -> list[int]:
 
 
 def parse_registry_subset(text: str) -> dict:
-    """Parse the registry without PyYAML (its regular shape only)."""
+    """Parse the registry without PyYAML (its regular shape only).
+
+    Two list shapes occur in the wild and both parse: the house style
+    (items indented 2 under `proposals:`, keys at 4) and PyYAML's
+    indentless style (items at 0, keys at 2). The item indent is
+    learned from the first item; key and block-list indents follow.
+    """
     registry: dict = {"proposals": []}
     current: dict | None = None
     pending_list_key: str | None = None
     in_proposals = False
+    key_indent: int | None = None
     for raw in text.splitlines():
         if not raw.strip() or raw.lstrip().startswith("#"):
             continue
         indent = len(raw) - len(raw.lstrip(" "))
         line = raw.strip()
-        if indent == 0:
+        if indent == 0 and not line.startswith("- "):
             in_proposals = line.startswith("proposals:")
             if not in_proposals and ":" in line:
                 key, _, value = line.partition(":")
                 registry[key.strip()] = _unquote(value)
             current = None
             pending_list_key = None
+            key_indent = None
             continue
         if not in_proposals:
             continue
-        if indent == 2 and line.startswith("- "):
+        if line.startswith("- ") and (key_indent is None or indent == key_indent - 2):
             current = {}
             registry["proposals"].append(current)
             pending_list_key = None
+            key_indent = indent + 2
             line = line[2:]
-            indent = 4
+            indent = key_indent
             if not line:
                 continue
-        if current is None:
+        if current is None or key_indent is None:
             continue
-        if indent == 4 and ":" in line:
+        if indent == key_indent and ":" in line:
             key, _, value = line.partition(":")
             key = key.strip()
             value = value.strip()
@@ -98,12 +107,43 @@ def parse_registry_subset(text: str) -> dict:
                     current[key] = []
                     pending_list_key = key
             continue
-        if indent == 6 and line.startswith("- ") and pending_list_key:
+        if indent == key_indent + 2 and line.startswith("- ") and pending_list_key:
             current[pending_list_key].append(int(line[2:].strip()))
             continue
         # anything deeper belongs to a skipped nested block (reviewers,
         # related_branches, gates_required, ...) — not feed fields.
     return registry
+
+
+BALLOT_CLASS_PRECEDENCE = ("LOCAL_BASELINE", "HUMAN_COLLABORATOR", "MODEL_PROVIDER")
+
+
+def _pass_outcome(ballot: dict) -> dict | None:
+    """The pass's round-1 outcome, verbatim from its ballot record.
+
+    Scores come from the ballot class that actually voted (count > 0);
+    when several classes voted, the class with the most ballots wins
+    and ties resolve by BALLOT_CLASS_PRECEDENCE. Scores are carried
+    exactly as recorded — equal scores stay equal (a tie is data;
+    the feed never ranks). Returns None when no class voted.
+    """
+    by_class = ballot.get("ballots_by_class") or {}
+    per_class = ballot.get("per_class") or {}
+    eligible = []
+    for cls in BALLOT_CLASS_PRECEDENCE:
+        count = by_class.get(cls, 0)
+        scores = (per_class.get(cls) or {}).get("scores")
+        if isinstance(count, int) and count > 0 and isinstance(scores, dict) and scores:
+            eligible.append((cls, count))
+    if not eligible:
+        return None
+    cls, _count = max(eligible, key=lambda kv: kv[1])
+    return {
+        "scores": per_class[cls]["scores"],
+        "ballots": sum(int(v) for v in by_class.values() if isinstance(v, int)),
+        "class": cls,
+        "source": "cycle/BALLOT-round1.json",
+    }
 
 
 def load_registry(path: Path) -> dict:
@@ -138,7 +178,7 @@ def build_feed(registry: dict, proposals_root: Path, now: str) -> dict:
     if passes_dir.is_dir():
         for pass_dir in sorted(p for p in passes_dir.iterdir() if p.is_dir()):
             record = {"id": pass_dir.name, "pass_id": None, "schema": None,
-                      "status": None, "candidates": None,
+                      "status": None, "candidates": None, "outcome": None,
                       "path": f"passes/{pass_dir.name}/",
                       "url": TREE + f"passes/{pass_dir.name}"}
             try:
@@ -154,6 +194,17 @@ def build_feed(registry: dict, proposals_root: Path, now: str) -> dict:
                     record["candidates"] = len(data["candidates"])
             except Exception as exc:  # named, never silently dropped
                 gaps.append(f"pass {pass_dir.name}: pass.json unreadable ({type(exc).__name__})")
+            ballot_path = pass_dir / "cycle" / "BALLOT-round1.json"
+            if ballot_path.is_file():
+                try:
+                    ballot = json.loads(ballot_path.read_text(encoding="utf-8"))
+                    outcome = _pass_outcome(ballot)
+                    if outcome is not None:
+                        record["outcome"] = outcome
+                    else:
+                        gaps.append(f"pass {pass_dir.name}: BALLOT-round1.json records no ballots (outcome not emitted)")
+                except Exception as exc:  # named, never silently dropped
+                    gaps.append(f"pass {pass_dir.name}: BALLOT-round1.json unreadable ({type(exc).__name__}); outcome not emitted")
             passes.append(record)
     else:
         gaps.append("docs/proposals/passes/ not found")

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2e198b87232ec1fab2f9ae3ddacd61667e637c0ecfed44b87679ecf88607c277",
-  "workflow_count": 240,
+  "source_fingerprint": "a03ed35f27fea352d230dbc5fca606cb1fe6b9b38bf707ea331fabe01692f3f0",
+  "workflow_count": 241,
   "workflows": [
     {
       "action_pins": [],
@@ -2782,6 +2782,24 @@
       "path": ".github/workflows/observer-poller-scheduled.yml",
       "schedules": [
         "*/20 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "snapshot"
+      ],
+      "name": "openrouter-bracket-snapshot",
+      "path": ".github/workflows/openrouter-bracket-snapshot.yml",
+      "schedules": [
+        "*/15 * * * *"
       ],
       "triggers": [
         "schedule",

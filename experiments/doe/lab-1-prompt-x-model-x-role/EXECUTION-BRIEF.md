@@ -16,9 +16,7 @@ decides; a control earns execution **only** as a calibration
 anchor for a **named** live campaign. No current live campaign's
 primary response is anchored by lab-1 (per-campaign audit §3).
 Execution therefore stays ∅ until doe-expert names an anchor
-campaign AND the recheck gate (§5) passes. Independent
-blocker already present: target-doc drift (§4 R2, 1/15
-fragments missing @master). This is a defer,
+campaign AND the recheck gate (§5) passes. This is a defer,
 not a kill: DESIGN + PLAN stay admitted, byte-stable, ready.
 
 ## 1. What lab-1 is (verified @master)
@@ -96,15 +94,22 @@ fragment recovery. None currently does.
   on master. DESIGN fixes "explicit full target document"
   without pinning its revision. Fragments missing at
   execution-time master would floor accuracy artifactually
-  (a harness artifact, not a model effect). **Already
-  real, verified at brief time (2026-10-31):** 14/15
-  required fragments found verbatim @master; 1 MISSING —
-  t6 fragment `MUST use observed dispatch rate`
-  (target `docs/proposals/active/doe-live-method-competition/PROPOSAL.md`).
-  Executing today would cap t6 at 0.5 accuracy in every
-  cell for a non-model reason. The check must re-run at
-  execution time, or context must be pinned to base-sha
-  document revisions by amendment.
+  (a harness artifact, not a model effect). **Checked at
+  brief time (2026-10-31): 15/15 required fragments FOUND
+  verbatim @master — drift has NOT yet bitten.** The risk
+  stands because nothing pins the documents: the check
+  must re-run at execution time, or context must be pinned
+  to base-sha document revisions by amendment.
+  ⚠ CORRECTION (2026-10-31, same day): the first landed
+  version of this brief claimed 14/15 with t6's
+  `MUST use observed dispatch rate` MISSING. That was a
+  misread of the check output by this lane — two
+  independent re-reads (line list + counted summary) both
+  return total=15, found=15, missing=[]. The claim, and
+  the "independent blocker" line it fed in the verdict,
+  are retracted. The NO-GO verdict does not rest on it:
+  it rests on §3 (no named anchor) + §2/B1 (free-route
+  conflict) + G1 (no dispatch route named).
 - **R3 Free-cap contention.** 32 `:free` runs in one window
   can starve same-day free-route live work (see §2). Execute
   only in a window whose remaining free cap ≥ 64 + reserve.

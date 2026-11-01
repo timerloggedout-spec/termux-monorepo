@@ -1,25 +1,25 @@
 {
  "schema": "proposals-feed/v1",
- "generated_at": "2026-10-28T23:52:47Z",
+ "generated_at": "2026-11-01T08:20:32Z",
  "source": "docs/proposals/registry.yaml",
  "registry_updated_at": "2026-10-27T13:52:00Z",
  "registry_updated_by": "tier1-classifiers-steward",
  "counts": {
-  "total": 52,
+  "total": 59,
   "by_status": {
-   "in_review": 12,
+   "in_review": 18,
    "posted": 18,
-   "executing": 18,
+   "executing": 19,
    "draft": 2,
    "accepted": 2
   },
   "by_priority": {
-   "P1": 37,
+   "P1": 44,
    "P0": 6,
    "P2": 9
   },
   "by_author": {
-   "ChatGPT": 11,
+   "ChatGPT": 12,
    "grok": 7,
    "timerloggedout-spec": 9,
    "Manus": 3,
@@ -30,10 +30,10 @@
    "Hark": 1,
    "Cue": 1,
    "gaps-and-opportunities-subagent": 1,
-   "oracle-method": 9,
+   "oracle-method": 15,
    "Perplexity": 1
   },
-  "passes": 3
+  "passes": 5
  },
  "proposals": [
   {
@@ -816,17 +816,177 @@
     1867,
     1886
    ]
+  },
+  {
+   "id": "free-tier-value-board",
+   "title": "Public usage value projection and cross-provider cost comparison",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/free-tier-value-board/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/free-tier-value-board/",
+   "issues": [
+    1588,
+    1592,
+    1593,
+    1571
+   ],
+   "prs": [
+    1589,
+    2409
+   ]
+  },
+  {
+   "id": "kiroween-delphi-concept-skeleton-crew",
+   "title": "Kiroween 2026 \u2014 skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/kiroween-delphi-concept-skeleton-crew/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kiroween-delphi-concept-skeleton-crew/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    1655,
+    1697,
+    1699,
+    1707
+   ]
+  },
+  {
+   "id": "kiroween-delphi-concept-frankenstein",
+   "title": "Kiroween 2026 \u2014 frankenstein: decision agent stitched from proven public patterns",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/kiroween-delphi-concept-frankenstein/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kiroween-delphi-concept-frankenstein/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    1655,
+    1697,
+    1699,
+    1707
+   ]
+  },
+  {
+   "id": "kiroween-delphi-concept-resurrection",
+   "title": "Kiroween 2026 \u2014 resurrection: dormant public spec rebuilt fresh in Kiro",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/kiroween-delphi-concept-resurrection/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kiroween-delphi-concept-resurrection/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    1655,
+    1697,
+    1699,
+    1707
+   ]
+  },
+  {
+   "id": "marketing-strategy-tactics-strict-separation",
+   "title": "Marketing doctrine \u2014 strict separation (verified record only)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "docs/proposals/active/marketing-strategy-tactics-strict-separation",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/docs/proposals/active/marketing-strategy-tactics-strict-separation",
+   "issues": [
+    574,
+    1487,
+    1489
+   ],
+   "prs": []
+  },
+  {
+   "id": "marketing-strategy-tactics-attributed-tiered",
+   "title": "Marketing doctrine \u2014 attributed tiering (labeled partner claims)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "docs/proposals/active/marketing-strategy-tactics-attributed-tiered",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/docs/proposals/active/marketing-strategy-tactics-attributed-tiered",
+   "issues": [
+    574,
+    1487,
+    1489
+   ],
+   "prs": []
+  },
+  {
+   "id": "marketing-strategy-tactics-partner-forward-blend",
+   "title": "Marketing doctrine \u2014 partner-forward blend (status quo)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "docs/proposals/active/marketing-strategy-tactics-partner-forward-blend",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/docs/proposals/active/marketing-strategy-tactics-partner-forward-blend",
+   "issues": [
+    574,
+    1487,
+    1489
+   ],
+   "prs": []
   }
  ],
  "passes": [
   {
+   "id": "ai-studio-delphi-panel",
+   "pass_id": null,
+   "schema": null,
+   "status": null,
+   "candidates": null,
+   "outcome": null,
+   "path": "passes/ai-studio-delphi-panel/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/ai-studio-delphi-panel"
+  },
+  {
    "id": "kiroween-delphi-concept",
    "pass_id": "kiroween-delphi-concept",
    "schema": "oracle-method-pass/v1",
-   "status": "stated_not_run",
-   "candidates": 0,
+   "status": "debate_recorded",
+   "candidates": 3,
+   "outcome": {
+    "scores": {
+     "kiroween-delphi-concept-skeleton-crew": 23.269,
+     "kiroween-delphi-concept-frankenstein": 23.269,
+     "kiroween-delphi-concept-resurrection": 23.269
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
    "path": "passes/kiroween-delphi-concept/",
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/kiroween-delphi-concept"
+  },
+  {
+   "id": "marketing-strategy-tactics",
+   "pass_id": "marketing-strategy-tactics",
+   "schema": "oracle-method-pass/v1",
+   "status": "round_1_recorded",
+   "candidates": 3,
+   "outcome": {
+    "scores": {
+     "marketing-strategy-tactics-strict-separation": 23.269,
+     "marketing-strategy-tactics-attributed-tiered": 23.269,
+     "marketing-strategy-tactics-partner-forward-blend": 16.462
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
+   "path": "passes/marketing-strategy-tactics/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/marketing-strategy-tactics"
   },
   {
    "id": "strands-rfp-response",
@@ -834,6 +994,16 @@
    "schema": "oracle-method-pass/v1",
    "status": "recorded",
    "candidates": 3,
+   "outcome": {
+    "scores": {
+     "strands-rfp-response-kernel-first": 23.269,
+     "strands-rfp-response-collection-first": 23.269,
+     "strands-rfp-response-packaging-first": 23.269
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
    "path": "passes/strands-rfp-response/",
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/strands-rfp-response"
   },
@@ -843,9 +1013,23 @@
    "schema": "oracle-method-pass/v1",
    "status": "recorded",
    "candidates": 5,
+   "outcome": {
+    "scores": {
+     "temporal-durable-execution-pi-core-resume": 23.654,
+     "temporal-durable-execution-cookbook-agent-loop": 23.077,
+     "temporal-durable-execution-versioned-autoscale": 23.654,
+     "temporal-durable-execution-contract-first": 23.654,
+     "temporal-durable-execution-serverless-skill": 23.654
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
    "path": "passes/temporal-durable-execution/",
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/temporal-durable-execution"
   }
  ],
- "gaps": []
+ "gaps": [
+  "pass ai-studio-delphi-panel: pass.json unreadable (FileNotFoundError)"
+ ]
 }

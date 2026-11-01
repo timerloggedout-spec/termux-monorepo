@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T11:45:55Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T11:48:05Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** GREEN on `0f94eaa915` (hygiene: success, smoke: success). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `e6104514e2` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 380 issues, 166 PRs. PR classes: EXTRACT 5 / CANDIDATE 80 / NEED_EVIDENCE 81 / SUPERSEDE 0.
 
@@ -173,7 +173,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `5a8bef1f08` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `6528096b3f` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

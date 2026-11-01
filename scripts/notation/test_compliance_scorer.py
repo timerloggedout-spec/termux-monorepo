@@ -1,10 +1,13 @@
-"""Tests for the notation compliance scorer (heuristic v1)."""
+"""Tests for the notation compliance scorer (heuristic v1 + v2)."""
+import json
 import os
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from compliance_scorer import features, score  # noqa: E402
+from compliance_scorer import (adjacency, connective_symbols, features,  # noqa: E402
+                               load_operator_set, score, score_v2)
 
 DENSE = ("[MUSEai]@{role:{tier1-classifiers-steward}} ENROLL ↦ filed. "
          "Slice ∅ firsthand: plan blob 691c44a88435 ∧ allocations bc9a325521b8 "
@@ -39,6 +42,67 @@ class Scorer(unittest.TestCase):
     def test_features_normalized(self):
         f = features(DENSE + " " + DENSE)
         self.assertAlmostEqual(f["sym_per_100w"], features(DENSE)["sym_per_100w"], places=1)
+
+
+OPS = {"→", "⇒", "∧", "∨", "¬", "∴", "∵", "←", "✓"}
+PAN_STYLE = ("A category consists of objects and morphisms. Morphism "
+             "assignment: f: A → B means f is an arrow with domain A. "
+             "Composition: g ∘ f : A → C, read as g after f [1, 2]. "
+             "The identity arrow id_A maps each object to itself, and "
+             "functors preserve this structure between categories.")
+SKELETON = ('{"provider": "g4f", "evidence": "not-established", '
+            '"free_tier": {"state": "not-established"}, '
+            '"credits": {"available": "not-established", "balance": null}, '
+            '"verdict": "not-established", "flags": []}')
+DECORATIVE = ("See also the related material collected elsewhere: "
+              "#111 #222 #333 #444 and the archive at "
+              "https://example.com/a https://example.com/b plus "
+              "notes in docs/x.md docs/y.md docs/z.md for background.")
+
+
+class V2Features(unittest.TestCase):
+    def test_adjacency_counts_claim_refs(self):
+        a = adjacency(DENSE)
+        self.assertGreaterEqual(a["adj_refs"], 3)
+
+    def test_decorative_refs_not_adjacent(self):
+        a = adjacency(DECORATIVE)
+        self.assertEqual(a["adj_refs"], 0)
+        self.assertGreater(a["refs_total"], 5)
+
+    def test_symbol_function_connective_vs_listed(self):
+        c = connective_symbols("A ∧ B ⇒ C ∴ D", OPS)
+        self.assertEqual(c["connective_sym"], 3)
+        listed = connective_symbols("symbols: ∧ ∨ ¬ are listed", OPS)
+        self.assertEqual(listed["connective_sym"], 0)
+
+    def test_pan_style_not_drift_under_v2(self):
+        r = score_v2(PAN_STYLE, OPS)
+        self.assertNotEqual(r["verdict_v2"], "prose")
+
+    def test_records_skeleton_is_drift_under_v2(self):
+        r = score_v2(SKELETON, OPS)
+        self.assertEqual(r["verdict_v2"], "prose")
+        self.assertEqual(r["adj_refs"], 0)
+
+    def test_dense_stays_compliant_under_v2(self):
+        r = score_v2(DENSE, OPS)
+        self.assertEqual(r["verdict_v2"], "compliant")
+
+    def test_operator_set_is_registry_derived(self):
+        feed = {"families": [{"id": "f1", "kind_detail": "symbol-map"},
+                             {"id": "f2", "kind_detail": "word-map"}],
+                "entries": [
+                    {"family_id": "f1", "variants": "['→', '∧']"},
+                    {"family_id": "f2", "variants": "['≫']"}]}
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
+            json.dump(feed, fh)
+            path = fh.name
+        ops = load_operator_set(path)
+        self.assertEqual(ops, {"→", "∧"})  # word-map family excluded;
+        # a glyph absent from the registry is absent from the set —
+        # the set comes from the feed, never from a hard-coded list.
+        self.assertNotIn("≫", ops)
 
 
 if __name__ == "__main__":

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 158,
+    "open_prs": 157,
     "pr_classes": {
-      "CANDIDATE": 76,
-      "EXTRACT": 5,
+      "CANDIDATE": 74,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 156,
+      "prs": 155,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T04:20:35Z",
+  "generated_at": "2026-11-01T04:21:56Z",
   "issues_unlabelled": [
     308,
     343,
@@ -122,7 +122,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c7593d24cd"
+    "sha": "25401cd877"
   },
   "prs": [
     {
@@ -194,6 +194,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f374400d7c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2941,
+      "title": "feat(viz): tracking board prototype - renders tracking-feed.json only",
+      "updated_at": "2026-11-01T04:21:06Z"
     },
     {
       "class": "CANDIDATE",
@@ -1235,34 +1249,6 @@
       "number": 2907,
       "title": "fix: scope free-tier opportunity cost to repo work",
       "updated_at": "2026-11-01T02:39:00Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f374400d7c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2941,
-      "title": "feat(viz): tracking board prototype - renders tracking-feed.json only",
-      "updated_at": "2026-11-01T04:19:30Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c2f17cc70b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2943,
-      "title": "docs(tracking): feed top-level structure \u2014 summary{} placement",
-      "updated_at": "2026-11-01T04:20:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2335,12 +2321,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "aaa00643bf",
+      "head_sha": "08cf4354f3",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T04:19:43Z"
+      "updated_at": "2026-11-01T04:21:48Z"
     }
   ],
   "schema": "operator-matrix/v1",

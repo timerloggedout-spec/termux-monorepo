@@ -9,6 +9,7 @@ ENDPOINTS = {
     "requesty": "https://router.requesty.ai/v1/models",
     "xkiro": "https://api.xkiro.com/v1/models",
     "sealion": "https://api.sea-lion.ai/v1/models",
+    "deepinfra": "https://api.deepinfra.com/v1/openai/models",
 }
 SECRETS = {provider: f"{provider.upper()}_API_KEY" for provider in ENDPOINTS}
 # Official docs explicitly allow anonymous model discovery for these gateways.
@@ -19,6 +20,7 @@ SOURCES = {
     "requesty": "https://docs.requesty.ai/api-reference/endpoint/models-list",
     "xkiro": "https://docs.xkiro.com/models/tiers/",
     "sealion": "https://docs.sea-lion.ai/guides/inferencing/api",
+    "deepinfra": "https://deepinfra.com/docs",
 }
 
 

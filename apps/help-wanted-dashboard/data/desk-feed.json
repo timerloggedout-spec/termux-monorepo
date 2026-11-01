@@ -2057,6 +2057,38 @@
      }
     ],
     "fleet_apk_note": "Fleet APK (apps/fleet-apk, com.timerloggedout.fleet) is NOT a 9th fleet app: two independent recons (2026-11-01) established no bare-Fleet GitHub App ever existed; its signing keystore was never provisioned (v0.1.0 shipped ephemeral-debug)."
+   },
+   "endpoint_census": {
+    "unit": "provider x model endpoints (the dispatch-relevant unit; provider counts are NOT endpoint counts - owner correction)",
+    "verified_floor": 5337,
+    "counted_at": "2026-11-01 (providers-dispatch seat, firsthand: in-repo catalog read + live public catalog GETs)",
+    "sources": {
+     "g4f-working catalog (data/g4f-working/providers.json @master, PR #2025)": {
+      "providers": 60,
+      "models": 4242,
+      "note": "catalogued; tester-working evidence = 100 entries across 15 providers"
+     },
+     "openrouter (live public catalog)": {
+      "models": 452
+     },
+     "kilo gateway (live public catalog; invoke key absent from Actions store)": {
+      "models": 384
+     },
+     "huggingface router (live public catalog)": {
+      "models": 135
+     },
+     "llm7 (live public catalog)": {
+      "models": 67
+     },
+     "modelscope (live public catalog)": {
+      "models": 35
+     },
+     "ovhcloud (live public catalog)": {
+      "models": 22
+     }
+    },
+    "not_yet_counted": "key-gated live catalogs (groq, mistral, cerebras, nvidia, siliconflow, sambanova, cohere, zai, gemini, cloudflare, routeway, aion, sealion + extension set) and unorouter (283 models per provisioning verification 2026-10-28) - counted CI-side where the keys live (provider_model_catalog / provider-invoke runs); the floor rises as those land. Owner figure of record: thousands wired + working, 7,500+ at full catalog count.",
+    "working_evidence": "per-provider invoke verdicts = issue #3141 batch (provider-invoke surface); per-model evidence shards across the contributing pool per the compounding rule."
    }
   }
  },

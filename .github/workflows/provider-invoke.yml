@@ -52,6 +52,7 @@ on:
           - omni
           - deepinfra
           - novita
+          - friendli
 
 permissions: {}
 
@@ -104,6 +105,7 @@ jobs:
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
           NOVITA_API_KEY: ${{ secrets.NOVITA_API_KEY }}
+          FRIENDLI_API_KEY: ${{ secrets.FRIENDLI_API_KEY }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: |
           set -o pipefail

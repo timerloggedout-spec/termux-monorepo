@@ -11,6 +11,7 @@ ENDPOINTS = {
     "sealion": "https://api.sea-lion.ai/v1/models",
     "deepinfra": "https://api.deepinfra.com/v1/openai/models",
     "novita": "https://api.novita.ai/v3/openai/models",
+    "friendli": "https://api.friendli.ai/serverless/v1/models",
 }
 SECRETS = {provider: f"{provider.upper()}_API_KEY" for provider in ENDPOINTS}
 # Official docs explicitly allow anonymous model discovery for these gateways.
@@ -23,6 +24,7 @@ SOURCES = {
     "sealion": "https://docs.sea-lion.ai/guides/inferencing/api",
     "deepinfra": "https://deepinfra.com/docs",
     "novita": "https://novita.ai/docs",
+    "friendli": "https://friendli.ai/docs",
 }
 
 

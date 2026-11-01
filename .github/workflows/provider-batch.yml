@@ -363,4 +363,5 @@ jobs:
           SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
           DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
           NOVITA_API_KEY: ${{ secrets.NOVITA_API_KEY }}
+          FRIENDLI_API_KEY: ${{ secrets.FRIENDLI_API_KEY }}
         run: python3 scripts/ops/provider_operational_check.py --catalogs

@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""apk-xref execution runner — one filed [apk-xref] request issue in,
+one findings filing out. Driven by .github/workflows/apk-xref-exec.yml
+in an ephemeral Actions runner (owner ENV rule: swarm execution runs
+in GitHub Actions isolation, not on a VM or a device).
+
+Pipeline: parse the request filing (form headings) -> belt acquire
+(exit 3 = no artifact, an evidence outcome, not a failure) -> extract
+-> clone the target repo -> scan-repo -> xref; or, when no artifact is
+acquired, the belt no-artifact record with the sources checked. The
+findings markdown is the belt's own render (apk-xref/v1 keys verbatim,
+form headings verbatim — the PR #2143 seam). Filing the findings issue
+and commenting stays in the workflow shell (gh), so this runner is
+deterministic file-in/file-out and unit-testable offline.
+
+Stdlib only.
+"""
+import argparse
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+BELT = Path(__file__).with_name("apk_xref.py")
+SUBMITTER = "reverse-engineering-toolkits{apk-xref-exec}"
+_HEADING = re.compile(r"^###\s+(.+?)\s*$", re.M)
+
+
+def parse_filing(body: str) -> dict:
+    """Form body -> {label: value} from `### Label` sections."""
+    fields: dict[str, str] = {}
+    parts = _HEADING.split(body or "")
+    # parts: [pre, label, value, label, value, ...]
+    for i in range(1, len(parts) - 1, 2):
+        fields[parts[i].strip()] = parts[i + 1].strip()
+    return fields
+
+
+def filing_spec(fields: dict) -> dict:
+    """The acquire spec + run identity from a parsed request filing."""
+    return {
+        "target_id": fields.get("Target ID", "").strip(),
+        "repo": fields.get("Target repo URL", "").strip(),
+        "source": fields.get("Artifact source", "none-known").strip()
+        or "none-known",
+        "package_id": fields.get("Package ID", "").strip(),
+        "evidence": fields.get("Evidence expectation", "reproduced").strip()
+        or "reproduced",
+    }
+
+
+def _run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
+    print("+", " ".join(cmd), flush=True)
+    return subprocess.run(cmd, capture_output=True, text=True, **kw)
+
+
+def _belt(args: list[str], expect: tuple[int, ...] = (0,)) -> subprocess.CompletedProcess:
+    r = _run([sys.executable, str(BELT), *args])
+    if r.returncode not in expect:
+        raise RuntimeError(f"belt {' '.join(args[:1])} exited {r.returncode}: "
+                           f"{r.stderr.strip()[:400]}")
+    return r
+
+
+def execute(fields: dict, issue_number: int, workdir: Path) -> dict:
+    """Run the belt pipeline. Returns the run summary dict; writes
+    findings.md + findings.json into workdir."""
+    spec = filing_spec(fields)
+    if not spec["target_id"]:
+        raise ValueError("filing has no Target ID")
+    workdir.mkdir(parents=True, exist_ok=True)
+    art_dir = workdir / "artifact"
+    acq = _belt(["acquire", "--source", spec["source"],
+                 "--repo", spec["repo"], "--package-id", spec["package_id"],
+                 "--out", str(art_dir)], expect=(0, 3))
+    acquisition = json.loads(acq.stdout)
+    summary = {"target_id": spec["target_id"], "issue": issue_number,
+               "source": spec["source"],
+               "acquisition_status": acquisition.get("status")}
+    common = ["--target-id", spec["target_id"],
+              "--xref-issue", f"#{issue_number}",
+              "--submitter", SUBMITTER,
+              "--artifact-source", spec["source"]]
+    if acquisition.get("status") != "acquired":
+        checked = acquisition.get("sources_checked") or [spec["source"]]
+        _belt(["no-artifact", *common, "--evidence", "observed",
+               "--sources-checked", *checked,
+               "--out", str(workdir / "findings.json"),
+               "--markdown", str(workdir / "findings.md")])
+        summary["verdict"] = "no-artifact-found"
+        return summary
+
+    apk_path = acquisition["path"]
+    ext_path = workdir / "extraction.json"
+    _belt(["extract", apk_path, "--out", str(ext_path)])
+    extraction = json.loads(ext_path.read_text(encoding="utf-8"))
+    extraction["provenance"] = acquisition  # xref reads provenance here
+    ext_path.write_text(json.dumps(extraction, indent=1), encoding="utf-8")
+
+    src_dir = workdir / "src"
+    clone = _run(["git", "clone", "--depth", "1", "--quiet",
+                  spec["repo"], str(src_dir)])
+    summary["clone_ok"] = clone.returncode == 0
+    if clone.returncode != 0:
+        src_dir.mkdir(parents=True, exist_ok=True)  # empty tree -> claims ∅
+        summary["clone_error"] = clone.stderr.strip()[:300]
+    claims_path = workdir / "claims.json"
+    _belt(["scan-repo", str(src_dir), "--out", str(claims_path)])
+
+    record_path = workdir / "findings.json"
+    _belt(["xref", "--extraction", str(ext_path),
+           "--claims", str(claims_path), *common,
+           "--evidence", spec["evidence"],
+           "--out", str(record_path),
+           "--markdown", str(workdir / "findings.md")])
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    summary["verdict"] = record.get("verdict")
+    summary["package_id"] = record.get("package_id")
+    return summary
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(prog="apk_xref_exec")
+    ap.add_argument("--issue-body", required=True)
+    ap.add_argument("--issue-number", required=True, type=int)
+    ap.add_argument("--workdir", required=True)
+    args = ap.parse_args(argv)
+    body = Path(args.issue_body).read_text(encoding="utf-8")
+    summary = execute(parse_filing(body), args.issue_number,
+                      Path(args.workdir))
+    print(json.dumps(summary, indent=1, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

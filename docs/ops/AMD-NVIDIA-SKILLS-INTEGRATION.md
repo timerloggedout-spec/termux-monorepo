@@ -36,8 +36,21 @@ The skills are an implementation lane, not the project itself. Select the challe
 
 ## Rollout checklist
 - [ ] Reconcile with existing registries before adding a duplicate canonical registry.
-- [ ] Validate the vendor registry and receipt schema in CI.
-- [ ] Add tests for required fields, allowed states, and secret/payload exclusion.
+- [x] Add a receipt JSON Schema and deterministic vendor-registry validator.
+- [x] Add focused tests for required registry fields, allowed states, discovery-only NVIDIA status, and sensitive-field-name rejection.
+- [x] Add a least-privilege GitHub Actions workflow for JSON parsing, registry validation, and focused contract tests.
+- [ ] Confirm the new workflow executes successfully on GitHub; a run was not yet visible at the time of this update.
 - [ ] Run an AMD baseline in an approved environment or record the precise blocker.
 - [ ] Add NVIDIA execution only after runtime access is verified.
 - [ ] Record results in the repository's existing evidence lane.
+
+
+## Validation implementation
+
+- Receipt contract: `docs/ops/AMD-NVIDIA-SKILL-EXECUTION-RECEIPT.schema.json`.
+- Deterministic registry checks: `scripts/ci/validate_vendor_skill_registry.py`.
+- Focused regression tests: `tests/test_vendor_skill_registry.py`.
+- CI entry point: `.github/workflows/amd-nvidia-skill-registry.yml` (read-only repository permission; no GPU workload is run).
+- Vendor router skill entry points: `skills/vendors/amd/SKILL.md` and `skills/vendors/nvidia/SKILL.md`.
+
+The validator checks registry structure and policy invariants without requiring a GPU or external dependency. The JSON Schema is committed as a contract; this workflow currently verifies that it is valid JSON and that its required receipt fields are present. Full standards-based instance validation should be added if a JSON Schema validator is adopted as a repository dependency.

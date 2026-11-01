@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "44041ab3a65089c587d9cc5aeb2820793ef15fe3880addbd538e88c0539c0fe2",
-  "workflow_count": 255,
+  "source_fingerprint": "1662d3593a52e5516130ed0bffa1f360dad21bf6bbadd7d51bb4618cc089dd52",
+  "workflow_count": 256,
   "workflows": [
     {
       "action_pins": [],
@@ -692,6 +692,24 @@
       "triggers": [
         "issue_comment",
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "unit"
+      ],
+      "name": "Cert unit (Route A)",
+      "path": ".github/workflows/cert-unit.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

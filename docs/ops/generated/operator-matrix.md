@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T08:36:28Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T08:47:19Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `d6427185ba` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `508319c106` (hygiene: in_progress, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 371 issues, 158 PRs. PR classes: EXTRACT 5 / CANDIDATE 77 / NEED_EVIDENCE 76 / SUPERSEDE 0.
+**Open inventory:** 372 issues, 159 PRs. PR classes: EXTRACT 5 / CANDIDATE 78 / NEED_EVIDENCE 76 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -72,6 +72,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1862 | CANDIDATE | unlabelled | `a4b28f7ef8` | success | success | unknown | 📖 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping |
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
+| #2167 | CANDIDATE | unlabelled | `c7d78062d0` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
 | #2263 | CANDIDATE | unlabelled | `f230b08d19` | success | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
@@ -124,7 +125,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `b28fe66e40` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `a82b2991a2` | in_progress | in_progress | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `fa7399b4e6` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -170,7 +170,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `dd8e401242` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `0c3ccd16c2` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3017 | NEED_EVIDENCE | unlabelled | `7da19bc727` | not_reported | not_reported | unknown | AppID: apk-xref-exec mint swap Swarm → CrossReference (Scalpel · App 5564430) |
 
 ## Families (open)
 
@@ -179,12 +180,12 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 11 | 0 |
 | delphi | 79 | 0 |
 | mesh | 4 | 0 |
-| other | 184 | 1 |
+| other | 185 | 1 |
 | proposal | 32 | 1 |
 | providers | 13 | 0 |
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 30 | 156 |
+| unlabelled | 30 | 157 |
 
 **Unlabelled open issues (30):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956 — worked oldest-first by the issue-lifecycle lane pass.

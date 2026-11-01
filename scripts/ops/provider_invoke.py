@@ -96,7 +96,7 @@ def main() -> int:
 
     provider = args.provider
     verdict = {"provider": provider, "ok": False, "diagnosis": "", "model": None,
-               "http": None, "latency_ms": None}
+               "http": None, "latency_ms": None, "catalog_http": None}
     url, secret_names, catalog_url, note = resolve_provider(provider)
     if url is None:
         verdict["diagnosis"] = note or "unresolved provider"
@@ -116,6 +116,13 @@ def main() -> int:
     model = os.environ.get("INVOKE_MODEL") or None
     if model is None and catalog_url:
         status, cat = http_json("GET", catalog_url, token)
+        verdict["catalog_http"] = status
+        if status != 200 and provider == "cohere":
+            # v1 models catalog refused; the v2 catalog is the same key's other door.
+            status2, cat2 = http_json("GET", "https://api.cohere.com/v2/models", token)
+            verdict["catalog_http_v2"] = status2
+            if status2 == 200:
+                status, cat = status2, cat2
         if status == 200:
             if provider_catalog_protocols is not None and provider in provider_catalog_protocols.PROVIDERS:
                 try:

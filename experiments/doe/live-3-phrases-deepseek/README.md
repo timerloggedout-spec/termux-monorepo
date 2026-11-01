@@ -78,13 +78,16 @@ phrases-jit = nested subset ⊂ doe-mgr-live-builds (28ac9715),
 ¬ peer category. Reporting line: phrases-jit ⇒ live-builds ⇒
 doe-expert. Remit unchanged; surfaces coordinate:
 
-- live-4-dispatch-framing (live-builds) rides Jules routes:
-  phrases there = NOT ESTABLISHED as landed ⇒ phrase factor
-  ∅ applies, ∅ collision.
+- live-1-wave-framing (live-builds; PR #2809, supersedes
+  live-4-dispatch-framing) rides Jules routes: phrases
+  there = NOT ESTABLISHED (composition rule carried in its
+  DESIGN instance_stamps.phrases) ⇒ phrase factor ∅ applies,
+  ∅ collision.
 - This campaign rides DeepSeek routes: framing HELD at
   framing-a (pattern C for review), ¬ a factor here in wave 1.
-- live-4 cb-1's DeepSeek-CI review arms are EXCLUDED from
-  live-3 assignment until cb-1 verdict (measurement surface).
+- live-builds WO#2 (ChronoMancer competing-build, ex live-4
+  cb-1) DeepSeek-CI review arms are EXCLUDED from live-3
+  assignment until its verdict (measurement surface).
 - Composition rule (pre-registered): one dispatch = one
   assignment per factor family; families meeting on one
   dispatch cross in a single stamp (framing × phrase, one

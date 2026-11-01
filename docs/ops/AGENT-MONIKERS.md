@@ -99,6 +99,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet Lifecycle | `Janus · Lifecycle` | `termux-fleet-lifecycle[bot]` | epithets Patulcius / Clusius; queued alt Clotho |
 | Termux Fleet Gate | `Cerberus · Gate` | `termux-fleet-gate[bot]` | aspect the Ward; no queued alt |
 | Termux Fleet Swarm | `Myriad · Swarm` | `termux-fleet-swarm[bot]` | aspect the Host; queued alt Apis (below) |
+| Termux Fleet CrossReference | `Concordance · CrossReference` | `termux-fleet-crossreference[bot]` | aspect the Index; queued alt Daedalus (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -121,6 +122,37 @@ against the mythic set (owner balance rule, 2026-10-29):
 
 Collision check at issuance: `Myriad` and `Apis` appear nowhere in
 this roster or in the registration registry.
+
+**CrossReference issuance (2026-11-01, registry lane; provisioning
+started the same day by the AppID lane under owner GO).** One app,
+two member workflows — apk-xref-exec (live seat) and
+apk-xref-intake (queued swap) — so the identity is singular. The
+name is the plain-register noun for an index of cross-references,
+which is the actor's whole work (matching references across apk
+artifacts), and it keeps the active pool balanced beside the
+mythic set (owner balance rule, 2026-10-29). Family naming obeys
+the owner constraint (2026-11-01): the token `RE` appears at no
+layer — name, slug, moniker or mark, leet disguises included.
+
+- canonical: `Concordance` (paired display
+  `Concordance · CrossReference`)
+- aspect: the Index
+- queued alt: `Daedalus` (mark `D4edalus`) — the exec seat's
+  confer alt; draws only on a registry-lane bounce/rename decision
+- held, not queued: `Charon` / `Porter` (intake-seat confer
+  names) — reserved for a future standalone intake identity if the
+  queued swap ever splits into its own app; not consumed here
+- leet marks: `C0ncordance` (single substitution, ranks first) >
+  `C0nc0rdance` — mark layer only, never identifiers
+- slug bounces: ∅ consumed at issuance (canonical
+  `termux-fleet-crossreference` in provisioning); a bounce, if
+  ever needed, returns to the registry lane
+- normalized form: CrossReference — `Termux Fleet CrossReference`
+  / `termux-fleet-crossreference[bot]`
+
+Collision check at issuance: `Concordance`, `Daedalus` and the
+Index appear nowhere in this roster or in the registration
+registry; `Charon` / `Porter` held unconsumed.
 
 ## Rules
 

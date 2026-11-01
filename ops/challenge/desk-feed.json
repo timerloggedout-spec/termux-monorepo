@@ -2045,7 +2045,32 @@
      "peer-review orchestrator surfaces",
      "gemini review/triage legs (review/command kind, not inference invoke)"
     ],
-    "note": "Wiring target per owner escalation to Swarm: every not_wired provider gets an invoke route (batch endpoint or catalog endpoint) or a named blocker of record. Counts: 89 distinct providers = 17 wired-invoke + 72 not-wired."
+    "note": "Wiring target per owner escalation to Swarm: every not_wired provider gets an invoke route (batch endpoint or catalog endpoint) or a named blocker of record. Counts: 89 distinct providers = 17 wired-invoke + 72 not-wired.",
+    "compounding": {
+     "rule": "OWNER RULE (2026-11-01): every time a new endpoint is wired, it is eligible to join the process of continuing the wiring — wiring COMPOUNDS. A provider joins the wiring worker pool the moment its invoke wiring lands (code route + selection entry + evidence). Packages are sharded across the pool by task-fit; no single provider or vendor — including Google (Jules + Gemini) — is the default, sole, or consecutive builder. Each landed wiring PR must name the providers it unlocks into the pool.",
+     "worker_pool_now": [
+      "aion",
+      "cerebras",
+      "felo",
+      "google",
+      "groq",
+      "huggingface",
+      "kilo",
+      "llm7",
+      "mistral",
+      "modelscope",
+      "nvidia",
+      "omni",
+      "openrouter",
+      "ovhcloud",
+      "sambanova",
+      "siliconflow",
+      "zai"
+     ],
+     "pool_count": 17,
+     "mechanics": "Pool members contribute through their wired invoke routes (generation / review / verification legs) and, where a repo build lane exists for them, build legs. Desk shards packages across the pool and stamps the shard's provider; Swarm second-pass reviews; fix seat republishes pool membership on every wiring landing.",
+     "applied_now": "PKG-A (#3099): each of the 9 providers Gemini wires joins the pool on landing and becomes claimable for remaining shards. PKG-B (#3100): DeepSeek holds the core-module shard ONLY; the g4f per-provider registration shards are claimable across the pool — the family is not a single-builder package."
+    }
    },
    "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated.",
    "app_layer": {

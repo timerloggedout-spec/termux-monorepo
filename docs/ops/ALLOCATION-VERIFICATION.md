@@ -61,13 +61,13 @@ One read-only GET per provider from Actions with the verified secret name. Grade
 - **pinecone — api-verified:** 2 indexes Ready (`swaying-dogwood`, `termux-knowledge`) ⇒ receiving.
 - **fly — api-verified:** org `personal` (PERSONAL) via GraphQL viewer read ⇒ account live.
 - **ollama, nvidia — api-read only:** public model surfaces answered 200; auth NOT proven by these endpoints.
-- **siliconflow — KEY REJECTED:** 401 `Token is invalid` (real verdict from the account surface) ⇒ flag `credential-dead` (provisioning fix; provider itself offers a free tier — not receivable with this token).
+- **siliconflow — ERRATA (corrected 2026-10-31):** batch-2's `credential-dead` verdict is RETRACTED. The probe hit `api.siliconflow.cn` (the separate CN platform) — its 401 was a platform mismatch, not key death. Canonical surface = `api.siliconflow.com`: key reads 200 (models; provisioning reads 2026-10-28 + 2026-10-31, 81 models; this lane's re-probe run 41264932179 = 200). The .com account endpoint `/v1/user/info` is DEPRECATED (410, code 20092, run 41264677968) ⇒ balance state `not-established`; key LIVE, free layer receiving. Lesson recorded: a rejection verdict requires the CANONICAL surface for the credential's platform (same discipline as the cloudflare verify-scope caveat).
 - **cloudflare — rejected at user-scope verify:** 401 code 1000 on `/user/tokens/verify`; an account-scoped token is NOT excluded (different verify path) ⇒ `verify-scope` caveat, not ruled dead.
 - **Edge-blocked, NO verdict (Cloudflare 1010 from the Actions egress):** groq, xkiro, **felo** — felo claim-state therefore STILL `verify-claim-state` (owner-attested stands); route forward = non-Actions egress.
 - **Route-dead:** aion (404 `no Route matched` — base/path wrong, no key verdict), sealion (DNS does not resolve — phantom-route candidate).
 - **Not executable (no credential under any name — provisioning lane, per gaps recon):** cerebras, mistral, requesty, xfyun (doubly phantom), kilo, modelscope, omni, ovhcloud, typhoon.
 
-Batch-2 totals: unclaimed allocations established = ∅; new card flags = ∅; credential-dead = 1 (siliconflow).
+Batch-2 totals: unclaimed allocations established = ∅; new card flags = ∅; credential-dead = 0 (siliconflow entry corrected by errata above).
 
 ## Remaining families (state `not-established`, route named)
 

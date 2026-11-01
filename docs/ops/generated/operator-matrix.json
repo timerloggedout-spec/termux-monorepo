@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 173,
+    "open_prs": 174,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 6,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 84,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 171,
+      "prs": 172,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:42:52Z",
+  "generated_at": "2026-11-01T23:44:17Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "dc244e8c34"
+    "sha": "1fa64de14e"
   },
   "prs": [
     {
@@ -214,12 +214,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "fb27c7f443",
+      "head_sha": "f4b696f9cf",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3335,
-      "title": "feat(icm): DeepWiki.com import harvest automation (run#10 phase 2)",
-      "updated_at": "2026-11-01T23:42:24Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T23:42:37Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "212b343244",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3337,
+      "title": "3L0 plane: live-dispatch intake spec 3l0-intake/v1 (to Swarm)",
+      "updated_at": "2026-11-01T23:43:48Z"
     },
     {
       "class": "CANDIDATE",
@@ -1798,20 +1812,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "f4b696f9cf",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T23:42:37Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2540,15 +2540,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "212b343244",
+      "head_sha": "0d8d82592f",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3337,
-      "title": "3L0 plane: live-dispatch intake spec 3l0-intake/v1 (to Swarm)",
-      "updated_at": "2026-11-01T23:42:24Z"
+      "mergeable_state": "unknown",
+      "number": 3342,
+      "title": "feat(ci): add merged branch review audit and quota engine",
+      "updated_at": "2026-11-01T23:43:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2557,12 +2557,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "90d411005a",
+      "head_sha": "2ffd15fcd9",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3339,
-      "title": "docs(llm-api-hub): archive rationale in PRESERVED.md",
-      "updated_at": "2026-11-01T23:42:25Z"
+      "number": 3343,
+      "title": "docs(ops): backfill doctrine in MVT/ATES scoring intake",
+      "updated_at": "2026-11-01T23:44:11Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "5658d97e2a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3344,
+      "title": "DoE: backfill doctrine (rule 8 + intake spec)",
+      "updated_at": "2026-11-01T23:44:12Z"
     }
   ],
   "schema": "operator-matrix/v1",

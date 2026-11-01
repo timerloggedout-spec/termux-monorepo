@@ -49,6 +49,29 @@ jobs:
           set -euo pipefail
           python3 -B scripts/telemetry_ingest/ingest.py \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Density association stats (Provenance table + HindSight payloads)
+        run: |
+          set -euo pipefail
+          for page in 1 2 3 4 5 6; do
+            gh api "repos/${{ github.repository }}/pulls?state=all&per_page=100&page=$page&sort=created&direction=desc" >> prs-pages.jsonl
+          done
+          python3 - << 'PYEOF'
+          import json
+          prs = []
+          for line in open("prs-pages.jsonl"):
+              line = line.strip()
+              if line:
+                  prs.extend(json.loads(line))
+          seen, out = set(), []
+          for p in prs:
+              if p["number"] not in seen:
+                  seen.add(p["number"]); out.append(p)
+          json.dump(out, open("prs.json", "w"))
+          PYEOF
+          python3 -B scripts/telemetry_ingest/density_stats.py \
+            --prs prs.json \
+            --rfp-feed apps/help-wanted-dashboard/data/delphi-rfp-feed.json \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
       - name: HindSight live retain (separate; no-op without its secrets)
         env:
           HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}

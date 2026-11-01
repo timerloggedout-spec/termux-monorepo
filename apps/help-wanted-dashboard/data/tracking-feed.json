@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T04:20:09Z",
+ "generated_at": "2026-11-01T04:28:22Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T04:20:09Z",
+   "read_at": "2026-11-01T04:28:22Z",
    "merged": 150,
-   "open": 158
+   "open": 156
   },
   "lane_events": {
-   "read_at": "2026-11-01T04:20:09Z",
+   "read_at": "2026-11-01T04:28:22Z",
    "status": "ok",
-   "count": 2987,
+   "count": 3005,
    "events_in_snapshot": 200
   },
   "records": [
@@ -19,13 +19,15 @@
    "ops/challenge/desk-feed.json",
    "ops/quota/registry.json",
    "experiments/doe/*/DESIGN.json",
+   "experiments/doe/*/{PLAN*.json,records/**,dispatch/**} (treatment.instance join)",
    "ops/tracking/projects.json (seed: identity+match only)"
   ]
  },
  "honesty_rules": [
   "State/last-merge/next are derived at generation time from the stamped snapshots + records; never copied forward, never hand-edited in the outputs.",
   "A value no source holds renders as NOT_ESTABLISHED or a named gap, never synthesized.",
-  "lane-events failures are evidence/next hints, never a state by themselves."
+  "lane-events failures are evidence/next hints, never a state by themselves.",
+  "Provider x DoE join: instance tuples come only from PLAN/records/dispatch files carrying treatment.instance (or PLAN rows[].instance); design factors alone never synthesize an instance row \u2014 a campaign without one is design_only."
  ],
  "summary": {
   "rows": 22,
@@ -66,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -82,7 +84,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -97,7 +99,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -111,7 +113,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -126,7 +128,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -138,7 +140,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -154,7 +156,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "challenge-entries",
@@ -168,7 +170,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "quota",
@@ -188,7 +190,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "doe",
@@ -197,10 +199,10 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2942,
-    "sha": "e0dad18eaa95",
-    "at": "2026-11-01T04:19:39Z",
-    "title": "doe(ww-1): run-1 failure recorded + evaluator UNHELD (Index #2939) + run-2 stamp"
+    "pr": 2948,
+    "sha": "971ff8a10299",
+    "at": "2026-11-01T04:27:47Z",
+    "title": "feat(tracking): provider x DoE-setting join (doe_join)"
    },
    "next": "land/close PR #2856 \u2014 doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
    "next_basis": "open-pr",
@@ -208,7 +210,7 @@
     "doe DESIGN.json campaigns=10",
     "open PRs: #2856, #2857, #740, #1569, #969"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "doe-nc1",
@@ -225,7 +227,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "tier-1",
@@ -242,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "contribution-desk",
@@ -256,7 +258,7 @@
    "evidence": [
     "desk-feed traversals=7 generated_at=2026-10-31T23:59:00Z"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "web-design-viz",
@@ -264,13 +266,18 @@
    "domain": "webdev-viz",
    "project_id": "webdev-viz",
    "state": "in-flight",
-   "last_merge": null,
-   "next": "land/close PR #2941 \u2014 feat(viz): tracking board prototype - renders tracking-feed.json only",
+   "last_merge": {
+    "pr": 2941,
+    "sha": "4b94e5304fec",
+    "at": "2026-11-01T04:26:14Z",
+    "title": "feat(viz): tracking board prototype - renders tracking-feed.json only"
+   },
+   "next": "land/close PR #2168 \u2014 chore(dashboards): refresh surface feeds",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #2941, #2168, #2702, #2461, #1436"
+    "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "marketing",
@@ -282,7 +289,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "marketing-social",
@@ -294,7 +301,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "swarm",
@@ -313,7 +320,7 @@
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "providers",
@@ -333,7 +340,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "providers-phrases",
@@ -345,7 +352,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "repo-replay",
@@ -357,7 +364,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "ops",
@@ -371,7 +378,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   },
   {
    "lane": "telemetry",
@@ -390,10 +397,269 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T04:20:09Z"
+   "updated_at": "2026-11-01T04:28:22Z"
   }
  ],
+ "doe_join": {
+  "summary": {
+   "campaigns": 10,
+   "campaigns_joined": 1,
+   "distinct_instances": 8,
+   "providers": [
+    "openrouter"
+   ]
+  },
+  "campaigns": [
+   {
+    "campaign": "cb-1-chronomancer-emission",
+    "status": "admitted_design_only",
+    "moniker": "doe-mgr-live-builds",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "lab-1-prompt-x-model-x-role",
+    "status": "admitted",
+    "moniker": "doe-expert",
+    "design_factors": {
+     "prompt": [
+      "prompt-a",
+      "prompt-b"
+     ],
+     "model": [
+      "openrouter/openai/gpt-4o-mini",
+      "openrouter/meta-llama/llama-3.1-8b-instruct:free"
+     ],
+     "role": [
+      "triage",
+      "reviewer"
+     ]
+    },
+    "providers": [
+     "openrouter"
+    ],
+    "join_state": "joined",
+    "instances": [
+     {
+      "provider": "openrouter",
+      "model_at_version": "meta-llama/llama-3.1-8b-instruct:free",
+      "role": "reviewer",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-a.md (+ role line: reviewer)#a8f522b64adf",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "7f5083a90dadd6829c70081dfb7034e50e7f5dc5af1f9df522763c084a270326",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "meta-llama/llama-3.1-8b-instruct:free",
+      "role": "reviewer",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-b.md (+ role line: reviewer)#1a3c8af80ddd",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "e42a430c55555c13806c0a9507a72989bf3f2f94ff8bfabab6adbaa9570fb643",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "meta-llama/llama-3.1-8b-instruct:free",
+      "role": "triage",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-a.md (+ role line: triage)#6dbc83fe4a09",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "2121b5f4c20fbd3fdfff7cc38ca0ac72545e816340f779a4726cfc94dbf773e4",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "meta-llama/llama-3.1-8b-instruct:free",
+      "role": "triage",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-b.md (+ role line: triage)#63ee8aad657b",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "e2f6199c75a3f228871d7fd274686ea660ca332af3404fe82a93849b5ce3570f",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "openai/gpt-4o-mini",
+      "role": "reviewer",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-a.md (+ role line: reviewer)#a8f522b64adf",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "cb4a2e08ff8728a6211c27bef64617c50589762cd3ad3ea8a9486dab4be3cef2",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "openai/gpt-4o-mini",
+      "role": "reviewer",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-b.md (+ role line: reviewer)#1a3c8af80ddd",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "cb4644f74a529666d2a35aa58c737fa35fb5a8024cb25a04ad013840b3ddbf37",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "openai/gpt-4o-mini",
+      "role": "triage",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-a.md (+ role line: triage)#6dbc83fe4a09",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "2889490a8da8cbe46040a2c8d0ef4e38099ba7ce6c0b32009085e2ffd6949926",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "openrouter",
+      "model_at_version": "openai/gpt-4o-mini",
+      "role": "triage",
+      "prompt": "experiments/doe/lab-1-prompt-x-model-x-role/prompts/prompt-b.md (+ role line: triage)#63ee8aad657b",
+      "moniker": "doe-expert",
+      "context": "lab-1-prompt-x-model-x-role",
+      "instance_key": "990dfd2fd2454549689b414fe35bb0933d9d14eb2b6fbb0eb1b9f8740d2231b5",
+      "occurrences": {
+       "plan": 8,
+       "record": 0,
+       "dispatch": 0
+      }
+     }
+    ],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "live-1-wave-framing",
+    "status": "admitted_design_only",
+    "moniker": "doe-mgr-live-builds",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 2,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "live-2-prlane-tuning",
+    "status": "admitted_design_only",
+    "moniker": "doe-expert",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "live-3-phrases-deepseek",
+    "status": "admitted_design_only",
+    "moniker": "doe-mgr-phrases-jit",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "live-4-dispatch-framing",
+    "status": "superseded",
+    "moniker": "doe-mgr-live-builds",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "nc-1-notation-compliance",
+    "status": "admitted_design_only",
+    "moniker": "doe-expert",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 2,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "pilot-1-context-routing-x-compression",
+    "status": "admitted",
+    "moniker": null,
+    "design_factors": {
+     "representation": [
+      "explicit",
+      "compressed"
+     ],
+     "routing": [
+      "icm-guided",
+      "bounded-search"
+     ]
+    },
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 32,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "ww-1-duckduckgo",
+    "status": "admitted_design_only",
+    "moniker": "optimizations-assurance",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   },
+   {
+    "campaign": "ww-2-brave",
+    "status": "admitted_design_only",
+    "moniker": "optimizations-assurance",
+    "design_factors": {},
+    "providers": [],
+    "join_state": "design_only",
+    "instances": [],
+    "experiment_records": 0,
+    "experiment_records_with_instance": 0
+   }
+  ]
+ },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 63/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 66/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

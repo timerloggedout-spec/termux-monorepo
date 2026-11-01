@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T14:28:00Z",
+ "generated_at": "2026-11-01T14:34:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2202,7 +2202,7 @@
      "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
     }
    },
-   "next": "Reader core MERGED #3102 + synced (parity 23/23) · SR module re-routed ⇒ command-dispatch on #3050 (engagement watch; merge timing = D1 hold) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT",
+   "next": "Reader core MERGED #3102 + synced (parity 23/23) · SR module: returned to the system for balanced execution (#3050; command-dispatch re-route withdrawn, owner correction) · DeepSeek notes PR pending (run 41301295882) · freeze-hold submission 2026-11-04 23:59 PT",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -2313,7 +2313,7 @@
      "scope": "D1 StudySprint FEATURES Next #1 — spaced-repetition module study_sr.py (FSRS default via py-fsrs + SM-2 baseline selectable, receipts carry scheduler name, genanki .apkg export, tests for all new functions, VERSION 0.3.0 + CHANGELOG)",
      "via": "issue #3050 with @gemini-cli invoke in body; gemini-dispatch run 41301369671 SUCCESS",
      "session_id": null,
-     "state": "LEG DEAD before PR (gemini-cli build leg OUT 2026-11-01) — re-selected ⇒ command-dispatch, see stamp below",
+     "state": "superseded: SR task returned to the system for balanced execution (owner correction 2026-11-01); ∅ single-provider assignment",
      "usage": {
       "value": null,
       "unit": null,
@@ -2383,7 +2383,7 @@
      "scope": "D1 SR module (study_sr.py) — re-route of #3050",
      "via": "issue #3050 comment command 6559056722 (@devin-ai)",
      "session_id": null,
-     "state": "DISPATCHED — engagement (bot ack/PR) watch open",
+     "state": "WITHDRAWN (owner correction 2026-11-01): command-dispatch = wrong model; SR task returned to the system for balanced execution across provider endpoints; outcomes = system’s, per run",
      "ts": "2026-11-01T14:08:57Z",
      "usage": {
       "value": null,

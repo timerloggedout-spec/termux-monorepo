@@ -18,7 +18,7 @@ wiring · **(d)** inference-only, with the wiring that would promote it.
 | `agent-jules-on-issues.yml` | issue label | Jules (build arm; registry `jules.build_sessions`, lane ci) | 405 successful runs, last 2026-11-01 |
 | `gemini-dispatch.yml` (+ `gemini-after-peers.yml`) | issues / issue_comment | google (Gemini) | dispatch successes 2026-11-01; after-peers 1,158 successes. Standalone `gemini-invoke/triage/review` = 0 successful runs — the router is the proven entry, the legs are not independently proven |
 | `deepseek-ci.yml` + `deepseek-termux-agent.yml` | events + dispatch | DeepSeek (registry `deepseek.build_dispatch`, lane ci) | successes 2026-11-01; termux-agent 22 successes |
-| `provider-batch.yml` | dispatch | 24-provider inference roster (below) | 249 runs, 138 successful, last success 2026-10-28; recent health degraded (latest-30: 0 success) |
+| `provider-batch.yml` | dispatch | 24-provider inference roster (below) | 249 runs, 138 successful, last success 2026-10-28; recent health degraded (latest-30: 0 success). **Gate state (Swarm firsthand, run 41301473553 job split): observation jobs all hang off the `contracts` job (`needs: contracts`), red on master per #2672 ⇒ the batch bench yields no operational evidence regardless of provider health until a green contracts run lands** |
 | `provider-command-dispatch.yml` | dispatch / repository_dispatch | coderabbit, qodo, devin (review-arm class; not registry model providers) | 1 run, success 2026-10-18 |
 | `ai-studio-delphi-trigger.yml` | dispatch | google (AI Studio) | 1 run, success 2026-10-30 |
 | `provider-availability.yml` | schedule | probe roster | 93 runs, recent 30/30 success, last 2026-10-28 — probes availability, does not dispatch work |
@@ -48,17 +48,27 @@ Flags from the allocation census (batch-2, 2026-10-31) where they exist:
 
 aion (flag route-dead: hub endpoint 404 + site DNS dead) · cerebras
 (flag no-credential) · cloudflare (flag verify-scope: account-scoped
-token) · cohere (key-live 200) · groq (flag route-blocked: Cloudflare
+token) · cohere (key-live 200; **gate-state blocked-by-#2672**) · groq (flag route-blocked: Cloudflare
 1010 from Actions egress; invocable from non-Actions egress) ·
 huggingface (key-live; free, isPro=false) · kilo (flag no-credential) ·
-llm7 (key-live) · mistral (flag no-credential) · modelscope (flag
+llm7 (key-live; **gate-state blocked-by-#2672**) · mistral (flag no-credential) · modelscope (flag
 no-credential) · nvidia (api-read only; auth not proven) · ovhcloud
 (flag no-credential) · requesty (flag no-credential) · routeway
-(key-live) · sambanova (key-live) · sealion (flag route-dead: DNS) ·
-siliconflow (key-live 200 post-errata, `.com/v1/models`) · typhoon
-(flag no-credential) · unorouter (key-live; :free ids visible) · xfyun
+(key-live; **gate-state blocked-by-#2672**) · sambanova (key-live; **gate-state blocked-by-#2672**) · sealion (flag route-dead: DNS) ·
+siliconflow (key-live 200 post-errata, `.com/v1/models`; **gate-state blocked-by-#2672**) · typhoon
+(flag no-credential) · unorouter (key-live; :free ids visible; **gate-state blocked-by-#2672**) · xfyun
 (flag no-credential, doubly phantom) · xkiro (flag route-blocked:
-1010 from Actions egress) · zai (key-live).
+1010 from Actions egress) · zai (key-live; **gate-state blocked-by-#2672**).
+
+The seven gate-blocked members — cohere, sambanova, zai, llm7,
+routeway, unorouter, siliconflow — are exactly the census key-live
+set: their keys are proven, but the batch's operational evidence for
+them is currently ∅ by gate construction, not by provider health.
+
+DeepAgent arm (adjacent, rides the DeepSeek/device route): workflow-
+level dispatch proven today (Swarm firsthand, run 41301564332); the
+device leg is NOT_ESTABLISHED (reachable=false) — a green workflow run
+is not device execution evidence.
 
 Reverse gap: batch roster member **ollama** has no registry model
 provider row (its registry record sits under a different provider

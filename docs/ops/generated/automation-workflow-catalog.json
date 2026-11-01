@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9dfb96b7ab3670d1dc4ae04d7acca9624c5b9e042f37ab4f1e2ca6b43660f5b7",
+  "source_fingerprint": "fd7fa8544bc777c70141e23c730687031593e049a8931d30cdb3039d8e87910a",
   "workflow_count": 246,
   "workflows": [
     {
@@ -3761,7 +3761,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: repo-tracking-collect cancel-in-progress: false",
       "domain": "agentic-development",

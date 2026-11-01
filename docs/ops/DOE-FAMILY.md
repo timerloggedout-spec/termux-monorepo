@@ -264,6 +264,16 @@ are levels, kinds are factors.
    adjustments land as amendments. A campaign whose automation is
    not yet built is `admitted_design_only`; manual runs taken
    anyway are OBSERVATIONAL, never designed results.
+6. **Continuous live production basis (owner, 2026-11-01): design
+   experiments around continuous live production.** Provider wiring
+   is being updated, so past route censuses go stale: routes are
+   re-verified at design time AND at dispatch time, and no design
+   may hard-pin a route (parameterize it — a dead route is a datum,
+   not a mid-run blocker). The design basis is the continuous live
+   production flow; controls are embedded in that flow only, never
+   standalone suite executions as experimental mass (strengthens
+   the live-first doctrine). Calibration anchors must be live
+   production campaigns calibrated in situ.
 
 ## Campaign layout
 

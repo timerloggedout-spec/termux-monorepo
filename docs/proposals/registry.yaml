@@ -2,1223 +2,1214 @@ version: 1
 updated_at: '2026-10-27T13:52:00Z'
 updated_by: tier1-classifiers-steward
 proposals:
-- id: agent-contributor-provenance
-  title: Evidence-backed agent contributor attribution and source citation ledger
-  author: ChatGPT
-  status: in_review
-  priority: P1
-  path: active/agent-contributor-provenance/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: ChatGPT
-    role: author+executor
+  - id: agent-contributor-provenance
+    title: Evidence-backed agent contributor attribution and source citation ledger
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/agent-contributor-provenance/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 1241
+    related_prs:
+      - 1244
+    related_branches:
+      - feat/biudl-full-stack-provenance
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: model-selection-market
+    title: Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards
+    author: grok
+    status: posted
+    priority: P1
+    path: active/model-selection-market/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - docs/model-selection-market-3l0-20261001
+    related_proposals:
+      - approxination-integration
+      - ml-keep-alive
+      - rate-limit-rotation
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: ratatui-tokio-terminal-dashboard
+    title: Termux-first Ratatui + Tokio responsive terminal dashboard
+    author: ChatGPT
     status: executing
-  related_issues:
-  - 1241
-  related_prs:
-  - 1244
-  related_branches:
-  - feat/biudl-full-stack-provenance
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: model-selection-market
-  title: "Model selection market \u2014 equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards"
-  author: grok
-  status: posted
-  priority: P1
-  path: active/model-selection-market/
-  reviewers:
-  - id: grok
-    role: author+executor
+    priority: P1
+    path: active/ratatui-tokio-terminal-dashboard/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 934
+    related_prs:
+      - 935
+      - 938
+      - 940
+      - 955
+    related_branches:
+      - feat/ratatui-tokio-terminal-dashboard
+      - docs/ratatui-dashboard-collaborator
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: ml-keep-alive
+    title: 'ML keep-alive DAG extract onto live master (Issue #175)'
+    author: grok
     status: executing
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_prs: []
-  related_branches:
-  - docs/model-selection-market-3l0-20261001
-  related_proposals:
-  - approxination-integration
-  - ml-keep-alive
-  - rate-limit-rotation
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: ratatui-tokio-terminal-dashboard
-  title: Termux-first Ratatui + Tokio responsive terminal dashboard
-  author: ChatGPT
-  status: executing
-  priority: P1
-  path: active/ratatui-tokio-terminal-dashboard/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: ChatGPT
-    role: author+executor
+    priority: P0
+    path: active/ml-keep-alive/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 175
+      - 772
+    related_prs:
+      - 817
+      - 787
+      - 746
+      - 682
+      - 432
+    related_branches:
+      - feat/ml-pipelines-keepalive-20260925
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: temporal-langsmith-adapter
+    title: Temporal self-host + LangSmith Trajectories adapter (P1 observational)
+    author: grok
     status: executing
-  related_issues:
-  - 934
-  related_prs:
-  - 935
-  - 938
-  - 940
-  - 955
-  related_branches:
-  - feat/ratatui-tokio-terminal-dashboard
-  - docs/ratatui-dashboard-collaborator
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: ml-keep-alive
-  title: 'ML keep-alive DAG extract onto live master (Issue #175)'
-  author: grok
-  status: executing
-  priority: P0
-  path: active/ml-keep-alive/
-  reviewers:
-  - id: grok
-    role: author+executor
+    priority: P1
+    path: active/temporal-langsmith-adapter/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - feat/temporal-langsmith-adapter
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: approxination-integration
+    title: Approxination skill search/create/contribute + A/B/C/D evaluation cohort
+    author: grok
     status: executing
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 175
-  - 772
-  related_prs:
-  - 817
-  - 787
-  - 746
-  - 682
-  - 432
-  related_branches:
-  - feat/ml-pipelines-keepalive-20260925
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: temporal-langsmith-adapter
-  title: Temporal self-host + LangSmith Trajectories adapter (P1 observational)
-  author: grok
-  status: executing
-  priority: P1
-  path: active/temporal-langsmith-adapter/
-  reviewers:
-  - id: grok
-    role: author+executor
+    priority: P1
+    path: active/approxination-integration/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs:
+      - 614
+    related_branches:
+      - feat/approxination-integration
+    related_repos:
+      - https://github.com/timerloggedout-spec/Approxination-Benchmark_fork
+      - https://github.com/timerloggedout-spec/Inverse-Arena_fork
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: bifrost-gateway-integration
+    title: Bifrost AI gateway + benchmarking forks — RECON, catalog, provider path
+    author: grok
     status: executing
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_prs: []
-  related_branches:
-  - feat/temporal-langsmith-adapter
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: approxination-integration
-  title: Approxination skill search/create/contribute + A/B/C/D evaluation cohort
-  author: grok
-  status: executing
-  priority: P1
-  path: active/approxination-integration/
-  reviewers:
-  - id: grok
-    role: author+executor
+    priority: P1
+    path: active/bifrost-gateway-integration/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs:
+      - 611
+    related_branches:
+      - docs/bifrost-gateway-recon-reconcile
+    related_repos:
+      - https://github.com/timerloggedout-spec/bifrost_fork
+      - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: auditengine-adapt
+    title: RinDig AuditEngine (Ethics Engine) adapt pass
+    author: timerloggedout-spec
+    status: draft
+    priority: P2
+    path: active/auditengine-adapt/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: []
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: cost-of-remembering-integration
+    title: RinDig cost-of-remembering_fork ICM evidence lane
+    author: timerloggedout-spec
     status: executing
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_prs:
-  - 614
-  related_branches:
-  - feat/approxination-integration
-  related_repos:
-  - https://github.com/timerloggedout-spec/Approxination-Benchmark_fork
-  - https://github.com/timerloggedout-spec/Inverse-Arena_fork
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: bifrost-gateway-integration
-  title: "Bifrost AI gateway + benchmarking forks \u2014 RECON, catalog, provider path"
-  author: grok
-  status: executing
-  priority: P1
-  path: active/bifrost-gateway-integration/
-  reviewers:
-  - id: grok
-    role: author+executor
+    priority: P1
+    path: active/cost-of-remembering-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/rindig-cost-of-remembering-icm
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: mcp-hub-risk-split
+    title: mcp-hub / hub_mcp risk split
+    author: timerloggedout-spec
     status: executing
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_prs:
-  - 611
-  related_branches:
-  - docs/bifrost-gateway-recon-reconcile
-  related_repos:
-  - https://github.com/timerloggedout-spec/bifrost_fork
-  - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: auditengine-adapt
-  title: RinDig AuditEngine (Ethics Engine) adapt pass
-  author: timerloggedout-spec
-  status: draft
-  priority: P2
-  path: active/auditengine-adapt/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
+    priority: P1
+    path: active/mcp-hub-risk-split/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: []
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: context-relationship-graph
+    title: GitHub-native context relationship graph and scope index
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/context-relationship-graph/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus
+        role: author-executor
+        status: executing
+    related_prs:
+      - 232
+      - 1286
+    related_branches:
+      - manus/context-relationship-graph
+      - docs/historical-corpus-explorer-proposal
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: manus-critical-eval
+    title: Manus Critical Evaluation & Novel Work
+    author: Manus
+    status: executing
+    priority: P0
+    path: active/manus-critical-eval/
+    reviewers:
+      - id: manus
+        role: author
+        status: posted
+    related_prs:
+      - 13
+    related_branches:
+      - manus/novel-work
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: rate-limit-rotation
+    title: Rate limits, model rotation, OpenRouter fallback
+    author: grok
+    status: executing
+    priority: P0
+    path: active/rate-limit-rotation/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: posted
+    related_issues:
+      - 86
+      - 87
+      - 88
+      - 91
+    related_prs:
+      - 72
+      - 81
+    gates_required:
+      - repo-gate
+  - id: termux-agentic-hub
+    title: Termux-first Agentic Hub and governed fork integration
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/termux-agentic-hub/
+    reviewers:
+      - id: user
+        role: operator+approver
+        status: accepted
+      - id: Manus
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches:
+      - feature/termux-agentic-hub
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: chatgpt-critical-eval
+    title: Critical Eval TER0-15 + other branches
+    author: ChatGPT
+    status: executing
+    priority: P0
+    path: active/chatgpt-critical-eval/
+    legacy_source: ChatGPT_Critical-Eval(TER0-15+other-branches).md
+    reviewers:
+      - id: chatgpt
+        role: author
+        status: posted
+      - id: grok-archw1z
+        role: reviewer+executor
+        status: accepted
+    related_prs:
+      - 2
+      - 3
+      - 5
+      - 6
+      - 9
+      - 10
+      - 11
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: chatgpt-initial
+    title: Initial repository evaluation / cockpit intelligence
+    author: ChatGPT
+    status: posted
+    priority: P2
+    path: active/chatgpt-initial/
+    legacy_source: ChatGPT-initial.md
+    reviewers:
+      - id: chatgpt
+        role: author
+        status: posted
+      - id: grok-archw1z
+        role: reviewer
+        status: accepted
+    related_prs: []
+    related_gates_required:
+      - repo-gate
+  - id: chatgpt-droidapp
+    title: droidApp / early branch inventory + plugin architecture
+    author: ChatGPT
+    status: posted
+    priority: P2
+    path: active/chatgpt-droidapp/
+    legacy_source: ChatGPT_droidApp.md
+    reviewers:
+      - id: chatgpt
+        role: author
+        status: posted
+      - id: grok-archw1z
+        role: reviewer
+        status: accepted
+    related_prs:
+      - 1
+      - 2
+    gates_required:
+      - repo-gate
+  - id: kimi-cloud-offload
+    title: Corrected Cloud Offload & Parallelization Evaluation
+    author: Kimi2.6
+    status: posted
+    priority: P1
+    path: active/kimi-cloud-offload/
+    legacy_source: corrected_cloud_offload_evaluation.md
+    source_branch: docs/kimi-cloud-offload-evaluation
+    reviewers:
+      - id: kimi
+        role: author
+        status: posted
+      - id: grok-archw1z
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches:
+      - docs/kimi-cloud-offload-evaluation
+    gates_required:
+      - repo-gate
+  - id: icm-architect-integration
+    title: Repository-native ICM integration
+    author: timerloggedout-spec
+    status: executing
+    priority: P0
+    path: active/icm-architect-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_prs:
+      - 232
+    related_branches:
+      - feat/icm-architect-submodule
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: actions-refinements
+    title: 'Issue #192 action-integration refinements'
+    author: Manus AI
     status: accepted
-  related_prs: []
-  related_branches: []
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: cost-of-remembering-integration
-  title: RinDig cost-of-remembering_fork ICM evidence lane
-  author: timerloggedout-spec
-  status: executing
-  priority: P1
-  path: active/cost-of-remembering-integration/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  related_prs: []
-  related_branches:
-  - feat/rindig-cost-of-remembering-icm
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: mcp-hub-risk-split
-  title: mcp-hub / hub_mcp risk split
-  author: timerloggedout-spec
-  status: executing
-  priority: P1
-  path: active/mcp-hub-risk-split/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  related_prs: []
-  related_branches: []
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: context-relationship-graph
-  title: GitHub-native context relationship graph and scope index
-  author: Manus
-  status: executing
-  priority: P1
-  path: active/context-relationship-graph/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  - id: Manus
-    role: author-executor
+    priority: P1
+    path: active/actions-refinements/
+    reviewers:
+      - id: user
+        role: operator+approver
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_issues:
+      - 192
+      - 175
+    related_prs:
+      - 193
+      - 81
+      - 92
+      - 143
+      - 72
+      - 232
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: linguist-machine-parity
+    title: Linguist README machine-parity enhancement
+    author: Manus AI
+    status: posted
+    priority: P2
+    path: active/linguist-machine-parity/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches: []
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: gantt-dependency-phases
+    title: Dependency-phase automation and GitHub Projects integration
+    author: Manus AI
     status: executing
-  related_prs:
-  - 232
-  - 1286
-  related_branches:
-  - manus/context-relationship-graph
-  - docs/historical-corpus-explorer-proposal
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: manus-critical-eval
-  title: Manus Critical Evaluation & Novel Work
-  author: Manus
-  status: executing
-  priority: P0
-  path: active/manus-critical-eval/
-  reviewers:
-  - id: manus
-    role: author
+    priority: P1
+    path: active/gantt-dependency-phases/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_prs:
+      - 248
+    related_branches:
+      - manus/dependency-phase-automation
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: notation-sets
+    title: Notation Sets, Living Lexicon, and Cross-Domain Semantic Index
+    author: ChatGPT
     status: posted
-  related_prs:
-  - 13
-  related_branches:
-  - manus/novel-work
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: rate-limit-rotation
-  title: Rate limits, model rotation, OpenRouter fallback
-  author: grok
-  status: executing
-  priority: P0
-  path: active/rate-limit-rotation/
-  reviewers:
-  - id: grok
-    role: author+executor
+    priority: P1
+    path: active/notation-sets/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 320
+      - 309
+      - 182
+      - 175
+      - 126
+      - 304
+      - 196
+      - 177
+      - 208
+      - 274
+    related_prs:
+      - 322
+    related_branches:
+      - docs/notation-sets-evolution
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: archwiz-ui-protocol
+    title: ArchW1z Termux UI over shared agentic protocols
+    author: ChatGPT
     status: posted
-  related_issues:
-  - 86
-  - 87
-  - 88
-  - 91
-  related_prs:
-  - 72
-  - 81
-  gates_required:
-  - repo-gate
-- id: termux-agentic-hub
-  title: Termux-first Agentic Hub and governed fork integration
-  author: Manus
-  status: executing
-  priority: P1
-  path: active/termux-agentic-hub/
-  reviewers:
-  - id: user
-    role: operator+approver
+    priority: P1
+    path: active/archwiz-ui-protocol/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: pending
+      - id: ChatGPT
+        role: author
+        status: posted
+    related_issues:
+      - 292
+    related_prs:
+      - 329
+    related_branches:
+      - proposal/archwiz-ui-protocol-clean
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: vercel-lane-topology
+    title: 'Vercel deployment lane topology: legacy project fate, mcp-multi-host retirement, lanes registry'
+    author: Claude
     status: accepted
-  - id: Manus
-    role: author+executor
+    priority: P1
+    path: active/vercel-lane-topology/
+    reviewers:
+      - id: Claude
+        role: author+driver
+        status: posted
+    related_prs:
+      - 442
+      - 445
+      - 446
+    related_branches:
+      - docs/proposals/vercel-lane-topology
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: demo-portal
+    title: 'Demo portal: public showcase of archwiz.py / deepcli-tui via a sandboxed Termux emulator'
+    author: Claude
+    status: posted
+    priority: P2
+    path: active/demo-portal/
+    reviewers:
+      - id: Claude
+        role: author+driver
+        status: posted
+    related_prs:
+      - 447
+    related_branches:
+      - docs/proposals/demo-portal
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: agentic-scoped-access
+    title: 'Agentic scoped access: per-agent scoped tokens instead of shared full-scope credentials'
+    author: agent-automation
+    status: posted
+    priority: P2
+    path: active/agentic-scoped-access/
+    reviewers:
+      - id: agent-automation
+        role: author+driver
+        status: posted
+    related_prs:
+      - 492
+    related_branches:
+      - docs/proposals/agentic-scoped-access-and-tier4-review
+    gates_required: []
+  - id: tier4-scope-review
+    title: 'Tier 4 scope review: pre-authorized allowlist for repeatable Operator-approved actions'
+    author: agent-automation
+    status: posted
+    priority: P2
+    path: active/tier4-scope-review/
+    reviewers:
+      - id: agent-automation
+        role: author+driver
+        status: posted
+    related_prs:
+      - 492
+    related_branches:
+      - docs/proposals/agentic-scoped-access-and-tier4-review
+    gates_required: []
+  - id: rindig-eduba-consolidation
+    title: RinDig ICM + EDUBA repository consolidation
+    author: timerloggedout-spec
     status: executing
-  related_prs: []
-  related_branches:
-  - feature/termux-agentic-hub
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: chatgpt-critical-eval
-  title: Critical Eval TER0-15 + other branches
-  author: ChatGPT
-  status: executing
-  priority: P0
-  path: active/chatgpt-critical-eval/
-  legacy_source: ChatGPT_Critical-Eval(TER0-15+other-branches).md
-  reviewers:
-  - id: chatgpt
-    role: author
+    priority: P0
+    path: active/rindig-eduba-consolidation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/rindig-eduba-consolidation
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: paper2agent-scientific-factory
+    title: 'Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate'
+    author: ChatGPT
     status: posted
-  - id: grok-archw1z
-    role: reviewer+executor
-    status: accepted
-  related_prs:
-  - 2
-  - 3
-  - 5
-  - 6
-  - 9
-  - 10
-  - 11
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: chatgpt-initial
-  title: Initial repository evaluation / cockpit intelligence
-  author: ChatGPT
-  status: posted
-  priority: P2
-  path: active/chatgpt-initial/
-  legacy_source: ChatGPT-initial.md
-  reviewers:
-  - id: chatgpt
-    role: author
+    priority: P1
+    path: active/paper2agent-scientific-factory/
+    reviewers:
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 621
+    related_prs:
+      - 695
+    related_branches:
+      - docs/paper2agent-scientific-factory-proposal-2026-09-29
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: domain-composition-matrix
+    title: 'Domain composition matrix: versioned research database for composition rules'
+    author: timerloggedout-spec
     status: posted
-  - id: grok-archw1z
-    role: reviewer
-    status: accepted
-  related_prs: []
-  related_gates_required:
-  - repo-gate
-- id: chatgpt-droidapp
-  title: droidApp / early branch inventory + plugin architecture
-  author: ChatGPT
-  status: posted
-  priority: P2
-  path: active/chatgpt-droidapp/
-  legacy_source: ChatGPT_droidApp.md
-  reviewers:
-  - id: chatgpt
-    role: author
+    priority: P2
+    path: active/domain-composition-matrix/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: posted
+    related_prs: []
+    related_branches: []
+    gates_required:
+      - repo-gate
+  - id: lane-compounding
+    title: 'Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight→HindSight calibration, blind-graded treatments'
+    author: Hark
     status: posted
-  - id: grok-archw1z
-    role: reviewer
-    status: accepted
-  related_prs:
-  - 1
-  - 2
-  gates_required:
-  - repo-gate
-- id: kimi-cloud-offload
-  title: Corrected Cloud Offload & Parallelization Evaluation
-  author: Kimi2.6
-  status: posted
-  priority: P1
-  path: active/kimi-cloud-offload/
-  legacy_source: corrected_cloud_offload_evaluation.md
-  source_branch: docs/kimi-cloud-offload-evaluation
-  reviewers:
-  - id: kimi
-    role: author
-    status: posted
-  - id: grok-archw1z
-    role: registrar
-    status: posted
-  related_prs: []
-  related_branches:
-  - docs/kimi-cloud-offload-evaluation
-  gates_required:
-  - repo-gate
-- id: icm-architect-integration
-  title: Repository-native ICM integration
-  author: timerloggedout-spec
-  status: executing
-  priority: P0
-  path: active/icm-architect-integration/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  - id: Manus AI
-    role: executor
+    priority: P1
+    path: active/lane-compounding/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Hark
+        role: author+executor
+        status: executing
+    related_prs:
+      - 1244
+      - 1274
+      - 1277
+      - 1278
+      - 1280
+    related_branches:
+      - hark/lane-compounding
+      - docs/biudl-audit-refresh-20261021
+    gates_required:
+      - repo-gate
+  - id: free-llm-provider-prioritization
+    title: Free LLM provider research/RFP feedback prioritization and HITL
+    author: Cue
+    status: in_review
+    priority: P1
+    path: active/free-llm-provider-prioritization/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Cue
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches: []
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: archwiz-markov-trellis-lab
+    title: ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox
+    author: ChatGPT
     status: executing
-  related_prs:
-  - 232
-  related_branches:
-  - feat/icm-architect-submodule
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: actions-refinements
-  title: 'Issue #192 action-integration refinements'
-  author: Manus AI
-  status: accepted
-  priority: P1
-  path: active/actions-refinements/
-  reviewers:
-  - id: user
-    role: operator+approver
-    status: accepted
-  - id: Manus AI
-    role: executor
+    priority: P1
+    path: active/archwiz-markov-trellis-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 966
+    related_prs:
+      - 967
+    related_branches:
+      - experiment/archwiz-markov-trellis-lab
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: archwiz-hyperforge-gemini-review
+    title: ArchWiz Hyper-Forge — Gemini plan reconciliation and collaborative development
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/archwiz-hyperforge-gemini-review/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+    related_issues:
+      - 943
+      - 951
+      - 952
+      - 944
+      - 945
+      - 946
+      - 947
+      - 948
+      - 949
+      - 950
+    related_prs:
+      - 937
+    related_branches:
+      - docs/archwiz-hyperforge-gemini-review-package
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: agent-team-formation
+    title: Role-aware agent teams, game-player fleet, scoring, and controlled research
+    author: Manus AI
+    status: draft
+    priority: P1
+    path: active/agent-team-formation/
+    reviewers:
+      - id: Manus AI
+        role: author
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: awaiting_review
+    related_issues:
+      - 129
+      - 236
+      - 243
+    related_prs:
+      - 131
+    related_branches:
+      - docs/agent-team-formation-draft
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: ops-hitl-control-plane
+    title: OPS-EVENT HITL Control Plane
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/ops-hitl-control-plane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs:
+      - 739
+    related_branches:
+      - feat/hitl-control-plane-739
+  - id: arrhythmic-zero-token-search
+    title: Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers
+    author: grok
     status: executing
-  related_issues:
-  - 192
-  - 175
-  related_prs:
-  - 193
-  - 81
-  - 92
-  - 143
-  - 72
-  - 232
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: linguist-machine-parity
-  title: Linguist README machine-parity enhancement
-  author: Manus AI
-  status: posted
-  priority: P2
-  path: active/linguist-machine-parity/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  - id: Manus AI
-    role: registrar
+    priority: P1
+    path: active/arrhythmic-zero-token-search/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: grok
+        role: author+executor
+        status: executing
+    related_prs:
+      - 685
+    related_issues: []
+    related_branches:
+      - feat/arrhythmic-zero-token-search
+  - id: codespaces-enablement
+    title: Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities sweep
+    author: gaps-and-opportunities-subagent
     status: posted
-  related_prs: []
-  related_branches: []
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: gantt-dependency-phases
-  title: Dependency-phase automation and GitHub Projects integration
-  author: Manus AI
-  status: executing
-  priority: P1
-  path: active/gantt-dependency-phases/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  - id: Manus AI
-    role: executor
+    priority: P2
+    path: active/codespaces-enablement/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: pending
+      - id: gaps-and-opportunities-subagent
+        role: author+driver
+        status: posted
+    related_prs:
+      - 499
+      - 530
+      - 531
+    related_branches:
+      - gaps-opps/add-devcontainer-codespaces
+      - docs/proposals/codespaces-enablement
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: aws-free-tier-strands-delphi-oracle
+    title: AWS Free Tier integration and Strands Decider Delphi Oracle
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/aws-free-tier-strands-delphi-oracle/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs:
+      - 1611
+    related_branches:
+      - proposal/aws-free-tier-strands-delphi-oracle
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: quota-aware-cadence-rfp
+    title: Quota-aware adaptive cadence system — full-thread evaluation
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/quota-aware-cadence-rfp/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1573
+    related_prs:
+      - 1574
+      - 1575
+      - 1576
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+  - id: delphi-desk-builder-io
+    title: Delphi Desk — decision-review cockpit for the Builder.io Agent-Native Hackathon
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/delphi-desk-builder-io/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs:
+      - 1620
+      - 1655
+      - 1701
+      - 1702
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: strands-rfp-response-kernel-first
+    title: 'Strands RFP response — kernel-first: executable E-05/E-01/E-03 on the merged offline kernel'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-kernel-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1487
+      - 1489
+    related_prs:
+      - 1611
+      - 1620
+      - 1702
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: strands-rfp-response-collection-first
+    title: 'Strands RFP response — collection-first: build the DEBATE collection plane (ITEMS-003)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-collection-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1487
+      - 1489
+    related_prs:
+      - 1611
+      - 1620
+      - 1702
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: strands-rfp-response-packaging-first
+    title: 'Strands RFP response — packaging-first: D0 Lambda shape as the deployment shape, to the account gate'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-packaging-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1487
+      - 1489
+    related_prs:
+      - 1611
+      - 1620
+      - 1702
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: system-one-classifier-census
+    title: System One classifier census — the full decision-model ecosystem as the Tier-1 extension backlog
+    author: Perplexity
     status: executing
-  related_prs:
-  - 248
-  related_branches:
-  - manus/dependency-phase-automation
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: notation-sets
-  title: Notation Sets, Living Lexicon, and Cross-Domain Semantic Index
-  author: ChatGPT
-  status: posted
-  priority: P1
-  path: active/notation-sets/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 320
-  - 309
-  - 182
-  - 175
-  - 126
-  - 304
-  - 196
-  - 177
-  - 208
-  - 274
-  related_prs:
-  - 322
-  related_branches:
-  - docs/notation-sets-evolution
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: archwiz-ui-protocol
-  title: ArchW1z Termux UI over shared agentic protocols
-  author: ChatGPT
-  status: posted
-  priority: P1
-  path: active/archwiz-ui-protocol/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: pending
-  - id: ChatGPT
-    role: author
+    priority: P1
+    path: active/system-one-classifier-census/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs:
+      - 1754
+      - 1782
+      - 1786
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: doe-live-method-competition
+    title: DOE/MVT live method-competition framework — repo-wide, sandbox-free
+    author: timerloggedout-spec
     status: posted
-  related_issues:
-  - 292
-  related_prs:
-  - 329
-  related_branches:
-  - proposal/archwiz-ui-protocol-clean
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: vercel-lane-topology
-  title: 'Vercel deployment lane topology: legacy project fate, mcp-multi-host retirement, lanes registry'
-  author: Claude
-  status: accepted
-  priority: P1
-  path: active/vercel-lane-topology/
-  reviewers:
-  - id: Claude
-    role: author+driver
-    status: posted
-  related_prs:
-  - 442
-  - 445
-  - 446
-  related_branches:
-  - docs/proposals/vercel-lane-topology
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: demo-portal
-  title: 'Demo portal: public showcase of archwiz.py / deepcli-tui via a sandboxed Termux emulator'
-  author: Claude
-  status: posted
-  priority: P2
-  path: active/demo-portal/
-  reviewers:
-  - id: Claude
-    role: author+driver
-    status: posted
-  related_prs:
-  - 447
-  related_branches:
-  - docs/proposals/demo-portal
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: agentic-scoped-access
-  title: 'Agentic scoped access: per-agent scoped tokens instead of shared full-scope credentials'
-  author: agent-automation
-  status: posted
-  priority: P2
-  path: active/agentic-scoped-access/
-  reviewers:
-  - id: agent-automation
-    role: author+driver
-    status: posted
-  related_prs:
-  - 492
-  related_branches:
-  - docs/proposals/agentic-scoped-access-and-tier4-review
-  gates_required: []
-- id: tier4-scope-review
-  title: 'Tier 4 scope review: pre-authorized allowlist for repeatable Operator-approved actions'
-  author: agent-automation
-  status: posted
-  priority: P2
-  path: active/tier4-scope-review/
-  reviewers:
-  - id: agent-automation
-    role: author+driver
-    status: posted
-  related_prs:
-  - 492
-  related_branches:
-  - docs/proposals/agentic-scoped-access-and-tier4-review
-  gates_required: []
-- id: rindig-eduba-consolidation
-  title: RinDig ICM + EDUBA repository consolidation
-  author: timerloggedout-spec
-  status: executing
-  priority: P0
-  path: active/rindig-eduba-consolidation/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  related_prs: []
-  related_branches:
-  - feat/rindig-eduba-consolidation
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: paper2agent-scientific-factory
-  title: 'Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate'
-  author: ChatGPT
-  status: posted
-  priority: P1
-  path: active/paper2agent-scientific-factory/
-  reviewers:
-  - id: ChatGPT
-    role: author+executor
-    status: posted
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 621
-  related_prs:
-  - 695
-  related_branches:
-  - docs/paper2agent-scientific-factory-proposal-2026-09-29
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: domain-composition-matrix
-  title: 'Domain composition matrix: versioned research database for composition rules'
-  author: timerloggedout-spec
-  status: posted
-  priority: P2
-  path: active/domain-composition-matrix/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: posted
-  related_prs: []
-  related_branches: []
-  gates_required:
-  - repo-gate
-- id: lane-compounding
-  title: "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight\u2192\
-    HindSight calibration, blind-graded treatments"
-  author: Hark
-  status: posted
-  priority: P1
-  path: active/lane-compounding/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: Hark
-    role: author+executor
+    priority: P1
+    path: active/doe-live-method-competition/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1573
+      - 1595
+      - 1596
+    related_prs:
+      - 1848
+    related_branches:
+      - doe-live-method-competition
+    gates_required:
+      - proposal-lifecycle
+  - id: temporal-durable-execution-pi-core-resume
+    title: 'Temporal durable execution — pi-core-resume: pi-temporal kill-and-resume core (Oracle Method pass, G6: adopt)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-pi-core-resume/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1885
+      - 1487
+      - 1489
+    related_prs:
+      - 1867
+      - 1886
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: temporal-durable-execution-cookbook-agent-loop
+    title: 'Temporal durable execution — cookbook-agent-loop: ai-cookbook recipes + HITL approval (Oracle Method pass, G6: pilot)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-cookbook-agent-loop/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1885
+      - 1487
+      - 1489
+    related_prs:
+      - 1867
+      - 1886
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: temporal-durable-execution-versioned-autoscale
+    title: 'Temporal durable execution — versioned-autoscale: Worker Versioning + backlog autoscaling model (Oracle Method pass, G6: reference-only)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-versioned-autoscale/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1885
+      - 1487
+      - 1489
+    related_prs:
+      - 1867
+      - 1886
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: temporal-durable-execution-contract-first
+    title: 'Temporal durable execution — contract-first: evidence-envelope schema + generated validators (Oracle Method pass, G6: adopt as contract discipline)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-contract-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1885
+      - 1487
+      - 1489
+    related_prs:
+      - 1867
+      - 1886
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: temporal-durable-execution-serverless-skill
+    title: 'Temporal durable execution — serverless-skill: skill-form starter, cloud paths gated (Oracle Method pass, G6: reference-only)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-serverless-skill/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1885
+      - 1487
+      - 1489
+    related_prs:
+      - 1867
+      - 1886
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: free-tier-value-board
+    title: Public usage value projection and cross-provider cost comparison
+    author: ChatGPT
     status: executing
-  related_prs:
-  - 1244
-  - 1274
-  - 1277
-  - 1278
-  - 1280
-  related_branches:
-  - hark/lane-compounding
-  - docs/biudl-audit-refresh-20261021
-  gates_required:
-  - repo-gate
-- id: free-llm-provider-prioritization
-  title: Free LLM provider research/RFP feedback prioritization and HITL
-  author: Cue
-  status: in_review
-  priority: P1
-  path: active/free-llm-provider-prioritization/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: Cue
-    role: author+executor
-    status: executing
-  related_prs: []
-  related_branches: []
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: archwiz-markov-trellis-lab
-  title: ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox
-  author: ChatGPT
-  status: executing
-  priority: P1
-  path: active/archwiz-markov-trellis-lab/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: ChatGPT
-    role: author+executor
-    status: executing
-  related_issues:
-  - 966
-  related_prs:
-  - 967
-  related_branches:
-  - experiment/archwiz-markov-trellis-lab
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: archwiz-hyperforge-gemini-review
-  title: "ArchWiz Hyper-Forge \u2014 Gemini plan reconciliation and collaborative development"
-  author: ChatGPT
-  status: posted
-  priority: P1
-  path: active/archwiz-hyperforge-gemini-review/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: ChatGPT
-    role: author+executor
-    status: posted
-  related_issues:
-  - 943
-  - 951
-  - 952
-  - 944
-  - 945
-  - 946
-  - 947
-  - 948
-  - 949
-  - 950
-  related_prs:
-  - 937
-  related_branches:
-  - docs/archwiz-hyperforge-gemini-review-package
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: agent-team-formation
-  title: Role-aware agent teams, game-player fleet, scoring, and controlled research
-  author: Manus AI
-  status: draft
-  priority: P1
-  path: active/agent-team-formation/
-  reviewers:
-  - id: Manus AI
-    role: author
-    status: posted
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: awaiting_review
-  related_issues:
-  - 129
-  - 236
-  - 243
-  related_prs:
-  - 131
-  related_branches:
-  - docs/agent-team-formation-draft
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: ops-hitl-control-plane
-  title: OPS-EVENT HITL Control Plane
-  author: timerloggedout-spec
-  status: posted
-  priority: P1
-  path: active/ops-hitl-control-plane/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues: []
-  related_prs:
-  - 739
-  related_branches:
-  - feat/hitl-control-plane-739
-- id: arrhythmic-zero-token-search
-  title: Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers
-  author: grok
-  status: executing
-  priority: P1
-  path: active/arrhythmic-zero-token-search/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: accepted
-  - id: grok
-    role: author+executor
-    status: executing
-  related_prs:
-  - 685
-  related_issues: []
-  related_branches:
-  - feat/arrhythmic-zero-token-search
-- id: codespaces-enablement
-  title: Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities
-    sweep
-  author: gaps-and-opportunities-subagent
-  status: posted
-  priority: P2
-  path: active/codespaces-enablement/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: pending
-  - id: gaps-and-opportunities-subagent
-    role: author+driver
-    status: posted
-  related_prs:
-  - 499
-  - 530
-  - 531
-  related_branches:
-  - gaps-opps/add-devcontainer-codespaces
-  - docs/proposals/codespaces-enablement
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: aws-free-tier-strands-delphi-oracle
-  title: AWS Free Tier integration and Strands Decider Delphi Oracle
-  author: ChatGPT
-  status: in_review
-  priority: P1
-  path: active/aws-free-tier-strands-delphi-oracle/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_prs:
-  - 1611
-  related_branches:
-  - proposal/aws-free-tier-strands-delphi-oracle
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: quota-aware-cadence-rfp
-  title: "Quota-aware adaptive cadence system \u2014 full-thread evaluation"
-  author: timerloggedout-spec
-  status: posted
-  priority: P1
-  path: active/quota-aware-cadence-rfp/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1573
-  related_prs:
-  - 1574
-  - 1575
-  - 1576
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-- id: delphi-desk-builder-io
-  title: "Delphi Desk \u2014 decision-review cockpit for the Builder.io Agent-Native Hackathon"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/delphi-desk-builder-io/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues: []
-  related_prs:
-  - 1620
-  - 1655
-  - 1701
-  - 1702
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: strands-rfp-response-kernel-first
-  title: "Strands RFP response \u2014 kernel-first: executable E-05/E-01/E-03 on the merged offline kernel"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/strands-rfp-response-kernel-first/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1487
-  - 1489
-  related_prs:
-  - 1611
-  - 1620
-  - 1702
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: strands-rfp-response-collection-first
-  title: "Strands RFP response \u2014 collection-first: build the DEBATE collection plane (ITEMS-003)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/strands-rfp-response-collection-first/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1487
-  - 1489
-  related_prs:
-  - 1611
-  - 1620
-  - 1702
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: strands-rfp-response-packaging-first
-  title: "Strands RFP response \u2014 packaging-first: D0 Lambda shape as the deployment shape, to the\
-    \ account gate"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/strands-rfp-response-packaging-first/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1487
-  - 1489
-  related_prs:
-  - 1611
-  - 1620
-  - 1702
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: system-one-classifier-census
-  title: "System One classifier census \u2014 the full decision-model ecosystem as the Tier-1 extension\
-    \ backlog"
-  author: Perplexity
-  status: executing
-  priority: P1
-  path: active/system-one-classifier-census/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues: []
-  related_prs:
-  - 1754
-  - 1782
-  - 1786
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: doe-live-method-competition
-  title: "DOE/MVT live method-competition framework \u2014 repo-wide, sandbox-free"
-  author: timerloggedout-spec
-  status: posted
-  priority: P1
-  path: active/doe-live-method-competition/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1573
-  - 1595
-  - 1596
-  related_prs:
-  - 1848
-  related_branches:
-  - doe-live-method-competition
-  gates_required:
-  - proposal-lifecycle
-- id: temporal-durable-execution-pi-core-resume
-  title: "Temporal durable execution \u2014 pi-core-resume: pi-temporal kill-and-resume core (Oracle Method\
-    \ pass, G6: adopt)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/temporal-durable-execution-pi-core-resume/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1885
-  - 1487
-  - 1489
-  related_prs:
-  - 1867
-  - 1886
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: temporal-durable-execution-cookbook-agent-loop
-  title: "Temporal durable execution \u2014 cookbook-agent-loop: ai-cookbook recipes + HITL approval (Oracle\
-    \ Method pass, G6: pilot)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/temporal-durable-execution-cookbook-agent-loop/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1885
-  - 1487
-  - 1489
-  related_prs:
-  - 1867
-  - 1886
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: temporal-durable-execution-versioned-autoscale
-  title: "Temporal durable execution \u2014 versioned-autoscale: Worker Versioning + backlog autoscaling\
-    \ model (Oracle Method pass, G6: reference-only)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/temporal-durable-execution-versioned-autoscale/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1885
-  - 1487
-  - 1489
-  related_prs:
-  - 1867
-  - 1886
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: temporal-durable-execution-contract-first
-  title: "Temporal durable execution \u2014 contract-first: evidence-envelope schema + generated validators\
-    \ (Oracle Method pass, G6: adopt as contract discipline)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/temporal-durable-execution-contract-first/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1885
-  - 1487
-  - 1489
-  related_prs:
-  - 1867
-  - 1886
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: temporal-durable-execution-serverless-skill
-  title: "Temporal durable execution \u2014 serverless-skill: skill-form starter, cloud paths gated (Oracle\
-    \ Method pass, G6: reference-only)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/temporal-durable-execution-serverless-skill/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1885
-  - 1487
-  - 1489
-  related_prs:
-  - 1867
-  - 1886
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: free-tier-value-board
-  title: Public usage value projection and cross-provider cost comparison
-  author: ChatGPT
-  status: executing
-  priority: P1
-  path: active/free-tier-value-board/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: ChatGPT
-    role: author+executor
-    status: executing
-  related_issues:
-  - 1588
-  - 1592
-  - 1593
-  - 1571
-  related_prs:
-  - 1589
-  - 2409
-  related_branches:
-  - feat/free-tier-value-public-usage-rank
-  - fix/provider-usage-unknown-token-counts
-  gates_required:
-  - repo-gate
-  - termux-smoke
-- id: kiroween-delphi-concept-skeleton-crew
-  title: "Kiroween 2026 \u2014 skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/kiroween-delphi-concept-skeleton-crew/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1487
-  - 1489
-  related_prs:
-  - 1655
-  - 1697
-  - 1699
-  - 1707
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: kiroween-delphi-concept-frankenstein
-  title: "Kiroween 2026 \u2014 frankenstein: decision agent stitched from proven public patterns"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/kiroween-delphi-concept-frankenstein/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1487
-  - 1489
-  related_prs:
-  - 1655
-  - 1697
-  - 1699
-  - 1707
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: kiroween-delphi-concept-resurrection
-  title: "Kiroween 2026 \u2014 resurrection: dormant public spec rebuilt fresh in Kiro"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: active/kiroween-delphi-concept-resurrection/
-  reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  related_issues:
-  - 1487
-  - 1489
-  related_prs:
-  - 1655
-  - 1697
-  - 1699
-  - 1707
-  related_branches: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: marketing-strategy-tactics-strict-separation
-  title: "Marketing doctrine \u2014 strict separation (verified record only)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: docs/proposals/active/marketing-strategy-tactics-strict-separation
-  reviewers:
-  - id: timerloggedout-spec/operator-authorizer/requested
-    role: owner
-    status: requested
-  related_issues:
-  - 574
-  - 1487
-  - 1489
-  related_prs: []
-  related_branches: []
-  related_proposals: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: marketing-strategy-tactics-attributed-tiered
-  title: "Marketing doctrine \u2014 attributed tiering (labeled partner claims)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: docs/proposals/active/marketing-strategy-tactics-attributed-tiered
-  reviewers:
-  - id: timerloggedout-spec/operator-authorizer/requested
-    role: owner
-    status: requested
-  related_issues:
-  - 574
-  - 1487
-  - 1489
-  related_prs: []
-  related_branches: []
-  related_proposals: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
-- id: marketing-strategy-tactics-partner-forward-blend
-  title: "Marketing doctrine \u2014 partner-forward blend (status quo)"
-  author: oracle-method
-  status: in_review
-  priority: P1
-  path: docs/proposals/active/marketing-strategy-tactics-partner-forward-blend
-  reviewers:
-  - id: timerloggedout-spec/operator-authorizer/requested
-    role: owner
-    status: requested
-  related_issues:
-  - 574
-  - 1487
-  - 1489
-  related_prs: []
-  related_branches: []
-  related_proposals: []
-  gates_required:
-  - proposal-lifecycle
-  - repo-gate
+    priority: P1
+    path: active/free-tier-value-board/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 1588
+      - 1592
+      - 1593
+      - 1571
+    related_prs:
+      - 1589
+      - 2409
+    related_branches:
+      - feat/free-tier-value-public-usage-rank
+      - fix/provider-usage-unknown-token-counts
+    gates_required:
+      - repo-gate
+      - termux-smoke
+  - id: kiroween-delphi-concept-skeleton-crew
+    title: 'Kiroween 2026 — skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/kiroween-delphi-concept-skeleton-crew/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1487
+      - 1489
+    related_prs:
+      - 1655
+      - 1697
+      - 1699
+      - 1707
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: kiroween-delphi-concept-frankenstein
+    title: 'Kiroween 2026 — frankenstein: decision agent stitched from proven public patterns'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/kiroween-delphi-concept-frankenstein/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1487
+      - 1489
+    related_prs:
+      - 1655
+      - 1697
+      - 1699
+      - 1707
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: kiroween-delphi-concept-resurrection
+    title: 'Kiroween 2026 — resurrection: dormant public spec rebuilt fresh in Kiro'
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/kiroween-delphi-concept-resurrection/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 1487
+      - 1489
+    related_prs:
+      - 1655
+      - 1697
+      - 1699
+      - 1707
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: marketing-strategy-tactics-strict-separation
+    title: Marketing doctrine — strict separation (verified record only)
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: docs/proposals/active/marketing-strategy-tactics-strict-separation
+    reviewers:
+      - id: timerloggedout-spec/operator-authorizer/requested
+        role: owner
+        status: requested
+    related_issues:
+      - 574
+      - 1487
+      - 1489
+    related_prs: []
+    related_branches: []
+    related_proposals: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: marketing-strategy-tactics-attributed-tiered
+    title: Marketing doctrine — attributed tiering (labeled partner claims)
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: docs/proposals/active/marketing-strategy-tactics-attributed-tiered
+    reviewers:
+      - id: timerloggedout-spec/operator-authorizer/requested
+        role: owner
+        status: requested
+    related_issues:
+      - 574
+      - 1487
+      - 1489
+    related_prs: []
+    related_branches: []
+    related_proposals: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+  - id: marketing-strategy-tactics-partner-forward-blend
+    title: Marketing doctrine — partner-forward blend (status quo)
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: docs/proposals/active/marketing-strategy-tactics-partner-forward-blend
+    reviewers:
+      - id: timerloggedout-spec/operator-authorizer/requested
+        role: owner
+        status: requested
+    related_issues:
+      - 574
+      - 1487
+      - 1489
+    related_prs: []
+    related_branches: []
+    related_proposals: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate

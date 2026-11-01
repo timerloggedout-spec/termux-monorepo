@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T12:06:39Z",
+ "generated_at": "2026-11-01T12:10:43Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -403,7 +403,7 @@
       "gemini-interactions-smoke.yml"
      ],
      "trigger": "workflow_dispatch (model input)",
-     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure.",
+     "evidence": "0 runs at census; trigger exists, never fired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302258314 + 41302303592 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302303592, job 124835623497): probe step HTTP 404 from the Gemini Interactions API with GEMINI_API_KEY configured — route/model not found, NOT a credential failure. || FOLD (desk, 2026-11-01): third dispatch run 41303165533 (11:43Z) FAILURE — pattern holds (Interactions API 404 diagnosis stands); class stays triggerable.",
      "batch_scope": "inference-bench"
     },
     {
@@ -433,7 +433,7 @@
       "cadence-provider-onboarding.yml"
      ],
      "trigger": "workflow_dispatch / schedule / push on registry paths",
-     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes).",
+     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302538342 SUCCESS (2026-11-01) (+ run 41302640540 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes). || FOLD (desk, 2026-11-01): queued batch run 41302640540 resolved SUCCESS ⇒ batch outcomes ∀✓ (41302538342 + 41302640540).",
      "batch_scope": "inference-bench"
     },
     {
@@ -448,7 +448,7 @@
       "provider-recon-compound.yml"
      ],
      "trigger": "workflow_dispatch / workflow_run / PR paths",
-     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335).",
+     "evidence": "57 runs; last_success run 40556385337 @2026-10-27 || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✗✗ — workflow_dispatch runs 41302080198 + 41302264142 FAILURE (2026-11-01) ⇒ class stays triggerable; failures route to diagnose-on-issue per the owner order (Swarm lane). || DIAGNOSIS (log-verified run 41302264142): collect step pinned-source fetch HTTP 403 Forbidden (exit 2, publish skipped); production fix dispatched to Gemini, issue #3077 (invoke run 41302651335). || FOLD (desk, 2026-11-01): NEW workflow_dispatch run 41304907142 (12:06:50Z) SUCCESS — first batch-era dispatch success; promotion candidate triggerable → proven, reclass = fix seat/Swarm call. (PR-event run 41305083037 = action_required, separate event class.)",
      "batch_scope": "inference-bench"
     },
     {
@@ -463,7 +463,7 @@
       "quota-dispatch-tree.yml"
      ],
      "trigger": "workflow events / dispatch",
-     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302083313 SUCCESS (2026-11-01) (+ run 41302266076 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes).",
+     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane || BATCH ALL TRIGGERABLE (owner order 2026-11-01; fired by Swarm lane [MUSEai]@{role:{optimizations-assurance}}; stamped by desk [MUSEai]@{role:{challenge-entries-manager}}, context = production batch dispatch, model = NOT ESTABLISHED (workflow-internal)): OUTCOME ✓ — workflow_dispatch run 41302083313 SUCCESS (2026-11-01) (+ run 41302266076 fired same batch) ⇒ class triggerable → proven (dispatch route fires + completes). || FOLD (desk, 2026-11-01): queued batch run 41302266076 resolved SUCCESS ⇒ both batch dispatch runs ✓.",
      "batch_scope": "inference-bench"
     }
    ],

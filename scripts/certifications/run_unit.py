@@ -28,7 +28,7 @@ PROMPT_TEMPLATE = (
     "one worked example. Format as markdown with a title line."
 )
 QUESTIONS_TEMPLATE = (
-    "FreeCodeCamp Relational Databases v9 lesson \"{title}". Answer each "
+    "FreeCodeCamp Relational Databases v9 lesson \"{title}\". Answer each "
     "comprehension check below from the lesson content. For every question: "
     "restate the question verbatim under a heading line \"Q<n>\", then give "
     "the correct option (letter and full text) and a one-sentence "

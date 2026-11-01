@@ -17,7 +17,10 @@ operator/ subpackage shadows the stdlib operator module. It lists every open PR,
 maps each to the classifier's input dict, runs `classify_pr`, and
 writes the feed to `ops/ml/pr-lane-feed.json` (schema `pr-lane-feed/v1`:
 generated_at, open_prs, per-lane counts, per-PR rows with lane, gates,
-age, size). The workflow commits the feed only when it changed. Each
+age, size, base_ref, mergeable_state — the last two added 2026-10-31
+so replaying the classifier over a frozen feed reproduces it exactly;
+live-2-prlane-tuning phase 0 found non-master bases unreplayable
+without them). The workflow commits the feed only when it changed. Each
 successful run also appends one counts-only line to
 `ops/ml/pr-lane-series.jsonl` ({generated_at, open_prs, counts,
 delta_vs_previous, fetch_warnings}) — the trend series for renderers,

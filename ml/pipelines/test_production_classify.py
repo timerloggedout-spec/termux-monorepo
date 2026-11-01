@@ -65,6 +65,11 @@ class ClassifyAll(unittest.TestCase):
         self.assertEqual(lanes[4], "CANDIDATE")      # clean + gates green
         self.assertEqual(lanes[5], "NEED_EVIDENCE")  # no gate evidence
         self.assertEqual(sum(feed["counts"].values()), 5)
+        # Rows carry base_ref + mergeable_state (replay exactness,
+        # live-2 phase 0 gap) — the row for PR 4 sits on master/clean.
+        row4 = next(r for r in feed["prs"] if r["number"] == 4)
+        self.assertEqual(row4["base_ref"], "master")
+        self.assertEqual(row4["mergeable_state"], "clean")
 
 
 class Series(unittest.TestCase):

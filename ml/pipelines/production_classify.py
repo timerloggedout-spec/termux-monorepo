@@ -135,6 +135,12 @@ def classify_all(pr_dicts: list[dict[str, Any]], now: datetime) -> dict[str, Any
             "title": d["title"],
             "author": (d.get("user") or {}).get("login"),
             "draft": d["draft"],
+            # Carried so replaying the classifier over a frozen feed is
+            # exact (live-2 phase 0, 2026-10-31: non-master bases were
+            # recorded NEED_EVIDENCE but replayed CANDIDATE because the
+            # projection dropped base.ref + mergeable_state).
+            "base_ref": (d.get("base") or {}).get("ref"),
+            "mergeable_state": d.get("mergeable_state"),
             "age_days": round(float(d.get("age_days") or 0), 1),
             "changed_files": d["changed_files"],
             "gates": d["gates"],

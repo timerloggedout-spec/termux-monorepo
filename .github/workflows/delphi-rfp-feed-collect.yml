@@ -2,6 +2,15 @@
 # Regenerates apps/help-wanted-dashboard/data/delphi-rfp-feed.json from
 # the open delphi:rfp issues and their gate ledger comments, and
 # proposes it as a refresh PR — never commits directly.
+#
+# F1 ADOPTION — Termux Fleet Swarm (issue #2750 wave, 2026-10-31): the
+# branch push + refresh-PR create run on a Swarm app token (SEC-03
+# minting), NOT the default GITHUB_TOKEN — default-token PR events do
+# not trigger downstream workflows (anti-recursion) and park as
+# action_required (17 of the most-recent 400 parked runs sampled
+# 2026-10-31 sat on this family's branch). Collection reads stay on
+# the default token. Mint failure fails the job loudly on purpose:
+# a silent fallback would re-park the refresh PR invisibly.
 name: delphi-rfp-feed-collect
 
 on:
@@ -29,7 +38,16 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       GITHUB_TOKEN: ${{ github.token }}
     steps:
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.swarm-token.outputs.token }}
       - name: Freshness gate (event-driven runs only)
         id: gate
         if: github.event_name == 'workflow_run'
@@ -79,6 +97,8 @@ jobs:
             --cache .rfp-cache --out apps/help-wanted-dashboard/data/delphi-rfp-feed.json
       - name: Propose the refresh as a PR
         if: steps.gate.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
           if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-rfp-feed.json; then
@@ -86,8 +106,8 @@ jobs:
             exit 0
           fi
           branch="delphi-rfp-feed/refresh"
-          git config user.name "delphi-rfp-feed-collect"
-          git config user.email "actions@github.com"
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "350898559+termux-fleet-swarm[bot]@users.noreply.github.com"
           git checkout -B "$branch"
           git add apps/help-wanted-dashboard/data/delphi-rfp-feed.json
           git commit -m "chore(delphi): refresh delphi-rfp-feed"

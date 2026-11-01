@@ -49,6 +49,26 @@ Row shape (feed: `ops/quota/allocation-verification.json`, schema `quota.allocat
 - Owner-named exemplar of the semantics: credits available ⇒ **free-equivalent** while they last.
 - API verification route from this lane: `not-established` (no connector/key on hand) ⇒ flag `verify-claim-state` (claimed/balance unconfirmed firsthand — NOT ruled unclaimed).
 
+
+## Batch 2 (2026-10-31, probe run 41263537880, PR #2862; routes per gaps recon PR #2859)
+
+One read-only GET per provider from Actions with the verified secret name. Grades: `api-verified` = real account object or key-gated surface answered 200; `api-read` = public surface answered (auth not proven); failures recorded verbatim.
+
+- **Key live (200, key-gated) — free layer receiving, limits not exposed by the surface:** cohere (models), sambanova (models), zai (models), llm7 (models), routeway (models), unorouter (models; roster visibly carries `:free` ids, AI-Horde class), gemini (models list is key-gated ⇒ key live; AI Studio free-quota class, no balance object).
+- **huggingface — api-verified account:** user `timerloggedout-hf`, `isPro = false`, no orgs ⇒ free account, receiving; no PRO credits layer.
+- **vercel — api-verified account:** user `timerloggedout-5184` answered; plan not present in the user object ⇒ plan `not-established`, account live.
+- **supabase — api-verified management surface:** the stored key answers the Management API projects read: 1 project (`termux-monorepo-lane-state`) ⇒ account surface readable; tier not in the project object ⇒ `not-established`.
+- **pinecone — api-verified:** 2 indexes Ready (`swaying-dogwood`, `termux-knowledge`) ⇒ receiving.
+- **fly — api-verified:** org `personal` (PERSONAL) via GraphQL viewer read ⇒ account live.
+- **ollama, nvidia — api-read only:** public model surfaces answered 200; auth NOT proven by these endpoints.
+- **siliconflow — KEY REJECTED:** 401 `Token is invalid` (real verdict from the account surface) ⇒ flag `credential-dead` (provisioning fix; provider itself offers a free tier — not receivable with this token).
+- **cloudflare — rejected at user-scope verify:** 401 code 1000 on `/user/tokens/verify`; an account-scoped token is NOT excluded (different verify path) ⇒ `verify-scope` caveat, not ruled dead.
+- **Edge-blocked, NO verdict (Cloudflare 1010 from the Actions egress):** groq, xkiro, **felo** — felo claim-state therefore STILL `verify-claim-state` (owner-attested stands); route forward = non-Actions egress.
+- **Route-dead:** aion (404 `no Route matched` — base/path wrong, no key verdict), sealion (DNS does not resolve — phantom-route candidate).
+- **Not executable (no credential under any name — provisioning lane, per gaps recon):** cerebras, mistral, requesty, xfyun (doubly phantom), kilo, modelscope, omni, ovhcloud, typhoon.
+
+Batch-2 totals: unclaimed allocations established = ∅; new card flags = ∅; credential-dead = 1 (siliconflow).
+
 ## Remaining families (state `not-established`, route named)
 
 g4f (61 records — aggregator; per-upstream verification rides the g4f resolution: 17 ESTABLISHED / 43 NOT), cloudflare, render, supabase, pinecone, turso, upstash, aws, gcp, oracle, meta, vercel (connector on hand — batch 2), azure, digitalocean, huggingface (saved login — batch 2), gemini (AI Studio route live — batch 2), ollama, grafana, partners, fly, koyeb, platform201, deno, netlify, aion, cerebras, cohere, groq, kilo, llm7, mistral, modelscope, nvidia, omni, ovhcloud, requesty, routeway, sambanova, sealion, siliconflow, typhoon, unorouter, xfyun, xkiro, zai, fleet.

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 172,
+    "open_prs": 173,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 84,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 170,
+      "prs": 171,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:41:42Z",
+  "generated_at": "2026-11-01T23:42:52Z",
   "issues_unlabelled": [
     308,
     343,
@@ -131,10 +131,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "ceb0ef30fe"
+    "sha": "dc244e8c34"
   },
   "prs": [
     {
@@ -206,6 +206,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fb27c7f443",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3335,
+      "title": "feat(icm): DeepWiki.com import harvest automation (run#10 phase 2)",
+      "updated_at": "2026-11-01T23:42:24Z"
     },
     {
       "class": "CANDIDATE",
@@ -442,7 +456,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-01T22:13:01Z"
@@ -1784,15 +1798,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "c1b1cc3cb2",
+      "head_sha": "f4b696f9cf",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T23:40:03Z"
+      "updated_at": "2026-11-01T23:42:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2529,26 +2543,26 @@
         "hygiene": "in_progress",
         "smoke": "queued"
       },
-      "head_sha": "fb27c7f443",
+      "head_sha": "212b343244",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3335,
-      "title": "feat(icm): DeepWiki.com import harvest automation (run#10 phase 2)",
-      "updated_at": "2026-11-01T23:41:31Z"
+      "number": 3337,
+      "title": "3L0 plane: live-dispatch intake spec 3l0-intake/v1 (to Swarm)",
+      "updated_at": "2026-11-01T23:42:24Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "15592a4ca9",
+      "head_sha": "90d411005a",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3336,
-      "title": "DoE scoring intake spec (for Swarm routing)",
-      "updated_at": "2026-11-01T23:41:40Z"
+      "mergeable_state": "unstable",
+      "number": 3339,
+      "title": "docs(llm-api-hub): archive rationale in PRESERVED.md",
+      "updated_at": "2026-11-01T23:42:25Z"
     }
   ],
   "schema": "operator-matrix/v1",

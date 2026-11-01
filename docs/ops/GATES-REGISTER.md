@@ -33,6 +33,8 @@ Notation: caveman micro dense · states = {CLOSED · OPEN · RESOLVED · TRANSIE
 | hyperbolic | google login via vault card (app.hyperbolic.ai) | OPEN | provisioning a78e43e6 |
 | unorouter | vault-card login; provider consents pending behind it | OPEN | provisioning a78e43e6 |
 | ai21 | vault card in provisioning chat | OPEN | provisioning a78e43e6 |
+| devin wiki indexing (DEVINdeepWiki) | owner Devin Settings step: service-user token (IndexOrgRepositories) → secret `DEVIN_API_KEY` + vars `DEVIN_ORG_ID` / `DEVIN_WIKI_EFFORT` | OPEN — blocks continuous automated DEVINdeepWiki refresh; owner manually refreshed repo+branches 2026-11-01 | owner / repo-org ec42d7e8 |
+| deepwiki fabric pair | secrets `DEEPWIKI_TOKEN` (mcp.devin.ai probe) + `DEEPWIKI_LLM_API_KEY` (local deepwiki-rs generation — independent provider family, ¬ Cognition) | OPEN | provisioning |
 | xfyun | vault card never submitted | OPEN | accounts 79a004f8 |
 | tinyfish | TINYFISH_API_KEY vault capture issued; Actions secret = separate step | OPEN | scraping 97b21d62 |
 

@@ -702,7 +702,1095 @@
     },
     "note_deepseek": "DeepSeek has no distinct model-lane provider row (only g4f/DeepSeek among the 89); its dispatch lanes are the ci-lane records deepseek.build_dispatch / deepseek.termux-agent."
    },
-   "cross_ref": "Swarm widened rotation of record: SWARM doc §15 (PR #3056 merged 8a8dd117fdb8) — arm inventory evidence-graded; this catalog is the desk-feed mirror."
+   "cross_ref": "Swarm widened rotation of record: SWARM doc §15 (PR #3056 merged 8a8dd117fdb8) — arm inventory evidence-graded; this catalog is the desk-feed mirror.",
+   "inference_availability": {
+    "note": "THE CRUX (owner emphasis 2026-11-01 via D1): catalog resolution stands on invocability — which registry records are actually invocable, via which route. Per-record mapping for all 91 model-lane records. Sources firsthand @master: registry ops/quota/registry.json blob 0f892261; availability surface scripts/provider_model_catalog.py blob 5d8f4b25 (ENDPOINTS 16 + SECRETS 17) driven by scripts/provider_availability_probe.py blob 323fc443 via provider-availability.yml; batch surface llm_api_hub/server/research_providers.py blob 062ec524 (ENDPOINTS 14 provider keys).",
+    "surface_semantics": "provider-availability proves credential_present + catalog_ok ONLY (its own schema: inference_ok = false for scheduled probes). Bounded inference legs exist for exactly 2 providers in the probe: openrouter (openrouter_inference on credential+catalog ok) and gemini (models list + generateContent-capability check). Availability coverage != inference proof for the other 14.",
+    "rosters": {
+     "availability_endpoints": [
+      "aion",
+      "cerebras",
+      "felo",
+      "gemini",
+      "groq",
+      "huggingface",
+      "kilo",
+      "llm7",
+      "mistral",
+      "modelscope",
+      "nvidia",
+      "omni",
+      "openrouter",
+      "ovhcloud",
+      "sambanova",
+      "siliconflow"
+     ],
+     "availability_secret_only": [
+      "zai"
+     ],
+     "batch_endpoints": [
+      "aion",
+      "cerebras",
+      "gemini",
+      "groq",
+      "huggingface",
+      "kilo",
+      "llm7",
+      "mistral",
+      "modelscope",
+      "nvidia",
+      "ovhcloud",
+      "sambanova",
+      "siliconflow",
+      "zai"
+     ],
+     "alias": {
+      "google": "gemini"
+     }
+    },
+    "summary": {
+     "records": 91,
+     "by_class": {
+      "wired-unproven": 22,
+      "triggerable": 2,
+      "inference-only": 65,
+      "proven": 2
+     },
+     "availability_covered": 16,
+     "availability_secret_only": 1,
+     "availability_not_covered": 74,
+     "batch_endpoint_wired": 14
+    },
+    "records": [
+     {
+      "id": "aion.free_tokens",
+      "provider": "aion",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published (no rate-limit headers or usage endpoint documented)"
+     },
+     {
+      "id": "cerebras.free_tokens",
+      "provider": "cerebras",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket"
+     },
+     {
+      "id": "cloudflare.workers_ai",
+      "provider": "cloudflare",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "none published (no usage API); Workers AI dashboard only"
+     },
+     {
+      "id": "cohere.trial_calls",
+      "provider": "cohere",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)"
+     },
+     {
+      "id": "felo.api_credits",
+      "provider": "felo",
+      "class": "triggerable",
+      "availability_probe": "endpoint+secret",
+      "batch": "not-wired",
+      "inference_route": [
+       "provider-availability catalog probe",
+       "catalog endpoint in scripts/provider_model_catalog.py; batch admission missing"
+      ],
+      "registry_live_field": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After"
+     },
+     {
+      "id": "g4f.agenttools",
+      "provider": "g4f/AgentTools",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.airforce",
+      "provider": "g4f/Airforce",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.antigravity",
+      "provider": "g4f/Antigravity",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.arena",
+      "provider": "g4f/Arena",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.bingcreateimages",
+      "provider": "g4f/BingCreateImages",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.blackboxpro",
+      "provider": "g4f/BlackboxPro",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.blackforestlabs_flux1dev",
+      "provider": "g4f/BlackForestLabs_Flux1Dev",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.blackforestlabs_flux1kontextdev",
+      "provider": "g4f/BlackForestLabs_Flux1KontextDev",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.bravesearch",
+      "provider": "g4f/BraveSearch",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.cachedsearch",
+      "provider": "g4f/CachedSearch",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.cerebras",
+      "provider": "g4f/Cerebras",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.chatgpt",
+      "provider": "g4f/ChatGPT",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.claude",
+      "provider": "g4f/Claude",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.cloudflare",
+      "provider": "g4f/Cloudflare",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.cohereforai_c4ai_command",
+      "provider": "g4f/CohereForAI_C4AI_Command",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.copilot",
+      "provider": "g4f/Copilot",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.copilotapp",
+      "provider": "g4f/CopilotApp",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.deepinfra",
+      "provider": "g4f/DeepInfra",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.deepseek",
+      "provider": "g4f/DeepSeek",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.elevenlabs",
+      "provider": "g4f/ElevenLabs",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.g4fspace",
+      "provider": "g4f/G4FSpace",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.gemini",
+      "provider": "g4f/Gemini",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.geminicli",
+      "provider": "g4f/GeminiCLI",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.geminipro",
+      "provider": "g4f/GeminiPro",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.githubcopilot",
+      "provider": "g4f/GithubCopilot",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.glm",
+      "provider": "g4f/GLM",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.googleaimode",
+      "provider": "g4f/GoogleAiMode",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.googlesearch",
+      "provider": "g4f/GoogleSearch",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.grok",
+      "provider": "g4f/Grok",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.groq",
+      "provider": "g4f/Groq",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.hailuoai",
+      "provider": "g4f/HailuoAI",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.huggingchat",
+      "provider": "g4f/HuggingChat",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.huggingface",
+      "provider": "g4f/HuggingFace",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.huggingfacemedia",
+      "provider": "g4f/HuggingFaceMedia",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.huggingspace",
+      "provider": "g4f/HuggingSpace",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.kilocode",
+      "provider": "g4f/KiloCode",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.llm7",
+      "provider": "g4f/LLM7",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.markitdown",
+      "provider": "g4f/MarkItDown",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.metaai",
+      "provider": "g4f/MetaAI",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.metaaiaccount",
+      "provider": "g4f/MetaAIAccount",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.microsoftdesigner",
+      "provider": "g4f/MicrosoftDesigner",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.nvidia",
+      "provider": "g4f/Nvidia",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.ollama",
+      "provider": "g4f/Ollama",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.omniroute",
+      "provider": "g4f/OmniRoute",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.openaifm",
+      "provider": "g4f/OpenAIFM",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.openrouterfree",
+      "provider": "g4f/OpenRouterFree",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.operaaria",
+      "provider": "g4f/OperaAria",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.perplexity",
+      "provider": "g4f/Perplexity",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.pi",
+      "provider": "g4f/Pi",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.pollinations",
+      "provider": "g4f/Pollinations",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.pollinationsaudio",
+      "provider": "g4f/PollinationsAudio",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.pollinationsimage",
+      "provider": "g4f/PollinationsImage",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.puter",
+      "provider": "g4f/Puter",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.qwen",
+      "provider": "g4f/Qwen",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.relayrouter",
+      "provider": "g4f/RelayRouter",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.stabilityai_sd35large",
+      "provider": "g4f/StabilityAI_SD35Large",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.teachanything",
+      "provider": "g4f/TeachAnything",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.vendors",
+      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call"
+     },
+     {
+      "id": "g4f.whiterabbitneo",
+      "provider": "g4f/WhiteRabbitNeo",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.you",
+      "provider": "g4f/You",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "g4f.yqcloud",
+      "provider": "g4f/Yqcloud",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)"
+     },
+     {
+      "id": "gemini.api_free",
+      "provider": "google",
+      "class": "proven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "gemini-dispatch (event invoke)",
+       "provider-availability bounded inference leg"
+      ],
+      "registry_live_field": "none; .github/actions/gemini-quota-gate soft budgets + 429s"
+     },
+     {
+      "id": "github.copilot.free",
+      "provider": "github",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none (no usage API for Free)"
+     },
+     {
+      "id": "groq.free_tier",
+      "provider": "groq",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-t"
+     },
+     {
+      "id": "huggingface.inference_providers",
+      "provider": "huggingface",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota)"
+     },
+     {
+      "id": "kilo.free_models",
+      "provider": "kilo",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published"
+     },
+     {
+      "id": "llm7.free_token",
+      "provider": "llm7",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard"
+     },
+     {
+      "id": "meta.llama_api",
+      "provider": "meta",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none (retired; superseded by meta.model_api)"
+     },
+     {
+      "id": "meta.model_api",
+      "provider": "meta",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none (no usage API established; credential MODEL_API_KEY not provisioned — owner provisioning item, names-only)"
+     },
+     {
+      "id": "meta.muse_code",
+      "provider": "meta",
+      "class": "inference-only",
+      "availability_probe": "not-covered",
+      "batch": "not-wired",
+      "inference_route": [
+       "no wired route established (see promotion wiring)"
+      ],
+      "registry_live_field": "none (auth = browser sign-in or META_API_KEY / muse auth set; credential not provisioned — owner item, names-only)"
+     },
+     {
+      "id": "mistral.free_mode",
+      "provider": "mistral",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published (Admin Panel only; Admin API is Enterprise)"
+     },
+     {
+      "id": "modelscope.api_inference",
+      "provider": "modelscope",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published (not established)"
+     },
+     {
+      "id": "nvidia.api_catalog",
+      "provider": "nvidia",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published"
+     },
+     {
+      "id": "omni.gateway",
+      "provider": "omni",
+      "class": "triggerable",
+      "availability_probe": "endpoint+secret",
+      "batch": "not-wired",
+      "inference_route": [
+       "provider-availability catalog probe",
+       "catalog endpoint in scripts/provider_model_catalog.py; batch admission missing"
+      ],
+      "registry_live_field": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers"
+     },
+     {
+      "id": "openrouter.free_models",
+      "provider": "openrouter",
+      "class": "proven",
+      "availability_probe": "endpoint+secret",
+      "batch": "not-wired",
+      "inference_route": [
+       "openrouter production legs",
+       "provider-availability bounded inference leg"
+      ],
+      "registry_live_field": "GET /api/v1/key -> data.free_model_daily_requests {used, limit, remaining} (OPENROUTER_API_KEY); ignore private credit/budget fields and openrouter_metadata"
+     },
+     {
+      "id": "ovhcloud.ai_endpoints",
+      "provider": "ovhcloud",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "none published; consumption visible in the Control Panel"
+     },
+     {
+      "id": "requesty.free_models",
+      "provider": "requesty",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage"
+     },
+     {
+      "id": "routeway.free_models",
+      "provider": "routeway",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After"
+     },
+     {
+      "id": "sambanova.free_tier",
+      "provider": "sambanova",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratel"
+     },
+     {
+      "id": "sealion.api",
+      "provider": "sealion",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "none published"
+     },
+     {
+      "id": "siliconflow.free_models",
+      "provider": "siliconflow",
+      "class": "wired-unproven",
+      "availability_probe": "endpoint+secret",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free val"
+     },
+     {
+      "id": "typhoon.api",
+      "provider": "typhoon",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message"
+     },
+     {
+      "id": "unorouter.free_models",
+      "provider": "unorouter",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "Retry-After header on HTTP 429"
+     },
+     {
+      "id": "xfyun.spark",
+      "provider": "xfyun",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "none published (not established)"
+     },
+     {
+      "id": "xkiro.free_models",
+      "provider": "xkiro",
+      "class": "wired-unproven",
+      "availability_probe": "not-covered",
+      "batch": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "no availability coverage"
+      ],
+      "registry_live_field": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published"
+     },
+     {
+      "id": "zai.free_models",
+      "provider": "zai",
+      "class": "wired-unproven",
+      "availability_probe": "secret-only",
+      "batch": "endpoint-wired",
+      "inference_route": [
+       "provider-batch (HELD per #2672)",
+       "provider-availability catalog probe"
+      ],
+      "registry_live_field": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)"
+     }
+    ]
+   }
   }
  },
  "traversals": [

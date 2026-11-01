@@ -79,3 +79,11 @@ B×P residual (name-match, v0 signal only): merged-PR head name still in refs 2,
 ## Maintenance
 
 Re-run `scripts/graph_matrix_census.py` (token: `GH_TOKEN`/`GITHUB_TOKEN`), refresh census.json + the tables above in one PR, report delta ↑ Repo Organization manager. Counts are always firsthand from the API at census time — never copied forward.
+
+## Freeze note (2026-11-01) — deletion framing superseded-by-freeze
+
+> Owner correction via main (2026-11-01): **DELETION IS PROHIBITED repo-wide.** Rationale: keep + archive + back up — the datasets are not compiled yet; all repo content is uncompiled dataset material for the ML pipelines, so nothing in the tree is surplus or prunable until the datasets exist. Sanctioned retirement = **ARCHIVE** (content kept in-tree, preserved, additive notes only; issue #3280 pattern). Consolidation = additive notes only; in-tree blob-identical moves allowed.
+>
+> Effect on this document (annotation only — the v0 text above stays in place): every deletion-oriented phrase is **superseded-by-freeze**, including "Branch deletion is list-only", the B×P lifecycle wording "residual head = leak … before any deletion list", and the stale∧orphan branch list in census.json as any kind of removal queue. Branch lists remain census records only; branches are not content files, and branch-deletion stays HELD until main speaks to branches specifically.
+>
+> Language rule for future censuses: "stale" / "orphan" are descriptive linkage states only — they imply no pruning candidacy. Census and backlink (additive) work is unaffected by the freeze.

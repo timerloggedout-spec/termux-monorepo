@@ -55,20 +55,19 @@ jobs:
         run: |
           set -euo pipefail
           for page in 1 2 3 4 5 6; do
-            gh api "repos/${{ github.repository }}/pulls?state=all&per_page=100&page=$page&sort=created&direction=desc" >> prs-pages.jsonl
+            gh api "repos/${{ github.repository }}/pulls?state=all&per_page=100&page=$page&sort=created&direction=desc" > "prs-page-$page.json"
           done
           python3 - << 'PYEOF'
-          import json
+          import glob, json
           prs = []
-          for line in open("prs-pages.jsonl"):
-              line = line.strip()
-              if line:
-                  prs.extend(json.loads(line))
+          for f in sorted(glob.glob("prs-page-*.json")):
+              prs.extend(json.load(open(f)))
           seen, out = set(), []
           for p in prs:
               if p["number"] not in seen:
                   seen.add(p["number"]); out.append(p)
           json.dump(out, open("prs.json", "w"))
+          print(f"prs merged: {len(out)}")
           PYEOF
           python3 -B scripts/telemetry_ingest/density_stats.py \
             --prs prs.json \

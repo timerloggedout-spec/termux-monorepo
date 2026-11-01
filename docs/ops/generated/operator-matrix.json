@@ -1,6 +1,6 @@
 {
   "counts": {
-    "open_issues": 381,
+    "open_issues": 380,
     "open_prs": 172,
     "pr_classes": {
       "CANDIDATE": 83,
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 36,
+      "issues": 35,
       "prs": 170,
       "unlabelled_numbers": [
         308,
@@ -86,12 +86,11 @@
         3050,
         3094,
         3141,
-        3215,
-        3327
+        3215
       ]
     }
   },
-  "generated_at": "2026-11-01T23:40:37Z",
+  "generated_at": "2026-11-01T23:41:42Z",
   "issues_unlabelled": [
     308,
     343,
@@ -127,8 +126,7 @@
     3050,
     3094,
     3141,
-    3215,
-    3327
+    3215
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -136,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "b828b9d209"
+    "sha": "ceb0ef30fe"
   },
   "prs": [
     {
@@ -444,7 +442,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-01T22:13:01Z"
@@ -1791,7 +1789,7 @@
       },
       "head_sha": "c1b1cc3cb2",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-11-01T23:40:03Z"
@@ -2528,29 +2526,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "cancelled"
+        "hygiene": "in_progress",
+        "smoke": "queued"
       },
-      "head_sha": "c1ae1bdb00",
+      "head_sha": "fb27c7f443",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3332,
-      "title": "docs(swarm): DeepWiki leg promoted to requirement (\u00a718 amendment)",
-      "updated_at": "2026-11-01T23:40:23Z"
+      "number": 3335,
+      "title": "feat(icm): DeepWiki.com import harvest automation (run#10 phase 2)",
+      "updated_at": "2026-11-01T23:41:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "38d095c5d8",
+      "head_sha": "15592a4ca9",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3333,
-      "title": "DoE: dispatch principle of record (comparative planes)",
-      "updated_at": "2026-11-01T23:40:32Z"
+      "mergeable_state": "unknown",
+      "number": 3336,
+      "title": "DoE scoring intake spec (for Swarm routing)",
+      "updated_at": "2026-11-01T23:41:40Z"
     }
   ],
   "schema": "operator-matrix/v1",

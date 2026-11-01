@@ -787,12 +787,12 @@
      }
     },
     "summary": {
-     "records": 94,
+     "records": 95,
      "by_class": {
       "wired-unproven": 23,
       "triggerable": 2,
       "inference-only": 65,
-      "proven": 4
+      "proven": 5
      },
      "availability_covered": 16,
      "availability_secret_only": 1,
@@ -1897,6 +1897,19 @@
       ],
       "registry_live_field": "none published",
       "invoke_verdict": "completion-blocked (Tier 0 / $0 class): catalog http 200 / 5 models (GLM-5.x serverless set) from the same runner; invoke http 403 empty body @64ms (not egress) - re-verify on top-up (verdicts issue #3141 c.6560345568/c.6560345635)"
+     },
+     {
+      "id": "baseten.api",
+      "provider": "baseten",
+      "class": "proven",
+      "availability_probe": "not-covered",
+      "batch": "wired (extension surface, PR #3235)",
+      "inference_route": [
+       "llm_api_hub provider_extensions (PR #3235)",
+       "provider-invoke (Actions verdicts #3141)"
+      ],
+      "registry_live_field": "none published",
+      "invoke_verdict": "INVOKE OK http 200 on openai/gpt-oss-120b @1.8s (verdict #3141 c.6560581857); catalog http 200 / 20 models (c.6560578679). First net-new to clear the completion tier at wiring time - joins the INVOKE-OK set {cohere, sealion, baseten} among shard-verified providers. Credit finite ($1 Model APIs): dispatchable now, burn-aware"
      }
     ],
     "gate_note": "#2672 CLOSED 2026-11-01: gate_state lifted to gate-green on the 7 key-live providers (cohere, llm7, routeway, sambanova, siliconflow, unorouter, zai) - contracts GREEN run 41308987754 (head 87453e9c = PR #3138 merge, in master history), operational_providers job executed = evidence leg run; per-provider invoke promotion proceeds at Swarm as results land.",
@@ -1906,8 +1919,8 @@
     "basis": "CORRECTED multi-surface census (fix seat, firsthand @master 2026-11-01). Supersedes the 2-surface re-base below-record: wiring = invoke code on ANY fleet surface {provider-batch ENDPOINTS, provider_model_catalog ENDPOINTS, llm_api_hub provider_extensions ENDPOINTS (PR #1471), llm_api_hub provider_protocols CHAT_ENDPOINTS, g4f-working/gpt4free route}.",
     "correction_note": "ERROR OF RECORD: the earlier census counted only batch+catalog surfaces and classed 72 providers not-wired; PKG-A (#3099) + PKG-B (#3100) were dispatched on that basis and have been STOOD DOWN (owner correction 2026-11-01; the targets were already wired/done). Corrected result: 87/89 catalogued provider keys carry an invoke surface; the only exceptions are the two long-flagged owner items (github, meta). SECOND CORRECTION (owner, 2026-11-01): PR #3133 wrongly retired the WHOLE meta provider — only the meta.llama_api RECORD is retired (limit 0, retired 2026-07-06). meta.model_api + meta.muse_code carry routes of record (PR #2641, enabled:false pending keys) = wired-unprovisioned; meta is restored to the wired set and joins the contributing pool when its keys land.",
     "wired_invoke": {
-     "count": 91,
-     "of": 92,
+     "count": 92,
+     "of": 93,
      "by_surface": {
       "batch+catalog": [
        "aion",
@@ -1938,7 +1951,8 @@
        "sealion",
        "deepinfra",
        "novita",
-       "friendli"
+       "friendli",
+       "baseten"
       ],
       "protocols (llm_api_hub/provider_protocols.py)": [
        "cloudflare",
@@ -2000,13 +2014,18 @@
        "provider": "friendli",
        "via": "PR #3224 merged 4e3187d3f286 (extensions + catalogs + quota registry web in one PR; contracts GREEN)",
        "at": "2026-11-01"
+      },
+      {
+       "provider": "baseten",
+       "via": "PR #3235 merged ef3ea068ea7e (extensions + catalogs + quota registry web; contracts GREEN) - first net-new to clear the completion tier: INVOKE OK at wiring time",
+       "at": "2026-11-01"
       }
      ]
     },
     "not_wired": {
      "count": 0,
      "providers": {},
-     "note": "No open not-wired items. 92/92 accounted: 91 wired (net-new deepinfra PR #3208, novita PR #3214, friendli PR #3224; meta = wired-unprovisioned, route of record in llm_providers.yaml) + github excluded-by-kind."
+     "note": "No open not-wired items. 93/93 accounted: 92 wired (net-new deepinfra PR #3208, novita PR #3214, friendli PR #3224, baseten PR #3235; meta = wired-unprovisioned, route of record in llm_providers.yaml) + github excluded-by-kind."
     },
     "excluded_surfaces": [
      "qodo review lane",
@@ -2142,7 +2161,7 @@
    },
    "endpoint_census": {
     "unit": "provider x model endpoints (the dispatch-relevant unit; provider counts are NOT endpoint counts - owner correction)",
-    "verified_floor": 7321,
+    "verified_floor": 7341,
     "counted_at": "2026-11-01 (public leg: providers-dispatch seat, live catalog GETs; CI leg: provider-invoke catalog mode verdicts on issue #3141). RETRACTION (owner rule, 2026-11-01): census counts MUST be Actions - VM-vantage and public-docs counts are void; the groq 14 + aion 6 fold (PR #3202) is reverted by this record; fresh Actions verdicts #3141 c.6559265532/c.6559268666 read groq + aion catalog 403, models null",
     "sources": {
      "g4f-working catalog (data/g4f-working/providers.json @master, PR #2025)": {
@@ -2210,6 +2229,9 @@
      },
      "CI leg - friendli (keyed catalog, #3141; net-new PR #3224)": {
       "models": 5
+     },
+     "CI leg - baseten (keyed catalog, #3141; net-new PR #3235)": {
+      "models": 20
      }
     },
     "not_yet_counted": "uncountable-from-Actions: groq + aion (catalog 403, egress-blocked; verdicts #3141) - countable only via an Actions-reachable route. Ruling dispositions: mistral + cerebras (no secret in store, ruling-blocked per provisioning); cloudflare (account-scope, catalog null from CI). Remaining gap to the owner figure of 7,500+ = groq + aion via an Actions-reachable route + net-new lands + growth.",

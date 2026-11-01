@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a78f07c4cf4dcba95ef13f521bb55801d86fd7bcca60d96873ef1b1c49eef0c2",
+  "source_fingerprint": "4783229803d9514941b4d6613338f313d3b675be444b38b504d9ca370039dbb4",
   "workflow_count": 250,
   "workflows": [
     {
@@ -3405,6 +3405,7 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "bounded-state-write",
@@ -3412,6 +3413,7 @@
       "domain": "peer-provider-review",
       "jobs": [
         "contracts",
+        "contracts_diagnostics",
         "diagnose",
         "observe",
         "operational_providers",

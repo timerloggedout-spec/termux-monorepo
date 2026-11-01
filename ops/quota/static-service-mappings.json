@@ -265,6 +265,16 @@
       ],
       "status": "static_roster_link_only",
       "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "deepinfra",
+      "mapping_id": "adapter:deepinfra",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
+        "scripts/provider_extension_catalogs.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
     }
   ]
 }

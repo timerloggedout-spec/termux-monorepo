@@ -14,6 +14,7 @@ on:
       - ".github/workflows/help-wanted-dashboard-deploy.yml"
       - ".github/workflows/help-wanted-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"
+      - "scripts/ci/verify_help_wanted_dashboard.py"
   workflow_dispatch:
     inputs:
       target:

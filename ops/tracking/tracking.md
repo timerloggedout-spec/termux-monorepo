@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T10:34:36Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T10:37:17Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T10:34:35Z` (merged 150 · open 164) · lane-events(Neon) status=`ok` count=`4073` read_at=`2026-11-01T10:34:35Z`
+Sources: PR feed read_at=`2026-11-01T10:37:17Z` (merged 150 · open 164) · lane-events(Neon) status=`ok` count=`4086` read_at=`2026-11-01T10:37:17Z`
 
 Rows: 22 · by_state: active=4 · closed=1 · in-flight=10 · landed=1 · unknown=6
 
@@ -16,7 +16,7 @@ Rows: 22 · by_state: active=4 · closed=1 · in-flight=10 · landed=1 · unknow
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3013 `503124a1c35f` 2026-11-01T09:34:45Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #3040 `5f6f6e6f4ea4` 2026-11-01T10:34:01Z | NOT_ESTABLISHED |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #3042 `f5c7478736be` 2026-11-01T10:36:53Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #2984 `9607c9a8cf3b` 2026-11-01T07:32:53Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |

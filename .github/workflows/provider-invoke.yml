@@ -8,6 +8,14 @@ name: Provider invoke (inference batch)
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: "invoke (one completion) or catalog (count live models)"
+        required: false
+        default: invoke
+        type: choice
+        options:
+          - invoke
+          - catalog
       provider:
         description: "Inference provider to invoke"
         required: true
@@ -92,12 +100,18 @@ jobs:
           python3 scripts/ops/provider_invoke.py \
             --provider "${{ inputs.provider }}" \
             --prompt-file docs/ops/tasks/inference-batch-ww3.md \
-            --out /tmp/invoke-completion.md 2>&1 | tee /tmp/invoke.log
-          grep '^INVOKE_VERDICT ' /tmp/invoke.log | tail -1 | sed 's/^INVOKE_VERDICT //' > /tmp/verdict.json
+            --out /tmp/invoke-completion.md \
+            ${{ inputs.mode == 'catalog' && '--catalog-only' || '' }} 2>&1 | tee /tmp/invoke.log
+          grep -E '^(INVOKE|CATALOG)_VERDICT ' /tmp/invoke.log | tail -1 | sed -E 's/^(INVOKE|CATALOG)_VERDICT //' > /tmp/verdict.json
           python3 - <<'PYEOF'
           import json
           v = json.load(open('/tmp/verdict.json'))
           with open('/tmp/invoke-comment.md', 'w') as f:
+              if 'models' in v:
+                  f.write('[MUSEai]@{role:{optimizations-assurance}} ENDPOINT CENSUS — provider **%s**: %s\n\n' % (
+                      v['provider'], ('**%d models**' % v['models']) if v['models'] is not None else 'not countable from CI'))
+                  f.write('verdict: `%s`\n' % json.dumps(v))
+                  raise SystemExit(0)
               f.write('[MUSEai]@{role:{optimizations-assurance}} INFERENCE BATCH invoke — provider **%s**: %s\n\n' % (
                   v['provider'], '✓ INVOKE OK' if v['ok'] else '✗ ' + v['diagnosis']))
               f.write('verdict: `%s`\n' % json.dumps(v))

@@ -92,6 +92,8 @@ def main() -> int:
     ap.add_argument("--prompt-file", required=True)
     ap.add_argument("--out", default="/tmp/invoke-completion.md")
     ap.add_argument("--max-tokens", type=int, default=300)
+    ap.add_argument("--catalog-only", action="store_true",
+                    help="Count the provider's live catalog instead of invoking")
     args = ap.parse_args()
 
     provider = args.provider
@@ -108,12 +110,49 @@ def main() -> int:
             token, token_name = os.environ[name], name
             break
     if not token:
+        if args.catalog_only:
+            print("CATALOG_VERDICT " + json.dumps(
+                {"provider": provider, "credential": None, "catalog_http": None, "models": None,
+                 "sample": [], "diagnosis": f"no-credential: none of {list(secret_names)} present in job env"}))
+            return 0
         verdict["diagnosis"] = f"no-credential: none of {list(secret_names)} present in job env"
         print("INVOKE_VERDICT " + json.dumps(verdict))
         return 0
     verdict["credential"] = token_name
 
     candidates: list = []
+    if args.catalog_only:
+        cverdict = {"provider": provider, "credential": token_name, "catalog_http": None,
+                    "models": None, "sample": []}
+        if catalog_url is None and provider in provider_catalog_protocols.PROVIDERS:
+            pass  # catalog stays None: counted as not countable from CI
+        if catalog_url:
+            if provider == "cloudflare":
+                status, cat = http_json("POST", catalog_url, token, {"page": 1, "per_page": 100})
+            else:
+                status, cat = http_json("GET", catalog_url, token)
+            cverdict["catalog_http"] = status
+            if status != 200 and provider == "cohere":
+                status2, cat2 = http_json("GET", "https://api.cohere.com/v2/models", token)
+                cverdict["catalog_http_v2"] = status2
+                if status2 == 200:
+                    status, cat = status2, cat2
+            if status == 200:
+                ids = None
+                if provider_catalog_protocols is not None and provider in provider_catalog_protocols.PROVIDERS:
+                    try:
+                        ids = [r["id"] for r in provider_catalog_protocols.normalize_models(provider, cat)]
+                    except Exception:
+                        ids = None
+                if ids is None:
+                    ids = [m.get("id") for m in cat.get("data", []) if isinstance(m, dict) and m.get("id")]
+                    if not ids and isinstance(cat.get("models"), list):
+                        ids = [m.get("id") or m.get("name") for m in cat["models"] if isinstance(m, dict)]
+                cverdict["models"] = len(ids)
+                cverdict["sample"] = ids[:3]
+        print("CATALOG_VERDICT " + json.dumps(cverdict))
+        return 0
+
     model = os.environ.get("INVOKE_MODEL") or None
     if model is None and catalog_url:
         if provider == "cloudflare":

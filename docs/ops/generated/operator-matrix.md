@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T23:57:49Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T23:58:43Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `281580626e` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `78a5ab0411` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 381 issues, 171 PRs. PR classes: EXTRACT 5 / CANDIDATE 84 / NEED_EVIDENCE 82 / SUPERSEDE 0.
 
@@ -94,7 +94,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2899 | CANDIDATE | unlabelled | `538790f31c` | success | success | unknown | fix: enforce descending provider cost ranking |
 | #2907 | CANDIDATE | unlabelled | `af9b38f892` | success | success | unknown | fix: scope free-tier opportunity cost to repo work |
 | #2966 | CANDIDATE | unlabelled | `d128986b7c` | success | success | unknown | [apk-doe] A v0.2.1 |
-| #2978 | CANDIDATE | unlabelled | `dc4800a2ce` | success | success | unknown | docs(ops): map UI surfaces and version lanes |
+| #2978 | CANDIDATE | unlabelled | `dc4800a2ce` | success | success | dirty | docs(ops): map UI surfaces and version lanes |
 | #3032 | CANDIDATE | unlabelled | `7b49010f81` | success | success | unknown | fix(crg): align promotion gate with canonical master |
 | #3034 | CANDIDATE | unlabelled | `2f5be5dbd7` | success | success | unknown | [Draft] Independent Foresight Landscape Explorer track |
 | #3037 | CANDIDATE | unlabelled | `0341bb2367` | success | success | unknown | docs(rfp): BLU View 5 mobile-first independent evaluation |
@@ -175,7 +175,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `b4e7d53d8f` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2914 | NEED_EVIDENCE | unlabelled | `145ed7dd22` | not_reported | not_reported | clean | chore(telemetry): refresh HindSight+Provenance ingest |
 | #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

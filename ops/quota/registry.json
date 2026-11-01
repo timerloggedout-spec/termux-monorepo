@@ -2772,6 +2772,24 @@
     "safety": 0.9,
     "note": "Build arm (Provider Index build-arm coverage, owner commission 2026-10-31): CI-shaped invoke/review arm; device leg device-dependent. Provider recorded as github because the dispatch surface is repo workflows (Actions/issues); the model provider is DeepSeek."
    }
+  },
+  {
+   "id": "deepinfra.api",
+   "provider": "deepinfra",
+   "lane": "model",
+   "metric": "Prepaid API balance (pay-as-you-go inference)",
+   "limit": null,
+   "unit": "USD balance (prepaid)",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://deepinfra.com/docs",
+   "doc_quote": "DeepInfra is a prepaid pay-as-you-go inference API; no free quota entitlement is published.",
+   "live": "none published",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Fleet credential provisioned: DEEPINFRA_API_KEY (repo Actions secret, 2026-11-01). Prepaid balance $0.00 at provisioning; completions funded-out until owner top-up."
+   }
   }
  ]
 }

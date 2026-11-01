@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (164 registry records)
+ QUOTA  termux-monorepo  (165 registry records)
  Snapshot generated (not observation time): 2026-11-01T13:23:25.948846+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -127,6 +127,14 @@
     limit (documented): 1000 API calls/month
     metric: Trial key call allowance | window: monthly | reset: monthly
     Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ deepinfra (1)
+  deepinfra.api
+    status: No live reading
+    limit (documented): n/a USD balance (prepaid)
+    metric: Prepaid API balance (pay-as-you-go inference) | window: n/a | reset:
+    n/a
+    No live reading (live source: none published)
 --------------------------------------------------------------------------------
  deno (1)
   deno.deploy_requests
@@ -1212,6 +1220,8 @@
   parser; registry: cloudflare.workers_ai
   cohere: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: cohere.trial_calls
+  deepinfra: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: deepinfra.api
   felo: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
   registry: felo.api_credits
   gemini: Manager / ChronoMancer; official_documentation_only; no passive
@@ -1259,6 +1269,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 164 registry records | 1 alert(s) | 164 with a reported reading | 0 with No
+ 165 registry records | 1 alert(s) | 164 with a reported reading | 1 with No
  live reading
 ================================================================================

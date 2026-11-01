@@ -69,3 +69,25 @@ python3 -m pytest tests/test_density_stats.py -q
 
 The `telemetry-ingest` workflow runs this on its cadence with the
 workflow token and proposes the tables in the same refresh PR.
+
+## Actor attribution (2026-11-01, attribution/1)
+
+Every github artifact carries `actor` + `actor_evidence`, extracted by
+`scripts/telemetry_ingest/attribution.py` per the
+agent-contributor-provenance rules (#1241): GitHub's login names the
+PAT holder, NOT the author. Evidence chain, strongest first:
+`stamp` ([MUSEai]@{role:{X}}) -> `trailer` (Agent:/Signed-off-by: in
+body or commit messages) -> `git_author` (known-identity mapping only)
+-> `app_bot` (`*[bot]` login). No evidence => `actor: null` — never
+defaulted to the owner. Registry keying: actor ids are canonicalized
+through the Role{Moniker} registry where a registered entry exists
+(Grok -> `Grok`, PR #3355; note `Grok (OPERATOR)` signings are the
+human owner's row, not the collaborator).
+
+Backfill over the 600-PR window (2026-10-27 -> 2026-11-01) ran under
+the backfill doctrine: origin-marked in the stats output
+(`attribution.origin = backfill{method, method_version, from, to}`)
+and audited in `ops/telemetry/attribution-backfill-audit.json`:
+546/599 attributed (stamp 297, app_bot 249), 53 null. Grok units in
+window: 0 — no in-window artifact carries Grok's established identity
+marks; attribution is live for its post-registration work.

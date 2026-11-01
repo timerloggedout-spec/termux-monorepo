@@ -108,6 +108,10 @@ jobs:
       - name: Run the belt (acquire -> extract -> scan -> xref)
         env:
           ISSUE: ${{ inputs.issue_number }}
+          # The belt's fetch sends this as Bearer for api.github.com
+          # only (env-read, never logged), so acquire rides the Swarm
+          # bucket instead of the anonymous 60/hr egress-IP quota.
+          GITHUB_TOKEN: ${{ steps.mint.outputs.token }}
         run: |
           set -euo pipefail
           WORK="${RUNNER_TEMP}/apk-xref"

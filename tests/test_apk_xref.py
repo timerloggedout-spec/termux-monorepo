@@ -330,3 +330,27 @@ def test_acquire_no_artifact_and_play_refusal(tmp_path):
         raise AssertionError("play download must be refused")
     except ValueError as e:
         assert "Play" in str(e)
+
+
+def test_repo_slug_normalization():
+    assert ax._repo_slug("o/r") == "o/r"
+    assert ax._repo_slug("https://github.com/o/r") == "o/r"
+    assert ax._repo_slug("https://github.com/o/r/") == "o/r"
+    assert ax._repo_slug("https://github.com/o/r.git") == "o/r"
+    assert ax._repo_slug("https://git.example/o/r") == "o/r"
+
+
+def test_acquire_github_repo_url_form(tmp_path):
+    # Regression (findings #2993): the request form files the target
+    # as a URL; acquire must still reach the releases API by slug.
+    apk_bytes = build_apk(tmp_path / "src.apk").read_bytes()
+    gh = _fake_fetch({
+        "https://api.github.com/repos/o/r/releases?per_page=30": [
+            {"tag_name": "v9", "name": "rel", "published_at": "2026-10-01",
+             "assets": [{"name": "app.apk",
+                         "browser_download_url": "https://dl.example/app.apk"}]}],
+        "https://dl.example/app.apk": apk_bytes})
+    got = ax.acquire({"sources": ["github-releases"],
+                      "repo": "https://github.com/o/r"},
+                     tmp_path / "out", fetch=gh)
+    assert got["status"] == "acquired" and got["version"] == "v9"

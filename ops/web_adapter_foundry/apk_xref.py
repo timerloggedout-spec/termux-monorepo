@@ -769,8 +769,22 @@ def _pick_apk_asset(releases: list[dict]) -> tuple[dict, dict] | None:
     return None
 
 
+def _repo_slug(repo: str) -> str:
+    """Accept 'owner/name' or a full forge URL (the request form files
+    the target as a URL); return 'owner/name'. Filings carry URLs —
+    passing one verbatim into the API path 404s (proof: #2141 run
+    41287494687 filed a false no-artifact for a repo whose every
+    release carries an APK)."""
+    r = (repo or "").strip().rstrip("/")
+    if r.endswith(".git"):
+        r = r[:-4]
+    parts = [seg for seg in r.split("/") if seg]
+    return "/".join(parts[-2:]) if len(parts) >= 2 else r
+
+
 def github_release_apk(repo: str, fetch=_default_fetch) -> dict | None:
     """Latest GitHub release carrying an .apk asset, or None."""
+    repo = _repo_slug(repo)
     rels = _fetch_json(
         f"https://api.github.com/repos/{repo}/releases?per_page=30", fetch)
     if not isinstance(rels, list):
@@ -788,6 +802,7 @@ def github_release_apk(repo: str, fetch=_default_fetch) -> dict | None:
 
 def gitea_release_apk(base_url: str, repo: str, fetch=_default_fetch) -> dict | None:
     base = base_url.rstrip("/")
+    repo = _repo_slug(repo)
     rels = _fetch_json(f"{base}/api/v1/repos/{repo}/releases?limit=30", fetch)
     if not isinstance(rels, list):
         return None

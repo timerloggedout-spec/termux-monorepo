@@ -106,6 +106,10 @@ ALIASES = [
     ("Code, Not Card", "code-not-card", "Code, Not Card", "page", "fleet"),
     ("Platform201", "platform201", "Platform201", "provider", "fleet"),
     ("Discord", "discord", "Discord", "provider", "fleet"),
+    ("Instagram", "instagram", "Instagram", "provider", "fleet"),
+    ("Threads", "threads", "Threads", "provider", "fleet"),
+    ("TikTok", "tiktok", "TikTok", "provider", "fleet"),
+    ("WhatsApp", "whatsapp", "WhatsApp", "provider", "fleet"),
 ]
 ALIAS_BY_ID = {pid: (alias, name, kind, aclass)
                for alias, pid, name, kind, aclass in ALIASES}

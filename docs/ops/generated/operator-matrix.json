@@ -4,8 +4,8 @@
     "open_prs": 170,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 82,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
     }
   },
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T23:29:46Z",
+  "generated_at": "2026-11-01T23:30:58Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "91051cc444"
+    "sha": "93b9975ef6"
   },
   "prs": [
     {
@@ -206,6 +206,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ffdc4f4d02",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T23:29:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -442,7 +456,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-01T22:13:01Z"
@@ -1779,20 +1793,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "ffdc4f4d02",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T23:29:22Z"
     },
     {
       "class": "NEED_EVIDENCE",

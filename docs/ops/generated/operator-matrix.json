@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 367,
-    "open_prs": 154,
+    "open_prs": 155,
     "pr_classes": {
       "CANDIDATE": 71,
-      "EXTRACT": 6,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 29,
-      "prs": 152,
+      "prs": 153,
       "unlabelled_numbers": [
         308,
         343,
@@ -84,7 +84,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T02:25:59Z",
+  "generated_at": "2026-11-01T02:28:43Z",
   "issues_unlabelled": [
     308,
     343,
@@ -119,10 +119,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "success",
+      "smoke": "in_progress"
     },
-    "sha": "134227b69d"
+    "sha": "f9d243aaf6"
   },
   "prs": [
     {
@@ -202,12 +202,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "11a7058e6f",
+      "head_sha": "b6becced24",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2896,
-      "title": "census(quota): ERRATA \u2014 siliconflow credential-dead retracted (probe-surface defect, key live)",
-      "updated_at": "2026-11-01T02:25:20Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T02:27:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f8c8605dea",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2898,
+      "title": "doe(live-3): dispatcher records carry rev-1.1 usage/window slots (first consumer of #2895)",
+      "updated_at": "2026-11-01T02:27:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -1621,20 +1635,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e21aa61472",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T02:24:26Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "fa7399b4e6",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2285,6 +2285,20 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "906778cfe7",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 2899,
+      "title": "fix: enforce descending provider cost ranking",
+      "updated_at": "2026-11-01T02:27:44Z"
     }
   ],
   "schema": "operator-matrix/v1",

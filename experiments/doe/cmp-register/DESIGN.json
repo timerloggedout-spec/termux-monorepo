@@ -12,29 +12,55 @@
   {
    "id": "CMP-1",
    "opened": "2026-11-01",
-   "question": "Skill packaging format: directory + SKILL.md vs single-file *.skill — which serves the fleet better over time?",
+   "question": "Skill packaging format: directory + SKILL.md vs single-file *.skill \u2014 which serves the fleet better over time?",
    "arms": {
     "skill_md": "Directory-canonical format (SKILL.md + sibling assets). Incumbent: 41 in termux-monorepo .agents/skills/*, registry docs/ops/SKILLS-INVENTORY.md; /opt/muse/skills + ~/workspace/custom-skills run on it; Agent Skills standard (Anthropic -> Linux Foundation) is this shape.",
     "dot_skill": "Single-file *.skill package. Challenger: no fleet usage yet; appears in external ecosystems/imports."
    },
-   "responses": ["discovery/load success + failure modes", "authoring + revision cost (incl. partial edits)", "collision/clobber incidents (evidence: the stepie-stepwise-ops salvage, 2026-10-20 — a 101-line SKILL.md extract nearly clobbered the 478-line canonical; format-shaped risk, logged for skill_md)", "cross-surface portability (which agent surfaces can consume each shape unchanged)", "asset carriage (multi-file needs: scripts, fixtures, references)"],
-   "evidence_sources": ["docs/ops/SKILLS-INVENTORY.md", "skill-quality lane outcomes", "fleet skill authoring/loading incidents as they occur", "external *.skill artifacts when imported or evaluated"],
-   "review_point": "first 10 scored observations across arms, or a *.skill adoption proposal — whichever first",
+   "responses": [
+    "discovery/load success + failure modes",
+    "authoring + revision cost (incl. partial edits)",
+    "collision/clobber incidents (evidence: the stepie-stepwise-ops salvage, 2026-10-20 \u2014 a 101-line SKILL.md extract nearly clobbered the 478-line canonical; format-shaped risk, logged for skill_md)",
+    "cross-surface portability (which agent surfaces can consume each shape unchanged)",
+    "asset carriage (multi-file needs: scripts, fixtures, references)"
+   ],
+   "evidence_sources": [
+    "docs/ops/SKILLS-INVENTORY.md",
+    "skill-quality lane outcomes",
+    "fleet skill authoring/loading incidents as they occur",
+    "external *.skill artifacts when imported or evaluated"
+   ],
+   "review_point": "first 10 scored observations across arms, or a *.skill adoption proposal \u2014 whichever first",
    "status": "open"
   },
   {
    "id": "CMP-2",
    "opened": "2026-11-01",
-   "question": "New-competition routing: dedicated side chat via a Competitions Opportunity manager channel vs folding the opportunity into the existing Challenge Management oversight (9cb1c873) — which routes opportunities to action better over time?",
+   "question": "New-competition routing: dedicated side chat via a Competitions Opportunity manager channel vs folding the opportunity into the existing Challenge Management oversight (9cb1c873) \u2014 which routes opportunities to action better over time?",
    "arms": {
     "dedicated_channel": "New Competitions Opportunity manager chat (created 2026-11-01) takes intake/evaluation; graduates entries to Challenge Management oversight.",
     "fold_in": "Opportunity handled inside the existing oversight chat (the D-slate baseline pattern)."
    },
-   "first_instance": ".approxination (owner, as-given 2026-11-01: 'We're competing in .approxination') — routed via the dedicated_channel arm; the D-slate history is the fold_in comparison record.",
-   "responses": ["time from opportunity-named to first action", "coordination overhead (seats touched per opportunity)", "missed-deadline / dropped-opportunity incidents", "evaluation quality (compete/skip calls vs outcomes)"],
-   "review_point": "after 3 opportunities routed via dedicated_channel, or the .approxination outcome — whichever first",
-   "status": "open"
+   "first_instance": ".approxination (owner, as-given 2026-11-01: 'We're competing in .approxination') \u2014 routed via the dedicated_channel arm; the D-slate history is the fold_in comparison record.",
+   "responses": [
+    "time from opportunity-named to first action",
+    "coordination overhead (seats touched per opportunity)",
+    "missed-deadline / dropped-opportunity incidents",
+    "evaluation quality (compete/skip calls vs outcomes)"
+   ],
+   "review_point": "after 3 opportunities routed via dedicated_channel, or the .approxination outcome \u2014 whichever first",
+   "status": "open",
+   "first_instance_outcome": "CORRECTED establishment (2026-11-01, supersedes the same-day initial report): .approxination is REAL \u2014 APPROXINATION-org arena platform; fleet integrated since 2026-09 (forks Approxination-Benchmark_fork + Inverse-Arena_fork; monorepo APPROXINATION-LANE.md LIVE; PR #614; APPROX-001..004 done, APPROX-006 backlog); pre-owned by the Approxination/Oversight lane. Verdict: PRE-OWNED \u2014 no new entry, no duplicate repo/AppID, no graduation; the channel monitors/routes only. The initial NOT_A_COMPETITION/SKIP verdict was a web-only search that missed the fleet-internal record and is RETRACTED; the 'placeholder / null-item' characterization is likewise retracted. Establishment rule adopted: internal-first, web second.",
+   "responses_observed": {
+    "time_to_first_action": "same turn (approx 0)",
+    "coordination_overhead": "2 relays",
+    "dropped_opportunity_incidents": "1 NEAR-MISS (the initial web-only skip; self-caught by internal grep in <2 min, corrected in the open) \u2014 logged against the dedicated arm, not hidden",
+    "compete_skip_quality": "initial skip WRONG (absence claimed from web-only evidence); corrected verdict pre-owned/no-build on fleet-internal evidence"
+   }
   }
  ],
- "registration": {"preregistered_in_repo": true, "recorded": "2026-11-01"}
+ "registration": {
+  "preregistered_in_repo": true,
+  "recorded": "2026-11-01"
+ }
 }

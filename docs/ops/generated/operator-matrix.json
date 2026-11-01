@@ -4,8 +4,8 @@
     "open_prs": 168,
     "pr_classes": {
       "CANDIDATE": 80,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 83,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T13:32:37Z",
+  "generated_at": "2026-11-01T13:36:47Z",
   "issues_unlabelled": [
     308,
     343,
@@ -132,7 +132,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "e8d5511837"
+    "sha": "1b53f97093"
   },
   "prs": [
     {
@@ -204,6 +204,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c36cf734a2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T13:35:30Z"
     },
     {
       "class": "CANDIDATE",
@@ -1735,20 +1749,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "12bd792dbd",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T13:31:58Z"
     },
     {
       "class": "NEED_EVIDENCE",

@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T07:29:35Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T07:31:36Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T07:29:34Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3517` read_at=`2026-11-01T07:29:34Z`
+Sources: PR feed read_at=`2026-11-01T07:31:35Z` (merged 150 · open 159) · lane-events(Neon) status=`ok` count=`3528` read_at=`2026-11-01T07:31:35Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown=9
 
@@ -27,7 +27,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #2891 `fbd8cb72b23f` 2026-11-01T02:22:05Z | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2967 `87bc95b1e156` 2026-11-01T04:50:33Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
-| replay | `repo-replay` | Repo Replay | active | #2974 `dfb1c88965fb` 2026-11-01T07:01:59Z | NOT_ESTABLISHED |
+| replay | `repo-replay` | Repo Replay | active | #2983 `f7acc22fa918` 2026-11-01T07:29:56Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #2937 `ecd08b5069a1` 2026-11-01T04:15:02Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #2961 `62072f729a36` 2026-11-01T04:38:58Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 

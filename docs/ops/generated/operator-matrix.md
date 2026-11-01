@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T21:48:46Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T21:50:17Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `f315f6e143` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `f29ca077c4` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 381 issues, 171 PRs. PR classes: EXTRACT 5 / CANDIDATE 83 / NEED_EVIDENCE 83 / SUPERSEDE 0.
+**Open inventory:** 381 issues, 170 PRs. PR classes: EXTRACT 5 / CANDIDATE 83 / NEED_EVIDENCE 82 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -183,7 +183,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `06d71aec43` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
-| #3279 | NEED_EVIDENCE | unlabelled | `121036a29a` | in_progress | success | unstable | docs(icm): maintenance run#6 — D7 tranche-1 cards (graph-matrix, challenge-progr |
 
 ## Families (open)
 
@@ -198,6 +197,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 8 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 36 | 169 |
+| unlabelled | 36 | 168 |
 
 **Unlabelled open issues (36):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3094, #3141, #3215, #3278 — worked oldest-first by the issue-lifecycle lane pass.

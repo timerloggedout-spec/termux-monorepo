@@ -31,7 +31,8 @@
     "external *.skill artifacts when imported or evaluated"
    ],
    "review_point": "first 10 scored observations across arms, or a *.skill adoption proposal \u2014 whichever first",
-   "status": "open"
+   "status": "open_ongoing_test",
+   "owner_note": "Owner 2026-11-01: CMP-1 is an ONGOING TEST, and it was his illustrative example of a KIND \u2014 rival formats/approaches evaluated continuously on live evidence. This register is that kind's home; CMP-3.. open the next instances. CMP-1 evidence = monthly census (adoption curve) + incident log (clobber/load/portability events) + any designed sub-study spun out by amendment."
   },
   {
    "id": "CMP-2",
@@ -57,6 +58,88 @@
     "dropped_opportunity_incidents": "1 NEAR-MISS (the initial web-only skip; self-caught by internal grep in <2 min, corrected in the open) \u2014 logged against the dedicated arm, not hidden",
     "compete_skip_quality": "initial skip WRONG (absence claimed from web-only evidence); corrected verdict pre-owned/no-build on fleet-internal evidence"
    }
+  },
+  {
+   "id": "CMP-3",
+   "opened": "2026-11-01",
+   "question": "Dispatch surface shape: issue-comment dispatch vs workflow_dispatch vs CI-embedded (fixed-prompt) \u2014 which surface administers treatments and yields observable responses best?",
+   "arms": {
+    "issue_comment": "prompt carried in a comment on an issue/PR (gemini-dispatch shape)",
+    "workflow_dispatch": "inputs at dispatch time (deepseek-termux shape)",
+    "ci_embedded": "fixed internal prompt, event-triggered (deepseek-ci ci_mode shape)"
+   },
+   "responses": [
+    "treatment administrability (can the designed prompt actually be delivered?)",
+    "observable-response rate (does a harvestable response exist?)",
+    "silent-skip incidents (green run, model never invoked \u2014 live-3's wound)"
+   ],
+   "evidence_sources": [
+    "live-3 ALT-route record (PR #2854): ci_embedded scored administrability=0, observability=0 on its first designed use",
+    "live-1/cb-1 dispatch outcomes as surfaces are used"
+   ],
+   "review_point": "10 scored dispatches per surface or 2026-12-31",
+   "status": "open_ongoing_test"
+  },
+  {
+   "id": "CMP-4",
+   "opened": "2026-11-01",
+   "question": "Prompt/record representation: symbol-dense compressed vs explicit prose \u2014 effect on task accuracy and token cost, measured continuously on live work?",
+   "arms": {
+    "compressed": "CedrLang-style symbol-dense representation",
+    "explicit": "plain explicit prose"
+   },
+   "responses": [
+    "task accuracy delta (pilot-1 seed: lossy compression path scored 0.31 vs 0.94 explicit \u2014 seed datum, not the ongoing verdict)",
+    "tokens per task",
+    "misread/repair incidents"
+   ],
+   "evidence_sources": [
+    "pilot-1 (PR #1873)",
+    "live-3 phrase cells (established leet cells only, A3-bound)",
+    "nc-1 density corpus as the measurement instrument"
+   ],
+   "review_point": "each contributing campaign's verdict folds in; register review at 30 scored live units",
+   "status": "open_ongoing_test"
+  },
+  {
+   "id": "CMP-5",
+   "opened": "2026-11-01",
+   "question": "Lane-state reads: projected feeds (desk-feed style) vs raw API reads \u2014 which loses fewer fields that downstream work depends on?",
+   "arms": {
+    "projected_feed": "curated JSON projections (desk-feed, pr-lane-feed)",
+    "raw_api": "direct API reads at point of use"
+   },
+   "responses": [
+    "field-loss incidents (seed: live-2 phase-0 \u2014 projection dropped base.ref, 28/793 residual, PR #2794/#2796)",
+    "staleness at read time",
+    "read cost (calls/tokens per state question)"
+   ],
+   "evidence_sources": [
+    "live-2 phase records",
+    "util-1 auditor first contact (feed-shape mismatch caught by proof run, PR #3152)"
+   ],
+   "review_point": "5 scored incidents or 2026-12-31",
+   "status": "open_ongoing_test"
+  },
+  {
+   "id": "CMP-6",
+   "opened": "2026-11-01",
+   "question": "Record/index shape: compact delta-JSONL index vs per-object full records \u2014 storage, token cost, and query sufficiency over time?",
+   "arms": {
+    "delta_jsonl": "deltas vs first parent, single-writer JSONL (commit-replay gindex shape; seed: x2522 smaller than full-tree records, PR #2983)",
+    "per_object_records": "one full record per object/run (EXPERIMENT records shape)"
+   },
+   "responses": [
+    "bytes per 1k units",
+    "LLM tokens to answer a state question from the store",
+    "reconstruction/query failures attributable to shape"
+   ],
+   "evidence_sources": [
+    "commit-replay P1 (PR #2974/#2983)",
+    "DoE records/ growth across campaigns"
+   ],
+   "review_point": "2026-12-31 or when either store passes 10k units",
+   "status": "open_ongoing_test"
   }
  ],
  "registration": {

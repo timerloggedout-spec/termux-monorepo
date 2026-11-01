@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 380,
-    "open_prs": 167,
+    "open_prs": 168,
     "pr_classes": {
       "CANDIDATE": 80,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 82,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 35,
-      "prs": 165,
+      "prs": 166,
       "unlabelled_numbers": [
         308,
         343,
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T16:20:33Z",
+  "generated_at": "2026-11-01T16:23:45Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "8bc6dae861"
+    "sha": "f7d9dc3ef9"
   },
   "prs": [
     {
@@ -260,7 +260,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-01T13:38:01Z"
@@ -753,7 +753,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:45Z"
@@ -935,7 +935,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:22Z"
@@ -1397,7 +1397,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-01T13:37:52Z"
@@ -1705,7 +1705,7 @@
       },
       "head_sha": "cc84ecf1b7",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-01T14:26:28Z"
@@ -1745,12 +1745,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "72815d6f62",
+      "head_sha": "2d3ccb7529",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T16:20:24Z"
+      "updated_at": "2026-11-01T16:22:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2375,12 +2375,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "adc5112cae",
+      "head_sha": "dadcec35db",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T16:14:35Z"
+      "updated_at": "2026-11-01T16:21:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2479,6 +2479,20 @@
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-01T16:19:45Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "cancelled"
+      },
+      "head_sha": "80c17bfebe",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3238,
+      "title": "docs(swarm): \u00a716 \u2014 inference surface at scale + net-new wiring wave (2026-11-01)",
+      "updated_at": "2026-11-01T16:23:09Z"
     }
   ],
   "schema": "operator-matrix/v1",

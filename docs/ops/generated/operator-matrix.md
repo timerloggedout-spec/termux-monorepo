@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T11:32:44Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T11:34:41Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `7cee3ed246` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `a1a698d6f4` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 378 issues, 169 PRs. PR classes: EXTRACT 7 / CANDIDATE 79 / NEED_EVIDENCE 83 / SUPERSEDE 0.
+**Open inventory:** 378 issues, 168 PRs. PR classes: EXTRACT 6 / CANDIDATE 80 / NEED_EVIDENCE 82 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -18,8 +18,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1540 | EXTRACT | unlabelled | `97c0c5649f` | success | success | unstable | feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV |
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #2167 | EXTRACT | unlabelled | `25b25c5d18` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
-| #3032 | EXTRACT | unlabelled | `7b49010f81` | success | success | unstable | fix(crg): align promotion gate with canonical master |
+| #2167 | EXTRACT | unlabelled | `5376a88b5d` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -96,6 +95,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2907 | CANDIDATE | unlabelled | `1990c8c171` | success | success | unknown | fix: scope free-tier opportunity cost to repo work |
 | #2966 | CANDIDATE | unlabelled | `d128986b7c` | success | success | unknown | [apk-doe] A v0.2.1 |
 | #2978 | CANDIDATE | unlabelled | `0bce3e2be3` | success | success | unknown | docs(ops): map UI surfaces and version lanes |
+| #3032 | CANDIDATE | unlabelled | `7b49010f81` | success | success | unknown | fix(crg): align promotion gate with canonical master |
 | #3034 | CANDIDATE | unlabelled | `2f5be5dbd7` | success | success | unknown | [Draft] Independent Foresight Landscape Explorer track |
 | #3037 | CANDIDATE | unlabelled | `0341bb2367` | success | success | unknown | docs(rfp): BLU View 5 mobile-first independent evaluation |
 | #3063 | CANDIDATE | unlabelled | `89202fe235` | success | success | unknown | viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema p |
@@ -173,15 +173,14 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `fae0cebc5d` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
-| #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | dirty | feat(orbital): add independent radial hierarchy layout lab |
+| #2914 | NEED_EVIDENCE | unlabelled | `fae0cebc5d` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3035 | NEED_EVIDENCE | unlabelled | `e358823bab` | not_reported | not_reported | unknown | [Draft] Independent RFP: foresight platform evaluation |
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3071 | NEED_EVIDENCE | unlabelled | `d9767e4b4a` | not_reported | not_reported | unstable | chore(ops): regenerate operator matrix |
-| #3072 | NEED_EVIDENCE | unlabelled | `082370454e` | not_reported | not_reported | unstable | desk-feed: bench-wide task-fit rotation + stamp bench positions (owner FIX via m |
-| #3073 | NEED_EVIDENCE | unlabelled | `47db217c06` | queued | success | unstable | index(quota): dispatch capability amendment — #2672 gate-state + DeepAgent split |
+| #3072 | NEED_EVIDENCE | unlabelled | `082370454e` | not_reported | not_reported | unknown | desk-feed: bench-wide task-fit rotation + stamp bench positions (owner FIX via m |
+| #3074 | NEED_EVIDENCE | unlabelled | `749cdfdcdb` | queued | queued | unstable | fix(cadence-onboarding): acknowledge meta unmapped + let autofix run on hard dri |
 
 ## Families (open)
 
@@ -196,6 +195,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 8 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 34 | 167 |
+| unlabelled | 34 | 166 |
 
 **Unlabelled open issues (34):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3068 — worked oldest-first by the issue-lifecycle lane pass.

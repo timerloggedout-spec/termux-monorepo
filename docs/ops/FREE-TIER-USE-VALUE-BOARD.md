@@ -21,13 +21,14 @@ paid_equivalent_usd = input_tokens × input_usd_per_million / 1,000,000 + output
 
 This is a counterfactual API list-price estimate, not cash spent or guaranteed savings. It excludes cached-token discounts, batch pricing, tools, search/grounding, taxes, subscriptions, negotiated rates, and non-token fees unless explicitly modeled.
 
-Time opportunity cost is separate:
+Repository time economics are repo-scoped and keep resource valuation distinct from the economic concept of opportunity cost:
 
-- time_invested_value = minutes_invested / 60 × chosen_hourly_rate
-- potential_time_value = estimated_hours_saved × chosen_hourly_rate
-- net_time_scenario = potential_time_value - time_invested_value
+- `repo_time_investment_value = measured_repo_minutes_invested / 60 × documented_repo_time_valuation_rate`
+- `repo_time_opportunity_cost = value_of_best_feasible_alternative_use_forgone`
+- `potential_repo_time_value = estimated_repo_hours_recovered × documented_repo_time_valuation_rate`
+- `net_repo_time_scenario = potential_repo_time_value - repo_time_opportunity_cost`
 
-Time saved is a scenario input until established against a comparable baseline. Do not add it to provider cost or label it realized ROI.
+Repo time investment value is the assigned value of human/agent time consumed by this repository. Opportunity cost is the value of the best feasible alternative use of those same resources that was forgone. The investment-value proxy may stand in for opportunity cost only when the selected rate is explicitly documented as the value of that foregone alternative. Time recovered remains a scenario until measured against a comparable baseline. Keep these measures separate from provider API value and observed provider cost. If actual time or alternative-use evidence is unavailable, label the relevant inputs as assumptions and keep the opportunity-cost result unavailable rather than silently substituting investment value.
 
 ## Price snapshot
 
@@ -42,7 +43,7 @@ Price comparisons do not imply quality equivalence, free-tier availability, or t
 
 ## Public usage cross-provider equivalent
 
-The public usage-equivalent panel aggregates input/output tokens from deduplicated rows that pass the existing validation, Basksweep, public-safe, success, and pricing-identity gates. It applies the same aggregate token counts to each valid, source-linked, model-specific pricing record and sorts results from **most expensive to least expensive**. The arbitrary-workload calculator uses the same descending order. The lowest-priced row is highlighted without implying quality equivalence.
+The public usage-equivalent panel aggregates input/output tokens from deduplicated rows that pass the existing validation, Basksweep, public-safe, success, and pricing-identity gates. It applies the same aggregate token counts to each valid, source-linked, model-specific pricing record and sorts results from **most expensive to least expensive**. The arbitrary-workload calculator uses the same descending order. The highest-priced row is highlighted first to reinforce the requested descending ranking; this does not imply quality equivalence.
 
 This panel remains unavailable when no validated public usage rows exist; it must not fabricate zero usage or $0 value. It reports counterfactual list-price estimates only. Observed provider cost and verified no-cost execution remain separate metrics.
 

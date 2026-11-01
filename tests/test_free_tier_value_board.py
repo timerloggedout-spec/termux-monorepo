@@ -46,6 +46,23 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertEqual(row["input_usd_per_million"], 1.75)
         self.assertEqual(row["output_usd_per_million"], 14)
 
+    def test_provider_comparison_ranks_most_expensive_first(self):
+        self.assertIn(".sort((a,b)=>b.total-a.total)", self.page)
+        self.assertIn("n===0?'most-expensive'", self.page)
+        self.assertIn(".bar.most-expensive{background:var(--gold)}", self.page)
+
+    def test_opportunity_cost_is_scoped_to_repository_work(self):
+        self.assertIn("Repo time invested (minutes)", self.page)
+        self.assertIn("Repo time valuation rate (USD/hour)", self.page)
+        self.assertIn('value="best-alternative"', self.page)
+        self.assertIn("alternative=$('basis').value==='best-alternative'", self.page)
+        self.assertIn("$('oppcost').textContent=alternative?money(opp):'—'", self.page)
+        self.assertIn("$('net').textContent=alternative?money(sv-opp):'—'", self.page)
+        self.assertIn("repo_time_investment_value", self.doc)
+        self.assertIn("repo_time_opportunity_cost", self.doc)
+        self.assertIn("best feasible alternative use", self.doc)
+        self.assertIn("keep the opportunity-cost result unavailable", self.doc)
+
     def test_missing_session_feed_is_explicit_not_synthesized(self):
         self.assertEqual(self.data["sessions"], [])
         self.assertIn("unknown", self.data["policy"]["unknown_semantics"].lower())
@@ -74,7 +91,7 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
     def test_public_page_and_methodology_are_linked(self):
         self.assertIn("free-tier-value.json", self.page)
         self.assertIn("FREE-TIER-USE-VALUE-BOARD.md", self.page)
-        self.assertIn("time_invested_value", self.doc)
+        self.assertIn("repo_time_investment_value", self.doc)
         self.assertIn("paid_equivalent_usd", self.doc)
         self.assertIn("billing_status=VERIFIED_NO_COST", self.doc)
 

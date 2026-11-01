@@ -2,6 +2,19 @@
 
 `[MUSEai]@{role:{3l0-plane}}` — seat established by owner dispatch 2026-10-28.
 
+## Definition of record — Swarm (owner, 2026-11-01)
+
+**Swarm = ALL providers' inference model endpoints participating in 3L0
+DoE.** For this plane, the swarm is the participant population: every
+provider inference endpoint enrolled in the experiment system (the
+catalog as experiment arms; endpoint scale — provider×model — per the
+endpoint census, floor 5,337 verified 2026-11-01, PR #3175). Seats,
+apps, and workflows (incl. the Swarm oversight seat and the Termux
+Fleet Swarm App identity) are organs acting on the swarm, ¬ the swarm
+itself. 3L0 scores are therefore computed over endpoints as configured
+instances (`treatment.instance` / `instance_key`), never over provider
+names alone.
+
 ## Remit
 
 3L0 is the **scoring plane**. It scores scouts, orchestrators, players,

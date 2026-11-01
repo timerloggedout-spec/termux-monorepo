@@ -48,13 +48,17 @@ def test_feed_matches_registry_of_record():
     for p in feed["proposals"]:
         assert p["url"] == ("https://github.com/timerloggedout-spec/termux-monorepo"
                             "/tree/master/docs/proposals/" + p["path"])
-    assert feed["counts"]["passes"] == len(feed["passes"]) == 3
+    assert feed["counts"]["passes"] == len(feed["passes"])
     by_id = {p["id"]: p for p in feed["passes"]}
     # each pass's own status, verbatim from its pass.json
     assert by_id["temporal-durable-execution"]["status"] == "recorded"
     assert by_id["strands-rfp-response"]["status"] == "recorded"
-    assert by_id["kiroween-delphi-concept"]["status"] == "stated_not_run"
-    assert feed["gaps"] == []
+    assert by_id["kiroween-delphi-concept"]["status"] == "debate_recorded"
+    assert by_id["marketing-strategy-tactics"]["status"] == "round_1_recorded"
+    # an unreadable pass.json ⇒ null fields + a gap naming the pass
+    assert by_id["ai-studio-delphi-panel"]["status"] is None
+    assert any("ai-studio-delphi-panel" in g for g in feed["gaps"])
+    assert all(g.startswith("pass ") for g in feed["gaps"])
 
 
 def test_chrome_wiring():

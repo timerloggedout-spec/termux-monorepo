@@ -851,7 +851,7 @@
       ],
       "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
       "gate_state": "gate-green",
-      "invoke_verdict": "INVOKE OK http 200 (model c4ai-aya-expanse-32b) via provider-invoke; verdicts issue #3141 Second model proven: c4ai-aya-vision-32b INVOKE OK 200 (per-model shard, #3141)"
+      "invoke_verdict": "INVOKE OK http 200 (model c4ai-aya-expanse-32b) via provider-invoke; verdicts issue #3141 Second model proven: c4ai-aya-vision-32b INVOKE OK 200 (per-model shard, #3141) Shard: command-a-03-2025 = transport timeout (datum only; class unchanged, 2 models proven 200)"
      },
      {
       "id": "felo.api_credits",
@@ -1683,7 +1683,7 @@
        "provider-availability catalog probe"
       ],
       "registry_live_field": "none published",
-      "invoke_verdict": "skew: catalog http 200 vs invoke model http 404; verdicts issue #3141"
+      "invoke_verdict": "skew (deepened by shards): catalog http 200 / 85 models vs serving layer - 5 models sampled across the day, 0 served (4x http 404 + 1x http 410 gone: meta/llama-3.3-70b-instruct); verdicts + shards issue #3141"
      },
      {
       "id": "omni.gateway",
@@ -1816,7 +1816,7 @@
       ],
       "registry_live_field": "Retry-After header on HTTP 429",
       "gate_state": "gate-green",
-      "invoke_verdict": "timeout: transport read timeout (~45s); verdicts issue #3141"
+      "invoke_verdict": "mixed route behavior: batch attempt = transport timeout on a :free model (timeout class is :free-model-specific); shard on openai/gpt-4o-mini = http 404 'not offered here', route answers fast; verdicts issue #3141"
      },
      {
       "id": "xfyun.spark",

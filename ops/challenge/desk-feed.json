@@ -1838,219 +1838,57 @@
     "gate_note": "7 key-live wired-unproven providers carry gate_state=blocked-by-#2672: batch observation jobs gated on contracts (red, #2672) => no operational evidence harvestable until a green contracts run; blocker is the gate, not the providers."
    },
    "inference_wiring": {
-    "basis": "OWNER CLASS CORRECTION (2026-11-01): the inference bench IS the batch universe; classes re-based on wired INVOKE routes for inference providers only. Review/command surfaces (Qodo, Devin, CodeRabbit, peer-review and command-dispatch lanes) are EXCLUDED from this batch — they are not inference wiring, and a triggerable workflow lane does not count as a wired provider.",
+    "basis": "CORRECTED multi-surface census (fix seat, firsthand @master 2026-11-01). Supersedes the 2-surface re-base below-record: wiring = invoke code on ANY fleet surface {provider-batch ENDPOINTS, provider_model_catalog ENDPOINTS, llm_api_hub provider_extensions ENDPOINTS (PR #1471), llm_api_hub provider_protocols CHAT_ENDPOINTS, g4f-working/gpt4free route}.",
+    "correction_note": "ERROR OF RECORD: the earlier census counted only batch+catalog surfaces and classed 72 providers not-wired; PKG-A (#3099) + PKG-B (#3100) were dispatched on that basis and have been STOOD DOWN (owner correction 2026-11-01; the targets were already wired/done). Corrected result: 87/89 catalogued provider keys carry an invoke surface; the only exceptions are the two long-flagged owner items (github, meta).",
     "wired_invoke": {
-     "count": 17,
-     "providers": {
-      "aion": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
+     "count": 87,
+     "of": 89,
+     "by_surface": {
+      "batch+catalog": [
+       "aion",
+       "cerebras",
+       "cloudflare",
+       "cohere",
+       "felo",
+       "google",
+       "groq",
+       "huggingface",
+       "kilo",
+       "llm7",
+       "mistral",
+       "modelscope",
+       "nvidia",
+       "omni",
+       "openrouter",
+       "ovhcloud",
+       "requesty"
+      ],
+      "extensions (llm_api_hub/provider_extensions.py, PR #1471)": [
+       "typhoon",
+       "unorouter",
+       "routeway",
+       "requesty",
+       "xkiro",
+       "xfyun",
+       "sealion"
+      ],
+      "protocols (llm_api_hub/provider_protocols.py)": [
+       "cloudflare",
+       "cohere"
+      ],
+      "g4f-working/gpt4free route": {
+       "records": 60,
+       "composite": [
+        "gpt4free/CLIProxyAPI/Chapito/ai-manus"
        ],
-       "blocker": "route-dead per Quota map (404/410 on route) — endpoint in code, route unverified-live"
-      },
-      "cerebras": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "no credential provisioned"
-      },
-      "felo": {
-       "routes": [
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)",
-        "own invoke workflow"
-       ],
-       "blocker": "own-workflow invoke route (Quota triggerable class)"
-      },
-      "google": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "wired (gemini key); invoke via batch + catalog + dispatch legs"
-      },
-      "groq": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "Actions egress blocked (invoke route exists; cannot execute from Actions)"
-      },
-      "huggingface": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "none established"
-      },
-      "kilo": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "no credential provisioned"
-      },
-      "llm7": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
-      },
-      "mistral": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "no credential provisioned"
-      },
-      "modelscope": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "no credential provisioned"
-      },
-      "nvidia": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "auth unproven"
-      },
-      "omni": {
-       "routes": [
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)",
-        "own invoke workflow"
-       ],
-       "blocker": "own-workflow invoke route (Quota triggerable class)"
-      },
-      "openrouter": {
-       "routes": [
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "paid balance $0.00 — free layer only"
-      },
-      "ovhcloud": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "no credential provisioned"
-      },
-      "sambanova": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
-      },
-      "siliconflow": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)",
-        "provider_model_catalog ENDPOINT (availability + invoke-capable)"
-       ],
-       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
-      },
-      "zai": {
-       "routes": [
-        "provider-batch invoke (llm_api_hub research_providers ENDPOINTS)"
-       ],
-       "blocker": "batch gate-state blocked-by-#2672 (contracts job red; blocker = gate, not provider)"
+       "evidence": "data/g4f-working/providers.json (blob 5c21ee071cc4): 60 providers / 4,242 models catalogued (PR #2025); tester-working evidence = 100 entries across 15 providers; remainder catalogued, per-provider live proof not established"
       }
-     }
-    },
-    "not_wired": {
-     "count": 72,
-     "providers": {
-      "cloudflare": "route claimed in hub/batch config (verify-scope) but no invoke endpoint in code under the strict basis",
-      "cohere": "route claimed in hub/batch config (key-live) but no invoke endpoint in code under the strict basis",
-      "g4f/AgentTools": "no invoke route wired (registry/roster presence only)",
-      "g4f/Airforce": "no invoke route wired (registry/roster presence only)",
-      "g4f/Antigravity": "no invoke route wired (registry/roster presence only)",
-      "g4f/Arena": "no invoke route wired (registry/roster presence only)",
-      "g4f/BingCreateImages": "no invoke route wired (registry/roster presence only)",
-      "g4f/BlackForestLabs_Flux1Dev": "no invoke route wired (registry/roster presence only)",
-      "g4f/BlackForestLabs_Flux1KontextDev": "no invoke route wired (registry/roster presence only)",
-      "g4f/BlackboxPro": "no invoke route wired (registry/roster presence only)",
-      "g4f/BraveSearch": "no invoke route wired (registry/roster presence only)",
-      "g4f/CachedSearch": "no invoke route wired (registry/roster presence only)",
-      "g4f/Cerebras": "no invoke route wired (registry/roster presence only)",
-      "g4f/ChatGPT": "no invoke route wired (registry/roster presence only)",
-      "g4f/Claude": "no invoke route wired (registry/roster presence only)",
-      "g4f/Cloudflare": "no invoke route wired (registry/roster presence only)",
-      "g4f/CohereForAI_C4AI_Command": "no invoke route wired (registry/roster presence only)",
-      "g4f/Copilot": "no invoke route wired (registry/roster presence only)",
-      "g4f/CopilotApp": "no invoke route wired (registry/roster presence only)",
-      "g4f/DeepInfra": "no invoke route wired (registry/roster presence only)",
-      "g4f/DeepSeek": "no invoke route wired (registry/roster presence only)",
-      "g4f/ElevenLabs": "no invoke route wired (registry/roster presence only)",
-      "g4f/G4FSpace": "no invoke route wired (registry/roster presence only)",
-      "g4f/GLM": "no invoke route wired (registry/roster presence only)",
-      "g4f/Gemini": "no invoke route wired (registry/roster presence only)",
-      "g4f/GeminiCLI": "no invoke route wired (registry/roster presence only)",
-      "g4f/GeminiPro": "no invoke route wired (registry/roster presence only)",
-      "g4f/GithubCopilot": "no invoke route wired (registry/roster presence only)",
-      "g4f/GoogleAiMode": "no invoke route wired (registry/roster presence only)",
-      "g4f/GoogleSearch": "no invoke route wired (registry/roster presence only)",
-      "g4f/Grok": "no invoke route wired (registry/roster presence only)",
-      "g4f/Groq": "no invoke route wired (registry/roster presence only)",
-      "g4f/HailuoAI": "no invoke route wired (registry/roster presence only)",
-      "g4f/HuggingChat": "no invoke route wired (registry/roster presence only)",
-      "g4f/HuggingFace": "no invoke route wired (registry/roster presence only)",
-      "g4f/HuggingFaceMedia": "no invoke route wired (registry/roster presence only)",
-      "g4f/HuggingSpace": "no invoke route wired (registry/roster presence only)",
-      "g4f/KiloCode": "no invoke route wired (registry/roster presence only)",
-      "g4f/LLM7": "no invoke route wired (registry/roster presence only)",
-      "g4f/MarkItDown": "no invoke route wired (registry/roster presence only)",
-      "g4f/MetaAI": "no invoke route wired (registry/roster presence only)",
-      "g4f/MetaAIAccount": "no invoke route wired (registry/roster presence only)",
-      "g4f/MicrosoftDesigner": "no invoke route wired (registry/roster presence only)",
-      "g4f/Nvidia": "no invoke route wired (registry/roster presence only)",
-      "g4f/Ollama": "no invoke route wired (registry/roster presence only)",
-      "g4f/OmniRoute": "no invoke route wired (registry/roster presence only)",
-      "g4f/OpenAIFM": "no invoke route wired (registry/roster presence only)",
-      "g4f/OpenRouterFree": "no invoke route wired (registry/roster presence only)",
-      "g4f/OperaAria": "no invoke route wired (registry/roster presence only)",
-      "g4f/Perplexity": "no invoke route wired (registry/roster presence only)",
-      "g4f/Pi": "no invoke route wired (registry/roster presence only)",
-      "g4f/Pollinations": "no invoke route wired (registry/roster presence only)",
-      "g4f/PollinationsAudio": "no invoke route wired (registry/roster presence only)",
-      "g4f/PollinationsImage": "no invoke route wired (registry/roster presence only)",
-      "g4f/Puter": "no invoke route wired (registry/roster presence only)",
-      "g4f/Qwen": "no invoke route wired (registry/roster presence only)",
-      "g4f/RelayRouter": "no invoke route wired (registry/roster presence only)",
-      "g4f/StabilityAI_SD35Large": "no invoke route wired (registry/roster presence only)",
-      "g4f/TeachAnything": "no invoke route wired (registry/roster presence only)",
-      "g4f/WhiteRabbitNeo": "no invoke route wired (registry/roster presence only)",
-      "g4f/You": "no invoke route wired (registry/roster presence only)",
-      "g4f/Yqcloud": "no invoke route wired (registry/roster presence only)",
-      "github": "platform + copilot (review-kind) record — not an inference invoke provider in this batch",
-      "gpt4free/CLIProxyAPI/Chapito/ai-manus": "no invoke route wired (registry/roster presence only)",
-      "meta": "do-not-route: llama_api RETIRED; model_api/muse_code pending MODEL_API_KEY/META_API_KEY provisioning",
-      "requesty": "route claimed in hub/batch config (no-credential) but no invoke endpoint in code under the strict basis",
-      "routeway": "route claimed in hub/batch config (key-live) but no invoke endpoint in code under the strict basis",
-      "sealion": "route claimed in hub/batch config (route-dead/DNS) but no invoke endpoint in code under the strict basis",
-      "typhoon": "route claimed in hub/batch config (no-credential) but no invoke endpoint in code under the strict basis",
-      "unorouter": "route claimed in hub/batch config (key-live) but no invoke endpoint in code under the strict basis",
-      "xfyun": "route claimed in hub/batch config (no-credential) but no invoke endpoint in code under the strict basis",
-      "xkiro": "route claimed in hub/batch config (Actions-egress 1010-blocked) but no invoke endpoint in code under the strict basis"
-     }
-    },
-    "excluded_surfaces": [
-     "qodo review lane",
-     "devin review lane",
-     "coderabbit command-dispatch / review lanes",
-     "peer-review orchestrator surfaces",
-     "gemini review/triage legs (review/command kind, not inference invoke)"
-    ],
-    "note": "Wiring target per owner escalation to Swarm: every not_wired provider gets an invoke route (batch endpoint or catalog endpoint) or a named blocker of record. Counts: 89 distinct providers = 17 wired-invoke + 72 not-wired.",
-    "compounding": {
-     "rule": "OWNER RULE (2026-11-01): every time a new endpoint is wired, it is eligible to join the process of continuing the wiring — wiring COMPOUNDS. A provider joins the wiring worker pool the moment its invoke wiring lands (code route + selection entry + evidence). Packages are sharded across the pool by task-fit; no single provider or vendor — including Google (Jules + Gemini) — is the default, sole, or consecutive builder. Each landed wiring PR must name the providers it unlocks into the pool.",
-     "worker_pool_now": [
+     },
+     "named_providers": [
       "aion",
       "cerebras",
+      "cloudflare",
+      "cohere",
       "felo",
       "google",
       "groq",
@@ -2063,14 +1901,69 @@
       "omni",
       "openrouter",
       "ovhcloud",
+      "requesty",
+      "routeway",
       "sambanova",
+      "sealion",
       "siliconflow",
+      "typhoon",
+      "unorouter",
+      "xfyun",
+      "xkiro",
       "zai"
      ],
-     "pool_count": 17,
+     "note": "ollama also carries a protocol CHAT_ENDPOINT (provider_protocols.py) but is not one of the 89 model-lane catalogued keys. Evidence grades differ by surface: batch/catalog/extensions/protocols = fixed invoke endpoints + secret names in code; g4f = catalogued route (see evidence)."
+    },
+    "not_wired": {
+     "count": 2,
+     "providers": {
+      "github": "platform + copilot (review-kind) record — not an inference invoke provider; owner decision: exclude-by-kind or open a github-models invoke record",
+      "meta": "do-not-route: llama_api RETIRED; model_api/muse_code pending MODEL_API_KEY/META_API_KEY provisioning (owner act)"
+     }
+    },
+    "excluded_surfaces": [
+     "qodo review lane",
+     "devin review lane",
+     "coderabbit command-dispatch / review lanes",
+     "peer-review orchestrator surfaces",
+     "gemini review/triage legs (review/command kind, not inference invoke)"
+    ],
+    "compounding": {
+     "rule": "OWNER RULE (2026-11-01): every time a new endpoint is wired, it is eligible to join the process of continuing the wiring — wiring COMPOUNDS. A provider joins the wiring worker pool the moment its invoke wiring lands (code route + selection entry + evidence). Packages are sharded across the pool by task-fit; no single provider or vendor — including Google (Jules + Gemini) — is the default, sole, or consecutive builder. Each landed wiring PR must name the providers it unlocks into the pool.",
+     "worker_pool_now": [
+      "aion",
+      "cerebras",
+      "cloudflare",
+      "cohere",
+      "felo",
+      "google",
+      "groq",
+      "huggingface",
+      "kilo",
+      "llm7",
+      "mistral",
+      "modelscope",
+      "nvidia",
+      "omni",
+      "openrouter",
+      "ovhcloud",
+      "requesty",
+      "routeway",
+      "sambanova",
+      "sealion",
+      "siliconflow",
+      "typhoon",
+      "unorouter",
+      "xfyun",
+      "xkiro",
+      "zai",
+      "gpt4free (g4f family route)"
+     ],
+     "pool_count": 27,
      "mechanics": "Pool members contribute through their wired invoke routes (generation / review / verification legs) and, where a repo build lane exists for them, build legs. Desk shards packages across the pool and stamps the shard's provider; Swarm second-pass reviews; fix seat republishes pool membership on every wiring landing.",
-     "applied_now": "PKG-A (#3099): each of the 9 providers Gemini wires joins the pool on landing and becomes claimable for remaining shards. PKG-B (#3100): DeepSeek holds the core-module shard ONLY; the g4f per-provider registration shards are claimable across the pool — the family is not a single-builder package."
-    }
+     "applied_now": "CORRECTED (2026-11-01): PKG-A + PKG-B stood down — their targets were already wired. The pool stands at the corrected wired set; future wiring work concerns only genuinely unwired surfaces as they appear."
+    },
+    "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts."
    },
    "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated.",
    "app_layer": {

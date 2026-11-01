@@ -110,7 +110,17 @@ def main() -> int:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
     OUT.mkdir(parents=True, exist_ok=True)
     if token:
-        (OUT / "pr_feed_snapshot.json").write_text(json.dumps(fetch_prs(token), indent=1) + "\n")
+        try:
+            snap = fetch_prs(token)
+            snap["status"] = "ok"
+        except Exception as e:  # fail-soft, recorded (DEFER class: e.g.
+            # GITHUB_TOKEN bucket exhausted by the merge-triggered workflow
+            # storm). The generator names this as a gap; next run retries.
+            msg = f"{type(e).__name__}: {str(e)[:160]}"
+            print(f"::warning::pr feed fetch failed ({msg}); degraded snapshot written")
+            snap = {"schema": "tracking-pr-feed-snapshot/v1", "read_at": _now(),
+                    "repo": REPO, "status": f"error:{msg}", "merged": [], "open": []}
+        (OUT / "pr_feed_snapshot.json").write_text(json.dumps(snap, indent=1) + "\n")
         print("pr_feed_snapshot refreshed")
     else:
         print("::warning::no GH token; pr snapshot untouched")

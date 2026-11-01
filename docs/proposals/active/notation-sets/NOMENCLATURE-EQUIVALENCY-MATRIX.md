@@ -141,6 +141,28 @@ A search result or model-generated suggestion is a **discovery lead**, not suffi
 
 These are seed examples, not promoted equivalences. Verify each against authoritative domain references and the exact repository discussions before changing any implementation or notation registry.
 
+## Domain expansion: group_theory (candidate, 2026-11-01)
+
+Owner-ordered domain addition. All records `candidate` per the candidate-first rule; sources primary = Dummit & Foote, *Abstract Algebra* (3rd ed.) and Fraleigh, *A First Course in Abstract Algebra*; Wikipedia tertiary/orientation only. Machine-readable records live in `nomenclature-matrix/seed.json` (domain_id `group_theory`: 13 concepts, labels in {preferred_formal, plain, synonym, symbolic_notation}, 4 mappings).
+
+| Concept | Formal label | Symbolic notation (direction/order) | Plain rendering | Guardrail |
+|---|---|---|---|---|
+| group | group | `(G, ·)` | a set with a combining rule that can always be undone | Requires associativity + identity + inverses; a set with any operation is not yet a group |
+| identity element | identity element | `e` (also `1` multiplicative, `0` additive) | the element that changes nothing | Unique per group; notation collides across domains — scope by group |
+| inverse | inverse | `g⁻¹` (additive: `−g`) | the element that undoes another | Unique per element; `(ab)⁻¹ = b⁻¹a⁻¹` — order reverses |
+| binary operation | binary operation / composition | `·`; `∘` composes right-to-left (`g ∘ f` = f, then g) | the rule for combining two elements | Convention varies (multiplicative vs additive vs composition); record which per source |
+| subgroup | subgroup | `H ≤ G` | a smaller group inside a bigger one | Subset alone is not a subgroup — closure + inverses required |
+| normal subgroup | normal subgroup | `N ⊲ G` | a subgroup unchanged by conjugation | Normality is relative to the ambient group; not every subgroup is normal (abelian groups: all are) |
+| quotient group | quotient group | `G/N` | collapse N to the identity | Defined only for NORMAL N; cosets of a non-normal subgroup do not form a group |
+| homomorphism | group homomorphism | `φ: G → H`, `φ(ab) = φ(a)φ(b)` | a map respecting the combining rule | Structure-preserving ≠ bijective; kernel measures the failure of injectivity |
+| isomorphism | group isomorphism | `G ≅ H` | same structure, different names | `≅` is domain-relative (groups vs categories vs sets); never read as equality |
+| abelian group | abelian group (= commutative group) | operation commutes: `ab = ba` | order of combining does not matter | Named for Abel; 'commutative' is a true synonym here, unlike near-synonyms elsewhere in this matrix |
+| group action | group action | `G ↷ X`; `G × X → X` | a group moving points of a set | An action is a homomorphism into Sym(X); the same group can act in inequivalent ways |
+| symmetry group | symmetry group | `Sym(X)` | all structure-preserving rearrangements | Sym(X) is for sets; geometric objects use their automorphism/isometry groups — related, not identical |
+| category of groups | Grp | `Grp` (objects: groups; morphisms: homomorphisms) | the world of groups and their maps | Grp is a category OF groups — not itself a group; do not file under group |
+
+Cross-domain links (all `related_match`, candidate): binary operation ↔ category_theory.composition (the operation is composition in the one-object-category view; direction conventions per the composition rows above) · identity element ↔ category_theory.morphism (e is the identity morphism in that view; cf. the 'Identity morphism/function' row) · Grp ↔ category_theory.morphism (definitional: morphisms of Grp are homomorphisms). **Monoid adjacency flag:** a group is a monoid *with inverses*; Haskell/FP `Monoid` has no inverse law, so Monoid ¬= group — adjacency recorded in seed mapping `map-gt-group-monoid-adjacency` at low confidence precisely to block any equivalence claim until a monoid concept is seeded and reviewed.
+
 ## Workflow and promotion policy
 
 1. **Discover:** extract candidate terms from Issue #320, related issues/PRs, comments, branch docs, and commits.

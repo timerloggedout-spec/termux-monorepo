@@ -3,9 +3,9 @@
     "open_issues": 366,
     "open_prs": 155,
     "pr_classes": {
-      "CANDIDATE": 70,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 78,
+      "CANDIDATE": 69,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 80,
       "SUPERSEDE": 0
     }
   },
@@ -83,7 +83,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T01:10:34Z",
+  "generated_at": "2026-11-01T01:13:31Z",
   "issues_unlabelled": [
     308,
     343,
@@ -117,10 +117,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "b139d48ec5"
+    "sha": "03dbb2624c"
   },
   "prs": [
     {
@@ -200,26 +200,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "1342be435e",
+      "head_sha": "9c99fc965b",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2804,
-      "title": "doe(control-suites): lab-1 EXECUTION-BRIEF \u2014 NO-GO (no named live anchor; drift + free-route blockers)",
-      "updated_at": "2026-11-01T01:09:53Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e95a6d8544",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2809,
-      "title": "docs(doe): live-1 wave-framing DESIGN \u2014 framing x entry-class over Nov wave (WO#1, dispatch gated)",
-      "updated_at": "2026-11-01T01:10:19Z"
+      "number": 2812,
+      "title": "doe(control-suites): EXECUTION-BRIEF correction \u2014 framing campaign of record = live-1-wave-framing (#2809, supersedes live-4)",
+      "updated_at": "2026-11-01T01:12:49Z"
     },
     {
       "class": "CANDIDATE",
@@ -1193,20 +1179,6 @@
       "updated_at": "2026-10-31T22:20:31Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a30e34fa8e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2803,
-      "title": "doe(live-2): phase 1 baseline \u2014 outcome join censored, NE->merged refined, phase-2 levels proposed",
-      "updated_at": "2026-11-01T01:09:22Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1619,12 +1591,12 @@
         "hygiene": "in_progress",
         "smoke": "success"
       },
-      "head_sha": "92e60df191",
+      "head_sha": "77297bd335",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T01:09:46Z"
+      "updated_at": "2026-11-01T01:12:08Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2288,15 +2260,43 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "3e2c30b6b8",
+      "head_sha": "0e9034eb06",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "clean",
+      "number": 2803,
+      "title": "doe(live-2): phase 1 baseline \u2014 outcome join censored, NE->merged refined, phase-2 levels proposed",
+      "updated_at": "2026-11-01T01:13:18Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "ffc5a03648",
+      "labels": [],
+      "mergeable_state": "clean",
       "number": 2810,
       "title": "doe(live-2): phase 1 outcome-join script + DESIGN-strata addendum (watch empty, false-S 0 cases)",
-      "updated_at": "2026-11-01T01:10:22Z"
+      "updated_at": "2026-11-01T01:13:24Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "6a48ac3e9a",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 2814,
+      "title": "DoE live-3: integration-review conditions A2 (held:pattern-C-review) + A3 (exclude live-1 PRs) + A4 (feed census)",
+      "updated_at": "2026-11-01T01:13:24Z"
     }
   ],
   "schema": "operator-matrix/v1",

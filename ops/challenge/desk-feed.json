@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T11:46:10Z",
+ "generated_at": "2026-11-01T11:48:13Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2408,7 +2408,7 @@
   },
   {
    "entry": "D2",
-   "project": "Vultr Agent Rush — pick not frozen (candidate: Web Adapter Foundry)",
+   "project": "Vultr Agent Rush — pick OPEN (owner-held; candidate: Web Adapter Foundry)",
    "artifact_repo": null,
    "status": "queued",
    "stages": {
@@ -2423,7 +2423,7 @@
    "evidence": {
     "note": "build route per D2 seat record: pick/spec ⇒ Desk ⇒ builder lanes ⇒ monorepo PR ⇒ sync ⇒ D2 verifies"
    },
-   "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
+   "next": "BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · pick OPEN owner-held (freeze leg REMOVED 2026-11-01 — owner direct NO to manager-enacted WAF freeze) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions",
    "provider_usage": []
   },
   {

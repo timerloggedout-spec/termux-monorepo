@@ -38,17 +38,28 @@ Do not store Devin API tokens, browser cookies, or exported session state in thi
 
 ## Credential dependency (recorded 2026-11-01)
 
-The **DeepWiki side** of this surface — Devin's generated wiki and its indexing — depends on **`DEVIN_API_KEY`**, the repository's canonical Devin credential name (allow-listed in `.github/connectors/connector_manager.py`). Indexing writes go through the Devin v3 REST API (`scripts/agentic/devin_wiki_indexing.py` + the reconcile workflow). Owner standing note, 2026-11-01: "Devin API remains required for Wiki etc." — this dependency is standing, not incidental.
+Owner ruling: **DEVINdeepWiki ≠ DeepWiki.com** — two distinct surfaces, recorded separately. Do not merge their credentials, interfaces, or state.
 
-Do not conflate the three Devin/DeepWiki credential surfaces:
+### Surface A — DEVINdeepWiki (Devin / Cognition)
 
-| Surface | Credential | Mechanism |
-|---|---|---|
-| Devin Wiki indexing (write) | `DEVIN_API_KEY` | v3 REST indexing API |
-| Wiki status probe (fabric) | `DEEPWIKI_TOKEN` | `remote-knowledge-fabric.yml` — `dwiki check` against the Devin MCP endpoint |
-| Local wiki generation (fabric) | `DEEPWIKI_LLM_API_KEY` | `deepwiki-rs` in the fabric workflow (+ base-url / model vars) |
+- **What:** org branch-level wiki material (the private Devin wiki linked from Home).
+- **Interfaces:** v3 REST indexing **write** (`scripts/agentic/devin_wiki_indexing.py` + the reconcile workflow); `mcp.devin.ai`.
+- **Credentials:** `DEVIN_API_KEY` + `DEVIN_ORG_ID` + `DEVIN_WIKI_EFFORT` (the first is the repository's canonical Devin credential name, allow-listed in `.github/connectors/connector_manager.py`).
+- **State** (gate in the register, PR #3323): all three ABSENT firsthand (0 of 66 secrets, 0 of 19 vars) ⇒ the indexing leg is `not_provisioned` and makes **no Devin calls**. The owner manually refreshed repo + branches on 2026-11-01 — the stopgap this automation replaces once provisioned.
+- Owner standing note, 2026-11-01: "Devin API remains required for Wiki etc."
 
-This dependency is **distinct from the managed mirror** described above: publishing `wiki/` to GitHub Wiki via `.github/workflows/publish-wiki.yml` needs no Devin credential — it runs on the repository's operator-token lane over reviewed content.
+### Surface B — DeepWiki.com
+
+- **What:** public repo wiki material (`deepwiki.com/timerloggedout-spec/termux-monorepo`).
+- **Interfaces:** web + `mcp.deepwiki.com`, **read-only** (public MCP read tools: `read_wiki_structure` / `read_wiki_contents` / `ask_question`).
+- **Credential:** none.
+
+### Collision note — not wiki-surface credentials
+
+- `DEEPWIKI_LLM_API_KEY` = the independent **deepwiki-rs** family (local generation in the fabric workflow) — not a Cognition credential for either surface above.
+- `DEEPWIKI_TOKEN` = the fabric probe credential (`remote-knowledge-fabric.yml`, `dwiki check`) — a third distinct item, not a wiki-surface credential.
+
+This dependency set is **distinct from the managed mirror** described above: publishing `wiki/` to GitHub Wiki via `.github/workflows/publish-wiki.yml` needs no Devin credential — it runs on the repository's operator-token lane over reviewed content.
 
 Additional DeepWiki refreshes beyond Devin's built-in cadence are a candidate **webWrapper** vehicle (Swarm ww lead, in parallel) — recorded here as a pointer only; that work is not part of this surface.
 

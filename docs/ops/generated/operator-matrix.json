@@ -3,8 +3,8 @@
     "open_issues": 380,
     "open_prs": 170,
     "pr_classes": {
-      "CANDIDATE": 82,
-      "EXTRACT": 6,
+      "CANDIDATE": 83,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -90,7 +90,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T22:37:18Z",
+  "generated_at": "2026-11-01T22:43:30Z",
   "issues_unlabelled": [
     308,
     343,
@@ -134,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "7261008534"
+    "sha": "03df5fb879"
   },
   "prs": [
     {
@@ -206,20 +206,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "56c1bccf40",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T22:36:05Z"
     },
     {
       "class": "CANDIDATE",
@@ -981,6 +967,20 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ea8340ffc9",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-01T22:40:24Z"
     },
     {
       "class": "CANDIDATE",

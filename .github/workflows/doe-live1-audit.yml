@@ -1,0 +1,76 @@
+name: DoE live-1 ledger audit
+
+# Rule-5 automation for experiments/doe/live-1-wave-framing (WO-B):
+# on a Jules dispatch (issue labeled) or manual run, verify the
+# issue's live-1 stamp against the pre-registered assignment ledger
+# and commit the audit EXPERIMENT record. A mismatch is recorded
+# OBSERVATIONAL (auditor exit 3) — never a silent pass.
+
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to audit'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  audit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.label.name == 'jules'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Export issue JSON
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+        run: |
+          gh issue view "$ISSUE_NUMBER" --json number,title,body \
+            > /tmp/issue.json
+          cat /tmp/issue.json
+      - name: Audit dispatch against ledger
+        id: audit
+        continue-on-error: true
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+        run: |
+          python3 scripts/doe/live1_auditor.py \
+            --ledger experiments/doe/live-1-wave-framing/records/assignments.jsonl \
+            --issue-json /tmp/issue.json \
+            --records-dir experiments/doe/live-1-wave-framing/records \
+            --base-sha "${{ github.sha }}"
+          echo "auditor exit: $?"
+      - name: Commit audit record if written
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experiments/doe/live-1-wave-framing/records/
+          if git diff --cached --quiet; then
+            echo "no audit record written"
+            exit 0
+          fi
+          git commit -m "data(doe): live-1 ledger audit record [skip ci]"
+          for attempt in 1 2 3; do
+            git fetch origin master
+            if git rebase origin/master && git push; then
+              echo "audit record pushed (attempt $attempt)"
+              exit 0
+            fi
+            git rebase --abort || true
+          done
+          echo "push failed after 3 attempts"
+          exit 1

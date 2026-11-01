@@ -23,7 +23,7 @@ Notation: #320/#1734 — claims carry evidence refs; gaps = NOT_ESTABLISHED.
 | 13 | action_required stock (≥2666 parked runs) | swarm (6628d41d) | per-run "Approve and run workflows" in Actions UI ∨ accept stock stays parked — forward inflow FIXED via Termux Fleet Swarm (App 5560920) + F1 adoption wave | 2026-10-31 | nothing forward; stock runs only |
 | 14 | OpenRouter top-up / DeepSeek model ruling | quota + swarm (6628d41d) | top-up ruling (balance $0.00) ∨ replacement-model ruling — `deepseek/deepseek-r1:free` DELISTED (quota lane, 2026-10-31) | 2026-10-31 | OpenRouter DeepSeek invoke/review route in desk dispatch_policy (carried as availability: unfunded until then) |
 | 15 | Fleet-APK prod-signing provisioning | archwiz-recon (ae45b8c4) | provision `ANDROID_KEYSTORE_*` secrets (names-only) for production signing — current apk-v0.1.0 = ephemeral-debug placeholder (apps/fleet-apk) | 2026-10-31 | fleet .APK Release signing |
-| 16 | ArchWiz = SEPARATE APK (≠ fleet-apk) | archwiz-recon (ae45b8c4) | specifics NOT_ESTABLISHED {package, tag, signing, build route} — ∅ assumed; owning lane defines before any owner item is sized | 2026-10-31 | ArchWiz .APK Release (FIX+UPGRADE item 7) |
+| 16 | ArchWiz = SEPARATE APK (≠ fleet-apk) | archwiz-recon (ae45b8c4) | specifics NOT_ESTABLISHED {package, tag, signing, build route} — ∅ assumed; owning lane defines before any owner item is sized. END-STATE (owner 2026-10-31): NOW ArchWiz.APK ∧ fleet-apk stay separate ∧ different; ULTIMATELY/LATER ArchWiz.APK → ingested into `fleet-apk`. Timing = later (∅ now, ∅ current task) | 2026-10-31 | ArchWiz .APK Release (FIX+UPGRADE item 7) |
 
 ## RESOLVED
 

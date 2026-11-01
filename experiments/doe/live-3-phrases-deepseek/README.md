@@ -71,3 +71,21 @@ Gates (evidence, ¬ assumed):
 Staging (pre-registered): Stage 1 = fixed-anchor slice
 (9 cells + control); Stage 2 = rotating crossed in for
 Stage-1 survivors + control. Decision rule in DESIGN.json.
+
+## Coordination (owner restructure, 2026-10-31)
+
+phrases-jit = nested subset ⊂ doe-mgr-live-builds (28ac9715),
+¬ peer category. Reporting line: phrases-jit ⇒ live-builds ⇒
+doe-expert. Remit unchanged; surfaces coordinate:
+
+- live-4-dispatch-framing (live-builds) rides Jules routes:
+  phrases there = NOT ESTABLISHED as landed ⇒ phrase factor
+  ∅ applies, ∅ collision.
+- This campaign rides DeepSeek routes: framing HELD at
+  framing-a (pattern C for review), ¬ a factor here in wave 1.
+- live-4 cb-1's DeepSeek-CI review arms are EXCLUDED from
+  live-3 assignment until cb-1 verdict (measurement surface).
+- Composition rule (pre-registered): one dispatch = one
+  assignment per factor family; families meeting on one
+  dispatch cross in a single stamp (framing × phrase, one
+  assignment hash), never parallel assignments.

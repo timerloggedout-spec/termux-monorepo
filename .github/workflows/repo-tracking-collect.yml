@@ -1,0 +1,90 @@
+name: repo-tracking-collect
+
+# Repo-org tracking surface (contract: docs/ops/REPO-TRACKING.md).
+# SINGLE-WRITER for ops/tracking/tracking.{json,md} +
+# apps/help-wanted-dashboard/data/tracking-feed.json. No other lane
+# hand-edits those outputs; lanes change inputs (records of record,
+# ops/tracking/projects.json seed) by normal PR.
+# Pattern: lane-matrix sweep (direct commit of generated artifacts to
+# master, observer-only) x surface-feeds (stamped observation snapshots;
+# the generator never calls the network).
+# VM = sandbox law: this workflow is the standing mechanism; no VM cron.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 7 * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/tracking/**'
+      - 'ops/tracking/projects.json'
+      - 'ops/challenge/coordinator.json'
+      - 'ops/challenge/desk-feed.json'
+      - 'ops/quota/registry.json'
+      - 'experiments/doe/*/DESIGN.json'
+
+concurrency:
+  group: repo-tracking-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-check (generator unit tests)
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/tracking/repo_tracking.py scripts/tracking/fetch_snapshots.py
+          python3 -m pytest tests/test_repo_tracking.py -q || python3 tests/test_repo_tracking.py
+      - name: Refresh observation snapshots (PR feed + Neon lane-events)
+        run: python3 -B scripts/tracking/fetch_snapshots.py
+      - name: Generate the tracking surface
+        run: |
+          set -euo pipefail
+          python3 -B scripts/tracking/repo_tracking.py
+          {
+            echo '## Repo tracking'
+            head -n 30 ops/tracking/tracking.md
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit generated artifacts to master (single-writer)
+        run: |
+          set -euo pipefail
+          git add ops/tracking/tracking.json ops/tracking/tracking.md \
+            apps/help-wanted-dashboard/data/tracking-feed.json \
+            scripts/tracking/pr_feed_snapshot.json scripts/tracking/lane_events_snapshot.json
+          if git diff --cached --quiet; then
+            echo 'tracking unchanged; no commit'
+            exit 0
+          fi
+          git config user.name 'repo-tracking-collect'
+          git config user.email 'actions@github.com'
+          git commit -m 'ops(tracking): refresh repo tracking surface (auto-derived)'
+          git pull --rebase origin master
+          git push origin HEAD:master
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-tracking-${{ github.run_id }}
+          path: |
+            ops/tracking/tracking.json
+            ops/tracking/tracking.md
+          if-no-files-found: ignore
+          retention-days: 30

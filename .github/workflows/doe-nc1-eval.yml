@@ -10,6 +10,9 @@ on:
       run_id:
         description: "run id (e.g. run-001)"
         default: "run-001"
+      flags_path:
+        description: "optional per-layer flags file (JSON/JSONL) for detector-comparison runs"
+        default: ""
   pull_request:
     paths:
       - "experiments/doe/nc-1-notation-compliance/records/corpus/**"
@@ -24,10 +27,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: score ordered-stack arms on gold corpus
         run: |
+          FLAGS_ARG=""
+          if [ -n "${{ inputs.flags_path }}" ]; then FLAGS_ARG="--flags ${{ inputs.flags_path }}"; fi
           python3 scripts/doe/nc1_evaluator.py \
             experiments/doe/nc-1-notation-compliance/records/corpus/units.jsonl \
             experiments/doe/nc-1-notation-compliance/records/corpus/tau.json \
             run-output.json \
+            $FLAGS_ARG \
             --record "experiments/doe/nc-1-notation-compliance/records/${{ inputs.run_id || 'run-001' }}-EXPERIMENT.json" \
             --master-sha "${{ github.sha }}" \
             --run-id "${{ inputs.run_id || 'run-001' }}" \

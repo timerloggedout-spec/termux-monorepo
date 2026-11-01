@@ -2,13 +2,19 @@ name: DoE live-3 auto-dispatch
 
 # Rule-5 automation for experiments/doe/live-3-phrases-deepseek
 # (WO-A). One workflow run = one designed dispatch, end to end:
-#   plan (live3_dispatcher: A3/cb-1 code screen, daily free-tier
-#   budget, cell assignment, phrase_layer composition, instance
-#   stamp) -> send (phrase_dispatch.py, OpenRouter r1:free) ->
-#   post the review comment -> record (EXPERIMENT record + SUMMARY)
-#   -> commit job + record + state back to the campaign dirs.
-# Excluded targets (exit 4) and budget exhaustion (exit 5) stop the
-# run loudly before any API call is made.
+#   plan (live3_dispatcher: A3/cb-1 code screen, daily budget,
+#   cell assignment, phrase_layer composition, instance stamp)
+#   -> send -> record (EXPERIMENT record + SUMMARY) -> commit-back.
+#
+# SEND LEG (doe-expert ruling (a), 2026-10-31): the PRIMARY
+# OpenRouter route is dead (deepseek/deepseek-r1:free delisted;
+# account paid-incapable). The authorized ALT is the deepseek-ci
+# COMMENT SURFACE: the send step posts the composed, stamped
+# prompt as the dispatch comment on the target PR. The manual
+# OpenRouter leg (doe-phrase-dispatch.yml + phrase_dispatch.py)
+# is retained for the record; it is not used here.
+# Excluded targets (exit 4) and budget exhaustion (exit 5) stop
+# the run loudly before any dispatch is made.
 
 on:
   workflow_dispatch:
@@ -56,40 +62,40 @@ jobs:
             --state experiments/doe/live-3-phrases-deepseek/dispatch/state.json
           JOB=$(ls experiments/doe/live-3-phrases-deepseek/dispatch/job-*.json | tail -1)
           echo "job=$JOB" >> "$GITHUB_OUTPUT"
-      - name: Send dispatch (OpenRouter)
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        run: |
-          mkdir -p doe-dispatch-out
-          python3 scripts/doe/phrase_dispatch.py \
-            --job "${{ steps.plan.outputs.job }}" \
-            --out doe-dispatch-out/result.json
-      - name: Post review comment
-        if: success()
+      - name: Send dispatch (deepseek-ci comment surface)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JOB_PATH: ${{ steps.plan.outputs.job }}
         run: |
+          mkdir -p doe-dispatch-out
           python3 - <<'EOF'
-          import json, os, subprocess
+          import datetime as dt, json, os, subprocess
           job = json.load(open(os.environ["JOB_PATH"]))
-          res = json.load(open("doe-dispatch-out/result.json"))
-          text = res.get("response_text") or ""
           body = (
               f"[MUSEai]@{{role:{{doe-mgr-phrases-jit}}}} — "
               f"live-3-phrases-deepseek dispatch "
               f"#{job['dispatch_no']} · cell "
               f"`{job['assignment']['cell']}` (stage 1, fixed-anchor) "
-              f"· route openrouter `{job['model']}` · prompt sha256 "
-              f"`{job['prompt_sha256'][:12]}` · instance "
-              f"`{str(job.get('instance_key'))[:16]}`\n\n"
-              + text[:30000]
-              + ("\n\n[truncated at 30000 chars; full response in "
-                 "the campaign record]" if len(text) > 30000 else ""))
-          open("comment.md", "w").write(body)
+              f"· route deepseek-ci comment surface (ALT, ruling (a)) "
+              f"· prompt sha256 `{job['prompt_sha256'][:12]}` · "
+              f"instance `{str(job.get('instance_key'))[:16]}`\n\n"
+              + job["prompt"])
+          open("dispatch-comment.md", "w").write(body)
           subprocess.run(["gh", "pr", "comment",
                           str(job["task"]["pr"]),
-                          "--body-file", "comment.md"], check=True)
+                          "--body-file", "dispatch-comment.md"],
+                         check=True)
+          result = {"status": "ok", "via": "deepseek-ci-comment",
+                    "finished_at": dt.datetime.now(
+                        dt.timezone.utc).isoformat(),
+                    "response_sha256": None,
+                    "response_chars": None,
+                    "note": "dispatch comment posted; the route "
+                            "response lands as the surface reply "
+                            "and is harvested by the record loop"}
+          json.dump(result, open("doe-dispatch-out/result.json", "w"),
+                    indent=1)
+          print("dispatch comment posted on PR", job["task"]["pr"])
           EOF
       - name: Record + summary + commit back
         if: always()

@@ -1,0 +1,77 @@
+name: DeepWiki.com import harvest (ICM)
+
+# ICM maintenance run#10 automation (owner order 2026-11-01: build+automate).
+# Harvests the DeepWiki.com wiki STRUCTURE for this repo into
+# docs/icm/_meta/deepwiki-import-record.md as dated additive sections and
+# opens a PR when the structure changed. Read-only public MCP surface
+# (no credential). DEVINdeepWiki is a distinct surface and is never touched.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 6 * * 1"
+  push:
+    branches: [master]
+    paths:
+      - "docs/icm/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deepwiki-import-harvest
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          client-id: ${{ vars.TERMUX_FLEET_SWARM_CLIENT_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Harvest structure into the import record
+        id: harvest
+        run: |
+          set -euo pipefail
+          python3 scripts/agentic/harvest_deepwiki_structure.py \
+            --run-ref "automated harvest (run ${{ github.run_id }})"
+          if git diff --quiet -- docs/icm/_meta/deepwiki-import-record.md; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open harvest PR
+        if: steps.harvest.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          branch="automation/deepwiki-harvest-$(date -u +%Y%m%d%H%M)"
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add docs/icm/_meta/deepwiki-import-record.md
+          git commit -m "docs(icm): DeepWiki.com structure harvest (automated)"
+          git push origin "$branch"
+          gh pr create \
+            --title "docs(icm): DeepWiki.com structure harvest (automated)" \
+            --body "Automated ICM DeepWiki.com import harvest (run#10 automation). Appends the latest read_wiki_structure harvest section to docs/icm/_meta/deepwiki-import-record.md — additive only. Source surface: DeepWiki.com public MCP (no credential); evidence_class generated-external. If the section says not_indexed, the repo had no public index at harvest time and nothing was fabricated." \
+            --base master --head "$branch"

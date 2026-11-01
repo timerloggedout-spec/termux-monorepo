@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T11:50:32Z",
+ "generated_at": "2026-11-01T11:58:07Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2424,6 +2424,28 @@
     "note": "build route per D2 seat record: pick/spec ⇒ Desk ⇒ builder lanes ⇒ monorepo PR ⇒ sync ⇒ D2 verifies"
    },
    "next": "BATCH queued @2026-11-03T15:00Z · fire-conditions {new repo ∧ new AppID via 7075f9c0} · pick OPEN owner-held (freeze leg REMOVED 2026-11-01 — owner direct NO to manager-enacted WAF freeze) · gate D2-NOCARD open (Vultr account before the gift-code step) · ∅ fire pre-conditions",
+   "provider_usage": []
+  },
+  {
+   "entry": "D4",
+   "project": "Skeleton Crew (Kiroween)",
+   "artifact_repo": "timerloggedout-spec/skeleton-crew",
+   "status": "queued",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "gated",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "pending"
+   },
+   "evidence": {
+    "note": "route of record: Jules-on-issues ONLY (producer=Jules, D4 seat verifies) => monorepo PR/CI/merge => artifact sync => skeleton-crew",
+    "batch": "spec pack verified firsthand by desk 2026-11-01: skeleton-crew@main 22a05bd0897a, BUILD-SPEC.md blob b4f45846172f (2,836B) — shape {foundation + apps/conflict-viewer + apps/stamped-report}, tasks T1 foundation -> {T2 viewer, T3 report} -> T4 integration, acceptance S1-S3 + receipt rule {command, exit_code, output sha256, code_paths}",
+    "desk": "batch intake registered by desk 2026-11-01 (this row); issue draft held ready-to-fire at window"
+   },
+   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT",
    "provider_usage": []
   },
   {

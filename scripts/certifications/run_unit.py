@@ -90,6 +90,20 @@ def main() -> int:
         for line in proc.stdout.splitlines():
             if line.startswith("INVOKE_VERDICT "):
                 verdict = json.loads(line.split(" ", 1)[1])
+        if verdict.get("model") == "default":
+            # Catalog resolution failed transiently (model unresolved ->
+            # "default" -> chat 404, no artifact). One re-invoke after a
+            # pause; the model is still auto-resolved on the retry.
+            import time
+            time.sleep(20)
+            proc = subprocess.run(
+                [sys.executable, str(INVOKE), "--provider", args.provider,
+                 "--prompt-file", str(prompt_file), "--out", str(artifact)],
+                capture_output=True, text=True, timeout=600)
+            verdict = {}
+            for line in proc.stdout.splitlines():
+                if line.startswith("INVOKE_VERDICT "):
+                    verdict = json.loads(line.split(" ", 1)[1])
         ok = proc.returncode == 0 and verdict.get("ok") is True
         missing = []
         if ok and questions:

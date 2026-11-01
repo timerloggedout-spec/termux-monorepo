@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T12:06:01Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T12:11:20Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T12:06:00Z` (merged 150 · open 167) · lane-events(Neon) status=`ok` count=`4292` read_at=`2026-11-01T12:06:00Z`
+Sources: PR feed read_at=`2026-11-01T12:11:20Z` (merged 150 · open 169) · lane-events(Neon) status=`ok` count=`4304` read_at=`2026-11-01T12:11:20Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknown=5
 
@@ -16,19 +16,19 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=12 · landed=1 · unknow
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3097 `e44e94fb9d2b` 2026-11-01T11:59:30Z | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3079 `d6901e880369` 2026-11-01T11:39:39Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3111 `4ae70d1b2ee5` 2026-11-01T12:09:15Z | land/close PR #3118 — desk-feed: batch wave-1 folds (queued runs resolved, recon-compound success) |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3048 `2132e82c6797` 2026-11-01T11:16:48Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #2995 `6b48cb3897c5` 2026-11-01T09:12:09Z | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | #3086 `23ff2c0992ed` 2026-11-01T11:46:32Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | #3117 `40dbd2ce7351` 2026-11-01T12:10:51Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3073 `6152f029217a` 2026-11-01T11:33:31Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3106 `9f030dbb0720` 2026-11-01T12:01:24Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3110 `14ce4a56ca95` 2026-11-01T12:06:38Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -59,4 +59,4 @@ Campaigns: 12 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 81/150 (extend ops/tracking/projects.json match rules)

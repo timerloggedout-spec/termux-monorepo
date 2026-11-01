@@ -7,7 +7,19 @@ This is the navigation entry point for the SHE dashboard contract and its surrou
 - SHE-DASHBOARD-PRD.md — product, evidence hierarchy, information architecture, deployment and acceptance contract.
 - SHE-DASHBOARD-SNAPSHOT-CONTRACT.md — machine-facing snapshot schema and provenance rules.
 - SHE-DASHBOARD-UI-UX-CONTROL-PLANE.md — implementation-ready interactive UI/UX, responsive behavior, accessibility, surface matrix, and promotion gates.
+- UI-SURFACE-VERSION-LANE-MAP.md — maps the Help-Wanted header into six proposed category groups, distinguishes it from SHE's ten cockpit surfaces, and defines orthogonal source/build/snapshot/event/experiment/metric/research version lanes.
 - SHE-DASHBOARD-ARCHITECTURE.mmd — authoritative architecture source.
+
+## Navigation and version-lane map
+
+See **UI-SURFACE-VERSION-LANE-MAP.md** for:
+- the observed flat Help-Wanted header inventory normalized into six category groups;
+- the separate SHE cockpit surface map;
+- the nested 3L0/Moneyball, MVT, DoE, ATES and Oracle conceptual lanes;
+- version identity rules and documentation ownership;
+- acceptance criteria for a later navigation implementation.
+
+The map is documentation-only: it does not claim the current HTML has grouped menus or authorize a UI rewrite by itself.
 
 ## Visual pipeline
 

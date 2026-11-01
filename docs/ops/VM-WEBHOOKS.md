@@ -54,6 +54,39 @@ Run: `VM_WEBHOOK_SECRET=<local value> python3 ops/receiver-mesh/vm/vm_webhook_re
 - log holds exactly 1 allowlisted envelope; the test payload's `raw`
   field is absent (allowlist verified in the landed record)
 
+## Chat routing (owner order 2026-10-31)
+
+Webhook -> chat selection: the envelope `source` is resolved AT INTAKE
+against the route table and the resolved route is recorded in the
+intake-log envelope, so the dispatch layer delivers to the specific
+side chat directly (no main-chat relay hop):
+
+- envelope gains `delivery_target {chat_id, role}` + `route_status`
+  (`routed` | `unrouted_flagged`) - the VM-leg extension of the mesh
+  envelope allowlist.
+- Unknown source => still accepted + logged, `delivery_target: null`,
+  `route_status: unrouted_flagged`. Never silently dropped.
+- Table of record: `ops/receiver-mesh/vm/routes.json`, carried by the
+  provider profile `fleet.vm_webhooks` (`routes` in
+  `ops/quota/registry.json`); the receiver loads `routes.json` next to
+  the script (override: `VM_WEBHOOK_ROUTES`). chat_ids verified against
+  the live chat list at wiring time (2026-10-31).
+
+| source | chat_id | role |
+|---|---|---|
+| github | 6920a2f6-fb87-4ec7-ae19-ca6afc3bf230 | connectors |
+| vm-proof | 6920a2f6-fb87-4ec7-ae19-ca6afc3bf230 | connectors |
+| meta | 628089aa-a83a-47b1-9367-9be5997a3811 | social-connectors |
+| whatsapp | 628089aa-a83a-47b1-9367-9be5997a3811 | social-connectors |
+| desk-dispatch | a440bcb2-f95a-41c5-81b4-9e1728e5fd6c | contribution-desk |
+| quota | b18fae96-44d8-4944-9e68-eeb8e5e86a88 | quota-specialist |
+| main | 9a88e77a-c58d-43f4-bdd3-848a7d0420db | main |
+
+Proof (2026-10-31, this VM, new code): signed `github` payload =>
+202 + log envelope `route_status=routed, delivery_target=6920a2f6...`;
+signed `meta` payload => routed to 628089aa...; signed unknown source
+=> 202 + logged `unrouted_flagged, delivery_target=null`.
+
 ## Provider registration
 
 Registered in the fleet Provider Model (`ops/quota/registry.json`,

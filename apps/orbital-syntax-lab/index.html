@@ -46,23 +46,32 @@ svg text{font-family:ui-monospace,monospace;fill:var(--ink)}.ring{fill:none;stro
 <script>
 "use strict";
 const DATA=[
-{id:"ops",label:"Operations",depth:1,parent:"root",description:"Operational state, queues, and bounded execution lanes.",angle:-90},
-{id:"evidence",label:"Evidence",depth:1,parent:"root",description:"Source records, provenance, snapshots, and validation receipts.",angle:30},
-{id:"research",label:"Research",depth:1,parent:"root",description:"Hypotheses, experiments, methods, and candidate integrations.",angle:150},
-{id:"runs",label:"Runs",depth:2,parent:"ops",description:"Workflow and job observations. Queued, running, and completed remain distinct.",angle:-125},
-{id:"health",label:"Health",depth:2,parent:"ops",description:"Observed health signals and explicit unknown or unavailable states.",angle:-55},
-{id:"source",label:"Sources",depth:2,parent:"evidence",description:"Commits, pull requests, issues, and upstream source references.",angle:0},
-{id:"lineage",label:"Lineage",depth:2,parent:"evidence",description:"The path from a derived display back to its exact evidence.",angle:60},
-{id:"cohorts",label:"Cohorts",depth:2,parent:"research",description:"Comparable task groups and frozen experiment definitions.",angle:125},
-{id:"methods",label:"Methods",depth:2,parent:"research",description:"Competing measurement and visualization methods.",angle:175},
-{id:"jobs",label:"Jobs",depth:3,parent:"runs",description:"A run's individual jobs and their observed conclusions.",angle:-145},
-{id:"steps",label:"Steps",depth:3,parent:"runs",description:"Execution steps and timestamps, when available.",angle:-105},
-{id:"checks",label:"Checks",depth:3,parent:"health",description:"Validation outcomes; absence of a check is not a pass.",angle:-55},
-{id:"gaps",label:"Gaps",depth:3,parent:"health",description:"Missing evidence and unresolved provenance, never silently zero-filled.",angle:-15}
+{id:"ops",label:"Operations",depth:1,parent:"root",description:"Operational state, queues, and bounded execution lanes."},
+{id:"evidence",label:"Evidence",depth:1,parent:"root",description:"Source records, provenance, snapshots, and validation receipts."},
+{id:"research",label:"Research",depth:1,parent:"root",description:"Hypotheses, experiments, methods, and candidate integrations."},
+{id:"runs",label:"Runs",depth:2,parent:"ops",description:"Workflow and job observations. Queued, running, and completed remain distinct."},
+{id:"health",label:"Health",depth:2,parent:"ops",description:"Observed health signals and explicit unknown or unavailable states."},
+{id:"source",label:"Sources",depth:2,parent:"evidence",description:"Commits, pull requests, issues, and upstream source references."},
+{id:"lineage",label:"Lineage",depth:2,parent:"evidence",description:"The path from a derived display back to its exact evidence."},
+{id:"cohorts",label:"Cohorts",depth:2,parent:"research",description:"Comparable task groups and frozen experiment definitions."},
+{id:"methods",label:"Methods",depth:2,parent:"research",description:"Competing measurement and visualization methods."},
+{id:"jobs",label:"Jobs",depth:3,parent:"runs",description:"A run's individual jobs and their observed conclusions."},
+{id:"steps",label:"Steps",depth:3,parent:"runs",description:"Execution steps and timestamps, when available."},
+{id:"checks",label:"Checks",depth:3,parent:"health",description:"Validation outcomes; absence of a check is not a pass."},
+{id:"gaps",label:"Gaps",depth:3,parent:"health",description:"Missing evidence and unresolved provenance, never silently zero-filled."}
 ];
 const NS="http://www.w3.org/2000/svg", center=360, radii={1:145,2:235,3:315};
 const geometry=document.getElementById("geometry"),nodes=document.getElementById("nodes"),list=document.getElementById("semantic-list");
 const byId=new Map(DATA.map(d=>[d.id,d]));let selected="root";
+const ROOT={id:"root",children:[]};
+DATA.forEach(d=>{d.children=[]});
+DATA.forEach(d=>{const parent=byId.get(d.parent)||ROOT;parent.children.push(d)});
+function leafCount(node){return node.children.length?node.children.reduce((n,child)=>n+leafCount(child),0):1}
+function assignAngles(node,start,end){
+ const total=node.children.reduce((n,child)=>n+leafCount(child),0)||1;let cursor=start;
+ node.children.forEach(child=>{const span=(end-start)*leafCount(child)/total;const next=cursor+span;child.angle=((cursor+next)/2)*180/Math.PI+90;assignAngles(child,cursor,next);cursor=next});
+}
+assignAngles(ROOT,-Math.PI/2,Math.PI*1.5);
 function polar(angle,r){const a=(angle-90)*Math.PI/180;return [center+Math.cos(a)*r,center+Math.sin(a)*r]}
 function el(name,attrs,parent){const n=document.createElementNS(NS,name);Object.entries(attrs||{}).forEach(([k,v])=>n.setAttribute(k,String(v)));parent.appendChild(n);return n}
 function draw(){

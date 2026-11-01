@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T11:40:31Z",
+ "generated_at": "2026-11-01T11:45:23Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T11:40:30Z",
+   "read_at": "2026-11-01T11:45:22Z",
    "merged": 150,
-   "open": 167
+   "open": 166
   },
   "lane_events": {
-   "read_at": "2026-11-01T11:40:30Z",
+   "read_at": "2026-11-01T11:45:22Z",
    "status": "ok",
-   "count": 4241,
+   "count": 4250,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -98,10 +98,10 @@
    "project_id": "d2-vultr",
    "state": "active",
    "last_merge": {
-    "pr": 3067,
-    "sha": "aa91e23e1ab4",
-    "at": "2026-11-01T11:30:04Z",
-    "title": "docs(ops): D2 promo \u2014 WAF target OUT, project beats HOLD pending pick"
+    "pr": 3081,
+    "sha": "e92008432bf6",
+    "at": "2026-11-01T11:44:14Z",
+    "title": "D2 record: WAF candidate superseded/out (owner framing 2026-11-01)"
    },
    "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
    "next_basis": "record",
@@ -109,7 +109,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -143,7 +143,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -176,7 +176,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "challenge-entries",
@@ -190,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "quota",
@@ -210,7 +210,7 @@
     "quota registry services=164",
     "open PRs: #2757, #2340, #2525, #2473, #2456"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "doe",
@@ -230,7 +230,7 @@
     "doe DESIGN.json campaigns=12",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "doe-nc1",
@@ -247,7 +247,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "tier-1",
@@ -259,7 +259,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "contribution-desk",
@@ -279,7 +279,7 @@
     "desk-feed traversals=8 generated_at=2026-11-01T11:38:42Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "web-design-viz",
@@ -298,7 +298,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "marketing",
@@ -317,7 +317,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "marketing-social",
@@ -329,7 +329,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "swarm",
@@ -348,7 +348,7 @@
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "providers",
@@ -357,10 +357,10 @@
    "project_id": "providers-registry",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3066,
-    "sha": "05697267e440",
-    "at": "2026-11-01T11:29:45Z",
-    "title": "feat(desk): inference availability mapping \u2014 per-record invocability (the crux)"
+    "pr": 3080,
+    "sha": "f75fcfa4b58d",
+    "at": "2026-11-01T11:44:41Z",
+    "title": "feat(desk): catalog batch outcomes \u2014 triage+invoke proven, failure diagnoses (BATCH ALL TRIGGERABLE)"
    },
    "next": "land/close PR #2167 \u2014 chore(reviewer-metrics): regenerate provider x context map",
    "next_basis": "open-pr",
@@ -368,7 +368,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "providers-phrases",
@@ -380,7 +380,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "repo-replay",
@@ -397,7 +397,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "ops",
@@ -411,7 +411,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   },
   {
    "lane": "telemetry",
@@ -425,7 +425,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T11:40:31Z"
+   "updated_at": "2026-11-01T11:45:23Z"
   }
  ],
  "doe_join": {
@@ -618,7 +618,7 @@
     "providers": [],
     "join_state": "design_only",
     "instances": [],
-    "experiment_records": 4,
+    "experiment_records": 5,
     "experiment_records_with_instance": 0
    },
    {

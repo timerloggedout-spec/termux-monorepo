@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T11:40:31Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T11:45:23Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T11:40:30Z` (merged 150 · open 167) · lane-events(Neon) status=`ok` count=`4241` read_at=`2026-11-01T11:40:30Z`
+Sources: PR feed read_at=`2026-11-01T11:45:22Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4250` read_at=`2026-11-01T11:45:22Z`
 
 Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknown=4
 
@@ -11,7 +11,7 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknow
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3051 `ff76abef797e` 2026-11-01T11:21:21Z | RE-SELECTION (owner FIX via main, 2026-11-01): the in-flight DeepSeek + Gemini dispatches stand as fired; every follow-up or re-dispatch re-selects from the full wired bench by task fit (no automatic repeat). DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
-| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3067 `aa91e23e1ab4` 2026-11-01T11:30:04Z | Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step) |
+| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | active | #3081 `e92008432bf6` 2026-11-01T11:44:14Z | Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step) |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3070 `1c9983eee4d6` 2026-11-01T11:30:39Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -23,7 +23,7 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknow
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #2995 `6b48cb3897c5` 2026-11-01T09:12:09Z | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | #3066 `05697267e440` 2026-11-01T11:29:45Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | #3080 `f75fcfa4b58d` 2026-11-01T11:44:41Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3073 `6152f029217a` 2026-11-01T11:33:31Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |

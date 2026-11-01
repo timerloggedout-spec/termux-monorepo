@@ -1,0 +1,1030 @@
+{
+ "schema": "quota.allocation-verification/v1",
+ "generated_by": "quota-specialist batch-1 2026-10-31",
+ "rows": [
+  {
+   "provider": "openrouter",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "free-model allowance 50/day (free_model_daily_requests); key is_free_tier=true"
+   },
+   "credits": {
+    "available": "paid credits purchasable only",
+    "claimed": "n/a",
+    "balance": 0.0,
+    "source": "GET /api/v1/credits: total_credits 0, total_usage 0.206466965 (account level)"
+   },
+   "replenishment": {
+    "mechanism": "free allowance refills daily; paid balance refills by purchase",
+    "gate": "card purchase for paid layer"
+   },
+   "verdict": "layered",
+   "flags": [
+    "card-required"
+   ]
+  },
+  {
+   "provider": "github",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "plan=free; PAT 5000/h core, App 5000/h/installation, GITHUB_TOKEN 1000/h/repo; Actions minutes free on public repos (doc)"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "user billing API 404 via PAT (scope)"
+   },
+   "replenishment": {
+    "mechanism": "hourly bucket refill; monthly minutes",
+    "gate": "none for free layer"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "neon",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "plan=free (API /users/me); 2 projects live"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no credit surface on read API"
+   },
+   "replenishment": {
+    "mechanism": "free-plan monthly allowances (doc)",
+    "gate": "billing (card) for paid tiers - not taken"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "jules",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - API (sessions/activities) exposes no quota object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no credits surface in API"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "felo",
+   "evidence": "owner-attested",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "yes (owner-attested exemplar)",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "owner statement 2026-10-31; API route not-established"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free-equivalent",
+   "flags": [
+    "verify-claim-state"
+   ]
+  },
+  {
+   "provider": "g4f",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "cloudflare",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "render",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "supabase",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "pinecone",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "turso",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "upstash",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "aws",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "gcp",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "oracle",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "meta",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "vercel",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "azure",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "digitalocean",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "huggingface",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "gemini",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "ollama",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "grafana",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "partners",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "fly",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "koyeb",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "platform201",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "deno",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "netlify",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "aion",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "cerebras",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "cohere",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "groq",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "kilo",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "llm7",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "mistral",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "modelscope",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "nvidia",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "omni",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "ovhcloud",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "requesty",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "routeway",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "sambanova",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "sealion",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "siliconflow",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "typhoon",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "unorouter",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "xfyun",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "xkiro",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "zai",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "fleet",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  }
+ ]
+}

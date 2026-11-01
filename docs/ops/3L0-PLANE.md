@@ -88,6 +88,52 @@ rankings table exists — rankings are computed at routing time and no
 per-model Elo values are committed (router default 1000 applies);
 per-response scoring history exists for the reviewer surface only.
 
+## Live-dispatch intake spec — `3l0-intake/v1` (to Swarm, 2026-11-01)
+
+Routing update (owner 2026-11-01): Swarm owns dispatch routing; 3L0
+scoring/weighting must populate from live routed work across all arms.
+Intake = one JSON object per completed dispatch, append-only, emitted
+by the routing layer at dispatch completion into the repo record
+(aligns with the desk telemetry-gate stamp + DoE `treatment.instance`;
+missing field = `NOT ESTABLISHED`, never invented):
+
+```json
+{
+  "schema": "3l0-intake/v1",
+  "dispatch_id": "<stable unique id>",
+  "ts": "<ISO-8601 completion time>",
+  "provider": "<verbatim>",
+  "model": "<model@version verbatim>",
+  "endpoint": "<provider×model catalog id>",
+  "moniker": "<role{moniker}>",
+  "role": "<per-dispatch role>",
+  "context": "<task/dispatch context>",
+  "instance": {
+    "system_prompt": {"ref": "<ref>", "sha256": "<12+>"},
+    "tools": {"ref": "<ref>", "sha256": "<12+>"},
+    "instance_key": "<per scripts/doe/instance_key.py>"
+  },
+  "run": {"session_id": "<id>", "workflow": "<name>", "run_id": "<id>"},
+  "outcome": {
+    "status": "completed|failed|abstained",
+    "gate_call": "pass|fail|null (the instance's own call, if it made one)",
+    "confirmed": "true|false|null (vs the real outcome, when known)",
+    "artifact": "<PR/issue/run ref>"
+  },
+  "usage": {"tokens_in": 0, "tokens_out": 0, "latency_ms": 0, "retries": 0},
+  "quota": {"pool": "<pool id>", "slice": "<slice id|null>"}
+}
+```
+
+Fold rules (this plane): only records with `outcome.confirmed ≠ null`
+move gate_pass_rate (EWMA α 0.2) / Elo (k=16) — v1 semantics until
+#1784 v2 lands; per-`role{moniker}` keying is the v2 target, records
+already carry the fields it needs. `usage` feeds the density
+consideration (signal ÷ tokens, #1784). Population is verified from
+the feed/ledger, not from routing claims: scoring counts as populated
+when the 3L0 feed's observed block rests on ≥1 live-dispatch outcome
+event beyond #1424.
+
 ## Diagnostic trigger
 
 The `seed_base_only` discrimination state is wired to a real trigger:

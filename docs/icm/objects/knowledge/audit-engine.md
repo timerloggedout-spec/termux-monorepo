@@ -1,6 +1,6 @@
 # AuditEngine (Ethics Engine) — Psychometric Assessment of LLMs
 
-**Source fork:** `refTemplates/smods/AuditEngine_fork` (pending gitlink)  
+**Source fork:** `refTemplates/smods/AuditEngine_fork` (gitlink active — submodule pinned @ `4b8313fc`)  
 **Owned fork:** https://github.com/timerloggedout-spec/AuditEngine_fork  
 **Upstream:** https://github.com/RinDig/AuditEngine  
 **Live demo (upstream):** https://ethicsengine.eduba.io

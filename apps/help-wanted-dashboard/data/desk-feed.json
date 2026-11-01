@@ -2029,7 +2029,29 @@
      ],
      "pool_count": 27,
      "mechanics": "Pool members contribute through their wired invoke routes (generation / review / verification legs) and, where a repo build lane exists for them, build legs. Desk shards packages across the pool and stamps the shard's provider; Swarm second-pass reviews; fix seat republishes pool membership on every wiring landing.",
-     "applied_now": "CORRECTED (2026-11-01): PKG-A + PKG-B stood down — their targets were already wired. The pool stands at the corrected wired set; future wiring work concerns only genuinely unwired surfaces as they appear."
+     "applied_now": "CORRECTED (2026-11-01): PKG-A + PKG-B stood down — their targets were already wired. The pool stands at the corrected wired set; future wiring work concerns only genuinely unwired surfaces as they appear.",
+     "g4f_verified_pool": {
+      "source": "data/g4f-working/working-endpoints.json (PR #3223 merged 9b1fcd94a329)",
+      "inference_ok_pairs": 160,
+      "of_universe_pairs": 9588,
+      "providers_ok": {
+       "Perplexity": 43,
+       "AnyProvider": 46,
+       "Gemini": 18,
+       "PollinationsImage": 17,
+       "KiloCode": 12,
+       "G4FSpace": 7,
+       "CohereForAI_C4AI_Command": 6,
+       "HuggingSpace": 6,
+       "BlackForestLabs_Flux1Dev": 2,
+       "AgentTools": 1,
+       "Pollinations": 1,
+       "Yqcloud": 1
+      },
+      "provenance": "sandbox VM probe (1 synthetic completion per pair, probed 2026-11-01T15:51Z) - NOT an Actions count; Actions re-verification run 41323654390 (g4f-inference-smoke, source=working) in flight at fold time; its artifact count supersedes the sandbox count on landing",
+      "admission": "compounding pool candidates under the experiment label (FREE-QUOTA-WINDOWS); production admission unchanged (per PR #3223); pool weighting per this catalog",
+      "execution": "scripts/ops/g4f_free_smoke.py + .github/workflows/g4f-inference-smoke.yml (dispatch-only)"
+     }
     },
     "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts.",
     "dispositions": {},
@@ -2100,13 +2122,12 @@
    },
    "endpoint_census": {
     "unit": "provider x model endpoints (the dispatch-relevant unit; provider counts are NOT endpoint counts - owner correction)",
-    "verified_floor": 7317,
+    "verified_floor": 7316,
     "counted_at": "2026-11-01 (public leg: providers-dispatch seat, live catalog GETs; CI leg: provider-invoke catalog mode verdicts on issue #3141). RETRACTION (owner rule, 2026-11-01): census counts MUST be Actions - VM-vantage and public-docs counts are void; the groq 14 + aion 6 fold (PR #3202) is reverted by this record; fresh Actions verdicts #3141 c.6559265532/c.6559268666 read groq + aion catalog 403, models null",
     "sources": {
      "g4f-working catalog (data/g4f-working/providers.json @master, PR #2025)": {
-      "providers": 60,
-      "models": 4242,
-      "note": "catalogued; tester-working evidence = 100 entries across 15 providers"
+      "models": 4241,
+      "note": "4,242 raw rows; deduped distinct pairs = 4,241 (universe correction on record, PR #3223 / docs/ops/G4F-WORKING-PROVISIONING.md). Universe enumeration (data/g4f-working/universe.json: 9,588 pairs = g4f 8.8.16 library enumeration + fork catalog) is recorded as the enumeration-of-record and is NOT counted here - census basis stays the fork catalog's distinct pairs. Prior tester-working evidence (100 entries / 15 providers) superseded by the 160-pair verified probe folded under compounding.g4f_verified_pool."
      },
      "openrouter (live public catalog)": {
       "models": 452

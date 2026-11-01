@@ -153,7 +153,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: write
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -178,11 +177,32 @@ jobs:
           python3 -m unittest scripts.model_selection_market.test_msm
           python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_service.py tests/test_provider_quota_openrouter.py tests/test_provider_quota_private_workflow.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
           python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
-      - name: Surface contracts failure tail (diagnostics)
+      - name: Upload contracts log for diagnostics
         if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: contracts-log
+          path: /tmp/contracts.log
+          if-no-files-found: ignore
+          retention-days: 3
+
+  contracts_diagnostics:
+    needs: contracts
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    timeout-minutes: 5
+    steps:
+      - name: Download contracts log
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: contracts-log
+      - name: Post contracts failure tail to the gate issue
         run: |
-          { echo '[MUSEai]@{role:{optimizations-assurance}} provider-batch contracts failure tail (auto-surfaced):'; echo; echo '```'; tail -n 120 /tmp/contracts.log 2>/dev/null || echo '(no contracts log captured)'; echo '```'; } > /tmp/contracts-comment.md
-          GH_TOKEN="${{ github.token }}" gh issue comment 2672 --body-file /tmp/contracts-comment.md
+          { echo '[MUSEai]@{role:{optimizations-assurance}} provider-batch contracts failure tail (auto-surfaced):'; echo; echo '```'; tail -n 120 contracts.log 2>/dev/null || echo '(no contracts log captured)'; echo '```'; } > /tmp/contracts-comment.md
+          GH_TOKEN="${{ github.token }}" gh issue comment 2672 --repo timerloggedout-spec/termux-monorepo --body-file /tmp/contracts-comment.md
 
   private_openrouter_quota:
     needs: contracts
@@ -250,7 +270,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
-          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HF_API_TOKEN || secrets.HF_TOKEN }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}

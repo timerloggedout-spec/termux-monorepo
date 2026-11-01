@@ -99,3 +99,54 @@ console.log(JSON.stringify({
     assert res["byAuthorPrio"] == ["b"]
     assert res["byText"] == ["c"]
     assert res["facets"] == ["executing", "posted"]
+
+
+def test_pass_outcome_renders_ties_without_ordinals(tmp_path):
+    """Tie law: equal scores render as one TIED group; the page never
+    ranks tied candidates 1st/2nd. Sim uses the marketing pass ballot
+    of record (BALLOT-round1.json: 23.269 = 23.269, 16.462)."""
+    import shutil
+    if not shutil.which("node"):
+        import pytest
+        pytest.skip("Node required")
+    html = _html()
+    m = re.search(r"// ==== pure logic \(node-sim tested\) ====([\s\S]*?)"
+                  r"// ==== end pure logic ====", html)
+    assert m, "pure-logic markers missing"
+    esc_line = re.search(r"const esc=[^\n]*", html).group(0)
+    sim = tmp_path / "sim.cjs"
+    sim.write_text(esc_line + m.group(1)
+                   + ";module.exports={outcomeCell};\n"
+                   + "const pass={id:'marketing-strategy-tactics',outcome:"
+                     "{scores:{'marketing-strategy-tactics-strict-"
+                     "separation':23.269,'marketing-strategy-tactics-"
+                     "attributed-tiered':23.269,'marketing-strategy-"
+                     "tactics-partner-forward-blend':16.462}}};\n"
+                   + "console.log(JSON.stringify({cell:outcomeCell(pass),"
+                     "none:outcomeCell({id:'x'})}));\n")
+    out = subprocess.run(["node", str(sim)], capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    got = json.loads(out.stdout)
+    assert "23.269 — TIED" in got["cell"]
+    assert "attributed-tiered · strict-separation" in got["cell"]
+    assert "16.462 — partner-forward-blend" in got["cell"]
+    for ordinal in ("1st", "2nd", "#1", "rank"):
+        assert ordinal not in got["cell"]
+    assert got["none"] == "—"
+
+
+def test_pass_table_has_outcome_column():
+    html = _html()
+    assert "<th>Outcome</th>" in html
+    assert "outcomeCell(p)" in html
+
+
+def test_feed_outcome_shape_when_present():
+    feed = json.loads(FEED.read_text())
+    for p in feed.get("passes", []):
+        outcome = p.get("outcome")
+        if outcome is None:
+            continue
+        assert isinstance(outcome.get("scores"), dict)
+        for v in outcome["scores"].values():
+            assert isinstance(v, (int, float))

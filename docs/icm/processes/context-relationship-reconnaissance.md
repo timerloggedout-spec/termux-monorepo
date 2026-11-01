@@ -4,13 +4,13 @@ universe: live
 status: verified
 consumes:
   - ../objects/knowledge/context-relationship-index.md
-  - ../../../AGENTS.md
+  - ../../../CLAUDE.md
   - ../../../docs/proposals/registry.yaml
 produces:
   - bounded context query
   - verified relationship evidence
   - separately labeled candidate links
-verified_at: 2026-08-18
+verified_at: 2026-11-01
 ---
 
 # Context Relationship Reconnaissance
@@ -27,7 +27,7 @@ Broad repository crawling produces noisy, stale, and potentially sensitive conte
 
 ## Steps
 
-1. Read `AGENTS.md`, the active proposal item, and `objects/knowledge/context-relationship-index.md`. Confirm that the intended work is registered and that the index manifest/ref is appropriate for the task.
+1. Read root `CLAUDE.md`, the active proposal item, and `objects/knowledge/context-relationship-index.md`. Confirm that the intended work is registered and that the index manifest/ref is appropriate for the task.
 2. Start with an exact query root such as `file:archwiz/context_graph_builder.py`, `pr:232`, `issue:86`, `label:P1`, `scope:context-relationships`, or a direct GitHub `#issuecomment-`, `#pullrequestreview-`, or `#discussion_r` permalink. Use `--file-review-timeline` for a review chronology tied to one exact file. Use fuzzy text only when no exact root exists, and retain the score and overlap reason.
 3. Keep traversal bounded. State the chosen depth and node limit; if the result is truncated, refine the root rather than silently widening collection.
 4. Treat AST, scope-registry, GitHub API, commit, native GitHub `cross-referenced` timeline events, exact permalinks, and explicit-reference edges as **verified** only when their evidence is present. Treat lexical similarity and co-change links as **candidates** only.
@@ -59,4 +59,4 @@ Broad repository crawling produces noisy, stale, and potentially sensitive conte
 
 - Object: [`../objects/knowledge/context-relationship-index.md`](../objects/knowledge/context-relationship-index.md)
 - Process: [`change-and-validate.md`](change-and-validate.md)
-- Source: [`AGENTS.md`](../../../AGENTS.md)
+- Source: [`CLAUDE.md`](../../../CLAUDE.md)

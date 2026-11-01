@@ -20,6 +20,8 @@ Consistency mapping (fixed in the phase-1 record, before scoring):
   EXTRACT    not scored — mapping NOT_ESTABLISHED
 Gap class (phase 0: recorded NEED_EVIDENCE, replay CANDIDATE, the
 dropped base.ref/mergeable_state PRs) is excluded from NE rates.
+Snapshot 8+ rows carry base_ref in-row: there the class self-describes
+(recorded NEED_EVIDENCE with base_ref != master) and needs no list.
 
 Auth: GITHUB_TOKEN or GH_TOKEN env (fleet lanes run this through the
 PAT helper route, which is the same pulls API surface).
@@ -88,7 +90,9 @@ def main(argv: list[str]) -> int:
         "lane_x_outcome_pr_level_latest_lane": xtab(latest.values()),
         "lane_x_outcome_row_level": xtab(rows),
         "candidate_still_open_old_watch": {"threshold_age_days": WATCH_AGE_DAYS, "prs": watch},
-        "gap_class_excluded_from_ne_rates": sorted(GAP),
+        "gap_class_excluded_from_ne_rates": sorted(
+            {r["number"] for r in rows if r["lane"] == "NEED_EVIDENCE"
+             and r.get("base_ref") not in (None, "master")} | GAP),
     }
     print(json.dumps(baseline, indent=1))
     return 0

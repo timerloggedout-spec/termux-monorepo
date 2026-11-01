@@ -1,0 +1,80 @@
+---
+title: "Certifications Evidence Index"
+description: "Evidence of record for the Certifications & Roles ladder (#506): per-unit fleet runs, model attribution, telemetry refs, and capture refs — issuer artifacts + telemetry only, never lane claims."
+---
+
+## Rules of This Index
+
+- Earner = `termux-monorepo` ∀ entries. The certifications tree manages (oversight, enrolment, evidence); it does not earn.
+- A rung counts COMPLETE ⇔ work ran via monorepo fleet automation (Swarm App / workflows) ∧ telemetry-evidenced (¬ lane claim) ∧ record carries per-model attribution {fleet run, model}.
+- Evidence = issuer artifacts (cert ID / date / verify link) + fleet-run telemetry + public project repos. Derived artifacts {skill refs → `.agents/skills/`, KB refs → `docs/icm/objects/knowledge/`} are outputs of a completion package, ¬ evidence.
+- Capture substrate = fleet-logs repo `certifications/` (raw captures + per-unit manifests); this page = the index over that substrate.
+- Program rules of record: `docs/ops/CERTIFICATIONS-PROGRAM.md` (PR #3249 merged cdbdfcee44f1).
+
+## L1 — FreeCodeCamp Relational Databases v9 (Baseline)
+
+State: ENROLLED 2026-11-01 ∘ progress **9/64** ∘ M1 Code Editors COMPLETE 5/5 ∘ Phase 1 velocity checkpoint CLEARED 2026-11-01 ∘ cert = ∅ ∘ exam (unit 065) locked until ∀ 5 P units pass.
+Plan: [Plan 001](/guides/certifications-plan-l1-freecodecamp) (PR #2564 merged 67f4d8330689; v9 framing supersedes v8-era plan text, pick unchanged).
+Capture: fleet-logs `certifications/l1-relational-databases-v9/` — INDEX.md blob f95e2c6d1b4f ∘ QUEUE.md blob e3389e52a470 (65 items: T39 W9 R6 Q5 P5 E1).
+Attribution ∀ units below: earner `termux-monorepo` ∘ provider `cohere` ∘ model `c4ai-aya-expanse-32b` ∘ skill refs = ∅ ∘ KB refs = ∅.
+
+| unit | type | item | date | FCC Δ | status | fleet run (telemetry ref) | capture ref (fleet-logs) |
+|---|---|---|---|---|---|---|---|
+| 001 | T | What Is a Code Editor and IDE? | 2026-11-01 | 1/64 | PASSED | 41353202524 (v2) | units/001/run-41353202524/ · sha256 b3303671… · capture PR #2 |
+| 002 | T | How to Install Visual Studio Code on Your Computer | 2026-11-01 | 5/64 | PASSED · **waiver: Q2 waived, Q1/Q3 established** (pin-note in lesson capture) | 41355120115 (v3) | units/002/run-41355120115/ · sha256 00fff093… · capture PR #3 |
+| 003 | T | How to Create a Project and Run Your Code Locally in VS Code | 2026-11-01 | 6/64 | PASSED | 41355668060 (v4) | units/003/run-41355668060/ · sha256 d79b26a8… · capture PR #4 |
+| 004 | T | What Are Several Useful Keyboard Shortcuts for Maximizing Productivity in VS Code? | 2026-11-01 | 7/64 | PASSED | 41355682121 (v4) | units/004/run-41355682121/ · sha256 b6621428… · capture PR #4 |
+| 005 | T | What Are Some Good VS Code Extensions You Can Use in Your Editor? | 2026-11-01 | 8/64 | PASSED | 41355696887 (v4) | units/005/run-41355696887/ · sha256 c2504772… · capture PR #4 |
+| 006 | T | What Is the Terminal, and How Does It Differ from the Command Line? | 2026-11-01 | 9/64 | PASSED | 41355710766 (v4) | units/006/run-41355710766/ · sha256 10400c17… · capture PR #4 |
+| 007 | T | What Are Some Shortcuts You Can Use in the Command Line to Speed Up Productivity? | 2026-11-01 | 2/64 | PASSED | 41354457916 | units/007/run-41354457916/ · sha256 9dada691… · capture PR #3 |
+| 008 | T | What Is Bash, and What Are Some Basic Commands? | 2026-11-01 | 3/64 | PASSED (capture-manifest detector false-positive on Q1/Q3 noted in INDEX; platform pass governs) | 41354472919 | units/008/run-41354472919/ · sha256 2082e565… · capture PR #3 |
+| 009 | T | What Are Some Command Options and Flags? | 2026-11-01 | 4/64 | PASSED | 41354487819 | units/009/run-41354487819/ · sha256 543ec76c… · capture PR #3 |
+
+Capture PRs (fleet-logs, merged): #2 unit 001 ∘ #3 units 002/007/008/009 ∘ #4 units 003–006, merge 24fa4b6058a7 (M1 complete, 9/64).
+
+Watch items (¬ entries): 010 re-run pending (Q2 pinned `;`) ∘ 011 (first W) held on Codespaces secret placement — VAULT-GATE log entry 2026-11-01, holder Platforms.
+
+### L1 Window (set at M1 checkpoint, 2026-11-01)
+
+Measured (post-fix steady state only; defective v1–v3 cycles + fix time EXCLUDED): v4 batch 003–006 = 4 T units in one batch cycle; planning rate for T = **≈3 min/unit** fire→submit incl. queueing (checkpoint input, dispatch→close).
+
+Remaining: 56 items = T30 ∘ W9 ∘ R6 ∘ Q5 ∘ P5 ∘ E1.
+
+Assumed per-type prices (UNMEASURED — assumptions, re-priced at first instance of each type):
+
+| type | assumed | range | subtotal (assumed) |
+|---|---|---|---|
+| T ×30 | 3 min | measured | 1.5 h |
+| R ×6 | 5 min | 5–10 min | 0.5 h |
+| Q ×5 | 20 min | 15–30 min | 1.7 h |
+| W ×9 | 45 min | 30–60 min | 6.8 h |
+| P ×5 | 120 min | 60–180 min | 10.0 h |
+| E ×1 | 60 min sitting | +168 h retake cooldown (schedule risk, ¬ work) | 1.0 h |
+
+Total active ≈ **20.5 h** (range ≈14.5–27 h). Cadence assumption: ≥5 pipeline sessions/week × ≈2 h active, subordinate to T1 windows (AMD) — L1 = Baseline, parallel ¬ displacing.
+
+**Window proposal: 64/64 by 2026-12-05 ∘ exam sitting ≤2026-12-12 ∘ L1 cleared window 2026-12-05 → 2026-12-12.** Re-price checkpoints: unit 011 (first W) ∧ unit 025 (first P, M3 close) — window re-issued if W/P prices land outside assumed bands.
+
+## T1 — Competition-Required (deadline-ordered)
+
+### AMD Academy ×5 (AMD AI League podium gate; holder gates-academy 840bd147)
+
+Windows: C1 ≤2026-11-07 ∘ C2 ≤11-10 ∘ C3 ≤11-13 ∘ C4 ≤11-17 ∘ C7 ≤11-20 ∘ League submission hard anchor 2026-12-01 11:00 PT.
+Entries: ∅ (completions = 0 at index creation). Entry fields on completion: {course, date, cert ref, points ref, fleet run, model, telemetry ref, skill refs, KB refs}.
+
+### ROCm Certified Associate (+500 League pts, Credly)
+
+Windows: prep parallel from 2026-11-01 ∘ modules + exam target ≤2026-11-28 ∘ hard deadline 2026-12-01 11:00 PT. Coordinator: gates-academy 840bd147.
+Entry (pre-created, state ∅): {Credly verify link = ∅, exam date/score = ∅, +500 pts screenshot = ∅, fleet run/model/telemetry (prep units) = ∅, skill refs = ∅, KB refs = ∅}.
+
+## T2 — Adjacent
+
+L2 CTF (picoCTF / HackTheBox / TryHackMe / OverTheWire, #342) ∘ L4 Bug Bounties (HackerOne / Bugcrowd) — windows start on prior-rung clear; tier = priority annotation only. Entries: ∅.
+
+## Prize-Received (tracked, ∅ work targets, ∅ windows)
+
+D5 Aha badge/cert (win-contingent) ∘ D1 winner cert (post-event) ∘ Strands-Decider winner cert (closed 2026-10-23, un-earnable). Entries: ∅.
+
+## Baseline — Ladder Remainder (L3 / L5 / L6)
+
+L3 CompTIA (Security+ / Network+ / Pentest+) ∘ L5 OffSec OSCP ∘ L6 CISSP — windows NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend ∀ rung). Entries: ∅. L1 sits Baseline-tier as the active ladder track (above); L2/L4 carry T2 annotation (above).

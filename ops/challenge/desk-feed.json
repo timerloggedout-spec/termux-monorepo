@@ -1817,7 +1817,7 @@
       ],
       "registry_live_field": "Retry-After header on HTTP 429",
       "gate_state": "gate-green",
-      "invoke_verdict": "mixed route behavior: batch attempt = transport timeout on a :free model (timeout class is :free-model-specific); shard on openai/gpt-4o-mini = http 404 'not offered here', route answers fast; verdicts issue #3141 Shard-3: anthropic/claude-3.5-sonnet 404 'not offered here' (2nd namespace miss; per-model attempts need catalog-sample-pinned ids)"
+      "invoke_verdict": "consent-gated (NEW blocker class, shard-4 #3141): route+catalog+auth live - pinned invoke on a catalog-sample id (agnes-2.5-flash:free) = http 403 'needs your consent for these providers: agnes (Singapore)', one-time web consent per upstream provider at unorouter.com/consents, covers every model those providers serve (c.6560422156). Earlier unpinned attempts (transport timeout on a :free model; 404 'not offered here' x2) were id artifacts, superseded. Not funding/capacity - consent clicks are a provisioning/owner-lane action. Catalog drift: 324 models on re-read (c.6560409301) vs 330 folded - churn, no census floor move"
      },
      {
       "id": "xfyun.spark",

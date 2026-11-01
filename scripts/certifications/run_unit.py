@@ -36,7 +36,7 @@ QUESTIONS_TEMPLATE = (
     "and quote the lesson body evidence that supports the answer. After "
     "each answer, emit one line exactly of the form KEY Q<n>: followed by "
     "the correct option text copied verbatim from the options list (no "
-    "paraphrase, no letter). If a "
+    "paraphrase, no letter, no bold or other formatting on the KEY line). If a "
     "question asks which option is NOT mentioned, select the option that is "
     "absent from the lesson body evidence. Questions:\n{questions}{context}"
 )
@@ -47,7 +47,7 @@ QUIZ_TEMPLATE = (
     "question from the lesson content. For every question emit exactly two "
     "lines: first \"Q<n>:\" plus a one-sentence justification, then "
     "\"KEY Q<n>:\" followed by the correct option text copied verbatim "
-    "from the options list. Be compact; no restatements. "
+    "from the options list (plain text, no bold). Be compact; no restatements. "
     "Questions:\n{questions}{context}"
 )
 
@@ -79,7 +79,8 @@ def content_check(text: str, questions: list[str]) -> list[str]:
             missing.append(key)
     return missing
 def _norm(text: str) -> str:
-    return " ".join(text.strip().strip("`\"'").split()).lower()
+    cleaned = re.sub(r"[*_`]+", "", text)
+    return " ".join(cleaned.strip().strip("\"'").split()).lower().rstrip(".")
 
 
 def parse_options(question: str) -> list[str]:

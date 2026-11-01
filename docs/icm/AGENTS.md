@@ -10,7 +10,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 |---|---|
 | [`objects/platform/`](objects/platform/CONTEXT.md) | The Android/Termux execution plane and its device/service boundary. |
 | [`objects/operations/`](objects/operations/CONTEXT.md) | ArchWiz and the bounded operational tool surface, including file-backed visual review. |
-| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
+| [`objects/knowledge/`](objects/knowledge/CONTEXT.md) | Navigation, routing governance, UI surface/version-lane registry, pinned reference inputs, methodology references, indices, and generated-map boundaries. |
 | [`objects/governance/`](objects/governance/CONTEXT.md) | F0rk, proposal, validation, and approval constraints. |
 | [`routing.md`](routing.md) | A separately owned nested provider-routing evidence resource; it is intentionally not a root alias. |
 | [`_tv/`](./_tv/README.md) | Initiated file-backed CCTV cards for human review; renderer and publication remain separate scopes. |
@@ -29,6 +29,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
 | review provider-routing state or propose polling | [`routing.md`](routing.md) | the nested source, observation, and post-ICM workflow gate |
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
+| change a user-facing modality, renderer/framework lane, surface version identity, or evidence-backed UI inventory | [`objects/knowledge/ui-surface-registry.md`](objects/knowledge/ui-surface-registry.md) | the canonical surface map/registry/schema and conformance limits |
 | select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
 | design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
 | classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |

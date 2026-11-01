@@ -42,6 +42,16 @@ QUESTIONS_TEMPLATE = (
 )
 
 
+QUIZ_TEMPLATE = (
+    "FreeCodeCamp Relational Databases v9 quiz \"{title}\". Answer each "
+    "question from the lesson content. For every question emit exactly two "
+    "lines: first \"Q<n>:\" plus a one-sentence justification, then "
+    "\"KEY Q<n>:\" followed by the correct option text copied verbatim "
+    "from the options list. Be compact; no restatements. "
+    "Questions:\n{questions}{context}"
+)
+
+
 def _tokens(text: str) -> list[str]:
     return re.findall(r"[a-z0-9]+", text.lower())
 
@@ -130,15 +140,17 @@ def main() -> int:
             qs = "\n".join(f"Q{i}: {q}" for i, q in enumerate(questions, 1))
             ctx = step.get("context") or ""
             ctx_block = f"\nLesson body evidence (verbatim):\n{ctx}" if ctx else ""
-            prompt_file.write_text(QUESTIONS_TEMPLATE.format(title=step["title"], questions=qs, context=ctx_block))
+            template = QUIZ_TEMPLATE if step.get("kind") == "quiz" else QUESTIONS_TEMPLATE
+            prompt_file.write_text(template.format(title=step["title"], questions=qs, context=ctx_block))
         else:
             template = WORKSHOP_TEMPLATE if step.get("kind") == "workshop" else PROMPT_TEMPLATE
             prompt_file.write_text(template.format(title=step["title"]))
         artifact = out / f"{step['id']}.md"
-        proc = subprocess.run(
-            [sys.executable, str(INVOKE), "--provider", args.provider,
-             "--prompt-file", str(prompt_file), "--out", str(artifact)],
-            capture_output=True, text=True, timeout=600)
+        invoke_cmd = [sys.executable, str(INVOKE), "--provider", args.provider,
+                      "--prompt-file", str(prompt_file), "--out", str(artifact)]
+        if step.get("kind") == "quiz":
+            invoke_cmd += ["--max-tokens", "2000"]
+        proc = subprocess.run(invoke_cmd, capture_output=True, text=True, timeout=600)
         verdict = {}
         for line in proc.stdout.splitlines():
             if line.startswith("INVOKE_VERDICT "):
@@ -161,7 +173,11 @@ def main() -> int:
         missing = []
         if ok and questions:
             text = artifact.read_text(errors="replace") if artifact.exists() else ""
-            missing = content_check(text, questions)
+            if step.get("kind") == "quiz":
+                missing = [f"Q{i}" for i in range(1, len(questions) + 1)
+                           if not re.search(rf"KEY\s+Q{i}\s*:", text)]
+            else:
+                missing = content_check(text, questions)
             keying_bad = keying_check(text, questions)
             missing = missing + [f"{k}-key" for k in keying_bad]
             if missing:

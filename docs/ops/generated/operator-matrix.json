@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 381,
+    "open_issues": 380,
     "open_prs": 170,
     "pr_classes": {
-      "CANDIDATE": 82,
-      "EXTRACT": 6,
+      "CANDIDATE": 81,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 36,
+      "issues": 35,
       "prs": 168,
       "unlabelled_numbers": [
         308,
@@ -86,12 +86,11 @@
         3050,
         3094,
         3141,
-        3215,
-        3290
+        3215
       ]
     }
   },
-  "generated_at": "2026-11-01T21:59:23Z",
+  "generated_at": "2026-11-01T22:04:33Z",
   "issues_unlabelled": [
     308,
     343,
@@ -127,8 +126,7 @@
     3050,
     3094,
     3141,
-    3215,
-    3290
+    3215
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -136,7 +134,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c54e55b113"
+    "sha": "5e567ff8ab"
   },
   "prs": [
     {
@@ -216,12 +214,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "5b88305ea3",
+      "head_sha": "8a7cbf3c67",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T21:58:28Z"
+      "updated_at": "2026-11-01T22:02:22Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "76fcad8a46",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T22:03:11Z"
     },
     {
       "class": "CANDIDATE",
@@ -1005,20 +1017,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "220214efb5",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T21:12:39Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1273,7 +1271,7 @@
       },
       "head_sha": "dc4800a2ce",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2978,
       "title": "docs(ops): map UI surfaces and version lanes",
       "updated_at": "2026-11-01T20:16:49Z"
@@ -1749,7 +1747,7 @@
       },
       "head_sha": "cc84ecf1b7",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-01T14:26:28Z"

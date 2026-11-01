@@ -15,20 +15,29 @@ on:
 permissions:
   contents: read
 
+# Share the publication lock with production. Every run publishes the current
+# production snapshot and, when dispatched, its preview in the same external commit.
 concurrency:
-  group: user-site-pages-preview
+  group: user-site-pages-publisher
   cancel-in-progress: false
 
 jobs:
   publish-preview:
     if: ${{ github.repository == 'timerloggedout-spec/termux-monorepo' && !contains(inputs.preview_key, '/') && !contains(inputs.preview_key, '..') }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Checkout requested source revision
+      - name: Checkout requested preview revision
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.source_ref }}
           path: source
+          persist-credentials: false
+      - name: Checkout current production source
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          path: production
           persist-credentials: false
       - name: Checkout trusted artifact builder
         uses: actions/checkout@v4
@@ -36,7 +45,7 @@ jobs:
           ref: master
           path: tooling
           persist-credentials: false
-      - name: Prepare Tribute preview artifact
+      - name: Prepare atomic production plus preview artifact
         env:
           SOURCE_REF: ${{ inputs.source_ref }}
           PREVIEW_KEY: ${{ inputs.preview_key }}
@@ -46,29 +55,56 @@ jobs:
             echo "::error::preview_key must be lowercase letters, digits, and hyphens."
             exit 1
           fi
-          mkdir -p _preview
+          mkdir -p _production _preview _user_site/tribute _user_site/help-wanted _user_site/matrix/data "_user_site/previews/$PREVIEW_KEY/tribute"
+          PRODUCTION_SHA="$(git -C production rev-parse HEAD)"
+          SOURCE_SHA="$(git -C source rev-parse HEAD)"
+
+          cp -a production/apps/help-wanted-dashboard/. _production/
+          python3 tooling/scripts/build_dashboard_manifest.py \
+            --root _production \
+            --channel production \
+            --source-ref master \
+            --source-sha "$PRODUCTION_SHA" \
+            --version-prefix "1.0.1"
+          if [ -f production/docs/ops/generated/help-wanted-status.json ]; then
+            cp production/docs/ops/generated/help-wanted-status.json _production/data/status.json
+          fi
+          touch _production/.nojekyll
+          cp -a _production/. _user_site/tribute/
+          cp -a _production/. _user_site/help-wanted/
+
           cp -a source/apps/help-wanted-dashboard/. _preview/
           python3 tooling/scripts/build_dashboard_manifest.py \
             --root _preview \
             --channel preview \
             --source-ref "$SOURCE_REF" \
-            --source-sha "$(git -C source rev-parse HEAD)" \
+            --source-sha "$SOURCE_SHA" \
             --version-prefix "1.0.1"
-          printf '%s\n' "Preview key: $PREVIEW_KEY" "Requested ref: $SOURCE_REF" "Source SHA: $(git -C source rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
-          echo "PREVIEW_URL=https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/tribute/" >> "$GITHUB_ENV"
-      - name: Publish isolated Tribute preview without replacing production files
+          touch _preview/.nojekyll
+          cp -a _preview/. "_user_site/previews/$PREVIEW_KEY/tribute/"
+
+          cp production/apps/help-wanted-dashboard/matrix.html _user_site/matrix/index.html
+          cp production/apps/help-wanted-dashboard/dashboard.css _user_site/matrix/dashboard.css
+          cp production/apps/help-wanted-dashboard/site-nav.js _user_site/matrix/site-nav.js
+          if [ -f production/docs/ops/generated/lane-matrix-status.json ]; then
+            cp production/docs/ops/generated/lane-matrix-status.json _user_site/matrix/data/lane-matrix-status.json
+          fi
+          touch _user_site/.nojekyll _user_site/matrix/.nojekyll
+          {
+            echo "Production Tribute: https://timerloggedout-spec.github.io/tribute/"
+            echo "Legacy compatibility alias: https://timerloggedout-spec.github.io/help-wanted/"
+            echo "Preview: https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/tribute/"
+            echo "Production source SHA: $PRODUCTION_SHA"
+            echo "Preview source SHA: $SOURCE_SHA"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish production and preview atomically
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453
         with:
           personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
-          publish_dir: _preview
-          destination_dir: previews/${{ inputs.preview_key }}/tribute
+          publish_dir: _user_site
           publish_branch: main
-          keep_files: false
+          keep_files: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "preview(help-wanted): ${{ inputs.preview_key }} from ${{ inputs.source_ref }}"
-      - name: Publish preview links
-        run: |
-          echo "Preview: $PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"
-          echo "Comparison: $PREVIEW_URL/versioning.html" >> "$GITHUB_STEP_SUMMARY"
+          commit_message: "deploy(production+preview): ${{ inputs.preview_key }} from ${{ inputs.source_ref }}"

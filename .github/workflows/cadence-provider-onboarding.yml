@@ -76,8 +76,8 @@ jobs:
           cat check.txt
           echo "code=$code" >> "$GITHUB_OUTPUT"
           if grep -qE 'stale|claimed by no|maps to no onboarded|empty reason|unknown|missing and no exception recorded' check.txt; then
-            echo 'Hard onboarding drift - not auto-fixable. Failing loudly.'
-            exit 1
+            echo 'Hard onboarding drift present - auto-register still runs for the fixable subset; the Verify step fails loudly if drift remains.'
+            echo "hard_drift=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Auto-register missing entries and open PR

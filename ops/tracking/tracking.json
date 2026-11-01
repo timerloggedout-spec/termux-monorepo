@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-01T11:17:37Z",
+ "generated_at": "2026-11-01T11:24:17Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-01T11:17:36Z",
+   "read_at": "2026-11-01T11:24:17Z",
    "merged": 150,
-   "open": 165
+   "open": 166
   },
   "lane_events": {
-   "read_at": "2026-11-01T11:17:36Z",
+   "read_at": "2026-11-01T11:24:17Z",
    "status": "ok",
-   "count": 4163,
+   "count": 4182,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "unknown": 6,
+   "active": 5,
+   "unknown": 5,
    "landed": 1,
-   "active": 4,
    "in-flight": 10
   }
  },
@@ -68,23 +68,28 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries-d1",
    "project": "D1 StudySprint (Workshop to Ship)",
    "domain": "challenges",
    "project_id": "d1-studysprint",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day)",
+   "state": "active",
+   "last_merge": {
+    "pr": 3051,
+    "sha": "ff76abef797e",
+    "at": "2026-11-01T11:21:21Z",
+    "title": "desk-feed: widen provider bench (owner utilization order) + stamp D1 DeepSeek/Gemini dispatches"
+   },
+   "next": "DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) \u2014 PR pending agent completion \u21d2 D1 verifies \u21d2 desk merges \u21d2 sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) \u2014 PR \u21d2 D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -99,7 +104,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -113,7 +118,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -133,7 +138,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -145,7 +150,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -166,7 +171,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "challenge-entries",
@@ -180,7 +185,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "quota",
@@ -194,13 +199,13 @@
     "at": "2026-11-01T09:07:05Z",
     "title": "apk-xref-exec: run on fleet Swarm app token (fix 403 rate-limit starvation)"
    },
-   "next": "land/close PR #2757 \u2014 feat(ci): add merged branch review audit and quota engine",
+   "next": "land/close PR #3053 \u2014 index(quota): provider dispatch capability \u2014 89-provider bench classified (a/b/c/d)",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=164",
-    "open PRs: #2757, #2340, #2525, #2473, #2456"
+    "open PRs: #3053, #2757, #2340, #2525, #2473"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "doe",
@@ -220,7 +225,7 @@
     "doe DESIGN.json campaigns=12",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "doe-nc1",
@@ -237,7 +242,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "tier-1",
@@ -249,7 +254,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "contribution-desk",
@@ -258,17 +263,17 @@
    "project_id": "desk",
    "state": "active",
    "last_merge": {
-    "pr": 3042,
-    "sha": "f5c7478736be",
-    "at": "2026-11-01T10:36:53Z",
-    "title": "desk-feed: Repo-Story row \u2014 stamp Gemini swarm dispatch (armed, key-gated)"
+    "pr": 3054,
+    "sha": "a27cf6d12a82",
+    "at": "2026-11-01T11:23:49Z",
+    "title": "desk-feed: recognize provider-batch as a dispatchable probe arm (routing recognition)"
    },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [
-    "desk-feed traversals=8 generated_at=2026-11-01T10:35:23Z"
+    "desk-feed traversals=8 generated_at=2026-11-01T11:21:51Z"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "web-design-viz",
@@ -287,7 +292,7 @@
    "evidence": [
     "open PRs: #2168, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "marketing",
@@ -306,7 +311,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "marketing-social",
@@ -318,7 +323,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "swarm",
@@ -327,17 +332,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3017,
-    "sha": "102e17b3ad2c",
-    "at": "2026-11-01T09:49:37Z",
-    "title": "AppID: apk-xref-exec mint swap Swarm \u2192 CrossReference (Scalpel \u00b7 App 5564430)"
+    "pr": 3056,
+    "sha": "8a8dd117fdb8",
+    "at": "2026-11-01T11:23:40Z",
+    "title": "docs(swarm): \u00a715 widened rotation \u2014 utilization fix, arm inventory + 2 proof dispatches"
    },
    "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #1470"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "providers",
@@ -357,7 +362,7 @@
     "quota registry services=164",
     "open PRs: #2167, #2899, #2330, #1852, #1612"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "providers-phrases",
@@ -369,7 +374,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "repo-replay",
@@ -386,7 +391,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "ops",
@@ -400,7 +405,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   },
   {
    "lane": "telemetry",
@@ -419,7 +424,7 @@
    "evidence": [
     "open PRs: #2914, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-01T11:17:37Z"
+   "updated_at": "2026-11-01T11:24:17Z"
   }
  ],
  "doe_join": {

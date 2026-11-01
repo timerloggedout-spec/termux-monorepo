@@ -1,22 +1,22 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T11:17:37Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T11:24:17Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T11:17:36Z` (merged 150 · open 165) · lane-events(Neon) status=`ok` count=`4163` read_at=`2026-11-01T11:17:36Z`
+Sources: PR feed read_at=`2026-11-01T11:24:17Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4182` read_at=`2026-11-01T11:24:17Z`
 
-Rows: 22 · by_state: active=4 · closed=1 · in-flight=10 · landed=1 · unknown=6
+Rows: 22 · by_state: active=5 · closed=1 · in-flight=10 · landed=1 · unknown=5
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #3044 `f44b59e32388` 2026-11-01T10:56:32Z | Routes after M3 or when builders idle |
-| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | unknown | NOT_ESTABLISHED | Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day) |
+| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3051 `ff76abef797e` 2026-11-01T11:21:21Z | DeepSeek pass run 41301295882 (README+article v0.2.0 notes + demo swap) — PR pending agent completion ⇒ D1 verifies ⇒ desk merges ⇒ sync. Gemini SR module (issue #3050, gemini-dispatch run 41301369671) — PR ⇒ D1 verify; merge timing = D1 call (may hold post-Nov-4). freeze-hold submission 2026-11-04 23:59 PT. |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | unknown | NOT_ESTABLISHED | Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step) |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3013 `503124a1c35f` 2026-11-01T09:34:45Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #3042 `f5c7478736be` 2026-11-01T10:36:53Z | NOT_ESTABLISHED |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #3054 `a27cf6d12a82` 2026-11-01T11:23:49Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3048 `2132e82c6797` 2026-11-01T11:16:48Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |
@@ -26,9 +26,9 @@ Rows: 22 · by_state: active=4 · closed=1 · in-flight=10 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #2924 `eda09a84bd56` 2026-11-01T03:54:43Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #2891 `fbd8cb72b23f` 2026-11-01T02:22:05Z | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2992 `bf65498ef010` 2026-11-01T09:07:05Z | land/close PR #2757 — feat(ci): add merged branch review audit and quota engine |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2992 `bf65498ef010` 2026-11-01T09:07:05Z | land/close PR #3053 — index(quota): provider dispatch capability — 89-provider bench classified (a/b/c/d) |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3017 `102e17b3ad2c` 2026-11-01T09:49:37Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3056 `8a8dd117fdb8` 2026-11-01T11:23:40Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)

@@ -3,6 +3,14 @@
 # the registered continuous-ledger issues (#1487 outcomes, #1489 weights,
 # #2028 living record; registry: ops/delphi/ledgers.json) and proposes it
 # as a refresh PR — never commits directly.
+#
+# F1 ADOPTION — Termux Fleet Swarm (issue #2750, 2026-10-31): the branch
+# push + refresh-PR create run on a Swarm app token (SEC-03 minting), NOT
+# the default GITHUB_TOKEN — default-token PR events do not trigger
+# downstream workflows (anti-recursion) and park as action_required
+# (this family's parked sample: run 41222975817). Collection reads stay
+# on the default token. Mint failure fails the job loudly on purpose:
+# a silent fallback would re-park the refresh PR invisibly.
 name: delphi-ledger-feed-collect
 
 on:
@@ -30,7 +38,16 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.swarm-token.outputs.token }}
       - name: Fetch the ledger cache
         run: |
           set -euo pipefail
@@ -59,6 +76,8 @@ jobs:
           python3 -B scripts/delphi/ledger_db_export.py
       - name: Propose the refresh as a PR
         if: hashFiles('.ledger-cache/issues.json') != ''
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
           if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-ledger-feed.json apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json; then
@@ -66,8 +85,8 @@ jobs:
             exit 0
           fi
           branch="delphi-ledger-feed/refresh"
-          git config user.name "delphi-ledger-feed-collect"
-          git config user.email "actions@github.com"
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "350898559+termux-fleet-swarm[bot]@users.noreply.github.com"
           git checkout -B "$branch"
           git add apps/help-wanted-dashboard/data/delphi-ledger-feed.json apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json
           git commit -m "chore(delphi): refresh delphi-ledger-feed"

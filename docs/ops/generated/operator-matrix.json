@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 383,
-    "open_prs": 168,
+    "open_issues": 382,
+    "open_prs": 169,
     "pr_classes": {
       "CANDIDATE": 79,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 83,
+      "EXTRACT": 8,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 37,
-      "prs": 166,
+      "issues": 36,
+      "prs": 167,
       "unlabelled_numbers": [
         308,
         343,
@@ -85,14 +85,13 @@
         3018,
         3036,
         3050,
-        3077,
         3094,
         3095,
         3099
       ]
     }
   },
-  "generated_at": "2026-11-01T12:10:33Z",
+  "generated_at": "2026-11-01T12:11:59Z",
   "issues_unlabelled": [
     308,
     343,
@@ -127,7 +126,6 @@
     3018,
     3036,
     3050,
-    3077,
     3094,
     3095,
     3099
@@ -138,7 +136,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "9a46d6adf7"
+    "sha": "15267d2e3f"
   },
   "prs": [
     {
@@ -224,6 +222,34 @@
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-11-01T12:09:34Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f6e9bae748",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-01T12:09:43Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8eb0d03f6b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3102,
+      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
+      "updated_at": "2026-11-01T12:10:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1886,20 +1912,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "f6e9bae748",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T12:09:43Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2477,12 +2489,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8eb0d03f6b",
+      "head_sha": "019c7ccaf1",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3102,
-      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
-      "updated_at": "2026-11-01T12:10:32Z"
+      "number": 3113,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-11-01T12:09:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2491,12 +2503,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "019c7ccaf1",
+      "head_sha": "bd6397a31c",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3113,
-      "title": "chore(recon): refresh pinned free-provider research",
-      "updated_at": "2026-11-01T12:09:07Z"
+      "mergeable_state": "dirty",
+      "number": 3118,
+      "title": "desk-feed: batch wave-1 folds (queued runs resolved, recon-compound success)",
+      "updated_at": "2026-11-01T12:11:48Z"
     }
   ],
   "schema": "operator-matrix/v1",

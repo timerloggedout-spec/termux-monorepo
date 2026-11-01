@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-01T12:10:33Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-01T12:11:59Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `9a46d6adf7` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `15267d2e3f` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 383 issues, 168 PRs. PR classes: EXTRACT 6 / CANDIDATE 79 / NEED_EVIDENCE 83 / SUPERSEDE 0.
+**Open inventory:** 382 issues, 169 PRs. PR classes: EXTRACT 8 / CANDIDATE 79 / NEED_EVIDENCE 82 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -19,6 +19,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
 | #2167 | EXTRACT | unlabelled | `dd01db1a2d` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #2263 | EXTRACT | unlabelled | `f6e9bae748` | success | success | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #3102 | EXTRACT | unlabelled | `8eb0d03f6b` | success | success | unstable | StudySprint RSVP multi-pass reader core — study_reader.py |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -137,7 +139,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `f6e9bae748` | queued | success | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `660d086004` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -179,8 +180,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3035 | NEED_EVIDENCE | unlabelled | `e358823bab` | not_reported | not_reported | unknown | [Draft] Independent RFP: foresight platform evaluation |
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3102 | NEED_EVIDENCE | unlabelled | `8eb0d03f6b` | not_reported | not_reported | unknown | StudySprint RSVP multi-pass reader core — study_reader.py |
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
+| #3118 | NEED_EVIDENCE | unlabelled | `bd6397a31c` | not_reported | not_reported | dirty | desk-feed: batch wave-1 folds (queued runs resolved, recon-compound success) |
 
 ## Families (open)
 
@@ -195,6 +196,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 8 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 37 | 166 |
+| unlabelled | 36 | 167 |
 
-**Unlabelled open issues (37):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3077, #3094, #3095, #3099 — worked oldest-first by the issue-lifecycle lane pass.
+**Unlabelled open issues (36):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3094, #3095, #3099 — worked oldest-first by the issue-lifecycle lane pass.

@@ -1,10 +1,10 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-01T11:24:17Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-01T11:27:45Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-01T11:24:17Z` (merged 150 · open 166) · lane-events(Neon) status=`ok` count=`4182` read_at=`2026-11-01T11:24:17Z`
+Sources: PR feed read_at=`2026-11-01T11:27:45Z` (merged 150 · open 169) · lane-events(Neon) status=`ok` count=`4194` read_at=`2026-11-01T11:27:45Z`
 
-Rows: 22 · by_state: active=5 · closed=1 · in-flight=10 · landed=1 · unknown=5
+Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknown=5
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
@@ -16,7 +16,7 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=10 · landed=1 · unknow
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | active | #3013 `503124a1c35f` 2026-11-01T09:34:45Z | deadline 2026-12-04T14:00:00-08:00 |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #3054 `a27cf6d12a82` 2026-11-01T11:23:49Z | NOT_ESTABLISHED |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3060 `b2813f208203` 2026-11-01T11:25:44Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3048 `2132e82c6797` 2026-11-01T11:16:48Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | active | #2908 `47b7aba1c339` 2026-11-01T02:41:18Z | NOT_ESTABLISHED |
@@ -26,9 +26,9 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=10 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #2924 `eda09a84bd56` 2026-11-01T03:54:43Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #2891 `fbd8cb72b23f` 2026-11-01T02:22:05Z | land/close PR #2914 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2992 `bf65498ef010` 2026-11-01T09:07:05Z | land/close PR #3053 — index(quota): provider dispatch capability — 89-provider bench classified (a/b/c/d) |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2992 `bf65498ef010` 2026-11-01T09:07:05Z | land/close PR #3064 — feat(desk): catalog fold — Quota per-provider bench classes (89 = 2+22+2+63) |
 | replay | `repo-replay` | Repo Replay | active | #2985 `d1de34243abf` 2026-11-01T07:34:10Z | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3056 `8a8dd117fdb8` 2026-11-01T11:23:40Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3062 `0f41764f0d72` 2026-11-01T11:27:00Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3012 `93237772cac5` 2026-11-01T09:24:56Z | land/close PR #2168 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -59,4 +59,4 @@ Campaigns: 12 · joined: 1 · distinct instances: 8 · providers: openrouter
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 85/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 86/150 (extend ops/tracking/projects.json match rules)

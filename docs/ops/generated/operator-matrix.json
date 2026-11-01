@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 379,
-    "open_prs": 168,
+    "open_prs": 166,
     "pr_classes": {
       "CANDIDATE": 79,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 84,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 34,
-      "prs": 166,
+      "prs": 164,
       "unlabelled_numbers": [
         308,
         343,
@@ -89,7 +89,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-01T14:05:56Z",
+  "generated_at": "2026-11-01T14:09:13Z",
   "issues_unlabelled": [
     308,
     343,
@@ -129,10 +129,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "cancelled",
+      "smoke": "cancelled"
     },
-    "sha": "c7b6c6f826"
+    "sha": "049b3c6208"
   },
   "prs": [
     {
@@ -258,7 +258,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-01T13:38:01Z"
@@ -751,7 +751,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:45Z"
@@ -933,7 +933,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-01T13:38:22Z"
@@ -1381,7 +1381,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-01T13:37:52Z"
@@ -1726,15 +1726,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "d3dcccac7b",
+      "head_sha": "8ddc637fc2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-01T14:03:59Z"
+      "updated_at": "2026-11-01T14:09:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1883,12 +1883,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "f9f80cda73",
+      "head_sha": "5c671d524e",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-01T14:05:22Z"
+      "updated_at": "2026-11-01T14:08:03Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2373,12 +2373,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "136a4b0d35",
+      "head_sha": "3bcd32bb81",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-01T14:04:47Z"
+      "updated_at": "2026-11-01T14:06:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2457,40 +2457,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7292609134",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3102,
-      "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
-      "updated_at": "2026-11-01T12:22:55Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "019c7ccaf1",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3113,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-01T12:09:07Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "4576067c81",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3183,
-      "title": "desk-feed: D3 route \u0394 \u2014 B1\u2013B5 via DeepSeek + command-dispatch until recovery probe",
-      "updated_at": "2026-11-01T14:04:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -19,6 +19,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write
 
 jobs:
   dispatch:
@@ -37,6 +38,37 @@ jobs:
           python3 scripts/doe/phrase_dispatch.py \
             --job "${{ inputs.job_path }}" \
             --out doe-dispatch-out/result.json
+      - name: Report outcome to dispatch log (issue #2830)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_PATH: ${{ inputs.job_path }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, subprocess
+          job = json.load(open(os.environ["JOB_PATH"]))
+          try:
+              res = json.load(open("doe-dispatch-out/result.json"))
+          except Exception as e:
+              res = {"status": "error", "error": f"result file unreadable: {e}"}
+          lines = [
+              f"[MUSEai]@{{role:{{doe-mgr-phrases-jit}}}} — dispatch outcome",
+              f"dispatch_no: {job.get('dispatch_no')} · campaign: {job.get('campaign_id')}",
+              f"task: {(job.get('task') or {})} · cell: {(job.get('assignment') or {}).get('cell')}",
+              f"model: {job.get('model')} · prompt_sha256: {job.get('prompt_sha256')}",
+              f"instance_key: {job.get('instance_key')}",
+              f"status: {res.get('status')} · model_returned: {res.get('model_returned')}",
+              f"usage: {res.get('usage')} · response_sha256: {res.get('response_sha256')} · response_chars: {res.get('response_chars')}",
+              f"run: https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/{os.environ.get('GITHUB_RUN_ID')}",
+          ]
+          if res.get("error"):
+              lines.append(f"error: {res['error']}")
+          if res.get("response_text"):
+              lines += ["", "--- response (first 20000 chars) ---", res["response_text"][:20000]]
+          open("log-comment.md", "w").write("\n".join(lines))
+          subprocess.run(["gh", "issue", "comment", "2830", "--body-file", "log-comment.md"], check=True)
+          print("outcome posted to dispatch log #2830")
+          EOF
       - name: Upload result artifact
         if: always()
         uses: actions/upload-artifact@v4

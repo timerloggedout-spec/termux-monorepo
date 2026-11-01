@@ -188,7 +188,8 @@ s[bot]@users.noreply.github.com
           commit_message: "deploy(matrix): ${{ github.sha }}"
       - name: User-site URLs
         run: |
-          echo "https://timerloggedout-spec.github.io/help-wanted/" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://timerloggedout-spec.github.io/tribute/ (canonical)" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://timerloggedout-spec.github.io/help-wanted/ (compatibility alias)" >> "$GITHUB_STEP_SUMMARY"
           echo "https://timerloggedout-spec.github.io/matrix/" >> "$GITHUB_STEP_SUMMARY"
 
   vercel:

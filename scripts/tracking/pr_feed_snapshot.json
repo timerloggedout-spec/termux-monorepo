@@ -1,13 +1,65 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-01T13:19:05Z",
+ "read_at": "2026-11-01T13:22:29Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3150,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-01T13:22:22Z",
+   "updated_at": "2026-11-01T13:22:26Z",
+   "created_at": "2026-11-01T13:22:17Z",
+   "merge_commit_sha": "db835c88557485ef632b61eb16385be6f31a1be7",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3150",
+   "merged": true
+  },
+  {
+   "number": 3148,
+   "title": "fix(batch): provider-invoke \u2014 catalog diagnostics in verdict + Cohere v2 catalog fallback",
+   "merged_at": "2026-11-01T13:21:37Z",
+   "updated_at": "2026-11-01T13:21:37Z",
+   "created_at": "2026-11-01T13:21:23Z",
+   "merge_commit_sha": "573ba74715c4977a17d038f366ca7a53ba7004f5",
+   "head_ref": "swarm/provider-invoke-catalog-diag",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3148",
+   "merged": true
+  },
+  {
+   "number": 3147,
+   "title": "desk-feed: util-1 auditor stamp fields \u2014 ts + outcome keys on in-flight D1 stamps",
+   "merged_at": "2026-11-01T13:21:20Z",
+   "updated_at": "2026-11-01T13:21:20Z",
+   "created_at": "2026-11-01T13:20:04Z",
+   "merge_commit_sha": "094f6a089917c4033e9ef2627954953c4e40e37e",
+   "head_ref": "desk/util1-stamp-fields",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3147",
+   "merged": true
+  },
+  {
+   "number": 3142,
+   "title": "feat(batch): provider-invoke \u2014 per-provider bounded invoke for the inference batch",
+   "merged_at": "2026-11-01T13:13:35Z",
+   "updated_at": "2026-11-01T13:21:01Z",
+   "created_at": "2026-11-01T13:10:42Z",
+   "merge_commit_sha": "73981b5dbd099e12c965a093a405bef7454efd3e",
+   "head_ref": "swarm/provider-invoke",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3142",
+   "merged": true
+  },
   {
    "number": 3146,
    "title": "chore(ops): regenerate operator matrix",
    "merged_at": "2026-11-01T13:18:39Z",
-   "updated_at": "2026-11-01T13:18:43Z",
+   "updated_at": "2026-11-01T13:19:08Z",
    "created_at": "2026-11-01T13:18:33Z",
    "merge_commit_sha": "be9fec09b9ed917380a8ea7a570ccf2c40dfe5be",
    "head_ref": "operator-matrix/auto",
@@ -53,19 +105,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3143",
-   "merged": true
-  },
-  {
-   "number": 3142,
-   "title": "feat(batch): provider-invoke \u2014 per-provider bounded invoke for the inference batch",
-   "merged_at": "2026-11-01T13:13:35Z",
-   "updated_at": "2026-11-01T13:13:35Z",
-   "created_at": "2026-11-01T13:10:42Z",
-   "merge_commit_sha": "73981b5dbd099e12c965a093a405bef7454efd3e",
-   "head_ref": "swarm/provider-invoke",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3142",
    "merged": true
   },
   {
@@ -1913,59 +1952,46 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2970",
    "merged": true
-  },
-  {
-   "number": 2969,
-   "title": "docs(ops): OWNER-REQUESTS correction \u2014 row 15 = fleet-APK only; ArchWiz separate-APK row 16",
-   "merged_at": "2026-11-01T04:58:52Z",
-   "updated_at": "2026-11-01T04:59:27Z",
-   "created_at": "2026-11-01T04:58:43Z",
-   "merge_commit_sha": "a17c9d321f9677067f12fc2e7f0ea47e1166a24d",
-   "head_ref": "docs/owner-requests-row15-correction",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2969",
-   "merged": true
-  },
-  {
-   "number": 2968,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T04:51:19Z",
-   "updated_at": "2026-11-01T04:51:30Z",
-   "created_at": "2026-11-01T04:51:15Z",
-   "merge_commit_sha": "7f247b9116821d42ef25c4fa8e31e94e6dcd1b9f",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2968",
-   "merged": true
-  },
-  {
-   "number": 2967,
-   "title": "apk-xref-exec: bounded rate-limit retry on the filing fetch (root cause proven from run logs)",
-   "merged_at": "2026-11-01T04:50:33Z",
-   "updated_at": "2026-11-01T04:50:33Z",
-   "created_at": "2026-11-01T04:48:39Z",
-   "merge_commit_sha": "87bc95b1e15659f28def26f9f6e29007f4b53c01",
-   "head_ref": "apk-xref/exec-fetch-retry-2026-10-31",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2967",
-   "merged": true
   }
  ],
  "open": [
   {
+   "number": 3149,
+   "title": "index(quota): dispatch capability \u2014 #2672 gate GREEN",
+   "merged_at": null,
+   "updated_at": "2026-11-01T13:22:15Z",
+   "created_at": "2026-11-01T13:22:05Z",
+   "merge_commit_sha": "2001a590283121c978a4e66aa405b54fe51f0450",
+   "head_ref": "quota/dispatch-capability-gate-green",
+   "author": "termux-fleet-publisher[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3149",
+   "merged": false
+  },
+  {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-01T13:17:53Z",
+   "updated_at": "2026-11-01T13:21:55Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "13b7a820af3442c0edd5560966901885e7494e6a",
+   "merge_commit_sha": "2979f1cdf387ac49cfc261d134543c04f7021cd2",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
+   "merged": false
+  },
+  {
+   "number": 2914,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-01T13:20:21Z",
+   "created_at": "2026-11-01T03:19:03Z",
+   "merge_commit_sha": "7fa31214bdcba4e9d2358cc8c384e0571be8b8b4",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
    "merged": false
   },
   {
@@ -1979,19 +2005,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
-   "number": 2914,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-01T13:00:41Z",
-   "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "7630000e1a43b3d018a3ad73aa2f50f7526bc240",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
    "merged": false
   },
   {

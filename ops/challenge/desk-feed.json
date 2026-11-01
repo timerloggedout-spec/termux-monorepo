@@ -1839,9 +1839,9 @@
    },
    "inference_wiring": {
     "basis": "CORRECTED multi-surface census (fix seat, firsthand @master 2026-11-01). Supersedes the 2-surface re-base below-record: wiring = invoke code on ANY fleet surface {provider-batch ENDPOINTS, provider_model_catalog ENDPOINTS, llm_api_hub provider_extensions ENDPOINTS (PR #1471), llm_api_hub provider_protocols CHAT_ENDPOINTS, g4f-working/gpt4free route}.",
-    "correction_note": "ERROR OF RECORD: the earlier census counted only batch+catalog surfaces and classed 72 providers not-wired; PKG-A (#3099) + PKG-B (#3100) were dispatched on that basis and have been STOOD DOWN (owner correction 2026-11-01; the targets were already wired/done). Corrected result: 87/89 catalogued provider keys carry an invoke surface; the only exceptions are the two long-flagged owner items (github, meta).",
+    "correction_note": "ERROR OF RECORD: the earlier census counted only batch+catalog surfaces and classed 72 providers not-wired; PKG-A (#3099) + PKG-B (#3100) were dispatched on that basis and have been STOOD DOWN (owner correction 2026-11-01; the targets were already wired/done). Corrected result: 87/89 catalogued provider keys carry an invoke surface; the only exceptions are the two long-flagged owner items (github, meta). SECOND CORRECTION (owner, 2026-11-01): PR #3133 wrongly retired the WHOLE meta provider — only the meta.llama_api RECORD is retired (limit 0, retired 2026-07-06). meta.model_api + meta.muse_code carry routes of record (PR #2641, enabled:false pending keys) = wired-unprovisioned; meta is restored to the wired set and joins the contributing pool when its keys land.",
     "wired_invoke": {
-     "count": 87,
+     "count": 88,
      "of": 89,
      "by_surface": {
       "batch+catalog": [
@@ -1882,7 +1882,10 @@
         "gpt4free/CLIProxyAPI/Chapito/ai-manus"
        ],
        "evidence": "data/g4f-working/providers.json (blob 5c21ee071cc4): 60 providers / 4,242 models catalogued (PR #2025); tester-working evidence = 100 entries across 15 providers; remainder catalogued, per-provider live proof not established"
-      }
+      },
+      "connector-config routes (.github/connectors/llm_providers.yaml, PR #2641)": [
+       "meta — model_api (https://api.meta.ai/v1, bearer MODEL_API_KEY) + muse_code (META_API_KEY); enabled:false until keys provisioned = WIRED-UNPROVISIONED"
+      ]
      },
      "named_providers": [
       "aion",
@@ -1895,6 +1898,7 @@
       "huggingface",
       "kilo",
       "llm7",
+      "meta",
       "mistral",
       "modelscope",
       "nvidia",
@@ -1917,7 +1921,7 @@
     "not_wired": {
      "count": 0,
      "providers": {},
-     "note": "No open not-wired items. 89/89 accounted: 87 wired + 2 dispositioned (github excluded-by-kind; meta retired/do-not-route)."
+     "note": "No open not-wired items. 89/89 accounted: 88 wired (meta = wired-unprovisioned, route of record in llm_providers.yaml) + github excluded-by-kind."
     },
     "excluded_surfaces": [
      "qodo review lane",
@@ -1935,10 +1939,12 @@
       "cohere",
       "felo",
       "google",
+      "gpt4free (g4f family route)",
       "groq",
       "huggingface",
       "kilo",
       "llm7",
+      "meta (joins on key provisioning)",
       "mistral",
       "modelscope",
       "nvidia",
@@ -1954,17 +1960,14 @@
       "unorouter",
       "xfyun",
       "xkiro",
-      "zai",
-      "gpt4free (g4f family route)"
+      "zai"
      ],
      "pool_count": 27,
      "mechanics": "Pool members contribute through their wired invoke routes (generation / review / verification legs) and, where a repo build lane exists for them, build legs. Desk shards packages across the pool and stamps the shard's provider; Swarm second-pass reviews; fix seat republishes pool membership on every wiring landing.",
      "applied_now": "CORRECTED (2026-11-01): PKG-A + PKG-B stood down — their targets were already wired. The pool stands at the corrected wired set; future wiring work concerns only genuinely unwired surfaces as they appear."
     },
     "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts.",
-    "dispositions": {
-     "meta": "RETIRED / DO-NOT-ROUTE (standing fleet record; fix-seat disposition 2026-11-01): llama_api retired; the surface is excluded from the wiring target — NOT a pending owner item. Reopen only on a future owner order that provisions MODEL_API_KEY/META_API_KEY and un-retires it."
-    }
+    "dispositions": {}
    },
    "batch_accounting": "OWNER CLASS CORRECTION (structural, 2026-11-01): batch accounting covers ONLY the inference bench (inference_wiring: 91 records / 89 providers via invoke routes). Lanes carry batch_scope: inference-bench (9) count toward it; excluded-review-command (10: Qodo/Devin/CodeRabbit/provider-command-dispatch/peer-review surfaces/gemini review+triage legs) and build-or-support (6) do not. Desk NOTE-level stamp = PR #3111 (merged 4ae70d1b2ee5); this field makes it structural. #2672 gate status: contracts run 41303413675 FAILURE 2026-11-01T11:47Z — batch observation still gated.",
    "app_layer": {

@@ -133,10 +133,12 @@ provider_protocols, g4f-working/gpt4free}: **87/89 catalogued keys carry an invo
 surface** — named 26 {batch/catalog 17 + extensions 7 (typhoon, unorouter, routeway,
 requesty, xkiro, xfyun, sealion) + protocols 2 (cloudflare, cohere)} + g4f family
 {60 records + composite, catalogued route; tester-working evidence 15 providers}.
-Not-wired open items = 0. 89/89 accounted: 87 wired + 2 dispositioned — github
-excluded-by-kind (review-kind record; reopen = owner word → github-models record) +
-meta RETIRED/do-not-route (standing fleet record; excluded from the wiring target,
-not a pending item). PKG-A (#3099) + PKG-B (#3100) were dispatched on the wrong census and are
+Not-wired open items = 0. 89/89 accounted: 88 wired + github excluded-by-kind
+(review-kind record; reopen = owner word → github-models record). Meta counts as
+WIRED-UNPROVISIONED: routes of record (PR #2641 — meta_model_api + muse_code in
+llm_providers.yaml, api.meta.ai/v1, enabled:false pending MODEL_API_KEY/META_API_KEY).
+Only the meta.llama_api RECORD is retired (2026-07-06, limit 0, do-not-route) —
+PR #3133's whole-provider retirement was WRONG and is corrected here. PKG-A (#3099) + PKG-B (#3100) were dispatched on the wrong census and are
 STOOD DOWN. (ollama also has a protocol endpoint; not a model-lane catalogued key.)
 
 ## Inference wiring — re-based (owner class correction 2026-11-01) — SUPERSEDED, kept for the record

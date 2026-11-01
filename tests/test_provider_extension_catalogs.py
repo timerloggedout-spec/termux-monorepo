@@ -6,7 +6,7 @@ from llm_api_hub.server import provider_extensions as runtime
 
 
 def test_endpoint_secret_and_public_catalog_definitions_match_actual_transports():
-    assert set(ext.ENDPOINTS) == {"unorouter", "routeway", "requesty", "xkiro", "sealion", "deepinfra"}
+    assert set(ext.ENDPOINTS) == {"unorouter", "routeway", "requesty", "xkiro", "sealion", "deepinfra", "novita"}
     assert ext.ENDPOINTS == runtime.CATALOG_ENDPOINTS
     assert all(catalog.ENDPOINTS[p] == url for p, url in ext.ENDPOINTS.items())
     assert all(catalog.SECRETS[p] == runtime.ENDPOINTS[p][1][0] for p in ext.ENDPOINTS)

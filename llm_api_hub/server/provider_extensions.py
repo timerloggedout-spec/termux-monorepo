@@ -12,6 +12,7 @@ ENDPOINTS = {
     "xfyun": ("https://spark-api-open.xf-yun.com/v1/chat/completions", ("XFYUN_API_KEY", "IFLYTEK_SPARK_API_PASSWORD")),
     "sealion": ("https://api.sea-lion.ai/v1/chat/completions", ("SEALION_API_KEY",)),
     "deepinfra": ("https://api.deepinfra.com/v1/openai/chat/completions", ("DEEPINFRA_API_KEY",)),
+    "novita": ("https://api.novita.ai/v3/openai/chat/completions", ("NOVITA_API_KEY",)),
 }
 CATALOG_ENDPOINTS = {
     "unorouter": "https://api.unorouter.com/v1/models",
@@ -20,6 +21,7 @@ CATALOG_ENDPOINTS = {
     "xkiro": "https://api.xkiro.com/v1/models",
     "sealion": "https://api.sea-lion.ai/v1/models",
     "deepinfra": "https://api.deepinfra.com/v1/openai/models",
+    "novita": "https://api.novita.ai/v3/openai/models",
 }
 SOURCES = {
     "typhoon": ("https://docs.opentyphoon.ai/en/api-reference/", "https://opentyphoon.ai/tac"),
@@ -30,6 +32,7 @@ SOURCES = {
     "xfyun": ("https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html",),
     "sealion": ("https://docs.sea-lion.ai/guides/inferencing/api",),
     "deepinfra": ("https://deepinfra.com/docs",),
+    "novita": ("https://novita.ai/docs",),
 }
 SETUP_CAVEATS = {
     "typhoon": "Use an independently authorized account/key; documented light research usage is free but quota entitlement is not guaranteed.",
@@ -40,4 +43,5 @@ SETUP_CAVEATS = {
     "xfyun": "Only exact lite model is treated as confirmed free; credential alias may be account-specific.",
     "sealion": "API key may be trial-based; no permanent free entitlement is guaranteed.",
     "deepinfra": "Prepaid account; completions are funded-out until the balance is topped up.",
+    "novita": "Prepaid account; $0 balance at provisioning (advertised sandbox credits not in account); completions funded-out until top-up.",
 }

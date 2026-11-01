@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (165 registry records)
+ QUOTA  termux-monorepo  (166 registry records)
  Snapshot generated (not observation time): 2026-11-01T13:23:25.948846+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -908,6 +908,14 @@
     month
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
+ novita (1)
+  novita.api
+    status: No live reading
+    limit (documented): n/a USD balance (prepaid)
+    metric: Prepaid API balance (pay-as-you-go inference) | window: n/a | reset:
+    n/a
+    No live reading (live source: none published)
+--------------------------------------------------------------------------------
  nvidia (1)
   nvidia.api_catalog
     status: PRIVATE_PREFLIGHT
@@ -1238,6 +1246,8 @@
   parser; registry: mistral.free_mode
   modelscope: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: modelscope.api_inference
+  novita: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: novita.api
   nvidia: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: nvidia.api_catalog
   ollama: Manager / ChronoMancer; opt_in_private_quota_service; live account
@@ -1269,6 +1279,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 165 registry records | 1 alert(s) | 164 with a reported reading | 1 with No
+ 166 registry records | 1 alert(s) | 164 with a reported reading | 2 with No
  live reading
 ================================================================================

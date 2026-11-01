@@ -1,0 +1,82 @@
+"""Nav-uniformity ratchet (owner order 2026-11-01).
+
+The header drifted three times (landing froze at 5 links, previews at
+27, matrix.html at 20) because every page carries its own copy of the
+nav and nothing failed when one copy lagged. This test is the lock:
+every page that carries the Primary nav must carry the SAME anchor
+sequence, exactly, and the set of nav-carrying pages is pinned — a
+page silently losing its nav, a new page shipping without one, or one
+link added to one page all fail CI until the change is made
+everywhere on purpose.
+"""
+import re
+from pathlib import Path
+
+APP = Path(__file__).resolve().parents[1] / "apps" / "help-wanted-dashboard"
+NAV_RE = re.compile(r'<nav aria-label="Primary">(.*?)</nav>', re.S)
+ANCHOR_RE = re.compile(r'<a[^>]*href="([^"]+)"[^>]*>([^<]+)</a>')
+
+CANON = [
+    ('https://timerloggedout-spec.github.io/', 'Autonomous AI Employees'),
+    ('https://timerloggedout-spec.github.io/', 'Marketing'),
+    ('https://timerloggedout-spec.github.io/help-wanted/', 'Ops · Tribute'),
+    ('https://timerloggedout-spec.github.io/matrix/', 'Lane matrix'),
+    ('https://timerloggedout-spec.github.io/help-wanted/quota.html', 'Quota'),
+    ('https://timerloggedout-spec.github.io/help-wanted/quota-usage.html', 'Quota Usage'),
+    ('https://timerloggedout-spec.github.io/help-wanted/quota-graphs.html', 'Quota Graphs'),
+    ('https://timerloggedout-spec.github.io/help-wanted/admin.html', 'Admin'),
+    ('https://timerloggedout-spec.github.io/help-wanted/oracle.html', 'Oracle'),
+    ('https://timerloggedout-spec.github.io/help-wanted/3l0.html', '3L0'),
+    ('https://timerloggedout-spec.github.io/help-wanted/moneyball.html', 'MoneyBall'),
+    ('https://timerloggedout-spec.github.io/help-wanted/mvt.html', 'MVT'),
+    ('https://timerloggedout-spec.github.io/help-wanted/doe.html', 'DoE'),
+    ('https://timerloggedout-spec.github.io/help-wanted/ates.html', 'ATES'),
+    ('https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html', 'Free-tier value'),
+    ('https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html', 'Dispatch Tree'),
+    ('https://timerloggedout-spec.github.io/help-wanted/admin-graph.html', 'Admin Graph'),
+    ('https://timerloggedout-spec.github.io/help-wanted/countdowns.html', 'Countdowns'),
+    ('https://timerloggedout-spec.github.io/help-wanted/linguist.html', 'Linguist'),
+    ('https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html', 'Delphi RFP'),
+    ('https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html', 'Delphi Ledgers'),
+    ('https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html', 'PR Lanes'),
+    ('https://timerloggedout-spec.github.io/help-wanted/proposals.html', 'Proposals'),
+    ('https://timerloggedout-spec.github.io/help-wanted/telemetry.html', 'Telemetry'),
+    ('https://timerloggedout-spec.github.io/help-wanted/desk.html', 'Desk'),
+    ('https://timerloggedout-spec.github.io/help-wanted/tracking.html', 'Tracking'),
+    ('https://help-wanted-oversight.vercel.app/', 'Vercel deployment'),
+    ('https://timerloggedout-spec.github.io/help-wanted/sitemap.xml', 'Sitemap'),
+    ('https://github.com/timerloggedout-spec/termux-monorepo', 'Monorepo'),
+]
+
+# Pages carrying the shell nav. admin-graph.html (self-contained, zero
+# outbound links by design), lanes-and-scopes.html and versioning.html
+# carry none — that set is pinned too (see test_nav_carrier_set).
+NAV_PAGES = {
+    "index.html", "quota.html", "quota-usage.html", "quota-graphs.html",
+    "admin.html", "oracle.html", "3l0.html", "moneyball.html",
+    "mvt.html", "doe.html", "ates.html", "free-tier-value.html",
+    "dispatch-tree.html", "countdowns.html", "linguist.html",
+    "delphi-rfp.html", "delphi-ledger.html", "pr-lanes.html",
+    "proposals.html", "telemetry.html", "desk.html", "tracking.html",
+    "matrix.html",
+}
+
+
+def anchors(path):
+    m = NAV_RE.search(path.read_text(encoding="utf-8"))
+    return ANCHOR_RE.findall(m.group(1)) if m else None
+
+
+def test_nav_carrier_set():
+    carriers = {p.name for p in APP.glob("*.html") if NAV_RE.search(p.read_text(encoding="utf-8"))}
+    assert carriers == NAV_PAGES, (
+        f"nav-carrying pages changed: +{sorted(carriers - NAV_PAGES)} "
+        f"-{sorted(NAV_PAGES - carriers)} — update the shell on purpose, everywhere")
+
+
+def test_every_nav_identical():
+    for name in sorted(NAV_PAGES):
+        got = anchors(APP / name)
+        assert got == CANON, (
+            f"{name} nav drifted from canonical ({len(got or [])} vs {len(CANON)} links): "
+            f"first diff at {next((i for i, (a, b) in enumerate(zip(got or [], CANON)) if a != b), None)}")

@@ -517,6 +517,31 @@ version and compared continuously until culling retires a version.
   — candidate plane: its counts are NOT_ESTABLISHED until a
   briefed pass runs.
 
+- **bayesian-updating v0** (family update rule; owner
+  instrument naming, 2026-11-02) — the formal update rule for
+  every score the family frame carries (program intake,
+  winprob, validation-yield, panel weights): a score is a
+  POSTERIOR, not an intake guess. Record shape: {quantity,
+  prior {value, basis}, evidence[] — each leg {source,
+  direction, likelihood/strength, corroboration state},
+  posterior {value, range, updated_at, n_evidence}}.
+  Update discipline = rule 9 in Bayesian form: corroborated
+  legs (>=2 independent, agreeing) update at full strength;
+  single-leg evidence is recorded but HELD (posterior flagged
+  provisional, weight capped); disputed legs excluded until
+  resolved; self-asserted evidence carries likelihood ~1 (no
+  movement — a claim, not proof). Unknowns widen the posterior
+  range rather than moving the point (winprob/v2 precedent:
+  base rate = prior only, standing/fit likelihood ratios,
+  unknown share drives range + confidence). A score with no
+  evidence legs since its prior is labeled INTAKE, never
+  presented as current. Conformance: winprob/v2 already has
+  this shape (its owner park stands — the frame rule governs
+  updating when evidence arrives, it does not unpark
+  refinement); #1489 weight updates already require
+  corroborated confirmed outcomes; validation-yield's
+  corroborated_share is this rule's per-plane truth fraction.
+
 ## Campaign layout
 
 ### Candidate method versions — dreambeans concepts (owner ruling, 2026-11-01)

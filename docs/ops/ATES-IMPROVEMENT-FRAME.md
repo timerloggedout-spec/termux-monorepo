@@ -1,8 +1,8 @@
 # ATES Improvement Frame
 
-**`ates-improvement-frame` v0.1** — registered 2026-11-02 under DoE
-(v0: PR #3844 - mechanism correction: PR #3846 - v0.1: this
-amendment).
+**`ates-improvement-frame` v0.2** — registered 2026-11-02 under DoE
+(v0: PR #3844 - mechanism correction: PR #3846 - v0.1: PR
+#3849 - v0.2: this amendment, owner parity ruling).
 governance (see `docs/ops/DOE-FAMILY.md`, Method versions).
 ATES is nested under DoE (leveling of record); this frame is
 its improvement surface.
@@ -101,9 +101,15 @@ REJECTED. An entry's claim may not exceed its state.
   withdrawn). Evidence requirement: a status-based census
   (IMP-001 recomputed on status) + a consumer audit listing
   every coverage consumer of record and its counting field.
-  State: PROPOSED. (The parity-target owner ruling is
-  RE-BASED by the correction, not dissolved — see Open owner
-  rulings (1).)
+  State: PROPOSED — the target dependency is LIFTED by the
+  owner ruling (Open rulings (1), RESOLVED): target state =
+  FULL parity; verification = BOUNDED sampled checks. The
+  entry proceeds on its evidence requirements: status census
+  + consumer audit (above), plus sampled parity checks with
+  n stated per stratum measured against the full-parity
+  target (K9). Note the dependency: full parity presumes a
+  durable receipt store (IMP-004) and the census machinery
+  (IMP-001).
 - **ATES-IMP-003 — Receipt validation suite.** Statement:
   standing checks over the receipt store {deduplication ·
   schema conformance · source run/attempt/SHA provenance},
@@ -158,6 +164,11 @@ of #3812) — confirmed by main, 2026-11-02.**
   quantities are computed on the receipt `status` field.
   Counting by event type ("task_completed") is non-conformant
   per se: it misreads failed/skipped receipts as completions.
+- **K9 — Sampled verification, stated n.** Parity conformity
+  is measured by bounded sampled checks en route to the
+  full-parity target state: every parity claim cites its
+  sample n per status stratum. A parity claim without
+  per-stratum n is non-conformant (significance standard).
 - **K6 — Claims follow entry states.** "Improvement landed"
   is stated only when the entry's evidence requirement is met
   and cited; otherwise HELD/PROPOSED language.
@@ -167,18 +178,22 @@ of #3812) — confirmed by main, 2026-11-02.**
 
 ## Open owner rulings (flagged, not assumed)
 
-1. **Parity target** — OWNER RULING, flagged not assumed
-   (re-based by the mechanism correction): no emission filter
-   exists, so there is no full-vs-bounded emission decision;
-   what remains the owner's is the parity STANDARD a coverage
-   claim must meet (e.g. the tolerance within which per-status
-   rates must sit before any pooled statement is allowed).
-   (An interim amendment marked this dissolved; main's word
-   2026-11-02 governs — it stays flagged and open.)
-2. **S governance** — v0 takes S descriptively from the
-   receipt workflow's trigger list. Whether S should be a
-   DoE-designated set (potentially wider: every workflow whose
-   runs should receipt) is an owner call.
+1. **Parity target** — RESOLVED (owner ruling via main,
+   2026-11-02): **BOTH.** Full parity is the TARGET STATE — a
+   receipt for every run, every conclusion class. Bounded
+   parity is the VERIFICATION METHOD — sampled parity checks,
+   n stated per stratum, as the conformity measurement on the
+   way to full (clause K9). IMP-002's target dependency is
+   lifted on this basis. (History: v0 flagged it as an
+   emission decision; the mechanism correction re-based it;
+   an interim marking of "dissolved" was superseded by main's
+   keep-flagged word, then by this ruling.)
+2. **S governance** — OPEN, flagged not assumed: no ruling
+   yet (owner via main, 2026-11-02) — the v0
+   descriptive-from-trigger-list reading stands until the
+   owner rules. Whether S should be a DoE-designated set
+   (potentially wider: every workflow whose runs should
+   receipt) remains the question.
 3. **Stewardship seat of record** — RESOLVED 2026-11-02:
    the Continuous Stewardship seat (takeover of #3812),
    confirmed by main; recorded in the conformity section

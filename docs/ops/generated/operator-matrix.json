@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 401,
-    "open_prs": 179,
+    "open_prs": 180,
     "pr_classes": {
       "CANDIDATE": 86,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 87,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 177,
+      "prs": 178,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:40:35Z",
+  "generated_at": "2026-11-02T09:42:02Z",
   "issues_unlabelled": [
     308,
     343,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "5d40dc9eea"
+    "sha": "4dd63d32d9"
   },
   "prs": [
     {
@@ -222,20 +222,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "04c56fb72e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:37:25Z"
     },
     {
       "class": "CANDIDATE",
@@ -433,7 +419,7 @@
       "mergeable_state": "dirty",
       "number": 1441,
       "title": "feat(triage): reconcile official quota before dispatch",
-      "updated_at": "2026-11-02T09:39:27Z"
+      "updated_at": "2026-11-02T09:40:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1856,6 +1842,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "3122d45769",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T09:41:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2640,7 +2640,7 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "in_progress",
         "smoke": "success"
       },
       "head_sha": "4dadc44f6c",
@@ -2659,10 +2659,24 @@
       },
       "head_sha": "c511380b89",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 3709,
       "title": "cert(coderoad): prebuild image to GHCR, pull per run (dpkg-throughput fix)",
-      "updated_at": "2026-11-02T09:38:34Z"
+      "updated_at": "2026-11-02T09:41:08Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "df0b1d450a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3713,
+      "title": "quota: audit-004 \u2014 F4 state \u2192 production-proven (Registry paced census proof)",
+      "updated_at": "2026-11-02T09:41:55Z"
     }
   ],
   "schema": "operator-matrix/v1",

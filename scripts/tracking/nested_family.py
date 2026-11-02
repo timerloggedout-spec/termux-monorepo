@@ -308,6 +308,20 @@ def collect_tasks(base: Path):
     return tasks, meta, gaps
 
 
+def _registry_providers(base: Path):
+    """ALL-providers denominator (owner amendment 2026-11-01): distinct
+    provider names, verbatim, from ops/quota/registry.json model lane.
+    Returns (names, path) or (None, path) when unreadable."""
+    path = base / "ops" / "quota" / "registry.json"
+    reg = _read_json(path)
+    if not isinstance(reg, dict):
+        return None, "ops/quota/registry.json"
+    names = sorted({s.get("provider") for s in reg.get("services", [])
+                    if isinstance(s, dict) and s.get("lane") == "model" and s.get("provider")},
+                   key=lambda s: str(s).casefold())
+    return names, "ops/quota/registry.json"
+
+
 def build(base=None, now=None) -> dict:
     base = base or ROOT
     now = now or datetime.now(timezone.utc)
@@ -349,8 +363,32 @@ def build(base=None, now=None) -> dict:
             p_tasks += len(clean)
             n_models += 1
         providers.append({"provider": pname, "models": models,
-                          "model_count": len(models), "task_count": p_tasks})
+                          "model_count": len(models), "task_count": p_tasks,
+                          "zero_dispatch": False})
         n_tasks += p_tasks
+
+    # ALL-providers denominator: registry model-lane providers with no
+    # dispatch family appear as zero-dispatch gap rows (verbatim names;
+    # join = casefold-exact, no aliases — declared in spec).
+    reg_names, reg_path = _registry_providers(base)
+    coverage = None
+    if reg_names is None:
+        gaps.append(f"registry denominator unavailable: {reg_path} unreadable — zero-dispatch rows omitted")
+    else:
+        fam_fold = {str(p).casefold(): p for p in fam}
+        zero = [n for n in reg_names if str(n).casefold() not in fam_fold]
+        for n in zero:
+            providers.append({"provider": n, "models": [], "model_count": 0,
+                              "task_count": 0, "zero_dispatch": True})
+        reg_fold = {str(n).casefold() for n in reg_names}
+        coverage = {
+            "denominator": f"{reg_path} · lane=model · distinct provider",
+            "registry_providers": len(reg_names),
+            "with_dispatches": len(reg_names) - len(zero),
+            "zero_dispatch": zero,
+            "unregistered_dispatch_providers": sorted(
+                (p for p in fam if str(p).casefold() not in reg_fold), key=lambda s: str(s)),
+        }
 
     desk_used = next((m["records_used"] for m in meta if m["id"] == "desk-usage"), 0)
     if desk_used:
@@ -366,10 +404,14 @@ def build(base=None, now=None) -> dict:
             "task_link": "dispatch_id + run_id + source_ref (repo path of the dispatch record) = the run-id join",
         },
         "sources": meta,
+        "coverage": coverage,
         "summary": {
-            "providers": len(providers), "models": n_models,
+            "providers": len({p['provider'] for p in providers if not p.get('zero_dispatch')}),
+            "models": n_models,
             "roles": len({r for r in roles_all if r}), "tasks": n_tasks,
             "dispatches": len({t.get("dispatch_id") for t in tasks if t.get("dispatch_id")}),
+            "registry_providers": coverage["registry_providers"] if coverage else None,
+            "zero_dispatch_providers": len(coverage["zero_dispatch"]) if coverage else None,
             "by_outcome": by_outcome, "by_source": by_source,
         },
         "providers": providers,

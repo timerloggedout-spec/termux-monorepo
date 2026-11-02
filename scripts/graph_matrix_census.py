@@ -12,15 +12,29 @@ REPO_OWNER, REPO_NAME = "timerloggedout-spec", "termux-monorepo"
 REF_RE = re.compile(r"#(\d+)")
 
 def gql(token, query):
-    req = urllib.request.Request(API, data=json.dumps({"query": query}).encode(),
-        method="POST")
-    req.add_header("Authorization", f"Bearer {token}")
-    req.add_header("Accept", "application/vnd.github+json")
-    with urllib.request.urlopen(req, timeout=120) as r:
-        d = json.loads(r.read())
-    if "errors" in d:
-        raise RuntimeError(d["errors"][:2])
-    return d["data"]
+    import time, urllib.error
+    last = None
+    for attempt, wait in enumerate((0, 3, 10, 30, 60)):
+        if wait:
+            time.sleep(wait)
+        req = urllib.request.Request(API, data=json.dumps({"query": query}).encode(),
+            method="POST")
+        req.add_header("Authorization", f"Bearer {token}")
+        req.add_header("Accept", "application/vnd.github+json")
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                d = json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            body = e.read()[:400]
+            last = RuntimeError(f"HTTP {e.code} attempt {attempt}: {body}")
+            if e.code in (403, 429, 502, 503) and attempt < 4:
+                print(f"gql retry after HTTP {e.code}: {body[:200]}", file=sys.stderr, flush=True)
+                continue
+            raise last
+        if "errors" in d:
+            raise RuntimeError(d["errors"][:2])
+        return d["data"]
+    raise last
 
 def paginate(token, alias, tpl):
     items, cursor = [], None
@@ -28,6 +42,7 @@ def paginate(token, alias, tpl):
         after = f', after:"{cursor}"' if cursor else ""
         conn = gql(token, tpl.replace("__AFTER__", after))["repository"][alias]
         items.extend(conn["nodes"])
+        print(f"{alias}: {len(items)}/{conn['totalCount']}", flush=True)
         if not conn["pageInfo"]["hasNextPage"]:
             return items, conn["totalCount"]
         cursor = conn["pageInfo"]["endCursor"]

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 392,
-    "open_prs": 177,
+    "open_prs": 179,
     "pr_classes": {
-      "CANDIDATE": 84,
-      "EXTRACT": 6,
+      "CANDIDATE": 85,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 175,
+      "prs": 177,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:11:57Z",
+  "generated_at": "2026-11-02T09:19:37Z",
   "issues_unlabelled": [
     308,
     343,
@@ -147,10 +147,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "219b6efe21"
+    "sha": "37bcee5bbd"
   },
   "prs": [
     {
@@ -230,12 +230,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a24a2483c3",
+      "head_sha": "30ae007d4d",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3675,
-      "title": "feat(ci): archwiz dangle_check \u2014 repo-side dangle_detector variant (Wave V verifier candidate)",
-      "updated_at": "2026-11-02T09:08:15Z"
+      "number": 3676,
+      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
+      "updated_at": "2026-11-02T09:10:33Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "feacabbf3f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3681,
+      "title": "tribute normalization bundle C: diff-gate + telemetry-tests + evidence dir rename",
+      "updated_at": "2026-11-02T09:17:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -1019,6 +1033,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "5b7a2737cf",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T09:14:15Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1411,12 +1439,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "30ae007d4d",
+      "head_sha": "a24a2483c3",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3676,
-      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
-      "updated_at": "2026-11-02T09:10:33Z"
+      "number": 3675,
+      "title": "feat(ci): archwiz dangle_check \u2014 repo-side dangle_detector variant (Wave V verifier candidate)",
+      "updated_at": "2026-11-02T09:08:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1831,12 +1859,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "04cddfecac",
+      "head_sha": "4c214c4f81",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:11:28Z"
+      "updated_at": "2026-11-02T09:18:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1963,20 +1991,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
-      },
-      "head_sha": "3e2292bf05",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T09:10:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2635,6 +2649,20 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "8a05fd9f68",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3683,
+      "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
+      "updated_at": "2026-11-02T09:18:46Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 172,
+    "open_prs": 174,
     "pr_classes": {
       "CANDIDATE": 82,
-      "EXTRACT": 5,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 85,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 170,
+      "prs": 172,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:10:44Z",
+  "generated_at": "2026-11-02T00:13:35Z",
   "issues_unlabelled": [
     308,
     343,
@@ -131,12 +131,12 @@
     3346
   ],
   "master": {
-    "functional_gate": "GREEN",
+    "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "success",
+      "hygiene": "in_progress",
       "smoke": "success"
     },
-    "sha": "fe0933a22a"
+    "sha": "74f048ab85"
   },
   "prs": [
     {
@@ -208,6 +208,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "92ac726f1a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T00:11:01Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0c523ade89",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3378,
+      "title": "feat(cert): wire cert-unit to the stamp fan-out",
+      "updated_at": "2026-11-02T00:12:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -444,7 +472,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-01T22:13:01Z"
@@ -1773,14 +1801,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "success"
+        "smoke": "queued"
       },
-      "head_sha": "374d3f8cb4",
+      "head_sha": "86b8170c9f",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:10:00Z"
+      "updated_at": "2026-11-02T00:13:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1921,20 +1949,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "04162be86d",
-      "labels": [],
-      "mergeable_state": "clean",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T00:09:17Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2542,15 +2556,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "c112be79b8",
+      "head_sha": "6d3181ec2f",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3369,
-      "title": "feat(dispatch): stamp fan-out to all scoring-plane intakes (routing update)",
-      "updated_at": "2026-11-02T00:10:22Z"
+      "number": 3379,
+      "title": "DoE: register chat-intent v1 as method version",
+      "updated_at": "2026-11-02T00:13:24Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "c5253c0da0",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3380,
+      "title": "docs(doe): register chat-intent v1 in DOE-FAMILY method versions (+ gate form folded)",
+      "updated_at": "2026-11-02T00:13:33Z"
     }
   ],
   "schema": "operator-matrix/v1",

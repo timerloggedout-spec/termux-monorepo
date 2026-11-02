@@ -1,18 +1,22 @@
 name: v2-snapshot-pull
-# Repo Replay V2 (pack v2): pull the GitLab validator copy (auth-gated;
-# token lives HERE as GITLAB_TOKEN) for ALL branches as a tree+blob pack
-# and push it to timerloggedout-spec/repo-replay-data/v2-snapshot/ via
+# Repo Replay V2 (pack v2, diagnostics-hardened): pull the GitLab
+# validator copy (auth-gated; token lives HERE as GITLAB_TOKEN) for ALL
+# branches as a tree+blob pack and push it to
+# timerloggedout-spec/repo-replay-data/v2-snapshot/ via
 # OPERATOR_GITHUB_TOKEN. Layout: tree/<branch>/<path>; manifest v2
 # carries per-branch head sha + file counts. Fetch pattern copied from
 # gitlab-governed-reconciliation.yml (oauth2 Basic extraheader; token
-# never in a URL, never printed).
+# never in a URL, never printed). branches.tsv is written incrementally
+# and uploaded as an artifact even on failure (run 41434360163 failed
+# ~28 min into the fetch/pack step with logs unreachable — diagnose by
+# artifact, not by log).
 on: workflow_dispatch
 permissions:
   contents: read
 jobs:
   pull:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Fetch GitLab snapshot (all branches) + pack
         env:
@@ -20,11 +24,14 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "${GITLAB_TOKEN:-}" ]; then echo "::error::GITLAB_TOKEN unset"; exit 1; fi
+          df -h / | tail -1
           mkdir work && cd work && git init -q
           auth="$(printf 'oauth2:%s' "$GITLAB_TOKEN" | base64 -w 0)"
           git -c http.extraheader="Authorization: Basic $auth" fetch --no-tags --depth 1 \
             "https://gitlab.com/a-group2180532/termux-monorepo.git" \
             "+refs/heads/*:refs/remotes/gitlab/*"
+          echo "fetch done"; df -h / | tail -1
+          git for-each-ref --format='%(refname)' refs/remotes/gitlab | wc -l
           mkdir -p ../tree
           : > ../branches.tsv
           for ref in $(git for-each-ref --format='%(refname)' refs/remotes/gitlab); do
@@ -34,7 +41,7 @@ jobs:
             git archive "$sha" | tar -x -C "../tree/$br"
             n="$(find "../tree/$br" -type f | wc -l)"
             printf '%s\t%s\t%s\n' "$br" "$sha" "$n" >> ../branches.tsv
-            echo "branch $br $sha files=$n"
+            echo "branch $br files=$n"; df -h / | tail -1
           done
           cd ..
           FILES="$(find tree -type f | wc -l)"
@@ -47,6 +54,13 @@ jobs:
           echo "bytes=$BYTES" >> "$GITHUB_ENV"
           mkdir chunks && split -b 40M v2.tar.gz chunks/part-
           ls -la chunks/
+      - name: Diagnostics artifact (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-pull-diagnostics
+          path: branches.tsv
+          if-no-files-found: warn
       - name: Push pack to repo-replay-data
         env:
           OP_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}

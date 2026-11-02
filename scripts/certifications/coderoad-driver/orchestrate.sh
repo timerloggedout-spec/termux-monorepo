@@ -13,6 +13,21 @@ git config --global user.email "camper@example.com" 2>/dev/null
 git config --global user.name "camper" 2>/dev/null
 git config --global --add safe.directory /workspace/project 2>/dev/null
 
+# Deterministic pre-setup (do not rely on extension setup hooks):
+# start PostgreSQL and install the .freeCodeCamp test harness deps.
+{
+  echo "== pre-setup =="
+  pg_lsclusters 2>&1 || true
+  service postgresql start 2>&1 || pg_ctlcluster 12 main start 2>&1 || \
+    su postgres -c '/usr/lib/postgresql/12/bin/pg_ctl -D /var/lib/postgresql/12/main -l /tmp/pg.log start' 2>&1 || true
+  sleep 3
+  pg_isready 2>&1 || true
+  if [ -d /workspace/project/.freeCodeCamp ]; then
+    (cd /workspace/project/.freeCodeCamp && npm install --no-audit --no-fund 2>&1 | tail -3) || true
+    ls /workspace/project/.freeCodeCamp/node_modules 2>/dev/null | head -3 || echo "node_modules absent"
+  fi
+} >> "$LOG" 2>&1
+
 # Launch VS Code (CodeRoad activates on the .freeCodeCamp workspace and
 # auto-loads the tutorial from CODEROAD_TUTORIAL_URL).
 (xvfb-run -a code --no-sandbox --user-data-dir /tmp/vscode-ud --disable-gpu --disable-dev-shm-usage \
@@ -48,6 +63,22 @@ fi
 touch "$EV/GO"
 echo "GO raised" >> "$LOG"
 
+# Post-launch probes: prove VS Code + extensions actually came up and find
+# CodeRoad's REAL session storage (the env-path guess is uncalibrated).
+sleep 25
+{
+  echo "== probes =="
+  ps aux | grep -iE "code|electron" | grep -v grep | head -8
+  code --no-sandbox --user-data-dir /tmp/vscode-ud --extensions-dir /opt/vscode-extensions --list-extensions 2>&1 | head -10
+  echo "-- globalStorage tree --"
+  find /tmp/vscode-ud/User/globalStorage -maxdepth 2 2>/dev/null | head -30
+  echo "-- coderoad-ish files --"
+  find /tmp/vscode-ud /root/.config -iname "*coderoad*" 2>/dev/null | head -20
+  echo "-- newest exthost log tail --"
+  newest=$(ls -t /tmp/vscode-ud/logs/*/window*/exthost/exthost.log 2>/dev/null | head -1)
+  [ -n "$newest" ] && tail -25 "$newest" || echo "(no exthost log found)"
+} > "$EV/session-files.txt" 2>&1 || true
+
 for i in $(seq 1 72); do
   [ -f "$EV/RESULT.json" ] && break
   sleep 5
@@ -55,5 +86,5 @@ done
 if [ -f "$EV/RESULT.json" ]; then
   cat "$EV/RESULT.json"
 else
-  echo '{"ok":false,"detail":"driver RESULT timeout"}'
+  echo '{"ok":false,"detail":"driver RESULT timeout"}' | tee "$EV/RESULT.json"
 fi

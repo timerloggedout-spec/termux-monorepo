@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-01T15:48:00Z",
+ "generated_at": "2026-11-02T07:10:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2315,7 +2315,7 @@
     },
     "execution_posture": "OWNER POSTURE (2026-11-01 via D1 seat): early = balanced runs across inference endpoints (executions accumulate evidence); closer to Nov 4 due date ⇒ converge on best-performing endpoint. Applies {DeepSeek notes outcome, SR, any re-runs}"
    },
-   "next": "Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT",
+   "next": "Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT · TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 · SR #3050} in the new form same-turn",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -2773,6 +2773,336 @@
      },
      "instance_key": null,
      "availability": "build leg OUT: gemini-cli build dispatch unavailable (Swarm via manager, 2026-11-01 05:49 PT) until recovery probe PASS; recheck leg status before firing build on key landing"
+    }
+   ]
+  },
+  {
+   "entry": "routed-dispatch",
+   "project": "Routed dispatch stamp carrier (DoE intake, docs/ops/DOE-SCORING-INTAKE.md)",
+   "status": "live",
+   "provider_usage": [
+    {
+     "provider": "cohere",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41364184062: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "c4ai-aya-expanse-32b",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "cohere",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "failed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41367182742: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "c4ai-aya-expanse-32b",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "sealion",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41367701010: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "Muse",
+     "via": "seat-dispatch (git-data API)",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch build-wire-provider-invoke-3411: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "Muse Spark 1.3",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "Muse",
+     "via": "seat-dispatch (git-data API)",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch build-wire-command-dispatch-3428: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "Muse Spark 1.3",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "sealion",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41367431291: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "sealion",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41367410806: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "sealion",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41367453278: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "Muse",
+     "via": "seat-dispatch (git-data API)",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch build-wire-gemini-invoke-3441: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "Muse Spark 1.3",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "baseten",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "failed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41374860979: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "NOT_ESTABLISHED",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "cohere",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "failed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41375368014: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "NOT_ESTABLISHED",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "cohere",
+     "via": "cert-unit.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-unit-41376051120: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "c4ai-aya-expanse-32b",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "github-actions",
+     "via": "cert-project.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-project-41378291157: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "postgres-16 fleet build (cert-project.yml; SQL authored in-repo)",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "github-actions",
+     "via": "cert-project.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-project-41379161305: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "github-actions",
+     "via": "cert-project.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-project-41379885682: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "github-actions",
+     "via": "cert-project.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-project-41380626948: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "github-actions",
+     "via": "cert-project.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch cert-project-41381256768: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "mistral",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41392653010: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "mistral-small-latest",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "mistral",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41392966979: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "open-mistral-nemo",
+     "phrases": "NOT_ESTABLISHED"
     }
    ]
   }

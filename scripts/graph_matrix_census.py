@@ -55,7 +55,7 @@ BR_Q = """query{ repository(owner:"%s", name:"%s"){
 PR_Q = """query{ repository(owner:"%s", name:"%s"){
  pullRequests(first:100__AFTER__, states:[OPEN, MERGED, CLOSED], orderBy:{field:CREATED_AT, direction:ASC}){
   totalCount pageInfo{hasNextPage endCursor}
-  nodes{ number state mergedAt createdAt updatedAt title body headRefName baseRefName
+  nodes{ number state isDraft mergedAt createdAt updatedAt title body headRefName baseRefName
     commits{ totalCount }
     closingIssuesReferences(first:10){ totalCount nodes{ number state } } } } } }""" % (REPO_OWNER, REPO_NAME)
 
@@ -102,23 +102,34 @@ def main():
     def no_closing(p): return p["closingIssuesReferences"]["totalCount"] == 0
     def unlinked(p, targets=None):
         return no_closing(p) and not refs_in(p["title"], p["body"], p["number"], targets)
+    pr_open_drafts = sorted((p for p in pr_open if p.get("isDraft")), key=lambda p: p["createdAt"])
+    draft_list = [{"number": p["number"], "title": p["title"], "created_at": p["createdAt"],
+                   "age_days": round((now - datetime.fromisoformat(p["createdAt"].replace("Z", "+00:00"))).total_seconds() / 86400, 1)}
+                  for p in pr_open_drafts]
     iss_open = [i for i in issues if i["state"] == "OPEN"]
     ref_map = {i["number"]: refs_in(i["title"], i["body"], i["number"], issue_nums) for i in issues}
     one_way = sorted([a, b] for a, t in ref_map.items() for b in t if a not in ref_map.get(b, set()))
     mutual = sum(1 for a, t in ref_map.items() for b in t if a in ref_map.get(b, set())) // 2
 
     out = {
-      "schema": "graph-matrix/v1", "census_at_utc": now.isoformat(),
+      "schema": "graph-matrix/v1",
+      "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] — additive extension, v1 consumers unaffected.",
+      "census_at_utc": now.isoformat(),
       "repo": f"{REPO_OWNER}/{REPO_NAME}",
       "defs": {"stale_branch": "tip committedDate < census-30d",
                "orphan_branch": "associatedPullRequests.totalCount==0",
                "strict_link": "PR closingIssuesReferences",
                "surface_issue_link": "authored #n in title/body, n is an issue",
                "any_ref_link": "authored #n in title/body, any target",
-               "one_way": "A refs B (issue->issue), B does not ref A; timeline auto-xref excluded"},
+               "one_way": "A refs B (issue->issue), B does not ref A; timeline auto-xref excluded",
+               "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"},
       "branches": {"total": br_total, "stale": stale, "orphan_no_assoc_PR": orphan,
                    "stale_and_orphan": stale_orphan},
-      "prs": {"total": pr_total, "open": len(pr_open), "merged": len(pr_merged),
+      "prs": {"total": pr_total, "open": len(pr_open),
+              "open_draft": len(pr_open_drafts),
+              "open_draft_share": round(len(pr_open_drafts) / len(pr_open), 4) if pr_open else 0,
+              "drafts": draft_list,
+              "merged": len(pr_merged),
               "closed_unmerged": len(pr_closed),
               "open_no_closing_ref": sum(1 for p in pr_open if no_closing(p)),
               "open_unlinked_issue_target": sum(1 for p in pr_open if unlinked(p, issue_nums)),

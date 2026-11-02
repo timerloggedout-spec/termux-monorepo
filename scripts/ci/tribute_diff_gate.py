@@ -10,7 +10,7 @@ STAKE_PATH = ".github/help-wanted-lane-stake.md"
 PROOF = ("### Help-Given Tribute", "- Stage: solution", "- Diff proof:", "- Validation:")
 
 def headers():
-    h = {"Accept":"application/vnd.github+json","User-Agent":"termux-monorepo-help-wanted-diff-gate","X-GitHub-Api-Version":"2022-11-28"}
+    h = {"Accept":"application/vnd.github+json","User-Agent":"termux-monorepo-tribute-diff-gate","X-GitHub-Api-Version":"2022-11-28"}
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if token: h["Authorization"] = f"Bearer {token}"
     return h

@@ -197,7 +197,7 @@ def lesson_row(thread: dict, html: str, now: datetime) -> dict:
 
 def recorded_lessons() -> set[str]:
     seen: set[str] = set()
-    for path in Path("docs/ops/generated/help-wanted-evidence").glob("*.jsonl"):
+    for path in Path("docs/ops/generated/tribute-evidence").glob("*.jsonl"):
         try:
             for line in path.read_text(encoding="utf-8").splitlines():
                 if '"followup_lesson"' in line:
@@ -445,7 +445,7 @@ def post_followup(owner: str, repo: str, number: int, body: str) -> str | None:
 
 def append_evidence(rows: list[dict]) -> None:
     day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    path = Path(f"docs/ops/generated/help-wanted-evidence/{day}.jsonl")
+    path = Path(f"docs/ops/generated/tribute-evidence/{day}.jsonl")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as f:
         for row in rows:

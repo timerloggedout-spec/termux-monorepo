@@ -46,10 +46,10 @@ jobs:
         env:
           TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          if git status --porcelain docs/ops/generated/help-wanted-evidence 2>/dev/null | grep -q .; then
+          if git status --porcelain docs/ops/generated/tribute-evidence 2>/dev/null | grep -q .; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add docs/ops/generated/help-wanted-evidence || true
+            git add docs/ops/generated/tribute-evidence || true
             git commit -m "ops(help-wanted): follow-up evidence $(date -u +%Y-%m-%dT%H:%MZ)" || true
             git push "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" HEAD:master || true
           else

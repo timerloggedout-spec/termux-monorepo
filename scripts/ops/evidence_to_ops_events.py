@@ -3,11 +3,11 @@
 Convert help-wanted / help-given receipts into OpsEvent / Gource streams via SeekLog.
 
 Sources:
-  - evidence JSONL (docs/ops/generated/help-wanted-evidence/*.jsonl)
+  - evidence JSONL (docs/ops/generated/tribute-evidence/*.jsonl)
   - status board (docs/ops/generated/tribute-status.json) tributes + foreign opens
 
 Usage:
-  python3 scripts/ops/evidence_to_ops_events.py docs/ops/generated/help-wanted-evidence/*.jsonl
+  python3 scripts/ops/evidence_to_ops_events.py docs/ops/generated/tribute-evidence/*.jsonl
   python3 scripts/ops/evidence_to_ops_events.py --status docs/ops/generated/tribute-status.json --format summary
   python3 scripts/ops/evidence_to_ops_events.py --format gource path.jsonl
   python3 scripts/ops/evidence_to_ops_events.py --format jsonl --slice 0.7:1.0 path.jsonl

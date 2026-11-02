@@ -1,9 +1,9 @@
-name: Help-Wanted telemetry regression suite
+name: Tribute telemetry regression suite
 
 on:
   pull_request:
     paths:
-      - ".github/workflows/help-wanted-telemetry-tests.yml"
+      - ".github/workflows/tribute-telemetry-tests.yml"
       - ".github/workflows/actions-run-watcher.yml"
       - ".github/workflows/agent-throughput-evidence.yml"
       - ".github/workflows/tribute-status-refresh.yml"
@@ -27,7 +27,7 @@ on:
   push:
     branches: [master]
     paths:
-      - ".github/workflows/help-wanted-telemetry-tests.yml"
+      - ".github/workflows/tribute-telemetry-tests.yml"
       - ".github/workflows/actions-run-watcher.yml"
       - ".github/workflows/agent-throughput-evidence.yml"
       - ".github/workflows/tribute-status-refresh.yml"
@@ -54,7 +54,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: help-wanted-telemetry-tests-${{ github.event.pull_request.number || github.ref }}
+  group: tribute-telemetry-tests-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:

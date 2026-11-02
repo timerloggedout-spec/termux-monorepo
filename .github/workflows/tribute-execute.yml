@@ -187,7 +187,7 @@ jobs:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
-          python3 scripts/ci/help_wanted_evidence.py \
+          python3 scripts/ci/tribute_evidence.py \
             --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
 
       - name: Evidence receipt (fail)
@@ -195,7 +195,7 @@ jobs:
         env:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python3 scripts/ci/help_wanted_evidence.py \
+          python3 scripts/ci/tribute_evidence.py \
             --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok false --run-url "$GITHUB_RUN_URL" || true
 
       - name: Upload evidence
@@ -203,7 +203,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tribute-claim-evidence
-          path: docs/ops/generated/help-wanted-evidence/
+          path: docs/ops/generated/tribute-evidence/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -238,7 +238,7 @@ jobs:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
-          python3 scripts/ci/help_wanted_evidence.py \
+          python3 scripts/ci/tribute_evidence.py \
             --kind stake_pr --issue "${{ needs.budget.outputs.issue }}" --ok true --extra '{"stage":"STAKE","gate_pass":false}' --run-url "$GITHUB_RUN_URL"
 
       - name: Evidence receipt (fail)
@@ -246,7 +246,7 @@ jobs:
         env:
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python3 scripts/ci/help_wanted_evidence.py \
+          python3 scripts/ci/tribute_evidence.py \
             --kind stake_pr --issue "${{ needs.budget.outputs.issue }}" --ok false --extra '{"stage":"STAKE","gate_pass":false}' --run-url "$GITHUB_RUN_URL" || true
 
       - name: Interthread → followup poll
@@ -269,7 +269,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: help-wanted-contribute-evidence
-          path: docs/ops/generated/help-wanted-evidence/
+          path: docs/ops/generated/tribute-evidence/
           retention-days: 30
           if-no-files-found: ignore
 

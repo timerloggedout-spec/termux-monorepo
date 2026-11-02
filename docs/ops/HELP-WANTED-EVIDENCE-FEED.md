@@ -20,9 +20,9 @@ Scouts propose; managers decide. Receipts do **not** auto-admit to MoneyBall.
 
 | Path | Role |
 |------|------|
-| `scripts/ci/help_wanted_evidence.py` | Append-only receipt writer |
-| `docs/ops/generated/help-wanted-evidence/YYYY-MM-DD.jsonl` | Daily cohort log |
-| `docs/ops/generated/help-wanted-evidence/latest.json` | Last event |
+| `scripts/ci/tribute_evidence.py` | Append-only receipt writer |
+| `docs/ops/generated/tribute-evidence/YYYY-MM-DD.jsonl` | Daily cohort log |
+| `docs/ops/generated/tribute-evidence/latest.json` | Last event |
 | `docs/ops/generated/tribute-scout-bench.json` | Scout cadence bench |
 | `docs/ops/generated/tribute-daily-budget.json` | Daily production ceiling |
 

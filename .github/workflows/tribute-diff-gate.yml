@@ -1,4 +1,4 @@
-name: help-wanted diff gate
+name: tribute diff gate
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
         type: choice
         options: [stake, solution]
   repository_dispatch:
-    types: [help-wanted-diff-gate]
+    types: [tribute-diff-gate]
 
 permissions:
   contents: read
@@ -35,13 +35,13 @@ jobs:
         run: |
           set -euo pipefail
           test -n "$PR"
-          mkdir -p docs/ops/generated/help-wanted-evidence/diff-gates
-          python3 scripts/ci/help_wanted_diff_gate.py --pr "$PR" --expect "$EXPECT" --out "docs/ops/generated/help-wanted-evidence/diff-gates/${GITHUB_RUN_ID}.json"
+          mkdir -p docs/ops/generated/tribute-evidence/diff-gates
+          python3 scripts/ci/tribute_diff_gate.py --pr "$PR" --expect "$EXPECT" --out "docs/ops/generated/tribute-evidence/diff-gates/${GITHUB_RUN_ID}.json"
       - name: Upload diff-gate receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: help-wanted-diff-gate-${{ github.run_id }}
-          path: docs/ops/generated/help-wanted-evidence/diff-gates/${{ github.run_id }}.json
+          name: tribute-diff-gate-${{ github.run_id }}
+          path: docs/ops/generated/tribute-evidence/diff-gates/${{ github.run_id }}.json
           retention-days: 30
           if-no-files-found: error

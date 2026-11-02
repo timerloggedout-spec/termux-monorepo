@@ -27,10 +27,50 @@ function phaseLog(msg) {
 }
 
 function readSession() {
-  try {
-    if (SESSION && fs.existsSync(SESSION)) return fs.readFileSync(SESSION, 'utf8');
-  } catch (e) { /* ignore */ }
+  for (const p of SESSION_CANDIDATES) {
+    try {
+      if (p && fs.existsSync(p) && fs.statSync(p).isFile()) {
+        const raw = fs.readFileSync(p, 'utf8');
+        if (raw) return raw;
+      }
+    } catch (e) { /* ignore */ }
+  }
   return '';
+}
+
+let SESSION_CANDIDATES = [];
+let CTX = null;
+function buildSessionCandidates(context) {
+  const out = [];
+  if (SESSION) out.push(SESSION);
+  try {
+    const gsParent = path.dirname(context.globalStorageUri.fsPath);
+    const crDir = path.join(gsParent, 'coderoad.coderoad');
+    const walk = (d, depth) => {
+      if (depth > 2 || !fs.existsSync(d)) return;
+      for (const name of fs.readdirSync(d)) {
+        const p = path.join(d, name);
+        try {
+          if (fs.statSync(p).isDirectory()) walk(p, depth + 1);
+          else if (/\.json$/i.test(name)) out.push(p);
+        } catch (e) { /* ignore */ }
+      }
+    };
+    walk(crDir, 0);
+  } catch (e) { /* ignore */ }
+  try {
+    const folders = vscode.workspace.workspaceFolders || [];
+    for (const f of folders) {
+      const crDir = path.join(f.uri.fsPath, '.coderoad');
+      if (fs.existsSync(crDir)) {
+        for (const name of fs.readdirSync(crDir)) {
+          const p = path.join(crDir, name);
+          if (fs.statSync(p).isFile()) out.push(p);
+        }
+      }
+    }
+  } catch (e) { /* ignore */ }
+  return out;
 }
 
 // Completion evidence in the session state: the final step marked complete.
@@ -41,11 +81,14 @@ function sessionShowsComplete(raw) {
   return /"complete"\s*:\s*true/.test(raw) && /tutorial/i.test(raw);
 }
 
-async function activate() {
+async function activate(context) {
   try { fs.mkdirSync(EV, { recursive: true }); } catch (e) { /* exists */ }
   phaseLog(`activate() entered; EV=${EV} SESSION=${SESSION || '(unset)'}`);
   if (fs.existsSync(RESULT)) { phaseLog('RESULT pre-exists; driver exits'); return; }
   try {
+    CTX = context;
+    SESSION_CANDIDATES = buildSessionCandidates(context);
+    phaseLog(`session candidates: ${SESSION_CANDIDATES.join(' | ') || '(none)'}`);
     await run();
   } catch (e) {
     phaseLog(`run() threw: ${e && e.stack ? e.stack : e}`);
@@ -79,13 +122,34 @@ async function run() {
   phaseLog(`coderoad active=${cr.isActive}`);
   await sleep(5000);
 
+  // Command surface + tutorial start: run_test on a cold session threw
+  // TypeError inside CodeRoad (B6) — start the tutorial machine first.
+  try {
+    const cmds = (await vscode.commands.getCommands(true)).filter((c) => /coderoad/i.test(c));
+    phaseLog(`coderoad commands: ${cmds.join(', ')}`);
+  } catch (e) { phaseLog(`getCommands threw: ${e}`); }
+  try {
+    await vscode.commands.executeCommand('coderoad.start');
+    phaseLog('coderoad.start returned');
+  } catch (e) { phaseLog(`coderoad.start threw: ${e}`); }
+  await sleep(8000);
+  if (CTX) {
+    SESSION_CANDIDATES = buildSessionCandidates(CTX);
+    phaseLog(`session candidates after start: ${SESSION_CANDIDATES.join(' | ') || '(none)'}`);
+  }
+  phaseLog(`session after start: len=${readSession().length}`);
+
   let attempts = 0;
   let ok = false;
   let lastRaw = '';
   while (attempts < 5 && !ok) {
     attempts++;
     try {
-      await vscode.commands.executeCommand('coderoad.run_test', { callbacks: { onSuccess: () => {} } });
+      if (attempts % 2 === 1) {
+        await vscode.commands.executeCommand('coderoad.run_test', { callbacks: { onSuccess: () => {} } });
+      } else {
+        await vscode.commands.executeCommand('coderoad.run_test');
+      }
       phaseLog(`run_test attempt ${attempts} returned`);
     } catch (e) { phaseLog(`run_test attempt ${attempts} threw: ${e}`); }
     // Observe session state for up to ~40s per attempt.

@@ -78,31 +78,48 @@
    "register": "ops/quota/rate-limit-events.json"
   },
   {
-   "id": "audit-002",
    "at": "2026-11-02T07:39:23Z",
    "auditor": "quota-specialist",
    "events_covered": 8,
-   "kind": "state-update (owner directive 2026-11-01: prioritize FIX from Audits)",
    "findings": [
     {
-     "id": "F1",
      "event_refs": [
       "wall-2026-10-28T23:41:00Z-pat"
      ],
+     "id": "F1",
      "state": "standard-landed",
      "update": "Publish preflight standard landed: scripts/quota_preflight.py (one batched /rate_limit read per principal; derived reserve = max(250, 10% of limit) must survive the batch; bulk >= 25 routes Publisher primary; PAT carrying bulk prints DEGRADED-GO, never a silent GO; failed read = NO-GO) + docs/ops/PUBLISH-PREFLIGHT.md. Remaining: promotion-pipeline adoption (owner: Convergence) - first production verdict lands with the next promotion batch."
     },
     {
-     "id": "F2",
      "event_refs": [
       "wall-2026-10-29T05:50:14Z-pat",
       "wall-2026-10-29T11:41:45Z-pat",
       "wall-2026-10-29T21:39:53Z-pat"
      ],
+     "id": "F2",
      "state": "landed - CORRECTION to audit-001",
      "update": "audit-001 stated tick-ledger PR #2473 was still open. Firsthand recheck: PR #2473 MERGED 2026-11-01T13:41:36Z (merge a6a18d71939d) - scripts/cadence_tick_ledger.py + tests + docs/ops/CADENCE-TICK-LEDGER.md on master. It merged ~21 minutes after the wiring-check snapshot the audit drew on. The named gap is CLOSED; residual = operating adoption by Cadence, not a build gap. Correction recorded per verify-before-claim."
     }
-   ]
+   ],
+   "id": "audit-002",
+   "kind": "state-update (owner directive 2026-11-01: prioritize FIX from Audits)"
+  },
+  {
+   "at": "2026-11-02T09:42:00Z",
+   "auditor": "quota-specialist",
+   "events_covered": 8,
+   "findings": [
+    {
+     "event_refs": [
+      "census-2026-11-02T06:25:00Z-search-pat"
+     ],
+     "id": "F4",
+     "state": "production-proven",
+     "update": "F4 machinery-landed \u2192 production-proven on the Registry lane's paced census tails (the run the v1 fan-out was cut from): plan printed BEFORE any call (per-key fallback; schedule estimate 4 units \u2248 10s @24/min) \u00b7 Pacer held 24/min across both runs (3+1 calls, \u2205 limit hit) \u00b7 Checkpoint resume proven \u2014 run 2 skipped the completed unit from the watermark; final checkpoint loads 17 done / 0 remaining. Evidence: PR #3710 merged 69faf04810bc (ops/moniker-census/2026-11-01-census.json + 2026-11-01-checkpoint.json); checkpoint + this register verified firsthand @master by quota-specialist 2026-11-02T09:41Z. Environmental caveat of record (\u00ac machinery defect): VM exec-channel file writes are intermittently EPERM-denied \u2227 a Checkpoint.mark attempt truncates-then-fails on that channel \u21d2 the runner marked against a work copy \u2227 the canonical watermark was materialized in identical Checkpoint format via the file-tool channel, then re-loaded for the resume proof (recorded in the checkpoint meta). Residual hazard for VM-side runners: prefer a durable write channel for watermark files until the exec channel stabilizes."
+    }
+   ],
+   "id": "audit-004",
+   "kind": "state-update (F4 production proof \u2014 consuming-lane evidence)"
   }
  ],
  "schema": "quota.rate-limit-event-audits/v1",

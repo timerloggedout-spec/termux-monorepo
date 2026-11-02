@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 385,
-    "open_prs": 172,
+    "open_prs": 171,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 84,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 170,
+      "prs": 169,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T02:03:15Z",
+  "generated_at": "2026-11-02T02:04:33Z",
   "issues_unlabelled": [
     308,
     343,
@@ -136,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "de8d84b0e0"
+    "sha": "1fa4cd7660"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b86dab4f6e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T02:02:59Z"
     },
     {
       "class": "CANDIDATE",
@@ -1786,20 +1800,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "b86dab4f6e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T02:02:59Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1926,15 +1926,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "queued"
       },
-      "head_sha": "771035b9dc",
+      "head_sha": "6420f2e48d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T02:02:48Z"
+      "updated_at": "2026-11-02T02:03:28Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2531,26 +2531,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "6a9846f726",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3442,
-      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T02:02:30Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "2fa2264840",
+      "head_sha": "70c5b6750e",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3480,
-      "title": "chore(dashboards): mvt feed refresh \u2014 M5 cert set stamped, instance_stamped 3\u21926",
-      "updated_at": "2026-11-02T02:03:13Z"
+      "number": 3442,
+      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+      "updated_at": "2026-11-02T02:04:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

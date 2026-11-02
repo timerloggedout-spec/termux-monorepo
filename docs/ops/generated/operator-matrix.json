@@ -3,9 +3,9 @@
     "open_issues": 386,
     "open_prs": 180,
     "pr_classes": {
-      "CANDIDATE": 83,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 90,
+      "CANDIDATE": 85,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T07:53:33Z",
+  "generated_at": "2026-11-02T07:56:49Z",
   "issues_unlabelled": [
     308,
     343,
@@ -138,7 +138,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "d9bec086b4"
+    "sha": "71154bfb13"
   },
   "prs": [
     {
@@ -218,26 +218,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "52cb658813",
+      "head_sha": "da745e35e2",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T07:15:44Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "35d99fd2d3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3612,
-      "title": "swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive)",
-      "updated_at": "2026-11-02T07:51:22Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T07:54:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -1021,6 +1007,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "52cb658813",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T07:15:44Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1405,6 +1405,20 @@
       "number": 3437,
       "title": "feat(dispatch): wire gemini-invoke to the stamp fan-out",
       "updated_at": "2026-11-02T01:09:20Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "35d99fd2d3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3612,
+      "title": "swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive)",
+      "updated_at": "2026-11-02T07:51:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1811,20 +1825,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "7f8625f11b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T07:50:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2552,7 +2552,7 @@
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T07:53:29Z"
+      "updated_at": "2026-11-02T07:53:40Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2605,7 +2605,7 @@
       },
       "head_sha": "5680692e94",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 3601,
       "title": "feat(quota): ALL-Providers denominator + pack-builder envelope fix (owner amendment)",
       "updated_at": "2026-11-02T07:35:26Z"
@@ -2633,38 +2633,38 @@
       },
       "head_sha": "ab3c3321d6",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3610,
       "title": "tribute normalization bundle A: dispatch-chain rename + D1 artifacts",
-      "updated_at": "2026-11-02T07:49:23Z"
+      "updated_at": "2026-11-02T07:54:51Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "9564d7f36f",
+      "head_sha": "fe58a90dee",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3617,
-      "title": "feat(tracking): backup-state/v1 \u2014 dashboard records the backups",
-      "updated_at": "2026-11-02T07:53:11Z"
+      "mergeable_state": "unknown",
+      "number": 3620,
+      "title": "feat(dashboard): Swarm Quota anchor in every shell nav (chrome)",
+      "updated_at": "2026-11-02T07:56:03Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "in_progress",
         "smoke": "queued"
       },
-      "head_sha": "066dadc29b",
+      "head_sha": "5632551efe",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3618,
-      "title": "ops(latency): standing probe instrument + VM baseline 2026-11-01 (state-gated, no cron)",
-      "updated_at": "2026-11-02T07:53:28Z"
+      "number": 3621,
+      "title": "fix(quota): repair pack series4 envelope + builder shape tolerance",
+      "updated_at": "2026-11-02T07:56:39Z"
     }
   ],
   "schema": "operator-matrix/v1",

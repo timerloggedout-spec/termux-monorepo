@@ -3,9 +3,9 @@
     "open_issues": 418,
     "open_prs": 181,
     "pr_classes": {
-      "CANDIDATE": 88,
+      "CANDIDATE": 87,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 88,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -76,7 +76,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T16:55:38Z",
+  "generated_at": "2026-11-02T17:11:05Z",
   "issues_unlabelled": [
     308,
     388,
@@ -106,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c79309d3bc"
+    "sha": "8c9924ab6c"
   },
   "prs": [
     {
@@ -953,20 +953,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c6caecda05",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T16:33:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -1947,6 +1933,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
+      },
+      "head_sha": "00ef2b827b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T17:09:52Z"
     },
     {
       "class": "NEED_EVIDENCE",

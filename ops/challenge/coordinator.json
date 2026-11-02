@@ -557,7 +557,9 @@
     "at": null,
     "confirmation_ref": null,
     "planned_at": "2026-11-04",
-    "note": "OWNER RULING 2026-10-30 (via Manager): HOLD the project submission until Nov 4 (day of due) \u2014 the staged Builder session stands down until then, not fired early. Article + demo video already LIVE = assets of record. Oct 31-Nov 3 = iterative-improvement phase (D1 seat). On Nov 4: session fires, publish, confirmation_ref recorded."
+    "note": "OWNER RULING 2026-10-30 (via Manager): HOLD the project submission until Nov 4 (day of due) \u2014 the staged Builder session stands down until then, not fired early. Article + demo video already LIVE = assets of record. Oct 31-Nov 3 = iterative-improvement phase (D1 seat). On Nov 4: session fires, publish, confirmation_ref recorded.",
+    "landing_target": "2026-11-03",
+    "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-03; wall 2026-11-04T23:59:00-08:00. NOTE: the 2026-10-30 owner ruling held the project PUBLISH to Nov 4 \u2014 read together: all content lands by Nov 3; publish = submission mechanics. Flagged to the Manager 2026-11-02 for confirmation."
    },
    "brief": {
     "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
@@ -978,7 +980,9 @@
    "submission": {
     "state": "none",
     "at": null,
-    "confirmation_ref": null
+    "confirmation_ref": null,
+    "landing_target": "2026-11-07",
+    "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-07; wall 2026-11-08T15:00:00-08:00."
    },
    "brief": {
     "evidence_pack_ref": null,
@@ -1194,7 +1198,9 @@
    "submission": {
     "state": "none",
     "at": null,
-    "confirmation_ref": null
+    "confirmation_ref": null,
+    "landing_target": "2026-11-08",
+    "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-08; wall 2026-11-09T23:59:00-08:00."
    },
    "brief": {
     "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
@@ -1491,7 +1497,9 @@
    "submission": {
     "state": "none",
     "at": null,
-    "confirmation_ref": null
+    "confirmation_ref": null,
+    "landing_target": "2026-12-02",
+    "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-12-02; wall 2026-12-04T14:00:00-08:00; Kiro credit-request form wall 2026-12-01T12:00:00-08:00 => landing target 2026-11-30."
    },
    "brief": {
     "evidence_pack_ref": "docs/proposals/briefs/kiroween-delphi-concept.brief.json",
@@ -1743,7 +1751,9 @@
    "submission": {
     "state": "none",
     "at": null,
-    "confirmation_ref": null
+    "confirmation_ref": null,
+    "landing_target": "2026-11-18",
+    "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-18; wall 2026-11-19T12:00:00-08:00; landing = Nov 18 EOD."
    },
    "brief": {
     "evidence_pack_ref": null,
@@ -1929,7 +1939,9 @@
    "submission": {
     "state": "none",
     "at": null,
-    "confirmation_ref": null
+    "confirmation_ref": null,
+    "landing_target": "2026-11-28",
+    "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-28; wall 2026-12-01T11:00:00-08:00."
    }
   }
  ],
@@ -2064,6 +2076,7 @@
   "related_seats": "ArchWiz RECON seat created by owner 2026-10-30: chat ae45b8c4-7b1d-4587-9559-1214b0ba62e5. D0 is required on desk.html (Viz lane folding; D0 record lives in this coordinator).",
   "manual_harvest_rule": "CORRECTED 2026-10-31 (entries lane): the \"owner rule restated\" relay behind PR #2682 was RETRACTED by the relaying lane (cross-plane-graph) \u2014 the owner states they never said it; the relay is VOID as an owner statement. The only firsthand owner sentence on record (scraping-tools lane, their own chat, 2026-10-30 22:22:08 PDT, verbatim): \"I said park if manually using your own browser.\" Broader formulations (\"avoid manual until automated tools\", unblock conditions) were lane paraphrase, NOT owner statements, and are OWNER-DISPUTED. Entries-lane practice stands on its own footing (not as an owner rule): gallery checks here are read-only recon reads; population work runs through repo tooling (osint_watch / field_size_scrape) as it always has.",
   "owner_go_automated_tools": "OWNER GO (2026-10-31, owner direct in the cross-plane-graph chat, relayed by that lane; verbatim): \"Yes! USE THE AUTOMATED TOOLS\" \u2014 automated tools approved for challenger OSINT population (TinyFetch/TinySearch via the scraping-tools lane; Firecrawl once #2672 unblocks). The ingestion surface design is an entries-manager + DB-lane call (scraping-tools flag); the entries lane supplies the Data Ingestion brief surface (PR #2685, leg 1). Provenance: relayed verbatim quote, not firsthand in this lane's chat.",
-  "entry_anatomy": "OWNER RULE (2026-11-01, fleet-wide): \"New AppID + Repo when build starts for any competition entry; if no suitable competition in reasonable time BUILD!\" \u2014 build start => new repo + new AppID (via the AppID lane) as standard entry anatomy; a competition gates CLAIMS only, never construction. First application: Repo-Story (repo created 2026-11-01, inside the C8 period; build #3018; AppID dispatched)."
+  "entry_anatomy": "OWNER RULE (2026-11-01, fleet-wide): \"New AppID + Repo when build starts for any competition entry; if no suitable competition in reasonable time BUILD!\" \u2014 build start => new repo + new AppID (via the AppID lane) as standard entry anatomy; a competition gates CLAIMS only, never construction. First application: Repo-Story (repo created 2026-11-01, inside the C8 period; build #3018; AppID dispatched).",
+  "landing_targets_rule": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only."
  }
 }

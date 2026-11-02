@@ -68,3 +68,9 @@ def test_density_build_carries_actor_and_origin():
     assert stats["attribution"]["origin"]["kind"] == "backfill"
     assert any(p["metadata"].get("actor") == "Grok" for p in payloads)
     assert stats["per_actor"][0]["actor"] == "Grok"
+
+def test_bold_trailers_grok_historical_form():
+    pr = {**PR, "body": "**Agent:** Grok (xAI)\n**Signed-off-by:** Grok <grok@x.ai>"}
+    r = at.extract_actor(pr)
+    assert r["actor"] == "grok" and r["actor_evidence"]["method"] == "trailer"
+    assert at.apply_registry(r["actor"]) == ("Grok", True)

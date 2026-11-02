@@ -46,3 +46,14 @@ def test_http_error_recorded_as_gate_evidence():
     assert s["ok"] == 0 and s["failed"] == 2
     assert s["first_error"]["status"] == 404
     assert "no route" in s["first_error"]["body_excerpt"]
+
+def test_state_skip_and_max_items():
+    calls = []
+    def opener(req, timeout=None):
+        calls.append(json.loads(req.data)); return Resp()
+    state = {"telemetry:s1:u1": "h1"}
+    s = rp.retain(PAYLOADS, "https://hs.example", "b", "k", opener=opener, state=dict(state))
+    assert s["skipped_unchanged"] == 1 and s["ok"] == 1
+    assert len(calls) == 1 and calls[0]["items"][0]["document_id"] == "density:density_actor:Grok"
+    s2 = rp.retain(PAYLOADS, "https://hs.example", "b", "k", opener=opener, max_items=1)
+    assert s2["ok"] == 1 and s2["attempted"] == 1

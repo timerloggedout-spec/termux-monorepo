@@ -270,6 +270,7 @@ def retain_live(payloads, receipt):
     live["skipped_reason"] = None
     summary = retain_payloads.retain(payloads, base, bank,
                                      os.environ.get("HINDSIGHT_API_KEY"))
+    summary.pop("state", None)
     live.update(summary)
 
 

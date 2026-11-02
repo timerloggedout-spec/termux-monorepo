@@ -411,6 +411,21 @@ version and compared continuously until culling retires a version.
   opened with the AppID lane (records keep one primary home —
   family rule 1; no silent migration).
 
+- **chat-intent v1** — Tier-1 rules-tier classification of owner
+  chat messages into {request · directive · aside · speculation ·
+  question}. Mechanism (cited, homed with Tier-1):
+  `scripts/classifiers/chat_intent.py` (PR #3376) — ordered stdlib
+  rules R1–R7 over message tokens: ability-form / interrogative /
+  imperative forms first, then hedge+artifact => proposed-request
+  (R4, the v1 key rule — a hedge with a concrete artifact noun is
+  a proposed request, not speculation), action+artifact =>
+  request, hedge-only => speculation, default aside; every verdict
+  carries evidence {hedges, artifacts, actions}. Evaluation:
+  labels = retrospective chat outcomes (weak supervision: built /
+  routed vs discussed-only); ESTABLISHED gated at n>=30/class ∧
+  minority>=10 ∧ p<.05 (standing gate); accuracy NOT_ESTABLISHED
+  at v1. Status: active. Comparison line: open.
+
 ## Campaign layout
 
 ```text

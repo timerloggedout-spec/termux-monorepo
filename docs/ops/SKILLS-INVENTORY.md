@@ -41,7 +41,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | find-skills | `.agents/skills/find-skills/SKILL.md` |
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | github-pages-operator | `.agents/skills/github-pages-operator/SKILL.md` |
-| help-wanted-lane | `.agents/skills/tribute-lane/SKILL.md` |
+| tribute-lane | `.agents/skills/tribute-lane/SKILL.md` |
 | **icm-cctv-ops** | `.agents/skills/icm-cctv-ops/SKILL.md` |
 | **ml-pipeline-ops** | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |

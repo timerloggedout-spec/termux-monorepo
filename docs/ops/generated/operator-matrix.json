@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 386,
-    "open_prs": 177,
+    "open_prs": 178,
     "pr_classes": {
-      "CANDIDATE": 85,
+      "CANDIDATE": 84,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 86,
+      "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 37,
-      "prs": 175,
+      "prs": 176,
       "unlabelled_numbers": [
         308,
         343,
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T08:30:10Z",
+  "generated_at": "2026-11-02T08:41:17Z",
   "issues_unlabelled": [
     308,
     343,
@@ -138,7 +138,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "368baace9e"
+    "sha": "13022a38a5"
   },
   "prs": [
     {
@@ -218,12 +218,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "49132b84ce",
+      "head_sha": "0639bd24f8",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T08:25:48Z"
+      "number": 3655,
+      "title": "swarm: one-off DeepSeek secret fingerprint probe (hash-only, #3141)",
+      "updated_at": "2026-11-02T08:39:40Z"
     },
     {
       "class": "CANDIDATE",
@@ -1407,20 +1407,6 @@
       "updated_at": "2026-11-02T01:09:20Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7f2411e63b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3642,
-      "title": "tribute bundle A residual fix: tribute_audit.py User-Agent",
-      "updated_at": "2026-11-02T08:27:52Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1825,6 +1811,20 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "ccb4ffcbe1",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T08:39:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2547,12 +2547,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e6742ae862",
+      "head_sha": "705bd0cf98",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T08:27:06Z"
+      "updated_at": "2026-11-02T08:41:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2623,6 +2623,20 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "0479f65134",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3652,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-02T08:38:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

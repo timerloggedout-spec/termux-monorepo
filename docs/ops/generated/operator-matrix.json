@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 410,
-    "open_prs": 185,
+    "open_prs": 184,
     "pr_classes": {
       "CANDIDATE": 90,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 90,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 183,
+      "prs": 182,
       "unlabelled_numbers": [
         308,
         388,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:08:10Z",
+  "generated_at": "2026-11-02T13:12:47Z",
   "issues_unlabelled": [
     308,
     388,
@@ -101,10 +101,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "queued"
     },
-    "sha": "d9af1636e2"
+    "sha": "0cfc64f48b"
   },
   "prs": [
     {
@@ -176,6 +176,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "609059431a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T13:07:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1852,20 +1866,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "609059431a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:07:47Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1992,15 +1992,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "queued"
       },
-      "head_sha": "dd06103057",
+      "head_sha": "f5441da762",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T13:07:57Z"
+      "updated_at": "2026-11-02T13:11:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2687,20 +2687,6 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "16bd01f5be",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3856,
-      "title": "Agentic Gambling Lane: book subjects = manager's authoritative 23",
-      "updated_at": "2026-11-02T13:07:55Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,6 +1,8 @@
 # ATES Improvement Frame
 
-**`ates-improvement-frame` v0** — registered 2026-11-02 under DoE
+**`ates-improvement-frame` v0.1** — registered 2026-11-02 under DoE
+(v0: PR #3844 - mechanism correction: PR #3846 - v0.1: this
+amendment).
 governance (see `docs/ops/DOE-FAMILY.md`, Method versions).
 ATES is nested under DoE (leveling of record); this frame is
 its improvement surface.
@@ -88,7 +90,7 @@ REJECTED. An entry's claim may not exceed its state.
   coverage is measured and published per window (quantity
   above). Basis: #3812 ("an explicit coverage limitation to
   quantify"). Evidence requirement: first census landed —
-  S enumerated, rates by conclusion class, parity gap stated.
+  S enumerated, rates by status class, parity gap stated.
   State at registration: PROPOSED.
 - **ATES-IMP-002 — Status-true parity accounting.**
   Statement: every coverage/parity quantity and every
@@ -99,10 +101,9 @@ REJECTED. An entry's claim may not exceed its state.
   withdrawn). Evidence requirement: a status-based census
   (IMP-001 recomputed on status) + a consumer audit listing
   every coverage consumer of record and its counting field.
-  State: PROPOSED. (The v0 owner-ruling flag on a parity
-  TARGET is dissolved by the correction: no emission filter
-  exists, so there is no full-vs-bounded emission decision
-  to take; a future proposal to ADD a filter re-opens it.)
+  State: PROPOSED. (The parity-target owner ruling is
+  RE-BASED by the correction, not dissolved — see Open owner
+  rulings (1).)
 - **ATES-IMP-003 — Receipt validation suite.** Statement:
   standing checks over the receipt store {deduplication ·
   schema conformance · source run/attempt/SHA provenance},
@@ -126,15 +127,18 @@ versions of the entry, with the superseded text retained.
 
 Receipt-coverage validation (Stewardship step 6) is judged
 against these clauses. A validation that violates a clause is
-non-conformant regardless of its conclusion.
+non-conformant regardless of its conclusion. **Seat of
+record for step 6: the Continuous Stewardship seat (takeover
+of #3812) — confirmed by main, 2026-11-02.**
 
 - **K1 — Versioned denominator.** Every coverage claim cites
   {S version · window · census source}. No S version, no
   claim.
 - **K2 — Parity by stratum.** Receipt rates are stated per
-  conclusion class. A pooled coverage figure that hides the
-  failure/cancelled gap is non-conformant (wrong-stratum
-  evidence counts as zero for the parity claim).
+  STATUS class {success · failed · skipped · error}. A pooled
+  coverage figure that hides the failed/skipped strata is
+  non-conformant (wrong-stratum evidence counts as zero for
+  the parity claim).
 - **K3 — Corroborated counts.** Counted receipts are
   corroborated by an independent leg (Actions-API census vs
   receipt-store count). Emitter self-report alone = HELD.
@@ -163,13 +167,19 @@ non-conformant regardless of its conclusion.
 
 ## Open owner rulings (flagged, not assumed)
 
-1. **Parity target** — DISSOLVED by the mechanism correction
-   (no emission filter exists; see IMP-002). Re-opens only if
-   a filter is ever proposed.
+1. **Parity target** — OWNER RULING, flagged not assumed
+   (re-based by the mechanism correction): no emission filter
+   exists, so there is no full-vs-bounded emission decision;
+   what remains the owner's is the parity STANDARD a coverage
+   claim must meet (e.g. the tolerance within which per-status
+   rates must sit before any pooled statement is allowed).
+   (An interim amendment marked this dissolved; main's word
+   2026-11-02 governs — it stays flagged and open.)
 2. **S governance** — v0 takes S descriptively from the
    receipt workflow's trigger list. Whether S should be a
    DoE-designated set (potentially wider: every workflow whose
    runs should receipt) is an owner call.
-3. **Stewardship seat of record** for step 6 — this frame
-   supplies the clauses; the validating seat's identity is
-   confirmed by main, not invented here.
+3. **Stewardship seat of record** — RESOLVED 2026-11-02:
+   the Continuous Stewardship seat (takeover of #3812),
+   confirmed by main; recorded in the conformity section
+   above. No longer open.

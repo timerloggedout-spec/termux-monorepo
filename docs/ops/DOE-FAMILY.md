@@ -692,7 +692,7 @@ version and compared continuously until culling retires a version.
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
 
-- **ates-improvement-frame v0** (registered 2026-11-02) — ATES
+- **ates-improvement-frame v0.1** (registered 2026-11-02; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home
   `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they
   lived only as work items (issue #3812) + the continuous

@@ -95,7 +95,61 @@ def test_end_to_end():
         assert open(out).read() == 'def keep():\n    return "K"\n'
 
 
+def test_lineage_check():
+    """§9 condition: compose --check verifies lineage parent hashes
+    against sibling recipe files; missing parent = fail-closed."""
+    with tempfile.TemporaryDirectory() as d:
+        repo = os.path.join(d, "repo")
+        os.makedirs(repo)
+        e = dict(os.environ, GIT_AUTHOR_NAME="T", GIT_AUTHOR_EMAIL="t@t",
+                 GIT_COMMITTER_NAME="T", GIT_COMMITTER_EMAIL="t@t")
+
+        def sh(*args):
+            subprocess.run(args, cwd=repo, env=e, check=True,
+                           capture_output=True, text=True)
+        sh("git", "init", "-b", "master", ".")
+        open(os.path.join(repo, "m.py"), "w").write(
+            'def keep():\n    return "K"\n')
+        sh("git", "add", "-A")
+        sh("git", "commit", "-m", "fixture")
+        idx = os.path.join(d, "idx.jsonl")
+        run("extract.py", "--repo-root", repo, "--repo-name",
+            "fixture/repo", "--index", idx, cwd=repo)
+        frag = os.path.join(d, "frag.jsonl")
+        run("fragments.py", "--repo-root", repo, "--repo-name",
+            "fixture/repo", "--index", idx, "--out", frag, cwd=repo)
+        rdir = os.path.join(d, "recipes")
+        os.makedirs(rdir)
+        parent = {"path": "o.py", "segments": [P("keep")]}
+        pp = os.path.join(rdir, "parent.json")
+        json.dump(parent, open(pp, "w"))
+        edit(rdir, parent,
+             [{"op": "insert", "at": "after", "segment": 0,
+               "with": L("\n")}], name="child")
+        # parent copy sits at child.json; edited recipe at child-v2.json,
+        # same directory => lineage parent hash resolvable by compose
+        ep = os.path.join(rdir, "child-v2.json")
+        run("jit.py", "--fragments", frag, "--recipe", ep, cwd=repo)
+        # NOTE: jit rewrites ep in place; lineage survives (dict passthrough)
+        out = os.path.join(d, "o.py")
+        run("compose.py", "--repo-root", repo, "--recipe", ep,
+            "--out", out, cwd=repo)
+        chk = run("compose.py", "--repo-root", repo, "--recipe", ep,
+                  "--out", out, "--check", cwd=repo)
+        assert chk["lineage"] == {"depth": 1, "verified": 1, "ok": True}, chk
+        # tamper: point lineage at a nonexistent parent hash -> exit 1
+        bad = json.load(open(ep))
+        bad["lineage"][0]["parent_recipe_sha256"] = "0" * 64
+        json.dump(bad, open(ep, "w"))
+        res = subprocess.run(
+            [sys.executable, os.path.join(CR, "compose.py"),
+             "--repo-root", repo, "--recipe", ep, "--out", out,
+             "--check"], capture_output=True, text=True)
+        assert res.returncode == 1, res.stdout
+
+
 if __name__ == "__main__":
     test_ops()
     test_end_to_end()
+    test_lineage_check()
     print("ok")

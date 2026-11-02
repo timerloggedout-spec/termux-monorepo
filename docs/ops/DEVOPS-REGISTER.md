@@ -142,6 +142,52 @@ verdict waits on nominal-interval extraction (next pass). Candidates are named,
 not smoothed: if a candidate's cron is monthly-class, the next pass clears it in
 a correction row.
 
+### Cron extraction pass 2026-11-02T13:45Z — critical subset (20/99)
+
+Nominal crons read from the workflow files at master; verdicts vs §2 census
+firings. Watch rule v2 (refines §2's rule with observed platform behavior):
+GitHub's delivered cadence on this repo ceilings at ~6 firings/day with lags up
+to ~7.6 h, so — sub-daily crons: STARVED = 0 firings in 24 h; FIRING-SPARSE =
+firing, chronically below nominal. Daily-or-slower: MISSED = no delivery by
+nominal + 12 h; STARVED = 2 consecutive missed firings.
+
+| Workflow | Cron (UTC) | Last schedule firing | Verdict |
+|---|---|---|---|
+| quota-dispatch-tree.yml | */10 * * * * | 11-02T09:56Z | FIRING-SPARSE (chronic under-delivery of record) |
+| observer-poller-scheduled.yml | */20 * * * * | 11-02T08:28Z | FIRING-SPARSE |
+| github-telemetry-snapshot.yml | 17 3 * * * | 11-02T10:56Z (+7.6 h late) | FIRING-DELAYED |
+| ml-pr-lane-classify.yml | 37 5 * * * | 11-01T11:59Z (+6.4 h late) | FIRING-DELAYED; 11-02 firing pending at census |
+| dispatch-tree-feed-collect.yml | 7 7 * * * | 11-01T14:13Z (failed) | FIRING-DELAYED; 11-02 firing pending |
+| telemetry-ingest.yml | 23 7 * * 3 (Wed) | masked by push runs | NOT_ESTABLISHED (schedule leg) |
+| repo-tracking-collect.yml | 23 7 * * * | masked by push runs | NOT_ESTABLISHED (schedule leg) |
+| surface-feeds-collect.yml | 41 6 * * 3 (Wed) | masked by push runs | NOT_ESTABLISHED (schedule leg) |
+| delphi-ledger-feed-collect.yml | 47 6 * * 2 (Tue) | masked by workflow_run runs | NOT_ESTABLISHED (schedule leg) |
+| operator-matrix-generate.yml | 41 6 * * * | masked by PR-event runs | NOT_ESTABLISHED (schedule leg); event leg ACTIVE |
+| issue-lifecycle-triage.yml | 17 7 * * 2 (Tue floor) | event leg 11-02T12:27Z | ACTIVE via events (latest failed = rate-wall class) |
+| registration-monikers.yml | 41 6 * * 2 (Tue) | next due 11-03 | PENDING |
+| challenge-countdowns-refresh.yml | 6 16 * * 1 (Mon) | due 11-02T16:06Z | PENDING-TODAY (last run = push, failed) |
+| traffic-feed-collect.yml | 23 9 * * 2 (Tue) | none in last-5-run window | **STARVED-CANDIDATE** — confirm at 11-03 firing |
+| context-relationship-reconcile.yml | 17 6 * * 1 (Mon) | 2026-10-26T13:04Z | **MISSED-FIRING CANDIDATE** — 11-02 firing undelivered at census (grace to ~14:17Z per lag precedent) |
+
+**The five §2 stale candidates, resolved:**
+- `ci-sweep.yml` — **CLEARED**: no `cron:` trigger exists in the file at master;
+  its last schedule run (2026-10-23) predates the trigger's removal. Config
+  state, not delivery failure.
+- `actions-queue-reaper.yml` — **CLEARED as starvation, reclassified CONFIG
+  GAP**: likewise no `cron:` at master — the reaping function is simply
+  unscheduled while the parked pile stands at ≥4,621. Whether a reaper should
+  be re-armed is a lane/owner decision, recorded here as an open gap.
+- `actions-run-watcher.yml` — **REMOVED from the watch**: no cron trigger
+  (enumeration false positive; the file's text mentions scheduling).
+- `agent-runtime-stall-watch.yml`, `merge-promotion-queue-v3.yml` — same:
+  no cron trigger, dispatch/workflow_run-driven, both active 11-02. Removed.
+- `traffic-feed-collect.yml` + `context-relationship-reconcile.yml` — stand as
+  candidates above; both resolve at their next nominal firings.
+
+Remaining enumeration: 79 of 99 files unextracted; extraction continues next
+pass. Event-masked schedule legs (NOT_ESTABLISHED rows) need schedule-event
+history queries beyond the last-5 window — method noted for the next pass.
+
 ## §3 Next passes (this seat)
 
 1. Nominal-cron extraction for all 99 enumerated files → per-workflow expected

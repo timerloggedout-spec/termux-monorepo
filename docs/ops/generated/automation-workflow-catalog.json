@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "872d8a72fa9eb55ef49ee99d3d0af42008cd05e2dbaf863a2dc0500460526fa4",
-  "workflow_count": 258,
+  "source_fingerprint": "f8ba3ccce9972ec2b8940de6f08447f20010cc07a5f22782d8b37ef4b124fc15",
+  "workflow_count": 259,
   "workflows": [
     {
       "action_pins": [],
@@ -1701,6 +1701,24 @@
       ],
       "triggers": [
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "compare"
+      ],
+      "name": "doe-bf1-compare",
+      "path": ".github/workflows/doe-bf1-compare.yml",
+      "schedules": [
+        "37 6 * * 1"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]

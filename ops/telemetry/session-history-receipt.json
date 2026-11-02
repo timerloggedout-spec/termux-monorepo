@@ -62,5 +62,8 @@
   "3l0": "ops/telemetry/session-history-3l0.jsonl (599 mapped, observational)",
   "foresight": "canonical feed (this file)"
  },
- "redactions_total": 2
+ "redactions_total": 2,
+ "store_origins": {
+  "session_store": "DeepCLI core.py webWrapper provenance (.deepcli/session_store originates from DeepCLI core.py webWrapper machinery; refs: deepcli/session_store.py, deepcli/deepcli/core.py, deepcli/ci_mode.py, deepcli/session_manager.py \u2014 spot-checked 2026-11-01)"
+ }
 }

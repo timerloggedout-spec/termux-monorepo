@@ -71,7 +71,7 @@ LAUNCH=(xvfb-run -a -s "-screen 0 1024x768x24" "$CODE" --no-sandbox
   --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage
   --disable-workspace-trust
   --extensions-dir "$HOME/vscode-extensions" "$WS")
-(PATH="$SHIM:$PATH" NODE_OPTIONS=--dns-result-order=ipv4first "${LAUNCH[@]}" > "$EV/code.log" 2>&1 &)
+(PATH="$SHIM:$PATH" NPM_CONFIG_LOGLEVEL=silent NODE_OPTIONS=--dns-result-order=ipv4first "${LAUNCH[@]}" > "$EV/code.log" 2>&1 &)
 echo "code launched (host)" >> "$LOG"
 
 # --- Stage the verified solution inside the pg container -----------------
@@ -136,7 +136,7 @@ for i in $(seq 1 72); do
   if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 4 ]; then
     relaunches=$((relaunches+1))
     echo "watchdog: code tree dead; relaunch #$relaunches" >> "$LOG"
-    (PATH="$SHIM:$PATH" NODE_OPTIONS=--dns-result-order=ipv4first "${LAUNCH[@]}" >> "$EV/code.log" 2>&1 &)
+    (PATH="$SHIM:$PATH" NPM_CONFIG_LOGLEVEL=silent NODE_OPTIONS=--dns-result-order=ipv4first "${LAUNCH[@]}" >> "$EV/code.log" 2>&1 &)
     sleep 20
   fi
   sleep 5

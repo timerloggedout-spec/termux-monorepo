@@ -53,3 +53,12 @@ def test_standard_doc_covers_family():
     for page in ("quota.html", "index.html", "owner-records.html",
                  "pr-lanes.html", "versioning.html", "EXCEPTION"):
         assert page in doc
+
+
+def test_index_and_owner_records_wiring():
+    idx = (APP / "index.html").read_text()
+    assert "./chartkit.js" in idx and 'id="chart-kinds"' in idx
+    assert "CK.stampState" in idx
+    orp = (APP / "owner-records.html").read_text()
+    assert "./chartkit.js" in orp and 'id="chart-classes"' in orp
+    assert "CK.bars" in orp

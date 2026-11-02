@@ -178,7 +178,17 @@ blob existed + its oid, never substitute its bytes.
 Quota: PAT core 5,000/h shared (recon window remaining 4,415) — indexer is
 workflow-side (App buckets preferred), chat-side = DESIGN/verify reads only.
 
-## 8. Open items (¬ blockers)
+## 8. Extraction plan (post-P4, manager ruling 2026-11-02)
+
+At P4 completion the engine is v1 feature-complete
+{extract ∘ fragments ∘ compose ∘ jit_resolve ∘ edit}. The whole engine
+then moves as ONE unit to a new repo `timerloggedout-spec/commit-replay`;
+this monorepo keeps the import-by-reference record (DESIGN + config +
+recipes + indexes stay as the consumer record, sibling pattern with
+repo-replay). P4 itself lands in the monorepo; extraction is the
+immediate follow-up, ∅ mid-P4 move.
+
+## 9. Open items (¬ blockers)
 
 - Engine name: sibling = RevWright; this plane's engine name = TBD w/ parent
   (working: none claimed; `Commit Replay` covers project + method). Schema

@@ -1,11 +1,66 @@
 {
- "emitted": 15,
- "feed": "ops/telemetry/session-history.jsonl",
- "feed_total": 15,
- "redactions_total": 0,
- "routes": [
-  "api-token"
+ "batches": [
+  {
+   "records": 15,
+   "source": "muse-db export, own chat 0b0272f1"
+  },
+  {
+   "origin": "backfill{chat-provenance/v1}",
+   "records": 599,
+   "source": "window PR artifacts (599 PRs, 2026-10-31T16:43Z..2026-11-01T23:50Z) via correlation wiring {PARTNERS, AGENT-MONIKERS, AGENT-IDENTITY, attribution map, quota registry, mesh matrix, token-attribution correlation}"
+  }
  ],
- "rows_in": 15,
- "skipped_existing": 0
+ "feed": "ops/telemetry/session-history.jsonl",
+ "feed_total": 614,
+ "null_actor": 52,
+ "per_actor": {
+  "3l0-plane": 3,
+  "None": 52,
+  "account-creation": 1,
+  "apk-release": 3,
+  "appid-process": 6,
+  "challenge-entries": 4,
+  "challenge-entries-manager": 21,
+  "chatgpt": 1,
+  "commit-replay": 5,
+  "connectors": 1,
+  "delphi-lane": 2,
+  "docs": 11,
+  "doe-expert": 21,
+  "doe-mgr-classifier-tuning": 4,
+  "doe-mgr-control-suites": 3,
+  "doe-mgr-live-builds": 12,
+  "doe-mgr-marketing-live": 1,
+  "doe-mgr-notation-density": 8,
+  "doe-mgr-phrases-jit": 13,
+  "github-actions": 244,
+  "google-labs-jules": 5,
+  "graph-matrix": 3,
+  "hindsight-provenance": 13,
+  "icm": 10,
+  "linguist-substrate": 2,
+  "main": 7,
+  "marketing-channel": 4,
+  "marketing-channel-d2": 2,
+  "optimizations-assurance": 70,
+  "owner": 2,
+  "providers-dispatch-fix": 19,
+  "provisioning": 1,
+  "quota-convergence": 4,
+  "quota-gaps": 3,
+  "quota-specialist": 24,
+  "registration-monikers": 6,
+  "reverse-engineering-toolkits": 4,
+  "roadmap-schedule-evidence": 1,
+  "social-connectors": 1,
+  "surface-separation": 3,
+  "tier1-classifiers-steward": 7,
+  "viz-dispatch-tree": 2,
+  "web-design": 5
+ },
+ "planes": {
+  "3l0": "ops/telemetry/session-history-3l0.jsonl (599 mapped, observational)",
+  "foresight": "canonical feed (this file)"
+ },
+ "redactions_total": 2
 }

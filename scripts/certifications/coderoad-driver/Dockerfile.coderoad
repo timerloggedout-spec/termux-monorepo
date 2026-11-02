@@ -25,14 +25,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libxkbfile1 libxrandr2 libexpat1 \
     && rm -rf /var/lib/apt/lists/*
 
-FROM libs AS vscode
+FROM libs AS fetch
+
+USER root
+RUN curl -fsSL -o /tmp/code.tgz \
+      "https://update.code.visualstudio.com/latest/linux-x64/stable" \
+    && ls -la /tmp/code.tgz
+
+FROM fetch AS extract
 
 USER root
 RUN mkdir -p /opt/vscode \
-    && curl -fsSL "https://update.code.visualstudio.com/latest/linux-x64/stable" \
-       | tar -xz -C /opt/vscode \
+    && tar -xzf /tmp/code.tgz -C /opt/vscode \
     && ln -s /opt/vscode/VSCode-linux-x64/bin/code /usr/local/bin/code \
-    && code --version
+    && ls /opt/vscode/VSCode-linux-x64/bin
+
+FROM extract AS vscode
+
+USER root
+RUN code --version
 
 FROM vscode AS full
 

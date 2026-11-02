@@ -1,0 +1,20 @@
+name: doe-bf1-compare
+on:
+  schedule: [{cron: "37 6 * * 1"}]
+  workflow_dispatch: {}
+permissions: {contents: write}
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python3 experiments/doe/bf-1-backfill-methods/scripts/backfill_compare.py
+      - name: commit records
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "swarm@timerloggedout-spec"
+          git add experiments/doe/bf-1-backfill-methods/records/
+          git diff --cached --quiet || git commit -m "doe: bf-1 backfill comparison record"
+          git push || true

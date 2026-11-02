@@ -62,6 +62,14 @@ def test_3l0_page():
         for h in tail:
             assert h["cycle_id"] not in html
     assert feed["gaps"]  # the no-rankings-table gap must be named in the feed
+    weights = feed["data"]["delphi_weights"]
+    assert weights["panel_defaults_kind"] == "cold_start_seed"
+    assert weights["observed"]["kind"] == "observed_live"
+    assert weights["observed"]["roles"]
+    assert "Delphi panel weights — cold-start seeds" in html
+    assert "Observed Delphi weights — ledger-backed" in html
+    assert "effective_weight_driver" in html
+    assert "newest_comment_url" in html
 
 
 def test_mvt_page():

@@ -378,3 +378,26 @@ def test_acquire_izzyondroid_v2_index(tmp_path):
                       "package_id": "com.example.aitools"},
                      tmp_path / "out2", fetch=f)
     assert got["status"] == "acquired" and got["via"] == "other-store->izzyondroid"
+
+
+def test_acquire_komistore_routes_upstream(tmp_path):
+    apk_bytes = build_apk(tmp_path / "src.apk").read_bytes()
+    gh = _fake_fetch({
+        "https://api.github.com/repos/o/r/releases?per_page=30": [
+            {"tag_name": "v2", "name": "rel", "published_at": "2026-10-01",
+             "assets": [{"name": "app.apk",
+                         "browser_download_url": "https://dl.example/app.apk"}]}],
+        "https://dl.example/app.apk": apk_bytes})
+    got = ax.acquire({"sources": ["komistore"], "repo": "https://github.com/o/r"},
+                     tmp_path / "out", fetch=gh)
+    assert got["status"] == "acquired"
+    assert got["via"] == "komistore->upstream-releases"
+
+
+def test_acquire_aurora_store_honest_gap(tmp_path):
+    empty = _fake_fetch({})
+    got = ax.acquire({"sources": ["aurora-store"],
+                      "package_id": "com.example.nope"},
+                     tmp_path / "out", fetch=empty)
+    assert got["status"] == "no-artifact-found"
+    assert any("aurora-store: not wired" in c for c in got["sources_checked"])

@@ -924,7 +924,18 @@ def acquire(spec: dict, out_dir: str | Path, fetch=_default_fetch) -> dict:
                 prov = fdroid_apk(spec["package_id"], fetch)
             elif source == "izzyondroid" and spec.get("package_id"):
                 prov = izzyondroid_apk(spec["package_id"], fetch)
-            elif source == "other-store" and spec.get("package_id"):
+            elif source == "komistore" and spec.get("repo"):
+                # KomiStore is a discovery layer over upstream forge
+                # releases — its bytes are the upstream assets. Route
+                # to the upstream: Codeberg -> gitea API, else GitHub.
+                repo = spec["repo"]
+                if "codeberg.org" in repo:
+                    prov = gitea_release_apk("https://codeberg.org", repo, fetch)
+                else:
+                    prov = github_release_apk(repo, fetch)
+                if prov is not None:
+                    prov["via"] = "komistore->upstream-releases"
+            elif source in ("other-store", "aurora-store") and spec.get("package_id"):
                 # Alt-store fallback chain: the F-Droid-protocol alt
                 # channels that are wired (IzzyOnDroid, then F-Droid
                 # proper). Aurora (Play-protocol) is not a URL route —
@@ -934,9 +945,14 @@ def acquire(spec: dict, out_dir: str | Path, fetch=_default_fetch) -> dict:
                             if sub == "izzyondroid"
                             else fdroid_apk(spec["package_id"], fetch))
                     if prov is not None:
-                        prov["via"] = f"other-store->{sub}"
+                        prov["via"] = f"{source}->{sub}"
                         break
-                    checked.append(f"other-store/{sub}: no APK asset published")
+                    checked.append(f"{source}/{sub}: no APK asset published")
+                if source == "aurora-store" and prov is None:
+                    checked.append(
+                        "aurora-store: not wired (Play-protocol client — "
+                        "dispenser accounts + protobuf delivery + split "
+                        "APKs; see APK-XREF-TOOLKIT acquisition routes)")
             elif source == "direct-apk" and spec.get("url"):
                 prov = {"source": "direct-apk",
                         "asset_name": spec["url"].rsplit("/", 1)[-1],

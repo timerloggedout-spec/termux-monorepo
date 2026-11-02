@@ -232,6 +232,106 @@ Collision check at issuance: `Factorial`, `Mendel` and the
 Design appear nowhere in this roster or in the registration
 registry.
 
+## Identity taxonomy and moniker versioning (proposal, 2026-11-01)
+
+The fleet's identity vocabulary has four layers. This section is
+the design of record for how they relate and what may change at
+each layer (owner framing, 2026-11-01).
+
+**Layer map**
+
+- **name** — the canonical identity: who an actor IS in the
+  record (a collaborator's name of record, a fleet app's
+  function name, a lane's seat name). Attribution keys on names
+  (the ledgers, HindSight, `REGISTRY_CANONICAL`).
+- **moniker** — the display form of a name: the paired display
+  (`Moniker · Function`), lane display monikers, and their
+  marks. One name carries one moniker family; the family may
+  hold several forms (canonical, epithet/aspect, queued alt,
+  marks).
+- **title** — an earned or held distinction ABOVE the role
+  layer: not a job but a standing an actor holds. Precedent of
+  record: `archW1z`, the OPERATOR title — currently held by the
+  Owner (human); DeepAgent.py earns it through DoE under the
+  bet of record (title transfer only; the OPERATOR automation
+  is already wired and running).
+- **role** — a class: the function slot an actor occupies
+  (OPERATOR, Manager, Orchestrator, fork-selector, builder, and
+  the extensible vocabulary above). Roles say what is done,
+  never who did it; the lane-coordination section's monikers
+  hold coordination roles (`<lane>-manager` form).
+
+Relations: name ←→ moniker (a moniker presents a name; it never
+replaces it) · title ↑ role (a title sits above roles — its
+holder may occupy roles, but the title is not one) ·
+provisioning (actor ids, slugs, bot logins, platform handles,
+sign-off strings) sits OUTSIDE the taxonomy: it is the identity
+substrate the layers describe, governed by its own records.
+
+**Mutability per layer**
+
+- name: immutable once of record. A change is an owner
+  decision and forks attribution history — never done by
+  versioning.
+- moniker: **versions live here** (scheme below). Display-only
+  at every version; a moniker form is never a username, actor
+  id, slug, handle, or sign-off string.
+- title: earned or granted only — transfer by DoE verdict or
+  owner grant; never versioned, never self-assumed, never
+  earned by usage alone short of the earning arena's verdict.
+- role: open class vocabulary; an actor's role assignment
+  changes by routing or owner order. Roles are neither earned
+  nor versioned.
+- provisioning: immutable facts — an id or handle changes only
+  as a provisioning event on its own record (e.g. a platform
+  rename window), never as a naming act.
+
+**Moniker versioning (PROPOSAL — owner decisions pending)**
+
+As a moniker's usage grows, its display form graduates:
+v1 (the canonical form of record) → v2 (a stylized respelling,
+the `m0niker` class; cf. derpWiki ≈ `d3π9W1K¡`). Design:
+
+- scope: display monikers in this file (fleet-app paired
+  monikers; lane/collaborator display monikers). Excluded: 4n0n
+  registration monikers and platform handles (provisioning
+  facts bound to accounts — a restyle breaks identity and
+  locks), actor ids/slugs (provisioning), queued alts (they
+  graduate only if ever canonical).
+- usage measure U: attributed units in the fleet's own
+  substrate, counted firsthand by the registry lane, never
+  self-reported — app identities: app-attributed artifacts
+  (PRs, issues, comments, check runs) per the attribution
+  layer; lane/collaborator monikers: signed artifacts (lane
+  signature comments, sign-off trailers, dispatch stamps
+  naming the actor). Cumulative since issuance.
+- threshold: U ≥ 100 ⇒ eligible. Graduation is permanent and
+  one-way; there is no v3 in this scheme.
+- v2 form: the family's first-ranked leet mark promoted to
+  display (pre-staged for most families: `Myr1ad`, `Scalp3l`,
+  `Chr0nicler`, `Argu5`, `J4nus`, `Cerberu5`). No mark on file
+  ⇒ derive under the Grimoire table (single substitution
+  first, ≤2 substitutions, skeleton and pronunciation
+  preserved); unicode flourish only while legible and
+  backtick-safe; uniqueness re-checked against this roster and
+  the registration registry at graduation (collision ⇒
+  next-ranked mark).
+- recording: the roster row shows the graduated paired form;
+  the family block gains a Versioning entry {v1 canonical ·
+  v2 form · U at graduation, with count source and date ·
+  graduation PR}. Ungraduated families carry no entry (v1 is
+  implicit). Process: registry-lane usage census → graduation
+  PR with the count evidence → merge makes it effective.
+- invariants: v1 stays the canonical of record forever —
+  attribution keys and `REGISTRY_CANONICAL` never change, so
+  weighting history never forks; graduation adds a form and
+  removes nothing (archive law).
+
+Status: PROPOSAL, recorded 2026-11-01; owner decisions pending —
+{adopt the scheme · threshold U ≥ 100 · per-graduation sign-off
+vs scheme-level pre-authorization for the registry lane}.
+Nothing graduates under this scheme until it is adopted.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

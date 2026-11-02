@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 411,
+    "open_issues": 410,
     "open_prs": 185,
     "pr_classes": {
       "CANDIDATE": 91,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 88,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 21,
+      "issues": 20,
       "prs": 183,
       "unlabelled_numbers": [
         308,
@@ -71,12 +71,11 @@
         3673,
         3735,
         3751,
-        3752,
-        3821
+        3752
       ]
     }
   },
-  "generated_at": "2026-11-02T12:28:51Z",
+  "generated_at": "2026-11-02T12:33:13Z",
   "issues_unlabelled": [
     308,
     388,
@@ -97,8 +96,7 @@
     3673,
     3735,
     3751,
-    3752,
-    3821
+    3752
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -106,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "70a389ad03"
+    "sha": "9a0a38a1b7"
   },
   "prs": [
     {
@@ -178,20 +176,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d94e0ffb40",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3823,
-      "title": "fix(fabric): Q1 \u2014 operator-token discovery (unprovisioned App mint root cause) + cadence off fixed cron",
-      "updated_at": "2026-11-02T12:28:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1882,15 +1866,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "success"
       },
-      "head_sha": "9276aab76e",
+      "head_sha": "db86647c26",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T12:28:37Z"
+      "updated_at": "2026-11-02T12:31:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2703,6 +2687,20 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "385c39aaad",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3826,
+      "title": "Agentic Gambling Lane: naming-collapse seed-cluster input (Registry feed)",
+      "updated_at": "2026-11-02T12:33:09Z"
     }
   ],
   "schema": "operator-matrix/v1",

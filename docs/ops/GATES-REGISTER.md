@@ -15,6 +15,7 @@ Notation: caveman micro dense · states = {CLOSED · OPEN · RESOLVED · TRANSIE
 | whatsapp WABA | payment method required | CLOSED | social 628089aa |
 | vultr (D2) | payment only post-gift-code ⇒ card-BLOCK (gate D2-NOCARD; $200 gift code first) | CLOSED-at-payment-step | D2 d8f72f94 |
 | meta app verification | card option (dual w/ SMS-WALL below) | CLOSED-via-card | social 628089aa |
+| devin API (DEVINdeepWiki indexing) | API access = paid organizations only ("API access is only available for paid organizations"); org timerloggedout-spec = Free plan, credits exhausted, ∅ card ⇒ upgrade = card | CLOSED — re-opens ⇔ paid org exists; blocks automated DEVINdeepWiki refresh (org/effort vars armed; owner manual refresh 2026-11-01 = stopgap) | provisioning a78e43e6 |
 
 ∀ "owner top-up item" framings RETIRED · ∀ "re-fire on top-up" promises VOID.
 
@@ -33,7 +34,7 @@ Notation: caveman micro dense · states = {CLOSED · OPEN · RESOLVED · TRANSIE
 | hyperbolic | google login via vault card (app.hyperbolic.ai) | OPEN | provisioning a78e43e6 |
 | unorouter | vault-card login; provider consents pending behind it | OPEN | provisioning a78e43e6 |
 | ai21 | vault card in provisioning chat | OPEN | provisioning a78e43e6 |
-| devin wiki indexing (DEVINdeepWiki) | owner Devin Settings step: service-user token (IndexOrgRepositories) → secret `DEVIN_API_KEY` + vars `DEVIN_ORG_ID` / `DEVIN_WIKI_EFFORT` | OPEN — blocks continuous automated DEVINdeepWiki refresh; owner manually refreshed repo+branches 2026-11-01 | owner / repo-org ec42d7e8 |
+| devin wiki indexing (DEVINdeepWiki) — settings leg | provisioning a78e43e6 signed in 2026-11-01 (own surfaces, Google SSO, ∅ prompt) ∧ provisioned: var `DEVIN_ORG_ID` ✓ read-back ∧ var `DEVIN_WIKI_EFFORT` ✓ (= Low, Frequency Daily; raising effort = cost↑ ⇒ untouched per report-before-spend) | RESOLVED → key leg = CARD-BLOCK (devin API row) | provisioning a78e43e6 |
 | deepwiki fabric pair | secrets `DEEPWIKI_TOKEN` (mcp.devin.ai probe) + `DEEPWIKI_LLM_API_KEY` (local deepwiki-rs generation — independent provider family, ¬ Cognition) | OPEN | provisioning |
 | xfyun | vault card never submitted | OPEN | accounts 79a004f8 |
 | tinyfish | TINYFISH_API_KEY vault capture issued; Actions secret = separate step | OPEN | scraping 97b21d62 |

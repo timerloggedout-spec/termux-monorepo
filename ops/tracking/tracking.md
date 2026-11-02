@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T11:01:56Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T11:15:32Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T11:01:56Z` (merged 150 · open 185) · lane-events(Neon) status=`ok` count=`8242` read_at=`2026-11-02T11:01:56Z`
+Sources: PR feed read_at=`2026-11-02T11:15:32Z` (merged 150 · open 184) · lane-events(Neon) status=`ok` count=`8317` read_at=`2026-11-02T11:15:32Z`
 
 Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknown=4
 
@@ -26,8 +26,8 @@ Rows: 22 · by_state: active=5 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3682 `6e718301dbd6` 2026-11-02T09:16:11Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3744 `de16a0ea1ead` 2026-11-02T10:07:56Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3713 `3d10f622c848` 2026-11-02T09:49:45Z | land/close PR #1441 — feat(triage): reconcile official quota before dispatch |
-| replay | `repo-replay` | Repo Replay | active | #3780 `d25f34070362` 2026-11-02T10:23:12Z | NOT_ESTABLISHED |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2340 `9554835acf5d` 2026-11-02T11:12:25Z | land/close PR #1441 — feat(triage): reconcile official quota before dispatch |
+| replay | `repo-replay` | Repo Replay | active | #3798 `663298b2ac30` 2026-11-02T11:08:15Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3770 `c32134670a97` 2026-11-02T10:22:46Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3768 `6428bbcf6aec` 2026-11-02T10:57:53Z | land/close PR #3795 — chore(dashboards): refresh surface feeds |
 
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 68/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 69/150 (extend ops/tracking/projects.json match rules)

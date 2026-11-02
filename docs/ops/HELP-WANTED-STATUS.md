@@ -1,15 +1,15 @@
 # Tribute — Living Status & Human Review
 
-**SSOT board (generated):** `docs/ops/generated/help-wanted-status.md`  
-**Machine:** `docs/ops/generated/help-wanted-status.json`  
+**SSOT board (generated):** `docs/ops/generated/tribute-status.md`  
+**Machine:** `docs/ops/generated/tribute-status.json`  
 **Receipts:** `docs/ops/generated/help-wanted-evidence/*.jsonl`  
 **Public dashboard:** `apps/help-wanted-dashboard/` → canonical Pages route `/tribute/`; Vercel **help-wanted-oversight** remains an implementation/deployment identifier.
 
 Regenerate:
 
 ```bash
-python3 scripts/ci/help_wanted_status.py
-cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
+python3 scripts/ci/tribute_status.py
+cp docs/ops/generated/tribute-status.json apps/help-wanted-dashboard/data/status.json
 ```
 
 ## Why this exists
@@ -30,7 +30,7 @@ This is **not** MoneyBall admission.
 
 1. Scout → claim once → upstream PR (or FALLBACK)
 2. Evidence JSONL
-3. `help_wanted_status.py` rebuilds board + dashboard snapshot
+3. `tribute_status.py` rebuilds board + dashboard snapshot
 4. Vercel serves `apps/help-wanted-dashboard`
 
 BIUDL. Agent-Identity: Grok (Administrator)

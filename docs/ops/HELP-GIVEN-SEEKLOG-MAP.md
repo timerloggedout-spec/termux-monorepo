@@ -24,13 +24,13 @@ SeekLog is the **seekable memory** over that surface — not the dashboard, not 
 | Dashboard | static `/help-wanted/` | (consumes status; no receipts) | — |
 
 ## Primary inputs
-- `docs/ops/generated/help-wanted-evidence/*.jsonl`
+- `docs/ops/generated/tribute-evidence/*.jsonl`
 - `docs/ops/generated/tribute-status.json` (`--status`)
 
 ## Example
 ```bash
 python3 scripts/ops/evidence_to_ops_events.py \
-  docs/ops/generated/help-wanted-evidence/*.jsonl \
+  docs/ops/generated/tribute-evidence/*.jsonl \
   --status docs/ops/generated/tribute-status.json \
   --format summary
 

@@ -51,11 +51,11 @@ class HelpWantedStatusOutcomeTests(unittest.TestCase):
         self.assertIn("audit.deferred_this_run_count", html)
         self.assertIn("audit.unknown_this_run_count", html)
         self.assertIn("audit.attempted_this_run_count", html)
-        workflow = Path(".github/workflows/help-wanted-telemetry-tests.yml").read_text(encoding="utf-8")
+        workflow = Path(".github/workflows/tribute-telemetry-tests.yml").read_text(encoding="utf-8")
         pull_request_paths = workflow.split("  pull_request:", 1)[1].split("  push:", 1)[0]
         push_paths = workflow.split("  push:", 1)[1].split("  workflow_dispatch:", 1)[0]
         for path in (
-            ".github/workflows/help-wanted-telemetry-tests.yml",
+            ".github/workflows/tribute-telemetry-tests.yml",
             "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md",
             "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md",
         ):

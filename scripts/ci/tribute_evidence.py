@@ -5,7 +5,7 @@ Does NOT grant MoneyBall admission. Writes evaluation-cohort evidence only.
 See docs/ops/HELP-WANTED-EVIDENCE-FEED.md.
 
 Usage:
-  python3 scripts/ci/help_wanted_evidence.py \\
+  python3 scripts/ci/tribute_evidence.py \\
     --kind claim --issue https://github.com/o/r/issues/1 --ok true \\
     --extra '{"comment_url":"..."}'
 """
@@ -29,7 +29,7 @@ def main() -> int:
     ap.add_argument("--extra", default="{}", help="JSON object of extra fields")
     ap.add_argument(
         "--out-dir",
-        default="docs/ops/generated/help-wanted-evidence",
+        default="docs/ops/generated/tribute-evidence",
         help="directory for dated JSONL",
     )
     args = ap.parse_args()

@@ -20,22 +20,22 @@ Follow-up arm emits frequent `followup_skip_idempotent` receipts against the sam
 
 ## Proposed refinement (not auto-applied)
 1. **Saturated-path soft cap** — after N identical `followup_skip_idempotent` on the same issue within 24h, emit a single rollup receipt instead of per-run lines (or mark `meta.rollup=true`).
-2. **SeekLog summary job** — periodic `evidence_to_ops_events.py --format summary` over `docs/ops/generated/help-wanted-evidence/*.jsonl` to surface `saturated_paths` in ops status.
+2. **SeekLog summary job** — periodic `evidence_to_ops_events.py --format summary` over `docs/ops/generated/tribute-evidence/*.jsonl` to surface `saturated_paths` in ops status.
 3. **Do not** change foreign follow-up correctness rules without dual-gate + evidence.
 
 ## Tooling
 ```bash
 # summary + saturation
 python3 scripts/ops/evidence_to_ops_events.py \
-  docs/ops/generated/help-wanted-evidence/*.jsonl --format summary
+  docs/ops/generated/tribute-evidence/*.jsonl --format summary
 
 # Gource custom log for optional visual check later
 python3 scripts/ops/evidence_to_ops_events.py \
-  docs/ops/generated/help-wanted-evidence/*.jsonl --format gource -o /tmp/hw.gource.log
+  docs/ops/generated/tribute-evidence/*.jsonl --format gource -o /tmp/hw.gource.log
 
 # recent slice only
 python3 scripts/ops/evidence_to_ops_events.py \
-  docs/ops/generated/help-wanted-evidence/*.jsonl --slice 0.7:1.0 --format jsonl
+  docs/ops/generated/tribute-evidence/*.jsonl --slice 0.7:1.0 --format jsonl
 ```
 
 ## Disposition

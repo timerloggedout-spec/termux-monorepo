@@ -2,7 +2,7 @@
 
 **SSOT board (generated):** `docs/ops/generated/tribute-status.md`  
 **Machine:** `docs/ops/generated/tribute-status.json`  
-**Receipts:** `docs/ops/generated/help-wanted-evidence/*.jsonl`  
+**Receipts:** `docs/ops/generated/tribute-evidence/*.jsonl`  
 **Public dashboard:** `apps/help-wanted-dashboard/` → canonical Pages route `/tribute/`; Vercel **help-wanted-oversight** remains an implementation/deployment identifier.
 
 Regenerate:

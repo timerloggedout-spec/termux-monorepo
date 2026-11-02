@@ -16,8 +16,8 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         workflow = Path(".github/workflows/tribute-status-refresh.yml").read_text(encoding="utf-8")
         self.assertIn("python3 scripts/ci/tribute_audit.py", workflow)
         self.assertIn("docs/ops/generated/tribute-audit.json", workflow)
-        tests_workflow = Path(".github/workflows/help-wanted-telemetry-tests.yml").read_text(encoding="utf-8")
-        self.assertIn('.github/workflows/help-wanted-telemetry-tests.yml', tests_workflow)
+        tests_workflow = Path(".github/workflows/tribute-telemetry-tests.yml").read_text(encoding="utf-8")
+        self.assertIn('.github/workflows/tribute-telemetry-tests.yml', tests_workflow)
         self.assertIn('docs/ops/AUTOMATED-TELEMETRY-AUDIT.md', tests_workflow.split('  push:', 1)[1])
 
     @patch("scripts.ci.tribute_audit.urllib.request.urlopen")

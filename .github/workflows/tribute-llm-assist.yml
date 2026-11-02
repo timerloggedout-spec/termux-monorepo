@@ -228,17 +228,17 @@ jobs:
             "https://api.github.com/repos/${REPO}/issues/${TARGET}/comments" \
             -d "$(jq -n --arg b "$BODY" '{body:$b}')" >/dev/null
           echo "commented ${REPO}#${TARGET} via ${PROVIDER}/${MODEL}"
-          mkdir -p docs/ops/generated/help-wanted-evidence
+          mkdir -p docs/ops/generated/tribute-evidence
           DAY=$(date -u +%Y-%m-%d)
           jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --arg issue "https://github.com/${REPO}/pull/${TARGET}" \
             --arg provider "$PROVIDER" --arg model "$MODEL" \
             '{ts:$ts,kind:"llm_assist",issue:$issue,ok:true,provider:$provider,model:$model,lane:"help-wanted",selection:"live_catalog"}' \
-            >> "docs/ops/generated/help-wanted-evidence/${DAY}.jsonl"
+            >> "docs/ops/generated/tribute-evidence/${DAY}.jsonl"
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: help-wanted-llm-evidence
-          path: docs/ops/generated/help-wanted-evidence/
+          path: docs/ops/generated/tribute-evidence/
           if-no-files-found: ignore

@@ -226,7 +226,7 @@ def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: l
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--evidence-dir", default="docs/ops/generated/help-wanted-evidence")
+    ap.add_argument("--evidence-dir", default="docs/ops/generated/tribute-evidence")
     ap.add_argument("--out-md", default="docs/ops/generated/tribute-status.md")
     ap.add_argument("--out-json", default="docs/ops/generated/tribute-status.json")
     ap.add_argument("--dashboard-json", default="apps/help-wanted-dashboard/data/status.json")

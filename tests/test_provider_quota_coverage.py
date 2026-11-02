@@ -212,3 +212,33 @@ def test_oversized_numeric_controls_fail_closed():
     huge = 10 ** 1000
     assert coverage.evaluate("p", "m", [_valid_row()], now=_now(), safety=huge)["admit"] == "deny"
     assert coverage.evaluate("p", "m", [_valid_row(limit=huge)], now=_now())["admit"] == "deny"
+
+
+def test_four_counts_each_from_its_own_source():
+    from scripts import provider_model_catalog
+    fc = coverage.build_four_counts()
+    assert fc["schema"] == "provider-four-counts/v1"
+    managers = json.loads(Path("ops/quota/provider-managers.json").read_text())
+    assert fc["wired"]["count"] == len({r["provider_family"] for r in managers["provider_families"]})
+    assert fc["callable"]["count"] == len(provider_model_catalog.ENDPOINTS)
+    prov_doc = json.loads(Path("ops/quota/provisioned-families.json").read_text())
+    # every recorded provisioned family must name the catalog's canonical secret
+    assert fc["provisioned"]["inconsistencies"] == []
+    assert fc["provisioned"]["count"] == len(prov_doc["families"])
+    assert set(fc["provisioned"]["families"]) | set(fc["provisioned"]["unprovisioned_catalog_families"]) == set(provider_model_catalog.SECRETS)
+    # executed leg re-derived from the pinned snapshot it cites
+    snap = json.loads(Path(fc["executed"]["source_snapshot"]).read_text())
+    rows = snap["providers"]
+    assert fc["executed"]["rows"] == len(rows)
+    assert fc["executed"]["credential_present"] == sum(bool(r["credential_present"]) for r in rows)
+    assert fc["executed"]["catalog_ok"] == sum(bool(r["catalog_ok"]) for r in rows)
+    assert fc["executed"]["inference_ok"] == sum(bool(r["inference_ok"]) for r in rows)
+    assert fc["executed"]["observed_at"] == snap["observed_at"]
+
+
+def test_four_counts_render_and_coverage_embedding():
+    result = coverage.build_coverage()
+    assert result["four_counts"]["schema"] == "provider-four-counts/v1"
+    md = coverage.render_four_counts_md(result["four_counts"])
+    assert "| wired |" in md and "| callable |" in md and "| provisioned |" in md
+    assert "never blended" in md

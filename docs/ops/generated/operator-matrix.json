@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 171,
+    "open_prs": 170,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 6,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 169,
+      "prs": 168,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:24:03Z",
+  "generated_at": "2026-11-02T00:26:57Z",
   "issues_unlabelled": [
     308,
     343,
@@ -136,7 +136,7 @@
       "hygiene": "in_progress",
       "smoke": "success"
     },
-    "sha": "0c00ab7c62"
+    "sha": "c9a460cc01"
   },
   "prs": [
     {
@@ -208,20 +208,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "afc514caf4",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:22:38Z"
     },
     {
       "class": "CANDIDATE",
@@ -1800,6 +1786,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "7b18b1a271",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T00:26:42Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2405,12 +2405,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9705e4e6ca",
+      "head_sha": "800e982586",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2914,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T00:21:37Z"
+      "updated_at": "2026-11-02T00:25:35Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2523,20 +2523,6 @@
       "number": 3342,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-01T23:44:38Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "d45e24834e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3392,
-      "title": "docs(dispatch): MoneyBall backfill hooks (supersedes convention)",
-      "updated_at": "2026-11-02T00:24:01Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,0 +1,20 @@
+# CodeRoad completion image: freeCodeCamp rdb-alpha environment plus a
+# headless VS Code carrying the CodeRoad extension and the fleet driver.
+# Build order (workflow): build rdb-alpha from its own Dockerfile as
+# rdb-alpha:local first, then build this file.
+FROM rdb-alpha:local
+
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      xvfb libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils \
+      libatspi2.0-0 libuuid1 libsecret-1-0 libasound2 fonts-liberation \
+    && rm -rf /var/lib/apt/lists/*
+RUN curl -fsSL -o /tmp/code.deb \
+      "https://update.code.visualstudio.com/latest/linux-deb-x64/stable" \
+    && apt-get update && apt-get install -y /tmp/code.deb \
+    && rm -f /tmp/code.deb && rm -rf /var/lib/apt/lists/*
+
+USER root
+RUN mkdir -p /opt/vscode-extensions \
+    && code --extensions-dir /opt/vscode-extensions --install-extension coderoad.coderoad
+COPY driver /opt/vscode-extensions/coderoad-driver

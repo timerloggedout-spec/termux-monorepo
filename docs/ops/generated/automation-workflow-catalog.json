@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c4be2e892791f5655a07564af739ca714e9be9733157bb3bc0ef250b6a756412",
-  "workflow_count": 277,
+  "source_fingerprint": "60d6829556212cf19ac3809cf080f82a68313281cb7446cccc491476b5bcfaf4",
+  "workflow_count": 276,
   "workflows": [
     {
       "action_pins": [],
@@ -3206,25 +3206,6 @@
       "path": ".github/workflows/ops-lane-matrix-sweep.yml",
       "schedules": [],
       "triggers": [
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
-      "concurrency": "group: operator-matrix-project-sync-${{ github.repository }}-${{ github.event.issue.number || github.event.pull_request.number || 'dispatch' }} cancel-in-progress: true",
-      "domain": "agentic-development",
-      "jobs": [
-        "add-current",
-        "seed-hub"
-      ],
-      "name": "Operator Matrix Project Sync",
-      "path": ".github/workflows/ops-operator-matrix-project-sync.yml",
-      "schedules": [],
-      "triggers": [
-        "issues",
-        "pull_request",
-        "pull_request_target",
         "workflow_dispatch"
       ]
     },

@@ -1,0 +1,41 @@
+{
+  "baseline_sha": "c377b7aeb9bd5a8b460d1d4929bd377e8beeebe9",
+  "candidate_sha": "c377b7aeb9bd5a8b460d1d4929bd377e8beeebe9",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41367431291"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "certifications-unit"
+  },
+  "observed_at": "2026-11-02T01:05:16Z",
+  "origin": "live",
+  "outcome": "cert unit verdict ok:true (run 41367431291); stamp re-emitted by routing after the wired self-emit was lost to a fan-out push race (fixed PR #3443)",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "sealion",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+    "provider": "sealion"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

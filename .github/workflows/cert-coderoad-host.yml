@@ -1,0 +1,268 @@
+name: cert-coderoad-host
+
+# Certifications CodeRoad completion leg — ROUTE B (host-side VS Code).
+# Route A (VS Code inside the focal rdb-alpha container) closed
+# 2026-11-02 after 17 pilots: the workbench never reaches extension-host
+# start in-container (~3-min GPU-spinning lifetime on 1.97.2; ~25 s on
+# 1.144.0). Here VS Code runs on the runner host (modern userland; the
+# @vscode/test-electron CI pattern) while PostgreSQL stays in the
+# prebuilt coderoad image (container "pg", 5432 published, workspace
+# mounted at /workspace/project for path parity). The course checkout
+# ref is the tutorial-pinned branch (tutorial.json config.repo.branch).
+# The extension fires tutorial_complete to the FCC webhook with the
+# CODEROAD_WEBHOOK_TOKEN header (repo secret, sealed by Provisioning;
+# the value never appears in logs or files).
+
+on:
+  workflow_dispatch:
+    inputs:
+      unit:
+        description: "Unit number, e.g. 025"
+        required: true
+        type: string
+      course_repo:
+        description: "Course repo name under freeCodeCamp/, e.g. learn-celestial-bodies-database"
+        required: true
+        type: string
+      solution_repo:
+        description: "Solution repo name under timerloggedout-spec/, e.g. fcc-celestial-bodies-database"
+        required: true
+        type: string
+      stage_cmd:
+        description: "Command staging the solution (executed inside the pg container)"
+        required: true
+        type: string
+      course_ref:
+        description: "Course repo ref pinned by tutorial.json (config.repo.branch)"
+        required: false
+        default: main
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+  packages: read
+
+concurrency:
+  group: cert-coderoad-host
+  cancel-in-progress: false
+
+jobs:
+  coderoad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+
+      - name: Check out monorepo (driver + orchestration sources)
+        uses: actions/checkout@v4
+        with:
+          path: mono
+
+      - name: Check out course repo (tutorial-pinned ref)
+        uses: actions/checkout@v4
+        with:
+          repository: freeCodeCamp/${{ inputs.course_repo }}
+          ref: ${{ inputs.course_ref }}
+          path: project
+
+      - name: Check out verified solution repo
+        uses: actions/checkout@v4
+        with:
+          repository: timerloggedout-spec/${{ inputs.solution_repo }}
+          token: ${{ steps.app-token.outputs.token }}
+          path: solution
+
+      - name: Routing stamp — dispatch (fail-soft)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          STAMP=$(python3 - <<'PYEOF'
+          import json, os
+          print(json.dumps({
+              "dispatch_id": f"coderoad-{os.environ['UNIT']}-{os.environ['RUN_ID']}",
+              "origin": "live",
+              "task_class": "certifications-coderoad",
+              "provider": "github-actions",
+              "model": "coderoad-vscode (host runner)",
+              "run_id": os.environ["RUN_ID"],
+              "repo": "timerloggedout-spec/termux-monorepo",
+          }))
+          PYEOF
+          )
+          gh workflow run dispatch-stamp-fanout.yml \
+            --repo timerloggedout-spec/termux-monorepo \
+            -f stamp="$STAMP" -f phase=dispatch
+
+      - name: Pull prebuilt CodeRoad image (postgres side)
+        timeout-minutes: 15
+        run: |
+          mkdir -p evidence && chmod 777 evidence
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker pull ghcr.io/timerloggedout-spec/coderoad-rdb:latest 2>&1 | tee evidence/pull.log
+          docker tag ghcr.io/timerloggedout-spec/coderoad-rdb:latest coderoad:local
+          docker inspect --format '{{index .RepoDigests 0}}' coderoad:local > evidence/image-digest.txt
+          cat evidence/image-digest.txt
+
+      - name: Install VS Code + extensions on host
+        timeout-minutes: 20
+        run: |
+          curl -fsSL -o /tmp/code.tgz \
+            "https://update.code.visualstudio.com/1.144.0/linux-x64/stable"
+          mkdir -p "$HOME/vscode" && tar -xzf /tmp/code.tgz -C "$HOME/vscode"
+          CODE="$HOME/vscode/VSCode-linux-x64/bin/code"
+          "$CODE" --version | head -2
+          curl --compressed -fsSL -o /tmp/coderoad.vsix \
+            "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/coderoad/vsextensions/coderoad/latest/vspackage"
+          mkdir -p "$HOME/vscode-extensions"
+          "$CODE" --no-sandbox --user-data-dir "$HOME/vsud-install" \
+            --extensions-dir "$HOME/vscode-extensions" \
+            --install-extension /tmp/coderoad.vsix
+          cp -r mono/scripts/certifications/coderoad-driver/driver \
+            "$HOME/vscode-extensions/coderoad-driver"
+          ls "$HOME/vscode-extensions"
+
+      - name: Run CodeRoad completion (host VS Code + container postgres)
+        id: run
+        env:
+          STAGE_CMD: ${{ inputs.stage_cmd }}
+          COURSE_REPO: ${{ inputs.course_repo }}
+          COURSE_REF: ${{ inputs.course_ref }}
+          CODEROAD_WEBHOOK_TOKEN: ${{ secrets.CODEROAD_WEBHOOK_TOKEN }}
+          CODEROAD_TUTORIAL_URL: https://raw.githubusercontent.com/freeCodeCamp/${{ inputs.course_repo }}/${{ inputs.course_ref }}/tutorial.json
+          CODEROAD_DISABLE_RUN_ON_SAVE: "true"
+          CODEROAD_DRIVER_EVIDENCE: ${{ github.workspace }}/evidence
+        run: |
+          if [ -n "$CODEROAD_WEBHOOK_TOKEN" ]; then
+            echo "TOKEN_PRESENT=true" >> "$GITHUB_ENV"
+          else
+            echo "TOKEN_PRESENT=false" >> "$GITHUB_ENV"
+          fi
+          bash mono/scripts/certifications/coderoad-driver/host_orchestrate.sh \
+            | tee evidence/orchestrate-stdout.txt
+          docker logs pg > evidence/container.log 2>&1 || true
+          if jq -e '.ok == true' evidence/RESULT.json > /dev/null 2>&1; then
+            echo "CR_OK=true" >> "$GITHUB_ENV"
+          else
+            echo "CR_OK=false" >> "$GITHUB_ENV"
+          fi
+          echo "--- evidence ---"; ls -la evidence || true
+          cat evidence/RESULT.json 2>/dev/null || echo "no RESULT.json"
+
+      - name: Upload evidence artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coderoad-host-${{ inputs.unit }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+
+      - name: Post build diagnostics to issue 506 (on failure)
+        if: ${{ always() && env.CR_OK == 'false' }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+          def tail(p, n=45):
+              try:
+                  lines = open(p, errors="replace").read().splitlines()
+                  return "\n".join(lines[-n:]) or "(empty)"
+              except Exception:
+                  return "(no log)"
+          body = (
+              f"CODEROAD_HOST_DIAG unit {os.environ['UNIT']} run {os.environ['RUN_ID']} — route B failure tails\n\n"
+              f"--- orchestrate.log ---\n{tail('evidence/orchestrate.log')}\n\n"
+              f"--- driver.log ---\n{tail('evidence/driver.log', 60)}\n\n"
+              f"--- RESULT.json ---\n{tail('evidence/RESULT.json', 60)}\n\n"
+              f"--- container.log ---\n{tail('evidence/container.log', 60)}\n\n"
+              f"--- code.log ---\n{tail('evidence/code.log', 40)}\n\n"
+              f"--- session files ---\n{tail('evidence/session-files.txt', 90)}\n\n"
+              f"--- stage.log ---\n{tail('evidence/stage.log', 30)}\n\n"
+              f"--- tap-direct.txt ---\n{tail('evidence/tap-direct.txt', 40)}\n\n"
+              f"--- code-fg.txt ---\n{tail('evidence/code-fg.txt', 50)}"
+          )
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body[:60000]}).encode(),
+              headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("diagnostics posted")
+          PYEOF
+
+      - name: Post verdict to issue 506
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+          ok = os.environ.get("CR_OK") == "true"
+          verdict = {
+              "unit": f"{os.environ['UNIT']}-coderoad",
+              "ok": ok,
+              "steps": 1,
+              "failures": 0 if ok else 1,
+              "model": "coderoad (Actions host VS Code; container postgres; headless driver)",
+              "missing": {},
+          }
+          body = (
+              "UNIT_VERDICT `" + json.dumps(verdict) + "`\n"
+              f"run: {os.environ['RUN_ID']} · CodeRoad completion leg (route B) "
+              f"· token_present={os.environ.get('TOKEN_PRESENT')} "
+              f"· tutorial_complete webhook fires from the extension on completion; "
+              f"authoritative confirmation = Platforms on-account Step-1 check"
+          )
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body}).encode(),
+              headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("verdict posted:", verdict)
+          PYEOF
+
+      - name: Routing stamp — outcome (fail-soft)
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          STAMP=$(python3 - <<'PYEOF'
+          import json, os
+          print(json.dumps({
+              "dispatch_id": f"coderoad-{os.environ['UNIT']}-{os.environ['RUN_ID']}",
+              "origin": "live",
+              "outcome": "completed" if os.environ.get("CR_OK") == "true" else "failed",
+          }))
+          PYEOF
+          )
+          gh workflow run dispatch-stamp-fanout.yml \
+            --repo timerloggedout-spec/termux-monorepo \
+            -f stamp="$STAMP" -f phase=outcome
+
+      - name: Gate on CodeRoad result
+        if: env.CR_OK != 'true'
+        run: |
+          echo "CodeRoad completion did not report success; see evidence artifacts."
+          exit 1

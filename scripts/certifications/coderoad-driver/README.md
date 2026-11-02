@@ -8,13 +8,13 @@ Mechanism (pinned from `coderoad/coderoad-vscode` source):
 
 - The image is freeCodeCamp's `rdb-alpha` Dockerfile (Ubuntu 20.04,
   PostgreSQL 12, Node 18) plus VS Code, Xvfb, the `coderoad.coderoad`
-  extension, and the fleet driver extension (`driver/`). Two recorded
-  deviations from the upstream recipe: focal's apt sources are
-  rewritten to `old-releases.ubuntu.com` (20.04 is EOL; the original
-  archives are gone), and the `unminimize` step is dropped (it only
-  restores docs/man pages and stalls non-TTY builds). The CodeRoad
-  extension itself is installed from a pinned marketplace VSIX
-  download rather than a gallery lookup.
+  extension, and the fleet driver extension (`driver/`). One recorded
+  deviation from the upstream recipe: the `unminimize` step is dropped
+  (it only restores docs/man pages and stalls non-TTY builds). Apt
+  sources stay upstream — `archive.ubuntu.com` still serves focal
+  (verified 2026-11-02); `old-releases.ubuntu.com` 404s it. The
+  CodeRoad extension itself is installed from a pinned marketplace
+  VSIX download rather than a gallery lookup.
 - VS Code launches on the course checkout with
   `CODEROAD_TUTORIAL_URL` set: the extension fetches `tutorial.json`,
   loads it into its state machine, runs the course setup hooks, and

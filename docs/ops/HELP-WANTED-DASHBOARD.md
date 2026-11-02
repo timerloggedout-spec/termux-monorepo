@@ -28,7 +28,7 @@ https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app
 | 3 | https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html | HTML fallback |
 | 4 | https://timerloggedout-spec.github.io/termux-monorepo/ | Thin project hub, not dashboard twin |
 
-Status JSON: https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json
+Status JSON: https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/tribute-status.json
 
 ## Operator deploy
 

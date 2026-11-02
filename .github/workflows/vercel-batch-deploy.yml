@@ -40,8 +40,8 @@ jobs:
       RESERVE: "5"
       COOLDOWN_H: "6"
       PLAN: |
-        help-wanted-oversight|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/help-wanted-status.json,docs/ops/generated/lane-matrix-status.json
-        help-wanted-dash|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/help-wanted-status.json,docs/ops/generated/lane-matrix-status.json
+        help-wanted-oversight|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/tribute-status.json,docs/ops/generated/lane-matrix-status.json
+        help-wanted-dash|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/tribute-status.json,docs/ops/generated/lane-matrix-status.json
         mcp-hub|mcp-hub|mcp-hub/
         termux-monorepo|demo-portal/public|demo-portal/public/
     steps:
@@ -127,7 +127,7 @@ jobs:
             DEST="$W/${ROOT:-.}"; mkdir -p "$DEST"; cp -a "$GITHUB_WORKSPACE/$SRC/." "$DEST/"
             if [ "$SRC" = "apps/help-wanted-dashboard" ]; then
               mkdir -p "$DEST/data"; G="$GITHUB_WORKSPACE/docs/ops/generated"
-              [ -f "$G/help-wanted-status.json" ] && cp "$G/help-wanted-status.json" "$DEST/data/status.json"
+              [ -f "$G/tribute-status.json" ] && cp "$G/tribute-status.json" "$DEST/data/status.json"
               [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json"
               printf '{"source_sha":"%s","short_sha":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
               # Stamp the version manifest into the staged copy (Pages parity:

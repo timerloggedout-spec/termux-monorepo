@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = {
     "mcp-hub/vercel.json": ("mcp-hub", "mcp-hub/api/mcp/index.ts"),
     "apps/help-wanted-dashboard/vercel.json": (
-        "help-wanted-dashboard", "scripts/ci/help_wanted_status.py"
+        "help-wanted-dashboard", "scripts/ci/tribute_status.py"
     ),
     "demo-portal/public/vercel.json": ("demo-portal", "demo-portal/public/index.html"),
 }

@@ -1,4 +1,4 @@
-name: help-wanted-followup
+name: tribute-followup
 
 # Dynamic follow-up on FOREIGN open PRs we authored:
 #   - CHANGES_REQUESTED after last marker
@@ -11,12 +11,12 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types:
-      - help-wanted-followup
-      - help-wanted-foreign
-      - help-wanted-changes-requested
+      - tribute-followup
+      - tribute-foreign
+      - tribute-changes-requested
 
 concurrency:
-  group: help-wanted-followup
+  group: tribute-followup
   cancel-in-progress: false
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HELP_WANTED_REENGAGE_HOURS: "18"
           HELP_WANTED_STALE_IDLE_HOURS: "72"
-        run: python3 scripts/ci/help_wanted_followup.py
+        run: python3 scripts/ci/tribute_followup.py
 
       - name: Commit evidence if any
         env:

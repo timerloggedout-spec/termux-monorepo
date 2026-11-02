@@ -9,7 +9,7 @@ on:
     paths:
       - "apps/help-wanted-dashboard/**"
       - "apps/project-pages-hub/**"
-      - "docs/ops/generated/help-wanted-status.json"
+      - "docs/ops/generated/tribute-status.json"
       - "docs/ops/generated/lane-matrix-status.json"
       - ".github/workflows/help-wanted-dashboard-deploy.yml"
       - ".github/workflows/help-wanted-dashboard-preview.yml"
@@ -146,7 +146,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          python3 scripts/ci/help_wanted_status.py
+          python3 scripts/ci/tribute_status.py
           python3 scripts/ci/verify_help_wanted_dashboard.py
       - name: Prepare Tribute subtree
         run: |
@@ -161,8 +161,8 @@ jobs:
             --source-ref "${GITHUB_REF_NAME}" \
             --source-sha "${GITHUB_SHA}" \
             --version-prefix "1.0.1"
-          if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            cp docs/ops/generated/help-wanted-status.json _tribute/data/status.json
+          if [ -f docs/ops/generated/tribute-status.json ]; then
+            cp docs/ops/generated/tribute-status.json _tribute/data/status.json
           fi
       - name: Prepare combined user-site artifact
         run: |
@@ -208,13 +208,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          python3 scripts/ci/help_wanted_status.py
+          python3 scripts/ci/tribute_status.py
           python3 scripts/ci/verify_help_wanted_dashboard.py
       - name: Sync status snapshot
         run: |
           mkdir -p apps/help-wanted-dashboard/data
-          if [ -f docs/ops/generated/help-wanted-status.json ]; then
-            cp docs/ops/generated/help-wanted-status.json apps/help-wanted-dashboard/data/status.json
+          if [ -f docs/ops/generated/tribute-status.json ]; then
+            cp docs/ops/generated/tribute-status.json apps/help-wanted-dashboard/data/status.json
           fi
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json apps/help-wanted-dashboard/data/lane-matrix-status.json

@@ -4,11 +4,11 @@ Convert help-wanted / help-given receipts into OpsEvent / Gource streams via See
 
 Sources:
   - evidence JSONL (docs/ops/generated/help-wanted-evidence/*.jsonl)
-  - status board (docs/ops/generated/help-wanted-status.json) tributes + foreign opens
+  - status board (docs/ops/generated/tribute-status.json) tributes + foreign opens
 
 Usage:
   python3 scripts/ops/evidence_to_ops_events.py docs/ops/generated/help-wanted-evidence/*.jsonl
-  python3 scripts/ops/evidence_to_ops_events.py --status docs/ops/generated/help-wanted-status.json --format summary
+  python3 scripts/ops/evidence_to_ops_events.py --status docs/ops/generated/tribute-status.json --format summary
   python3 scripts/ops/evidence_to_ops_events.py --format gource path.jsonl
   python3 scripts/ops/evidence_to_ops_events.py --format jsonl --slice 0.7:1.0 path.jsonl
 
@@ -207,7 +207,7 @@ def summarize(log: SeekLog) -> Dict[str, Any]:
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Help-given evidence → OpsEvent / Gource SeekLog")
     ap.add_argument("paths", nargs="*", type=Path, help="JSONL/JSON receipt files")
-    ap.add_argument("--status", type=Path, default=None, help="help-wanted-status.json")
+    ap.add_argument("--status", type=Path, default=None, help="tribute-status.json")
     ap.add_argument("--format", choices=("gource", "jsonl", "summary"), default="summary")
     ap.add_argument("--slice", default=None, help="Percent slice start:stop e.g. 0.7:1.0")
     ap.add_argument("-o", "--output", type=Path, default=None)

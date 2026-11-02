@@ -1,4 +1,4 @@
-name: help-wanted-audit-staleness
+name: tribute-audit-staleness
 
 # Watchdog for the tribute diagnostics refresh (gap G-02).
 # The refresh cadence is owned by quota-dispatch-tree.yml, whose */10
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: help-wanted-audit-staleness
+  group: tribute-audit-staleness
   cancel-in-progress: false
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
           python3 - <<'PY'
           import json, os
           from datetime import datetime, timezone
-          d = json.load(open('docs/ops/generated/help-wanted-tribute-audit.json'))
+          d = json.load(open('docs/ops/generated/tribute-audit.json'))
           gen = datetime.fromisoformat(d['generated_at'])
           if gen.tzinfo is None:
               gen = gen.replace(tzinfo=timezone.utc)
@@ -57,7 +57,7 @@ jobs:
           curl -sS -X POST \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/help-wanted-status-refresh.yml/dispatches" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/tribute-status-refresh.yml/dispatches" \
             -d '{"ref":"master"}'
           echo "recovery refresh dispatched"
 

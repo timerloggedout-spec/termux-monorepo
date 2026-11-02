@@ -21,7 +21,7 @@ embedded credentials, actions navigate to the owning admin surface.
 
 ## Local
 
-Open `index.html` or serve the folder. Data: `data/status.json` (synced from `docs/ops/generated/help-wanted-status.json` on deploy).
+Open `index.html` or serve the folder. Data: `data/status.json` (synced from `docs/ops/generated/tribute-status.json` on deploy).
 
 
 ## Control-surface contract (v2)

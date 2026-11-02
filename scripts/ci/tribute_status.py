@@ -227,8 +227,8 @@ def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: l
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--evidence-dir", default="docs/ops/generated/help-wanted-evidence")
-    ap.add_argument("--out-md", default="docs/ops/generated/help-wanted-status.md")
-    ap.add_argument("--out-json", default="docs/ops/generated/help-wanted-status.json")
+    ap.add_argument("--out-md", default="docs/ops/generated/tribute-status.md")
+    ap.add_argument("--out-json", default="docs/ops/generated/tribute-status.json")
     ap.add_argument("--dashboard-json", default="apps/help-wanted-dashboard/data/status.json")
     args = ap.parse_args()
 
@@ -281,12 +281,12 @@ def main() -> int:
             "tribute": "each upstream PR is a contributor tribute to the foreign maintainer",
         },
         "live": {
-            "dashboard": "https://timerloggedout-spec.github.io/help-wanted/",
+            "dashboard": "https://timerloggedout-spec.github.io/tribute/",
             "githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
-            "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/help-wanted-status.json",
+            "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/tribute-status.json",
             "tribute_doc": "docs/ops/HELP-WANTED-TRIBUTE.md",
         },
-        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":False,"history_coverage":"lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill","history_count":len(history),"lane_paths":["apps/help-wanted-dashboard/","docs/ops/HELP-WANTED-*",".agents/skills/help-wanted-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/help-wanted/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
+        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":False,"history_coverage":"lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill","history_count":len(history),"lane_paths":["apps/help-wanted-dashboard/","docs/ops/HELP-WANTED-*",".agents/skills/help-wanted-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/tribute/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
         "evolution": history,
         "pipeline": [
             "scout",

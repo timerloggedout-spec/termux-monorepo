@@ -25,9 +25,9 @@ case "$PROJECT" in
   help-wanted-dashboard)
     PATHS=(
       ':(top)apps/help-wanted-dashboard/'
-      ':(top)docs/ops/generated/help-wanted-status.json'
+      ':(top)docs/ops/generated/tribute-status.json'
       ':(top)docs/ops/generated/lane-matrix-status.json'
-      ':(top)scripts/ci/help_wanted_status.py'
+      ':(top)scripts/ci/tribute_status.py'
       ':(top)scripts/ci/verify_help_wanted_dashboard.py'
     )
     ;;

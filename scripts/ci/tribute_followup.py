@@ -92,7 +92,7 @@ def api(method: str, path: str, body: dict | None = None):
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {TOKEN}",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "termux-help-wanted-followup",
+            "User-Agent": "termux-tribute-followup",
             "Content-Type": "application/json",
         },
     )
@@ -116,7 +116,7 @@ def parse_ts(s: str | None) -> datetime | None:
 
 
 def _search_foreign_prs(qualifier: str) -> list[dict]:
-    """Full census for the qualifier, paginated (see help_wanted_status).
+    """Full census for the qualifier, paginated (see tribute_status).
 
     A single page is a sliding window: closes beyond it would silently
     miss their lesson routing. On an API failure keep the pages
@@ -184,7 +184,7 @@ def lesson_row(thread: dict, html: str, now: datetime) -> dict:
         "kind": "followup_lesson",
         "issue": html,
         "ok": True,
-        "lane": "help-wanted-followup",
+        "lane": "tribute-followup",
         "foreign": True,
         "action": "lesson",
         "primary": r.get("primary"),
@@ -548,7 +548,7 @@ def main() -> int:
                     "kind": "followup_skip_cooldown",
                     "issue": html,
                     "ok": True,
-                    "lane": "help-wanted-followup",
+                    "lane": "tribute-followup",
                     "foreign": True,
                     "action": "skip",
                 }
@@ -565,7 +565,7 @@ def main() -> int:
                         "kind": "followup_skip_system1",
                         "issue": html,
                         "ok": True,
-                        "lane": "help-wanted-followup",
+                        "lane": "tribute-followup",
                         "foreign": True,
                         "action": action,
                         "hydrated": thread is not None,
@@ -612,7 +612,7 @@ def main() -> int:
             body += f"### Foreign-repo recon\n\n{recon}\n\n"
         body += (
             f"{next_line}\n\n"
-            f"— `timerloggedout-spec/termux-monorepo` help-wanted-followup "
+            f"— `timerloggedout-spec/termux-monorepo` tribute-followup "
             f"(dynamic re-engage + CONTRIBUTING recon)\n"
         )
 
@@ -626,7 +626,7 @@ def main() -> int:
                 "issue": html,
                 "ok": ok,
                 "comment_url": url,
-                "lane": "help-wanted-followup",
+                "lane": "tribute-followup",
                 "foreign": True,
                 "action": action,
                 "has_contributing": bool(contrib),

@@ -58,8 +58,8 @@ Each audit record should carry schema version, canonical record/incident ID, sou
 
 ## Automated tribute audit operation
 
-The hourly Help-Wanted status refresh now invokes `scripts/ci/help_wanted_tribute_audit.py`. It performs a bounded, rotating read-only sample of upstream tribute PRs, checks PR state, changed-file evidence, solution-proof markers, and GitHub check runs, and writes:
-- `docs/ops/generated/help-wanted-tribute-audit.json`;
+The hourly Help-Wanted status refresh now invokes `scripts/ci/tribute_audit.py`. It performs a bounded, rotating read-only sample of upstream tribute PRs, checks PR state, changed-file evidence, solution-proof markers, and GitHub check runs, and writes:
+- `docs/ops/generated/tribute-audit.json`;
 - a `tribute_audit` projection into the generated status JSON and dashboard data.
 
 The live batch is intentionally capped at 25 PRs per refresh to limit API pressure. The window rotates hourly, and the generated report retains the latest known audit per currently listed PR across refreshes. `audited_pr_count` counts retained fully observed records (`audit_status=observed`), `audited_this_run_count` counts fully observed PRs in the current batch, and `not_audited_count` includes PRs without a complete observation (including partial, deferred, and unknown results). `attempted_this_run_count` counts all attempts; `partial_this_run_count`, `deferred_this_run_count`, and `unknown_this_run_count` expose incomplete current-batch outcomes. Cached stages are last-usable-observation evidence, not current-state guarantees. A deferred/failed/unknown refresh preserves the last known stage while recording `last_attempt_status`, `last_attempt_at`, and `last_attempt_evidence_gaps`. The `audit_statuses` counter uses the latest attempt status when available; stage counters retain the last usable stage. Changed-file and check-run responses are checked for truncation, and incomplete pages cannot establish a validated solution. Rate limits and missing/truncated check/file data are recorded as unknown/partial, not success. A merged PR is counted as accepted, never as realized effect.

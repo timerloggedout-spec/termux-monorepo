@@ -1,4 +1,4 @@
-# Record completed runs of the help-wanted (Tribute) and SHE lanes into the
+# Record completed runs of the tribute and SHE lanes into the
 # Neon lane_events ledger (ops/lane-events/schema.sql, scripts/ops/lane_event.py).
 # Additive: observes completions via workflow_run; never edits or blocks the
 # watched workflows. No-ops (notice only) until a repo secret exists:
@@ -11,9 +11,9 @@ on:
   workflow_run:
     workflows:
       - help-wanted scout
-      - help-wanted execute
-      - help-wanted-followup
-      - help-wanted-status-refresh
+      - tribute execute
+      - tribute-followup
+      - tribute-status-refresh
       - Agent Throughput Evidence
       - n8n SHE bridge
     types: [completed]
@@ -46,7 +46,7 @@ jobs:
             .github/actions/lane-event
             scripts/ops/lane_event.py
             ops/lane-events
-            docs/ops/generated/help-wanted-status.json
+            docs/ops/generated/tribute-status.json
           sparse-checkout-cone-mode: false
 
       - name: build events
@@ -61,7 +61,7 @@ jobs:
           import json, os, pathlib, subprocess
           wr = json.loads(os.environ["WR"])
           name = wr.get("name") or ""
-          lane = "she" if name in ("Agent Throughput Evidence", "n8n SHE bridge") else "help-wanted"
+          lane = "she" if name in ("Agent Throughput Evidence", "n8n SHE bridge") else "tribute"
           base = {"lane": lane, "workflow": name, "repo": os.environ["GITHUB_REPOSITORY"],
                   "run_id": wr.get("id"), "run_attempt": wr.get("run_attempt"),
                   "conclusion": wr.get("conclusion"), "head_sha": wr.get("head_sha"),
@@ -69,8 +69,8 @@ jobs:
           events = [dict(base, event_type="run_completed", payload={
               "event": wr.get("event"), "head_branch": wr.get("head_branch"),
               "run_started_at": wr.get("run_started_at"), "html_url": wr.get("html_url")})]
-          if name == "help-wanted-status-refresh":
-              p = pathlib.Path("docs/ops/generated/help-wanted-status.json")
+          if name == "tribute-status-refresh":
+              p = pathlib.Path("docs/ops/generated/tribute-status.json")
               try:
                   st = json.loads(p.read_text())
                   for pr in (st.get("foreign_open_prs") or [])[:100]:
@@ -81,7 +81,7 @@ jobs:
                   events.append(dict(base, event_type="status_snapshot",
                                      payload={"receipts": st.get("receipts"), "kinds": st.get("kinds"), "outcomes": st.get("outcomes")}))
               except Exception as exc:  # status file optional
-                  print(f"::notice::help-wanted-status.json unreadable: {exc}")
+                  print(f"::notice::tribute-status.json unreadable: {exc}")
           with open("lane-events.jsonl", "w") as fh:
               for e in events:
                   fh.write(json.dumps(e) + "\n")

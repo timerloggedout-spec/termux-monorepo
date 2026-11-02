@@ -129,7 +129,7 @@ jobs:
                 return latest ? (Date.now() - new Date(latest.created_at).getTime()) / 60000 : 1e9;
               } catch (_) { return 1e9; /* unreadable run history = treat as stale */ }
             };
-            const hwRefreshStaleMin = await laneAgeMin('help-wanted-status-refresh.yml');
+            const hwRefreshStaleMin = await laneAgeMin('tribute-status-refresh.yml');
             // Node F1: sibling-lane staleness (4 calls) — G-02 follow-up.
             // hw-pair / hw-execute / hw-assist carried the same phase
             // defect in a rarer form (firstCycle AND an hour-mod
@@ -139,10 +139,10 @@ jobs:
             // unlike the read-only refresh, these lanes spend, so
             // their staleness branch keeps the Node A admission guard.
             const hwPairStaleMin = Math.max(
-              await laneAgeMin('help-wanted-followup.yml'),
+              await laneAgeMin('tribute-followup.yml'),
               await laneAgeMin('help-wanted-scout.yml')
             );
-            const hwExecuteStaleMin = await laneAgeMin('help-wanted-execute.yml');
+            const hwExecuteStaleMin = await laneAgeMin('tribute-execute.yml');
             const hwAssistStaleMin = await laneAgeMin('help-wanted-llm-assist.yml');
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
@@ -301,11 +301,11 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_recon }}
             inputs_json: '{"sweep":true}'
             advance_watermark: 'false'
-          - lane: help-wanted-status-refresh
+          - lane: tribute-status-refresh
             run: ${{ needs.decide.outputs.dispatch_hw_refresh }}
             sweep: 'false'
             advance_watermark: 'false'
-          - lane: help-wanted-followup
+          - lane: tribute-followup
             run: ${{ needs.decide.outputs.dispatch_hw_pair }}
             sweep: 'false'
             advance_watermark: 'false'
@@ -313,7 +313,7 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_hw_pair }}
             sweep: 'false'
             advance_watermark: 'false'
-          - lane: help-wanted-execute
+          - lane: tribute-execute
             run: ${{ needs.decide.outputs.dispatch_hw_execute }}
             sweep: 'false'
             advance_watermark: 'false'

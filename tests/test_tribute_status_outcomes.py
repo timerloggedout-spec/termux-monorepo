@@ -4,8 +4,8 @@ from pathlib import Path
 
 from unittest.mock import patch
 
-from scripts.ci import help_wanted_status
-from scripts.ci.help_wanted_status import (
+from scripts.ci import tribute_status
+from scripts.ci.tribute_status import (
     build_tributes,
     classify_receipt_outcome,
     is_own_repo,
@@ -156,7 +156,7 @@ class HelpWantedLiveForeignPaginationTests(unittest.TestCase):
             requested.append(page)
             return {"items": pages.get(page, []), "total_count": 103}
 
-        with patch.object(help_wanted_status, "api_get", fake_api_get):
+        with patch.object(tribute_status, "api_get", fake_api_get):
             out = live_foreign_prs("closed")
         self.assertEqual(requested, [1, 2])
         self.assertEqual(len(out), 102)
@@ -172,7 +172,7 @@ class HelpWantedLiveForeignPaginationTests(unittest.TestCase):
                 }
             return None
 
-        with patch.object(help_wanted_status, "api_get", flaky_api_get):
+        with patch.object(tribute_status, "api_get", flaky_api_get):
             out = live_foreign_prs("open")
         self.assertEqual(len(out), 100)
 

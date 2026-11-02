@@ -523,6 +523,12 @@ through an admitted campaign design.
   identical-profile tie stays TIED (any separation = invented
   signal = spec defect); (iv) no historical ALLOW flips to
   ESCALATE on replay (a flip = defect signal).
+  Threshold anchors (v0, from the seat's registration block):
+  τ_allow anchored on the shadow_min 15.0 analog (25-pt scale);
+  τ_risk set so ONE corroborated consequential-risk signal
+  crosses it (preserves the kernel rule risk_tier=consequential
+  ⇒ ESCALATE); all values fixed at brief time, not at
+  registration.
   Open parameters (brief-time): τ_allow, τ_risk, ε values;
   V increment schedule per signal class; whether gate pass/fail
   enters V as a prior. Non-goals v0: weights-estimator change
@@ -530,6 +536,14 @@ through an admitted campaign design.
   kernel edits; implementation (builder ≠ evaluator when a run
   is briefed). Review: the Delphi lane reviews any future pass
   record against this spec (reviewer pattern as on #1963).
+  Home refs (seat's registration block): no dedicated issue/PR
+  yet — this register entry is its first home. Provenance chain:
+  fit evaluation at main cff94ce9 (2026-11-01, Delphi seat) →
+  owner ruling via main → spec hand-down (Delphi seat, this
+  registration). Family of record: RFP #1963 (delphi method
+  self-application, sibling method-variant slate); ledgers #1489
+  (weights) / #1487 (outcomes); kernel of record =
+  timerloggedout-spec/delphi-oracle at 393e1f4b.
 - **interface-gates / symmetrical-action-log v0** (candidate;
   spec: D3 seat 39fc8b89 eval, 2026-11-01, from D3/ListingLens
   ground truth, PR #2616 verified; source eval at main 98387e77).

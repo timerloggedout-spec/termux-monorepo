@@ -3,7 +3,7 @@
 The page renders ONLY data/pr-lane-feed.json — the byte-identical
 mirror of ops/ml/pr-lane-feed.json that ml-pr-lane-classify.yml commits
 alongside the source feed. No lane counts are hardcoded in the page;
-the trend/burn-down views are phase 2 and must stay data-fed too.
+Phase 2 (landed): the trend views render from the committed series mirror (data/pr-lane-series.jsonl) via chartkit, data-fed like everything else.
 """
 import json
 import re
@@ -48,7 +48,7 @@ def _html():
 def test_page_consumes_only_the_mirror_feed():
     html = _html()
     fetches = re.findall(r"fetch\(([^)]*)\)", html)
-    assert fetches == ['"./data/pr-lane-feed.json"'], fetches
+    assert fetches == ['"./data/pr-lane-feed.json"', '"./data/pr-lane-series.jsonl"'], fetches
     assert 'id="dist"' in html and 'id="tables"' in html and 'id="meta"' in html
 
 
@@ -149,3 +149,63 @@ def test_chrome_wiring():
     assert f'{link} aria-current="page"' in _html()
     assert "https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html" in (APP / "sitemap.xml").read_text()
     assert "<td>PR Lanes</td>" in (APP / "admin.html").read_text()
+
+
+# ---- phase 2: trend chart (chart standard) ----
+
+SERIES = APP / "data" / "pr-lane-series.jsonl"
+
+
+def _trend_js():
+    blocks = re.findall(r"<script>(.*?)</script>", _html(), re.S)
+    trend = [b for b in blocks if "parseSeries" in b]
+    assert len(trend) == 1
+    return trend[0]
+
+
+def test_trend_hooks_present():
+    html = _html()
+    for hook in ['src="./chartkit.js"', 'id="trendchart"',
+                 'id="trendstamp"', "CK.line", "CK.stampState"]:
+        assert hook in html, hook
+
+
+def test_trend_script_parses(tmp_path):
+    f = tmp_path / "trend.js"
+    f.write_text(_trend_js())
+    r = subprocess.run(["node", "--check", str(f)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+
+
+def test_node_sim_trend_points(tmp_path):
+    logic = _trend_js().split(
+        "// ==== pure logic (node-sim tested) ====")[1].split(
+        "// ==== end pure logic ====")[0]
+    harness = tmp_path / "harness.cjs"
+    harness.write_text(logic)
+    out = tmp_path / "run.cjs"
+    out.write_text("""
+const {parseSeries, pointsFor} = require("./harness.cjs");
+const fs = require("fs");
+const rows = parseSeries(fs.readFileSync(process.argv[2], "utf8"));
+const feed = JSON.parse(fs.readFileSync(process.argv[3], "utf8"));
+const last = rows[rows.length - 1];
+console.log(JSON.stringify({
+  n: rows.length,
+  open: pointsFor(rows, "open_prs").map(p => p.v),
+  last_counts: last.counts, last_open: last.open_prs,
+  feed_counts: feed.counts, feed_open: feed.open_prs,
+  sorted: rows.every((r, i) => i === 0 ||
+    rows[i - 1].generated_at <= r.generated_at),
+}));
+""")
+    r = subprocess.run(["node", str(out), str(SERIES), str(MIRROR)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    res = json.loads(r.stdout.strip())
+    assert res["n"] >= 2 and res["sorted"]
+    assert len(res["open"]) == res["n"]
+    # the series' last snapshot is the current feed state
+    assert res["last_counts"] == res["feed_counts"]
+    assert res["last_open"] == res["feed_open"]

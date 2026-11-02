@@ -55,6 +55,10 @@
 <div id="tables"></div>
 </section>
 
+<section>
+<h2>Lane trend (phase 2)</h2>
+<div class="card"><div id="trendchart"></div><p class="dim" id="trendstamp"></p></div>
+</section>
 </main>
 <script>
 "use strict";
@@ -115,6 +119,29 @@ async function load(){
   }
 }
 if(typeof document!=="undefined") load();
+</script>
+<script src="./chartkit.js"></script>
+<script>
+"use strict";
+// ==== pure logic (node-sim tested) ====
+const LANE_CLASSES=["CANDIDATE","EXTRACT","NEED_EVIDENCE","SUPERSEDE"];
+function parseSeries(text){
+  return text.split("\n").map(s=>s.trim()).filter(Boolean).map(s=>JSON.parse(s))
+    .sort((a,b)=>String(a.generated_at)<String(b.generated_at)?-1:1);
+}
+function pointsFor(rows,key){
+  return rows.map(r=>({t:r.generated_at, v: key==="open_prs"? r.open_prs : (r.counts||{})[key]})).filter(p=>typeof p.v==="number");
+}
+if(typeof module!=="undefined"){ module.exports={parseSeries,pointsFor,LANE_CLASSES}; }
+// ==== end pure logic ====
+fetch("./data/pr-lane-series.jsonl").then(r=>{ if(!r.ok) throw new Error("series fetch "+r.status); return r.text(); }).then(text=>{
+  const rows=parseSeries(text);
+  let h="<h3>Open PRs over time ("+rows.length+" snapshots)</h3>"+CK.line(pointsFor(rows,"open_prs"),860,180);
+  LANE_CLASSES.forEach(c=>{ h+="<h3>"+c+" over time</h3>"+CK.line(pointsFor(rows,c),860,140); });
+  document.getElementById("trendchart").innerHTML=h;
+  const last=rows[rows.length-1];
+  document.getElementById("trendstamp").textContent="Series last snapshot "+(last? last.generated_at : "—")+" · "+CK.stampState(last? last.generated_at : null,Date.now())+" · trend computed from the committed pr-lane series as issued.";
+}).catch(e=>{ document.getElementById("trendstamp").textContent="Trend unavailable: "+e.message; });
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T12:28:53.276998+00:00",
+ "census_at_utc": "2026-11-02T12:31:11.309219+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3004,
+  "total": 3005,
   "stale": 885,
   "orphan_no_assoc_PR": 351,
   "stale_and_orphan": 87
  },
  "prs": {
   "total": 3324,
-  "open": 185,
+  "open": 184,
   "open_draft": 23,
-  "open_draft_share": 0.1243,
+  "open_draft_share": 0.125,
   "drafts": [
    {
     "number": 386,
@@ -163,23 +163,21 @@
     "age_days": 0.7
    }
   ],
-  "merged": 2664,
+  "merged": 2665,
   "closed_unmerged": 475,
-  "open_no_closing_ref": 179,
-  "open_unlinked_issue_target": 152,
-  "open_unlinked_any_ref": 129,
-  "merged_no_closing_ref": 2635,
-  "merged_unlinked_issue_target": 1539,
-  "merged_unlinked_any_ref": 874,
+  "open_no_closing_ref": 178,
+  "open_unlinked_issue_target": 151,
+  "open_unlinked_any_ref": 128,
+  "merged_no_closing_ref": 2636,
+  "merged_unlinked_issue_target": 1540,
+  "merged_unlinked_any_ref": 875,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2588,
-  "open_head_branch_missing": [
-   3825
-  ]
+  "merged_head_branch_residual_name_match": 2589,
+  "open_head_branch_missing": []
  },
  "issues": {
   "total": 496,
-  "open": 411,
+  "open": 410,
   "open_surface_unlinked": 176,
   "open_unlinked_strict": 157
  },

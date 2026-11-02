@@ -73,7 +73,14 @@ def _live3_dispatch(event: dict) -> dict | None:
     """
     if event.get("action") != "created":
         return None
-    body = (event.get("comment") or {}).get("body") or ""
+    comment = event.get("comment") or {}
+    # Only repository-trusted authors may administer a dispatch:
+    # the marker alone must never let an arbitrary commenter drive
+    # the bot's prompt (review finding, PR #2856).
+    if comment.get("author_association") not in (
+            "OWNER", "MEMBER", "COLLABORATOR"):
+        return None
+    body = comment.get("body") or ""
     if LIVE3_MARKER not in body:
         return None
     issue = event.get("issue") or {}
@@ -93,7 +100,7 @@ def _live3_dispatch(event: dict) -> dict | None:
 def run_ci(
     event: dict,
     workspace: str,
-    operator_token: str | None,
+    operator_token: str | None = None,
     pr_override: str | None = None,
 ) -> dict:
     workspace_path = Path(workspace)
@@ -203,8 +210,9 @@ def run_ci(
                     "ephemeral session · Implements: RL-18 · Fixes #109*"
                 )
             comment_body = body + signature
+            posted = False
             try:
-                subprocess.run(
+                res = subprocess.run(
                     [
                         "gh",
                         "pr",
@@ -219,6 +227,7 @@ def run_ci(
                     check=False,
                     timeout=30,
                 )
+                posted = res.returncode == 0
             except Exception as e:
                 print(f"::warning::Failed to post PR comment: {e}", file=sys.stderr)
 
@@ -227,7 +236,7 @@ def run_ci(
                     {
                         "type": "live3_dispatch",
                         "pr": pr_number,
-                        "posted": True,
+                        "posted": posted,
                         "chars": len(comment_body),
                         "dispatch_no": dispatch["stamp"].get(
                             "dispatch_no"),
@@ -239,7 +248,7 @@ def run_ci(
                     {
                         "type": "pr_review",
                         "pr": pr_number,
-                        "posted": True,
+                        "posted": posted,
                         "chars": len(comment_body),
                     }
                 )
@@ -285,7 +294,7 @@ def main() -> None:
     result = run_ci(
         event=event,
         workspace=args.workspace,
-        operator_token=os.environ.get("OPERATOR_TOKEN")
+        operator_token=os.environ.get("OPERATOR")
         or os.environ.get("GH_TOKEN"),
         pr_override=args.pr or None,
     )

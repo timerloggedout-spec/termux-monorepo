@@ -1,3 +1,7 @@
+# Cursor mode (spec: docs/ops/ARCHWIZ-ARCHAEO-CURSOR-MODE.md): the
+# cursor_mode dispatch input + CONTEXT_CURSOR_* env below carry the
+# archaeo-increment contract to the collector. Until the collector leg
+# lands, the env is inert and the publisher behaves exactly as before.
 name: context relationship index publisher
 
 on:
@@ -19,6 +23,10 @@ on:
         description: 'Maximum commits for the collection window.'
         type: string
         default: '25'
+      cursor_mode:
+        description: 'Incremental collection via the context-relationships cursor (docs/ops/ARCHWIZ-ARCHAEO-CURSOR-MODE.md). Inert until the collector leg lands.'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -52,6 +60,8 @@ jobs:
           FULL_REFRESH: ${{ inputs.full_refresh || 'false' }}
           MAX_ITEMS: ${{ inputs.max_items || '20' }}
           MAX_COMMITS: ${{ inputs.max_commits || '25' }}
+          CONTEXT_CURSOR_MODE: ${{ inputs.cursor_mode && 'incremental' || 'off' }}
+          CONTEXT_CURSOR_FILE: workspace/llm_map/context_relationships/cursor.json
         run: |
           set -euo pipefail
           refresh_flag=""

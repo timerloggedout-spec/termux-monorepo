@@ -465,6 +465,38 @@ version and compared continuously until culling retires a version.
   pass; the standing establishment path (n>=30/class ^
   minority>=10 ^ p<.05) applies if/when it does.
 
+- **validation-yield v0** (family measure; owner directive via
+  main, 2026-11-01) — the measurement-plane family {quota -
+  latency - AST - family - backup-state - exchange-scoring}
+  exists to produce validations; this measure counts them and
+  grades their truth. A validation event = a plane's unit check
+  with a recorded outcome. TRUE validation = independently
+  corroborated (rule 9 discipline): two or more independent legs
+  agreeing. Single-leg = HELD, not counted true. Self-asserted
+  (the producing surface asserting its own result, no
+  independent leg) = CLAIM, not proof; disputed legs = excluded
+  from truth counts (attribution/1.4 vocabulary reused).
+  Reporting tuple per plane per window: {plane, window,
+  produced, corroborated_true, held_single_leg,
+  self_asserted_claims, corroborated_share =
+  corroborated_true / produced}. Each seat names its unit and
+  its legs on adoption; counts ride the plane's own records and
+  the planes own their verdicts. Growth bar: produced volume
+  should GROW window over window; an active plane flat at zero
+  is a finding, not a neutral.
+  Unit/leg sketches (frame examples; seats confirm on adoption):
+  quota = readings, legs {api-verified / api-read} over
+  reported; latency = probe medians, legs {edge timing,
+  timestamp-based meters where available}; AST = complexity
+  stamps, legs {stamp, outcome correlation}; family =
+  nested-family rows, legs {record, donor stamp/intake via
+  field_sources}; backup-state = export verifications, legs
+  {manifest hash, restore drill}; exchange-scoring = scored
+  exchanges, legs {intent class, corrections behavior, proceed
+  outcome} with the corrections count as the distance component
+  — candidate plane: its counts are NOT_ESTABLISHED until a
+  briefed pass runs.
+
 ## Campaign layout
 
 ### Candidate method versions — dreambeans concepts (owner ruling, 2026-11-01)

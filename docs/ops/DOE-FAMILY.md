@@ -442,6 +442,14 @@ regenerates records + summary — `observed_at`/elapsed are run stamps).
 
 ### ChronoMancer mapping (2026-10-30)
 
+**Status: `bet · earning-in-progress` (owner Δ, 2026-11-01).**
+ChronoMancer is a title-in-earning: the owner's bet is that
+DeepAgent.py EARNS the title through DoE. Trial surface = cb-1
+(cb-1-chronomancer-emission). Earning is judged by DoE results —
+campaign records ∧ the standing significance gate (ESTABLISHED ⇔
+n≥30 ∧ minority≥10 ∧ p<.05) — never by registration alone.
+Operator := Owner (human), out of module scope.
+
 `harmony_hub/workspace/agent/chronomancer.py` (+ CHRONOMANCER_SPEC.md)
 is a Time-Loop fork selector/executor: it scans `run_history`
 (SQLite: session_id, account, timestamp, validated) for the last

@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T01:21:29Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T01:30:35Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T01:21:28Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6518` read_at=`2026-11-02T01:21:28Z`
+Sources: PR feed read_at=`2026-11-02T01:30:34Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6557` read_at=`2026-11-02T01:30:34Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -28,7 +28,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3455 `604d47358a9f` 2026-11-02T01:10:43Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3414 `0fd3c4b139fe` 2026-11-02T00:40:17Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3445 `5fd0979ed8a9` 2026-11-02T01:04:46Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3462 `262ee6f157a9` 2026-11-02T01:28:19Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #2168 `b60d62bf4781` 2026-11-02T00:19:49Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -55,7 +55,7 @@ Campaigns: 16 · joined: 2 · distinct instances: 9 · providers: Muse, openrout
 | live-4-dispatch-framing | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | nc-1-notation-compliance | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | pilot-1-context-routing-x-compression | NOT_ESTABLISHED (design_only) | | | | | | | | | |
-| routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 2 | 0 |
+| routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 3 | 0 |
 | util-1-provider-rotation | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-1-duckduckgo | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-2-brave | NOT_ESTABLISHED (design_only) | | | | | | | | | |
@@ -63,4 +63,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 9 · providers: Muse, openrout
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)

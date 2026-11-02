@@ -51,6 +51,7 @@ keep them; the standard governs data + stamps, not the drawing code.
 | quota-event-audits.html | ✓ coverage + findings-by-state/class charts (chartkit); chrome (nav) rides the canon normalization | rate-limit-event-audits.json + register |
 | 3l0.html | ✓ review cycles per provider (chartkit) | 3l0-feed.json |
 | ates.html | ✓ observed runs per workflow (chartkit) | ates-feed.json |
+| results-index.html | ✓ ALL-4 results index, render-verbatim (feed-carried values) | results-index-feed.json |
 | doe.html | ✓ campaigns by state + runs per campaign (chartkit) | doe-feed.json |
 | mvt.html | ✓ experiment record population (chartkit) | mvt-feed.json |
 | moneyball.html | ✓ scoring weights + penalty magnitudes (chartkit) | moneyball-feed.json |

@@ -40,6 +40,7 @@ CANON = [
     ('https://timerloggedout-spec.github.io/tribute/mvt.html', 'MVT'),
     ('https://timerloggedout-spec.github.io/tribute/doe.html', 'DoE'),
     ('https://timerloggedout-spec.github.io/tribute/ates.html', 'ATES'),
+    ('https://timerloggedout-spec.github.io/tribute/results-index.html', 'Results Index'),
     ('https://timerloggedout-spec.github.io/tribute/free-tier-value.html', 'Free-tier value'),
     ('https://timerloggedout-spec.github.io/tribute/dispatch-tree.html', 'Dispatch Tree'),
     ('https://timerloggedout-spec.github.io/tribute/admin-graph.html', 'Admin Graph'),
@@ -65,7 +66,7 @@ CANON = [
 NAV_PAGES = {
     "index.html", "quota.html", "quota-usage.html", "quota-graphs.html",
     "admin.html", "oracle.html", "3l0.html", "moneyball.html", "wagering-book.html",
-    "mvt.html", "doe.html", "ates.html", "free-tier-value.html",
+    "mvt.html", "doe.html", "ates.html", "results-index.html", "free-tier-value.html",
     "dispatch-tree.html", "countdowns.html", "linguist.html",
     "delphi-rfp.html", "delphi-ledger.html", "classifiers.html", "pr-lanes.html",
     "proposals.html", "telemetry.html", "desk.html", "tracking.html",

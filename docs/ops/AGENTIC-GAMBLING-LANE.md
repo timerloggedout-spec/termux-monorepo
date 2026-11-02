@@ -115,3 +115,5 @@ The collapse is a **naming/listing convention only**; participant records, walle
 - **bookie/bookmaker** = ABSENT odds-setting class; **11th man** = distinct audience/reserve role — must not merge into one listing name.
 
 **Conflicts flagged ↑Registry:** (1) *Speculators* three-way collision — implementation vs Swarm seat name vs generic listing synonym for gamblers; one collapsed name cannot serve all three. (2) *Bookmaker* three senses — absent lane class (listing must not imply an implemented role) vs external quote source (`bookmaker_id`) vs bookie synonym.
+
+**Conformity boundary (DoE criteria → Registry, 2026-11-02):** the collapse conforms iff it is crosswalk-only (records stay one-per-class, each with its own scoring record), the ker is named per cluster, naming moves no posterior/wallet/standing, listing ≠ minting, and strata are never pooled. Lane exposure: any Registry hunk touching seed-cluster records' **values** in this charter/lane.json is a record merge and needs its own owner word; name-layer hunks are Registry's to make. DoE's verdict issues on the landed Registry PR.

@@ -542,6 +542,30 @@ version and compared continuously until culling retires a version.
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
 
+- **accumulation-targets v0** (owner doctrine, 2026-11-02) —
+  dispatch is REQUIRED data accumulation: rotation exists to
+  accumulate per-arm evidence toward class bars, and the
+  accumulation is auditable. Bars by estimand: mean-type
+  outcomes (wall time, rework) — FLOOR n>=30 per arm (rough
+  mean; also the ESTABLISHED gate's floor with minority>=10 ^
+  p<.05); variance/covariance-grade (dispersion inputs, e.g.
+  the Laya precondition) — n>=100 per arm (usable variance,
+  stable covariance); proportion-type outcomes (first-pass
+  rate, pass/fail shares) — screening at n>=30, CLAIM-GRADE
+  ~384 per arm (95% CI +-5% at worst-case p=0.5; the outer
+  marker). Campaign decision rules may set interim looks below
+  these bars (rule 7 sets-of-3 accumulate toward them); claims
+  may not exceed the bar the accumulated n has reached.
+  Reporting shape, per arm per window: {arm (instance_key),
+  class, n_window, n_accumulated, target (class bar),
+  delta_vs_target, posterior_state (per bayesian-updating:
+  INTAKE / provisional / corroborated + the metric's
+  posterior)}. Carriage: the Bayesian record's n_evidence IS
+  the accumulated n — no parallel counter. A health-gated LIVE
+  arm with n_window = 0 is a FINDING (flat arm), same standing
+  as validation-yield's flat plane; an arm down or ungated is
+  reported as such, never silently flat.
+
 ## Campaign layout
 
 ### Candidate method versions — dreambeans concepts (owner ruling, 2026-11-01)

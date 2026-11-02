@@ -26,6 +26,8 @@ marker. Never file paths, never manifest content, never backup content.
   marker: {state_hash, export_id, source},   // the last-export fingerprint
   exports: [{id, at, t0, t1, manifest_only, excluded, bytes,
              gates_pass, publish_commit, state_hash}],   // newest first
+  failed_attempts: [{export_id, at, reason}],   // relayed kind=export_failed;
+                                                 // never move the marker
   drills: [{report, export_id, verdict,
             t0: {checked, mismatched, excluded_absent},
             t1: {checked, consistent, missing},
@@ -41,7 +43,10 @@ marker. Never file paths, never manifest content, never backup content.
 1. `relays` — `ops/tracking/backup-relays.jsonl`: export outcomes
    relayed from the hook runs that perform the exports (the
    `vm-backup-state-watch` cadence). One JSON object per line:
-   `{kind: "export", export_id, at, publish_commit, state_hash}`.
+   `{kind: "export", export_id, at, publish_commit, state_hash}` —
+   plus `{kind: "export_failed", export_id, at, reason}` for failed
+   attempts (the hook wiring of record, 2026-11-01): failed attempts
+   surface in `failed_attempts[]` and never move the marker.
    The state hash and the marker live VM-side (the exporter's
    stat-only T0 fingerprint, `ops/vm-backup/state_hash.py`); relays
    are the only channel that carries them into the record. The marker

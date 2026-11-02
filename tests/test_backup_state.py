@@ -35,7 +35,10 @@ def _tree() -> Path:
     (base / "scripts" / "tracking").mkdir(parents=True)
     (base / "ops" / "tracking").mkdir(parents=True)
     (base / "scripts" / "tracking" / "backup_snapshot.json").write_text(json.dumps(SNAP))
-    (base / "ops" / "tracking" / "backup-relays.jsonl").write_text(json.dumps(RELAY) + "\n")
+    (base / "ops" / "tracking" / "backup-relays.jsonl").write_text(
+        json.dumps(RELAY) + "\n" + json.dumps(
+            {"kind": "export_failed", "export_id": "exp-2", "at": "2026-11-03T00:00:00Z",
+             "reason": "scrub-gate abort"}) + "\n")
     return base
 
 
@@ -49,6 +52,10 @@ def test_merge_and_marker():
     e0 = next(e for e in feed["exports"] if e["id"] == "exp-0")
     assert e0["t0"] == 10 and e0["publish_commit"] == "oldsha" and e0["state_hash"] is None
     assert feed["marker"] == {"state_hash": "hash-1", "export_id": "exp-1", "source": "relay"}
+    assert feed["failed_attempts"] == [
+        {"export_id": "exp-2", "at": "2026-11-03T00:00:00Z", "reason": "scrub-gate abort"}]
+    assert feed["summary"]["failed_attempts"] == 1
+    assert all(e["id"] != "exp-2" for e in feed["exports"])  # failure is not an export
     d = feed["drills"][0]
     assert d["verdict"] == "fail" and d["t1"]["consistent"] == 46773
     assert feed["summary"]["last_drill_verdict"] == "fail"

@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T01:09:05Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T01:13:12Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T01:09:05Z` (merged 150 · open 173) · lane-events(Neon) status=`ok` count=`6450` read_at=`2026-11-02T01:09:05Z`
+Sources: PR feed read_at=`2026-11-02T01:13:12Z` (merged 150 · open 173) · lane-events(Neon) status=`ok` count=`6461` read_at=`2026-11-02T01:13:12Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -25,7 +25,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3453 `6050e1975ae5` 2026-11-02T01:08:47Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3455 `604d47358a9f` 2026-11-02T01:10:43Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3414 `0fd3c4b139fe` 2026-11-02T00:40:17Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3445 `5fd0979ed8a9` 2026-11-02T01:04:46Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
@@ -63,4 +63,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 9 · providers: Muse, openrout
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 81/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)

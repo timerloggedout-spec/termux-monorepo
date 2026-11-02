@@ -68,6 +68,42 @@ jobs:
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
             mono/scripts/certifications/coderoad-driver
 
+      - name: Diagnose vscode stage on failure (issue 506)
+        if: failure()
+        timeout-minutes: 12
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          DIAG=$(docker run --rm coderoad-stage:libs bash -c '
+            set +e
+            mkdir -p /opt/vscode
+            curl -fsSL "https://update.code.visualstudio.com/latest/linux-x64/stable" -o /tmp/code.tgz
+            echo "curl exit: $?"
+            ls -la /tmp/code.tgz
+            tar -xzf /tmp/code.tgz -C /opt/vscode
+            echo "tar exit: $?"
+            ls /opt/vscode
+            /opt/vscode/VSCode-linux-x64/bin/code --version
+            echo "code --version exit: $?"
+            ldd /opt/vscode/VSCode-linux-x64/code 2>/dev/null | grep "not found" | head -20
+            echo "ldd-scan done"
+          ' 2>&1 | tail -30)
+          export DIAG
+          python3 - <<PYEOF
+          import json, os, urllib.request
+          body = "CODEROAD_IMAGE_DIAG run %s\n\n```\n%s\n```" % (os.environ["RUN_ID"], os.environ.get("DIAG", "")[:2400])
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body}).encode(),
+              headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("diag recorded")
+          PYEOF
+
       - name: Report stage state on failure (issue 506)
         if: failure()
         env:

@@ -1,0 +1,44 @@
+name: quota-event-audit
+
+# Event Audit gate (owner standard 2026-11-01: the events register
+# gets audited into improvements). State-gated cadence per cadence
+# law: NO cron - the gate fires when the register grows (push on the
+# events file) or on manual dispatch. The checker proves coverage:
+# every register event must be referenced by >=1 audit finding in
+# ops/quota/rate-limit-event-audits.json. A red run = an audit is
+# owed; the audit content itself is authored by the quota-specialist
+# lane, never by this workflow. Shape follows graph-matrix-probe.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "ops/quota/rate-limit-events.json"
+      - "ops/quota/rate-limit-event-audits.json"
+  workflow_dispatch:
+
+concurrency:
+  group: quota-event-audit
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit-gate:
+    name: event audit coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Audit coverage check
+        id: audit
+        run: |
+          set -euo pipefail
+          python3 scripts/quota_event_audit.py | tee -a "$GITHUB_STEP_SUMMARY"

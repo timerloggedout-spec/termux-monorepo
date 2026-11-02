@@ -32,3 +32,14 @@ Internal market mechanics over **inference and challenge outcomes only**. No rea
 - Rule 9 applies to consumption: actor-weighting consumes only corroborated attribution; single-leg marks are held out of weights and flagged.
 - Backfill doctrine applies at every scoring/method version change: full history re-scored, audited, versions compared until DoE culling retires a version.
 - Stakes vocabulary is closed: observational units and soft quota tokens only. Any proposal touching real value is out of scope by charter, not by discretion.
+
+## Registry addendum (owner, 2026-11-01) — managers · scouts · wallets · provider wallets
+
+| Component | State (verified 2026-11-01) |
+|---|---|
+| **Managers** | PARTIAL — lane managing seat = this MoneyBall seat (charter home). MSM program carries provider-family **passive quota manager contracts** (MSM-019 done, 20 canonical provider families, #1448) + Ollama balance service manager (MSM-022). A distinct "Scout Manager" seat is **not** named in `docs/ops/AGENT-MONIKERS.md` (0 hits) |
+| **Scouts** | LANDED — selection surface: `docs/ops/SCOUT-ROSTER.md` + `SCOUT-MISSIONS.md`; pipeline provider catalog → normalized evidence → roster → MVT → MoneyBall/3L0 admission (`MONEYBALL_SCORED`) |
+| **Wallets (participant-side)** | OPEN — ∅ wallet artifact in market/speculator/ops trees; substrate = stake units on `BetEntry` only. Per-participant internal wallet store = build item |
+| **Provider wallets (market side, per provider/model)** | PARTIAL — landed as quota/balance manager contracts + `ops/quota` registry pools; no artifact named/shaped as a per-provider/model market wallet |
+
+**Refinement to the evidence base (same-day, carrier expansion):** the MSM proposal tree (`docs/proposals/active/model-selection-market/`, outside the original hunt's carrier set) carries **Bids at design level** — DESIGN.md §6 "Bets | Wagers | Bids {Itself | Others | Job} (MSM-005)" and `schemas/bet-ledger.schema.json` ("Observational bet/wager/bid entry… Settlement does not bypass dual-gate", status `open|settled|cancelled`). No distinct bid/ask price construct exists — the bid is folded into the bet entry; **Asks remain absent at every level**. Charter component 2 status reads accordingly: Bids = design-level (proposal), not implemented in `market.py`.

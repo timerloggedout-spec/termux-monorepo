@@ -705,7 +705,16 @@ version and compared continuously until culling retires a version.
   (never blanks dressed as zeros); tiering (T1 / T2) re-derives
   from the records by a stated function instead of standing as
   assertion. Conformity spec held by doe-expert; matrix led by
-  the Certifications manager, rows held by Ladder.
+  the Certifications manager, rows held by Ladder. SCOPE
+  AMENDMENT (owner, 2026-11-02): the matrix covers the WHOLE
+  certifications category — the cross-surface index population,
+  candidates entering as INTAKE rows — not only enrolled rungs.
+  Most rows therefore start unevidenced, and every INTAKE row
+  must name its evidence_requirement: the evidence that would
+  price it (move it from INTAKE to a posterior). Intake is thus
+  an evidence-accumulation queue under the standard, not a
+  list: a row without a named requirement is a defect of the
+  queue, and accumulation work draws from the requirements.
 
 - **accumulation-targets v0** (owner doctrine, 2026-11-02) —
   dispatch is REQUIRED data accumulation: rotation exists to

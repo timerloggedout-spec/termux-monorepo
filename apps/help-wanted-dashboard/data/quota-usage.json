@@ -1,12 +1,12 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-02T07:58:41Z",
+ "generated_at": "2026-11-02T08:20:44Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
  "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap decision pending)",
  "registry_context": {
   "records": 170,
   "pools": 53,
-  "coverage": "164/170 readings rows (registry at 170 records; promotion cycle carries new records into readings)"
+  "coverage": "170/170 readings rows (registry at 170 records; promotion cycle carries new records into readings)"
  },
  "series1_api_core": {
   "title": "GitHub API core \u2014 shared PAT bucket",
@@ -179,6 +179,12 @@
     "rows": 164,
     "landed": true,
     "provenance": "landed via convergence promotion 12469317ba (164-row snapshot 2026-11-01)"
+   },
+   {
+    "at": "2026-11-02T08:16:06.415255+00:00",
+    "rows": 170,
+    "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
+    "provenance": "vercel-quota-probe readings generation"
    }
   ],
   "stamp_source": "registry reset fields \u2014 snapshot rows carry reset=null by design; stamps never join from the snapshot"

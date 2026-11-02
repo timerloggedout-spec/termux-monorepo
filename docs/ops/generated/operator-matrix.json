@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 410,
-    "open_prs": 184,
+    "open_prs": 186,
     "pr_classes": {
       "CANDIDATE": 90,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 88,
+      "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 182,
+      "prs": 184,
       "unlabelled_numbers": [
         308,
         388,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:16:39Z",
+  "generated_at": "2026-11-02T13:18:14Z",
   "issues_unlabelled": [
     308,
     388,
@@ -101,10 +101,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "in_progress"
     },
-    "sha": "ec010352c3"
+    "sha": "7b416c374c"
   },
   "prs": [
     {
@@ -184,12 +184,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "bc1bcdf1bf",
+      "head_sha": "bce66da163",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:13:38Z"
+      "updated_at": "2026-11-02T13:16:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -2687,6 +2687,34 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "861a70fd51",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3866,
+      "title": "viz(moneyball): wagering-book Gantt \u2014 23 subjects, calendar anchors, forecast scoring layer",
+      "updated_at": "2026-11-02T13:18:00Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "00594795a1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3867,
+      "title": "NSE-023 launch: research lane open + packet P-001 (\u2218 associativity)",
+      "updated_at": "2026-11-02T13:18:09Z"
     }
   ],
   "schema": "operator-matrix/v1",

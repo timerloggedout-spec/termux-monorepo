@@ -18,7 +18,7 @@ GENERATOR = ROOT / "scripts/quota_usage_series.py"
 ESC_LINE = ("const esc=v=>String(v??'').replace(/[&<>\"']/g,"
             "c=>'&#'+c.charCodeAt(0)+';');")
 KINDS = {"measured", "usage-exact", "activity-proxy", "reconstructed",
-         "estimated"}
+         "estimated", "gap"}
 
 
 def pure_block():
@@ -89,9 +89,22 @@ def test_generator_contract(tmp_path):
     prov = {(s["key"], s["kind"]) for s in pack["axes"]["provider"]}
     assert ("github", "measured") in prov
     assert ("jules", "activity-proxy") in prov
-    # Model axis: no stamped model carries a usage value yet - honestly empty.
-    assert pack["axes"]["model"] == []
-    assert "NOT ESTABLISHED" in pack["notes"]["model"]
+    # Model axis: populated from stamped dispatch records (activity-proxy
+    # dispatch counts, NOT consumption); usage-class model series still
+    # require usage{} values - the note says so.
+    assert pack["axes"]["model"]
+    assert all(s["kind"] == "activity-proxy" for s in pack["axes"]["model"])
+    assert "stamped dispatch" in pack["notes"]["model"]
+    assert "usage{}" in pack["notes"]["model"]
+    # ALL-providers amendment: every registry model-lane provider is
+    # present on the provider axis - populated or an explicit gap.
+    gaps = [s for s in pack["axes"]["provider"] if s["kind"] == "gap"]
+    assert gaps and all(s["points"] == [] for s in gaps)
+    cov = pack["coverage"]
+    assert cov["providers_gap"] == len(gaps)
+    assert cov["providers_total"] > 0
+    assert cov["model_populated"] == len(
+        [s for s in pack["axes"]["model"] if s["points"]])
     gh = next(s for s in pack["axes"]["provider"] if s["key"] == "github")
     assert gh["context"]["target_flow_per_min"] > 0
     # Owner directive 2026-11-01: the 403 must be visible on the graph -
@@ -107,6 +120,13 @@ def test_pack_live_guards_and_mirror():
     for axis in ("provider", "service", "model"):
         for s in pack["axes"][axis]:
             assert s["kind"] in KINDS
+            if s["kind"] == "gap":
+                # ALL-providers amendment: a gap is an explicit absence -
+                # empty points, gap-marked title, no last point. Never a
+                # zero-filled series.
+                assert s["points"] == [] and s["title"].endswith("(gap)")
+                assert s["last_point_at"] is None
+                continue
             for p in s["points"]:
                 assert p["t"] and isinstance(p["v"], (int, float))
     assert MIRROR.read_bytes() == PACK.read_bytes()
@@ -132,7 +152,10 @@ def test_pack_freshness_stamps():
     assert pack["inputs_generated_at"]["ops/quota/quota-usage.json"]
     for axis in ("provider", "service", "model", "events"):
         for s in pack["axes"][axis]:
-            assert s["last_point_at"] == max(p["t"] for p in s["points"])
+            if s["kind"] == "gap":
+                assert s["points"] == [] and s["last_point_at"] is None
+            else:
+                assert s["last_point_at"] == max(p["t"] for p in s["points"])
     html = PAGE.read_text()
     assert "STALE" in html and "last_point_at" in html
     # Viz condition (2026-11-02): staleness keys PER-SERIES (a STALE chip

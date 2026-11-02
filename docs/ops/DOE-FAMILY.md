@@ -715,6 +715,36 @@ version and compared continuously until culling retires a version.
   an evidence-accumulation queue under the standard, not a
   list: a row without a named requirement is a defect of the
   queue, and accumulation work draws from the requirements.
+  POPULATION EQUATION (owner addendum "=+", 2026-11-02):
+  population = active / competition rows + baseline ladder
+  {L2 CTF / OverTheWire - L3 CompTIA - L5 OffSec / OSCP - L6
+  CISSP} + open INTAKE additions ("++"), deduped against the
+  ladder of record. Owner naming supplies the INCLUSION prior
+  only — a named row enters the population; naming prices no
+  cell. Claimed cell values remain posterior / evidence-gated
+  under the significance standard (INTAKE / HELD until priced).
+  DEPENDENCY GRAPH (owner extension, 2026-11-02): Learnings -
+  Skills - Tools are first-class records in the matrix.
+  NOVELTY CORRECTION (owner, 2026-11-02): the skills /
+  learnings <-> certifications mapping is ALREADY delineated
+  of record (derived-artifacts program rule + planes
+  delineation, 2026-10-30 / 11-01) — the matrix's skills /
+  learnings treatment IS that delineation; the only NEW
+  element here is the dependency-edge / value-cap machinery
+  below, entering as an EXTENSION of that delineation, never
+  a replacement layering. Standing distinction (per the
+  delineation): a Learning is an EVIDENCE INPUT, not a skill;
+  a Skill is a CAPABILITY DEFINITION, not evidence
+  (SKILL.md files are definitions — certified evidence = issuer
+  artifacts + execution receipts). A skill's value record cites
+  its dependency state as an evidence leg: a critical
+  dependency down / blocked CAPS the skill's claim at HELD
+  until redundancy / failover is TESTED (fleet doctrine:
+  backup exists only when tested). A tool's leverage = the
+  value of the skills downstream of it (derived from their
+  records, never a tool-local score). Edges are records under
+  the same citation discipline {n - stratum - basis}; no edge
+  is asserted from naming alone.
 
 - **accumulation-targets v0** (owner doctrine, 2026-11-02) —
   dispatch is REQUIRED data accumulation: rotation exists to

@@ -403,6 +403,13 @@ version and compared continuously until culling retires a version.
   lane-events in Neon (a database, not a repo); no record names a
   DoE data repo. Org repo searches (`doe`, `experiment`, `scoring`,
   `doe-data`) all return 0.
+  Status change (2026-11-01): the AppID + repo were an owner
+  REQUEST all along (main's speculation reading corrected by the
+  owner, owned by main); build routed to the AppID lane. The
+  absent-state above stands as the pre-build baseline; this record
+  updates when the AppID + repo land. Data-homing coordination
+  opened with the AppID lane (records keep one primary home —
+  family rule 1; no silent migration).
 
 ## Campaign layout
 

@@ -53,5 +53,24 @@ jobs:
             echo "index unchanged"
           else
             git commit -m "chore(llm_map): regenerate compact repo index [archwiz-repo-index]"
-            git push
+            # Master advances on a minutes cadence; a bare push of the
+            # triggering-SHA checkout is rejected non-fast-forward
+            # (first-run failure 41453686902, capture #3888). Rebase the
+            # data commit onto current origin/master, retry bounded.
+            for attempt in 1 2 3; do
+              git fetch origin master
+              if ! git rebase origin/master; then
+                git rebase --abort
+                echo "rebase conflict — not a push race; failing loudly" >&2
+                exit 1
+              fi
+              if git push; then
+                break
+              fi
+              if [ "$attempt" = "3" ]; then
+                echo "push failed after 3 attempts" >&2
+                exit 1
+              fi
+              sleep $((attempt * 5))
+            done
           fi

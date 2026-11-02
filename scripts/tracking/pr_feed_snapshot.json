@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T17:47:28Z",
+ "read_at": "2026-11-02T18:02:34Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3972,
+   "title": "fix(cert-coderoad-host): pg listen on bridge; canonical driver dir name",
+   "merged_at": "2026-11-02T17:49:53Z",
+   "updated_at": "2026-11-02T17:49:53Z",
+   "created_at": "2026-11-02T17:48:32Z",
+   "merge_commit_sha": "cb0b91a9bbf4105269dd8dbc13815ea7ae9a398b",
+   "head_ref": "fix/coderoad-host-b5",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3972",
+   "merged": true
+  },
   {
    "number": 3971,
    "title": "chore(ops): regenerate operator matrix",
@@ -1939,22 +1952,35 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3814",
    "merged": true
-  },
-  {
-   "number": 3813,
-   "title": "v2-snapshot-pull pack v2: all GitLab branches (Repo Replay V2 lever a)",
-   "merged_at": "2026-11-02T12:05:19Z",
-   "updated_at": "2026-11-02T12:07:28Z",
-   "created_at": "2026-11-02T12:05:15Z",
-   "merge_commit_sha": "b037313f11cbd9f2a99c53d6475e6addf87e4411",
-   "head_ref": "v2-pack-git-objects",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3813",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 3974,
+   "title": "fix(cert-coderoad-host): driver as installed .vsix",
+   "merged_at": null,
+   "updated_at": "2026-11-02T18:02:20Z",
+   "created_at": "2026-11-02T18:01:43Z",
+   "merge_commit_sha": "e2db292ff438f5ec7f4daeb4174f4a11689cdc53",
+   "head_ref": "fix/coderoad-host-b6",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3974",
+   "merged": false
+  },
+  {
+   "number": 3973,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": null,
+   "updated_at": "2026-11-02T17:52:00Z",
+   "created_at": "2026-11-02T17:51:22Z",
+   "merge_commit_sha": "171b838b828315a9451b4eb10f7e6fcb5fe9f199",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3973",
+   "merged": false
+  },
   {
    "number": 3969,
    "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",

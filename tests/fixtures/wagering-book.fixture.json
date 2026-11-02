@@ -1,6 +1,6 @@
 {
- "schema": "moneyball.wagering-book/v1",
- "generated_at": "2026-11-02T13:17:21Z",
+ "schema": "moneyball.wagering-book/v2",
+ "generated_at": "2026-11-02T13:23:24Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 23
@@ -19,15 +19,31 @@
   "FCC": "FCC L1 (baseline milestone)"
  },
  "forecast_layer": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) \u2014 calendar anchors are DATA ON THE SUBJECT, not a new participant class",
+ "publishability_flags": [
+  "record_of_record text for AMD-20 cites an internal seat short-id (840bd147) \u2014 settlement-critical text, carried verbatim; flagged to main before render",
+  "expectation priors/posteriors are null/NOT_ESTABLISHED at open \u2014 render as no-estimate, never as 0",
+  "no winprob values exist anywhere in the book or this feed (B5 boundary holds)",
+  "ledger bookkeeping-event notes (internal routing language) are NOT carried in this feed \u2014 only positions/settlements arrays render"
+ ],
+ "ledger_ref": {
+  "path": "ops/agentic-gambling/book/ledger.jsonl",
+  "entries": 7,
+  "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
+ },
+ "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
+ "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@dfdafd629d46 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@8c45e46dbcf7 (schema agentic-gambling-book/v1)",
+  "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
  "honesty": [
   "Subjects with a rule knowable (NOT_ESTABLISHED / on receipt / at exam pass) render open-ended: no date is invented.",
   "AMD-17 / AMD-18 carry no register anchors (NOT_ESTABLISHED in the book) - no landing/wall markers render.",
   "Forecast is an OUTPUT class (naming-collapse amendment #3830): forecasts score at each subject's settlement, at the issuer's record. There are no forecast rows.",
-  "Date-only knowables render at end of day PT, except 'by wall' subjects, which resolve at the wall instant."
+  "Date-only knowables render at end of day PT, except 'by wall' subjects, which resolve at the wall instant.",
+  "An expectation whose prior and posterior are both null is in INTAKE state and renders as INTAKE (no estimate) - never as a number, never as 0.",
+  "The ledger's bookkeeping-event notes are internal routing language and do not render (MoneyBall publishability flag 4); the ledger is carried by reference - path + entry count - and only its positions/settlements extracts render."
  ],
  "subjects": [
   {
@@ -37,6 +53,7 @@
    "family": "D1",
    "register_item": "D1 StudySprint submission",
    "settles_by": "entries confirmation_ref + coordinator record",
+   "record_of_record": "entries confirmation_ref + coordinator record",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-03T09:00:00-08:00",
    "wall_at": "2026-11-04T23:59:00-08:00",
@@ -51,7 +68,20 @@
     "at": "2026-11-04T23:59:00-08:00",
     "basis": "knowable = wall instant"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D1-2-placement-winner",
@@ -60,6 +90,7 @@
    "family": "D1",
    "register_item": "D1 StudySprint submission",
    "settles_by": "Builder Center official results",
+   "record_of_record": "Builder Center official results",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-03T09:00:00-08:00",
    "wall_at": "2026-11-04T23:59:00-08:00",
@@ -73,7 +104,20 @@
     "at": null,
     "text": "NOT_ESTABLISHED (judging date unpublished)"
    },
-   "anchors_note": "anchors = the D1 submission item's set; the placement itself settles on the official results posting"
+   "anchors_note": "anchors = the D1 submission item's set; the placement itself settles on the official results posting",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D2-3-nocard-account-live",
@@ -82,6 +126,7 @@
    "family": "D2",
    "register_item": "D2 Vultr kickoff",
    "settles_by": "D2 seat + gate D2-NOCARD",
+   "record_of_record": "D2 seat + gate D2-NOCARD",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-03T09:00:00-08:00",
    "wall_at": null,
@@ -95,7 +140,20 @@
     "at": "2026-11-03T15:00:00Z",
     "text": "2026-11-03 15:00Z"
    },
-   "anchors_note": "kickoff item carries stage B only in the register"
+   "anchors_note": "kickoff item carries stage B only in the register",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D2-4-submission-landed",
@@ -104,6 +162,7 @@
    "family": "D2",
    "register_item": "D2 Vultr submission",
    "settles_by": "entries confirmation_ref",
+   "record_of_record": "entries confirmation_ref",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-07T09:00:00-08:00",
    "wall_at": "2026-11-08T15:00:00-08:00",
@@ -119,7 +178,20 @@
     "at": "2026-11-08T15:00:00-08:00",
     "basis": "knowable = wall instant"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D2-5-placement-top3",
@@ -128,6 +200,7 @@
    "family": "D2",
    "register_item": "D2 Vultr submission",
    "settles_by": "lablab official results",
+   "record_of_record": "lablab official results",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-07T09:00:00-08:00",
    "wall_at": "2026-11-08T15:00:00-08:00",
@@ -142,7 +215,20 @@
     "at": null,
     "text": "NOT_ESTABLISHED (post-close posting)"
    },
-   "anchors_note": "anchors = the D2 submission item's set; placement settles on official posting"
+   "anchors_note": "anchors = the D2 submission item's set; placement settles on official posting",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D3-6-clips-gate-cleared",
@@ -151,6 +237,7 @@
    "family": "D3",
    "register_item": "D3 ListingLens submission",
    "settles_by": "gate D3-CLIPS-STORAGE",
+   "record_of_record": "gate D3-CLIPS-STORAGE",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-08T09:00:00-08:00",
    "wall_at": "2026-11-09T23:59:00-08:00",
@@ -166,7 +253,20 @@
     "at": "2026-11-08T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D3-7-feature-batch-b1-b3",
@@ -175,6 +275,7 @@
    "family": "D3",
    "register_item": "D3 ListingLens submission",
    "settles_by": "D3 seat per-PR verification",
+   "record_of_record": "D3 seat per-PR verification",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-08T09:00:00-08:00",
    "wall_at": "2026-11-09T23:59:00-08:00",
@@ -190,7 +291,20 @@
     "at": "2026-11-08T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D3-8-submission-landed",
@@ -199,6 +313,7 @@
    "family": "D3",
    "register_item": "D3 ListingLens submission",
    "settles_by": "entries / D3 record",
+   "record_of_record": "entries / D3 record",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-08T09:00:00-08:00",
    "wall_at": "2026-11-09T23:59:00-08:00",
@@ -214,7 +329,20 @@
     "at": "2026-11-09T23:59:00-08:00",
     "basis": "knowable = wall instant"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D3-9-placement-paid-tier",
@@ -223,6 +351,7 @@
    "family": "D3",
    "register_item": "D3 ListingLens submission",
    "settles_by": "Builder.io official results",
+   "record_of_record": "Builder.io official results",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-08T09:00:00-08:00",
    "wall_at": "2026-11-09T23:59:00-08:00",
@@ -237,7 +366,20 @@
     "at": null,
     "text": "NOT_ESTABLISHED (post-close TBD)"
    },
-   "anchors_note": "anchors = the D3 submission item's set; placement settles on official posting"
+   "anchors_note": "anchors = the D3 submission item's set; placement settles on official posting",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D4-10-credit-form-filed",
@@ -246,6 +388,7 @@
    "family": "D4",
    "register_item": "D4 Kiro ID credit form",
    "settles_by": "Gates / D4 seat",
+   "record_of_record": "Gates / D4 seat",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-30T09:00:00-08:00",
    "wall_at": "2026-12-01T12:00:00-08:00",
@@ -261,7 +404,20 @@
     "at": "2026-11-30T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D4-11-skeleton-apps-live",
@@ -270,6 +426,7 @@
    "family": "D4",
    "register_item": "D4 Kiroween submission",
    "settles_by": "D4 seat record",
+   "record_of_record": "D4 seat record",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-12-02T09:00:00-08:00",
    "wall_at": "2026-12-04T14:00:00-08:00",
@@ -285,7 +442,20 @@
     "at": "2026-12-02T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D4-12-submission-landed",
@@ -294,6 +464,7 @@
    "family": "D4",
    "register_item": "D4 Kiroween submission",
    "settles_by": "entries confirmation_ref (Devpost)",
+   "record_of_record": "entries confirmation_ref (Devpost)",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-12-02T09:00:00-08:00",
    "wall_at": "2026-12-04T14:00:00-08:00",
@@ -309,7 +480,20 @@
     "at": "2026-12-04T14:00:00-08:00",
     "basis": "knowable = wall instant"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D4-13-placement-any-prize",
@@ -318,6 +502,7 @@
    "family": "D4",
    "register_item": "D4 Kiroween submission",
    "settles_by": "Devpost official results",
+   "record_of_record": "Devpost official results",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-12-02T09:00:00-08:00",
    "wall_at": "2026-12-04T14:00:00-08:00",
@@ -332,7 +517,20 @@
     "at": null,
     "text": "NOT_ESTABLISHED (post-close TBD)"
    },
-   "anchors_note": "anchors = the D4 submission item's set; placement settles on official posting"
+   "anchors_note": "anchors = the D4 submission item's set; placement settles on official posting",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D5-14-spot-confirmation",
@@ -341,6 +539,7 @@
    "family": "D5",
    "register_item": "D5 Aha kickoff",
    "settles_by": "entries + gate D5-SPOT",
+   "record_of_record": "entries + gate D5-SPOT",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-17T09:00:00-08:00",
    "wall_at": null,
@@ -354,7 +553,20 @@
     "at": null,
     "text": "on receipt (pending now)"
    },
-   "anchors_note": "no dedicated spot item in the register; anchors = D5 Aha kickoff stage B (the spot gates the kickoff)"
+   "anchors_note": "no dedicated spot item in the register; anchors = D5 Aha kickoff stage B (the spot gates the kickoff)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D5-15-submission-landed",
@@ -363,6 +575,7 @@
    "family": "D5",
    "register_item": "D5 Aha submission",
    "settles_by": "entries confirmation_ref",
+   "record_of_record": "entries confirmation_ref",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-18T09:00:00-08:00",
    "wall_at": "2026-11-19T12:00:00-08:00",
@@ -378,7 +591,20 @@
     "at": "2026-11-19T12:00:00-08:00",
     "basis": "knowable = wall instant"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "D5-16-placement-winner",
@@ -387,6 +613,7 @@
    "family": "D5",
    "register_item": "D5 Aha submission",
    "settles_by": "Aha official results",
+   "record_of_record": "Aha official results",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-18T09:00:00-08:00",
    "wall_at": "2026-11-19T12:00:00-08:00",
@@ -401,7 +628,20 @@
     "at": "2026-11-20T11:30:00-08:00",
     "text": "2026-11-20 11:30 PT (dated)"
    },
-   "anchors_note": "anchors = the D5 submission item's set; placement settles 2026-11-20 11:30 PT per Aha official"
+   "anchors_note": "anchors = the D5 submission item's set; placement settles 2026-11-20 11:30 PT per Aha official",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "AMD-17-gpu100-claim",
@@ -410,6 +650,7 @@
    "family": "AMD",
    "register_item": null,
    "settles_by": "gate AMD-GPU100",
+   "record_of_record": "gate AMD-GPU100",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": null,
    "wall_at": null,
@@ -422,7 +663,20 @@
     "at": "2026-11-07T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for the M1 GPU claim; nearest register coverage starts at the League submission item"
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for the M1 GPU claim; nearest register coverage starts at the League submission item",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "AMD-18-m4-submitted",
@@ -431,6 +685,7 @@
    "family": "AMD",
    "register_item": null,
    "settles_by": "AMD seat + League platform",
+   "record_of_record": "AMD seat + League platform",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": null,
    "wall_at": null,
@@ -443,7 +698,20 @@
     "at": "2026-11-09T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)"
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "AMD-19-academy-5-complete",
@@ -452,6 +720,7 @@
    "family": "AMD",
    "register_item": "AMD Academy C5",
    "settles_by": "Gates evidence (cert + points) + certs ledger",
+   "record_of_record": "Gates evidence (cert + points) + certs ledger",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-19T09:00:00-08:00",
    "wall_at": "2026-11-20T23:59:00-08:00",
@@ -467,7 +736,20 @@
     "at": "2026-11-19T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": "subject settles when the 5th course lands; anchors shown = AMD Academy C5 item; C1-C4 items carry their own full anchor sets in the register (C1 B Nov 6 / C2 B Nov 9 / C3 B Nov 12 / C4 B Nov 16)"
+   "anchors_note": "subject settles when the 5th course lands; anchors shown = AMD Academy C5 item; C1-C4 items carry their own full anchor sets in the register (C1 B Nov 6 / C2 B Nov 9 / C3 B Nov 12 / C4 B Nov 16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "AMD-20-rocm-exam-passed",
@@ -476,6 +758,7 @@
    "family": "AMD",
    "register_item": "AMD ROCm exam",
    "settles_by": "Gates seat 840bd147 evidence",
+   "record_of_record": "Gates seat 840bd147 evidence",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-25T09:00:00-08:00",
    "wall_at": "2026-11-28T23:59:00-08:00",
@@ -491,7 +774,20 @@
     "at": "2026-11-25T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "AMD-21-m2-m3-m5-m6-submissions",
@@ -500,6 +796,7 @@
    "family": "AMD",
    "register_item": "AMD AI League submission",
    "settles_by": "AMD seat records",
+   "record_of_record": "AMD seat records",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-28T09:00:00-08:00",
    "wall_at": "2026-12-01T11:00:00-08:00",
@@ -515,7 +812,20 @@
     "at": "2026-11-28T23:59:00-08:00",
     "basis": "date-only knowable = end of day PT"
    },
-   "anchors_note": null
+   "anchors_note": null,
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "AMD-22-podium",
@@ -524,6 +834,7 @@
    "family": "AMD",
    "register_item": "AMD AI League submission",
    "settles_by": "lablab official results",
+   "record_of_record": "lablab official results",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-11-28T09:00:00-08:00",
    "wall_at": "2026-12-01T11:00:00-08:00",
@@ -540,7 +851,20 @@
     "basis": "date-only knowable = end of day PT",
     "lag": true
    },
-   "anchors_note": "anchors = the League submission item's set; podium settles on official posting (may lag Dec 1)"
+   "anchors_note": "anchors = the League submission item's set; podium settles on official posting (may lag Dec 1)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   },
   {
    "id": "FCC-23-relational-db-cert",
@@ -549,6 +873,7 @@
    "family": "FCC",
    "register_item": "FCC L1 checkpoint (Dec 5) + FCC L1 exam (soft wall Dec 12)",
    "settles_by": "certs ledger #506 + FCC verify link",
+   "record_of_record": "certs ledger #506 + FCC verify link",
    "open": "2026-11-02T00:00:00-08:00",
    "landing_at": "2026-12-05T09:00:00-08:00",
    "wall_at": "2026-12-12T23:59:00-08:00",
@@ -565,7 +890,23 @@
     "at": null,
     "text": "at exam pass"
    },
-   "anchors_note": "soft item: register carries A/B stages only (checkpoint Dec 5 + exam soft wall Dec 12); no D/E stages"
+   "anchors_note": "soft item: register carries A/B stages only (checkpoint Dec 5 + exam soft wall Dec 12); no D/E stages",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
   }
- ]
+ ],
+ "positions": [],
+ "settlements": [],
+ "feed_settlements": []
 }

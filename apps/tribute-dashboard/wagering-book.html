@@ -3,28 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wagering Book — Challenge Gantt</title>
+<title>Wagering Book — Challenge Gantt &amp; Public Book</title>
 <!--
-  Renders ONLY data/wagering-book.json (schema moneyball.wagering-book/v1),
-  the join of the challenges wagering book (MoneyBall plane,
-  ops/agentic-gambling/book/challenges-book.json) with its calendar
-  anchors (deadline-reminders/v1, Tracking lane), built by
-  scripts/moneyball/wagering_book_feed.py. Bars span open -> knowable;
-  markers are the subject's landing, wall and settle points from the
-  same anchors the calendar fires on, so chart and calendar agree by
-  construction. Forecast is an OUTPUT class (naming-collapse amendment
-  #3830): the gold tick marks where forecasts on a subject score - at
-  settlement, at the issuer's record. There are no forecast rows, and
-  no expectation or win-probability value renders anywhere on this page.
+  PUBLIC VIEW of the internal challenges wagering book (owner ruling
+  2026-11-02). Renders ONLY data/wagering-book.json (schema
+  moneyball.wagering-book/v2), built by
+  scripts/moneyball/wagering_book_feed.py from MoneyBall's publication
+  feed (ops/agentic-gambling/book/book-feed.json) at ledger truth.
+  Published values equal the ledger values by construction. Entries
+  stay internal - observational stakes only, no external participation
+  surface, no wallet movement; this page is read-only. The ledger's
+  bookkeeping notes are internal routing language and do NOT render
+  (publishability flag 4): the ledger is referenced, and only its
+  positions/settlements extracts appear. Expectation records render
+  exactly as held: null prior/posterior = INTAKE (no estimate), never
+  a number, never 0. Forecast is an OUTPUT class (amendment #3830):
+  the gold tick marks where forecasts score - at settlement, at the
+  issuer's record. There are no forecast rows.
 -->
 <link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
 <style>
   .chart{width:100%;height:auto;display:block}
   .chip{display:inline-block;padding:0 8px;border-radius:10px;font-size:11px;border:1px solid var(--line);white-space:nowrap}
   .chip.stale{border-color:var(--bad);color:var(--bad);font-weight:700}
+  .chip.intake{border-color:var(--gold);color:var(--gold);font-weight:700}
   .dim{color:var(--muted)}
   .fctick{fill:var(--gold)}
   .legend span{margin-right:1.1rem;white-space:nowrap}
+  table.st{width:100%;border-collapse:collapse;font-size:13px}
+  table.st td,table.st th{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
 </style>
 </head>
 <body>
@@ -37,8 +44,8 @@
 <a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
 <div class="hero">
 <p class="eyebrow">MoneyBall · Agentic Gambling — Challenges Book</p>
-<h1>The wagering book, on one timeline</h1>
-<p class="lede">Every wagerable subject in the challenges book as a bar from the book's open to the moment its outcome becomes knowable, with the landing, wall and settle points the deadline calendar fires on. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v1</code>) and nothing else. A subject whose knowable is a rule, not a date, renders open-ended — no date is invented for it.</p>
+<h1>The wagering book, published</h1>
+<p class="lede">The public, read-only view of our internal challenges wagering book: the Gantt of all 23 subjects, their expectation records, positions as they open, and settlements as they land from the named records of record. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v2</code>) and nothing else. Entries stay internal — observational stakes only, no external participation, no wallet movement.</p>
 </div>
 </header>
 <main>
@@ -49,6 +56,18 @@
 <p class="legend dim" id="legend"></p>
 <p class="dim" id="fcnote"></p>
 </div>
+</section>
+<section>
+<div class="head"><h2>The book — subjects &amp; expectation records</h2></div>
+<div class="card" id="booktable"></div>
+</section>
+<section>
+<div class="head"><h2>Positions</h2></div>
+<div class="card" id="positions"></div>
+</section>
+<section>
+<div class="head"><h2>Settlements</h2></div>
+<div class="card" id="settlements"></div>
 </section>
 <section>
 <div class="head"><h2>Honesty &amp; sources</h2></div>
@@ -77,7 +96,14 @@ function ganttGeom(feed,w){
   });
   return {t0:t0, t1:t1, labelW:labelW, ticks:ticks.map(t=>({x:X(t), label:new Date(t).toISOString().slice(5,10)})), rows:rows};
 }
-if(typeof module!=="undefined"){ module.exports={parseT,staleOf,ganttGeom}; }
+function expectationState(exp){ if(!exp) return "INTAKE"; return (exp.prior_value==null&&exp.posterior_value==null)? "INTAKE" : "SET"; }
+function expectationText(exp){
+  if(expectationState(exp)==="INTAKE") return "INTAKE — no estimate";
+  const p=exp.prior_value==null?"—":String(exp.prior_value);
+  const q=exp.posterior_value==null?"—":String(exp.posterior_value);
+  return "prior "+p+" · posterior "+q+" (n="+exp.n_evidence+")";
+}
+if(typeof module!=="undefined"){ module.exports={parseT,staleOf,ganttGeom,expectationState,expectationText}; }
 // ==== end pure logic ====
 let FEED=null;
 function trunc(s,n){ s=String(s==null?"":s); return s.length>n? s.slice(0,n-1)+"…" : s; }
@@ -115,7 +141,15 @@ function renderBook(nowMs){
   $("gantt").innerHTML=out;
   $("legend").innerHTML='<span>▬ bar: open → knowable</span><span>◆ landing</span><span>▲ wall (hollow = soft)</span><span>● settle point</span><span><span class="fctick">✦</span> forecasts score here — at settlement, at the issuer record</span><span>hatched → knowable by rule, date NOT_ESTABLISHED</span>';
   $("fcnote").textContent='Forecast layer: '+FEED.forecast_layer;
-  $("notes").innerHTML='<ul>'+FEED.honesty.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ul><p class="dim">Sources — book: '+esc(FEED.sources.book)+' · register: '+esc(FEED.sources.register)+'</p>';
+  $("booktable").innerHTML='<table class="st"><tr><th>Subject</th><th>Record of record</th><th>Knowable</th><th>Expectation — '+esc(FEED.subjects[0].expectation.quantity)+'</th><th>Settlement</th></tr>'+FEED.subjects.map(s=>{
+    const st=expectationState(s.expectation);
+    const cell=st==="INTAKE"? '<span class="chip intake">INTAKE</span> <span class="dim">no estimate</span>' : esc(expectationText(s.expectation));
+    return '<tr><td>'+esc(s.label)+'<br><span class="dim">'+esc(s.id)+'</span></td><td>'+esc(s.record_of_record||s.settles_by)+'</td><td>'+esc(s.knowable.text)+'</td><td title="'+esc(s.expectation.prior_basis)+'">'+cell+'<br><span class="dim">evidence items: '+s.expectation.n_evidence_items+'</span></td><td>'+(s.settlement.value==null? '<span class="dim">open — '+esc(s.settlement.field)+'</span>' : esc(String(s.settlement.value)))+'</td></tr>';
+  }).join('')+'</table>';
+  $("positions").innerHTML=FEED.positions.length? '<table class="st"><tr><th>Position</th></tr>'+FEED.positions.map(e=>'<tr><td>'+esc(trunc(JSON.stringify(e),400))+'</td></tr>').join('')+'</table>' : '<p class="dim">No positions opened yet. Positions appear here as they open in the ledger of record.</p>';
+  const stl=FEED.settlements.concat(FEED.feed_settlements);
+  $("settlements").innerHTML=stl.length? '<table class="st"><tr><th>Settlement</th></tr>'+stl.map(s2=>'<tr><td>'+esc(trunc(JSON.stringify(s2),400))+'</td></tr>').join('')+'</table>' : '<p class="dim">No settlements yet. Settlements land here from the named records of record as subjects resolve.</p>';
+  $("notes").innerHTML='<p>'+esc(FEED.publication)+'</p><ul>'+FEED.honesty.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ul><p class="dim">Ledger of record: '+esc(FEED.ledger_ref.path)+' — '+FEED.ledger_ref.entries+' entries, append-only. '+esc(FEED.ledger_ref.note)+'</p><p class="dim">Sources — publication feed: '+esc(FEED.upstream_feed)+' · book: '+esc(FEED.sources.book)+' · ledger: '+esc(FEED.sources.ledger)+' · register: '+esc(FEED.sources.register)+'</p>';
   $("meta").innerHTML='Book opened '+esc(FEED.book.opened)+' · '+FEED.book.subjects+' subjects · feed '+esc(FEED.generated_at)+(staleOf(FEED,nowMs)? ' <span class="chip stale">STALE</span>' : '');
 }
 fetch("./data/wagering-book.json",{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(j=>{ FEED=j; renderBook(Date.now()); }).catch(e=>{ $("meta").innerHTML='<span style="color:var(--bad);font-weight:700">FEED ERROR</span> '+esc(e.message); });

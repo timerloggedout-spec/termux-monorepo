@@ -43,6 +43,12 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
+      - name: Mint Swarm App token (stamp fan-out dispatch)
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
       - name: Run cert unit
         env:
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
@@ -66,6 +72,41 @@ jobs:
           curl -sS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/issues/506/comments" \
             -d "$(python3 -c 'import json,sys; print(json.dumps({"body": sys.argv[1]}))' "$body")" > /dev/null
+      - name: Emit dispatch stamp to scoring planes
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          verdict=$(grep -E '^UNIT_VERDICT ' /tmp/unit.log | tail -1 | sed 's/^UNIT_VERDICT //')
+          STAMP=$(VERDICT="$verdict" TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)" python3 - <<'PYEOF'
+          import json, os
+          v = json.loads(os.environ.get("VERDICT") or "{}")
+          ok = bool(v.get("ok"))
+          provider = "${{ inputs.provider }}"
+          stamp = {
+            "dispatch_id": "cert-unit-${{ github.run_id }}",
+            "ts": os.environ.get("TS"),
+            "task_class": "certifications-unit",
+            "entry": "506",
+            "trigger": "workflow_dispatch",
+            "provider": provider,
+            "model": v.get("model"),
+            "role": "builder",
+            "moniker": "optimizations-assurance",
+            "context": "certifications-unit ${{ inputs.cert }}/${{ inputs.unit }}",
+            "run": {"workflow": "cert-unit.yml", "run_id": "${{ github.run_id }}", "session_id": None},
+            "outcome": {"status": "completed" if ok else "failed",
+                        "summary": "cert unit ${{ inputs.unit }} verdict ok=%s" % ok,
+                        "artifact": "issue 506 verdict comment", "gate_call": None, "confirmed": None},
+            "quota": {"pool": provider, "cost_class": "free-credit" if provider == "baseten" else "free-tier", "slice": None},
+          }
+          print(json.dumps(stamp))
+          PYEOF
+          )
+          curl -sS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/dispatch-stamp-fanout.yml/dispatches" \
+            -d "$(python3 -c 'import json,sys; print(json.dumps({"ref": "master", "inputs": {"stamp": sys.argv[1]}}))' "$STAMP")" > /dev/null
+          echo "stamp dispatched for run ${{ github.run_id }}"
       - name: Upload unit artifacts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

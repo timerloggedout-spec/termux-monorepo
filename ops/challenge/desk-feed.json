@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-02T14:02:00Z",
+  "generated_at": "2026-11-02T22:05:00Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -2258,9 +2258,17 @@
         "pr": 1702,
         "merge_sha": "aa110a5e71af",
         "note": "D0 completion package (Delphi Oracle + fetch_evidence) \u2014 the contestant-model precedent. Own-repo port timerloggedout-spec/delphi-oracle@393e1f4b verified firsthand (blobs identical, tests 5 passed, demo receipts reproduced). Builders of record: Scout (port) + Delphi (verification).",
-        "sync": "delphi-oracle repo live @393e1f4b (foundation pin)"
+        "sync": "delphi-oracle repo live @393e1f4b (foundation pin)",
+        "release_v1": {
+          "tag": "v1.0.0",
+          "pin": "393e1f4b9f7f",
+          "kernel": "strands_oracle_mvp",
+          "release_id": 432016830,
+          "url": "https://github.com/timerloggedout-spec/delphi-oracle/releases/tag/v1.0.0",
+          "verified": "API read-back 2026-11-02 (desk)"
+        }
       },
-      "next": "Closed as foundation for D1 (StudySprint builds on the D0 package).",
+      "next": "Closed as foundation for D1 (StudySprint builds on the D0 package). \u00b7 DELPHI UPGRADE (owner order via main, 2026-11-02): leg 3 RELEASE DONE \u2014 v1.0.0 @pin 393e1f4b (release id 432016830, API-verified) \u00b7 leg 1 VIDEO \u21d2 D0 seat (3-beat walkthrough) \u00b7 leg 4 PAGE+BLOG \u21d2 Web Dev PM (names release + video + 2nd story) \u00b7 leg 2 YOUTUBE: upload step needs fleet-channel hand \u2014 flagged \u2191main, \u2205 silent stall \u00b7 claims gate holds (submissions=0)",
       "provider_usage": [
         {
           "provider": "Scout / Delphi (owner-named)",

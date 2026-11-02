@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T07:48:08Z",
+ "generated_at": "2026-11-02T07:55:23Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -41,12 +41,13 @@
  ],
  "coverage": {
   "denominator": "ops/quota/registry.json \u00b7 lane=model \u00b7 distinct provider",
-  "registry_records": 95,
-  "registry_providers": 93,
-  "with_dispatches": 5,
+  "registry_records": 97,
+  "registry_providers": 95,
+  "with_dispatches": 6,
   "zero_dispatch": [
    "aion",
    "cerebras",
+   "Claude",
    "cloudflare",
    "deepinfra",
    "felo",
@@ -135,7 +136,6 @@
    "zai"
   ],
   "unregistered_dispatch_providers": [
-   "DeepSeek",
    "Jules",
    "Muse",
    "claude-muse",
@@ -148,8 +148,8 @@
   "roles": 2,
   "tasks": 24,
   "dispatches": 21,
-  "registry_providers": 93,
-  "zero_dispatch_providers": 88,
+  "registry_providers": 95,
+  "zero_dispatch_providers": 89,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
    "passed": 17,
@@ -1086,6 +1086,13 @@
    "zero_dispatch": true
   },
   {
+   "provider": "Claude",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
    "provider": "cloudflare",
    "models": [],
    "model_count": 0,
@@ -1689,7 +1696,7 @@
   }
  ],
  "gaps": [
-  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): DeepSeek, Jules, Muse, claude-muse, github-actions",
+  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, claude-muse, github-actions",
   "desk-usage rows carry no run_id/dispatch_id (3 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

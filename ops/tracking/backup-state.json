@@ -1,0 +1,70 @@
+{
+ "schema": "backup-state/v1",
+ "generated_at": "2026-11-02T07:55:23Z",
+ "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
+ "spec": {
+  "doc": "docs/ops/BACKUP-STATE.md",
+  "metadata_only": "counts, hashes, verdicts \u2014 never file paths or backup content"
+ },
+ "sources": [
+  {
+   "id": "relays",
+   "path": "ops/tracking/backup-relays.jsonl",
+   "records": 1
+  },
+  {
+   "id": "snapshot",
+   "path": "scripts/tracking/backup_snapshot.json",
+   "status": "error:HTTPError: HTTP Error 404: Not Found",
+   "read_at": "2026-11-02T07:55:23Z"
+  }
+ ],
+ "marker": {
+  "state_hash": "528188422781f0c54c13bd023f084aa6a74fa0918a48c34a76d6bfdd70f751d5",
+  "export_id": "exp-20261102T062322Z-65e231",
+  "source": "relay"
+ },
+ "exports": [
+  {
+   "id": "exp-20261102T062322Z-65e231",
+   "at": "2026-11-02T06:24:53Z",
+   "t0": 288,
+   "t1": 46774,
+   "manifest_only": 15,
+   "excluded": 55,
+   "bytes": 54451903,
+   "gates_pass": true,
+   "publish_commit": "34a9dd16b5d974a8d8b986d32285f70146dbd488",
+   "state_hash": "528188422781f0c54c13bd023f084aa6a74fa0918a48c34a76d6bfdd70f751d5"
+  }
+ ],
+ "drills": [
+  {
+   "report": "reports/drill-2026-11-01.json",
+   "export_id": "exp-20261102T062322Z-65e231",
+   "verdict": "fail",
+   "t0": {
+    "checked": 288,
+    "mismatched": 0,
+    "excluded_absent": true
+   },
+   "t1": {
+    "checked": 46774,
+    "consistent": 46773,
+    "missing": 0
+   },
+   "restored_bytes": 54466842,
+   "mode": "in-memory verification (exec sandbox write denial); shipped restore tool semantics unchanged"
+  }
+ ],
+ "summary": {
+  "exports": 1,
+  "drills": 1,
+  "last_export_at": "2026-11-02T06:24:53Z",
+  "last_export_id": "exp-20261102T062322Z-65e231",
+  "last_drill_verdict": "fail"
+ },
+ "gaps": [
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-02T07:55:23Z): data may be stale; relays remain live"
+ ]
+}

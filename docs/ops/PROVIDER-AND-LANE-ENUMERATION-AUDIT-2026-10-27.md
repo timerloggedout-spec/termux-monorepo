@@ -447,3 +447,32 @@ Mistral note: Addendum 5 recorded the 2026-10-27 webWrapper ruling. On
 This addendum records the store fact and the supersession of Addendum 5's
 "unprovisioned by design" status; the route's current doctrine is the owning
 lanes' to state.
+
+---
+
+## Addendum 7 (2026-11-02) — queue item 11 closed: ml/pipelines is a library with one production lane
+
+Item 11 asked whether `ml/pipelines` is a library or a lane. Live evidence
+says both, with a precise split:
+
+- **Lane (production execution) — exactly one surface.**
+  `ml.pipelines.production_classify`, run by `.github/workflows/ml-pr-lane-classify.yml`
+  (daily schedule + dispatch; 24 runs, latest 41456042695 success
+  2026-11-02T13:47Z) over the live open-PR list, writing
+  `ops/ml/pr-lane-feed.json` (generated 2026-11-02T13:50Z: 184 PRs —
+  CANDIDATE 47 / EXTRACT 28 / NEED_EVIDENCE 92 / SUPERSEDE 17). Descriptive
+  only: no labels, comments, or gates (its contract,
+  `docs/ops/ML-PR-LANE-CLASSIFY.md`).
+- **Library — everything else.** Package form (`__main__.py` + `cli.py`,
+  stdlib-only): `ml/` holds 564 files / 542 py / 67 test files. Production
+  importers outside the package: `scripts/doe/prlane_replay.py`
+  (`classify_pr`) and tests (`moneyball.quota_weights`). The
+  `ml-pipelines-keepalive.yml` workflow (42 runs, path-triggered) is its CI
+  test leg — unit tests + CLI smoke — not a production lane.
+
+Supersession: the census appendix (PR #1761) recorded "classify.py never
+classifies a live PR." That was true on 2026-10-27 and is false now: the
+production trigger landed 2026-10-28 (its first five dispatched runs failed
+on a sys.path shadowing bug — `operator/` subpackage vs stdlib — root-caused
+in the workflow's own header; scheduled successes run from 2026-10-29).
+Item 11 is CLOSED with this record.

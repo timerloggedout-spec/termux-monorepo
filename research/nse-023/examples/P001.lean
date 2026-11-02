@@ -7,7 +7,7 @@
 import Batteries
 
 /-- Adapter lemma: function composition is associative. -/
-theorem fleet_comp_assoc {α β γ δ : Type*} (f : γ → δ) (g : β → γ) (h : α → β) :
+theorem fleet_comp_assoc {α β γ δ : Type} (f : γ → δ) (g : β → γ) (h : α → β) :
     (f ∘ g) ∘ h = f ∘ (g ∘ h) := by
   funext x
   rfl

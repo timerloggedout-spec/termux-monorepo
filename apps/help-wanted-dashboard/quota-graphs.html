@@ -60,8 +60,9 @@ function render(){
   $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':'';
   $('series-grid').innerHTML=list.length?list.map(s=>{
     const n=(s.points||[]).length;
+    const sStale=!!s.last_point_at&&((Date.now()-new Date(s.last_point_at).getTime())>48*3600*1000);
     const ctx=s.context?'<p class="muted">Context: plan target flow '+esc(s.context.target_flow_per_min)+'/min ('+esc(s.context.source)+') — context only, not plotted as usage.</p>':'';
-    return '<div class="card"><div class="label">'+esc(s.title)+'<span class="chip">'+esc(kindLabel(s.kind))+'</span></div>'
+    return '<div class="card"><div class="label">'+esc(s.title)+'<span class="chip">'+esc(kindLabel(s.kind))+'</span>'+(sStale?'<span class="chip">STALE</span>':'')+'</div>'
       +seriesSvg(s)
       +'<p class="muted">'+esc(s.unit||'')+' · '+n+' point'+(n===1?'':'s')+(n===1?' — single observation, no trend implied':'')+(s.last_point_at?(' · last '+esc(s.last_point_at)):'')+'</p>'
       +ctx+'<p class="muted">Source: '+esc(s.provenance||'—')+'</p></div>';
@@ -73,10 +74,10 @@ async function load(){
   pack=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/usage-series.json?t='+bust,'./data/usage-series.json?t='+bust]);
   if(!pack){$('freshness').textContent='Pack unavailable';$('generated').textContent='Could not fetch ops/quota/usage-series.json.';return}
   const lastPts=[];Object.values(pack.axes||{}).forEach(rows=>(rows||[]).forEach(s=>{if(s.last_point_at)lastPts.push(s.last_point_at)}));
-  const lastPoint=lastPts.length?lastPts.sort()[lastPts.length-1]:null;
-  const stale=!!lastPoint&&((Date.now()-new Date(lastPoint).getTime())>48*3600*1000);
-  $('freshness').textContent=stale?('STALE — newest observation '+String(lastPoint).slice(0,10)):'Pack loaded';
-  $('generated').textContent='Schema '+(pack.schema||'—')+' · built by '+(pack.generated_by||'—')+(pack.generated_at?(' · generated '+pack.generated_at):' · generated — (pack predates stamping)')+(lastPoint?(' · newest point '+lastPoint):'')+(stale?'. Series extend when the quota-usage pack refreshes; the readings snapshots carry no usage values by design.':'');
+  const sorted=lastPts.sort();const oldest=sorted.length?sorted[0]:null;const newest=sorted.length?sorted[sorted.length-1]:null;
+  const stale=!!oldest&&((Date.now()-new Date(oldest).getTime())>48*3600*1000);
+  $('freshness').textContent=stale?('STALE — oldest observation '+String(oldest).slice(0,10)):'Pack loaded';
+  $('generated').textContent='Schema '+(pack.schema||'—')+' · built by '+(pack.generated_by||'—')+(pack.generated_at?(' · generated '+pack.generated_at):' · generated — (pack predates stamping)')+(oldest?(' · oldest point '+oldest):'')+(newest?(' · newest point '+newest):'')+(stale?'. Staleness is flagged per series on its card; series extend when the quota-usage pack refreshes.':'');
   render();
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{axis=b.dataset.axis;render()}));

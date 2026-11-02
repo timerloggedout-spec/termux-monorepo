@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T11:00:15Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T11:01:49Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `12d1306cc7` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `2f899f5fee` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 409 issues, 184 PRs. PR classes: EXTRACT 6 / CANDIDATE 92 / NEED_EVIDENCE 86 / SUPERSEDE 0.
+**Open inventory:** 409 issues, 185 PRs. PR classes: EXTRACT 5 / CANDIDATE 92 / NEED_EVIDENCE 88 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -18,7 +18,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1540 | EXTRACT | unlabelled | `97c0c5649f` | success | success | unstable | feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV |
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #2167 | EXTRACT | unlabelled | `601e40b31f` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -105,7 +104,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3675 | CANDIDATE | unlabelled | `a24a2483c3` | success | success | unknown | feat(ci): archwiz dangle_check — repo-side dangle_detector variant (Wave V verif |
 | #3676 | CANDIDATE | unlabelled | `30ae007d4d` | success | success | unknown | feat(ci): archwiz build_repo_index — repo-side build_final_all_profile variant |
 | #3707 | CANDIDATE | unlabelled | `4dadc44f6c` | success | success | unknown | g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeou |
-| #3723 | CANDIDATE | unlabelled | `5526e88bfe` | success | success | dirty | apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs) |
+| #3723 | CANDIDATE | unlabelled | `5526e88bfe` | success | success | unknown | apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs) |
 | #3755 | CANDIDATE | unlabelled | `f9c62712f1` | success | success | unknown | feat(ci): archwiz func_index — repo-side func_indexer variant (ast depth) |
 | #3757 | CANDIDATE | unlabelled | `32224dee89` | success | success | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
@@ -140,6 +139,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `cc84ecf1b7` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
+| #2167 | NEED_EVIDENCE | unlabelled | `cf586614f9` | queued | queued | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2182 | NEED_EVIDENCE | unlabelled | `5607284d96` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
@@ -190,13 +190,14 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3035 | NEED_EVIDENCE | unlabelled | `e358823bab` | not_reported | not_reported | unknown | [Draft] Independent RFP: foresight platform evaluation |
 | #3045 | NEED_EVIDENCE | unlabelled | `9511149971` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
-| #3209 | NEED_EVIDENCE | unlabelled | `97af9ac4c8` | not_reported | not_reported | unstable | chore(cadence): auto-register providers from surface drift |
+| #3209 | NEED_EVIDENCE | unlabelled | `97af9ac4c8` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
-| #3442 | NEED_EVIDENCE | unlabelled | `fc6e60adf6` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3442 | NEED_EVIDENCE | unlabelled | `b52058fa20` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3640 | NEED_EVIDENCE | unlabelled | `8ada38da33` | not_reported | not_reported | unstable | chore(proposals): refresh proposals-feed.json |
+| #3640 | NEED_EVIDENCE | unlabelled | `8ada38da33` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
+| #3795 | NEED_EVIDENCE | unlabelled | `72b4b6bec9` | not_reported | not_reported | unstable | chore(dashboards): refresh surface feeds |
 
 ## Families (open)
 
@@ -211,6 +212,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 12 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 20 | 182 |
+| unlabelled | 20 | 183 |
 
 **Unlabelled open issues (20):** #308, #388, #389, #1226, #1450, #2185, #2210, #2571, #2732, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3735, #3751, #3752 — worked oldest-first by the issue-lifecycle lane pass.

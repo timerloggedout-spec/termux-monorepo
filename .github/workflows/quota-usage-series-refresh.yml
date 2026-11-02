@@ -20,6 +20,7 @@ on:
     branches: [master]
     paths:
       - 'ops/quota/quota-usage.json'
+      - 'ops/quota/rate-limit-events.json'
       - 'ops/challenge/desk-feed.json'
       - 'ops/quota/allocation-plan.json'
       - 'scripts/quota_usage_series.py'

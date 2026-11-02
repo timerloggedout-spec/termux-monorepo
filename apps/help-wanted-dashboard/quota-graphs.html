@@ -18,6 +18,7 @@
 <button class="tab" role="tab" data-axis="provider" aria-selected="true">Per provider</button>
 <button class="tab" role="tab" data-axis="model" aria-selected="false">Per model</button>
 <button class="tab" role="tab" data-axis="service" aria-selected="false">Per service</button>
+<button class="tab" role="tab" data-axis="events" aria-selected="false">Rate-limit events</button>
 </div>
 <div id="axis-note"></div>
 <div id="series-grid" class="grid grid-2"></div>
@@ -27,17 +28,17 @@
 <script>
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 // ==== pure logic (node-sim tested) ====
-const KIND_LABEL={measured:'measured',exact:'usage-exact','usage-exact':'usage-exact','activity-proxy':'activity-proxy — NOT consumption',reconstructed:'reconstructed',estimated:'estimated'};
+const KIND_LABEL={measured:'measured',exact:'usage-exact','usage-exact':'usage-exact','activity-proxy':'activity-proxy — NOT consumption',reconstructed:'reconstructed',estimated:'estimated',event:'rate-limit event'};
 function kindLabel(k){return KIND_LABEL[k]||String(k||'unknown')}
 function median(xs){if(!xs.length)return 0;const s=[...xs].sort((a,b)=>a-b);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2}
 function chartGeom(points,w,h){
-  const pts=(points||[]).filter(p=>p&&p.t&&typeof p.v==='number').map(p=>({t:new Date(p.t).getTime(),v:p.v,ts:p.t})).filter(p=>isFinite(p.t)).sort((a,b)=>a.t-b.t);
+  const pts=(points||[]).filter(p=>p&&p.t&&typeof p.v==='number').map(p=>({t:new Date(p.t).getTime(),v:p.v,ts:p.t,class:p.class||null})).filter(p=>isFinite(p.t)).sort((a,b)=>a.t-b.t);
   if(!pts.length)return{dots:[],segs:[],minV:0,maxV:0};
   const pad={l:8,r:8,t:10,b:14},iw=w-pad.l-pad.r,ih=h-pad.t-pad.b;
   const minT=pts[0].t,maxT=pts[pts.length-1].t,minV=Math.min(...pts.map(p=>p.v)),maxV=Math.max(...pts.map(p=>p.v));
   const spanT=Math.max(1,maxT-minT),spanV=Math.max(1e-9,maxV-minV);
   const X=t=>pad.l+(spanT===1?iw/2:(t-minT)/spanT*iw),Y=v=>pad.t+ih-(spanV===0?ih/2:(v-minV)/spanV*ih);
-  const dots=pts.map(p=>({x:+X(p.t).toFixed(1),y:+Y(p.v).toFixed(1),t:p.ts,v:p.v}));
+  const dots=pts.map(p=>({x:+X(p.t).toFixed(1),y:+Y(p.v).toFixed(1),t:p.ts,v:p.v,cls:p.class||null}));
   const steps=[];for(let i=1;i<pts.length;i++)steps.push(pts[i].t-pts[i-1].t);
   const med=median(steps),minStep=steps.length?Math.min(...steps):0;
   const segs=[];for(let i=1;i<dots.length;i++){const dt=pts[i].t-pts[i-1].t;const gap=minStep>0&&dt>3*minStep&&dt>med;segs.push({x1:dots[i-1].x,y1:dots[i-1].y,x2:dots[i].x,y2:dots[i].y,gap:!!gap})}
@@ -47,17 +48,18 @@ function seriesSvg(s){
   const g=chartGeom(s.points,640,180);
   if(!g.dots.length)return '<p class="muted">No observations on record.</p>';
   const lines=g.segs.map(sg=>'<line x1="'+sg.x1+'" y1="'+sg.y1+'" x2="'+sg.x2+'" y2="'+sg.y2+'" stroke="currentColor" stroke-width="1.5" '+(sg.gap?'stroke-dasharray="2 5" opacity="0.55"':'')+'/>').join('');
-  const dots=g.dots.map(d=>'<circle cx="'+d.x+'" cy="'+d.y+'" r="3.2" fill="currentColor"><title>'+esc(d.t)+' · '+esc(d.v)+'</title></circle>').join('');
+  const dots=g.dots.map(d=>s.kind==='event'?'<path d="M '+d.x+' '+(d.y-6.5)+' L '+(d.x+6.5)+' '+d.y+' L '+d.x+' '+(d.y+6.5)+' L '+(d.x-6.5)+' '+d.y+' Z" fill="currentColor"><title>'+esc(d.t)+' · '+esc(d.cls||'event')+'</title></path>':'<circle cx="'+d.x+'" cy="'+d.y+'" r="3.2" fill="currentColor"><title>'+esc(d.t)+' · '+(d.cls?esc(d.cls):esc(d.v))+'</title></circle>').join('');
   return '<svg class="chart" viewBox="0 0 640 180" role="img" aria-label="'+esc(s.title)+'">'+lines+dots+'</svg>';
 }
 // ==== end pure logic ====
-let pack=null,axis='provider';
+let pack=null,axis='provider',EVENTS=null;
+function evList(bucket){if(!EVENTS)return '';const rows=(EVENTS.events||[]).filter(e=>e.bucket===bucket);if(!rows.length)return '';return '<p class="muted">'+rows.map(e=>esc(e.at)+' · '+esc(e.class||'')+(e.http?(' · HTTP '+esc(e.http)):'')+(e.surface?(' · '+esc(e.surface)):'')).join('<br>')+'</p>'}
 function render(){
   const axes=(pack&&pack.axes)||{};
   const list=axes[axis]||[];
   document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.axis===axis?'true':'false'));
-  $('graphs-summary').textContent=pack?('provider '+(axes.provider||[]).length+' series · model '+(axes.model||[]).length+' series · service '+(axes.service||[]).length+' series'):'Pack unavailable';
-  $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':'';
+  $('graphs-summary').textContent=pack?('provider '+(axes.provider||[]).length+' series · model '+(axes.model||[]).length+' series · service '+(axes.service||[]).length+' series · events '+(axes.events||[]).length+' series'):'Pack unavailable';
+  $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':(axis==='events'?'<div class="card"><p class="muted">Recorded rate-limit incidents per bucket (register: ops/quota/rate-limit-events.json, append-only). No recent markers means no recorded incidents - the register is incident-driven, not a live probe.</p></div>':'');
   $('series-grid').innerHTML=list.length?list.map(s=>{
     const n=(s.points||[]).length;
     const sStale=!!s.last_point_at&&((Date.now()-new Date(s.last_point_at).getTime())>48*3600*1000);
@@ -65,13 +67,14 @@ function render(){
     return '<div class="card"><div class="label">'+esc(s.title)+'<span class="chip">'+esc(kindLabel(s.kind))+'</span>'+(sStale?'<span class="chip">STALE</span>':'')+'</div>'
       +seriesSvg(s)
       +'<p class="muted">'+esc(s.unit||'')+' · '+n+' point'+(n===1?'':'s')+(n===1?' — single observation, no trend implied':'')+(s.last_point_at?(' · last '+esc(s.last_point_at)):'')+'</p>'
-      +ctx+'<p class="muted">Source: '+esc(s.provenance||'—')+'</p></div>';
+      +ctx+(s.kind==='event'?evList(s.key):'')+'<p class="muted">Source: '+esc(s.provenance||'—')+'</p></div>';
   }).join(''):'<div class="card empty">No series on this axis yet — see the note above. Absence is the honest state; nothing is inferred.</div>';
 }
 async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
 async function load(){
   const bust=Date.now();
   pack=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/usage-series.json?t='+bust,'./data/usage-series.json?t='+bust]);
+  EVENTS=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/rate-limit-events.json?t='+bust]);
   if(!pack){$('freshness').textContent='Pack unavailable';$('generated').textContent='Could not fetch ops/quota/usage-series.json.';return}
   const lastPts=[];Object.values(pack.axes||{}).forEach(rows=>(rows||[]).forEach(s=>{if(s.last_point_at)lastPts.push(s.last_point_at)}));
   const sorted=lastPts.sort();const oldest=sorted.length?sorted[0]:null;const newest=sorted.length?sorted[sorted.length-1]:null;

@@ -105,7 +105,7 @@ jobs:
           sleep 45
           python3 -B scripts/telemetry_ingest/hindsight_verify.py \
             --receipt-out ops/telemetry/hindsight-verify.json
-      - name: HindSight FULL populate (gated: proof ok AND vars.HINDSIGHT_POPULATE_FULL == 'true')
+      - name: HindSight FULL populate (gated)
         if: steps.hs_proof.outputs.proof_ok != '0' && vars.HINDSIGHT_POPULATE_FULL == 'true'
         env:
           HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}

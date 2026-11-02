@@ -64,12 +64,16 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Install PostgreSQL client (major pinned to the service)
+      - name: Prepare PostgreSQL 16 client wrappers (service image as toolbox)
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq postgresql-client-16 >/dev/null
-          echo "/usr/lib/postgresql/16/bin" >> "$GITHUB_PATH"
-          /usr/lib/postgresql/16/bin/psql --version; /usr/lib/postgresql/16/bin/pg_dump --version
+          mkdir -p /tmp/pgbin
+          for tool in psql pg_dump; do
+            printf '#!/bin/sh\nexec docker run --rm --network host -e PGPASSWORD -e PGUSER -e PGHOST -v "$PWD:/work" -w /work postgres:16 %s "$@"\n' "$tool" > "/tmp/pgbin/$tool"
+            chmod +x "/tmp/pgbin/$tool"
+          done
+          echo "/tmp/pgbin" >> "$GITHUB_PATH"
+          docker pull postgres:16
+          /tmp/pgbin/psql --version; /tmp/pgbin/pg_dump --version
 
       - name: Build database
         run: |

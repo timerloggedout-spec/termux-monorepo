@@ -1,0 +1,117 @@
+name: owner-records-vercel
+
+# Owner-records gated Vercel project (owner decisions D1-D5, 2026-11-01).
+# Serves the dashboard static build + owner-records.html + a STAGED
+# owner-records.xml (scripts/owner_records.py xml; D5: Vercel-only,
+# never committed to the app tree / Pages) behind Vercel Authentication
+# SSO scope=all (incl. production domain; Hobby $0 per the
+# vercel-specialist scoping 2026-11-01).
+#
+# Sequence is gated: project ensure (harmless, undeployed) -> page gate
+# (fail-closed while apps/help-wanted-dashboard/owner-records.html is
+# absent from master, so an empty project is never locked) -> stage +
+# deploy -> verify page+XML live -> automation bypass secret -> SSO
+# flip -> verify gated (signed-out challenged, bypass passes).
+# Dispatch-only; public projects untouched.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: owner-records-vercel
+  cancel-in-progress: false
+
+jobs:
+  owner-records:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+      PROJECT: owner-records
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure project, gate on page, deploy, protect
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then echo "::error::VERCEL_TOKEN secret is missing"; exit 1; fi
+          API="https://api.vercel.com"
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+          # 1. Ensure project exists (no git link; deploys are staged CLI deploys).
+          if curl -fsS -H "$AUTH" "$API/v9/projects/$PROJECT?teamId=$SCOPE" > "$RUNNER_TEMP/proj.json" 2>/dev/null; then
+            echo "::notice::$PROJECT already exists"
+          else
+            curl -fsS -X POST -H "$AUTH" -H "Content-Type: application/json" \
+              -d "{\"name\":\"$PROJECT\"}" "$API/v10/projects?teamId=$SCOPE" > "$RUNNER_TEMP/proj.json"
+            echo "::notice::$PROJECT created"
+          fi
+          PID=$(jq -r '.id' "$RUNNER_TEMP/proj.json")
+          # 2. Page gate: never deploy/protect before the page exists in source.
+          if [ ! -f apps/help-wanted-dashboard/owner-records.html ]; then
+            echo "::warning::owner-records.html not on master yet - project ensured ($PID), deploy + SSO flip held."
+            { echo "## owner-records-vercel"; echo "- project: `$PROJECT` ($PID) ensured, undeployed"; echo "- state: HELD at page gate (owner-records.html absent)"; } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          # 3. Stage the dashboard build + XML + stamps into a temp tree.
+          npm i -g vercel@latest >/dev/null 2>&1
+          W="$RUNNER_TEMP/deploy-$PROJECT"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
+          vercel link --yes --project "$PROJECT" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
+          cp -a "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/." "$W/"
+          mkdir -p "$W/data"
+          G="$GITHUB_WORKSPACE/docs/ops/generated"
+          [ -f "$G/help-wanted-status.json" ] && cp "$G/help-wanted-status.json" "$W/data/status.json" || true
+          [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$W/data/lane-matrix-status.json" || true
+          printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' \
+            "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_REF_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$W/data/build.json"
+          python3 "$GITHUB_WORKSPACE/scripts/build_dashboard_manifest.py" --root "$W" \
+            --channel production --source-ref "$GITHUB_REF_NAME" --source-sha "$GITHUB_SHA" --version-prefix "1.0.1"
+          python3 "$GITHUB_WORKSPACE/scripts/owner_records.py" xml --root "$GITHUB_WORKSPACE" --out "$W/owner-records.xml"
+          test -s "$W/owner-records.xml"
+          # 4. Deploy to production.
+          URL=$(vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE")
+          echo "::notice::deployed $PROJECT -> $URL"
+          LIVE="https://$PROJECT.vercel.app"
+          # 5. Verify page + XML live BEFORE locking.
+          ok=""
+          for i in 1 2 3 4 5 6; do
+            c1=$(curl -s -o /dev/null -w "%{http_code}" "$LIVE/owner-records.html?t=$(date +%s)" || true)
+            c2=$(curl -s -o /dev/null -w "%{http_code}" "$LIVE/owner-records.xml?t=$(date +%s)" || true)
+            [ "$c1" = "200" ] && [ "$c2" = "200" ] && { ok=1; break; }
+            sleep 10
+          done
+          if [ -z "$ok" ]; then echo "::error::post-deploy verify failed (html=$c1 xml=$c2); SSO flip held"; exit 1; fi
+          # 6. Automation bypass secret (create only if none exists; value never logged).
+          curl -fsS -H "$AUTH" "$API/v9/projects/$PID?teamId=$SCOPE" > "$RUNNER_TEMP/proj2.json"
+          BYPASS=""
+          if [ "$(jq -r '(.protectionBypass // {}) | length' "$RUNNER_TEMP/proj2.json")" = "0" ]; then
+            curl -fsS -X POST -H "$AUTH" "$API/v9/projects/$PID/protection-bypass?teamId=$SCOPE" > "$RUNNER_TEMP/bypass.json"
+            BYPASS=$(jq -r '.secret // empty' "$RUNNER_TEMP/bypass.json")
+            echo "::notice::automation bypass secret created (value not logged)"
+          else
+            echo "::notice::automation bypass secret already exists (value unrecoverable; in-job bypass verify skipped)"
+          fi
+          # 7. SSO flip: Vercel Authentication, scope=all deployments.
+          curl -fsS -X PATCH -H "$AUTH" -H "Content-Type: application/json" \
+            -d '{"ssoProtection":{"deploymentType":"all"}}' \
+            "$API/v9/projects/$PROJECT?teamId=$SCOPE" > "$RUNNER_TEMP/patched.json"
+          jq -e '.ssoProtection.deploymentType == "all"' "$RUNNER_TEMP/patched.json" >/dev/null \
+            || { echo "::error::SSO flip did not take (see patched project read)"; exit 1; }
+          # 8. Verify gated: signed-out challenged; bypass (if minted this run) passes.
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$LIVE/owner-records.html?t=$(date +%s)" || true)
+          case "$code" in 200) echo "::error::signed-out still 200 after SSO flip"; exit 1;; \
+            301|302|303|307|308|401|403) echo "::notice::signed-out challenged ($code)";; \
+            *) echo "::warning::signed-out returned $code (expected a challenge class)";; esac
+          bcode="skipped"
+          if [ -n "$BYPASS" ]; then
+            bcode=$(curl -s -o /dev/null -w "%{http_code}" -H "x-vercel-protection-bypass: $BYPASS" "$LIVE/owner-records.xml?t=$(date +%s)" || true)
+            [ "$bcode" = "200" ] || { echo "::error::bypass verify failed ($bcode)"; exit 1; }
+          fi
+          { echo "## owner-records-vercel"
+            echo "- project: `$PROJECT` ($PID) - $LIVE"
+            echo "- deployed: $URL @ $GITHUB_SHA"
+            echo "- protection: ssoProtection deploymentType=all (verified in PATCH read-back)"
+            echo "- signed-out: $code (challenged) - bypass: $bcode"
+          } >> "$GITHUB_STEP_SUMMARY"

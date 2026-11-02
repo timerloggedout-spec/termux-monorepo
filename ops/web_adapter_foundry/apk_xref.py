@@ -922,8 +922,14 @@ def acquire(spec: dict, out_dir: str | Path, fetch=_default_fetch) -> dict:
                 prov = gitea_release_apk(spec.get("gitea_url", ""), spec["repo"], fetch)
             elif source == "f-droid" and spec.get("package_id"):
                 prov = fdroid_apk(spec["package_id"], fetch)
-            elif source == "izzyondroid" and spec.get("package_id"):
+            elif source in ("izzyondroid", "lizzyondroid") and spec.get("package_id"):
+                # "lizzyondroid" is the spelling the issue forms carry
+                # (PR #3427, merged over this lane's seam objection);
+                # the channel is IzzyOnDroid and the canonical source
+                # name stays izzyondroid in provenance.
                 prov = izzyondroid_apk(spec["package_id"], fetch)
+                if prov is not None and source == "lizzyondroid":
+                    prov["via"] = "lizzyondroid->izzyondroid (form spelling alias)"
             elif source == "komistore" and spec.get("repo"):
                 # KomiStore is a discovery layer over upstream forge
                 # releases — its bytes are the upstream assets. Route

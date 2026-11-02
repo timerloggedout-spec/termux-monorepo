@@ -106,7 +106,7 @@ jobs:
           export DIAG
           python3 - <<PYEOF
           import json, os, urllib.request
-          body = "CODEROAD_IMAGE_DIAG run %s\n\n```\n%s\n```" % (os.environ["RUN_ID"], os.environ.get("DIAG", "")[:2400])
+          body = "CODEROAD_IMAGE_DIAG run %s\n\n%s" % (os.environ["RUN_ID"], os.environ.get("DIAG", "")[:2400])
           req = urllib.request.Request(
               "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
               data=json.dumps({"body": body}).encode(),

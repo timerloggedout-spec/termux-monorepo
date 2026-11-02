@@ -103,6 +103,23 @@
      "update": "audit-001 stated tick-ledger PR #2473 was still open. Firsthand recheck: PR #2473 MERGED 2026-11-01T13:41:36Z (merge a6a18d71939d) - scripts/cadence_tick_ledger.py + tests + docs/ops/CADENCE-TICK-LEDGER.md on master. It merged ~21 minutes after the wiring-check snapshot the audit drew on. The named gap is CLOSED; residual = operating adoption by Cadence, not a build gap. Correction recorded per verify-before-claim."
     }
    ]
+  },
+  {
+   "id": "audit-003",
+   "at": "2026-11-02T07:41:54Z",
+   "auditor": "quota-specialist",
+   "events_covered": 8,
+   "kind": "state-update (owner directive 2026-11-01: prioritize FIX from Audits)",
+   "findings": [
+    {
+     "id": "F4",
+     "event_refs": [
+      "census-2026-11-02T06:25:00Z-search-pat"
+     ],
+     "state": "machinery-landed",
+     "update": "Search-window scheduling landed: scripts/quota_search_pacer.py (Pacer: token-bucket 24/min default under the 30/min cap, secondary-limit backoff to the API-named reset, never retry inside a closed window; Checkpoint: per-unit JSON watermarks, resume-after-cut; planners: window-pull batching preferred over per-key fan-out) + docs/ops/SEARCH-WINDOW-SCHEDULING.md (the three rules: batch, pace, checkpoint). Unit-verified (pacing math, planners, schedule estimate). Remaining: Registry lane census adoption (owner: registry lane ac8e5e6b + quota-specialist spec) - first paced census is the production proof."
+    }
+   ]
   }
  ],
  "schema": "quota.rate-limit-event-audits/v1",

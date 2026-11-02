@@ -472,6 +472,9 @@ event and the continuation are two records, not one).
   DoE results. Judged by DoE: campaign records ∧ the standing
   significance gate (ESTABLISHED ⇔ n≥30 ∧ minority≥10 ∧ p<.05),
   never by registration. Until earned, `archW1z` := Owner only.
+  Baseline (owner Δ, 2026-11-01): the OPERATOR is already wired
+  automated — the bet sits on top of that live automation and
+  does not gate it.
   (Correction of record: an earlier paste marked ChronoMancer
   itself as the bet — struck; the ChronoMancer mapping above
   stands at its plain identity state.)

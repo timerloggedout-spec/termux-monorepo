@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T07:22:21Z",
+ "generated_at": "2026-11-02T07:24:19Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -39,12 +39,117 @@
    "records_used": 3
   }
  ],
+ "coverage": {
+  "denominator": "ops/quota/registry.json \u00b7 lane=model \u00b7 distinct provider",
+  "registry_providers": 93,
+  "with_dispatches": 4,
+  "zero_dispatch": [
+   "aion",
+   "cerebras",
+   "cloudflare",
+   "deepinfra",
+   "felo",
+   "friendli",
+   "g4f/AgentTools",
+   "g4f/Airforce",
+   "g4f/Antigravity",
+   "g4f/Arena",
+   "g4f/BingCreateImages",
+   "g4f/BlackboxPro",
+   "g4f/BlackForestLabs_Flux1Dev",
+   "g4f/BlackForestLabs_Flux1KontextDev",
+   "g4f/BraveSearch",
+   "g4f/CachedSearch",
+   "g4f/Cerebras",
+   "g4f/ChatGPT",
+   "g4f/Claude",
+   "g4f/Cloudflare",
+   "g4f/CohereForAI_C4AI_Command",
+   "g4f/Copilot",
+   "g4f/CopilotApp",
+   "g4f/DeepInfra",
+   "g4f/DeepSeek",
+   "g4f/ElevenLabs",
+   "g4f/G4FSpace",
+   "g4f/Gemini",
+   "g4f/GeminiCLI",
+   "g4f/GeminiPro",
+   "g4f/GithubCopilot",
+   "g4f/GLM",
+   "g4f/GoogleAiMode",
+   "g4f/GoogleSearch",
+   "g4f/Grok",
+   "g4f/Groq",
+   "g4f/HailuoAI",
+   "g4f/HuggingChat",
+   "g4f/HuggingFace",
+   "g4f/HuggingFaceMedia",
+   "g4f/HuggingSpace",
+   "g4f/KiloCode",
+   "g4f/LLM7",
+   "g4f/MarkItDown",
+   "g4f/MetaAI",
+   "g4f/MetaAIAccount",
+   "g4f/MicrosoftDesigner",
+   "g4f/Nvidia",
+   "g4f/Ollama",
+   "g4f/OmniRoute",
+   "g4f/OpenAIFM",
+   "g4f/OpenRouterFree",
+   "g4f/OperaAria",
+   "g4f/Perplexity",
+   "g4f/Pi",
+   "g4f/Pollinations",
+   "g4f/PollinationsAudio",
+   "g4f/PollinationsImage",
+   "g4f/Puter",
+   "g4f/Qwen",
+   "g4f/RelayRouter",
+   "g4f/StabilityAI_SD35Large",
+   "g4f/TeachAnything",
+   "g4f/WhiteRabbitNeo",
+   "g4f/You",
+   "g4f/Yqcloud",
+   "github",
+   "google",
+   "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+   "groq",
+   "huggingface",
+   "kilo",
+   "llm7",
+   "meta",
+   "modelscope",
+   "novita",
+   "nvidia",
+   "omni",
+   "openrouter",
+   "ovhcloud",
+   "requesty",
+   "routeway",
+   "sambanova",
+   "siliconflow",
+   "typhoon",
+   "unorouter",
+   "xfyun",
+   "xkiro",
+   "zai"
+  ],
+  "unregistered_dispatch_providers": [
+   "DeepSeek",
+   "Jules",
+   "Muse",
+   "claude-muse",
+   "github-actions"
+  ]
+ },
  "summary": {
   "providers": 9,
   "models": 12,
   "roles": 2,
   "tasks": 23,
   "dispatches": 20,
+  "registry_providers": 93,
+  "zero_dispatch_providers": 89,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
    "passed": 16,
@@ -100,7 +205,8 @@
     }
    ],
    "model_count": 1,
-   "task_count": 1
+   "task_count": 1,
+   "zero_dispatch": false
   },
   {
    "provider": "Jules",
@@ -169,7 +275,8 @@
     }
    ],
    "model_count": 1,
-   "task_count": 2
+   "task_count": 2,
+   "zero_dispatch": false
   },
   {
    "provider": "Muse",
@@ -266,7 +373,8 @@
     }
    ],
    "model_count": 1,
-   "task_count": 3
+   "task_count": 3,
+   "zero_dispatch": false
   },
   {
    "provider": "baseten",
@@ -316,7 +424,8 @@
     }
    ],
    "model_count": 1,
-   "task_count": 1
+   "task_count": 1,
+   "zero_dispatch": false
   },
   {
    "provider": "claude-muse",
@@ -357,7 +466,8 @@
     }
    ],
    "model_count": 1,
-   "task_count": 1
+   "task_count": 1,
+   "zero_dispatch": false
   },
   {
    "provider": "cohere",
@@ -505,7 +615,8 @@
     }
    ],
    "model_count": 2,
-   "task_count": 4
+   "task_count": 4,
+   "zero_dispatch": false
   },
   {
    "provider": "github-actions",
@@ -685,7 +796,8 @@
     }
    ],
    "model_count": 2,
-   "task_count": 5
+   "task_count": 5,
+   "zero_dispatch": false
   },
   {
    "provider": "mistral",
@@ -778,7 +890,8 @@
     }
    ],
    "model_count": 2,
-   "task_count": 2
+   "task_count": 2,
+   "zero_dispatch": false
   },
   {
    "provider": "sealion",
@@ -904,7 +1017,631 @@
     }
    ],
    "model_count": 1,
-   "task_count": 4
+   "task_count": 4,
+   "zero_dispatch": false
+  },
+  {
+   "provider": "aion",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "cerebras",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "cloudflare",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "deepinfra",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "felo",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "friendli",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/AgentTools",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Airforce",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Antigravity",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Arena",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/BingCreateImages",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/BlackboxPro",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/BlackForestLabs_Flux1Dev",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/BlackForestLabs_Flux1KontextDev",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/BraveSearch",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/CachedSearch",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Cerebras",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/ChatGPT",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Claude",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Cloudflare",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/CohereForAI_C4AI_Command",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Copilot",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/CopilotApp",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/DeepInfra",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/DeepSeek",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/ElevenLabs",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/G4FSpace",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Gemini",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/GeminiCLI",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/GeminiPro",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/GithubCopilot",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/GLM",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/GoogleAiMode",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/GoogleSearch",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Grok",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Groq",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/HailuoAI",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/HuggingChat",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/HuggingFace",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/HuggingFaceMedia",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/HuggingSpace",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/KiloCode",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/LLM7",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/MarkItDown",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/MetaAI",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/MetaAIAccount",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/MicrosoftDesigner",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Nvidia",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Ollama",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/OmniRoute",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/OpenAIFM",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/OpenRouterFree",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/OperaAria",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Perplexity",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Pi",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Pollinations",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/PollinationsAudio",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/PollinationsImage",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Puter",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Qwen",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/RelayRouter",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/StabilityAI_SD35Large",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/TeachAnything",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/WhiteRabbitNeo",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/You",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "g4f/Yqcloud",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "github",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "google",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "groq",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "huggingface",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "kilo",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "llm7",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "meta",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "modelscope",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "novita",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "nvidia",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "omni",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "openrouter",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "ovhcloud",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "requesty",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "routeway",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "sambanova",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "siliconflow",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "typhoon",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "unorouter",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "xfyun",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "xkiro",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
+  },
+  {
+   "provider": "zai",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
   }
  ],
  "gaps": [

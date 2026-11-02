@@ -41,7 +41,7 @@ def test_registry_sitemap_crosslinks():
     files = [p["file"] for p in manifest["pages"]]
     assert "quota-swarm.html" in files and files == sorted(files)
     assert '"file":"quota-swarm.html"' in (APP / "versioning.js").read_text().replace(" ", "")
-    assert "https://timerloggedout-spec.github.io/help-wanted/quota-swarm.html" in (APP / "sitemap.xml").read_text()
+    assert "https://timerloggedout-spec.github.io/tribute/quota-swarm.html" in (APP / "sitemap.xml").read_text()
     assert "./quota-swarm.html" in (APP / "quota.html").read_text()
     assert "./quota-swarm.html" in (APP / "family.html").read_text()
     assert "./quota-swarm.html" in (APP / "admin.html").read_text()

@@ -40,6 +40,6 @@ def test_registry_sitemap_crosslinks():
     files = [p["file"] for p in manifest["pages"]]
     assert "family.html" in files and files == sorted(files)
     assert '"file":"family.html"' in (APP / "versioning.js").read_text().replace(" ", "")
-    assert "https://timerloggedout-spec.github.io/help-wanted/family.html" in (APP / "sitemap.xml").read_text()
+    assert "https://timerloggedout-spec.github.io/tribute/family.html" in (APP / "sitemap.xml").read_text()
     assert "./family.html" in (APP / "tracking.html").read_text()
     assert "./family.html" in (APP / "admin.html").read_text()

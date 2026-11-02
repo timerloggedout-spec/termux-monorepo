@@ -155,3 +155,50 @@ do not retrigger other workflows, so the findings issue cannot wake
 deterministic intake parser itself and posts the record with the
 intake workflow's own hash-dedupe marker — a later human edit
 re-runs intake, which skips its duplicate.
+
+## Acquisition routes (2026-11-01 alt-store pass)
+
+Wired sources (`acquire` tries the filing's sources in order):
+
+| source | channel | mechanics |
+|---|---|---|
+| `github-releases` | GitHub Releases | latest release carrying an `.apk` asset; repo may be filed as slug or URL (normalized) |
+| `gitea-releases` | Gitea/Forgejo Releases | same shape via `/api/v1` |
+| `f-droid` | f-droid.org | metadata API; F-Droid-rebuilt + F-Droid-signed binaries |
+| `izzyondroid` | IzzyOnDroid repo (`apt.izzysoft.de/fdroid/repo`) | F-Droid-protocol v2 index (`index-v2.json`, verified live: 1,401 packages); binaries are **developer-built + developer-signed**, taken from upstream — a different trust class from `f-droid`, recorded in provenance (`repo_base`, `index_sha256` = the channel's per-file hash claim, next to the belt's own sha256 of the bytes) |
+| `other-store` | alt-store fallback chain | tries `izzyondroid` then `f-droid` for the package id; the acquired provenance carries `via: other-store-><channel>` |
+| `direct-apk` | a filed URL | refused outright when the host is `play.google.com` |
+
+**KomiStore — no channel to wire (verdict).** Komi Store (formerly
+GitHub Store) is a discovery/install layer over GitHub, Codeberg and
+Forgejo *releases*: the bytes it delivers are the upstream release
+assets themselves, already covered by `github-releases`/`gitea-releases`
+byte-for-byte. There is no KomiStore artifact channel distinct from
+its upstreams; its digest-verification idea is already belt behaviour
+(every download is sha256'd; F-Droid-protocol channels also carry an
+index hash claim for parity checks). A filing naming KomiStore maps
+to the upstream repo's releases route.
+
+**Aurora Store — the design question, answered honestly.** Aurora is
+an unofficial Google Play *protocol client*, not a download URL: an
+anonymous session is dispensed a Google account token by community
+dispenser servers, then speaks the Play protobuf API (check-in,
+purchase, delivery), and modern Play apps are delivered as split-APK
+sets derived from bundles rather than one universal APK. None of
+that fits this belt's stdlib, URL-route shape, and the dispenser
+layer adds a third party's Google accounts to the trust path. The
+belt's direct-Play refusal therefore stands, and `aurora` is **not**
+a wired source: a Play-only target filed today resolves through the
+wired alt channels (`other-store` chain) and, when none serves it,
+the no-artifact record names the checked channels — that record is
+the Aurora demand signal. Wiring Aurora for real is a separate
+build (dedicated Play-protocol client + an owner ruling on the
+dispenser trust posture), not an acquire-route patch.
+
+**Channel parity.** Where two channels serve the same package, run
+acquire per channel and compare: provenance `sha256` (belt-computed
+over the actual bytes) per channel, plus `index_sha256` where the
+channel publishes one. Byte-identical artifacts across channels hash
+equal; F-Droid-proper vs developer-signed channels (IzzyOnDroid,
+GitHub) legitimately differ for many apps because the signer/build
+differs — parity claims must name the channels they span.

@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 410,
-    "open_prs": 183,
+    "open_issues": 411,
+    "open_prs": 184,
     "pr_classes": {
-      "CANDIDATE": 88,
-      "EXTRACT": 5,
+      "CANDIDATE": 87,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 20,
-      "prs": 181,
+      "issues": 21,
+      "prs": 182,
       "unlabelled_numbers": [
         308,
         388,
@@ -71,11 +71,12 @@
         3673,
         3735,
         3751,
-        3752
+        3752,
+        3888
       ]
     }
   },
-  "generated_at": "2026-11-02T13:35:27Z",
+  "generated_at": "2026-11-02T13:40:57Z",
   "issues_unlabelled": [
     308,
     388,
@@ -96,7 +97,8 @@
     3673,
     3735,
     3751,
-    3752
+    3752,
+    3888
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -104,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "d8bc34d378"
+    "sha": "1b794749bc"
   },
   "prs": [
     {
@@ -176,6 +178,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "32224dee89",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3757,
+      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
+      "updated_at": "2026-11-02T13:40:44Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c48da7b95a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3885,
+      "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
+      "updated_at": "2026-11-02T13:37:17Z"
     },
     {
       "class": "CANDIDATE",
@@ -1356,21 +1386,7 @@
       "mergeable_state": "unknown",
       "number": 3755,
       "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
-      "updated_at": "2026-11-02T10:22:10Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "32224dee89",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3757,
-      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
-      "updated_at": "2026-11-02T10:15:49Z"
+      "updated_at": "2026-11-02T13:37:17Z"
     },
     {
       "class": "CANDIDATE",
@@ -1825,14 +1841,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "not_reported",
-        "smoke": "queued"
+        "smoke": "not_reported"
       },
-      "head_sha": "8077a2a7cb",
+      "head_sha": "430db22f6d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:35:12Z"
+      "updated_at": "2026-11-02T13:39:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2583,20 +2599,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1bafc7127e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3442,
-      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T13:34:03Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "13e71a6d8f",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2664,15 +2666,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "196d0ae8e6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3890,
+      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+      "updated_at": "2026-11-02T13:39:18Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "c48da7b95a",
+      "head_sha": "f65671b786",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3885,
-      "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
-      "updated_at": "2026-11-02T13:35:21Z"
+      "number": 3891,
+      "title": "nse023-oracle: elan PATH fix (first run INCONCLUSIVE, fail-closed \u2713)",
+      "updated_at": "2026-11-02T13:39:47Z"
     }
   ],
   "schema": "operator-matrix/v1",

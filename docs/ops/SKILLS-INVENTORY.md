@@ -71,11 +71,11 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Doc | Role |
 |-----|------|
-| [`HELP-WANTED-LANE.md`](HELP-WANTED-LANE.md) | Production execute |
-| [`HELP-WANTED-PARALLEL.md`](HELP-WANTED-PARALLEL.md) | Roster + limits |
-| [`HELP-WANTED-STATUS.md`](HELP-WANTED-STATUS.md) | Living human-review surface |
-| [`HELP-WANTED-DASHBOARD.md`](HELP-WANTED-DASHBOARD.md) | Live surfaces + deploy |
-| [`HELP-WANTED-EVIDENCE-FEED.md`](HELP-WANTED-EVIDENCE-FEED.md) | Receipts → evaluation |
+| [`TRIBUTE-LANE.md`](TRIBUTE-LANE.md) | Production execute |
+| [`TRIBUTE-PARALLEL.md`](TRIBUTE-PARALLEL.md) | Roster + limits |
+| [`TRIBUTE-STATUS.md`](TRIBUTE-STATUS.md) | Living human-review surface |
+| [`TRIBUTE-DASHBOARD.md`](TRIBUTE-DASHBOARD.md) | Live surfaces + deploy |
+| [`TRIBUTE-EVIDENCE-FEED.md`](TRIBUTE-EVIDENCE-FEED.md) | Receipts → evaluation |
 
 ## Cycle snapshot (2026-09-21 15:07 PDT)
 

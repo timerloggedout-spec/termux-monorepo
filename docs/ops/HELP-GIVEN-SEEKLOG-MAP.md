@@ -3,7 +3,7 @@
 **Session:** 2026-09-23
 **Agent-Identity:** Grok (Administrator)
 **Lane:** help-wanted / help-given (outward contribution / tribute)
-**Refs:** #718 SeekLog, #725 converter, HELP-WANTED-LANE, HELP-WANTED-TRIBUTE, HELP-WANTED-FOLLOWUP
+**Refs:** #718 SeekLog, #725 converter, TRIBUTE-LANE, TRIBUTE-TRIBUTE, TRIBUTE-FOLLOWUP
 
 ## Framing
 **Help-given** = the full outward FOSS contribution surface: scout → claim → upstream PR (tribute) → followup → llm-assist → rerequest → status → dashboard.

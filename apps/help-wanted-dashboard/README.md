@@ -4,7 +4,7 @@ Static KPI surface for the help-wanted lane.
 
 ## Live deploy
 
-See `docs/ops/HELP-WANTED-DASHBOARD.md` and workflow `help-wanted-dashboard-deploy.yml (legacy workflow identifier)`.
+See `docs/ops/TRIBUTE-DASHBOARD.md` and workflow `help-wanted-dashboard-deploy.yml (legacy workflow identifier)`.
 
 - **Vercel:** Actions job uses `secrets.VERCEL_TOKEN`
 - **GitHub Pages:** `gh-pages` branch → `https://timerloggedout-spec.github.io/termux-monorepo/`
@@ -40,7 +40,7 @@ The UI renders that information as **Control surface** and **Lane evolution** se
 
 Registered paths are intentionally broad enough to catch implementation, contract, workflow, skill, and status-generator changes:
 
-`apps/help-wanted-dashboard/`, `docs/ops/HELP-WANTED-*`, `.agents/skills/tribute-lane/`, `.github/workflows/help-wanted-*`, `scripts/ci/help_wanted_*`.
+`apps/help-wanted-dashboard/`, `docs/ops/TRIBUTE-*`, `.agents/skills/tribute-lane/`, `.github/workflows/help-wanted-*`, `scripts/ci/help_wanted_*`.
 
 The surface remains read-only: operator buttons navigate to GitHub Actions/evidence/contracts; they do not embed credentials or mutate repository state from browser JavaScript.
 

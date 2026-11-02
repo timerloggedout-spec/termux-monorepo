@@ -2,7 +2,7 @@
 """Append-only evidence receipts for help-wanted Oversight execute arm.
 
 Does NOT grant MoneyBall admission. Writes evaluation-cohort evidence only.
-See docs/ops/HELP-WANTED-EVIDENCE-FEED.md.
+See docs/ops/TRIBUTE-EVIDENCE-FEED.md.
 
 Usage:
   python3 scripts/ci/tribute_evidence.py \\

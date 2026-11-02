@@ -1,0 +1,16 @@
+{
+  "dispatch_id": "build-wire-gemini-invoke-3441",
+  "pr": 3441,
+  "merged": true,
+  "merge_sha": "7b185aef8215f7214a0cb9e18d01aa554031eb05",
+  "gates": {
+    "guard": [
+      "success",
+      "success"
+    ],
+    "hygiene": "success",
+    "ci_tests": null
+  },
+  "task": "build dispatch set 3/3: wire gemini-invoke.yml to the stamp fan-out",
+  "diff_summary": "gemini-invoke.yml gains a stamp job (needs invoke, always; Swarm App mint; fan-out dispatch with the run's canonical stamp)"
+}

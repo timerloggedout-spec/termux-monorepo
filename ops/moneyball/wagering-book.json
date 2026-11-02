@@ -1,0 +1,571 @@
+{
+ "schema": "moneyball.wagering-book/v1",
+ "generated_at": "2026-11-02T13:17:21Z",
+ "book": {
+  "opened": "2026-11-02",
+  "subjects": 23
+ },
+ "horizon": {
+  "start": "2026-11-02T00:00:00-08:00",
+  "end": "2026-12-12T23:59:00-08:00"
+ },
+ "family_label": {
+  "D1": "D1 Workshop to Ship (landing Nov 3, wall Nov 4 23:59 PT)",
+  "D2": "D2 Vultr Agent Rush (kickoff Nov 3 15:00Z, landing Nov 7, wall Nov 8 15:00 PT)",
+  "D3": "D3 Builder.io (landing Nov 8, wall Nov 9 23:59 PT)",
+  "D4": "D4 Kiroween (form landing Nov 30, landing Dec 2, wall Dec 4 14:00 PT)",
+  "D5": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
+  "AMD": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
+  "FCC": "FCC L1 (baseline milestone)"
+ },
+ "forecast_layer": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) \u2014 calendar anchors are DATA ON THE SUBJECT, not a new participant class",
+ "sources": {
+  "book": "ops/agentic-gambling/book/challenges-book.json@dfdafd629d46 (schema agentic-gambling-book/v1)",
+  "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
+ },
+ "honesty": [
+  "Subjects with a rule knowable (NOT_ESTABLISHED / on receipt / at exam pass) render open-ended: no date is invented.",
+  "AMD-17 / AMD-18 carry no register anchors (NOT_ESTABLISHED in the book) - no landing/wall markers render.",
+  "Forecast is an OUTPUT class (naming-collapse amendment #3830): forecasts score at each subject's settlement, at the issuer's record. There are no forecast rows.",
+  "Date-only knowables render at end of day PT, except 'by wall' subjects, which resolve at the wall instant."
+ ],
+ "subjects": [
+  {
+   "id": "D1-1-submission-landed",
+   "label": "Submission landed by wall {Y/N}",
+   "group": "D1 Workshop to Ship (landing Nov 3, wall Nov 4 23:59 PT)",
+   "family": "D1",
+   "register_item": "D1 StudySprint submission",
+   "settles_by": "entries confirmation_ref + coordinator record",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-03T09:00:00-08:00",
+   "wall_at": "2026-11-04T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-04T23:29:00-08:00",
+   "cushions": [
+    "2026-11-03T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-04",
+    "at": "2026-11-04T23:59:00-08:00",
+    "basis": "knowable = wall instant"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D1-2-placement-winner",
+   "label": "Placement = winner (top-3) {Y/N}",
+   "group": "D1 Workshop to Ship",
+   "family": "D1",
+   "register_item": "D1 StudySprint submission",
+   "settles_by": "Builder Center official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-03T09:00:00-08:00",
+   "wall_at": "2026-11-04T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-04T23:29:00-08:00",
+   "cushions": [
+    "2026-11-03T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (judging date unpublished)"
+   },
+   "anchors_note": "anchors = the D1 submission item's set; the placement itself settles on the official results posting"
+  },
+  {
+   "id": "D2-3-nocard-account-live",
+   "label": "Vultr no-card account live at kickoff {Y/N}",
+   "group": "D2 Vultr Agent Rush (kickoff Nov 3 15:00Z, landing Nov 7, wall Nov 8 15:00 PT)",
+   "family": "D2",
+   "register_item": "D2 Vultr kickoff",
+   "settles_by": "D2 seat + gate D2-NOCARD",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-03T09:00:00-08:00",
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [
+    "2026-11-03T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "at": "2026-11-03T15:00:00Z",
+    "text": "2026-11-03 15:00Z"
+   },
+   "anchors_note": "kickoff item carries stage B only in the register"
+  },
+  {
+   "id": "D2-4-submission-landed",
+   "label": "Submission landed by wall {Y/N}",
+   "group": "D2 Vultr Agent Rush",
+   "family": "D2",
+   "register_item": "D2 Vultr submission",
+   "settles_by": "entries confirmation_ref",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-07T09:00:00-08:00",
+   "wall_at": "2026-11-08T15:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-08T14:30:00-08:00",
+   "cushions": [
+    "2026-11-04T09:00:00-08:00",
+    "2026-11-07T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-08",
+    "at": "2026-11-08T15:00:00-08:00",
+    "basis": "knowable = wall instant"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D2-5-placement-top3",
+   "label": "Placement top-3 {Y/N}",
+   "group": "D2 Vultr Agent Rush",
+   "family": "D2",
+   "register_item": "D2 Vultr submission",
+   "settles_by": "lablab official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-07T09:00:00-08:00",
+   "wall_at": "2026-11-08T15:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-08T14:30:00-08:00",
+   "cushions": [
+    "2026-11-04T09:00:00-08:00",
+    "2026-11-07T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (post-close posting)"
+   },
+   "anchors_note": "anchors = the D2 submission item's set; placement settles on official posting"
+  },
+  {
+   "id": "D3-6-clips-gate-cleared",
+   "label": "Clips gate cleared by landing {Y/N}",
+   "group": "D3 Builder.io (landing Nov 8, wall Nov 9 23:59 PT)",
+   "family": "D3",
+   "register_item": "D3 ListingLens submission",
+   "settles_by": "gate D3-CLIPS-STORAGE",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-08T09:00:00-08:00",
+   "wall_at": "2026-11-09T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-09T23:29:00-08:00",
+   "cushions": [
+    "2026-11-05T09:00:00-08:00",
+    "2026-11-08T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-08",
+    "at": "2026-11-08T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D3-7-feature-batch-b1-b3",
+   "label": "Feature batch B1-B3 landed by Nov 8 {Y/N}",
+   "group": "D3 Builder.io",
+   "family": "D3",
+   "register_item": "D3 ListingLens submission",
+   "settles_by": "D3 seat per-PR verification",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-08T09:00:00-08:00",
+   "wall_at": "2026-11-09T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-09T23:29:00-08:00",
+   "cushions": [
+    "2026-11-05T09:00:00-08:00",
+    "2026-11-08T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-08",
+    "at": "2026-11-08T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D3-8-submission-landed",
+   "label": "Submission landed (form + public Clips URL) by wall {Y/N}",
+   "group": "D3 Builder.io",
+   "family": "D3",
+   "register_item": "D3 ListingLens submission",
+   "settles_by": "entries / D3 record",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-08T09:00:00-08:00",
+   "wall_at": "2026-11-09T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-09T23:29:00-08:00",
+   "cushions": [
+    "2026-11-05T09:00:00-08:00",
+    "2026-11-08T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-09",
+    "at": "2026-11-09T23:59:00-08:00",
+    "basis": "knowable = wall instant"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D3-9-placement-paid-tier",
+   "label": "Placement = paid tier (top-5) {Y/N}",
+   "group": "D3 Builder.io",
+   "family": "D3",
+   "register_item": "D3 ListingLens submission",
+   "settles_by": "Builder.io official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-08T09:00:00-08:00",
+   "wall_at": "2026-11-09T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-09T23:29:00-08:00",
+   "cushions": [
+    "2026-11-05T09:00:00-08:00",
+    "2026-11-08T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (post-close TBD)"
+   },
+   "anchors_note": "anchors = the D3 submission item's set; placement settles on official posting"
+  },
+  {
+   "id": "D4-10-credit-form-filed",
+   "label": "4,000-credit form filed by Nov 30 {Y/N}",
+   "group": "D4 Kiroween (form landing Nov 30, landing Dec 2, wall Dec 4 14:00 PT)",
+   "family": "D4",
+   "register_item": "D4 Kiro ID credit form",
+   "settles_by": "Gates / D4 seat",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-30T09:00:00-08:00",
+   "wall_at": "2026-12-01T12:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-12-01T11:30:00-08:00",
+   "cushions": [
+    "2026-11-27T09:00:00-08:00",
+    "2026-11-30T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-30",
+    "at": "2026-11-30T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D4-11-skeleton-apps-live",
+   "label": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}",
+   "group": "D4 Kiroween",
+   "family": "D4",
+   "register_item": "D4 Kiroween submission",
+   "settles_by": "D4 seat record",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-12-02T09:00:00-08:00",
+   "wall_at": "2026-12-04T14:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-12-04T13:30:00-08:00",
+   "cushions": [
+    "2026-11-29T09:00:00-08:00",
+    "2026-12-02T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-12-02",
+    "at": "2026-12-02T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D4-12-submission-landed",
+   "label": "Submission landed by wall {Y/N}",
+   "group": "D4 Kiroween",
+   "family": "D4",
+   "register_item": "D4 Kiroween submission",
+   "settles_by": "entries confirmation_ref (Devpost)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-12-02T09:00:00-08:00",
+   "wall_at": "2026-12-04T14:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-12-04T13:30:00-08:00",
+   "cushions": [
+    "2026-11-29T09:00:00-08:00",
+    "2026-12-02T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-12-04",
+    "at": "2026-12-04T14:00:00-08:00",
+    "basis": "knowable = wall instant"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D4-13-placement-any-prize",
+   "label": "Placement = any prize (overall/category/crew) {Y/N}",
+   "group": "D4 Kiroween",
+   "family": "D4",
+   "register_item": "D4 Kiroween submission",
+   "settles_by": "Devpost official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-12-02T09:00:00-08:00",
+   "wall_at": "2026-12-04T14:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-12-04T13:30:00-08:00",
+   "cushions": [
+    "2026-11-29T09:00:00-08:00",
+    "2026-12-02T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (post-close TBD)"
+   },
+   "anchors_note": "anchors = the D4 submission item's set; placement settles on official posting"
+  },
+  {
+   "id": "D5-14-spot-confirmation",
+   "label": "Spot confirmation received {Y/N}",
+   "group": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
+   "family": "D5",
+   "register_item": "D5 Aha kickoff",
+   "settles_by": "entries + gate D5-SPOT",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-17T09:00:00-08:00",
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [
+    "2026-11-17T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "on receipt (pending now)"
+   },
+   "anchors_note": "no dedicated spot item in the register; anchors = D5 Aha kickoff stage B (the spot gates the kickoff)"
+  },
+  {
+   "id": "D5-15-submission-landed",
+   "label": "Submission landed by wall {Y/N}",
+   "group": "D5 Aha",
+   "family": "D5",
+   "register_item": "D5 Aha submission",
+   "settles_by": "entries confirmation_ref",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-18T09:00:00-08:00",
+   "wall_at": "2026-11-19T12:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-19T11:30:00-08:00",
+   "cushions": [
+    "2026-11-15T09:00:00-08:00",
+    "2026-11-18T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-19",
+    "at": "2026-11-19T12:00:00-08:00",
+    "basis": "knowable = wall instant"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "D5-16-placement-winner",
+   "label": "Placement = winner {Y/N}",
+   "group": "D5 Aha",
+   "family": "D5",
+   "register_item": "D5 Aha submission",
+   "settles_by": "Aha official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-18T09:00:00-08:00",
+   "wall_at": "2026-11-19T12:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-19T11:30:00-08:00",
+   "cushions": [
+    "2026-11-15T09:00:00-08:00",
+    "2026-11-18T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "at": "2026-11-20T11:30:00-08:00",
+    "text": "2026-11-20 11:30 PT (dated)"
+   },
+   "anchors_note": "anchors = the D5 submission item's set; placement settles 2026-11-20 11:30 PT per Aha official"
+  },
+  {
+   "id": "AMD-17-gpu100-claim",
+   "label": "M1 $100 GPU claim filed by Nov 7 {Y/N}",
+   "group": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
+   "family": "AMD",
+   "register_item": null,
+   "settles_by": "gate AMD-GPU100",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-07",
+    "at": "2026-11-07T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for the M1 GPU claim; nearest register coverage starts at the League submission item"
+  },
+  {
+   "id": "AMD-18-m4-submitted",
+   "label": "M4 submitted by Nov 9 target {Y/N}",
+   "group": "AMD AI League",
+   "family": "AMD",
+   "register_item": null,
+   "settles_by": "AMD seat + League platform",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-09",
+    "at": "2026-11-09T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)"
+  },
+  {
+   "id": "AMD-19-academy-5-complete",
+   "label": "Academy >=5 complete by Nov 19 landing {Y/N}",
+   "group": "AMD AI League",
+   "family": "AMD",
+   "register_item": "AMD Academy C5",
+   "settles_by": "Gates evidence (cert + points) + certs ledger",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-19T09:00:00-08:00",
+   "wall_at": "2026-11-20T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-20T23:29:00-08:00",
+   "cushions": [
+    "2026-11-16T09:00:00-08:00",
+    "2026-11-19T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-19",
+    "at": "2026-11-19T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": "subject settles when the 5th course lands; anchors shown = AMD Academy C5 item; C1-C4 items carry their own full anchor sets in the register (C1 B Nov 6 / C2 B Nov 9 / C3 B Nov 12 / C4 B Nov 16)"
+  },
+  {
+   "id": "AMD-20-rocm-exam-passed",
+   "label": "ROCm exam passed by Nov 25 landing {Y/N}",
+   "group": "AMD AI League",
+   "family": "AMD",
+   "register_item": "AMD ROCm exam",
+   "settles_by": "Gates seat 840bd147 evidence",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-25T09:00:00-08:00",
+   "wall_at": "2026-11-28T23:59:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-11-28T23:29:00-08:00",
+   "cushions": [
+    "2026-11-22T09:00:00-08:00",
+    "2026-11-25T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-25",
+    "at": "2026-11-25T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "AMD-21-m2-m3-m5-m6-submissions",
+   "label": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}",
+   "group": "AMD AI League",
+   "family": "AMD",
+   "register_item": "AMD AI League submission",
+   "settles_by": "AMD seat records",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-28T09:00:00-08:00",
+   "wall_at": "2026-12-01T11:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-12-01T10:30:00-08:00",
+   "cushions": [
+    "2026-11-25T09:00:00-08:00",
+    "2026-11-28T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-28",
+    "at": "2026-11-28T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": null
+  },
+  {
+   "id": "AMD-22-podium",
+   "label": "Podium (top-3) at close {Y/N}",
+   "group": "AMD AI League",
+   "family": "AMD",
+   "register_item": "AMD AI League submission",
+   "settles_by": "lablab official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-11-28T09:00:00-08:00",
+   "wall_at": "2026-12-01T11:00:00-08:00",
+   "wall_soft": false,
+   "final_at": "2026-12-01T10:30:00-08:00",
+   "cushions": [
+    "2026-11-25T09:00:00-08:00",
+    "2026-11-28T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-12-01 (posting may lag)",
+    "at": "2026-12-01T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT",
+    "lag": true
+   },
+   "anchors_note": "anchors = the League submission item's set; podium settles on official posting (may lag Dec 1)"
+  },
+  {
+   "id": "FCC-23-relational-db-cert",
+   "label": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}",
+   "group": "FCC L1 (baseline milestone)",
+   "family": "FCC",
+   "register_item": "FCC L1 checkpoint (Dec 5) + FCC L1 exam (soft wall Dec 12)",
+   "settles_by": "certs ledger #506 + FCC verify link",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": "2026-12-05T09:00:00-08:00",
+   "wall_at": "2026-12-12T23:59:00-08:00",
+   "wall_soft": true,
+   "final_at": null,
+   "cushions": [
+    "2026-12-02T09:00:00-08:00",
+    "2026-12-05T09:00:00-08:00",
+    "2026-12-09T09:00:00-08:00",
+    "2026-12-12T09:00:00-08:00"
+   ],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "at exam pass"
+   },
+   "anchors_note": "soft item: register carries A/B stages only (checkpoint Dec 5 + exam soft wall Dec 12); no D/E stages"
+  }
+ ]
+}

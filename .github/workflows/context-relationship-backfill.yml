@@ -57,6 +57,17 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Pin source identity
+        id: source
+        run: |
+          set -euo pipefail
+          # One immutable source SHA for this run, resolved from the tree
+          # actually checked out. Collection, the temporal snapshot, the
+          # build-receipt guard, and validation all bind to this value --
+          # never to github.sha, which can name a different tree than the
+          # one this job read (queue delay lets master advance first).
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Determine historical continuation
         id: continuation
         env:
@@ -95,6 +106,8 @@ jobs:
           MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
           EXPECTED_REPOSITORY: ${{ github.repository }}
           EXPECTED_REF: master
+          EXPECTED_SOURCE_SHA: ${{ steps.source.outputs.sha }}
+          GITHUB_SHA: ${{ steps.source.outputs.sha }}
         run: |
           set -euo pipefail
           # Capture the builder's result separately from stderr. A rate-limited
@@ -125,12 +138,14 @@ jobs:
           if result.get("deferred") is True:
               reason = result.get("reason", "unspecified deferral")
               raise SystemExit(f"backfill collection deferred; refusing to validate stale artifacts: {reason}")
-          required = ("snapshot_id", "history_window", "coverage", "repository", "ref")
+          required = ("snapshot_id", "history_window", "coverage", "repository", "ref", "source_sha")
           missing = [field for field in required if field not in result]
           if missing:
               raise SystemExit(f"backfill builder result is incomplete; missing: {', '.join(missing)}")
           if result.get("repository") != os.environ["EXPECTED_REPOSITORY"] or result.get("ref") != os.environ["EXPECTED_REF"]:
               raise SystemExit("backfill builder result does not match the expected repository/ref")
+          if result.get("source_sha") != os.environ["EXPECTED_SOURCE_SHA"]:
+              raise SystemExit("backfill builder result source_sha does not match the pinned source SHA")
           PY
 
       - name: Validate backfill corpus before promotion
@@ -138,8 +153,9 @@ jobs:
         env:
           EXPECTED_REPOSITORY: ${{ github.repository }}
           EXPECTED_REF: master
-          # The builder binds temporal.source_sha to the immutable event SHA.
-          EXPECTED_SOURCE_SHA: ${{ github.sha }}
+          # The builder binds temporal.source_sha to the pinned source SHA
+          # resolved from this run's checkout (Pin source identity step).
+          EXPECTED_SOURCE_SHA: ${{ steps.source.outputs.sha }}
         run: |
           set -euo pipefail
           python3 -m unittest -q tests/test_context_relationship_backfill_validation.py

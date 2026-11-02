@@ -1,9 +1,9 @@
 # ATES Improvement Frame
 
-**`ates-improvement-frame` v0.3** — registered 2026-11-02 under DoE
+**`ates-improvement-frame` v0.4** — registered 2026-11-02 under DoE
 (v0: PR #3844 - mechanism correction: PR #3846 - v0.1: PR
-#3849 - v0.2: PR #3850, owner parity ruling - v0.3: this
-amendment, S measured).
+#3849 - v0.2: PR #3850, owner parity ruling - v0.3: PR
+#3853, S measured - v0.4: this amendment, Oracle recon).
 governance (see `docs/ops/DOE-FAMILY.md`, Method versions).
 ATES is nested under DoE (leveling of record); this frame is
 its improvement surface.
@@ -39,15 +39,22 @@ item); the parity problem is a MEASUREMENT problem
 quantity definitions and IMP-002 below are restated on the
 status field accordingly.
 
-Established denominator facts (Stewardship census): the
-emitting surface is ONE workflow_run path over ONE selected
-source workflow ("Continuous agent ops") of 271 repo
-workflows; the receipt workflow has 9 runs ever and is
-DORMANT since 2026-10-23; output is artifact-only (30-day
-retention, no in-repo persistence); payloads missing run
-id / attempt / timestamp produce NO receipt (the emitter
-refuses a synthetic receipt) — an exclusion class invisible
-in the store, countable only from the census leg.
+Established denominator facts (Stewardship census; Oracle
+recon @master f29955138f3b): the emitting surface is ONE
+workflow_run path over ONE selected source workflow
+("Continuous agent ops") of 309 registered workflows
+(Actions census; the 271 figure in the first census was the
+earlier count) — ATES-bearing workflows = 2 (see the layered
+surface note below). The receipt workflow has 9 runs ever
+and is DORMANT since 2026-10-23 — by INHERITANCE, not emitter
+fault: its trigger source "Continuous agent ops" (622 runs)
+has had no runs since 2026-10-23T13:33Z, and the receipt
+workflow's last run came 78s after the upstream's last
+completion. Output is artifact-only (30-day retention, no
+in-repo persistence); payloads missing run id / attempt /
+timestamp produce NO receipt (the emitter refuses a
+synthetic receipt) — an exclusion class invisible in the
+store, countable only from the census leg.
 
 ## The measured quantity — receipt coverage
 
@@ -63,6 +70,13 @@ against `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`).
   Stewardship's step-6 denominator re-derivation is that
   measurement in progress. S is versioned with this frame; a
   coverage figure without its S version is NOT_ESTABLISHED.
+- **Layered surface (Oracle recon, 2026-11-02).** The ATES
+  surface is WIDER than S: `ates-orchestrator-benchmark.yml`
+  (the MVT benchmark suite; 14 runs, including a success on
+  2026-11-02) is ATES surface but emits NO receipts and is
+  NOT in S. S names the receipt-selected set only; reading S
+  as the whole ATES surface understates the surface and
+  misstates the denominator's context.
 - **Workflow coverage** (per window) = workflows in S emitting
   at least one receipt / |S|.
 - **Run-level receipt rate**, per STATUS class c in

@@ -1,0 +1,51 @@
+name: quota-pages-visual
+
+# Hybrid E / B-lite (owner GO 2026-11-01): screenshot evidence for the
+# quota pages as run artifacts - 390px phone + desktop. Evidence only;
+# the rendered-value assertions live in the pytest Chrome tests.
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - apps/help-wanted-dashboard/quota.html
+      - apps/help-wanted-dashboard/quota-usage.html
+      - apps/help-wanted-dashboard/quota-graphs.html
+      - apps/help-wanted-dashboard/dashboard.css
+      - .github/workflows/quota-pages-visual.yml
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+      - name: Serve dashboard statically
+        run: |
+          python3 -m http.server 8901 --directory apps/help-wanted-dashboard &
+          sleep 2
+          curl -sf -o /dev/null http://127.0.0.1:8901/quota-graphs.html
+      - name: Screenshots (390px + desktop)
+        run: |
+          mkdir -p shots
+          CHROME="${{ steps.chrome.outputs.chrome-path }}"
+          for page in quota quota-usage quota-graphs; do
+            "$CHROME" --headless --disable-gpu --no-sandbox --hide-scrollbars \
+              --window-size=390,844 --virtual-time-budget=10000 \
+              --screenshot="shots/${page}-390.png" \
+              "http://127.0.0.1:8901/${page}.html"
+            "$CHROME" --headless --disable-gpu --no-sandbox --hide-scrollbars \
+              --window-size=1280,900 --virtual-time-budget=10000 \
+              --screenshot="shots/${page}-desktop.png" \
+              "http://127.0.0.1:8901/${page}.html"
+          done
+          ls -la shots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quota-pages-screenshots
+          path: shots/
+          retention-days: 30

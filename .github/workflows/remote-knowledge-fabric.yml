@@ -1,8 +1,21 @@
 name: Remote knowledge fabric
 
+# Cadence (re-specified 2026-11-02, ICM Q1 fix wave): event/drift-gated only —
+# workflow_dispatch + push to the manifest builder's own inputs. The former
+# fixed cron "17 6 * * *" is removed: fixed-clock cadence fails the owner's
+# crons-superseded rule (decision-tree / event-gated cadence is the model).
+# Identity (same fix wave): the App mint referenced vars.APP_CLIENT_ID +
+# secrets.APP_PRIVATE_KEY, which are NOT provisioned on this repository
+# (verified 2026-11-02: absent from repo variables/secrets; the account is a
+# user, so no org-level store exists) — every scheduled run failed at the
+# mint step (12/12, 2026-10-21 → 2026-11-01). Repository discovery now uses
+# the provisioned OPERATOR_GITHUB_TOKEN (owner PAT, same data surface:
+# /user/repos owner affiliation returns the fields the manifest builder
+# consumes). To restore the App route: provision the fabric App's key +
+# id as repo secret/variable, then reinstate a mint step in the proven
+# app-id form (cf. deepwiki-import-harvest.yml, PR #3350).
+
 on:
-  schedule:
-    - cron: "17 6 * * *"
   workflow_dispatch:
     inputs:
       include_devinwiki:
@@ -26,6 +39,11 @@ on:
         required: true
         default: en
         type: string
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/agentic/build_knowledge_fabric_manifest.py'
+      - '.github/workflows/remote-knowledge-fabric.yml'
 
 permissions:
   contents: read
@@ -43,21 +61,12 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Mint short-lived installation token
-        id: app-token
-        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
-        with:
-          client-id: ${{ vars.APP_CLIENT_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          permission-contents: read
-          permission-metadata: read
-      - name: Discover installation repositories
+      - name: Discover owner repositories
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          gh api --paginate /installation/repositories --jq '.repositories[] | {full_name, default_branch, archived, disabled, fork, has_wiki}' | jq -s '.' > repos.json
+          gh api --paginate '/user/repos?affiliation=owner&per_page=100' --jq '.[] | {full_name, default_branch, archived, disabled, fork, has_wiki}' | jq -s '.' > repos.json
       - name: Build redacted manifest
         env:
           INCLUDE_DEVIN: ${{ inputs.include_devinwiki || 'true' }}
@@ -79,7 +88,7 @@ jobs:
       - name: Generate deepwiki-rs documentation
         if: ${{ inputs.generate_deepwiki == true }}
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
           DEEPWIKI_LLM_API_KEY: ${{ secrets.DEEPWIKI_LLM_API_KEY }}
           DEEPWIKI_SCOPE: ${{ inputs.deepwiki_scope || 'current' }}
           DEEPWIKI_TARGET_LANGUAGE: ${{ inputs.deepwiki_target_language || 'en' }}
@@ -107,7 +116,7 @@ jobs:
           done < deepwiki-targets.txt
           # Generated documentation is intentionally not uploaded: it may contain source-derived content.
       - name: Probe Devin/DeepWiki status
-        if: ${{ inputs.include_devinwiki || github.event_name == 'schedule' }}
+        if: ${{ inputs.include_devinwiki != false }}
         env:
           DEEPWIKI_TOKEN: ${{ secrets.DEEPWIKI_TOKEN }}
         run: |

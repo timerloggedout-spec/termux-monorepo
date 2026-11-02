@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "doe",
- "generated_at": "2026-10-31T06:38:02Z",
+ "generated_at": "2026-11-02T00:17:30Z",
  "sources": [
   "deepcli/deepcli/observatory/doe.py",
   ".agents/skills/multivariate-doe/SKILL.md",
@@ -162,6 +162,42 @@
      "note": "Existing member. Its payload lives on the MVT surface (mvt-feed.json); this surface carries the pointer only, per the separation spec."
     },
     {
+     "campaign_id": "apk-1-parallel-versioning",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/apk-1-parallel-versioning/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 1,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "cb-1-chronomancer-emission",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/cb-1-chronomancer-emission/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
+     "campaign_id": "cmp-register",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/cmp-register/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
      "campaign_id": "lab-1-prompt-x-model-x-role",
      "issue": null,
      "kind": "campaign",
@@ -184,6 +220,66 @@
      "primary_outcome": "source-grounded task accuracy = required fragments recovered / required fragments (same scorer definition as pilot-1)",
      "runs": 0,
      "state": "admitted_design_only",
+     "results": null
+    },
+    {
+     "campaign_id": "live-1-wave-framing",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/live-1-wave-framing/DESIGN.json",
+     "factors": null,
+     "design_type": "2x2 factorial: framing (manipulated, assigned) x entry-class (intrinsic classification factor, NOT assignable \u2014 recorded before assignment, never relabelled after outcomes)",
+     "primary_outcome": null,
+     "runs": 7,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "live-2-prlane-tuning",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/live-2-prlane-tuning/DESIGN.json",
+     "factors": null,
+     "design_type": "replay_factorial_over_frozen_snapshots",
+     "primary_outcome": null,
+     "runs": 5,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "live-3-phrases-deepseek",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/live-3-phrases-deepseek/DESIGN.json",
+     "factors": null,
+     "design_type": "full_factorial_plus_control_staged",
+     "primary_outcome": null,
+     "runs": 1,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "live-4-dispatch-framing",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/live-4-dispatch-framing/DESIGN.json",
+     "factors": null,
+     "design_type": "blocked_single_factor_live",
+     "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
+     "campaign_id": "nc-1-notation-compliance",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/nc-1-notation-compliance/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 6,
+     "state": "executed",
      "results": null
     },
     {
@@ -249,6 +345,66 @@
      }
     },
     {
+     "campaign_id": "routed-dispatch",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/routed-dispatch/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 1,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "util-1-provider-rotation",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/util-1-provider-rotation/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 2,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "ww-1-duckduckgo",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/ww-1-duckduckgo/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
+     "campaign_id": "ww-2-brave",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/ww-2-brave/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
+     "campaign_id": "ww-3-you-com",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/ww-3-you-com/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 0,
+     "state": "admitted_design_only",
+     "results": null
+    },
+    {
      "member_id": "pilot-2-dispatch-topology-x-quota-policy",
      "kind": "campaign_candidate",
      "state": "proposal_only_not_admitted",
@@ -264,6 +420,42 @@
    ]
   },
   "campaigns": [
+   {
+    "campaign_id": "apk-1-parallel-versioning",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/apk-1-parallel-versioning/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 1,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "cb-1-chronomancer-emission",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/cb-1-chronomancer-emission/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
+   },
+   {
+    "campaign_id": "cmp-register",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/cmp-register/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
+   },
    {
     "campaign_id": "lab-1-prompt-x-model-x-role",
     "issue": null,
@@ -287,6 +479,66 @@
     "primary_outcome": "source-grounded task accuracy = required fragments recovered / required fragments (same scorer definition as pilot-1)",
     "runs": 0,
     "state": "admitted_design_only",
+    "results": null
+   },
+   {
+    "campaign_id": "live-1-wave-framing",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/live-1-wave-framing/DESIGN.json",
+    "factors": null,
+    "design_type": "2x2 factorial: framing (manipulated, assigned) x entry-class (intrinsic classification factor, NOT assignable \u2014 recorded before assignment, never relabelled after outcomes)",
+    "primary_outcome": null,
+    "runs": 7,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "live-2-prlane-tuning",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/live-2-prlane-tuning/DESIGN.json",
+    "factors": null,
+    "design_type": "replay_factorial_over_frozen_snapshots",
+    "primary_outcome": null,
+    "runs": 5,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "live-3-phrases-deepseek",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/live-3-phrases-deepseek/DESIGN.json",
+    "factors": null,
+    "design_type": "full_factorial_plus_control_staged",
+    "primary_outcome": null,
+    "runs": 1,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "live-4-dispatch-framing",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/live-4-dispatch-framing/DESIGN.json",
+    "factors": null,
+    "design_type": "blocked_single_factor_live",
+    "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
+   },
+   {
+    "campaign_id": "nc-1-notation-compliance",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/nc-1-notation-compliance/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 6,
+    "state": "executed",
     "results": null
    },
    {
@@ -350,11 +602,77 @@
      },
      "verdict": "threshold_not_met"
     }
+   },
+   {
+    "campaign_id": "routed-dispatch",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/routed-dispatch/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 1,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "util-1-provider-rotation",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/util-1-provider-rotation/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 2,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "ww-1-duckduckgo",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/ww-1-duckduckgo/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
+   },
+   {
+    "campaign_id": "ww-2-brave",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/ww-2-brave/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
+   },
+   {
+    "campaign_id": "ww-3-you-com",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/ww-3-you-com/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 0,
+    "state": "admitted_design_only",
+    "results": null
    }
   ]
  },
  "gaps": [
+  "Campaign cb-1-chronomancer-emission is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign cmp-register is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Campaign lab-1-prompt-x-model-x-role is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign live-4-dispatch-framing is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign ww-1-duckduckgo is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign ww-2-brave is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
+  "Campaign ww-3-you-com is admitted (design record committed) but has no run records yet \u2014 defined, not run.",
   "Pilot 2 (#1850) is proposal-only: no design record or run evidence, so it is not yet a family member.",
   "The DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that."
  ]

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5e301a2fd2efb3c13fb665cf10fa5553fb99524ebee8fa0fca5d9f4bef5c978c",
-  "workflow_count": 261,
+  "source_fingerprint": "e1526cd9107cdfe9b0c4c312aef5ecf2a393b9d9324ff91491760fdb685366df",
+  "workflow_count": 262,
   "workflows": [
     {
       "action_pins": [],
@@ -692,6 +692,21 @@
       "triggers": [
         "issue_comment",
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: cert-project cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "build"
+      ],
+      "name": "cert-project",
+      "path": ".github/workflows/cert-project.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

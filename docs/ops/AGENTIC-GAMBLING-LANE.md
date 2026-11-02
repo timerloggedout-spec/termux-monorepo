@@ -50,3 +50,12 @@ Internal market mechanics over **inference and challenge outcomes only**. No rea
 - **Residuals & royalties (code → legacy):** percentage residuals/royalties are owed on optimized 'steals' | 'splits' | etc. as code passes through upgrades — cherry-picked slices/splits carry a % back to origin. State today: **OPEN** — no mechanism found (royalty = 1 noise hit; residual hits are unrelated senses). Rule registered; mechanism = build item.
 - **Fees · roster · contracts for teams:** team-side structures — fees, team rosters, team contracts. State today: **PARTIAL** — team roster landed (`docs/ops/AGENT-TEAM-ROSTER.md`); team-formation contracts at proposal level (`docs/proposals/active/agent-team-formation/`); fees not found in lane/market context.
 - **Pooled 🪣:** pooled buckets fund promotions · incentives · bonuses. State today: **PARTIAL** — pooled quota buckets landed (`ops/quota` allocation-plan pools); promotion/incentive/bonus funding designation not found.
+
+## Addendum 3 — widened prior-art hunt (owner, 2026-11-01)
+
+Carriers widened to `docs/proposals/**`, all local design exports, early MoneyBall/market docs, charter-adjacent trees:
+
+- **Residuals/royalties:** ∅ after widened search — royalty = 0 in `docs/proposals/**`; every residual hit is an unrelated sense (graph blocked-nodes, ANOVA residual variation, residual billable cloud resources). State stays OPEN/absent.
+- **Fees:** ∅ after widened search — word-level `fee` = 0 in MSM + team-formation trees; exports carry only unrelated GCP platform-fee lines. Fees stay ABSENT.
+- **Team roster/contracts:** refined to **design-level** — `agent-team-formation/TEAM_CHARTER.md` carries a "Role assignment contract" (task-card + `context_manifest` contracts resolving lane/team/role/agent) and the roster model; packet state = draft / awaiting_review. Roster doc `AGENT-TEAM-ROSTER.md` landed separately.
+- **Pooled buckets:** nearest prior art = MSM-020 "modern USD pools" (Ollama provider balance pools) + `ops/quota` pooled allocation buckets — both are balance/quota pools, not promotion funding. Promotion/incentive/bonus designation stays ABSENT (bonus hits = Kiroween prize context only).

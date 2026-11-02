@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f4cc560db0253fcad0063f6a0873662e66d58893c3de715734ec9f7adaa78255",
-  "workflow_count": 269,
+  "source_fingerprint": "489e7d7567658bad682790cb373f09ee6b1c0eaefad54c354579aa85ff6310c4",
+  "workflow_count": 270,
   "workflows": [
     {
       "action_pins": [],
@@ -1282,6 +1282,21 @@
         "issue_comment",
         "pull_request",
         "pull_request_review_comment",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "deepseek-secret-probe",
+      "path": ".github/workflows/deepseek-secret-probe.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

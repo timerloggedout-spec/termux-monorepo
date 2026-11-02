@@ -84,8 +84,8 @@ After dispatch / commit / merge attempt:
 3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
 4. Promote when dual gates green **and** task outcome verified (FA-ADE auto-promote).
 
-Canonical skill: `.agents/skills/adaptive-feedback-cycle/SKILL.md`  
-Companion: `.github/skills/production-reconciliation/SKILL.md` (WAIT → VALIDATE → RE-FETCH)  
+Canonical skill: `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+Companion: `.github/skills/production-reconciliation/SKILL.md` (WAIT → VALIDATE → RE-FETCH)
 Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 
 ## Quick pointers
@@ -127,8 +127,13 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 
 ---
 
-**Collaborator-Identity:** Grok (Administrator)  
-**Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led  
-**Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.  
-**Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.  
+**Collaborator-Identity:** Grok (Administrator)
+**Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led
+**Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
+**Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.
 **Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.
+
+## Tool acquisition routes (owner, 2026-11-01)
+
+Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/download task:
+① Exec network calls ride an approval system — "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② Silent failure mode: downloads from non-whitelisted hosts (storage.googleapis.com, googlechromelabs.github.io) die at write (curl rc23/EPERM, 0-byte) with ∅ card generated — never report "platform-impossible"; correct report = "host not whitelisted ∧ no card engaged; route via ③/④". ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact route via api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.

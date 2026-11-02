@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-02T07:10:00Z",
+ "generated_at": "2026-11-02T09:35:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2313,7 +2313,26 @@
      "merge_sha": "2c0894d2e7d3",
      "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
     },
-    "execution_posture": "OWNER POSTURE (2026-11-01 via D1 seat): early = balanced runs across inference endpoints (executions accumulate evidence); closer to Nov 4 due date ⇒ converge on best-performing endpoint. Applies {DeepSeek notes outcome, SR, any re-runs}"
+    "execution_posture": "OWNER POSTURE (2026-11-01 via D1 seat): early = balanced runs across inference endpoints (executions accumulate evidence); closer to Nov 4 due date ⇒ converge on best-performing endpoint. Applies {DeepSeek notes outcome, SR, any re-runs}",
+    "doc_of_record": {
+     "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+     "read": "firsthand 2026-11-02 (D1 seat)",
+     "qualify": "workshop in-window Oct 28–Nov 4 — cleared Oct 30 ✓",
+     "submission": "5 components, ∀ required",
+     "rubric": [
+      "Social impact",
+      "Technical execution",
+      "Communication quality",
+      "Originality"
+     ],
+     "timeline": {
+      "due": "Nov 4",
+      "gate_1": "wk Nov 9",
+      "gate_2": "wk Nov 16",
+      "winners": "wk Nov 23"
+     },
+     "prizes": "3 × ($5,000 credits + ~$600 swag + certificate), pool $16,800"
+    }
    },
    "next": "Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT · TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 · SR #3050} in the new form same-turn",
    "provider_usage": [
@@ -3102,6 +3121,125 @@
       "status": "not_established"
      },
      "model": "open-mistral-nemo",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "unorouter",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41408357473: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "NOT_ESTABLISHED",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "deepseek",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41411361651: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "NOT_ESTABLISHED",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "deepseek",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41412826624: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "deepseek-chat",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "deepseek",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41413151771: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "deepseek-chat",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "deepseek",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41416686691: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "NOT_ESTABLISHED",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "deepseek",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41418515925: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "NOT_ESTABLISHED",
+     "phrases": "NOT_ESTABLISHED"
+    },
+    {
+     "provider": "deepseek",
+     "via": "provider-invoke.yml",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "dispatch provider-invoke-41418529472: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+      "status": "not_established"
+     },
+     "model": "deepseek-chat",
      "phrases": "NOT_ESTABLISHED"
     }
    ]

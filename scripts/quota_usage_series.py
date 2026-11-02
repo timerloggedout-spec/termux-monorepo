@@ -49,6 +49,7 @@ def build(root):
     desk = load(root, "ops/challenge/desk-feed.json") or {}
     plan = load(root, "ops/quota/allocation-plan.json") or {}
     events_doc = load(root, "ops/quota/rate-limit-events.json") or {}
+    nested = load(root, "ops/tracking/nested-family.json") or {}
 
     provider, service, model = [], [], []
 
@@ -109,6 +110,65 @@ def build(root):
                 model.append({**series, "key": m,
                               "title": m + " - " + str(u.get("unit"))})
 
+    # Stamped dispatch usage (owner order 2026-11-01: model-axis
+    # population). Sources: the routed-dispatch fan-out records +
+    # stamps (experiments/doe/routed-dispatch/{records,stamps}/*.json)
+    # and the nested-family carriers (ops/tracking/nested-family.json
+    # tasks). Each stamp is ONE dispatch of a configured instance at
+    # ts - activity class per the QUOTA-ATTRIBUTION contract (counts
+    # render as activity-proxy, never as consumption). Deduped by
+    # dispatch_id across sources. Models stamped NOT ESTABLISHED are
+    # excluded - no inferred model@version. github-actions carriers
+    # are CI builds, not model dispatches - excluded.
+    stamps = {}
+
+    def add_stamp(provider, model_name, ts, dispatch_id):
+        if not provider or not model_name or not ts:
+            return
+        if model_name == "NOT ESTABLISHED":
+            return
+        if str(provider).lower() == "github-actions":
+            return
+        key = dispatch_id or (str(provider) + "|" + str(model_name)
+                              + "|" + str(ts))
+        stamps.setdefault(key, (str(provider), str(model_name),
+                                str(ts)))
+
+    for sub in ("records", "stamps"):
+        for f in sorted(Path(root).glob(
+                "experiments/doe/routed-dispatch/" + sub + "/*.json")):
+            try:
+                rec = json.loads(f.read_text())
+            except (OSError, ValueError):
+                continue
+            add_stamp(rec.get("provider"), rec.get("model"),
+                      rec.get("ts"), rec.get("dispatch_id"))
+    for prov in nested.get("providers", []):
+        for mod in prov.get("models", []):
+            for t in mod.get("tasks", []):
+                add_stamp(prov.get("provider"), mod.get("model"),
+                          t.get("ts"), t.get("dispatch_id"))
+
+    by_model = {}
+    for pname, mname, tsv in stamps.values():
+        slot = by_model.setdefault((pname.lower(), mname),
+                                   {"provider": pname, "ts": []})
+        slot["ts"].append(tsv)
+    for (plow, model_name), slot in sorted(by_model.items()):
+        tss = sorted(slot["ts"])
+        model.append({
+            "key": model_name,
+            "title": slot["provider"] + " - " + model_name +
+                     " - dispatches (cumulative)",
+            "unit": "dispatches", "kind": "activity-proxy",
+            "metric": "dispatches",
+            "points": [{"t": t, "v": i + 1}
+                       for i, t in enumerate(tss)],
+            "provenance": "stamped dispatch records: experiments/doe/"
+                          "routed-dispatch/{records,stamps} + "
+                          "ops/tracking/nested-family.json tasks "
+                          "(activity-proxy class)"})
+
     pools = {p["id"]: p.get("target_flow_per_min")
              for p in plan.get("pools", [])}
     for s in provider:
@@ -146,20 +206,18 @@ def build(root):
         "generated_at": datetime.now(timezone.utc).strftime(
             "%Y-%m-%dT%H:%M:%SZ"),
         "inputs_generated_at": {
-            "ops/quota/quota-usage.json": usage_pack.get("generated_at")},
+            "ops/quota/quota-usage.json": usage_pack.get("generated_at"),
+            "ops/tracking/nested-family.json": nested.get("generated_at")},
         "sources": ["ops/quota/quota-usage.json",
                     "ops/challenge/desk-feed.json",
                     "ops/quota/allocation-plan.json",
-                    "ops/quota/rate-limit-events.json"],
+                    "ops/quota/rate-limit-events.json",
+                    "ops/tracking/nested-family.json",
+                    "experiments/doe/routed-dispatch/records/*.json",
+                    "experiments/doe/routed-dispatch/stamps/*.json"],
         "axes": {"provider": provider, "service": service, "model": model, "events": events_axis},
         "notes": {
-            "model": "Per-model series require a stamped model@version AND "
-                     "a usage{} value on the same record. Jules-class rows "
-                     "carry no model@version (NOT ESTABLISHED) and the "
-                     "Muse rows carry no usage value (waived), so the "
-                     "model axis is empty until live-3 dispatch records "
-                     "(EXPERIMENT rev 1.1 usage{}) land. Empty is the "
-                     "honest state - nothing is inferred.",
+            "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",
             "readings": "The public readings snapshots "
                         "(docs/ops/generated/quota-status.json) carry no "
                         "usage values by design (status-only projection); "

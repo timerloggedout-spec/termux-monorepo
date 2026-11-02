@@ -26,6 +26,12 @@ on:
     paths:
       - 'ops/quota/quota-usage.json'
       - 'ops/quota/rate-limit-events.json'
+      - 'ops/quota/registry.json'
+      - 'docs/ops/generated/quota-status.json'
+      - 'docs/ops/generated/actions-performance-reconstructed-*.json'
+      - 'ops/tracking/nested-family.json'
+      - 'experiments/doe/routed-dispatch/**'
+      - 'scripts/quota_usage_pack.py'
       - 'ops/challenge/desk-feed.json'
       - 'ops/quota/allocation-plan.json'
       - 'scripts/quota_usage_series.py'
@@ -61,18 +67,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Regenerate the usage-series pack + mirror
+      - name: Rebuild the quota-usage pack + regenerate usage-series
         run: |
           set -euo pipefail
+          python3 -B scripts/quota_usage_pack.py --root .
           python3 -B scripts/quota_usage_series.py --root .
           cp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
           cmp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
+          cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
           cp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
           cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
       - name: Commit generated artifacts to master (single-writer)
         run: |
           set -euo pipefail
-          git add ops/quota/usage-series.json \
+          git add ops/quota/usage-series.json ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json \
             apps/help-wanted-dashboard/data/usage-series.json \
             apps/help-wanted-dashboard/data/quota-usage.json
           if git diff --cached --quiet; then

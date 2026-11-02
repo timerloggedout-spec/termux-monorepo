@@ -46,6 +46,7 @@ keep them; the standard governs data + stamps, not the drawing code.
 | quota.html | ✓ headroom + state charts (chartkit, PR #3573) | quota.json |
 | index.html | ✓ receipts-by-kind + outcomes charts (chartkit) | status.json |
 | owner-records.html | ✓ records-by-class bar (chartkit) | owner-records envelope |
+| family.html | ✓ nested tree + tasks-per-provider/outcome charts (chartkit); chrome (nav) PR follows | nested-family-feed.json |
 | 3l0.html | P2 | 3l0-feed.json |
 | ates.html | P2 | ates-feed.json |
 | doe.html | P2 | doe-feed.json |

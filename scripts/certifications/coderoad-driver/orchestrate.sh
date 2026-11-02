@@ -43,8 +43,8 @@ export DONT_PROMPT_WSL_INSTALL=1
 # "$UD" (a CLI session's state.vscdb + logs); pilot 11's GUI
 # session wrote main.log but never opened a window / started exthost —
 # baked state is the prime suspect. UD is exported for the probes below.
-export UD=/tmp/vscode-ud-run
-mkdir -p "$UD/User"
+export UD=/home/camper/vsud
+mkdir -p "$UD/User" /tmp/runtime-camper
 # First-run workbench is heavy under software GL (welcome page, walkthrough,
 # update + telemetry chatter) and the GPU process burns until it crashes
 # the window (~3.5 min in pilots 13/14). Pre-seed a minimal, quiet profile.
@@ -54,9 +54,31 @@ cat > "$UD/User/settings.json" <<'JSON'
  "extensions.autoUpdate": false, "extensions.autoCheckUpdates": false,
  "workbench.enableExperiments": false, "git.enabled": false}
 JSON
-(dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust --use-gl=angle --use-angle=gl-egl \
+chown -R camper:camper "$UD" /tmp/runtime-camper 2>/dev/null || chown -R camper "$UD" /tmp/runtime-camper
+chmod 777 "$EV"
+# Launch as camper (the course env's designed user): every prior pilot ran
+# VS Code as ROOT, which the rdb-alpha environment never does — Chromium's
+# GPU/shared-process behavior as root is the last big environmental delta.
+cat > /tmp/launch_code.sh <<'EOS'
+#!/usr/bin/env bash
+export XDG_RUNTIME_DIR=/tmp/runtime-camper
+export DONT_PROMPT_WSL_INSTALL=1
+exec dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox \
+  --user-data-dir /home/camper/vsud --disable-gpu --disable-dev-shm-usage \
+  --disable-workspace-trust \
   --extensions-dir /opt/vscode-extensions \
-  /workspace/project > "$EV/code.log" 2>&1 &)
+  /workspace/project
+EOS
+chmod 755 /tmp/launch_code.sh
+# su resets the environment: embed the CodeRoad contract vars explicitly.
+{
+  echo "export CODEROAD_TUTORIAL_URL='${CODEROAD_TUTORIAL_URL:-}'"
+  echo "export CODEROAD_WEBHOOK_TOKEN='${CODEROAD_WEBHOOK_TOKEN:-}'"
+  echo "export CODEROAD_DISABLE_RUN_ON_SAVE='${CODEROAD_DISABLE_RUN_ON_SAVE:-true}'"
+  echo "export CODEROAD_DRIVER_EVIDENCE='${CODEROAD_DRIVER_EVIDENCE:-/evidence}'"
+  echo "export CODEROAD_SESSION_STORAGE_PATH='${CODEROAD_SESSION_STORAGE_PATH:-}'"
+} >> /tmp/launch_code.sh
+(su camper -c /tmp/launch_code.sh > "$EV/code.log" 2>&1 &)
 echo "code launched" >> "$LOG"
 
 # Wait for the environment: PostgreSQL accepting connections (pre-setup
@@ -106,9 +128,7 @@ for i in $(seq 1 72); do
   if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 4 ]; then
     relaunches=$((relaunches+1))
     echo "watchdog: code tree dead; relaunch #$relaunches" >> "$LOG"
-    (dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust --use-gl=angle --use-angle=gl-egl \
-      --extensions-dir /opt/vscode-extensions \
-      /workspace/project >> "$EV/code.log" 2>&1 &)
+    (su camper -c /tmp/launch_code.sh >> "$EV/code.log" 2>&1 &)
     sleep 20
   fi
   sleep 5
@@ -122,7 +142,7 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
   ls /opt/vscode-extensions 2>/dev/null || true
   ps aux | grep -iE "xvfb|dbus|code|electron" | grep -v grep | head -10
   free -m | head -2
-  code --no-sandbox --user-data-dir "$UD" --extensions-dir /opt/vscode-extensions --list-extensions 2>&1 | head -10
+  su camper -c "code --no-sandbox --user-data-dir $UD --extensions-dir /opt/vscode-extensions --list-extensions" 2>&1 | head -10
   echo "-- globalStorage tree --"
   find "$UD"/User/globalStorage -maxdepth 2 2>/dev/null | head -30
   echo "-- coderoad-ish files --"
@@ -142,9 +162,7 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
 # If no live code process survived, capture a foreground launch's output
 # verbatim (the backgrounded launch's code.log has been empty every pilot).
 if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1; then
-  timeout 15 dbus-run-session -- xvfb-run -a code --no-sandbox --user-data-dir "$UD" \
-    --disable-gpu --disable-dev-shm-usage --extensions-dir /opt/vscode-extensions \
-    /workspace/project > "$EV/code-fg.txt" 2>&1 || true
+  timeout 15 su camper -c /tmp/launch_code.sh > "$EV/code-fg.txt" 2>&1 || true
 fi
 if [ -f "$EV/RESULT.json" ]; then
   cat "$EV/RESULT.json"

@@ -53,9 +53,10 @@ def parse_ts(v):
     if not isinstance(v, str):
         return None
     try:
-        return datetime.fromisoformat(v.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(v.replace("Z", "+00:00"))
     except ValueError:
         return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
 def load(root, rel):

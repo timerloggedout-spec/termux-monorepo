@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f8ba3ccce9972ec2b8940de6f08447f20010cc07a5f22782d8b37ef4b124fc15",
+  "source_fingerprint": "0f73f3428ada65760f2ddaf0d90d4a137ee31e8ac1e6f1cae927b5444a8ee4d3",
   "workflow_count": 259,
   "workflows": [
     {
@@ -1290,12 +1290,9 @@
       ],
       "name": "DeepWiki.com import harvest (ICM)",
       "path": ".github/workflows/deepwiki-import-harvest.yml",
-      "schedules": [
-        "41 6 * * 1"
-      ],
+      "schedules": [],
       "triggers": [
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },

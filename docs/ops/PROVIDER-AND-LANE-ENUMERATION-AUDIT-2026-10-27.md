@@ -408,3 +408,42 @@ Consequences for the record:
   basis; session material stays in the origin-device seam, per the standing
   rule. The mailbox evidence in Addendum 2 (usage-limit notices, no La
   Plateforme key) is consistent with this ruling.
+
+---
+
+## Addendum 6 (2026-11-02) — queue item 8 closed: the four counts are machine-generated; all four moved
+
+Queue item 8 is CLOSED. `scripts/provider_quota_coverage.py` now emits a
+`four_counts` block (schema `provider-four-counts/v1`) inside the coverage JSON
+and renders `ops/quota/four-counts.md` via `--four-counts-md`. Each count is
+derived from its own committed source — wired ← `ops/quota/provider-managers.json`,
+callable ← `provider_model_catalog.ENDPOINTS`, provisioned ←
+`ops/quota/provisioned-families.json` (new names-only record, seeded from the
+live store listing 2026-11-02 and cross-checked against the catalog's canonical
+`SECRETS` names by the generator), executed ← the newest pinned
+`ops/quota/availability-observation-*.json`. Future reports cite the generated
+table, not prose.
+
+Current values (live-derived 2026-11-02; the audit's originals in parentheses):
+**wired 32** (27), **callable 28** (24 — the catalog gained baseten, deepinfra,
+friendli, novita, zai), **provisioned 23** (6 — the Oct 27–Nov 2 provisioning
+waves; the store holds 67 names), **executed 16 credential-present / 20
+catalog-ok / 0 inference of 24 rows** per the pinned 2026-11-01 observation
+(run 41308757523, pinned by this addendum; a fresh dispatch, run 41456184549,
+sat queued at writing — pin its artifact as
+`availability-observation-2026-11-02.json` when it lands and the table follows
+automatically). Catalog families still unprovisioned: cerebras, kilo,
+modelscope, omni, ovhcloud, requesty.
+
+Queue consequences: item 5 (sambanova / siliconflow / ollama keys) is DONE —
+all three provisioned 2026-10-27/28. Item 6 is half-resolved in fact: zai has
+an endpoint and a provisioned key; typhoon / xfyun remain registry-only in
+practice (no keys in store). Items 4 (OMNI set) and 7 (GAMUT_JUDGE_API_KEY)
+remain open — all five names verified absent from the store 2026-11-02.
+
+Mistral note: Addendum 5 recorded the 2026-10-27 webWrapper ruling. On
+2026-11-02 `MISTRAL_API_KEY` was provisioned into the store (created
+2026-11-02T05:11:30Z) and the generated table counts mistral as provisioned.
+This addendum records the store fact and the supersession of Addendum 5's
+"unprovisioned by design" status; the route's current doctrine is the owning
+lanes' to state.

@@ -1,4 +1,4 @@
-{"commit": "c6a665027b8dffa2b2ebb76998cb091e67d50dba", "files": 2012, "fragments": 9023, "generated_at": "2026-11-02T09:59:52Z", "kind": "header", "repo": "timerloggedout-spec/termux-monorepo", "skipped": 0, "spec": "fragment-index/v1"}
+{"commit": "4b0d9c57ac30bb59f593450c4439f0150e5ef339", "files": 2014, "fragments": 9032, "generated_at": "2026-11-02T10:11:26Z", "kind": "header", "repo": "timerloggedout-spec/termux-monorepo", "skipped": 0, "spec": "fragment-index/v1"}
 {"blob": "1cb56eea4275bcfaaa500525446438948c2f8dc5", "end_line": 30, "kind": "class", "path": ".github/connectors/connector_manager.py", "start_line": 21, "symbol": "ConnectorInfo"}
 {"blob": "1cb56eea4275bcfaaa500525446438948c2f8dc5", "end_line": 30, "kind": "method", "path": ".github/connectors/connector_manager.py", "start_line": 28, "symbol": "ConnectorInfo.to_dict"}
 {"blob": "1cb56eea4275bcfaaa500525446438948c2f8dc5", "end_line": 413, "kind": "class", "path": ".github/connectors/connector_manager.py", "start_line": 32, "symbol": "ConnectorManager"}
@@ -3989,9 +3989,10 @@
 {"blob": "ccdaf3c6f8505f8ffc051e6050f4ca4c1cc41796", "end_line": 112, "kind": "function", "path": "scripts/comment_quality_sweep.py", "start_line": 89, "symbol": "make_client"}
 {"blob": "ccdaf3c6f8505f8ffc051e6050f4ca4c1cc41796", "end_line": 130, "kind": "function", "path": "scripts/comment_quality_sweep.py", "start_line": 115, "symbol": "sweep"}
 {"blob": "ccdaf3c6f8505f8ffc051e6050f4ca4c1cc41796", "end_line": 147, "kind": "function", "path": "scripts/comment_quality_sweep.py", "start_line": 133, "symbol": "main"}
-{"blob": "c1dada283b78cd9bde486c79a754dc25e9efe570", "end_line": 23, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 20, "symbol": "blob_lines"}
-{"blob": "c1dada283b78cd9bde486c79a754dc25e9efe570", "end_line": 46, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 26, "symbol": "materialize"}
-{"blob": "c1dada283b78cd9bde486c79a754dc25e9efe570", "end_line": 75, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 49, "symbol": "main"}
+{"blob": "bd16b1a343bfeac34702e39459fa086f8686788d", "end_line": 47, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 20, "symbol": "verify_lineage"}
+{"blob": "bd16b1a343bfeac34702e39459fa086f8686788d", "end_line": 53, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 50, "symbol": "blob_lines"}
+{"blob": "bd16b1a343bfeac34702e39459fa086f8686788d", "end_line": 76, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 56, "symbol": "materialize"}
+{"blob": "bd16b1a343bfeac34702e39459fa086f8686788d", "end_line": 107, "kind": "function", "path": "scripts/commit_replay/compose.py", "start_line": 79, "symbol": "main"}
 {"blob": "b69ad140dcce6cb934d6765c44847834723210bf", "end_line": 16, "kind": "function", "path": "scripts/commit_replay/demo_pointers.py", "start_line": 13, "symbol": "git"}
 {"blob": "b69ad140dcce6cb934d6765c44847834723210bf", "end_line": 24, "kind": "function", "path": "scripts/commit_replay/demo_pointers.py", "start_line": 19, "symbol": "iso"}
 {"blob": "b69ad140dcce6cb934d6765c44847834723210bf", "end_line": 46, "kind": "function", "path": "scripts/commit_replay/demo_pointers.py", "start_line": 27, "symbol": "parse_commit"}
@@ -5235,6 +5236,8 @@
 {"blob": "1827d3fd96e09d0f52d464fcdf789d72797214e5", "end_line": 115, "kind": "function", "path": "scripts/telemetry_ingest/session_history.py", "start_line": 103, "symbol": "to_3l0"}
 {"blob": "1827d3fd96e09d0f52d464fcdf789d72797214e5", "end_line": 127, "kind": "function", "path": "scripts/telemetry_ingest/session_history.py", "start_line": 118, "symbol": "emit"}
 {"blob": "1827d3fd96e09d0f52d464fcdf789d72797214e5", "end_line": 157, "kind": "function", "path": "scripts/telemetry_ingest/session_history.py", "start_line": 130, "symbol": "main"}
+{"blob": "2356abbc50ccfe6d13f57256d69074e61095cea0", "end_line": 60, "kind": "function", "path": "scripts/telemetry_ingest/session_pointers.py", "start_line": 48, "symbol": "target_for"}
+{"blob": "2356abbc50ccfe6d13f57256d69074e61095cea0", "end_line": 111, "kind": "function", "path": "scripts/telemetry_ingest/session_pointers.py", "start_line": 63, "symbol": "main"}
 {"blob": "8f1820ead359a34fd6fe49656fd92c2aa6cda35d", "end_line": 51, "kind": "function", "path": "scripts/temporal/delphi_cycle/activities.py", "start_line": 50, "symbol": "_sha"}
 {"blob": "8f1820ead359a34fd6fe49656fd92c2aa6cda35d", "end_line": 57, "kind": "function", "path": "scripts/temporal/delphi_cycle/activities.py", "start_line": 54, "symbol": "_cycle_dir"}
 {"blob": "8f1820ead359a34fd6fe49656fd92c2aa6cda35d", "end_line": 75, "kind": "function", "path": "scripts/temporal/delphi_cycle/activities.py", "start_line": 63, "symbol": "generate_pass_activity"}
@@ -5299,11 +5302,12 @@
 {"blob": "12232c8023b700355763b13333dbf9a5f1d126c8", "end_line": 34, "kind": "function", "path": "scripts/temporal/versioning_model.py", "start_line": 31, "symbol": "route"}
 {"blob": "12232c8023b700355763b13333dbf9a5f1d126c8", "end_line": 41, "kind": "function", "path": "scripts/temporal/versioning_model.py", "start_line": 37, "symbol": "autoscale"}
 {"blob": "12232c8023b700355763b13333dbf9a5f1d126c8", "end_line": 65, "kind": "function", "path": "scripts/temporal/versioning_model.py", "start_line": 44, "symbol": "main"}
-{"blob": "75aa75d261983b4265cd6340255584b62cd1b95a", "end_line": 38, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 37, "symbol": "_iso"}
-{"blob": "75aa75d261983b4265cd6340255584b62cd1b95a", "end_line": 45, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 41, "symbol": "_read_json"}
-{"blob": "75aa75d261983b4265cd6340255584b62cd1b95a", "end_line": 51, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 48, "symbol": "_blank_export"}
-{"blob": "75aa75d261983b4265cd6340255584b62cd1b95a", "end_line": 164, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 54, "symbol": "build"}
-{"blob": "75aa75d261983b4265cd6340255584b62cd1b95a", "end_line": 184, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 167, "symbol": "main"}
+{"blob": "5350b826e0d31a49f14b5ee8285563074b11565a", "end_line": 41, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 40, "symbol": "_iso"}
+{"blob": "5350b826e0d31a49f14b5ee8285563074b11565a", "end_line": 48, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 44, "symbol": "_read_json"}
+{"blob": "5350b826e0d31a49f14b5ee8285563074b11565a", "end_line": 54, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 51, "symbol": "_blank_export"}
+{"blob": "5350b826e0d31a49f14b5ee8285563074b11565a", "end_line": 167, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 57, "symbol": "build"}
+{"blob": "5350b826e0d31a49f14b5ee8285563074b11565a", "end_line": 209, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 170, "symbol": "events_lines"}
+{"blob": "5350b826e0d31a49f14b5ee8285563074b11565a", "end_line": 233, "kind": "function", "path": "scripts/tracking/backup_state.py", "start_line": 212, "symbol": "main"}
 {"blob": "f2f3925b05e00f8c58dc028a183a2cd92c53d696", "end_line": 29, "kind": "function", "path": "scripts/tracking/fetch_snapshots.py", "start_line": 28, "symbol": "_now"}
 {"blob": "f2f3925b05e00f8c58dc028a183a2cd92c53d696", "end_line": 38, "kind": "function", "path": "scripts/tracking/fetch_snapshots.py", "start_line": 32, "symbol": "_gh"}
 {"blob": "f2f3925b05e00f8c58dc028a183a2cd92c53d696", "end_line": 51, "kind": "function", "path": "scripts/tracking/fetch_snapshots.py", "start_line": 41, "symbol": "_slim"}
@@ -6150,8 +6154,9 @@
 {"blob": "dbee07bbdd80121f3fa56647e2df61a5dac59d14", "end_line": 36, "kind": "class", "path": "tests/test_backup_events.py", "start_line": 15, "symbol": "TestBackupEvents"}
 {"blob": "dbee07bbdd80121f3fa56647e2df61a5dac59d14", "end_line": 30, "kind": "method", "path": "tests/test_backup_events.py", "start_line": 16, "symbol": "TestBackupEvents.test_backfill_shape_and_join"}
 {"blob": "dbee07bbdd80121f3fa56647e2df61a5dac59d14", "end_line": 36, "kind": "method", "path": "tests/test_backup_events.py", "start_line": 32, "symbol": "TestBackupEvents.test_evidence_hash_matches_source_line"}
-{"blob": "ee4d9dbc90493391e6592e6dc09c746675d9c8c0", "end_line": 42, "kind": "function", "path": "tests/test_backup_state.py", "start_line": 31, "symbol": "_tree"}
-{"blob": "ee4d9dbc90493391e6592e6dc09c746675d9c8c0", "end_line": 62, "kind": "function", "path": "tests/test_backup_state.py", "start_line": 45, "symbol": "test_merge_and_marker"}
+{"blob": "7c375f9b0750b037881050a8b25faf4d4a6a37f9", "end_line": 44, "kind": "function", "path": "tests/test_backup_state.py", "start_line": 33, "symbol": "_tree"}
+{"blob": "7c375f9b0750b037881050a8b25faf4d4a6a37f9", "end_line": 64, "kind": "function", "path": "tests/test_backup_state.py", "start_line": 47, "symbol": "test_merge_and_marker"}
+{"blob": "7c375f9b0750b037881050a8b25faf4d4a6a37f9", "end_line": 82, "kind": "function", "path": "tests/test_backup_state.py", "start_line": 67, "symbol": "test_events_series_byte_identity"}
 {"blob": "04ee5797e87747687f0fb22fc680be398d638bc0", "end_line": 18, "kind": "function", "path": "tests/test_backup_state_section.py", "start_line": 11, "symbol": "test_admin_backup_state_section"}
 {"blob": "1656cc2caa4ac329cd116eb3b7231a77f0897eac", "end_line": 29, "kind": "function", "path": "tests/test_bayesian_routing.py", "start_line": 15, "symbol": "test_bayesian_routing"}
 {"blob": "fa005897be5e1dbe7ceb167ccaf41fbede9c2924", "end_line": 107, "kind": "class", "path": "tests/test_bridge_ates_trace_to_events.py", "start_line": 12, "symbol": "TraceBridgeTests"}
@@ -6291,10 +6296,11 @@
 {"blob": "24aa3125589dc196b29a5274ceb6adef4d12d0ff", "end_line": 21, "kind": "function", "path": "tests/test_commit_replay_p3.py", "start_line": 17, "symbol": "sh"}
 {"blob": "24aa3125589dc196b29a5274ceb6adef4d12d0ff", "end_line": 28, "kind": "function", "path": "tests/test_commit_replay_p3.py", "start_line": 24, "symbol": "run"}
 {"blob": "24aa3125589dc196b29a5274ceb6adef4d12d0ff", "end_line": 71, "kind": "function", "path": "tests/test_commit_replay_p3.py", "start_line": 31, "symbol": "test_p3"}
-{"blob": "e858cfa885a3cd24713275968f3dfb936db6e490", "end_line": 20, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 16, "symbol": "run"}
-{"blob": "e858cfa885a3cd24713275968f3dfb936db6e490", "end_line": 30, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 23, "symbol": "edit"}
-{"blob": "e858cfa885a3cd24713275968f3dfb936db6e490", "end_line": 62, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 33, "symbol": "test_ops"}
-{"blob": "e858cfa885a3cd24713275968f3dfb936db6e490", "end_line": 95, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 65, "symbol": "test_end_to_end"}
+{"blob": "c38fea764c779c54c6e744bd321b47eb6d16ef9f", "end_line": 20, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 16, "symbol": "run"}
+{"blob": "c38fea764c779c54c6e744bd321b47eb6d16ef9f", "end_line": 30, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 23, "symbol": "edit"}
+{"blob": "c38fea764c779c54c6e744bd321b47eb6d16ef9f", "end_line": 62, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 33, "symbol": "test_ops"}
+{"blob": "c38fea764c779c54c6e744bd321b47eb6d16ef9f", "end_line": 95, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 65, "symbol": "test_end_to_end"}
+{"blob": "c38fea764c779c54c6e744bd321b47eb6d16ef9f", "end_line": 148, "kind": "function", "path": "tests/test_commit_replay_p4.py", "start_line": 98, "symbol": "test_lineage_check"}
 {"blob": "940253b307b83f5ad34b8902bab939ff26bdfd0e", "end_line": 37, "kind": "function", "path": "tests/test_context_collector.py", "start_line": 7, "symbol": "test_find_dependent_files"}
 {"blob": "940253b307b83f5ad34b8902bab939ff26bdfd0e", "end_line": 54, "kind": "function", "path": "tests/test_context_collector.py", "start_line": 39, "symbol": "test_assemble_minimized_bundle"}
 {"blob": "940253b307b83f5ad34b8902bab939ff26bdfd0e", "end_line": 79, "kind": "function", "path": "tests/test_context_collector.py", "start_line": 56, "symbol": "test_termux_context_collector_modes"}
@@ -8167,6 +8173,9 @@
 {"blob": "eb1b409e86112f738cde7cbbd73aad96112f5815", "end_line": 33, "kind": "function", "path": "tests/test_session_history.py", "start_line": 30, "symbol": "test_emit_once"}
 {"blob": "eb1b409e86112f738cde7cbbd73aad96112f5815", "end_line": 39, "kind": "function", "path": "tests/test_session_history.py", "start_line": 36, "symbol": "test_3l0_mapping_observational"}
 {"blob": "eb1b409e86112f738cde7cbbd73aad96112f5815", "end_line": 45, "kind": "function", "path": "tests/test_session_history.py", "start_line": 41, "symbol": "test_precomputed_attribution_override"}
+{"blob": "cd82721fac459f258dff4ced3b8b987ccb779e9e", "end_line": 30, "kind": "class", "path": "tests/test_session_pointers.py", "start_line": 17, "symbol": "TestSessionPointers"}
+{"blob": "cd82721fac459f258dff4ced3b8b987ccb779e9e", "end_line": 23, "kind": "method", "path": "tests/test_session_pointers.py", "start_line": 18, "symbol": "TestSessionPointers.test_target_kinds"}
+{"blob": "cd82721fac459f258dff4ced3b8b987ccb779e9e", "end_line": 30, "kind": "method", "path": "tests/test_session_pointers.py", "start_line": 25, "symbol": "TestSessionPointers.test_feed_corpus_pointers"}
 {"blob": "9fe04fad8bfec031578ec1e20ef6ce8c9f5523de", "end_line": 18, "kind": "function", "path": "tests/test_she_actions_bridge.py", "start_line": 12, "symbol": "test_plan_rerun_failed_jobs_path"}
 {"blob": "9fe04fad8bfec031578ec1e20ef6ce8c9f5523de", "end_line": 30, "kind": "function", "path": "tests/test_she_actions_bridge.py", "start_line": 21, "symbol": "test_execute_default_dry_run"}
 {"blob": "9fe04fad8bfec031578ec1e20ef6ce8c9f5523de", "end_line": 49, "kind": "function", "path": "tests/test_she_actions_bridge.py", "start_line": 33, "symbol": "test_missing_run_id_skipped"}

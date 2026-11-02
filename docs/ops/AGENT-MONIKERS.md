@@ -349,6 +349,104 @@ census and first graduations: registry lane, 2026-11-01.
   same repo and date). v2 derived (E3, single substitution).
   Graduation PR: the PR carrying this entry.
 
+## Naming-collapse registry — listing convention (2026-11-02)
+
+One canonical name per concept on listing surfaces (platform
+listings of the versioned Apps and versioned role monikers,
+e.g. Polymarket). This is a NAMING convention only: records,
+implementations and scoring stay distinct underneath (DoE
+scores each class on its own record; the canonical name is an
+inclusion prior, nothing more). Alias terms stay valid in
+their home records. A crosswalk that loses bindings names its
+ker (the set of bindings the listing word does not carry).
+Dispositions: **canonical** · **alias → canonical** ·
+**distinct-class** (difference named). Evidence of record:
+`docs/ops/AGENTIC-GAMBLING-LANE.md` (charter + addenda,
+2026-11-01), this file's role vocabulary, and the lane
+records cited per row.
+
+### Cluster S — speculation participants (seed cluster)
+
+| Term | Disposition | Canonical / difference · ker |
+|---|---|---|
+| gambler | **canonical** | Participant class of record (§Speculation: stakes on task performance off the scoring surfaces; wallet · speculation record · standing · cull → pool) |
+| speculator | alias → gambler | ker: {`scripts/speculators/` implementation (speculative-decoding strategies) · the optimizations-assurance manager seat} — both stay distinct underneath; the charter seats the implementation in-lane as a bettor class |
+| wagerer | alias → gambler | ker ∅ — pure synonym, no fleet binding |
+| bettor | alias → gambler | ker: {Perplexity export schema's bettor-side fields (counterparty `bookmaker_id`)} — schema terms stay in the export |
+| forecaster (`forecast`) | **distinct-class** | Issues unstaked predictions, scored on calibration (Delphi ledgers). Difference vs gambler: no stake, no wallet, no standing/cull — a gambler position is a forecast WITH stake and a cited basis |
+| wager | **distinct-class** (object, not a participant) | The stake-object/entry (Perplexity schema: wager as separate entity; bet-ledger schema folds bet/wager/bid into one entry). Names positions, never participants |
+| bet | alias → wager | The record shape is `BetEntry` (`MarketGraph.place_bet`); listing names the object `wager` |
+| bid | alias → wager | Design-level fold of record (the bid is folded into the bet entry); ker: {no bid/ask price construct exists — Asks absent at every level} |
+| bookmaker | **canonical** (class reserved) | Counterparty / odds-setting side. Class ABSENT in the fleet (open build item — no bookmaker role exists yet); the canonical name is reserved for it |
+| bookie | alias → bookmaker | ker ∅ — colloquial form of the same reserved class |
+| 11th man | **distinct-class** | Audience / reserve participant (owner-defined): the non-staking crowd-side seat in the bookie/audience structure. Difference vs gambler: holds no position; may be called in from reserve. Class ABSENT (build item tied to the bookie/audience class); canonical form kept verbatim |
+
+### Cluster M — coordination
+
+| Term | Disposition | Canonical / difference · ker |
+|---|---|---|
+| manager | **canonical** | Coordination class, tier-1: the lane lead (`<lane>-manager` formation rule; selects teams per charter §Teams) |
+| coordinator | **distinct-class** | Tier-2 coordination (of record as sub-coordinator): owns a slice under a manager, reports up one level. Difference vs manager: slice scope, not lane scope |
+| orchestrator | alias → manager | ker: {peerGate GHA role label (suite-coordination implementation) · generic orchestration prose} |
+| operator | **distinct-class** | The accountable human principal (OPERATOR; the `archW1z` title sits on this role). Difference vs manager: human principal, not an agent lane |
+| owner | alias → operator | ker: {property sense — repo/org owner literal (timerloggedout-spec)} |
+| lead | alias → manager | ker: {temporary execution-assignment sense (e.g. "execution lead" for a build)} |
+| steward | **distinct-class** | Custodian of a record/feed (classifiers steward). Difference vs manager: maintains state; selects nothing, manages no team |
+
+**⚠ BOUNDARY FLAG — ruling of record (2026-10-28):**
+lane-coordination identities (manager / sub-coordinator
+monikers) are NEVER platform identities and never enter
+`config/registration_monikers.json`. The canonical WORDS
+above describe classes for listing the versioned Apps and
+versioned role monikers; this collapse does NOT make any
+coordination identity listable. If coordination identities
+are ever to be listed, that needs its own owner ruling —
+flagged here, not assumed.
+
+### Cluster R — exploration
+
+| Term | Disposition | Canonical / difference · ker |
+|---|---|---|
+| scout | **canonical** | Participant class of record (selection surface; competes as a participant: wallet · record · standing; cull applies — charter §Scouts compete) |
+| recon | alias → scout | ker: {activity-noun sense (recon = the work, scout = the worker) · the Recon lane identity `Archaeo · Oracle` is a lane moniker, not this class} |
+| selector | alias → scout | ker: {DoE fork-selector role binding (ChronoMancer)} |
+| observer | **distinct-class** | Passive witness: watches and reports; difference vs scout: no selection mandate, no stake, no standing |
+| watcher | alias → observer | ker: {automation sense — a watcher is a monitoring mechanism (hook / scheduled check), not a participant} |
+
+### Cluster J — judgment
+
+| Term | Disposition | Canonical / difference · ker |
+|---|---|---|
+| reviewer | **canonical** | Artifact-review class of record (fleet App function; peer reviewers) |
+| critic | alias → reviewer | ker: {charter role table: critic evaluates/challenges entries — advisory findings, ABSENT as a named lane role; nearest substrate = card role `review`} |
+| validator | **distinct-class** | Verifies settlements/records against schema and gates (function of record: validate_v2 · dual-gate). Difference vs reviewer: conformance verdicts on records, not judgment on artifacts |
+| judge | **distinct-class** | Renders outcome verdicts (DoE ESTABLISHED gate; challenge/Delphi judging contexts). Difference vs evaluator: decision authority over outcomes and standings |
+| evaluator | **distinct-class** | Scores against a rubric, producing explained composites (MoneyBall pattern: axes + intake-fixed weights). Difference vs judge: continuous explained score, not a verdict |
+| scorer | alias → evaluator | ker: {surface names stay (moneyball-scorer; per-surface score records)} |
+| oracle | alias → evaluator | ker: {Delphi Oracle is a scoring SURFACE, not a participant class · the `Oracle` inside `Archaeo · Oracle` is a moniker component, untouched by this crosswalk} |
+
+### Cluster P — generic participation
+
+| Term | Disposition | Canonical / difference · ker |
+|---|---|---|
+| participant | **canonical** | Generic class of record (charter + challenge schema; the wallet invariant quantifies over participants) |
+| actor | alias → participant | ker: {attribution-layer sense — actor = provenance key (`ActorClass {itself · others · job}` in market.py; attribution actors); records keep `actor`} |
+| player | alias → participant | ker: {MoneyBall sports-metaphor prose sense} |
+
+### Cluster B — construction
+
+| Term | Disposition | Canonical / difference · ker |
+|---|---|---|
+| builder | **canonical** | Class of record (fleet builder persona; build lanes) |
+| implementer | alias → builder | ker: {SSOT row label wording ("Jules (implementation)")} |
+
+Scope note: fleet App function names (Collector · Publisher ·
+Reviewer · Gate · Lifecycle · Swarm · CrossReference ·
+RepoStory · DoE) are listing items themselves (versioned
+Apps), not cluster terms; where a function word also appears
+above (reviewer), the cluster governs the generic class and
+the App keeps its paired moniker.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

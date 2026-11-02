@@ -450,6 +450,26 @@ version and compared continuously until culling retires a version.
   minority>=10 ∧ p<.05 (standing gate); accuracy NOT_ESTABLISHED
   at v1. Status: active. Comparison line: open.
 
+- **chat-intent v2** (rule-8 version change; steward PR #3631
+  merged 5cc881a8cb7c, history + landed content verified by the
+  steward) — delta over v1: + class `do` (DO Statements —
+  principle/criteria declarations governing standing behavior;
+  owner-named 2026-11-02; instances: "Resilient Efficient
+  Effective" - "Proper Prior Planning" - "alternatives are
+  priority"). Detection = new R6-do-statement (maxim shape:
+  bare declarative - criteria/principle lexicon >=2 - <=10
+  words - no hedge/artifact/action), placed after R3-R5
+  (actionable maxims stay request/directive) and before
+  speculation/aside; speculation renumbers R6->R7, aside
+  R7->R8 (documented in-module); R1-R5 unchanged. Tests 12/12
+  (7 v1 regression + 5 v2). Backfill (rule 8):
+  scripts/classifiers/backfill-v1-v2.json — seed-set deltas =
+  exactly 3 (aside->do, the owner instances); all else
+  identical. Labeled corpus still empty: the v1<->v2 comparison
+  line opens on labeled outcomes; ESTABLISHED gate unmet;
+  accuracy NOT_ESTABLISHED at v2. v1 stays registered and its
+  comparison line stays open until DoE culling retires it.
+
 - **exchange-scoring v0** (candidate; seat: doe-mgr-notation-
   density; owner model via main, 2026-11-01) — scoring of a
   user<->response exchange, sibling to chat-intent v1:

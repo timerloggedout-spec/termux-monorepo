@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "005818ca35544165eb013c31f65ca6c12d1814bccdfa7d5274e67bcaa11e9123",
-  "workflow_count": 275,
+  "source_fingerprint": "a85c09ae43c2bb7178d40138e67826f214bec5fed21d22fedce41edad01c8ae5",
+  "workflow_count": 277,
   "workflows": [
     {
       "action_pins": [],
@@ -474,6 +474,23 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: archwiz-dangle-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "dangle"
+      ],
+      "name": "archwiz dangle check",
+      "path": ".github/workflows/archwiz-dangle.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -489,6 +506,22 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: archwiz-repo-index cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "build"
+      ],
+      "name": "archwiz repo index",
+      "path": ".github/workflows/archwiz-repo-index.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
       ]
     },
     {

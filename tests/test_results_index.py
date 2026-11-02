@@ -17,6 +17,23 @@ class TestResultsIndex(unittest.TestCase):
             self.assertIn("record_of_record", s)
             self.assertIn("headline", s)
 
+    def test_viz_twin_shape(self):
+        twin = json.loads(
+            (ROOT / "apps/tribute-dashboard/data/results-index-feed.json")
+            .read_text())
+        self.assertEqual(twin["schema"], "results-index-feed/v1")
+        self.assertEqual([s["id"] for s in twin["sections"]],
+                         ["ates", "3l0", "temporal", "hindsight"])
+        for s in twin["sections"]:
+            self.assertIn("generated_at", s)
+            for r in s["rows"]:
+                self.assertIn("label", r)
+                self.assertIn("state", r)
+                self.assertIn("record_of_record", r)
+        tp = next(s for s in twin["sections"] if s["id"] == "temporal")
+        inst = next(r for r in tp["rows"] if r["label"] == "persistent instance")
+        self.assertEqual(inst["state"], "none")
+
     def test_headlines_match_sources(self):
         d = json.loads(IDX.read_text())
         hs = next(s for s in d["systems"] if s["id"] == "hindsight")

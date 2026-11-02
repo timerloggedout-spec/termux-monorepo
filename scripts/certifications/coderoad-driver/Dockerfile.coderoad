@@ -1,24 +1,33 @@
 # CodeRoad completion image: freeCodeCamp rdb-alpha environment plus a
 # headless VS Code carrying the CodeRoad extension and the fleet driver.
 # Build order (workflow): build rdb-alpha from its own Dockerfile as
-# rdb-alpha:local first, then build this file.
+# rdb-alpha:local first, then build this file stage by stage
+# (libs -> vscode -> full) so a failure names its stage in the run's
+# step list — Actions job logs are not readable from the fleet's API
+# seat, step granularity is the diagnostic surface.
 #
 # VS Code ships as a TARBALL, not the .deb: on the Actions runner disk
 # class, dpkg unpacks crawl (~12 s/package observed across pilots 5-6,
 # layer timeouts at 40 and 80 min) while a tar stream extracts in one
 # pass. The only dpkg work left is the small Electron library set.
-FROM rdb-alpha:local
+FROM rdb-alpha:local AS libs
 
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
       xvfb libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils \
       libatspi2.0-0 libuuid1 libsecret-1-0 libasound2 fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
+
+FROM libs AS vscode
+
+USER root
 RUN mkdir -p /opt/vscode \
     && curl -fsSL "https://update.code.visualstudio.com/latest/linux-x64/stable" \
        | tar -xz -C /opt/vscode \
     && ln -s /opt/vscode/VSCode-linux-x64/bin/code /usr/local/bin/code \
     && code --version
+
+FROM vscode AS full
 
 USER root
 RUN mkdir -p /opt/vscode-extensions \

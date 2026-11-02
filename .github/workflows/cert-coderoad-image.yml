@@ -47,12 +47,47 @@ jobs:
         timeout-minutes: 30
         run: docker build --progress=plain -t rdb-alpha:local ./rdb-alpha
 
-      - name: Build CodeRoad image layer
-        timeout-minutes: 80
+      - name: Build CodeRoad stage 1 of 3 — libs
+        timeout-minutes: 30
         run: |
-          docker build --progress=plain -t ghcr.io/timerloggedout-spec/coderoad-rdb:latest \
+          docker build --progress=plain --target libs -t coderoad-stage:libs \
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
             mono/scripts/certifications/coderoad-driver
+
+      - name: Build CodeRoad stage 2 of 3 — vscode tarball
+        timeout-minutes: 30
+        run: |
+          docker build --progress=plain --target vscode -t coderoad-stage:vscode \
+            -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
+            mono/scripts/certifications/coderoad-driver
+
+      - name: Build CodeRoad stage 3 of 3 — full (extension + driver)
+        timeout-minutes: 30
+        run: |
+          docker build --progress=plain --target full -t ghcr.io/timerloggedout-spec/coderoad-rdb:latest \
+            -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
+            mono/scripts/certifications/coderoad-driver
+
+      - name: Report stage state on failure (issue 506)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          STATE=$(docker images --format '{{.Repository}}:{{.Tag}} {{.Size}}' | grep -E 'coderoad|rdb-alpha' | tr '\n' ';' || true)
+          python3 - <<PYEOF
+          import json, os, urllib.request
+          body = "CODEROAD_IMAGE_FAILED run %s — stage state at failure: %s (the failed step in the run's step list names the stage: libs / vscode / full)." % (os.environ["RUN_ID"], os.environ.get("STATE", "") or "$STATE")
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body}).encode(),
+              headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("failure state recorded")
+          PYEOF
 
       - name: Push image to GHCR
         run: |

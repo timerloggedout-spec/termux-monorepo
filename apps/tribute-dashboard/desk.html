@@ -76,6 +76,10 @@
 <div id="provroll"></div>
 </section>
 <section>
+<h2>Traversal distribution</h2>
+<div class="card"><div id="distchart"></div><p class="dim" id="diststamp"></p></div>
+</section>
+<section>
 <h2>Provenance</h2>
 <p id="prov" class="dim"></p>
 </section>
@@ -213,6 +217,36 @@ function renderAll(){
   $("prov").textContent=PACK.provenance+" "+PACK.refresh;
 }
 fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "+r.status); return r.json(); }).then(p=>{ PACK=p; renderAll(); }).catch(e=>{ $("meta").textContent="Desk feed failed to load: "+e.message; });
+</script>
+<script src="./chartkit.js"></script>
+<script>
+"use strict";
+// ==== pure logic (node-sim tested) ====
+const STATUS_ORDER=["queued","in-progress","gated","landed","shipped","live"];
+const DIST_STAGES=["spec","desk","builder","pr","ci","merge","sync"];
+function statusDist(traversals){
+  const counts=new Map();
+  (traversals||[]).forEach(t=>{ const s=String(t.status||"unknown"); counts.set(s,(counts.get(s)||0)+1); });
+  const keys=[...counts.keys()].sort((a,b)=>{
+    const ia=STATUS_ORDER.indexOf(a), ib=STATUS_ORDER.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib) || (a<b?-1:1);
+  });
+  return keys.map(k=>({label:k, value:counts.get(k)}));
+}
+function stageDist(traversals){
+  const rows=DIST_STAGES.map(s=>({label:s, value:0}));
+  (traversals||[]).forEach(t=>{ const st=t.stages||{}; rows.forEach(r=>{ if(st[r.label]==="done") r.value++; }); });
+  return rows;
+}
+if(typeof module!=="undefined"){ module.exports={statusDist,stageDist}; }
+// ==== end pure logic ====
+fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "+r.status); return r.json(); }).then(p=>{
+  const n=(p.traversals||[]).length;
+  document.getElementById("distchart").innerHTML=
+    "<h3>Entries by status</h3>"+CK.bars(statusDist(p.traversals),860)+
+    "<h3>Stage completions — traversals at done, of "+n+"</h3>"+CK.bars(stageDist(p.traversals),860);
+  document.getElementById("diststamp").textContent="Feed "+p.generated_at+" · "+CK.stampState(p.generated_at,Date.now())+" · distribution computed from the feed's traversal records as issued.";
+}).catch(e=>{ document.getElementById("diststamp").textContent="Distribution unavailable: "+e.message; });
 </script>
 </body>
 </html>

@@ -21,7 +21,9 @@ docker run -d --name pg \
   coderoad:local sleep infinity >> "$LOG" 2>&1
 docker exec pg bash -c '
   sed -i -E "s/^(host[[:space:]]+all[[:space:]]+all[[:space:]]+(127.0.0.1\/32|::1\/128)[[:space:]]+).*/\1trust/" /etc/postgresql/12/main/pg_hba.conf
-  grep -E "^host" /etc/postgresql/12/main/pg_hba.conf
+  printf "\nhost all all 0.0.0.0/0 trust\n" >> /etc/postgresql/12/main/pg_hba.conf
+  sed -i -E "s/^#?listen_addresses.*/listen_addresses = '\''*'\''/" /etc/postgresql/12/main/postgresql.conf
+  grep -E "^host|^listen" /etc/postgresql/12/main/pg_hba.conf /etc/postgresql/12/main/postgresql.conf | tail -6
   service postgresql start || pg_ctlcluster 12 main start
 ' >> "$LOG" 2>&1
 for i in $(seq 1 24); do
@@ -152,6 +154,12 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
   echo "-- GUI session main.log tails --"
   for d in "$UD"/logs/*/; do
     [ -f "$d/main.log" ] && { echo "## $d"; tail -15 "$d/main.log"; }
+  done
+  echo "-- exthost coderoad lines --"
+  grep -i "coderoad" "$UD"/logs/*/window1/exthost/exthost.log 2>/dev/null | head -20 || echo "(none)"
+  echo "-- extensions dir package names --"
+  for d in "$HOME"/vscode-extensions/*/; do
+    [ -f "$d/package.json" ] && echo "$d -> $(grep -o '"name": *"[^"]*"' "$d/package.json" | head -1)"
   done
   echo "-- newest exthost log tail --"
   newest=$(ls -t "$UD"/logs/*/window*/exthost/exthost.log 2>/dev/null | head -1)

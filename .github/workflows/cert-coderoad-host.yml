@@ -128,7 +128,7 @@ jobs:
             --extensions-dir "$HOME/vscode-extensions" \
             --install-extension /tmp/coderoad.vsix
           cp -r mono/scripts/certifications/coderoad-driver/driver \
-            "$HOME/vscode-extensions/coderoad-driver"
+            "$HOME/vscode-extensions/termux-fleet.coderoad-driver-0.1.0"
           ls "$HOME/vscode-extensions"
 
       - name: Run CodeRoad completion (host VS Code + container postgres)

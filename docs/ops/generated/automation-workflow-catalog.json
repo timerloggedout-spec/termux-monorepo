@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b201bb9b16932ee30a4110b443dfcaaec0752a45f9ae49975c3186c88e3cfc19",
-  "workflow_count": 274,
+  "source_fingerprint": "63d198fcdbf2dbe5de81b0fc473128e496dc40ead67827ff997327b1960317d1",
+  "workflow_count": 275,
   "workflows": [
     {
       "action_pins": [],
@@ -2928,6 +2928,21 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "oracle"
+      ],
+      "name": "nse023-oracle",
+      "path": ".github/workflows/nse023-oracle.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

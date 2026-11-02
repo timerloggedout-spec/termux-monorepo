@@ -210,3 +210,16 @@ Owner directive via main (2026-11-01 23:41 PT) ∧ amendment (23:50 PT): both jo
 ### Claude — no endpoint rotation exists (amendment-scoped, closed)
 
 - ∅ `ANTHROPIC_API_KEY` provisioned; Anthropic pay-first ∈ card-closed class (∅CC). Aggregator catalog presence only: OpenRouter (completions 402 funded-out) ∧ Unorouter (403 consent-gated; one-time web consents = HITL unlock). Live working surface = the collaborator/session surface with its own tooling; registry records `g4f.claude` (reference class) ∧ `claude.seat_runtime` (Quota lane). **No endpoint rotation is claimed.** If Provisioning identifies a provisioned Claude endpoint route, wiring is a one-line harness addition from this seat.
+
+## 25. Method–provider unbinding — the alignment rule (2026-11-02)
+
+Owner challenge sustained in main (2026-11-02): Repo-Story's build was hard-bound to one arm (Scout selection = Gemini) and inherited its capacity death — §20 violated at the method layer. This section generalizes §20 from dispatches to methods.
+
+**Rule (fleet-wide draft):**
+1. Methods bind to **capability contracts** (`build-dispatch`, `inference-invoke`, `review`, …), never to a named provider. A method document naming a provider as its actor of record is defective on its face.
+2. Provider = **runtime selection** at dispatch, from live capacity readings: an arm is selectable iff {live ∧ funded ∧ completing} on the registry/usage evidence planes. Selection + readings are stamped (fan-out) with every dispatch.
+3. Selections rotate per §20. A single-arm route is a **constrained arm** — constraint recorded (capability or completion capacity) — never a binding.
+4. **Defect class:** a method blocked on one arm while another arm of its capability class is completing = a defect, captured as an issue at capture time. First instance: #3735 (Repo-Story build bound to Gemini through 4 failed attempts / ~20h while the seat-build class completed builds fleet-wide).
+5. Recovery = re-selection, not re-dispatch storms: a failed arm rejoins the rotation when one of its legs completes; meanwhile the method proceeds on the selected live arm.
+
+**First application (proof):** Repo-Story v0 build re-dispatched under `build-dispatch` (selection record: repo-story issue #2 comment 6574154878) → seat-build routed dispatch selected (constrained arm: completion capacity) → build PR repo-story #4, App-authored (`termux-fleet-repostory[bot]`), product workflow self-fired on its own range (run 41424900013). Note on the owner's named arm: `provider-command-dispatch.yml` is PR-bound and monorepo-only (allowlist = review/autofix/fix-ci on an existing PR) — mechanically it cannot carry a cross-repo build; the live completing build class under routed dispatch is the seat-build class, and the build moved under it with the constraint stamped. Gemini capacity was separately restored by Provisioning the same morning (new free-tier project key, resealed 2026-11-02T09:53:48Z; pin Δ: `gemini-2.5-flash` 404s for new keys ⇒ `gemini-3.5-flash-lite`) — the arm rejoins on its first completed leg; the pin fix is a machinery follow-up on repo-story's build-dispatch.

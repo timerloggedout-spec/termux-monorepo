@@ -4,7 +4,7 @@ on:
   # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   workflow_dispatch:
   workflow_run:
-    workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]
+    workflows: ["RECON INTEL discovery", "tribute execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]
     types: [completed]
 
 permissions:

@@ -195,3 +195,18 @@ population per §20 (no-hard-select). Direct dispatch from DeepAgent to a
 named model was questioned and **stands rejected**. Recorded as the routing
 rule of record for the DeepAgent surface; DeepAgent's organs emit routed
 dispatch stamps like every other dispatch.
+
+## 24. "Use them" — Claude ∧ DeepSeek as endpoints (2026-11-02)
+
+Owner directive via main (2026-11-01 23:41 PT) ∧ amendment (23:50 PT): both join active swarm rotation as endpoints; Claude scoped by the amendment (card-closed as an API endpoint).
+
+### DeepSeek — direct route wired ∧ verified (auth-live, balance-blocked)
+
+- **Wiring:** PR #3612 merged `57c87cdc018e` — reviewed `deepseek` entry in `llm_api_hub/server/provider_extensions.py` (chat `api.deepseek.com/v1/chat/completions` · catalog `/v1/models` · env `DEEPSEEK_API_KEY`) + `deepseek` choice in `provider-invoke.yml`.
+- **401 root cause (this lane's bug, owned):** the #3612 splice's env line reached master with the secret expression scrubbed to a literal placeholder by the exec channel (proven by hash-verified blob read). Every post-#3612 run sent the placeholder as the bearer token. Provisioning's re-mint (fleet key, sealed 2026-11-02T08:26:49Z; fingerprint sha256[:12] `dcf12286205f`, len 35) was valid throughout — probe PR #3655 (run 41415733481) proved the in-job value == the seal. The original key's death is **UNPROVEN** (never read by any post-#3612 run). Fix: PR #3674 merged `aa959a4b623b` (expression fragment-built in-process; post-merge standard-form verified on hash-checked master bytes). **Standing rule: secret expressions are authored only via the file tool or in-process fragment construction — never through exec heredocs — and any env line this lane touches gets a post-merge standard-form regex check.**
+- **First true readings (2026-11-02T09:11Z; #3141 comments 6573317668 ∧ 6573329144):** catalog **HTTP 200, 2 models** {deepseek-flash, deepseek-v4-pro} ⇒ CI endpoint floor 7,397 → **7,399**; first stamped invoke (`deepseek-chat`) **HTTP 402 Insufficient Balance** — the request authenticates and prices; account balance $0.00 ∧ funding ∈ ∅CC closed class. **Class: direct route verified end-to-end; completions funded-out** (same family as deepinfra/novita, with live auth + countable catalog). No fleet action can fund it; the arm clears completions the day the account is funded.
+- Probe workflow `deepseek-secret-probe.yml` retained in-tree as a diagnostic (deletion prohibited; dispatch-only; hash-only output).
+
+### Claude — no endpoint rotation exists (amendment-scoped, closed)
+
+- ∅ `ANTHROPIC_API_KEY` provisioned; Anthropic pay-first ∈ card-closed class (∅CC). Aggregator catalog presence only: OpenRouter (completions 402 funded-out) ∧ Unorouter (403 consent-gated; one-time web consents = HITL unlock). Live working surface = the collaborator/session surface with its own tooling; registry records `g4f.claude` (reference class) ∧ `claude.seat_runtime` (Quota lane). **No endpoint rotation is claimed.** If Provisioning identifies a provisioned Claude endpoint route, wiring is a one-line harness addition from this seat.

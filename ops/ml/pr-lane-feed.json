@@ -1,12 +1,12 @@
 {
  "schema": "pr-lane-feed/v1",
- "generated_at": "2026-11-01T11:59:35Z",
- "open_prs": 169,
+ "generated_at": "2026-11-02T13:50:27Z",
+ "open_prs": 184,
  "counts": {
-  "CANDIDATE": 42,
-  "EXTRACT": 29,
-  "NEED_EVIDENCE": 87,
-  "SUPERSEDE": 11
+  "CANDIDATE": 47,
+  "EXTRACT": 28,
+  "NEED_EVIDENCE": 92,
+  "SUPERSEDE": 17
  },
  "prs": [
   {
@@ -16,7 +16,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 87.8,
+   "age_days": 88.9,
    "changed_files": 100,
    "gates": {
     "repo-gate": false,
@@ -31,7 +31,7 @@
    "draft": false,
    "base_ref": "master-staging",
    "mergeable_state": "dirty",
-   "age_days": 87.8,
+   "age_days": 88.9,
    "changed_files": 73,
    "gates": {
     "repo-gate": false,
@@ -46,7 +46,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 85.6,
+   "age_days": 86.7,
    "changed_files": 5,
    "gates": {
     "repo-gate": false,
@@ -61,7 +61,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 84.9,
+   "age_days": 86.0,
    "changed_files": 9,
    "gates": {
     "repo-gate": false,
@@ -76,7 +76,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 84.5,
+   "age_days": 85.5,
    "changed_files": 15,
    "gates": {
     "repo-gate": false,
@@ -91,7 +91,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 83.6,
+   "age_days": 84.6,
    "changed_files": 4785,
    "gates": {
     "repo-gate": false,
@@ -106,7 +106,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 82.9,
+   "age_days": 83.9,
    "changed_files": 4790,
    "gates": {
     "repo-gate": false,
@@ -121,7 +121,7 @@
    "draft": false,
    "base_ref": "master-staging",
    "mergeable_state": "dirty",
-   "age_days": 71.7,
+   "age_days": 72.8,
    "changed_files": 8,
    "gates": {
     "repo-gate": true,
@@ -136,7 +136,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 65.3,
+   "age_days": 66.3,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -151,7 +151,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 65.2,
+   "age_days": 66.3,
    "changed_files": 120,
    "gates": {
     "repo-gate": false,
@@ -166,7 +166,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 63.2,
+   "age_days": 64.2,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -180,8 +180,8 @@
    "author": "timerloggedout-spec",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unknown",
-   "age_days": 47.2,
+   "mergeable_state": "dirty",
+   "age_days": 48.2,
    "changed_files": 27,
    "gates": {
     "repo-gate": true,
@@ -196,7 +196,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 45.1,
+   "age_days": 46.2,
    "changed_files": 11,
    "gates": {
     "repo-gate": true,
@@ -211,7 +211,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 43.8,
+   "age_days": 44.8,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -226,7 +226,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 41.7,
+   "age_days": 42.8,
    "changed_files": 45,
    "gates": {
     "repo-gate": false,
@@ -241,13 +241,13 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 40.0,
+   "age_days": 41.0,
    "changed_files": 37,
    "gates": {
     "repo-gate": false,
     "termux-smoke": false
    },
-   "lane": "NEED_EVIDENCE"
+   "lane": "SUPERSEDE"
   },
   {
    "number": 752,
@@ -256,13 +256,13 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 39.6,
+   "age_days": 40.6,
    "changed_files": 6,
    "gates": {
     "repo-gate": true,
     "termux-smoke": true
    },
-   "lane": "NEED_EVIDENCE"
+   "lane": "SUPERSEDE"
   },
   {
    "number": 761,
@@ -271,13 +271,13 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 39.4,
+   "age_days": 40.4,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
     "termux-smoke": true
    },
-   "lane": "NEED_EVIDENCE"
+   "lane": "SUPERSEDE"
   },
   {
    "number": 762,
@@ -286,13 +286,13 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 39.4,
+   "age_days": 40.4,
    "changed_files": 11,
    "gates": {
     "repo-gate": false,
     "termux-smoke": false
    },
-   "lane": "NEED_EVIDENCE"
+   "lane": "SUPERSEDE"
   },
   {
    "number": 764,
@@ -301,13 +301,13 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 39.3,
+   "age_days": 40.4,
    "changed_files": 12,
    "gates": {
     "repo-gate": false,
     "termux-smoke": false
    },
-   "lane": "NEED_EVIDENCE"
+   "lane": "SUPERSEDE"
   },
   {
    "number": 769,
@@ -316,13 +316,13 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 39.2,
+   "age_days": 40.3,
    "changed_files": 10,
    "gates": {
     "repo-gate": false,
     "termux-smoke": false
    },
-   "lane": "NEED_EVIDENCE"
+   "lane": "SUPERSEDE"
   },
   {
    "number": 829,
@@ -331,7 +331,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 37.5,
+   "age_days": 38.5,
    "changed_files": 11,
    "gates": {
     "repo-gate": true,
@@ -346,7 +346,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 31.5,
+   "age_days": 32.5,
    "changed_files": 49,
    "gates": {
     "repo-gate": false,
@@ -361,7 +361,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 31.1,
+   "age_days": 32.2,
    "changed_files": 28,
    "gates": {
     "repo-gate": false,
@@ -376,7 +376,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 31.0,
+   "age_days": 32.1,
    "changed_files": 19,
    "gates": {
     "repo-gate": false,
@@ -391,7 +391,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 30.2,
+   "age_days": 31.3,
    "changed_files": 12,
    "gates": {
     "repo-gate": false,
@@ -406,7 +406,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 29.0,
+   "age_days": 30.0,
    "changed_files": 15,
    "gates": {
     "repo-gate": false,
@@ -421,7 +421,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 13.1,
+   "age_days": 14.2,
    "changed_files": 16,
    "gates": {
     "repo-gate": false,
@@ -436,7 +436,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 13.1,
+   "age_days": 14.2,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -451,7 +451,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 12.2,
+   "age_days": 13.3,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -466,7 +466,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 11.2,
+   "age_days": 12.3,
    "changed_files": 16,
    "gates": {
     "repo-gate": true,
@@ -481,7 +481,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 11.2,
+   "age_days": 12.3,
    "changed_files": 38,
    "gates": {
     "repo-gate": true,
@@ -496,7 +496,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 11.0,
+   "age_days": 12.0,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -511,7 +511,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 10.9,
+   "age_days": 12.0,
    "changed_files": 44,
    "gates": {
     "repo-gate": true,
@@ -526,7 +526,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 10.5,
+   "age_days": 11.6,
    "changed_files": 8,
    "gates": {
     "repo-gate": true,
@@ -541,7 +541,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 10.4,
+   "age_days": 11.5,
    "changed_files": 26,
    "gates": {
     "repo-gate": false,
@@ -556,7 +556,7 @@
    "draft": false,
    "base_ref": "master-staging",
    "mergeable_state": "unstable",
-   "age_days": 10.2,
+   "age_days": 11.3,
    "changed_files": 14,
    "gates": {
     "repo-gate": true,
@@ -571,7 +571,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 10.2,
+   "age_days": 11.3,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -586,7 +586,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 10.2,
+   "age_days": 11.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -601,7 +601,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 10.2,
+   "age_days": 11.2,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -616,7 +616,7 @@
    "draft": false,
    "base_ref": "master-staging",
    "mergeable_state": "unstable",
-   "age_days": 10.2,
+   "age_days": 11.2,
    "changed_files": 45,
    "gates": {
     "repo-gate": true,
@@ -631,7 +631,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "clean",
-   "age_days": 10.2,
+   "age_days": 11.2,
    "changed_files": 4,
    "gates": {
     "repo-gate": false,
@@ -646,7 +646,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 10.2,
+   "age_days": 11.2,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -661,7 +661,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 10.1,
+   "age_days": 11.2,
    "changed_files": 8,
    "gates": {
     "repo-gate": true,
@@ -676,7 +676,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 10.1,
+   "age_days": 11.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -690,8 +690,8 @@
    "author": "timerloggedout-spec",
    "draft": true,
    "base_ref": "master",
-   "mergeable_state": "unknown",
-   "age_days": 10.1,
+   "mergeable_state": "dirty",
+   "age_days": 11.2,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -706,7 +706,7 @@
    "draft": false,
    "base_ref": "cue/swarms-research-remote-20261021",
    "mergeable_state": "unstable",
-   "age_days": 10.0,
+   "age_days": 11.1,
    "changed_files": 12,
    "gates": {
     "repo-gate": true,
@@ -721,7 +721,7 @@
    "draft": false,
    "base_ref": "cue/swarms-research-remote-20261021",
    "mergeable_state": "unstable",
-   "age_days": 10.0,
+   "age_days": 11.1,
    "changed_files": 49,
    "gates": {
     "repo-gate": false,
@@ -736,7 +736,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 9.8,
+   "age_days": 10.9,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -751,7 +751,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 9.6,
+   "age_days": 10.6,
    "changed_files": 0,
    "gates": {
     "repo-gate": true,
@@ -766,7 +766,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 9.5,
+   "age_days": 10.6,
    "changed_files": 6,
    "gates": {
     "repo-gate": true,
@@ -781,7 +781,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 9.5,
+   "age_days": 10.5,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -796,7 +796,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 9.2,
+   "age_days": 10.3,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -811,7 +811,7 @@
    "draft": false,
    "base_ref": "master-staging",
    "mergeable_state": "unstable",
-   "age_days": 9.2,
+   "age_days": 10.3,
    "changed_files": 5,
    "gates": {
     "repo-gate": true,
@@ -826,7 +826,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 9.2,
+   "age_days": 10.2,
    "changed_files": 0,
    "gates": {
     "repo-gate": true,
@@ -841,7 +841,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 8.8,
+   "age_days": 9.9,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -856,7 +856,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 8.6,
+   "age_days": 9.6,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -870,8 +870,8 @@
    "author": "google-labs-jules[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "clean",
-   "age_days": 8.5,
+   "mergeable_state": "unknown",
+   "age_days": 9.6,
    "changed_files": 8,
    "gates": {
     "repo-gate": false,
@@ -886,7 +886,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 8.5,
+   "age_days": 9.5,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -901,7 +901,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 8.4,
+   "age_days": 9.5,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -916,7 +916,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 8.4,
+   "age_days": 9.4,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -931,7 +931,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "clean",
-   "age_days": 8.4,
+   "age_days": 9.4,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -946,7 +946,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 8.2,
+   "age_days": 9.3,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -961,7 +961,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 8.2,
+   "age_days": 9.3,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -976,7 +976,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 8.2,
+   "age_days": 9.3,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -991,7 +991,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 8.2,
+   "age_days": 9.3,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1006,7 +1006,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 8.2,
+   "age_days": 9.2,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -1021,7 +1021,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 7.6,
+   "age_days": 8.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1030,43 +1030,13 @@
    "lane": "CANDIDATE"
   },
   {
-   "number": 1640,
-   "title": "ci: enforce explicit justification for dismissed reviews in merge readiness engine",
-   "author": "google-labs-jules[bot]",
-   "draft": false,
-   "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 7.6,
-   "changed_files": 2,
-   "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
-   },
-   "lane": "NEED_EVIDENCE"
-  },
-  {
    "number": 1642,
    "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
    "author": "google-labs-jules[bot]",
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 7.5,
-   "changed_files": 8,
-   "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
-   },
-   "lane": "EXTRACT"
-  },
-  {
-   "number": 1642,
-   "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
-   "author": "google-labs-jules[bot]",
-   "draft": false,
-   "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 7.5,
+   "age_days": 8.6,
    "changed_files": 8,
    "gates": {
     "repo-gate": true,
@@ -1081,7 +1051,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 7.5,
+   "age_days": 8.6,
    "changed_files": 22,
    "gates": {
     "repo-gate": false,
@@ -1096,7 +1066,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 7.4,
+   "age_days": 8.5,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1111,7 +1081,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 7.2,
+   "age_days": 8.3,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1126,7 +1096,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 6.2,
+   "age_days": 7.2,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -1140,8 +1110,8 @@
    "author": "timerloggedout-spec",
    "draft": true,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 5.5,
+   "mergeable_state": "unknown",
+   "age_days": 6.6,
    "changed_files": 8,
    "gates": {
     "repo-gate": true,
@@ -1156,7 +1126,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 5.5,
+   "age_days": 6.6,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -1171,7 +1141,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 5.4,
+   "age_days": 6.5,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -1186,7 +1156,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 5.2,
+   "age_days": 6.3,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -1201,7 +1171,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 5.2,
+   "age_days": 6.3,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1216,7 +1186,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 5.2,
+   "age_days": 6.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1231,7 +1201,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 5.0,
+   "age_days": 6.1,
    "changed_files": 21,
    "gates": {
     "repo-gate": true,
@@ -1246,7 +1216,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 5.0,
+   "age_days": 6.1,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1261,7 +1231,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 5.0,
+   "age_days": 6.1,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -1276,7 +1246,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 4.7,
+   "age_days": 5.8,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1291,7 +1261,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 4.6,
+   "age_days": 5.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1306,7 +1276,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 4.5,
+   "age_days": 5.6,
    "changed_files": 8,
    "gates": {
     "repo-gate": true,
@@ -1321,7 +1291,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 4.3,
+   "age_days": 5.4,
    "changed_files": 19,
    "gates": {
     "repo-gate": false,
@@ -1336,7 +1306,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 4.2,
+   "age_days": 5.3,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -1351,7 +1321,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 4.2,
+   "age_days": 5.2,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -1366,26 +1336,11 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 3.7,
+   "age_days": 4.8,
    "changed_files": 1,
    "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
-   },
-   "lane": "CANDIDATE"
-  },
-  {
-   "number": 2168,
-   "title": "chore(dashboards): refresh surface feeds",
-   "author": "github-actions[bot]",
-   "draft": false,
-   "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 3.7,
-   "changed_files": 5,
-   "gates": {
     "repo-gate": false,
-    "termux-smoke": false
+    "termux-smoke": true
    },
    "lane": "NEED_EVIDENCE"
   },
@@ -1396,7 +1351,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.7,
+   "age_days": 4.8,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -1411,7 +1366,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.7,
+   "age_days": 4.8,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1425,8 +1380,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 3.7,
+   "mergeable_state": "unknown",
+   "age_days": 4.8,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1441,7 +1396,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.7,
+   "age_days": 4.7,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1456,7 +1411,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.7,
+   "age_days": 4.7,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1471,7 +1426,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.7,
+   "age_days": 4.7,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1486,7 +1441,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.7,
+   "age_days": 4.7,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1501,7 +1456,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.6,
+   "age_days": 4.7,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -1516,7 +1471,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 3.6,
+   "age_days": 4.6,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -1531,7 +1486,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 3.6,
+   "age_days": 4.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1545,14 +1500,14 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 3.6,
+   "mergeable_state": "clean",
+   "age_days": 4.6,
    "changed_files": 2,
    "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
+    "repo-gate": false,
+    "termux-smoke": false
    },
-   "lane": "CANDIDATE"
+   "lane": "NEED_EVIDENCE"
   },
   {
    "number": 2304,
@@ -1560,8 +1515,8 @@
    "author": "google-labs-jules[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 3.5,
+   "mergeable_state": "unknown",
+   "age_days": 4.6,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -1576,13 +1531,13 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 3.3,
+   "age_days": 4.4,
    "changed_files": 1,
    "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
+    "repo-gate": false,
+    "termux-smoke": false
    },
-   "lane": "CANDIDATE"
+   "lane": "NEED_EVIDENCE"
   },
   {
    "number": 2330,
@@ -1591,7 +1546,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 3.2,
+   "age_days": 4.3,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1600,28 +1555,13 @@
    "lane": "EXTRACT"
   },
   {
-   "number": 2340,
-   "title": "chore(dashboards): refresh dispatch-tree feed",
-   "author": "github-actions[bot]",
-   "draft": false,
-   "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 2.9,
-   "changed_files": 2,
-   "gates": {
-    "repo-gate": false,
-    "termux-smoke": false
-   },
-   "lane": "NEED_EVIDENCE"
-  },
-  {
    "number": 2343,
    "title": "Add Merged Branch Audit and Timing Quotas Evaluator",
    "author": "google-labs-jules[bot]",
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 2.6,
+   "age_days": 3.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1636,7 +1576,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 2.5,
+   "age_days": 3.6,
    "changed_files": 5,
    "gates": {
     "repo-gate": true,
@@ -1650,8 +1590,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.5,
+   "mergeable_state": "unknown",
+   "age_days": 3.6,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -1665,8 +1605,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.5,
+   "mergeable_state": "unknown",
+   "age_days": 3.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1681,7 +1621,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 2.4,
+   "age_days": 3.5,
    "changed_files": 4,
    "gates": {
     "repo-gate": true,
@@ -1695,8 +1635,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.4,
+   "mergeable_state": "unknown",
+   "age_days": 3.5,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -1710,8 +1650,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.4,
+   "mergeable_state": "unknown",
+   "age_days": 3.5,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1726,7 +1666,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 2.2,
+   "age_days": 3.3,
    "changed_files": 7,
    "gates": {
     "repo-gate": true,
@@ -1741,7 +1681,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 2.2,
+   "age_days": 3.2,
    "changed_files": 5,
    "gates": {
     "repo-gate": true,
@@ -1756,7 +1696,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 2.1,
+   "age_days": 3.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -1770,27 +1710,12 @@
    "author": "timerloggedout-spec",
    "draft": true,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 2.1,
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
     "termux-smoke": true
-   },
-   "lane": "NEED_EVIDENCE"
-  },
-  {
-   "number": 2473,
-   "title": "feat(cadence): tick ledger \u2014 per-request quota telemetry (QAC-009)",
-   "author": "timerloggedout-spec",
-   "draft": false,
-   "base_ref": "master",
-   "mergeable_state": "clean",
-   "age_days": 2.1,
-   "changed_files": 4,
-   "gates": {
-    "repo-gate": false,
-    "termux-smoke": false
    },
    "lane": "NEED_EVIDENCE"
   },
@@ -1800,8 +1725,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.1,
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1815,8 +1740,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.1,
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1830,8 +1755,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.1,
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -1845,8 +1770,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.1,
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1860,8 +1785,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 2.0,
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1876,7 +1801,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 1.6,
+   "age_days": 2.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -1890,8 +1815,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 1.5,
+   "mergeable_state": "unknown",
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1905,8 +1830,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "dirty",
-   "age_days": 1.5,
+   "mergeable_state": "unknown",
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1921,7 +1846,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1936,7 +1861,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1951,7 +1876,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1966,7 +1891,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1981,7 +1906,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -1996,7 +1921,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -2011,7 +1936,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2026,7 +1951,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2041,7 +1966,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2056,7 +1981,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -2071,7 +1996,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2086,7 +2011,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "clean",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -2101,7 +2026,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -2116,7 +2041,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "clean",
-   "age_days": 1.5,
+   "age_days": 2.6,
    "changed_files": 11,
    "gates": {
     "repo-gate": false,
@@ -2131,7 +2056,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.4,
+   "age_days": 2.5,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2146,7 +2071,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.4,
+   "age_days": 2.5,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2161,7 +2086,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.4,
+   "age_days": 2.5,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2176,7 +2101,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.3,
+   "age_days": 2.4,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2191,7 +2116,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.3,
+   "age_days": 2.4,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2206,7 +2131,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 1.3,
+   "age_days": 2.4,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -2221,7 +2146,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.3,
+   "age_days": 2.4,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2236,7 +2161,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 1.3,
+   "age_days": 2.3,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2251,7 +2176,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 1.3,
+   "age_days": 2.3,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -2266,7 +2191,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.8,
+   "age_days": 1.9,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -2281,7 +2206,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.6,
+   "age_days": 1.6,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -2295,14 +2220,14 @@
    "author": "timerloggedout-spec",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.4,
+   "mergeable_state": "clean",
+   "age_days": 1.5,
    "changed_files": 2,
    "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
+    "repo-gate": false,
+    "termux-smoke": false
    },
-   "lane": "CANDIDATE"
+   "lane": "NEED_EVIDENCE"
   },
   {
    "number": 2857,
@@ -2311,7 +2236,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.4,
+   "age_days": 1.5,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -2325,8 +2250,8 @@
    "author": "timerloggedout-spec",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.4,
+   "mergeable_state": "unknown",
+   "age_days": 1.5,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -2340,8 +2265,8 @@
    "author": "timerloggedout-spec",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.4,
+   "mergeable_state": "unknown",
+   "age_days": 1.5,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -2350,28 +2275,13 @@
    "lane": "CANDIDATE"
   },
   {
-   "number": 2914,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "author": "github-actions[bot]",
-   "draft": false,
-   "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.4,
-   "changed_files": 3,
-   "gates": {
-    "repo-gate": false,
-    "termux-smoke": false
-   },
-   "lane": "NEED_EVIDENCE"
-  },
-  {
    "number": 2966,
    "title": "[apk-doe] A v0.2.1",
    "author": "google-labs-jules[bot]",
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.3,
+   "age_days": 1.4,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -2385,12 +2295,12 @@
    "author": "timerloggedout-spec",
    "draft": true,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.2,
-   "changed_files": 8,
+   "mergeable_state": "unknown",
+   "age_days": 1.3,
+   "changed_files": 15,
    "gates": {
-    "repo-gate": true,
-    "termux-smoke": true
+    "repo-gate": false,
+    "termux-smoke": false
    },
    "lane": "NEED_EVIDENCE"
   },
@@ -2401,7 +2311,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unknown",
-   "age_days": 0.2,
+   "age_days": 1.3,
    "changed_files": 10,
    "gates": {
     "repo-gate": false,
@@ -2415,8 +2325,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.1,
+   "mergeable_state": "unknown",
+   "age_days": 1.2,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2430,8 +2340,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.1,
+   "mergeable_state": "unknown",
+   "age_days": 1.2,
    "changed_files": 3,
    "gates": {
     "repo-gate": false,
@@ -2446,7 +2356,7 @@
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.1,
+   "age_days": 1.2,
    "changed_files": 2,
    "gates": {
     "repo-gate": true,
@@ -2461,7 +2371,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.1,
+   "age_days": 1.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -2476,7 +2386,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "clean",
-   "age_days": 0.1,
+   "age_days": 1.2,
    "changed_files": 1,
    "gates": {
     "repo-gate": false,
@@ -2491,7 +2401,7 @@
    "draft": true,
    "base_ref": "master",
    "mergeable_state": "unstable",
-   "age_days": 0.1,
+   "age_days": 1.1,
    "changed_files": 1,
    "gates": {
     "repo-gate": true,
@@ -2505,8 +2415,8 @@
    "author": "github-actions[bot]",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.0,
+   "mergeable_state": "unknown",
+   "age_days": 1.1,
    "changed_files": 2,
    "gates": {
     "repo-gate": false,
@@ -2520,8 +2430,8 @@
    "author": "timerloggedout-spec",
    "draft": false,
    "base_ref": "master",
-   "mergeable_state": "unstable",
-   "age_days": 0.0,
+   "mergeable_state": "unknown",
+   "age_days": 1.1,
    "changed_files": 3,
    "gates": {
     "repo-gate": true,
@@ -2530,9 +2440,279 @@
    "lane": "CANDIDATE"
   },
   {
-   "number": 3102,
-   "title": "StudySprint RSVP multi-pass reader core \u2014 study_reader.py",
+   "number": 3113,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3209,
+   "title": "chore(cadence): auto-register providers from surface drift",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3241,
+   "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 0.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3242,
+   "title": "feat(quota): harden provider consumption audit",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.7,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3247,
+   "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3342,
+   "title": "feat(ci): add merged branch review audit and quota engine",
    "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 0.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3437,
+   "title": "feat(dispatch): wire gemini-invoke to the stamp fan-out",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3500,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 0.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3501,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3502,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 0.4,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3640,
+   "title": "chore(proposals): refresh proposals-feed.json",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3707,
+   "title": "g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeout, no artifact)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3723,
+   "title": "apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 0.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3755,
+   "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3757,
+   "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3758,
+   "title": "feat(ci): archwiz mirror_report \u2014 repo-side mirror variant (advisory rollup)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3763,
+   "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3789,
+   "title": "docs(guides): Certifications Value Matrix \u2014 expectation records for all cert rows + INTAKE category index",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.1,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3885,
+   "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
+   "author": "timerloggedout-spec",
    "draft": false,
    "base_ref": "master",
    "mergeable_state": "unstable",
@@ -2543,6 +2723,51 @@
     "termux-smoke": true
    },
    "lane": "CANDIDATE"
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 0.0,
+   "changed_files": 9,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3899,
+   "title": "desk-feed: Repo-Story closeout \u2014 v0 SHIPPED",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3903,
+   "title": "docs index: register skill-reference files as convention-loaded census class",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
   }
  ],
  "fetch_warnings": 0

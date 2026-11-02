@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 410,
-    "open_prs": 186,
+    "open_issues": 411,
+    "open_prs": 185,
     "pr_classes": {
       "CANDIDATE": 91,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 89,
+      "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 20,
-      "prs": 184,
+      "issues": 21,
+      "prs": 183,
       "unlabelled_numbers": [
         308,
         388,
@@ -71,11 +71,12 @@
         3673,
         3735,
         3751,
-        3752
+        3752,
+        3821
       ]
     }
   },
-  "generated_at": "2026-11-02T12:26:24Z",
+  "generated_at": "2026-11-02T12:28:51Z",
   "issues_unlabelled": [
     308,
     388,
@@ -96,7 +97,8 @@
     3673,
     3735,
     3751,
-    3752
+    3752,
+    3821
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -104,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "6b04815f43"
+    "sha": "70a389ad03"
   },
   "prs": [
     {
@@ -184,12 +186,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d1dfbeb58b",
+      "head_sha": "d94e0ffb40",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3818,
-      "title": "Q2: create-github-app-token v1 -> v3 fleet SHA pin (cert-coderoad, cert-project)",
-      "updated_at": "2026-11-02T12:24:42Z"
+      "number": 3823,
+      "title": "fix(fabric): Q1 \u2014 operator-token discovery (unprovisioned App mint root cause) + cadence off fixed cron",
+      "updated_at": "2026-11-02T12:28:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1880,15 +1882,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "2e3b3f0c67",
+      "head_sha": "9276aab76e",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T12:25:54Z"
+      "updated_at": "2026-11-02T12:28:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2701,20 +2703,6 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "90430bbfbc",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3815,
-      "title": "fix(backfill): fail closed on deferred corpus builds",
-      "updated_at": "2026-11-02T12:09:01Z"
     }
   ],
   "schema": "operator-matrix/v1",

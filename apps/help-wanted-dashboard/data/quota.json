@@ -1,6 +1,6 @@
 {
   "schema": "quota.readings.v2",
-  "generated_at": "2026-11-01T13:23:25.948846+00:00",
+  "generated_at": "2026-11-02T08:16:06.415255+00:00",
   "source": "Converted from the quota probe's status-only public projection (quota-public-status) through the generated-file path; not a live quota feed. The projection withholds account values by design, so every converted row carries used null and reset null.",
   "readings": [
     {
@@ -25,7 +25,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
     },
     {
       "resource_id": "github.api.app_collector",
@@ -61,7 +61,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
     },
     {
       "resource_id": "github.api.user_token",
@@ -109,7 +109,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
     },
     {
       "resource_id": "vercel.build_time",
@@ -241,7 +241,7 @@
       "note": "Probe run observed this service privately (private_preflight); account values and the real status are withheld from the public projection, so the public row is unknown. Private authoritative preflight required.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
     },
     {
       "resource_id": "gemini.api_free",
@@ -277,7 +277,7 @@
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
     },
     {
       "resource_id": "g4f.vendors",
@@ -1105,7 +1105,7 @@
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
     },
     {
       "resource_id": "pinecone.storage",
@@ -1965,6 +1965,78 @@
       "used": null,
       "limit": null,
       "unit": "dispatches",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "deepinfra.api",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "USD balance (prepaid)",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "novita.api",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "USD balance (prepaid)",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "friendli.api",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "USD balance (prepaid)",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "baseten.api",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "USD credits (prepaid)",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "claude.seat_runtime",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "dispatches (consumption NOT ESTABLISHED)",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "deepseek.api",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "requests/tokens (NOT ESTABLISHED)",
       "reset": null,
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "early_signal",

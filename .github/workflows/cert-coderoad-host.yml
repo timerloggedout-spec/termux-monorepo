@@ -191,7 +191,9 @@ jobs:
               f"--- session files ---\n{tail('evidence/session-files.txt', 90)}\n\n"
               f"--- stage.log ---\n{tail('evidence/stage.log', 30)}\n\n"
               f"--- tap-direct.txt ---\n{tail('evidence/tap-direct.txt', 40)}\n\n"
-              f"--- code-fg.txt ---\n{tail('evidence/code-fg.txt', 50)}"
+              f"--- code-fg.txt ---\n{tail('evidence/code-fg.txt', 50)}\n\n"
+              f"--- pg-probe.txt ---\n{tail('evidence/pg-probe.txt', 20)}\n\n"
+              f"--- pg-container.log ---\n{tail('evidence/pg-container.log', 35)}"
           )
           req = urllib.request.Request(
               "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",

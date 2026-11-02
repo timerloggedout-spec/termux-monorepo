@@ -24,6 +24,7 @@ CANON = [
     ('https://timerloggedout-spec.github.io/help-wanted/quota.html', 'Quota'),
     ('https://timerloggedout-spec.github.io/help-wanted/quota-usage.html', 'Quota Usage'),
     ('https://timerloggedout-spec.github.io/help-wanted/quota-graphs.html', 'Quota Graphs'),
+    ('https://timerloggedout-spec.github.io/help-wanted/quota-swarm.html', 'Swarm Quota'),
     ('https://timerloggedout-spec.github.io/help-wanted/admin.html', 'Admin'),
     ('https://timerloggedout-spec.github.io/help-wanted/oracle.html', 'Oracle'),
     ('https://timerloggedout-spec.github.io/help-wanted/3l0.html', '3L0'),
@@ -59,7 +60,7 @@ NAV_PAGES = {
     "dispatch-tree.html", "countdowns.html", "linguist.html",
     "delphi-rfp.html", "delphi-ledger.html", "pr-lanes.html",
     "proposals.html", "telemetry.html", "desk.html", "tracking.html",
-    "family.html",
+    "family.html", "quota-swarm.html",
 }
 
 

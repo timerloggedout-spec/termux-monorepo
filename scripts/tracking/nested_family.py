@@ -311,15 +311,16 @@ def collect_tasks(base: Path):
 def _registry_providers(base: Path):
     """ALL-providers denominator (owner amendment 2026-11-01): distinct
     provider names, verbatim, from ops/quota/registry.json model lane.
-    Returns (names, path) or (None, path) when unreadable."""
+    Returns (names, n_records, path) or (None, 0, path) when unreadable —
+    the records/distinct pair is the census vintage fingerprint."""
     path = base / "ops" / "quota" / "registry.json"
     reg = _read_json(path)
     if not isinstance(reg, dict):
-        return None, "ops/quota/registry.json"
-    names = sorted({s.get("provider") for s in reg.get("services", [])
-                    if isinstance(s, dict) and s.get("lane") == "model" and s.get("provider")},
-                   key=lambda s: str(s).casefold())
-    return names, "ops/quota/registry.json"
+        return None, 0, "ops/quota/registry.json"
+    lane = [s for s in reg.get("services", [])
+            if isinstance(s, dict) and s.get("lane") == "model" and s.get("provider")]
+    names = sorted({s.get("provider") for s in lane}, key=lambda s: str(s).casefold())
+    return names, len(lane), "ops/quota/registry.json"
 
 
 def build(base=None, now=None) -> dict:
@@ -370,7 +371,7 @@ def build(base=None, now=None) -> dict:
     # ALL-providers denominator: registry model-lane providers with no
     # dispatch family appear as zero-dispatch gap rows (verbatim names;
     # join = casefold-exact, no aliases — declared in spec).
-    reg_names, reg_path = _registry_providers(base)
+    reg_names, reg_records, reg_path = _registry_providers(base)
     coverage = None
     if reg_names is None:
         gaps.append(f"registry denominator unavailable: {reg_path} unreadable — zero-dispatch rows omitted")
@@ -381,14 +382,19 @@ def build(base=None, now=None) -> dict:
             providers.append({"provider": n, "models": [], "model_count": 0,
                               "task_count": 0, "zero_dispatch": True})
         reg_fold = {str(n).casefold() for n in reg_names}
+        unregistered = sorted((p for p in fam if str(p).casefold() not in reg_fold),
+                              key=lambda s: str(s))
         coverage = {
             "denominator": f"{reg_path} · lane=model · distinct provider",
+            "registry_records": reg_records,
             "registry_providers": len(reg_names),
             "with_dispatches": len(reg_names) - len(zero),
             "zero_dispatch": zero,
-            "unregistered_dispatch_providers": sorted(
-                (p for p in fam if str(p).casefold() not in reg_fold), key=lambda s: str(s)),
+            "unregistered_dispatch_providers": unregistered,
         }
+        if unregistered:
+            gaps.append("dispatch providers with no registry model-lane match "
+                        f"(casefold-exact join, no aliases): {', '.join(map(str, unregistered))}")
 
     desk_used = next((m["records_used"] for m in meta if m["id"] == "desk-usage"), 0)
     if desk_used:

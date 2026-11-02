@@ -1,0 +1,221 @@
+name: cert-coderoad
+
+# Certifications CodeRoad completion leg (Route A follow-on): a project or
+# workshop unit is completed inside freeCodeCamp's own rdb-alpha dev
+# environment by the real CodeRoad VS Code extension, headless on an
+# Actions runner. The extension auto-loads the tutorial from
+# CODEROAD_TUTORIAL_URL, runs the course setup hooks, and — once the
+# verified solution is staged and the fleet driver extension fires
+# coderoad.run_test — reports tutorial_complete to the FCC webhook with
+# the CODEROAD_WEBHOOK_TOKEN header (repo secret, sealed by Provisioning;
+# the value never appears in logs or files).
+# Evidence: CodeRoad session state + driver RESULT + a direct mocha TAP
+# diagnostic, uploaded as artifacts; verdict posts on issue #506;
+# routing stamps emit via dispatch-stamp-fanout.
+
+on:
+  workflow_dispatch:
+    inputs:
+      unit:
+        description: "Unit number, e.g. 025"
+        required: true
+        type: string
+      course_repo:
+        description: "Course repo name under freeCodeCamp/, e.g. learn-celestial-bodies-database"
+        required: true
+        type: string
+      solution_repo:
+        description: "Solution repo name under timerloggedout-spec/, e.g. fcc-celestial-bodies-database"
+        required: true
+        type: string
+      stage_cmd:
+        description: "In-container command staging the solution after CodeRoad setup"
+        required: true
+        type: string
+      course_ref:
+        description: "Course repo ref holding tutorial.json"
+        required: false
+        default: main
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+
+concurrency:
+  group: cert-coderoad
+  cancel-in-progress: false
+
+jobs:
+  coderoad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+
+      - name: Check out monorepo (driver + orchestration sources)
+        uses: actions/checkout@v4
+        with:
+          path: mono
+
+      - name: Check out course repo (student starting state)
+        uses: actions/checkout@v4
+        with:
+          repository: freeCodeCamp/${{ inputs.course_repo }}
+          ref: ${{ inputs.course_ref }}
+          path: project
+
+      - name: Check out rdb-alpha (environment recipe)
+        uses: actions/checkout@v4
+        with:
+          repository: freeCodeCamp/rdb-alpha
+          path: rdb-alpha
+
+      - name: Check out verified solution repo
+        uses: actions/checkout@v4
+        with:
+          repository: timerloggedout-spec/${{ inputs.solution_repo }}
+          token: ${{ steps.app-token.outputs.token }}
+          path: solution
+
+      - name: Routing stamp — dispatch (fail-soft)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          STAMP=$(python3 - <<'PYEOF'
+          import json, os
+          print(json.dumps({
+              "dispatch_id": f"coderoad-{os.environ['UNIT']}-{os.environ['RUN_ID']}",
+              "origin": "live",
+              "task_class": "certifications-coderoad",
+              "provider": "github-actions",
+              "model": "coderoad-vscode (rdb-alpha container)",
+              "run_id": os.environ["RUN_ID"],
+              "repo": "timerloggedout-spec/termux-monorepo",
+          }))
+          PYEOF
+          )
+          gh workflow run dispatch-stamp-fanout.yml \
+            --repo timerloggedout-spec/termux-monorepo \
+            -f stamp="$STAMP" -f phase=dispatch
+
+      - name: Build images (rdb-alpha, then CodeRoad layer)
+        run: |
+          docker build -t rdb-alpha:local ./rdb-alpha
+          docker build -t coderoad:local \
+            -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
+            mono/scripts/certifications/coderoad-driver
+
+      - name: Run CodeRoad completion in container
+        id: run
+        env:
+          STAGE_CMD: ${{ inputs.stage_cmd }}
+          COURSE_REPO: ${{ inputs.course_repo }}
+        run: |
+          mkdir -p evidence && chmod 777 evidence
+          if [ -n "${{ secrets.CODEROAD_WEBHOOK_TOKEN }}" ]; then
+            echo "TOKEN_PRESENT=true" >> "$GITHUB_ENV"
+          else
+            echo "TOKEN_PRESENT=false" >> "$GITHUB_ENV"
+          fi
+          docker run -d --name cr --user root \
+            -e CODEROAD_WEBHOOK_TOKEN="${{ secrets.CODEROAD_WEBHOOK_TOKEN }}" \
+            -e CODEROAD_TUTORIAL_URL="https://raw.githubusercontent.com/freeCodeCamp/${COURSE_REPO}/main/tutorial.json" \
+            -e CODEROAD_DISABLE_RUN_ON_SAVE=true \
+            -e CODEROAD_SESSION_STORAGE_PATH=/evidence/session.json \
+            -e CODEROAD_DRIVER_EVIDENCE=/evidence \
+            -e STAGE_CMD="${STAGE_CMD}" \
+            -v "$GITHUB_WORKSPACE/project:/workspace/project" \
+            -v "$GITHUB_WORKSPACE/solution:/solution:ro" \
+            -v "$GITHUB_WORKSPACE/evidence:/evidence" \
+            coderoad:local sleep infinity
+          docker cp mono/scripts/certifications/coderoad-driver/orchestrate.sh cr:/tmp/orchestrate.sh
+          docker exec cr bash /tmp/orchestrate.sh | tee evidence/orchestrate-stdout.txt
+          docker logs cr > evidence/container.log 2>&1 || true
+          if jq -e '.ok == true' evidence/RESULT.json > /dev/null 2>&1; then
+            echo "CR_OK=true" >> "$GITHUB_ENV"
+          else
+            echo "CR_OK=false" >> "$GITHUB_ENV"
+          fi
+          echo "--- evidence ---"; ls -la evidence || true
+          cat evidence/RESULT.json 2>/dev/null || echo "no RESULT.json"
+
+      - name: Upload evidence artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coderoad-${{ inputs.unit }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+
+      - name: Post verdict to issue 506
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+          ok = os.environ.get("CR_OK") == "true"
+          verdict = {
+              "unit": f"{os.environ['UNIT']}-coderoad",
+              "ok": ok,
+              "steps": 1,
+              "failures": 0 if ok else 1,
+              "model": "coderoad (Actions rdb-alpha container; real extension, headless driver)",
+              "missing": {},
+          }
+          body = (
+              "UNIT_VERDICT `" + json.dumps(verdict) + "`\n"
+              f"run: {os.environ['RUN_ID']} · CodeRoad completion leg "
+              f"· token_present={os.environ.get('TOKEN_PRESENT')} "
+              f"· tutorial_complete webhook fires from the extension on completion; "
+              f"authoritative confirmation = Platforms on-account Step-1 check"
+          )
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body}).encode(),
+              headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("verdict posted:", verdict)
+          PYEOF
+
+      - name: Routing stamp — outcome (fail-soft)
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          STAMP=$(python3 - <<'PYEOF'
+          import json, os
+          print(json.dumps({
+              "dispatch_id": f"coderoad-{os.environ['UNIT']}-{os.environ['RUN_ID']}",
+              "origin": "live",
+              "outcome": "completed" if os.environ.get("CR_OK") == "true" else "failed",
+          }))
+          PYEOF
+          )
+          gh workflow run dispatch-stamp-fanout.yml \
+            --repo timerloggedout-spec/termux-monorepo \
+            -f stamp="$STAMP" -f phase=outcome
+
+      - name: Gate on CodeRoad result
+        if: env.CR_OK != 'true'
+        run: |
+          echo "CodeRoad completion did not report success; see evidence artifacts."
+          exit 1

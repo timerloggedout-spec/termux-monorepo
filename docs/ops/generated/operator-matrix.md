@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T15:46:10Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T15:57:30Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `3110a81597` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `be3324b40e` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 418 issues, 181 PRs. PR classes: EXTRACT 5 / CANDIDATE 88 / NEED_EVIDENCE 88 / SUPERSEDE 0.
 

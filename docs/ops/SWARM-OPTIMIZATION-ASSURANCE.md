@@ -157,3 +157,15 @@ Possible future ww scope, recorded for the campaign record (a scope note, not a 
 **Hard-select is prohibited as a dispatch pattern.** Dispatched work is routed + assigned across the Swarm's arms (task-fit rotation / tranches) so every dispatch emits **comparative signal** for 3L0/DoE efficiency learning. A single hard-selected arm yields single-plane signal — incomparable, unusable for cross-arm learning. Single-arm routing is permitted only when task constraints genuinely bind (capability/credential class), and is then recorded as a **constrained arm**, never a preference.
 
 **Application to the ww re-fire plan:** on arm recovery, probes **distribute across arms** (Jules, Gemini build_dispatch, command-dispatch, DeepSeek when restored) — not Jules alone. The wave's "Jules-gated" phrasing in §18 and the campaign issues is superseded by this section: Jules recovery unblocks the wave, but re-fire probes run as cross-arm sets with per-instance stamps ({provider, model@version, session/run, role, set index}) so the recovery itself produces comparable evidence.
+
+## §21 — Routing update: scoring planes populated from live dispatch (owner, 2026-11-01)
+
+Per the Swarm definition (§19) and the no-hard-select principle (§20), dispatch routing now emits every routed+assigned dispatch's full stamp {task class · arm/provider · model · run id · outcome · quota/cost class} to **each** scoring plane's intake, not just the desk-feed:
+
+- **Emitter (routing layer):** `scripts/dispatch/stamp_fanout.py` + `.github/workflows/dispatch-stamp-fanout.yml` (Swarm App authored commits). One canonical stamp in, four intakes out.
+- **3L0:** `ops/3l0/intake.jsonl` (`3l0-intake/v1`, append-only, per docs/ops/3L0-PLANE.md intake spec).
+- **DoE:** desk-feed `traversals[routed-dispatch].provider_usage[]` live carrier (DOE-SCORING-INTAKE) + EXPERIMENT scored records.
+- **MVT/ATES:** EXPERIMENT records (schema 1.0) under the `routed-dispatch` campaign (`experiments/doe/routed-dispatch/`, DESIGN declares the SHA convention and the observational-honesty rule).
+- **MoneyBall:** `ops/moneyball/dispatch-intake.jsonl` — the scoring **feed** only; rows land `unscored` (axes null). The plane's winprob method work stays parked (owner, 2026-10-28).
+
+Honesty discipline: unestablished fields emit as null / `NOT_ESTABLISHED`, usage values are never fabricated, emission is idempotent per dispatch_id, and origin (`live` vs `backfill{...}`) is carried on every record per the backfill doctrine. Wiring: dispatch workflows chain to the fan-out at completion (cert-unit first; the pattern is one dispatch step per route).

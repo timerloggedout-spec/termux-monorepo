@@ -1,0 +1,57 @@
+name: Dispatch stamp fan-out
+
+# Swarm routing layer (owner routing update 2026-11-01): emits one
+# canonical dispatch stamp to every scoring plane's intake — 3L0
+# (ops/3l0/intake.jsonl), DoE (desk-feed provider_usage carrier +
+# EXPERIMENT records), MVT/ATES (EXPERIMENT records), MoneyBall
+# (ops/moneyball/dispatch-intake.jsonl). Commits are authored by the
+# Termux Fleet Swarm App so downstream collectors trigger.
+
+on:
+  workflow_dispatch:
+    inputs:
+      stamp:
+        description: "Canonical dispatch stamp JSON"
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: dispatch-stamp-fanout
+  cancel-in-progress: false
+
+jobs:
+  fanout:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
+      - name: Emit stamp to all plane intakes
+        env:
+          STAMP_JSON: ${{ inputs.stamp }}
+        run: |
+          printf '%s' "$STAMP_JSON" > /tmp/stamp.json
+          python3 scripts/dispatch/stamp_fanout.py --stamp /tmp/stamp.json --head-sha "${{ github.sha }}"
+      - name: Commit intake updates
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add ops/3l0/intake.jsonl ops/moneyball/dispatch-intake.jsonl ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records
+          if git diff --cached --quiet; then
+            echo "no intake changes (already emitted)"
+          else
+            git commit -m "telemetry(dispatch): stamp fan-out ${{ github.run_id }}"
+            git push
+          fi

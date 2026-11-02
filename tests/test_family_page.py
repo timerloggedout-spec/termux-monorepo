@@ -31,8 +31,8 @@ def test_page_render_and_dispatch_links():
                    "CK.stampState", 'id="chart-providers"',
                    'id="chart-outcomes"', "NOT_ESTABLISHED"):
         assert marker in html
-    # PR-1: no Primary nav block yet (chrome PR lands it family-wide).
-    assert 'aria-label="Primary"' not in html
+    assert 'aria-label="Primary"' in html
+    assert 'family.html" aria-current="page">Family' in html
 
 
 def test_registry_sitemap_crosslinks():

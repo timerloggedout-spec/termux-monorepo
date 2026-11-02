@@ -103,8 +103,27 @@ def build(root):
     pack["series3_actions"] = rebuild_series3(
         root, pack.get("series3_actions") or {})
     # series4 keeps its pack envelope {title, source, note, events} -
-    # only the events list is the register's copy.
-    s4 = dict(pack.get("series4_rate_limit_events") or {})
+    # only the events list is the register's copy. Shape-tolerant:
+    # the first auto-refresh (run 41408641878) wrote this key as a
+    # bare list; never crash on that legacy shape - re-wrap it.
+    raw4 = pack.get("series4_rate_limit_events")
+    envelope = {
+        "title": "GitHub rate-limit events - walls, secondary 403s, "
+                 "Search-API window exhaustions",
+        "source": "ops/quota/rate-limit-events.json "
+                  "(quota.rate-limit-events/v1) - the record of "
+                  "record; this section is its pack copy",
+        "note": "Events render as markers on the quota graphs "
+                "(owner directive 2026-11-01: 'I ought to see the "
+                "403 on the graph'). One entry per observed event; "
+                "nothing inferred.",
+    }
+    if isinstance(raw4, dict):
+        s4 = {**envelope, **raw4}
+    elif isinstance(raw4, list):
+        s4 = {**envelope, "events": raw4}
+    else:
+        s4 = dict(envelope)
     s4["events"] = events.get("events", [])
     pack["series4_rate_limit_events"] = s4
 

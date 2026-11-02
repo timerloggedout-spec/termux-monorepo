@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 386,
-    "open_prs": 179,
+    "open_prs": 180,
     "pr_classes": {
-      "CANDIDATE": 84,
-      "EXTRACT": 5,
+      "CANDIDATE": 83,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 37,
-      "prs": 177,
+      "prs": 178,
       "unlabelled_numbers": [
         308,
         343,
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T07:50:30Z",
+  "generated_at": "2026-11-02T07:53:33Z",
   "issues_unlabelled": [
     308,
     343,
@@ -135,10 +135,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "f951d395d2"
+    "sha": "d9bec086b4"
   },
   "prs": [
     {
@@ -210,6 +210,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "52cb658813",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T07:15:44Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "35d99fd2d3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3612,
+      "title": "swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive)",
+      "updated_at": "2026-11-02T07:51:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -985,20 +1013,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "52cb658813",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T07:15:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -1802,15 +1816,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "97136dd056",
+      "head_sha": "7f8625f11b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T07:48:14Z"
+      "updated_at": "2026-11-02T07:50:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2505,12 +2519,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0c7dfb6ab5",
+      "head_sha": "1b1e8b20f7",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
-      "updated_at": "2026-11-02T05:21:04Z"
+      "updated_at": "2026-11-02T07:50:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2533,12 +2547,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ae50918031",
+      "head_sha": "b64431609d",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T07:50:23Z"
+      "updated_at": "2026-11-02T07:53:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2591,7 +2605,7 @@
       },
       "head_sha": "5680692e94",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 3601,
       "title": "feat(quota): ALL-Providers denominator + pack-builder envelope fix (owner amendment)",
       "updated_at": "2026-11-02T07:35:26Z"
@@ -2629,28 +2643,28 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "in_progress"
       },
-      "head_sha": "35d99fd2d3",
+      "head_sha": "9564d7f36f",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3612,
-      "title": "swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive)",
-      "updated_at": "2026-11-02T07:50:07Z"
+      "number": 3617,
+      "title": "feat(tracking): backup-state/v1 \u2014 dashboard records the backups",
+      "updated_at": "2026-11-02T07:53:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "bdf0761e3a",
+      "head_sha": "066dadc29b",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3614,
-      "title": "DoE: exchange-scoring v0 candidate (owner model)",
-      "updated_at": "2026-11-02T07:50:24Z"
+      "number": 3618,
+      "title": "ops(latency): standing probe instrument + VM baseline 2026-11-01 (state-gated, no cron)",
+      "updated_at": "2026-11-02T07:53:28Z"
     }
   ],
   "schema": "operator-matrix/v1",

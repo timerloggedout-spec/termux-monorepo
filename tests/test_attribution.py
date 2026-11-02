@@ -85,3 +85,17 @@ def test_agent_identity_trailer_variants():
     assert run("Agent-Identity: ChatGPT / implementation steward") == ("chatgpt", "trailer")
     assert run("Agent-Identity: Hark") == ("hark", "trailer")
     assert run("Agent-Identity: Cue") == ("cue", "trailer")
+
+def test_manifest_leg():
+    pr = {"number": 9, "title": "t", "user": {"login": "timerloggedout-spec"},
+          "body": "no marks"}
+    files = [{"filename": "docs/proposals/active/chatgpt-initial/MANIFEST.md",
+              "patch": "@@ -0,0 +1,6 @@\n+---\n+id: chatgpt-initial\n+author: ChatGPT\n+status: posted"}]
+    r = at.extract_actor(pr, files=files)
+    assert r["actor"] == "chatgpt" and r["actor_evidence"]["method"] == "manifest"
+    pr2 = {**pr, "body": "---\nauthor: Manus\n---\nproposal"}
+    assert at.extract_actor(pr2)["actor"] == "manus"
+    code = [{"filename": "src/x.py", "patch": "+author: ChatGPT"}]
+    assert at.extract_actor(pr, files=code)["actor"] is None
+    own = [{"filename": "docs/proposals/active/z/MANIFEST.md", "patch": "+author: LoggedOut"}]
+    assert at.extract_actor(pr, files=own)["actor"] is None

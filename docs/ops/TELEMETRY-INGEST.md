@@ -126,3 +126,18 @@ Ramp (telemetry-ingest.yml): PROOF (3 units, batch 3) → VERIFY
 `HINDSIGHT_POPULATE_FULL == 'true'`. Proof failure records the exact
 gate in `hindsight-retain-proof.json` and stops — no silent stall, no
 unbudgeted burn.
+
+## Attribution 1.3 — manifest/frontmatter leg (2026-11-01)
+
+Owner ruling: ChatGPT 0-units was a system gap, not behavior — a chain
+firing only on self-applied sign-offs structurally misses collaborators
+working through owner channels. Chain is now stamp → trailer (incl.
+`Agent-Identity:`, 1.2) → **manifest** → git-author → app_bot. The
+manifest leg reads the artifact's own declared author: PR-body YAML
+frontmatter and added `author:` lines in changed MANIFEST /
+frontmatter-carrying files (ACP `author: ChatGPT` class). Live wiring:
+the density step fetches PR files for still-null PRs only (cap 80) and
+passes `--files-dir`. Re-score (doctrine: audited, cross-version):
+window 546/53 → 547/52, Δ = PR #2980 → chatgpt; historical manifest
+census 60 files (chatgpt 9, grok 5, manus 7) in
+`ops/telemetry/attribution-rescore-1.3.json`.

@@ -142,14 +142,14 @@ def association(rows, kind):
             "verdict": "NOT_ESTABLISHED" if reasons else "ESTABLISHED",
             "reasons": reasons}
 
-def build(prs, rfp_feed, generated_at, source_hashes=None, commits_by_pr=None, origin=None):
+def build(prs, rfp_feed, generated_at, source_hashes=None, commits_by_pr=None, origin=None, files_by_pr=None):
     artifacts = []
     for pr in prs:
         text = (pr.get("title") or "") + "\n" + (pr.get("body") or "")
         d = signal_units(text)
         merged = bool(pr.get("merged_at"))
         pending = pr.get("state") == "open"
-        att = attribution_mod.extract_actor(pr, (commits_by_pr or {}).get(pr["number"]))
+        att = attribution_mod.extract_actor(pr, (commits_by_pr or {}).get(pr["number"]), files=(files_by_pr or {}).get(pr["number"]))
         actor, keyed = attribution_mod.apply_registry(att["actor"])
         artifacts.append({"artifact_id": f"pr-{pr['number']}", "stratum": "github",
                           "lane": pr["head"]["ref"].split("/")[0] if "/" in pr["head"]["ref"] else "direct",
@@ -254,6 +254,8 @@ def main():
     ap.add_argument("--now", default="1970-01-01T00:00:00Z")
     ap.add_argument("--out", default="ops/telemetry/density-stats.json")
     ap.add_argument("--hindsight-out", default="ops/telemetry/density-hindsight.jsonl")
+    ap.add_argument("--files-dir", default=None,
+                    help="dir of <number>.json PR file lists (manifest/frontmatter evidence leg)")
     ap.add_argument("--commits-dir", default=None,
                     help="dir of pr-<number>.json commit lists (git-author evidence leg)")
     ap.add_argument("--origin-kind", choices=["live", "backfill"], default="live")
@@ -261,6 +263,13 @@ def main():
     ap.add_argument("--origin-to", default=None)
     ap.add_argument("--audit-out", default="ops/telemetry/attribution-backfill-audit.json")
     args = ap.parse_args()
+    files_by_pr = {}
+    if args.files_dir:
+        for f in Path(args.files_dir).glob("*.json"):
+            try:
+                files_by_pr[int(f.stem)] = json.loads(f.read_text())
+            except Exception:
+                pass
     commits_by_pr = {}
     if args.commits_dir:
         for f in Path(args.commits_dir).glob("pr-*.json"):
@@ -274,7 +283,8 @@ def main():
                             json.loads(Path(args.rfp_feed).read_text()), args.now,
                             {"prs_snapshot_sha256": sha(Path(args.prs).read_bytes()),
                              "rfp_feed_sha256": sha(Path(args.rfp_feed).read_bytes())},
-                            commits_by_pr=commits_by_pr, origin=origin)
+                            commits_by_pr=commits_by_pr, origin=origin,
+                            files_by_pr=files_by_pr)
     if args.origin_kind == "backfill":
         first_by_actor = {}
         for a in stats["artifacts"]:

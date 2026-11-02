@@ -106,6 +106,39 @@ def fetch_lane_events() -> dict:
         return base
 
 
+def fetch_backup(token: str) -> dict:
+    """Metadata-only extract of the private backup repo (owner order:
+    the dashboard records the backups). Reads EXPORT.json (counts and
+    gates only — never the manifest, never file paths), reports/*.json
+    drill verdicts, and the export/drill commit subjects. On error the
+    status records the class and the caller preserves last-good data."""
+    repo = os.environ.get("BACKUP_REPO", "timerloggedout-spec/muse-vm-workspace-backup")
+    base = {"schema": "tracking-backup-snapshot/v1", "read_at": _now(),
+            "status": "ok", "repo": repo, "export": None, "drills": [], "commits": []}
+    ex = _gh(f"/repos/{repo}/contents/EXPORT.json", token)
+    import base64 as _b64
+    ex_doc = json.loads(_b64.b64decode(ex["content"]))
+    base["export"] = {"export_id": ex_doc.get("export_id"),
+                      "exported_at": ex_doc.get("exported_at"),
+                      "counts": ex_doc.get("counts"), "gates": ex_doc.get("gates")}
+    try:
+        listing = _gh(f"/repos/{repo}/contents/reports", token)
+        for item in listing if isinstance(listing, list) else []:
+            if item.get("type") == "file" and str(item.get("name", "")).endswith(".json"):
+                doc = json.loads(_b64.b64decode(
+                    _gh(f"/repos/{repo}/contents/{item['path']}", token)["content"]))
+                doc["report"] = f"reports/{item['name']}"
+                base["drills"].append(doc)
+    except Exception:
+        pass  # drills are enrichment; the export record stands without them
+    for c in _gh(f"/repos/{repo}/commits?per_page=30", token):
+        msg = (c.get("commit") or {}).get("message", "")
+        if msg.startswith(("export ", "drill ", "init:")):
+            base["commits"].append({"sha": c.get("sha"), "message": msg.splitlines()[0],
+                                    "at": (c.get("commit") or {}).get("committer", {}).get("date")})
+    return base
+
+
 def main() -> int:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
     OUT.mkdir(parents=True, exist_ok=True)
@@ -126,6 +159,26 @@ def main() -> int:
         print("::warning::no GH token; pr snapshot untouched")
     (OUT / "lane_events_snapshot.json").write_text(json.dumps(fetch_lane_events(), indent=1) + "\n")
     print("lane_events_snapshot refreshed")
+    bpath = OUT / "backup_snapshot.json"
+    if token:
+        try:
+            bsnap = fetch_backup(token)
+        except Exception as e:  # fail-soft: keep last-good data, stamp status
+            prev = {}
+            try:
+                prev = json.loads(bpath.read_text())
+            except Exception:
+                pass
+            bsnap = {"schema": "tracking-backup-snapshot/v1", "read_at": _now(),
+                     "status": f"error:{type(e).__name__}: {str(e)[:120]}",
+                     "repo": prev.get("repo"),
+                     "export": prev.get("export"), "drills": prev.get("drills", []),
+                     "commits": prev.get("commits", [])}
+            print(f"::warning::backup fetch failed ({bsnap['status']}); last-good preserved")
+        bpath.write_text(json.dumps(bsnap, indent=1) + "\n")
+        print("backup_snapshot refreshed")
+    else:
+        print("::warning::no GH token; backup snapshot untouched")
     return 0
 
 

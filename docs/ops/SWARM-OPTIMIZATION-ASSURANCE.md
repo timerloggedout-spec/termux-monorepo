@@ -186,3 +186,12 @@ Improvement delta (cycle 2): routing coverage went from one self-emitting route 
 ## 22. Mistral landing (2026-11-02)
 
 MISTRAL_API_KEY provisioned by the provisioning lane (2026-11-02T05:11Z, store-verified; an explicit override of the PR #1805 webWrapper-only ruling). This lane's verification (Actions, provider-invoke): catalog mode = 200, **55 models**; invoke mode = **OK** on `open-mistral-nemo` (HTTP 200, run 41392966979), while `mistral-small-latest` returned 429 (run 41392653010) — classified model-tier/rate, not an account block, since a second model completed in the same window. Evidence on #3141. Mistral leaves the no-credential class (7 remain). Endpoint census floor: mistral's catalog was absent from the census union sources, so the 55 are net-new: **floor 7,342 -> 7,397**. Registry record `mistral.free_mode` updated to the provisioned state in the same PR.
+
+## §23 DeepAgent dispatch — swarm routing restated (owner, 2026-11-01)
+
+Owner restatement for DeepAgent.py (integration upcoming): **the swarm is
+demanded** — any DeepAgent dispatch integration routes through the Swarm
+population per §20 (no-hard-select). Direct dispatch from DeepAgent to a
+named model was questioned and **stands rejected**. Recorded as the routing
+rule of record for the DeepAgent surface; DeepAgent's organs emit routed
+dispatch stamps like every other dispatch.

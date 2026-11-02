@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T08:21:06Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T08:22:56Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T08:21:05Z` (merged 150 · open 176) · lane-events(Neon) status=`ok` count=`7709` read_at=`2026-11-02T08:21:05Z`
+Sources: PR feed read_at=`2026-11-02T08:22:56Z` (merged 150 · open 176) · lane-events(Neon) status=`ok` count=`7711` read_at=`2026-11-02T08:22:56Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknown=7
 
@@ -29,7 +29,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknow
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3635 `91f6fed17208` 2026-11-02T08:20:09Z | land/close PR #3608 — fix(quota): audit F4 search-window pacer + scheduling standard (audit-003) |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3612 `57c87cdc018e` 2026-11-02T08:12:30Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3632 `fdd1134ce6f8` 2026-11-02T08:14:57Z | land/close PR #3638 — feat(dashboard): normalize nav canon to /tribute/ (owner ruling) |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3638 `5b46b261d99a` 2026-11-02T08:21:04Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 

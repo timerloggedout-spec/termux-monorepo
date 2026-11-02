@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T08:21:06Z",
+ "generated_at": "2026-11-02T08:22:56Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T08:21:05Z",
+   "read_at": "2026-11-02T08:22:56Z",
    "merged": 150,
    "open": 176
   },
   "lane_events": {
-   "read_at": "2026-11-02T08:21:05Z",
+   "read_at": "2026-11-02T08:22:56Z",
    "status": "ok",
-   "count": 7709,
+   "count": 7711,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +104,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -138,7 +138,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -150,7 +150,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -166,7 +166,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "challenge-entries",
@@ -180,7 +180,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "quota",
@@ -200,7 +200,7 @@
     "quota registry services=170",
     "open PRs: #3608, #3342, #3242, #2757, #2340"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "doe",
@@ -220,7 +220,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "doe-nc1",
@@ -232,7 +232,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "tier-1",
@@ -249,7 +249,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "contribution-desk",
@@ -264,7 +264,7 @@
     "desk-feed traversals=10 generated_at=2026-11-02T07:10:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "web-design-viz",
@@ -273,17 +273,17 @@
    "project_id": "webdev-viz",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3632,
-    "sha": "fdd1134ce6f8",
-    "at": "2026-11-02T08:14:57Z",
-    "title": "feat(dashboard): bundle - family contract fix + event-audits page"
+    "pr": 3638,
+    "sha": "5b46b261d99a",
+    "at": "2026-11-02T08:21:04Z",
+    "title": "feat(dashboard): normalize nav canon to /tribute/ (owner ruling)"
    },
-   "next": "land/close PR #3638 \u2014 feat(dashboard): normalize nav canon to /tribute/ (owner ruling)",
+   "next": "land/close PR #2702 \u2014 docs(dashboard): standing preview QA checklist",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #3638, #2702, #2461, #1436"
+    "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "marketing",
@@ -297,7 +297,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "marketing-social",
@@ -309,7 +309,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "swarm",
@@ -328,7 +328,7 @@
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "providers",
@@ -348,7 +348,7 @@
     "quota registry services=170",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "providers-phrases",
@@ -360,7 +360,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "repo-replay",
@@ -372,7 +372,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "ops",
@@ -386,7 +386,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   },
   {
    "lane": "telemetry",
@@ -405,7 +405,7 @@
    "evidence": [
     "open PRs: #3442, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T08:21:06Z"
+   "updated_at": "2026-11-02T08:22:56Z"
   }
  ],
  "doe_join": {

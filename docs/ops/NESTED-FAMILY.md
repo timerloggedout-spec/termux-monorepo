@@ -26,10 +26,15 @@ EXPERIMENT/intake carriers, consumed here as sources, never re-scored.
   generated_at, generated_by,
   spec: {doc, grouping, task_link},          // this file + join rules, carried in-record
   sources: [{id, path, records_read, records_used}],
+  coverage: {denominator, registry_providers, with_dispatches,
+             zero_dispatch: [..], unregistered_dispatch_providers: [..]},
   summary: {providers, models, roles, tasks, dispatches,
+            registry_providers, zero_dispatch_providers,
             by_outcome{status: n}, by_source{id: n}},
   providers: [{
-    provider,                                 // verbatim from the stamp
+    provider,                                 // verbatim from the winning source;
+                                              // zero-dispatch rows: verbatim from the registry
+    zero_dispatch,                            // true = registry provider, no dispatches yet
     models: [{
       model,                                  // model@version VERBATIM as recorded;
                                               // NOT_ESTABLISHED stays literal, never resolved
@@ -119,6 +124,21 @@ Non-sources, named: PLAN rows (planned ≠ run — the family lists tasks
 a model **has run**); campaign records bearing no provider (named
 under campaign-records above); session-history provenance records
 (no dispatch outcome semantics).
+
+## Coverage denominator — ALL providers (owner amendment, 2026-11-01)
+
+The family's denominator is the **full registry model-lane set**:
+distinct `provider` names (verbatim) from `ops/quota/registry.json`
+services with `lane == "model"` — the same registry the Quota lane's
+feeds amend. A registry provider with no dispatch family appears in
+`providers[]` as a **zero-dispatch gap row** (`models: []`,
+`task_count: 0`, `zero_dispatch: true`). The join between dispatch
+families and registry names is **casefold-exact, no aliases** (v1);
+dispatch providers with no registry match are named in
+`coverage.unregistered_dispatch_providers` (a registry gap signal for
+the Quota lane, not a rollup error). If the registry is unreadable,
+coverage is null, the gap is named in `gaps[]`, and dispatch families
+still publish (fail-soft).
 
 ## Rules
 

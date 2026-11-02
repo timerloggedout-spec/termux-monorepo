@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9dc411f2a8ea4406a2e6487cf6da6994c0a622495bd696806c677ad728fcdae1",
-  "workflow_count": 262,
+  "source_fingerprint": "83ea66652b8b23dc902fa36117ec689a0acf3bf721b7fc64d9b8b6e96174e3d2",
+  "workflow_count": 263,
   "workflows": [
     {
       "action_pins": [],
@@ -3754,6 +3754,24 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: quota-usage-series-refresh cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "refresh"
+      ],
+      "name": "quota-usage-series-refresh",
+      "path": ".github/workflows/quota-usage-series-refresh.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

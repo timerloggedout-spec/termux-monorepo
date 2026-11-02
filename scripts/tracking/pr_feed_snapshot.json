@@ -1,8 +1,47 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T00:23:39Z",
+ "read_at": "2026-11-02T00:26:13Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3392,
+   "title": "docs(dispatch): MoneyBall backfill hooks (supersedes convention)",
+   "merged_at": "2026-11-02T00:25:44Z",
+   "updated_at": "2026-11-02T00:25:44Z",
+   "created_at": "2026-11-02T00:24:01Z",
+   "merge_commit_sha": "64e98e656dd328a094d836ea4b9e081a5c7f0452",
+   "head_ref": "swarm/doc-mb-backfill-hooks-20261101",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3392",
+   "merged": true
+  },
+  {
+   "number": 3394,
+   "title": "fix(dashboards): mvt feed gap text stale \u2014 derive population from committed EXPERIMENT records",
+   "merged_at": "2026-11-02T00:24:47Z",
+   "updated_at": "2026-11-02T00:25:09Z",
+   "created_at": "2026-11-02T00:24:32Z",
+   "merge_commit_sha": "c1cdbcb057a4a8b9fba10972140cab4b7684d582",
+   "head_ref": "fix/mvt-feed-records-population",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3394",
+   "merged": true
+  },
+  {
+   "number": 3393,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T00:24:13Z",
+   "updated_at": "2026-11-02T00:24:17Z",
+   "created_at": "2026-11-02T00:24:08Z",
+   "merge_commit_sha": "ccf11ea89ba5c3b9b3e68db02c446ededc175c21",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3393",
+   "merged": true
+  },
   {
    "number": 3391,
    "title": "feat(dispatch): backfill-consumable stamp records",
@@ -1913,72 +1952,33 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3234",
    "merged": true
-  },
-  {
-   "number": 3232,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T16:07:37Z",
-   "updated_at": "2026-11-01T16:08:27Z",
-   "created_at": "2026-11-01T16:07:32Z",
-   "merge_commit_sha": "8b3afb32b9143382e12bdeb70d22b70f318e41c2",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3232",
-   "merged": true
-  },
-  {
-   "number": 3229,
-   "title": "docs(dispatch): net-new fold - friendli (92nd provider key, census floor 7,321)",
-   "merged_at": "2026-11-01T16:02:48Z",
-   "updated_at": "2026-11-01T16:07:23Z",
-   "created_at": "2026-11-01T16:02:25Z",
-   "merge_commit_sha": "eb886627179b399421100085977328feaa8bcdb0",
-   "head_ref": "providers/friendli-fold",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3229",
-   "merged": true
-  },
-  {
-   "number": 3230,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T16:04:40Z",
-   "updated_at": "2026-11-01T16:05:36Z",
-   "created_at": "2026-11-01T16:04:35Z",
-   "merge_commit_sha": "ab66bcc2e75869d9fce7c21978ca2de2fde6823e",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3230",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 2167,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-02T00:22:38Z",
-   "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "209f4bfa64429a408030c7b3650c2f1e9fbfb845",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
-   "merged": false
-  },
-  {
    "number": 2914,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-02T00:21:37Z",
+   "updated_at": "2026-11-02T00:25:35Z",
    "created_at": "2026-11-01T03:19:03Z",
-   "merge_commit_sha": "b67880f085818d6f0a69335281e0f32dd551f81c",
+   "merge_commit_sha": "9d71983485db38016f9d8ee82670700d4da09392",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2914",
+   "merged": false
+  },
+  {
+   "number": 2167,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-02T00:24:38Z",
+   "created_at": "2026-10-28T19:26:06Z",
+   "merge_commit_sha": "6cb7e2984a7395b70fab6130e8d609fc1b907665",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
    "merged": false
   },
   {

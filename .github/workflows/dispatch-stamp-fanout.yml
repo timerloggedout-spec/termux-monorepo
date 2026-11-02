@@ -82,10 +82,22 @@ jobs:
           import json, re, hashlib
           pkt = json.load(open('/tmp/packet.json'))
           log = open('/tmp/judge.log').read() + open('/tmp/judge-out.md').read()
-          m = re.search(r'JUDGE_VERDICT (\{.*\})', log)
-          if not m:
-              raise SystemExit('judge produced no JUDGE_VERDICT line')
-          verdict = json.loads(m.group(1))
+          verdict = None
+          m = re.search(r'JUDGE_VERDICT:?\s*(\{.*\})', log)
+          if m:
+              try:
+                  verdict = json.loads(m.group(1))
+              except Exception:
+                  verdict = None
+          if verdict is None:
+              for cand in re.findall(r'\{[^{}]*"judge_score"[^{}]*\}', log):
+                  try:
+                      verdict = json.loads(cand)
+                      break
+                  except Exception:
+                      continue
+          if verdict is None:
+              raise SystemExit('judge produced no parseable JUDGE_VERDICT')
           gates = pkt.get('gates') or {}
           flat = []
           for v in gates.values():

@@ -401,3 +401,18 @@ def test_acquire_aurora_store_honest_gap(tmp_path):
                      tmp_path / "out", fetch=empty)
     assert got["status"] == "no-artifact-found"
     assert any("aurora-store: not wired" in c for c in got["sources_checked"])
+
+
+def test_acquire_lizzyondroid_form_spelling_alias(tmp_path):
+    apk_bytes = build_apk(tmp_path / "src.apk").read_bytes()
+    idx = {"packages": {"com.example.aitools": {"versions": {
+        "42": {"file": {"name": "/com.example.aitools_42.apk"},
+               "manifest": {"versionName": "1.4.2", "versionCode": 42}}}}}}
+    f = _fake_fetch({
+        "https://apt.izzysoft.de/fdroid/repo/index-v2.json": idx,
+        "https://apt.izzysoft.de/fdroid/repo/com.example.aitools_42.apk": apk_bytes})
+    got = ax.acquire({"sources": ["lizzyondroid"],
+                      "package_id": "com.example.aitools"},
+                     tmp_path / "out", fetch=f)
+    assert got["status"] == "acquired" and got["source"] == "izzyondroid"
+    assert "form spelling alias" in got["via"]

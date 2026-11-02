@@ -43,6 +43,7 @@ CANON = [
     ('https://timerloggedout-spec.github.io/help-wanted/telemetry.html', 'Telemetry'),
     ('https://timerloggedout-spec.github.io/help-wanted/desk.html', 'Desk'),
     ('https://timerloggedout-spec.github.io/help-wanted/tracking.html', 'Tracking'),
+    ('https://timerloggedout-spec.github.io/help-wanted/family.html', 'Family'),
     ('https://help-wanted-oversight.vercel.app/', 'Vercel deployment'),
     ('https://timerloggedout-spec.github.io/help-wanted/sitemap.xml', 'Sitemap'),
     ('https://github.com/timerloggedout-spec/termux-monorepo', 'Monorepo'),
@@ -58,7 +59,7 @@ NAV_PAGES = {
     "dispatch-tree.html", "countdowns.html", "linguist.html",
     "delphi-rfp.html", "delphi-ledger.html", "pr-lanes.html",
     "proposals.html", "telemetry.html", "desk.html", "tracking.html",
-    "matrix.html",
+    "family.html",
 }
 
 
@@ -80,3 +81,13 @@ def test_every_nav_identical():
         assert got == CANON, (
             f"{name} nav drifted from canonical ({len(got or [])} vs {len(CANON)} links): "
             f"first diff at {next((i for i, (a, b) in enumerate(zip(got or [], CANON)) if a != b), None)}")
+
+
+def test_site_nav_family_link():
+    # matrix.html carries no static nav - it injects one from
+    # site-nav.js at runtime (the cross-repo publisher's shared nav).
+    # That list is pinned here for the family link instead.
+    js = (APP / "site-nav.js").read_text(encoding="utf-8")
+    assert '"tracking.html"' in js and '"family.html"' in js
+    assert js.index('"tracking.html"') < js.index('"family.html"')
+    assert "./site-nav.js" in (APP / "matrix.html").read_text(encoding="utf-8")

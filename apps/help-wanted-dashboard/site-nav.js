@@ -34,6 +34,7 @@
     ["Telemetry", tribute + "telemetry.html", "telemetry"],
     ["Desk", tribute + "desk.html", "desk"],
     ["Tracking", tribute + "tracking.html", "tracking"],
+    ["Family", tribute + "family.html", "family"],
     ["Version comparison", tribute + "versioning.html", "versioning"],
     ["Sitemap", tribute + "sitemap.xml", "sitemap"],
     ["Vercel deployment", "https://help-wanted-oversight.vercel.app/", "vercel"],

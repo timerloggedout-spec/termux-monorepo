@@ -338,6 +338,23 @@ def publish(staging: Path, repo: str, message: str):
                    for p in staging.rglob("*") if p.is_file())
     st, ref = gh("GET", f"/repos/{repo}/git/ref/heads/main")
     parent = ref.get("object", {}).get("sha") if st == 200 else None
+    if parent is None:
+        # A completely empty repo rejects Git Data API writes (409
+        # "Git Repository is empty"); seed it with one Contents-API
+        # commit first. The export tree then replaces the seed.
+        seed = base64.b64encode(
+            b"# muse-vm-workspace-backup\n\nPrivate backup of the Muse "
+            b"VM workspace.\nSee EXPORT.json / MANIFEST.json at the root "
+            b"of each export commit.\n").decode()
+        st, _r = gh("PUT", f"/repos/{repo}/contents/README.md",
+                    {"message": "init: seed repository for git-data "
+                                "publishing", "content": seed})
+        if st not in (200, 201):
+            raise RuntimeError(f"seed commit failed: {st}")
+        st, ref = gh("GET", f"/repos/{repo}/git/ref/heads/main")
+        parent = ref.get("object", {}).get("sha") if st == 200 else None
+        if parent is None:
+            raise RuntimeError("seed commit did not create main")
     existing_blobs = set()
     if parent:
         st, commit = gh("GET", f"/repos/{repo}/git/commits/{parent}")

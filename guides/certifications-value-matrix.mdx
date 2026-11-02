@@ -13,11 +13,11 @@ description: "Value view of the Certifications program (#506): every cert/rung a
 - Buffer rule (owner, 2026-11-02): dated items land −1d ahead of wall; landing dates govern.
 - **Two axes, mechanical (DoE F2):** every record carries `basis_kind` ∈ {measured · issuer · assumption} AND `state` ∈ {CORROBORATED · PROVISIONAL · INTAKE · HELD · NOT_ESTABLISHED}. An assumption-basis cell is **prior-only**: its posterior carries the value flagged PROVISIONAL/INTAKE — never silently priced.
 - **Record shape (DoE F1):** per cell {quantity · prior{value · range · basis_kind} · evidence[{source · direction · strength · rule9_state}] · posterior{value · range · updated_at · n_evidence} · state} — the posterior is recomputable from the legs. Records home: `guides/certifications-value-matrix.records.json` (one home, beside this render).
-- **Tier labels are asserted until the amendment commit replaces them with derivation citations {tier · records cited · function version}** (DoE F6).
+- **Tier labels are DERIVED (DoE conformity PASS, 2026-11-02):** every assignment carries derivation citations {tier · records cited · function version} (DoE F6/F8); a tier change is a re-derivation event against the records, never an edit.
 
 ## Tiering (clause 4 — a function of the records, not labels)
 
-**State of this section: tiers below are ASSERTED (owner/mgr ruling of record), not yet derived — derivation takes effect only on DoE's conformity PASS of this function + the records file. A tier change is a re-derivation event against the records, never an edit.**
+**State of this section: tiers are DERIVED — DoE conformity PASS (2026-11-02) on this function + the records file (F1–F6 + G1 discharged; verdict on PR #3789 @69e4911ec251). Derivations + citations below and in the records home.**
 
 `tier(row)` — evaluated on the row's records {posterior value · range · n_evidence vs the named thresholds}:
 

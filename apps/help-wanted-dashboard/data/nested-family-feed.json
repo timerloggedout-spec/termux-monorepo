@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T08:34:48Z",
+ "generated_at": "2026-11-02T08:43:32Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 22,
-   "records_used": 22
+   "records_read": 23,
+   "records_used": 23
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 21,
+   "records_read": 22,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 22,
+   "records_read": 23,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 33,
+   "records_read": 34,
    "records_used": 3
   }
  ],
@@ -146,18 +146,18 @@
   "providers": 11,
   "models": 15,
   "roles": 2,
-  "tasks": 26,
-  "dispatches": 23,
+  "tasks": 27,
+  "dispatches": 24,
   "registry_providers": 95,
   "zero_dispatch_providers": 89,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
-   "passed": 19,
+   "passed": 20,
    "failed": 3
   },
   "by_source": {
    "desk-usage": 3,
-   "records": 22,
+   "records": 23,
    "campaign-records": 1
   }
  },
@@ -675,7 +675,7 @@
      "contexts": [
       "provider-invoke mode=invoke"
      ],
-     "task_count": 1,
+     "task_count": 2,
      "tasks": [
       {
        "task_class": "inference-invoke",
@@ -704,12 +704,40 @@
        },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41412826624.json"
+      },
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=invoke",
+       "dispatch_id": "provider-invoke-41413151771",
+       "run_id": 41413151771,
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-02T08:33:21Z",
+       "outcome": {
+        "status": "passed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41413151771.json"
       }
      ]
     }
    ],
    "model_count": 2,
-   "task_count": 2,
+   "task_count": 3,
    "zero_dispatch": false
   },
   {

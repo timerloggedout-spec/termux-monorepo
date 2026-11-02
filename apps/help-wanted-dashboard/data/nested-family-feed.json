@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T06:44:47Z",
+ "generated_at": "2026-11-02T06:51:07Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -34,9 +34,7 @@
   "tasks": 22,
   "dispatches": 19,
   "by_outcome": {
-   "STALLED \u2014 never invoked \u00d72 (runs 41301295882 + 41321691938: tunnel-unresolved skip at Start; Poll skipped; \u2205 work product). Re-dispatch decision (desk, posture): \u2205 further re-fires into a down tunnel; task submitted to the system as issue #3215; tunnel escalated \u21d2 Swarm": 1,
-   "landed (merged 2c0894d2e7d3; synced f7270f379fae)": 1,
-   "COMPLETED \u2192 PR #3102 merged ca1e3bc34d1a (D1 PASS) \u2192 studysprint sync parity 23/23": 1,
+   "(prose state \u2014 verbatim in tasks)": 3,
    "completed": 16,
    "failed": 3
   },
@@ -234,7 +232,7 @@
    "provider": "baseten",
    "models": [
     {
-     "model": null,
+     "model": "NOT_ESTABLISHED",
      "roles": [
       "builder"
      ],
@@ -275,7 +273,7 @@
    "provider": "cohere",
    "models": [
     {
-     "model": null,
+     "model": "NOT_ESTABLISHED",
      "roles": [
       "builder"
      ],

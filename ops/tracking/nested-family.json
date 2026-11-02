@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T06:52:00Z",
+ "generated_at": "2026-11-02T06:58:21Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -9,16 +9,22 @@
  },
  "sources": [
   {
+   "id": "records",
+   "path": "experiments/doe/routed-dispatch/records/*.json",
+   "records_read": 19,
+   "records_used": 19
+  },
+  {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
    "records_read": 18,
-   "records_used": 18
+   "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
    "records_read": 19,
-   "records_used": 1
+   "records_used": 0
   },
   {
    "id": "desk-usage",
@@ -35,13 +41,12 @@
   "dispatches": 19,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
-   "completed": 16,
+   "passed": 16,
    "failed": 3
   },
   "by_source": {
    "desk-usage": 3,
-   "stamps": 18,
-   "intake": 1
+   "records": 19
   }
  },
  "providers": [
@@ -77,6 +82,9 @@
         "confirmed": null
        },
        "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd",
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       }
@@ -119,6 +127,9 @@
         "confirmed": null
        },
        "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       },
@@ -138,6 +149,9 @@
         "confirmed": null
        },
        "instance_key": "challenge-entries-manager/d1-studysprint-reader-core/fcc968db0eed",
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       }
@@ -159,9 +173,7 @@
       "optimizations-assurance"
      ],
      "contexts": [
-      "build dispatch set 1/3: wire provider-invoke.yml to the stamp fan-out",
-      "build dispatch set 2/3: wire provider-command-dispatch.yml to the stamp fan-out",
-      "build dispatch set 3/3: wire gemini-invoke.yml to the stamp fan-out"
+      "fan-out wiring completion set (build-class)"
      ],
      "task_count": 3,
      "tasks": [
@@ -169,58 +181,67 @@
        "task_class": "build",
        "role": "builder",
        "moniker": "optimizations-assurance",
-       "context": "build dispatch set 1/3: wire provider-invoke.yml to the stamp fan-out",
+       "context": "fan-out wiring completion set (build-class)",
        "dispatch_id": "build-wire-provider-invoke-3411",
        "run_id": null,
        "workflow": "seat-dispatch (git-data API)",
        "session_id": null,
        "ts": "2026-11-02T00:39:10Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/build-wire-provider-invoke-3411.json"
+       "instance_key": "1a60e8329fb6c7300ce5611eb6b9a5009b959a9fa032d3f4a8cfbf7801ba0fdd",
+       "first_pass": true,
+       "origin": "live",
+       "pr": 3411,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-wire-provider-invoke-3411.json"
       },
       {
        "task_class": "build",
        "role": "builder",
        "moniker": "optimizations-assurance",
-       "context": "build dispatch set 2/3: wire provider-command-dispatch.yml to the stamp fan-out",
+       "context": "fan-out wiring completion set (build-class)",
        "dispatch_id": "build-wire-command-dispatch-3428",
        "run_id": null,
        "workflow": "seat-dispatch (git-data API)",
        "session_id": null,
        "ts": "2026-11-02T01:04:53Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/build-wire-command-dispatch-3428.json"
+       "instance_key": "1a60e8329fb6c7300ce5611eb6b9a5009b959a9fa032d3f4a8cfbf7801ba0fdd",
+       "first_pass": true,
+       "origin": "live",
+       "pr": 3428,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-wire-command-dispatch-3428.json"
       },
       {
        "task_class": "build",
        "role": "builder",
        "moniker": "optimizations-assurance",
-       "context": "build dispatch set 3/3: wire gemini-invoke.yml to the stamp fan-out",
+       "context": "fan-out wiring completion set (build-class)",
        "dispatch_id": "build-wire-gemini-invoke-3441",
        "run_id": null,
        "workflow": "seat-dispatch (git-data API)",
        "session_id": null,
        "ts": "2026-11-02T01:24:02Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/build-wire-gemini-invoke-3441.json"
+       "instance_key": "1a60e8329fb6c7300ce5611eb6b9a5009b959a9fa032d3f4a8cfbf7801ba0fdd",
+       "first_pass": true,
+       "origin": "live",
+       "pr": 3441,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-wire-gemini-invoke-3441.json"
       }
      ]
     }
@@ -250,7 +271,7 @@
        "moniker": "optimizations-assurance",
        "context": "certifications-unit l1-relational-databases-v9/061",
        "dispatch_id": "cert-unit-41374860979",
-       "run_id": "41374860979",
+       "run_id": 41374860979,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T01:54:34Z",
@@ -259,9 +280,12 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41374860979.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41374860979.json"
       }
      ]
     }
@@ -291,7 +315,7 @@
        "moniker": "optimizations-assurance",
        "context": "certifications-unit l1-relational-databases-v9/061",
        "dispatch_id": "cert-unit-41375368014",
-       "run_id": "41375368014",
+       "run_id": 41375368014,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T02:02:27Z",
@@ -300,9 +324,12 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41375368014.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41375368014.json"
       }
      ]
     },
@@ -322,23 +349,26 @@
      "task_count": 3,
      "tasks": [
       {
-       "task_class": null,
+       "task_class": "certifications-unit",
        "role": "builder",
        "moniker": "optimizations-assurance",
        "context": "certifications-unit l1-relational-databases-v9/what-is-ci-cd-and-how-does-ci-work-with-github-actions",
        "dispatch_id": "cert-unit-41364184062",
-       "run_id": "41364184062",
+       "run_id": 41364184062,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-01T23:52:00Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
        "instance_key": "NOT_ESTABLISHED",
-       "source": "intake",
-       "source_ref": "ops/3l0/intake.jsonl#cert-unit-41364184062"
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41364184062.json"
       },
       {
        "task_class": "certifications-unit",
@@ -346,7 +376,7 @@
        "moniker": "optimizations-assurance",
        "context": "certifications-unit l1-relational-databases-v9/quiz-sql-and-postgresql-record",
        "dispatch_id": "cert-unit-41367182742",
-       "run_id": "41367182742",
+       "run_id": 41367182742,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T00:28:57Z",
@@ -355,9 +385,12 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367182742.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367182742.json"
       },
       {
        "task_class": "certifications-unit",
@@ -365,18 +398,21 @@
        "moniker": "optimizations-assurance",
        "context": "certifications-unit l1-relational-databases-v9/061",
        "dispatch_id": "cert-unit-41376051120",
-       "run_id": "41376051120",
+       "run_id": 41376051120,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T02:10:16Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41376051120.json"
+       "instance_key": "7434577f5900e36626447c37e6a283fe1c03f1c1538e64e1228cfae64f74e9da",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41376051120.json"
       }
      ]
     }
@@ -409,18 +445,21 @@
        "moniker": "optimizations-assurance",
        "context": "FCC L1 unit 039 project: Build a World Cup Database",
        "dispatch_id": "cert-project-41379161305",
-       "run_id": "41379161305",
+       "run_id": 41379161305,
        "workflow": "cert-project.yml",
        "session_id": null,
        "ts": "2026-11-02T02:47:47Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41379161305.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41379161305.json"
       },
       {
        "task_class": "certifications-project",
@@ -428,18 +467,21 @@
        "moniker": "optimizations-assurance",
        "context": "FCC L1 unit 040 project: Build a Salon Appointment Scheduler",
        "dispatch_id": "cert-project-41379885682",
-       "run_id": "41379885682",
+       "run_id": 41379885682,
        "workflow": "cert-project.yml",
        "session_id": null,
        "ts": "2026-11-02T02:56:00Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41379885682.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41379885682.json"
       },
       {
        "task_class": "certifications-project",
@@ -447,18 +489,21 @@
        "moniker": "optimizations-assurance",
        "context": "FCC L1 unit 062 project: Build a Periodic Table Database",
        "dispatch_id": "cert-project-41380626948",
-       "run_id": "41380626948",
+       "run_id": 41380626948,
        "workflow": "cert-project.yml",
        "session_id": null,
        "ts": "2026-11-02T03:04:15Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41380626948.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41380626948.json"
       },
       {
        "task_class": "certifications-project",
@@ -466,18 +511,21 @@
        "moniker": "optimizations-assurance",
        "context": "FCC L1 unit 063 project: Build a Number Guessing Game",
        "dispatch_id": "cert-project-41381256768",
-       "run_id": "41381256768",
+       "run_id": 41381256768,
        "workflow": "cert-project.yml",
        "session_id": null,
        "ts": "2026-11-02T03:11:46Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41381256768.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41381256768.json"
       }
      ]
     },
@@ -500,18 +548,21 @@
        "moniker": "optimizations-assurance",
        "context": "FCC L1 unit 025 project: Build a Celestial Bodies Database",
        "dispatch_id": "cert-project-41378291157",
-       "run_id": "41378291157",
+       "run_id": 41378291157,
        "workflow": "cert-project.yml",
        "session_id": null,
        "ts": "2026-11-02T02:37:56Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41378291157.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41378291157.json"
       }
      ]
     }
@@ -541,18 +592,21 @@
        "moniker": "optimizations-assurance",
        "context": "provider-invoke mode=invoke",
        "dispatch_id": "provider-invoke-41392653010",
-       "run_id": "41392653010",
+       "run_id": 41392653010,
        "workflow": "provider-invoke.yml",
        "session_id": null,
        "ts": "2026-11-02T05:12:54Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/provider-invoke-41392653010.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392653010.json"
       }
      ]
     },
@@ -575,18 +629,21 @@
        "moniker": "optimizations-assurance",
        "context": "provider-invoke mode=invoke",
        "dispatch_id": "provider-invoke-41392966979",
-       "run_id": "41392966979",
+       "run_id": 41392966979,
        "workflow": "provider-invoke.yml",
        "session_id": null,
        "ts": "2026-11-02T05:16:30Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/provider-invoke-41392966979.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392966979.json"
       }
      ]
     }
@@ -606,9 +663,7 @@
       "optimizations-assurance"
      ],
      "contexts": [
-      "FCC L1 unit what-is-normalization-in-sql (M5 theory batch, provider rotation cohere->sealion)",
-      "FCC L1 unit what-is-sql-injection-and-what-are-some-ways-to-prevent-it (M5 theory batch, provider rotation cohere->sealion)",
-      "FCC L1 unit what-is-the-n-plus-1-problem (M5 theory batch, provider rotation cohere->sealion)",
+      "FCC L1 M5 theory batch (cert-unit workflow dispatch)",
       "certifications-unit l1-relational-databases-v9/quiz-bash-and-sql-a"
      ],
      "task_count": 4,
@@ -619,75 +674,87 @@
        "moniker": "optimizations-assurance",
        "context": "certifications-unit l1-relational-databases-v9/quiz-bash-and-sql-a",
        "dispatch_id": "cert-unit-41367701010",
-       "run_id": "41367701010",
+       "run_id": 41367701010,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T00:33:03Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367701010.json"
+       "instance_key": "NOT_ESTABLISHED",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367701010.json"
       },
       {
        "task_class": "certifications-unit",
        "role": "builder",
        "moniker": "optimizations-assurance",
-       "context": "FCC L1 unit what-is-sql-injection-and-what-are-some-ways-to-prevent-it (M5 theory batch, provider rotation cohere->sealion)",
+       "context": "FCC L1 M5 theory batch (cert-unit workflow dispatch)",
        "dispatch_id": "cert-unit-41367431291",
        "run_id": 41367431291,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T01:05:16Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367431291.json"
+       "instance_key": "7e20822af41d263ad950cb8ed17817ed97824df1d95db4f56464b4efeb2de4db",
+       "first_pass": true,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367431291.json"
       },
       {
        "task_class": "certifications-unit",
        "role": "builder",
        "moniker": "optimizations-assurance",
-       "context": "FCC L1 unit what-is-normalization-in-sql (M5 theory batch, provider rotation cohere->sealion)",
+       "context": "FCC L1 M5 theory batch (cert-unit workflow dispatch)",
        "dispatch_id": "cert-unit-41367410806",
        "run_id": 41367410806,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T01:17:47Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367410806.json"
+       "instance_key": "7e20822af41d263ad950cb8ed17817ed97824df1d95db4f56464b4efeb2de4db",
+       "first_pass": true,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367410806.json"
       },
       {
        "task_class": "certifications-unit",
        "role": "builder",
        "moniker": "optimizations-assurance",
-       "context": "FCC L1 unit what-is-the-n-plus-1-problem (M5 theory batch, provider rotation cohere->sealion)",
+       "context": "FCC L1 M5 theory batch (cert-unit workflow dispatch)",
        "dispatch_id": "cert-unit-41367453278",
        "run_id": 41367453278,
        "workflow": "cert-unit.yml",
        "session_id": null,
        "ts": "2026-11-02T01:19:03Z",
        "outcome": {
-        "status": "completed",
+        "status": "passed",
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": null,
-       "source": "stamps",
-       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367453278.json"
+       "instance_key": "7e20822af41d263ad950cb8ed17817ed97824df1d95db4f56464b4efeb2de4db",
+       "first_pass": true,
+       "origin": "live",
+       "pr": null,
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367453278.json"
       }
      ]
     }

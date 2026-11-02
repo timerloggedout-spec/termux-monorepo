@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T06:52:00Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T06:58:21Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T06:51:59Z` (merged 150 · open 176) · lane-events(Neon) status=`ok` count=`7480` read_at=`2026-11-02T06:51:59Z`
+Sources: PR feed read_at=`2026-11-02T06:58:21Z` (merged 150 · open 177) · lane-events(Neon) status=`ok` count=`7507` read_at=`2026-11-02T06:58:21Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | NOT_ESTABLISHED | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3518 `cef0f780a908` 2026-11-02T05:46:40Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3568 `19c535ca84b7` 2026-11-02T06:57:55Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3469 `39102aca30aa` 2026-11-02T01:44:54Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3548 `04496fb621b2` 2026-11-02T06:48:16Z | land/close PR #3562 — feat(quota): rate-limit event #1 of record (Registry census Search 403) |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3564 `122b8609f9c8` 2026-11-02T06:54:28Z | land/close PR #3565 — feat(quota): swarm feed for quota-swarm.html (nested-family/v1 envelope) |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3497 `69f3835f1a15` 2026-11-02T03:06:36Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3503 `57e96ebbb865` 2026-11-02T05:20:16Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |

@@ -138,6 +138,7 @@ Baseline (fleet record): Jules DOWN (entry builds created 3 / completed 0 / erro
 | PAT | ONE no-expiry admin PAT = ∀ Muse-lane GitHub access (§3) | partial — 8 App specialists, narrow classes, custody split (4/8 backed, 4/8 VM-only; errata §3) | partial (pilots live; outage drill ∅) |
 | Browser profile | ONE VM profile anchors ∀ console sessions (§4) | partial — stale repo snapshot + token routes | **∅** |
 | Builder arms | 3/4 arms down/degraded/out; command-dispatch alone (§5) | ∅ at census time (1 effective arm) | n/a — lived failure, ¬ drill |
+| VM workspace | platform home-volume = sole copy of memory/conventions/lane state (§6 addendum) | ∅ — ∅ backup/export mechanism; persistence = platform volume only | **∅** |
 
 **∅ domain in this census has a completed failover test on record.** That — ¬ any single row — is the finding.
 
@@ -145,3 +146,4 @@ Baseline (fleet record): Jules DOWN (entry builds created 3 / completed 0 / erro
 1. Which deployment `HINDSIGHT_BASE_URL` targets. 2. Live health of Fly/Koyeb deployments at census.
 3. Neon lane-events current row count / last successful write. 4. Browser-profile portability + restore procedure.
 5. Arm-health gating in dispatch routing. 6. Whether Fly A (`hindsight-termux`) or Fly B (`hindsight-deepagent`) is the live Fly app.
+7. VM workspace backup — scoped, design only: `docs/ops/VM-WORKSPACE-BACKUP-SCOPING-2026-11-01.md`; build owner-gated; counts as untested until that doc's §4 drill spec runs.

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "3a17a18d6e86727256c31ca1e670495842f2a19aaebdd94fc834904c8fd3ea5d",
-  "workflow_count": 270,
+  "source_fingerprint": "e0fc43300794f4aacaffe8e4a2f02c7b57f71ad1a0ed96973fd345d32de53adb",
+  "workflow_count": 271,
   "workflows": [
     {
       "action_pins": [],
@@ -692,6 +692,21 @@
       "triggers": [
         "issue_comment",
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: cert-coderoad-image cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "build"
+      ],
+      "name": "cert-coderoad-image",
+      "path": ".github/workflows/cert-coderoad-image.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },
@@ -2543,39 +2558,6 @@
       "path": ".github/workflows/help-wanted-dashboard-preview.yml",
       "schedules": [],
       "triggers": [
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
-      "concurrency": "",
-      "domain": "agentic-development",
-      "jobs": [
-        "verify"
-      ],
-      "name": "help-wanted diff gate",
-      "path": ".github/workflows/help-wanted-diff-gate.yml",
-      "schedules": [],
-      "triggers": [
-        "repository_dispatch",
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
-      "concurrency": "group: help-wanted-telemetry-tests-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
-      "domain": "agentic-development",
-      "jobs": [
-        "regression"
-      ],
-      "name": "Help-Wanted telemetry regression suite",
-      "path": ".github/workflows/help-wanted-telemetry-tests.yml",
-      "schedules": [],
-      "triggers": [
-        "pull_request",
-        "push",
         "workflow_dispatch"
       ]
     },
@@ -4622,6 +4604,22 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "verify"
+      ],
+      "name": "tribute diff gate",
+      "path": ".github/workflows/tribute-diff-gate.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: tribute-execute cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -4749,6 +4747,23 @@
       ],
       "name": "tribute-system1",
       "path": ".github/workflows/tribute-system1.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-telemetry-tests-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "regression"
+      ],
+      "name": "Tribute telemetry regression suite",
+      "path": ".github/workflows/tribute-telemetry-tests.yml",
       "schedules": [],
       "triggers": [
         "pull_request",

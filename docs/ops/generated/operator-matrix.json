@@ -3,8 +3,8 @@
     "open_issues": 385,
     "open_prs": 175,
     "pr_classes": {
-      "CANDIDATE": 83,
-      "EXTRACT": 7,
+      "CANDIDATE": 84,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 85,
       "SUPERSEDE": 0
     }
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T06:25:12Z",
+  "generated_at": "2026-11-02T06:28:04Z",
   "issues_unlabelled": [
     308,
     343,
@@ -136,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "0176ae622b"
+    "sha": "6ecad77ac1"
   },
   "prs": [
     {
@@ -216,26 +216,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d8a9130162",
+      "head_sha": "49dfe215f8",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T06:22:24Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "696860d69c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3525,
-      "title": "ops(vm-backup): tiered VM workspace export \u2014 scrub-gated, state-cadence, restore drill",
-      "updated_at": "2026-11-02T06:23:32Z"
+      "updated_at": "2026-11-02T06:27:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1403,6 +1389,20 @@
       "number": 3437,
       "title": "feat(dispatch): wire gemini-invoke to the stamp fan-out",
       "updated_at": "2026-11-02T01:09:20Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "696860d69c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3525,
+      "title": "ops(vm-backup): tiered VM workspace export \u2014 scrub-gated, state-cadence, restore drill",
+      "updated_at": "2026-11-02T06:23:32Z"
     },
     {
       "class": "NEED_EVIDENCE",

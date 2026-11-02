@@ -1,0 +1,105 @@
+{
+ "generated_at": "2026-11-02T13:25:58Z",
+ "schema": "results-index-feed/v1",
+ "sections": [
+  {
+   "generated_at": "2026-11-02T13:25:58Z",
+   "id": "ates",
+   "name": "ATES",
+   "note": "No committed results ledger exists (feed gaps[] of record): benchmark verdicts are asserted inside workflow runs; run receipts publish as 30-day Actions artifacts.",
+   "rows": [
+    {
+     "at": "2026-10-23T13:34:25Z",
+     "label": "receipt runs",
+     "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+     "state": 9
+    },
+    {
+     "at": "2026-10-22T12:25:12Z",
+     "label": "benchmark runs",
+     "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+     "state": 13
+    },
+    {
+     "at": "2026-11-02T00:17:30Z",
+     "label": "governance/frame state",
+     "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+     "state": "7 invariants"
+    }
+   ]
+  },
+  {
+   "generated_at": "2026-11-02T13:25:58Z",
+   "id": "3l0",
+   "name": "3L0",
+   "note": "Staged intake (3l0-intake/v1) from the session-history plane; observational fold - weights derive only where confirmed != null (charter source class 2).",
+   "rows": [
+    {
+     "at": "2026-11-02T13:25:58Z",
+     "label": "staged intake records",
+     "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
+     "state": 599
+    },
+    {
+     "at": "2026-11-02T13:25:58Z",
+     "label": "confirmed (weights-eligible)",
+     "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
+     "state": 0
+    },
+    {
+     "at": "2026-11-02T13:25:58Z",
+     "label": "routed-dispatch stamp corpus",
+     "record_of_record": "ops/telemetry/session-history.jsonl",
+     "state": 614
+    }
+   ]
+  },
+  {
+   "generated_at": "2026-11-02T13:25:58Z",
+   "id": "temporal",
+   "name": "Temporal",
+   "note": "No results feed exists for Temporal; the run receipts are the record of record.",
+   "rows": [
+    {
+     "at": "2026-10-28T22:36:40Z",
+     "label": "engagement runs",
+     "record_of_record": "Actions: temporal-engagement.yml",
+     "state": 2
+    },
+    {
+     "at": "2026-10-28T19:59:44Z",
+     "label": "self-host smoke runs",
+     "record_of_record": "Actions: temporal-self-host-smoke.yml",
+     "state": 21
+    },
+    {
+     "at": "2026-11-02T13:25:58Z",
+     "label": "persistent instance",
+     "record_of_record": "Actions: temporal-engagement.yml",
+     "state": "none"
+    }
+   ]
+  },
+  {
+   "generated_at": "2026-11-02T13:25:58Z",
+   "id": "hindsight",
+   "name": "HindSight",
+   "note": "Retain receipts are the population record; the bank itself is verified via the gated verify step when the proof passes.",
+   "rows": [
+    {
+     "at": "2026-11-02T13:25:58Z",
+     "label": "receipts on record",
+     "record_of_record": "ops/telemetry/hindsight-retain-proof.json",
+     "state": "proof attempted 3 - ok 0 - last error 402"
+    },
+    {
+     "at": "2026-11-02T13:25:58Z",
+     "label": "retained population",
+     "record_of_record": "ops/telemetry/hindsight-retain-state.json",
+     "state": 0
+    }
+   ]
+  }
+ ],
+ "source": "ops/telemetry/results-index.json (same builder, same values - render presentation)"
+}

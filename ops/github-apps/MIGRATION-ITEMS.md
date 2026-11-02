@@ -60,7 +60,7 @@ execution and evidence must be independently observable.
 
 - [ ] MAINT-01 Weekly permission-drift audit workflow live (installed perms vs manifest of record; diff → one tracking issue) [appid]
 - [ ] MAINT-02 Weekly bucket census live (per-app `GET /rate_limit` readings → registry via #1884 route; missing = null) [quota]
-- [ ] MAINT-03 Monthly GitHub API changelog / version review; deprecations become items here with sunset dates [migration-plan]
+- [ ] MAINT-03 Monthly GitHub API changelog / version review; deprecations become items here with sunset dates [migration-plan] — 2026-11 PASS DONE 2026-11-02 (stateless-token rollout: fleet impact ∅; SBOM-sync removal: ∅ usage; webhook meta ranges noted; next pass 2026-12) [migration-plan]
 - [ ] MAINT-04 Quarterly minter upkeep (pinned action release, JWT claims, token-expiry handling) [appid]
 - [ ] MAINT-05 Collector PEM rotation due by 2027-04-29 (6-month anchor from 2026-10-29 creation); per-app anchors set at each creation [appid]
 - [ ] MAINT-06 Rotation procedure test: zero-downtime dual-key overlap exercised once before first due date [appid]

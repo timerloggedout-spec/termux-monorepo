@@ -27,14 +27,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 FROM libs AS fetch
 
-# Pinned VS Code 1.97.2 (not latest): current stable's Electron fails
-# `code --version` inside the focal-based rdb-alpha image (builds 8-9:
-# fetch + extract pass, version gate fails with the full Depends set
-# and --no-sandbox). 1.97.2 is the known focal-compatible line; the
-# CodeRoad host does not need a newer editor.
+# VS Code current stable 1.144.0 (route-A probe, Cert Mgr call
+# 2026-11-02): 1.97.2 was pinned during the --version-gate era; the
+# workbench under it never reaches exthost in-container (~3-min GPU-
+# spinning lifetime, pilots 10-16). This bump tests the newer Electron
+# against that signature. If the signature repeats, the container-
+# Electron route closes and the leg moves host-side.
 USER root
 RUN curl -fsSL -o /tmp/code.tgz \
-      "https://update.code.visualstudio.com/1.97.2/linux-x64/stable" \
+      "https://update.code.visualstudio.com/1.144.0/linux-x64/stable" \
     && ls -la /tmp/code.tgz
 
 FROM fetch AS extract

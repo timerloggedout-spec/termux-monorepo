@@ -358,7 +358,21 @@ under DoE rules:
   exists to prevent.
 
 Scout proposes within the feed; DoE's bars govern what may
-bind. Feed carriage: maintained by the rotation automation
+bind.
+
+Working model (owner, 2026-11-02): **Scouts select FOR
+managers.** Flow: a manager places a request {capability
+class, task} — requests are a first-class intake; a manager
+never hand-picks an arm — Scout selects from the pool
+population (the swarm's arms/endpoints as carried in the feed,
+with their n / targets / posteriors), the selection is stamped
+as a selection experiment {requesting manager - request -
+selected arm - basis: the feed state the selection rested on},
+and dispatch executes the stamped selection. Scout never
+selects outside the feed. Population state — which arms exist,
+their health, their accumulated n — is the selection substrate:
+the feed is what makes the population selectable.
+Feed carriage: maintained by the rotation automation
 (Swarm) under this governance; an existing equivalent live
 surface becomes the feed by designation, never a second build.
 

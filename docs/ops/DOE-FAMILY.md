@@ -299,6 +299,16 @@ are levels, kinds are factors.
    compared across versions continuously — version-over-version
    comparison is an ongoing line — until DoE culling retires a
    method version, which ends that version's comparison line.
+9. **Attribution corroboration for weighting (owner, 2026-11-01):
+   some signings are FALSE.** Attribution feeding scores carries
+   false-signature risk until Telemetry's provenance corroboration
+   lands (their priority work). Records stand as records — the
+   population and outcome layers are unaffected. But actor-weighting
+   consumes only CORROBORATED attribution: a mark resting on a
+   single leg of the attribution evidence chain (stamp / trailer /
+   manifest / git_author / app_bot) is UNCORROBORATED — held out of
+   actor weights and flagged, never taken at face value. Applies
+   family-wide, including nested MVT and the MoneyBall feed.
 
 ## Definitions of record
 

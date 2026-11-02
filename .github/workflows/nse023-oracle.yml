@@ -1,0 +1,88 @@
+name: nse023-oracle
+
+# NSE-023 constraint oracle — compile a research packet example against the
+# pinned Batteries fork (36cc05ca). Dispatch-only. Fail-closed verdict:
+# PASS requires the Lean kernel to accept the proof (exit 0 + axioms line);
+# toolchain/import failure before Lean runs => INCONCLUSIVE. A green job
+# alone is never a PASS; read the verdict artifact.
+
+on:
+  workflow_dispatch:
+    inputs:
+      example:
+        description: "Example file under research/nse-023/examples/"
+        required: true
+        default: "P001.lean"
+
+permissions:
+  contents: read
+
+jobs:
+  oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout pinned Batteries
+        uses: actions/checkout@v4
+        with:
+          repository: timerloggedout-spec/batteries_fork
+          ref: 36cc05ca2d0e469bfbeea9437f460e19238e885e
+          path: batteries-pin
+      - name: Install elan toolchain (pin's lean-toolchain)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          cd batteries-pin
+          elan toolchain install "$(cat lean-toolchain)"
+          elan override set "$(cat lean-toolchain)"
+      - name: Build pinned Batteries
+        id: build
+        continue-on-error: true
+        run: |
+          cd batteries-pin
+          lake build
+      - name: Compile example against the pin
+        id: compile
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          cd batteries-pin
+          lake env lean "$GITHUB_WORKSPACE/research/nse-023/examples/${{ inputs.example }}" > lean-out.txt 2>&1
+          echo "lean_exit=$?" >> "$GITHUB_ENV"
+          cat lean-out.txt
+      - name: Emit verdict (fail-closed)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          build = "${{ steps.build.outcome }}"
+          comp = "${{ steps.compile.outcome }}"
+          out = ""
+          try:
+              out = open("batteries-pin/lean-out.txt").read()
+          except Exception:
+              pass
+          if build != "success" or comp == "":
+              verdict = "INCONCLUSIVE"   # toolchain/import reproduction failed
+          elif comp != "success" or "error" in out.lower():
+              verdict = "FAIL"           # Lean rejected the proof
+          elif "axioms" in out.lower():
+              verdict = "PASS"           # kernel accepted; axioms on record
+          else:
+              verdict = "INCONCLUSIVE"
+          rec = {"proposition_example": "${{ inputs.example }}",
+                 "pin": "36cc05ca2d0e469bfbeea9437f460e19238e885e",
+                 "toolchain": "leanprover/lean4:v4.34.0-rc1",
+                 "build_outcome": build, "compile_outcome": comp,
+                 "lean_output_tail": out[-2000:], "verdict": verdict}
+          open("verdict.json", "w").write(json.dumps(rec, indent=2))
+          print(json.dumps(rec, indent=2))
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as fh:
+              fh.write(f"## NSE-023 oracle verdict: {verdict}\n\n```json\n{json.dumps(rec, indent=2)}\n```\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nse023-verdict
+          path: verdict.json

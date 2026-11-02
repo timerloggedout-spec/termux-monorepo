@@ -41,4 +41,4 @@ Mathlib is the broader machine-checked library. This extract starts at **Batteri
 
 ## Status
 
-Specification + inventory. No new Lean sources in this extract. Research experiments belong under a governed `research/` path before applied promotion.
+**LAUNCHED — research-active** (owner word, 2026-11-02, relayed via main). The research lane is open under this proposal's own governance: the pre-proofing lane and the oracle contract above are in force, fail-closed. First research packet: `research/nse-023/` (input class 1 = the Linguist matrices/vector-stores ⇔ Lean notation mapping; first proposition P-001, composition associativity). **Mathlib stays OUT** — a separate pinned/licensed dependency decision with dual-gate review is required before any Mathlib surface; this launch does not authorize it.

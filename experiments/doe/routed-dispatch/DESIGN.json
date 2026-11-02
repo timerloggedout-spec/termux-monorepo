@@ -31,7 +31,11 @@
    "ops/moneyball/routed-dispatch/*.json (moneyball-plane/v2 score records, one per dispatch; deterministic rubric in the emitter, weights fixed at this intake, quantities null = unidentified; the plane validates on master)",
    "experiments/doe/routed-dispatch/stamps/*.json (canonical stamp retention \u2014 backfill doctrine: full history re-derivable at every scoring version change; records immutable, versions re-derive scores)"
   ],
-  "identity": "Records carry instance_key where the dispatch stamp provides the configured-instance tuple (scripts/doe/instance_key.py); stamps without the tuple group by provider/model and are marked NOT_ESTABLISHED at the instance level."
+  "identity": "Records carry instance_key where the dispatch stamp provides the configured-instance tuple (scripts/doe/instance_key.py); stamps without the tuple group by provider/model and are marked NOT_ESTABLISHED at the instance level.",
+  "moneyball_backfill": {
+   "doctrine": "owner backfill doctrine (2026-11-01, canonical record: DoE expert); MoneyBall addendum via the plane: at every scoring version change the feed backfills - prior records re-scored under the new version, audited + improved, version results compared continuously as per-entity version pairs until DoE culling retires a version",
+   "hooks": "records carry schema per record (moneyball-plane/v2); backfilled record = NEW record per entity under the new schema at ops/moneyball/routed-dispatch/<dispatch_id>--<schema-slug>.json with record_id mb-<dispatch_id>--<schema-slug> and a supersedes ref to the prior record_id; live records keep record_id mb-<dispatch_id>; re-scoring source = the retained canonical stamps (experiments/doe/routed-dispatch/stamps/); the plane validates backfilled records identically and verdicts note version pairs"
+  }
  },
  "registration": {
   "preregistered_in_repo": true,

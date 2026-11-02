@@ -1,0 +1,16 @@
+{
+  "dispatch_id": "build-wire-provider-invoke-3411",
+  "pr": 3411,
+  "merged": true,
+  "merge_sha": "8371b517d5d57436ff5b7abd8db23b9d9478af72",
+  "gates": {
+    "guard": [
+      "success",
+      "success"
+    ],
+    "hygiene": "success",
+    "ci_tests": null
+  },
+  "task": "build dispatch set 1/3: wire provider-invoke.yml to the stamp fan-out + land the seat build-tools instance manifest",
+  "diff_summary": "provider-invoke.yml gains a stamp job (needs invoke, always; Swarm App mint; fan-out dispatch with the run's canonical stamp); scripts/dispatch/instance/build-tools.json added"
+}

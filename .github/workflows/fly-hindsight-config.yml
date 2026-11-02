@@ -36,7 +36,7 @@ jobs:
           fly secrets set -a hindsight-termux \
             HINDSIGHT_API_LLM_PROVIDER="openrouter" \
             HINDSIGHT_API_LLM_API_KEY="$OPENROUTER_KEY" \
-            HINDSIGHT_API_LLM_MODEL="openai/gpt-4o-mini" \
+            HINDSIGHT_API_LLM_MODEL="meta-llama/llama-3.3-70b-instruct:free" \
             HINDSIGHT_API_EMBEDDINGS_PROVIDER="google" \
             HINDSIGHT_API_EMBEDDINGS_API_KEY="$GEMINI_KEY" \
             HINDSIGHT_API_EMBEDDINGS_MODEL="text-embedding-004" \

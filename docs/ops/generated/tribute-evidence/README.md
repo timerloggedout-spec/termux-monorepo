@@ -7,5 +7,5 @@ Append-only **JSONL** per UTC day + `latest.json`.
 - **PRIMARY delivery:** upstream-pr
 - Does **not** auto-admit to MoneyBall — evaluation cohort evidence only
 
-Writer: `scripts/ci/help_wanted_evidence.py`  
+Writer: `scripts/ci/tribute_evidence.py`  
 Contract: `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`

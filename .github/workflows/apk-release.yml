@@ -80,8 +80,13 @@ jobs:
             dist/SIGNING_MODE
 
       - name: Create GitHub Release
+        # Token class fix (2026-11-02, arm-A proof runs 41422144649/41422211229): GITHUB_TOKEN got
+        # HTTP 403 'Resource not accessible by integration' on POST /releases for non-master refs,
+        # while build/sign/verify succeeded. Release step uses the provisioned operator PAT-class
+        # secret (name verified in live secrets census) until the Termux Fleet ApkRelease AppID
+        # migration (QUEUED, AppID lane) makes this an app token. All other steps keep github.token.
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
           TAG: ${{ steps.ver.outputs.tag }}
           VERSION: ${{ steps.ver.outputs.version }}
           PRERELEASE: ${{ inputs.prerelease }}

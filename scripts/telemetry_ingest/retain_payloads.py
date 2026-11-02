@@ -46,13 +46,31 @@ def to_item(p: dict) -> dict:
             "context": "telemetry-ingest", "metadata": md, "tags": tags}
 
 
-def retain(payloads, base, bank, key, batch=BATCH, opener=None):
+def load_state(path):
+    if path and Path(path).exists():
+        return json.loads(Path(path).read_text())
+    return {}
+
+
+def retain(payloads, base, bank, key, batch=BATCH, opener=None, state=None, max_items=None):
     opener = opener or urllib.request.urlopen
     url = base.rstrip("/") + f"/v1/default/banks/{quote(str(bank), safe='')}/memories"
     summary = {"attempted": 0, "ok": 0, "failed": 0, "batches": 0, "batches_failed": 0,
                "endpoint": "POST /v1/default/banks/{bank_id}/memories",
-               "first_error": None}
-    items = [to_item(p) for p in payloads]
+               "first_error": None, "skipped_unchanged": 0}
+    state = state if state is not None else {}
+    fresh = []
+    for p in payloads:
+        doc = document_id_for(p)
+        ev = (p.get("metadata") or {}).get("evidence_hash")
+        if ev and state.get(doc) == ev:
+            summary["skipped_unchanged"] += 1
+        else:
+            fresh.append(p)
+    if max_items is not None:
+        fresh = fresh[:max_items]
+    items = [to_item(p) for p in fresh]
+    ok_docs = []
     for i in range(0, len(items), batch):
         chunk = items[i:i + batch]
         summary["batches"] += 1
@@ -65,6 +83,7 @@ def retain(payloads, base, bank, key, batch=BATCH, opener=None):
             with opener(req, timeout=60) as resp:
                 if resp.status < 400:
                     summary["ok"] += len(chunk)
+                    ok_docs += chunk
                 else:
                     summary["failed"] += len(chunk); summary["batches_failed"] += 1
         except urllib.error.HTTPError as e:
@@ -79,6 +98,9 @@ def retain(payloads, base, bank, key, batch=BATCH, opener=None):
             summary["failed"] += len(chunk); summary["batches_failed"] += 1
             if summary["first_error"] is None:
                 summary["first_error"] = {"status": None, "body_excerpt": f"{type(e).__name__}: {e}"[:300]}
+    for it in ok_docs:
+        state[it["document_id"]] = it["metadata"].get("evidence_hash")
+    summary["state"] = state
     return summary
 
 
@@ -86,6 +108,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", action="append", required=True)
     ap.add_argument("--receipt-out", default=None)
+    ap.add_argument("--state", default=None,
+                    help="json {document_id: evidence_hash} of already-retained units; "
+                         "unchanged units are skipped (0 credit burn), state updated on success")
+    ap.add_argument("--max-items", type=int, default=None)
+    ap.add_argument("--batch", type=int, default=BATCH)
     args = ap.parse_args()
     base = os.environ.get("HINDSIGHT_BASE_URL")
     bank = os.environ.get("HINDSIGHT_BANK_ID")
@@ -95,7 +122,13 @@ def main():
     payloads = []
     for f in args.file:
         payloads += [json.loads(l) for l in Path(f).read_text().splitlines() if l.strip()]
-    summary = retain(payloads, base, bank, os.environ.get("HINDSIGHT_API_KEY"))
+    state = load_state(args.state)
+    summary = retain(payloads, base, bank, os.environ.get("HINDSIGHT_API_KEY"),
+                     batch=args.batch, state=state, max_items=args.max_items)
+    if args.state:
+        Path(args.state).write_text(json.dumps(summary.pop("state"), indent=1, sort_keys=True) + "\n")
+    else:
+        summary.pop("state", None)
     summary["payloads"] = len(payloads)
     if args.receipt_out:
         Path(args.receipt_out).write_text(json.dumps(summary, indent=1, sort_keys=True) + "\n")

@@ -21,13 +21,13 @@ paid_equivalent_usd = input_tokens × input_usd_per_million / 1,000,000 + output
 
 This is a counterfactual API list-price estimate, not cash spent or guaranteed savings. It excludes cached-token discounts, batch pricing, tools, search/grounding, taxes, subscriptions, negotiated rates, and non-token fees unless explicitly modeled.
 
-Time opportunity cost is separate:
+Repository time-investment opportunity cost is a separate, repo-scoped measure:
 
-- time_invested_value = minutes_invested / 60 × chosen_hourly_rate
-- potential_time_value = estimated_hours_saved × chosen_hourly_rate
-- net_time_scenario = potential_time_value - time_invested_value
+- `repo_time_invested_value = repo_minutes_invested / 60 × repo_opportunity_cost_rate`
+- `potential_repo_time_value = estimated_repo_hours_recovered × repo_opportunity_cost_rate`
+- `net_repo_time_scenario = potential_repo_time_value - repo_time_invested_value`
 
-Time saved is a scenario input until established against a comparable baseline. Do not add it to provider cost or label it realized ROI.
+The rate and time inputs must describe work on this repository; they are not provider API prices or a generic, unrelated hourly-rate scenario. Time recovered remains a scenario until measured against a comparable baseline. Do not add repo time value to provider cost or label it realized ROI. If actual repo time evidence is unavailable, label the inputs as assumptions and do not imply the values were observed.
 
 ## Price snapshot
 
@@ -63,3 +63,8 @@ The upstream export/filter step must validate attribution, token fields, source 
 7. Existing quota and telemetry contracts remain authoritative; no poller, runtime admission rule, or scheduler is added.
 8. Static deployment navigation and page are validated before promotion.
 9. External evidence and pricing links are accepted only over HTTPS; unsafe or malformed URLs render as unavailable.
+
+
+## Ranking convention
+
+Provider comparisons are sorted by the same workload's estimated API list-price equivalent in **descending order (most expensive first)**. The first row is the highest modeled replacement cost; the cheapest row remains last. Each row is model-specific, and ranking is not a provider-wide quality or value judgment. The order is recalculated when input/output token assumptions change.

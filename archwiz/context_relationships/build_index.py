@@ -333,6 +333,7 @@ def build_index(
             "builder": BUILDER_ID,
             "repository": f"{owner}/{repo}",
             "ref": ref,
+            "source_sha": source_sha,
             "node_count": manifest["node_count"],
             "edge_count": manifest["edge_count"],
             "verified_edge_count": manifest["verified_edge_count"],

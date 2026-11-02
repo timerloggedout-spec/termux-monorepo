@@ -45,7 +45,11 @@ def parse_commit(root, oid):
     return {"kind": "commit", "oid": oid, "tree": tree,
             "parents": parents, "author": author, "ts": ts, "refs": []}
 
+def parse_head(root, oid):
+    c = parse_commit(root, oid)
+    return {k: c[k] for k in ("oid", "tree", "parents")}
+
 if __name__ == "__main__":
     import json, sys
-    print(json.dumps(parse_commit(sys.argv[1], sys.argv[2]),
+    print(json.dumps(parse_head(sys.argv[1], sys.argv[2]),
                      indent=1, sort_keys=True))

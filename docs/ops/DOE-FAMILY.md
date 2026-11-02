@@ -443,9 +443,24 @@ govern when any of it may be stated as established. Positions
 cite their basis surface per position. No class is scored by
 another class's record, and no class's standing exempts it
 from the bars.
-Feed carriage: maintained by the rotation automation
-(Swarm) under this governance; an existing equivalent live
-surface becomes the feed by designation, never a second build.
+Feed carriage — DESIGNATED (Swarm designation, doe-expert
+accepted 2026-11-02; no second build): the pool feed IS the
+canonical stamp corpus under experiments/doe/routed-dispatch/
+(stamps/ retained verbatim per the backfill doctrine +
+records/), carried by the fan-out automation
+(dispatch-stamp-fanout.yml, Swarm-App authored,
+direct-to-master). Field mapping: instance_key - class =
+task_class - n_accumulated = cumulative_n per stamp chain -
+outcome / posterior legs = records' metrics + score fills
+(native). arm_state (health gates) is single-sourced from the
+quota plane of record (ops/quota/registry.json + usage-series
+readings). Health-leg ruling (doe-expert): the fan-out ALSO
+materializes arm_state into the corpus as append-only snapshot
+records (stamped with source + vintage) whenever a selectable
+arm's joined health state changes and at each dispatch cycle —
+a selection's basis must stay reconstructible after the fact;
+join-at-read remains the live view, the snapshot is the
+citable basis.
 
 ## Definitions of record
 

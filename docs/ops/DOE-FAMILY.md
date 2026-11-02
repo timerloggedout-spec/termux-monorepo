@@ -723,6 +723,20 @@ version and compared continuously until culling retires a version.
   only — a named row enters the population; naming prices no
   cell. Claimed cell values remain posterior / evidence-gated
   under the significance standard (INTAKE / HELD until priced).
+  DEPENDENCY GRAPH (owner extension, 2026-11-02): Learnings -
+  Skills - Tools are first-class records in the matrix.
+  Standing distinction: a Learning is an EVIDENCE INPUT, not a
+  skill; a Skill is a CAPABILITY DEFINITION, not evidence
+  (SKILL.md files are definitions — certified evidence = issuer
+  artifacts + execution receipts). A skill's value record cites
+  its dependency state as an evidence leg: a critical
+  dependency down / blocked CAPS the skill's claim at HELD
+  until redundancy / failover is TESTED (fleet doctrine:
+  backup exists only when tested). A tool's leverage = the
+  value of the skills downstream of it (derived from their
+  records, never a tool-local score). Edges are records under
+  the same citation discipline {n - stratum - basis}; no edge
+  is asserted from naming alone.
 
 - **accumulation-targets v0** (owner doctrine, 2026-11-02) —
   dispatch is REQUIRED data accumulation: rotation exists to

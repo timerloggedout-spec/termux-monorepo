@@ -1,9 +1,10 @@
 # ATES Improvement Frame
 
-**`ates-improvement-frame` v0.4** — registered 2026-11-02 under DoE
+**`ates-improvement-frame` v0.5** — registered 2026-11-02 under DoE
 (v0: PR #3844 - mechanism correction: PR #3846 - v0.1: PR
 #3849 - v0.2: PR #3850, owner parity ruling - v0.3: PR
-#3853, S measured - v0.4: this amendment, Oracle recon).
+#3853, S measured - v0.4: PR #3855, Oracle recon - v0.5:
+this amendment, S layered ruling).
 governance (see `docs/ops/DOE-FAMILY.md`, Method versions).
 ATES is nested under DoE (leveling of record); this frame is
 its improvement surface.
@@ -68,8 +69,16 @@ against `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`).
   2026-11-02: already measured, not an open ruling): the
   IMP-001 census establishes it from the trigger record, and
   Stewardship's step-6 denominator re-derivation is that
-  measurement in progress. S is versioned with this frame; a
-  coverage figure without its S version is NOT_ESTABLISHED.
+  measurement in progress. **S is the CONTROL**: coverage and
+  parity claims anchor on S. S is versioned with this frame;
+  a coverage figure without its S version is NOT_ESTABLISHED.
+- **Designated superset Sⁿ** (owner ruling, 2026-11-02 —
+  layered, not binary): DoE may designate a wider set with
+  S ⊆ Sⁿ. Designation is DoE's act, recorded per designation
+  {designated set · basis · date · designating entry}. Claims
+  must NAME their set: a claim over Sⁿ never reads as a claim
+  over the control S, and the two are never pooled (K10).
+  Designations at this version: none (Sⁿ undesignated).
 - **Layered surface (Oracle recon, 2026-11-02).** The ATES
   surface is WIDER than S: `ates-orchestrator-benchmark.yml`
   (the MVT benchmark suite; 14 runs, including a success on
@@ -188,7 +197,12 @@ of #3812) — confirmed by main, 2026-11-02.**
   stratum over the measured S (above), and every parity claim
   cites its sample n per status stratum. A parity claim
   without per-stratum n is non-conformant (significance
-  standard).
+  standard). Sampling strata live on S unless an entry
+  explicitly designates Sⁿ scope.
+- **K10 — Named set.** Every coverage/parity claim names its
+  set: S (the control) or a designated Sⁿ (citing its
+  designation record). An Sⁿ claim presented as, or pooled
+  with, a control claim is non-conformant.
 - **K6 — Claims follow entry states.** "Improvement landed"
   is stated only when the entry's evidence requirement is met
   and cited; otherwise HELD/PROPOSED language.
@@ -216,7 +230,11 @@ of #3812) — confirmed by main, 2026-11-02.**
    measurement in progress; the bounded parity checks sample
    per stratum over that measured S (K9). The flag CLOSES on
    this basis and re-opens only if the census contradicts
-   the measured set.
+   the measured set. LAYERED ADDENDUM (owner ruling,
+   2026-11-02): the closure stands for S itself — S is the
+   CONTROL. The ruling ADDS the Sⁿ layer (DoE-designated
+   superset, S ⊆ Sⁿ; designation recorded per designation;
+   claims name their set, K10); it does not reopen S.
 3. **Stewardship seat of record** — RESOLVED 2026-11-02:
    the Continuous Stewardship seat (takeover of #3812),
    confirmed by main; recorded in the conformity section

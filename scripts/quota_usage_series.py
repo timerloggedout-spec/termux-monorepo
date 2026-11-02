@@ -48,6 +48,7 @@ def build(root):
     usage_pack = load(root, "ops/quota/quota-usage.json") or {}
     desk = load(root, "ops/challenge/desk-feed.json") or {}
     plan = load(root, "ops/quota/allocation-plan.json") or {}
+    events_doc = load(root, "ops/quota/rate-limit-events.json") or {}
 
     provider, service, model = [], [], []
 
@@ -119,7 +120,22 @@ def build(root):
                             "note": "plan target flow - context only, "
                                     "not usage; plotted only if units match"}
 
-    for rows in (provider, service, model):
+    ev_by_bucket = {}
+    for ev in events_doc.get("events", []):
+        ev_by_bucket.setdefault(ev.get("bucket", "unknown"), []).append(ev)
+    events_axis = []
+    for bucket in sorted(ev_by_bucket):
+        evs = sorted(ev_by_bucket[bucket], key=lambda e: e.get("at", ""))
+        events_axis.append({"key": bucket,
+                            "title": bucket + " - rate-limit events",
+                            "unit": "events", "kind": "event",
+                            "metric": "events",
+                            "points": [{"t": e["at"], "v": 1,
+                                        "class": e.get("class")}
+                                       for e in evs if e.get("at")],
+                            "provenance": "ops/quota/rate-limit-events.json"})
+
+    for rows in (provider, service, model, events_axis):
         for s in rows:
             ts = [p["t"] for p in s.get("points", []) if p.get("t")]
             s["last_point_at"] = max(ts) if ts else None
@@ -133,8 +149,9 @@ def build(root):
             "ops/quota/quota-usage.json": usage_pack.get("generated_at")},
         "sources": ["ops/quota/quota-usage.json",
                     "ops/challenge/desk-feed.json",
-                    "ops/quota/allocation-plan.json"],
-        "axes": {"provider": provider, "service": service, "model": model},
+                    "ops/quota/allocation-plan.json",
+                    "ops/quota/rate-limit-events.json"],
+        "axes": {"provider": provider, "service": service, "model": model, "events": events_axis},
         "notes": {
             "model": "Per-model series require a stamped model@version AND "
                      "a usage{} value on the same record. Jules-class rows "

@@ -1,0 +1,41 @@
+name: vercel-batch-deploy-watchdog
+# Self-heal for the Vercel batch lane. quota-dispatch-tree.yml wakes vercel-batch-deploy
+# only when its tree run starts in the first 10 minutes of an hour (dispatch_hourly =
+# firstCycle). Delayed cron runs miss that window, so the lane went silent after
+# 2026-10-23 and the Ops Tribute production page lagged master (found 2026-11-01).
+# This watchdog is additive: it never deploys itself. It only wakes the existing,
+# quota-aware planner (own budget, change detection, 6 h cooldown) when that planner's
+# latest run is older than STALE_H. One cheap API read per tick.
+on:
+  schedule:
+    - cron: '41 */3 * * *'
+  workflow_dispatch:
+    inputs:
+      stale_hours:
+        description: "Wake the planner when its latest run is older than this many hours"
+        required: false
+        default: "6"
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: vercel-batch-deploy-watchdog
+  cancel-in-progress: false
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      STALE_H: ${{ github.event.inputs.stale_hours || '6' }}
+    steps:
+      - name: Wake vercel-batch-deploy when stale
+        run: |
+          set -eu
+          last=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/vercel-batch-deploy.yml/runs?per_page=1" --jq '.workflow_runs[0].created_at // empty')
+          if [ -z "$last" ]; then age_h=9999; else age_h=$(( ( $(date +%s) - $(date -d "$last" +%s) ) / 3600 )); fi
+          echo "::notice title=vercel-batch-watchdog::last planner run ${last:-none}, age ${age_h}h, threshold ${STALE_H}h"
+          if [ "$age_h" -ge "$STALE_H" ]; then
+            gh workflow run vercel-batch-deploy.yml --repo "$GITHUB_REPOSITORY" --ref "${{ github.event.repository.default_branch }}"
+            echo "::notice title=vercel-batch-watchdog::woke vercel-batch-deploy (planner decides budget and change detection)"
+          fi

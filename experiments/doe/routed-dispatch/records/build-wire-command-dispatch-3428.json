@@ -3,15 +3,22 @@
   "candidate_sha": "828113dc46a587e2748c599c8cd03a7904588bf9",
   "cohort": "routed-dispatch-2026-11",
   "confidence": "high",
-  "evidence_refs": [],
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/pull/3428"
+  ],
   "experiment_id": "routed-dispatch",
   "metrics": {
     "ates_outcome": null,
     "cumulative_n": 2,
     "dispatch_status": "completed",
+    "dispatch_to_pr_wall_time": null,
+    "first_pass_success": true,
+    "pr": 3428,
     "quota_cost_class": "metered",
+    "rework_cycles": 0,
     "selection_reason": "designed set: complete fan-out wiring across dispatch routes; seat build arm = only live build class (Jules down, Gemini CLI out, DeepSeek tunnel down)",
     "set_index": 2,
+    "stalled_action_required": false,
     "task_class": "build"
   },
   "observed_at": "2026-11-02T01:04:53Z",

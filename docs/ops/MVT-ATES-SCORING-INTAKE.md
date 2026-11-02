@@ -106,3 +106,9 @@ keys above present (null only where the trace contract allows null).
 The separation lane verifies population from the committed records
 and reports it; run counts from the Actions API alone do not count
 as scoring population.
+
+**Roll-up counting** (leveling, owner 2026-11-01; canonical in
+`docs/ops/DOE-FAMILY.md`): MVT and ATES are pieces nested in the DoE
+family — any population or scoring roll-up that spans surfaces
+counts **DoE once**, with MVT shown as its sub-piece, never as a
+separate plane tally added on top of the family count.

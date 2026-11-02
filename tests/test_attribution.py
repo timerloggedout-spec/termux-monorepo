@@ -99,3 +99,15 @@ def test_manifest_leg():
     assert at.extract_actor(pr, files=code)["actor"] is None
     own = [{"filename": "docs/proposals/active/z/MANIFEST.md", "patch": "+author: LoggedOut"}]
     assert at.extract_actor(pr, files=own)["actor"] is None
+
+def test_corroboration_states():
+    base = {"number": 3, "title": "t", "user": {"login": "timerloggedout-spec"}}
+    r = at.extract_actor({**base, "body": "plain work"})
+    assert r["corroboration"]["state"] == "unattributed"
+    r = at.extract_actor({**base, "body": "Agent-Identity: Grok (Administrator)"})
+    assert r["corroboration"]["state"] == "single-leg"
+    commits = [{"commit": {"author": {"name": "Grok", "email": "grok@x.ai"}, "message": "x"}}]
+    r = at.extract_actor({**base, "body": "Agent-Identity: Grok (Administrator)"}, commits)
+    assert r["corroboration"]["state"] == "corroborated" and r["actor"] == "grok"
+    r = at.extract_actor({**base, "body": "Agent-Identity: Manus"}, commits)
+    assert r["corroboration"]["state"] == "disputed" and r["corroboration"]["conflicts"] == ["grok"]

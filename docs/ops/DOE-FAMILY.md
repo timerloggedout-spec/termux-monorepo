@@ -418,6 +418,19 @@ class n bar is HELD, never stated, and standing claims cite
 Cull reach: scouts are participants — a culled scout's wallet
 flows to the pooled system under the cull wallet consequence,
 named in the cull record like any participant's.
+
+**Universal competition (owner capstone, 2026-11-02): ALL
+competing.** Every actor class competes on its own record:
+arms on task performance - scouts on selection quality -
+gamblers on speculation accuracy (positions on task
+performance; basis = AST maps - Archaeo - Oracle scores - peer
+scoring surfaces) - managers on outcomes. The scoring surfaces
+are EVIDENCE INPUTS to competition, not oracles: a surface's
+score is one leg, and rule 9 + the significance standard
+govern when any of it may be stated as established. Positions
+cite their basis surface per position. No class is scored by
+another class's record, and no class's standing exempts it
+from the bars.
 Feed carriage: maintained by the rotation automation
 (Swarm) under this governance; an existing equivalent live
 surface becomes the feed by designation, never a second build.

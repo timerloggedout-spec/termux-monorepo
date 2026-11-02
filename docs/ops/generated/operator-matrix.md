@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T00:57:32Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T00:58:30Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `5347f7b285` (hygiene: queued, smoke: success). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `aaa087b889` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 384 issues, 170 PRs. PR classes: EXTRACT 5 / CANDIDATE 83 / NEED_EVIDENCE 82 / SUPERSEDE 0.
 
@@ -182,7 +182,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `06d71aec43` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
-| #3437 | NEED_EVIDENCE | unlabelled | `0dd529472a` | not_reported | not_reported | unstable | feat(dispatch): wire gemini-invoke to the stamp fan-out |
+| #3437 | NEED_EVIDENCE | unlabelled | `0dd529472a` | not_reported | not_reported | unknown | feat(dispatch): wire gemini-invoke to the stamp fan-out |
 
 ## Families (open)
 

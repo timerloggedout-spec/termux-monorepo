@@ -111,3 +111,26 @@ def test_corroboration_states():
     assert r["corroboration"]["state"] == "corroborated" and r["actor"] == "grok"
     r = at.extract_actor({**base, "body": "Agent-Identity: Manus"}, commits)
     assert r["corroboration"]["state"] == "disputed" and r["corroboration"]["conflicts"] == ["grok"]
+
+def test_token_history_leg():
+    bot = {"number": 5, "title": "t", "body": "",
+           "user": {"login": "github-actions[bot]"}}
+    r = at.extract_actor(bot)
+    assert r["corroboration"]["state"] == "single-leg"
+    r = at.extract_actor(bot, token_history={"merged_by": "github-actions[bot]"})
+    assert r["corroboration"]["state"] == "corroborated"
+    assert "token_history" in r["corroboration"]["agreeing"]
+    r = at.extract_actor(bot, token_history={"merged_by": "timerloggedout-spec",
+                                             "run_actors": ["github-actions[bot]"]})
+    assert r["corroboration"]["state"] == "corroborated"
+    # Jules shape: owner-merged, owner run actors -> stays single-leg
+    jules = {**bot, "user": {"login": "google-labs-jules[bot]"}}
+    r = at.extract_actor(jules, token_history={"merged_by": "timerloggedout-spec",
+                                               "run_actors": ["timerloggedout-spec"]})
+    assert r["corroboration"]["state"] == "single-leg"
+    # token history never speaks for PAT riders / never conflicts
+    human = {"number": 6, "title": "t", "body": "[MUSEai]@{role:{docs}}",
+             "user": {"login": "timerloggedout-spec"}}
+    r = at.extract_actor(human, token_history={"merged_by": "github-actions[bot]"})
+    assert r["corroboration"]["state"] == "single-leg"
+    assert "token_history" not in r["corroboration"]["legs"]

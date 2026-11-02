@@ -48,12 +48,13 @@ function recordRow(r){
   const rd=r.readings;
   return '<div class="rec"><strong>'+esc(r.provider||r.id)+'</strong><span class="muted"> · '+esc(r.metric||'')+'</span><br><span class="muted">'
     +(r.limit!=null?('limit '+esc(r.limit)+' '+esc(r.unit||'')+' · '):'')+esc(r.window||'')+(rd?(' · reading: '+esc(rd.status||'unknown')):'')+'</span>'
+    +(r.populated===false?'<br><span class="muted">gap - no readings or usage on record</span>':'')
     +(r.usage_series?('<div data-usage="'+esc(r.id)+'"></div>'):'')+'</div>';
 }
 function familyCard(p){
   const recs=p.records||[];
-  const head='<div class="label">'+esc(p.provider)+'<span class="chip">'+recs.length+' records</span>'+(p.live_verified?'<span class="chip">live-verified</span>':'')+'</div>'
-    +'<p class="muted">'+(p.providers_distinct||recs.length)+' provider entr'+((p.providers_distinct||recs.length)===1?'y':'ies')+' · census: '+esc(p.census?(p.census.verdict||'—'):'not-established')+'</p>';
+  const head='<div class="label">'+esc(p.provider)+'<span class="chip">'+recs.length+' records</span>'+(p.live_verified?'<span class="chip">live-verified</span>':'')+(p.population&&p.population.state==='gap'?'<span class="chip">GAP</span>':'')+'</div>'
+    +'<p class="muted">'+(p.providers_distinct||recs.length)+' provider entr'+((p.providers_distinct||recs.length)===1?'y':'ies')+' · census: '+esc(p.census?(p.census.verdict||'—'):'not-established')+(p.population?(' · population: '+esc(p.population.state)+((p.population.bases&&p.population.bases.length)?(' ('+p.population.bases.map(esc).join(', ')+')'):' (no readings, usage or census basis)')):'')+'</p>';
   if(recs.length>12)return '<details class="card"><summary>'+head+'</summary>'+recs.map(recordRow).join('')+'</details>';
   return '<div class="card">'+head+recs.map(recordRow).join('')+'</div>';
 }
@@ -63,7 +64,7 @@ async function load(){
   if(!feed){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch swarm-feed.json.';return}
   const s=feed.summary||{};
   $('freshness').textContent='Swarm loaded';
-  $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.registry_model_records||0)+' records · '+(s.distinct_providers||0)+' provider entries · '+(s.families||0)+' families';
+  $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.registry_model_records||0)+' records · '+(s.distinct_providers||0)+' provider entries · '+(s.families||0)+' families'+(s.population?(' · population: '+s.population.providers_populated+'/'+s.population.providers_total+' providers populated, '+s.population.providers_gap+' gap · families '+s.population.families_populated+'/'+s.population.families_total+' populated, '+s.population.families_gap+' gap'):'');
   const st=CK.stampState(feed.generated_at,Date.now(),86400000);
   $('layers-stamp').textContent='Feed generated '+(feed.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
   $('chart-layers').innerHTML=CK.bars([

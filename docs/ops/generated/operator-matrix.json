@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 173,
+    "open_prs": 171,
     "pr_classes": {
       "CANDIDATE": 83,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 84,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 171,
+      "prs": 169,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:18:43Z",
+  "generated_at": "2026-11-02T00:19:55Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "success",
+      "hygiene": "not_reported",
       "smoke": "queued"
     },
-    "sha": "22e19e1cb7"
+    "sha": "b60d62bf47"
   },
   "prs": [
     {
@@ -216,12 +216,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "88c8ec8732",
+      "head_sha": "aee728c570",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3384,
-      "title": "docs(swarm): routing cycle 1 \u2014 populated + delta",
-      "updated_at": "2026-11-02T00:17:50Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T00:18:08Z"
     },
     {
       "class": "CANDIDATE",
@@ -1800,26 +1800,12 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "aee728c570",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:18:08Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
       "head_sha": "10c752341d",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2168,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T00:17:55Z"
@@ -2551,20 +2537,6 @@
       "number": 3342,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-01T23:44:38Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "a4e22c17f5",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3385,
-      "title": "DoE: ChronoMancer status \u2014 bet \u00b7 earning-in-progress",
-      "updated_at": "2026-11-02T00:18:40Z"
     }
   ],
   "schema": "operator-matrix/v1",

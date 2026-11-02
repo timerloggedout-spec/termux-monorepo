@@ -58,7 +58,7 @@ jobs:
         if: inputs.phase == 'score'
         env:
           PACKET_JSON: ${{ inputs.packet }}
-          COHERE_API_KEY: <redacted>
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
         run: |
           printf '%s' "$PACKET_JSON" > /tmp/packet.json
           python3 - <<'PYEOF'

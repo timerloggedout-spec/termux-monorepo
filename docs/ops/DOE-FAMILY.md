@@ -450,6 +450,21 @@ version and compared continuously until culling retires a version.
   minority>=10 ∧ p<.05 (standing gate); accuracy NOT_ESTABLISHED
   at v1. Status: active. Comparison line: open.
 
+- **exchange-scoring v0** (candidate; seat: doe-mgr-notation-
+  density; owner model via main, 2026-11-01) — scoring of a
+  user<->response exchange, sibling to chat-intent v1:
+  score = {intent - response_alignment - corrections}. intent =
+  the chat-intent v1 class of the user message;
+  response_alignment = whether the response addresses that
+  intent; corrections = count of owner statements on the thread
+  until the output is good enough to start — owner verbatim:
+  "Corrections are statements the user makes until good enough
+  to start"; the count IS the distance measure itself.
+  Status: candidate (registered in the seat's records and here);
+  no scoring run claimed. Enters evaluation only via a briefed
+  pass; the standing establishment path (n>=30/class ^
+  minority>=10 ^ p<.05) applies if/when it does.
+
 ## Campaign layout
 
 ### Candidate method versions — dreambeans concepts (owner ruling, 2026-11-01)

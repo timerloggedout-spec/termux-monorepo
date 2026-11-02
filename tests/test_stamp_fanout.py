@@ -86,3 +86,22 @@ def test_fanout_idempotent(tmp_path):
     assert "already emitted" in proc.stdout
     lines = (tmp_path / "ops/3l0/intake.jsonl").read_text().strip().splitlines()
     assert len(lines) == 1
+
+
+def test_outcome_fill_updates_record_without_duplicates(tmp_path):
+    assert _run(tmp_path).returncode == 0
+    fill = {"dispatch_id": STAMP["dispatch_id"],
+            "outcome_fill": {"first_pass_success": True, "rework_cycles": 0,
+                             "dispatch_to_pr_wall_time": 3600,
+                             "stalled_action_required": False, "pr": 3369}}
+    fill_file = tmp_path / "fill.json"
+    fill_file.write_text(json.dumps(fill))
+    proc = subprocess.run(
+        [sys.executable, str(EMITTER), "--stamp", str(fill_file), "--root", str(tmp_path),
+         "--phase", "outcome"], capture_output=True, text=True, cwd=ROOT)
+    assert proc.returncode == 0, proc.stderr
+    exp = json.loads((tmp_path / "experiments/doe/routed-dispatch/records/test-dispatch-0001.json").read_text())
+    assert exp["metrics"]["first_pass_success"] is True
+    assert exp["metrics"]["pr"] == 3369
+    # append-only intakes untouched by the fill
+    assert len((tmp_path / "ops/3l0/intake.jsonl").read_text().strip().splitlines()) == 1

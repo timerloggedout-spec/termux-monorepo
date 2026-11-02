@@ -265,14 +265,46 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
                         f"experiments/doe/{CAMPAIGN}/records/{safe}.json", "ops/challenge/desk-feed.json"]}
 
 
+def emit_outcome_fill(stamp: dict, root: Path) -> dict:
+    """Second phase (DoE intake spec): the outcome fill at PR/merge close.
+
+    Updates the dispatch's EXPERIMENT record metrics + desk-feed carrier
+    state. Never appends duplicate 3L0/MoneyBall records — those intakes
+    are append-only per completed dispatch.
+    """
+    dispatch_id = stamp["dispatch_id"]
+    fill = stamp.get("outcome_fill") or {}
+    safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in dispatch_id)
+    rec_path = root / f"experiments/doe/{CAMPAIGN}/records/{safe}.json"
+    if not rec_path.exists():
+        raise SystemExit(f"outcome fill for unemitted dispatch {dispatch_id}: no record at {rec_path}")
+    rec = json.loads(rec_path.read_text())
+    metrics = rec.setdefault("metrics", {})
+    for key in ("first_pass_success", "rework_cycles", "dispatch_to_pr_wall_time",
+                "stalled_action_required", "pr"):
+        if key in fill:
+            metrics[key] = fill[key]
+    if fill.get("pr"):
+        rec.setdefault("evidence_refs", []).append(f"https://github.com/timerloggedout-spec/termux-monorepo/pull/{fill['pr']}")
+    rec_path.write_text(json.dumps(rec, indent=2, sort_keys=True) + "\n")
+    return {"dispatch_id": dispatch_id, "emitted": True, "phase": "outcome_fill",
+            "targets": [f"experiments/doe/{CAMPAIGN}/records/{safe}.json"]}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--stamp", required=True, help="Path to the canonical stamp JSON, or - for stdin")
     ap.add_argument("--root", default=".", help="Repo root (default: cwd)")
     ap.add_argument("--head-sha", default=None, help="Fallback baseline/candidate SHA (e.g. github.sha)")
+    ap.add_argument("--phase", choices=["dispatch", "outcome"], default="dispatch",
+                    help="dispatch = full fan-out at completion; outcome = DoE outcome fill at PR close")
     args = ap.parse_args()
     raw = sys.stdin.read() if args.stamp == "-" else Path(args.stamp).read_text()
-    result = emit(json.loads(raw), Path(args.root), head_sha=args.head_sha)
+    parsed = json.loads(raw)
+    if args.phase == "outcome":
+        result = emit_outcome_fill(parsed, Path(args.root))
+    else:
+        result = emit(parsed, Path(args.root), head_sha=args.head_sha)
     print(json.dumps(result))
 
 

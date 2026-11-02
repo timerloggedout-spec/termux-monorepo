@@ -1,0 +1,894 @@
+{
+ "schema": "owner-records/v1",
+ "generated_at": "2026-11-02T06:40:00Z",
+ "seeded_from": {
+  "inventory": "ops/tracking/owner-records-inventory.json",
+  "registers": [
+   "docs/ops/GATES-REGISTER.md",
+   "docs/ops/OWNER-REQUESTS.md"
+  ]
+ },
+ "keys": {
+  "gates": {
+   "recipient": null,
+   "status": "pending-owner-step"
+  },
+  "decisions": {
+   "recipient": null,
+   "status": "pending-owner-step"
+  },
+  "authorizations": {
+   "recipient": null,
+   "status": "pending-owner-step"
+  },
+  "clearances": {
+   "recipient": null,
+   "status": "pending-owner-step"
+  }
+ },
+ "cautions": [
+  "Envelope rows are L1 metadata only - never body text.",
+  "Seed records derive from already-public registers; the public repo-tracking feed may join envelope rows only, never record bodies."
+ ],
+ "classes": [
+  {
+   "class": "authorizations",
+   "state": "not_established",
+   "key_class": "authorizations",
+   "note": "No authorizations register exists in the repo (inventory PR #3505); docs/agentic/phase-approvals.json is an empty stub, excluded.",
+   "source_refs": [],
+   "records": []
+  },
+  {
+   "class": "gates",
+   "state": "established",
+   "key_class": "gates",
+   "source_refs": [
+    "docs/ops/GATES-REGISTER.md"
+   ],
+   "records": [
+    {
+     "id": "gate-card-block-01",
+     "class": "gates",
+     "title": "nebius",
+     "state": "CLOSED",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-02",
+     "class": "gates",
+     "title": "together",
+     "state": "CLOSED",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-03",
+     "class": "gates",
+     "title": "cerebras",
+     "state": "CLOSED",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-04",
+     "class": "gates",
+     "title": "anthropic / openai-codex",
+     "state": "CLOSED",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-05",
+     "class": "gates",
+     "title": "whatsapp WABA",
+     "state": "CLOSED",
+     "holder": "social 628089aa",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-06",
+     "class": "gates",
+     "title": "vultr (D2)",
+     "state": "CLOSED-at-payment-step",
+     "holder": "D2 d8f72f94",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-07",
+     "class": "gates",
+     "title": "meta app verification",
+     "state": "CLOSED-via-card",
+     "holder": "social 628089aa",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-card-block-08",
+     "class": "gates",
+     "title": "devin API (DEVINdeepWiki indexing)",
+     "state": "CLOSED — re-opens ⇔ paid org exists; blocks automated DEVINdeepWiki refresh (org/effort vars armed; owner manual refresh 2026-11-01 = stopgap)",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CARD-BLOCK"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-sms-wall-01",
+     "class": "gates",
+     "title": "fireworks",
+     "state": "OPEN",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "SMS-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-sms-wall-02",
+     "class": "gates",
+     "title": "meta developer verification",
+     "state": "OPEN",
+     "holder": "social 628089aa",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "SMS-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-sms-wall-03",
+     "class": "gates",
+     "title": "whatsapp",
+     "state": "OPEN",
+     "holder": "social 628089aa",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "SMS-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-01",
+     "class": "gates",
+     "title": "hyperbolic",
+     "state": "OPEN",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-02",
+     "class": "gates",
+     "title": "unorouter",
+     "state": "OPEN",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-03",
+     "class": "gates",
+     "title": "ai21",
+     "state": "OPEN",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-04",
+     "class": "gates",
+     "title": "devin wiki indexing (DEVINdeepWiki) — settings leg",
+     "state": "RESOLVED → key leg = CARD-BLOCK (devin API row)",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-05",
+     "class": "gates",
+     "title": "deepwiki fabric pair",
+     "state": "OPEN",
+     "holder": "provisioning",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-06",
+     "class": "gates",
+     "title": "xfyun",
+     "state": "OPEN",
+     "holder": "accounts 79a004f8",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-vault-gate-07",
+     "class": "gates",
+     "title": "tinyfish",
+     "state": "OPEN",
+     "holder": "scraping 97b21d62",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "VAULT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-prompt-gate-01",
+     "class": "gates",
+     "title": "nebius google prompt",
+     "state": "RESOLVED → CARD-BLOCK",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "PROMPT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-prompt-gate-02",
+     "class": "gates",
+     "title": "class rule",
+     "state": "STANDING",
+     "holder": "∀ lanes",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "PROMPT-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-capacity-wall-01",
+     "class": "gates",
+     "title": "jules",
+     "state": "OPEN",
+     "holder": "swarm 6628d41d",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CAPACITY-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-capacity-wall-02",
+     "class": "gates",
+     "title": "gemini-cli",
+     "state": "OPEN",
+     "holder": "swarm 6628d41d",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CAPACITY-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-capacity-wall-03",
+     "class": "gates",
+     "title": "deepseek",
+     "state": "OPEN",
+     "holder": "swarm 6628d41d",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CAPACITY-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-capacity-wall-04",
+     "class": "gates",
+     "title": "qodo",
+     "state": "OPEN",
+     "holder": "desk a440bcb2",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "CAPACITY-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-funded-out-01",
+     "class": "gates",
+     "title": "deepinfra · novita · friendli · zai · llm7 · routeway · siliconflow",
+     "state": "CLOSED-class",
+     "holder": "quota b18fae96",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "FUNDED-OUT"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-scope-wall-01",
+     "class": "gates",
+     "title": "huggingface",
+     "state": "OPEN",
+     "holder": "swarm 6628d41d",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "SCOPE-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-scope-wall-02",
+     "class": "gates",
+     "title": "meta",
+     "state": "OPEN",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "SCOPE-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-01",
+     "class": "gates",
+     "title": "X",
+     "state": "OPEN",
+     "holder": "main",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-02",
+     "class": "gates",
+     "title": "modelscope",
+     "state": "OPEN",
+     "holder": "provisioning a78e43e6",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-03",
+     "class": "gates",
+     "title": "#1861",
+     "state": "OPEN",
+     "holder": "registry ac8e5e6b",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-04",
+     "class": "gates",
+     "title": "system-one",
+     "state": "OPEN",
+     "holder": "main",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-05",
+     "class": "gates",
+     "title": "notebooklm",
+     "state": "OPEN",
+     "holder": "quota b18fae96",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-06",
+     "class": "gates",
+     "title": "D5-SPOT",
+     "state": "OPEN",
+     "holder": "D5 5b1fd8ae",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-07",
+     "class": "gates",
+     "title": "D4 kiro id",
+     "state": "OPEN",
+     "holder": "D4 fefff1ad",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-08",
+     "class": "gates",
+     "title": "D3-CLIPS-STORAGE",
+     "state": "OPEN",
+     "holder": "D3 39fc8b89",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-09",
+     "class": "gates",
+     "title": "AMD onboarding",
+     "state": "OPEN",
+     "holder": "gates-academy 840bd147",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-10",
+     "class": "gates",
+     "title": "fly.io",
+     "state": "OPEN",
+     "holder": "main",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-decision-gate-11",
+     "class": "gates",
+     "title": "github support",
+     "state": "OPEN",
+     "holder": "email de76e743",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "DECISION-GATE"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-egress-wall-01",
+     "class": "gates",
+     "title": "kilo",
+     "state": "OPEN",
+     "holder": "accounts 79a004f8",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "EGRESS-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "gate-egress-wall-02",
+     "class": "gates",
+     "title": "approxination.com",
+     "state": "TRANSIENT",
+     "holder": "competitions f6a8a1d9",
+     "source": {
+      "path": "docs/ops/GATES-REGISTER.md",
+      "section": "EGRESS-WALL"
+     },
+     "key_class": "gates",
+     "body_status": "pending-keys",
+     "body_file": null
+    }
+   ]
+  },
+  {
+   "class": "clearances",
+   "state": "not_established",
+   "key_class": "clearances",
+   "note": "Class does not exist in the repo (inventory PR #3505).",
+   "source_refs": [],
+   "records": []
+  },
+  {
+   "class": "bets",
+   "state": "not_established",
+   "key_class": null,
+   "note": "BetLedgerEntry schema held at docs/proposals/active/model-selection-market/schemas/bet-ledger.schema.json; no ledger data in repo. No key class in v1 (owner decision D-set keys x4); a key is minted per-record if a body ever needs one.",
+   "source_refs": [
+    "docs/proposals/active/model-selection-market/schemas/bet-ledger.schema.json"
+   ],
+   "records": []
+  },
+  {
+   "class": "decisions",
+   "state": "established",
+   "key_class": "decisions",
+   "source_refs": [
+    "docs/ops/OWNER-REQUESTS.md"
+   ],
+   "records": [
+    {
+     "id": "decision-open-1",
+     "class": "decisions",
+     "title": "ModelScope ruling",
+     "state": "OPEN",
+     "holder": "provisioning (a78e43e6)",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-2",
+     "class": "decisions",
+     "title": "TinyFish key ⇒ Actions secret",
+     "state": "OPEN",
+     "holder": "scraping-tools (97b21d62)",
+     "since": "2026-10-30",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-3",
+     "class": "decisions",
+     "title": "Meta/WhatsApp number ruling",
+     "state": "OPEN",
+     "holder": "social-connectors (a78e43e6)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-4",
+     "class": "decisions",
+     "title": "WABA payment (card rule)",
+     "state": "OPEN",
+     "holder": "social-connectors (a78e43e6)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-5",
+     "class": "decisions",
+     "title": "X un-park",
+     "state": "OPEN",
+     "holder": "social-connectors (628089aa)",
+     "since": "2026-10-29",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-6",
+     "class": "decisions",
+     "title": "Social others-scan build word",
+     "state": "OPEN",
+     "holder": "social-connectors (628089aa)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-7",
+     "class": "decisions",
+     "title": "Pay-first families (Anthropic/Codex)",
+     "state": "OPEN",
+     "holder": "quota",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-8",
+     "class": "decisions",
+     "title": "Cerebras card",
+     "state": "OPEN",
+     "holder": "provisioning",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-9",
+     "class": "decisions",
+     "title": "Omni instance",
+     "state": "OPEN",
+     "holder": "provisioning",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-10",
+     "class": "decisions",
+     "title": "ROCm #13152",
+     "state": "OPEN",
+     "holder": "AMD (f92553f1)",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-11",
+     "class": "decisions",
+     "title": "#1861 direction",
+     "state": "OPEN",
+     "holder": "repo",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-12",
+     "class": "decisions",
+     "title": "notebooklm pool-charge",
+     "state": "OPEN",
+     "holder": "provisioning",
+     "since": "≤2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-13",
+     "class": "decisions",
+     "title": "action_required stock (≥2666 parked runs)",
+     "state": "OPEN",
+     "holder": "swarm (6628d41d)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-14",
+     "class": "decisions",
+     "title": "OpenRouter top-up / DeepSeek model ruling",
+     "state": "OPEN",
+     "holder": "quota + swarm (6628d41d)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-15",
+     "class": "decisions",
+     "title": "Fleet-APK prod-signing provisioning",
+     "state": "OPEN",
+     "holder": "archwiz-recon (ae45b8c4)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-open-16",
+     "class": "decisions",
+     "title": "ArchWiz = SEPARATE APK (≠ fleet-apk)",
+     "state": "OPEN",
+     "holder": "archwiz-recon (ae45b8c4)",
+     "since": "2026-10-31",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "OPEN"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    },
+    {
+     "id": "decision-r1",
+     "class": "decisions",
+     "title": "Swarm AppID GO + checks:write",
+     "state": "RESOLVED",
+     "source": {
+      "path": "docs/ops/OWNER-REQUESTS.md",
+      "section": "RESOLVED"
+     },
+     "key_class": "decisions",
+     "body_status": "pending-keys",
+     "body_file": null
+    }
+   ]
+  }
+ ]
+}

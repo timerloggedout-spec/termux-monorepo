@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import re
 
-METHOD_VERSION = "attribution/1.4"
+METHOD_VERSION = "attribution/1.5"
 METHOD = "stamp+trailer+git-author evidence chain (ACP)"
 
 STAMP_RE = re.compile(r"\[MUSEai\]@\{role:\{([^}]+)\}\}")
@@ -165,7 +165,33 @@ def _manifest_actor(body: str, files):
                                "raw": m.group(1).strip()[:80]}
     return None
 
-def extract_actor(pr: dict, commits=None, files=None) -> dict:
+def _token_history_actor(pr: dict, token_history: dict | None):
+    """attribution/1.5 token-history leg (G14): server-side token records
+    for the PR — `merged_by` (single-PR record) and Actions run actors
+    on the head SHA. Speaks ONLY about app/bot attributions: when one of
+    those independent server records names the PR author's own bot
+    login, the transport attribution is corroborated by a second,
+    independent surface (merge record / run record vs author field).
+    Returns (actor_key, detail) or None. Never an authorship leg and
+    never a conflict source (same transport class as app_bot)."""
+    if not token_history:
+        return None
+    login = ((pr.get("user") or {}).get("login") or "")
+    if not login.endswith("[bot]"):
+        return None
+    key = login[:-5].lower()
+    via = []
+    if token_history.get("merged_by") == login:
+        via.append("merged_by")
+    if login in (token_history.get("run_actors") or []):
+        via.append("run_actor")
+    if not via:
+        return None
+    return (key, {"login": login, "via": via})
+
+
+def extract_actor(pr: dict, commits=None, files=None,
+                  token_history: dict | None = None) -> dict:
     """Return {actor, actor_evidence:{method, detail}, corroboration} for
     one PR dict.
 
@@ -202,6 +228,9 @@ def extract_actor(pr: dict, commits=None, files=None) -> dict:
     login = ((pr.get("user") or {}).get("login") or "")
     if login.endswith("[bot]"):
         legs["app_bot"] = (login[:-5].lower(), {"login": login})
+    th = _token_history_actor(pr, token_history)
+    if th:
+        legs["token_history"] = th
     order = ["stamp", "trailer", "manifest", "git_author", "app_bot"]
     winner = next((k for k in order if k in legs), None)
     verdicts = {k: v[0] for k, v in legs.items()}
@@ -215,10 +244,14 @@ def extract_actor(pr: dict, commits=None, files=None) -> dict:
     # it matches, but a mismatch against an authorship leg is the normal
     # publish pattern, not a false signing. Conflicts are computed over
     # AUTHORSHIP legs only (stamp/trailer/manifest/git_author).
-    author_legs = {k: a for k, a in verdicts.items() if k != "app_bot"}
+    author_legs = {k: a for k, a in verdicts.items()
+                   if k not in ("app_bot", "token_history")}
     agreeing = [k for k, a in author_legs.items() if a == actor and k != winner]
     if "app_bot" in verdicts and verdicts["app_bot"] == actor and winner != "app_bot":
         agreeing.append("app_bot")
+    if ("token_history" in verdicts and verdicts["token_history"] == actor
+            and winner != "token_history"):
+        agreeing.append("token_history")
     conflicts = sorted({a for k, a in author_legs.items() if a != actor})
     if conflicts:
         state = "disputed"

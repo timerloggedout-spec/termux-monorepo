@@ -1,0 +1,20 @@
+# Diagnostic vehicle for the vscode stage: replays its commands with
+# every exit swallowed and the transcript written to /diag.txt, so the
+# build succeeds by construction and the workflow can extract the file
+# with docker create + docker cp (pure filesystem ops — no entrypoint,
+# user, or run semantics involved). Built only by the image workflow's
+# failure path.
+FROM coderoad-stage:libs
+
+USER root
+RUN set +e; { \
+      echo "== id =="; id; \
+      echo "== mkdir =="; mkdir -p /opt/vscode; echo "mkdir exit: $?"; \
+      echo "== curl =="; curl -fsSL "https://update.code.visualstudio.com/latest/linux-x64/stable" -o /tmp/code.tgz; echo "curl exit: $?"; \
+      ls -la /tmp/code.tgz; \
+      echo "== tar =="; tar -xzf /tmp/code.tgz -C /opt/vscode; echo "tar exit: $?"; \
+      ls /opt/vscode; \
+      echo "== code --version =="; /opt/vscode/VSCode-linux-x64/bin/code --version; echo "code exit: $?"; \
+      echo "== ldd not-found =="; ldd /opt/vscode/VSCode-linux-x64/code 2>/dev/null | grep "not found" | head -20; \
+      echo "== done =="; \
+    } > /diag.txt 2>&1; true

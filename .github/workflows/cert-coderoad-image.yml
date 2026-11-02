@@ -76,27 +76,16 @@ jobs:
           RUN_ID: ${{ github.run_id }}
         run: |
           set +eo pipefail
-          CFG=$(docker inspect coderoad-stage:libs --format 'entrypoint={{json .Config.Entrypoint}} cmd={{json .Config.Cmd}} user={{json .Config.User}} workdir={{json .Config.WorkingDir}}' 2>&1)
-          DIAG=$(docker run --rm --user root --entrypoint bash coderoad-stage:libs -c '
-            set +e
-            id
-            mkdir -p /opt/vscode
-            echo "mkdir exit: $?"
-            curl -fsSL "https://update.code.visualstudio.com/latest/linux-x64/stable" -o /tmp/code.tgz
-            echo "curl exit: $?"
-            ls -la /tmp/code.tgz
-            tar -xzf /tmp/code.tgz -C /opt/vscode
-            echo "tar exit: $?"
-            ls /opt/vscode
-            /opt/vscode/VSCode-linux-x64/bin/code --version
-            echo "code --version exit: $?"
-            ldd /opt/vscode/VSCode-linux-x64/code 2>/dev/null | grep "not found" | head -20
-            echo "ldd-scan done"
-          ' 2>&1 | tail -30)
-          export DIAG CFG
+          docker build --progress=plain -t coderoad-diag \
+            -f mono/scripts/certifications/coderoad-driver/Dockerfile.diag \
+            mono/scripts/certifications/coderoad-driver
+          CID=$(docker create coderoad-diag)
+          docker cp "$CID:/diag.txt" diag.txt
+          DIAG=$(tail -40 diag.txt)
+          export DIAG
           python3 - <<PYEOF
           import json, os, urllib.request
-          body = "CODEROAD_IMAGE_DIAG run %s\n\nimage config: %s\n\n```\n%s\n```" % (os.environ["RUN_ID"], os.environ.get("CFG", ""), os.environ.get("DIAG", "")[:2200])
+          body = "CODEROAD_IMAGE_DIAG run %s\n\n```\n%s\n```" % (os.environ["RUN_ID"], os.environ.get("DIAG", "")[:2400])
           req = urllib.request.Request(
               "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
               data=json.dumps({"body": body}).encode(),

@@ -98,14 +98,14 @@ The matrix covers **Certifications as a category**, not only the enrolled ladder
 
 The INTAKE row set is an **accumulation queue** (DoE amendment, PR #3784): every row names its `evidence_requirement`; a row lacking one is a queue defect. Two reads are served: (1) sequencing the active track (matrix above), and (2) prioritizing what enters it. An INTAKE row is promoted when its gap evidence lands and a Role Requirements Plan (plan-before-spend) is opened for it; promotion order = competition linkage first, then deadline, then target-role gap fit, then cost class.
 
-**Requirement vocabulary** (draft — mgr reviews, DoE verifies; seed classes from DoE, classes marked † drafted here). Requirements are tagged per row so accumulation work is comparable across rows:
+**Requirement vocabulary — ADOPTED as the vocabulary of record (DoE verdict 2026-11-02, 6 classes; seed classes from DoE, † = drafted here and accepted with the boundaries stated).** Requirements are tagged per row so accumulation work is comparable across rows:
 
 - `issuer-page` — issuer-page verification: the issuer's own catalogue/page {credential name, exam structure, fee, validity} → prices payoff class + cost/time priors.
 - `cost-feasibility` — cost/feasibility read: total cost, card-gate class (fleet rule: card-gated ⇒ CLOSED class), fleet-route (workflow) feasibility → prices cost/quota cells.
 - `competition-link` — competition-requirement link: a competition rules/milestones page naming the cert or gate → prices competition payoff + tier-derivation inputs.
 - `completion-precedent` — completion-evidence precedent: a completion on record {cert ref · points ref · fleet run / model / telemetry} → moves INTAKE cells to posterior.
-- `census` † — platform/family census: structured enumeration {tracks, credential issued if any, tiers} — the raw read the other classes draw from for multi-cert families and platforms.
-- `plan` † — Role Requirements Plan (pre-spend plan of record) → prices the gated ladder rows (L3 / L5 / L6 pattern).
+- `census` † — platform/family census: structured enumeration {tracks, credential issued if any, tiers} — the raw read the other classes draw from for multi-cert families and platforms. **Boundary (DoE, adopted):** a census discharges an *enumeration* requirement only — it prices nothing by itself; a completed census leaves cells INTAKE until a pricing class lands on the enumerated items.
+- `plan` † — Role Requirements Plan (pre-spend plan of record) → prices the gated ladder rows (L3 / L5 / L6 pattern). **Boundary (DoE, adopted):** plan-derived values enter at `basis_kind = assumption` (prior-class), never measured/issuer, until execution or issuer verification re-bases them; for the gated rows the pre-spend plan IS the operative record — prior-grade evidence.
 
 | family / provider (INTAKE) | category | evidence_requirement — gap: the evidence that would price this row |
 |---|---|---|

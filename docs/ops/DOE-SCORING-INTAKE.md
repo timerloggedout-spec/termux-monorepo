@@ -40,17 +40,36 @@ that return no usage omit the slot — never fabricate zeros.
 
 ## Attribution corroboration (owner, 2026-11-01; DOE-FAMILY rule 9)
 
-Units carrying actor attribution name their basis:
-`attribution {actor, legs[], corroborated}`, legs drawn from the
-attribution evidence chain {stamp, trailer, manifest, git_author,
-app_bot}. `corroborated` = at least two independent legs agree, or
-Telemetry's provenance-corroboration verdict once it lands.
-Single-leg attribution ⇒ `corroborated: false`: the unit still
-counts for population and outcome scoring, but actor-keyed
-weighting MUST exclude or flag it — some signings are false, and
-uncorroborated marks are never taken at face value. A unit with no
-attribution slot claims no attribution (neither false nor
-corroborated).
+Consumption shape = Telemetry's attribution/1.4 corroboration
+block (PR #3469), carried per record:
+
+```
+"corroboration": {
+  "state": "corroborated" | "disputed" | "single-leg" | "unattributed",
+  "legs": {"stamp": ..., "trailer": ..., "manifest": ...,
+           "git_author": ..., "app_bot": ...},
+  "agreeing": [...], "conflicts": [...], "publisher": ...
+}
+```
+
+Actor selection follows the chain order (stamp > trailer >
+manifest > git_author > app_bot); weighting consumes `state`:
+
+| state | weighting treatment |
+|---|---|
+| corroborated (>=2 authorship legs agree, conflicts empty) | consume at face value |
+| single-leg | held out of actor weights, flagged (rule 9) |
+| disputed (authorship legs conflict — suspected false signing) | EXCLUDED from face-value scoring |
+| unattributed | no actor weight (no attribution established) |
+
+`app_bot` is the transport/publisher leg, not an authorship leg:
+a match corroborates transport only; a mismatch is recorded as
+`publisher`, never as a conflict. Units still count for population
+and outcome scoring under every state — only actor-keyed weighting
+is gated. Window baseline at wiring (599 PRs, attribution/1.4
+audit): single-leg 547, unattributed 52, corroborated 0, disputed
+0 — corroborated/disputed populate first at the historical
+Agent-Identity tranche + per-PR token-history join.
 
 ## Carriers
 

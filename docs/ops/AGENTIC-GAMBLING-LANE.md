@@ -76,3 +76,9 @@ Checked against the widened carriers before minting; the known substrate is `Act
 ## Registry note (2026-11-01) — components of record, Swarm seat
 
 Per owner decision via main, recorded by `[MUSEai]@{role:{optimizations-assurance}}` (Swarm oversight seat): **Speculators manager = the optimizations-assurance seat** (multi-lane participant manager; `scripts/speculators/` + `experiments/speculators/token-strategies/`), and the **provider/model market execution side = the Swarm dispatch surface** (provider-invoke rotation + dispatch-stamp fan-out into MoneyBall v2 records; internal mechanics only). Scope guard acknowledged by that seat: no real money, stakes = observational units / soft quota tokens, #407 trading freeze untouched. No build action from that seat beyond this note until the lane tasks it.
+
+## Wallet lifecycle (owner rule, 2026-11-01)
+
+**Cull → pool:** when a participant is culled, its wallet balance transfers into the pooled buckets system (the promotions / incentives / bonuses pool) — culling never destroys wallet value; the balance recycles into the pool. Registered in lane.json on wallets-participant (lifecycle.cull) and pooled-buckets (inflows).
+
+Explicit non-fold: a culled participant's residual/royalty stream is a separate question — it is NOT transferred or extinguished by this rule, and is not folded in without the owner's word.

@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "ates",
- "generated_at": "2026-11-02T00:17:30Z",
+ "generated_at": "2026-11-02T10:59:56Z",
  "sources": [
   "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
   ".github/workflows/ates-orchestrator-benchmark.yml + .github/workflows/ates-phase-b-run-receipt.yml + .github/workflows/agent-mvt-experiment.yml",
@@ -101,13 +101,13 @@
   "citations": [
    {
     "surface": "mvt",
-    "record": "docs/ops/corpus/EXPERIMENT.schema.json + apps/help-wanted-dashboard/data/mvt-feed.json",
+    "record": "docs/ops/corpus/EXPERIMENT.schema.json + apps/tribute-dashboard/data/mvt-feed.json",
     "label": "MVT \u2014 experiment records and practice",
     "note": "Experiments the harness executes are recorded in the EXPERIMENT schema and owned by the MVT surface."
    },
    {
     "surface": "doe",
-    "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (\u00a7DoE) + apps/help-wanted-dashboard/data/doe-feed.json",
+    "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (\u00a7DoE) + apps/tribute-dashboard/data/doe-feed.json",
     "label": "DoE \u2014 first factorial slice",
     "note": "The factorial design for ATES-cohort arms is defined in \u00a7DoE of the harness doc and owned by the DoE surface."
    }

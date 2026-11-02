@@ -226,7 +226,7 @@ def test_node_sim_logic(tmp_path):
     harness.write_text(logic)
     out = tmp_path / "run.cjs"
     out.write_text("""
-const {burnGeom, stepPath, stateClass, barGeom, stampText} = require("./harness.cjs");
+const {burnGeom, stepPath, stateClass, barGeom, stampText, yTicks, labelPlace, wallLabels, barScale} = require("./harness.cjs");
 const pts = [
   {at: "2026-10-28T23:41:00Z", remaining: 0, kind: "wall"},
   {at: "2026-10-29T00:37:00Z", remaining: 2500, kind: "observed"},
@@ -241,6 +241,11 @@ const res = {
   bar_max_h: Math.max(...bars.map(b => b.h)), bar_zero_h: bars[1].h,
   stamp_ok: stampText({established: true, cadence: "daily"}),
   stamp_none: stampText({established: false, cadence: null}),
+  yticks: yTicks(5000),
+  place_right: labelPlace(900, "3230 · 2026-10-30T01:54:00Z", 920, 44).anchor,
+  place_left: labelPlace(100, "2500 · 2026-10-29T00:37:00Z", 920, 44).anchor,
+  wall_ys: wallLabels([{x: 800, y: 256, at: "2026-10-30T01:54:00Z"}, {x: 830, y: 256, at: "2026-10-30T01:56:00Z"}], 920, 44).map(w => w.y),
+  scale: barScale([{runs_delta: 40}, {runs_delta: 0}, {runs_delta: 20}]),
 };
 console.log(JSON.stringify(res));
 """)
@@ -253,6 +258,11 @@ console.log(JSON.stringify(res));
     assert res["state_ok"] == "cap_tripped" and res["state_none"] == "none"
     assert res["bar_max_h"] == 180 and res["bar_zero_h"] == 0
     assert res["stamp_ok"] == "↻ DAILY" and res["stamp_none"].startswith("NO STAMP")
+    # V1 axis legibility: intermediate ticks, bounded labels, wall stagger, bar scale
+    assert res["yticks"] == [0, 1250, 2500, 3750, 5000]
+    assert res["place_right"] == "end" and res["place_left"] == "start"
+    assert len(set(res["wall_ys"])) == 2
+    assert res["scale"] == {"max": 40, "ticks": [0, 20, 40]}
 
 
 def test_quota_page_links_usage_graphs_and_sitemap():
@@ -281,3 +291,11 @@ def test_gearbox_consumer_controls_present_and_admin_only():
     html = _html()
     assert "consumer_controls" not in html
     assert "diagnose_dependency" not in html
+
+
+def test_axis_hooks_present():
+    # HYBRID E (B-lite) hooks: tick/label classes exist as DOM text hooks.
+    html = _html()
+    for hook in ['class="ytick"', 'class="ptlabel"', 'class="walllabel"',
+                 'class="axisname"', "yTicks(", "labelPlace(", "wallLabels(", "barScale("]:
+        assert hook in html, hook

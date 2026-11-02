@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T06:58:48Z",
+ "generated_at": "2026-11-02T07:06:01Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -13,6 +13,12 @@
    "path": "experiments/doe/routed-dispatch/records/*.json",
    "records_read": 19,
    "records_used": 19
+  },
+  {
+   "id": "campaign-records",
+   "path": "experiments/doe/*/records/*.json",
+   "records_read": 57,
+   "records_used": 1
   },
   {
    "id": "stamps",
@@ -34,11 +40,11 @@
   }
  ],
  "summary": {
-  "providers": 8,
-  "models": 11,
+  "providers": 9,
+  "models": 12,
   "roles": 2,
-  "tasks": 22,
-  "dispatches": 19,
+  "tasks": 23,
+  "dispatches": 20,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
    "passed": 16,
@@ -46,7 +52,8 @@
   },
   "by_source": {
    "desk-usage": 3,
-   "records": 19
+   "records": 19,
+   "campaign-records": 1
   }
  },
  "providers": [
@@ -286,6 +293,46 @@
        "pr": null,
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41374860979.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1
+  },
+  {
+   "provider": "claude-muse",
+   "models": [
+    {
+     "model": "NOT_ESTABLISHED",
+     "roles": [],
+     "monikers": [],
+     "contexts": [
+      "claude-authored-baseline"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": null,
+       "role": null,
+       "moniker": null,
+       "context": "claude-authored-baseline",
+       "dispatch_id": "arm-M-baseline",
+       "run_id": null,
+       "workflow": null,
+       "session_id": null,
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": 2946,
+       "source": "campaign-records",
+       "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-M-baseline.json"
       }
      ]
     }

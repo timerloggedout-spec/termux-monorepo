@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 386,
-    "open_prs": 177,
+    "open_issues": 392,
+    "open_prs": 176,
     "pr_classes": {
       "CANDIDATE": 84,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 88,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 86,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 37,
-      "prs": 175,
+      "issues": 43,
+      "prs": 174,
       "unlabelled_numbers": [
         308,
         343,
@@ -88,11 +88,17 @@
         3141,
         3215,
         3346,
-        3577
+        3577,
+        3665,
+        3666,
+        3667,
+        3668,
+        3669,
+        3670
       ]
     }
   },
-  "generated_at": "2026-11-02T08:50:49Z",
+  "generated_at": "2026-11-02T08:59:35Z",
   "issues_unlabelled": [
     308,
     343,
@@ -130,15 +136,21 @@
     3141,
     3215,
     3346,
-    3577
+    3577,
+    3665,
+    3666,
+    3667,
+    3668,
+    3669,
+    3670
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "fc3e37a11f"
+    "sha": "28c51f4680"
   },
   "prs": [
     {
@@ -210,6 +222,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8b12382fa9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T08:56:36Z"
     },
     {
       "class": "CANDIDATE",
@@ -1802,20 +1828,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "d79b35d3c8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T08:49:35Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2533,12 +2545,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7ae09f9cd8",
+      "head_sha": "eb1e1be6d8",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T08:49:36Z"
+      "updated_at": "2026-11-02T08:55:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2609,20 +2621,6 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "c647f7d2f7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3661,
-      "title": "tribute normalization bundle B: scout/rerequest/llm-assist rename + subscription completion",
-      "updated_at": "2026-11-02T08:48:36Z"
     }
   ],
   "schema": "operator-matrix/v1",

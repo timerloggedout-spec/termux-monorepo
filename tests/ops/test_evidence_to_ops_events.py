@@ -47,7 +47,7 @@ class TestEvidenceToOps(unittest.TestCase):
             "issue": "https://github.com/vedantnimbarte/zero/pull/81",
             "ok": True,
             "foreign": True,
-            "lane": "help-wanted-followup",
+            "lane": "tribute-followup",
         })
         assert ev is not None
         self.assertEqual(ev.meta.get("foreign"), True)

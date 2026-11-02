@@ -4,8 +4,8 @@
     "open_prs": 176,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 88,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
   },
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T06:46:53Z",
+  "generated_at": "2026-11-02T06:50:27Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "success"
+      "hygiene": "in_progress",
+      "smoke": "in_progress"
     },
-    "sha": "16fe4c5ed8"
+    "sha": "2938e480b4"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4fe057dfed",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T06:48:06Z"
     },
     {
       "class": "CANDIDATE",
@@ -1789,20 +1803,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "24a537dc90",
-      "labels": [],
-      "mergeable_state": "clean",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T06:45:52Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "71856c6976",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2531,12 +2531,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d084b0ecc7",
+      "head_sha": "121547e2ff",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T06:45:56Z"
+      "updated_at": "2026-11-02T06:48:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2584,29 +2584,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "success",
+        "smoke": "queued"
       },
-      "head_sha": "358acf8722",
+      "head_sha": "eb2d7265f8",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3548,
-      "title": "feat(quota): rate-limit events series - see the 403 on the graph",
-      "updated_at": "2026-11-02T06:45:42Z"
+      "number": 3559,
+      "title": "fix(vercel): owner-records verify follows cleanUrls redirect (308) pre-flip",
+      "updated_at": "2026-11-02T06:48:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "success"
       },
-      "head_sha": "ae452ee6db",
+      "head_sha": "cbb1c303aa",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3557,
-      "title": "fix(tracking): nested-family hygiene (null model literal, prose-outcome bucketing)",
-      "updated_at": "2026-11-02T06:46:33Z"
+      "number": 3560,
+      "title": "cert(coderoad): fetch rdb-alpha Dockerfile as pinned raw file (checkout failed in pilot run 1)",
+      "updated_at": "2026-11-02T06:49:34Z"
     }
   ],
   "schema": "operator-matrix/v1",

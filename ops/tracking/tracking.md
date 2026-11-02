@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T08:46:59Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T08:58:54Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T08:46:58Z` (merged 150 · open 179) · lane-events(Neon) status=`ok` count=`7810` read_at=`2026-11-02T08:46:58Z`
+Sources: PR feed read_at=`2026-11-02T08:58:54Z` (merged 150 · open 176) · lane-events(Neon) status=`ok` count=`7839` read_at=`2026-11-02T08:58:54Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknown=7
 
@@ -28,7 +28,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3628 `650c27ff8116` 2026-11-02T08:03:53Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3654 `ae5d88be5f55` 2026-11-02T08:37:19Z | land/close PR #3608 — fix(quota): audit F4 search-window pacer + scheduling standard (audit-003) |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3612 `57c87cdc018e` 2026-11-02T08:12:30Z | land/close PR #3655 — swarm: one-off DeepSeek secret fingerprint probe (hash-only, #3141) |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3655 `5490faec4026` 2026-11-02T08:48:15Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3645 `138fb4bf81a2` 2026-11-02T08:28:48Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 86/150 (extend ops/tracking/projects.json match rules)

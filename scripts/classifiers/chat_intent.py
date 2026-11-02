@@ -7,7 +7,9 @@ continuous, cullable.
 Classes: request · directive · aside · speculation · question.
 Eval substrate = labeled chat outcomes (weak supervision: a message
 whose outcome was built/routed vs discussed-only). No ESTABLISHED
-accuracy claim until n>=30 labeled outcomes per class.
+accuracy claim until the standing gate is met:
+n>=30 labeled outcomes per class, minority>=10, p<.05
+(CADENCE-AMENDMENT-2026-11-01).
 
 Rule order (first match wins); every verdict carries its evidence:
   R1 ability-form ("can/could you ...") + action/artifact -> request

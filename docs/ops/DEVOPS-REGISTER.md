@@ -51,6 +51,51 @@ State-change rule: this section's state flips only on a census showing (a) the
 executed-success share of completed runs in the newest-100 window ≥ 50%.
 Anything less is a new census row under PARKED.
 
+### CORRECTION 2026-11-02T13:35Z — the "2,500" figure is withdrawn
+
+The §1 census table above records "Runs currently `action_required` = 2,500".
+That number is the runs API's `total_count` **saturation cap**, not a count —
+the fleet established this on 2026-10-31 (ruling of record, SWARM doc PR #2748)
+and this register's v1 repeated the withdrawn figure in error. Superseded
+statement, measured this census with fine `created=` partitions (coarse or
+unbounded partitions saturate at 2,500 and are not evidence):
+
+- disjoint measured partitions: pre-2026-10-24 = 123 · 2026-10-24→10-27 = 77 ·
+  2026-11-01 in 8 h slices = 716 + 1,481 + 257 = 2,454 · 2026-11-02→census = 1,967
+- **floor: the parked pile is ≥ 4,621 runs** (supersedes the 2026-10-31 floor of
+  ≥2,666), plus the 2026-10-27→11-01 span whose partitions saturate — **exact
+  total NOT_ESTABLISHED**
+- census method corrected accordingly: backlog claims use fine partitions only;
+  a reading of exactly 2,500 is recorded as SATURATED, never as a count
+
+### Census 2026-11-02T13:29Z (census #2)
+
+| Measure | Census #1 12:39Z | Census #2 13:29Z |
+|---|---|---|
+| Runs `queued` / `in_progress` / `pending` / `waiting` | 58 / 40 / 14 / 0 | **157 / 52 / 40 / 0** |
+| Newest-100 window span | 46 s | 49 s |
+| Window completed | 78 {skipped 65 · cancelled 10 · success 3} | 66 {skipped 55 · cancelled 11 · **success 0**} |
+| Executed-success share of completed | 3/78 ≈ 3.8% | **0/66 = 0%** |
+| Newest `action_required` run created | — | 2026-11-02T13:23:38Z (inflow live) |
+| Pre-2026-10-24 parked stratum | 166 (2026-10-31 probe) | 123 (**−43: the only measured drainage**) |
+
+**Flip rule: NOT MET on either leg.** (a) Draining cannot be established —
+census #1's backlog figure is invalid (cap artifact) and census #2's measured
+floor (≥4,621) exceeds it; the −43 oldest-stratum movement is a trickle against
+~2.5k/day-class inflow. (b) Executed-success share 0% < 50%. State stays PARKED.
+
+**Named blockers per component (evidenced):**
+1. *Approval/admission pile* — ≥4,621 parked runs, inflow live at census minute,
+   and **no drain mechanism exists in any lane's hands** for the parked pile;
+   drainage observed only as −43 in the oldest stratum over two days.
+2. *Execution share* — completed runs resolve `skipped` (dispatcher admission
+   gating; cf. #3812's repo-wide busy≥6 pause) or `cancelled` (burst
+   self-congestion); the remediation build is Stewardship #3812 step 4 — this
+   seat's day-2 operations begin at its landing.
+3. *Queue pressure* — queued+pending rose 72 → 197 between censuses while
+   ~100-run bursts land in <50 s windows; GitHub schedule under-delivery
+   (dispatch-tree sparse firing, §2) compounds the backlog.
+
 ## §2 Schedule-delivery watch
 
 Rule: for every workflow carrying a `schedule:` trigger, silence beyond

@@ -1277,7 +1277,7 @@
    "doc_quote": "Free mode usage limits are shown per model in the signed-in Admin Panel (Usage limits); no public numeric table is published.",
    "live": "none published (Admin Panel only; Admin API is Enterprise)",
    "planned_use": {
-    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key \u2014 Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
+    "note": "Fleet credential provisioned: MISTRAL_API_KEY (repo Actions secret, 2026-11-02; provisioning override of the PR #1805 webWrapper-only ruling). Experiment plan, $1 trial credits. Live-verified 2026-11-02 via provider-invoke (Actions): catalog 200, 55 models; invoke OK open-mistral-nemo (HTTP 200); mistral-small-latest returned 429 (model-tier/rate class, not an account block). Census floor: +55 net-new API endpoints (7,342 -> 7,397)."
    }
   },
   {

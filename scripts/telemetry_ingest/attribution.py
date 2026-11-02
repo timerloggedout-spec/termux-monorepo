@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import re
 
-METHOD_VERSION = "attribution/1.2"
+METHOD_VERSION = "attribution/1.3"
 METHOD = "stamp+trailer+git-author evidence chain (ACP)"
 
 STAMP_RE = re.compile(r"\[MUSEai\]@\{role:\{([^}]+)\}\}")
@@ -133,7 +133,39 @@ def _git_author_actor(commits):
     return best, {"commits_by_actor": seen}
 
 
-def extract_actor(pr: dict, commits=None) -> dict:
+_MANIFEST_AUTHOR_RE = re.compile(r"^\+?\s*author:\s*(.+?)\s*$", re.M)
+_MANIFEST_FILE_RE = re.compile(r"(MANIFEST\.|\.(md|ya?ml|toml)$)", re.I)
+
+
+def _manifest_actor(body: str, files):
+    """Manifest/frontmatter evidence leg (owner ruling 2026-11-01): a chain
+    that fires only on self-applied sign-offs structurally misses
+    collaborators working through owner channels; the artifact's own
+    declared author (ACP MANIFEST frontmatter `author: ChatGPT` class) is
+    first-class evidence. Sources: PR-body YAML frontmatter, and added
+    `author:` lines in changed MANIFEST/frontmatter-carrying files."""
+    fm = re.match(r"^---\n(.*?)\n---", body or "", re.S)
+    if fm:
+        m = _MANIFEST_AUTHOR_RE.search(fm.group(1))
+        if m:
+            a = normalize_actor(m.group(1))
+            if a and not _is_owner(m.group(1), ""):
+                return a, {"source": "body_frontmatter", "raw": m.group(1).strip()[:80]}
+    for f in files or []:
+        if not _MANIFEST_FILE_RE.search(f.get("filename") or ""):
+            continue
+        for line in (f.get("patch") or "").splitlines():
+            if not line.startswith("+"):
+                continue
+            m = _MANIFEST_AUTHOR_RE.match(line)
+            if m:
+                a = normalize_actor(m.group(1))
+                if a and not _is_owner(m.group(1), ""):
+                    return a, {"source": "file_frontmatter", "file": f["filename"],
+                               "raw": m.group(1).strip()[:80]}
+    return None
+
+def extract_actor(pr: dict, commits=None, files=None) -> dict:
     """Return {actor, actor_evidence:{method, detail}} for one PR dict."""
     text = (pr.get("title") or "") + "\n" + (pr.get("body") or "")
     hit = _stamp_actor(text)
@@ -148,6 +180,9 @@ def extract_actor(pr: dict, commits=None) -> dict:
         if hit:
             return {"actor": hit[0], "actor_evidence": {"method": "trailer",
                             "detail": {**hit[1], "source": "commit_message"}}}
+    hit = _manifest_actor(pr.get("body") or "", files)
+    if hit:
+        return {"actor": hit[0], "actor_evidence": {"method": "manifest", "detail": hit[1]}}
     hit = _git_author_actor(commits)
     if hit:
         return {"actor": hit[0], "actor_evidence": {"method": "git_author", "detail": hit[1]}}

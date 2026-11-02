@@ -10,8 +10,12 @@ governed `research/` path the proposal requires before any applied promotion.
   `36cc05ca2d0e469bfbeea9437f460e19238e885e` (submodule
   `refTemplates/smods/batteries_fork`), toolchain `leanprover/lean4:v4.34.0-rc1`
   (the pin's own `lean-toolchain`). No other revision is an oracle input.
-- **Mathlib is OUT.** No Mathlib import, surface, or claim is authorized by
-  this lane; that requires a separate pinned/licensed decision + dual-gate.
+- **Pinned dependencies only.** Batteries ∧ Mathlib ∧ further libraries
+  are IN scope (owner ruling 2026-11-02) — each ONLY as a pinned dependency
+  recorded in [DEPENDENCIES.md](DEPENDENCIES.md) {pin revision · toolchain ·
+  license · provenance}, under dual-gate review. An unpinned or unrecorded
+  library is not an oracle input. Each dependency compiles under its OWN
+  pinned toolchain.
 - **Oracle contract (fail-closed):** every proposition run emits
   `PASS | FAIL | INCONCLUSIVE` + provenance + pin revision. A green workflow
   alone is never a PASS — PASS requires the Lean kernel to have accepted the
@@ -41,3 +45,4 @@ governed `research/` path the proposal requires before any applied promotion.
 | Packet | Proposition (fleet claim) | Verdict |
 |---|---|---|
 | [P-001](packets/P-001.md) | ∘ is associative — the (G, ∘) frame axiom | **PASS** (run 41457244573; axioms [Quot.sound]) |
+| [P-002](packets/P-002.md) | `e` ↦ `1`: matrix identity (`1 * M = M`) — first Mathlib packet | PENDING (Mathlib leg) |

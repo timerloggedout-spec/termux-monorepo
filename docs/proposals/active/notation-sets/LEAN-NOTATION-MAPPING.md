@@ -21,7 +21,7 @@ first input class for proposition shapes (`research/nse-023/`).
 | sqlite-vec | ABSENT |
 | archwiz/graph_tensors (.npz) | graph tensors — ¬ an embedding store |
 | Lean code in tree | ∅ `.lean` / lakefile; Batteries pin `36cc05ca` only |
-| Mathlib | NOT a landed surface — mapping rows are spec-level until a pinned Mathlib dependency lands (owner ruling 2026-11-02: Mathlib IN for the Lean Implementation, as pinned dependency {pin · license · provenance}) |
+| Mathlib | IN (owner ruling 2026-11-02): pinned dependency `cc8b65263ab8` registered in `research/nse-023/DEPENDENCIES.md` {pin · Apache-2.0 · provenance}; compile proof = NSE-023 packet P-002 — until it lands, Mathlib rows are spec-level keyed to that pin |
 
 ## Class 1 — MATRICES
 

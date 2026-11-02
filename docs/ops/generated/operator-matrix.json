@@ -4,8 +4,8 @@
     "open_prs": 180,
     "pr_classes": {
       "CANDIDATE": 84,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 90,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T08:05:05Z",
+  "generated_at": "2026-11-02T08:09:19Z",
   "issues_unlabelled": [
     308,
     343,
@@ -138,7 +138,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "af4c46d58e"
+    "sha": "c450a5a187"
   },
   "prs": [
     {
@@ -218,12 +218,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "37e882285c",
+      "head_sha": "92e8add6cc",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3626,
-      "title": "cert(coderoad): revert old-releases rewrite \u2014 focal still served by archive.ubuntu.com (diag-proven)",
-      "updated_at": "2026-11-02T08:04:19Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T08:06:19Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "35d99fd2d3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3612,
+      "title": "swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive)",
+      "updated_at": "2026-11-02T07:51:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -1399,12 +1413,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "35d99fd2d3",
+      "head_sha": "37e882285c",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3612,
-      "title": "swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive)",
-      "updated_at": "2026-11-02T07:51:22Z"
+      "number": 3626,
+      "title": "cert(coderoad): revert old-releases rewrite \u2014 focal still served by archive.ubuntu.com (diag-proven)",
+      "updated_at": "2026-11-02T08:04:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1816,20 +1830,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "8e0b996d09",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T08:02:53Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1956,15 +1956,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "in_progress",
         "smoke": "queued"
       },
-      "head_sha": "9e7aa64283",
+      "head_sha": "fa940e7cc9",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T08:04:40Z"
+      "updated_at": "2026-11-02T08:08:38Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2561,12 +2561,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "4b8d567db0",
+      "head_sha": "ac87970e16",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T08:01:21Z"
+      "updated_at": "2026-11-02T08:09:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2656,15 +2656,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "in_progress"
       },
-      "head_sha": "0c71618c79",
+      "head_sha": "a238769768",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3624,
-      "title": "chore(ops): regenerate operator matrix",
-      "updated_at": "2026-11-02T08:01:08Z"
+      "mergeable_state": "unstable",
+      "number": 3629,
+      "title": "fix(tracking): backup-state failed_attempts carry the relayed state_hash",
+      "updated_at": "2026-11-02T08:08:19Z"
     }
   ],
   "schema": "operator-matrix/v1",

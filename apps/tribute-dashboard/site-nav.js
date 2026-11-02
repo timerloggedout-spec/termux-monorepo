@@ -25,6 +25,7 @@
     ["MVT", tribute + "mvt.html", "mvt"],
     ["DoE", tribute + "doe.html", "doe"],
     ["ATES", tribute + "ates.html", "ates"],
+    ["Results Index", tribute + "results-index.html", "results-index"],
     ["Free-tier value", tribute + "free-tier-value.html", "free-tier-value"],
     ["Dispatch tree", tribute + "dispatch-tree.html", "dispatch-tree"],
     ["Countdowns", tribute + "countdowns.html", "countdowns"],

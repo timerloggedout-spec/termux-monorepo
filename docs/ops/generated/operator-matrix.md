@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T17:37:33Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T18:04:02Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `0978459fc7` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `2ba6d34e11` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 418 issues, 182 PRs. PR classes: EXTRACT 5 / CANDIDATE 89 / NEED_EVIDENCE 88 / SUPERSEDE 0.
+**Open inventory:** 418 issues, 183 PRs. PR classes: EXTRACT 5 / CANDIDATE 89 / NEED_EVIDENCE 89 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -106,7 +106,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
 | #3763 | CANDIDATE | unlabelled | `50bba792c7` | success | success | unknown | archwiz ⑥: archaeo cursor-mode spec + inert workflow pass-through (context_relat |
 | #3885 | CANDIDATE | unlabelled | `c48da7b95a` | success | success | unknown | fix(ci): dangle_check TEXT_EXTS += .jsonl — capture #3751 |
-| #3969 | CANDIDATE | unlabelled | `d01e2c211e` | success | success | unstable | ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D pr |
+| #3969 | CANDIDATE | unlabelled | `d01e2c211e` | success | success | unknown | ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D pr |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -195,6 +195,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3890 | NEED_EVIDENCE | unlabelled | `196d0ae8e6` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3916 | NEED_EVIDENCE | unlabelled | `1340ec7a5f` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3939 | NEED_EVIDENCE | unlabelled | `64638a9ff6` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
+| #3973 | NEED_EVIDENCE | unlabelled | `164773f8ea` | not_reported | not_reported | unknown | chore(ops): regenerate operator matrix |
 
 ## Families (open)
 
@@ -209,6 +210,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 12 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 21 | 180 |
+| unlabelled | 21 | 181 |
 
 **Unlabelled open issues (21):** #308, #388, #389, #1226, #1450, #2185, #2210, #2571, #2732, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3751, #3752, #3906, #3915 — worked oldest-first by the issue-lifecycle lane pass.

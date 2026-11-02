@@ -3,8 +3,8 @@
     "open_issues": 410,
     "open_prs": 184,
     "pr_classes": {
-      "CANDIDATE": 91,
-      "EXTRACT": 6,
+      "CANDIDATE": 92,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T12:46:25Z",
+  "generated_at": "2026-11-02T13:00:30Z",
   "issues_unlabelled": [
     308,
     388,
@@ -104,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c0b2d2a969"
+    "sha": "415dc195fb"
   },
   "prs": [
     {
@@ -176,20 +176,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "dc6686f8ba",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T12:44:49Z"
     },
     {
       "class": "CANDIDATE",
@@ -951,6 +937,20 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9bbefb5896",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T12:55:23Z"
     },
     {
       "class": "CANDIDATE",
@@ -2613,7 +2613,7 @@
       },
       "head_sha": "fc5ac1f8ee",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-02T12:46:13Z"

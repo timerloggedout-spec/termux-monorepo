@@ -114,14 +114,32 @@ jobs:
           print('score stamp:', json.dumps(stamp))
           PYEOF
           python3 scripts/dispatch/stamp_fanout.py --stamp /tmp/score-stamp.json --phase score
+      - name: Snapshot emitted intake changes
+        run: |
+          git add -A -- ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch 2>/dev/null || true
+          git diff --cached > /tmp/intake.patch
+          wc -c /tmp/intake.patch
       - name: Commit intake updates
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          for pth in ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records experiments/doe/routed-dispatch/stamps experiments/doe/routed-dispatch/evidence; do git add "$pth" 2>/dev/null || true; done
-          if git diff --cached --quiet; then
+          if [ ! -s /tmp/intake.patch ]; then
             echo "no intake changes (already emitted)"
-          else
-            git commit -m "telemetry(dispatch): stamp fan-out ${{ github.run_id }}"
-            git push
+            exit 0
           fi
+          for attempt in 1 2 3 4; do
+            git fetch origin master
+            git reset --hard origin/master
+            if git apply --3way /tmp/intake.patch || git apply /tmp/intake.patch; then
+              git add -A -- ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch
+              git commit -m "telemetry(dispatch): stamp fan-out ${{ github.run_id }}"
+              if git push origin HEAD:master; then
+                echo "pushed on attempt $attempt"
+                exit 0
+              fi
+            fi
+            echo "attempt $attempt raced; retrying on a fresher master"
+            sleep 5
+          done
+          echo "could not land the intake commit after 4 attempts"
+          exit 1

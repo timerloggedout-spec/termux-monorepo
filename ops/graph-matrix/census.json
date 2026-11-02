@@ -1,7 +1,6 @@
 {
  "schema": "graph-matrix/v1",
- "census_at_utc": "2026-11-01T20:17:53+00:00",
- "window_note": "fetched 20:17-20:26Z; merged total drift +3 vs census-start totals (live churn)",
+ "census_at_utc": "2026-11-02T00:41:49.223110+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -9,38 +8,36 @@
   "strict_link": "PR closingIssuesReferences",
   "surface_issue_link": "authored #n in title/body, n is an issue",
   "any_ref_link": "authored #n in title/body, any target",
-  "one_way": "A refs B (issue->issue) and B does not ref A; timeline auto cross-reference does not count"
+  "one_way": "A refs B (issue->issue), B does not ref A; timeline auto-xref excluded"
  },
  "branches": {
-  "total": 2664,
-  "fetched": 2664,
-  "stale": 854,
-  "orphan_no_assoc_PR": 346,
-  "stale_and_orphan": 78,
-  "fresh": 1810,
-  "master_present": true
+  "total": 2759,
+  "stale": 864,
+  "orphan_no_assoc_PR": 348,
+  "stale_and_orphan": 82
  },
  "prs": {
-  "total": 2795,
-  "open": 171,
-  "merged": 2151,
-  "closed_unmerged": 473,
-  "open_unlinked": 114,
-  "open_no_closing_ref": 165,
-  "merged_unlinked": 691,
-  "merged_no_closing_ref": 2122,
+  "total": 2952,
+  "open": 172,
+  "merged": 2306,
+  "closed_unmerged": 474,
+  "open_no_closing_ref": 166,
+  "open_unlinked_issue_target": 139,
+  "open_unlinked_any_ref": 116,
+  "merged_no_closing_ref": 2277,
+  "merged_unlinked_issue_target": 1340,
+  "merged_unlinked_any_ref": 744,
   "open_zero_commits": [],
-  "merged_head_branch_residual": 2078,
-  "closed_unmerged_head_branch_residual": 467,
-  "open_head_branch_missing": 1
+  "merged_head_branch_residual_name_match": 2231,
+  "open_head_branch_missing": [
+   3418
+  ]
  },
  "issues": {
-  "total": 453,
-  "open": 380,
-  "closed": 73,
+  "total": 462,
+  "open": 381,
   "open_surface_unlinked": 170,
-  "open_unlinked_strict": 151,
-  "open_linked_by_PR_closing_only": 19
+  "open_unlinked_strict": 151
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -1339,6 +1336,10 @@
    [
     3141,
     2672
+   ],
+   [
+    3271,
+    272
    ]
   ],
   "issue_issue_mutual_pairs": 2,
@@ -1357,6 +1358,8 @@
    "backup/tmx-node-primary-20261021/list",
    "backup/tmx-node-primary-20261021/master",
    "backup/tmx-node-primary-20261021/net-resume",
+   "backup/tmx-node-primary-20261021/recovery-pre-rebase-1790984983",
+   "backup/tmx-node-primary-20261021/recovery-pre-rebase-1790985516",
    "backup/tmx-node-primary-20261021/termux-smoke",
    "backup/tmx-node-primary-20261021/timerloggedout-ter-12-prioritize-deepcli-as-primary-driver-for-custom-codex-rename",
    "bolt-temporal-lag-index-optimization-7092498872592714131",
@@ -1378,6 +1381,7 @@
    "feature/multi-ai-lightwrap-parity",
    "feature/multi-ai-webwrapper-provider-hub",
    "feature/recovery-refTemplates",
+   "fix/ancestor-push-noise-classifier",
    "fix/context-backfill-ref-adoption",
    "fix/context-backfill-symbol-span-union",
    "fix/deepseek-ci-cookie-import",
@@ -1385,6 +1389,7 @@
    "fix/dev-eval-empty-check-race",
    "fix/ecc-sweep-skip-saturated-prs",
    "fix/gitlab-governed-sync-clean",
+   "fix/non-tip-zero-job-skip-20261002",
    "fix/peer-orch-comment-storm-cancel",
    "fix/peer-orch-event-name-concurrency-20de2a54",
    "fix/peer-orch-event-name-v2",
@@ -1421,14 +1426,6 @@
    "wip/feat-manus-termux-mcp-connector-2026-10-02",
    "wip/fix-session-store-prune-expired-2026-10-02",
    "wip/hindsight-wire-2026-10-02"
-  ],
-  "open_head_branch_missing_at_census": [
-   3253
-  ],
-  "open_head_branch_missing_resolution": "PR #3253 merged 2026-11-01T21:24Z 47a7d1363f98, head deleted on merge = clean lifecycle (mgr-verified)"
- },
- "derived_issue_target_counts": {
-  "open_PR_unlinked": 138,
-  "merged_PR_unlinked": 1260
+  ]
  }
 }

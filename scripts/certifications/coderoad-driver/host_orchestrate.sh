@@ -67,14 +67,31 @@ export DONT_PROMPT_WSL_INSTALL=1
 CODE="$HOME/vscode/VSCode-linux-x64/bin/code"
 LAUNCH=(xvfb-run -a -s "-screen 0 1024x768x24" "$CODE" --no-sandbox
   --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage
-  --disable-workspace-trust --enable-logging=stderr --v=1
+  --disable-workspace-trust
   --extensions-dir "$HOME/vscode-extensions" "$WS")
-(PATH="$SHIM:$PATH" "${LAUNCH[@]}" > "$EV/code.log" 2>&1 &)
+(PATH="$SHIM:$PATH" NODE_OPTIONS=--dns-result-order=ipv4first "${LAUNCH[@]}" > "$EV/code.log" 2>&1 &)
 echo "code launched (host)" >> "$LOG"
 
 # --- Stage the verified solution inside the pg container -----------------
 docker exec pg bash -c "$STAGE_CMD" > "$EV/stage.log" 2>&1
 echo "stage rc=$?" >> "$LOG"
+
+# TCP probe from the host (the tests connect via localhost:5432 — B2's
+# direct mocha died with ECONNRESET despite a healthy socket-side stage).
+if [ -f "$WS/.freeCodeCamp/package.json" ]; then
+  (cd "$WS/.freeCodeCamp" && node -e '
+    const { Client } = require("pg");
+    (async () => {
+      for (const host of ["127.0.0.1", "::1", "localhost"]) {
+        const c = new Client({ host, port: 5432, user: "postgres", database: "universe" });
+        try { await c.connect(); const r = await c.query("select 1 as ok");
+          console.log(host, "CONNECT OK", JSON.stringify(r.rows)); await c.end(); }
+        catch (e) { console.log(host, "CONNECT FAIL", e.message); try { await c.end(); } catch (_) {} }
+      }
+    })();
+  ' > "$EV/pg-probe.txt" 2>&1) || true
+fi
+docker exec pg bash -c 'tail -30 /var/log/postgresql/*.log' > "$EV/pg-container.log" 2>&1 || true
 
 # Direct mocha run as a diagnostic (host, against container postgres).
 if [ -f "$WS/.freeCodeCamp/package.json" ]; then
@@ -94,7 +111,7 @@ for i in $(seq 1 72); do
   if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 4 ]; then
     relaunches=$((relaunches+1))
     echo "watchdog: code tree dead; relaunch #$relaunches" >> "$LOG"
-    (PATH="$SHIM:$PATH" "${LAUNCH[@]}" >> "$EV/code.log" 2>&1 &)
+    (PATH="$SHIM:$PATH" NODE_OPTIONS=--dns-result-order=ipv4first "${LAUNCH[@]}" >> "$EV/code.log" 2>&1 &)
     sleep 20
   fi
   sleep 5

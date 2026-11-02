@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T13:18:14Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T13:19:44Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `7b416c374c` (hygiene: in_progress, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `0d06ce4295` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 410 issues, 186 PRs. PR classes: EXTRACT 6 / CANDIDATE 90 / NEED_EVIDENCE 90 / SUPERSEDE 0.
+**Open inventory:** 410 issues, 186 PRs. PR classes: EXTRACT 5 / CANDIDATE 91 / NEED_EVIDENCE 90 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -18,7 +18,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1540 | EXTRACT | unlabelled | `97c0c5649f` | success | success | unstable | feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV |
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #2167 | EXTRACT | unlabelled | `bce66da163` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -73,6 +72,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1862 | CANDIDATE | unlabelled | `a4b28f7ef8` | success | success | unknown | 📖 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping |
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
+| #2167 | CANDIDATE | unlabelled | `bce66da163` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
@@ -197,8 +197,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3640 | NEED_EVIDENCE | unlabelled | `8ada38da33` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #3795 | NEED_EVIDENCE | unlabelled | `72b4b6bec9` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
-| #3866 | NEED_EVIDENCE | unlabelled | `861a70fd51` | in_progress | queued | unstable | viz(moneyball): wagering-book Gantt — 23 subjects, calendar anchors, forecast sc |
-| #3867 | NEED_EVIDENCE | unlabelled | `00594795a1` | not_reported | not_reported | unstable | NSE-023 launch: research lane open + packet P-001 (∘ associativity) |
+| #3867 | NEED_EVIDENCE | unlabelled | `00594795a1` | queued | queued | unknown | NSE-023 launch: research lane open + packet P-001 (∘ associativity) |
+| #3869 | NEED_EVIDENCE | unlabelled | `a32c32a1e5` | not_reported | not_reported | unknown | Agentic Gambling Lane: book publication feed (read-only render extract) |
 
 ## Families (open)
 

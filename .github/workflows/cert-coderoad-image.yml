@@ -47,35 +47,42 @@ jobs:
         timeout-minutes: 30
         run: docker build --progress=plain -t rdb-alpha:local ./rdb-alpha
 
-      - name: Build CodeRoad stage 1 of 5 — libs
+      - name: Build CodeRoad stage 1 of 6 — libs
         timeout-minutes: 30
         run: |
           docker build --progress=plain --target libs -t coderoad-stage:libs \
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
             mono/scripts/certifications/coderoad-driver
 
-      - name: Build CodeRoad stage 2 of 5 — fetch tarball
+      - name: Build CodeRoad stage 2 of 6 — fetch tarball
         timeout-minutes: 30
         run: |
           docker build --progress=plain --target fetch -t coderoad-stage:fetch \
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
             mono/scripts/certifications/coderoad-driver
 
-      - name: Build CodeRoad stage 3 of 5 — extract tarball
+      - name: Build CodeRoad stage 3 of 6 — extract tarball
         timeout-minutes: 30
         run: |
           docker build --progress=plain --target extract -t coderoad-stage:extract \
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
             mono/scripts/certifications/coderoad-driver
 
-      - name: Build CodeRoad stage 4 of 5 — code --version
+      - name: Build CodeRoad stage 4 of 6 — probe ldd linkage
+        timeout-minutes: 30
+        run: |
+          docker build --progress=plain --target probe-ldd -t coderoad-stage:probe-ldd \
+            -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
+            mono/scripts/certifications/coderoad-driver
+
+      - name: Build CodeRoad stage 5 of 6 — code --version
         timeout-minutes: 30
         run: |
           docker build --progress=plain --target vscode -t coderoad-stage:vscode \
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
             mono/scripts/certifications/coderoad-driver
 
-      - name: Build CodeRoad stage 5 of 5 — full (extension + driver)
+      - name: Build CodeRoad stage 6 of 6 — full (extension + driver)
         timeout-minutes: 30
         run: |
           docker build --progress=plain --target full -t ghcr.io/timerloggedout-spec/coderoad-rdb:latest \

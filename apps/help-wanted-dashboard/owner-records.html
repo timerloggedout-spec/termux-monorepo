@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Owner records: envelope metadata for authorizations, gates, clearances, bets and decisions. Bodies are age ciphertext, decrypted client-side only on the gated project.">
+<title>Owner Records · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Ops · owner records</div><h1>Owner <span>Records</span></h1><p class="lede">Authorizations, gates, clearances, bets and decisions — one envelope. This page renders L1 metadata only (title, state, holder, source). Record bodies are age ciphertext in the repo store and decrypt client-side, in the owner's browser, on the gated Vercel project — never at build time, never on a server. Classes with no register render NOT_ESTABLISHED; absence is the honest state.</p><div class="links" style="margin-top:1rem"><a class="button" href="./admin.html">Admin</a><a class="button" href="./tracking.html">Tracking</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/index.json">Envelope (index.json)</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/README.md">Store doc</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching envelope.</small></div></div></header>
+<main>
+<div id="classes"></div>
+<footer>Owner Records · envelope: ops/owner-records/index.json (owner-records/v1) · bodies: ops/owner-records/bodies/ (age ciphertext, per-class recipients; private halves live only in the owner's vault + offline backup) · XML surface is Vercel-only (staged into the gated project, never served from Pages) · discovery is Admin + Tracking cross-links only — this page is not in the primary nav (D4)</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const GH='https://github.com/timerloggedout-spec/termux-monorepo/blob/master/';
+function bodyLine(r){
+  if(r.body_status==='encrypted')return 'Body: age ciphertext ('+esc(r.body_file||'')+') — decrypts client-side on the gated project.';
+  if(r.body_status==='none')return 'Body: none.';
+  return 'Body: sealed — pending the owner key step.';
+}
+function recordCard(r){
+  return '<div class="card"><div class="label">'+esc(r.title)+'<span class="chip">'+esc(r.state)+'</span></div>'
+    +'<p class="muted">'+(r.holder?('Holder: '+esc(r.holder)+' · '):'')+(r.since?('Since: '+esc(r.since)+' · '):'')+'Source: <a href="'+GH+esc(r.source.path)+'">'+esc(r.source.path)+'</a>'+(r.source.section?(' · '+esc(r.source.section)):'')+'</p>'
+    +'<p class="muted">'+bodyLine(r)+'</p></div>';
+}
+function classSection(c){
+  const head='<section aria-labelledby="cls-'+esc(c.class)+'"><div class="head"><h2 id="cls-'+esc(c.class)+'">'+esc(c.class)+'</h2><span class="note">'+esc(c.state)+' · '+(c.records||[]).length+' record'+((c.records||[]).length===1?'':'s')+' · key: '+esc(c.key_class||'—')+'</span></div>';
+  const note=c.note?'<p class="muted">'+esc(c.note)+'</p>':'';
+  const body=(c.records||[]).length?'<div class="grid grid-2">'+c.records.map(recordCard).join('')+'</div>'
+    :'<div class="card empty">NOT_ESTABLISHED — no register exists for this class yet. Nothing is inferred.</div>';
+  return head+note+body+'</section>';
+}
+async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+async function load(){
+  const bust=Date.now();
+  const env=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/owner-records/index.json?t='+bust,'./owner-records.json?t='+bust]);
+  if(!env){$('freshness').textContent='Envelope unavailable';$('generated').textContent='Could not fetch ops/owner-records/index.json.';return}
+  const total=(env.classes||[]).reduce((n,c)=>n+(c.records||[]).length,0);
+  $('freshness').textContent='Envelope loaded';
+  $('generated').textContent='Schema '+(env.schema||'—')+' · generated '+(env.generated_at||'—')+' · '+total+' records · bodies stay ciphertext';
+  $('classes').innerHTML=(env.classes||[]).map(classSection).join('');
+}
+load();setInterval(load,60000);
+</script>
+</body>
+</html>

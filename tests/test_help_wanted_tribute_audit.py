@@ -6,21 +6,21 @@ from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.ci.help_wanted_tribute_audit import (
+from scripts.ci.tribute_audit import (
     api_get, audit_one, merge_audit_history, parse_pr_url, valid_realization_receipt,
 )
 
 
 class HelpWantedTributeAuditTests(unittest.TestCase):
     def test_hourly_status_refresh_runs_and_publishes_audit(self):
-        workflow = Path(".github/workflows/help-wanted-status-refresh.yml").read_text(encoding="utf-8")
-        self.assertIn("python3 scripts/ci/help_wanted_tribute_audit.py", workflow)
-        self.assertIn("docs/ops/generated/help-wanted-tribute-audit.json", workflow)
+        workflow = Path(".github/workflows/tribute-status-refresh.yml").read_text(encoding="utf-8")
+        self.assertIn("python3 scripts/ci/tribute_audit.py", workflow)
+        self.assertIn("docs/ops/generated/tribute-audit.json", workflow)
         tests_workflow = Path(".github/workflows/help-wanted-telemetry-tests.yml").read_text(encoding="utf-8")
         self.assertIn('.github/workflows/help-wanted-telemetry-tests.yml', tests_workflow)
         self.assertIn('docs/ops/AUTOMATED-TELEMETRY-AUDIT.md', tests_workflow.split('  push:', 1)[1])
 
-    @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
+    @patch("scripts.ci.tribute_audit.urllib.request.urlopen")
     def test_http_429_is_classified_as_rate_limited(self, urlopen):
         urlopen.side_effect = urllib.error.HTTPError(
             "https://api.github.com/example", 429, "Too Many Requests",
@@ -28,7 +28,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         )
         self.assertEqual(api_get("/example"), (None, "rate_limited"))
 
-    @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
+    @patch("scripts.ci.tribute_audit.urllib.request.urlopen")
     def test_permission_403_is_not_misclassified_as_rate_limit(self, urlopen):
         urlopen.side_effect = urllib.error.HTTPError(
             "https://api.github.com/example", 403, "Forbidden",
@@ -36,7 +36,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         )
         self.assertEqual(api_get("/example"), (None, "http_403"))
 
-    @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
+    @patch("scripts.ci.tribute_audit.urllib.request.urlopen")
     def test_rate_limit_403_header_is_classified_as_deferred(self, urlopen):
         headers = Message()
         headers["X-RateLimit-Remaining"] = "0"
@@ -86,7 +86,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertEqual(merged[0]["last_attempt_status"], "deferred")
         self.assertEqual(merged[0]["last_attempt_evidence_gaps"], ["rate_limited"])
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_truncated_changed_file_response_is_partial_and_cannot_validate(self, api_get):
         api_get.side_effect = [
             ({
@@ -129,7 +129,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         )
         self.assertIsNone(parse_pr_url("https://github.com/example/project/issues/42"))
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_unavailable_changed_files_are_partial_not_a_crash(self, api_get):
         api_get.side_effect = [
             ({
@@ -147,7 +147,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertIn("files_http_403", result["evidence_gaps"])
         self.assertNotEqual(result["stage"], "validated_solution")
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_validated_solution_requires_diff_proof_and_successful_checks(self, api_get):
         api_get.side_effect = [
             ({
@@ -165,7 +165,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertTrue(result["checks_pass"])
         self.assertFalse(result["realized_effect_verified"])
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_skipped_checks_without_success_do_not_validate(self, api_get):
         api_get.side_effect = [
             ({
@@ -183,7 +183,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertFalse(result["checks_pass"])
         self.assertEqual(result["stage"], "solution_claimed_unvalidated")
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_truncated_check_run_response_is_an_evidence_gap(self, api_get):
         api_get.side_effect = [
             ({
@@ -202,7 +202,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertFalse(result["checks_pass"])
         self.assertIn("checks_truncated", result["evidence_gaps"])
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_stake_only_is_not_a_solution(self, api_get):
         api_get.side_effect = [
             ({
@@ -219,7 +219,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertEqual(result["stage"], "stake_only")
         self.assertFalse(result["checks_pass"])
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_rate_limit_is_unknown_not_success(self, api_get):
         api_get.return_value = (None, "rate_limited")
         result = audit_one("https://github.com/example/project/pull/42")
@@ -227,7 +227,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertEqual(result["audit_status"], "deferred")
         self.assertFalse(result["realized_effect_verified"])
 
-    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    @patch("scripts.ci.tribute_audit.api_get")
     def test_merged_pr_does_not_imply_realized_effect(self, api_get):
         api_get.side_effect = [
             ({

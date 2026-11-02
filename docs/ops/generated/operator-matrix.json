@@ -3,8 +3,8 @@
     "open_issues": 419,
     "open_prs": 185,
     "pr_classes": {
-      "CANDIDATE": 89,
-      "EXTRACT": 6,
+      "CANDIDATE": 87,
+      "EXTRACT": 8,
       "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
@@ -71,7 +71,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T22:06:09Z",
+  "generated_at": "2026-11-02T22:09:50Z",
   "issues_unlabelled": [
     308,
     388,
@@ -96,7 +96,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "ea4a5f791b"
+    "sha": "4d94a89dfa"
   },
   "prs": [
     {
@@ -176,12 +176,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c007d90a61",
+      "head_sha": "c802ab054b",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T22:04:38Z"
+      "updated_at": "2026-11-02T22:06:13Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "2d0ab5288e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2966,
+      "title": "[apk-doe] A v0.2.1",
+      "updated_at": "2026-11-02T15:21:30Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0291b02e9c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3247,
+      "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
+      "updated_at": "2026-11-01T21:10:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -1203,20 +1231,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "2d0ab5288e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2966,
-      "title": "[apk-doe] A v0.2.1",
-      "updated_at": "2026-11-02T15:21:30Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "dc4800a2ce",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1278,7 +1292,7 @@
       "mergeable_state": "unknown",
       "number": 3063,
       "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
-      "updated_at": "2026-11-01T11:28:45Z"
+      "updated_at": "2026-11-02T22:08:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1307,20 +1321,6 @@
       "number": 3242,
       "title": "feat(quota): harden provider consumption audit",
       "updated_at": "2026-11-01T20:38:07Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0291b02e9c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3247,
-      "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
-      "updated_at": "2026-11-01T21:10:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -2670,29 +2670,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "4e8cb5e336",
+      "head_sha": "887b44c6c0",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3994,
-      "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-11-02T22:04:43Z"
+      "mergeable_state": "unstable",
+      "number": 3995,
+      "title": "docs(github-apps): TEL-03 checked \u2014 emitter scheduled + mint-wired (dual-sign)",
+      "updated_at": "2026-11-02T22:08:18Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "887b44c6c0",
+      "head_sha": "1c350ea60e",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3995,
-      "title": "docs(github-apps): TEL-03 checked \u2014 emitter scheduled + mint-wired (dual-sign)",
-      "updated_at": "2026-11-02T22:05:42Z"
+      "mergeable_state": "unstable",
+      "number": 4002,
+      "title": "viz(desk): adopt desk-feed v1.3 on the tribute tree (re-issues #3063)",
+      "updated_at": "2026-11-02T22:09:26Z"
     }
   ],
   "schema": "operator-matrix/v1",

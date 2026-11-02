@@ -317,6 +317,13 @@ are levels, kinds are factors.
   estimate). Designs therefore spread dispatch across arms by
   default (rotation, sets, factorial assignment); a single-arm run
   is observational color, never comparative evidence.
+- **Leveling** (owner, 2026-11-01): MVT is one piece nested under
+  DoE — not a peer plane (this family's title has always read "MVT
+  Is One Member, Not the Whole"; the leveling makes the counting
+  explicit). Records and scoreboards represent MVT, and ATES,
+  nested in the DoE family; population roll-ups count DoE once,
+  with MVT shown as its sub-piece — never as a separate plane
+  tally.
 
 ## Method versions (strategy-level, under rule 8)
 

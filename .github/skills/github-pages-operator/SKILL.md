@@ -10,7 +10,7 @@ description: Enable and publish GitHub Pages for termux-monorepo help-wanted das
 See full skill body under `.agents/skills/github-pages-operator/SKILL.md`.
 
 **Quick:**
-1. Workflow `help-wanted-dashboard-deploy.yml` target=`all`
+1. Workflow `tribute-dashboard-deploy.yml` target=`all`
 2. Enable Pages API → `gh-pages`
 3. Mirror → `https://timerloggedout-spec.github.io/help-wanted/`
 4. Fallback CDN → raw.githack (not jsDelivr for HTML)

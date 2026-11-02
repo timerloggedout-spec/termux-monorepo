@@ -62,7 +62,7 @@ First table (2026-10-31, 600 most recent PRs + 28 scored RFPs):
 ```
 gh api "repos/{owner}/{repo}/pulls?state=all&per_page=100&page=N" (N=1..6) > prs.json
 python3 scripts/telemetry_ingest/density_stats.py \
-  --prs prs.json --rfp-feed apps/help-wanted-dashboard/data/delphi-rfp-feed.json \
+  --prs prs.json --rfp-feed apps/tribute-dashboard/data/delphi-rfp-feed.json \
   --now <ISO8601>
 python3 -m pytest tests/test_density_stats.py -q
 ```

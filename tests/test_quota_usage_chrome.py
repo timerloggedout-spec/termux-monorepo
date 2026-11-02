@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DASH = ROOT / "apps" / "help-wanted-dashboard"
+DASH = ROOT / "apps" / "tribute-dashboard"
 
 SHELL_PAGES = [
     "index", "quota", "admin", "oracle", "3l0", "moneyball", "mvt", "doe",

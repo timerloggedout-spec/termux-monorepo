@@ -8,10 +8,10 @@ on:
   push:
     branches: [master]
     paths:
-      - apps/help-wanted-dashboard/quota.html
-      - apps/help-wanted-dashboard/quota-usage.html
-      - apps/help-wanted-dashboard/quota-graphs.html
-      - apps/help-wanted-dashboard/dashboard.css
+      - apps/tribute-dashboard/quota.html
+      - apps/tribute-dashboard/quota-usage.html
+      - apps/tribute-dashboard/quota-graphs.html
+      - apps/tribute-dashboard/dashboard.css
       - .github/workflows/quota-pages-visual.yml
 
 permissions:
@@ -26,7 +26,7 @@ jobs:
         id: chrome
       - name: Serve dashboard statically
         run: |
-          python3 -m http.server 8901 --directory apps/help-wanted-dashboard &
+          python3 -m http.server 8901 --directory apps/tribute-dashboard &
           sleep 2
           curl -sf -o /dev/null http://127.0.0.1:8901/quota-graphs.html
       - name: Screenshots (390px + desktop)

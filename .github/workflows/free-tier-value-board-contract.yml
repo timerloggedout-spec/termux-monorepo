@@ -4,8 +4,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - 'apps/help-wanted-dashboard/free-tier-value.html'
-      - 'apps/help-wanted-dashboard/data/free-tier-value.json'
+      - 'apps/tribute-dashboard/free-tier-value.html'
+      - 'apps/tribute-dashboard/data/free-tier-value.json'
       - 'docs/ops/FREE-TIER-USE-VALUE-BOARD.md'
       - 'tests/test_free_tier_value_board.py'
       - 'tests/test_http_llm_invoke_usage_contract.py'
@@ -14,8 +14,8 @@ on:
   push:
     branches: [master]
     paths:
-      - 'apps/help-wanted-dashboard/free-tier-value.html'
-      - 'apps/help-wanted-dashboard/data/free-tier-value.json'
+      - 'apps/tribute-dashboard/free-tier-value.html'
+      - 'apps/tribute-dashboard/data/free-tier-value.json'
       - 'docs/ops/FREE-TIER-USE-VALUE-BOARD.md'
       - 'tests/test_free_tier_value_board.py'
       - 'tests/test_http_llm_invoke_usage_contract.py'
@@ -41,7 +41,7 @@ jobs:
           python3 - <<'PY'
           import re
           from pathlib import Path
-          html = Path('apps/help-wanted-dashboard/free-tier-value.html').read_text(encoding='utf-8')
+          html = Path('apps/tribute-dashboard/free-tier-value.html').read_text(encoding='utf-8')
           scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
           if not scripts:
               raise SystemExit('no inline dashboard script found')

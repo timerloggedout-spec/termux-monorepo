@@ -1,5 +1,5 @@
 # Linguist Panel feed refresh (contract: docs/ops/LINGUIST-PANEL-FEED.md).
-# Regenerates apps/help-wanted-dashboard/data/linguist-panel-feed.json
+# Regenerates apps/tribute-dashboard/data/linguist-panel-feed.json
 # from the mapping sources of record and proposes it as a refresh PR —
 # never commits directly. Mirrors the oracle-panel-feed-collect pattern.
 name: linguist-panel-feed-collect
@@ -37,11 +37,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/linguist/linguist_panel_feed.py \
-            --root . --out apps/help-wanted-dashboard/data/linguist-panel-feed.json
+            --root . --out apps/tribute-dashboard/data/linguist-panel-feed.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/help-wanted-dashboard/data/linguist-panel-feed.json; then
+          if git diff --quiet -- apps/tribute-dashboard/data/linguist-panel-feed.json; then
             echo "feed unchanged; no refresh PR"
             exit 0
           fi
@@ -49,7 +49,7 @@ jobs:
           git config user.name "linguist-panel-feed-collect"
           git config user.email "actions@github.com"
           git checkout -B "$branch"
-          git add apps/help-wanted-dashboard/data/linguist-panel-feed.json
+          git add apps/tribute-dashboard/data/linguist-panel-feed.json
           git commit -m "chore(linguist): refresh linguist-panel-feed.json"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

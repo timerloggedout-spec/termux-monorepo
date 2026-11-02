@@ -1,12 +1,12 @@
 # Quota TUI — termux-monorepo
 
 A working terminal renderer for the quota panel, using the same shared
-source as the web panel (`apps/help-wanted-dashboard/quota.html`):
+source as the web panel (`apps/tribute-dashboard/quota.html`):
 
 | Role | Schema | Master path | Local copy used here |
 |---|---|---|---|
 | Registry (ALL services + documented entitlements) | `quota.registry.v2` | `ops/quota/registry.json` | `../quota_registry.json` |
-| Readings (live/reported status, sparse) | `quota.readings.v2` | `apps/help-wanted-dashboard/data/quota.json` (= `docs/ops/generated/quota-status.json`) | `../quota-panel/quota.json` |
+| Readings (live/reported status, sparse) | `quota.readings.v2` | `apps/tribute-dashboard/data/quota.json` (= `docs/ops/generated/quota-status.json`) | `../quota-panel/quota.json` |
 
 Current data (2026-10-20): **26 registry services, 3 readings**
 (`vercel.deployments` = cap_tripped, `openrouter.free_models` = exhausted,

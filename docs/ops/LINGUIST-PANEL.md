@@ -5,8 +5,8 @@ registry + feed). Deploy/integration = Web Design lane.
 
 ## Page
 
-`apps/help-wanted-dashboard/linguist.html` — prototype, renders ONLY
-`apps/help-wanted-dashboard/data/linguist-panel-feed.json`. Feed absent →
+`apps/tribute-dashboard/linguist.html` — prototype, renders ONLY
+`apps/tribute-dashboard/data/linguist-panel-feed.json`. Feed absent →
 explicit absent state; no mappings are invented in the page.
 
 Surface (owner MUSTs):

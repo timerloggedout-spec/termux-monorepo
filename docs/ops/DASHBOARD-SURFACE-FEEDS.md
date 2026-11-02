@@ -1,6 +1,6 @@
 # Dashboard Surface Feeds — 3L0 / MoneyBall / MVT / DoE / ATES
 
-The contract for the surface pages in `apps/help-wanted-dashboard/`
+The contract for the surface pages in `apps/tribute-dashboard/`
 (`3l0.html`, `moneyball.html`, `mvt.html`, `doe.html`, `ates.html`),
 sibling to the Oracle Panel feed contract
 (`docs/ops/ORACLE-PANEL-FEED.md`, owned by the Delphi lane — that feed
@@ -12,11 +12,11 @@ separate surfaces with separate records:
 
 | Surface | Feed | Page |
 |---|---|---|
-| 3L0 | `apps/help-wanted-dashboard/data/3l0-feed.json` | `3l0.html` |
-| MoneyBall | `apps/help-wanted-dashboard/data/moneyball-feed.json` | `moneyball.html` |
-| MVT | `apps/help-wanted-dashboard/data/mvt-feed.json` | `mvt.html` |
-| DoE | `apps/help-wanted-dashboard/data/doe-feed.json` | `doe.html` |
-| ATES | `apps/help-wanted-dashboard/data/ates-feed.json` | `ates.html` (Web Design split — feed lands first, per the separation spec) |
+| 3L0 | `apps/tribute-dashboard/data/3l0-feed.json` | `3l0.html` |
+| MoneyBall | `apps/tribute-dashboard/data/moneyball-feed.json` | `moneyball.html` |
+| MVT | `apps/tribute-dashboard/data/mvt-feed.json` | `mvt.html` |
+| DoE | `apps/tribute-dashboard/data/doe-feed.json` | `doe.html` |
+| ATES | `apps/tribute-dashboard/data/ates-feed.json` | `ates.html` (Web Design split — feed lands first, per the separation spec) |
 
 Schema: `dashboard-surface-feed/v1` — `{schema, surface, generated_at,
 sources, honesty_rules, data, gaps}`.

@@ -8,7 +8,7 @@ GitHub API, and never embed credentials or mutate state from the browser.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 
 
 def _admin():

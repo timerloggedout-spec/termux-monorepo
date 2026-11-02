@@ -2,7 +2,7 @@ name: repo-tracking-collect
 
 # Repo-org tracking surface (contract: docs/ops/REPO-TRACKING.md).
 # SINGLE-WRITER for ops/tracking/tracking.{json,md} +
-# apps/help-wanted-dashboard/data/tracking-feed.json. No other lane
+# apps/tribute-dashboard/data/tracking-feed.json. No other lane
 # hand-edits those outputs; lanes change inputs (records of record,
 # ops/tracking/projects.json seed) by normal PR.
 # Pattern: lane-matrix sweep (direct commit of generated artifacts to
@@ -95,13 +95,13 @@ jobs:
         run: |
           set -euo pipefail
           git add ops/tracking/tracking.json ops/tracking/tracking.md \
-            apps/help-wanted-dashboard/data/tracking-feed.json \
+            apps/tribute-dashboard/data/tracking-feed.json \
             ops/tracking/nested-family.json \
-            apps/help-wanted-dashboard/data/nested-family-feed.json \
+            apps/tribute-dashboard/data/nested-family-feed.json \
             ops/tracking/backup-state.json \
-            apps/help-wanted-dashboard/data/backup-state-feed.json \
+            apps/tribute-dashboard/data/backup-state-feed.json \
             ops/tracking/backup-events.jsonl \
-            apps/help-wanted-dashboard/data/backup-events-feed.jsonl \
+            apps/tribute-dashboard/data/backup-events-feed.jsonl \
             scripts/tracking/backup_snapshot.json \
             scripts/tracking/pr_feed_snapshot.json scripts/tracking/lane_events_snapshot.json
           if git diff --cached --quiet; then

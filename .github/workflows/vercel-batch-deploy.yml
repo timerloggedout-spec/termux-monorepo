@@ -40,8 +40,8 @@ jobs:
       RESERVE: "5"
       COOLDOWN_H: "6"
       PLAN: |
-        help-wanted-oversight|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/tribute-status.json,docs/ops/generated/lane-matrix-status.json
-        help-wanted-dash|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/tribute-status.json,docs/ops/generated/lane-matrix-status.json
+        tribute-oversight|apps/tribute-dashboard|apps/tribute-dashboard/,docs/ops/generated/tribute-status.json,docs/ops/generated/lane-matrix-status.json
+        tribute-dash|apps/tribute-dashboard|apps/tribute-dashboard/,docs/ops/generated/tribute-status.json,docs/ops/generated/lane-matrix-status.json
         mcp-hub|mcp-hub|mcp-hub/
         termux-monorepo|demo-portal/public|demo-portal/public/
     steps:
@@ -125,13 +125,13 @@ jobs:
             [ -n "$ROOT" ] || ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
             echo "::notice title=vercel-batch-root::$P rootDirectory=${ROOT:-.}"
             DEST="$W/${ROOT:-.}"; mkdir -p "$DEST"; cp -a "$GITHUB_WORKSPACE/$SRC/." "$DEST/"
-            if [ "$SRC" = "apps/help-wanted-dashboard" ]; then
+            if [ "$SRC" = "apps/tribute-dashboard" ]; then
               mkdir -p "$DEST/data"; G="$GITHUB_WORKSPACE/docs/ops/generated"
               [ -f "$G/tribute-status.json" ] && cp "$G/tribute-status.json" "$DEST/data/status.json"
               [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json"
               printf '{"source_sha":"%s","short_sha":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
               # Stamp the version manifest into the staged copy (Pages parity:
-              # help-wanted-dashboard-deploy stamps its _tribute copy) so the
+              # tribute-dashboard-deploy stamps its _tribute copy) so the
               # Vercel mirror reports channel=production + real sha/built_at
               # instead of the committed dev+unbuilt manifest. Source stays clean.
               python3 "$GITHUB_WORKSPACE/scripts/build_dashboard_manifest.py" --root "$DEST" --channel production --source-ref "${GITHUB_REF_NAME:-master}" --source-sha "$GITHUB_SHA" --version-prefix "1.0.1" || echo "::warning::version-manifest stamp failed for $P"
@@ -162,10 +162,10 @@ jobs:
           # Preserve each project root config on this orphan branch too:
           # without it Vercel creates broken Git deployments on every state push.
           # These configs set git.deploymentEnabled=false; no application source is copied.
-          mkdir -p apps/help-wanted-dashboard mcp-hub demo-portal/public
-          cp "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/vercel.json" apps/help-wanted-dashboard/vercel.json
+          mkdir -p apps/tribute-dashboard mcp-hub demo-portal/public
+          cp "$GITHUB_WORKSPACE/apps/tribute-dashboard/vercel.json" apps/tribute-dashboard/vercel.json
           cp "$GITHUB_WORKSPACE/mcp-hub/vercel.json" mcp-hub/vercel.json
           cp "$GITHUB_WORKSPACE/demo-portal/public/vercel.json" demo-portal/public/vercel.json
-          git add state.json ledger.jsonl apps/help-wanted-dashboard/vercel.json mcp-hub/vercel.json demo-portal/public/vercel.json && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
+          git add state.json ledger.jsonl apps/tribute-dashboard/vercel.json mcp-hub/vercel.json demo-portal/public/vercel.json && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
           echo "::notice title=vercel-batch::deployed=[$(jq -r --arg s "$GITHUB_SHA" '[.last|to_entries[]|select(.value.sha==$s)|.key]|join(" ")' state.json)] failed=[${FAILED# }]"
           [ -z "$FAILED" ]

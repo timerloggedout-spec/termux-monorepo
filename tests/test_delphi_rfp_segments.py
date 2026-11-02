@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FEED = ROOT / "apps/help-wanted-dashboard/data/delphi-rfp-feed.json"
+FEED = ROOT / "apps/tribute-dashboard/data/delphi-rfp-feed.json"
 
 
 def _feed() -> dict:

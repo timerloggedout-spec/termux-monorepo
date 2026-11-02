@@ -9,7 +9,7 @@ panel data. Shared source of truth is the same pair the web panel uses:
                   local:  ``quota_registry.json``)
                  ALL documented services + entitlements.
   * Readings  -- schema ``quota.readings.v2``
-                 (master: ``apps/help-wanted-dashboard/data/quota.json``
+                 (master: ``apps/tribute-dashboard/data/quota.json``
                   == ``docs/ops/generated/quota-status.json``;
                   local:  ``quota-panel/quota.json``)
                  Live/reported readings only (sparse -- most services
@@ -113,7 +113,7 @@ def candidate_paths(script_dir: Path) -> tuple[list[Path], list[Path]]:
     The workspace layout mirrors the repo layout for these artifacts:
         <root>/quota_registry.json          (registry)
         <root>/quota-panel/quota.json       (readings, local build copy)
-        <root>/apps/help-wanted-dashboard/data/quota.json  (repo path)
+        <root>/apps/tribute-dashboard/data/quota.json  (repo path)
         <root>/docs/ops/generated/quota-status.json        (repo path)
     """
     roots = [Path.cwd(), script_dir, script_dir.parent]
@@ -123,7 +123,7 @@ def candidate_paths(script_dir: Path) -> tuple[list[Path], list[Path]]:
         readings += [
             r / "quota.json",
             r / "quota-panel" / "quota.json",
-            r / "apps/help-wanted-dashboard/data/quota.json",
+            r / "apps/tribute-dashboard/data/quota.json",
             r / "docs/ops/generated/quota-status.json",
         ]
         registry += [
@@ -366,7 +366,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--snapshot", action="store_true",
                     help="render as of the readings snapshot's generated_at "
                          "instead of wall-clock now; makes regenerating "
-                         "apps/help-wanted-dashboard/quota.txt deterministic "
+                         "apps/tribute-dashboard/quota.txt deterministic "
                          "(statuses as they stood at snapshot generation)")
     ap.add_argument("--no-color", action="store_true",
                     help="disable ANSI colours")
@@ -433,7 +433,7 @@ def main(argv: list[str] | None = None) -> int:
                 meta = {**rd, **{k: v for k, v in meta.items() if v}}
                 sources.append(str(rd_path))
 
-    coverage_path = Path(args.coverage) if args.coverage else script_dir.parent / "apps/help-wanted-dashboard/data/provider-quota-coverage.json"
+    coverage_path = Path(args.coverage) if args.coverage else script_dir.parent / "apps/tribute-dashboard/data/provider-quota-coverage.json"
     coverage = load_json(coverage_path) if coverage_path.is_file() else {}
     if coverage.get("schema") != "provider-quota-coverage/v1":
         coverage = {}

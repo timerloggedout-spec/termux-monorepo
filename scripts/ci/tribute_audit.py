@@ -295,7 +295,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--status", default="docs/ops/generated/tribute-status.json")
     parser.add_argument("--out", default="docs/ops/generated/tribute-audit.json")
-    parser.add_argument("--dashboard", default="apps/help-wanted-dashboard/data/status.json")
+    parser.add_argument("--dashboard", default="apps/tribute-dashboard/data/status.json")
     parser.add_argument("--max-prs", type=int, default=25)
     parser.add_argument(
         "--realization-evidence",

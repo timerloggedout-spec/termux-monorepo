@@ -36,7 +36,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT / "apps" / "help-wanted-dashboard" / "data"
+DATA = ROOT / "apps" / "tribute-dashboard" / "data"
 TREE = ROOT / ".github" / "workflows" / "quota-dispatch-tree.yml"
 SNAP = ROOT / "scripts" / "dashboards" / "dispatch_tree_observation.json"
 SCHEMA = "dispatch-tree-feed/v1"

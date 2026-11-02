@@ -11,9 +11,9 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "apps/help-wanted-dashboard/quota.html"
+PAGE = ROOT / "apps/tribute-dashboard/quota.html"
 FEED = ROOT / "ops/quota/allocation-verification.json"
-MIRROR = ROOT / "apps/help-wanted-dashboard/data/allocation-verification.json"
+MIRROR = ROOT / "apps/tribute-dashboard/data/allocation-verification.json"
 FIXTURE = ROOT / "tests/fixtures/allocation-verification.fixture.json"
 ESC_LINE = ("const esc=v=>String(v??'').replace(/[&<>\"']/g,"
             "c=>'&#'+c.charCodeAt(0)+';');")

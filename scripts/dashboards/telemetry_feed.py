@@ -1,16 +1,16 @@
 """Telemetry-viz feed — Slice 1 (S1-proxy / S2 / S4).
 
 Reads only committed repository records and emits one feed JSON into
-apps/help-wanted-dashboard/data/. The telemetry page (Web Design lane)
+apps/tribute-dashboard/data/. The telemetry page (Web Design lane)
 consumes this feed and nothing else. Facts the records do not hold are
 emitted as named gaps, never synthesized: an unobserved value stays
 null/absent, never 0. Refresh = re-run this collector and land the
 result by PR, exactly like the surface feeds.
 
 Sources (all committed, no network):
-- S2 outcome ledger ...... apps/help-wanted-dashboard/data/status.json
-- S4 quota readings ...... apps/help-wanted-dashboard/data/quota.json
-- S5 quota usage pack .... apps/help-wanted-dashboard/data/quota-usage.json
+- S2 outcome ledger ...... apps/tribute-dashboard/data/status.json
+- S4 quota readings ...... apps/tribute-dashboard/data/quota.json
+- S5 quota usage pack .... apps/tribute-dashboard/data/quota-usage.json
 - S1-proxy executions .... scripts/dashboards/workflow_observations.json
   (checked-in Actions API observations snapshot, stamped read_at) plus
   the status.json lane receipts. The Neon lane_events table itself is
@@ -27,12 +27,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT / "apps" / "help-wanted-dashboard" / "data"
+DATA = ROOT / "apps" / "tribute-dashboard" / "data"
 SCHEMA = "telemetry-viz-feed/v1"
 
-STATUS = "apps/help-wanted-dashboard/data/status.json"
-QUOTA = "apps/help-wanted-dashboard/data/quota.json"
-QUOTA_USAGE = "apps/help-wanted-dashboard/data/quota-usage.json"
+STATUS = "apps/tribute-dashboard/data/status.json"
+QUOTA = "apps/tribute-dashboard/data/quota.json"
+QUOTA_USAGE = "apps/tribute-dashboard/data/quota-usage.json"
 OBSERVATIONS = "scripts/dashboards/workflow_observations.json"
 ACTIONS_OBS = "scripts/dashboards/actions_observations.json"
 

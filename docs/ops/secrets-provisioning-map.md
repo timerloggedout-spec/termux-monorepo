@@ -21,7 +21,7 @@ Token sources refer to the inventory in #184. Least privilege: prefer a new fine
 | termux-monorepo | `OPERATOR_GITHUB_TOKEN` | yes | ARCHWIZ_GITHUB_TOKEN (fine-grained, termux-monorepo: Contents/Issues/PRs/Actions/Workflows RW) | 23 workflows (preferred operator token) |
 | termux-monorepo | `OPERATOR_TOKEN` | no | same value as OPERATOR_GITHUB_TOKEN | 22 workflows (legacy name) |
 | termux-monorepo | `ARCHWIZ_GITHUB_TOKEN` | no | ARCHWIZ_GITHUB_TOKEN (fine-grained) | 22 workflows (fallback chain) |
-| termux-monorepo | `GH_PAT` | no | NEW fine-grained (Contents RW on timerloggedout-spec.github.io) | help-wanted-dashboard-deploy mirror |
+| termux-monorepo | `GH_PAT` | no | NEW fine-grained (Contents RW on timerloggedout-spec.github.io) | tribute-dashboard-deploy mirror |
 | termux-monorepo | `CODESPACE_CREATE_TOKEN` | no | NEW fine-grained (Codespaces RW); fallback none of #184 without admin scopes | codespace-create / codespace-start |
 | termux-monorepo | `RECON_INTEL_GITHUB_WRITE_TOKEN` | no | NEW fine-grained (Issues RW) | recon-intel-reconcile |
 | termux-monorepo | `REPOSITORY_OBSERVATORY_TOKEN` | no | gitlab_cicd-w+org_view (read:org, repo) or NEW fine-grained read-only | repository-observatory |

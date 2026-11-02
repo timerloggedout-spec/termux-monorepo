@@ -1,5 +1,5 @@
 # Delphi RFP flood feed refresh (contract: docs/ops/DELPHI-RFP-FEED.md).
-# Regenerates apps/help-wanted-dashboard/data/delphi-rfp-feed.json from
+# Regenerates apps/tribute-dashboard/data/delphi-rfp-feed.json from
 # the open delphi:rfp issues and their gate ledger comments, and
 # proposes it as a refresh PR — never commits directly.
 #
@@ -94,14 +94,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/rfp_flood_feed.py \
-            --cache .rfp-cache --out apps/help-wanted-dashboard/data/delphi-rfp-feed.json
+            --cache .rfp-cache --out apps/tribute-dashboard/data/delphi-rfp-feed.json
       - name: Propose the refresh as a PR
         if: steps.gate.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-rfp-feed.json; then
+          if git diff --quiet -- apps/tribute-dashboard/data/delphi-rfp-feed.json; then
             echo "feed unchanged; no refresh PR"
             exit 0
           fi
@@ -109,7 +109,7 @@ jobs:
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "350898559+termux-fleet-swarm[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add apps/help-wanted-dashboard/data/delphi-rfp-feed.json
+          git add apps/tribute-dashboard/data/delphi-rfp-feed.json
           git commit -m "chore(delphi): refresh delphi-rfp-feed"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

@@ -33,9 +33,9 @@ out = {"issue184": {"title": iss.get("title"), "state": iss.get("state"), "body_
 
 # 2) Environment secrets for every environment on the repo
 envs = ["env_Termux-MonoRepo","github-pages","hindsight-prod","Preview",
-        "Preview – help-wanted-dash","Preview – help-wanted-oversight","Preview – mcp-hub",
-        "Preview – termux-monorepo","Production","Production – help-wanted-dash",
-        "Production – help-wanted-oversight","Production – mcp-hub","Production – termux-monorepo","staging"]
+        "Preview – tribute-dash","Preview – tribute-oversight","Preview – mcp-hub",
+        "Preview – termux-monorepo","Production","Production – tribute-dash",
+        "Production – tribute-oversight","Production – mcp-hub","Production – termux-monorepo","staging"]
 import urllib.parse
 out["environment_secrets"] = {}
 for e in envs:

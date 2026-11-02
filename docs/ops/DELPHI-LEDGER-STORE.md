@@ -45,7 +45,7 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
 | **Neon Postgres** (fleet precedent: `ops/lane-events/`) | full SQL, jsonb | none direct (static dashboard cannot hold creds) — needs an export | trigger-enforced (proven in `lane_events`) | free tier; secret NAMES of record `LANE_EVENTS_DATABASE_URL` / `NEON_API_KEY` — verified 2026-10-28 NOT yet provisioned in repo Actions secrets (53 names checked); provisioning owned by the neon-fix lane | gate workflows via psql writer pattern → export job | **ADOPT as the working database (primary queryable store)** |
 | Supabase Postgres | full SQL | same export problem | buildable | free; key provisioned by name, but no ledger precedent + Jules route contested | new surface for no gain over Neon | reject (duplicate of Neon) |
 | Pinecone (provisioned 2026-10-28) | vector similarity only — no folds, no EWMA, no exact current-state query | none | none (upsert overwrites) | Starter free | HindSight recall only | reject — wrong shape entirely |
-| **Repo-native feed** (`delphi-rfp-feed` precedent, PR #1949/#1952) | jq / DuckDB `read_json` over one file; no SQL server | **proven**: `apps/help-wanted-dashboard/data/*.json` → static Pages/Vercel render | git history + collector honesty rules; source comments stay append-only | zero, no card | collector workflow (dispatch + weekly + `workflow_run` on delphi-gate) → Web Design pages | **ADOPT as web-availability layer (this slice)** |
+| **Repo-native feed** (`delphi-rfp-feed` precedent, PR #1949/#1952) | jq / DuckDB `read_json` over one file; no SQL server | **proven**: `apps/tribute-dashboard/data/*.json` → static Pages/Vercel render | git history + collector honesty rules; source comments stay append-only | zero, no card | collector workflow (dispatch + weekly + `workflow_run` on delphi-gate) → Web Design pages | **ADOPT as web-availability layer (this slice)** |
 | SQLite / DuckDB file in repo | full SQL locally | none (binary, no static render) | file is mutable; git-diff hostile, multi-writer unsafe | zero | — | reject as store; DuckDB-over-JSON remains the ad-hoc query route |
 
 ## Design — two layers, one source of truth
@@ -55,7 +55,7 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
    no semantics move.
 2. **Web availability (this slice):** `scripts/delphi/ledger_fetch.py`
    → cache; `scripts/delphi/ledger_feed.py` (pure transform, stdlib)
-   → `apps/help-wanted-dashboard/data/delphi-ledger-feed.json`
+   → `apps/tribute-dashboard/data/delphi-ledger-feed.json`
    (`delphi-ledger-feed/v1`): per ledger an `events[]` stream
    (`event_key = sha256(ledger_id|comment_id)`, payload verbatim when
    carried, signed `[MUSEai]@` appends included, third-party noise

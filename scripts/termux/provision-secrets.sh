@@ -33,7 +33,7 @@ gh-aw_fork|CODEX_API_KEY|no|provider key; same value as OPENAI_API_KEY|58 Codex-
 termux-monorepo|OPERATOR_GITHUB_TOKEN|yes|ARCHWIZ_GITHUB_TOKEN (fine-grained, termux-monorepo: Contents/Issues/PRs/Actions/Workflows RW)|23 workflows (preferred operator token)
 termux-monorepo|OPERATOR_TOKEN|no|same value as OPERATOR_GITHUB_TOKEN|22 workflows (legacy name)
 termux-monorepo|ARCHWIZ_GITHUB_TOKEN|no|ARCHWIZ_GITHUB_TOKEN (fine-grained)|22 workflows (fallback chain)
-termux-monorepo|GH_PAT|no|NEW fine-grained (Contents RW on timerloggedout-spec.github.io)|help-wanted-dashboard-deploy mirror
+termux-monorepo|GH_PAT|no|NEW fine-grained (Contents RW on timerloggedout-spec.github.io)|tribute-dashboard-deploy mirror
 termux-monorepo|CODESPACE_CREATE_TOKEN|no|NEW fine-grained (Codespaces RW); fallback none of #184 without admin scopes|codespace-create / codespace-start
 termux-monorepo|RECON_INTEL_GITHUB_WRITE_TOKEN|no|NEW fine-grained (Issues RW)|recon-intel-reconcile
 termux-monorepo|REPOSITORY_OBSERVATORY_TOKEN|no|gitlab_cicd-w+org_view (read:org, repo) or NEW fine-grained read-only|repository-observatory
@@ -114,7 +114,7 @@ cmd_resume() {
 
 cmd_rerun() {
   for pair in "gh-aw-mcpg_fork:gateway-issue-dispatcher.lock.yml" "gh-aw_fork:contribution-check.lock.yml" "gh-aw_fork:aw-failure-investigator.lock.yml" \
-              "termux-monorepo:help-wanted-dashboard-deploy.yml"; do
+              "termux-monorepo:tribute-dashboard-deploy.yml"; do
     repo="${pair%%:*}"; wf="${pair#*:}"
     gh workflow enable "$wf" -R "$OWNER/$repo" >/dev/null 2>&1 || true
     gh workflow run "$wf" -R "$OWNER/$repo" >/dev/null 2>&1 && echo "dispatched $repo/$wf" || echo "could not dispatch $repo/$wf"

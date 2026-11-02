@@ -2,7 +2,7 @@
 
 Reads only repository records (plus the checked-in workflow observations
 snapshot, itself an API read with its own read_at stamp) and emits one feed
-JSON per surface into apps/help-wanted-dashboard/data/. The pages consume
+JSON per surface into apps/tribute-dashboard/data/. The pages consume
 their feed and nothing else. Facts the records do not hold are emitted as
 named gaps, never synthesized. Refresh = re-run this collector and land the
 result by PR, exactly like the Oracle Panel feed.
@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT / "apps" / "help-wanted-dashboard" / "data"
+DATA = ROOT / "apps" / "tribute-dashboard" / "data"
 SCHEMA = "dashboard-surface-feed/v1"
 
 HONESTY = [
@@ -372,13 +372,13 @@ def collect_mvt() -> dict:
         "citations": [
             {
                 "surface": "ates",
-                "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/help-wanted-dashboard/data/ates-feed.json",
+                "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/tribute-dashboard/data/ates-feed.json",
                 "label": "ATES harness — the seven hard invariants",
                 "note": "The invariants gate every arm MVT runs; they are ATES property, cited here, not copied.",
             },
             {
                 "surface": "doe",
-                "record": "deepcli/deepcli/observatory/doe.py + apps/help-wanted-dashboard/data/doe-feed.json",
+                "record": "deepcli/deepcli/observatory/doe.py + apps/tribute-dashboard/data/doe-feed.json",
                 "label": "DoE design library",
                 "note": "full_factorial / taguchi_l9 / mvt_shuffle generate the arm designs MVT campaigns consume (doe.py: 'DoE helpers for MVT campaigns').",
             },
@@ -469,13 +469,13 @@ def collect_ates() -> dict:
         "citations": [
             {
                 "surface": "mvt",
-                "record": "docs/ops/corpus/EXPERIMENT.schema.json + apps/help-wanted-dashboard/data/mvt-feed.json",
+                "record": "docs/ops/corpus/EXPERIMENT.schema.json + apps/tribute-dashboard/data/mvt-feed.json",
                 "label": "MVT — experiment records and practice",
                 "note": "Experiments the harness executes are recorded in the EXPERIMENT schema and owned by the MVT surface.",
             },
             {
                 "surface": "doe",
-                "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE) + apps/help-wanted-dashboard/data/doe-feed.json",
+                "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE) + apps/tribute-dashboard/data/doe-feed.json",
                 "label": "DoE — first factorial slice",
                 "note": "The factorial design for ATES-cohort arms is defined in §DoE of the harness doc and owned by the DoE surface.",
             },

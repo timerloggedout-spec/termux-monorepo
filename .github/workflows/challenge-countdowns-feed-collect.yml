@@ -1,5 +1,5 @@
 # Challenge countdowns feed refresh (contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md).
-# Regenerates apps/help-wanted-dashboard/data/challenge-countdowns-feed.json
+# Regenerates apps/tribute-dashboard/data/challenge-countdowns-feed.json
 # from the challenge entries log (the SSOT for deadline instants) and
 # proposes it as a refresh PR — never commits directly. Mirrors the
 # linguist-panel-feed-collect pattern (issue #1880).
@@ -35,11 +35,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/dashboards/challenge_countdowns_feed.py \
-            --root . --out apps/help-wanted-dashboard/data/challenge-countdowns-feed.json
+            --root . --out apps/tribute-dashboard/data/challenge-countdowns-feed.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/help-wanted-dashboard/data/challenge-countdowns-feed.json; then
+          if git diff --quiet -- apps/tribute-dashboard/data/challenge-countdowns-feed.json; then
             echo "feed unchanged; no refresh PR"
             exit 0
           fi
@@ -47,7 +47,7 @@ jobs:
           git config user.name "challenge-countdowns-feed-collect"
           git config user.email "actions@github.com"
           git checkout -B "$branch"
-          git add apps/help-wanted-dashboard/data/challenge-countdowns-feed.json
+          git add apps/tribute-dashboard/data/challenge-countdowns-feed.json
           git commit -m "chore(countdowns): refresh challenge-countdowns-feed.json"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

@@ -10,7 +10,7 @@ class DualGateTest(unittest.TestCase):
             {"name": "Vercel – termux-monorepo", "conclusion": "failure"},
         ]
         self.assertTrue(dual_gate_green(checks))
-        self.assertTrue(is_advisory("Vercel – help-wanted-dash"))
+        self.assertTrue(is_advisory("Vercel – tribute-dash"))
 
 if __name__ == "__main__":
     unittest.main()

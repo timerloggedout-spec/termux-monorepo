@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 KIT = APP / "chartkit.js"
 DOC = ROOT / "docs/ops/DASHBOARD-CHART-STANDARD.md"
 

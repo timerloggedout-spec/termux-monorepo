@@ -1,7 +1,7 @@
 # DASHBOARD CHART STANDARD — every surface carries a live chart
 
 Owner standard 2026-11-01 22:28 PT: **all surfaces require live chart
-graphs.** Every page in the dashboard family (`apps/help-wanted-dashboard/`)
+graphs.** Every page in the dashboard family (`apps/tribute-dashboard/`)
 carries at least one chart that is live-fed — not just the quota pages —
 and every rate-limit event must be visible on the quota graphs.
 
@@ -30,7 +30,7 @@ A page complies when its chart(s) satisfy all of:
    `ops/quota/rate-limit-events.json` (PR #3548 + #3564) — never as
    prose-only annotations.
 
-Shared implementation: `apps/help-wanted-dashboard/chartkit.js`
+Shared implementation: `apps/tribute-dashboard/chartkit.js`
 (`CK.bars`, `CK.line`, `CK.stampState`) — pure string builders, pinned
 by `tests/test_chartkit.py`. Pages with richer renderers (quota-graphs)
 keep them; the standard governs data + stamps, not the drawing code.

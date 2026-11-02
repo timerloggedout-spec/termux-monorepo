@@ -1,7 +1,7 @@
 """Oracle Panel page contract (Web Design lane, 2026-10-27).
 
 The Delphi lane owns the data contract (docs/ops/ORACLE-PANEL-FEED.md):
-oracle.html consumes apps/help-wanted-dashboard/data/oracle-panel-feed.json and nothing
+oracle.html consumes apps/tribute-dashboard/data/oracle-panel-feed.json and nothing
 else. These tests pin the rendering side of that contract:
 
 * the page reads the contract feed (raw master, the fleet pattern) and no
@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps" / "help-wanted-dashboard"
+APP = ROOT / "apps" / "tribute-dashboard"
 FEED = APP / "data/oracle-panel-feed.json"
 FEED_URL = "./data/oracle-panel-feed.json"
 

@@ -1,7 +1,7 @@
 # Owner records — encrypted store (owner decisions D1–D5, confirmed 2026-11-01)
 
 Owner-specific records {authorizations · gates · clearances · bets ·
-decisions} get a visual layer: `apps/help-wanted-dashboard/owner-records.html`
+decisions} get a visual layer: `apps/tribute-dashboard/owner-records.html`
 on a dedicated Vercel project gated by Vercel Authentication (SSO,
 scope = all). Data lives here; presentation never carries plaintext bodies.
 

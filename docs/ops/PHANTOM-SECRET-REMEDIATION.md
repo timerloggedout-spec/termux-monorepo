@@ -66,7 +66,7 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.REQUESTY_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.SWE_EVALUATION_API_KEY` — swe-reference-evaluation.yml
 - [ ] `secrets.TYPHOON_API_KEY` — provider-batch.yml
-- [ ] `secrets.VERCEL_ORG_ID` — help-wanted-dashboard-deploy.yml, tribute-vercel-prod.yml, vercel-batch-deploy.yml, vercel-quota-probe.yml
+- [ ] `secrets.VERCEL_ORG_ID` — tribute-dashboard-deploy.yml, tribute-vercel-prod.yml, vercel-batch-deploy.yml, vercel-quota-probe.yml
 - [ ] `secrets.XFYUN_API_KEY` — provider-availability.yml, provider-batch.yml
 
 ## Rule

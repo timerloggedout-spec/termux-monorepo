@@ -1,7 +1,7 @@
 # Referral automation — free marketing stack (2026-10-27)
 
 Lane: `[MUSEai]@{role:{marketing-channel}}` · Registry: `config/referral_programs.json`
-Feed: `apps/help-wanted-dashboard/data/referral-feed.json` (built by
+Feed: `apps/tribute-dashboard/data/referral-feed.json` (built by
 `scripts/referral/build_feed.py`) · Human registry: `docs/PARTNERS.md`
 Census: `docs/ops/MARKETING-CHANNEL-CENSUS-2026-10-27.md` (PR #1889)
 

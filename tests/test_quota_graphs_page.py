@@ -9,10 +9,10 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "apps/help-wanted-dashboard/quota-graphs.html"
-QUOTA_PAGE = ROOT / "apps/help-wanted-dashboard/quota.html"
+PAGE = ROOT / "apps/tribute-dashboard/quota-graphs.html"
+QUOTA_PAGE = ROOT / "apps/tribute-dashboard/quota.html"
 PACK = ROOT / "ops/quota/usage-series.json"
-MIRROR = ROOT / "apps/help-wanted-dashboard/data/usage-series.json"
+MIRROR = ROOT / "apps/tribute-dashboard/data/usage-series.json"
 FIXTURE = ROOT / "tests/fixtures/usage-series.fixture.json"
 GENERATOR = ROOT / "scripts/quota_usage_series.py"
 ESC_LINE = ("const esc=v=>String(v??'').replace(/[&<>\"']/g,"

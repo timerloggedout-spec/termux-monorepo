@@ -16,7 +16,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps" / "help-wanted-dashboard"
+APP = ROOT / "apps" / "tribute-dashboard"
 PAGE = APP / "desk.html"
 PACK = APP / "data" / "desk-feed.json"
 SOURCE = ROOT / "ops" / "challenge" / "desk-feed.json"

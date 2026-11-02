@@ -15,7 +15,7 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 
 ## 1b. Code lanes (invite / referral codes, owner-supplied, free no-CC)
 
-Machine registry: `config/referral_programs.json` · Public feed: `apps/help-wanted-dashboard/data/referral-feed.json` · Automation: `docs/ops/REFERRAL-AUTOMATION.md`. One live code is published per programme; reserve codes rotate in on exhaustion.
+Machine registry: `config/referral_programs.json` · Public feed: `apps/tribute-dashboard/data/referral-feed.json` · Automation: `docs/ops/REFERRAL-AUTOMATION.md`. One live code is published per programme; reserve codes rotate in on exhaustion.
 
 | Partner | Mechanic | Visitor gets (free) | Live code | Status |
 |---|---|---|---|---|

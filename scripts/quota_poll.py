@@ -335,7 +335,7 @@ def readings_snapshot(public, services):
     This is the publisher step of the generated-file path: a human/agent
     downloads the probe workflow's artifact, runs this conversion, reviews
     the result and lands it as docs/ops/generated/quota-status.json ==
-    apps/help-wanted-dashboard/data/quota.json through a PR. The poller
+    apps/tribute-dashboard/data/quota.json through a PR. The poller
     itself still never commits anything.
 
     Honesty rules: the projection exports no account values, so every

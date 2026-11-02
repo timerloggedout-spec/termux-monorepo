@@ -59,7 +59,7 @@ jobs:
           PRODUCTION_SHA="$(git -C production rev-parse HEAD)"
           SOURCE_SHA="$(git -C source rev-parse HEAD)"
 
-          cp -a production/apps/help-wanted-dashboard/. _production/
+          cp -a production/apps/tribute-dashboard/. _production/
           python3 tooling/scripts/build_dashboard_manifest.py \
             --root _production \
             --channel production \
@@ -73,7 +73,7 @@ jobs:
           cp -a _production/. _user_site/tribute/
           cp -a _production/. _user_site/help-wanted/
 
-          cp -a source/apps/help-wanted-dashboard/. _preview/
+          cp -a source/apps/tribute-dashboard/. _preview/
           python3 tooling/scripts/build_dashboard_manifest.py \
             --root _preview \
             --channel preview \
@@ -89,9 +89,9 @@ jobs:
           fi
           cp -a _preview/. "_user_site/previews/$PREVIEW_KEY/tribute/"
 
-          cp production/apps/help-wanted-dashboard/matrix.html _user_site/matrix/index.html
-          cp production/apps/help-wanted-dashboard/dashboard.css _user_site/matrix/dashboard.css
-          cp production/apps/help-wanted-dashboard/site-nav.js _user_site/matrix/site-nav.js
+          cp production/apps/tribute-dashboard/matrix.html _user_site/matrix/index.html
+          cp production/apps/tribute-dashboard/dashboard.css _user_site/matrix/dashboard.css
+          cp production/apps/tribute-dashboard/site-nav.js _user_site/matrix/site-nav.js
           if [ -f production/docs/ops/generated/lane-matrix-status.json ]; then
             cp production/docs/ops/generated/lane-matrix-status.json _user_site/matrix/data/lane-matrix-status.json
           fi

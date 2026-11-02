@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 PAGE = APP / "quota-event-audits.html"
 FEED = APP / "data/rate-limit-event-audits.json"
 

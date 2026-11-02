@@ -48,10 +48,10 @@ class TestMergeable(unittest.TestCase):
             _run("guard", "SUCCESS"),
             _run("gitleaks", "SUCCESS"),
             _run("evaluate", "SUCCESS"),
-            _ctx("Vercel - help-wanted-dash", "FAILURE"),
+            _ctx("Vercel - tribute-dash", "FAILURE"),
             _ctx("Vercel - termux-monorepo", "FAILURE"),
             _ctx("Vercel - mcp-hub", "FAILURE"),
-            _ctx("Vercel - help-wanted-oversight", "FAILURE"),
+            _ctx("Vercel - tribute-oversight", "FAILURE"),
         ]
         self.assertTrue(is_merge_ready(rollup))
         self.assertEqual(merge_blockers(rollup), [])

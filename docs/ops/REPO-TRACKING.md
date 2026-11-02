@@ -9,10 +9,10 @@ those systems — it replaces none of them.
 | System | Where | Verdict |
 |---|---|---|
 | Challenge coordinator | `ops/challenge/coordinator.json` + `docs/ops/CHALLENGE-SCHEMA.md` | **KEEP — record of record** for challenge events/dates/submissions. Entries-lane single-writer. Challenges-domain only. |
-| Desk feed | `ops/challenge/desk-feed.json` (`desk-feed/v1.2`) + render copy `apps/help-wanted-dashboard/data/desk-feed.json` | **KEEP — record** for desk traversals (status/evidence/next per D-entry). Hand-refreshed by desk lane via PR; challenges/desk only. |
+| Desk feed | `ops/challenge/desk-feed.json` (`desk-feed/v1.2`) + render copy `apps/tribute-dashboard/data/desk-feed.json` | **KEEP — record** for desk traversals (status/evidence/next per D-entry). Hand-refreshed by desk lane via PR; challenges/desk only. |
 | Lane-events (Neon) | `ops/lane-events/{schema,insert}.sql`, `scripts/ops/lane_event.py`, `lane-events-recorder.yml` | **KEEP — event ledger.** Append-only workflow-run events (`lane, workflow, conclusion, head_sha`); durable, queryable. Not project state. |
 | Lane-matrix sweep | `scripts/ops/lane_matrix_sweep.py` → `docs/ops/generated/lane-matrix-status.{json,md}` | **KEEP — PR-disposition board** (EXTRACT/CANDIDATE/NEED_EVIDENCE/SUPERSEDE). PR-centric, not lane×project; last generated 2026-10-29 at recon. |
-| Surface feeds | `scripts/dashboards/surface_feeds.py` → `apps/help-wanted-dashboard/data/*-feed.json` (3L0/MoneyBall/MVT/DoE/ATES) | **KEEP — pattern of record**: stamped observation snapshots, collector never calls network, honesty rules, refresh automation. Per-surface only. |
+| Surface feeds | `scripts/dashboards/surface_feeds.py` → `apps/tribute-dashboard/data/*-feed.json` (3L0/MoneyBall/MVT/DoE/ATES) | **KEEP — pattern of record**: stamped observation snapshots, collector never calls network, honesty rules, refresh automation. Per-surface only. |
 | Dispatch-tree feed | `scripts/dashboards/dispatch_tree_feed.py` | KEEP — quota cadence/admission only. |
 | Domain boards | challenge-osint / countdowns, `ops/quota/*.json`, operator-matrix, reviewer-metrics, telemetry-ingest | KEEP — each is its domain's record; none spans domains. |
 | Monikers/roster | `docs/ops/AGENT-MONIKERS.md`, `AGENT-TEAM-ROSTER.md` | KEEP — lane identity source. |
@@ -30,13 +30,13 @@ hand-refreshed, or PR-centric.
 |---|---|
 | Canonical feed | `ops/tracking/tracking.json` (`repo-tracking/v1`) |
 | Human board | `ops/tracking/tracking.md` (generated; this doc's render surface) |
-| Desk/viz render copy | `apps/help-wanted-dashboard/data/tracking-feed.json` (byte-identical payload; pages consume the feed and nothing else) |
+| Desk/viz render copy | `apps/tribute-dashboard/data/tracking-feed.json` (byte-identical payload; pages consume the feed and nothing else) |
 | Generator | `scripts/tracking/repo_tracking.py` (offline; reads records + snapshots only) |
 | Snapshot fetcher | `scripts/tracking/fetch_snapshots.py` (workflow-side network only) |
 | Snapshots | `scripts/tracking/pr_feed_snapshot.json`, `scripts/tracking/lane_events_snapshot.json` |
 | Seed registry | `ops/tracking/projects.json` — identity + match rules + lane of record **only; no state** |
-| Nested-family record | `ops/tracking/nested-family.json` (`nested-family/v1`) + twin `apps/help-wanted-dashboard/data/nested-family-feed.json` — provider ⊃ model ⊃ {roles, tasks run} with dispatch connection; spec: [NESTED-FAMILY.md](NESTED-FAMILY.md) |
-| Backup-state record | `ops/tracking/backup-state.json` (`backup-state/v1`) + twin `apps/help-wanted-dashboard/data/backup-state-feed.json` — backup export history, drill verdicts, current marker (metadata only); spec: [BACKUP-STATE.md](BACKUP-STATE.md) |
+| Nested-family record | `ops/tracking/nested-family.json` (`nested-family/v1`) + twin `apps/tribute-dashboard/data/nested-family-feed.json` — provider ⊃ model ⊃ {roles, tasks run} with dispatch connection; spec: [NESTED-FAMILY.md](NESTED-FAMILY.md) |
+| Backup-state record | `ops/tracking/backup-state.json` (`backup-state/v1`) + twin `apps/tribute-dashboard/data/backup-state-feed.json` — backup export history, drill verdicts, current marker (metadata only); spec: [BACKUP-STATE.md](BACKUP-STATE.md) |
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` |
 | Tests | `tests/test_repo_tracking.py` |
 

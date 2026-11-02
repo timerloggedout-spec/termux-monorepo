@@ -244,7 +244,7 @@ never blank and never omitted.
    (this JSON is its source; briefs drawn from it carry prizes,
    dates, status, and open gates per event).
 2. **HITL web pages** — the countdowns dashboard
-   (`apps/help-wanted-dashboard/countdowns.html`, via
+   (`apps/tribute-dashboard/countdowns.html`, via
    `challenge-countdowns-feed/v1.1`, whose entries carry `prizes`
    wired from this JSON by the feed collector).
 

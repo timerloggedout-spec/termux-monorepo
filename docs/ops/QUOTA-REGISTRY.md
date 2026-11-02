@@ -17,7 +17,7 @@ Corrections to Render figures, 2026-10-19: 500 Starter pipeline minutes on Hobby
 
 ## Cross-provider management and public dashboards (MSM-018)
 
-The existing registry remains the entitlement and reader index; no competing service or scheduler is introduced. `scripts/provider_quota_coverage.py` derives canonical families from native research endpoints and the catalog registry, then maps provider-specific quota resources. Google explicitly maps to Gemini; the aggregate vendor row does **not** prove every vendor has a quota reader. Missing mappings remain visible gaps. The public artifact is [`provider-quota-coverage.json`](../../apps/help-wanted-dashboard/data/provider-quota-coverage.json).
+The existing registry remains the entitlement and reader index; no competing service or scheduler is introduced. `scripts/provider_quota_coverage.py` derives canonical families from native research endpoints and the catalog registry, then maps provider-specific quota resources. Google explicitly maps to Gemini; the aggregate vendor row does **not** prove every vendor has a quota reader. Missing mappings remain visible gaps. The public artifact is [`provider-quota-coverage.json`](../../apps/tribute-dashboard/data/provider-quota-coverage.json).
 
 **Manager** owns quota-policy review; **ChronoMancer** owns freshness and reset-boundary review. These are responsibility assignments, not proof of persistent workers, account-specific managers or a deployed distributed reservation service. Actual implemented readers are distinguished from manual/unknown capability by source implementation, not merely a documented URL.
 
@@ -28,8 +28,8 @@ The existing web panel, TUI and plain-text snapshot distinguish recent confirmed
 Public quota snapshots are historical attributed reports, **not** an automatically refreshed mirror of private `quota_poll.py` artifacts. The existing deployment workflow regenerates only safe coverage metadata offline; it neither fetches accounts nor publishes poller artifacts. Provider contract CI checks reproducibility and the web/TUI/evaluator regressions:
 
 ```bash
-python3 scripts/provider_quota_coverage.py --output apps/help-wanted-dashboard/data/provider-quota-coverage.json
-python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
+python3 scripts/provider_quota_coverage.py --output apps/tribute-dashboard/data/provider-quota-coverage.json
+python3 scripts/provider_quota_coverage.py --check apps/tribute-dashboard/data/provider-quota-coverage.json
 python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py
 ```
 

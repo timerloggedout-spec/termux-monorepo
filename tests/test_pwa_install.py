@@ -11,7 +11,7 @@ import json
 import re
 from pathlib import Path
 
-APP = Path(__file__).resolve().parents[1] / "apps/help-wanted-dashboard"
+APP = Path(__file__).resolve().parents[1] / "apps/tribute-dashboard"
 
 SHELL_PAGES = [
     "index", "quota", "admin", "oracle", "3l0", "moneyball", "mvt", "doe",

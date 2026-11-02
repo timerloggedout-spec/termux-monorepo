@@ -26,7 +26,7 @@ Recommended control loop:
 - Intended change: reduce planning-lane scheduled starts by roughly 50/day while preserving event-driven `workflow_run` triggers.
 - Review submissions returned by GitHub: **none** at snapshot.
 - Devin Review and CodeRabbit status contexts: success.
-- Four Vercel contexts (help-wanted-dash, help-wanted-oversight, mcp-hub, termux-monorepo): failure URLs indicate build-rate-limit / provider capacity, not a source-code test failure. Treat as non-gating only if repository policy explicitly classifies them that way.
+- Four Vercel contexts (tribute-dash, tribute-oversight, mcp-hub, termux-monorepo): failure URLs indicate build-rate-limit / provider capacity, not a source-code test failure. Treat as non-gating only if repository policy explicitly classifies them that way.
 - Important: **bot status success is not a submitted APPROVED review**. The repo metadata says auto-merge is allowed, but this snapshot does not establish the active branch-protection/ruleset requirements. Therefore, enabling auto-merge before checking protections could merge without a meaningful review if no required review rule applies.
 
 ### Related open PRs that need deliberate triage

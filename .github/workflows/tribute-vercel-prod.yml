@@ -1,10 +1,10 @@
 name: tribute-vercel-prod
 
 # Keeps the public Vercel production URL of the Ops · Tribute dashboard
-# (apps/help-wanted-dashboard) on the current master commit.
+# (apps/tribute-dashboard) on the current master commit.
 #
-# Why this exists: the Vercel projects that serve this page (help-wanted-oversight,
-# help-wanted-dash) build master pushes as *Preview* (their Production Branch is
+# Why this exists: the Vercel projects that serve this page (tribute-oversight,
+# tribute-dash) build master pushes as *Preview* (their Production Branch is
 # not master), so the public *.vercel.app production alias stayed on a
 # 2026-09-19-era build. This workflow promotes master explicitly with
 # `vercel deploy --prod` and stamps data/build.json with the commit it serves.
@@ -37,7 +37,7 @@ jobs:
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      PROJECTS: ${{ github.event.inputs.projects || vars.TRIBUTE_VERCEL_PROJECTS || 'help-wanted-oversight help-wanted-dash' }}
+      PROJECTS: ${{ github.event.inputs.projects || vars.TRIBUTE_VERCEL_PROJECTS || 'tribute-oversight tribute-dash' }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Vercel CLI
@@ -59,7 +59,7 @@ jobs:
             vercel pull --yes --environment=production --token "$VERCEL_TOKEN" || true
             ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
             DEST="$W/${ROOT:-.}"; mkdir -p "$DEST/data"
-            cp -a "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/." "$DEST/"
+            cp -a "$GITHUB_WORKSPACE/apps/tribute-dashboard/." "$DEST/"
             [ -f "$GITHUB_WORKSPACE/docs/ops/generated/tribute-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/tribute-status.json" "$DEST/data/status.json" || true
             [ -f "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json" || true
             printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' \

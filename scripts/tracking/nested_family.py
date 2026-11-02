@@ -18,7 +18,7 @@ fill fields the winner left null (enrichment, never overwrite).
 Identity fields are verbatim; NOT_ESTABLISHED stays literal; outcomes
 are the sources' own (this substrate never scores). Single-writer:
 repo-tracking-collect.yml. Outputs: ops/tracking/nested-family.json +
-apps/help-wanted-dashboard/data/nested-family-feed.json (byte-identical).
+apps/tribute-dashboard/data/nested-family-feed.json (byte-identical).
 """
 from __future__ import annotations
 
@@ -437,7 +437,7 @@ def main() -> int:
     out = json.dumps(feed, indent=1, sort_keys=False) + "\n"
     (ROOT / "ops" / "tracking").mkdir(parents=True, exist_ok=True)
     (ROOT / "ops" / "tracking" / "nested-family.json").write_text(out)
-    dash = ROOT / "apps" / "help-wanted-dashboard" / "data"
+    dash = ROOT / "apps" / "tribute-dashboard" / "data"
     dash.mkdir(parents=True, exist_ok=True)
     (dash / "nested-family-feed.json").write_text(out)
     print(f"nested-family: providers={feed['summary']['providers']} models={feed['summary']['models']} "

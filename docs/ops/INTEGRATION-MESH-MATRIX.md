@@ -401,7 +401,7 @@ triggered the apps.
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
 | Pages | Legacy build from `gh-pages` branch, https enforced, `timerloggedout-spec.github.io/termux-monorepo/` |
-| Environments | 14 (listed §2c) — deployment targets exist for help-wanted-dash / oversight / mcp-hub / termux-monorepo in Preview + Production pairs |
+| Environments | 14 (listed §2c) — deployment targets exist for tribute-dash / oversight / mcp-hub / termux-monorepo in Preview + Production pairs |
 | Deployments (300 sampled) | Mintlify 153 (staging/docs) · Vercel 96 (Preview/Production per app) · GitHub Pages 51 |
 | Branch governance | Ruleset `master-no-rewind` **active** (deletion + non-fast-forward blocked). Classic branch protection on master: **none** (404) — the repo gate + ruleset carry governance instead |
 | Vulnerability alerts | endpoint live (204) · Automated security fixes **disabled** |

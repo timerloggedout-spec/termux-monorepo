@@ -80,4 +80,4 @@ Routes by class: Actions-secret probe (where a repo secret exists — the OpenRo
 - A row is `api-verified` only with a dated firsthand read on record; everything else carries its evidence class or `not-established`.
 - `unclaimed-allocation` flags ONLY on evidence an allocation exists ∧ is not credited — recoverable value, reported same-day.
 - Any card requirement ⇒ `parked-card`, reported, ∅ purchase (owner rule).
-- **Mirror duty (viz PR #2910):** the 🚦 live index (quota.html) fetches this feed from master with `apps/help-wanted-dashboard/data/allocation-verification.json` as fallback mirror — every census refresh PR MUST update the mirror byte-identical to `ops/quota/allocation-verification.json` (guard-tested viz-side).
+- **Mirror duty (viz PR #2910):** the 🚦 live index (quota.html) fetches this feed from master with `apps/tribute-dashboard/data/allocation-verification.json` as fallback mirror — every census refresh PR MUST update the mirror byte-identical to `ops/quota/allocation-verification.json` (guard-tested viz-side).

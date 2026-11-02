@@ -11,7 +11,7 @@ name: quota-event-audit
 #
 # Publishing leg (owner directive 2026-11-01: the Event Audit is
 # published .html): the sync-twin job keeps the dashboard twin
-# apps/help-wanted-dashboard/data/rate-limit-event-audits.json
+# apps/tribute-dashboard/data/rate-limit-event-audits.json
 # byte-identical to the record (single-writer, Swarm app token,
 # direct commit - the twin path is not a trigger path, so no loop).
 # It runs only when the coverage gate passes: an unaudited register
@@ -75,13 +75,13 @@ jobs:
         run: |
           set -euo pipefail
           cp ops/quota/rate-limit-event-audits.json \
-            apps/help-wanted-dashboard/data/rate-limit-event-audits.json
+            apps/tribute-dashboard/data/rate-limit-event-audits.json
           cmp ops/quota/rate-limit-event-audits.json \
-            apps/help-wanted-dashboard/data/rate-limit-event-audits.json
+            apps/tribute-dashboard/data/rate-limit-event-audits.json
       - name: Commit twin to master (single-writer)
         run: |
           set -euo pipefail
-          git add apps/help-wanted-dashboard/data/rate-limit-event-audits.json
+          git add apps/tribute-dashboard/data/rate-limit-event-audits.json
           if git diff --cached --quiet; then
             echo "twin already identical - nothing to commit" >> "$GITHUB_STEP_SUMMARY"
             exit 0

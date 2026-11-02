@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "apps/help-wanted-dashboard/data/free-tier-value.json"
-PAGE = ROOT / "apps/help-wanted-dashboard/free-tier-value.html"
+DATA = ROOT / "apps/tribute-dashboard/data/free-tier-value.json"
+PAGE = ROOT / "apps/tribute-dashboard/free-tier-value.html"
 DOC = ROOT / "docs/ops/FREE-TIER-USE-VALUE-BOARD.md"
 
 

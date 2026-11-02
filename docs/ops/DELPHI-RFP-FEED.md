@@ -7,7 +7,7 @@ data contract for that page; the Web Design lane renders it. One
 feed, one collector — no parallel shapes.
 
 - **Schema:** `delphi-rfp-feed/v1`
-- **Canonical file:** `apps/help-wanted-dashboard/data/delphi-rfp-feed.json`
+- **Canonical file:** `apps/tribute-dashboard/data/delphi-rfp-feed.json`
 - **Collector:** `scripts/delphi/rfp_flood_feed.py` (pure transform,
   stdlib) over a cache written by `scripts/delphi/rfp_flood_fetch.py`
 - **Refresh:** `.github/workflows/delphi-rfp-feed-collect.yml` —

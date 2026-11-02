@@ -10,7 +10,7 @@ WF = ROOT / ".github/workflows/quota-pages-visual.yml"
 def test_visual_workflow_shape():
     text = WF.read_text()
     for page in ("quota.html", "quota-usage.html", "quota-graphs.html"):
-        assert "apps/help-wanted-dashboard/" + page in text
+        assert "apps/tribute-dashboard/" + page in text
     assert "--window-size=390,844" in text
     assert "--window-size=1280,900" in text
     assert "upload-artifact" in text

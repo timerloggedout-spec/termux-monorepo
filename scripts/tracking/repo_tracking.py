@@ -24,7 +24,7 @@ docs/ops/REPO-TRACKING.md):
 Outputs (single-writer = .github/workflows/repo-tracking-collect.yml):
   ops/tracking/tracking.json                       canonical feed
   ops/tracking/tracking.md                         human board (ops doc surface)
-  apps/help-wanted-dashboard/data/tracking-feed.json  desk/viz render copy
+  apps/tribute-dashboard/data/tracking-feed.json  desk/viz render copy
 
 Honesty rules (surface-feeds pattern): a value no source holds is emitted
 as NOT_ESTABLISHED / a named gap, never synthesized. `next` is derived in
@@ -512,7 +512,7 @@ def main() -> int:
     out = json.dumps(feed, indent=1, sort_keys=False) + "\n"
     (ROOT / "ops" / "tracking" / "tracking.json").write_text(out)
     (ROOT / "ops" / "tracking" / "tracking.md").write_text(render_md(feed))
-    dash = ROOT / "apps" / "help-wanted-dashboard" / "data"
+    dash = ROOT / "apps" / "tribute-dashboard" / "data"
     dash.mkdir(parents=True, exist_ok=True)
     (dash / "tracking-feed.json").write_text(out)
     print(f"tracking: rows={feed['summary']['rows']} gaps={len(feed['gaps'])}")

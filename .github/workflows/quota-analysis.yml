@@ -18,9 +18,9 @@ on:
       - "scripts/provider_quota_coverage.py"
       - "tests/test_quota_*.py"
       - "tests/test_provider_quota_coverage.py"
-      - "apps/help-wanted-dashboard/data/quota*.json"
-      - "apps/help-wanted-dashboard/data/provider-quota-coverage.json"
-      - "apps/help-wanted-dashboard/quota.txt"
+      - "apps/tribute-dashboard/data/quota*.json"
+      - "apps/tribute-dashboard/data/provider-quota-coverage.json"
+      - "apps/tribute-dashboard/quota.txt"
       - "docs/ops/generated/quota-status.json"
       - "llm_api_hub/**"
       - ".github/workflows/quota-analysis.yml"
@@ -35,9 +35,9 @@ on:
       - "scripts/provider_quota_coverage.py"
       - "tests/test_quota_*.py"
       - "tests/test_provider_quota_coverage.py"
-      - "apps/help-wanted-dashboard/data/quota*.json"
-      - "apps/help-wanted-dashboard/data/provider-quota-coverage.json"
-      - "apps/help-wanted-dashboard/quota.txt"
+      - "apps/tribute-dashboard/data/quota*.json"
+      - "apps/tribute-dashboard/data/provider-quota-coverage.json"
+      - "apps/tribute-dashboard/quota.txt"
       - "docs/ops/generated/quota-status.json"
       - "llm_api_hub/**"
       - ".github/workflows/quota-analysis.yml"
@@ -73,7 +73,7 @@ jobs:
           tests/test_provider_quota_coverage.py
       - name: Snapshot pair identical + complete against the registry
         run: |
-          cmp docs/ops/generated/quota-status.json apps/help-wanted-dashboard/data/quota.json
+          cmp docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json
           python3 - <<'PYEOF'
           import json
           snap = json.load(open("docs/ops/generated/quota-status.json"))
@@ -84,4 +84,4 @@ jobs:
           print(f"snapshot complete: {len(rows)} rows == {len(want)} registry records")
           PYEOF
       - name: Provider-quota coverage is current
-        run: python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
+        run: python3 scripts/provider_quota_coverage.py --check apps/tribute-dashboard/data/provider-quota-coverage.json

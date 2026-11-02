@@ -113,7 +113,7 @@ Acceptance additions: (d) v2 fields render per above on all 7 events;
 ## Forbidden surfaces (acceptance scan)
 
 `win_probability` / `metrics_internal` must return **zero hits** in:
-`apps/help-wanted-dashboard/**` public pages and `data/*.json` feeds
+`apps/tribute-dashboard/**` public pages and `data/*.json` feeds
 **except** the admin view surface itself and its designated feed
 `data/challenge-admin-metrics.json`, the opportunity ledger
 (`ops/challenge/opportunity_ledger.json` + its doc), challenge briefs

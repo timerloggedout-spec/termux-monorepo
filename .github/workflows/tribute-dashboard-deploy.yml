@@ -1,5 +1,5 @@
 # Cross-repo publish: serialize the mirror commit so GitHub Pages deployment completes before landing navigation is promoted.
-name: help-wanted-dashboard-deploy
+name: tribute-dashboard-deploy
 
 # marketing (/) ≠ Tribute (/tribute/) ≠ legacy alias (/help-wanted/) ≠ Matrix (/matrix/) ≠ project hub (/termux-monorepo/)
 
@@ -7,14 +7,14 @@ on:
   push:
     branches: [master]
     paths:
-      - "apps/help-wanted-dashboard/**"
+      - "apps/tribute-dashboard/**"
       - "apps/project-pages-hub/**"
       - "docs/ops/generated/tribute-status.json"
       - "docs/ops/generated/lane-matrix-status.json"
-      - ".github/workflows/help-wanted-dashboard-deploy.yml"
-      - ".github/workflows/help-wanted-dashboard-preview.yml"
+      - ".github/workflows/tribute-dashboard-deploy.yml"
+      - ".github/workflows/tribute-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"
-      - "scripts/ci/verify_help_wanted_dashboard.py"
+      - "scripts/ci/verify_tribute_dashboard.py"
   workflow_dispatch:
     inputs:
       target:
@@ -99,24 +99,24 @@ jobs:
         run: |
           mkdir -p _site/data
           cp apps/project-pages-hub/index.html _site/index.html
-          cp apps/help-wanted-dashboard/matrix.html _site/matrix.html
-          cp apps/help-wanted-dashboard/dashboard.css _site/dashboard.css
-          cp apps/help-wanted-dashboard/site-nav.js _site/site-nav.js
+          cp apps/tribute-dashboard/matrix.html _site/matrix.html
+          cp apps/tribute-dashboard/dashboard.css _site/dashboard.css
+          cp apps/tribute-dashboard/site-nav.js _site/site-nav.js
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
           fi
           touch _site/.nojekyll
       - name: Opt gh-pages out of Vercel Git deployments
         # gh-pages is a force-orphaned static Pages artifact, not an app source.
-        # Every Vercel project linked to this repo (mcp-hub, help-wanted-dash,
-        # help-wanted-oversight, termux-monorepo) otherwise tries a Preview build
+        # Every Vercel project linked to this repo (mcp-hub, tribute-dash,
+        # tribute-oversight, termux-monorepo) otherwise tries a Preview build
         # of it and fails because its Root Directory is absent here. Drop a
         # vercel.json at the root and at every known lane Root Directory so
         # Vercel skips the branch (git.deploymentEnabled) and, as a fallback,
         # cancels instead of failing (ignoreCommand). Additive only; no app files.
         run: |
           set -euo pipefail
-          for d in . mcp-hub demo-portal/public deepseek-cli apps/help-wanted-dashboard apps/help-wanted-oversight; do
+          for d in . mcp-hub demo-portal/public deepseek-cli apps/tribute-dashboard apps/tribute-oversight; do
             mkdir -p "_site/$d"
             printf '%s\n' '{' '  "git": { "deploymentEnabled": false },' '  "ignoreCommand": "exit 0"' '}' > "_site/$d/vercel.json"
           done
@@ -140,18 +140,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Refresh offline provider quota coverage
-        run: python3 scripts/provider_quota_coverage.py --output apps/help-wanted-dashboard/data/provider-quota-coverage.json
+        run: python3 scripts/provider_quota_coverage.py --output apps/tribute-dashboard/data/provider-quota-coverage.json
       - name: Refresh provenance-aware dashboard snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           python3 scripts/ci/tribute_status.py
-          python3 scripts/ci/verify_help_wanted_dashboard.py
+          python3 scripts/ci/verify_tribute_dashboard.py
       - name: Prepare Tribute subtree
         run: |
           mkdir -p _tribute/data
-          cp -a apps/help-wanted-dashboard/. _tribute/
+          cp -a apps/tribute-dashboard/. _tribute/
       - name: Stamp version identities and content hashes
         run: |
           set -euo pipefail
@@ -170,9 +170,9 @@ jobs:
           mkdir -p _user_site/tribute _user_site/help-wanted _user_site/matrix/data
           cp -a _tribute/. _user_site/tribute/
           cp -a _tribute/. _user_site/help-wanted/
-          cp apps/help-wanted-dashboard/matrix.html _user_site/matrix/index.html
-          cp apps/help-wanted-dashboard/dashboard.css _user_site/matrix/dashboard.css
-          cp apps/help-wanted-dashboard/site-nav.js _user_site/matrix/site-nav.js
+          cp apps/tribute-dashboard/matrix.html _user_site/matrix/index.html
+          cp apps/tribute-dashboard/dashboard.css _user_site/matrix/dashboard.css
+          cp apps/tribute-dashboard/site-nav.js _user_site/matrix/site-nav.js
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json _user_site/matrix/data/lane-matrix-status.json
           fi
@@ -202,22 +202,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Refresh offline provider quota coverage
-        run: python3 scripts/provider_quota_coverage.py --output apps/help-wanted-dashboard/data/provider-quota-coverage.json
+        run: python3 scripts/provider_quota_coverage.py --output apps/tribute-dashboard/data/provider-quota-coverage.json
       - name: Refresh provenance-aware dashboard snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           python3 scripts/ci/tribute_status.py
-          python3 scripts/ci/verify_help_wanted_dashboard.py
+          python3 scripts/ci/verify_tribute_dashboard.py
       - name: Sync status snapshot
         run: |
-          mkdir -p apps/help-wanted-dashboard/data
+          mkdir -p apps/tribute-dashboard/data
           if [ -f docs/ops/generated/tribute-status.json ]; then
-            cp docs/ops/generated/tribute-status.json apps/help-wanted-dashboard/data/status.json
+            cp docs/ops/generated/tribute-status.json apps/tribute-dashboard/data/status.json
           fi
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
-            cp docs/ops/generated/lane-matrix-status.json apps/help-wanted-dashboard/data/lane-matrix-status.json
+            cp docs/ops/generated/lane-matrix-status.json apps/tribute-dashboard/data/lane-matrix-status.json
           fi
       - name: Install Vercel CLI
         run: npm i -g vercel@latest
@@ -232,7 +232,7 @@ jobs:
             exit 0
           fi
           ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
-          cd apps/help-wanted-dashboard
+          cd apps/tribute-dashboard
           set +e
           vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt
           deploy_rc=${PIPESTATUS[0]}

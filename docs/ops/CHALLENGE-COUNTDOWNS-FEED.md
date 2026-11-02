@@ -1,11 +1,11 @@
 # Challenge Countdowns Feed — contract
 
 Schema: `challenge-countdowns-feed/v1.1`
-File: `apps/help-wanted-dashboard/data/challenge-countdowns-feed.json`
+File: `apps/tribute-dashboard/data/challenge-countdowns-feed.json`
 Collector: `scripts/dashboards/challenge_countdowns_feed.py`
 Refresh: `.github/workflows/challenge-countdowns-feed-collect.yml`
 (refresh-by-PR; push-triggered on the source log)
-Consumer: `apps/help-wanted-dashboard/countdowns.html`
+Consumer: `apps/tribute-dashboard/countdowns.html`
 Requirement: issue #1880 (dashboard surface, requirement 3).
 
 ## Source of truth

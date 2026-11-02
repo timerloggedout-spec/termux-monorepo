@@ -27,7 +27,7 @@ SUCCESS_CONCLUSIONS = {"success", "skipped", "neutral"}
 def api_get(path: str) -> tuple[Any | None, str | None]:
     headers = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "termux-help-wanted-tribute-audit",
+        "User-Agent": "termux-tribute-audit",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     token = (

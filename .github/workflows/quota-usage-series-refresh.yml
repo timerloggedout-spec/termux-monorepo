@@ -7,6 +7,11 @@ name: quota-usage-series-refresh
 # (2026-10-31) while the quota pages presented it as current.
 # SINGLE-WRITER for ops/quota/usage-series.json +
 # apps/help-wanted-dashboard/data/usage-series.json (byte-identical mirror).
+# Also mirrors the quota-usage pack to its dashboard twin
+# (apps/help-wanted-dashboard/data/quota-usage.json, byte-identical;
+# the pack itself stays the Quota Specialist's hand-built source -
+# this workflow only mirrors it, closing the hand-sync gap PR #3545
+# covered once by hand).
 # Triggers: push on any generator input + manual dispatch. NO schedule:
 # fleet schedules are thinned by doctrine and by the 2026-10-28 stall, and
 # a derived pack only changes when an input changes.
@@ -62,17 +67,20 @@ jobs:
           python3 -B scripts/quota_usage_series.py --root .
           cp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
           cmp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
+          cp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
+          cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
       - name: Commit generated artifacts to master (single-writer)
         run: |
           set -euo pipefail
           git add ops/quota/usage-series.json \
-            apps/help-wanted-dashboard/data/usage-series.json
+            apps/help-wanted-dashboard/data/usage-series.json \
+            apps/help-wanted-dashboard/data/quota-usage.json
           if git diff --cached --quiet; then
             echo 'usage-series unchanged; no commit'
             exit 0
           fi
           git config user.name 'quota-usage-series-refresh'
           git config user.email 'actions@github.com'
-          git commit -m 'ops(quota): refresh usage-series pack (auto-derived)'
+          git commit -m 'ops(quota): refresh usage-series pack + quota-usage mirror (auto-derived)'
           git pull --rebase origin master
           git push origin HEAD:master

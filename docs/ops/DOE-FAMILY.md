@@ -309,6 +309,12 @@ are levels, kinds are factors.
    manifest / git_author / app_bot) is UNCORROBORATED — held out of
    actor weights and flagged, never taken at face value. Applies
    family-wide, including nested MVT and the MoneyBall feed.
+   Consumption shape: Telemetry's attribution/1.4 `corroboration`
+   block (PR #3469) — states {corroborated: consume · single-leg:
+   hold/flag · disputed: exclude from face-value scoring ·
+   unattributed: no actor weight}; app_bot is a transport leg,
+   never an authorship conflict. Mapping of record:
+   DOE-SCORING-INTAKE §Attribution corroboration.
 
 ## Definitions of record
 

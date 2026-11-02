@@ -124,6 +124,30 @@ class CandidateAndPatchPreflight(unittest.TestCase):
                 mock.patch.object(contribute, "ensure_fork", side_effect=AssertionError("no fork")):
             self.assertEqual(contribute.main(), 0)
 
+    def test_delivery_revalidation_blocks_closed_issue(self):
+        with mock.patch.object(contribute, "_api", return_value={"state": "closed"}):
+            meta, pf = contribute.revalidate_issue("o", "r", 1)
+        self.assertEqual(meta["state"], "closed")
+        self.assertFalse(pf["eligible"])
+        self.assertIn("closed", pf["reasons"])
+
+    def test_delivery_revalidation_fails_closed_on_unreadable_issue(self):
+        with mock.patch.object(contribute, "_api", side_effect=RuntimeError("API unavailable")):
+            meta, pf = contribute.revalidate_issue("o", "r", 1)
+        self.assertIsNone(meta)
+        self.assertFalse(pf["eligible"])
+        self.assertTrue(pf["reasons"][0].startswith("issue_revalidation_failed:"))
+
+    def test_delivery_revalidation_rechecks_assignment_preflight(self):
+        current = {"state": "open", "assignees": [{"login": "another-contributor"}]}
+        with mock.patch.object(contribute, "_api", return_value=current), \
+                mock.patch.object(contribute, "preflight_issue",
+                                  return_value={"eligible": False, "reasons": ["claimed_by_other"]}) as pf:
+            meta, result = contribute.revalidate_issue("o", "r", 1)
+        pf.assert_called_once_with("o", "r", 1, current)
+        self.assertFalse(result["eligible"])
+        self.assertEqual(result["reasons"], ["claimed_by_other"])
+
 
 if __name__ == "__main__":
     unittest.main()

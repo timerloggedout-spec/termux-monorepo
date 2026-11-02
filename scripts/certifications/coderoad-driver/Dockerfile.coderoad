@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libatspi2.0-0 libuuid1 libsecret-1-0 libasound2 fonts-liberation \
       libatk1.0-0 libatk-bridge2.0-0 libcairo2 libpango-1.0-0 libdbus-1-3 \
       libdrm2 libgbm1 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 \
-      libxkbfile1 libxrandr2 libexpat1 \
+      libxkbfile1 libxrandr2 libexpat1 libatomic1 libxshmfence1 \
     && rm -rf /var/lib/apt/lists/*
 
 FROM libs AS fetch
@@ -44,6 +44,12 @@ RUN mkdir -p /opt/vscode \
     && tar -xzf /tmp/code.tgz -C /opt/vscode \
     && ln -s /opt/vscode/VSCode-linux-x64/bin/code /usr/local/bin/code \
     && ls /opt/vscode/VSCode-linux-x64/bin
+
+FROM extract AS probe-ldd
+
+USER root
+RUN ldd /opt/vscode/VSCode-linux-x64/code > /tmp/ldd.txt 2>&1; \
+    ! grep -q "not found" /tmp/ldd.txt
 
 FROM extract AS vscode
 

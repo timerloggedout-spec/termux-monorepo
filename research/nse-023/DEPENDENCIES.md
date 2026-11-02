@@ -11,7 +11,7 @@ recorded, not smoothed).
 | Library | Pin revision | Toolchain (pin's own) | License | Provenance | Status |
 |---|---|---|---|---|---|
 | Batteries (fork) | `36cc05ca2d0e469bfbeea9437f460e19238e885e` | `leanprover/lean4:v4.34.0-rc1` | Apache-2.0 | `timerloggedout-spec/batteries_fork` (fork of leanprover-community/batteries); submodule `refTemplates/smods/batteries_fork` | ACTIVE — P-001 PASS against this pin |
-| Mathlib | `cc8b65263ab8ef05dd813bccd999400f0303fdcc` | `leanprover/lean4:v4.36.0-rc2` | Apache-2.0 | upstream `leanprover-community/mathlib4`, master HEAD as retrieved 2026-11-02 (commit dated 2026-11-02T13:31:39Z); pin is the immutable SHA, not the moving branch | REGISTERED — compile proof = packet P-002 (oracle Mathlib leg) |
+| Mathlib | `cc8b65263ab8ef05dd813bccd999400f0303fdcc` | `leanprover/lean4:v4.36.0-rc2` | Apache-2.0 | upstream `leanprover-community/mathlib4`, master HEAD as retrieved 2026-11-02 (commit dated 2026-11-02T13:31:39Z); pin is the immutable SHA, not the moving branch | ACTIVE — P-002 PASS against this pin (run 41462666934) |
 | (further libraries) | — | — | — | register open; admission = pin + this row + dual-gate | ∅ yet |
 
 Notes:

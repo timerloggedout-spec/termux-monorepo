@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T08:16:35.495423+00:00",
+ "census_at_utc": "2026-11-02T08:53:50.079701+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,13 +13,13 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 2888,
+  "total": 2906,
   "stale": 878,
   "orphan_no_assoc_PR": 349,
   "stale_and_orphan": 85
  },
  "prs": {
-  "total": 3164,
+  "total": 3192,
   "open": 177,
   "open_draft": 23,
   "open_draft_share": 0.1299,
@@ -82,7 +82,7 @@
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 31.8
+    "age_days": 31.9
    },
    {
     "number": 1301,
@@ -124,13 +124,13 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 2.3
+    "age_days": 2.4
    },
    {
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 1.0
+    "age_days": 1.1
    },
    {
     "number": 3034,
@@ -163,25 +163,23 @@
     "age_days": 0.5
    }
   ],
-  "merged": 2513,
+  "merged": 2541,
   "closed_unmerged": 474,
   "open_no_closing_ref": 171,
   "open_unlinked_issue_target": 144,
-  "open_unlinked_any_ref": 121,
-  "merged_no_closing_ref": 2484,
-  "merged_unlinked_issue_target": 1449,
-  "merged_unlinked_any_ref": 810,
+  "open_unlinked_any_ref": 120,
+  "merged_no_closing_ref": 2512,
+  "merged_unlinked_issue_target": 1465,
+  "merged_unlinked_any_ref": 819,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2438,
-  "open_head_branch_missing": [
-   3635
-  ]
+  "merged_head_branch_residual_name_match": 2466,
+  "open_head_branch_missing": []
  },
  "issues": {
-  "total": 467,
-  "open": 386,
-  "open_surface_unlinked": 170,
-  "open_unlinked_strict": 151
+  "total": 473,
+  "open": 392,
+  "open_surface_unlinked": 171,
+  "open_unlinked_strict": 152
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [

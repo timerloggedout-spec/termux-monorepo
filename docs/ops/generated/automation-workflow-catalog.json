@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "419f51d79c81ed3e959aa5c99d196803744d1779add53146ca2227f81c825bf3",
-  "workflow_count": 266,
+  "source_fingerprint": "676a27be9563cc93185e20681d154c0bed24b8eb071f81bebffee83674ec939c",
+  "workflow_count": 267,
   "workflows": [
     {
       "action_pins": [],
@@ -3784,6 +3784,22 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "screenshots"
+      ],
+      "name": "quota-pages-visual",
+      "path": ".github/workflows/quota-pages-visual.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

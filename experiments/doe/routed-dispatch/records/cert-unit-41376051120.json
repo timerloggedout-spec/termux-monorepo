@@ -1,0 +1,56 @@
+{
+  "baseline_sha": "a2e1f456d8bf9fe8a51ba940e700ab4d21952bb8",
+  "candidate_sha": "a2e1f456d8bf9fe8a51ba940e700ab4d21952bb8",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41376051120"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "certifications-unit"
+  },
+  "observed_at": "2026-11-02T02:10:16Z",
+  "origin": "live",
+  "outcome": "cert unit 061 verdict ok=True",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "cohere",
+    "instance": {
+      "context": "certifications-unit l1-relational-databases-v9/061",
+      "instance_key": "7434577f5900e36626447c37e6a283fe1c03f1c1538e64e1228cfae64f74e9da",
+      "model": "c4ai-aya-expanse-32b",
+      "moniker": "optimizations-assurance",
+      "provider": "cohere",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "scripts/certifications/run_unit.py",
+        "sha256": "c34eb7290dfee8acfb9d1fe4d960310d6f8cc50c1282dbec8d97a3a99617dd16"
+      },
+      "tools": {
+        "ref": ".github/workflows/cert-unit.yml",
+        "sha256": "9b82d213505626ca6b8092710d76551309af89c07cecbcfe389a9e0597d23d68"
+      }
+    },
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "c4ai-aya-expanse-32b",
+    "provider": "cohere"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

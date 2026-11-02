@@ -23,6 +23,7 @@ Use backticks or plain text for display. Live triggers remain the original handl
 | FELO contributor lane | `feloForge` | non-callable display | Provider/research/inference contributor; callable only through configured adapters |
 | Hugging Face contributor lane | `hfFoundry` | non-callable display | Hub/model/dataset/evaluation contributor; callable only through configured adapters |
 | Contributor-role coordinator | `roleMesh` | non-callable display | Cross-provider role/provenance coordination; no provider identity implied |
+| Recon 🏅 (fleet forensic recon lane) | `Archaeo · Oracle` | non-callable display (side chat) | **Owner-issued** (2026-11-01) on the lane's AppID hunt verdicts: a "Fleet" GitHub App NEVER-EXISTED on the traceable record, and the Fleet APK was BORN-KEYLESS (production keystore never existed; v0.1.0 signed ephemeral-debug). *Archaeo* digs the record; *Oracle* speaks the verdict. **Collision flag:** the `Oracle` token is adjacent to Delphi Oracle (the D0/Ops scoring surface) — no exact collision (∅ `Archaeo`/`Oracle` in this roster or the registration registry at issuance); mitigation: the paired form is always written in full and bare `Oracle` never denotes this lane (bare Oracle = Delphi Oracle). Display only — do **not** `@`-mention; no GitHub actor identity implied; ∅ marks/alts issued. |
 
 ## Contributor lanes and role expansion
 

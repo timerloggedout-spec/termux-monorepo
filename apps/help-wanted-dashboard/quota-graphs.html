@@ -68,9 +68,10 @@ function render(){
   const axes=(pack&&pack.axes)||{};
   const list=axes[axis]||[];
   document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.axis===axis?'true':'false'));
-  $('graphs-summary').textContent=pack?('provider '+(axes.provider||[]).length+' series · model '+(axes.model||[]).length+' series · service '+(axes.service||[]).length+' series · events '+(axes.events||[]).length+' series'):'Pack unavailable';
+  $('graphs-summary').textContent=pack?('provider '+(axes.provider||[]).length+' series · model '+(axes.model||[]).length+' series · service '+(axes.service||[]).length+' series · events '+(axes.events||[]).length+' series'+(pack.coverage?(' · coverage: '+pack.coverage.providers_populated+'/'+pack.coverage.providers_total+' providers populated, '+pack.coverage.providers_gap+' gap') :'')):'Pack unavailable';
   $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':(axis==='events'?'<div class="card"><p class="muted">Recorded rate-limit incidents per bucket (register: ops/quota/rate-limit-events.json, append-only). No recent markers means no recorded incidents - the register is incident-driven, not a live probe.</p><p><a href="./quota-event-audits.html">Event audits →</a> - findings, coverage and improvements from this register.</p></div>':'');
   $('series-grid').innerHTML=list.length?list.map(s=>{
+    if(s.kind==='gap')return '<div class="card"><div class="label">'+esc(s.title)+'<span class="chip">GAP</span></div><p class="muted">No stamped usage yet - this provider is in the registry population (ALL-providers denominator) with no measured series. Absence is shown, not omitted.</p><p class="muted">Source: '+esc(s.provenance||'usage-series pack coverage')+'</p></div>';
     const n=(s.points||[]).length;
     const sStale=!!s.last_point_at&&((Date.now()-new Date(s.last_point_at).getTime())>48*3600*1000);
     const ctx=s.context?'<p class="muted">Context: plan target flow '+esc(s.context.target_flow_per_min)+'/min ('+esc(s.context.source)+') — context only, not plotted as usage.</p>':'';

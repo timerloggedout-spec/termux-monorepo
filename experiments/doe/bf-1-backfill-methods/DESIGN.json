@@ -1,0 +1,27 @@
+{
+ "campaign_id": "bf-1-backfill-methods",
+ "family": "doe",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "admitted_implementing",
+ "moniker": "doe-expert",
+ "owner_basis": "Owner trigger 2026-11-01: competing backfilling v-layers, continuous, per DOE-FAMILY rule 8 (backfill doctrine). Backfill methods are themselves method versions: they compete, are compared version-over-version, and are culled/promoted only at significance.",
+ "corpora": {
+  "provenance_attribution_set_repo_side": "EXPERIMENT records under experiments/doe/*/records/ (the repo-side set carrying configured-instance stamps that Provenance attribution consumes). Extension not yet wired: the Neon HindSight ledger.",
+  "routed_dispatch_records": "experiments/doe/routed-dispatch/records/ + desk-feed traversals[].provider_usage[] stamps (join source)."
+ },
+ "methods_in_competition": {
+  "bf-strict v1": "Intake-spec rule: a unit scores only with the full configured-instance tuple {provider, model@version, system_prompt ref+sha, tools ref+sha, role, moniker, context} or a precomputed instance_key; otherwise NOT_ESTABLISHED (observational).",
+  "bf-partial v1": "Subset key {provider, model, role} when the full tuple is absent; scored but marked partial. Competes on coverage; fidelity risk = collisions (two strict keys under one partial key), measured on the gold subset.",
+  "bf-join v1": "bf-strict keying plus a desk-feed join (provider + dispatch date) that recovers outcome fills {first_pass_success, rework_cycles, wall_time, stalled_action_required, pr} where the feed carries them. Competes on outcome completeness at strict fidelity."
+ },
+ "responses": ["scored_units + coverage per method", "distinct instance keys per method", "partial collisions on the gold subset", "join outcome fills recovered + outcome completeness", "NOT_ESTABLISHED counts"],
+ "decision_rule": "No cull/promote before the standing gate (ESTABLISHED: n>=30 per compared class, minority>=10, p<.05). Readouts name candidates as watch-only until then. Comparison lines run continuously (weekly automation + on corpus change).",
+ "automation": {
+  "runner": "experiments/doe/bf-1-backfill-methods/scripts/backfill_compare.py",
+  "workflow": ".github/workflows/doe-bf1-compare.yml",
+  "cadence": "weekly + workflow_dispatch",
+  "emits": "records/comparison-NNNN.json + records/SUMMARY.json (append-only comparison history = the version-comparison line)"
+ },
+ "registration": {"preregistered_in_repo": true, "recorded": "2026-11-01"}
+}

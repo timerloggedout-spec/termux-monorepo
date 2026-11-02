@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-02T10:37:00Z",
+  "generated_at": "2026-11-02T14:02:00Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -2739,15 +2739,15 @@
       "entry": "Repo-Story",
       "project": "Repo-Story \u2014 PR/repo-history narrative (I1 of record, PR #2481)",
       "artifact_repo": "timerloggedout-spec/repo-story",
-      "status": "in-progress",
+      "status": "shipped",
       "stages": {
         "spec": "done",
         "desk": "done",
-        "builder": "gated",
-        "pr": "pending",
-        "ci": "pending",
-        "merge": "pending",
-        "sync": "pending"
+        "builder": "done",
+        "pr": "done",
+        "ci": "done",
+        "merge": "done",
+        "sync": "done"
       },
       "evidence": {
         "issue": 3018,
@@ -2761,16 +2761,33 @@
         "oracle_pass": "Delphi Oracle pass CLOSED \u21d2 SPEC v2 folded (\u0394A\u2013\u0394I); C8 gate held (SPEC v2 \u00a79)",
         "build_route": "fleet swarm via Scout \u2014 Swarm lane 6628d41d-9519-4881-9063-3afe501df815 execution lead (owner correction 2026-11-01 02:31 PT)",
         "appid": "Termux Fleet RepoStory \u2014 App 5565297, slug termux-fleet-repostory, installation 177463385 (repo-story ONLY), record PR #3038 (owner rule: new AppID + new repo at build start)",
-        "dispatch_stamp": "provider Gemini (Index arm gemini.build_dispatch) via Fleet Swarm/Scout \u2014 Swarm lane stamp 2026-11-01; session_id \u2205 yet (completes on first run); model@version NOT ESTABLISHED pre-run (resolved at dispatch by run-gemini-cli); machinery repo-story PR #1 merged 71df1cfc909a; build issue repo-story #2; gate = GEMINI_API_KEY provisioning for repo-story \u21a6 AppID lane 7075f9c0 (repo-story secret names today: TERMUX_FLEET_REPOSTORY_PRIVATE_KEY only \u2014 desk-verified)"
+        "dispatch_stamp": "provider Gemini (Index arm gemini.build_dispatch) via Fleet Swarm/Scout \u2014 Swarm lane stamp 2026-11-01; session_id \u2205 yet (completes on first run); model@version NOT ESTABLISHED pre-run (resolved at dispatch by run-gemini-cli); machinery repo-story PR #1 merged 71df1cfc909a; build issue repo-story #2; gate = GEMINI_API_KEY provisioning for repo-story \u21a6 AppID lane 7075f9c0 (repo-story secret names today: TERMUX_FLEET_REPOSTORY_PRIVATE_KEY only \u2014 desk-verified)",
+        "v0_closeout": {
+          "pr": 4,
+          "merge_sha": "d2b23dfe7801",
+          "pr_author": "termux-fleet-repostory[bot]",
+          "acceptance": "\u00a78 PASS (mgr comment 6574397646)",
+          "builder": "seat-build Muse Spark via Swarm/Scout capability dispatch",
+          "dispatch_id": "build-repo-story-v0-20261102",
+          "gemini_rejoin": {
+            "run": 41426129878,
+            "result": "SUCCESS (fleet-free key restored + pin 3.5-flash-lite)",
+            "candidate_pr": 6,
+            "disposition": "RECORD-ONLY closed-unmerged (verify lacks claim-support, comment 6575930182)",
+            "capacity": "Gemini capacity restored (Provisioning, fleet-free project)"
+          },
+          "website": "served-verified",
+          "appid": "5565297 \u00b7 install 177463385 \u00b7 record PR #3038"
+        }
       },
-      "next": "AppID lane provisions GEMINI_API_KEY for repo-story \u21d2 Swarm lane fires the Gemini build arm on repo-story issue #2 \u21d2 PR(s) per SPEC v2.1 @6aa130f15438 \u21d2 desk stamps session_id + model@version on first run \u2227 provenance-verifies PRs \u21d2 manager 8cc20168 oversight.",
+      "next": "v0 SHIPPED. Residue = v1 deferrals {labeled-set P/R \u00b7 claim-support sampling \u00b7 scale fixture \u00b7 LLM adapter} \u2014 \u2205 live gate.",
       "provider_usage": [
         {
           "provider": "Gemini \u2014 via Fleet Swarm/Scout (Index arm gemini.build_dispatch)",
           "scope": "Repo-Story build per SPEC v2.1 tidy (oracle-folded; dispatch basis = corrected SPEC v1.1)",
           "via": "Swarm lane 6628d41d dispatch stamp 2026-11-01; machinery repo-story PR #1 merged 71df1cfc909a; build issue repo-story #2",
           "session_id": null,
-          "state": "armed \u2014 gated on GEMINI_API_KEY provisioning for repo-story (AppID lane 7075f9c0); session NOT ESTABLISHED",
+          "state": "completed \u2014 rejoin leg run 41426129878 SUCCESS; candidate PR #6 RECORD-ONLY closed-unmerged (verify lacks claim-support); capacity restored",
           "usage": {
             "value": null,
             "unit": null,
@@ -2791,7 +2808,18 @@
             "note": "Swarm/scout dispatch not yet surfaced \u21d2 refs cannot be hashed; \u2205 fabricated."
           },
           "instance_key": null,
-          "availability": "build leg OUT: gemini-cli build dispatch unavailable (Swarm via manager, 2026-11-01 05:49 PT) until recovery probe PASS; recheck leg status before firing build on key landing"
+          "availability": "restored (fleet-free project key + pin 3.5-flash-lite, Provisioning)"
+        },
+        {
+          "provider": "Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch",
+          "scope": "Repo-Story v0 build (pr_range pipeline per SPEC v2.1)",
+          "session_id": "build-repo-story-v0-20261102",
+          "state": "completed \u2014 v0 PR #4 merged d2b23dfe7801 (\u00a78 PASS)",
+          "ts": "2026-11-02T13:41:00Z",
+          "moniker": "Chronicler \u00b7 RepoStory",
+          "role": "builder (fleet actor identity)",
+          "first_pass_success": null,
+          "rework_cycles": null
         }
       ]
     },

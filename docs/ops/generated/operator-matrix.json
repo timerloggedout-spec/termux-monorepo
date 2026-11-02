@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 410,
-    "open_prs": 184,
+    "open_prs": 185,
     "pr_classes": {
-      "CANDIDATE": 91,
+      "CANDIDATE": 92,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 182,
+      "prs": 183,
       "unlabelled_numbers": [
         308,
         388,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T12:39:47Z",
+  "generated_at": "2026-11-02T12:42:06Z",
   "issues_unlabelled": [
     308,
     388,
@@ -104,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "d3ec2ef8b4"
+    "sha": "3e5e1ffe31"
   },
   "prs": [
     {
@@ -937,6 +937,20 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4221f86e54",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T12:38:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1866,20 +1880,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
-      },
-      "head_sha": "4221f86e54",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T12:38:39Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2687,6 +2687,20 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "6646672289",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3836,
+      "title": "fix(cert-coderoad-image): code invocations carry --no-sandbox (Electron refuses root without it)",
+      "updated_at": "2026-11-02T12:42:01Z"
     }
   ],
   "schema": "operator-matrix/v1",

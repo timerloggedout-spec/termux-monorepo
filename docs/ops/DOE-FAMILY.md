@@ -476,9 +476,60 @@ through an admitted campaign design.
   market-network domain as a built/traded system is the frozen
   trading lane — the operator is domain-neutral, the domain does
   not transfer.
-- **dual-accumulator arbitration v0** (candidate; spec seat:
-  Delphi 5565cdf5 — spec pull in flight; mechanism
-  NOT_ESTABLISHED in this register until the seat's spec lands).
+- **dual-accumulator arbitration v0** (candidate; spec: Delphi
+  seat 5565cdf5 hand-down, 2026-11-01; fit evaluation at main
+  cff94ce9). Status: specified_not_run — registration is not a
+  run; holds until a briefed pass. Origin: owner integration
+  consideration 2026-11-01. Source basis (seat's honesty grade:
+  analogy-grade, n=6/single-task — licenses hypothesis, not
+  validation): Starkweather et al., Nat Neurosci 2026-09-15,
+  DOI 10.1038/s41593-026-02444-4 — medial OFC = approach
+  accumulator, lateral OFC = avoidance accumulator, race to
+  threshold. (TRN-gating and state-space elements of the original
+  consideration are not in this candidate — framing/deferred.)
+  Problem (decision-layer): incumbent aggregation (weighted mean)
+  collapses support and objection into one signed value ⇒ risk is
+  compensable by impact; vetoes ride brittle substring
+  comparators (incident 2026-11-01: "cards" → false money-veto);
+  fixed 3-round schedule spends full budget on round-1-decisive
+  evidence.
+  Mechanism: per candidate per round, ballots decompose into
+  A_r (approach: weighted Σ of positive rubric contributions)
+  and V_r (avoidance: weighted Σ of STRUCTURED risk signals as
+  ballot fields — risk flags, cost_auditor objections, veto-class
+  findings; text/substring scanning excluded as a V source, a
+  design requirement from the incident). Weights = panel weights
+  of record (#1489); the variant changes AGGREGATION ONLY.
+  Accumulators A, V monotone append-only, per-round trajectories
+  receipted. Decision = first crossing: A ≥ τ_allow ∧ V < τ_risk
+  ⇒ approach outcome; V ≥ τ_risk ⇒ avoidance outcome REGARDLESS
+  of A (non-compensability = the core invariant); both cross
+  same-round within ε ⇒ TIED ⇒ DEBATE callable (tie law
+  preserved); budget exhausted (max 3 rounds) with no crossing ⇒
+  ABSTAIN, trajectories published. Early stop on crossing.
+  Shadow discipline: incumbent weighted-mean runs in parallel on
+  identical ballots, reported beside, never merged; promotion
+  requires a pass verdict, not registration.
+  Invariants held: source classes separate (never pooled);
+  ballots require rationale + evidence_refs; kernel 3-class
+  output shape unchanged; #1489 updates still require
+  corroborated confirmed outcomes.
+  Priors (pre-registered by the seat, for replay on recorded
+  ballots — Strands, Temporal, Kiroween r1, marketing r1):
+  (i) high concordance on clear cases; (ii) marketing
+  partner-forward-blend: V crosses via the structured
+  unresolved-claims signal (reproduces its round-1 loss by
+  mechanism, not substring accident); (iii) Strands
+  identical-profile tie stays TIED (any separation = invented
+  signal = spec defect); (iv) no historical ALLOW flips to
+  ESCALATE on replay (a flip = defect signal).
+  Open parameters (brief-time): τ_allow, τ_risk, ε values;
+  V increment schedule per signal class; whether gate pass/fail
+  enters V as a prior. Non-goals v0: weights-estimator change
+  (state-space deferred); intake pre-filter (TRN framing);
+  kernel edits; implementation (builder ≠ evaluator when a run
+  is briefed). Review: the Delphi lane reviews any future pass
+  record against this spec (reviewer pattern as on #1963).
 - **interface-gates / symmetrical-action-log v0** (candidate;
   spec: D3 seat 39fc8b89 eval, 2026-11-01, from D3/ListingLens
   ground truth, PR #2616 verified; source eval at main 98387e77).

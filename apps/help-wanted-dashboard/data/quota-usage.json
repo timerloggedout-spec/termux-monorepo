@@ -794,6 +794,17 @@
     "id": "wall-2026-10-30T01:36:00Z-pat",
     "provenance": "viz rate-limit read (used 5000, reset 2026-10-30T01:42:09Z) (ops/quota/quota-usage.json series1 point, kind=observed, remaining=0)",
     "surface": "REST core"
+   },
+   {
+    "at": "2026-11-02T06:25:00Z",
+    "bucket": "github.api.user_token",
+    "class": "secondary-403",
+    "context": "moniker-versioning usage census - queue cut (RepoStory + signature counts uncounted); lane stopped all API calls per service limits",
+    "evidence": "lane-attested",
+    "http": 403,
+    "id": "census-2026-11-02T06:25:00Z-search-pat",
+    "provenance": "Event #1 of record (owner directive 2026-11-01 22:28 PT). Registry lane (ac8e5e6b) firsthand report to main at 22:25 PT: GitHub Search API secondary limit hit mid-census on involves:<actor> queries over timerloggedout-spec/termux-monorepo. NOT core-bucket exhaustion - PAT core stayed >=3,049 all night (quota-gaps attestation).",
+    "surface": "Search API"
    }
   ]
  }

@@ -1,6 +1,7 @@
 # INTEGRATION MESH MATRIX — every GitHub-listed integration for `timerloggedout-spec`, mapped
 
 **Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505. **Refreshed 2026-10-23 (sixth pass, ~09:48 PDT):** github-advanced-security first check suites in the 30-head window (5 suites, CodeQL, on `547f54e7`), workflows 200→201 (+`operator-variable-provision`), secrets steady at 37 names, PRs 1,358→1,362, issues steady at 213 — see #1505. **Refreshed 2026-10-23 (seventh pass, ~15:48 PDT):** secrets 37→38 (+`VANTAGE_PAT_GH_SECRETS` — Vantage cost-report lane), workflows 201→205 (+4 verified new files: `vantage-cost-report`, `operator-wake`, `delphi-intake`, `target-intake`), PRs 1,362→1,374, issues 213→220 — see #1505.
+**Refreshed 2026-11-02 (eighth pass, driven by `mesh-refresh` issue #1621 — 28 poll diffs, 2026-10-24→11-02):** secrets 38→**67**, variables 3→**22**, workflows 205→**305** (registry total; phantoms persist), PRs 1,374→**3,091** ∧ true issues 220→**466** (poll census 2026-11-02T06:53Z, fully paginated), codespaces 3→**1**, public repos 677→**711**; check apps **+supabase** (2026-10-25), **+termux-fleet-gate** (2026-10-30), **+termux-fleet-swarm** (2026-11-01) — the fleet's own AppID apps entering the mesh; cross-repo cluster reach 7→**22** of 60 scanned repos; GitLab webhook last code 400→429 (still failing, §9 I2); fleet app bots (publisher/crossreference/swarm) entered the top comment-actor set. §3/§4/§4B owner-firsthand sections unchanged — owner refresh still 2026-10-22. Evidence ↦ poll diffs on #1621/#1505 ∘ live reads 2026-11-02.
 (full pagination, no samples — 1,342 PRs, 207 issues, 2,000 comments, check suites
 across 30 master heads, submitted reviews in two labeled frames) + the installations
 probe (stored-token exercise from inside Actions, Issue #184 comment 6321665538),
@@ -62,11 +63,11 @@ nothing here proposes a purge, rotation, or revocation — see §9 rules.
 | Fact | Value |
 |---|---|
 | Account | `timerloggedout-spec` (id 233432881), Free plan, 2FA on, created 2025-09-20 |
-| Repos | **677 public** (660 forks, 1 archived), 0 private; hub = `termux-monorepo` (207 open issues+PRs at census) |
+| Repos | **711 public** (677 at 2026-10-21 census; read live 2026-11-02); hub = `termux-monorepo` |
 | Orgs (role: **admin**) | `Research-Astute` (5 repos, mostly Manus research), `search-astute-ly` (3 repos, incl. 2 enterprise monorepo copies) |
 | SSH keys | 1 — `DeepSeek_Account-1_ssh` (matches #184) · GPG keys 0 · SSH signing keys 0 |
 | Social link | `termux-monorepo.vercel.app` |
-| Codespaces | 3, all Shutdown, all on termux-monorepo (2-core/8 GB + 2× 4-core/16 GB) |
+| Codespaces | **1** (3 at census, all Shutdown on termux-monorepo; poll figure series 3→2→1 across 2026-10-31→11-01) |
 | Packages | GHCR container `termux-readme-extractor` (public, from termux-monorepo) |
 | API budget | PAT core 5,000 req/hr (4,493 remaining at census) |
 
@@ -85,37 +86,39 @@ nothing here proposes a purge, rotation, or revocation — see §9 rules.
 | `timers-full+accessPAT` | Classic | Never used | Full-admin scope set, no expiration |
 | `MUSE_ADMIN_GH` | Classic | Live daily | Created 2026-10-20, **post-dates #184**. Muse's only GitHub route (`custom.github-pat`, Secure Vault, no per-call approval cards) |
 
-### 2b. Repository Actions secrets — termux-monorepo (LIVE-API, 38 names)
+### 2b. Repository Actions secrets — termux-monorepo (LIVE-API, 67 names — full list read live 2026-11-02; growth 38→67 across 2026-10-24→11-02 per poll diffs on #1621)
 
 Grouped by the service each name serves (the mesh's wiring diagram in one table):
 
 | Service lane | Secret names |
 |---|---|
 | GitHub admin lanes | `OPERATOR_GITHUB_TOKEN`, `ARCHWIZ_GITHUB_TOKEN`, `OPERATOR_TOKEN`, `RECON_INTEL_GITHUB_WRITE_TOKEN` |
+| Fleet GitHub Apps (AppID family, NEW) | `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY`, `TERMUX_FLEET_SWARM_PRIVATE_KEY`, `TERMUX_FLEET_CROSSREFERENCE_PRIVATE_KEY` |
 | GitLab | `GITLAB_TOKEN`, `GITLAB_ADMIN_TOKEN`, `OPERATOR_GITLAB_TOKEN` |
-| Model providers | `DEEPSEEK_API_KEY`, `DEEPSEEK_AGENT_TOKEN`, `DEEPSEEK_AGENT_URL`, `DEEPSEEK_AWS_WAF_TOKEN`, `GEMINI_API_KEY`, `OPENROUTER_API_KEY`, `FELO_AI_API` |
+| Model providers | `DEEPSEEK_API_KEY`, `DEEPSEEK_AGENT_TOKEN`, `DEEPSEEK_AGENT_URL`, `DEEPSEEK_AWS_WAF_TOKEN`, `GEMINI_API_KEY`, `GOOGLE_API_KEY`, `OPENROUTER_API_KEY`, `FELO_AI_API`, `AION_API_KEY`, `BASETEN_API_KEY`, `COHERE_API_KEY`, `DEEPINFRA_API_KEY`, `FRIENDLI_API_KEY`, `GROQ_API_KEY`, `HUGGINGFACE_TOKEN`, `LLM7_API_TOKEN`, `MISTRAL_API_KEY`, `NOVITA_API_KEY`, `NVIDIA_API_KEY`, `NVIDIA_NIM_API_KEY`, `OLLAMA_API_KEY`, `ROUTEWAY_API_KEY`, `SAMBANOVA_API_KEY`, `SEALION_API_KEY`, `SILICONFLOW_API_KEY`, `UNOROUTER_API_KEY`, `XKIRO_API_KEY`, `ZAI_API_KEY` |
 | Agent platforms | `JULES_API_KEY`, `CELLCOG_API_KEY`, `LIKECLAW_A2A_GH_ACTIONS`, `MANUS_SSH_HOST`, `MANUS_SSH_KEY`, `MANUS_SSH_PORT` |
-| Telemetry / memory | `HINDSIGHT_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `HEX_ALSO_USEDBY_CELLCOG` |
-| PM / deploy / coverage | `LINEAR_API_KEY`, `VERCEL_TOKEN`, `VERCEL_GITHUB_AND_TANKA`, `FLY_IO_ORG_TOKEN`, `CODECOV_TOKEN` |
+| Telemetry / memory / data | `HINDSIGHT_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `HEX_ALSO_USEDBY_CELLCOG`, `NEON_API_KEY`, `LANE_EVENTS_DATABASE_URL`, `PINECONE_API_KEY` |
+| PM / deploy / coverage | `LINEAR_API_KEY`, `VERCEL_TOKEN`, `VERCEL_GITHUB_AND_TANKA`, `FLY_IO_ORG_TOKEN`, `CODECOV_TOKEN`, `SUPABASE_KEY` |
 | Vault | `TMX_VAULT_AGE_KEY` |
 | Cloudflare | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
 | Device queue | `DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS`, `DEVICE_QUEUE_DEVICE_TOKEN_PRIMARY` |
 | Termux device MCP | `TERMUX_MCP_KNOWN_HOSTS`, `TERMUX_MCP_SSH_PRIVATE_KEY` |
 | Cost reporting | `VANTAGE_PAT_GH_SECRETS` |
+| VM webhook | `VM_WEBHOOK_SECRET` |
 
-### 2c. Every other secret store — enumerated; all empty except the 7 repo Codespaces secrets listed here (LIVE-API, 2026-10-22)
+### 2c. Every other secret store — enumerated; all empty except the 7 repo Codespaces secrets listed here (LIVE-API, 2026-10-22; counts re-read live 2026-11-02)
 
 | Store | Result |
 |---|---|
 | Repo Dependabot secrets | 0 |
-| Repo Codespaces secrets | **7** — `HINDSIGHT_API_KEY`, `HINDSIGHT_API_LLM_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `OPENROUTER_API_KEY`, `TMX_VAULT_AGE_KEY` |
+| Repo Codespaces secrets | **7** (count re-verified 2026-11-02) — `HINDSIGHT_API_KEY`, `HINDSIGHT_API_LLM_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `OPENROUTER_API_KEY`, `TMX_VAULT_AGE_KEY` |
 | Environment secrets × 14 environments | **0 in every environment** (env_Termux-MonoRepo, github-pages, hindsight-prod, Preview ×5, Production ×5, staging) |
 | Org Actions secrets (both orgs) | 0 |
 | Org Dependabot secrets (both orgs) | 0 |
-| Org Codespaces secrets (both orgs) | endpoint 404 (not available on Free orgs) |
+| Org Codespaces secrets (both orgs) | endpoint 404 at census (not available on Free orgs); poll reads since degrade on this section — not re-derived |
 | Org Actions variables / org webhooks | 0 / 0 |
 | User Codespaces secrets | 0 |
-| Repo Actions variables | 3 — `TERMUX_MCP_ENDPOINT` (Pinggy tunnel to the device MCP, refreshed 2026-10-22), `TERMUX_MCP_ENDPOINT_UPDATED_AT`, `DEVICE_QUEUE_URL` |
+| Repo Actions variables | **22** (full list read live 2026-11-02) — original 3: `TERMUX_MCP_ENDPOINT` (Pinggy tunnel to the device MCP, refreshed 2026-10-22), `TERMUX_MCP_ENDPOINT_UPDATED_AT`, `DEVICE_QUEUE_URL` · operator set: `CELLCOG_CHAT_TIER`, `OPERATOR_ALLOWED_ACTIONS`, `OPERATOR_EXECUTOR_LOGINS`, `OPERATOR_MATRIX_PROJECT_URL`, `PEER_ENFORCE_PROVIDER_COMPLETION`, `PEER_REQUIRED_PROVIDERS`, `PEER_STATE_PUBLISHER_LOGINS` · Supabase set: `SUPABASE_ANON_KEY`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_URL` · fleet AppID pairs: `TERMUX_FLEET_COLLECTOR_APP_ID`/`_CLIENT_ID`, `TERMUX_FLEET_SWARM_APP_ID`/`_CLIENT_ID`, `TERMUX_FLEET_CROSSREFERENCE_APP_ID`/`_CLIENT_ID` · Devin: `DEVIN_ORG_ID`, `DEVIN_WIKI_EFFORT` · `HINDSIGHT_POPULATE_FULL` |
 
 **Reading:** the mesh's *secret stores* are 100% repo-scoped today (the
 account-level PATs in §2a and the SSH key in §5B are separate account
@@ -269,25 +272,38 @@ absence from the screenshot portion is expected, not contradictory.
 
 | App | Slug / owner | Evidence | Role |
 |---|---|---|---|
-| GitHub Actions | `github-actions` / github | **970 check suites across 30 master heads** (320 success / 534 skipped / 112 cancelled / 4 failure); 1,299 contributions | The execution substrate (201 workflows, §6) |
-| GitHub Pages | `github-pages` / github | suites + 48/300 deployments | Docs/site deploy |
+| GitHub Actions | `github-actions` / github | **970 check suites across 30 master heads** (320 success / 534 skipped / 112 cancelled / 4 failure); 1,299 contributions | The execution substrate (305 registry workflows, §6) |
+| GitHub Pages | `github-pages` / github | suites + 48/300 deployments at census; **dropped out of the 30-head + cross-repo suite windows 2026-10-27 (poll)** — deployments continue; suite-window absence ≠ inactivity | Docs/site deploy |
 | Mintlify | `mintlify` / mintlify | suites + **161/300 deployments** (all `staging` = docs previews) | Docs platform; biggest deployment producer |
 | Qodo Code Review | `qodo-code-review` / qodo-ai | 41/2,000 comments + reviews | Peer reviewer (orchestrator tracked opt-in) |
-| GitHub Advanced Security | `github-advanced-security` / github | **NEW 2026-10-23** — 5 check suites in the 30-head window (4 success / 1 neutral, CodeQL; first seen 2026-10-23 ~04:05 PDT on `547f54e7`); submitted reviews in sample | Code scanning lane |
+| GitHub Advanced Security | `github-advanced-security` / github | **NEW 2026-10-23** — 5 check suites in the 30-head window (4 success / 1 neutral, CodeQL; first seen 2026-10-23 ~04:05 PDT on `547f54e7`); submitted reviews in sample. **Window-intermittent since 2026-10-24:** flaps in/out of the 30-head window (removed/re-added 5× across polls to 2026-11-01) — window presence is head-composition-dependent, not an outage signal | Code scanning lane |
 | Blacksmith.sh | `blacksmith-sh` / useblacksmith | suites on 30/30 heads | Hosted Actions runners (speed/cost lane) |
-| Buildkite | `buildkite` / buildkite | **NEW 2026-10-23** — 2 check suites in the 30-head window (1 success, 1 failure; first seen 2026-10-23 ~02:59 PDT) + new repo webhook (id 702058218, all events, last 200 OK) | External CI lane — arrived with no repo-side workflow; who set it up NOT ESTABLISHED from API evidence |
+| Buildkite | `buildkite` / buildkite | **NEW 2026-10-23** — 2 check suites in the 30-head window (1 success, 1 failure; first seen 2026-10-23 ~02:59 PDT) + new repo webhook (id 702058218, all events; last code flaps 200⇄429, 429 at 2026-11-02 read) | External CI lane — arrived with no repo-side workflow; who set it up NOT ESTABLISHED from API evidence |
+| Supabase | `supabase` | **NEW 2026-10-25 (poll)** — check suites in the 30-head window + cross-repo (reach 17 repos by 2026-11-02); `SUPABASE_KEY` secret + `SUPABASE_URL`/`SUPABASE_ANON_KEY`/`SUPABASE_PUBLISHABLE_KEY` variables landed the same window | DB lane — the GitHub-App face of the Jules ↔ Supabase pair (§9 C1) |
+| Termux Fleet Gate | `termux-fleet-gate` | **NEW 2026-10-30 (poll)** — the fleet's own AppID app (App ID 5539499, checks-write) emitting suites on hub heads + cross-repo; declared in the poll's `github_app_registry` census (`ops/github-apps/registry.json`) | Fleet gate annotations/status — first fleet-owned app in the check mesh |
+| Termux Fleet Swarm | `termux-fleet-swarm` | **NEW 2026-11-01 (poll)** — App ID 5560920; suites on hub heads + cross-repo (first seen 2026-11-01T04:27Z); own 5,000/hr bucket; `TERMUX_FLEET_SWARM_*` secret+variables | Swarm/provider workflow actor — app-authored events trigger downstream runs (the B1 fix) |
+| Termux Fleet app family (rest) | `termux-fleet-collector`, `termux-fleet-publisher`, `termux-fleet-crossreference`, `termux-fleet-lifecycle`, `termux-fleet-reviewer` | Declared-registry census (collector + publisher registered, 3 planned roles, 2026-10-30) + actor evidence: `termux-fleet-publisher[bot]` entered top comment actors 2026-10-31, `termux-fleet-crossreference[bot]` + `termux-fleet-swarm[bot]` 2026-11-02 (poll actor-set diffs); per-app record = `docs/ops/APPID-FLEET-REGISTRY.md` | Specialist fleet identities, one 5,000/hr bucket each — the mesh growing its own organs |
 | Codecov | `codecov` / codecov | suites on 30/30 heads + `CODECOV_TOKEN` secret | Coverage lane |
 | Hark | `hark` / Adcock-AGI-Inc | suites on 30/30 heads | Agent surface (MAP §B7); its GitHub App is one of its connections |
 | LaunchDarkly agent | `launchdarkly-agent` / launchdarkly | suites on 30/30 heads | AgentHQ flag/agent-task lane — no visible task use yet (§9 C6) |
 | Pulumi | `pulumi` / pulumi | suites on 30/30 heads | IaC lane |
 | Dependabot | `dependabot` / github | 3 contributions; `dependabot.yml` present; Dependabot secrets 0; automated security fixes **disabled** | Dependency lane, partially wired (§9 I6) |
 
+**Cross-repo reach (poll, 60 most-recently-pushed owned repos):** the full
+app cluster's reach grew from **7 repos (2026-10-21) to 22 repos
+(2026-11-02 poll)** — core cluster apps at 22, Hark 19, Codecov 19,
+Buildkite 17, Supabase 17, GitHub Actions 12. Reach = check suites on head
+commits (effective activity), not installation records. Whole-set
+removal/re-add flaps in the 2026-10-29→30 polls were 30-head
+window-composition artifacts (sets restored in full, +Gate on re-add);
+single-app flaps (GHAS, Gate cross-repo) are the same class.
+
 ## 5A. Org installations — retrieved live (LIVE-API + PROBE cross-verified)
 
 `GET /orgs/{org}/installations` answers both chat-side (owner PAT) and from
 inside Actions with the stored classic admin tokens — identical results from
 four independent credentials. All installations are `repository_selection: all`,
-none suspended.
+none suspended. **Re-verified live 2026-11-02: still 6 / 3, same app sets.**
 
 | Org | App | Installed | Permission keys (non-none) |
 |---|---|---|---|
@@ -377,11 +393,11 @@ triggered the apps.
 
 | Piece | State |
 |---|---|
-| Webhooks (4) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** · **Buildkite (NEW 2026-10-23)** — all events (`*`), last 200 OK (id 702058218) |
-| Workflows | **205 total, 204 active, 1 manually disabled** (+4 since the 2026-10-23 09:48 PDT poll, all verified as live files on master: `vantage-cost-report.yml` (Vantage cost report, created 10:30 PDT), `operator-wake.yml` (Operator wake, 12:21 PDT), `delphi-intake.yml` (Delphi conversational intake, 13:37 PDT), `target-intake.yml` (target intake — T.A.K. input layer, PR #1597, 14:36 PDT); the one disabled workflow is Merge Promotion Queue (disabled_manually); note the API registry total also carries phantom entries for deleted workflow files — 176 workflow files are actually on master; still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only). Recent 100 runs: actors `timerloggedout-spec` 62 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), vercel[bot] 29, ecc-tools[bot] 9; events workflow_run 40, issue_comment 60 — owner-attributed + Vercel deploy runs dominate this window; CodeRabbit review activity continues in the updated-PR frame, so no lane outage |
-| PR / issue totals (v2, fully paginated) | **1,374 PRs** — authors: owner 1,063 (+10 since the 09:48 PDT poll), Jules 288 (+1), CodeRabbit 9, github-actions 5 (+1), Dependabot 3, ECC 3, Devin 2, Tembo 1 · **220 true issues** (owner 198 (+7), github-actions 21, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
+| Webhooks (4) | **Linear** — all events (`*`), last **429** (flaps 200⇄429 across polls) · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **429** (was 400 until 2026-10-26; still failing — §9 I2) · **ZenHub** — 12 event types, last **422 misconfigured** (unchanged) · **Buildkite** — all events (`*`), last **429** (flaps 200⇄429; id 702058218). All four active; codes read live 2026-11-02 |
+| Workflows | **305 registry total** (read live 2026-11-02; 205 at the 2026-10-23 pass — the registry also carries phantom entries for deleted workflow files, so files on master are fewer; active/disabled split not re-derived this pass: 204 active / 1 manually disabled (Merge Promotion Queue) at the Oct-23 pass). Still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only |
+| PR / issue totals (poll census, fully paginated) | **3,091 PRs · 466 true issues** at poll 2026-11-02T06:53Z (search-index counts read 3,220 / 483 the same morning — the index ≠ the census; the census governs). Author split not re-derived this pass (2026-10-23: owner 1,063, Jules 288, CodeRabbit 9, github-actions 5, Dependabot 3, ECC 3, Devin 2, Tembo 1 of 1,374) |
 | Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 35 PRs carry 251 reviews — Devin 139 (all COMMENTED; 92 still on #143), CodeRabbit 66 (42 CHANGES_REQUESTED / 6 APPROVED / 17 COMMENTED / 1 DISMISSED), owner 26 (24 COMMENTED / 2 APPROVED), Aikido 12, GHAS 7, Qodo 1. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
-| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume** |
+| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume**. Actor-set Δ since: Vercel in/out (2026-10-27), Jules back (2026-10-29), and the **fleet app bots entered the set — `termux-fleet-publisher[bot]` 2026-10-31, `termux-fleet-crossreference[bot]` + `termux-fleet-swarm[bot]` 2026-11-02** (poll actor-set diffs) |
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
 | Pages | Legacy build from `gh-pages` branch, https enforced, `timerloggedout-spec.github.io/termux-monorepo/` |
@@ -430,7 +446,7 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 | # | Move | Why / evidence | Route |
 |---|---|---|---|
 | I1 | ECC check runs come from the repo-side mirror, not from any settings approval | ECC is the top bot actor (**915/2,000 comments, 46%**) but publishes **zero** check runs because the vendor app requests **no Checks permission in its own configuration** (`GET /apps/ecc-tools`) — no owner approval exists to give, in any UI. **Done as build, not as an ask — MERGED 2026-10-22 (PR #1491, e6c4d342):** a `Mirror ECC audit outcomes to check runs` **step** folded into the existing `sweep-prs` job of `agent-ecc-tools-ops.yml` (+ `checks: write` on that job only — zero new jobs, zero new executions; trigger accounting per the owner's rule), republishing ECC's own audit conclusions as evidence-only check runs on the existing sweep cadence (06:23/18:23 UTC) | Landed and verified on master (step + `checks: write` present, no standalone job). First execution on the next regular ecc-ops sweep; vendor adding Checks app-side would supersede the mirror |
-| I2 | Repair the GitLab mirror webhook (400) | Mirror is the redundancy lane for the whole repo; 3 GitLab secrets exist to support it | Check GitLab project 85129320 mirror state; re-ping hook via API |
+| I2 | Repair the GitLab mirror webhook (400 → 429) | Mirror is the redundancy lane for the whole repo; 3 GitLab secrets exist to support it. **Update 2026-11-02:** last response code changed 400→429 (poll 2026-10-26; 429 at live read 2026-11-02) — still failing on every delivery; the code change says the GitLab side answers differently now, mirror health itself still unverified GitLab-side | Check GitLab project 85129320 mirror state; re-ping hook via API |
 | I3 | ZenHub: repair the 422 webhook **or** retire the lane deliberately | Board duplicates Linear (the working spine). A dead webhook firing 12 event types is pure noise | Owner decision; either fix config in ZenHub or remove hook + OAuth in one recorded move |
 | I4 | Resolve Travis CI duplication | Travis suites on every master head while Actions is the real CI — double signal, double noise in the gate | Verify whether Travis runs any unique job; if not, park it as a recorded decision (not a silent clearing) |
 | I5 | Keep Vercel moves quota-first | Daily deploy cap already tripped once (2026-10-20); Mintlify (161) + Vercel (91) dominate deployment volume | Batching cooldown (vercel-batch-deploy, 6h) + ignore-step guard; no new deploy-producing integrations until cap behaviour is measured |
@@ -474,7 +490,15 @@ four accumulated figure-only polls — also open/update a labeled
 checklist instead of looping as comments. **No change = no comment.**
 Snapshots persist in the Actions cache + 30-day run artifacts — never
 committed (rule 4). Doc refresh PRs still land through the repo gates,
-driven by the `mesh-refresh` issue's diff.
+driven by the `mesh-refresh` issue's diff. Poll output renders in the
+**notation spec** (owner rule 2026-10-30, #320 + #1734) since PR #2453
+(merged 45f6d4e5c0a4, oracle-verified; live proof run 41272979519 →
+#1505 comment 6553397873). The poll also censuses the checked-in fleet
+app registry (`ops/github-apps/registry.json`, declarations only) — a
+registry change is a structural diff. **First refresh cycle closed by
+this section's own loop:** `mesh-refresh` #1621 (opened 2026-10-24 on a
+GHAS window flap, 28 diffs accumulated) drove the eighth-pass refresh
+(2026-11-02) recorded in the header.
 
 ## NOT ESTABLISHED — stated, not filled in
 

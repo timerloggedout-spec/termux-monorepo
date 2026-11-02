@@ -14,6 +14,10 @@
 <header><div class="hero"><div><div class="eyebrow">Ops · quota · entitlements + live readings</div><h1>Quota <span>Panel</span></h1><p class="lede">Every service the monorepo runs on, with its documented limit and window. Documented limits are policy ceilings, not proof of account entitlement or balances — Private account balances are not published here; coverage metadata never grants runtime admission.</p><div class="links" style="margin-top:1rem"><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/registry.json">Quota registry</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/FREE-QUOTA-WINDOWS.md">Free quota windows</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/vercel-quota-probe.yml">Quota probe</a><a class="button" href="./quota-usage.html">Usage graphs · burn-down &amp; replenishment</a><a class="button" href="./quota-graphs.html">Usage graphs · provider / model / service</a><a class="button" href="./quota.txt">Plain text (TUI / eReader)</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching registry + readings.</small></div></div></header>
 <main>
 <section aria-labelledby="alerts"><div class="head"><h2 id="alerts">Needs attention</h2><span class="note" id="alert-note">Services with a live or reported state</span></div><div class="grid grid-3" id="alert-cards"></div></section>
+<section aria-labelledby="charts"><div class="head"><h2 id="charts">Usage charts</h2><span class="note" id="charts-stamp">—</span></div>
+<div class="grid grid-2"><div class="card"><div class="label">Remaining headroom — top services</div><div id="chart-headroom"></div></div>
+<div class="card"><div class="label">Readings by state</div><div id="chart-states"></div></div></div>
+<p class="muted">Charts render only from the quota readings feed (quota.readings.v2) — chart standard: docs/ops/DASHBOARD-CHART-STANDARD.md. Services without numeric used/limit are excluded, never estimated.</p></section>
 <section aria-labelledby="coverage"><div class="head"><h2 id="coverage">Provider quota-manager coverage</h2><span class="note" id="coverage-summary">Loading coverage metadata…</span></div><p class="note">Coverage is a control inventory, not proof of live quota, model participation, free entitlement or runtime eligibility.</p><div id="provider-coverage"></div></section>
 <section aria-labelledby="alloc-verify"><div class="head"><h2 id="alloc-verify">Allocation verification · 🚦 live index</h2><span class="note" id="alloc-summary">Loading census…</span></div><p class="note">Census of record: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ALLOCATION-VERIFICATION.md">docs/ops/ALLOCATION-VERIFICATION.md</a> · feed <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/allocation-verification.json">ops/quota/allocation-verification.json</a> (schema quota.allocation-verification/v1). 🚦 🟢 = api-verified, free/layered, no caveat flags · 🟡 = api-read, owner-attested, or verified-with-caveat · 🔴 = route-dead · ⚪ = not established. ✅ = api-verified. Last-used = latest readings observation for the family; — = no observation on record, never inferred.</p><div id="alloc-index"></div></section>
 <section aria-labelledby="provider-development"><div class="head"><h2 id="provider-development">Provider development · callable adapters</h2></div><p class="note"><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/TYPHOON-FREE-API-CONTRACT.md">Typhoon: registered HTTP text transport with fixture-tested protocol</a>. The operational batch also adds UnoRouter, Routeway, Requesty, xKiro, Spark Lite and SEA-LION trial transports. Existing Felo integration is unchanged. Exact-model free-account admission and public-data restrictions still apply. Transport implementation is not live inference, a remaining quota reading or a new quota service. LongCat is not integrated as free; Felo OX Alpha's earlier trial has ended.</p></section>
@@ -72,6 +76,23 @@ async function load(){
   render();
 }
 $('search').addEventListener('input',render);load();setInterval(load,60000);
+</script>
+<script src="./chartkit.js"></script>
+<script>
+const CQ=id=>document.getElementById(id);
+async function getJSON2(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+async function loadCharts(){
+  const bust=Date.now();
+  const q=await getJSON2(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/quota-status.json?t='+bust,'./data/quota.json?t='+bust]);
+  if(!q){CQ('charts-stamp').textContent='readings feed unavailable';return}
+  const st=CK.stampState(q.generated_at,Date.now(),86400000);
+  CQ('charts-stamp').textContent='Feed generated '+(q.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
+  const rows=(q.readings||[]).filter(r=>typeof r.used==='number'&&typeof r.limit==='number'&&r.limit>0).map(r=>({label:String(r.resource_id||'?'),value:r.limit-r.used})).sort((a,b)=>b.value-a.value).slice(0,10);
+  CQ('chart-headroom').innerHTML=rows.length?CK.bars(rows):'<p class="muted">No numeric readings.</p>';
+  const counts={};(q.readings||[]).forEach(r=>{const s=String(r.status||'unknown');counts[s]=(counts[s]||0)+1});
+  CQ('chart-states').innerHTML=CK.bars(Object.entries(counts).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+}
+loadCharts();setInterval(loadCharts,60000);
 </script>
 </body>
 </html>

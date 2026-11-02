@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T07:57:02Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T08:01:46Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T07:57:01Z` (merged 150 · open 180) · lane-events(Neon) status=`ok` count=`7664` read_at=`2026-11-02T07:57:01Z`
+Sources: PR feed read_at=`2026-11-02T08:01:45Z` (merged 150 · open 183) · lane-events(Neon) status=`ok` count=`7675` read_at=`2026-11-02T08:01:45Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -18,15 +18,15 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | NOT_ESTABLISHED | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3614 `4c1a269e1c83` 2026-11-02T07:50:41Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3614 `4c1a269e1c83` 2026-11-02T07:50:41Z | land/close PR #3627 — DoE: validation-yield v0 family measure |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3590 `921d84080f90` 2026-11-02T07:23:51Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3469 `39102aca30aa` 2026-11-02T01:44:54Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3594 `37783dd6cd72` 2026-11-02T07:49:43Z | land/close PR #3621 — fix(quota): repair pack series4 envelope + builder shape tolerance |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3625 `1e898b4606cb` 2026-11-02T07:59:14Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3621 `52aebe7258fd` 2026-11-02T07:58:03Z | land/close PR #3601 — feat(quota): ALL-Providers denominator + pack-builder envelope fix (owner amendment) |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3606 `398ff6043751` 2026-11-02T07:50:02Z | land/close PR #3612 — swarm: wire DeepSeek direct endpoint into the invoke rotation (owner directive) |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3617 `e6b37b93a2c0` 2026-11-02T07:54:48Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |

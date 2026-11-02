@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "13ef0358e714dd58d8331255a97617294028f182ae91bc18dc8975251dc39477",
-  "workflow_count": 272,
+  "source_fingerprint": "9af1dd7a4222fd455550f3edaaaa39a6b87072e6be8ffb42fce46658d0e27746",
+  "workflow_count": 273,
   "workflows": [
     {
       "action_pins": [],
@@ -4811,6 +4811,19 @@
       ],
       "name": "v2-gitlab-probe",
       "path": ".github/workflows/v2-gitlab-probe.yml",
+      "schedules": [],
+      "triggers": []
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "pull"
+      ],
+      "name": "v2-snapshot-pull",
+      "path": ".github/workflows/v2-snapshot-pull.yml",
       "schedules": [],
       "triggers": []
     },

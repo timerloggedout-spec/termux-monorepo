@@ -4,8 +4,8 @@
     "open_prs": 171,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 83,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:38:37Z",
+  "generated_at": "2026-11-02T00:39:28Z",
   "issues_unlabelled": [
     308,
     343,
@@ -136,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "3b6ea46c18"
+    "sha": "3a67aaedf8"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "07e6b7ec46",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T00:38:02Z"
     },
     {
       "class": "CANDIDATE",
@@ -1786,20 +1800,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "07e6b7ec46",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:38:02Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2533,7 +2533,7 @@
       },
       "head_sha": "140fec2f0f",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 3411,
       "title": "feat(dispatch): wire provider-invoke to the stamp fan-out",
       "updated_at": "2026-11-02T00:38:27Z"

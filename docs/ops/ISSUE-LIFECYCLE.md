@@ -54,7 +54,7 @@ There is no `config.yml` in `.github/ISSUE_TEMPLATE/`; blank issues are
 enabled by default, which is legitimate (lanes file by API) but means the
 form route is the only route that guarantees a label at birth.
 
-## 2. Categorization — the label taxonomy (97 labels)
+## 2. Categorization — the label taxonomy (97 labels at the 2026-10-27 census; 106 at the 2026-11-02 census)
 
 Labels are the repo's categorization source of truth. Families in use:
 
@@ -262,6 +262,7 @@ the URL.
 | G6 | Sub-issues feature unused; hierarchy implicit | sub-issues API `[]` on #943/#1241 | **Decided:** D1 — formally not adopted |
 | G7 | Close-as-fixed evidence inconsistent | closed-set sample §7 | **Convention set:** C1; lane audits closures in the weekly pass |
 | G8 | Findings loop as comments on standing threads (#1505 pattern) | §6 anti-pattern | **Convention set:** C2 |
+| G9 | Record-class issues carry no taxonomy label: `record(qual):` qualification records, `capture:`/`defect(§…)` captures and machine dispatch logs are filed under title conventions only | live census 2026-11-02: 11 open unlabelled in this class (#3665/#3666/#3668/#3669/#3670/#3673, #3751/#3752, #2830 + kin) after the lane's judgment pass labelled everything title/body-evidenced (43→16 unlabelled) | **OPEN — taxonomy decision:** a dedicated class label (e.g. `record`) vs leaving title-convention retrieval; this lane does not mint a fleet-visible label class unilaterally. Interim: the class is findable by its title prefixes, and the triage floor correctly leaves them untouched |
 
 ## Landing record (appended 2026-10-27, post-merge)
 

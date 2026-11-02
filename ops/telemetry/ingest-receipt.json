@@ -16,7 +16,7 @@
   "ingested_providers": 172,
   "missing": []
  },
- "generated_at": "2026-11-02T00:46:04Z",
+ "generated_at": "2026-11-02T13:36:34Z",
  "schema": "telemetry-ingest-receipt/v1",
  "sinks": {
   "hindsight": {
@@ -27,20 +27,20 @@
     "skipped_reason": "not requested"
    },
    "path": "ops/telemetry/hindsight-payloads.jsonl",
-   "payloads": 326
+   "payloads": 336
   },
   "provenance": {
    "path": "ops/telemetry/provenance-ledger.jsonl",
-   "records": 326
+   "records": 336
   }
  },
  "sources": [
   {
    "id": "quota_registry",
    "path": "ops/quota/registry.json",
-   "sha256": "c0ee4ada7439b53b9a33125f825abfbc4b1ba64cf384a4c9a135de9909ff179b",
+   "sha256": "f0092928e164130ce1ef7034f2e6ae3c0dee612a1a10ce463bea29a1ac6bc175",
    "status": "emitted",
-   "units": 168
+   "units": 170
   },
   {
    "id": "cadence_providers",
@@ -94,7 +94,7 @@
   {
    "id": "challenge_coordinator",
    "path": "ops/challenge/coordinator.json",
-   "sha256": "4fc178fd0e7f6ff165528ec29ad2406949686ee88c6c558bec72cb9fa6c8dcd9",
+   "sha256": "c1b7bbb2d451838a7ba3a28401ef9fbfc834e01a30d002628edcb7a979785916",
    "status": "emitted",
    "units": 1
   },
@@ -107,204 +107,260 @@
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/3l0-feed.json",
+   "path": "apps/tribute-dashboard/data/3l0-feed.json",
    "sha256": "257ab8a2af66140171c9cf1f5913653ae80ab04f7cd07b5f245d4f60b7b29082",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/allocation-verification.json",
+   "path": "apps/tribute-dashboard/data/allocation-verification.json",
    "sha256": "972a49e09a047dd65217a50097037c0d1befea7b3beb60f120320baea7e0a497",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/ates-feed.json",
+   "path": "apps/tribute-dashboard/data/ates-feed.json",
    "sha256": "47fa4ee4c00043679fa88776209856130ff86f09bbed2f83f917d6ad10e12ff7",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/challenge-admin-metrics.json",
+   "path": "apps/tribute-dashboard/data/backup-events-feed.jsonl",
+   "sha256": "00982809f52a2e9cf5a30c7c884761ffd71390e35ea326730da30c1a4b7bbaa9",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/backup-state-feed.json",
+   "sha256": "ba36579818eb6db7bd0e044a6e7e21b9bb5136336a78b43947ed6b28fc902010",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/challenge-admin-metrics.json",
    "sha256": "84e4271edfb49baff350527937c5d5c3558aa3bd17d44f6621f5d3f1d24ada84",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/challenge-countdowns-feed.json",
+   "path": "apps/tribute-dashboard/data/challenge-countdowns-feed.json",
    "sha256": "b1244f1914b79318e4d62302ff06de2a1a3fb6b1dba4695b7da7ef923230e32c",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json",
+   "path": "apps/tribute-dashboard/data/delphi-ledger-feed-db.json",
    "sha256": "7629ac661613acd8eed758e510f8fd809133bb734cfda74285c311111891c462",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/delphi-ledger-feed.json",
+   "path": "apps/tribute-dashboard/data/delphi-ledger-feed.json",
    "sha256": "b6f62bf11069097c1086158a8c5f17876fec838ab093c1ec4e7814c5d055cefe",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/delphi-rfp-feed.json",
+   "path": "apps/tribute-dashboard/data/delphi-rfp-feed.json",
    "sha256": "ab789fde5460c4b3d0ce6fb1b43cae450ec006b77f32d356d9ade49087280677",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/desk-feed.json",
-   "sha256": "87b088f262b8392e0843d5127efc7defaebc0512eddb4d52a70ce23942cdc387",
+   "path": "apps/tribute-dashboard/data/desk-feed.json",
+   "sha256": "289aa7cbf657c676297220fb0715ce5eb09df392db1ca328d44b3fe14befc51b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/dispatch-tree-feed.json",
-   "sha256": "1eebc4a234d9bf18f0ad535143b0ed16cc84254f6bd8c20c06e20b1153541a47",
+   "path": "apps/tribute-dashboard/data/dispatch-tree-feed.json",
+   "sha256": "e2dc34c360eb62b5460b5f95b6af806641c3a6e253fcfe19542dbaba1658bc2b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/doe-feed.json",
+   "path": "apps/tribute-dashboard/data/doe-feed.json",
    "sha256": "6064f59e33e34cd75d751fac080056f437aa1f592e4b040a99440b42902bfa71",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/fb-traffic.json",
+   "path": "apps/tribute-dashboard/data/fb-traffic.json",
    "sha256": "8d50fddda8c21ef46988cad6ef750897fef94cf8a34af41c437349775f0376ba",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/free-tier-value.json",
+   "path": "apps/tribute-dashboard/data/free-tier-value.json",
    "sha256": "6f0ab143b5f3c3628c8fd7cc235972561575bdadde6ced4bdd85404da02f6057",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/linguist-panel-feed.json",
+   "path": "apps/tribute-dashboard/data/linguist-panel-feed.json",
    "sha256": "f1f5a31a36eb719ef81f29792d0b1730747ea6901c38c35bbc23c56a3d34f083",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/moneyball-feed.json",
+   "path": "apps/tribute-dashboard/data/moneyball-feed.json",
    "sha256": "36a1c630aee9c337ef666d7a4d21ab5c4d29dc40d91ed488835fa2a18df3676b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/mvt-feed.json",
-   "sha256": "aca744d251a40c5a0d6395c10dcc55853c6cb647a279f6cbc6771bec7757887c",
+   "path": "apps/tribute-dashboard/data/mvt-feed.json",
+   "sha256": "4ead41ffc3f3624f25b02ce815afddbd2cac7353ecfcbbea248eb4d4d5d750c5",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/oracle-panel-feed.json",
+   "path": "apps/tribute-dashboard/data/nested-family-feed.json",
+   "sha256": "3450103bba34f33813e27bfdcad8432f134a2056581fd814beabb7fab9309c2b",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/oracle-panel-feed.json",
    "sha256": "7fe898d87feca7e954efaf003e3792e0f7ec0e9347045c6dbae071a7784c5a5a",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/pr-lane-feed.json",
+   "path": "apps/tribute-dashboard/data/pr-lane-feed.json",
    "sha256": "7b46471ab44b2bbff916cbec3134df9c8640ac0a99eed1f22c4af1583c9627ed",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/pr-lane-series.jsonl",
+   "path": "apps/tribute-dashboard/data/pr-lane-series.jsonl",
    "sha256": "99290dfa00b14abfd12da9438d008fa7f04cf69805d6744c74dc3082d113a70f",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/proposals-feed.json",
+   "path": "apps/tribute-dashboard/data/proposals-feed.json",
    "sha256": "292ad852f715d491b067e71c61bc062d2d48b7822a076ff5043f13861a1f6f0b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/provider-quota-coverage.json",
-   "sha256": "adffba9fb4b29083e55fa98406203f322a88ac3366d62946b448606581e4173b",
+   "path": "apps/tribute-dashboard/data/provider-quota-coverage.json",
+   "sha256": "74a119be69f8422093fc228ea3966b9466f57cc37309d6fd80f194b8fc8c30e9",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/quota-allocations-feed.json",
+   "path": "apps/tribute-dashboard/data/quota-allocations-feed.json",
    "sha256": "09d701e17fe59022e1d6b07fa3e3e985877725d53362daf35c639e81515f31db",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/quota-usage.json",
-   "sha256": "c49346911210f3cbd959c9ea65680eab5d985530afc945561a889bd9d9675c7d",
+   "path": "apps/tribute-dashboard/data/quota-usage.json",
+   "sha256": "47a98361fe556bf2a12dd4e9ee2ff6c5426596d28e300c3b74c43879c9840576",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/quota.json",
-   "sha256": "001e1be4996f0160435b6533ef2212a3c0a2e796917247b315c182fffd937ce0",
+   "path": "apps/tribute-dashboard/data/quota.json",
+   "sha256": "9d6ac8b5d9a4be11de4a224e924cb24029ee32e20e97cd6564d52eb0941702b1",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/referral-feed.json",
+   "path": "apps/tribute-dashboard/data/rate-limit-event-audits.json",
+   "sha256": "046a18f31f2552023af2b549d9435a34e356d1e37e58bb7a0c6d9f8ac816f393",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/referral-feed.json",
    "sha256": "5830d2068c1d9a7714f8d8511bb3c6035b8dbaddacb0c8e9652fd57b29cf22b2",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/status.json",
-   "sha256": "db85cb077e5f0abad815194a4fe8ed1866209900623b16fa8bfa9995e0254b0e",
+   "path": "apps/tribute-dashboard/data/results-index-feed.json",
+   "sha256": "46c9d24e724796ad9c1c50f35808fb73b70bdb46a0ced32824d34b11565b6b5f",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/telemetry-feed.json",
+   "path": "apps/tribute-dashboard/data/results-index.json",
+   "sha256": "1c63faf174fb42fc8b6e354111c56fb6bb1ba105a5426e2e3d4cc48e047d3e26",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/status.json",
+   "sha256": "d6efcfce673c69e8480645891a30186e859baa315ed0bfdd929871ae557d1fa9",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/swarm-feed.json",
+   "sha256": "fede848a6a26e7232bda0ada57e8b729d31cb23b1c7ad66bfb6835e9cba38f43",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/telemetry-feed.json",
    "sha256": "54faa9db8870d7ddd8ee6a0de4846278eb7a07710cd2ef964177271f2e7515b7",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/tracking-feed.json",
-   "sha256": "12eecb230f5bf77e901965d451c42aebf79d5fc2e47bc2e88127e6eb88180529",
+   "path": "apps/tribute-dashboard/data/tracking-feed.json",
+   "sha256": "99e87c9aa231387dacb433bda81e7e5c7d73fd0bb536f980c1ba3737782e6fce",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
-   "path": "apps/help-wanted-dashboard/data/usage-series.json",
-   "sha256": "1c7e0908f7f9f079cbad6b53b11b4c41e8a8c18ceb11e0a6a8b2abdb6146fee0",
+   "path": "apps/tribute-dashboard/data/usage-series.json",
+   "sha256": "90c1fc2ddb54ed064e5d6fb1eb3492d80536bfb95a2215adc81dd354a64f7a18",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/wagering-book.json",
+   "sha256": "491999bb60806af960ecea34f4121b3142e509449f11f064c486fa4ac393f6d9",
    "status": "emitted",
    "units": 1
   }

@@ -72,3 +72,19 @@ def test_filing_spec_blank_source_and_evidence_default():
 
 def test_submitter_is_role_moniker_form():
     assert ex.SUBMITTER == "reverse-engineering-toolkits{apk-xref-exec}"
+
+
+def test_cap_findings_markdown_elides_lists_keeps_headings():
+    big = "### Endpoints actually observed\n\n" + "\n".join(
+        f"- https://example.com/api/v1/resource/{i}" for i in range(3000))
+    text = ("### Target ID\n\nbig-target\n\n" + big +
+            "\n\n### Verdict\n\ndivergences-found\n")
+    capped = ex.cap_findings_markdown(text)
+    assert len(capped) <= ex.ISSUE_BODY_LIMIT
+    assert "### Target ID" in capped and "### Verdict" in capped
+    assert "elided" in capped and "findings-full.md" in capped
+
+
+def test_cap_findings_markdown_small_is_untouched():
+    text = "### Target ID\n\nx\n"
+    assert ex.cap_findings_markdown(text) == text

@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T14:12:09Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T14:18:21Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `a219bf55a4` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `fcc504306f` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 418 issues, 181 PRs. PR classes: EXTRACT 6 / CANDIDATE 87 / NEED_EVIDENCE 88 / SUPERSEDE 0.
+**Open inventory:** 418 issues, 182 PRs. PR classes: EXTRACT 5 / CANDIDATE 87 / NEED_EVIDENCE 90 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -18,7 +18,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1540 | EXTRACT | unlabelled | `97c0c5649f` | success | success | unstable | feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV |
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #3926 | EXTRACT | unlabelled | `8fe642c697` | success | success | unstable | Lean ⇔ fleet notation mapping record (matrices · vector stores) |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -144,7 +143,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `e8b348b80e` | queued | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `6c74444101` | queued | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #2310 | NEED_EVIDENCE | unlabelled | `572598317e` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -193,7 +192,9 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3640 | NEED_EVIDENCE | unlabelled | `433bba95d0` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #3890 | NEED_EVIDENCE | unlabelled | `196d0ae8e6` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3916 | NEED_EVIDENCE | unlabelled | `1340ec7a5f` | not_reported | not_reported | dirty | chore(reviewer-metrics): regenerate provider x context map |
+| #3916 | NEED_EVIDENCE | unlabelled | `1340ec7a5f` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #3931 | NEED_EVIDENCE | unlabelled | `36926e747d` | queued | queued | unknown | NSE-023: Mathlib IN — pinned dependency register + packet P-002 |
+| #3933 | NEED_EVIDENCE | unlabelled | `8ca378669b` | not_reported | not_reported | unknown | nse023-oracle: Mathlib leg (pinned, cache-backed) |
 
 ## Families (open)
 
@@ -208,6 +209,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 12 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 21 | 179 |
+| unlabelled | 21 | 180 |
 
 **Unlabelled open issues (21):** #308, #388, #389, #1226, #1450, #2185, #2210, #2571, #2732, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3751, #3752, #3906, #3915 — worked oldest-first by the issue-lifecycle lane pass.

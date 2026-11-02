@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T00:34:03Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T00:34:58Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `6034e93740` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `930983f275` (hygiene: in_progress, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 381 issues, 170 PRs. PR classes: EXTRACT 5 / CANDIDATE 83 / NEED_EVIDENCE 82 / SUPERSEDE 0.
 
@@ -130,7 +130,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `cc84ecf1b7` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `b3ee658068` | not_reported | not_reported | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `b3ee658068` | not_reported | not_reported | clean | chore(reviewer-metrics): regenerate provider x context map |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2182 | NEED_EVIDENCE | unlabelled | `5607284d96` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
@@ -174,7 +174,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2613 | NEED_EVIDENCE | unlabelled | `8e223d5342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2914 | NEED_EVIDENCE | unlabelled | `1ea85e9443` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #2980 | NEED_EVIDENCE | unlabelled | `9bf44e9842` | not_reported | not_reported | unknown | feat(orbital): add independent radial hierarchy layout lab |
 | #3024 | NEED_EVIDENCE | unlabelled | `aa699c0d1a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3029 | NEED_EVIDENCE | unlabelled | `22912b19b7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -183,6 +182,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `06d71aec43` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
+| #3405 | NEED_EVIDENCE | unlabelled | `48cc2762b1` | not_reported | not_reported | unknown | docs(ops): tooling-upgrade requirements — web-access parity + device-confirmatio |
 
 ## Families (open)
 

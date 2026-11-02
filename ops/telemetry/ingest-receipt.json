@@ -12,40 +12,47 @@
     "unit_id": "copilot-usage-metrics-api"
    }
   ],
-  "expected_providers": 169,
-  "ingested_providers": 169,
+  "expected_providers": 172,
+  "ingested_providers": 172,
   "missing": []
  },
- "generated_at": "2026-11-01T02:20:40Z",
+ "generated_at": "2026-11-02T00:32:25Z",
  "schema": "telemetry-ingest-receipt/v1",
  "sinks": {
   "hindsight": {
    "live_retain": {
-    "attempted": 316,
-    "failed": 316,
+    "attempted": 326,
+    "batches": 7,
+    "batches_failed": 7,
+    "endpoint": "POST /v1/default/banks/{bank_id}/memories",
+    "failed": 326,
+    "first_error": {
+     "body_excerpt": "{\"detail\":\"Insufficient credits. Please add credits to continue.\"}",
+     "status": 402
+    },
     "ok": 0,
     "skipped_reason": null
    },
    "path": "ops/telemetry/hindsight-payloads.jsonl",
-   "payloads": 316
+   "payloads": 326
   },
   "provenance": {
    "path": "ops/telemetry/provenance-ledger.jsonl",
-   "records": 316
+   "records": 326
   }
  },
  "sources": [
   {
    "id": "quota_registry",
    "path": "ops/quota/registry.json",
-   "sha256": "8f0ffc281b8b1b949355a2efe6335935eaf2d492d6114cb3f4fe094639d9d4e7",
+   "sha256": "c0ee4ada7439b53b9a33125f825abfbc4b1ba64cf384a4c9a135de9909ff179b",
    "status": "emitted",
-   "units": 161
+   "units": 168
   },
   {
    "id": "cadence_providers",
    "path": "ops/cadence/provider-onboarding.json",
-   "sha256": "118aa21b2f58d5a9cde6d62b9526c055b8342881665c3991f7b03e74762703bb",
+   "sha256": "edf25ade6b562a251f98ed1c1e09f6f2f093f9d60478aecbd4d19a3d2cf208dc",
    "status": "emitted",
    "units": 33
   },
@@ -94,7 +101,7 @@
   {
    "id": "challenge_coordinator",
    "path": "ops/challenge/coordinator.json",
-   "sha256": "386a542f17a8b4ac4b66b8ad51043ddb8eca6668abc18ac1ba731d316b44a721",
+   "sha256": "4fc178fd0e7f6ff165528ec29ad2406949686ee88c6c558bec72cb9fa6c8dcd9",
    "status": "emitted",
    "units": 1
   },
@@ -108,14 +115,21 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/3l0-feed.json",
-   "sha256": "1b0528394d853e6c146296c9b0cc24add1c9a595289f582f87a5a370a00a2c09",
+   "sha256": "257ab8a2af66140171c9cf1f5913653ae80ab04f7cd07b5f245d4f60b7b29082",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/allocation-verification.json",
+   "sha256": "972a49e09a047dd65217a50097037c0d1befea7b3beb60f120320baea7e0a497",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/ates-feed.json",
-   "sha256": "bfa1c54a1523e21ae5f1f1ef56c7af2efca49fc37d4eb465ac07a20580b62ce6",
+   "sha256": "47fa4ee4c00043679fa88776209856130ff86f09bbed2f83f917d6ad10e12ff7",
    "status": "emitted",
    "units": 1
   },
@@ -157,7 +171,7 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/desk-feed.json",
-   "sha256": "196c2a2288891807b5f38f6d0365db091951e6ae228bafa328ac9777a2a4545f",
+   "sha256": "87b088f262b8392e0843d5127efc7defaebc0512eddb4d52a70ce23942cdc387",
    "status": "emitted",
    "units": 1
   },
@@ -171,7 +185,7 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/doe-feed.json",
-   "sha256": "6748ad856fc6badcdb0b278906702be637263a7d40752c8cfca2584c59412738",
+   "sha256": "6064f59e33e34cd75d751fac080056f437aa1f592e4b040a99440b42902bfa71",
    "status": "emitted",
    "units": 1
   },
@@ -192,21 +206,21 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/linguist-panel-feed.json",
-   "sha256": "0a5950ceb66034b6ae6c444889027f776bf9a4823c5123228fd8878aa55b53fe",
+   "sha256": "f1f5a31a36eb719ef81f29792d0b1730747ea6901c38c35bbc23c56a3d34f083",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/moneyball-feed.json",
-   "sha256": "15b0392cd2c59ddd8c8701eb0273b8da22a96c9953cd84aa597b98b0bb7eb0ec",
+   "sha256": "36a1c630aee9c337ef666d7a4d21ab5c4d29dc40d91ed488835fa2a18df3676b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/mvt-feed.json",
-   "sha256": "11537fdbf7ef5837e1a74db11abb2548d62247e8a594c49f897bbbbb17521496",
+   "sha256": "aca744d251a40c5a0d6395c10dcc55853c6cb647a279f6cbc6771bec7757887c",
    "status": "emitted",
    "units": 1
   },
@@ -220,35 +234,35 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/pr-lane-feed.json",
-   "sha256": "e39c2bfdd018d3d1ba1c6fe0134b5341a0ccdab1d1261787a711028ed2262c9d",
+   "sha256": "7b46471ab44b2bbff916cbec3134df9c8640ac0a99eed1f22c4af1583c9627ed",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/pr-lane-series.jsonl",
-   "sha256": "7f361eb23e4276e0d722e2812b5f7e9a6a5f38bc3c2f4f8b77b245f1e44184ee",
+   "sha256": "99290dfa00b14abfd12da9438d008fa7f04cf69805d6744c74dc3082d113a70f",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/proposals-feed.json",
-   "sha256": "23c305eb66dc507f1205aceab66aeb6b840f5900e75599de0e6a28a13bee73d6",
+   "sha256": "292ad852f715d491b067e71c61bc062d2d48b7822a076ff5043f13861a1f6f0b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/provider-quota-coverage.json",
-   "sha256": "3686957c640d286e45f9b674fe923b77645b76bbbb93523b3da7486948758ea4",
+   "sha256": "adffba9fb4b29083e55fa98406203f322a88ac3366d62946b448606581e4173b",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/quota-allocations-feed.json",
-   "sha256": "f0b817503e79b87b90210d00543b5c23099329306623c05772745cec45e8e87b",
+   "sha256": "09d701e17fe59022e1d6b07fa3e3e985877725d53362daf35c639e81515f31db",
    "status": "emitted",
    "units": 1
   },
@@ -262,7 +276,7 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/quota.json",
-   "sha256": "fd20cc7fbe7679182dde4c2162eab254c5fdaddb87048def133096d04f940ff3",
+   "sha256": "001e1be4996f0160435b6533ef2212a3c0a2e796917247b315c182fffd937ce0",
    "status": "emitted",
    "units": 1
   },
@@ -276,7 +290,7 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/status.json",
-   "sha256": "335677c5dc662816d6c31a48a1f27cb0e564be1099fe58535ed74ed112aff8f7",
+   "sha256": "db85cb077e5f0abad815194a4fe8ed1866209900623b16fa8bfa9995e0254b0e",
    "status": "emitted",
    "units": 1
   },
@@ -284,6 +298,20 @@
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/telemetry-feed.json",
    "sha256": "54faa9db8870d7ddd8ee6a0de4846278eb7a07710cd2ef964177271f2e7515b7",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/tracking-feed.json",
+   "sha256": "1fe872bae1979b2e32b2bfa4b2b5bc2c521e8be81cd551c72d13c395148e0835",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/help-wanted-dashboard/data/usage-series.json",
+   "sha256": "1c7e0908f7f9f079cbad6b53b11b4c41e8a8c18ceb11e0a6a8b2abdb6146fee0",
    "status": "emitted",
    "units": 1
   }

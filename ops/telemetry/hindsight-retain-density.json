@@ -1,0 +1,13 @@
+{
+ "attempted": 62,
+ "batches": 2,
+ "batches_failed": 2,
+ "endpoint": "POST /v1/default/banks/{bank_id}/memories",
+ "failed": 62,
+ "first_error": {
+  "body_excerpt": "{\"detail\":\"Insufficient credits. Please add credits to continue.\"}",
+  "status": 402
+ },
+ "ok": 0,
+ "payloads": 62
+}

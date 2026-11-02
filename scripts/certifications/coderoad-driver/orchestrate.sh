@@ -91,6 +91,9 @@ sleep 25
   find /tmp/vscode-ud/User/globalStorage -maxdepth 2 2>/dev/null | head -30
   echo "-- coderoad-ish files --"
   find /tmp/vscode-ud /root/.config -iname "*coderoad*" 2>/dev/null | head -20
+  echo "-- logs + User trees --"
+  ls -R /tmp/vscode-ud/logs 2>/dev/null | head -30 || echo "(no logs dir)"
+  find /tmp/vscode-ud/User -maxdepth 3 2>/dev/null | head -30
   echo "-- newest exthost log tail --"
   newest=$(ls -t /tmp/vscode-ud/logs/*/window*/exthost/exthost.log 2>/dev/null | head -1)
   [ -n "$newest" ] && tail -25 "$newest" || echo "(no exthost log found)"

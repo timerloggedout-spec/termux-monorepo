@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 383,
-    "open_prs": 171,
+    "open_prs": 173,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 83,
+      "EXTRACT": 8,
+      "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 169,
+      "prs": 171,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:52:06Z",
+  "generated_at": "2026-11-02T00:53:50Z",
   "issues_unlabelled": [
     308,
     343,
@@ -136,7 +136,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "6af762d1e2"
+    "sha": "e55e98ae14"
   },
   "prs": [
     {
@@ -208,6 +208,48 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9e5742fa4a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3427,
+      "title": "apk-xref forms: add aurora-store/komistore/lizzyondroid artifact sources",
+      "updated_at": "2026-11-02T00:52:31Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "828113dc46",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3428,
+      "title": "feat(dispatch): wire provider-command-dispatch to the stamp fan-out",
+      "updated_at": "2026-11-02T00:52:46Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "cb6c2ec101",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3430,
+      "title": "3L0 plane: intake source class 2 \u2014 chat provenance / session history",
+      "updated_at": "2026-11-02T00:53:40Z"
     },
     {
       "class": "CANDIDATE",
@@ -1791,10 +1833,10 @@
       },
       "head_sha": "4e96cf3500",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:51:53Z"
+      "updated_at": "2026-11-02T00:51:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2514,29 +2556,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "queued"
-      },
-      "head_sha": "9e5742fa4a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3427,
-      "title": "apk-xref forms: add aurora-store/komistore/lizzyondroid artifact sources",
-      "updated_at": "2026-11-02T00:51:59Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "828113dc46",
+      "head_sha": "473bf7195b",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3428,
-      "title": "feat(dispatch): wire provider-command-dispatch to the stamp fan-out",
-      "updated_at": "2026-11-02T00:51:55Z"
+      "number": 3431,
+      "title": "fix(dispatch): fan-out commit step pathspec hardening",
+      "updated_at": "2026-11-02T00:53:43Z"
     }
   ],
   "schema": "operator-matrix/v1",

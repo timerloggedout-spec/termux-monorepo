@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T07:19:02Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T07:22:21Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T07:19:02Z` (merged 150 · open 174) · lane-events(Neon) status=`ok` count=`7548` read_at=`2026-11-02T07:19:02Z`
+Sources: PR feed read_at=`2026-11-02T07:22:21Z` (merged 150 · open 175) · lane-events(Neon) status=`ok` count=`7559` read_at=`2026-11-02T07:22:21Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -23,13 +23,13 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3590 — feat(tracking): nested-family ALL-providers denominator |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3469 `39102aca30aa` 2026-11-02T01:44:54Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3583 `8bdaba2f36cd` 2026-11-02T07:15:43Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3589 `80ade4415915` 2026-11-02T07:22:10Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3497 `69f3835f1a15` 2026-11-02T03:06:36Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3581 `90fec3e545ec` 2026-11-02T07:09:02Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3587 `9dda09b44272` 2026-11-02T07:19:27Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 

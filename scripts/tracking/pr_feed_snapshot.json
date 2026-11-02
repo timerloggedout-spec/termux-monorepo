@@ -1,8 +1,60 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T07:19:02Z",
+ "read_at": "2026-11-02T07:22:21Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3589,
+   "title": "feat(quota): auto-mirror quota-usage pack to dashboard twin",
+   "merged_at": "2026-11-02T07:22:10Z",
+   "updated_at": "2026-11-02T07:22:10Z",
+   "created_at": "2026-11-02T07:21:44Z",
+   "merge_commit_sha": "80ade44159158014a17bbd8a9bb8ea6c501e10bf",
+   "head_ref": "web/quota-usage-mirror-auto",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3589",
+   "merged": true
+  },
+  {
+   "number": 3588,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T07:19:37Z",
+   "updated_at": "2026-11-02T07:19:43Z",
+   "created_at": "2026-11-02T07:19:33Z",
+   "merge_commit_sha": "ea264bf04166d2e1a1771004038b87c07a56a3d6",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3588",
+   "merged": true
+  },
+  {
+   "number": 3587,
+   "title": "feat(dashboard): Family anchor in every shell nav (chrome)",
+   "merged_at": "2026-11-02T07:19:27Z",
+   "updated_at": "2026-11-02T07:19:28Z",
+   "created_at": "2026-11-02T07:19:02Z",
+   "merge_commit_sha": "9dda09b44272fb8e7fbe1e1ec3b414d6d9503ffd",
+   "head_ref": "web/family-chrome",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3587",
+   "merged": true
+  },
+  {
+   "number": 3586,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T07:18:16Z",
+   "updated_at": "2026-11-02T07:19:03Z",
+   "created_at": "2026-11-02T07:18:11Z",
+   "merge_commit_sha": "6a0a35762f35d8ef5453e44625cdc8221c0c7f44",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3586",
+   "merged": true
+  },
   {
    "number": 3551,
    "title": "feat(vercel): owner-records gated project deploy workflow (SSO scope=all, staged XML)",
@@ -14,19 +66,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3551",
-   "merged": true
-  },
-  {
-   "number": 3586,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T07:18:16Z",
-   "updated_at": "2026-11-02T07:18:22Z",
-   "created_at": "2026-11-02T07:18:11Z",
-   "merge_commit_sha": "6a0a35762f35d8ef5453e44625cdc8221c0c7f44",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3586",
    "merged": true
   },
   {
@@ -1913,48 +1952,35 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3434",
    "merged": true
-  },
-  {
-   "number": 3433,
-   "title": "apk-xref-exec: cap findings body to the GitHub issue limit (agora run 41369356763 could not file)",
-   "merged_at": "2026-11-02T00:55:58Z",
-   "updated_at": "2026-11-02T00:55:58Z",
-   "created_at": "2026-11-02T00:53:57Z",
-   "merge_commit_sha": "f508d38dd74c501f2d4c26ae4fdd56aabc42dd00",
-   "head_ref": "apk-xref/findings-body-cap-2026-11-01",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3433",
-   "merged": true
-  },
-  {
-   "number": 3428,
-   "title": "feat(dispatch): wire provider-command-dispatch to the stamp fan-out",
-   "merged_at": "2026-11-02T00:55:52Z",
-   "updated_at": "2026-11-02T00:55:52Z",
-   "created_at": "2026-11-02T00:51:40Z",
-   "merge_commit_sha": "454480be7731705f4c33ebd4374f6d69f5f29123",
-   "head_ref": "swarm/wire-command-dispatch-stamp-20261101",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3428",
-   "merged": true
-  },
-  {
-   "number": 3431,
-   "title": "fix(dispatch): fan-out commit step pathspec hardening",
-   "merged_at": "2026-11-02T00:55:45Z",
-   "updated_at": "2026-11-02T00:55:46Z",
-   "created_at": "2026-11-02T00:53:29Z",
-   "merge_commit_sha": "5b065bf85db389ba46f03a802d488acbb82dfd18",
-   "head_ref": "swarm/fanout-commit-step-fix-20261101",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3431",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 3590,
+   "title": "feat(tracking): nested-family ALL-providers denominator",
+   "merged_at": null,
+   "updated_at": "2026-11-02T07:21:57Z",
+   "created_at": "2026-11-02T07:21:47Z",
+   "merge_commit_sha": "649fc2527e8c172578b3ac0aadd61b0aae162be7",
+   "head_ref": "ops/tracking-nested-family-denominator",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3590",
+   "merged": false
+  },
+  {
+   "number": 3442,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-02T07:21:44Z",
+   "created_at": "2026-11-02T00:58:48Z",
+   "merge_commit_sha": "dc4c90fc1059eeb333c0d37537ff372bc94fe69e",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3442",
+   "merged": false
+  },
   {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
@@ -1966,19 +1992,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
-   "merged": false
-  },
-  {
-   "number": 3442,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-02T07:18:08Z",
-   "created_at": "2026-11-02T00:58:48Z",
-   "merge_commit_sha": "86919ba4505d72a091b6ccfbf61cceb9563339c2",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3442",
    "merged": false
   },
   {

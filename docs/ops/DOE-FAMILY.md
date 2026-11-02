@@ -534,6 +534,21 @@ through an admitted campaign design.
   to this candidate is unevidenced.
   (4) *OTEL observability pattern* — informational; parallels our
   stamp telemetry, no registration action.
+  Parameters (v0, from the seat's registration spec): pattern
+  vocabulary = {Swarm (shared-memory self-coordination, dynamic
+  peer handoffs) · agents-as-tools (specialists callable under an
+  orchestrator) · Graph (deterministic nodes + conditional edges —
+  vocabulary mapping only) · A2A (agent-card interop)}. AST stamp:
+  aggregation per dispatch {cyclomatic_max, cyclomatic_mean (per
+  changed function), nesting_max, functions_changed, diff_loc};
+  carriage = stamp field `complexity` on the routed-dispatch
+  record (fan-out emitted; backfill-derivable from retained
+  diffs); fold class = observational-only (Δ=0 until a later
+  version promotes it on corroborated outcome correlation);
+  anti-gaming constraint as in (2). Home refs: eval report at main
+  sub d3660a72 + registration spec (Swarm seat, 2026-11-01); lane
+  doc `docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md`; provider
+  evidence ledger issue #3141.
   Versioning: v0 = as-evaluated 2026-11-01 by the Swarm seat;
   verdicts revisable only on new firsthand data (a hosted-runtime
   decision reopens 1+3; a complexity-feature pilot graduates 2's

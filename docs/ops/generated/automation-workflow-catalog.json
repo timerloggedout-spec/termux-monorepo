@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "63046c6e649827ec4993547fb3f1fde8fabf941b7538f72e5c5fb8aa2ded7bd3",
-  "workflow_count": 276,
+  "source_fingerprint": "e1edfb280b769844643b7b976a5e0dfccb21c26c36674eaf49a3c42293bb15a4",
+  "workflow_count": 277,
   "workflows": [
     {
       "action_pins": [],
@@ -725,6 +725,23 @@
       "triggers": [
         "issue_comment",
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: cert-coderoad-host cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "coderoad"
+      ],
+      "name": "cert-coderoad-host",
+      "path": ".github/workflows/cert-coderoad-host.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

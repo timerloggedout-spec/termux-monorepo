@@ -188,6 +188,44 @@ Remaining enumeration: 79 of 99 files unextracted; extraction continues next
 pass. Event-masked schedule legs (NOT_ESTABLISHED rows) need schedule-event
 history queries beyond the last-5 window — method noted for the next pass.
 
+### Watch pass 2 — 2026-11-02T22:05Z: leg-level verdicts via schedule-event history
+
+Method note (corrects pass 1's plan): code-search fragments are NOT available
+through the PAT helper (its Accept header lacks the text-match media type, so
+`text_matches` come back empty — extraction via search yields nothing and is
+retired as a route). Verdicts instead come from per-workflow
+`runs?event=schedule` history — exact and cheap. Cron-expression extraction for
+the remaining files stays contents-read work.
+
+**Rule v3:** observed delivery lag for daily crons is 6.4–9.9 h — that is the
+norm, not the exception — so the +12 h grace stands. New leg-level class:
+a schedule leg with **0 deliveries ever** and ≥1 nominal date passed is
+**STARVED (leg)**, independent of the workflow staying alive on other triggers.
+
+| Workflow | Schedule runs EVER | Last schedule delivery | Verdict (supersedes pass 1) |
+|---|---|---|---|
+| traffic-feed-collect.yml | **0** | never | **STARVED (leg) CONFIRMED** |
+| telemetry-ingest.yml | **0** | never | **STARVED (leg)** — workflow alive on push; its Wed 07:23Z leg has never delivered |
+| delphi-ledger-feed-collect.yml | **0** | never | **STARVED (leg)** — alive on workflow_run; next nominal Tue 11-03 06:47Z |
+| challenge-countdowns-refresh.yml | **0** | never | CANDIDATE — today's 16:06Z firing undelivered at 22:05Z, inside grace (expires 11-03T04:06Z) |
+| context-relationship-reconcile.yml | 11 | 2026-11-02T15:52Z ✓ success | **RESOLVED: FIRING-DELAYED-EXTREME** (+9.6 h lag; candidate cleared) |
+| repo-tracking-collect.yml | 2 | 2026-11-02T17:13Z ✓ | FIRING-DELAYED-EXTREME (+9.8 h), thin history |
+| operator-matrix-generate.yml | 5 | 2026-11-02T16:33Z ✓ | FIRING-DELAYED-EXTREME (+9.9 h) |
+| surface-feeds-collect.yml | 1 | 2026-10-28T13:32Z ✓ | FIRING, thin (1 delivery ever); next due Wed 11-04 |
+| quota-dispatch-tree.yml | 53 | 2026-11-02T20:12Z ✓ | FIRING-SPARSE (stands) |
+| observer-poller-scheduled.yml | 42 | 2026-11-02T18:47Z ✓ | FIRING-SPARSE (stands) |
+
+Repo-wide context: the newest 100 schedule-event runs span 2026-11-01T13:26Z →
+11-02T21:56Z across **45 distinct workflows** — schedule delivery works as a
+system; the starved legs above are per-workflow, not a platform outage. (The
+repo-wide schedule `total_count` reads 2,500 = the §1 saturation cap; recorded
+as SATURATED, not a count.)
+
+Open after pass 2: countdowns candidate resolves 11-03T04:06Z · delphi/traffic
+Tue firings 11-03 · cron extraction for the un-baselined remainder (contents
+reads) · the 45-workflow firing set vs cron-file set difference = the full
+silent-leg census, computable once extraction completes.
+
 ## §3 Next passes (this seat)
 
 1. Nominal-cron extraction for all 99 enumerated files → per-workflow expected

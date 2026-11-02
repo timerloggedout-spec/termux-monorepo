@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T09:19:02Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T09:20:51Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T09:19:01Z` (merged 150 · open 179) · lane-events(Neon) status=`ok` count=`7911` read_at=`2026-11-02T09:19:01Z`
+Sources: PR feed read_at=`2026-11-02T09:20:50Z` (merged 150 · open 179) · lane-events(Neon) status=`ok` count=`7919` read_at=`2026-11-02T09:20:50Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknown=7
 
@@ -25,7 +25,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknow
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3682 `6e718301dbd6` 2026-11-02T09:16:11Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3628 `650c27ff8116` 2026-11-02T08:03:53Z | land/close PR #3681 — tribute normalization bundle C: diff-gate + telemetry-tests + evidence dir rename |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3681 `7e6c025e339e` 2026-11-02T09:19:53Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3677 `fd327a670d2a` 2026-11-02T09:06:35Z | land/close PR #3683 — fix(quota): static adapter mapping + manager row for deepseek family (roster 32) |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3674 `aa959a4b623b` 2026-11-02T09:10:31Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 86/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 85/150 (extend ops/tracking/projects.json match rules)

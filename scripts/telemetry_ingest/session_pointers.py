@@ -10,7 +10,21 @@ validation consumes one record per session row - no parallel index.
 
 Derived, not intake: the file is REGENERATED from
 `ops/telemetry/session-history.jsonl` each run (the feed is append-only,
-so 1-based line numbers are stable pointers). Per record:
+so 1-based line numbers are stable pointers).
+
+Contract (validation lane amendments A1-A3, 2026-11-01):
+  - line index = index over NON-BLANK lines; the feed is blank-free by
+    construction (the emitter never writes blank lines) and this builder
+    ASSERTS blank-freedom rather than assuming it (A3).
+  - line_sha256 = sha256(feed line as splitlines element, utf-8,
+    NO trailing newline) (A2).
+  - content_sha256 = sha256(record's content field, utf-8);
+    content_chars = len(content str) (A2).
+  - the receipt pins {feed_blob_sha (git blob sha1 of the feed file),
+    generated_at} so an audit can name the exact feed version the
+    pointers derive from (A1).
+
+Per record:
   - feed pointer: {path, line, line_sha256}      -> resolves + hash-match
   - target pointer: muse-message {chat_id, turn_anchor=message_id} or
     github-pr-body {pr_number, turn_anchor}     -> resolves + live
@@ -53,8 +67,15 @@ def main() -> int:
     ap.add_argument("--receipt", required=True)
     args = ap.parse_args()
 
-    raw = open(args.feed, "rb").read().decode("utf-8")
-    lines = [l for l in raw.splitlines() if l.strip()]
+    raw_bytes = open(args.feed, "rb").read()
+    raw = raw_bytes.decode("utf-8")
+    all_lines = raw.splitlines()
+    blanks = [i for i, l in enumerate(all_lines, start=1) if not l.strip()]
+    assert not blanks, f"feed is not blank-free (blank lines: {blanks[:5]})"
+    lines = all_lines
+    feed_blob_sha = hashlib.sha1(
+        b"blob " + str(len(raw_bytes)).encode() + b"\0" + raw_bytes
+    ).hexdigest()
     out = []
     kinds = {}
     for i, line in enumerate(lines, start=1):
@@ -77,8 +98,12 @@ def main() -> int:
     with open(args.out, "w", encoding="utf-8") as fh:
         for rec in out:
             fh.write(json.dumps(rec, sort_keys=True) + "\n")
+    import datetime
     receipt = {"schema": SCHEMA, "feed": FEED_PATH, "records": len(out),
                "target_kinds": kinds,
+               "feed_blob_sha": feed_blob_sha,
+               "generated_at": datetime.datetime.now(
+                   datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                "consumer": "tests-llm-validation (pointer-reference validation)"}
     with open(args.receipt, "w", encoding="utf-8") as fh:
         json.dump(receipt, fh, indent=1, sort_keys=True)

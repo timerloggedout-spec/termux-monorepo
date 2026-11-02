@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T00:34:11Z",
+ "generated_at": "2026-11-02T00:37:33Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T00:34:10Z",
+   "read_at": "2026-11-02T00:37:32Z",
    "merged": 150,
    "open": 171
   },
   "lane_events": {
-   "read_at": "2026-11-02T00:34:10Z",
+   "read_at": "2026-11-02T00:37:32Z",
    "status": "ok",
-   "count": 6347,
+   "count": 6353,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +104,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -138,7 +138,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -171,7 +171,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "challenge-entries",
@@ -185,7 +185,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "quota",
@@ -205,7 +205,7 @@
     "quota registry services=168",
     "open PRs: #3342, #3242, #2757, #2340, #2525"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "doe",
@@ -214,10 +214,10 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3400,
-    "sha": "e0fb311c118d",
-    "at": "2026-11-02T00:30:47Z",
-    "title": "docs(ops): leveling alignment \u2014 MVT/ATES nested under DoE in separation + intake specs"
+    "pr": 3409,
+    "sha": "70c1a5172fac",
+    "at": "2026-11-02T00:36:57Z",
+    "title": "DoE bf-1: comparison-0002 (provenance corpus wired)"
    },
    "next": "land/close PR #2966 \u2014 [apk-doe] A v0.2.1",
    "next_basis": "open-pr",
@@ -225,7 +225,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "doe-nc1",
@@ -237,7 +237,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "tier-1",
@@ -254,7 +254,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "contribution-desk",
@@ -269,7 +269,7 @@
     "desk-feed traversals=10 generated_at=2026-11-01T15:48:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "web-design-viz",
@@ -288,7 +288,7 @@
    "evidence": [
     "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "marketing",
@@ -307,7 +307,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "marketing-social",
@@ -319,7 +319,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "swarm",
@@ -333,12 +333,12 @@
     "at": "2026-11-02T00:33:39Z",
     "title": "ops(graph-matrix): census workflow \u2014 dispatch + weekly + push-on-script, Swarm token, direct-commit"
    },
-   "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
+   "next": "land/close PR #3411 \u2014 feat(dispatch): wire provider-invoke to the stamp fan-out",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #1470"
+    "open PRs: #3411, #1470"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "providers",
@@ -358,7 +358,7 @@
     "quota registry services=168",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "providers-phrases",
@@ -370,7 +370,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "repo-replay",
@@ -382,7 +382,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "ops",
@@ -396,7 +396,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   },
   {
    "lane": "telemetry",
@@ -405,17 +405,17 @@
    "project_id": "telemetry-ingest",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3399,
-    "sha": "3fa76f40fa5b",
-    "at": "2026-11-02T00:30:26Z",
-    "title": "feat(telemetry): HindSight retain v1 contract fix + token/attribution correlation"
+    "pr": 3412,
+    "sha": "f34391105a5b",
+    "at": "2026-11-02T00:37:28Z",
+    "title": "feat(telemetry): attribution/1.1 \u2014 bold trailer forms (Grok historical mark)"
    },
-   "next": "land/close PR #2914 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
+   "next": "land/close PR #3406 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #2914, #1734, #1645, #1469, #990"
+    "open PRs: #3406, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T00:34:11Z"
+   "updated_at": "2026-11-02T00:37:33Z"
   }
  ],
  "doe_join": {

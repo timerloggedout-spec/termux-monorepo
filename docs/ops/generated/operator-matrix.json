@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 383,
-    "open_prs": 173,
+    "open_prs": 169,
     "pr_classes": {
-      "CANDIDATE": 85,
-      "EXTRACT": 7,
+      "CANDIDATE": 83,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 171,
+      "prs": 167,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:55:06Z",
+  "generated_at": "2026-11-02T00:56:25Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "success"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "231412a4a7"
+    "sha": "27997e41fc"
   },
   "prs": [
     {
@@ -208,34 +208,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "473bf7195b",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3431,
-      "title": "fix(dispatch): fan-out commit step pathspec hardening",
-      "updated_at": "2026-11-02T00:54:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3a0019d445",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3433,
-      "title": "apk-xref-exec: cap findings body to the GitHub issue limit (agora run 41369356763 could not file)",
-      "updated_at": "2026-11-02T00:54:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -1403,34 +1375,6 @@
       "number": 3247,
       "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
       "updated_at": "2026-11-01T21:10:12Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "9e5742fa4a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3427,
-      "title": "apk-xref forms: add aurora-store/komistore/lizzyondroid artifact sources",
-      "updated_at": "2026-11-02T00:52:31Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "828113dc46",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3428,
-      "title": "feat(dispatch): wire provider-command-dispatch to the stamp fan-out",
-      "updated_at": "2026-11-02T00:52:46Z"
     },
     {
       "class": "NEED_EVIDENCE",

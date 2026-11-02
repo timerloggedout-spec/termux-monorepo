@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T02:01:55Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T02:11:49Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T02:01:55Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6664` read_at=`2026-11-02T02:01:55Z`
+Sources: PR feed read_at=`2026-11-02T02:11:49Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6706` read_at=`2026-11-02T02:11:49Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -28,12 +28,12 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3469 `39102aca30aa` 2026-11-02T01:44:54Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3414 `0fd3c4b139fe` 2026-11-02T00:40:17Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3477 `a0b4d3a1a1ae` 2026-11-02T02:01:37Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3466 `ab64c30ccb1d` 2026-11-02T01:44:17Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3483 `199ebdda46a8` 2026-11-02T02:10:59Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3480 `307ce7624ee4` 2026-11-02T02:03:20Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
-Campaigns: 16 · joined: 2 · distinct instances: 10 · providers: Muse, openrouter, sealion
+Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere, openrouter, sealion
 
 | campaign | provider | model@version | role | prompt (ref#sha12) | moniker | context | instance_key | plan | recorded | dispatched |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -56,6 +56,7 @@ Campaigns: 16 · joined: 2 · distinct instances: 10 · providers: Muse, openrou
 | nc-1-notation-compliance | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | pilot-1-context-routing-x-compression | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 3 | 0 |
+| routed-dispatch | cohere | c4ai-aya-expanse-32b | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | certifications-unit l1-relational-databases-v9/061 | `7434577f5900…` | 0 | 1 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | FCC L1 M5 theory batch (cert-unit workflow dispatch) | `7e20822af41d…` | 0 | 3 | 0 |
 | util-1-provider-rotation | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-1-duckduckgo | NOT_ESTABLISHED (design_only) | | | | | | | | | |
@@ -64,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 10 · providers: Muse, openrou
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 80/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 78/150 (extend ops/tracking/projects.json match rules)

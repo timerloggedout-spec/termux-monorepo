@@ -33,7 +33,10 @@ SCHEMA = "nested-family/v1"
 NOT_ESTABLISHED = "NOT_ESTABLISHED"
 _RUN_TAIL = re.compile(r"(\d{6,})$")
 _FILL_FIELDS = ("task_class", "role", "moniker", "context", "run_id",
-                "workflow", "session_id", "ts", "instance_key")
+                "workflow", "session_id", "ts")
+# instance_key is deliberately NOT a fill field (DoE ruling 2026-11-01):
+# enrichment never synthesizes one — a task's instance_key comes only
+# from its own winning record, else stays null/NOT_ESTABLISHED.
 
 
 def _iso(dt: datetime) -> str:
@@ -62,7 +65,7 @@ def _base_task() -> dict:
             "session_id": None, "ts": None,
             "outcome": {"status": None, "gate_call": None, "confirmed": None},
             "instance_key": None, "first_pass": None, "origin": None,
-            "pr": None, "source": None, "source_ref": None}
+            "pr": None, "field_sources": {}, "source": None, "source_ref": None}
 
 
 def _task_from_stamp(rec: dict, source: str, source_ref: str) -> dict:
@@ -156,13 +159,16 @@ def _task_from_desk(row: dict, entry: str) -> dict:
 
 def _enrich(task: dict, donor: dict) -> None:
     """Fill fields the task left null from a lower-priority carrier of
-    the same dispatch. Never overwrites."""
+    the same dispatch. Never overwrites; every fill is provenance-tagged
+    in task['field_sources'] (DoE ruling 2026-11-01)."""
     for f in _FILL_FIELDS:
         if task.get(f) is None and donor.get(f) is not None:
             task[f] = donor[f]
+            task["field_sources"][f] = donor["source"]
     for f in ("gate_call", "confirmed"):
         if task["outcome"].get(f) is None and donor["outcome"].get(f) is not None:
             task["outcome"][f] = donor["outcome"][f]
+            task["field_sources"][f"outcome.{f}"] = donor["source"]
 
 
 def collect_tasks(base: Path):

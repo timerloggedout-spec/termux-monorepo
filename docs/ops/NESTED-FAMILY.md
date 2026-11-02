@@ -45,6 +45,7 @@ EXPERIMENT/intake carriers, consumed here as sources, never re-scored.
         outcome: {status, gate_call, confirmed},
         instance_key,                         // when the source carries one, else null
         first_pass, origin, pr,               // scoring-plane fields (records source; else null)
+        field_sources: {field: source_id},    // provenance of enrichment fills ({} = none)
         source,                               // source id (below)
         source_ref,                           // repo path of the dispatch record
       }]                                      // sorted by ts
@@ -98,7 +99,21 @@ back to `session_id` for desk rows):
 for the same dispatch only **fill fields the winner left null**
 (records lack task_class/workflow/run_id for some classes — stamps
 supply them; stamps lack instance_key — records/intake supply it).
-Nothing is ever overwritten.
+Nothing is ever overwritten. Field primacy (DoE ruling 2026-11-01):
+stamps are dispatch-time primary for dispatch fields
+(role/moniker/context); records are primary for outcome fields.
+Two guards bind the fills: every filled field is provenance-tagged in
+the task's `field_sources` map ({field: source_id}), and enrichment
+**never fills `instance_key`** — a task's instance_key comes only from
+its own winning record (a dispatch with no tuple in any artifact
+keeps instance NOT_ESTABLISHED while its stamp-filled role stands).
+
+**Known split, explained:** github-actions cert-project tasks nest
+under two model strings (4+1) because the landed records themselves
+carry both prose variants of the model label (mode baked into the
+string). The rollup stays source-verbatim (∅ silent normalization);
+canonicalization is emitter-side and forward-only (landed records are
+append-only) — Swarm flagged under the mapping protocol.
 
 Non-sources, named: PLAN rows (planned ≠ run — the family lists tasks
 a model **has run**); campaign records bearing no provider (named

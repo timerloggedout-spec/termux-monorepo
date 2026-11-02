@@ -52,6 +52,14 @@ def _tree() -> Path:
     adir.mkdir(parents=True)
     (adir / "arm-M-baseline.json").write_text(json.dumps(
         {"provider": "claude-muse", "pr": 2946, "route": "claude-authored-baseline", "arm": "M"}))
+    rec9 = {"experiment_id": "routed-dispatch", "status": "passed", "origin": "live",
+            "observed_at": "2026-11-01T03:00:00Z", "session_id": None,
+            "treatment": {"provider": "mistral", "model": "mistral-small-latest",
+                          "instance": {"provider": "mistral", "model": "mistral-small-latest",
+                                       "role": None, "moniker": None, "context": None,
+                                       "instance_key": None}},
+            "metrics": {"task_class": None, "first_pass_success": None, "pr": None}}
+    (rdir / "provider-invoke-9.json").write_text(json.dumps(rec9))
     (adir / "SUMMARY.json").write_text(json.dumps({"provider": "claude-muse"}))  # aggregate: skipped by name
     ldir = base / "experiments" / "doe" / "live-1-x" / "records"
     ldir.mkdir(parents=True)
@@ -62,8 +70,12 @@ def _tree() -> Path:
     extra = dict(STAMP, dispatch_id="provider-invoke-2", provider="mistral",
                  model="mistral-small-latest", task_class="inference-invoke",
                  run={"run_id": "222", "session_id": None, "workflow": "provider-invoke.yml"})
+    extra9 = dict(STAMP, dispatch_id="provider-invoke-9", provider="mistral",
+                  model="mistral-small-latest", task_class="inference-invoke",
+                  instance={"instance_key": "feedface"},
+                  run={"run_id": 999, "session_id": None, "workflow": "provider-invoke.yml"})
     (base / "ops" / "3l0" / "intake.jsonl").write_text(
-        json.dumps(intake) + "\n" + json.dumps(extra) + "\n")
+        json.dumps(intake) + "\n" + json.dumps(extra) + "\n" + json.dumps(extra9) + "\n")
     (base / "ops" / "challenge").mkdir(parents=True)
     desk = {"traversals": [
         {"entry": "routed-dispatch", "provider_usage": [
@@ -81,16 +93,16 @@ def test_nesting_and_dedupe():
     feed = build(_tree())
     assert feed["schema"] == "nested-family/v1"
     assert feed["summary"]["providers"] == 5  # sealion, mistral, jules, baseten, claude-muse
-    assert feed["summary"]["tasks"] == 6      # record + campaign + stamp-only + intake-extra + 2 desk rows
-    assert feed["summary"]["dispatches"] == 4
+    assert feed["summary"]["tasks"] == 7      # 2 records + campaign + stamp-only + intake-extra + 2 desk rows
+    assert feed["summary"]["dispatches"] == 5
     by_src = feed["summary"]["by_source"]
-    assert by_src == {"records": 1, "campaign-records": 1, "stamps": 1, "intake": 1, "desk-usage": 2}
+    assert by_src == {"records": 2, "campaign-records": 1, "stamps": 1, "intake": 1, "desk-usage": 2}
     apk = next(p for p in feed["providers"] if p["provider"] == "claude-muse")
     atask = apk["models"][0]["tasks"][0]
     assert apk["models"][0]["model"] == "NOT_ESTABLISHED" and atask["pr"] == 2946
     assert atask["source"] == "campaign-records"
     assert feed["summary"]["by_outcome"] == {
-        "passed": 1, "completed": 2, "landed": 1, "(prose state — verbatim in tasks)": 1}
+        "passed": 2, "completed": 2, "landed": 1, "(prose state — verbatim in tasks)": 1}
     baseten = next(p for p in feed["providers"] if p["provider"] == "baseten")
     assert baseten["models"][0]["model"] == "NOT_ESTABLISHED"  # null model, literal bucket
     sealion = next(p for p in feed["providers"] if p["provider"] == "sealion")
@@ -102,6 +114,14 @@ def test_nesting_and_dedupe():
     assert task["instance_key"] == "7e20822af41d" and task["first_pass"] is True
     assert task["task_class"] == "certifications-unit"  # enriched from stamp
     assert task["outcome"] == {"status": "passed", "gate_call": "PASS", "confirmed": None}
+    assert task["field_sources"] == {"task_class": "stamps", "run_id": "stamps",
+                                     "workflow": "stamps", "outcome.gate_call": "stamps"}
+    mistral = next(p for p in feed["providers"] if p["provider"] == "mistral")
+    t9 = next(t for m in mistral["models"] for t in m["tasks"] if t["dispatch_id"] == "provider-invoke-9")
+    assert t9["instance_key"] is None  # enrichment never fills instance_key (donor had "feedface")
+    assert t9["field_sources"] == {"task_class": "intake", "role": "intake", "moniker": "intake",
+                                   "context": "intake", "run_id": "intake", "workflow": "intake",
+                                   "outcome.gate_call": "intake"}
 
 
 def test_not_established_model_stays_literal():

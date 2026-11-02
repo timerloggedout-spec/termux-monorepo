@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 392,
-    "open_prs": 179,
+    "open_prs": 178,
     "pr_classes": {
-      "CANDIDATE": 85,
+      "CANDIDATE": 86,
       "EXTRACT": 7,
-      "NEED_EVIDENCE": 87,
+      "NEED_EVIDENCE": 85,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 177,
+      "prs": 176,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:19:37Z",
+  "generated_at": "2026-11-02T09:22:20Z",
   "issues_unlabelled": [
     308,
     343,
@@ -150,7 +150,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "37bcee5bbd"
+    "sha": "6e49b738f2"
   },
   "prs": [
     {
@@ -230,12 +230,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "30ae007d4d",
+      "head_sha": "4c214c4f81",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3676,
-      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
-      "updated_at": "2026-11-02T09:10:33Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T09:18:20Z"
     },
     {
       "class": "EXTRACT",
@@ -244,12 +244,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "feacabbf3f",
+      "head_sha": "8a05fd9f68",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3681,
-      "title": "tribute normalization bundle C: diff-gate + telemetry-tests + evidence dir rename",
-      "updated_at": "2026-11-02T09:17:35Z"
+      "number": 3683,
+      "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
+      "updated_at": "2026-11-02T09:18:46Z"
     },
     {
       "class": "CANDIDATE",
@@ -1447,6 +1447,20 @@
       "updated_at": "2026-11-02T09:08:15Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "30ae007d4d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3676,
+      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
+      "updated_at": "2026-11-02T09:10:33Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1851,20 +1865,6 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "4c214c4f81",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:18:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2587,12 +2587,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9b2efe811a",
+      "head_sha": "ab44bf7c41",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T09:03:05Z"
+      "updated_at": "2026-11-02T09:21:17Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2649,20 +2649,6 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "8a05fd9f68",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3683,
-      "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
-      "updated_at": "2026-11-02T09:18:46Z"
     }
   ],
   "schema": "operator-matrix/v1",

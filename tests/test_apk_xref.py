@@ -354,3 +354,27 @@ def test_acquire_github_repo_url_form(tmp_path):
                       "repo": "https://github.com/o/r"},
                      tmp_path / "out", fetch=gh)
     assert got["status"] == "acquired" and got["version"] == "v9"
+
+
+def test_acquire_izzyondroid_v2_index(tmp_path):
+    apk_bytes = build_apk(tmp_path / "src.apk").read_bytes()
+    import hashlib as _h
+    idx = {"packages": {"com.example.aitools": {"versions": {
+        "7": {"file": {"name": "/com.example.aitools_7.apk"},
+              "manifest": {"versionName": "0.9", "versionCode": 7}},
+        "42": {"file": {"name": "/com.example.aitools_42.apk",
+                        "sha256": _h.sha256(apk_bytes).hexdigest()},
+               "manifest": {"versionName": "1.4.2", "versionCode": 42}}}}}}
+    f = _fake_fetch({
+        "https://apt.izzysoft.de/fdroid/repo/index-v2.json": idx,
+        "https://apt.izzysoft.de/fdroid/repo/com.example.aitools_42.apk": apk_bytes})
+    got = ax.acquire({"sources": ["izzyondroid"],
+                      "package_id": "com.example.aitools"},
+                     tmp_path / "out", fetch=f)
+    assert got["status"] == "acquired" and got["build"] == 42
+    assert got["index_sha256"] == _h.sha256(apk_bytes).hexdigest()
+    # other-store falls back through the same channel
+    got = ax.acquire({"sources": ["other-store"],
+                      "package_id": "com.example.aitools"},
+                     tmp_path / "out2", fetch=f)
+    assert got["status"] == "acquired" and got["via"] == "other-store->izzyondroid"

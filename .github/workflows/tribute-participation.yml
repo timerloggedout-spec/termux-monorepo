@@ -44,13 +44,13 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
-        run: python3 scripts/ci/help_wanted_status.py
+        run: python3 scripts/ci/tribute_status.py
 
       - name: Rebuild tribute audit
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
-        run: python3 scripts/ci/help_wanted_tribute_audit.py
+        run: python3 scripts/ci/tribute_audit.py
 
       - name: Run participation loop
         env:
@@ -66,7 +66,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/ops/generated/help-wanted-tribute-audit.json \
+          git add docs/ops/generated/tribute-audit.json \
                   docs/ops/generated/tribute-participation.json || true
           if git diff --staged --quiet; then
             echo "no participation delta"

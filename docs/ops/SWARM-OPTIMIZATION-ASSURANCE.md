@@ -240,3 +240,6 @@ Owner challenge sustained in main (2026-11-02): Repo-Story's build was hard-boun
 
 **Authority line (owner ruling, via main 2026-11-02):**
 14. **DoE governs selection, Swarm executes.** DoE (doe-expert seat) has authority over Scout, with the pool feed: selection policy + the pool feed's governance sit with DoE {health-gated · target-carrying · posterior-stated}; Scout binds only what the DoE-governed feed supports. This lane's execution lead stands for what it owns — dispatch machinery, rotations, stamps — and consumes DoE's selection policy as its input, never as its own preference.
+
+**Scout working model (owner, via main 2026-11-02):**
+15. **Managers request → Scout selects → Swarm dispatches.** Requests are a first-class intake on the execution side: a manager states the capability need; Scout selects the arm from the pool population (the DoE-governed feed, item 14); this lane's machinery dispatches. **No manager hand-picks an arm.** The dispatch stamp gains {requesting_manager · request_id} so every execution traces back to the request it served and the selection that filled it (machinery delta: fan-out stamp schema, additive fields).

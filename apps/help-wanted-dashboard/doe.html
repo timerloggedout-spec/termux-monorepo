@@ -49,6 +49,7 @@
 <ul id="sources" class="feed-list"></ul>
 </section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const GH = "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -66,6 +67,17 @@ async function load(){
   document.getElementById("feed-state").textContent = "live · " + f.schema;
   document.getElementById("feed-generated").textContent = f.generated_at;
   const d = f.data, out = [];
+  const p2camps = d.campaigns || [];
+  if(p2camps.length){
+    const p2byState = {};
+    for(const c of p2camps) p2byState[c.state] = (p2byState[c.state] || 0) + 1;
+    const p2state = Object.entries(p2byState).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+    const p2runs = p2camps.filter(c => (c.runs || 0) > 0).map(c => ({label: c.campaign_id, value: c.runs})).sort((a, b) => b.value - a.value);
+    out.push(`<section class="card"><h2>Charts</h2>
+    <p class="meta">Feed generated ${esc(f.generated_at)}${CK.stampState(f.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : ''} · rendered from this page's feed only.</p>
+    <h3>Campaigns by state</h3>${CK.bars(p2state)}
+    ${p2runs.length ? `<h3>Runs per campaign</h3>${CK.bars(p2runs)}` : '<p class="muted">No campaign run records yet.</p>'}</section>`);
+  }
   const fam = d.family;
   if(fam){
     const mrows = fam.members.map(m => {

@@ -47,6 +47,7 @@
 <ul id="sources" class="feed-list"></ul>
 </section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const GH = "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/";
@@ -64,6 +65,13 @@ async function load(){
   document.getElementById("feed-state").textContent = "live · " + f.schema;
   document.getElementById("feed-generated").textContent = f.generated_at;
   const d = f.data, out = [];
+  const p2wfs = d.workflows || [];
+  if(p2wfs.length){
+    const p2runs = p2wfs.map(w => ({label: w.name, value: (w.observed_runs && w.observed_runs.total_runs) || 0})).sort((a, b) => b.value - a.value);
+    out.push(`<section class="card"><h2>Charts</h2>
+    <p class="meta">Feed generated ${esc(f.generated_at)}${CK.stampState(f.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : ''} · rendered from this page's feed only.</p>
+    <h3>Observed runs per workflow (feed snapshot)</h3>${CK.bars(p2runs)}</section>`);
+  }
   out.push(`<section class="card"><h2>The harness — seven hard invariants</h2>
   <div class="chips">${d.invariants.map(i => `<span class="pill">${esc(i)}</span>`).join("")}</div>
   <p>${esc(d.invariant_note)}</p>

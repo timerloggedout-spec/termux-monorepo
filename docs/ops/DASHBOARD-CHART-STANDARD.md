@@ -49,17 +49,17 @@ keep them; the standard governs data + stamps, not the drawing code.
 | family.html | ✓ nested tree + tasks-per-provider/outcome charts (chartkit); chrome (nav) PR follows | nested-family-feed.json |
 | quota-swarm.html | ✓ layers funnel + records-per-family + events timeline (chartkit) + chrome (PR #3620) | swarm-feed.json + nested-family-feed.json |
 | quota-event-audits.html | ✓ coverage + findings-by-state/class charts (chartkit); chrome (nav) rides the canon normalization | rate-limit-event-audits.json + register |
-| 3l0.html | P2 | 3l0-feed.json |
-| ates.html | P2 | ates-feed.json |
-| doe.html | P2 | doe-feed.json |
-| mvt.html | P2 | mvt-feed.json |
-| moneyball.html | P2 | moneyball-feed.json |
-| oracle.html | P2 | oracle-panel-feed.json |
-| delphi-rfp.html | P2 | delphi-rfp-feed.json |
-| delphi-ledger.html | P2 | delphi-ledger-feed.json |
-| proposals.html | P2 | proposals-feed.json |
-| free-tier-value.html | P2 | free-tier-value.json |
-| admin.html | P2 — feed-freshness chart across its feeds | all admin feeds |
+| 3l0.html | ✓ review cycles per provider (chartkit) | 3l0-feed.json |
+| ates.html | ✓ observed runs per workflow (chartkit) | ates-feed.json |
+| doe.html | ✓ campaigns by state + runs per campaign (chartkit) | doe-feed.json |
+| mvt.html | ✓ experiment record population (chartkit) | mvt-feed.json |
+| moneyball.html | ✓ scoring weights + penalty magnitudes (chartkit) | moneyball-feed.json |
+| oracle.html | ✓ proposals + passes by status (chartkit) | oracle-panel-feed.json |
+| delphi-rfp.html | ✓ open RFPs by status + group (chartkit) | delphi-rfp-feed.json |
+| delphi-ledger.html | ✓ events per ledger (chartkit) | delphi-ledger-feed.json |
+| proposals.html | ✓ proposals by status + priority (chartkit) | proposals-feed.json |
+| free-tier-value.html | ✓ list prices per model (input/output) (chartkit) | free-tier-value.json |
+| admin.html | ✓ feed-freshness: age in hours per consumed feed (chartkit) | all admin feeds |
 | desk.html | viz lane | desk-feed.json |
 | dispatch-tree.html | viz lane | dispatch-tree-feed.json |
 | linguist.html | viz lane | linguist-panel-feed.json |

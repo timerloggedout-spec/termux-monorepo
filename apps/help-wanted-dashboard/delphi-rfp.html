@@ -80,6 +80,11 @@
 <p class="muted" id="meta">Loading feed…</p>
 
 <section>
+<div class="head"><h2>Charts</h2></div>
+<div class="card" id="p2-charts"><p class="muted">Loading feed…</p></div>
+</section>
+
+<section>
 <div class="head"><h2>Progress &amp; status</h2></div>
 <div class="card" id="summary"></div>
 </section>
@@ -127,6 +132,7 @@
 </section>
 
 </main>
+<script src="./chartkit.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -280,6 +286,11 @@ async function load(){
     $("meta").textContent="Generated "+(feed.generated_at||"unknown")+" · Source: "+(feed.source||"")+" · Schema "+(feed.schema||"")+" · This page consumes data/delphi-rfp-feed.json (contract docs/ops/DELPHI-RFP-FEED.md) and nothing else — votes and outcomes render verbatim from the gate ledger; nothing is re-scored, averaged, or guessed.";
     renderSegments(feed.segments);
     renderSummary(feed.summary||{});
+    const p2sum = feed.summary || {};
+    const p2rows = o => Object.entries(o || {}).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+    $('p2-charts').innerHTML = '<p class="meta">Feed generated ' + esc(feed.generated_at) + (CK.stampState(feed.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : '') + ' · rendered from this page feed only.</p>'
+      + '<h3>Open RFPs by status</h3>' + CK.bars(p2rows(p2sum.by_status))
+      + '<h3>Open RFPs by group</h3>' + CK.bars(p2rows(p2sum.by_group));
     renderCriteria(feed.criteria);
     if(feed.honesty_rules) $("honesty").innerHTML=feed.honesty_rules.map(h=>'<li>'+esc(h)+'</li>').join("");
     $("cards").innerHTML=(feed.rfps||[]).map(cardHTML).join("");

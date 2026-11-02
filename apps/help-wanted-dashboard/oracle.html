@@ -51,6 +51,11 @@
 </section>
 
 <section>
+<h2>Charts</h2>
+<div id="p2-charts"><p class="muted">Loading the feed…</p></div>
+</section>
+
+<section>
 <h2>Generated proposals</h2>
 <div id="proposals"><p class="muted">Loading the feed…</p></div>
 </section>
@@ -74,6 +79,7 @@
 </section>
 </main>
 <footer><p class="muted">Oracle Panel · Help-Wanted Oversight · Data: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/apps/help-wanted-dashboard/data/oracle-panel-feed.json">oracle-panel-feed.json</a> (<span id="foot-stamp">schema oracle-panel-feed/v1</span>) · Contract: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ORACLE-PANEL-FEED.md">ORACLE-PANEL-FEED.md</a> · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a></p></footer>
+<script src="./chartkit.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -226,6 +232,12 @@ async function load(){
     $('feed-ledger').innerHTML=f.sources?(f.sources.ledger_verified?pill('verified','ok'):pill('NOT verified — repo-record values','bad')):'—';
     $('foot-stamp').textContent='schema '+f.schema+' · generated '+f.generated_at+' · '+f.generator;
     $('honesty').innerHTML=(f.honesty_rules||[]).map(r=>'<li>'+esc(r)+'</li>').join('');
+    const p2tally={}; for(const pr of (f.proposals||[])) p2tally[pr.status]=(p2tally[pr.status]||0)+1;
+    const p2pass={}; for(const ps of (f.passes||[])) p2pass[ps.status]=(p2pass[ps.status]||0)+1;
+    const p2rows=o=>Object.entries(o).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value);
+    $('p2-charts').innerHTML='<p class="meta">Feed generated '+esc(f.generated_at)+(CK.stampState(f.generated_at,Date.now())==='STALE'?' · <span class="pill">STALE</span>':'')+' · rendered from this page feed only.</p>'
+      +'<h3>Proposals by status</h3>'+CK.bars(p2rows(p2tally))
+      +'<h3>Passes by status</h3>'+CK.bars(p2rows(p2pass));
     $('proposals').innerHTML=(f.proposals||[]).map(renderProposal).join('');
     if(f.settings){
       const s=f.settings, g2=s.generation||{};

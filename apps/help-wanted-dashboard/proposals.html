@@ -29,6 +29,11 @@
 
 <main>
 <section>
+  <div class="head"><h2>Charts</h2></div>
+  <div class="card" id="p2-charts"><p class="muted">Loading feed…</p></div>
+</section>
+
+<section>
   <div class="head"><h2>Registry</h2><span class="note" id="meta">Loading…</span></div>
   <div class="toolbar">
     <select id="f-status" aria-label="Filter by status"></select>
@@ -54,6 +59,7 @@
   Proposals index · registry of record: docs/proposals/registry.yaml · feed: proposals-feed/v1 · page renders the feed verbatim.
 </footer>
 
+<script src="./chartkit.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -120,6 +126,11 @@ async function load(){
     fillSelect('f-author',facetValues(FEED,'author'),'Author');
     $('f-text').addEventListener('input',render);
     render();
+    const p2c = FEED.counts || {};
+    const p2rows = o => Object.entries(o || {}).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+    $('p2-charts').innerHTML = '<p class="meta">Feed generated ' + esc(FEED.generated_at) + (CK.stampState(FEED.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : '') + ' · rendered from this page feed only.</p>'
+      + '<h3>Proposals by status</h3>' + CK.bars(p2rows(p2c.by_status))
+      + '<h3>Proposals by priority</h3>' + CK.bars(p2rows(p2c.by_priority));
     const ps=FEED.passes||[];
     $('passes').innerHTML=ps.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Pass</th><th>Status</th><th>Schema</th><th>Candidates</th><th>Outcome</th></tr></thead><tbody>'+
       ps.map(p=>'<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.id)+'</strong></a><br><span class="muted">'+esc(p.path)+'</span></td><td>'+esc(p.status||'—')+'</td><td>'+esc(p.schema||'—')+'</td><td>'+(p.candidates==null?'—':p.candidates)+'</td><td>'+outcomeCell(p)+'</td></tr>').join('')+

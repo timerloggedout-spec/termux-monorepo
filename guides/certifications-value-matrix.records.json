@@ -1181,14 +1181,25 @@
       "direction": "support",
       "strength": "partial",
       "rule9_state": "single-leg"
+     },
+     {
+      "source": "CDPA v1.1 full text (developer.amd.com/rocm-certified), gates-delegate firsthand read 2026-11-02: no attempt limit/wait/retake fee stated; s6.3 scheduling rules reserved to AMD/Testing Providers, unpublished; s9/AppA = 24-mo renewal-retest, not fail-retake",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
      }
     ],
     "posterior": {
      "value": "exam binary at single sitting in League window; exposure = full +500 if no in-window retake",
      "range": null,
      "updated_at": "2026-11-02",
-     "n_evidence": 1,
-     "retake_policy": "NOT_ESTABLISHED"
+     "n_evidence": 2,
+     "retake_policy": {
+      "state": "NOT_ESTABLISHED",
+      "basis": "issuer-silent (CDPA v1.1)",
+      "plan_basis": "as-if-single-shot (assumption); landing 2026-11-25 preserves 6d buffer to exam wall",
+      "recheck_trigger": "in-portal s6.3 rules at the auth session"
+     }
     },
     "state": "PROVISIONAL"
    },

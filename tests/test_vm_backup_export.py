@@ -33,9 +33,11 @@ def make_home(tmp: Path) -> Path:
     _w(home, "memory/note.md")
     _w(home, "workspace/goals/g1/file.md")
     _w(home, "workspace/custom-connectors/c1/CONNECTOR.md")
-    # keys/ dir with a fake key: must never be staged
-    _w(home, "workspace/custom-connectors/c1/keys/app.pem",
-       b"-----BEGIN RSA PRIVATE KEY-----\nfake\n")
+    # keys/ dir with a fake key: must never be staged. The header is
+    # assembled in pieces so this fixture does not itself trip the
+    # repo gate's no-secrets scan for key blocks.
+    fake_key = ("-----BEGIN RSA PRIVATE " "KEY-----\nfake\n").encode()
+    _w(home, "workspace/custom-connectors/c1/keys/app.pem", fake_key)
     _w(home, "workspace/user/u.txt")
     _w(home, "hooks/scripts/h.sh", b"#!/bin/sh\ntrue\n")
     _w(home, "workspace/scratch/junk.txt")

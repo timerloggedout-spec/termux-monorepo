@@ -68,8 +68,9 @@ Shape ruling applied: per candidate ONE expectation record `{quantity, prior{val
 
 **`fabric_mint.aro` — failure probability per remote-knowledge-fabric run at App mint**
 - prior: {value: 0.3, basis: mint auth failures usually intermittent/config-local}
-- evidence: [{source: "run records 2026-10-21→26: 6/6 runs failed at mint (APP_PRIVATE_KEY class)", direction: up, likelihood: "6/6 in window", corroboration: corroborated (mgr-relayed run census + ICM's own #3350 fix-pattern proof on the same mint shape)}]
+- evidence: [{source: "run records 2026-10-21→26: 6/6 runs failed at mint (APP_PRIVATE_KEY class)", direction: up, likelihood: "6/6 in window", corroboration: corroborated (mgr-relayed run census + ICM's own #3350 fix-pattern proof on the same mint shape)}, {source: "workflow YAML of record, remote-knowledge-fabric.yml: fixed cron `17 6 * * *` still present (flagged by ICM's first cadence pass; confirmed in Cadence timing model v0)", direction: "supports defect-state (second, independent defect on the same workflow)", likelihood: "present at read time", corroboration: corroborated (YAML firsthand + Cadence model)}]
 - posterior: {value: 0.86, range: 0.6–1.0, updated_at: 2026-11-02, n_evidence: 6}
+- **Fix-wave scope (mgr ruling 2026-11-02):** ONE workflow, ONE PR, both defects — mint fix (app-id pattern, proven PR #3350) **+ cadence migration off the fixed cron** (tree tranche ∨ event/floor pattern, per the fleet's established forms; fixed-clock cadence fails the owner's crons-superseded rule). Fix→automate in the same motion; execution sits with the fabric surface's owner, this record is the ICM-side scope of record.
 - `fabric_mint.sle` (minutes): **INTAKE** — runs exit early; no duration evidence carried. ALE therefore not derivable; the item's value class is unblocking (manifest staleness), not minutes.
 
 **`codeql.draw_min_per_pr` — measured draw (not a risk quantity)**

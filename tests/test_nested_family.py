@@ -29,6 +29,10 @@ def _tree() -> Path:
     sdir = base / "experiments" / "doe" / "routed-dispatch" / "stamps"
     sdir.mkdir(parents=True)
     (sdir / "cert-unit-1.json").write_text(json.dumps(STAMP))
+    stamp2 = dict(STAMP, dispatch_id="invoke-3", provider="baseten", model=None,
+                  task_class="inference-invoke",
+                  run={"run_id": 333, "session_id": None, "workflow": "provider-invoke.yml"})
+    (sdir / "invoke-3.json").write_text(json.dumps(stamp2))
     (base / "ops" / "3l0").mkdir(parents=True)
     intake = dict(STAMP)  # same dispatch via fan-out: must dedupe
     extra = dict(STAMP, dispatch_id="provider-invoke-2", provider="mistral",
@@ -40,7 +44,7 @@ def _tree() -> Path:
     desk = {"traversals": [
         {"entry": "routed-dispatch", "provider_usage": [
             {"provider": "sealion", "model": STAMP["model"], "session_id": "s-dup",
-             "state": "landed"}]},  # no dispatch_id; session-keyed, distinct from stamp
+             "state": "landed (merged 2c0894d2e7d3; synced f7270f379fae)"}]},  # prose state: bucketed in summary, verbatim in task
         {"entry": "D1", "provider_usage": [
             {"provider": "jules", "model": "NOT_ESTABLISHED", "role": "builder",
              "moniker": "challenge-entries", "session_id": "sess-9", "state": "landed"}]},
@@ -52,11 +56,15 @@ def _tree() -> Path:
 def test_nesting_and_dedupe():
     feed = build(_tree())
     assert feed["schema"] == "nested-family/v1"
-    assert feed["summary"]["providers"] == 3  # sealion, mistral, jules
-    assert feed["summary"]["tasks"] == 4      # stamp + intake-extra + 2 desk rows
-    assert feed["summary"]["dispatches"] == 2
+    assert feed["summary"]["providers"] == 4  # sealion, mistral, jules, baseten
+    assert feed["summary"]["tasks"] == 5      # 2 stamps + intake-extra + 2 desk rows
+    assert feed["summary"]["dispatches"] == 3
     by_src = feed["summary"]["by_source"]
-    assert by_src == {"stamps": 1, "intake": 1, "desk-usage": 2}
+    assert by_src == {"stamps": 2, "intake": 1, "desk-usage": 2}
+    assert feed["summary"]["by_outcome"] == {
+        "completed": 3, "landed": 1, "(prose state — verbatim in tasks)": 1}
+    baseten = next(p for p in feed["providers"] if p["provider"] == "baseten")
+    assert baseten["models"][0]["model"] == "NOT_ESTABLISHED"  # null model, literal bucket
     sealion = next(p for p in feed["providers"] if p["provider"] == "sealion")
     model = sealion["models"][0]
     assert model["roles"] == ["builder"]

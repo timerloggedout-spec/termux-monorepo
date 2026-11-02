@@ -42,6 +42,7 @@ permissions:
   contents: read
   issues: write
   actions: write
+  packages: read
 
 concurrency:
   group: cert-coderoad
@@ -70,27 +71,6 @@ jobs:
           repository: freeCodeCamp/${{ inputs.course_repo }}
           ref: ${{ inputs.course_ref }}
           path: project
-
-      - name: Fetch rdb-alpha environment recipe (pinned Dockerfile)
-        # Only the Dockerfile is needed; a full cross-repo checkout of
-        # rdb-alpha failed in run 41400838295 for an unproven runner-side
-        # reason, so the recipe is fetched as a pinned raw file instead.
-        # One fleet deviation is applied to the fetched recipe:
-        # `RUN yes | unminimize` is dropped — it only restores docs/man
-        # pages, is functionally irrelevant to CodeRoad, and is a known
-        # multi-minute stall in non-TTY builds (run 41402889058 hung in
-        # the combined build step and was cancelled).
-        # Sources stay UPSTREAM (archive.ubuntu.com): run 41408722874
-        # proved a rewrite to old-releases.ubuntu.com is wrong — that
-        # host 404s every focal suite, while archive.ubuntu.com still
-        # serves focal (Release file 200, probed 2026-11-02).
-        run: |
-          mkdir -p rdb-alpha
-          curl -fsSL "https://raw.githubusercontent.com/freeCodeCamp/rdb-alpha/main/Dockerfile" \
-            -o rdb-alpha/Dockerfile.upstream
-          grep -v 'unminimize' rdb-alpha/Dockerfile.upstream > rdb-alpha/Dockerfile
-          head -5 rdb-alpha/Dockerfile
-          wc -l rdb-alpha/Dockerfile rdb-alpha/Dockerfile.upstream
 
       - name: Check out verified solution repo
         uses: actions/checkout@v4
@@ -123,20 +103,15 @@ jobs:
             --repo timerloggedout-spec/termux-monorepo \
             -f stamp="$STAMP" -f phase=dispatch
 
-      - name: Build rdb-alpha image
-        timeout-minutes: 20
+      - name: Pull prebuilt CodeRoad image
+        timeout-minutes: 15
         run: |
           mkdir -p evidence && chmod 777 evidence
-          set -o pipefail
-          docker build --progress=plain -t rdb-alpha:local ./rdb-alpha 2>&1 | tee evidence/build-rdb.log
-
-      - name: Build CodeRoad image layer
-        timeout-minutes: 40
-        run: |
-          set -o pipefail
-          docker build --progress=plain -t coderoad:local \
-            -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
-            mono/scripts/certifications/coderoad-driver 2>&1 | tee evidence/build-coderoad.log
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker pull ghcr.io/timerloggedout-spec/coderoad-rdb:latest 2>&1 | tee evidence/pull.log
+          docker tag ghcr.io/timerloggedout-spec/coderoad-rdb:latest coderoad:local
+          docker inspect --format '{{index .RepoDigests 0}}' coderoad:local > evidence/image-digest.txt
+          cat evidence/image-digest.txt
 
       - name: Run CodeRoad completion in container
         id: run

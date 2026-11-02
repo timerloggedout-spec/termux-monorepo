@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 386,
-    "open_prs": 174,
+    "open_prs": 175,
     "pr_classes": {
-      "CANDIDATE": 83,
+      "CANDIDATE": 84,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 86,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 37,
-      "prs": 172,
+      "prs": 173,
       "unlabelled_numbers": [
         308,
         343,
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T07:18:06Z",
+  "generated_at": "2026-11-02T07:19:29Z",
   "issues_unlabelled": [
     308,
     343,
@@ -135,10 +135,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "success",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "08786d5d56"
+    "sha": "9dda09b442"
   },
   "prs": [
     {
@@ -993,6 +993,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "52cb658813",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T07:15:44Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1788,15 +1802,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "9c798751b2",
+      "head_sha": "4d2c922419",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T07:11:58Z"
+      "updated_at": "2026-11-02T07:18:39Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1923,20 +1937,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "52cb658813",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T07:15:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2535,10 +2535,10 @@
       },
       "head_sha": "671e022424",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T07:18:03Z"
+      "updated_at": "2026-11-02T07:18:08Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2581,6 +2581,20 @@
       "number": 3502,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-02T05:16:56Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "88c25d39dd",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3587,
+      "title": "feat(dashboard): Family anchor in every shell nav (chrome)",
+      "updated_at": "2026-11-02T07:19:12Z"
     }
   ],
   "schema": "operator-matrix/v1",

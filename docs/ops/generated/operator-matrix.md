@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T07:18:06Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T07:19:29Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `08786d5d56` (hygiene: success, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `9dda09b442` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 386 issues, 174 PRs. PR classes: EXTRACT 5 / CANDIDATE 83 / NEED_EVIDENCE 86 / SUPERSEDE 0.
+**Open inventory:** 386 issues, 175 PRs. PR classes: EXTRACT 5 / CANDIDATE 84 / NEED_EVIDENCE 86 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -73,6 +73,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
+| #2263 | CANDIDATE | unlabelled | `52cb658813` | success | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
 | #2310 | CANDIDATE | unlabelled | `846b64b1d1` | success | success | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
@@ -130,7 +131,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `cc84ecf1b7` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `9c798751b2` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `4d2c922419` | in_progress | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2182 | NEED_EVIDENCE | unlabelled | `5607284d96` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
@@ -140,7 +141,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `52cb658813` | queued | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `660d086004` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -183,10 +183,11 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `0c7dfb6ab5` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
-| #3442 | NEED_EVIDENCE | unlabelled | `671e022424` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3442 | NEED_EVIDENCE | unlabelled | `671e022424` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #3587 | NEED_EVIDENCE | unlabelled | `88c25d39dd` | in_progress | queued | unstable | feat(dashboard): Family anchor in every shell nav (chrome) |
 
 ## Families (open)
 
@@ -201,6 +202,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 8 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 37 | 172 |
+| unlabelled | 37 | 173 |
 
 **Unlabelled open issues (37):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2677, #2732, #2734, #2735, #2750, #2758, #2830, #2956, #3018, #3036, #3050, #3094, #3141, #3215, #3346, #3577 — worked oldest-first by the issue-lifecycle lane pass.

@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-11-02T13:25:58Z",
+ "generated_at": "2026-11-02T13:26:57Z",
  "schema": "results-index-feed/v1",
  "sections": [
   {
-   "generated_at": "2026-11-02T13:25:58Z",
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "ates",
    "name": "ATES",
    "note": "No committed results ledger exists (feed gaps[] of record): benchmark verdicts are asserted inside workflow runs; run receipts publish as 30-day Actions artifacts.",
@@ -29,25 +29,25 @@
    ]
   },
   {
-   "generated_at": "2026-11-02T13:25:58Z",
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "3l0",
    "name": "3L0",
    "note": "Staged intake (3l0-intake/v1) from the session-history plane; observational fold - weights derive only where confirmed != null (charter source class 2).",
    "rows": [
     {
-     "at": "2026-11-02T13:25:58Z",
+     "at": "2026-11-02T13:26:57Z",
      "label": "staged intake records",
      "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
      "state": 599
     },
     {
-     "at": "2026-11-02T13:25:58Z",
+     "at": "2026-11-02T13:26:57Z",
      "label": "confirmed (weights-eligible)",
      "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
      "state": 0
     },
     {
-     "at": "2026-11-02T13:25:58Z",
+     "at": "2026-11-02T13:26:57Z",
      "label": "routed-dispatch stamp corpus",
      "record_of_record": "ops/telemetry/session-history.jsonl",
      "state": 614
@@ -55,7 +55,7 @@
    ]
   },
   {
-   "generated_at": "2026-11-02T13:25:58Z",
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "temporal",
    "name": "Temporal",
    "note": "No results feed exists for Temporal; the run receipts are the record of record.",
@@ -73,7 +73,7 @@
      "state": 21
     },
     {
-     "at": "2026-11-02T13:25:58Z",
+     "at": "2026-11-02T13:26:57Z",
      "label": "persistent instance",
      "record_of_record": "Actions: temporal-engagement.yml",
      "state": "none"
@@ -81,19 +81,19 @@
    ]
   },
   {
-   "generated_at": "2026-11-02T13:25:58Z",
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "hindsight",
    "name": "HindSight",
    "note": "Retain receipts are the population record; the bank itself is verified via the gated verify step when the proof passes.",
    "rows": [
     {
-     "at": "2026-11-02T13:25:58Z",
+     "at": "2026-11-02T13:26:57Z",
      "label": "receipts on record",
      "record_of_record": "ops/telemetry/hindsight-retain-proof.json",
      "state": "proof attempted 3 - ok 0 - last error 402"
     },
     {
-     "at": "2026-11-02T13:25:58Z",
+     "at": "2026-11-02T13:26:57Z",
      "label": "retained population",
      "record_of_record": "ops/telemetry/hindsight-retain-state.json",
      "state": 0

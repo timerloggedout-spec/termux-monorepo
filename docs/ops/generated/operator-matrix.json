@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 174,
+    "open_prs": 172,
     "pr_classes": {
-      "CANDIDATE": 82,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 85,
+      "CANDIDATE": 83,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 83,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 172,
+      "prs": 170,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:13:35Z",
+  "generated_at": "2026-11-02T00:15:14Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "success"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "74f048ab85"
+    "sha": "1d835c050d"
   },
   "prs": [
     {
@@ -216,26 +216,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "92ac726f1a",
+      "head_sha": "86b8170c9f",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T00:11:01Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0c523ade89",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3378,
-      "title": "feat(cert): wire cert-unit to the stamp fan-out",
-      "updated_at": "2026-11-02T00:12:44Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T00:13:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -1011,6 +997,20 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "92ac726f1a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T00:11:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -1800,20 +1800,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "86b8170c9f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:13:01Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2556,29 +2542,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "6d3181ec2f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3379,
-      "title": "DoE: register chat-intent v1 as method version",
-      "updated_at": "2026-11-02T00:13:24Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
       "head_sha": "c5253c0da0",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "dirty",
       "number": 3380,
       "title": "docs(doe): register chat-intent v1 in DOE-FAMILY method versions (+ gate form folded)",
-      "updated_at": "2026-11-02T00:13:33Z"
+      "updated_at": "2026-11-02T00:15:09Z"
     }
   ],
   "schema": "operator-matrix/v1",

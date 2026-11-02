@@ -54,9 +54,9 @@ HONESTY = [
 # specific lane-age variable, and the lane-age variable -> workflow files
 # whose age the tree actually measures (hw-pair takes the max of two).
 STALE_VAR_FILES = {
-    "hwRefreshStaleMin": ["help-wanted-status-refresh.yml"],
-    "hwPairStaleMin": ["help-wanted-followup.yml", "help-wanted-scout.yml"],
-    "hwExecuteStaleMin": ["help-wanted-execute.yml"],
+    "hwRefreshStaleMin": ["tribute-status-refresh.yml"],
+    "hwPairStaleMin": ["tribute-followup.yml", "help-wanted-scout.yml"],
+    "hwExecuteStaleMin": ["tribute-execute.yml"],
     "hwAssistStaleMin": ["help-wanted-llm-assist.yml"],
     "paStaleMin": ["provider-availability.yml"],
 }

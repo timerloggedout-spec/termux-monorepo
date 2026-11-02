@@ -105,5 +105,14 @@ jobs:
             exit 0
           fi
           git commit -m "ops(commit-replay): gindex refresh [skip ci]"
-          git pull --rebase origin master
-          git push origin HEAD:master
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin master
+            if git push origin HEAD:master; then
+              echo "index pushed (attempt $i)" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "push raced (attempt $i) — re-rebase + retry" >> "$GITHUB_STEP_SUMMARY"
+            sleep 5
+          done
+          echo "push failed after 5 attempts" >&2
+          exit 1

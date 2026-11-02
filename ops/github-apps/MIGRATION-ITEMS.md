@@ -29,13 +29,13 @@ PR) — never on a lane report alone. Owner lane in brackets.
 
 ## APP — new app graduations (plan §3.4: proven → recorded → planned → standing)
 
-- [ ] APP-01 Publisher: naming final set (conference close) [registry]
-- [ ] APP-02 Publisher: manifest package PR + creation + install [appid]
-- [ ] APP-03 Publisher: proven + recorded (#1884 slice) + custody [appid + quota]
-- [ ] APP-04 Publisher: standing (first workflow on token) [appid]
-- [ ] APP-05 Reviewer-ops: same four steps (naming / package+install / proven+recorded / standing) [appid + registry + quota]
-- [ ] APP-06 Gate/CI: same four steps [appid + registry + quota]
-- [ ] APP-07 Lifecycle: same four steps [appid + registry + quota]
+- [x] APP-01 Publisher: naming final set (conference close) [registry] — CLOSED 2026-11-02: FINAL SET issued 2026-10-30 (Publisher `Edict` + full form family), bundle record PR #2401; evidence packet from migration-plan lane 2026-11-02, checked by AppID lane.
+- [x] APP-02 Publisher: manifest package PR + creation + install [appid] — CLOSED 2026-11-02: App 5537873 created 2026-10-29 via manifest flow, installation 176799777 (termux-monorepo; scope since extended to repo-replay family per PROCESS.json).
+- [x] APP-03 Publisher: proven + recorded (#1884 slice) + custody [appid + quota] — CLOSED 2026-11-02: custody connector custom.github-app-publisher live (0600 PEM); quota slice app_publisher registered (PR #2422); fleet record PR #2479 merged 88ecf7d4f40c.
+- [x] APP-04 Publisher: standing (first workflow on token) [appid] — CLOSED 2026-11-02: standing exceeded — publishes + merges routinely on its own token (first proof PR #2472 entirely on Publisher token; 2026-11-02 examples PRs #3913/#3922, zero PAT).
+- [x] APP-05 Reviewer-ops: same four steps (naming / package+install / proven+recorded / standing) [appid + registry + quota] — CLOSED 2026-11-02: `Argus`, App 5539430, installation 176838378, created 2026-10-30; custody custom.github-app-reviewer live; recorded PR #2479; standing = local-mint review operations (Actions adoption = separate track, none referenced).
+- [x] APP-06 Gate/CI: same four steps [appid + registry + quota] — CLOSED 2026-11-02: `Cerberus`, App 5539499, installation 176839926, created 2026-10-30; custody custom.github-app-gate live; recorded PR #2479; standing = local-mint check posts (App-JWT read-back 2026-10-30T09:38Z).
+- [x] APP-07 Lifecycle: same four steps [appid + registry + quota] — CLOSED 2026-11-02: `Janus`, App 5539639, installation 176843209, created 2026-10-30; custody custom.github-app-lifecycle live; recorded PR #2479; standing = local-mint triage operations.
 
 ## TEL — telemetry integration (PR #2407 audit, 2026-10-30)
 
@@ -54,7 +54,7 @@ execution and evidence must be independently observable.
 
 - [x] SEC-01 RESOLVED as identity separation (2026-10-30): the `APP_PRIVATE_KEY` + `APP_CLIENT_ID` referenced by `github-app-capability-probe.yml` belong to that probe's Checks:write app (PR #800 lineage) — NOT to the Collector. It is not provisioned, and must not be provisioned with the Collector PEM; it stops being a Collector blocker. Its own provisioning waits for the Gate/CI app (APP-06). [migration-plan]
 - [x] SEC-02 Collector Actions pair provisioned (2026-10-30): secret `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` (sealed-box from custody PEM, value never in chat/files/logs) + variables `TERMUX_FLEET_COLLECTOR_CLIENT_ID` + `TERMUX_FLEET_COLLECTOR_APP_ID` (App ID 5535733; the action takes app-id, not client-id — fix PR #2427), proven by green `github-app-collector-mint-probe` run 41016897632 [migration-plan + owner order 2026-10-29]
-- [ ] SEC-03 Per-app Actions secret names for future apps follow the SEC-02 pattern (`TERMUX_FLEET_<ROLE>_*`), provisioned + verified before any workflow references them [owner + appid]
+- [x] SEC-03 Per-app Actions secret names for future apps follow the SEC-02 pattern (`TERMUX_FLEET_<ROLE>_*`), provisioned + verified before any workflow references them [owner + appid] — CLOSED 2026-11-02: pattern live — pairs provisioned + read-back verified for Collector/Swarm/CrossReference (termux-monorepo) + RepoStory (repo-story) before their workflows referenced them; 2026-11-02 census (66 secrets / 21 vars) confirms no workflow references an unprovisioned TERMUX_FLEET_* name.
 
 ## MAINT — recurring (all as GitHub Workflows; VM hosts none)
 

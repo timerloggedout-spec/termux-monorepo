@@ -8,7 +8,7 @@ docs/ops/TRIBUTE-LANE-EFFICACY-AUDIT-2026-10-27.md (Phase 2, batch 1).
 
 Each run:
   1. Reads the lane universe from the tribute audit ledger
-     (docs/ops/generated/help-wanted-tribute-audit.json; the status and
+     (docs/ops/generated/tribute-audit.json; the status and
      audit rebuilds run as earlier workflow steps).
   2. Re-reads every actionable PR live and classifies it with
      decide_disposition() — deterministic, no LLM:
@@ -259,7 +259,7 @@ def load_json(path):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["report", "apply"], default="report")
-    ap.add_argument("--audit", default="docs/ops/generated/help-wanted-tribute-audit.json")
+    ap.add_argument("--audit", default="docs/ops/generated/tribute-audit.json")
     ap.add_argument("--out", default="docs/ops/generated/tribute-participation.json")
     ap.add_argument("--max-actions", type=int, default=10)
     ap.add_argument("--max-closed", type=int, default=25)
@@ -361,7 +361,7 @@ def main(argv=None):
         "schema_version": "tribute-participation/v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "mode": args.mode,
-        "universe": "tribute audit ledger (help-wanted-tribute-audit.json)",
+        "universe": "tribute audit ledger (tribute-audit.json)",
         "summary": summary,
         "actions_taken": actions,
         "withdrawals_deferred_by_cap": deferred if args.mode == "apply" else 0,

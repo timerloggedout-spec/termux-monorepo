@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T13:32:59Z",
+ "generated_at": "2026-11-02T13:59:05Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -35,8 +35,8 @@
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 38,
-   "records_used": 3
+   "records_read": 39,
+   "records_used": 4
   }
  ],
  "coverage": {
@@ -138,6 +138,7 @@
   "unregistered_dispatch_providers": [
    "Jules",
    "Muse",
+   "Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch",
    "claude-muse",
    "gemini",
    "gemini-cli",
@@ -146,21 +147,21 @@
   ]
  },
  "summary": {
-  "providers": 14,
-  "models": 18,
-  "roles": 2,
-  "tasks": 34,
+  "providers": 15,
+  "models": 19,
+  "roles": 3,
+  "tasks": 35,
   "dispatches": 31,
   "registry_providers": 95,
   "zero_dispatch_providers": 89,
   "by_outcome": {
-   "(prose state \u2014 verbatim in tasks)": 3,
+   "(prose state \u2014 verbatim in tasks)": 4,
    "passed": 23,
    "failed": 3,
    "observed": 1
   },
   "by_source": {
-   "desk-usage": 3,
+   "desk-usage": 4,
    "records": 27,
    "campaign-records": 4
   }
@@ -378,6 +379,52 @@
    ],
    "model_count": 1,
    "task_count": 3,
+   "zero_dispatch": false
+  },
+  {
+   "provider": "Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch",
+   "models": [
+    {
+     "model": "NOT_ESTABLISHED",
+     "roles": [
+      "builder (fleet actor identity)"
+     ],
+     "monikers": [
+      "Chronicler \u00b7 RepoStory"
+     ],
+     "contexts": [
+      "desk traversal Repo-Story"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "desk-traversal",
+       "role": "builder (fleet actor identity)",
+       "moniker": "Chronicler \u00b7 RepoStory",
+       "context": "desk traversal Repo-Story",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "build-repo-story-v0-20261102",
+       "ts": null,
+       "outcome": {
+        "status": "completed \u2014 v0 PR #4 merged d2b23dfe7801 (\u00a78 PASS)",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[Repo-Story].provider_usage"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1,
    "zero_dispatch": false
   },
   {
@@ -2064,7 +2111,7 @@
   }
  ],
  "gaps": [
-  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, claude-muse, gemini, gemini-cli, github-actions, jules",
-  "desk-usage rows carry no run_id/dispatch_id (3 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
+  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch, claude-muse, gemini, gemini-cli, github-actions, jules",
+  "desk-usage rows carry no run_id/dispatch_id (4 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

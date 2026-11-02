@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "83ea66652b8b23dc902fa36117ec689a0acf3bf721b7fc64d9b8b6e96174e3d2",
-  "workflow_count": 263,
+  "source_fingerprint": "71b1de37e75f16fb757b01d6f87b54480b2c353fa05e309a035c6a33a6421828",
+  "workflow_count": 264,
   "workflows": [
     {
       "action_pins": [],
@@ -3754,6 +3754,22 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: quota-served-probe cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "quota-served-probe",
+      "path": ".github/workflows/quota-served-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

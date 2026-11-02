@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9af1dd7a4222fd455550f3edaaaa39a6b87072e6be8ffb42fce46658d0e27746",
-  "workflow_count": 273,
+  "source_fingerprint": "77f4712cfdf84d48fb25d6187e6347cf359ed5bd0751798a558ea199af76b997",
+  "workflow_count": 274,
   "workflows": [
     {
       "action_pins": [],
@@ -4875,6 +4875,21 @@
       "triggers": [
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: vercel-project-rename cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "rename"
+      ],
+      "name": "vercel-project-rename",
+      "path": ".github/workflows/vercel-project-rename.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

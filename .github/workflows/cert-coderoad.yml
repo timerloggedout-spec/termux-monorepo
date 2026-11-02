@@ -75,12 +75,24 @@ jobs:
         # Only the Dockerfile is needed; a full cross-repo checkout of
         # rdb-alpha failed in run 41400838295 for an unproven runner-side
         # reason, so the recipe is fetched as a pinned raw file instead.
+        # Two fleet deviations are applied to the fetched recipe (run
+        # 41402889058 hung in the image build):
+        #  - focal (20.04) is EOL: its archives moved to
+        #    old-releases.ubuntu.com, so the base image's apt sources are
+        #    rewritten before any apt step runs;
+        #  - `RUN yes | unminimize` is dropped: it only restores docs/man
+        #    pages, is functionally irrelevant to CodeRoad, and is a known
+        #    multi-minute stall in non-TTY builds.
         run: |
           mkdir -p rdb-alpha
           curl -fsSL "https://raw.githubusercontent.com/freeCodeCamp/rdb-alpha/main/Dockerfile" \
-            -o rdb-alpha/Dockerfile
-          head -3 rdb-alpha/Dockerfile
-          wc -l rdb-alpha/Dockerfile
+            -o rdb-alpha/Dockerfile.upstream
+          { head -1 rdb-alpha/Dockerfile.upstream
+            echo 'RUN sed -i -e "s|archive.ubuntu.com|old-releases.ubuntu.com|g" -e "s|security.ubuntu.com|old-releases.ubuntu.com|g" /etc/apt/sources.list'
+            grep -v 'unminimize' rdb-alpha/Dockerfile.upstream | tail -n +2
+          } > rdb-alpha/Dockerfile
+          head -5 rdb-alpha/Dockerfile
+          wc -l rdb-alpha/Dockerfile rdb-alpha/Dockerfile.upstream
 
       - name: Check out verified solution repo
         uses: actions/checkout@v4
@@ -113,12 +125,20 @@ jobs:
             --repo timerloggedout-spec/termux-monorepo \
             -f stamp="$STAMP" -f phase=dispatch
 
-      - name: Build images (rdb-alpha, then CodeRoad layer)
+      - name: Build rdb-alpha image
+        timeout-minutes: 20
         run: |
-          docker build -t rdb-alpha:local ./rdb-alpha
-          docker build -t coderoad:local \
+          mkdir -p evidence && chmod 777 evidence
+          set -o pipefail
+          docker build --progress=plain -t rdb-alpha:local ./rdb-alpha 2>&1 | tee evidence/build-rdb.log
+
+      - name: Build CodeRoad image layer
+        timeout-minutes: 20
+        run: |
+          set -o pipefail
+          docker build --progress=plain -t coderoad:local \
             -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
-            mono/scripts/certifications/coderoad-driver
+            mono/scripts/certifications/coderoad-driver 2>&1 | tee evidence/build-coderoad.log
 
       - name: Run CodeRoad completion in container
         id: run
@@ -126,7 +146,6 @@ jobs:
           STAGE_CMD: ${{ inputs.stage_cmd }}
           COURSE_REPO: ${{ inputs.course_repo }}
         run: |
-          mkdir -p evidence && chmod 777 evidence
           if [ -n "${{ secrets.CODEROAD_WEBHOOK_TOKEN }}" ]; then
             echo "TOKEN_PRESENT=true" >> "$GITHUB_ENV"
           else
@@ -161,6 +180,38 @@ jobs:
           name: coderoad-${{ inputs.unit }}-${{ github.run_id }}
           path: evidence/
           if-no-files-found: warn
+
+      - name: Post build diagnostics to issue 506 (on failure)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UNIT: ${{ inputs.unit }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+          def tail(p, n=45):
+              try:
+                  lines = open(p, errors="replace").read().splitlines()
+                  return "\n".join(lines[-n:]) or "(empty)"
+              except Exception:
+                  return "(no log)"
+          body = (
+              f"CODEROAD_DIAG unit {os.environ['UNIT']} run {os.environ['RUN_ID']} — build/run failure tails\n\n"
+              f"--- build-rdb.log ---\n{tail('evidence/build-rdb.log')}\n\n"
+              f"--- build-coderoad.log ---\n{tail('evidence/build-coderoad.log')}\n\n"
+              f"--- orchestrate.log ---\n{tail('evidence/orchestrate.log')}"
+          )
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body[:60000]}).encode(),
+              headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("diagnostics posted")
+          PYEOF
 
       - name: Post verdict to issue 506
         if: always()

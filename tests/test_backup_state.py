@@ -53,7 +53,8 @@ def test_merge_and_marker():
     assert e0["t0"] == 10 and e0["publish_commit"] == "oldsha" and e0["state_hash"] is None
     assert feed["marker"] == {"state_hash": "hash-1", "export_id": "exp-1", "source": "relay"}
     assert feed["failed_attempts"] == [
-        {"export_id": "exp-2", "at": "2026-11-03T00:00:00Z", "reason": "scrub-gate abort"}]
+        {"export_id": "exp-2", "at": "2026-11-03T00:00:00Z", "state_hash": None,
+         "reason": "scrub-gate abort"}]
     assert feed["summary"]["failed_attempts"] == 1
     assert all(e["id"] != "exp-2" for e in feed["exports"])  # failure is not an export
     d = feed["drills"][0]

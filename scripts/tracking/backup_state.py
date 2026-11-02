@@ -129,7 +129,10 @@ def build(base=None, now=None) -> dict:
                     "(marker lives VM-side; hook-run relays populate it)")
     # Failed attempts are relayed too (kind=export_failed): surfaced
     # verbatim, and they never move the marker or the export history.
+    # The relayed state_hash is the UNEXPORTED state awaiting publish
+    # (export_id is null — a failed attempt never minted one).
     failed = [{"export_id": r.get("export_id"), "at": r.get("at"),
+               "state_hash": r.get("state_hash"),
                "reason": r.get("reason") or r.get("gate") or r.get("detail")}
               for r in relays if r.get("kind") == "export_failed"]
 

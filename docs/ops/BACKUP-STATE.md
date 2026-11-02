@@ -26,8 +26,10 @@ marker. Never file paths, never manifest content, never backup content.
   marker: {state_hash, export_id, source},   // the last-export fingerprint
   exports: [{id, at, t0, t1, manifest_only, excluded, bytes,
              gates_pass, publish_commit, state_hash}],   // newest first
-  failed_attempts: [{export_id, at, reason}],   // relayed kind=export_failed;
-                                                 // never move the marker
+  failed_attempts: [{export_id, at, state_hash, reason}],  // relayed
+                                                 // kind=export_failed; state_hash =
+                                                 // the unexported state; never
+                                                 // move the marker
   drills: [{report, export_id, verdict,
             t0: {checked, mismatched, excluded_absent},
             t1: {checked, consistent, missing},

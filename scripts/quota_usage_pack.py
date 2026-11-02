@@ -80,6 +80,7 @@ def rebuild_series3(root, prev):
 def build(root):
     pack = load(root, PACK_REL) or {}
     registry = load(root, "ops/quota/registry.json") or {}
+    plan = load(root, "ops/quota/allocation-plan.json") or {}
     status = load(root, "docs/ops/generated/quota-status.json") or {}
     events = load(root, "ops/quota/rate-limit-events.json") or {}
 
@@ -101,15 +102,24 @@ def build(root):
 
     pack["series3_actions"] = rebuild_series3(
         root, pack.get("series3_actions") or {})
-    pack["series4_rate_limit_events"] = events.get("events", [])
+    # series4 keeps its pack envelope {title, source, note, events} -
+    # only the events list is the register's copy.
+    s4 = dict(pack.get("series4_rate_limit_events") or {})
+    s4["events"] = events.get("events", [])
+    pack["series4_rate_limit_events"] = s4
 
     n_rec = len(registry.get("services") or [])
-    n_pool = len(registry.get("pools") or [])
-    pack["registry_context"] = {
+    # pools live in the allocation plan, not the registry.
+    n_pool = (len(plan.get("pools") or [])
+              or (pack.get("registry_context") or {}).get("pools")
+              or 0)
+    rc = dict(pack.get("registry_context") or {})
+    rc.update({
         "records": n_rec, "pools": n_pool,
         "coverage": f"{rows}/{n_rec} readings rows (registry at "
                     f"{n_rec} records; promotion cycle carries new "
-                    f"records into readings)"}
+                    f"records into readings)"})
+    pack["registry_context"] = rc
 
     return pack
 
@@ -144,7 +154,8 @@ def main():
           "| series2 snapshots:",
           len(pack["series2_snapshots"]["snapshots"]),
           "| series3 days:", len(pack["series3_actions"]["days"]),
-          "| series4 events:", len(pack["series4_rate_limit_events"]))
+          "| series4 events:",
+          len(pack["series4_rate_limit_events"].get("events", [])))
 
 
 if __name__ == "__main__":

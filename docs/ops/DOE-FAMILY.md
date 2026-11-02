@@ -725,8 +725,16 @@ version and compared continuously until culling retires a version.
   under the significance standard (INTAKE / HELD until priced).
   DEPENDENCY GRAPH (owner extension, 2026-11-02): Learnings -
   Skills - Tools are first-class records in the matrix.
-  Standing distinction: a Learning is an EVIDENCE INPUT, not a
-  skill; a Skill is a CAPABILITY DEFINITION, not evidence
+  NOVELTY CORRECTION (owner, 2026-11-02): the skills /
+  learnings <-> certifications mapping is ALREADY delineated
+  of record (derived-artifacts program rule + planes
+  delineation, 2026-10-30 / 11-01) — the matrix's skills /
+  learnings treatment IS that delineation; the only NEW
+  element here is the dependency-edge / value-cap machinery
+  below, entering as an EXTENSION of that delineation, never
+  a replacement layering. Standing distinction (per the
+  delineation): a Learning is an EVIDENCE INPUT, not a skill;
+  a Skill is a CAPABILITY DEFINITION, not evidence
   (SKILL.md files are definitions — certified evidence = issuer
   artifacts + execution receipts). A skill's value record cites
   its dependency state as an evidence leg: a critical

@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-02T06:53:59Z",
+ "generated_at": "2026-11-02T08:31:52Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -22,12 +22,12 @@
   {
    "id": "readings",
    "path": "docs/ops/generated/quota-status.json",
-   "generated_at": "2026-11-01T13:23:25.948846+00:00"
+   "generated_at": "2026-11-02T08:16:06.415255+00:00"
   },
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-02T06:49:47Z"
+   "generated_at": "2026-11-02T08:25:12Z"
   },
   {
    "id": "rate-limit-events",
@@ -36,13 +36,25 @@
   }
  ],
  "summary": {
-  "registry_model_records": 95,
-  "distinct_providers": 93,
-  "families": 33,
-  "families_direct": 32,
+  "registry_model_records": 97,
+  "distinct_providers": 95,
+  "families": 35,
+  "families_direct": 34,
   "g4f_children": 61,
   "live_verified_families": 12,
-  "rate_limit_events": 8
+  "rate_limit_events": 8,
+  "families_populated": 29,
+  "families_gap": 6,
+  "records_populated": 2,
+  "records_total": 97,
+  "population": {
+   "providers_total": 95,
+   "providers_populated": 2,
+   "providers_gap": 93,
+   "families_total": 35,
+   "families_populated": 29,
+   "families_gap": 6
+  }
  },
  "providers": [
   {
@@ -50,6 +62,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -89,7 +107,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -98,6 +117,10 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
    "census": null,
    "records": [
     {
@@ -109,8 +132,16 @@
      "window": "n/a",
      "reset": "n/a",
      "live": "none published",
-     "readings": null,
-     "usage_series": null
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -119,6 +150,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -158,7 +195,41 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
+    }
+   ]
+  },
+  {
+   "provider": "claude",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
+   "census": null,
+   "records": [
+    {
+     "id": "claude.seat_runtime",
+     "provider": "Claude",
+     "metric": "Inference dispatches via the Muse seat runtime (endpoint Muse::Muse Spark 1.3; metered, seat-runtime pool)",
+     "limit": null,
+     "unit": "dispatches (consumption NOT ESTABLISHED)",
+     "window": "seat plan window (not exposed)",
+     "reset": "not exposed",
+     "live": "routed-dispatch stamps + nested-family carriers; usage-series model axis carries the activity-proxy counts; no passive quota reader",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -167,6 +238,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "api-verified",
@@ -206,7 +283,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -215,6 +293,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -252,7 +336,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -261,6 +346,10 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
    "census": null,
    "records": [
     {
@@ -272,8 +361,49 @@
      "window": "n/a",
      "reset": "n/a",
      "live": "none published",
-     "readings": null,
-     "usage_series": null
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
+    }
+   ]
+  },
+  {
+   "provider": "deepseek",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
+   "census": null,
+   "records": [
+    {
+     "id": "deepseek.api",
+     "provider": "DeepSeek",
+     "metric": "Inference via the direct DeepSeek API route (distinct from the g4f route g4f.deepseek and the CI build arm deepseek.build_dispatch)",
+     "limit": null,
+     "unit": "requests/tokens (NOT ESTABLISHED)",
+     "window": "provider-side (not established)",
+     "reset": "not established",
+     "live": "nested-family carriers + dispatch records; no passive quota reader",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -282,6 +412,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free-equivalent",
     "evidence": "owner-attested",
@@ -322,7 +458,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -331,6 +468,10 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
    "census": null,
    "records": [
     {
@@ -342,8 +483,16 @@
      "window": "n/a",
      "reset": "n/a",
      "live": "none published",
-     "readings": null,
-     "usage_series": null
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -352,6 +501,12 @@
    "record_count": 61,
    "providers_distinct": 61,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -389,7 +544,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.airforce",
@@ -408,7 +564,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.antigravity",
@@ -427,7 +584,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.arena",
@@ -446,7 +604,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.bingcreateimages",
@@ -465,7 +624,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.blackboxpro",
@@ -484,7 +644,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.blackforestlabs_flux1dev",
@@ -503,7 +664,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.blackforestlabs_flux1kontextdev",
@@ -522,7 +684,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.bravesearch",
@@ -541,7 +704,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.cachedsearch",
@@ -560,7 +724,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.cerebras",
@@ -579,7 +744,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.chatgpt",
@@ -598,7 +764,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.claude",
@@ -617,7 +784,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.cloudflare",
@@ -636,7 +804,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.cohereforai_c4ai_command",
@@ -655,7 +824,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.copilot",
@@ -674,7 +844,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.copilotapp",
@@ -693,7 +864,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.deepinfra",
@@ -712,7 +884,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.deepseek",
@@ -731,7 +904,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.elevenlabs",
@@ -750,7 +924,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.g4fspace",
@@ -769,7 +944,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.gemini",
@@ -788,7 +964,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.geminicli",
@@ -807,7 +984,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.geminipro",
@@ -826,7 +1004,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.githubcopilot",
@@ -845,7 +1024,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.glm",
@@ -864,7 +1044,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.googleaimode",
@@ -883,7 +1064,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.googlesearch",
@@ -902,7 +1084,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.grok",
@@ -921,7 +1104,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.groq",
@@ -940,7 +1124,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.hailuoai",
@@ -959,7 +1144,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.huggingchat",
@@ -978,7 +1164,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.huggingface",
@@ -997,7 +1184,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.huggingfacemedia",
@@ -1016,7 +1204,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.huggingspace",
@@ -1035,7 +1224,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.kilocode",
@@ -1054,7 +1244,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.llm7",
@@ -1073,7 +1264,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.markitdown",
@@ -1092,7 +1284,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.metaai",
@@ -1111,7 +1304,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.metaaiaccount",
@@ -1130,7 +1324,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.microsoftdesigner",
@@ -1149,7 +1344,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.nvidia",
@@ -1168,7 +1364,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.ollama",
@@ -1187,7 +1384,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.omniroute",
@@ -1206,7 +1404,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.openaifm",
@@ -1225,7 +1424,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.openrouterfree",
@@ -1244,7 +1444,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.operaaria",
@@ -1263,7 +1464,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.perplexity",
@@ -1282,7 +1484,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.pi",
@@ -1301,7 +1504,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.pollinations",
@@ -1320,7 +1524,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.pollinationsaudio",
@@ -1339,7 +1544,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.pollinationsimage",
@@ -1358,7 +1564,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.puter",
@@ -1377,7 +1584,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.qwen",
@@ -1396,7 +1604,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.relayrouter",
@@ -1415,7 +1624,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.stabilityai_sd35large",
@@ -1434,7 +1644,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.teachanything",
@@ -1453,7 +1664,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.vendors",
@@ -1472,7 +1684,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.whiterabbitneo",
@@ -1491,7 +1704,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.you",
@@ -1510,7 +1724,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "g4f.yqcloud",
@@ -1529,7 +1744,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1538,6 +1754,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -1575,7 +1797,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1584,6 +1807,13 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census",
+     "usage-series"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -1684,7 +1914,8 @@
        "note": "plan target flow - context only, not usage; plotted only if units match"
       },
       "last_point_at": "2026-11-02T06:30:06Z"
-     }
+     },
+     "populated": true
     }
    ]
   },
@@ -1693,6 +1924,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -1732,7 +1969,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1741,6 +1979,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -1778,7 +2022,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1787,6 +2032,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -1826,7 +2077,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1835,6 +2087,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -1872,7 +2130,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1881,6 +2140,12 @@
    "record_count": 3,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -1918,7 +2183,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "meta.model_api",
@@ -1937,7 +2203,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     },
     {
      "id": "meta.muse_code",
@@ -1956,7 +2223,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -1965,6 +2233,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2004,7 +2278,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2013,6 +2288,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2052,7 +2333,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2061,6 +2343,10 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
    "census": null,
    "records": [
     {
@@ -2072,8 +2358,16 @@
      "window": "n/a",
      "reset": "n/a",
      "live": "none published",
-     "readings": null,
-     "usage_series": null
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2082,6 +2376,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-read",
@@ -2119,7 +2419,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2128,6 +2429,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2167,7 +2474,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2176,6 +2484,13 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census",
+     "readings"
+    ]
+   },
    "census": {
     "verdict": "layered",
     "evidence": "api-verified",
@@ -2214,9 +2529,10 @@
       "remaining": null,
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+      "observed_at": "2026-11-02T08:16:06.415255+00:00"
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": "2026-11-02T08:16:06.415255+00:00"
     }
    ]
   },
@@ -2225,6 +2541,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2264,7 +2586,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2273,6 +2596,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2312,7 +2641,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2321,6 +2651,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -2358,7 +2694,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2367,6 +2704,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -2404,7 +2747,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2413,6 +2757,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2452,7 +2802,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2461,6 +2812,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -2498,7 +2855,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2507,6 +2865,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2546,7 +2910,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2555,6 +2920,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -2592,7 +2963,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2601,6 +2973,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2640,7 +3018,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2649,6 +3028,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": false,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "not-established",
     "evidence": "not-established",
@@ -2688,7 +3073,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   },
@@ -2697,6 +3083,12 @@
    "record_count": 1,
    "providers_distinct": 1,
    "live_verified": true,
+   "population": {
+    "state": "populated",
+    "bases": [
+     "census"
+    ]
+   },
    "census": {
     "verdict": "free",
     "evidence": "api-verified",
@@ -2734,7 +3126,8 @@
       "horizon": "H1",
       "observed_at": null
      },
-     "usage_series": null
+     "usage_series": null,
+     "populated": null
     }
    ]
   }

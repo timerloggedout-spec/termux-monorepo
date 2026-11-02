@@ -91,10 +91,18 @@ def build(root):
                 } if rd else None,
                 "usage_series": pts_by_key.get(rec["id"])
                 or pts_by_key.get(fam),
+                "populated": bool(
+                    pts_by_key.get(rec["id"]) or pts_by_key.get(fam))
+                or (bool(rd) and (rd.get("status") not in (None, "unknown")
+                                  or rd.get("used") is not None
+                                  or rd.get("observed_at"))),
             })
         fam_bases = set()
         for r in records:
-            if r.get("readings"):
+            rdg = r.get("readings") or {}
+            if rdg and (rdg.get("status") not in (None, "unknown")
+                        or rdg.get("used") is not None
+                        or rdg.get("observed_at")):
                 fam_bases.add("readings")
             if r.get("usage_series"):
                 fam_bases.add("usage-series")
@@ -166,8 +174,26 @@ def build(root):
                                  if p["population"]["state"] == "gap"]),
             "records_populated": sum(
                 1 for p in providers for r in p["records"]
-                if r.get("readings") or r.get("usage_series")),
+                if r.get("populated")),
             "records_total": len(model_recs),
+            "population": {
+                "providers_total": len({r.get("provider")
+                                        for r in model_recs}),
+                "providers_populated": len({
+                    r["provider"] for p in providers
+                    for r in p["records"] if r.get("populated")}),
+                "providers_gap": len({r.get("provider")
+                                      for r in model_recs}) - len({
+                    r["provider"] for p in providers
+                    for r in p["records"] if r.get("populated")}),
+                "families_total": len(providers),
+                "families_populated": len([p for p in providers
+                                           if p["population"]["state"]
+                                           == "populated"]),
+                "families_gap": len([p for p in providers
+                                     if p["population"]["state"]
+                                     == "gap"]),
+            },
         },
         "providers": providers,
         "events": {

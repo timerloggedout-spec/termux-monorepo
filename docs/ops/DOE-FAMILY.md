@@ -39,6 +39,18 @@ propagations recorded as design events in the campaign record.
   family campaign run emits one record conforming to it, validated in
   tests (`tests/test_doe_family.py`). One dispatched/executed run = one
   record = one observation.
+- **Cull wallet consequence (owner rule, 2026-11-02)** — culling
+  carries a wallet consequence in the gambling-lane economics:
+  a culled participant's wallet flows into the pooled system
+  (the promotions / incentives / bonuses pool). Every cull
+  event record therefore names, IN THE SAME RECORD that culls:
+  {culled_participant - wallet_balance_at_cull -
+  pool_destination}, so the transfer is auditable from the cull
+  record alone — no detached transfer record substitutes.
+  Balance = as recorded by the lane's wallet of record
+  (MoneyBall lane-charter side); a participant with no wallet
+  on record carries wallet_balance_at_cull = NOT_ESTABLISHED —
+  never an invented figure — and the cull itself is unaffected.
 - **Feed sections** — `doe-feed.json` carries, per member: designs /
   campaigns / results. A member with no results renders its state
   exactly (design-only, proposal-only), never a borrowed result.

@@ -49,7 +49,12 @@ DENY_DIR_NAMES = {"keys"}
 DENY_FILE_GLOBS = ["*.pem", "*.key", "*.env", "tokens.env",
                    "client_secret*", "*.pyc"]
 SECRET_PATTERNS = [
-    rb"PRIVATE KEY-----",
+    # Actual PEM header forms only. The looser fragment
+    # "PRIVATE KEY-----" false-positives on the fleet's own
+    # sensitivity-policy docs, which quote the pattern spec with an
+    # ellipsis ("-----BEGIN … PRIVATE KEY-----"); every real key
+    # header (plain/RSA/EC/OPENSSH/ENCRYPTED/PGP) still matches this.
+    rb"-----BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY-----",
     rb"ghp_[A-Za-z0-9]{20,}",
     rb"github_pat_[A-Za-z0-9_]{20,}",
     rb"AKIA[0-9A-Z]{16}",

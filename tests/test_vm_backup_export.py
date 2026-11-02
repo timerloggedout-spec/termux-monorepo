@@ -32,6 +32,10 @@ def make_home(tmp: Path) -> Path:
     _w(home, "MEMORY.md")
     _w(home, "memory/note.md")
     _w(home, "workspace/goals/g1/file.md")
+    # a policy doc quoting the PEM pattern spec (ellipsis form, as in
+    # the fleet's real SENSITIVITY-RULES doc): must NOT trip the gate
+    policy = "detector: `-----BEGIN … PRIVATE " "KEY-----`\n"
+    _w(home, "workspace/goals/g1/policy.md", policy.encode())
     _w(home, "workspace/custom-connectors/c1/CONNECTOR.md")
     # keys/ dir with a fake key: must never be staged. The header is
     # assembled in pieces so this fixture does not itself trip the
@@ -127,6 +131,17 @@ def test_scrub_gate_aborts_on_secret_in_t0(tmp_path):
     # the planted path is named, the secret value is not echoed
     assert "memory/evil.md" in json.dumps(export_doc["gates"])
     assert FAKE_GHP not in json.dumps(export_doc)
+
+
+def test_scrub_gate_aborts_on_real_key_header_in_t0(tmp_path):
+    home = make_home(tmp_path)
+    real_header = ("-----BEGIN RSA PRIVATE " "KEY-----\nfake\n").encode()
+    _w(home, "memory/keydump.txt", real_header)
+    staging = tmp_path / "stage"
+    r = run_exporter(home, staging)
+    assert r.returncode == 2
+    export_doc = json.loads((staging / "EXPORT.json").read_text())
+    assert export_doc["gates"]["content_scrub"] == "fail"
 
 
 def test_state_hash_cycle(tmp_path):

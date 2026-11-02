@@ -57,8 +57,13 @@ inventory is honest about what was skipped.
 1. Staged inventory equals the allowlist-derived inventory (diff = ∅).
 2. Filename denylist re-checked against the staged tree.
 3. Content scan of every staged file for secret shapes:
-   `PRIVATE KEY-----`, `ghp_…`, `github_pat_…`, `AKIA…`, `sk-…`,
+   PEM key headers (`-----BEGIN … PRIVATE KEY-----` in its real
+   header forms), `ghp_…`, `github_pat_…`, `AKIA…`, `sk-…`,
    `Bearer …`. Only offending **paths** are reported, never content.
+   The PEM pattern deliberately requires a real header form so the
+   fleet's own sensitivity-policy docs — which quote the pattern spec
+   with an ellipsis — do not false-positive; every actual key block
+   still aborts the export.
 
 Gate results land in `EXPORT.json` next to `MANIFEST.json` at the repo
 root of each export commit: `export <EXPORT_ID> t0=<n> t1=<n> gates=pass`.

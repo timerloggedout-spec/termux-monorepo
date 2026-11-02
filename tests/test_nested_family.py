@@ -86,6 +86,11 @@ def _tree() -> Path:
              "moniker": "challenge-entries", "session_id": "sess-9", "state": "landed"}]},
     ]}
     (base / "ops" / "challenge" / "desk-feed.json").write_text(json.dumps(desk))
+    (base / "ops" / "quota").mkdir(parents=True)
+    registry = {"services": [
+        {"provider": "sealion", "lane": "model"}, {"provider": "mistral", "lane": "model"},
+        {"provider": "unus", "lane": "model"}, {"provider": "ci-only", "lane": "ci"}]}
+    (base / "ops" / "quota" / "registry.json").write_text(json.dumps(registry))
     return base
 
 
@@ -122,6 +127,14 @@ def test_nesting_and_dedupe():
     assert t9["field_sources"] == {"task_class": "intake", "role": "intake", "moniker": "intake",
                                    "context": "intake", "run_id": "intake", "workflow": "intake",
                                    "outcome.gate_call": "intake"}
+    cov = feed["coverage"]
+    assert cov["registry_providers"] == 3 and cov["with_dispatches"] == 2
+    assert cov["zero_dispatch"] == ["unus"]
+    assert cov["unregistered_dispatch_providers"] == ["baseten", "claude-muse", "jules"]
+    assert feed["summary"]["zero_dispatch_providers"] == 1
+    assert feed["summary"]["providers"] == 5  # dispatch-bearing only; zero rows excluded
+    unus = next(p for p in feed["providers"] if p["provider"] == "unus")
+    assert unus["zero_dispatch"] is True and unus["models"] == [] and unus["task_count"] == 0
 
 
 def test_not_established_model_stays_literal():

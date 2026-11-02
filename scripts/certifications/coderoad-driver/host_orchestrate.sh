@@ -116,6 +116,12 @@ docker exec pg bash -c 'tail -30 /var/log/postgresql/*.log' > "$EV/pg-container.
 if [ -f "$WS/.freeCodeCamp/package.json" ]; then
   (cd "$WS/.freeCodeCamp" && npm run programmatic-test \
     > "$EV/tap-direct.txt" 2>&1; echo "direct mocha rc=$?" >> "$LOG") || true
+  # CodeRoad-replica run: CodeRoad execs "<command> <args.tap>" verbatim and
+  # treats ANY stderr (with zero TAP failures) as 'Test Runner Failed'.
+  # Capture the two streams separately, exactly as CodeRoad sees them.
+  (cd "$WS/.freeCodeCamp" && npm run programmatic-test --reporter=mocha-tap-reporter \
+    > "$EV/tap-cr-stdout.txt" 2> "$EV/tap-cr-stderr.txt"; \
+    echo "coderoad-replica rc=$?" >> "$LOG") || true
 fi
 
 # --- GO + RESULT wait with relaunch watchdog -----------------------------

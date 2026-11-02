@@ -154,6 +154,7 @@ def build(prs, rfp_feed, generated_at, source_hashes=None, commits_by_pr=None, o
         artifacts.append({"artifact_id": f"pr-{pr['number']}", "stratum": "github",
                           "lane": pr["head"]["ref"].split("/")[0] if "/" in pr["head"]["ref"] else "direct",
                           "actor": actor, "actor_evidence": att["actor_evidence"],
+                          "corroboration": att.get("corroboration"),
                           "actor_registry_keyed": keyed,
                           **d, "outcome_kind": "merged",
                           "outcome_value": None if pending else (1.0 if merged else 0.0),
@@ -194,7 +195,10 @@ def build(prs, rfp_feed, generated_at, source_hashes=None, commits_by_pr=None, o
     per_actor = []
     for actor, rows in sorted(by_actor_map.items(), key=lambda kv: (kv[0] is None, kv[0] or "")):
         scored = [r for r in rows if r["outcome_value"] is not None and r["density"] is not None]
-        per_actor.append({"actor": actor, "n": len(rows), "n_with_outcome": len(scored),
+        per_actor.append({"actor": actor, "n": len(rows),
+                          "corroboration": {s: sum(1 for r in rows if (r.get("corroboration") or {}).get("state") == s)
+                                            for s in ("corroborated", "single-leg", "disputed")},
+                          "n_with_outcome": len(scored),
                           "density_median": round(median([r["density"] for r in rows]), 6),
                           "outcome_mean": round(sum(r["outcome_value"] for r in scored) / len(scored), 4) if scored else None,
                           "evidence_methods": sorted({r["actor_evidence"]["method"] for r in rows if r["actor_evidence"]["method"]})})
@@ -210,6 +214,18 @@ def build(prs, rfp_feed, generated_at, source_hashes=None, commits_by_pr=None, o
         m = (a.get("actor_evidence") or {}).get("method")
         if m:
             attribution_summary["by_evidence"][m] = attribution_summary["by_evidence"].get(m, 0) + 1
+    attribution_summary["corroboration"] = {}
+    attribution_summary["disputed_artifacts"] = []
+    for a in artifacts:
+        st = (a.get("corroboration") or {}).get("state")
+        if st:
+            attribution_summary["corroboration"][st] = attribution_summary["corroboration"].get(st, 0) + 1
+        if st == "disputed":
+            attribution_summary["disputed_artifacts"].append(
+                {"artifact_id": a["artifact_id"], "actor": a.get("actor"),
+                 "conflicts": (a.get("corroboration") or {}).get("conflicts")})
+    attribution_summary["scoring_rule"] = ("corroborated + single-leg reported; "
+        "disputed flagged and excluded from face-value scoring (owner ruling 2026-11-01: marks != proof)")
     stats = {"schema": "telemetry-density-stats/v1",
              "metric_source": "DoE nc-1 PR #2865 DESIGN.json: information_density = signal_units / tokens (all surfaces)",
              "operationalization": "signal = identifiers + verdicts + 0.5*quantities - restatement(dup-sentence tokens/4), floor 0; tokens = whitespace split; tau NOT set here (DoE gold-corpus property)",

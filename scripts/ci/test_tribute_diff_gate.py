@@ -1,6 +1,6 @@
 import importlib.util
 from pathlib import Path
-spec=importlib.util.spec_from_file_location("gate",Path(__file__).with_name("help_wanted_diff_gate.py"))
+spec=importlib.util.spec_from_file_location("gate",Path(__file__).with_name("tribute_diff_gate.py"))
 gate=importlib.util.module_from_spec(spec); spec.loader.exec_module(gate)
 def pr(body=""):
     return {"number":3,"html_url":"https://github.com/o/r/pull/3","body":body,"base":{"sha":"base","repo":{"full_name":"o/r"}},"head":{"sha":"head"}}

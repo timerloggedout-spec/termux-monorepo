@@ -17,7 +17,7 @@ description: Select AND EXECUTE external help-wanted / good-first-issue / mutual
 - `scripts/ci/tribute_scout.py`
 - `scripts/ci/tribute_claim.py` ← idempotent claim
 - `scripts/ci/tribute_contribute.py` ← upstream PR + fallback
-- `scripts/ci/help_wanted_evidence.py` · `help_wanted_status.py`
+- `scripts/ci/tribute_evidence.py` · `tribute_status.py`
 - `.github/workflows/tribute-scout.yml` (~2h)
 - `.github/workflows/help-wanted-execute.yml` (~4h + dispatch)
 
@@ -78,7 +78,7 @@ Agent-Identity: Grok (Administrator)
 
 Before describing an external PR as a fix, run:
 
-    python3 scripts/ci/help_wanted_diff_gate.py --pr <foreign-pr-url> --expect solution
+    python3 scripts/ci/tribute_diff_gate.py --pr <foreign-pr-url> --expect solution
 
 A claim or stake is not a solution. The graduation contract is docs/ops/HELP-GIVEN-TRIBUTE.md; its receipt schema is docs/ops/HELP-WANTED-TRIBUTE.schema.json.
 

@@ -4,7 +4,7 @@ Implemented Help-Wanted graduation contract.
 
 STAKE != CLAIM != IMPLEMENTATION != SOLUTION != VALIDATED != ACCEPTED.
 
-See scripts/ci/help_wanted_diff_gate.py for the diff-proof gate.
+See scripts/ci/tribute_diff_gate.py for the diff-proof gate.
 
 
 ## Sweep accountability

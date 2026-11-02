@@ -29,6 +29,26 @@ on:
           - cohere
           - sealion
           - baseten
+      set_index:
+        description: "Batch set index (scoring-grade stamp; optional)"
+        required: false
+        default: ""
+        type: string
+      cumulative_n:
+        description: "Batch cumulative n (optional)"
+        required: false
+        default: ""
+        type: string
+      selection_reason:
+        description: "Why this arm/batch (optional)"
+        required: false
+        default: ""
+        type: string
+      instance_context:
+        description: "Configured-instance context shared by the batch (optional)"
+        required: false
+        default: ""
+        type: string
 
 permissions: {}
 
@@ -100,6 +120,31 @@ jobs:
                         "artifact": "issue 506 verdict comment", "gate_call": None, "confirmed": None},
             "quota": {"pool": provider, "cost_class": "free-credit" if provider == "baseten" else "free-tier", "slice": None},
           }
+          import hashlib
+          si = "${{ inputs.set_index }}".strip()
+          if si:
+              stamp["set_index"] = int(si)
+              cn = "${{ inputs.cumulative_n }}".strip()
+              stamp["cumulative_n"] = int(cn) if cn else int(si)
+              sr = "${{ inputs.selection_reason }}".strip()
+              if sr:
+                  stamp["selection_reason"] = sr
+          model = v.get("model")
+          if model:
+              def _sha(p):
+                  try:
+                      return hashlib.sha256(open(p, "rb").read()).hexdigest()
+                  except OSError:
+                      return None
+              sp = _sha("scripts/certifications/run_unit.py")
+              tw = _sha(".github/workflows/cert-unit.yml")
+              if sp and tw:
+                  ctx = "${{ inputs.instance_context }}".strip() or stamp["context"]
+                  stamp["instance"] = {
+                      "provider": provider, "model": model,
+                      "system_prompt": {"ref": "scripts/certifications/run_unit.py", "sha256": sp},
+                      "tools": {"ref": ".github/workflows/cert-unit.yml", "sha256": tw},
+                      "role": "builder", "moniker": "optimizations-assurance", "context": ctx}
           print(json.dumps(stamp))
           PYEOF
           )

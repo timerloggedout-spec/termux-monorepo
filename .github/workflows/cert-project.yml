@@ -88,9 +88,31 @@ jobs:
 
       - name: Round-trip — rebuild from dump and re-verify
         run: |
-          psql -d postgres -v ON_ERROR_STOP=1 -f "${{ inputs.dump_name }}"
+          set +e
+          psql -d postgres -v ON_ERROR_STOP=1 -f "${{ inputs.dump_name }}" > /tmp/rt-reload.log 2>&1
+          echo "RELOAD_EXIT=$?" >> /tmp/rt-reload.log
           psql -d "${{ inputs.db_name }}" -v ON_ERROR_STOP=1 \
-            -f "scripts/certifications/projects/${{ inputs.slug }}/verify.sql"
+            -f "scripts/certifications/projects/${{ inputs.slug }}/verify.sql" > /tmp/rt-verify.log 2>&1
+          echo "VERIFY_EXIT=$?" >> /tmp/rt-verify.log
+          grep -q "RELOAD_EXIT=0" /tmp/rt-reload.log && grep -q "VERIFY_EXIT=0" /tmp/rt-verify.log
+
+      - name: Commit round-trip diagnostics on failure
+        if: failure()
+        run: |
+          DEST="certifications/solutions/${{ inputs.unit }}-${{ inputs.slug }}/diagnostics"
+          mkdir -p "$DEST"
+          { echo "== reload =="; cat /tmp/rt-reload.log 2>/dev/null; echo "== verify =="; cat /tmp/rt-verify.log 2>/dev/null; } \
+            > "$DEST/run-${{ github.run_id }}.log"
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4; do
+            git add "$DEST/run-${{ github.run_id }}.log"
+            if git diff --cached --quiet; then break; fi
+            git commit -m "cert(${{ inputs.unit }}): round-trip diagnostics run ${{ github.run_id }}"
+            if git push origin HEAD:master; then break; fi
+            git fetch origin master
+            git reset --soft origin/master
+          done
 
       - name: Commit solution dump
         run: |

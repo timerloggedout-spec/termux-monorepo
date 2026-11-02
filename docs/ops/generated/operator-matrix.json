@@ -3,9 +3,9 @@
     "open_issues": 386,
     "open_prs": 177,
     "pr_classes": {
-      "CANDIDATE": 84,
+      "CANDIDATE": 85,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 87,
+      "NEED_EVIDENCE": 86,
       "SUPERSEDE": 0
     }
   },
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T08:25:04Z",
+  "generated_at": "2026-11-02T08:30:10Z",
   "issues_unlabelled": [
     308,
     343,
@@ -135,10 +135,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "b966bbe300"
+    "sha": "368baace9e"
   },
   "prs": [
     {
@@ -218,12 +218,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a29a83c677",
+      "head_sha": "49132b84ce",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T08:21:29Z"
+      "updated_at": "2026-11-02T08:25:48Z"
     },
     {
       "class": "CANDIDATE",
@@ -1407,6 +1407,20 @@
       "updated_at": "2026-11-02T01:09:20Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7f2411e63b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3642,
+      "title": "tribute bundle A residual fix: tribute_audit.py User-Agent",
+      "updated_at": "2026-11-02T08:27:52Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2533,12 +2547,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "bed81acfbc",
+      "head_sha": "e6742ae862",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T08:24:40Z"
+      "updated_at": "2026-11-02T08:27:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2608,21 +2622,7 @@
       "mergeable_state": "unknown",
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-02T08:23:59Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "7f2411e63b",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3642,
-      "title": "tribute bundle A residual fix: tribute_audit.py User-Agent",
-      "updated_at": "2026-11-02T08:24:39Z"
+      "updated_at": "2026-11-02T08:26:29Z"
     }
   ],
   "schema": "operator-matrix/v1",

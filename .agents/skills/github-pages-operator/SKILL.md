@@ -6,7 +6,7 @@ description: Enable and publish GitHub Pages for termux-monorepo help-wanted das
 # Skill: github-pages-operator
 
 **Canonical:** `.agents/skills/github-pages-operator/SKILL.md` on master  
-**Load with:** `evidence-led-monorepo-ops` · `help-wanted-lane`  
+**Load with:** `evidence-led-monorepo-ops` · `tribute-lane`  
 **Map:** `docs/ops/SITE-MAP.md`
 
 ## Site map (navigation goal)

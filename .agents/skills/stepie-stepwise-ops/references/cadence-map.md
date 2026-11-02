@@ -23,7 +23,7 @@
 - Session tip, mega policy, co-load list, Agent-Identity.
 - Load every admin session with adaptive-wait.
 
-## help-wanted-lane
+## tribute-lane
 
 - Foreign claim → PR → follow-up poll → dashboard receipts.
 - Parallel to 2087; link by note, do not merge trees.

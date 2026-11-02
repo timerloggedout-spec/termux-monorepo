@@ -1,10 +1,10 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T09:38:03Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T09:47:37Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T09:38:02Z` (merged 150 · open 179) · lane-events(Neon) status=`ok` count=`7997` read_at=`2026-11-02T09:38:02Z`
+Sources: PR feed read_at=`2026-11-02T09:47:36Z` (merged 150 · open 183) · lane-events(Neon) status=`ok` count=`8011` read_at=`2026-11-02T09:47:36Z`
 
-Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknown=7
+Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknown=6
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | active | #3659 `75223d81763c` 2026-11-02T08:43:17Z | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | NOT_ESTABLISHED | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3648 `76afbe903049` 2026-11-02T08:32:37Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3724 `2254ea4fecec` 2026-11-02T09:46:34Z | land/close PR #2856 — doe(live-3): ci_mode — stamped dispatch comment as prompt (ruling (i-a), owners' review) |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -26,8 +26,8 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3682 `6e718301dbd6` 2026-11-02T09:16:11Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3681 `7e6c025e339e` 2026-11-02T09:19:53Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3683 `98e0f640529d` 2026-11-02T09:29:09Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
-| replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3683 `98e0f640529d` 2026-11-02T09:29:09Z | land/close PR #3713 — quota: audit-004 — F4 state → production-proven (Registry paced census proof) |
+| replay | `repo-replay` | Repo Replay | active | #3725 `9cbd6a1a0f9e` 2026-11-02T09:47:14Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3690 `743def3365f0` 2026-11-02T09:25:27Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3645 `138fb4bf81a2` 2026-11-02T08:28:48Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)

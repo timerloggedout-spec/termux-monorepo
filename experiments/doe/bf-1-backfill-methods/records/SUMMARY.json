@@ -1,6 +1,6 @@
 {
  "campaign_id": "bf-1-backfill-methods",
- "compared_at": "2026-11-02T00:26:49.173090+00:00",
+ "compared_at": "2026-11-02T00:36:01.886905+00:00",
  "corpus_units": 55,
  "methods": {
   "bf-strict v1": {
@@ -22,5 +22,20 @@
   }
  },
  "outcome_completeness_in_corpus": 0.7818,
- "significance": "NOT_ESTABLISHED - corpus and per-class n far below the standing gate (n>=30/class, minority>=10, p<.05); candidates are watch-only, no cull/promote action."
+ "significance": "NOT_ESTABLISHED - corpus and per-class n far below the standing gate (n>=30/class, minority>=10, p<.05); candidates are watch-only, no cull/promote action.",
+ "provenance_corpus": {
+  "attribution/1": {
+   "population": 599,
+   "attributed": 546,
+   "null": 53,
+   "attributed_rate": 0.9115,
+   "method_home": "scripts/telemetry_ingest/attribution.py (PR #3361)"
+  },
+  "token_correlation": {
+   "app_history_prs": 274,
+   "apps": 4,
+   "note": "join-class recovery on the provenance population: PAT-era owner-login PRs redistributed to app actors by token correlation (counts in the correlation file)"
+  }
+ },
+ "cross_method_read": "attribution/1 (a join-class method over a correlation source) attributes ~91% of its provenance population, vs ~2% strict keying on the EXPERIMENT corpus - different populations, not a like-for-like delta: the transferable datum is that join-class recovery works when a correlation source exists; the EXPERIMENT corpus has none yet."
 }

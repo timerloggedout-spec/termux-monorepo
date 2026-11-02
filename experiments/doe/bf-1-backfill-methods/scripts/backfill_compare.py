@@ -116,6 +116,30 @@ def main():
         "outcome_completeness_in_corpus": round(outcome_filled / n, 4) if n else 0,
         "significance": "NOT_ESTABLISHED - corpus and per-class n far below the standing gate (n>=30/class, minority>=10, p<.05); candidates are watch-only, no cull/promote action.",
     }
+    prov = {}
+    try:
+        audit = json.loads((ROOT / "ops/telemetry/attribution-backfill-audit.json").read_text())
+        null_n = audit.get("null_actor", audit.get("null", audit.get("unattributed")))
+        total = audit.get("window_prs") or audit.get("total") or audit.get("population") or (audit.get("attributed", 0) + (null_n or 0))
+        prov["attribution/1"] = {"population": total, "attributed": audit.get("attributed"),
+                                 "null": null_n,
+                                 "attributed_rate": round(audit["attributed"] / total, 4) if total else None,
+                                 "method_home": "scripts/telemetry_ingest/attribution.py (PR #3361)"}
+    except Exception as e:
+        prov["attribution/1"] = {"error": str(e)}
+    try:
+        corr = json.loads((ROOT / "ops/telemetry/token-attribution-correlation.json").read_text())
+        hist = corr.get("app_action_history", [])
+        prov["token_correlation"] = {"app_history_prs": sum(h.get("prs_opened", 0) for h in hist),
+                                     "apps": len(hist),
+                                     "note": "join-class recovery on the provenance population: PAT-era owner-login PRs redistributed to app actors by token correlation (counts in the correlation file)"}
+    except Exception as e:
+        prov["token_correlation"] = {"error": str(e)}
+    result["provenance_corpus"] = prov
+    result["cross_method_read"] = ("attribution/1 (a join-class method over a correlation source) attributes ~91% of its "
+                                    "provenance population, vs ~2% strict keying on the EXPERIMENT corpus - different "
+                                    "populations, not a like-for-like delta: the transferable datum is that join-class "
+                                    "recovery works when a correlation source exists; the EXPERIMENT corpus has none yet.")
     OUT.mkdir(parents=True, exist_ok=True)
     prior = sorted(OUT.glob("comparison-*.json"))
     seq = (int(prior[-1].stem.split("-")[1]) + 1) if prior else 1

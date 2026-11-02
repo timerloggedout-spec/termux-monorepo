@@ -127,6 +127,11 @@ def build(base=None, now=None) -> dict:
     else:
         gaps.append("marker state hash NOT_ESTABLISHED: no export relay carries one yet "
                     "(marker lives VM-side; hook-run relays populate it)")
+    # Failed attempts are relayed too (kind=export_failed): surfaced
+    # verbatim, and they never move the marker or the export history.
+    failed = [{"export_id": r.get("export_id"), "at": r.get("at"),
+               "reason": r.get("reason") or r.get("gate") or r.get("detail")}
+              for r in relays if r.get("kind") == "export_failed"]
 
     rows = sorted(exports.values(), key=lambda e: str(e.get("at") or ""), reverse=True)
     drills.sort(key=lambda d: str(d.get("export_id") or ""), reverse=True)
@@ -143,9 +148,11 @@ def build(base=None, now=None) -> dict:
         ],
         "marker": marker,
         "exports": rows,
+        "failed_attempts": failed,
         "drills": drills,
         "summary": {
             "exports": len(rows), "drills": len(drills),
+            "failed_attempts": len(failed),
             "last_export_at": rows[0].get("at") if rows else None,
             "last_export_id": rows[0].get("id") if rows else None,
             "last_drill_verdict": drills[0].get("verdict") if drills else None,

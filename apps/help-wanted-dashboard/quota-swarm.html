@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Swarm quota: the DoE participant population - every provider endpoint, its models, quota layers and rate-limit events. Distinct from the general quota registry.">
+<title>Swarm Quota · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.rec{padding:.3rem 0;border-top:1px solid rgba(127,127,127,.25)}details.card summary{cursor:pointer}</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Ops · swarm quota</div><h1>Swarm <span>Quota</span></h1><p class="lede">The Swarm is the DoE participant population — ALL providers' inference endpoints that can be dispatched to — not the general quota registry (that is <a href="./quota.html">Quota</a>). Three layers, kept legible: what the registry lists, what actually surfaces (aggregator backends collapse to one surface), and what is live-verified invoked. Quota values render only where the census or a usage series establishes them — readings used/remaining are null in the public projection by design.</p><div class="links" style="margin-top:1rem"><a class="button" href="./quota.html">Quota registry</a><a class="button" href="./family.html">Nested family</a><a class="button" href="./quota-graphs.html">Quota graphs</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/PROVIDER-DISPATCH-CAPABILITY.md">Capability spec</a><a class="button" href="./data/swarm-feed.json">Swarm feed</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching swarm feed.</small></div></div></header>
+<main>
+<section aria-labelledby="layers"><div class="head"><h2 id="layers">The three layers</h2><span class="note" id="layers-stamp">—</span></div>
+<div class="card"><div id="chart-layers"></div>
+<p class="muted" id="layers-note">—</p></div></section>
+<section aria-labelledby="providers"><div class="head"><h2 id="providers">Provider families</h2><span class="note" id="prov-note">—</span></div>
+<div class="card"><div class="label">Registry records per family</div><div id="chart-families"></div></div>
+<div class="grid grid-2" id="family-cards" style="margin-top:1rem"></div></section>
+<section aria-labelledby="events"><div class="head"><h2 id="events">Rate-limit events — the 403 series</h2><span class="note" id="events-stamp">—</span></div>
+<div class="card"><div id="chart-events"></div><div id="event-list"></div>
+<p class="muted">Events render from the feed's embedded register (quota.rate-limit-events/v1) — recorded incidents, not a live probe. Full graph context: <a href="./quota-graphs.html">Quota Graphs · Rate-limit events</a>.</p></div></section>
+<section aria-labelledby="atwork"><div class="head"><h2 id="atwork">The population at work</h2><span class="note" id="atwork-note">—</span></div>
+<div class="card"><p class="muted" style="margin-top:0">The nested-family view (Tracking's nested-family/v1, DoE record join): providers that have actually run tasks, their models, roles and outcomes. Full task lists: <a href="./family.html">Nested Family</a>.</p><div id="atwork-tree"></div></div></section>
+<section aria-labelledby="gaps"><div class="head"><h2 id="gaps">Gaps</h2></div><div class="card" id="gap-list"><p class="muted">—</p></div></section>
+<footer>Swarm Quota · feeds: data/swarm-feed.json (quota.swarm-feed/v1, twin of ops/quota/swarm-feed.json; generator scripts/quota_swarm_feed.py — refresh automation pending, data leg: Quota Specialist) + data/nested-family-feed.json · charts: chartkit (docs/ops/DASHBOARD-CHART-STANDARD.md)</footer>
+</main>
+<script src="./chartkit.js"></script>
+<script>
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+function eventTimeline(events,w=860,h=74){
+  const evs=(events||[]).map(e=>({at:e.at,t:new Date(e.at).getTime(),cls:e.class})).filter(e=>isFinite(e.t)).sort((a,b)=>a.t-b.t);
+  if(!evs.length)return '<p class="muted">No events on record.</p>';
+  const min=evs[0].t,max=evs[evs.length-1].t,span=Math.max(1,max-min),pad=26,iw=w-2*pad,y=h/2;
+  const X=t=>pad+(t-min)/span*iw;
+  let s='<svg class="chart" viewBox="0 0 '+w+' '+h+'" role="img"><line x1="'+pad+'" y1="'+y+'" x2="'+(w-pad)+'" y2="'+y+'" stroke="currentColor" opacity="0.3"/>';
+  evs.forEach(e=>{s+='<path d="M '+X(e.t).toFixed(1)+' '+(y-9)+' L '+(X(e.t)+7).toFixed(1)+' '+y+' L '+X(e.t).toFixed(1)+' '+(y+9)+' L '+(X(e.t)-7).toFixed(1)+' '+y+' Z" fill="currentColor"><title>'+esc(e.at)+' · '+esc(e.cls)+'</title></path>'});
+  s+='<text x="'+pad+'" y="'+(h-4)+'" font-size="10">'+esc(evs[0].at.slice(0,10))+'</text><text x="'+(w-pad)+'" y="'+(h-4)+'" font-size="10" text-anchor="end">'+esc(evs[evs.length-1].at.slice(0,10))+'</text></svg>';
+  return s;
+}
+function recordRow(r){
+  const rd=r.readings;
+  return '<div class="rec"><strong>'+esc(r.provider||r.id)+'</strong><span class="muted"> · '+esc(r.metric||'')+'</span><br><span class="muted">'
+    +(r.limit!=null?('limit '+esc(r.limit)+' '+esc(r.unit||'')+' · '):'')+esc(r.window||'')+(rd?(' · reading: '+esc(rd.status||'unknown')):'')+'</span>'
+    +(r.usage_series?('<div data-usage="'+esc(r.id)+'"></div>'):'')+'</div>';
+}
+function familyCard(p){
+  const recs=p.records||[];
+  const head='<div class="label">'+esc(p.provider)+'<span class="chip">'+recs.length+' records</span>'+(p.live_verified?'<span class="chip">live-verified</span>':'')+'</div>'
+    +'<p class="muted">'+(p.providers_distinct||recs.length)+' provider entr'+((p.providers_distinct||recs.length)===1?'y':'ies')+' · census: '+esc(p.census?(p.census.verdict||'—'):'not-established')+'</p>';
+  if(recs.length>12)return '<details class="card"><summary>'+head+'</summary>'+recs.map(recordRow).join('')+'</details>';
+  return '<div class="card">'+head+recs.map(recordRow).join('')+'</div>';
+}
+async function load(){
+  const bust=Date.now();
+  const feed=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/swarm-feed.json?t='+bust,'./data/swarm-feed.json?t='+bust]);
+  if(!feed){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch swarm-feed.json.';return}
+  const s=feed.summary||{};
+  $('freshness').textContent='Swarm loaded';
+  $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.registry_model_records||0)+' records · '+(s.distinct_providers||0)+' provider entries · '+(s.families||0)+' families';
+  const st=CK.stampState(feed.generated_at,Date.now(),86400000);
+  $('layers-stamp').textContent='Feed generated '+(feed.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
+  $('chart-layers').innerHTML=CK.bars([
+    {label:'Registry provider entries',value:s.distinct_providers||0},
+    {label:'Distinct surfaces (families)',value:s.families||0},
+    {label:'Live-verified families',value:s.live_verified_families||0}]);
+  $('layers-note').textContent='Registry lists '+(s.registry_model_records||0)+' model records across '+(s.distinct_providers||0)+' provider entries. '+(s.g4f_children||0)+' of them are g4f/* backends behind ONE aggregator, so the population surfaces as '+(s.families||0)+' families ('+(s.families_direct||0)+' direct + g4f). Live-verified invoked: '+(s.live_verified_families||0)+' families.';
+  const fams=(feed.providers||[]).slice().sort((a,b)=>(b.record_count||0)-(a.record_count||0));
+  $('prov-note').textContent=fams.length+' families';
+  $('chart-families').innerHTML=CK.bars(fams.map(p=>({label:p.provider,value:p.record_count||0})));
+  $('family-cards').innerHTML=fams.map(familyCard).join('');
+  fams.forEach(p=>(p.records||[]).forEach(r=>{
+    if(r.usage_series){
+      const host=document.querySelector('[data-usage="'+CSS.escape(r.id)+'"]');
+      if(host)host.innerHTML='<div class="label" style="margin-top:.4rem">'+esc(r.usage_series.title||'Usage')+' ('+esc(r.usage_series.unit||'')+')</div>'+CK.line((r.usage_series.points||[]).map(pt=>({t:pt.t,v:pt.v})));
+    }}));
+  const evs=(feed.events&&feed.events.events)||[];
+  const lastEv=evs.length?evs.map(e=>e.at).sort().pop():null;
+  const est=CK.stampState(lastEv,Date.now(),86400000*7);
+  $('events-stamp').textContent=evs.length+(' events · latest '+(lastEv||'—'))+(est==='STALE'?' · STALE (no incident in 7d is not proof of health)':'');
+  $('chart-events').innerHTML=eventTimeline(evs);
+  $('event-list').innerHTML=evs.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).map(e=>'<div class="rec"><span class="muted">'+esc(e.at)+'</span> · <strong>'+esc(e.class)+'</strong> · '+esc(e.bucket||'')+' · HTTP '+esc(e.http!=null?e.http:'—')+' · '+esc(e.surface||'')+'</div>').join('');
+  $('gap-list').innerHTML=(feed.gaps||[]).length?('<p class="muted">'+feed.gaps.map(esc).join('<br>')+'</p>'):'<p class="muted">No gaps recorded.</p>';
+  const nf=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/data/nested-family-feed.json?t='+bust,'./data/nested-family-feed.json?t='+bust]);
+  if(nf){
+    const ns=nf.summary||{};
+    $('atwork-note').textContent=(ns.providers||0)+' providers · '+(ns.models||0)+' models · '+(ns.tasks||0)+' tasks · '+(ns.dispatches||0)+' dispatches (DoE join)';
+    $('atwork-tree').innerHTML=(nf.providers||[]).map(p=>'<div class="rec"><strong>'+esc(p.provider)+'</strong><span class="muted"> · '+(p.task_count||0)+' tasks</span><br>'
+      +(p.models||[]).map(m=>{
+        const tally={};(m.tasks||[]).forEach(t=>{const k=(t.outcome||{}).status||'unknown';tally[k]=(tally[k]||0)+1});
+        return '<span class="muted">'+esc(m.model)+' — roles: '+esc((m.roles||[]).join(', ')||'—')+' · '+Object.entries(tally).map(([k,v])=>esc(k)+' '+v).join(' · ')+'</span>';
+      }).join('<br>')+'</div>').join('');
+  }
+}
+load();setInterval(load,60000);
+</script>
+</body>
+</html>

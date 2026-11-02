@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 385,
+    "open_issues": 386,
     "open_prs": 177,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 87,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
   },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 36,
+      "issues": 37,
       "prs": 175,
       "unlabelled_numbers": [
         308,
@@ -87,11 +87,12 @@
         3094,
         3141,
         3215,
-        3346
+        3346,
+        3577
       ]
     }
   },
-  "generated_at": "2026-11-02T07:05:01Z",
+  "generated_at": "2026-11-02T07:08:14Z",
   "issues_unlabelled": [
     308,
     343,
@@ -128,7 +129,8 @@
     3094,
     3141,
     3215,
-    3346
+    3346,
+    3577
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -136,7 +138,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "46e313378e"
+    "sha": "97c9296072"
   },
   "prs": [
     {
@@ -216,26 +218,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "bd588191ca",
+      "head_sha": "0964eda710",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T07:02:25Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c74e83352d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3572,
-      "title": "fix(vercel): owner-records verify uses canonical paths + protection-aware liveness",
-      "updated_at": "2026-11-02T07:03:59Z"
+      "updated_at": "2026-11-02T07:05:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -1941,7 +1929,7 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "success"
       },
       "head_sha": "28b5d0bbce",
       "labels": [],
@@ -2545,12 +2533,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8d59319229",
+      "head_sha": "b07631b66c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T06:59:35Z"
+      "updated_at": "2026-11-02T07:07:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2598,29 +2586,43 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
       "head_sha": "e5048651f0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3565,
       "title": "feat(quota): swarm feed for quota-swarm.html (nested-family/v1 envelope)",
-      "updated_at": "2026-11-02T06:54:15Z"
+      "updated_at": "2026-11-02T07:07:35Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "in_progress"
       },
-      "head_sha": "39fbf76422",
+      "head_sha": "28ad08317c",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3574,
-      "title": "feat(quota): event audit 001 + state-gated audit gate (owner standard)",
-      "updated_at": "2026-11-02T07:03:57Z"
+      "number": 3578,
+      "title": "desk-feed: D1 template-trigger build filed (#3577); re-file on landing",
+      "updated_at": "2026-11-02T07:07:52Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "01e77563ce",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3579,
+      "title": "fix(tracking): nested-family enrichment guards (DoE rulings)",
+      "updated_at": "2026-11-02T07:07:41Z"
     }
   ],
   "schema": "operator-matrix/v1",

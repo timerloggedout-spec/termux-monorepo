@@ -3,7 +3,10 @@
 The amendment is marker-gated: only a PR issue_comment carrying
 the live-3 stamp header is treated as a designed dispatch (comment
 body = composed prompt). Everything else must return None so the
-surface's behavior is unchanged.
+surface's behavior is unchanged. Dispatch administration is also
+author-gated: only repository-trusted authors (OWNER / MEMBER /
+COLLABORATOR) may trigger one — the marker alone must never let
+an arbitrary commenter drive the bot's prompt.
 """
 from __future__ import annotations
 
@@ -42,9 +45,10 @@ HEADER = ("[MUSEai]@{role:{doe-mgr-phrases-jit}} — "
 PROMPT = "Review this pull request.\n\nPR #2436: the diff."
 
 
-def event(body, *, pr_issue=True, action="created"):
+def event(body, *, pr_issue=True, action="created", assoc="OWNER"):
     return {"action": action,
-            "comment": {"body": body},
+            "comment": {"body": body,
+                        "author_association": assoc},
             "issue": {"number": 2436,
                       "pull_request": {"url": "x"} if pr_issue
                       else None}}
@@ -79,3 +83,13 @@ def test_pull_request_event_is_not_a_dispatch():
     ev = {"action": "opened",
           "pull_request": {"number": 2436, "body": HEADER}}
     assert CI._live3_dispatch(ev) is None
+
+
+def test_untrusted_author_is_not_a_dispatch():
+    for assoc in ("NONE", "FIRST_TIME_CONTRIBUTOR",
+                  "FIRST_TIMER", None):
+        assert CI._live3_dispatch(
+            event(HEADER + "\n\n" + PROMPT, assoc=assoc)) is None
+    for assoc in ("OWNER", "MEMBER", "COLLABORATOR"):
+        assert CI._live3_dispatch(
+            event(HEADER + "\n\n" + PROMPT, assoc=assoc)) is not None

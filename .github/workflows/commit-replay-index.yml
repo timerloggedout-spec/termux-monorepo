@@ -79,10 +79,27 @@ jobs:
             --index ops/commit-replay/index/termux-monorepo.jsonl \
             --out ops/commit-replay/index/fragments-termux-monorepo.jsonl \
             | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Subject 2 — repo-replay (git history only)
+        run: |
+          set -euo pipefail
+          git clone --quiet https://github.com/timerloggedout-spec/repo-replay.git subjects/repo-replay
+          python3 -B scripts/commit_replay/extract.py \
+            --repo-root subjects/repo-replay \
+            --repo-name "timerloggedout-spec/repo-replay" \
+            --index ops/commit-replay/index/repo-replay.jsonl \
+            --max-commits "${{ inputs.max_commits || '1000' }}" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 -B scripts/commit_replay/fragments.py \
+            --repo-root subjects/repo-replay \
+            --repo-name "timerloggedout-spec/repo-replay" \
+            --index ops/commit-replay/index/repo-replay.jsonl \
+            --out ops/commit-replay/index/fragments-repo-replay.jsonl \
+            --ref refs/heads/main \
+            | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Commit index to master (single-writer)
         run: |
           set -euo pipefail
-          git add ops/commit-replay/index/termux-monorepo.jsonl ops/commit-replay/index/fragments-termux-monorepo.jsonl
+          git add ops/commit-replay/index/termux-monorepo.jsonl ops/commit-replay/index/fragments-termux-monorepo.jsonl ops/commit-replay/index/repo-replay.jsonl ops/commit-replay/index/fragments-repo-replay.jsonl
           if git diff --cached --quiet; then
             echo "index unchanged — nothing to commit" >> "$GITHUB_STEP_SUMMARY"
             exit 0

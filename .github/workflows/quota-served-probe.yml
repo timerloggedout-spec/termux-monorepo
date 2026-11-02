@@ -1,0 +1,46 @@
+name: quota-served-probe
+
+# Hybrid E served-vs-record diff gate (owner decision 2026-11-01).
+# Shape follows graph-matrix-probe: push-triggered on the data paths,
+# one cheap probe, verdict in the step summary, never writes repo
+# content. State gate: the probe re-runs only when the record or the
+# served-data inputs change (push paths) or on manual dispatch.
+# Assertions live in scripts/quota_served_diff.py (served quota.json /
+# quota-usage.json / usage-series.json across GitHub Pages + the
+# Vercel mirror vs the master record; gen-stamp age <= 24h; series
+# end-dates >= usage gen - 72h; reading count == registry count).
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "ops/quota/**"
+      - "apps/help-wanted-dashboard/data/**"
+      - "docs/ops/generated/quota-status.json"
+  workflow_dispatch:
+
+concurrency:
+  group: quota-served-probe
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: served-vs-record diff
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Served-vs-record diff
+        id: probe
+        run: |
+          set -euo pipefail
+          python3 scripts/quota_served_diff.py | tee -a "$GITHUB_STEP_SUMMARY"

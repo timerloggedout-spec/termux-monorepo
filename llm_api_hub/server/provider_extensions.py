@@ -15,6 +15,7 @@ ENDPOINTS = {
     "novita": ("https://api.novita.ai/v3/openai/chat/completions", ("NOVITA_API_KEY",)),
     "friendli": ("https://api.friendli.ai/serverless/v1/chat/completions", ("FRIENDLI_API_KEY",)),
     "baseten": ("https://inference.baseten.co/v1/chat/completions", ("BASETEN_API_KEY",)),
+    "deepseek": ("https://api.deepseek.com/v1/chat/completions", ("DEEPSEEK_API_KEY",)),
 }
 CATALOG_ENDPOINTS = {
     "unorouter": "https://api.unorouter.com/v1/models",
@@ -26,6 +27,7 @@ CATALOG_ENDPOINTS = {
     "novita": "https://api.novita.ai/v3/openai/models",
     "friendli": "https://api.friendli.ai/serverless/v1/models",
     "baseten": "https://inference.baseten.co/v1/models",
+    "deepseek": "https://api.deepseek.com/v1/models",
 }
 SOURCES = {
     "typhoon": ("https://docs.opentyphoon.ai/en/api-reference/", "https://opentyphoon.ai/tac"),
@@ -39,6 +41,7 @@ SOURCES = {
     "novita": ("https://novita.ai/docs",),
     "friendli": ("https://friendli.ai/docs",),
     "baseten": ("https://docs.baseten.co",),
+    "deepseek": ("https://api-docs.deepseek.com/",),
 }
 SETUP_CAVEATS = {
     "typhoon": "Use an independently authorized account/key; documented light research usage is free but quota entitlement is not guaranteed.",
@@ -52,4 +55,5 @@ SETUP_CAVEATS = {
     "novita": "Prepaid account; $0 balance at provisioning (advertised sandbox credits not in account); completions funded-out until top-up.",
     "friendli": "Tier 0 account; $0 balance at provisioning ($3 promo is card-gated); completions funded-out until top-up.",
     "baseten": "Free credits at provisioning ($1.00 Model APIs + $2.00 Tool Calls); completions expected live until credits exhaust.",
+    "deepseek": "Direct API key pre-existing in the Actions store (provisioning census 2026-11-01); prepaid balance state not established — the invoke verdict is the first live verification.",
 }

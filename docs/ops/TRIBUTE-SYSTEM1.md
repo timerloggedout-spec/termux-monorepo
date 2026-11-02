@@ -74,9 +74,9 @@ blocks stake/placeholder-only PRs.
 - `help_wanted_followup.decide_action`: call `tribute_system1.reengage_allowed(thread)`
   before any `reengage` / `stale_nudge` post.
 - `help_wanted_followup` search: include closed PRs and foreign issue threads.
-- `help_wanted_scout` / `help_wanted_claim`: call `preflight_candidate`.
-- `help_wanted_contribute`: call `preflight_pr`; stop opening stake-only PRs.
-- `help-wanted-llm-assist`: only take rung-1 threads.
+- `tribute_scout` / `tribute_claim`: call `preflight_candidate`.
+- `tribute_contribute`: call `preflight_pr`; stop opening stake-only PRs.
+- `tribute-llm-assist`: only take rung-1 threads.
 - Delphi: needs a `tribute-outcome` event in `delphi-signal.yml`'s enum.
 
 ## Eval
@@ -93,9 +93,9 @@ backfill output on branch `tribute-s1/backfill` is the source for new labels.
 | Writer | Gate | Effect |
 |---|---|---|
 | `scripts/ci/help_wanted_followup.py` | `hydrate` then `reengage_allowed(thread)` before every `reengage` / `stale_nudge` post | Post skipped unless System 1 allows it (fails closed on any read error). Closed foreign PRs from the last `HELP_WANTED_LESSON_DAYS` (default 14) are routed into a `followup_lesson` evidence row, once per PR, and are never posted on. |
-| `scripts/ci/help_wanted_scout.py` | `preflight_candidate(issue, comments)` | Ineligible issues (assigned elsewhere, prior human claim, human skill/language, closed, comments unreadable) are moved to the catalog's `excluded` list. |
-| `scripts/ci/help_wanted_claim.py` | `preflight_candidate` before the claim comment and fork | Ineligible = no comment, no fork, exit 0 with `claim_skipped_preflight`. |
-| `scripts/ci/help_wanted_contribute.py` | real patch required (`--patch` / `HELP_WANTED_PATCH`), candidate preflight, then `preflight_pr(files)` on the staged diff | Stake-only PRs (`.github/help-wanted-lane-stake.md`) are retired; no fallback issue notice. |
-| `.github/workflows/help-wanted-llm-assist.yml` | `route(hydrate(...))["rung"] == "system2_llm"` | Only rung-1 threads get an LLM pass; explicit inputs are gated too. |
+| `scripts/ci/tribute_scout.py` | `preflight_candidate(issue, comments)` | Ineligible issues (assigned elsewhere, prior human claim, human skill/language, closed, comments unreadable) are moved to the catalog's `excluded` list. |
+| `scripts/ci/tribute_claim.py` | `preflight_candidate` before the claim comment and fork | Ineligible = no comment, no fork, exit 0 with `claim_skipped_preflight`. |
+| `scripts/ci/tribute_contribute.py` | real patch required (`--patch` / `HELP_WANTED_PATCH`), candidate preflight, then `preflight_pr(files)` on the staged diff | Stake-only PRs (`.github/help-wanted-lane-stake.md`) are retired; no fallback issue notice. |
+| `.github/workflows/tribute-llm-assist.yml` | `route(hydrate(...))["rung"] == "system2_llm"` | Only rung-1 threads get an LLM pass; explicit inputs are gated too. |
 
 Regression: `tests/test_tribute_system1_gates.py` proves the three seed fixtures never trigger a follow-up post, claim, or PR.

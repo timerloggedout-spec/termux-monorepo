@@ -1,4 +1,4 @@
-name: help-wanted-llm-assist
+name: tribute-llm-assist
 
 # LIVE catalog selection — NOT legacy model-router fallback chain.
 # NOT MoneyBall admission (MB scores providers after repeated success).
@@ -15,10 +15,10 @@ on:
         required: false
         default: ""
   repository_dispatch:
-    types: [help-wanted-llm-assist]
+    types: [tribute-llm-assist]
 
 concurrency:
-  group: help-wanted-llm-assist
+  group: tribute-llm-assist
   cancel-in-progress: false
 
 permissions:
@@ -44,7 +44,7 @@ jobs:
           def api(path):
               req = urllib.request.Request(
                   "https://api.github.com" + path,
-                  headers={"Accept": "application/vnd.github+json", "Authorization": f"Bearer {tok}", "User-Agent": "help-wanted-llm-assist"},
+                  headers={"Accept": "application/vnd.github+json", "Authorization": f"Bearer {tok}", "User-Agent": "tribute-llm-assist"},
               )
               with urllib.request.urlopen(req, timeout=45) as r:
                   return json.loads(r.read().decode())
@@ -211,7 +211,7 @@ jobs:
             -H "Authorization: Bearer ${KEY}" \
             -H "Content-Type: application/json" \
             -H "HTTP-Referer: https://github.com/timerloggedout-spec/termux-monorepo" \
-            -H "X-Title: help-wanted-llm-assist" \
+            -H "X-Title: tribute-llm-assist" \
             -d "$PAYLOAD" || true)
           TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // empty' 2>/dev/null || true)
           if [ -z "$TEXT" ]; then

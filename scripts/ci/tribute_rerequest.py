@@ -2,8 +2,8 @@
 """Re-request review on foreign open PRs that still have CHANGES_REQUESTED after our push.
 
 Usage:
-  python3 scripts/ci/help_wanted_rerequest.py --pr https://github.com/vedantnimbarte/zero/pull/81
-  python3 scripts/ci/help_wanted_rerequest.py --all-foreign
+  python3 scripts/ci/tribute_rerequest.py --pr https://github.com/vedantnimbarte/zero/pull/81
+  python3 scripts/ci/tribute_rerequest.py --all-foreign
 """
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def api(method: str, path: str, body: dict | None = None):
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {TOKEN}",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "termux-help-wanted-rerequest",
+            "User-Agent": "termux-tribute-rerequest",
             "Content-Type": "application/json",
         },
     )

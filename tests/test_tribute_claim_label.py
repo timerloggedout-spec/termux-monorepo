@@ -1,7 +1,7 @@
 """Regression tests for revalidating labels on auto-selected claims."""
 import unittest
 
-from scripts.ci.help_wanted_claim import label_matches
+from scripts.ci.tribute_claim import label_matches
 
 
 class HelpWantedClaimLabelTests(unittest.TestCase):

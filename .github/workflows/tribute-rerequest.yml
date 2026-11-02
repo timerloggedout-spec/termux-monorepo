@@ -1,4 +1,4 @@
-name: help-wanted-rerequest
+name: tribute-rerequest
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ -n "${PR:-}" ]; then
-            python3 scripts/ci/help_wanted_rerequest.py --pr "$PR"
+            python3 scripts/ci/tribute_rerequest.py --pr "$PR"
           else
-            python3 scripts/ci/help_wanted_rerequest.py --all-foreign
+            python3 scripts/ci/tribute_rerequest.py --all-foreign
           fi

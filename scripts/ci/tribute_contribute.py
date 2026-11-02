@@ -213,9 +213,9 @@ def staged_files(cwd: str) -> list[dict]:
 def preflight_issue(owner: str, repo: str, number: int, meta: dict) -> dict:
     """Same candidate gate as claim, re-run at the point of action."""
     try:
-        from scripts.ci.help_wanted_claim import preflight
+        from scripts.ci.tribute_claim import preflight
     except ImportError:  # pragma: no cover
-        from help_wanted_claim import preflight  # type: ignore
+        from tribute_claim import preflight  # type: ignore
     return preflight(owner, repo, number, meta, allow_closed=os.environ.get("HELP_WANTED_ALLOW_CLOSED") == "1")
 
 

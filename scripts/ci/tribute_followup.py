@@ -22,7 +22,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 try:
-    from scripts.ci.help_wanted_foreign_recon import (
+    from scripts.ci.tribute_foreign_recon import (
         extract_urls,
         fetch_contributing,
         format_recon_block,
@@ -30,7 +30,7 @@ try:
 except ImportError:
     # Actions checkout root
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-    from scripts.ci.help_wanted_foreign_recon import (  # type: ignore
+    from scripts.ci.tribute_foreign_recon import (  # type: ignore
         extract_urls,
         fetch_contributing,
         format_recon_block,

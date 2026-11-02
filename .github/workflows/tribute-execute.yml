@@ -71,7 +71,7 @@ jobs:
 
           budget = int(os.environ.get("INPUT_BUDGET") or "8")
           day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-          path = Path("docs/ops/generated/help-wanted-daily-budget.json")
+          path = Path("docs/ops/generated/tribute-daily-budget.json")
           path.parent.mkdir(parents=True, exist_ok=True)
           data = {"day": day, "used": 0, "success": 0, "fail": 0, "events": [], "note": "ephemeral-runner soft ceiling"}
           remaining = budget
@@ -88,11 +88,11 @@ jobs:
           ]
 
           if not issue:
-              out = Path("docs/ops/generated/help-wanted-catalog.json")
+              out = Path("docs/ops/generated/tribute-catalog.json")
               out.parent.mkdir(parents=True, exist_ok=True)
               for label in ("good first issue", "help wanted"):
                   subprocess.run(
-                      ["python3", "scripts/ci/help_wanted_scout.py", "--max", "20", "--label", label, "--out", str(out)],
+                      ["python3", "scripts/ci/tribute_scout.py", "--max", "20", "--label", label, "--out", str(out)],
                       check=False,
                   )
                   items = []
@@ -143,8 +143,8 @@ jobs:
         with:
           name: tribute-execute-gate
           path: |
-            docs/ops/generated/help-wanted-catalog.json
-            docs/ops/generated/help-wanted-daily-budget.json
+            docs/ops/generated/tribute-catalog.json
+            docs/ops/generated/tribute-daily-budget.json
           if-no-files-found: ignore
 
   fail_closed:
@@ -177,7 +177,7 @@ jobs:
           REQUIRED_LABEL: ${{ needs.budget.outputs.issue_label }}
         run: |
           set -euo pipefail
-          ARGS=(python3 scripts/ci/help_wanted_claim.py --issue "$ISSUE")
+          ARGS=(python3 scripts/ci/tribute_claim.py --issue "$ISSUE")
           if [ -n "$REQUIRED_LABEL" ]; then ARGS+=(--required-label "$REQUIRED_LABEL"); fi
           "${ARGS[@]}"
 
@@ -202,7 +202,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: help-wanted-claim-evidence
+          name: tribute-claim-evidence
           path: docs/ops/generated/help-wanted-evidence/
           retention-days: 30
           if-no-files-found: ignore
@@ -230,7 +230,7 @@ jobs:
             echo "::error::An operator PAT is required for upstream contribution"
             exit 1
           fi
-          python3 scripts/ci/help_wanted_contribute.py --issue "${{ needs.budget.outputs.issue }}"
+          python3 scripts/ci/tribute_contribute.py --issue "${{ needs.budget.outputs.issue }}"
 
       - name: Evidence receipt (success)
         if: success()
@@ -293,4 +293,4 @@ jobs:
             echo "::error::An operator PAT is required for upstream contribution"
             exit 1
           fi
-          python3 scripts/ci/help_wanted_contribute.py --issue "https://github.com/vedantnimbarte/zero/issues/72"
+          python3 scripts/ci/tribute_contribute.py --issue "https://github.com/vedantnimbarte/zero/issues/72"

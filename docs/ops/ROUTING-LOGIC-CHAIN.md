@@ -20,7 +20,7 @@ model_router_bootstrap               catalog-feed/latest.json
       peers from LIVE eligible + static residual
         │
         ▼
-http-llm-invoke / help-wanted-llm-assist
+http-llm-invoke / tribute-llm-assist
         │
         ▼
 invocation telemetry (no secrets)

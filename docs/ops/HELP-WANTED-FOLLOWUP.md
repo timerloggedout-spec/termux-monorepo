@@ -22,7 +22,7 @@ Each non-skip posts a comment with:
 ## Scripts
 
 - `scripts/ci/tribute_followup.py`
-- `scripts/ci/help_wanted_foreign_recon.py`
+- `scripts/ci/tribute_foreign_recon.py`
 
 ## Cadence
 

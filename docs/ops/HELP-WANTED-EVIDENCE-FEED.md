@@ -23,8 +23,8 @@ Scouts propose; managers decide. Receipts do **not** auto-admit to MoneyBall.
 | `scripts/ci/help_wanted_evidence.py` | Append-only receipt writer |
 | `docs/ops/generated/help-wanted-evidence/YYYY-MM-DD.jsonl` | Daily cohort log |
 | `docs/ops/generated/help-wanted-evidence/latest.json` | Last event |
-| `docs/ops/generated/help-wanted-scout-bench.json` | Scout cadence bench |
-| `docs/ops/generated/help-wanted-daily-budget.json` | Daily production ceiling |
+| `docs/ops/generated/tribute-scout-bench.json` | Scout cadence bench |
+| `docs/ops/generated/tribute-daily-budget.json` | Daily production ceiling |
 
 Seed: [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) as `upstream_pr` primary success.
 

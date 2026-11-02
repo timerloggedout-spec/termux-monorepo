@@ -19,7 +19,7 @@
 | Execute | **every 4 hours** + dispatch | Budget gate; no spray when `remaining=0` |
 | Daily upstream budget | **3 / UTC day** (input `daily_budget`) | Tunable; ledger records used/success/fail |
 
-**Finding the working limit:** increase cadence and budget until secondary rate limits or abuse signals appear; artifact benches (`help-wanted-scout-bench.json`, `help-wanted-daily-budget.json`) feed process tuning. Prefer production of **merged upstream value** over raw comment volume.
+**Finding the working limit:** increase cadence and budget until secondary rate limits or abuse signals appear; artifact benches (`tribute-scout-bench.json`, `tribute-daily-budget.json`) feed process tuning. Prefer production of **merged upstream value** over raw comment volume.
 
 ### Parallel notice (implementation sketch)
 

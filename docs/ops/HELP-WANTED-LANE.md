@@ -19,11 +19,11 @@ dashboard        https://timerloggedout-spec.github.io/tribute/
 
 | Workflow | Role |
 |----------|------|
-| `help-wanted-scout` | Rank |
+| `tribute-scout` | Rank |
 | `tribute-execute` | Claim + upstream PR |
 | `tribute-followup` | Foreign CHANGES_REQUESTED poll |
-| `help-wanted-llm-assist` | Live-catalog model plan on foreign PR |
-| `help-wanted-rerequest` | Re-request reviews |
+| `tribute-llm-assist` | Live-catalog model plan on foreign PR |
+| `tribute-rerequest` | Re-request reviews |
 | `tribute-status-refresh` | Board + tributes + dashboard data |
 | `help-wanted-dashboard-deploy` | Pages / CDN |
 

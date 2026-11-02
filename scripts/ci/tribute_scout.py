@@ -4,8 +4,8 @@
 Emits ranked JSON catalog. Stdlib-first. Safe for Termux / Codespace / Actions.
 
 Usage:
-  python3 scripts/ci/help_wanted_scout.py
-  python3 scripts/ci/help_wanted_scout.py --max 30 --lang python --out /tmp/catalog.json
+  python3 scripts/ci/tribute_scout.py
+  python3 scripts/ci/tribute_scout.py --max 30 --lang python --out /tmp/catalog.json
 
 Env:
   GITHUB_TOKEN or GH_TOKEN optional (higher rate limits).
@@ -55,7 +55,7 @@ CLARITY_KEYWORDS = ("acceptance", "expected", "steps to", "checklist", "- [ ]", 
 def _headers() -> dict[str, str]:
     h = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "termux-monorepo-help-wanted-scout",
+        "User-Agent": "termux-monorepo-tribute-scout",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
@@ -250,7 +250,7 @@ def main() -> int:
     ranked = sorted((rank_issue(i, now=now) for i in eligible_items), key=lambda x: -x["score"])[: args.max]
 
     catalog = {
-        "schema_version": "help-wanted-catalog.v2",
+        "schema_version": "tribute-catalog.v2",
         "generated_at": now.isoformat(),
         "query": query,
         "count": len(ranked),

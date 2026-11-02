@@ -435,7 +435,7 @@ def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = N
 
 
 def reengage_allowed(thread: dict) -> bool:
-    """Gate for help_wanted_followup.decide_action: a timing-based 'reengage'
+    """Gate for tribute_followup.decide_action: a timing-based 'reengage'
     must only fire when System 1 sees no decline/claim/close class."""
     return bool(route(thread)["reengage_allowed"])
 

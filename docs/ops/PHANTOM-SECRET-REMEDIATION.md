@@ -52,8 +52,8 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.MODELSCOPE_TOKEN` — provider-availability.yml
 - [ ] `secrets.N8N_SHE_WEBHOOK_URL` — n8n-she-bridge.yml
 - [ ] `secrets.NEXUSCLI_TOKEN` — deepseek-ci.yml
-- [ ] `secrets.OMNIROUTE_API_KEY` — gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, help-wanted-llm-assist.yml
-- [ ] `secrets.OMNI_API_KEY` — continuous-evaluation.yml, gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, help-wanted-llm-assist.yml, provider-availability.yml, provider-batch.yml, team-mvt.yml
+- [ ] `secrets.OMNIROUTE_API_KEY` — gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, tribute-llm-assist.yml
+- [ ] `secrets.OMNI_API_KEY` — continuous-evaluation.yml, gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, tribute-llm-assist.yml, provider-availability.yml, provider-batch.yml, team-mvt.yml
 - [ ] `secrets.OMNI_BASE_URL` — gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml
 - [ ] `secrets.OPENAI_API_KEY` — provision-secrets.yml — provisioning catalog entry (by design)
 - [ ] `secrets.OPENTYPHOON_API_KEY` — provider-batch.yml

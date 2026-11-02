@@ -9,7 +9,7 @@ on:
   repository_dispatch:
     types: [tribute-status-refresh, tribute-followup]
   workflow_run:
-    workflows: ["tribute execute", "tribute-followup", "help-wanted scout"]
+    workflows: ["tribute execute", "tribute-followup", "tribute scout"]
     types: [completed]
 
 concurrency:

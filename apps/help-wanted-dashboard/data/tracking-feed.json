@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T09:00:40Z",
+ "generated_at": "2026-11-02T09:19:02Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T09:00:39Z",
+   "read_at": "2026-11-02T09:19:01Z",
    "merged": 150,
-   "open": 176
+   "open": 179
   },
   "lane_events": {
-   "read_at": "2026-11-02T09:00:39Z",
+   "read_at": "2026-11-02T09:19:01Z",
    "status": "ok",
-   "count": 7856,
+   "count": 7911,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +104,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -118,7 +118,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -133,7 +133,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -145,7 +145,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -161,7 +161,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "challenge-entries",
@@ -175,7 +175,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "quota",
@@ -184,18 +184,18 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3654,
-    "sha": "ae5d88be5f55",
-    "at": "2026-11-02T08:37:19Z",
-    "title": "feat(dashboard): quota-graphs ALL-providers gap cards + coverage"
+    "pr": 3677,
+    "sha": "fd327a670d2a",
+    "at": "2026-11-02T09:06:35Z",
+    "title": "feat(dashboard): quota-swarm ALL-providers gap rendering"
    },
-   "next": "land/close PR #3608 \u2014 fix(quota): audit F4 search-window pacer + scheduling standard (audit-003)",
+   "next": "land/close PR #3683 \u2014 fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=170",
-    "open PRs: #3608, #3342, #3242, #2757, #2340"
+    "open PRs: #3683, #3342, #3242, #2757, #2340"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "doe",
@@ -215,7 +215,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "doe-nc1",
@@ -227,7 +227,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "contribution-desk",
@@ -259,7 +259,7 @@
     "desk-feed traversals=10 generated_at=2026-11-02T07:10:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "web-design-viz",
@@ -278,7 +278,7 @@
    "evidence": [
     "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "marketing",
@@ -292,7 +292,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "marketing-social",
@@ -304,7 +304,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "swarm",
@@ -313,17 +313,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3655,
-    "sha": "5490faec4026",
-    "at": "2026-11-02T08:48:15Z",
-    "title": "swarm: one-off DeepSeek secret fingerprint probe (hash-only, #3141)"
+    "pr": 3674,
+    "sha": "aa959a4b623b",
+    "at": "2026-11-02T09:10:31Z",
+    "title": "swarm: fix DeepSeek env expression in provider-invoke (401 root cause)"
    },
    "next": "land/close PR #3437 \u2014 feat(dispatch): wire gemini-invoke to the stamp fan-out",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "providers",
@@ -332,10 +332,10 @@
    "project_id": "providers-registry",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3590,
-    "sha": "921d84080f90",
-    "at": "2026-11-02T07:23:51Z",
-    "title": "feat(tracking): nested-family ALL-providers denominator"
+    "pr": 3682,
+    "sha": "6e718301dbd6",
+    "at": "2026-11-02T09:16:11Z",
+    "title": "Agentic Gambling Lane: registry addendum \u2014 managers, scouts, wallets, provider wallets"
    },
    "next": "land/close PR #2167 \u2014 chore(reviewer-metrics): regenerate provider x context map",
    "next_basis": "open-pr",
@@ -343,7 +343,7 @@
     "quota registry services=170",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "providers-phrases",
@@ -355,7 +355,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "repo-replay",
@@ -367,7 +367,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "ops",
@@ -381,7 +381,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   },
   {
    "lane": "telemetry",
@@ -395,12 +395,12 @@
     "at": "2026-11-02T08:03:53Z",
     "title": "feat(hindsight): free-mapping \u2014 Fly LLM -> llama-3.3-70b:free + ramp day-budget"
    },
-   "next": "land/close PR #3442 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
+   "next": "land/close PR #3681 \u2014 tribute normalization bundle C: diff-gate + telemetry-tests + evidence dir rename",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #3442, #1734, #1645, #1469, #990"
+    "open PRs: #3681, #3442, #1734, #1645, #1469"
    ],
-   "updated_at": "2026-11-02T09:00:40Z"
+   "updated_at": "2026-11-02T09:19:02Z"
   }
  ],
  "doe_join": {
@@ -729,7 +729,7 @@
       }
      }
     ],
-    "experiment_records": 24,
+    "experiment_records": 26,
     "experiment_records_with_instance": 7
    },
    {
@@ -779,6 +779,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 87/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 86/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

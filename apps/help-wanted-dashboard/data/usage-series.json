@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-02T08:01:30Z",
+ "generated_at": "2026-11-02T08:06:14Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-02T07:58:41Z",
-  "ops/tracking/nested-family.json": "2026-11-02T07:57:02Z"
+  "ops/tracking/nested-family.json": "2026-11-02T08:04:52Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -110,6 +110,946 @@
     ],
     "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)",
     "last_point_at": "2026-10-31T06:17:14Z"
+   },
+   {
+    "key": "aion",
+    "title": "aion - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "baseten",
+    "title": "baseten - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "cerebras",
+    "title": "cerebras - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "claude",
+    "title": "Claude - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "cloudflare",
+    "title": "cloudflare - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "cohere",
+    "title": "cohere - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "deepinfra",
+    "title": "deepinfra - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "deepseek",
+    "title": "DeepSeek - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "felo",
+    "title": "felo - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "friendli",
+    "title": "friendli - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/agenttools",
+    "title": "g4f/AgentTools - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/airforce",
+    "title": "g4f/Airforce - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/antigravity",
+    "title": "g4f/Antigravity - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/arena",
+    "title": "g4f/Arena - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/bingcreateimages",
+    "title": "g4f/BingCreateImages - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/blackboxpro",
+    "title": "g4f/BlackboxPro - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/blackforestlabs_flux1dev",
+    "title": "g4f/BlackForestLabs_Flux1Dev - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/blackforestlabs_flux1kontextdev",
+    "title": "g4f/BlackForestLabs_Flux1KontextDev - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/bravesearch",
+    "title": "g4f/BraveSearch - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/cachedsearch",
+    "title": "g4f/CachedSearch - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/cerebras",
+    "title": "g4f/Cerebras - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/chatgpt",
+    "title": "g4f/ChatGPT - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/claude",
+    "title": "g4f/Claude - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/cloudflare",
+    "title": "g4f/Cloudflare - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/cohereforai_c4ai_command",
+    "title": "g4f/CohereForAI_C4AI_Command - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/copilot",
+    "title": "g4f/Copilot - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/copilotapp",
+    "title": "g4f/CopilotApp - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/deepinfra",
+    "title": "g4f/DeepInfra - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/deepseek",
+    "title": "g4f/DeepSeek - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/elevenlabs",
+    "title": "g4f/ElevenLabs - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/g4fspace",
+    "title": "g4f/G4FSpace - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/gemini",
+    "title": "g4f/Gemini - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/geminicli",
+    "title": "g4f/GeminiCLI - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/geminipro",
+    "title": "g4f/GeminiPro - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/githubcopilot",
+    "title": "g4f/GithubCopilot - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/glm",
+    "title": "g4f/GLM - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/googleaimode",
+    "title": "g4f/GoogleAiMode - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/googlesearch",
+    "title": "g4f/GoogleSearch - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/grok",
+    "title": "g4f/Grok - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/groq",
+    "title": "g4f/Groq - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/hailuoai",
+    "title": "g4f/HailuoAI - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/huggingchat",
+    "title": "g4f/HuggingChat - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/huggingface",
+    "title": "g4f/HuggingFace - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/huggingfacemedia",
+    "title": "g4f/HuggingFaceMedia - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/huggingspace",
+    "title": "g4f/HuggingSpace - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/kilocode",
+    "title": "g4f/KiloCode - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/llm7",
+    "title": "g4f/LLM7 - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/markitdown",
+    "title": "g4f/MarkItDown - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/metaai",
+    "title": "g4f/MetaAI - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/metaaiaccount",
+    "title": "g4f/MetaAIAccount - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/microsoftdesigner",
+    "title": "g4f/MicrosoftDesigner - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/nvidia",
+    "title": "g4f/Nvidia - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/ollama",
+    "title": "g4f/Ollama - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/omniroute",
+    "title": "g4f/OmniRoute - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/openaifm",
+    "title": "g4f/OpenAIFM - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/openrouterfree",
+    "title": "g4f/OpenRouterFree - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/operaaria",
+    "title": "g4f/OperaAria - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/perplexity",
+    "title": "g4f/Perplexity - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/pi",
+    "title": "g4f/Pi - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/pollinations",
+    "title": "g4f/Pollinations - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/pollinationsaudio",
+    "title": "g4f/PollinationsAudio - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/pollinationsimage",
+    "title": "g4f/PollinationsImage - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/puter",
+    "title": "g4f/Puter - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/qwen",
+    "title": "g4f/Qwen - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/relayrouter",
+    "title": "g4f/RelayRouter - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/stabilityai_sd35large",
+    "title": "g4f/StabilityAI_SD35Large - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/teachanything",
+    "title": "g4f/TeachAnything - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/whiterabbitneo",
+    "title": "g4f/WhiteRabbitNeo - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/you",
+    "title": "g4f/You - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "g4f/yqcloud",
+    "title": "g4f/Yqcloud - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "google",
+    "title": "google - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "gpt4free/cliproxyapi/chapito/ai-manus",
+    "title": "gpt4free/CLIProxyAPI/Chapito/ai-manus - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "groq",
+    "title": "groq - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "huggingface",
+    "title": "huggingface - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "kilo",
+    "title": "kilo - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "llm7",
+    "title": "llm7 - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "meta",
+    "title": "meta - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "mistral",
+    "title": "mistral - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "modelscope",
+    "title": "modelscope - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "novita",
+    "title": "novita - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "nvidia",
+    "title": "nvidia - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "omni",
+    "title": "omni - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "openrouter",
+    "title": "openrouter - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "ovhcloud",
+    "title": "ovhcloud - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "requesty",
+    "title": "requesty - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "routeway",
+    "title": "routeway - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "sambanova",
+    "title": "sambanova - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "sealion",
+    "title": "sealion - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "siliconflow",
+    "title": "siliconflow - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "typhoon",
+    "title": "typhoon - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "unorouter",
+    "title": "unorouter - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "xfyun",
+    "title": "xfyun - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "xkiro",
+    "title": "xkiro - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
+   },
+   {
+    "key": "zai",
+    "title": "zai - no stamped usage yet (gap)",
+    "unit": null,
+    "kind": "gap",
+    "metric": null,
+    "points": [],
+    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
+    "last_point_at": null
    }
   ],
   "service": [
@@ -694,6 +1634,13 @@
     "last_point_at": "2026-11-02T06:25:00Z"
    }
   ]
+ },
+ "coverage": {
+  "providers_total": 95,
+  "providers_populated": 3,
+  "providers_gap": 94,
+  "model_series": 8,
+  "model_populated": 8
  },
  "notes": {
   "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",

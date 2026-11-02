@@ -86,7 +86,12 @@ instance (cannot nest honestly); session-history provenance records
   the stamp exactly; grouping is provider ⊃ model ⊃ tasks, and a
   model's roles are the distinct roles across its tasks. Never
   collapse by model alone across providers (the same model string
-  under two providers = two families).
+  under two providers = two families). A stamp whose model field is
+  absent/null nests under the literal `NOT_ESTABLISHED` (fleet
+  honesty convention: missing = NOT_ESTABLISHED). Desk-carrier
+  outcome states can be full prose verdicts: task entries keep them
+  verbatim; only the summary's `by_outcome` buckets prose states
+  (>40 chars) under `(prose state — verbatim in tasks)`.
 - **Dispatch connection:** every task carries `dispatch_id` +
   `run_id` + `source_ref` (the stamp's repo path) — the run-id join
   back to the dispatch record of record. Where a carrier lacks one of

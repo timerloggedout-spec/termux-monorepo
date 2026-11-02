@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T01:03:26Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T01:06:46Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `a61b172371` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `1d4ed43dab` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 384 issues, 173 PRs. PR classes: EXTRACT 6 / CANDIDATE 83 / NEED_EVIDENCE 84 / SUPERSEDE 0.
+**Open inventory:** 385 issues, 173 PRs. PR classes: EXTRACT 6 / CANDIDATE 82 / NEED_EVIDENCE 85 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -18,7 +18,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1540 | EXTRACT | unlabelled | `97c0c5649f` | success | success | unstable | feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV |
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #2167 | EXTRACT | unlabelled | `c90e359c40` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | EXTRACT | unlabelled | `31880c0ae7` | success | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -74,7 +74,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
-| #2263 | CANDIDATE | unlabelled | `92ac726f1a` | success | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
 | #2310 | CANDIDATE | unlabelled | `9c2151eae4` | success | success | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
@@ -140,6 +139,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #2263 | NEED_EVIDENCE | unlabelled | `6eb3b4f14a` | queued | queued | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `660d086004` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -182,10 +182,10 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `06d71aec43` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
-| #3437 | NEED_EVIDENCE | unlabelled | `0dd529472a` | not_reported | not_reported | unknown | feat(dispatch): wire gemini-invoke to the stamp fan-out |
+| #3437 | NEED_EVIDENCE | unlabelled | `5b65425fbb` | queued | success | unstable | feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | #3442 | NEED_EVIDENCE | unlabelled | `4f8186461d` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3445 | NEED_EVIDENCE | unlabelled | `225043f225` | queued | queued | unstable | fix(dispatch): judge verdict parse hardening |
-| #3446 | NEED_EVIDENCE | unlabelled | `5daa69260b` | queued | queued | unstable | docs(ops): errata — SPOF census App-key custody count 5→4 (RepoStory backed on r |
+| #3450 | NEED_EVIDENCE | unlabelled | `0cc59babc6` | not_reported | not_reported | unstable | apk-xref forms: lizzyondroid -> izzyondroid (channel spelling) |
+| #3451 | NEED_EVIDENCE | unlabelled | `09d72895fc` | queued | queued | unstable | apk-xref belt: komistore->upstream + aurora-store honest-gap mapping (seam follo |
 
 ## Families (open)
 
@@ -194,7 +194,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 11 | 0 |
 | delphi | 79 | 0 |
 | mesh | 4 | 0 |
-| other | 189 | 1 |
+| other | 190 | 1 |
 | proposal | 32 | 1 |
 | providers | 13 | 0 |
 | research | 8 | 0 |

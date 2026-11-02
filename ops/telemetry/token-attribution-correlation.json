@@ -1,0 +1,135 @@
+{
+ "app_action_history": [
+  {
+   "app_id": null,
+   "attributed_actor": [
+    "github-actions"
+   ],
+   "login": "github-actions[bot]",
+   "prs_opened": 244
+  },
+  {
+   "app_id": null,
+   "attributed_actor": [
+    "google-labs-jules"
+   ],
+   "login": "google-labs-jules[bot]",
+   "prs_opened": 5
+  },
+  {
+   "app_id": 5537873,
+   "attributed_actor": [
+    "appid-process",
+    "quota-specialist"
+   ],
+   "login": "termux-fleet-publisher[bot]",
+   "prs_opened": 23
+  },
+  {
+   "app_id": 5560920,
+   "attributed_actor": [
+    "appid-process"
+   ],
+   "login": "termux-fleet-swarm[bot]",
+   "prs_opened": 2
+  }
+ ],
+ "attributed_population": {
+  "3l0-plane": 3,
+  "account-creation": 1,
+  "apk-release": 3,
+  "appid-process": 6,
+  "challenge-entries": 4,
+  "challenge-entries-manager": 21,
+  "commit-replay": 5,
+  "connectors": 1,
+  "delphi-lane": 2,
+  "docs": 11,
+  "doe-expert": 21,
+  "doe-mgr-classifier-tuning": 4,
+  "doe-mgr-control-suites": 3,
+  "doe-mgr-live-builds": 12,
+  "doe-mgr-marketing-live": 1,
+  "doe-mgr-notation-density": 8,
+  "doe-mgr-phrases-jit": 13,
+  "github-actions": 244,
+  "google-labs-jules": 5,
+  "graph-matrix": 3,
+  "icm": 10,
+  "linguist-substrate": 2,
+  "main": 7,
+  "marketing-channel": 4,
+  "marketing-channel-d2": 2,
+  "null": 53,
+  "optimizations-assurance": 70,
+  "providers-dispatch-fix": 19,
+  "provisioning": 1,
+  "quota-convergence": 4,
+  "quota-gaps": 3,
+  "quota-specialist": 24,
+  "registration-monikers": 6,
+  "reverse-engineering-toolkits": 4,
+  "roadmap-schedule-evidence": 1,
+  "social-connectors": 1,
+  "surface-separation": 3,
+  "tier1-classifiers-steward": 7,
+  "viz-dispatch-tree": 2,
+  "web-design": 5
+ },
+ "commits_sample": "the 53 null-actor PRs carry 234 commits, all git-authored under the owner identity (timerloggedout@gmail.com) \u2014 PAT-era records with no per-collaborator git evidence",
+ "generated_from": "599-PR window snapshot 2026-10-31T16:43:32Z..2026-11-01T23:50:12Z (backfill attribution/1)",
+ "github_actor_population_PAT_era_view": {
+  "github-actions[bot]": 244,
+  "google-labs-jules[bot]": 5,
+  "termux-fleet-publisher[bot]": 23,
+  "termux-fleet-swarm[bot]": 2,
+  "timerloggedout-spec": 325
+ },
+ "provenance_population_delta": {
+  "owner_login_prs": 325,
+  "reading": "Under the PAT-era GitHub view all owner-login PRs attribute to the owner. The attribution chain redistributes them across lane actors by stamp/trailer evidence; the remainder stays null (owner git identity on commits, no collaborator evidence) \u2014 never owner-defaulted.",
+  "redistributed_to_actors": {
+   "3l0-plane": 3,
+   "account-creation": 1,
+   "apk-release": 3,
+   "appid-process": 2,
+   "challenge-entries": 4,
+   "challenge-entries-manager": 21,
+   "commit-replay": 5,
+   "connectors": 1,
+   "delphi-lane": 2,
+   "docs": 11,
+   "doe-expert": 21,
+   "doe-mgr-classifier-tuning": 4,
+   "doe-mgr-control-suites": 3,
+   "doe-mgr-live-builds": 12,
+   "doe-mgr-marketing-live": 1,
+   "doe-mgr-notation-density": 8,
+   "doe-mgr-phrases-jit": 13,
+   "graph-matrix": 3,
+   "icm": 10,
+   "linguist-substrate": 2,
+   "main": 7,
+   "marketing-channel": 4,
+   "marketing-channel-d2": 2,
+   "optimizations-assurance": 70,
+   "providers-dispatch-fix": 19,
+   "provisioning": 1,
+   "quota-convergence": 4,
+   "quota-gaps": 3,
+   "quota-specialist": 3,
+   "registration-monikers": 6,
+   "reverse-engineering-toolkits": 4,
+   "roadmap-schedule-evidence": 1,
+   "social-connectors": 1,
+   "surface-separation": 3,
+   "tier1-classifiers-steward": 7,
+   "viz-dispatch-tree": 2,
+   "web-design": 5
+  },
+  "remains_null": 53
+ },
+ "schema": "telemetry-token-attribution-correlation/v1",
+ "token_history_note": "PAT-era = actions under the owner login (single-token history, attribution only via evidence chain). App era = per-App bot logins with their own rate buckets (AppID lane); app actions self-attribute via the app_bot evidence leg.",
+ "window_prs": 599
+}

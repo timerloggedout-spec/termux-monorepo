@@ -9,8 +9,10 @@ and emits, as two strictly separate sinks:
       (resource_id/item_id/lane_id), source path + SHA-256, evidence_hash
       over canonical JSON. Append-style, deterministic, stdlib only.
   hindsight  -> ops/telemetry/hindsight-payloads.jsonl
-      One retain payload per (source, unit), in the repo's HindSight client
-      contract shape (deepcli/_v1_hindsight.py: POST /retain with
+      One retain payload per (source, unit). Live retain uses the server's
+      real contract (timerloggedout-spec/hindsight http.py: POST
+      /v1/default/banks/{bank_id}/memories, items[]+async, document_id
+      upsert) via retain_payloads.py — the scaffold's POST /retain shape
       {bank_id, content, metadata}). Content carries ids/counts/hashes
       only -- never values, prompts, or credentials.
 
@@ -35,6 +37,8 @@ from __future__ import annotations
 
 import argparse, hashlib, json, os, re, sys, urllib.request, urllib.error
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 SECRET_PATTERNS = [
     re.compile(r"(?i)(api[_-]?key|token|secret|password)\s*[:=]\s*[\"']?[A-Za-z0-9_\-]{12,}"),
@@ -256,6 +260,7 @@ def build(root: Path):
     return envelopes, payloads, receipt
 
 def retain_live(payloads, receipt):
+    import retain_payloads
     base = os.environ.get("HINDSIGHT_BASE_URL")
     bank = os.environ.get("HINDSIGHT_BANK_ID")
     live = receipt["sinks"]["hindsight"]["live_retain"]
@@ -263,20 +268,10 @@ def retain_live(payloads, receipt):
         live["skipped_reason"] = "HINDSIGHT_BASE_URL or HINDSIGHT_BANK_ID not set"
         return
     live["skipped_reason"] = None
-    key = os.environ.get("HINDSIGHT_API_KEY")
-    for p in payloads:
-        live["attempted"] += 1
-        body = json.dumps({"bank_id": bank, "content": p["content"],
-                           "metadata": p["metadata"]}).encode()
-        req = urllib.request.Request(base.rstrip("/") + "/retain", data=body,
-                                     headers={"Content-Type": "application/json"})
-        if key:
-            req.add_header("Authorization", f"Bearer {key}")
-        try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                live["ok" if resp.status < 400 else "failed"] += 1
-        except Exception:
-            live["failed"] += 1
+    summary = retain_payloads.retain(payloads, base, bank,
+                                     os.environ.get("HINDSIGHT_API_KEY"))
+    live.update(summary)
+
 
 def render(envelopes, payloads, receipt, now):
     receipt = dict(receipt); receipt["generated_at"] = now

@@ -60,19 +60,18 @@ The observation feed lists these relevant runs:
 
 The log shows:
 1. The collector began building page 1.
-2. The builder deferred collection after an HTTP 403 response for the issues endpoint and emitted a deferred result.
+2. The builder deferred collection after an HTTP 403 response for the issues endpoint and emitted a JSON object with `deferred=true` while returning exit code 0.
 3. The six validation unit tests passed.
-4. The corpus validation then failed with: `temporal.source_sha does not match the independently captured expected source SHA`.
+4. Because the workflow did not inspect the builder result, validation continued against the checked-out corpus artifacts and failed with: `temporal.source_sha does not match the independently captured expected source SHA`.
 5. The publish-summary and commit steps were skipped.
 
-This is a useful fail-closed result: the gate did not allow an unvalidated delta to be published. It is not yet a complete root-cause diagnosis. The mismatch could be caused by a mutable-ref/source-identity race or by deferred-build artifact semantics; both must be distinguished by capturing the actual and expected SHA values and the build outcome in the receipt. **Do not weaken or remove the SHA gate.**
+**Root cause confirmed:** the builder's rate-limit path is a successful process exit that does not publish a fresh corpus; the workflow treated that exit code as a successful build and validated stale artifacts. The SHA mismatch is the guard correctly detecting stale provenance, not a reason to weaken validation. The workflow fix in this branch captures the builder JSON result and fails immediately on a deferred or incomplete result, before validation can read stale artifacts.
 
 ### Required runtime fix
 
-- Make source identity deterministic for a run: pin the collected source to the event/checkout commit, or explicitly resolve and capture the intended ref SHA once and use that same immutable SHA throughout build and validation.
-- Represent a rate-limited/deferred build as a distinct, validated non-publishable outcome. It must not be confused with a complete corpus build.
-- Ensure a deferred run does not proceed into validation against stale temporal artifacts left in the checkout. Clear/isolated staging output before building, and validate that the build actually produced a fresh receipt for the current run.
-- Record expected SHA, actual SHA, source ref, build status, run ID, attempt, and the exact deferral reason in the job summary/artifact.
+- [Implemented in this branch] Capture the builder JSON separately and reject `deferred=true`, malformed JSON, or missing build-receipt fields before the validator runs.
+- [Remaining] Make source identity deterministic for a run: pin the collected source to the event/checkout commit, or explicitly resolve and capture the intended ref SHA once and use that same immutable SHA throughout build and validation.
+- [Remaining] Record expected SHA, actual SHA, source ref, build status, run ID, attempt, and the exact deferral reason in the job summary/artifact.
 - Rerun a bounded page only after the source-identity issue is fixed; verify that the manifest observation time and history window change as expected. Do not manually force page 2 merely to make the counter move.
 
 ## 4. Workflow/control-plane review

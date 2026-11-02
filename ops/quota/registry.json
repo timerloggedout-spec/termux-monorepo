@@ -2844,6 +2844,40 @@
     "safety": 0.9,
     "note": "Fleet credential provisioned: BASETEN_API_KEY (repo Actions secret, 2026-11-01). Free credits live at provisioning; completions expected to pass until credits exhaust."
    }
+  },
+  {
+   "id": "claude.seat_runtime",
+   "provider": "Claude",
+   "lane": "model",
+   "metric": "Inference dispatches via the Muse seat runtime (endpoint Muse::Muse Spark 1.3; metered, seat-runtime pool)",
+   "limit": null,
+   "unit": "dispatches (consumption NOT ESTABLISHED)",
+   "window": "seat plan window (not exposed)",
+   "reset": "not exposed",
+   "zone": "UTC",
+   "source": "Dispatch-proven 2026-11-01/02: experiments/doe/routed-dispatch stamps {provider: Claude, model: Muse Spark 1.3, quota: {cost_class: metered, pool: seat-runtime}} + nested-family carriers. Owner directive 2026-11-01: Claude as an endpoint in active use (via Swarm). Limits state: NOT ESTABLISHED until measured.",
+   "live": "routed-dispatch stamps + nested-family carriers; usage-series model axis carries the activity-proxy counts; no passive quota reader",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Accounting record for the owner's active-use directive (Claude endpoint). Closes the registry denominator gap named by Tracking PR #3590 (unregistered dispatch providers); provider name verbatim 'Claude' for the casefold-exact denominator join. Limits stay NOT ESTABLISHED until measured."
+   }
+  },
+  {
+   "id": "deepseek.api",
+   "provider": "DeepSeek",
+   "lane": "model",
+   "metric": "Inference via the direct DeepSeek API route (distinct from the g4f route g4f.deepseek and the CI build arm deepseek.build_dispatch)",
+   "limit": null,
+   "unit": "requests/tokens (NOT ESTABLISHED)",
+   "window": "provider-side (not established)",
+   "reset": "not established",
+   "zone": "UTC",
+   "source": "Dispatch-proven: nested-family carriers (provider DeepSeek, tasks 2026-11-01) + provider capability map. Allocation census batch-2 did not establish a direct-route quota object. Owner directive 2026-11-01: DeepSeek as an endpoint in active use (via Swarm). Limits state: NOT ESTABLISHED until measured.",
+   "live": "nested-family carriers + dispatch records; no passive quota reader",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Accounting record for the owner's active-use directive (DeepSeek endpoint). Closes the registry denominator gap named by Tracking PR #3590; provider name verbatim 'DeepSeek' for the casefold-exact denominator join. Limits stay NOT ESTABLISHED until measured."
+   }
   }
  ]
 }

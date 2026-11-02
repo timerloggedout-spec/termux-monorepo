@@ -25,7 +25,7 @@ dashboard        https://timerloggedout-spec.github.io/tribute/
 | `tribute-llm-assist` | Live-catalog model plan on foreign PR |
 | `tribute-rerequest` | Re-request reviews |
 | `tribute-status-refresh` | Board + tributes + dashboard data |
-| `help-wanted-dashboard-deploy` | Pages / CDN |
+| `tribute-dashboard-deploy` | Pages / CDN |
 
 ## Working with others
 

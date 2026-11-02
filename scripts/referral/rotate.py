@@ -41,7 +41,7 @@ def main():
                     choices=["owner-panel", "in-app", "visitor-report", "pool-watch"])
     ap.add_argument("--uses-left", type=int, default=None)
     ap.add_argument("--registry", default=str(ROOT / "config" / "referral_programs.json"))
-    ap.add_argument("--feed", default=str(ROOT / "apps" / "help-wanted-dashboard" / "data" / "referral-feed.json"))
+    ap.add_argument("--feed", default=str(ROOT / "apps" / "tribute-dashboard" / "data" / "referral-feed.json"))
     ap.add_argument("--partners", default=str(ROOT / "docs" / "PARTNERS.md"))
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()

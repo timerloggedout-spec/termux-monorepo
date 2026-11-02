@@ -7,7 +7,7 @@ must consume this feed and nothing else.
 
 ## The feed
 
-- **File:** `apps/help-wanted-dashboard/data/oracle-panel-feed.json`
+- **File:** `apps/tribute-dashboard/data/oracle-panel-feed.json`
   (the dashboard's own data directory — the deployed panel can only
   serve files inside the app; v1 briefly landed the feed under
   `docs/ops/generated/` and relocated it here the same night. Per

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build living help-wanted status + Tribute ledger from evidence + live foreign PRs.
 
-Writes status json/md AND apps/help-wanted-dashboard/data/status.json.
+Writes status json/md AND apps/tribute-dashboard/data/status.json.
 """
 from __future__ import annotations
 
@@ -103,7 +103,7 @@ def classify_receipt_outcome(row: dict) -> str:
 
 
 def lane_git_history() -> list[dict]:
-    paths = ['apps/help-wanted-dashboard/', 'docs/ops/TRIBUTE-*', '.agents/skills/tribute-lane/', '.github/workflows/help-wanted-*', 'scripts/ci/help_wanted_*']
+    paths = ['apps/tribute-dashboard/', 'docs/ops/TRIBUTE-*', '.agents/skills/tribute-lane/', '.github/workflows/help-wanted-*', 'scripts/ci/help_wanted_*']
     try:
         raw = subprocess.check_output(['git','log','--date=iso-strict','--format=%H%x09%aI%x09%an%x09%s','--',*paths], text=True, stderr=subprocess.DEVNULL)
     except (OSError, subprocess.CalledProcessError):
@@ -229,7 +229,7 @@ def main() -> int:
     ap.add_argument("--evidence-dir", default="docs/ops/generated/tribute-evidence")
     ap.add_argument("--out-md", default="docs/ops/generated/tribute-status.md")
     ap.add_argument("--out-json", default="docs/ops/generated/tribute-status.json")
-    ap.add_argument("--dashboard-json", default="apps/help-wanted-dashboard/data/status.json")
+    ap.add_argument("--dashboard-json", default="apps/tribute-dashboard/data/status.json")
     args = ap.parse_args()
 
     evid = Path(args.evidence_dir)
@@ -282,11 +282,11 @@ def main() -> int:
         },
         "live": {
             "dashboard": "https://timerloggedout-spec.github.io/tribute/",
-            "githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/index.html",
+            "githack": "https://raw.githack.com/timerloggedout-spec/termux-monorepo/master/apps/tribute-dashboard/index.html",
             "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/tribute-status.json",
             "tribute_doc": "docs/ops/TRIBUTE-TRIBUTE.md",
         },
-        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":False,"history_coverage":"lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill","history_count":len(history),"lane_paths":["apps/help-wanted-dashboard/","docs/ops/TRIBUTE-*",".agents/skills/tribute-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/tribute/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
+        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":False,"history_coverage":"lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill","history_count":len(history),"lane_paths":["apps/tribute-dashboard/","docs/ops/TRIBUTE-*",".agents/skills/tribute-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/tribute/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
         "evolution": history,
         "pipeline": [
             "scout",

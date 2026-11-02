@@ -34,7 +34,7 @@ manifest is not ingested — add it there, never by hand-editing outputs.
 - `agent_telemetry_stream.json` — the agent telemetry stream, per provider
 - `ops/delphi/ledgers.json`, `ops/challenge/coordinator.json`,
   `ops/moneyball/plane.json` — ops record surfaces
-- `apps/help-wanted-dashboard/data/*` — every dashboard feed file (glob)
+- `apps/tribute-dashboard/data/*` — every dashboard feed file (glob)
 
 Coverage rule: the expected provider set is the union of provider names
 in the quota registry, cadence onboarding, and the g4f harvest. Every

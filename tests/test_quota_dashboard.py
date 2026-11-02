@@ -61,7 +61,7 @@ def test_terminal_render_does_not_leak_private_content():
 
 def test_public_snapshot_does_not_invent_openrouter_reset():
     snapshots = [json.loads((ROOT / p).read_text()) for p in (
-        "docs/ops/generated/quota-status.json", "apps/help-wanted-dashboard/data/quota.json")]
+        "docs/ops/generated/quota-status.json", "apps/tribute-dashboard/data/quota.json")]
     assert snapshots[0] == snapshots[1]
     row = next(r for r in snapshots[0]["readings"] if r["resource_id"] == "openrouter.free_models")
     assert row["reset"] is None and row["status"] == "unknown"
@@ -71,7 +71,7 @@ def test_public_snapshot_does_not_invent_openrouter_reset():
 
 @pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser helper parity")
 def test_browser_evidence_contract():
-    module = ROOT / "apps/help-wanted-dashboard/quota-evidence.js"
+    module = ROOT / "apps/tribute-dashboard/quota-evidence.js"
     script = r"""
 const assert=require('node:assert/strict'), q=require(process.argv[1]);
 const now=Date.parse('2026-10-21T09:00:00Z');
@@ -135,7 +135,7 @@ def test_converted_projection_feeds_terminal_without_hand_seeding():
 def test_converted_projection_feeds_browser_without_hand_seeding(tmp_path):
     rows_file = tmp_path / "converted.json"
     rows_file.write_text(json.dumps(converted_rows()))
-    module = ROOT / "apps/help-wanted-dashboard/quota-evidence.js"
+    module = ROOT / "apps/tribute-dashboard/quota-evidence.js"
     script = r"""
 const assert=require('node:assert/strict'), q=require(process.argv[1]);
 const rows=require(process.argv[2]);
@@ -153,14 +153,14 @@ def test_snapshot_rows_all_carry_observed_at_key():
     """Shape pin for the 2026-10-27 gap fill: a row may be unobserved
     (observed_at null) but must never omit the field — before the fill, 2 of
     3 seed rows omitted it and rendered unknown for shape, not evidence."""
-    for p in ("docs/ops/generated/quota-status.json", "apps/help-wanted-dashboard/data/quota.json"):
+    for p in ("docs/ops/generated/quota-status.json", "apps/tribute-dashboard/data/quota.json"):
         snap = json.loads((ROOT / p).read_text())
         for row in snap["readings"]:
             assert "observed_at" in row, f"{p}: {row['resource_id']} omits observed_at"
 
 
 def test_web_panel_uses_evidence_helper_and_hides_balances():
-    html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
+    html = (ROOT / "apps/tribute-dashboard/quota.html").read_text()
     assert 'src="./quota-evidence.js"' in html
     assert "QuotaEvidence.readingView" in html and "QuotaEvidence.indexReadings" in html
     assert "provider-quota-coverage.json" in html
@@ -168,16 +168,16 @@ def test_web_panel_uses_evidence_helper_and_hides_balances():
     assert "setInterval(load,60000)" in html  # interval must refetch (load), not only re-render stale data
     assert "Public documented evidence" in html
     assert "Private balance" in html and "not published" in html
-    assert "function coverageView" in (ROOT / "apps/help-wanted-dashboard/quota-evidence.js").read_text()
+    assert "function coverageView" in (ROOT / "apps/tribute-dashboard/quota-evidence.js").read_text()
 
 def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
-    html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
+    html = (ROOT / "apps/tribute-dashboard/quota.html").read_text()
     assert "static adapter links" in html
     assert "quota-service mappings" in html
     assert "passive parsers · " in html and "live accounts unknown" in html
     assert "r.static_mapping_state==='static_roster_link_only'" in html
     assert "r.mapping_state==='documented_registry_mapping'" in html
-    snapshot = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
+    snapshot = json.loads((ROOT / "apps/tribute-dashboard/data/provider-quota-coverage.json").read_text())
     counts = snapshot["coverage_counts"]
     assert "live_account_managers" not in counts
     assert counts["implemented_passive_adapters"] == 6
@@ -189,7 +189,7 @@ def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
 
 @pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser syntax")
 def test_all_panel_javascript_parses(tmp_path):
-    html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
+    html = (ROOT / "apps/tribute-dashboard/quota.html").read_text()
     for index, script in enumerate(re.findall(r"<script>(.*?)</script>", html, re.S)):
         path = tmp_path / f"panel-{index}.js"
         path.write_text(script)
@@ -213,19 +213,19 @@ def test_quota_txt_is_the_deterministic_snapshot_render(monkeypatch):
     --snapshot existed, regeneration depended on wall-clock freshness, so
     no exact guard was possible and drift was caught only for counts."""
     registry = json.loads((ROOT / "ops/quota/registry.json").read_text())
-    readings_file = json.loads((ROOT / "apps/help-wanted-dashboard/data/quota.json").read_text())
-    coverage = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
+    readings_file = json.loads((ROOT / "apps/tribute-dashboard/data/quota.json").read_text())
+    coverage = json.loads((ROOT / "apps/tribute-dashboard/data/provider-quota-coverage.json").read_text())
     meta = {**readings_file, "provider_quota_coverage": coverage}
     now = datetime.fromisoformat(readings_file["generated_at"].replace("Z", "+00:00"))
     monkeypatch.setattr(tui, "USE_COLOR", False)
     rendered = tui.render(registry["services"], readings_file["readings"], meta, 80,
-                          "apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json",
+                          "apps/tribute-dashboard/data/quota.json + ops/quota/registry.json",
                           now=now)
-    committed = (ROOT / "apps/help-wanted-dashboard/quota.txt").read_text()
+    committed = (ROOT / "apps/tribute-dashboard/quota.txt").read_text()
     assert rendered == committed, (
         "quota.txt is stale; regenerate with: python3 scripts/quota_tui.py "
-        "--once --snapshot apps/help-wanted-dashboard/data/quota.json "
-        "--registry ops/quota/registry.json > apps/help-wanted-dashboard/quota.txt")
+        "--once --snapshot apps/tribute-dashboard/data/quota.json "
+        "--registry ops/quota/registry.json > apps/tribute-dashboard/quota.txt")
 
 
 def test_terminal_alerts_surface_stale_and_reported_like_the_web_panel():
@@ -249,7 +249,7 @@ def test_quota_txt_matches_registry_count_and_lists_every_service():
     regenerated in the same change that grows the registry."""
     registry = json.loads((ROOT / "ops/quota/registry.json").read_text())
     services = registry["services"]
-    txt = (ROOT / "apps/help-wanted-dashboard/quota.txt").read_text()
+    txt = (ROOT / "apps/tribute-dashboard/quota.txt").read_text()
     assert f"({len(services)} registry records)" in txt.splitlines()[1]
     missing = [s["id"] for s in services if s["id"] not in txt]
     assert missing == [], f"quota.txt is stale; missing services: {missing}"

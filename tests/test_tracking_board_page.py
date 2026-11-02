@@ -11,8 +11,8 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "apps/help-wanted-dashboard/tracking.html"
-FEED = ROOT / "apps/help-wanted-dashboard/data/tracking-feed.json"
+PAGE = ROOT / "apps/tribute-dashboard/tracking.html"
+FEED = ROOT / "apps/tribute-dashboard/data/tracking-feed.json"
 FIXTURE = ROOT / "tests/fixtures/tracking-feed.fixture.json"
 ESC_LINE = ("const esc=v=>String(v??'').replace(/[&<>\"']/g,"
             "c=>'&#'+c.charCodeAt(0)+';');")

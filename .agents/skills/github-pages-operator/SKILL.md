@@ -24,8 +24,8 @@ Cross-nav: Marketing ↔ Ops dashboard ↔ Monorepo ↔ Preview.
 
 ## Deploy
 
-Workflow `help-wanted-dashboard-deploy.yml`:
+Workflow `tribute-dashboard-deploy.yml`:
 - `gh-pages` ← `apps/project-pages-hub/` only
-- user site `/tribute/` ← `apps/help-wanted-dashboard/` (compatibility alias: `/help-wanted/`)
+- user site `/tribute/` ← `apps/tribute-dashboard/` (compatibility alias: `/help-wanted/`)
 
 Agent-Identity: Grok (Administrator)

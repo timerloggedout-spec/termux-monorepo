@@ -27,7 +27,7 @@ loop: a no-change run writes nothing and commits nothing.
 
 Usage: python3 scripts/quota_usage_pack.py [--root .]
 Writes ops/quota/quota-usage.json +
-apps/help-wanted-dashboard/data/quota-usage.json (byte-identical).
+apps/tribute-dashboard/data/quota-usage.json (byte-identical).
 """
 import argparse
 import glob as globmod
@@ -37,7 +37,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 PACK_REL = "ops/quota/quota-usage.json"
-MIRROR_REL = "apps/help-wanted-dashboard/data/quota-usage.json"
+MIRROR_REL = "apps/tribute-dashboard/data/quota-usage.json"
 
 
 def load(root, rel):

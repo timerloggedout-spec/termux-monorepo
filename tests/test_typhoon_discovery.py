@@ -68,7 +68,7 @@ def test_only_exact_source_scoped_service_alias_gets_transport_link():
 
 
 def test_dashboard_and_workflow_describe_transport_not_offline_development_hold():
-    dashboard = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
+    dashboard = (ROOT / "apps/tribute-dashboard/quota.html").read_text()
     assert 'id="provider-development"' in dashboard
     assert "TYPHOON-FREE-API-CONTRACT.md" in dashboard
     assert "registered HTTP text transport" in dashboard

@@ -10,7 +10,7 @@ name: vercel-ignore-guard
 # Ignored Build Step came from the project settings, and it calls a helper that
 # only exists on newer commits. Exit 127 is neither "skip" (0) nor "build" (1),
 # so Vercel marks the deployment failed, and each failure still spends the
-# Hobby api-deployments-free-per-day quota that help-wanted-dash's production
+# Hobby api-deployments-free-per-day quota that tribute-dash's production
 # promotion is waiting on.
 #
 # Fix: set the project-level Ignored Build Step to a guarded form that skips the
@@ -50,7 +50,7 @@ on:
         required: false
         default: "termux-monorepo"
       helper_arg:
-        description: "Argument passed to vercel_ignore_build.sh (demo-portal | mcp-hub | help-wanted-dashboard)"
+        description: "Argument passed to vercel_ignore_build.sh (demo-portal | mcp-hub | tribute-dashboard)"
         required: false
         default: "demo-portal"
   # [AUTOMATION] Apply automatically when the guard lands or changes on
@@ -101,8 +101,8 @@ jobs:
       # mcp-hub pathspec does not describe it — confirm before enable.
       ENABLED_TARGETS: |
         termux-monorepo|demo-portal
-        help-wanted-oversight|help-wanted-dashboard
-        help-wanted-dash|help-wanted-dashboard
+        tribute-oversight|tribute-dashboard
+        tribute-dash|tribute-dashboard
         mcp-hub|mcp-hub
     steps:
       - name: Read or patch Ignored Build Step
@@ -154,7 +154,7 @@ jobs:
             t_project="${line%%|*}"; t_project="${t_project// /}"
             t_helper="${line##*|}"; t_helper="${t_helper// /}"
             # Original allowlist validation, now applied per target.
-            case "$t_helper" in demo-portal|mcp-hub|help-wanted-dashboard) ;; *)
+            case "$t_helper" in demo-portal|mcp-hub|tribute-dashboard) ;; *)
               echo "::error::unknown helper_arg '$t_helper'"; exit 1;; esac
             api="https://api.vercel.com/v9/projects/${t_project}?slug=${SCOPE}"
             # Plan GET (original call). [AUTOMATION] failure is captured

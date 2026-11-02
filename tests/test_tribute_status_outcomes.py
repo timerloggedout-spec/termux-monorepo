@@ -39,7 +39,7 @@ class HelpWantedStatusOutcomeTests(unittest.TestCase):
         )
 
     def test_dashboard_exposes_audited_stages_and_operational_outcomes(self):
-        html = Path("apps/help-wanted-dashboard/index.html").read_text(encoding="utf-8")
+        html = Path("apps/tribute-dashboard/index.html").read_text(encoding="utf-8")
         self.assertIn("Validated (audited)", html)
         self.assertIn("Accepted (audited)", html)
         self.assertIn("Realized effects (sample)", html)

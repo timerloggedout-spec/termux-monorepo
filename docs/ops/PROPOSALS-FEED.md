@@ -1,8 +1,8 @@
 # Proposals index feed — contract
 
-The dashboard's proposals page (`apps/help-wanted-dashboard/proposals.html`)
+The dashboard's proposals page (`apps/tribute-dashboard/proposals.html`)
 is the web display for the proposal registry of record. It renders
-exactly one feed: `apps/help-wanted-dashboard/data/proposals-feed.json`
+exactly one feed: `apps/tribute-dashboard/data/proposals-feed.json`
 (schema `proposals-feed/v1`).
 
 ## Source of record

@@ -124,12 +124,12 @@ flowchart TD
 - Pages setup is idempotent: an already-correct `gh-pages:/` configuration exits without a write. API transport errors, unexpected statuses, and failed writes are no longer hidden with `|| true`.
 - Vercel ignored-build-step commands are now explicitly top-root path-scoped in:
   - `mcp-hub/vercel.json` → `mcp-hub/`
-  - `apps/help-wanted-dashboard/vercel.json` → dashboard sources plus generated dashboard snapshots and status validation scripts
+  - `apps/tribute-dashboard/vercel.json` → dashboard sources plus generated dashboard snapshots and status validation scripts
   - `demo-portal/public/vercel.json` → static demo portal only
 - Missing previous/current SHAs and diff errors fail open to a build; unchanged source returns exit 0 to skip; relevant changes return nonzero to continue the build. This follows Vercel's documented ignored-build-step contract.
 - `tests/test_vercel_ignore_commands.py` adds regression coverage for unrelated changes, relevant changes, missing previous SHA, and project-path scoping.
 
-**Activation boundary:** PR #1310 is merged as `2194a62192dce89e3dedbb3142418aad06d6fab9`. The shared helper and project-scoped `vercel.json` settings are now on master, and the connected Vercel project settings for `mcp-hub`, `help-wanted-dash`, `help-wanted-oversight`, and `termux-monorepo` were updated to call the helper. This makes the selector configured, but the provider still returned `build-rate-limit` on the merge SHA and no deployment records were returned for that SHA; effectiveness is therefore not yet verified by a successful post-merge event. Source-path filters reduce unnecessary build attempts; they do not manufacture quota headroom, expose a remaining-quota counter, or provide cross-provider production failover.
+**Activation boundary:** PR #1310 is merged as `2194a62192dce89e3dedbb3142418aad06d6fab9`. The shared helper and project-scoped `vercel.json` settings are now on master, and the connected Vercel project settings for `mcp-hub`, `tribute-dash`, `tribute-oversight`, and `termux-monorepo` were updated to call the helper. This makes the selector configured, but the provider still returned `build-rate-limit` on the merge SHA and no deployment records were returned for that SHA; effectiveness is therefore not yet verified by a successful post-merge event. Source-path filters reduce unnecessary build attempts; they do not manufacture quota headroom, expose a remaining-quota counter, or provide cross-provider production failover.
 
 ## Quota resilience policy — act before exhaustion, never after a retry storm
 

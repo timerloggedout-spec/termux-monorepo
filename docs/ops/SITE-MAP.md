@@ -10,7 +10,7 @@ https://timerloggedout-spec.github.io/tribute/     OPS DASHBOARD (canonical UI)
   sitemap → /help-wanted/sitemap.xml
   robots → /help-wanted/robots.txt
 https://timerloggedout-spec.github.io/termux-monorepo/  PROJECT HUB (thin)
-https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/
+https://tribute-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/
   VERIFIED VERCEL DEPLOYMENT (current observed production deployment)
   not canonical: Vercel deployment hostnames are ephemeral
   source SHA: 44626f77baa64d49f452f25f6cf23ef992160ce0
@@ -41,4 +41,4 @@ https://github.com/timerloggedout-spec/termux-monorepo SOURCE
 - Treating a Vercel deployment hostname as a permanent canonical URL.
 - Using jsDelivr as primary HTML host (`text/plain`).
 
-Skill: `github-pages-operator` · Deploy: `help-wanted-dashboard-deploy.yml`
+Skill: `github-pages-operator` · Deploy: `tribute-dashboard-deploy.yml`

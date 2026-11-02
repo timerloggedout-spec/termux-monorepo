@@ -10,7 +10,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/vercel-ignore-guard.yml"
-PROJECTS = ("demo-portal", "mcp-hub", "help-wanted-dashboard")
+PROJECTS = ("demo-portal", "mcp-hub", "tribute-dashboard")
 
 
 def shell_source() -> str:

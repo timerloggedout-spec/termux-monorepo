@@ -1,5 +1,5 @@
 # Proposals index feed refresh (contract: docs/ops/PROPOSALS-FEED.md).
-# Regenerates apps/help-wanted-dashboard/data/proposals-feed.json from
+# Regenerates apps/tribute-dashboard/data/proposals-feed.json from
 # the proposal registry of record (docs/proposals/registry.yaml) and
 # the pass records under docs/proposals/passes/, and proposes it as a
 # refresh PR — never commits directly.
@@ -35,11 +35,11 @@ jobs:
           python3 -B scripts/proposals/proposals_feed.py \
             --registry docs/proposals/registry.yaml \
             --proposals-root docs/proposals \
-            --out apps/help-wanted-dashboard/data/proposals-feed.json
+            --out apps/tribute-dashboard/data/proposals-feed.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/help-wanted-dashboard/data/proposals-feed.json; then
+          if git diff --quiet -- apps/tribute-dashboard/data/proposals-feed.json; then
             echo "feed unchanged; no refresh PR"
             exit 0
           fi
@@ -47,7 +47,7 @@ jobs:
           git config user.name "proposals-feed-collect"
           git config user.email "actions@github.com"
           git checkout -B "$branch"
-          git add apps/help-wanted-dashboard/data/proposals-feed.json
+          git add apps/tribute-dashboard/data/proposals-feed.json
           git commit -m "chore(proposals): refresh proposals-feed"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

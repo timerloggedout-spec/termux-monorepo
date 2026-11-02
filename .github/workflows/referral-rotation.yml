@@ -36,7 +36,7 @@ jobs:
           git config user.email "actions@github.com"
           BR="referral-rotation/${{ inputs.program }}-${{ github.run_id }}"
           git checkout -b "$BR"
-          git add config/referral_programs.json apps/help-wanted-dashboard/data/referral-feed.json docs/PARTNERS.md
+          git add config/referral_programs.json apps/tribute-dashboard/data/referral-feed.json docs/PARTNERS.md
           if git diff --cached --quiet; then echo "no changes (above-threshold no-op)"; exit 0; fi
           git commit -m "feat(marketing): rotate ${{ inputs.program }} (${{ inputs.cell }}) via ${{ inputs.source }}"
           git push origin "$BR"

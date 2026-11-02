@@ -19,7 +19,7 @@ everywhere on purpose.
 import re
 from pathlib import Path
 
-APP = Path(__file__).resolve().parents[1] / "apps" / "help-wanted-dashboard"
+APP = Path(__file__).resolve().parents[1] / "apps" / "tribute-dashboard"
 NAV_RE = re.compile(r'<nav aria-label="Primary">(.*?)</nav>', re.S)
 ANCHOR_RE = re.compile(r'<a[^>]*href="([^"]+)"[^>]*>([^<]+)</a>')
 

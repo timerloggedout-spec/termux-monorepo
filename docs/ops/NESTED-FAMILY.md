@@ -13,7 +13,7 @@ EXPERIMENT/intake carriers, consumed here as sources, never re-scored.
 | Piece | Path |
 |---|---|
 | Canonical record | `ops/tracking/nested-family.json` (`nested-family/v1`) |
-| Dashboard twin | `apps/help-wanted-dashboard/data/nested-family-feed.json` (byte-identical payload; pages consume the feed and nothing else) |
+| Dashboard twin | `apps/tribute-dashboard/data/nested-family-feed.json` (byte-identical payload; pages consume the feed and nothing else) |
 | Generator | `scripts/tracking/nested_family.py` (offline; committed records only) |
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` (same writer as the tracking surface) |
 | Tests | `tests/test_nested_family.py` |

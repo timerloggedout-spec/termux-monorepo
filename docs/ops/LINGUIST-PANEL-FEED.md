@@ -2,7 +2,7 @@
 
 Schema: `linguist-panel-feed/v1`
 Collector: `scripts/linguist/linguist_panel_feed.py`
-Feed: `apps/help-wanted-dashboard/data/linguist-panel-feed.json`
+Feed: `apps/tribute-dashboard/data/linguist-panel-feed.json`
 Refresh: `.github/workflows/linguist-panel-feed-collect.yml` (dispatch +
 weekly Tue 06:53 UTC + pushes touching a source path; refresh lands by
 PR, never direct commit — same pattern as the Oracle Panel feed).

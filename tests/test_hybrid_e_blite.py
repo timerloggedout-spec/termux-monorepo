@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 
 GRAPHS_SIM = r"""
 const f = require(process.argv[2]);

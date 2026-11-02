@@ -3,13 +3,13 @@
 **SSOT board (generated):** `docs/ops/generated/tribute-status.md`  
 **Machine:** `docs/ops/generated/tribute-status.json`  
 **Receipts:** `docs/ops/generated/tribute-evidence/*.jsonl`  
-**Public dashboard:** `apps/help-wanted-dashboard/` → canonical Pages route `/tribute/`; Vercel **help-wanted-oversight** remains an implementation/deployment identifier.
+**Public dashboard:** `apps/tribute-dashboard/` → canonical Pages route `/tribute/`; Vercel **tribute-oversight** remains an implementation/deployment identifier.
 
 Regenerate:
 
 ```bash
 python3 scripts/ci/tribute_status.py
-cp docs/ops/generated/tribute-status.json apps/help-wanted-dashboard/data/status.json
+cp docs/ops/generated/tribute-status.json apps/tribute-dashboard/data/status.json
 ```
 
 ## Why this exists
@@ -31,6 +31,6 @@ This is **not** MoneyBall admission.
 1. Scout → claim once → upstream PR (or FALLBACK)
 2. Evidence JSONL
 3. `tribute_status.py` rebuilds board + dashboard snapshot
-4. Vercel serves `apps/help-wanted-dashboard`
+4. Vercel serves `apps/tribute-dashboard`
 
 BIUDL. Agent-Identity: Grok (Administrator)

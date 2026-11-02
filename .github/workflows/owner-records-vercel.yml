@@ -8,7 +8,7 @@ name: owner-records-vercel
 # vercel-specialist scoping 2026-11-01).
 #
 # Sequence is gated: project ensure (harmless, undeployed) -> page gate
-# (fail-closed while apps/help-wanted-dashboard/owner-records.html is
+# (fail-closed while apps/tribute-dashboard/owner-records.html is
 # absent from master, so an empty project is never locked) -> stage +
 # deploy -> verify page+XML live -> automation bypass secret -> SSO
 # flip -> verify gated (signed-out challenged, bypass passes).
@@ -50,7 +50,7 @@ jobs:
           fi
           PID=$(jq -r '.id' "$RUNNER_TEMP/proj.json")
           # 2. Page gate: never deploy/protect before the page exists in source.
-          if [ ! -f apps/help-wanted-dashboard/owner-records.html ]; then
+          if [ ! -f apps/tribute-dashboard/owner-records.html ]; then
             echo "::warning::owner-records.html not on master yet - project ensured ($PID), deploy + SSO flip held."
             { echo "## owner-records-vercel"; echo "- project: `$PROJECT` ($PID) ensured, undeployed"; echo "- state: HELD at page gate (owner-records.html absent)"; } >> "$GITHUB_STEP_SUMMARY"
             exit 0
@@ -59,7 +59,7 @@ jobs:
           npm i -g vercel@latest >/dev/null 2>&1
           W="$RUNNER_TEMP/deploy-$PROJECT"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
           vercel link --yes --project "$PROJECT" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
-          cp -a "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/." "$W/"
+          cp -a "$GITHUB_WORKSPACE/apps/tribute-dashboard/." "$W/"
           mkdir -p "$W/data"
           G="$GITHUB_WORKSPACE/docs/ops/generated"
           [ -f "$G/tribute-status.json" ] && cp "$G/tribute-status.json" "$W/data/status.json" || true

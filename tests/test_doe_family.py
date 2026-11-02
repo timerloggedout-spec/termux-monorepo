@@ -15,7 +15,7 @@ from pathlib import Path
 import jsonschema
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "apps" / "help-wanted-dashboard" / "data"
+DATA = ROOT / "apps" / "tribute-dashboard" / "data"
 CAMPAIGNS = ROOT / "experiments" / "doe"
 
 

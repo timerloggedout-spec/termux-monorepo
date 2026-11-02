@@ -115,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--registry", default=None,
                     help="default: .ledger-cache/ledgers.json when present, "
                          "else ops/delphi/ledgers.json")
-    ap.add_argument("--out", default="apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json")
+    ap.add_argument("--out", default="apps/tribute-dashboard/data/delphi-ledger-feed-db.json")
     ap.add_argument("--strict", action="store_true")
     ns = ap.parse_args(argv)
     try:

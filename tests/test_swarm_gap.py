@@ -5,7 +5,7 @@ PR #3601 shape); absent the field the page renders as before."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 
 
 def test_swarm_gap_rendering_hooks():

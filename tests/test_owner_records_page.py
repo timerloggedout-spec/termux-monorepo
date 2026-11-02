@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 PAGE = APP / "owner-records.html"
 ADMIN = APP / "admin.html"
 TRACKING = APP / "tracking.html"

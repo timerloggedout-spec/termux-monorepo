@@ -5,7 +5,7 @@ labelled as shares. Win-probability machinery stays off public pages."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 
 
 def test_classifiers_page():

@@ -32,13 +32,13 @@ from pathlib import Path
 
 SURFACES = {
     "pages": "https://timerloggedout-spec.github.io/help-wanted",
-    "vercel": "https://help-wanted-oversight.vercel.app",
+    "vercel": "https://tribute-oversight.vercel.app",
 }
-READINGS = "apps/help-wanted-dashboard/data/quota.json"
+READINGS = "apps/tribute-dashboard/data/quota.json"
 USAGE = "ops/quota/quota-usage.json"
 SERIES = "ops/quota/usage-series.json"
-SERIES_MIRROR = "apps/help-wanted-dashboard/data/usage-series.json"
-USAGE_MIRROR = "apps/help-wanted-dashboard/data/quota-usage.json"
+SERIES_MIRROR = "apps/tribute-dashboard/data/usage-series.json"
+USAGE_MIRROR = "apps/tribute-dashboard/data/quota-usage.json"
 REGISTRY = "ops/quota/registry.json"
 
 RESULTS = []

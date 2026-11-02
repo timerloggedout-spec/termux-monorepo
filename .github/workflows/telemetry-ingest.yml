@@ -20,7 +20,7 @@ on:
       - 'docs/ops/generated/reviewer-metrics.json'
       - 'ops/github-telemetry/config/sources.yaml'
       - 'agent_telemetry_stream.json'
-      - 'apps/help-wanted-dashboard/data/**'
+      - 'apps/tribute-dashboard/data/**'
       - 'ops/delphi/ledgers.json'
       - 'ops/challenge/coordinator.json'
       - 'ops/moneyball/plane.json'
@@ -90,7 +90,7 @@ jobs:
           python3 -B scripts/telemetry_ingest/density_stats.py \
             --prs prs.json \
             --files-dir density-files \
-            --rfp-feed apps/help-wanted-dashboard/data/delphi-rfp-feed.json \
+            --rfp-feed apps/tribute-dashboard/data/delphi-rfp-feed.json \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
       - name: Session pointers (validation-lane correlation shape)
         run: |

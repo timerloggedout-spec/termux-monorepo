@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "apps" / "help-wanted-dashboard" / "data"
+DATA = ROOT / "apps" / "tribute-dashboard" / "data"
 
 
 def _collect(tmp_path):
@@ -27,9 +27,9 @@ def test_schema_and_envelope(tmp_path):
     assert feed["schema"] == "telemetry-viz-feed/v1"
     assert feed["surface"] == "telemetry"
     assert {s["path"] for s in feed["sources"]} == {
-        "apps/help-wanted-dashboard/data/status.json",
-        "apps/help-wanted-dashboard/data/quota.json",
-        "apps/help-wanted-dashboard/data/quota-usage.json",
+        "apps/tribute-dashboard/data/status.json",
+        "apps/tribute-dashboard/data/quota.json",
+        "apps/tribute-dashboard/data/quota-usage.json",
         "scripts/dashboards/workflow_observations.json",
         "scripts/dashboards/actions_observations.json",
     }

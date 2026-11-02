@@ -49,7 +49,7 @@ def test_parse_tree_matrix_and_manifest_not_lane_staleness():
 
 
 def test_feed_shape_and_honesty():
-    feed_path = ROOT / "apps" / "help-wanted-dashboard" / "data" / "dispatch-tree-feed.json"
+    feed_path = ROOT / "apps" / "tribute-dashboard" / "data" / "dispatch-tree-feed.json"
     feed = json.loads(feed_path.read_text())
     assert feed["schema"] == "dispatch-tree-feed/v1"
     data = feed["data"]

@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps" / "help-wanted-dashboard"
+APP = ROOT / "apps" / "tribute-dashboard"
 PAGE = APP / "pr-lanes.html"
 MIRROR = APP / "data" / "pr-lane-feed.json"
 SOURCE = ROOT / "ops" / "ml" / "pr-lane-feed.json"
@@ -58,8 +58,8 @@ def test_mirror_matches_source_feed():
 
 def test_workflow_keeps_mirror_fresh():
     wf = WORKFLOW.read_text()
-    assert "cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json" in wf
-    assert "apps/help-wanted-dashboard/data/pr-lane-feed.json" in wf.split("git add -A")[1].split("\n")[0]
+    assert "cp ops/ml/pr-lane-feed.json apps/tribute-dashboard/data/pr-lane-feed.json" in wf
+    assert "apps/tribute-dashboard/data/pr-lane-feed.json" in wf.split("git add -A")[1].split("\n")[0]
 
 
 def test_no_hardcoded_lane_counts():
@@ -132,8 +132,8 @@ def test_series_mirror_matches_source():
 def test_workflow_mirrors_series_too():
     wf = WORKFLOW.read_text()
     # both commit paths mirror (initial + regenerate-on-conflict)
-    assert wf.count("cp ops/ml/pr-lane-series.jsonl apps/help-wanted-dashboard/data/pr-lane-series.jsonl") == 2
-    assert wf.count("cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json") == 2
+    assert wf.count("cp ops/ml/pr-lane-series.jsonl apps/tribute-dashboard/data/pr-lane-series.jsonl") == 2
+    assert wf.count("cp ops/ml/pr-lane-feed.json apps/tribute-dashboard/data/pr-lane-feed.json") == 2
 
 
 def test_chrome_wiring():

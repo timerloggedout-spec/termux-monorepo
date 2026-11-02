@@ -4,7 +4,7 @@
 Contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md. Reads the deadline
 instants stored per entry in docs/ops/CHALLENGE-ENTRIES-LOG.md (the
 SSOT, parsed by the challenge lane's scripts/challenge_entries/
-countdowns.py) and writes apps/help-wanted-dashboard/data/
+countdowns.py) and writes apps/tribute-dashboard/data/
 challenge-countdowns-feed.json.
 
 The feed carries INSTANTS ONLY — never a computed state and never a

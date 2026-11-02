@@ -583,7 +583,7 @@ def main(argv: list[str] | None = None) -> int:
         GENERATED.write_text(json.dumps(build_report(), indent=2) + "\n", encoding="utf-8")
         print("  - generated matrix: re-rendered")
         print("post-steps: python3 scripts/provider_quota_coverage.py --output "
-              "apps/help-wanted-dashboard/data/provider-quota-coverage.json && "
+              "apps/tribute-dashboard/data/provider-quota-coverage.json && "
               "python3 scripts/cadence_provider_onboarding.py check")
         return 0
     if args.cmd == "scaffold":

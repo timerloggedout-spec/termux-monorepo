@@ -52,7 +52,7 @@ def _summary_and_features(readme: str) -> tuple[str, list[str], str]:
 def build(cycle: int) -> dict:
     silos = json.loads(
         (ROOT / "ops/delphi/research-silos.json").read_text())["silos"]
-    feed = json.loads((ROOT / "apps/help-wanted-dashboard/data/"
+    feed = json.loads((ROOT / "apps/tribute-dashboard/data/"
                             "delphi-rfp-feed.json").read_text())
     baseline_no = {r["silo"]: r["number"] for r in feed["rfps"]
                    if r["group"] == "research-baseline"}

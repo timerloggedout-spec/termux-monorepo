@@ -60,7 +60,7 @@ jobs:
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          feeds="apps/help-wanted-dashboard/data/moneyball-feed.json apps/help-wanted-dashboard/data/3l0-feed.json apps/help-wanted-dashboard/data/mvt-feed.json apps/help-wanted-dashboard/data/doe-feed.json apps/help-wanted-dashboard/data/ates-feed.json"
+          feeds="apps/tribute-dashboard/data/moneyball-feed.json apps/tribute-dashboard/data/3l0-feed.json apps/tribute-dashboard/data/mvt-feed.json apps/tribute-dashboard/data/doe-feed.json apps/tribute-dashboard/data/ates-feed.json"
           if git diff --quiet -- $feeds; then
             echo "feeds unchanged; no refresh PR"
             exit 0

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """3L0 discrimination watch — the diagnostic trigger for the 3L0 plane.
 
-Reads the collected 3L0 feed (`apps/help-wanted-dashboard/data/3l0-feed.json`).
+Reads the collected 3L0 feed (`apps/tribute-dashboard/data/3l0-feed.json`).
 While the observed Delphi weights' `discrimination.effective_weight_driver`
 is `seed_base_only` (the observed factors are identical across roles, so the
 effective weights reproduce only the seed base ratios), this watch keeps
@@ -36,7 +36,7 @@ from pathlib import Path
 MARKER = "<!-- 3l0-discrimination-watch v1"
 TITLE = "[3L0] discrimination watch: effective weights are seed_base_only"
 UPGRADE_ISSUE = 1784
-FEED = Path("apps/help-wanted-dashboard/data/3l0-feed.json")
+FEED = Path("apps/tribute-dashboard/data/3l0-feed.json")
 
 
 def extract(feed: dict) -> dict:

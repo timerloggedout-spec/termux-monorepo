@@ -14,7 +14,7 @@ workflow ──uses──▶ hark-enqueue.yml ──▶ issue [hark:queue] ─�
 
 | Field | Where | Meaning |
 |---|---|---|
-| title | issue title | The task, in plain words ("Re-run Vercel prod deploy for help-wanted-dash") |
+| title | issue title | The task, in plain words ("Re-run Vercel prod deploy for tribute-dash") |
 | key | `<!-- hark-key: … -->` marker + YAML | Dedup key. Same key while the issue is open = append, not a new issue |
 | project | YAML | Which Hark project owns the job (slugs below) |
 | priority | YAML | `P0` urgent, `P1` normal, `P2` whenever |
@@ -25,16 +25,16 @@ workflow ──uses──▶ hark-enqueue.yml ──▶ issue [hark:queue] ─�
 Example issue body (what `hark-enqueue.yml` writes):
 
 ````
-<!-- hark-key: vercel-redeploy:help-wanted-dash -->
+<!-- hark-key: vercel-redeploy:tribute-dash -->
 ```yaml
-key: vercel-redeploy:help-wanted-dash
+key: vercel-redeploy:tribute-dash
 project: deploy-quota
 priority: P1
 inputs:
   workflow: tribute-vercel-prod.yml
   ref: master
 done_when: |
-  help-wanted-dash.vercel.app/data/build.json serves the latest master SHA
+  tribute-dash.vercel.app/data/build.json serves the latest master SHA
 source: https://github.com/OWNER/REPO/actions/runs/123
 enqueued_at: 2026-10-19T09:30:00Z
 ```

@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "apps" / "help-wanted-dashboard" / "data"
+DATA = ROOT / "apps" / "tribute-dashboard" / "data"
 
 
 def _feed(name: str) -> dict:

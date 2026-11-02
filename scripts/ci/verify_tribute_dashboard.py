@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DASHBOARD = ROOT / "apps/help-wanted-dashboard"
+DASHBOARD = ROOT / "apps/tribute-dashboard"
 HTML = DASHBOARD / "index.html"
 NAV = DASHBOARD / "site-nav.js"
 VERSIONING = DASHBOARD / "versioning.js"
@@ -14,7 +14,7 @@ MATRIX = DASHBOARD / "matrix.html"
 SERVICE_WORKER = DASHBOARD / "sw.js"
 SITEMAP = DASHBOARD / "sitemap.xml"
 ROBOTS = DASHBOARD / "robots.txt"
-SNAPSHOT = ROOT / "apps/help-wanted-dashboard/data/status.json"
+SNAPSHOT = ROOT / "apps/tribute-dashboard/data/status.json"
 
 REQUIRED_HTML = (
     "Control surface",

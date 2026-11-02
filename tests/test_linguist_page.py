@@ -13,7 +13,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps" / "help-wanted-dashboard"
+APP = ROOT / "apps" / "tribute-dashboard"
 PAGE = APP / "linguist.html"
 FEED = APP / "data" / "linguist-panel-feed.json"
 

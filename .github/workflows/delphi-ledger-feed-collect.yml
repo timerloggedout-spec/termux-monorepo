@@ -1,5 +1,5 @@
 # delphi-ledger-feed refresh (contract: docs/ops/DELPHI-LEDGER-STORE.md).
-# Regenerates apps/help-wanted-dashboard/data/delphi-ledger-feed.json from
+# Regenerates apps/tribute-dashboard/data/delphi-ledger-feed.json from
 # the registered continuous-ledger issues (#1487 outcomes, #1489 weights,
 # #2028 living record; registry: ops/delphi/ledgers.json) and proposes it
 # as a refresh PR — never commits directly.
@@ -57,7 +57,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/ledger_feed.py \
-            --cache .ledger-cache --out apps/help-wanted-dashboard/data/delphi-ledger-feed.json
+            --cache .ledger-cache --out apps/tribute-dashboard/data/delphi-ledger-feed.json
       - name: Mirror to Neon (slice 2; no-op without ledger secrets)
         if: hashFiles('.ledger-cache/issues.json') != ''
         env:
@@ -80,7 +80,7 @@ jobs:
           GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-ledger-feed.json apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json; then
+          if git diff --quiet -- apps/tribute-dashboard/data/delphi-ledger-feed.json apps/tribute-dashboard/data/delphi-ledger-feed-db.json; then
             echo "feed unchanged; no refresh PR"
             exit 0
           fi
@@ -88,7 +88,7 @@ jobs:
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "350898559+termux-fleet-swarm[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add apps/help-wanted-dashboard/data/delphi-ledger-feed.json apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json
+          git add apps/tribute-dashboard/data/delphi-ledger-feed.json apps/tribute-dashboard/data/delphi-ledger-feed-db.json
           git commit -m "chore(delphi): refresh delphi-ledger-feed"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

@@ -10,7 +10,7 @@ marker. Never file paths, never manifest content, never backup content.
 | Piece | Path |
 |---|---|
 | Canonical record | `ops/tracking/backup-state.json` (`backup-state/v1`) |
-| Dashboard twin | `apps/help-wanted-dashboard/data/backup-state-feed.json` (byte-identical; pages consume the twin only) |
+| Dashboard twin | `apps/tribute-dashboard/data/backup-state-feed.json` (byte-identical; pages consume the twin only) |
 | Generator | `scripts/tracking/backup_state.py` (offline; committed sources only) |
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` (same writer as the tracking surface) |
 | Tests | `tests/test_backup_state.py` |
@@ -73,7 +73,7 @@ verdict and the leg counts, readers judge).
 ## Event series (Telemetry twin)
 
 `ops/tracking/backup-events.jsonl` (+ dashboard twin
-`apps/help-wanted-dashboard/data/backup-events-feed.jsonl`,
+`apps/tribute-dashboard/data/backup-events-feed.jsonl`,
 byte-identical): the unified chronological series — export + attempt
 + drill, one event per line, ascending by `at`. Built by the same
 generator in the same run (there is exactly one count of anything).

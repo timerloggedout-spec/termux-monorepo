@@ -2,7 +2,7 @@
 """Build the public referral feed from config/referral_programs.json.
 
 One live code per programme (pool order = rotation order); reserve codes
-stay unpublished. Output: apps/help-wanted-dashboard/data/referral-feed.json
+stay unpublished. Output: apps/tribute-dashboard/data/referral-feed.json
 Feed is consumed by the landing repo's partners grid (Web Design lane).
 Stdlib only. Unknown values stay null, never zero.
 """
@@ -10,7 +10,7 @@ import json, pathlib, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SRC = ROOT / "config" / "referral_programs.json"
-OUT = ROOT / "apps" / "help-wanted-dashboard" / "data" / "referral-feed.json"
+OUT = ROOT / "apps" / "tribute-dashboard" / "data" / "referral-feed.json"
 
 
 def build(reg):

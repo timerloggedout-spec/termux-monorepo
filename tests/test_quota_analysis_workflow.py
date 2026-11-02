@@ -30,7 +30,7 @@ def test_workflow_runs_the_full_analysis():
                    "tests/test_quota_dashboard.py",
                    "tests/test_quota_allocation_planner.py",
                    "tests/test_provider_quota_coverage.py",
-                   "cmp docs/ops/generated/quota-status.json apps/help-wanted-dashboard/data/quota.json",
+                   "cmp docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json",
                    "provider_quota_coverage.py --check",
                    "pip install -q pytest"):
         assert needle in WF, needle

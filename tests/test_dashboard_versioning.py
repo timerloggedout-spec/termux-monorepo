@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps" / "help-wanted-dashboard"
+APP = ROOT / "apps" / "tribute-dashboard"
 BUILDER = ROOT / "scripts" / "build_dashboard_manifest.py"
 
 
@@ -47,7 +47,7 @@ def test_builder_fails_closed_when_page_cannot_be_versioned(tmp_path):
     assert result.returncode != 0
 
 def test_preview_workflow_isolated_and_preserves_existing_site():
-    workflow = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-preview.yml").read_text()
+    workflow = (ROOT / ".github" / "workflows" / "tribute-dashboard-preview.yml").read_text()
     assert "workflow_dispatch:" in workflow
     assert "source_ref:" in workflow and "preview_key:" in workflow
     assert "publish_dir: _preview" in workflow
@@ -57,7 +57,7 @@ def test_preview_workflow_isolated_and_preserves_existing_site():
 
 
 def test_production_deployment_stamps_the_artifact():
-    workflow = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-deploy.yml").read_text()
+    workflow = (ROOT / ".github" / "workflows" / "tribute-dashboard-deploy.yml").read_text()
     assert "scripts/build_dashboard_manifest.py" in workflow
     assert "--channel production" in workflow
     assert "--source-sha" in workflow
@@ -84,12 +84,12 @@ def test_builder_rejects_empty_registry(tmp_path):
 
 
 def test_versioning_preview_and_production_share_release_prefix():
-    preview = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-preview.yml").read_text()
-    production = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-deploy.yml").read_text()
+    preview = (ROOT / ".github" / "workflows" / "tribute-dashboard-preview.yml").read_text()
+    production = (ROOT / ".github" / "workflows" / "tribute-dashboard-deploy.yml").read_text()
     assert '--version-prefix "1.0.1"' in preview
     assert '--version-prefix "1.0.1"' in production
     assert "scripts/build_dashboard_manifest.py" in production
-    assert ".github/workflows/help-wanted-dashboard-preview.yml" in production
+    assert ".github/workflows/tribute-dashboard-preview.yml" in production
 
 
 def test_fallback_navigation_covers_every_registered_page():

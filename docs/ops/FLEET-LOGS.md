@@ -20,7 +20,7 @@ Per its `manifest.json` (fleet-logs-manifest/v1):
 
 - `ops/challenge/coordinator.json` — state, not a log; gates consume it in place (entries lane single-writer)
 - `docs/ops/CHALLENGE-ENTRIES-LOG.md` — authored log
-- `apps/help-wanted-dashboard/data/delphi-ledger-feed*.json` — consumer-bound; the live dashboard reads them in place
+- `apps/tribute-dashboard/data/delphi-ledger-feed*.json` — consumer-bound; the live dashboard reads them in place
 - Roadmaps, Role Requirements Plans, ICM knowledge objects, `LEARNINGS`, `SKILL.md` — authored knowledge/definitions, context-bound to the code
 - Certification index (cert ID / date / verify link in `guides/certifications-*` + issue #506) — public verifiability lives in the docs
 

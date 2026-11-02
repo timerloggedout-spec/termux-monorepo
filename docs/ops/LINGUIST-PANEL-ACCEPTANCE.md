@@ -13,7 +13,7 @@ Pipeline: substrate → prototype → re-pin → deploy, all landed 2026-10-27.
 | Shell integration (deploy) | #1892 | `06b981405275c123` |
 
 Contracts: `docs/ops/LINGUIST-PANEL.md` (viz) + `docs/ops/LINGUIST-PANEL-FEED.md`
-(substrate). Feed: `apps/help-wanted-dashboard/data/linguist-panel-feed.json`
+(substrate). Feed: `apps/tribute-dashboard/data/linguist-panel-feed.json`
 (schema `linguist-panel-feed/v1`, 15 families / 288 entries enumerated /
 7,575 total incl. count-only).
 

@@ -59,7 +59,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/ops/generated/tribute-status.json \
                   docs/ops/generated/tribute-status.md \
-                  apps/help-wanted-dashboard/data/status.json \
+                  apps/tribute-dashboard/data/status.json \
                   docs/ops/generated/tribute-audit.json || true
           if git diff --staged --quiet; then
             echo "no status delta"
@@ -116,5 +116,5 @@ jobs:
           curl -sS -X POST \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/help-wanted-dashboard-deploy.yml/dispatches" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/tribute-dashboard-deploy.yml/dispatches" \
             -d '{"ref":"master","inputs":{"target":"user-site"}}' || true

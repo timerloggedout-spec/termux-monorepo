@@ -40,7 +40,7 @@ environment stores. Counts below are derived from that live read, not copied for
 | `Fly_io_ORG_TOKEN` | 5 | `deploy-hindsight.yml`, `fly-diag.yml`, `fly-fast-diag.yml`, `fly-hindsight-config.yml` … |
 | `OMNIROUTE_API_KEY` | 5 | `gemini-after-peers.yml`, `gemini-invoke.yml`, `gemini-review.yml`, `gemini-triage.yml` … |
 | `OMNI_BASE_URL` | 4 | `gemini-after-peers.yml`, `gemini-invoke.yml`, `gemini-review.yml`, `gemini-triage.yml` |
-| `VERCEL_ORG_ID` | 4 | `help-wanted-dashboard-deploy.yml`, `tribute-vercel-prod.yml`, `vercel-batch-deploy.yml`, `vercel-quota-probe.yml` |
+| `VERCEL_ORG_ID` | 4 | `tribute-dashboard-deploy.yml`, `tribute-vercel-prod.yml`, `vercel-batch-deploy.yml`, `vercel-quota-probe.yml` |
 | `HF_API_TOKEN` | 3 | `provider-availability.yml`, `provider-batch.yml`, `team-mvt.yml` |
 | `HUGGINGFACE_TOKEN` | 3 | `provider-availability.yml`, `provider-batch.yml`, `team-mvt.yml` |
 | `HUGGING_FACE_HUB_TOKEN` | 3 | `provider-availability.yml`, `provider-batch.yml`, `team-mvt.yml` |
@@ -89,7 +89,7 @@ environment stores. Counts below are derived from that live read, not copied for
 | `GH_ACTIONS` | 1 | `provision-secrets.yml` |
 | `GH_AW_AGENT_TOKEN` | 1 | `provision-secrets.yml` |
 | `GH_AW_CI_TRIGGER_TOKEN` | 1 | `provision-secrets.yml` |
-| `GH_PAT` | 1 | `help-wanted-dashboard-deploy.yml` |
+| `GH_PAT` | 1 | `tribute-dashboard-deploy.yml` |
 | `GITLAB_CICD` | 1 | `provision-secrets.yml` |
 | `GITLAB_CICD_W_ORG_VIEW` | 1 | `provision-secrets.yml` |
 | `GOVERNED_AUTOMERGE_APP_PRIVATE_KEY` | 1 | `governed-pr-auto-merge-readiness.yml` |

@@ -8,7 +8,7 @@ boundary. Browser-level interaction tests remain a separate follow-up.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "apps" / "help-wanted-dashboard" / "admin-graph.html"
+PAGE = ROOT / "apps" / "tribute-dashboard" / "admin-graph.html"
 
 
 def _html():

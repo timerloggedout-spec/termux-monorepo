@@ -12,9 +12,9 @@ PR #1815).
 
 | Item | Value |
 |---|---|
-| Feed | `apps/help-wanted-dashboard/data/dispatch-tree-feed.json` |
+| Feed | `apps/tribute-dashboard/data/dispatch-tree-feed.json` |
 | Schema | `dispatch-tree-feed/v1` — `{schema, surface, generated_at, sources, honesty_rules, data, gaps}` |
-| First visualization | `apps/help-wanted-dashboard/dispatch-tree.html` (standalone prototype; page integration owned by the Web Design Specialist lane) |
+| First visualization | `apps/tribute-dashboard/dispatch-tree.html` (standalone prototype; page integration owned by the Web Design Specialist lane) |
 
 `data` holds three blocks:
 

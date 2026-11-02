@@ -3,7 +3,7 @@ and renders at least one chart from its own feed, with the feed stamp."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps/help-wanted-dashboard"
+APP = ROOT / "apps/tribute-dashboard"
 
 
 def test_doe_charts():

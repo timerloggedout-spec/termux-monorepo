@@ -6,11 +6,11 @@ name: quota-usage-series-refresh
 # but nothing regenerated it: the pack froze at its last hand build
 # (2026-10-31) while the quota pages presented it as current.
 # SINGLE-WRITER for ops/quota/usage-series.json +
-# apps/help-wanted-dashboard/data/usage-series.json (byte-identical mirror).
+# apps/tribute-dashboard/data/usage-series.json (byte-identical mirror).
 # The pack is REBUILT from its committed sources by
 # scripts/quota_usage_pack.py (auto-refresh, owner order 2026-11-01;
 # series1 carried verbatim) and mirrored to its dashboard twin
-# (apps/help-wanted-dashboard/data/quota-usage.json, byte-identical).
+# (apps/tribute-dashboard/data/quota-usage.json, byte-identical).
 # Triggers: push on any generator input + manual dispatch. NO schedule:
 # fleet schedules are thinned by doctrine and by the 2026-10-28 stall, and
 # a derived pack only changes when an input changes.
@@ -73,21 +73,21 @@ jobs:
           set -euo pipefail
           python3 -B scripts/quota_usage_pack.py --root .
           python3 -B scripts/quota_usage_series.py --root .
-          cp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
-          cmp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
-          cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
-          cp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
-          cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
+          cp ops/quota/usage-series.json apps/tribute-dashboard/data/usage-series.json
+          cmp ops/quota/usage-series.json apps/tribute-dashboard/data/usage-series.json
+          cmp ops/quota/quota-usage.json apps/tribute-dashboard/data/quota-usage.json
+          cp ops/quota/quota-usage.json apps/tribute-dashboard/data/quota-usage.json
+          cmp ops/quota/quota-usage.json apps/tribute-dashboard/data/quota-usage.json
           python3 -B scripts/quota_swarm_feed.py --root .
-          cp ops/quota/swarm-feed.json apps/help-wanted-dashboard/data/swarm-feed.json
-          cmp ops/quota/swarm-feed.json apps/help-wanted-dashboard/data/swarm-feed.json
+          cp ops/quota/swarm-feed.json apps/tribute-dashboard/data/swarm-feed.json
+          cmp ops/quota/swarm-feed.json apps/tribute-dashboard/data/swarm-feed.json
       - name: Commit generated artifacts to master (single-writer)
         run: |
           set -euo pipefail
-          git add ops/quota/usage-series.json ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json \
-            apps/help-wanted-dashboard/data/usage-series.json \
-            apps/help-wanted-dashboard/data/quota-usage.json \
-            ops/quota/swarm-feed.json apps/help-wanted-dashboard/data/swarm-feed.json
+          git add ops/quota/usage-series.json ops/quota/quota-usage.json apps/tribute-dashboard/data/quota-usage.json \
+            apps/tribute-dashboard/data/usage-series.json \
+            apps/tribute-dashboard/data/quota-usage.json \
+            ops/quota/swarm-feed.json apps/tribute-dashboard/data/swarm-feed.json
           if git diff --cached --quiet; then
             echo 'usage-series unchanged; no commit'
             exit 0

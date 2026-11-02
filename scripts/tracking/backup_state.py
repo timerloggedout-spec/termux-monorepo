@@ -18,9 +18,9 @@ Sources (all committed; the generator is offline):
               records its status.
 Single-writer: repo-tracking-collect.yml. Outputs:
 ops/tracking/backup-state.json +
-apps/help-wanted-dashboard/data/backup-state-feed.json (byte-identical),
+apps/tribute-dashboard/data/backup-state-feed.json (byte-identical),
 plus the unified event series ops/tracking/backup-events.jsonl +
-apps/help-wanted-dashboard/data/backup-events-feed.jsonl (Telemetry
+apps/tribute-dashboard/data/backup-events-feed.jsonl (Telemetry
 consume shape: relay lines byte-identical, drill lines canonical).
 """
 from __future__ import annotations
@@ -221,7 +221,7 @@ def main() -> int:
     out = json.dumps(feed, indent=1, sort_keys=False) + "\n"
     (ROOT / "ops" / "tracking").mkdir(parents=True, exist_ok=True)
     (ROOT / "ops" / "tracking" / "backup-state.json").write_text(out)
-    dash = ROOT / "apps" / "help-wanted-dashboard" / "data"
+    dash = ROOT / "apps" / "tribute-dashboard" / "data"
     dash.mkdir(parents=True, exist_ok=True)
     (dash / "backup-state-feed.json").write_text(out)
     ev = events_lines()

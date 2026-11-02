@@ -22,13 +22,13 @@ case "$PROJECT" in
   mcp-hub)
     PATHS=(':(top)mcp-hub/')
     ;;
-  help-wanted-dashboard)
+  tribute-dashboard)
     PATHS=(
-      ':(top)apps/help-wanted-dashboard/'
+      ':(top)apps/tribute-dashboard/'
       ':(top)docs/ops/generated/tribute-status.json'
       ':(top)docs/ops/generated/lane-matrix-status.json'
       ':(top)scripts/ci/tribute_status.py'
-      ':(top)scripts/ci/verify_help_wanted_dashboard.py'
+      ':(top)scripts/ci/verify_tribute_dashboard.py'
     )
     ;;
   demo-portal)

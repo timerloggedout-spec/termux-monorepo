@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps" / "help-wanted-dashboard"
+APP = ROOT / "apps" / "tribute-dashboard"
 PAGE = APP / "linguist.html"
 BASE = "https://timerloggedout-spec.github.io/help-wanted/"
 PAGES = ["index.html", "quota.html", "matrix.html", "admin.html",

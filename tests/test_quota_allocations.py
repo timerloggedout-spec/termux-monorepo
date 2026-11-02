@@ -12,8 +12,8 @@ SPEC.loader.exec_module(qa)
 
 CFG = json.loads((ROOT / "ops/quota/allocations.json").read_text())
 REG = json.loads((ROOT / "ops/quota/registry.json").read_text())
-READINGS = json.loads((ROOT / "apps/help-wanted-dashboard/data/quota.json").read_text())
-COUNTDOWNS = json.loads((ROOT / "apps/help-wanted-dashboard/data/challenge-countdowns-feed.json").read_text())
+READINGS = json.loads((ROOT / "apps/tribute-dashboard/data/quota.json").read_text())
+COUNTDOWNS = json.loads((ROOT / "apps/tribute-dashboard/data/challenge-countdowns-feed.json").read_text())
 NOW = datetime(2026, 10, 28, 2, 0, tzinfo=timezone.utc)
 
 
@@ -180,7 +180,7 @@ def test_feed_never_invents_focus_attribution():
 
 
 def test_committed_feed_matches_config():
-    committed = json.loads((ROOT / "apps/help-wanted-dashboard/data/quota-allocations-feed.json").read_text())
+    committed = json.loads((ROOT / "apps/tribute-dashboard/data/quota-allocations-feed.json").read_text())
     assert committed["schema"] == "quota-allocations-feed/v1"
     assert [p["pool"] for p in committed["pools"]] == [p["id"] for p in CFG["pools"]]
     for cp, p in zip(committed["pools"], CFG["pools"]):

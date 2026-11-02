@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f00b4f0cb282db95b81f7ba5bfe70c795c4f3032111fda18af3b194b4bdc9b23",
+  "source_fingerprint": "b923a894b529410ad36e57561ecaab5543b6e6cecd3c0ff6308ea62cfdcf9b61",
   "workflow_count": 268,
   "workflows": [
     {
@@ -3788,12 +3788,15 @@
       ]
     },
     {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
       "concurrency": "group: quota-event-audit cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
-        "audit-gate"
+        "audit-gate",
+        "sync-twin"
       ],
       "name": "quota-event-audit",
       "path": ".github/workflows/quota-event-audit.yml",

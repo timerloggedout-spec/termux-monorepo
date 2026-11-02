@@ -1,0 +1,81 @@
+name: cert-coderoad-image
+
+# Builds the CodeRoad completion image ONCE and publishes it to GHCR;
+# cert-coderoad.yml pulls it per run. Rationale (2026-11-02): the
+# in-run image build is dpkg-bound on hosted runners — attempt 4 died
+# at the 20-min step timeout mid-unpack and attempt 5 at 40 min,
+# both still progressing (runner disk throughput, not a hang). The
+# rdb-alpha half builds in ~1 min; the VS Code layer is the cost.
+# Amortize it: build here (rare, on dispatch), pull there (fast).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  issues: write
+
+concurrency:
+  group: cert-coderoad-image
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out monorepo (driver sources)
+        uses: actions/checkout@v4
+        with:
+          path: mono
+
+      - name: Fetch rdb-alpha environment recipe (pinned Dockerfile)
+        # Same preprocessing as the run workflow used: full cross-repo
+        # checkout failed in run 41400838295, so the recipe is a pinned
+        # raw file; `unminimize` dropped (docs-only, non-TTY stall);
+        # apt sources stay upstream (archive.ubuntu.com serves focal;
+        # old-releases 404s it — run 41408722874).
+        run: |
+          mkdir -p rdb-alpha
+          curl -fsSL "https://raw.githubusercontent.com/freeCodeCamp/rdb-alpha/main/Dockerfile" \
+            -o rdb-alpha/Dockerfile.upstream
+          grep -v 'unminimize' rdb-alpha/Dockerfile.upstream > rdb-alpha/Dockerfile
+          wc -l rdb-alpha/Dockerfile rdb-alpha/Dockerfile.upstream
+
+      - name: Build rdb-alpha image
+        timeout-minutes: 30
+        run: docker build --progress=plain -t rdb-alpha:local ./rdb-alpha
+
+      - name: Build CodeRoad image layer
+        timeout-minutes: 80
+        run: |
+          docker build --progress=plain -t ghcr.io/timerloggedout-spec/coderoad-rdb:latest \
+            -f mono/scripts/certifications/coderoad-driver/Dockerfile.coderoad \
+            mono/scripts/certifications/coderoad-driver
+
+      - name: Push image to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push ghcr.io/timerloggedout-spec/coderoad-rdb:latest
+          docker inspect --format '{{index .RepoDigests 0}}' ghcr.io/timerloggedout-spec/coderoad-rdb:latest
+
+      - name: Record built digest on issue 506
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          DIGEST=$(docker inspect --format '{{index .RepoDigests 0}}' ghcr.io/timerloggedout-spec/coderoad-rdb:latest)
+          python3 - <<PYEOF
+          import json, os, urllib.request
+          body = "CODEROAD_IMAGE_BUILT run %s digest \`%s\` — cert-coderoad.yml pulls ghcr.io/timerloggedout-spec/coderoad-rdb:latest per run." % (os.environ["RUN_ID"], "$DIGEST")
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body}).encode(),
+              headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("digest recorded")
+          PYEOF

@@ -298,18 +298,63 @@ def emit_outcome_fill(stamp: dict, root: Path) -> dict:
             "targets": [f"experiments/doe/{CAMPAIGN}/records/{safe}.json"]}
 
 
+def emit_score_fill(stamp: dict, root: Path) -> dict:
+    """Third phase (MVT/ATES intake): ATES scoring keys at merge close.
+
+    Deterministic keys derive from the dispatch's required-gate record;
+    the judge keys come from an evaluator dispatch (instance != builder)
+    over committed evidence only. Keys land in the record's metrics with
+    the evaluator's provenance; nothing here is synthesized — a missing
+    input raises instead of defaulting.
+    """
+    dispatch_id = stamp["dispatch_id"]
+    score = stamp["score"]
+    safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in dispatch_id)
+    rec_path = root / f"experiments/doe/{CAMPAIGN}/records/{safe}.json"
+    if not rec_path.exists():
+        raise SystemExit(f"score fill for unemitted dispatch {dispatch_id}")
+    rec = json.loads(rec_path.read_text())
+    det = float(score["deterministic_score"])
+    judge = float(score["judge_score"])
+    weight = float(score.get("judge_weight", 0.3))
+    if weight > 0.3:
+        raise SystemExit("judge_weight exceeds the 0.3 cap (MVT/ATES intake)")
+    penalty = float(score.get("wrong_commit_penalty", 0.0))
+    metrics = rec.setdefault("metrics", {})
+    metrics.update({
+        "ates_outcome": score["ates_outcome"],
+        "deterministic_score": det,
+        "judge_score": judge,
+        "judge_weight": weight,
+        "net_score": round((1 - weight) * det + weight * judge - penalty, 4),
+        "wrong_commit_penalty": penalty,
+        "trace_id": score["trace_id"],
+        "task_fingerprint": score["task_fingerprint"],
+        "environment_fingerprint": score["environment_fingerprint"],
+        "repetition": score.get("repetition", 1),
+        "judge_provider": score["judge_provider"],
+        "judge_model": score["judge_model"],
+        "judge_dispatch_id": score["judge_dispatch_id"],
+    })
+    rec_path.write_text(json.dumps(rec, indent=2, sort_keys=True) + "\n")
+    return {"dispatch_id": dispatch_id, "emitted": True, "phase": "score_fill",
+            "targets": [f"experiments/doe/{CAMPAIGN}/records/{safe}.json"]}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--stamp", required=True, help="Path to the canonical stamp JSON, or - for stdin")
     ap.add_argument("--root", default=".", help="Repo root (default: cwd)")
     ap.add_argument("--head-sha", default=None, help="Fallback baseline/candidate SHA (e.g. github.sha)")
-    ap.add_argument("--phase", choices=["dispatch", "outcome"], default="dispatch",
-                    help="dispatch = full fan-out at completion; outcome = DoE outcome fill at PR close")
+    ap.add_argument("--phase", choices=["dispatch", "outcome", "score"], default="dispatch",
+                    help="dispatch = full fan-out at completion; outcome = DoE outcome fill at PR close; score = MVT/ATES scoring keys at merge")
     args = ap.parse_args()
     raw = sys.stdin.read() if args.stamp == "-" else Path(args.stamp).read_text()
     parsed = json.loads(raw)
     if args.phase == "outcome":
         result = emit_outcome_fill(parsed, Path(args.root))
+    elif args.phase == "score":
+        result = emit_score_fill(parsed, Path(args.root))
     else:
         result = emit(parsed, Path(args.root), head_sha=args.head_sha)
     print(json.dumps(result))

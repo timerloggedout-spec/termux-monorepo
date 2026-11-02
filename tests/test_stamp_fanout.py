@@ -109,3 +109,25 @@ def test_outcome_fill_updates_record_without_duplicates(tmp_path):
     assert exp["metrics"]["pr"] == 3369
     # append-only intakes untouched by the fill
     assert len((tmp_path / "ops/3l0/intake.jsonl").read_text().strip().splitlines()) == 1
+
+
+def test_score_fill_adds_ates_keys(tmp_path):
+    assert _run(tmp_path).returncode == 0
+    fill = {"dispatch_id": STAMP["dispatch_id"],
+            "score": {"ates_outcome": "PASS", "deterministic_score": 1.0,
+                      "judge_score": 0.8, "judge_weight": 0.3,
+                      "wrong_commit_penalty": 0.0, "trace_id": "fanout-run-1",
+                      "task_fingerprint": "b" * 64, "environment_fingerprint": "c" * 64,
+                      "judge_provider": "cohere", "judge_model": "command-a-03-2025",
+                      "judge_dispatch_id": "provider-invoke-999"}}
+    fill_file = tmp_path / "score.json"
+    fill_file.write_text(json.dumps(fill))
+    proc = subprocess.run(
+        [sys.executable, str(EMITTER), "--stamp", str(fill_file), "--root", str(tmp_path),
+         "--phase", "score"], capture_output=True, text=True, cwd=ROOT)
+    assert proc.returncode == 0, proc.stderr
+    exp = json.loads((tmp_path / "experiments/doe/routed-dispatch/records/test-dispatch-0001.json").read_text())
+    m = exp["metrics"]
+    assert m["ates_outcome"] == "PASS"
+    assert abs(m["net_score"] - (0.7 * 1.0 + 0.3 * 0.8)) < 1e-6
+    assert m["judge_provider"] == "cohere"

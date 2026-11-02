@@ -22,24 +22,30 @@ git config --global --add safe.directory /workspace/project 2>/dev/null
     su postgres -c '/usr/lib/postgresql/12/bin/pg_ctl -D /var/lib/postgresql/12/main -l /tmp/pg.log start' 2>&1 || true
   sleep 3
   pg_isready 2>&1 || true
-  if [ -d /workspace/project/.freeCodeCamp ]; then
+  if [ -d /workspace/project/.freeCodeCamp ] && [ -f /workspace/project/.freeCodeCamp/package.json ]; then
     (cd /workspace/project/.freeCodeCamp && npm install --no-audit --no-fund 2>&1 | tail -3) || true
     ls /workspace/project/.freeCodeCamp/node_modules 2>/dev/null | head -3 || echo "node_modules absent"
+  else
+    echo "no .freeCodeCamp/package.json — harness is not npm-based for this course; skipping npm install"
   fi
 } >> "$LOG" 2>&1
 
 # Launch VS Code (CodeRoad activates on the .freeCodeCamp workspace and
-# auto-loads the tutorial from CODEROAD_TUTORIAL_URL).
-(xvfb-run -a code --no-sandbox --user-data-dir /tmp/vscode-ud --disable-gpu --disable-dev-shm-usage \
+# auto-loads the tutorial from CODEROAD_TUTORIAL_URL). Electron in a bare
+# container needs a D-Bus session + XDG_RUNTIME_DIR; without them the main
+# process spins and dies (pilot 8: all code processes defunct, no exthost).
+export XDG_RUNTIME_DIR=/tmp/runtime-root
+mkdir -p "$XDG_RUNTIME_DIR" && chmod 700 "$XDG_RUNTIME_DIR"
+(dbus-run-session -- xvfb-run -a code --no-sandbox --user-data-dir /tmp/vscode-ud --disable-gpu --disable-dev-shm-usage \
   --extensions-dir /opt/vscode-extensions \
   /workspace/project > "$EV/code.log" 2>&1 &)
 echo "code launched" >> "$LOG"
 
-# Wait for CodeRoad's setup hooks: PostgreSQL accepting connections and the
-# .freeCodeCamp dependencies installed.
+# Wait for the environment: PostgreSQL accepting connections (pre-setup
+# started it; CodeRoad setup hooks may add more, but pg is the hard gate).
 ready=0
-for i in $(seq 1 120); do
-  if pg_isready -q 2>/dev/null && [ -d /workspace/project/.freeCodeCamp/node_modules ]; then
+for i in $(seq 1 24); do
+  if pg_isready -q 2>/dev/null; then
     ready=1; echo "setup ready after ~$((i*5))s" >> "$LOG"; break
   fi
   sleep 5
@@ -55,9 +61,14 @@ if [ -n "${STAGE_CMD:-}" ]; then
 fi
 
 # Direct mocha run as a diagnostic TAP artifact (not the credited path;
-# proves the staged state independently of the CodeRoad run).
-(cd /workspace/project/.freeCodeCamp && npm run programmatic-test \
-  > "$EV/tap-direct.txt" 2>&1; echo "direct mocha rc=$?" >> "$LOG") || true
+# proves the staged state independently of the CodeRoad run). Only for
+# npm-harness courses; this course family drives tests from tutorial.json.
+if [ -f /workspace/project/.freeCodeCamp/package.json ]; then
+  (cd /workspace/project/.freeCodeCamp && npm run programmatic-test \
+    > "$EV/tap-direct.txt" 2>&1; echo "direct mocha rc=$?" >> "$LOG") || true
+else
+  echo "direct mocha skipped (no package.json)" >> "$LOG"
+fi
 
 # Raise GO: the driver extension fires coderoad.run_test.
 touch "$EV/GO"
@@ -68,6 +79,8 @@ echo "GO raised" >> "$LOG"
 sleep 25
 {
   echo "== probes =="
+  which dbus-run-session xvfb-run || true
+  ls /opt/vscode-extensions 2>/dev/null || true
   ps aux | grep -iE "code|electron" | grep -v grep | head -8
   code --no-sandbox --user-data-dir /tmp/vscode-ud --extensions-dir /opt/vscode-extensions --list-extensions 2>&1 | head -10
   echo "-- globalStorage tree --"

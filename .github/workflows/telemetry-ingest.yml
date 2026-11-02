@@ -131,6 +131,7 @@ jobs:
             --file ops/telemetry/hindsight-payloads.jsonl \
             --file ops/telemetry/density-hindsight.jsonl \
             --batch 50 \
+            --max-items 37 \
             --state ops/telemetry/hindsight-retain-state.json \
             --receipt-out ops/telemetry/hindsight-retain-full.json
       - name: Propose the refresh as a PR

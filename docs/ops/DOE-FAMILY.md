@@ -452,6 +452,41 @@ version and compared continuously until culling retires a version.
 
 ## Campaign layout
 
+### Candidate method versions — dreambeans concepts (owner ruling, 2026-11-01)
+
+Registered as versioned implementation concepts in the evolution
+substrate — the DNA of the codebase performance selection systems —
+available as contextual basis. Registration is not adoption and
+not a run: candidates evolve under rule 8 (versioning, backfill,
+continuous comparison) and culling, and a candidate executes only
+through an admitted campaign design.
+
+- **bisociation v0** (candidate; spec: doe-expert fit evaluation
+  2026-11-01) — cross-frame generation operator (Koestler): collide
+  two unrelated frames' relational structures to generate variants
+  the intra-frame operator (rnd v1) cannot reach. Form: frame-pair
+  selection from distinct domains (stamped like selection_reason),
+  structure mapping (relations carried across, named), variant
+  emission into the design pool; admission stays design-gated
+  (rule 5); Delphi remains evaluation-only. Test form: variant
+  source as factor vs rnd v1 {design-admission rate, culling
+  survival, ESTABLISHED-gate outcomes}. Mesa agent-based modeling
+  attaches in the control seat only (rule 6): pre-screening,
+  observational, never live evidence. Boundary: the sources'
+  market-network domain as a built/traded system is the frozen
+  trading lane — the operator is domain-neutral, the domain does
+  not transfer.
+- **dual-accumulator arbitration v0** (candidate; spec seat:
+  Delphi 5565cdf5 — spec pull in flight; mechanism
+  NOT_ESTABLISHED in this register until the seat's spec lands).
+- **interface-gates / symmetrical-action-log v0** (candidate;
+  spec seat: D3 39fc8b89 — spec pull in flight; mechanism
+  NOT_ESTABLISHED in this register until the seat's spec lands).
+- **strands-patterns v0**, incl. the AST-complexity stamp feature
+  (candidate; spec seat: Swarm 6628d41d — spec pull in flight;
+  mechanism NOT_ESTABLISHED in this register until the seat's
+  spec lands).
+
 ```text
 experiments/doe/<campaign-id>/
   DESIGN.json    # design record: hypothesis, factors/levels, blocks,

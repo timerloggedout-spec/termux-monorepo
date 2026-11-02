@@ -141,3 +141,15 @@ passes `--files-dir`. Re-score (doctrine: audited, cross-version):
 window 546/53 → 547/52, Δ = PR #2980 → chatgpt; historical manifest
 census 60 files (chatgpt 9, grok 5, manus 7) in
 `ops/telemetry/attribution-rescore-1.3.json`.
+
+## Attribution 1.4 — corroboration state (2026-11-01)
+
+Owner ruling: some signings are FALSE — marks ≠ proof, and Provenance
+gates scores. The extractor now evaluates ALL legs and every record
+carries `corroboration{state, legs, agreeing, conflicts, publisher}`:
+corroborated / disputed (suspected false signing — flagged, never
+silently scored) / single-leg (uncorroborated) / unattributed. The
+app_bot leg is transport (publisher), not authorship. Window re-score:
+547 single-leg · 52 unattributed · 0 corroborated · 0 disputed —
+details + remaining gap (per-PR token-history join) in
+`ops/telemetry/attribution-rescore-1.4.json`.

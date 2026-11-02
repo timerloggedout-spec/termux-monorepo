@@ -1,0 +1,70 @@
+---
+title: "Certifications Value Matrix"
+description: "Value view of the Certifications program (#506): every cert/rung as an expectation record — time, quota, walls, payoff, risk (ALE view), evidence state. Companion to the Evidence Index; the two are derived views of the same numbers."
+---
+
+## Rules of This Matrix (DoE conformity — binding)
+
+- Every cell is an **expectation record**, not a bare number: it carries a value or range **and** its basis — `measured` (telemetry/capture of record), `issuer` (platform-published rule), `assumption` (labelled, re-priced at first instance), or **INTAKE/HELD** (unevidenced — no value claimed).
+- The ALE view and this matrix are **derived views of the same numbers**. No cell is computed twice from different inputs.
+- **Unevidenced cells carry INTAKE/HELD. There are no dressed-up zeros in this document.** A `0` appears only where zero is itself the evidenced value (e.g. completions counted on the record).
+- Earner = `termux-monorepo` ∀ rows. The certifications tree manages (oversight, enrolment, evidence); it does not earn. Completion ⇔ fleet-automation run ∧ telemetry-evidenced ∧ per-model attribution on record (`docs/ops/CERTIFICATIONS-PROGRAM.md`, PR #3249).
+- Dates columns (wall + buffer-landing) and evidence-state column are supplied by the Roadmap lane and reconciled into this single matrix; ladder is rows-of-record owner.
+- Buffer rule (owner, 2026-11-02): dated items land −1d ahead of wall; landing dates govern.
+
+## Matrix
+
+| cert / rung | time cost | quota / Actions cost | wall → buffer-landing | payoff (points · credential · prize linkage) | risk (ALE view) | evidence / attribution state |
+|---|---|---|---|---|---|---|
+| **FCC L1 — Relational Databases v9** (Baseline) | ≈20.5 h active total (range 14.5–27 h) — `assumption` priced per type in the Evidence Index; T `measured` ≈3 min/unit; remainder dominated by W ×9 (45 min assumed) + P ×5 (120 min assumed) | Cert-unit workflow runs of record: 50 units passed, incl. re-run cycles (v1–v10 on defective units) — `measured` (run IDs in Evidence Index + fleet-logs manifests); Actions minutes total = **INTAKE/HELD** (not metered in records) | wall = ∅ external (self-paced); adopted window: 64/64 by 2026-12-05 → exam sitting ≤2026-12-12 (`assumption`, re-priced at first W/P) | FCC Relational Databases certification on exam pass (`issuer`); L2 prerequisite; derived {skill, KB} package per completion rule; competition points = 0 — `measured` (claim-check: 0 hits across coordinator + entries log) | Loss events of record: exam fail ⇒ 168 h retake cooldown ∧ projects not re-done (`issuer`); W/P submits gated on Step-1 CodeRoad completion — root gate, live, local-route clearance ↑main 2026-11-01; served-set rotation (T+Q) retired by live-capture flow | **50/64 established** on the execution record (002 = waived-Q2, pin-note of record); attribution live per unit {earner, fleet run, model — cohere `c4ai-aya-expanse-32b` M1–M4 era, sealion M5 era; manifests govern}; captures = fleet-logs PRs #1–#15+. Evidence Index entries lag the execution record (001–009 landed, PR #3301 + #3779; catch-up = roadmap lane cadence) — the Δ is stated, not smoothed; cert = ∅ |
+| **AMD Academy C1** (T1) | **INTAKE/HELD** (course duration not evidenced in tree records) | **INTAKE/HELD** (fleet runs ∅ yet; sitting = platform) | wall 2026-11-07 → landing **2026-11-06** | completion cert + points screenshot (evidence pair, `issuer`); set-level payoff at 5 courses: +500 League pts ∧ podium eligibility — per-course points split = **INTAKE/HELD** (milestone is set-level) | ALE: set-binary exposure — podium eligibility is won/lost at the 5-course gate (AMD-ACADEMY-5), not per course; a C1 miss compresses all later landings against the 2026-12-01 hard wall | completions = 0 (`measured`); attribution = pending; holder = gates-academy 840bd147 |
+| **AMD Academy C2** (T1) | **INTAKE/HELD** | **INTAKE/HELD** | wall 2026-11-10 → landing **2026-11-09** | as C1 | as C1 | completions = 0; attribution pending |
+| **AMD Academy C3** (T1) | **INTAKE/HELD** | **INTAKE/HELD** | wall 2026-11-13 → landing **2026-11-12** | as C1 | as C1 | completions = 0; attribution pending |
+| **AMD Academy C4** (T1) | **INTAKE/HELD** | **INTAKE/HELD** | wall 2026-11-17 → landing **2026-11-16** | as C1 | as C1 | completions = 0; attribution pending |
+| **AMD Academy C5** (T1) | **INTAKE/HELD** | **INTAKE/HELD** | wall + landing = **INTAKE/HELD** (absent from the landing-dates record of 2026-11-02; Roadmap to supply) | as C1 (one of the ≥5 toward the gate, if taken) | as C1 | completions = 0; attribution pending |
+| **AMD Academy C6** (T1) | **INTAKE/HELD** | **INTAKE/HELD** | wall + landing = **INTAKE/HELD** (absent from plan + landing records; Roadmap to supply) | as C1 (spare/alternate toward the ≥5 gate, if taken) | as C1 | completions = 0; attribution pending |
+| **AMD Academy C7** (T1) | **INTAKE/HELD** | **INTAKE/HELD** | wall 2026-11-20 → landing **2026-11-19** | as C1 | as C1 — latest landing in the set; least buffer to the League landing 2026-11-28 | completions = 0; attribution pending |
+| **ROCm Certified Associate** (T1) | **INTAKE/HELD** (5-module Core ROCm curriculum + Docker GPU labs + assessments + exam; durations not evidenced) | **INTAKE/HELD** (prep fleet runs ∅ yet) | hard wall 2026-12-01 11:00 PT; exam target ≤2026-11-28 → landing **2026-11-25** | **+500 League pts** (`issuer`, lablab milestones) + Credly shareable badge; separate +500 ADP-profile points (distinct system, not conflated) | ALE: exam outcome binary at a single sitting inside the League window; retake policy = **INTAKE/HELD** (not evidenced) — exposure = full +500 if no in-window retake exists; prep runs parallel to Academy ×5 (shared-seat contention, holder 840bd147) | state = not started; cert = ∅; attribution = pending; evidence entry pre-created ∅ {Credly link, exam date/score, points screenshot} |
+| **L2 — CTF** (picoCTF / HackTheBox / TryHackMe / OverTheWire) (T2) | **INTAKE/HELD** (not started; window opens on L1 clear) | **INTAKE/HELD** | wall = NOT_ESTABLISHED (start = prior-rung clear, roadmap skeleton) → landing = **INTAKE/HELD** | capability, not a formal cert (roadmap of record); competition points = 0 evidenced (claim-check 0 hits) | **INTAKE/HELD** (no exposure quantified pre-plan; plan-before-spend governs) | entries = ∅; attribution = pending |
+| **L3 — CompTIA** (Sec+ / Net+ / Pentest+) (Baseline) | **INTAKE/HELD** | **INTAKE/HELD** | NOT_ESTABLISHED → **INTAKE/HELD** | industry credential(s) (`issuer` class); competition points = 0 evidenced | exam-fee spend exists as a class but is **unpriced in records = INTAKE/HELD**; ∅ spend before a Role Requirements Plan (plan-before-spend) | entries = ∅; attribution = pending |
+| **L4 — Bug Bounties** (HackerOne / Bugcrowd) (T2) | **INTAKE/HELD** | **INTAKE/HELD** | NOT_ESTABLISHED → **INTAKE/HELD** | variable bounty income (no cert, no fixed points — `issuer` class); amounts = **INTAKE/HELD** per program | **INTAKE/HELD** (duplicate/informative-report rate unmeasured) | entries = ∅; attribution = pending |
+| **L5 — OSCP** (OffSec) (Baseline) | **INTAKE/HELD** | **INTAKE/HELD** | NOT_ESTABLISHED → **INTAKE/HELD** | industry credential (`issuer` class); competition points = 0 evidenced | exam/lab spend unpriced in records = **INTAKE/HELD**; plan-before-spend | entries = ∅; attribution = pending |
+| **L6 — CISSP** (Baseline) | **INTAKE/HELD** | **INTAKE/HELD** | NOT_ESTABLISHED → **INTAKE/HELD** (late sequence — experience attestation, roadmap of record) | industry credential (`issuer` class); competition points = 0 evidenced | attestation eligibility is the gating exposure; quantified view = **INTAKE/HELD** | entries = ∅; attribution = pending |
+| **Prize — D5 Aha badge + certificate** (prize-received) | ∅ work target (tracked only) | ∅ work target | event: submit 2026-11-19 12:00 PT → awards 2026-11-20 (no landing — win-contingent) | badge + certificate per winning-team member (`issuer`, coordinator of record) | ALE: payoff is win-contingent; expected value not quantified in records = **INTAKE/HELD** | entries = ∅; not earnable by work — received on win only |
+| **Prize — D1 winner certificate** (prize-received) | ∅ work target (tracked only) | ∅ work target | event closed for submission 2026-11-04 23:59 PT; cert = post-event issuance | official winner's certificate (`issuer`) | win-contingent, as D5 = **INTAKE/HELD** | entries = ∅; note: D1 workshop badge/cert **does not exist** (PR #2580) — not this row, never claimable |
+| **Prize — Strands Decider winner certificate** (prize-received) | ∅ (event CLOSED) | ∅ (event CLOSED) | event closed 2026-10-23 — **un-earnable** | ∅ — closed before the program tracked it; value = 0 is `measured` here (event state of record), not an assumption | ∅ — no live exposure | closed; retained as a row so the class is complete and the closed state is not re-litigated |
+
+## INTAKE — Certifications as a Category (not yet enrolled)
+
+The matrix covers **Certifications as a category**, not only the enrolled ladder. Every cert family/provider of record across the L1–L6 categories appears below as an **INTAKE row** until it is enrolled. INTAKE rows carry **no estimated values** — each names **the gap**: the specific evidence that would price the row and promote it to a full expectation record above.
+
+Two reads are served: (1) sequencing the active track (matrix above), and (2) prioritizing what enters it. An INTAKE row is promoted when its gap evidence lands and a Role Requirements Plan (plan-before-spend) is opened for it; promotion order = competition linkage first, then deadline, then target-role gap fit, then cost class.
+
+| family / provider (INTAKE) | category | gap — evidence that would price this row |
+|---|---|---|
+| FreeCodeCamp — JavaScript Algorithms and Data Structures | L1 family (FCC) | Plan 002 candidate of record (PLAN 001 lineage). Gap: current-version curriculum census {projects, exam structure} + hours + fleet-route fit assessment |
+| FreeCodeCamp — remaining certification catalogue | L1 family (FCC) | Gap: catalogue census vs target role (security-leaning software operator) — which certs exist, their project/exam structure, and a pick/no-pick ruling per cert |
+| CompTIA — wider family (A+ · CySA+ · CASP+ · others) | L3 family | Gap: family census {exam codes, fees, validity} + role-fit ranking vs the L3 picks of record (Sec+ / Net+ / Pentest+) |
+| OffSec — wider family (OSWE · OSWP · OSEP · others) | L5 family | Gap: family census {course+exam fees, lab windows} + sequencing vs OSCP |
+| ISC2 — wider family (CC · SSCP · CCSP · others) | L6 family | Gap: family census {fees, experience/endorsement requirements per cert} + fit vs the CISSP attestation constraint |
+| HackTheBox (incl. CPTS track) | L2 (CTF platforms) | Gap: platform census {cert tracks vs free tier, cost + card-gate class, fleet-route (workflow) feasibility} |
+| TryHackMe | L2 (CTF platforms) | Gap: platform census {certificate paths, subscription/card-gate class, fleet-route feasibility} |
+| picoCTF | L2 (CTF platforms) | Gap: platform census {competition cadence, credential issued if any, fleet-route feasibility} |
+| OverTheWire | L2 (adjacent, #342 of record) | Gap: platform census {credential issued if any — wargames historically issue none; if none, class moves to capability-evidence, not cert} |
+| HackerOne | L4 (bounty platforms) | Gap: per-program census {scope, payout bands, disclosure rules} + fleet-route feasibility for submissions |
+| Bugcrowd | L4 (bounty platforms) | Gap: per-program census {scope, payout bands, ranking mechanics} + fleet-route feasibility |
+| AWS certification family | cloud / vendor | Gap: family census {cert tracks + fees} + fleet-need mapping + competition-linkage scan (none of record yet) |
+| Google Cloud certification family | cloud / vendor | Gap: family census {cert tracks + fees} + fleet-need mapping + competition-linkage scan (none of record yet) |
+| Microsoft Azure certification family | cloud / vendor | Gap: family census {cert tracks + fees} + fleet-need mapping + competition-linkage scan (none of record yet) |
+| NVIDIA certification family | cloud / vendor | Gap: family census {cert tracks + fees} + fleet-need mapping + competition-linkage scan (none of record yet) |
+
+New families enter this table as INTAKE rows when named by the owner or a tree lane — entry claims nothing but the gap.
+
+## Row notes (provenance)
+
+- **FCC L1 time/quota** derive from the [Evidence Index](/guides/certifications-evidence-index) L1 window section (measured T rate; labelled per-type assumptions) and the fleet-logs capture PRs — the same numbers the ALE view reads. Re-price checkpoints: unit 011 (first W) and unit 025 (first P).
+- **AMD Academy rows**: the League gate is set-level (≥5 courses ⇒ +500 pts ∧ podium eligibility $2,500 / $1,500 / $1,000). Plan of record names C1, C2, C3, C4, C7 with walls; C5 exists in the roadmap skeleton windows (≤11-20) but carries no landing date in the 2026-11-02 landing record, and C6 carries neither — both ship HELD rather than inherit a neighbour's date.
+- **ROCm retake policy** is the single largest unpriced exposure in T1: if the exam allows no in-window retake, the +500 is single-shot. HELD until the issuer rule is on record.
+- **L2–L6** are sequenced L1≫L2≫…≫L6, plan-before-spend; every quantified cell is HELD until the rung's Role Requirements Plan prices it. That is the DoE-correct state, not missing work.
+- **Prize-received class** carries ∅ work targets by the HYBRID ruling: deadline/prize certs stay with their owning lanes; this matrix tracks value and state only.
+- **Reconciliation (2026-11-02)**: dates + evidence-state columns folded from the Roadmap lane's per-row record of the same date — all walls/landings match the landing-dates record; C5/C6 appear in **neither** lane's dates record, so their HELD state is a two-lane fact, not a single-lane gap. INTAKE-row dates/evidence follow the same pattern (NOT_ESTABLISHED / ∅), confirmation requested from Roadmap.

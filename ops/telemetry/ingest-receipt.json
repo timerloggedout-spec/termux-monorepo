@@ -16,22 +16,15 @@
   "ingested_providers": 172,
   "missing": []
  },
- "generated_at": "2026-11-02T00:32:25Z",
+ "generated_at": "2026-11-02T00:46:04Z",
  "schema": "telemetry-ingest-receipt/v1",
  "sinks": {
   "hindsight": {
    "live_retain": {
-    "attempted": 326,
-    "batches": 7,
-    "batches_failed": 7,
-    "endpoint": "POST /v1/default/banks/{bank_id}/memories",
-    "failed": 326,
-    "first_error": {
-     "body_excerpt": "{\"detail\":\"Insufficient credits. Please add credits to continue.\"}",
-     "status": 402
-    },
+    "attempted": 0,
+    "failed": 0,
     "ok": 0,
-    "skipped_reason": null
+    "skipped_reason": "not requested"
    },
    "path": "ops/telemetry/hindsight-payloads.jsonl",
    "payloads": 326
@@ -304,7 +297,7 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/help-wanted-dashboard/data/tracking-feed.json",
-   "sha256": "1fe872bae1979b2e32b2bfa4b2b5bc2c521e8be81cd551c72d13c395148e0835",
+   "sha256": "12eecb230f5bf77e901965d451c42aebf79d5fc2e47bc2e88127e6eb88180529",
    "status": "emitted",
    "units": 1
   },

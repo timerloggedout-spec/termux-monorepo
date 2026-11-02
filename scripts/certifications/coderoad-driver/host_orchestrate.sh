@@ -20,11 +20,8 @@ docker run -d --name pg \
   -v "$GITHUB_WORKSPACE/solution:/solution:ro" \
   coderoad:local sleep infinity >> "$LOG" 2>&1
 docker exec pg bash -c '
-  cp /workspace/project/.freeCodeCamp/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
-  grep -q "127.0.0.1/32 trust" /etc/postgresql/12/main/pg_hba.conf || \
-    echo "host all all 127.0.0.1/32 trust" >> /etc/postgresql/12/main/pg_hba.conf
-  grep -q "::1/128 trust" /etc/postgresql/12/main/pg_hba.conf || \
-    echo "host all all ::1/128 trust" >> /etc/postgresql/12/main/pg_hba.conf
+  sed -i -E "s/^(host[[:space:]]+all[[:space:]]+all[[:space:]]+(127.0.0.1\/32|::1\/128)[[:space:]]+).*/\1trust/" /etc/postgresql/12/main/pg_hba.conf
+  grep -E "^host" /etc/postgresql/12/main/pg_hba.conf
   service postgresql start || pg_ctlcluster 12 main start
 ' >> "$LOG" 2>&1
 for i in $(seq 1 24); do
@@ -70,7 +67,8 @@ export DONT_PROMPT_WSL_INSTALL=1
 CODE="$HOME/vscode/VSCode-linux-x64/bin/code"
 LAUNCH=(xvfb-run -a -s "-screen 0 1024x768x24" "$CODE" --no-sandbox
   --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage
-  --disable-workspace-trust --extensions-dir "$HOME/vscode-extensions" "$WS")
+  --disable-workspace-trust --enable-logging=stderr --v=1
+  --extensions-dir "$HOME/vscode-extensions" "$WS")
 (PATH="$SHIM:$PATH" "${LAUNCH[@]}" > "$EV/code.log" 2>&1 &)
 echo "code launched (host)" >> "$LOG"
 
@@ -117,6 +115,10 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
   echo "-- logs + User trees --"
   ls -R "$UD/logs" 2>/dev/null | head -40 || echo "(no logs dir)"
   find "$UD/User" -maxdepth 3 2>/dev/null | head -30
+  echo "-- GUI session main.log tails --"
+  for d in "$UD"/logs/*/; do
+    [ -f "$d/main.log" ] && { echo "## $d"; tail -15 "$d/main.log"; }
+  done
   echo "-- newest exthost log tail --"
   newest=$(ls -t "$UD"/logs/*/window*/exthost/exthost.log 2>/dev/null | head -1)
   [ -n "$newest" ] && tail -25 "$newest" || echo "(no exthost log found)"

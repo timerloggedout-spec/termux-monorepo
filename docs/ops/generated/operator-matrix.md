@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T11:28:35Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T11:34:53Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `409f5f36ef` (hygiene: queued, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `f1fa8ec851` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 409 issues, 184 PRs. PR classes: EXTRACT 5 / CANDIDATE 91 / NEED_EVIDENCE 88 / SUPERSEDE 0.
 
@@ -103,7 +103,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3675 | CANDIDATE | unlabelled | `a24a2483c3` | success | success | unknown | feat(ci): archwiz dangle_check — repo-side dangle_detector variant (Wave V verif |
 | #3676 | CANDIDATE | unlabelled | `30ae007d4d` | success | success | unknown | feat(ci): archwiz build_repo_index — repo-side build_final_all_profile variant |
 | #3707 | CANDIDATE | unlabelled | `4dadc44f6c` | success | success | unknown | g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeou |
-| #3723 | CANDIDATE | unlabelled | `5526e88bfe` | success | success | unknown | apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs) |
+| #3723 | CANDIDATE | unlabelled | `5526e88bfe` | success | success | dirty | apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs) |
 | #3755 | CANDIDATE | unlabelled | `f9c62712f1` | success | success | unknown | feat(ci): archwiz func_index — repo-side func_indexer variant (ast depth) |
 | #3757 | CANDIDATE | unlabelled | `32224dee89` | success | success | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
@@ -138,7 +138,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `cc84ecf1b7` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `bbdbdea4fc` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `a3cc039f21` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2182 | NEED_EVIDENCE | unlabelled | `5607284d96` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
@@ -191,7 +191,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `97af9ac4c8` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
-| #3442 | NEED_EVIDENCE | unlabelled | `78c36f60e4` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3442 | NEED_EVIDENCE | unlabelled | `b93d9702ae` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

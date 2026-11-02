@@ -679,6 +679,15 @@ event and the continuation are two records, not one).
   DoE results. Judged by DoE: campaign records ∧ the standing
   significance gate (ESTABLISHED ⇔ n≥30 ∧ minority≥10 ∧ p<.05),
   never by registration. Until earned, `archW1z` := Owner only.
+  Evaluation shape (owner restatement, 2026-11-01): the
+  contender's dispatches route through the SWARM population
+  (the routed-dispatch plane; no hard-select, no direct-to-model
+  dispatch — direct dispatch to model was questioned by the
+  owner, the swarm is demanded). Evidence toward the title
+  counts only from population-routed dispatches; direct-to-model
+  runs are observational color and do not count toward the gate.
+  This restates the standing dispatch principle (work routed
+  across comparative planes) for the arena.
   Baseline (owner Δ, 2026-11-01): the OPERATOR is already wired
   automated — the bet sits on top of that live automation and
   does not gate it.

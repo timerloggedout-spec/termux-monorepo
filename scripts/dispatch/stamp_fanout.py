@@ -111,6 +111,8 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
                   "latency_ms": usage.get("latency_ms"), "retries": usage.get("retries")},
         "quota": {"pool": quota.get("pool"), "slice": quota.get("slice"), "cost_class": quota.get("cost_class")},
         "origin": stamp.get("origin", "live"),
+        "request": {"manager": stamp.get("requesting_manager") or NE,
+                    "id": stamp.get("request_id") or NE},
     }
     intake_path.parent.mkdir(parents=True, exist_ok=True)
     with intake_path.open("a") as fh:
@@ -220,6 +222,8 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
         "confidence": "high",
         "evidence_refs": [run_url] if run_url else [],
         "session_id": run.get("session_id"),
+        "requesting_manager": stamp.get("requesting_manager"),
+        "request_id": stamp.get("request_id"),
         "window": None,
         "usage": {"status": usage.get("status", "not_established"), "value": usage.get("value"),
                   "unit": usage.get("unit"), "source": usage.get("source")},

@@ -14,7 +14,37 @@ Usage:
 --check: materialize in memory, verify target file bytes match, print
 sha256 + per-segment provenance either way.
 """
-import argparse, hashlib, json, subprocess, sys
+import argparse, glob, hashlib, json, os, subprocess, sys
+
+
+def verify_lineage(recipe_path, recipe):
+    """§9 ruling (2026-11-02): lineage is mandatory on edit() output and
+    each parent_recipe_sha256 must resolve to a sibling recipe file's raw
+    bytes. Fail-closed: unresolvable/malformed lineage => not ok."""
+    lineage = recipe.get("lineage")
+    if lineage is None:
+        return {"depth": 0, "verified": 0, "ok": True}
+    if not isinstance(lineage, list) or not lineage:
+        return {"depth": 0, "verified": 0, "ok": False}
+    here = os.path.dirname(os.path.abspath(recipe_path))
+    self_abs = os.path.abspath(recipe_path)
+    sib_hashes = set()
+    for p in glob.glob(os.path.join(here, "*.json")):
+        if os.path.abspath(p) == self_abs:
+            continue
+        with open(p, "rb") as f:
+            sib_hashes.add(hashlib.sha256(f.read()).hexdigest())
+    verified = 0
+    for entry in lineage:
+        h = entry.get("parent_recipe_sha256")
+        if not h or not isinstance(entry.get("ops"), list):
+            return {"depth": len(lineage), "verified": verified,
+                    "ok": False}
+        if h not in sib_hashes:
+            return {"depth": len(lineage), "verified": verified,
+                    "ok": False}
+        verified += 1
+    return {"depth": len(lineage), "verified": verified, "ok": True}
 
 
 def blob_lines(root, blob):
@@ -63,10 +93,12 @@ def main():
             ok = existing == content
         except OSError:
             ok = False
+        lin = verify_lineage(a.recipe, recipe)
         print(json.dumps({"target": target, "sha256": digest,
-                          "matches_file": ok, "segments": prov},
+                          "matches_file": ok, "lineage": lin,
+                          "segments": prov},
                          indent=1, sort_keys=True))
-        return 0 if ok else 1
+        return 0 if (ok and lin["ok"]) else 1
     with open(target, "w", encoding="utf-8") as f:
         f.write(content)
     print(json.dumps({"target": target, "sha256": digest,

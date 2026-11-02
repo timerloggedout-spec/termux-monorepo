@@ -19,7 +19,7 @@ description: Select AND EXECUTE external help-wanted / good-first-issue / mutual
 - `scripts/ci/tribute_contribute.py` ← upstream PR + fallback
 - `scripts/ci/tribute_evidence.py` · `tribute_status.py`
 - `.github/workflows/tribute-scout.yml` (~2h)
-- `.github/workflows/help-wanted-execute.yml` (~4h + dispatch)
+- `.github/workflows/tribute-execute.yml` (~4h + dispatch)
 
 ## INTENT
 

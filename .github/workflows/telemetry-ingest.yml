@@ -74,8 +74,22 @@ jobs:
           json.dump(out, open("prs.json", "w"))
           print(f"prs merged: {len(out)}")
           PYEOF
+          python3 - << 'PYEOF'
+          import json, sys
+          sys.path.insert(0, "scripts/telemetry_ingest")
+          import attribution
+          prs = json.load(open("prs.json"))
+          nulls = [p["number"] for p in prs if attribution.extract_actor(p)["actor"] is None]
+          open("density-nulls.txt", "w").write("\n".join(str(n) for n in nulls[:80]))
+          print(f"manifest-leg candidates (still-null PRs): {len(nulls)}")
+          PYEOF
+          mkdir -p density-files
+          while read -r n; do
+            [ -n "$n" ] && gh api "repos/${{ github.repository }}/pulls/$n/files?per_page=100" > "density-files/$n.json" || true
+          done < density-nulls.txt
           python3 -B scripts/telemetry_ingest/density_stats.py \
             --prs prs.json \
+            --files-dir density-files \
             --rfp-feed apps/help-wanted-dashboard/data/delphi-rfp-feed.json \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
       - name: HindSight retain PROOF (3 units; state-gated, first spend = tested spend)

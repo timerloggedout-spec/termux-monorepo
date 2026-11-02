@@ -166,6 +166,20 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
   [ -n "$newest" ] && tail -25 "$newest" || echo "(no exthost log found)"
 } > "$EV/session-files.txt" 2>&1 || true
 
+# CodeRoad's own record: its output channel + the memento state DBs as text.
+{
+  echo "== output-channel files =="
+  find "$UD/logs" -type f \( -iname "*coderoad*" -o -path "*output*" \) 2>/dev/null | head -10
+  for f in $(find "$UD/logs" -type f -iname "*coderoad*" 2>/dev/null | head -3); do
+    echo "== $f =="; tail -50 "$f"
+  done
+  for db in "$UD"/User/workspaceStorage/*/state.vscdb "$UD"/User/globalStorage/state.vscdb; do
+    [ -f "$db" ] || continue
+    echo "== strings $db (coderoad/complete context) =="
+    strings "$db" 2>/dev/null | grep -i "coderoad\|complete\|tutorial" | head -30
+  done
+} > "$EV/coderoad-state.txt" 2>&1 || true
+
 if [ -f "$EV/RESULT.json" ]; then
   cat "$EV/RESULT.json"
 else

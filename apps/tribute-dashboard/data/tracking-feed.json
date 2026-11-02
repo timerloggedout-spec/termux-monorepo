@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T14:46:37Z",
+ "generated_at": "2026-11-02T15:02:08Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T14:46:36Z",
+   "read_at": "2026-11-02T15:02:08Z",
    "merged": 150,
    "open": 181
   },
   "lane_events": {
-   "read_at": "2026-11-02T14:46:36Z",
+   "read_at": "2026-11-02T15:02:08Z",
    "status": "ok",
-   "count": 8901,
+   "count": 8910,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,10 +46,10 @@
   },
   "by_state": {
    "closed": 1,
-   "active": 2,
-   "unknown": 7,
+   "unknown": 8,
    "landed": 1,
-   "in-flight": 11
+   "in-flight": 11,
+   "active": 1
   }
  },
  "rows": [
@@ -68,20 +68,15 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries-d1",
    "project": "D1 StudySprint (Workshop to Ship)",
    "domain": "challenges",
    "project_id": "d1-studysprint",
-   "state": "active",
-   "last_merge": {
-    "pr": 3785,
-    "sha": "dd76c7e62905",
-    "at": "2026-11-02T10:36:37Z",
-    "title": "desk-feed: D1 RFP evals returned \u2014 copy execution proceeds to Nov 3"
-   },
+   "state": "unknown",
+   "last_merge": null,
    "next": "Reader MERGED+synced \u00b7 SR: system (balanced) \u00b7 Notes pass: DeepSeek arm tunnel-DOWN \u00d72 skips \u21d2 task submitted to system (issue #3215); tunnel escalated \u21d2 Swarm \u00b7 freeze-hold submission 2026-11-04 23:59 PT \u00b7 TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 \u00b7 SR #3050} in the new form same-turn \u00b7 RFPs FILED (owner order): #3695 RFP-D1-1 impact copy (pre-Nov 4) \u00b7 #3696 RFP-D1-2 originality copy (pre-Nov 4) \u00b7 #3697 RFP-D1-3 reading pipeline \u00a71b (post-Nov 4) \u00b7 #3698 RFP-D1-4 multi-course+countdown+.ics (post-Nov 4) \u2014 Delphi gate evaluation; outputs \u21d2 D1 verification \u00b7 BUFFER TARGET (owner via main, 2026-11-02): #3695/#3696 evaluations must return in time for copy landed + D1-verified by the **Nov 3 re-sync**; final ~24h pre-deadline = buffer only, \u2205 deadline-day copy landings; desk tracks dispatch timing vs Nov 3 \u00ac Nov 4 \u00b7 LANDING TARGET Nov 3 (wall Nov 4 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it. \u00b7 EVALUATIONS RETURNED (Delphi, desk-verified on-issue): #3695 \u2227 #3696 both effective 8.54/25, parked/Backlog, converged 1 round, recheck >2026-12-02 \u2014 parked = quota-surface vocabulary, \u2205 gate on the copy PRs (evaluator read via D1 seat); EXECUTION proceeding: RFP-D1-1 + RFP-D1-2 copy folds ride the copy landing path alongside notes #3215; target = landed + D1-verified by Nov 3 re-sync",
    "next_basis": "record",
    "evidence": [
@@ -89,7 +84,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +99,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -118,7 +113,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -133,7 +128,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -145,7 +140,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -161,7 +156,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "challenge-entries",
@@ -175,7 +170,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "quota",
@@ -195,7 +190,7 @@
     "quota registry services=170",
     "open PRs: #1441, #3342, #3242, #2757, #2525"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "doe",
@@ -215,7 +210,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "doe-nc1",
@@ -227,7 +222,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "tier-1",
@@ -239,7 +234,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "contribution-desk",
@@ -259,7 +254,7 @@
     "desk-feed traversals=10 generated_at=2026-11-02T14:02:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "web-design-viz",
@@ -278,7 +273,7 @@
    "evidence": [
     "open PRs: #3939, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "marketing",
@@ -292,7 +287,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "marketing-social",
@@ -304,7 +299,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "swarm",
@@ -318,7 +313,7 @@
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "providers",
@@ -338,7 +333,7 @@
     "quota registry services=170",
     "open PRs: #3916, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "providers-phrases",
@@ -350,7 +345,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "repo-replay",
@@ -367,7 +362,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "ops",
@@ -381,7 +376,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   },
   {
    "lane": "telemetry",
@@ -400,7 +395,7 @@
    "evidence": [
     "open PRs: #3890, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T14:46:37Z"
+   "updated_at": "2026-11-02T15:02:08Z"
   }
  ],
  "doe_join": {
@@ -779,6 +774,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 108/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 109/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

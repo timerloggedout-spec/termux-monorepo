@@ -37,3 +37,9 @@ def test_3l0_mapping_observational():
     m = sh.to_3l0(sh.to_record(ROW, "t"))
     assert m["origin"] == "session-history" and m["outcome"]["confirmed"] is None
     assert m["schema"] == "3l0-intake/v1"
+
+def test_precomputed_attribution_override():
+    row = {**ROW, "actor": "chatgpt",
+           "actor_evidence": {"method": "manifest", "detail": {"file": "x/MANIFEST.md"}}}
+    rec = sh.to_record(row, "t")
+    assert rec["actor"] == "chatgpt" and rec["actor_evidence"]["method"] == "manifest"

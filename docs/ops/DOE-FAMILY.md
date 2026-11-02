@@ -411,6 +411,31 @@ version and compared continuously until culling retires a version.
   opened with the AppID lane (records keep one primary home —
   family rule 1; no silent migration).
 
+- **chat-intent v1** — rules-tier intent classification of owner
+  chat messages {request · directive · aside · speculation ·
+  question}, registered on owner ruling 2026-11-01 ("it's a
+  versioning to compare in DoE"); steward = tier1-classifiers
+  lane. Mechanism: `scripts/classifiers/chat_intent.py` (PR #3376
+  merged 74f048ab855b6404dc8b3d595d7866a594050c9a) — ordered stdlib
+  rules R1–R7 over message tokens: ability-form (R1),
+  interrogative (R2), imperative lead (R3), hedge + concrete
+  artifact noun ⇒ proposed-request (R4), action + artifact ⇒
+  request (R5), hedge-only ⇒ speculation (R6), default aside (R7);
+  every verdict carries its evidence {hedges, artifacts, actions}.
+  Key rule R4 exists because of the motivating miss (2026-11-01):
+  "DoE likely it's own AppID && Repo etc" read as speculation by
+  main and verified instead of built — owner-corrected; the miss
+  is recorded in this file under doe-specialist-methods v1. Bias
+  is deliberate: a request missed as speculation is the failure
+  class, so artifact-bearing rules fire before R6. Eval substrate:
+  labeled chat outcomes (weak supervision — retrospective:
+  message outcome built/routed vs discussed-only). ESTABLISHED
+  gate, full standing form (CADENCE-AMENDMENT-2026-11-01): n≥30
+  per class ∧ minority≥10 ∧ p<.05 — accuracy NOT_ESTABLISHED at
+  v1. Lifecycle per this section: versioned, backfilled on
+  version change, comparison continuous, cullable. Status:
+  active. Comparison line: open.
+
 ## Campaign layout
 
 ```text

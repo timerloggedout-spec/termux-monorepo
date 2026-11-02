@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T07:13:14Z",
+ "generated_at": "2026-11-02T07:19:02Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -92,6 +92,7 @@
        "first_pass": null,
        "origin": null,
        "pr": null,
+       "field_sources": {},
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       }
@@ -137,6 +138,7 @@
        "first_pass": null,
        "origin": null,
        "pr": null,
+       "field_sources": {},
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       },
@@ -159,6 +161,7 @@
        "first_pass": null,
        "origin": null,
        "pr": null,
+       "field_sources": {},
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       }
@@ -203,6 +206,9 @@
        "first_pass": true,
        "origin": "live",
        "pr": 3411,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-wire-provider-invoke-3411.json"
       },
@@ -225,6 +231,9 @@
        "first_pass": true,
        "origin": "live",
        "pr": 3428,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-wire-command-dispatch-3428.json"
       },
@@ -247,6 +256,9 @@
        "first_pass": true,
        "origin": "live",
        "pr": 3441,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-wire-gemini-invoke-3441.json"
       }
@@ -287,10 +299,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41374860979.json"
       }
@@ -331,6 +349,7 @@
        "first_pass": null,
        "origin": null,
        "pr": 2946,
+       "field_sources": {},
        "source": "campaign-records",
        "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-M-baseline.json"
       }
@@ -371,10 +390,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41375368014.json"
       }
@@ -410,10 +435,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": null,
        "pr": null,
+       "field_sources": {
+        "role": "intake",
+        "moniker": "intake",
+        "context": "intake",
+        "workflow": "intake"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41364184062.json"
       },
@@ -432,10 +463,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367182742.json"
       },
@@ -458,6 +495,9 @@
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41376051120.json"
       }
@@ -501,10 +541,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41379161305.json"
       },
@@ -523,10 +569,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41379885682.json"
       },
@@ -545,10 +597,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41380626948.json"
       },
@@ -567,10 +625,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41381256768.json"
       }
@@ -604,10 +668,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-project-41378291157.json"
       }
@@ -648,10 +718,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392653010.json"
       }
@@ -685,10 +761,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392966979.json"
       }
@@ -730,10 +812,16 @@
         "gate_call": null,
         "confirmed": null
        },
-       "instance_key": "NOT_ESTABLISHED",
+       "instance_key": null,
        "first_pass": null,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367701010.json"
       },
@@ -756,6 +844,9 @@
        "first_pass": true,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367431291.json"
       },
@@ -778,6 +869,9 @@
        "first_pass": true,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367410806.json"
       },
@@ -800,6 +894,9 @@
        "first_pass": true,
        "origin": "live",
        "pr": null,
+       "field_sources": {
+        "workflow": "stamps"
+       },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367453278.json"
       }

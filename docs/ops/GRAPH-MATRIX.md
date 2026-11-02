@@ -93,3 +93,7 @@ Re-run `scripts/graph_matrix_census.py` (token: `GH_TOKEN`/`GITHUB_TOKEN`), refr
 > Owner refinement via main (2026-11-01): **"list+only is a signal for the dataset."** The branch lists produced by this matrix — stale / orphan / linkage classifications, incl. the stale∧orphan list and head-residual counts in census.json — are **dataset material, retained as data permanently**: branch linkage and staleness metadata feeds dataset compilation. They are not deletion candidates and not a work queue, and no deletion semantics attach to them anywhere.
 >
 > Status conversion: branch lists move from HELD (freeze note above, "until main speaks to branches specifically") to **KEPT-AS-SIGNAL, permanently** — main has now spoken. The census keeps producing these lists as signal at each pass; nothing downstream of them is an action queue.
+
+## Wiring note (2026-11-01) — census automation live
+
+> Census refresh is automated: `.github/workflows/graph-matrix-census.yml` — triggers = workflow_dispatch + weekly floor (Thu 07:23Z) + push on the census inputs (`scripts/graph_matrix_census.py`, the workflow itself); cadence per the decision-tree model (event + weekly floor), not the fixed-cron class. Runtime auth = Termux Fleet Swarm app token (SEC-03 mint-before-checkout, own 5000/h bucket); commit-back of `ops/graph-matrix/census.json` direct to master, single-writer = this workflow. The Maintenance section above ("re-run … report delta") now runs through this workflow; lane re-runs remain possible on mgr demand.

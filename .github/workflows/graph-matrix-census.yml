@@ -1,0 +1,84 @@
+name: graph-matrix-census
+
+# Graph Matrix census (contract: docs/ops/GRAPH-MATRIX.md). SINGLE-WRITER
+# for ops/graph-matrix/census.json (graph-matrix/v1). Linkage integrity
+# only (commits x issues x PRs x branches); never touches other planes.
+# Cadence (decision-tree model, not fixed-cron class): event (push on the
+# census inputs) + weekly floor + manual dispatch.
+# Freeze law: census output is dataset signal (KEPT-AS-SIGNAL); this
+# workflow deletes nothing and closes nothing.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '23 7 * * 4'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/graph_matrix_census.py'
+      - '.github/workflows/graph-matrix-census.yml'
+
+concurrency:
+  group: graph-matrix-census
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  census:
+    name: regenerate graph matrix census
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Mint BEFORE checkout (fleet F1 pattern, SEC-03): census reads and
+      # the commit run on the Swarm app token (own 5000/h bucket), not the
+      # shared GITHUB_TOKEN bucket (1000/h/repo).
+      - name: Mint Swarm app token (F1)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-check (census script compiles)
+        run: python3 -m py_compile scripts/graph_matrix_census.py
+      - name: Run census (PAT/App GraphQL, read-only against the API)
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/graph_matrix_census.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Commit census to master (single-writer)
+        run: |
+          set -euo pipefail
+          git add ops/graph-matrix/census.json
+          if git diff --cached --quiet; then
+            echo "census unchanged — nothing to commit" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "graph-matrix-census"
+          git config user.email "graph-matrix-census@fleet.local"
+          git commit -s -m 'chore(graph-matrix): census refresh (automated)' \
+            -m 'Agent-Identity: GitHub Actions Graph Matrix Census (Swarm token)' \
+            -m 'Source: scripts/graph_matrix_census.py — firsthand GraphQL census, graph-matrix/v1'
+          git fetch origin master
+          git rebase origin/master
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto origin/master"
+            git pull --rebase origin master
+          done
+          echo '::error::failed to push census after retries'
+          exit 1

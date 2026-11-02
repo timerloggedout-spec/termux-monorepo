@@ -27,7 +27,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 | BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 — OUT (WAF target struck) |
 | BUILD-OPEN-2 | mid-build ≈2026-11-06 | long post / Discord | drafted §3.3 — OUT (WAF target struck) |
 | DEMO-TEASE | demo live only | short post | drafted §3.5 — OUT (WAF target struck); future demo beat awaits new pick |
-| SUBMISSION | post-submit only | short post | drafted §3.4 — template only, blocked: submission = none ∧ pick = ∅ |
+| SUBMISSION | Nov7-landing signal only | short post | drafted §3.4 — template only, blocked: submission = none ∧ pick = ∅; BUFFER RULE 2026-11-02 (D2 seat): landing target = Sat 2026-11-07 (packet ready); Nov 8 = mechanics/buffer only; beat keys off Nov7-landing signal, ¬wall |
 
 Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat (RE-KEY per Desk note via D2 seat: holds keyed "until owner pick" — freeze ¬enacted ∧ ¬pending; WAF superseded #3081, target ∅); only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until owner pick ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
 
@@ -49,7 +49,7 @@ Architecture we're testing: 1) brief parser scopes target + allowed actions, 2) 
 
 Containment-first is the constraint, not a feature add-on. If it isn't bounded and evidenced, it doesn't ship.
 
-### 3.4 SUBMISSION (template — publish ONLY after lablab submission confirmation ∈ coordinator)
+### 3.4 SUBMISSION (template — publish ONLY on Nov7-landing signal from D2 seat ∧ lablab submission confirmation ∈ coordinator; Nov 8 = buffer/mechanics only, ¬ target)
 Submitted: Vultr: Agent Rush Hackathon — deadline 2026-11-08 15:00 PT. Entry by Rap1dZ3nith: Web Adapter Foundry, sandboxed browser-operating agent returning an evidence envelope from a bounded probe. Built containment-first. Demo + repo in follow-up.
 
 ### 3.5 DEMO-TEASE

@@ -103,3 +103,15 @@ Gamblers speculate on **task performance**, priced off the scoring surfaces.
 ## Teams (owner, 2026-11-01)
 
 Managers have **teams they can select**. A team is a rostered, selectable unit: {manager · roster · contracts · team record/standing}. A manager selecting a team for a task is a **recorded selection**, stamped like any other selection. Gamblers' task-performance speculation can take a **team as its subject**. Feed/posterior side sits with DoE: a team is its own stratum with its own n bar.
+
+## Naming-collapse input — Registry feed (owner order, 2026-11-02)
+
+The collapse is a **naming/listing convention only**; participant records, wallets, standings and scoring stay distinct underneath. This lane's seed cluster: {gamblers · speculators · forecast · wagerers} + adjacent {bettor/wager · bookie/bookmaker · 11th man}. Distinctions this lane's records require preserved (full text in lane.json `naming_collapse_input`):
+
+- **gambler** = participant CLASS (speculation positions on task performance) — record key must survive any listing-name collapse.
+- **Speculators** = a concrete participant IMPLEMENTATION (own strategies/evaluation/manager seat), separately keyed — not interchangeable with the gambler class at record level.
+- **forecast** = activity/output (position content; winprob estimate class), NOT a participant — collapsing it into a participant name breaks record typing.
+- **wager** = entity distinct from the participant (export: wager as separate entity) — actor-vs-entity distinction must survive.
+- **bookie/bookmaker** = ABSENT odds-setting class; **11th man** = distinct audience/reserve role — must not merge into one listing name.
+
+**Conflicts flagged ↑Registry:** (1) *Speculators* three-way collision — implementation vs Swarm seat name vs generic listing synonym for gamblers; one collapsed name cannot serve all three. (2) *Bookmaker* three senses — absent lane class (listing must not imply an implemented role) vs external quote source (`bookmaker_id`) vs bookie synonym.

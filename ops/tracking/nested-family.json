@@ -1,0 +1,704 @@
+{
+ "schema": "nested-family/v1",
+ "generated_at": "2026-11-02T06:43:38Z",
+ "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
+ "spec": {
+  "doc": "docs/ops/NESTED-FAMILY.md",
+  "grouping": "provider > model (verbatim, NOT_ESTABLISHED literal) > tasks; roles = distinct roles across the model's tasks",
+  "task_link": "dispatch_id + run_id + source_ref (repo path of the dispatch record) = the run-id join"
+ },
+ "sources": [
+  {
+   "id": "stamps",
+   "path": "experiments/doe/routed-dispatch/stamps/*.json",
+   "records_read": 18,
+   "records_used": 18
+  },
+  {
+   "id": "intake",
+   "path": "ops/3l0/intake.jsonl",
+   "records_read": 19,
+   "records_used": 1
+  },
+  {
+   "id": "desk-usage",
+   "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
+   "records_read": 30,
+   "records_used": 3
+  }
+ ],
+ "summary": {
+  "providers": 8,
+  "models": 11,
+  "roles": 2,
+  "tasks": 22,
+  "dispatches": 19,
+  "by_outcome": {
+   "STALLED \u2014 never invoked \u00d72 (runs 41301295882 + 41321691938: tunnel-unresolved skip at Start; Poll skipped; \u2205 work product). Re-dispatch decision (desk, posture): \u2205 further re-fires into a down tunnel; task submitted to the system as issue #3215; tunnel escalated \u21d2 Swarm": 1,
+   "landed (merged 2c0894d2e7d3; synced f7270f379fae)": 1,
+   "COMPLETED \u2192 PR #3102 merged ca1e3bc34d1a (D1 PASS) \u2192 studysprint sync parity 23/23": 1,
+   "completed": 16,
+   "failed": 3
+  },
+  "by_source": {
+   "desk-usage": 3,
+   "stamps": 18,
+   "intake": 1
+  }
+ },
+ "providers": [
+  {
+   "provider": "DeepSeek",
+   "models": [
+    {
+     "model": "NOT ESTABLISHED",
+     "roles": [
+      "contribution-desk dispatch (per-dispatch)"
+     ],
+     "monikers": [
+      "[MUSEai]@{role:{challenge-entries-manager}}"
+     ],
+     "contexts": [
+      "Staged pass unblocked by D1 seat 2026-11-01; note text pulled verbatim from the live Builder article by desk (Gate was entries' article-note text \u2014 entries had already published it)"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "desk-traversal",
+       "role": "contribution-desk dispatch (per-dispatch)",
+       "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+       "context": "Staged pass unblocked by D1 seat 2026-11-01; note text pulled verbatim from the live Builder article by desk (Gate was entries' article-note text \u2014 entries had already published it)",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "41301295882",
+       "ts": null,
+       "outcome": {
+        "status": "STALLED \u2014 never invoked \u00d72 (runs 41301295882 + 41321691938: tunnel-unresolved skip at Start; Poll skipped; \u2205 work product). Re-dispatch decision (desk, posture): \u2205 further re-fires into a down tunnel; task submitted to the system as issue #3215; tunnel escalated \u21d2 Swarm",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd",
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1
+  },
+  {
+   "provider": "Jules",
+   "models": [
+    {
+     "model": "NOT ESTABLISHED",
+     "roles": [
+      "contribution-desk dispatch (per-dispatch)"
+     ],
+     "monikers": [
+      "[MUSEai]@{role:{challenge-entries-manager}}"
+     ],
+     "contexts": [
+      "D1 BATCH spec from D1 seat 07d68c43 (owner order via manager: BATCH ALL TRIGGERABLE at production builds)",
+      "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues"
+     ],
+     "task_count": 2,
+     "tasks": [
+      {
+       "task_class": "desk-traversal",
+       "role": "contribution-desk dispatch (per-dispatch)",
+       "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+       "context": "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "17326020844735872479",
+       "ts": null,
+       "outcome": {
+        "status": "landed (merged 2c0894d2e7d3; synced f7270f379fae)",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "contribution-desk dispatch (per-dispatch)",
+       "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+       "context": "D1 BATCH spec from D1 seat 07d68c43 (owner order via manager: BATCH ALL TRIGGERABLE at production builds)",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "16575382661216894510",
+       "ts": null,
+       "outcome": {
+        "status": "COMPLETED \u2192 PR #3102 merged ca1e3bc34d1a (D1 PASS) \u2192 studysprint sync parity 23/23",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "challenge-entries-manager/d1-studysprint-reader-core/fcc968db0eed",
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 2
+  },
+  {
+   "provider": "Muse",
+   "models": [
+    {
+     "model": "Muse Spark 1.3",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "build dispatch set 1/3: wire provider-invoke.yml to the stamp fan-out",
+      "build dispatch set 2/3: wire provider-command-dispatch.yml to the stamp fan-out",
+      "build dispatch set 3/3: wire gemini-invoke.yml to the stamp fan-out"
+     ],
+     "task_count": 3,
+     "tasks": [
+      {
+       "task_class": "build",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "build dispatch set 1/3: wire provider-invoke.yml to the stamp fan-out",
+       "dispatch_id": "build-wire-provider-invoke-3411",
+       "run_id": null,
+       "workflow": "seat-dispatch (git-data API)",
+       "session_id": null,
+       "ts": "2026-11-02T00:39:10Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/build-wire-provider-invoke-3411.json"
+      },
+      {
+       "task_class": "build",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "build dispatch set 2/3: wire provider-command-dispatch.yml to the stamp fan-out",
+       "dispatch_id": "build-wire-command-dispatch-3428",
+       "run_id": null,
+       "workflow": "seat-dispatch (git-data API)",
+       "session_id": null,
+       "ts": "2026-11-02T01:04:53Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/build-wire-command-dispatch-3428.json"
+      },
+      {
+       "task_class": "build",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "build dispatch set 3/3: wire gemini-invoke.yml to the stamp fan-out",
+       "dispatch_id": "build-wire-gemini-invoke-3441",
+       "run_id": null,
+       "workflow": "seat-dispatch (git-data API)",
+       "session_id": null,
+       "ts": "2026-11-02T01:24:02Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/build-wire-gemini-invoke-3441.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 3
+  },
+  {
+   "provider": "baseten",
+   "models": [
+    {
+     "model": null,
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "certifications-unit l1-relational-databases-v9/061"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "certifications-unit l1-relational-databases-v9/061",
+       "dispatch_id": "cert-unit-41374860979",
+       "run_id": "41374860979",
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T01:54:34Z",
+       "outcome": {
+        "status": "failed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41374860979.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1
+  },
+  {
+   "provider": "cohere",
+   "models": [
+    {
+     "model": null,
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "certifications-unit l1-relational-databases-v9/061"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "certifications-unit l1-relational-databases-v9/061",
+       "dispatch_id": "cert-unit-41375368014",
+       "run_id": "41375368014",
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T02:02:27Z",
+       "outcome": {
+        "status": "failed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41375368014.json"
+      }
+     ]
+    },
+    {
+     "model": "c4ai-aya-expanse-32b",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "certifications-unit l1-relational-databases-v9/061",
+      "certifications-unit l1-relational-databases-v9/quiz-sql-and-postgresql-record",
+      "certifications-unit l1-relational-databases-v9/what-is-ci-cd-and-how-does-ci-work-with-github-actions"
+     ],
+     "task_count": 3,
+     "tasks": [
+      {
+       "task_class": null,
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "certifications-unit l1-relational-databases-v9/what-is-ci-cd-and-how-does-ci-work-with-github-actions",
+       "dispatch_id": "cert-unit-41364184062",
+       "run_id": "41364184062",
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-01T23:52:00Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "NOT_ESTABLISHED",
+       "source": "intake",
+       "source_ref": "ops/3l0/intake.jsonl#cert-unit-41364184062"
+      },
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "certifications-unit l1-relational-databases-v9/quiz-sql-and-postgresql-record",
+       "dispatch_id": "cert-unit-41367182742",
+       "run_id": "41367182742",
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T00:28:57Z",
+       "outcome": {
+        "status": "failed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367182742.json"
+      },
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "certifications-unit l1-relational-databases-v9/061",
+       "dispatch_id": "cert-unit-41376051120",
+       "run_id": "41376051120",
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T02:10:16Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41376051120.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 2,
+   "task_count": 4
+  },
+  {
+   "provider": "github-actions",
+   "models": [
+    {
+     "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "FCC L1 unit 039 project: Build a World Cup Database",
+      "FCC L1 unit 040 project: Build a Salon Appointment Scheduler",
+      "FCC L1 unit 062 project: Build a Periodic Table Database",
+      "FCC L1 unit 063 project: Build a Number Guessing Game"
+     ],
+     "task_count": 4,
+     "tasks": [
+      {
+       "task_class": "certifications-project",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit 039 project: Build a World Cup Database",
+       "dispatch_id": "cert-project-41379161305",
+       "run_id": "41379161305",
+       "workflow": "cert-project.yml",
+       "session_id": null,
+       "ts": "2026-11-02T02:47:47Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41379161305.json"
+      },
+      {
+       "task_class": "certifications-project",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit 040 project: Build a Salon Appointment Scheduler",
+       "dispatch_id": "cert-project-41379885682",
+       "run_id": "41379885682",
+       "workflow": "cert-project.yml",
+       "session_id": null,
+       "ts": "2026-11-02T02:56:00Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41379885682.json"
+      },
+      {
+       "task_class": "certifications-project",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit 062 project: Build a Periodic Table Database",
+       "dispatch_id": "cert-project-41380626948",
+       "run_id": "41380626948",
+       "workflow": "cert-project.yml",
+       "session_id": null,
+       "ts": "2026-11-02T03:04:15Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41380626948.json"
+      },
+      {
+       "task_class": "certifications-project",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit 063 project: Build a Number Guessing Game",
+       "dispatch_id": "cert-project-41381256768",
+       "run_id": "41381256768",
+       "workflow": "cert-project.yml",
+       "session_id": null,
+       "ts": "2026-11-02T03:11:46Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41381256768.json"
+      }
+     ]
+    },
+    {
+     "model": "postgres-16 fleet build (cert-project.yml; SQL authored in-repo)",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "FCC L1 unit 025 project: Build a Celestial Bodies Database"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "certifications-project",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit 025 project: Build a Celestial Bodies Database",
+       "dispatch_id": "cert-project-41378291157",
+       "run_id": "41378291157",
+       "workflow": "cert-project.yml",
+       "session_id": null,
+       "ts": "2026-11-02T02:37:56Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-project-41378291157.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 2,
+   "task_count": 5
+  },
+  {
+   "provider": "mistral",
+   "models": [
+    {
+     "model": "mistral-small-latest",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "provider-invoke mode=invoke"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=invoke",
+       "dispatch_id": "provider-invoke-41392653010",
+       "run_id": "41392653010",
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-02T05:12:54Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/provider-invoke-41392653010.json"
+      }
+     ]
+    },
+    {
+     "model": "open-mistral-nemo",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "provider-invoke mode=invoke"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=invoke",
+       "dispatch_id": "provider-invoke-41392966979",
+       "run_id": "41392966979",
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-02T05:16:30Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/provider-invoke-41392966979.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 2,
+   "task_count": 2
+  },
+  {
+   "provider": "sealion",
+   "models": [
+    {
+     "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "FCC L1 unit what-is-normalization-in-sql (M5 theory batch, provider rotation cohere->sealion)",
+      "FCC L1 unit what-is-sql-injection-and-what-are-some-ways-to-prevent-it (M5 theory batch, provider rotation cohere->sealion)",
+      "FCC L1 unit what-is-the-n-plus-1-problem (M5 theory batch, provider rotation cohere->sealion)",
+      "certifications-unit l1-relational-databases-v9/quiz-bash-and-sql-a"
+     ],
+     "task_count": 4,
+     "tasks": [
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "certifications-unit l1-relational-databases-v9/quiz-bash-and-sql-a",
+       "dispatch_id": "cert-unit-41367701010",
+       "run_id": "41367701010",
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T00:33:03Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367701010.json"
+      },
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit what-is-sql-injection-and-what-are-some-ways-to-prevent-it (M5 theory batch, provider rotation cohere->sealion)",
+       "dispatch_id": "cert-unit-41367431291",
+       "run_id": 41367431291,
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T01:05:16Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367431291.json"
+      },
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit what-is-normalization-in-sql (M5 theory batch, provider rotation cohere->sealion)",
+       "dispatch_id": "cert-unit-41367410806",
+       "run_id": 41367410806,
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T01:17:47Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367410806.json"
+      },
+      {
+       "task_class": "certifications-unit",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "FCC L1 unit what-is-the-n-plus-1-problem (M5 theory batch, provider rotation cohere->sealion)",
+       "dispatch_id": "cert-unit-41367453278",
+       "run_id": 41367453278,
+       "workflow": "cert-unit.yml",
+       "session_id": null,
+       "ts": "2026-11-02T01:19:03Z",
+       "outcome": {
+        "status": "completed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "source": "stamps",
+       "source_ref": "experiments/doe/routed-dispatch/stamps/cert-unit-41367453278.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 4
+  }
+ ],
+ "gaps": [
+  "desk-usage rows carry no run_id/dispatch_id (3 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "campaign_id": "routed-dispatch",
+ "family": "doe",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "admitted_implementing",
+ "moniker": "optimizations-assurance",
+ "manager_chat": "6628d41d-9519-4881-9063-3afe501df815",
+ "owner_basis": "Owner routing update 2026-11-01 (via main): update dispatch routing per the Swarm definition (all provider endpoints participating in 3L0 DoE) + the no-hard-select principle so the scoring planes (3L0, DoE, MoneyBall, MVT/ATES) are POPULATED \u2014 every routed+assigned dispatch emits its full stamp {task class, arm/provider, model, run id, outcome, quota/cost class} to each plane's intake, not just the desk-feed.",
+ "hypothesis": "When every routed dispatch emits its full stamp to every scoring plane's intake at completion, the planes' scoring populations grow from live work across all arms (comparative signal per instance_key), replacing the single-outcome starvation recorded by the 3L0 plane (one distinct outcome event, #1424).",
+ "design": {
+  "units": "Every routed+assigned dispatch completed by the fleet routing layer (workflow runs, provider dispatches, cert units) \u2014 the continuous production flow itself; no synthetic units.",
+  "factor": "The resolved arm (provider x configured instance) as stamped post-hoc by the routing layer; dispatch is route-parameterized and records never carry a pre-pinned model as their result.",
+  "assignment": "The routing layer assigns across arms by task-fit rotation/tranches (no hard-select, swarm doc section 20); single-arm routing only as a recorded constrained arm.",
+  "responses": [
+   "outcome status per dispatch",
+   "gate_call / confirmed where the instance made a call",
+   "quota/cost class per dispatch",
+   "usage slots where the provider returns them (schema rev 1.1; value null unless measured/estimated)"
+  ],
+  "sha_convention": "baseline_sha = the master tip the dispatch started from; candidate_sha = the resulting ref for build dispatches (PR head / merge), else the master tip at completion. Both are real repo refs the arm's work was scored against; the convention is declared here, never dressed as a designed A/B comparison.",
+  "honesty": "Routed production dispatches are OBSERVATIONAL population for the planes unless they belong to a designed campaign's sets; records carry their real status and cohort and are never retro-dressed as designed arms (MVT/ATES intake honesty rules). Missing fields are null / NOT_ESTABLISHED, never invented."
+ },
+ "automation": {
+  "emitter": "scripts/dispatch/stamp_fanout.py",
+  "workflow": ".github/workflows/dispatch-stamp-fanout.yml",
+  "emits": [
+   "ops/3l0/intake.jsonl (3l0-intake/v1)",
+   "ops/challenge/desk-feed.json traversals[routed-dispatch].provider_usage[] (DoE live carrier)",
+   "experiments/doe/routed-dispatch/records/*.json (EXPERIMENT 1.0; DoE scored records + MVT/ATES intake)",
+   "ops/moneyball/routed-dispatch/*.json (moneyball-plane/v2 score records, one per dispatch; deterministic rubric in the emitter, weights fixed at this intake, quantities null = unidentified; the plane validates on master)"
+  ],
+  "identity": "Records carry instance_key where the dispatch stamp provides the configured-instance tuple (scripts/doe/instance_key.py); stamps without the tuple group by provider/model and are marked NOT_ESTABLISHED at the instance level."
+ },
+ "registration": {
+  "preregistered_in_repo": true,
+  "recorded": "2026-11-01"
+ }
+}

@@ -1,0 +1,57 @@
+name: archwiz repo index
+
+# Repo-side adaptive variant of workspace/llm_map/build_final_all_profile.py
+# (device-home inputs) — see scripts/ci/build_repo_index.py. Regenerates
+# workspace/llm_map/llm_index_compact.jsonl + CAVEMAN_INDEX.md from the git
+# index only. Direct commit to master follows the quota-usage-series-refresh
+# pattern: the outputs are not trigger paths of any consumer workflow, so
+# the commit cannot loop; pushes ride the default token (no downstream
+# workflow is expected to fire on these data files).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/build_repo_index.py'
+      - 'scripts/ci/func_index.py'
+      - 'workspace/llm_map/bloat_exclusions.lst'
+      - 'workspace/llm_map/project_mapping.json'
+      - '.github/workflows/archwiz-repo-index.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archwiz-repo-index
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build compact repo index
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -p 'test_build_repo_index.py' -v
+
+      - name: Build index
+        run: python3 scripts/ci/build_repo_index.py
+
+      - name: Commit outputs if changed
+        run: |
+          set -euo pipefail
+          git config user.name "archwiz-repo-index"
+          git config user.email "actions@github.com"
+          git add workspace/llm_map/llm_index_compact.jsonl workspace/llm_map/CAVEMAN_INDEX.md
+          if git diff --cached --quiet; then
+            echo "index unchanged"
+          else
+            git commit -m "chore(llm_map): regenerate compact repo index [archwiz-repo-index]"
+            git push
+          fi

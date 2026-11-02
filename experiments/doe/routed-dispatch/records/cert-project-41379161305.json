@@ -1,0 +1,41 @@
+{
+  "baseline_sha": "8770a4095117008538febeb67ff859766eca84f0",
+  "candidate_sha": "8770a4095117008538febeb67ff859766eca84f0",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41379161305"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "included-minutes",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "certifications-project"
+  },
+  "observed_at": "2026-11-02T02:47:47Z",
+  "origin": "live",
+  "outcome": "worldcup.sql applied; insert_data.sh loaded teams=24/games=32 in worldcup AND worldcuptest; queries.sh output identical to expected_output.txt; fileset committed to monorepo certifications/solutions/039-world-cup-database/",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "github-actions",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+    "provider": "github-actions"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

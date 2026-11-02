@@ -64,7 +64,7 @@ JSON
 export XDG_RUNTIME_DIR="$HOME/runtime-dir"
 mkdir -p "$XDG_RUNTIME_DIR" && chmod 700 "$XDG_RUNTIME_DIR"
 export DONT_PROMPT_WSL_INSTALL=1
-CODE="$HOME/vscode/VSCode-linux-x64/bin/code"
+CODE="$HOME/vscode/VSCode-linux-x64/code"
 LAUNCH=(xvfb-run -a -s "-screen 0 1024x768x24" "$CODE" --no-sandbox
   --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage
   --disable-workspace-trust
@@ -92,6 +92,23 @@ if [ -f "$WS/.freeCodeCamp/package.json" ]; then
   ' > "$EV/pg-probe.txt" 2>&1) || true
 fi
 docker exec pg bash -c 'tail -30 /var/log/postgresql/*.log' > "$EV/pg-container.log" 2>&1 || true
+{ echo "== listeners on 5432 =="; ss -ltnp 2>/dev/null | grep 5432 || ss -ltn | grep 5432 || true
+  echo "== docker port pg =="; docker port pg || true
+  echo "== container IP connect =="
+  CIP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pg 2>/dev/null)
+  echo "container ip: $CIP"
+  if [ -n "$CIP" ] && [ -f "$WS/.freeCodeCamp/package.json" ]; then
+    (cd "$WS/.freeCodeCamp" && CIP="$CIP" node -e '
+      const { Client } = require("pg");
+      (async () => {
+        const c = new Client({ host: process.env.CIP, port: 5432, user: "postgres", database: "universe" });
+        try { await c.connect(); const r = await c.query("select 1 as ok");
+          console.log("container-ip CONNECT OK", JSON.stringify(r.rows)); await c.end(); }
+        catch (e) { console.log("container-ip CONNECT FAIL", e.message); }
+      })();
+    ') || true
+  fi
+} >> "$EV/pg-probe.txt" 2>&1 || true
 
 # Direct mocha run as a diagnostic (host, against container postgres).
 if [ -f "$WS/.freeCodeCamp/package.json" ]; then

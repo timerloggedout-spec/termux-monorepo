@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T13:20:48Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T13:32:58Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T13:20:47Z` (merged 150 · open 185) · lane-events(Neon) status=`ok` count=`8683` read_at=`2026-11-02T13:20:47Z`
+Sources: PR feed read_at=`2026-11-02T13:32:58Z` (merged 150 · open 183) · lane-events(Neon) status=`ok` count=`8714` read_at=`2026-11-02T13:32:58Z`
 
 Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknown=5
 
@@ -25,11 +25,11 @@ Rows: 22 · by_state: active=4 · closed=1 · in-flight=11 · landed=1 · unknow
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3744 `de16a0ea1ead` 2026-11-02T10:07:56Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3875 `072b2adb2106` 2026-11-02T13:24:07Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #2340 `9554835acf5d` 2026-11-02T11:12:25Z | land/close PR #1441 — feat(triage): reconcile official quota before dispatch |
 | replay | `repo-replay` | Repo Replay | active | #3816 `6677c1ffcbeb` 2026-11-02T12:18:46Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3770 `c32134670a97` 2026-11-02T10:22:46Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3866 `0d06ce4295de` 2026-11-02T13:19:36Z | land/close PR #3795 — chore(dashboards): refresh surface feeds |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3881 `daf1bdfa57f6` 2026-11-02T13:29:34Z | land/close PR #3795 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 85/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)

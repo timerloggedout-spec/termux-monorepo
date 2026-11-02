@@ -50,6 +50,31 @@ jobs:
           }
           rename_one help-wanted-oversight tribute-oversight
           rename_one help-wanted-dash tribute-dash
+      - name: Swap production domains to the new names (assign new, verify, remove old)
+        shell: bash
+        run: |
+          set -euo pipefail
+          auth=(-H "Authorization: Bearer $VERCEL_TOKEN")
+          swap_one () {
+            proj="$1"; newd="$2"; oldd="$3"
+            code=$(curl -s -o /tmp/d.json -w '%{http_code}' -X POST "${auth[@]}" -H 'Content-Type: application/json' -d "{\"name\": \"$newd\"}" "$API/v9/projects/$proj/domains")
+            echo "POST domain $newd on $proj = HTTP $code"
+            case "$code" in 200|201|409) :;; *) cat /tmp/d.json; exit 1;; esac
+            ok=0
+            for i in $(seq 1 12); do
+              c=$(curl -s -o /dev/null -w '%{http_code}' "https://$newd/")
+              echo "probe https://$newd/ = $c"
+              if [ "$c" = "200" ]; then ok=1; break; fi
+              sleep 10
+            done
+            [ "$ok" = "1" ] || { echo "::error::$newd not serving 200; old domain $oldd KEPT"; exit 1; }
+            code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE "${auth[@]}" "$API/v9/projects/$proj/domains/$oldd")
+            echo "DELETE domain $oldd from $proj = HTTP $code"
+            case "$code" in 200|204|404) :;; *) exit 1;; esac
+            echo "::notice::domain swap $proj: $newd live, $oldd removed"
+          }
+          swap_one tribute-oversight tribute-oversight.vercel.app help-wanted-oversight.vercel.app
+          swap_one tribute-dash tribute-dash.vercel.app help-wanted-dash.vercel.app
           {
             echo "## Vercel project renames (Bundle D window)"
             echo "- help-wanted-oversight -> tribute-oversight: renamed/read-back asserted"

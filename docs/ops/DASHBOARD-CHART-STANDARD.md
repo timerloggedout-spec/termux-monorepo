@@ -54,6 +54,7 @@ keep them; the standard governs data + stamps, not the drawing code.
 | doe.html | ✓ campaigns by state + runs per campaign (chartkit) | doe-feed.json |
 | mvt.html | ✓ experiment record population (chartkit) | mvt-feed.json |
 | moneyball.html | ✓ scoring weights + penalty magnitudes (chartkit) | moneyball-feed.json |
+| wagering-book.html | ✓ wagering-book Gantt (own feed) | wagering-book.json |
 | oracle.html | ✓ proposals + passes by status (chartkit) | oracle-panel-feed.json |
 | delphi-rfp.html | ✓ open RFPs by status + group (chartkit) | delphi-rfp-feed.json |
 | delphi-ledger.html | ✓ events per ledger (chartkit) | delphi-ledger-feed.json |

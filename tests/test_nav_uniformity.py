@@ -36,6 +36,7 @@ CANON = [
     ('https://timerloggedout-spec.github.io/tribute/oracle.html', 'Oracle'),
     ('https://timerloggedout-spec.github.io/tribute/3l0.html', '3L0'),
     ('https://timerloggedout-spec.github.io/tribute/moneyball.html', 'MoneyBall'),
+    ('https://timerloggedout-spec.github.io/tribute/wagering-book.html', 'Wagering Book'),
     ('https://timerloggedout-spec.github.io/tribute/mvt.html', 'MVT'),
     ('https://timerloggedout-spec.github.io/tribute/doe.html', 'DoE'),
     ('https://timerloggedout-spec.github.io/tribute/ates.html', 'ATES'),
@@ -63,7 +64,7 @@ CANON = [
 # carry none — that set is pinned too (see test_nav_carrier_set).
 NAV_PAGES = {
     "index.html", "quota.html", "quota-usage.html", "quota-graphs.html",
-    "admin.html", "oracle.html", "3l0.html", "moneyball.html",
+    "admin.html", "oracle.html", "3l0.html", "moneyball.html", "wagering-book.html",
     "mvt.html", "doe.html", "ates.html", "free-tier-value.html",
     "dispatch-tree.html", "countdowns.html", "linguist.html",
     "delphi-rfp.html", "delphi-ledger.html", "classifiers.html", "pr-lanes.html",

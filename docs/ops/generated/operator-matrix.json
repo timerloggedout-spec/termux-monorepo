@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 385,
-    "open_prs": 175,
+    "open_prs": 177,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 173,
+      "prs": 175,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T07:00:22Z",
+  "generated_at": "2026-11-02T07:05:01Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "d1094ff0b8"
+    "sha": "46e313378e"
   },
   "prs": [
     {
@@ -208,6 +208,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bd588191ca",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T07:02:25Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c74e83352d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3572,
+      "title": "fix(vercel): owner-records verify uses canonical paths + protection-aware liveness",
+      "updated_at": "2026-11-02T07:03:59Z"
     },
     {
       "class": "CANDIDATE",
@@ -1786,20 +1814,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "ac09020b45",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T06:59:36Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1926,15 +1940,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "42817482aa",
+      "head_sha": "28b5d0bbce",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T06:12:54Z"
+      "updated_at": "2026-11-02T07:04:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2593,6 +2607,20 @@
       "number": 3565,
       "title": "feat(quota): swarm feed for quota-swarm.html (nested-family/v1 envelope)",
       "updated_at": "2026-11-02T06:54:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "39fbf76422",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3574,
+      "title": "feat(quota): event audit 001 + state-gated audit gate (owner standard)",
+      "updated_at": "2026-11-02T07:03:57Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -8,4 +8,4 @@ Append-only **JSONL** per UTC day + `latest.json`.
 - Does **not** auto-admit to MoneyBall — evaluation cohort evidence only
 
 Writer: `scripts/ci/tribute_evidence.py`  
-Contract: `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`
+Contract: `docs/ops/TRIBUTE-EVIDENCE-FEED.md`

@@ -9,10 +9,10 @@ description: Select AND EXECUTE external help-wanted / good-first-issue / mutual
 
 **Canonical paths (in-repo — collaborator parity):**
 - `.agents/skills/tribute-lane/SKILL.md` ← this file
-- `docs/ops/HELP-WANTED-LANE.md`
-- `docs/ops/HELP-WANTED-PARALLEL.md`
-- `docs/ops/HELP-WANTED-STATUS.md` ← living human-review surface
-- `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`
+- `docs/ops/TRIBUTE-LANE.md`
+- `docs/ops/TRIBUTE-PARALLEL.md`
+- `docs/ops/TRIBUTE-STATUS.md` ← living human-review surface
+- `docs/ops/TRIBUTE-EVIDENCE-FEED.md`
 - `docs/ops/SKILLS-INVENTORY.md` · root `SKILLS.md`
 - `scripts/ci/tribute_scout.py`
 - `scripts/ci/tribute_claim.py` ← idempotent claim
@@ -80,7 +80,7 @@ Before describing an external PR as a fix, run:
 
     python3 scripts/ci/tribute_diff_gate.py --pr <foreign-pr-url> --expect solution
 
-A claim or stake is not a solution. The graduation contract is docs/ops/HELP-GIVEN-TRIBUTE.md; its receipt schema is docs/ops/HELP-WANTED-TRIBUTE.schema.json.
+A claim or stake is not a solution. The graduation contract is docs/ops/HELP-GIVEN-TRIBUTE.md; its receipt schema is docs/ops/TRIBUTE-TRIBUTE.schema.json.
 
 The initial execute arm may intentionally create a stake-only PR. Record that as STAKE evidence, then return to the same upstream PR for the actual Help-Given Tribute patch and proof.
 

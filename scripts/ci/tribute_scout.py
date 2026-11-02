@@ -258,7 +258,7 @@ def main() -> int:
         "excluded": excluded,
         "preflight": "tribute_system1.preflight_candidate",
         "ranking_contract": {
-            "heuristics": "CPPH v0 — see docs/ops/HELP-WANTED-LANE.md",
+            "heuristics": "CPPH v0 — see docs/ops/TRIBUTE-LANE.md",
             "meaning": "relative discovery priority, not eligibility or claim authorization",
             "unknown_evidence_policy": "unknown signals earn zero points and are listed as evidence gaps",
             "requires_fresh_validation_before_claim": True,

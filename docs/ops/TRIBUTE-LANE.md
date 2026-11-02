@@ -3,7 +3,7 @@
 **Status:** LIVE · **with Tribute** (contributor project)  
 **One sentence:** Scan FOSS opportunities → rank → claim once → open an **upstream PR** as a tribute to the maintainer → follow feedback → record the outcome on `/tribute/`.
 
-Legacy implementation contract: **`HELP-WANTED-TRIBUTE.md`** for the contributor ledger contract.
+Legacy implementation contract: **`TRIBUTE-TRIBUTE.md`** for the contributor ledger contract.
 
 ## Pipeline (complete)
 

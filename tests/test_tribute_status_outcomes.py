@@ -57,7 +57,7 @@ class HelpWantedStatusOutcomeTests(unittest.TestCase):
         for path in (
             ".github/workflows/tribute-telemetry-tests.yml",
             "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md",
-            "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md",
+            "docs/ops/TRIBUTE-REALIZATION-EVIDENCE.md",
         ):
             self.assertIn(path, pull_request_paths)
             self.assertIn(path, push_paths)

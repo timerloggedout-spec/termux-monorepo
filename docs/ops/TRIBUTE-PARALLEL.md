@@ -1,7 +1,7 @@
 # Help-Wanted Parallel Capacity (SSOT)
 
 **Status:** adaptive cadence live (scout 2h / execute 4h budgeted).
-**Companion:** `HELP-WANTED-LANE.md` · `AGENT-MONIKERS.md` · skill `tribute-lane`.
+**Companion:** `TRIBUTE-LANE.md` · `AGENT-MONIKERS.md` · skill `tribute-lane`.
 
 ## Delivery hierarchy — DO NOT FLATTEN
 

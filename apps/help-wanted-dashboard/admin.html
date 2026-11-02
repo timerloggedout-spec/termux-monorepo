@@ -151,6 +151,10 @@
 <h2>Feed freshness</h2>
 <div id="p2-charts"><p class="muted">Loading feeds…</p></div>
 </section>
+<section>
+<h2>Backup state</h2>
+<div id="p2-backup"><p class="muted">Loading backup-state feed…</p></div>
+</section>
 </main>
 <footer><p class="muted">Admin panel · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
 <script src="./chartkit.js"></script>
@@ -268,8 +272,33 @@ async function loadP2Fresh(){
   rows.sort((a,b)=>b.value-a.value);
   $('p2-charts').innerHTML='<p class="meta">Age in hours of the feeds this panel consumes, at render time · STALE = older than 24h (chart standard).</p><h3>Feed age (hours)</h3>'+CK.bars(rows);
 }
+async function loadBackup(){
+  try{
+    const f=await jget('./data/backup-state-feed.json');
+    const ex=(f.exports||[])[(f.exports||[]).length-1];
+    const dr=(f.drills||[])[(f.drills||[]).length-1];
+    const cur=ex&&f.marker&&f.marker.state_hash===ex.state_hash;
+    let html='<p class="meta">Feed generated '+esc(f.generated_at)+' · '+(CK.stampState(f.generated_at,Date.now())==='STALE'?'<span class="pill">STALE</span> feed older than 24h':'fresh')+' · schema '+esc(f.schema||'')+'</p>';
+    html+='<p>'+(cur?'<span class="pill ok">CURRENT</span> backup covers the current workspace state':'<span class="pill bad">STALE</span> state has moved past the last export - the backup does not cover the current state')+'</p>';
+    if(ex){
+      html+='<p class="muted">Last export '+esc(ex.id)+' · '+esc(ex.at)+' · publish commit '+esc(String(ex.publish_commit||'').slice(0,10))+' · scrub gates '+(ex.gates_pass?'PASS':'FAIL')+'</p>';
+      const rows=[{label:'T0 content files',value:ex.t0||0},{label:'T1 manifest entries',value:ex.t1||0},{label:'manifest-only files',value:ex.manifest_only||0},{label:'excluded',value:ex.excluded||0}];
+      html+='<h3>Latest export composition</h3>'+CK.bars(rows);
+      html+='<p class="muted">Export size '+esc(ex.bytes)+' bytes</p>';
+    } else html+='<p class="muted">No export on record.</p>';
+    if(dr){
+      html+='<p>Restore drill verdict: <strong>'+esc(dr.verdict)+'</strong> <span class="muted">(export '+esc(dr.export_id)+')</span></p>'
+        +'<p class="muted">T0 leg: '+esc(dr.t0.checked)+' checked, '+esc(dr.t0.mismatched)+' mismatched, exclusions absent: '+esc(dr.t0.excluded_absent)+' · T1 leg: '+esc(dr.t1.checked)+' checked, '+esc(dr.t1.consistent)+' consistent, '+esc(dr.t1.missing)+' missing · restored '+esc(dr.restored_bytes)+' bytes · '+esc(dr.mode)+'</p>';
+    } else html+='<p class="muted">No restore drill on record.</p>';
+    const fa=f.failed_attempts||[];
+    html+='<p class="muted">Failed export attempts on record: '+fa.length+(fa.length?(' · latest '+esc(fa[fa.length-1].at)):'')+'</p>';
+    if((f.gaps||[]).length)html+='<p class="muted">Gaps: '+f.gaps.map(esc).join(' · ')+'</p>';
+    $('p2-backup').innerHTML=html;
+  }catch(e){ $('p2-backup').innerHTML='<p class="muted">Backup-state feed unavailable.</p>'; }
+}
 async function load(){
   await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue(),loadChallenge(),loadGearbox()]);
+  loadBackup();
   loadP2Fresh();
   $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
 }

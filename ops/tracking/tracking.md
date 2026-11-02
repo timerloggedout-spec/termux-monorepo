@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T22:05:21Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T22:28:56Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T22:05:20Z` (merged 150 · open 184) · lane-events(Neon) status=`ok` count=`9422` read_at=`2026-11-02T22:05:20Z`
+Sources: PR feed read_at=`2026-11-02T22:28:54Z` (merged 150 · open 185) · lane-events(Neon) status=`ok` count=`9478` read_at=`2026-11-02T22:28:54Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -16,7 +16,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | unknown | NOT_ESTABLISHED | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first · LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3899 `0a223bddacb3` 2026-11-02T13:55:09Z | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | #3899 `0a223bddacb3` 2026-11-02T13:55:09Z | land/close PR #4002 — viz(desk): adopt desk-feed v1.3 on the tribute tree (re-issues #3063) |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #3865 `7b416c374c09` 2026-11-02T13:17:49Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -27,7 +27,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3920 `a9841cfed69f` 2026-11-02T13:56:58Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3928 `6635afbb8572` 2026-11-02T14:11:20Z | land/close PR #1441 — feat(triage): reconcile official quota before dispatch |
-| replay | `repo-replay` | Repo Replay | active | #3896 `7b22048ce8ca` 2026-11-02T13:46:27Z | NOT_ESTABLISHED |
+| replay | `repo-replay` | Repo Replay | active | #4001 `4d94a89dfa30` 2026-11-02T22:08:50Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | NOT_ESTABLISHED | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3937 `e7f0a4dfecbd` 2026-11-02T14:20:07Z | land/close PR #3969 — ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood) |
 
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 117/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 116/150 (extend ops/tracking/projects.json match rules)

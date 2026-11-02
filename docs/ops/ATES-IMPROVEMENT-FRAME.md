@@ -17,6 +17,35 @@ quantity. This frame closes that gap. It does not replace
 claims are governed by rule 9 (attribution corroboration) and
 the significance standard.
 
+## Mechanism correction (2026-11-02 — supersedes v0 text)
+
+Stewardship firsthand (artifacts read in full), verified by
+doe-expert against `scripts/ci/emit_ates_run_receipt.py`
+@master: **there is NO conclusion filter** in the receipt
+workflow. The emitter maps the source conclusion onto the
+receipt `status` field — success -> "success", failure /
+timed_out / action_required / startup_failure -> "failed",
+cancelled / neutral / skipped -> "skipped", anything else ->
+"error" — while `event` stays "task_completed" for ALL
+receipts. Truth rides the status field; a consumer counting
+by event type misreads failures and cancellations as
+completions. Issue #3812's "success-only emitter" mechanism
+claim is SUPERSEDED (Stewardship is correcting it as a step-6
+item); the parity problem is a MEASUREMENT problem
+(status-blind counting), not an emission problem. The
+quantity definitions and IMP-002 below are restated on the
+status field accordingly.
+
+Established denominator facts (Stewardship census): the
+emitting surface is ONE workflow_run path over ONE selected
+source workflow ("Continuous agent ops") of 271 repo
+workflows; the receipt workflow has 9 runs ever and is
+DORMANT since 2026-10-23; output is artifact-only (30-day
+retention, no in-repo persistence); payloads missing run
+id / attempt / timestamp produce NO receipt (the emitter
+refuses a synthetic receipt) — an exclusion class invisible
+in the store, countable only from the census leg.
+
 ## The measured quantity — receipt coverage
 
 ATES receipts are emitted by
@@ -30,15 +59,17 @@ against `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`).
   coverage figure without its S version is NOT_ESTABLISHED.
 - **Workflow coverage** (per window) = workflows in S emitting
   at least one receipt / |S|.
-- **Run-level receipt rate**, per conclusion class c in
-  {success, failure, cancelled, other}: receipts emitted for
-  runs of class c / total runs of class c in S (census leg:
+- **Run-level receipt rate**, per STATUS class c in
+  {success, failed, skipped, error} (the emitter's
+  conclusion -> status map, cited above): receipts with
+  status c / total source runs mapping to c in S (census leg:
   Actions API).
-- **Parity gap** = rate(success) − rate(failure ∪ cancelled).
-  At frame open the gap is structural: the emitter runs only
-  on success conclusions (#3812), so failure/cancelled rates
-  sit at ~0 BY CONSTRUCTION. The gap is the headline quantity
-  this frame exists to close or consciously bound.
+- **Parity gap (measurement)** = success rate as counted by
+  event type − TRUE success rate counted by status. Emission
+  parity exists by construction (no filter); the gap this
+  frame tracks is the inflation status-blind consumers
+  introduce, driven to zero when every coverage consumer of
+  record reads the status field (IMP-002, clause K8).
 - Readings are expectation records: a coverage claim cites
   {S version · window · n runs censused · census source}.
   Emitter self-count alone is a single leg — HELD under
@@ -59,16 +90,19 @@ REJECTED. An entry's claim may not exceed its state.
   quantify"). Evidence requirement: first census landed —
   S enumerated, rates by conclusion class, parity gap stated.
   State at registration: PROPOSED.
-- **ATES-IMP-002 — Failure/cancelled parity.** Statement:
-  failed and cancelled source runs receive main-path receipts
-  equivalent to success runs, OR parity is consciously bounded
-  at a stated rate. Basis: #3812 emitter condition. Evidence
-  requirement: post-change census showing failure/cancelled
-  receipt_rate at the adopted target, with dedup, schema and
-  provenance validation passing (IMP-003). State: HELD —
-  **the parity target (full vs bounded/sampled) is an owner
-  decision, not assumed here** (#3812 itself notes full-cost
-  emission of every failure is not necessarily warranted).
+- **ATES-IMP-002 — Status-true parity accounting.**
+  Statement: every coverage/parity quantity and every
+  coverage consumer of record computes on the receipt
+  `status` field; event-type counting is retired. Basis: the
+  mechanism correction above (v0's emission-parity statement
+  rested on #3812's superseded mechanism claim and is
+  withdrawn). Evidence requirement: a status-based census
+  (IMP-001 recomputed on status) + a consumer audit listing
+  every coverage consumer of record and its counting field.
+  State: PROPOSED. (The v0 owner-ruling flag on a parity
+  TARGET is dissolved by the correction: no emission filter
+  exists, so there is no full-vs-bounded emission decision
+  to take; a future proposal to ADD a filter re-opens it.)
 - **ATES-IMP-003 — Receipt validation suite.** Statement:
   standing checks over the receipt store {deduplication ·
   schema conformance · source run/attempt/SHA provenance},
@@ -77,6 +111,13 @@ REJECTED. An entry's claim may not exceed its state.
   and source run/attempt/SHA provenance"). Evidence
   requirement: the checks exist, run, and their first results
   are on record. State: PROPOSED.
+- **ATES-IMP-004 — Receipt persistence.** Statement: receipts
+  land in a durable in-repo store; today output is
+  artifact-only with 30-day retention, so the receipt record
+  evaporates and long-window coverage is unverifiable.
+  Evidence requirement: the store exists, emitter output
+  lands there, and a window older than 30 days is read back
+  from it. State: PROPOSED.
 
 New entries append with the next id; entry amendments are new
 versions of the entry, with the superseded text retained.
@@ -105,6 +146,14 @@ non-conformant regardless of its conclusion.
   {run_id · attempt · source SHA} provenance. Failures are
   excluded AND reported as exclusions — never silently
   dropped.
+  (K5 applies equally to emitter-refused payloads — missing
+  run id / attempt / timestamp — which are counted as
+  exclusions from the census leg, since the store cannot see
+  them.)
+- **K8 — Status-field accounting.** Coverage and parity
+  quantities are computed on the receipt `status` field.
+  Counting by event type ("task_completed") is non-conformant
+  per se: it misreads failed/skipped receipts as completions.
 - **K6 — Claims follow entry states.** "Improvement landed"
   is stated only when the entry's evidence requirement is met
   and cited; otherwise HELD/PROPOSED language.
@@ -114,8 +163,9 @@ non-conformant regardless of its conclusion.
 
 ## Open owner rulings (flagged, not assumed)
 
-1. **Parity target** for IMP-002 (full parity vs a bounded
-   rate) — a cost decision #3812 leaves open.
+1. **Parity target** — DISSOLVED by the mechanism correction
+   (no emission filter exists; see IMP-002). Re-opens only if
+   a filter is ever proposed.
 2. **S governance** — v0 takes S descriptively from the
    receipt workflow's trigger list. Whether S should be a
    DoE-designated set (potentially wider: every workflow whose

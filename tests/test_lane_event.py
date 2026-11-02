@@ -11,7 +11,7 @@ spec = importlib.util.spec_from_file_location("lane_event", ROOT / "scripts/ops/
 le = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(le)
 
-BASE = {"lane": "help-wanted", "workflow": "help-wanted scout", "event_type": "run_completed",
+BASE = {"lane": "help-wanted", "workflow": "tribute scout", "event_type": "run_completed",
         "repo": "o/r", "run_id": 1, "run_attempt": 1}
 
 

@@ -8,7 +8,7 @@ Idempotent: will NOT re-post if our claim marker already exists on the issue.
 Skips closed issues unless --allow-closed.
 
 Usage:
-  python3 scripts/ci/help_wanted_claim.py --issue https://github.com/owner/repo/issues/123
+  python3 scripts/ci/tribute_claim.py --issue https://github.com/owner/repo/issues/123
 """
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ If someone is already actively working this, say so and we will yield.
 def _headers() -> dict[str, str]:
     h = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "termux-monorepo-help-wanted-claim",
+        "User-Agent": "termux-monorepo-tribute-claim",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")

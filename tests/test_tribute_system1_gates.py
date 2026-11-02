@@ -9,10 +9,10 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from scripts.ci import help_wanted_claim as claim
-from scripts.ci import help_wanted_contribute as contribute
+from scripts.ci import tribute_claim as claim
+from scripts.ci import tribute_contribute as contribute
 from scripts.ci import tribute_followup as followup
-from scripts.ci import help_wanted_scout as scout
+from scripts.ci import tribute_scout as scout
 
 FIX = Path(__file__).parent / "fixtures" / "tribute_system1"
 SEEDS = sorted(FIX.glob("seed*.json"))

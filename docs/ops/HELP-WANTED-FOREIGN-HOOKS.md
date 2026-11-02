@@ -12,7 +12,7 @@ foreign POST ─────► same event types on THIS repo
 |--------------|----------|
 | `tribute-execute` / `tribute-foreign-execute` | execute |
 | `tribute-followup` / `tribute-foreign` / `tribute-changes-requested` | followup (poll only) |
-| `help-wanted-scout` / `tribute-foreign-scout` | scout |
+| `tribute-scout` / `tribute-foreign-scout` | scout |
 
 ```bash
 curl -X POST \

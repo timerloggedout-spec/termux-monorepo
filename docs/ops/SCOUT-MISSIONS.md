@@ -14,7 +14,7 @@ Scout is a **population of scouts**, not a single provider roster script. Each s
 
 The implementation is `scripts/scout_missions.py`; it consumes the dynamic Scout roster and emits proposal-only mission records.
 
-**Help-wanted lane** (`.agents/skills/help-wanted-lane`, workflows `help-wanted-scout` / `help-wanted-execute`) is the **execute arm of Oversight**, not a sixth scout species. See `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`.
+**Help-wanted lane** (`.agents/skills/help-wanted-lane`, workflows `tribute-scout` / `tribute-execute`) is the **execute arm of Oversight**, not a sixth scout species. See `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`.
 
 ## Oversight is a performance laboratory
 

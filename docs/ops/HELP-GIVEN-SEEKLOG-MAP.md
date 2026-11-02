@@ -14,12 +14,12 @@ SeekLog is the **seekable memory** over that surface — not the dashboard, not 
 
 | Stage | Workflow / script | Evidence kind(s) | SeekLog path prefix |
 |-------|-------------------|------------------|---------------------|
-| Scout | `help-wanted-scout` | `scout_bench` | `help-given/scout_bench/` |
-| Claim | `help_wanted_claim.py` | `claim`, `claim_skipped_closed` | `help-given/claim*/` |
-| Execute / contribute | `help_wanted_contribute.py` | `upstream_pr`, `fallback`, `notice` | `help-given/upstream_pr/` |
+| Scout | `tribute-scout` | `scout_bench` | `help-given/scout_bench/` |
+| Claim | `tribute_claim.py` | `claim`, `claim_skipped_closed` | `help-given/claim*/` |
+| Execute / contribute | `tribute_contribute.py` | `upstream_pr`, `fallback`, `notice` | `help-given/upstream_pr/` |
 | Followup | `tribute-followup` | `followup_skip_idempotent`, `followup_skip_cooldown`, `followup_changes_requested`, `followup_reengage`, `followup_stale_nudge` | `help-given/followup_*/` |
-| LLM assist | `help-wanted-llm-assist` | `llm_assist` (when written) | `help-given/llm_assist/` |
-| Rerequest | `help-wanted-rerequest` | `rerequest` (when written) | `help-given/rerequest/` |
+| LLM assist | `tribute-llm-assist` | `llm_assist` (when written) | `help-given/llm_assist/` |
+| Rerequest | `tribute-rerequest` | `rerequest` (when written) | `help-given/rerequest/` |
 | Status board | `tribute_status.py` | synthetic `tribute`, `foreign_open` | `help-given/tribute/`, `help-given/foreign_open/` |
 | Dashboard | static `/help-wanted/` | (consumes status; no receipts) | — |
 

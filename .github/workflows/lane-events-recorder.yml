@@ -10,7 +10,7 @@ name: lane events recorder
 on:
   workflow_run:
     workflows:
-      - help-wanted scout
+      - tribute scout
       - tribute execute
       - tribute-followup
       - tribute-status-refresh

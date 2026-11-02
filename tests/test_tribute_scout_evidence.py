@@ -3,8 +3,8 @@ import importlib.util
 import unittest
 from pathlib import Path
 
-MODULE_PATH = Path(__file__).resolve().parents[1] / "scripts" / "ci" / "help_wanted_scout.py"
-SPEC = importlib.util.spec_from_file_location("help_wanted_scout", MODULE_PATH)
+MODULE_PATH = Path(__file__).resolve().parents[1] / "scripts" / "ci" / "tribute_scout.py"
+SPEC = importlib.util.spec_from_file_location("tribute_scout", MODULE_PATH)
 SCOUT = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(SCOUT)
@@ -45,7 +45,7 @@ class HelpWantedScoutEvidenceTests(unittest.TestCase):
     def test_catalog_contract_disclaims_claim_authorization(self):
         # Contract is asserted at the source level to prevent accidental weakening.
         source = MODULE_PATH.read_text(encoding="utf-8")
-        self.assertIn('"schema_version": "help-wanted-catalog.v2"', source)
+        self.assertIn('"schema_version": "tribute-catalog.v2"', source)
         self.assertIn('"requires_fresh_validation_before_claim": True', source)
 
 

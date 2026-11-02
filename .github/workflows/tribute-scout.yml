@@ -1,4 +1,4 @@
-name: help-wanted scout
+name: tribute scout
 
 # Rank external help-wanted / good-first-issue candidates via CPPH.
 # Interthread: optional chain-execute via repository_dispatch after scout.
@@ -20,20 +20,20 @@ on:
         required: false
         default: ""
       chain_execute:
-        description: "true = dispatch help-wanted-execute after scout"
+        description: "true = dispatch tribute-execute after scout"
         required: false
         default: "false"
   repository_dispatch:
     types:
-      - help-wanted-scout
-      - help-wanted-foreign-scout
+      - tribute-scout
+      - tribute-foreign-scout
 
 permissions:
   contents: read
   actions: write
 
 concurrency:
-  group: help-wanted-scout
+  group: tribute-scout
   cancel-in-progress: true
 
 jobs:
@@ -59,14 +59,14 @@ jobs:
           set -euo pipefail
           export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
           mkdir -p docs/ops/generated
-          ARGS=(python3 scripts/ci/help_wanted_scout.py --max "$MAX" --label "$LABEL" --out docs/ops/generated/help-wanted-catalog.json)
+          ARGS=(python3 scripts/ci/tribute_scout.py --max "$MAX" --label "$LABEL" --out docs/ops/generated/tribute-catalog.json)
           if [ -n "${LANG:-}" ]; then ARGS+=(--lang "$LANG"); fi
           "${ARGS[@]}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: help-wanted-catalog
-          path: docs/ops/generated/help-wanted-catalog.json
+          name: tribute-catalog
+          path: docs/ops/generated/tribute-catalog.json
           if-no-files-found: ignore
 
       - name: Interthread → execute (optional)
@@ -79,5 +79,5 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/dispatches" \
-            -d '{"event_type":"help-wanted-execute","client_payload":{"mode":"claim-and-pr","source":"scout"}}'
+            -d '{"event_type":"tribute-execute","client_payload":{"mode":"claim-and-pr","source":"scout"}}'
           echo "chained execute"

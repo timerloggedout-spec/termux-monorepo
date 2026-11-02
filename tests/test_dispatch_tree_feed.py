@@ -40,7 +40,7 @@ def test_parse_tree_matrix_and_manifest_not_lane_staleness():
     lanes = {e["lane"]: e["output"] for e in rule["lanes"]}
     assert len(lanes) == 32
     assert lanes["tribute-status-refresh"] == "dispatch_hw_refresh"
-    assert lanes["help-wanted-scout"] == "dispatch_hw_pair"
+    assert lanes["tribute-scout"] == "dispatch_hw_pair"
     assert lanes["provider-availability"] == "dispatch_q6"
     # bridge/probe thresholds are manifest ages, never lane staleness
     assert "dispatch_bridge" not in rule["stale"]

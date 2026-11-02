@@ -55,9 +55,9 @@ HONESTY = [
 # whose age the tree actually measures (hw-pair takes the max of two).
 STALE_VAR_FILES = {
     "hwRefreshStaleMin": ["tribute-status-refresh.yml"],
-    "hwPairStaleMin": ["tribute-followup.yml", "help-wanted-scout.yml"],
+    "hwPairStaleMin": ["tribute-followup.yml", "tribute-scout.yml"],
     "hwExecuteStaleMin": ["tribute-execute.yml"],
-    "hwAssistStaleMin": ["help-wanted-llm-assist.yml"],
+    "hwAssistStaleMin": ["tribute-llm-assist.yml"],
     "paStaleMin": ["provider-availability.yml"],
 }
 

@@ -12,16 +12,16 @@ on:
       - "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"
       - "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md"
       - "scripts/ci/actions_incident_dedupe.py"
-      - "scripts/ci/help_wanted_claim.py"
+      - "scripts/ci/tribute_claim.py"
       - "scripts/ci/tribute_followup.py"
-      - "scripts/ci/help_wanted_scout.py"
+      - "scripts/ci/tribute_scout.py"
       - "scripts/ci/tribute_status.py"
       - "scripts/ci/tribute_audit.py"
       - "tests/test_actions_incident_dedupe.py"
       - "tests/test_ates_skip_receipt_contract.py"
-      - "tests/test_help_wanted_claim_label.py"
+      - "tests/test_tribute_claim_label.py"
       - "tests/test_tribute_followup_policy.py"
-      - "tests/test_help_wanted_scout_evidence.py"
+      - "tests/test_tribute_scout_evidence.py"
       - "tests/test_tribute_status_outcomes.py"
       - "tests/test_tribute_audit.py"
   push:
@@ -36,16 +36,16 @@ on:
       - "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"
       - "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md"
       - "scripts/ci/actions_incident_dedupe.py"
-      - "scripts/ci/help_wanted_claim.py"
+      - "scripts/ci/tribute_claim.py"
       - "scripts/ci/tribute_followup.py"
-      - "scripts/ci/help_wanted_scout.py"
+      - "scripts/ci/tribute_scout.py"
       - "scripts/ci/tribute_status.py"
       - "scripts/ci/tribute_audit.py"
       - "tests/test_actions_incident_dedupe.py"
       - "tests/test_ates_skip_receipt_contract.py"
-      - "tests/test_help_wanted_claim_label.py"
+      - "tests/test_tribute_claim_label.py"
       - "tests/test_tribute_followup_policy.py"
-      - "tests/test_help_wanted_scout_evidence.py"
+      - "tests/test_tribute_scout_evidence.py"
       - "tests/test_tribute_status_outcomes.py"
       - "tests/test_tribute_audit.py"
   workflow_dispatch:
@@ -73,9 +73,9 @@ jobs:
         run: |
           python -m py_compile \
             scripts/ci/actions_incident_dedupe.py \
-            scripts/ci/help_wanted_claim.py \
+            scripts/ci/tribute_claim.py \
             scripts/ci/tribute_followup.py \
-            scripts/ci/help_wanted_scout.py \
+            scripts/ci/tribute_scout.py \
             scripts/ci/tribute_status.py \
             scripts/ci/tribute_audit.py
       - name: Run telemetry and Help-Wanted regression suite
@@ -84,8 +84,8 @@ jobs:
           python -m unittest -v \
             tests.test_actions_incident_dedupe \
             tests.test_ates_skip_receipt_contract \
-            tests.test_help_wanted_claim_label \
+            tests.test_tribute_claim_label \
             tests.test_tribute_followup_policy \
-            tests.test_help_wanted_scout_evidence \
+            tests.test_tribute_scout_evidence \
             tests.test_tribute_status_outcomes \
             tests.test_tribute_audit

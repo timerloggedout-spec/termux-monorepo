@@ -17,7 +17,7 @@ on:
       - "DeepSeek Self-Integrate"
       - "Team MVT — simultaneous provider lanes"
       - "Continuous Team Evaluation"
-      - "help-wanted scout"
+      - "tribute scout"
       - "Peer review orchestrator"
       - "Jules on Issues (label / @jules)"
       - "Agent review → auto Jules"
@@ -146,7 +146,7 @@ jobs:
               { needle: 'DeepSeek Self-Integrate', agentId: 'deepseek-self-integrate', provider: 'deepseek', role: 'builder', kind: 'agent', confidence: 0.80 },
               { needle: 'Team MVT', agentId: 'team-mvt', provider: null, role: 'manager', kind: 'manager', confidence: 0.65 },
               { needle: 'Continuous Team Evaluation', agentId: 'continuous-evaluation', provider: null, role: 'manager', kind: 'manager', confidence: 0.65 },
-              { needle: 'help-wanted scout', agentId: 'help-wanted-scout', provider: null, role: 'scout', kind: 'scout', confidence: 0.65 },
+              { needle: 'tribute scout', agentId: 'tribute-scout', provider: null, role: 'scout', kind: 'scout', confidence: 0.65 },
               { needle: 'Peer review orchestrator', agentId: 'peer-review-orchestrator', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
               { needle: 'Jules on Issues', agentId: 'jules', provider: 'google-labs', role: 'builder', kind: 'agent', confidence: 0.80 },
               { needle: 'Agent review', agentId: 'agent-review-auto-jules', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },

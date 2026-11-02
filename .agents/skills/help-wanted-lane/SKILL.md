@@ -14,11 +14,11 @@ description: Select AND EXECUTE external help-wanted / good-first-issue / mutual
 - `docs/ops/HELP-WANTED-STATUS.md` ← living human-review surface
 - `docs/ops/HELP-WANTED-EVIDENCE-FEED.md`
 - `docs/ops/SKILLS-INVENTORY.md` · root `SKILLS.md`
-- `scripts/ci/help_wanted_scout.py`
-- `scripts/ci/help_wanted_claim.py` ← idempotent claim
-- `scripts/ci/help_wanted_contribute.py` ← upstream PR + fallback
+- `scripts/ci/tribute_scout.py`
+- `scripts/ci/tribute_claim.py` ← idempotent claim
+- `scripts/ci/tribute_contribute.py` ← upstream PR + fallback
 - `scripts/ci/help_wanted_evidence.py` · `help_wanted_status.py`
-- `.github/workflows/help-wanted-scout.yml` (~2h)
+- `.github/workflows/tribute-scout.yml` (~2h)
 - `.github/workflows/help-wanted-execute.yml` (~4h + dispatch)
 
 ## INTENT

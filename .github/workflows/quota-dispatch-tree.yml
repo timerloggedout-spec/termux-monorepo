@@ -140,10 +140,10 @@ jobs:
             // their staleness branch keeps the Node A admission guard.
             const hwPairStaleMin = Math.max(
               await laneAgeMin('tribute-followup.yml'),
-              await laneAgeMin('help-wanted-scout.yml')
+              await laneAgeMin('tribute-scout.yml')
             );
             const hwExecuteStaleMin = await laneAgeMin('tribute-execute.yml');
-            const hwAssistStaleMin = await laneAgeMin('help-wanted-llm-assist.yml');
+            const hwAssistStaleMin = await laneAgeMin('tribute-llm-assist.yml');
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
             const firstCycle = new Date().getUTCMinutes() < 10;
@@ -309,7 +309,7 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_hw_pair }}
             sweep: 'false'
             advance_watermark: 'false'
-          - lane: help-wanted-scout
+          - lane: tribute-scout
             run: ${{ needs.decide.outputs.dispatch_hw_pair }}
             sweep: 'false'
             advance_watermark: 'false'
@@ -317,7 +317,7 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_hw_execute }}
             sweep: 'false'
             advance_watermark: 'false'
-          - lane: help-wanted-llm-assist
+          - lane: tribute-llm-assist
             run: ${{ needs.decide.outputs.dispatch_hw_assist }}
             sweep: 'false'
             advance_watermark: 'false'

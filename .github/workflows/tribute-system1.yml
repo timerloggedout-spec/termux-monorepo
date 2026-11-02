@@ -17,10 +17,10 @@ on:
       - "tests/test_tribute_system1.py"
       - "tests/test_tribute_system1_gates.py"
       - "scripts/ci/help_wanted_followup.py"
-      - "scripts/ci/help_wanted_scout.py"
-      - "scripts/ci/help_wanted_claim.py"
-      - "scripts/ci/help_wanted_contribute.py"
-      - ".github/workflows/help-wanted-llm-assist.yml"
+      - "scripts/ci/tribute_scout.py"
+      - "scripts/ci/tribute_claim.py"
+      - "scripts/ci/tribute_contribute.py"
+      - ".github/workflows/tribute-llm-assist.yml"
       - "tests/fixtures/tribute_system1/**"
   push:
     branches: [master]
@@ -31,10 +31,10 @@ on:
       - "tests/test_tribute_system1.py"
       - "tests/test_tribute_system1_gates.py"
       - "scripts/ci/help_wanted_followup.py"
-      - "scripts/ci/help_wanted_scout.py"
-      - "scripts/ci/help_wanted_claim.py"
-      - "scripts/ci/help_wanted_contribute.py"
-      - ".github/workflows/help-wanted-llm-assist.yml"
+      - "scripts/ci/tribute_scout.py"
+      - "scripts/ci/tribute_claim.py"
+      - "scripts/ci/tribute_contribute.py"
+      - ".github/workflows/tribute-llm-assist.yml"
       - "tests/fixtures/tribute_system1/**"
 # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:

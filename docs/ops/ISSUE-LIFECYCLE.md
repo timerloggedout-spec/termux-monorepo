@@ -380,8 +380,13 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   ESTABLISHED, exactly as #175's rules require). First cut from live
   data (2026-10-28T16:20Z): 284 issues, 95 PRs — EXTRACT 30 /
   CANDIDATE 30 / NEED_EVIDENCE 35. Retirement of
-  `ops-operator-matrix-project-sync.yml` is the follow-up, after the
-  first scheduled generation proves; #175's own rule 7 (no
+  `ops-operator-matrix-project-sync.yml` was the follow-up, after the
+  first scheduled generation proved — **EXECUTED 2026-11-02:**
+  scheduled generation proven (runs `40884600002` under the daily
+  cadence + `41312953496`), so the workflow is archived to
+  `docs/ops/archive/workflows/` (content preserved + archive header;
+  owner deletion freeze 2026-11-01 — archive class, not deletion).
+  Project #4 remains as a static view; #175's own rule 7 (no
   pulse-comments; the body is edited by its operator) is respected —
   this method is recorded here and in the landing PR, not commented
   onto #175.

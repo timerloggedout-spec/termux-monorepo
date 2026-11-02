@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-02T08:25:12Z",
+ "generated_at": "2026-11-02T08:32:40Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-02T08:20:44Z",
-  "ops/tracking/nested-family.json": "2026-11-02T08:22:56Z"
+  "ops/tracking/nested-family.json": "2026-11-02T08:31:16Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -1501,6 +1501,21 @@
     "last_point_at": "2026-11-02T08:16:23Z"
    },
    {
+    "key": "deepseek-chat",
+    "title": "deepseek - deepseek-chat - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-02T08:31:08Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-02T08:31:08Z"
+   },
+   {
     "key": "mistral-small-latest",
     "title": "mistral - mistral-small-latest - dispatches (cumulative)",
     "unit": "dispatches",
@@ -1654,8 +1669,8 @@
   "providers_total": 95,
   "providers_populated": 3,
   "providers_gap": 94,
-  "model_series": 9,
-  "model_populated": 9
+  "model_series": 10,
+  "model_populated": 10
  },
  "notes": {
   "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",

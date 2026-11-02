@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "94a794dff2979e8817180ba029f7771a16a946163b2b9be1e04c5e1ae74af32f",
-  "workflow_count": 265,
+  "source_fingerprint": "419f51d79c81ed3e959aa5c99d196803744d1779add53146ca2227f81c825bf3",
+  "workflow_count": 266,
   "workflows": [
     {
       "action_pins": [],
@@ -3353,6 +3353,21 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: owner-records-vercel cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "owner-records"
+      ],
+      "name": "owner-records-vercel",
+      "path": ".github/workflows/owner-records-vercel.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

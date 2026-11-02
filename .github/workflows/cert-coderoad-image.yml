@@ -139,10 +139,17 @@ jobs:
           print("failure state recorded")
           PYEOF
 
-      - name: Push image to GHCR
+      - name: GHCR login
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Push image to GHCR
+        timeout-minutes: 30
+        run: |
           docker push ghcr.io/timerloggedout-spec/coderoad-rdb:latest
+
+      - name: Read back pushed digest
+        run: |
           docker inspect --format '{{index .RepoDigests 0}}' ghcr.io/timerloggedout-spec/coderoad-rdb:latest
 
       - name: Record built digest on issue 506

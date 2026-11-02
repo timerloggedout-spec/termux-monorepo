@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T13:59:05Z",
+ "generated_at": "2026-11-02T14:11:51Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T13:59:05Z",
+   "read_at": "2026-11-02T14:11:51Z",
    "merged": 150,
-   "open": 183
+   "open": 181
   },
   "lane_events": {
-   "read_at": "2026-11-02T13:59:05Z",
+   "read_at": "2026-11-02T14:11:51Z",
    "status": "ok",
-   "count": 8762,
+   "count": 8781,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -109,7 +109,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -143,7 +143,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -176,7 +176,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "challenge-entries",
@@ -190,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "quota",
@@ -199,10 +199,10 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3919,
-    "sha": "2ec76a231b45",
-    "at": "2026-11-02T13:56:40Z",
-    "title": "feat(quota): generate the enumeration four-count table from provider_quota_coverage.py (dossier item 8)"
+    "pr": 3928,
+    "sha": "6635afbb8572",
+    "at": "2026-11-02T14:11:20Z",
+    "title": "viz(dispatch-tree): lane-state distribution chart \u2014 chartkit, stamp/STALE (chart standard)"
    },
    "next": "land/close PR #1441 \u2014 feat(triage): reconcile official quota before dispatch",
    "next_basis": "open-pr",
@@ -210,7 +210,7 @@
     "quota registry services=170",
     "open PRs: #1441, #3342, #3242, #2757, #2525"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "doe",
@@ -230,7 +230,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2856, #2966, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "doe-nc1",
@@ -242,7 +242,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "tier-1",
@@ -254,7 +254,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "contribution-desk",
@@ -274,7 +274,7 @@
     "desk-feed traversals=10 generated_at=2026-11-02T14:02:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "web-design-viz",
@@ -283,17 +283,17 @@
    "project_id": "webdev-viz",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3795,
-    "sha": "b7c673d2182d",
-    "at": "2026-11-02T13:43:14Z",
-    "title": "chore(dashboards): refresh surface feeds"
+    "pr": 3927,
+    "sha": "7571d0d01e80",
+    "at": "2026-11-02T14:09:18Z",
+    "title": "viz(desk): traversal distribution chart \u2014 chartkit, stamp/STALE (chart standard)"
    },
    "next": "land/close PR #2702 \u2014 docs(dashboard): standing preview QA checklist",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "marketing",
@@ -307,7 +307,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "marketing-social",
@@ -319,7 +319,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "swarm",
@@ -327,18 +327,13 @@
    "domain": "swarm",
    "project_id": "swarm-f1",
    "state": "in-flight",
-   "last_merge": {
-    "pr": 3770,
-    "sha": "c32134670a97",
-    "at": "2026-11-02T10:22:46Z",
-    "title": "feat(dispatch): feed health snapshot emitter (materialized health leg)"
-   },
+   "last_merge": null,
    "next": "land/close PR #3437 \u2014 feat(dispatch): wire gemini-invoke to the stamp fan-out",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "providers",
@@ -358,7 +353,7 @@
     "quota registry services=170",
     "open PRs: #3916, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "providers-phrases",
@@ -370,7 +365,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "repo-replay",
@@ -387,7 +382,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "ops",
@@ -401,7 +396,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   },
   {
    "lane": "telemetry",
@@ -420,7 +415,7 @@
    "evidence": [
     "open PRs: #3890, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T13:59:05Z"
+   "updated_at": "2026-11-02T14:11:51Z"
   }
  ],
  "doe_join": {
@@ -799,6 +794,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 94/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 98/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

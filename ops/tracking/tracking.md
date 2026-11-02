@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T01:17:02Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T01:18:42Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T01:17:01Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6489` read_at=`2026-11-02T01:17:01Z`
+Sources: PR feed read_at=`2026-11-02T01:18:42Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6510` read_at=`2026-11-02T01:18:42Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 

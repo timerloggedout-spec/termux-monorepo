@@ -8,11 +8,11 @@ Use backticks or plain text for display. Live triggers remain the original handl
 
 | Role | Display moniker | Live trigger (callable) | Notes |
 |------|-----------------|-------------------------|-------|
-| Jules (implementation) | `heyVern` | `@jules` | App only reacts to `@jules` |
+| Jules (implementation) | `h3yVern` | `@jules` | App only reacts to `@jules` · v2 graduated 2026-11-01 (v1 `heyVern`; see Graduations of record) |
 | Gemini CLI (on-demand) | `sparkFlux` | `@gemini-cli` | Dispatch also accepts case-insensitive `@sparkFlux` as alias |
 | DeepSeek CI (review/invoke) | `deepCore` | `@deepseek` / `@deepseek-ci` | Workflow also accepts case-insensitive `@deepCore`; labels `deepseek-ci`, `deepseek`, `deepCore` |
-| CodeRabbit (review) | `codeHound` | `@coderabbitai` | Reviewer identity unchanged |
-| Devin (review/fix) | `devinForge` | Devin app | |
+| CodeRabbit (review) | `c0deHound` | `@coderabbitai` | Reviewer identity unchanged · v2 graduated 2026-11-01 (v1 `codeHound`; see Graduations of record) |
+| Devin (review/fix) | `d3vinForge` | Devin app | v2 graduated 2026-11-01 (v1 `devinForge`; see Graduations of record) |
 | Continuous-ops sweep | `opsSweep` | (GHA) | Marker: `<!-- continuous-agent-ops -->` |
 | OPERATOR / Grok | `archW1z` | human OWNER | Signing: `Signed-off-by: Grok (OPERATOR)` |
 | Grok (AI collaborator — recon) | `Grok` | non-callable display (Grok app; rides owner PAT) | **Distinct attributed actor** (registered 2026-11-01): Grok-authored artifacts attribute to `Grok` in the ledgers/HindSight, NOT to OPERATOR/`archW1z` (human owner, row above). Established identity — provisioning facts from `docs/ops/AGENT-IDENTITY.md` + `docs/ops/OPERATOR-SIGNING.md`: git identity `Grok <grok@x.ai>`, signing `Signed-off-by: Grok <grok@x.ai>` with session/message ids; pipeline identity `Grok (Administrator)` (`ml/pipelines/peers/grok.py`). Scope: termux-monorepo recon + Approxination oversight lane. |
@@ -232,7 +232,7 @@ Collision check at issuance: `Factorial`, `Mendel` and the
 Design appear nowhere in this roster or in the registration
 registry.
 
-## Identity taxonomy and moniker versioning (proposal, 2026-11-01)
+## Identity taxonomy and moniker versioning (adopted, 2026-11-01)
 
 The fleet's identity vocabulary has four layers. This section is
 the design of record for how they relate and what may change at
@@ -286,7 +286,7 @@ substrate the layers describe, governed by its own records.
   as a provisioning event on its own record (e.g. a platform
   rename window), never as a naming act.
 
-**Moniker versioning (PROPOSAL — owner decisions pending)**
+**Moniker versioning (ADOPTED 2026-11-01)**
 
 As a moniker's usage grows, its display form graduates:
 v1 (the canonical form of record) → v2 (a stylized respelling,
@@ -327,10 +327,27 @@ the `m0niker` class; cf. derpWiki ≈ `d3π9W1K¡`). Design:
   weighting history never forks; graduation adds a form and
   removes nothing (archive law).
 
-Status: PROPOSAL, recorded 2026-11-01; owner decisions pending —
-{adopt the scheme · threshold U ≥ 100 · per-graduation sign-off
-vs scheme-level pre-authorization for the registry lane}.
-Nothing graduates under this scheme until it is adopted.
+Status: ADOPTED by owner decision 2026-11-01, as designed —
+threshold U ≥ 100; the registry lane is pre-authorized at
+scheme level (no per-graduation owner sign-off). First usage
+census and first graduations: registry lane, 2026-11-01.
+
+**Graduations of record**
+
+- `heyVern` → `h3yVern` (Jules) — U = 352 attributed units
+  (Search API `involves:google-labs-jules[bot]`,
+  timerloggedout-spec/termux-monorepo, counted 2026-11-01).
+  v2 derived under the Grimoire table (E3, single
+  substitution; no mark was on file). Graduation PR: the PR
+  carrying this entry.
+- `codeHound` → `c0deHound` (CodeRabbit) — U = 1,663
+  attributed units (Search API `involves:coderabbitai[bot]`,
+  same repo and date). v2 derived (O0, single substitution).
+  Graduation PR: the PR carrying this entry.
+- `devinForge` → `d3vinForge` (Devin) — U = 163 attributed
+  units (Search API `involves:devin-ai-integration[bot]`,
+  same repo and date). v2 derived (E3, single substitution).
+  Graduation PR: the PR carrying this entry.
 
 ## Rules
 

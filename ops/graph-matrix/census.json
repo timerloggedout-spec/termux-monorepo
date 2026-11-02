@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T09:34:08.070598+00:00",
+ "census_at_utc": "2026-11-02T11:01:02.222045+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 2922,
-  "stale": 878,
-  "orphan_no_assoc_PR": 349,
+  "total": 2990,
+  "stale": 879,
+  "orphan_no_assoc_PR": 351,
   "stale_and_orphan": 85
  },
  "prs": {
-  "total": 3217,
-  "open": 178,
+  "total": 3298,
+  "open": 185,
   "open_draft": 23,
-  "open_draft_share": 0.1292,
+  "open_draft_share": 0.1243,
   "drafts": [
    {
     "number": 386,
@@ -34,7 +34,7 @@
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 46.0
+    "age_days": 46.1
    },
    {
     "number": 740,
@@ -64,7 +64,7 @@
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 40.2
+    "age_days": 40.3
    },
    {
     "number": 829,
@@ -82,19 +82,19 @@
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 31.9
+    "age_days": 32.0
    },
    {
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 13.1
+    "age_days": 13.2
    },
    {
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 11.0
+    "age_days": 11.1
    },
    {
     "number": 1612,
@@ -106,19 +106,19 @@
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 9.1
+    "age_days": 9.2
    },
    {
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 6.4
+    "age_days": 6.5
    },
    {
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 3.0
+    "age_days": 3.1
    },
    {
     "number": 2578,
@@ -130,7 +130,7 @@
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 1.1
+    "age_days": 1.2
    },
    {
     "number": 3034,
@@ -160,26 +160,26 @@
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 0.5
+    "age_days": 0.6
    }
   ],
-  "merged": 2565,
+  "merged": 2639,
   "closed_unmerged": 474,
-  "open_no_closing_ref": 172,
-  "open_unlinked_issue_target": 144,
-  "open_unlinked_any_ref": 121,
-  "merged_no_closing_ref": 2536,
-  "merged_unlinked_issue_target": 1480,
-  "merged_unlinked_any_ref": 826,
+  "open_no_closing_ref": 179,
+  "open_unlinked_issue_target": 152,
+  "open_unlinked_any_ref": 129,
+  "merged_no_closing_ref": 2610,
+  "merged_unlinked_issue_target": 1530,
+  "merged_unlinked_any_ref": 865,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2490,
+  "merged_head_branch_residual_name_match": 2563,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 481,
-  "open": 399,
-  "open_surface_unlinked": 175,
-  "open_unlinked_strict": 156
+  "total": 494,
+  "open": 409,
+  "open_surface_unlinked": 176,
+  "open_unlinked_strict": 157
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -770,6 +770,22 @@
    [
     1474,
     1978
+   ],
+   [
+    1474,
+    3695
+   ],
+   [
+    1474,
+    3696
+   ],
+   [
+    1474,
+    3697
+   ],
+   [
+    1474,
+    3698
    ],
    [
     1520,
@@ -1514,6 +1530,38 @@
    [
     3703,
     2276
+   ],
+   [
+    3705,
+    2277
+   ],
+   [
+    3706,
+    2278
+   ],
+   [
+    3714,
+    2279
+   ],
+   [
+    3717,
+    2280
+   ],
+   [
+    3718,
+    2281
+   ],
+   [
+    3720,
+    2284
+   ],
+   [
+    3721,
+    2282
+   ],
+   [
+    3722,
+    2285
    ]
   ],
   "issue_issue_mutual_pairs": 3,

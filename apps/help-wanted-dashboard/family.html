@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Nested family: every provider, its models, the roles they played and the tasks they ran - dispatch-connected to the run records.">
+<title>Nested Family · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.task{padding:.35rem 0;border-top:1px solid rgba(127,127,127,.25)}</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Ops · nested family</div><h1>Nested <span>Family</span></h1><p class="lede">Every provider → its models → the roles each model played and the tasks it ran, dispatch-connected: each task links its run record. Model@version renders verbatim as recorded — NOT_ESTABLISHED stays literal, never resolved. Record of record: nested-family/v1 (tracking lane, single-writer repo-tracking-collect); scoring-plane fields are carried from the DoE records, never re-scored here.</p><div class="links" style="margin-top:1rem"><a class="button" href="./tracking.html">Tracking</a><a class="button" href="./dispatch-tree.html">Dispatch Tree</a><a class="button" href="./doe.html">DoE</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/NESTED-FAMILY.md">Nested-family contract</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/tracking/nested-family.json">Record (ops)</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching nested-family feed.</small></div></div></header>
+<main>
+<section aria-labelledby="charts"><div class="head"><h2 id="charts">Live charts</h2><span class="note" id="charts-stamp">—</span></div>
+<div class="grid grid-2"><div class="card"><div class="label">Tasks per provider</div><div id="chart-providers"></div></div>
+<div class="card"><div class="label">Tasks by outcome</div><div id="chart-outcomes"></div></div></div>
+<p class="muted">Charts render only from the nested-family feed — chart standard: docs/ops/DASHBOARD-CHART-STANDARD.md.</p></section>
+<div id="family-tree"></div>
+<section aria-labelledby="gaps"><div class="head"><h2 id="gaps">Gaps</h2></div><div class="card" id="gap-list"><p class="muted">—</p></div></section>
+<footer>Nested Family · feed: apps/help-wanted-dashboard/data/nested-family-feed.json (nested-family/v1, twin of ops/tracking/nested-family.json) · generator scripts/tracking/nested_family.py · dispatch links go to the Actions run record or the committed dispatch record — never inferred</footer>
+</main>
+<script src="./chartkit.js"></script>
+<script>
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const GH='https://github.com/timerloggedout-spec/termux-monorepo';
+function runLink(t){
+  const links=[];
+  if(t.run_id)links.push('<a href="'+GH+'/actions/runs/'+esc(t.run_id)+'">run '+esc(t.run_id)+'</a>');
+  if(t.source_ref)links.push('<a href="'+GH+'/blob/master/'+esc(t.source_ref)+'">record</a>');
+  if(t.pr){const p=String(t.pr);links.push(/^https?:/.test(p)?'<a href="'+esc(p)+'">PR</a>':'<a href="'+GH+'/pull/'+esc(p.replace('#',''))+'">PR '+esc(p)+'</a>')}
+  return links.length?(' · '+links.join(' · ')):'';
+}
+function taskRow(t){
+  const oc=t.outcome||{};
+  return '<div class="task"><span class="muted">'+esc(t.ts||'—')+'</span> <span class="chip">'+esc(oc.status||'unknown')+'</span> <strong>'+esc(t.task_class||'—')+'</strong>'
+    +' · role '+esc(t.role||'—')+(t.moniker?(' · '+esc(t.moniker)):'')+(t.context?('<br><span class="muted">'+esc(String(t.context).slice(0,180))+'</span>'):'')
+    +'<br><span class="muted">dispatch '+(t.dispatch_id?esc(t.dispatch_id):'—')+(t.workflow?(' · '+esc(t.workflow)):'')+'</span>'+runLink(t)+'</div>';
+}
+function modelCard(p,m){
+  return '<div class="card"><div class="label">'+esc(m.model)+((m.roles||[]).map(r=>'<span class="chip">'+esc(r)+'</span>').join(''))+'</div>'
+    +'<p class="muted">'+esc(p.provider)+' · '+(m.task_count||0)+' task'+((m.task_count||0)===1?'':'s')+(m.monikers&&m.monikers.length?(' · monikers: '+m.monikers.map(esc).join(', ')):'')+'</p>'
+    +((m.tasks||[]).map(taskRow).join(''))+'</div>';
+}
+function providerSection(p){
+  return '<section aria-labelledby="prov-'+esc(p.provider)+'"><div class="head"><h2 id="prov-'+esc(p.provider)+'">'+esc(p.provider)+'</h2><span class="note">'+(p.model_count||0)+' models · '+(p.task_count||0)+' tasks</span></div>'
+    +'<div class="grid grid-2">'+(p.models||[]).map(m=>modelCard(p,m)).join('')+'</div></section>';
+}
+async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+async function load(){
+  const bust=Date.now();
+  const feed=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/data/nested-family-feed.json?t='+bust,'./data/nested-family-feed.json?t='+bust]);
+  if(!feed){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch nested-family-feed.json.';return}
+  const s=feed.summary||{};
+  $('freshness').textContent='Family loaded';
+  $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.providers||0)+' providers · '+(s.models||0)+' models · '+(s.tasks||0)+' tasks · '+(s.dispatches||0)+' dispatches';
+  const st=CK.stampState(feed.generated_at,Date.now(),86400000);
+  $('charts-stamp').textContent='Feed generated '+(feed.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
+  $('chart-providers').innerHTML=CK.bars((feed.providers||[]).map(p=>({label:p.provider,value:p.task_count||0})).sort((a,b)=>b.value-a.value));
+  $('chart-outcomes').innerHTML=CK.bars(Object.entries(s.by_outcome||{}).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+  $('family-tree').innerHTML=(feed.providers||[]).map(providerSection).join('');
+  $('gap-list').innerHTML=(feed.gaps||[]).length?('<p class="muted">'+feed.gaps.map(esc).join('<br>')+'</p>'):'<p class="muted">No gaps recorded.</p>';
+}
+load();setInterval(load,60000);
+</script>
+</body>
+</html>

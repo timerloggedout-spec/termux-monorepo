@@ -384,13 +384,41 @@ def collect_mvt() -> dict:
             },
         ],
     }
-    gaps = [
-        "No committed experiment records conforming to EXPERIMENT.schema.json exist in the repo: the experiment loop has never been dispatched (0 runs observed), so there are no recorded MVT experiment results to rank or chart. Defined-but-not-run renders as exactly that.",
-    ]
+    # Committed EXPERIMENT records (intake population, derived — never
+    # hardcoded): scan the campaign record homes the scoring intake
+    # contract names (docs/ops/MVT-ATES-SCORING-INTAKE.md).
+    recs = []
+    for rp in sorted((ROOT / "experiments" / "doe").glob("*/records/*.json")):
+        try:
+            rec = json.loads(rp.read_text())
+        except Exception:
+            continue
+        if isinstance(rec, dict):
+            recs.append(rec)
+    terminal = {"passed", "failed", "observed", "skipped", "blocked", "superseded"}
+    routed = [r for r in recs if r.get("experiment_id") == "routed-dispatch"]
+    payload["experiment_records"] = {
+        "committed_records": len(recs),
+        "routed_dispatch_records": len(routed),
+        "routed_terminal": sum(1 for r in routed if r.get("status") in terminal),
+        "ates_scored": sum(1 for r in recs if ((r.get("metrics") or {}).get("ates_outcome") is not None)),
+        "instance_stamped": sum(1 for r in recs if (r.get("treatment") or {}).get("instance")),
+        "note": "Population per docs/ops/MVT-ATES-SCORING-INTAKE.md: scoring reads committed records only; a record with no ates_outcome renders unscored on ATES metrics, never synthesized.",
+    }
+    gaps = []
+    if not recs:
+        gaps.append(
+            "No committed experiment records conforming to EXPERIMENT.schema.json exist in the repo: the experiment loop has never been dispatched (0 runs observed), so there are no recorded MVT experiment results to rank or chart. Defined-but-not-run renders as exactly that."
+        )
+    else:
+        gaps.append(
+            f"The experiment loop has never been dispatched (0 runs observed) — defined-but-not-run renders as exactly that. Committed EXPERIMENT records do exist ({len(recs)} under experiments/doe/*/records/, incl. the first live routed-dispatch record, terminal), but MVT/ATES scoring population is partial: ates_outcome is set in {payload['experiment_records']['ates_scored']} records and {payload['experiment_records']['instance_stamped']} records carry a configured-instance stamp, so ATES scoring renders unscored until routed dispatch emits the intake scoring keys (docs/ops/MVT-ATES-SCORING-INTAKE.md)."
+        )
     sources = [
         "docs/ops/corpus/EXPERIMENT.schema.json",
         ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
         "scripts/dashboards/workflow_observations.json (Actions API read)",
+        "experiments/doe/*/records/*.json (committed EXPERIMENT records, scanned)",
     ]
     return _feed("mvt", sources, payload, gaps)
 

@@ -20,6 +20,21 @@ on:
         required: false
         default: "working"
         type: string
+      timeout_s:
+        description: "Per-call timeout seconds"
+        required: false
+        default: "45"
+        type: string
+      workers:
+        description: "Concurrent probes"
+        required: false
+        default: "16"
+        type: string
+      deadline_s:
+        description: "Global deadline seconds (receipt writes regardless)"
+        required: false
+        default: "1500"
+        type: string
 
 concurrency:
   group: g4f-inference-smoke
@@ -45,6 +60,9 @@ jobs:
           --source "${{ inputs.source }}"
           --output g4f-inference-smoke.json
           --limit "${{ inputs.limit }}"
+          --timeout "${{ inputs.timeout_s }}"
+          --workers "${{ inputs.workers }}"
+          --deadline "${{ inputs.deadline_s }}"
       - name: Upload sanitized receipt
         if: always()
         uses: actions/upload-artifact@v4

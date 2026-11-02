@@ -83,6 +83,8 @@ Per owner decision via main, recorded by `[MUSEai]@{role:{optimizations-assuranc
 
 Explicit non-fold: a culled participant's residual/royalty stream is a separate question — it is NOT transferred or extinguished by this rule, and is not folded in without the owner's word.
 
+**Cull-record composition (DoE side, landed):** the DoE family-level shared rule (DOE-FAMILY, PR #3748) requires every cull event record to name {culled_participant · wallet_balance_at_cull · pool_destination} in the same record that culls. The balance source is this lane's **wallet of record**: the DoE side reads the balance from the lane record and never invents one; participants without an established wallet carry NOT_ESTABLISHED and the cull stands. Until the lane's wallet store is implemented, balances read NOT_ESTABLISHED by construction — registered in lane.json as lifecycle.cull_record_composition.
+
 ## Scouts compete (owner, 2026-11-01)
 
 Scouts are **participants** in this lane, not a neutral surface: each scout entry holds its own **wallet** (universal-participant rule), its own **record** = its selection experiments' outcomes, and **comparative standing among scouts = competition** (a standing field is carried per scout entry in lane.json). Scoring/authority side sits with DoE: posteriors over selections, the significance standard applies to scout-edge claims, and culling applies to scouts — a culled scout's wallet goes to the pooled 🪣 per the lifecycle rule above.

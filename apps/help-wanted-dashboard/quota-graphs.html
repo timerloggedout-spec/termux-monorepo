@@ -35,7 +35,7 @@ function median(xs){if(!xs.length)return 0;const s=[...xs].sort((a,b)=>a-b);cons
 function chartGeom(points,w,h){
   const pts=(points||[]).filter(p=>p&&p.t&&typeof p.v==='number').map(p=>({t:new Date(p.t).getTime(),v:p.v,ts:p.t,class:p.class||null})).filter(p=>isFinite(p.t)).sort((a,b)=>a.t-b.t);
   if(!pts.length)return{dots:[],segs:[],minV:0,maxV:0};
-  const pad={l:8,r:8,t:10,b:14},iw=w-pad.l-pad.r,ih=h-pad.t-pad.b;
+  const pad={l:46,r:10,t:10,b:22},iw=w-pad.l-pad.r,ih=h-pad.t-pad.b;
   const minT=pts[0].t,maxT=pts[pts.length-1].t,minV=Math.min(...pts.map(p=>p.v)),maxV=Math.max(...pts.map(p=>p.v));
   const spanT=Math.max(1,maxT-minT),spanV=Math.max(1e-9,maxV-minV);
   const X=t=>pad.l+(spanT===1?iw/2:(t-minT)/spanT*iw),Y=v=>pad.t+ih-(spanV===0?ih/2:(v-minV)/spanV*ih);
@@ -43,14 +43,22 @@ function chartGeom(points,w,h){
   const steps=[];for(let i=1;i<pts.length;i++)steps.push(pts[i].t-pts[i-1].t);
   const med=median(steps),minStep=steps.length?Math.min(...steps):0;
   const segs=[];for(let i=1;i<dots.length;i++){const dt=pts[i].t-pts[i-1].t;const gap=minStep>0&&dt>3*minStep&&dt>med;segs.push({x1:dots[i-1].x,y1:dots[i-1].y,x2:dots[i].x,y2:dots[i].y,gap:!!gap})}
-  return{dots,segs,minV,maxV,medStep:med};
+  return{dots,segs,minV,maxV,medStep:med,pad:pad,yOf:Y,firstT:pts[0].ts,lastT:pts[pts.length-1].ts};
 }
+function axisTicks(minV,maxV){if(minV===maxV)return[minV];return[minV,(minV+maxV)/2,maxV]}
+function fmtV(v){if(!isFinite(v))return'';if(Math.abs(v)>=1000)return String(Math.round(v));if(Number.isInteger(v))return String(v);return String(Math.round(v*10)/10)}
 function seriesSvg(s){
   const g=chartGeom(s.points,640,180);
   if(!g.dots.length)return '<p class="muted">No observations on record.</p>';
   const lines=g.segs.map(sg=>'<line x1="'+sg.x1+'" y1="'+sg.y1+'" x2="'+sg.x2+'" y2="'+sg.y2+'" stroke="currentColor" stroke-width="1.5" '+(sg.gap?'stroke-dasharray="2 5" opacity="0.55"':'')+'/>').join('');
   const dots=g.dots.map(d=>s.kind==='event'?'<path d="M '+d.x+' '+(d.y-6.5)+' L '+(d.x+6.5)+' '+d.y+' L '+d.x+' '+(d.y+6.5)+' L '+(d.x-6.5)+' '+d.y+' Z" fill="currentColor"><title>'+esc(d.t)+' · '+esc(d.cls||'event')+'</title></path>':'<circle cx="'+d.x+'" cy="'+d.y+'" r="3.2" fill="currentColor"><title>'+esc(d.t)+' · '+(d.cls?esc(d.cls):esc(d.v))+'</title></circle>').join('');
-  return '<svg class="chart" viewBox="0 0 640 180" role="img" aria-label="'+esc(s.title)+'">'+lines+dots+'</svg>';
+  const pad=g.pad,W=640,H=180;
+  const grid=axisTicks(g.minV,g.maxV).map(v=>{const y=g.yOf(v);return '<line x1="'+pad.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+y.toFixed(1)+'" stroke="currentColor" opacity="0.18"/><text class="ytick" x="'+(pad.l-6)+'" y="'+(y+3.5).toFixed(1)+'" text-anchor="end" font-size="11" fill="currentColor" opacity="0.75">'+esc(fmtV(v))+'</text>';}).join('');
+  const axis='<line x1="'+pad.l+'" y1="'+pad.t+'" x2="'+pad.l+'" y2="'+(H-pad.b)+'" stroke="currentColor" opacity="0.4"/><line x1="'+pad.l+'" y1="'+(H-pad.b)+'" x2="'+(W-pad.r)+'" y2="'+(H-pad.b)+'" stroke="currentColor" opacity="0.4"/>';
+  const d0=g.dots[0],d1=g.dots[g.dots.length-1],f0=String(d0.t).slice(0,10),f1=String(d1.t).slice(0,10);
+  let xt='<text class="xtick" x="'+d0.x+'" y="'+(H-5)+'" font-size="11" fill="currentColor" opacity="0.75">'+esc(f0)+'</text>';
+  if(f1!==f0)xt+='<text class="xtick" x="'+d1.x+'" y="'+(H-5)+'" text-anchor="end" font-size="11" fill="currentColor" opacity="0.75">'+esc(f1)+'</text>';
+  return '<svg class="chart" viewBox="0 0 640 180" role="img" aria-label="'+esc(s.title)+'">'+grid+axis+lines+dots+xt+'</svg>';
 }
 // ==== end pure logic ====
 let pack=null,axis='provider',EVENTS=null;
@@ -60,7 +68,7 @@ function render(){
   const list=axes[axis]||[];
   document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.axis===axis?'true':'false'));
   $('graphs-summary').textContent=pack?('provider '+(axes.provider||[]).length+' series · model '+(axes.model||[]).length+' series · service '+(axes.service||[]).length+' series · events '+(axes.events||[]).length+' series'):'Pack unavailable';
-  $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':(axis==='events'?'<div class="card"><p class="muted">Recorded rate-limit incidents per bucket (register: ops/quota/rate-limit-events.json, append-only). No recent markers means no recorded incidents - the register is incident-driven, not a live probe.</p></div>':'');
+  $('axis-note').innerHTML=axis==='model'&&pack&&pack.notes?'<div class="card"><p class="muted">'+esc(pack.notes.model)+'</p></div>':(axis==='events'?'<div class="card"><p class="muted">Recorded rate-limit incidents per bucket (register: ops/quota/rate-limit-events.json, append-only). No recent markers means no recorded incidents - the register is incident-driven, not a live probe.</p><p><a href="./quota-event-audits.html">Event audits →</a> - findings, coverage and improvements from this register.</p></div>':'');
   $('series-grid').innerHTML=list.length?list.map(s=>{
     const n=(s.points||[]).length;
     const sStale=!!s.last_point_at&&((Date.now()-new Date(s.last_point_at).getTime())>48*3600*1000);

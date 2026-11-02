@@ -15,6 +15,7 @@
     ["Quota", tribute + "quota.html", "quota"],
     ["Quota usage", tribute + "quota-usage.html", "quota-usage"],
     ["Quota graphs", tribute + "quota-graphs.html", "quota-graphs"],
+    ["Swarm quota", tribute + "quota-swarm.html", "quota-swarm"],
     ["Admin", tribute + "admin.html", "admin"],
     ["Admin graph", tribute + "admin-graph.html", "admin-graph"],
     ["Oracle", tribute + "oracle.html", "oracle"],

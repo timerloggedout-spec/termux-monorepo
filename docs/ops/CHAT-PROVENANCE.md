@@ -70,3 +70,15 @@ API+TOKEN route, this lane's own chat (0b0272f1): **15 records**
 redactions 0, receipt `ops/telemetry/session-history-receipt.json`.
 Fleet-wide expansion = repeat the DB export per chat (bounded,
 per-chat emit-once), then APK/webWrapper rows as those lanes emit.
+
+## Store origins (owner provenance fact, 2026-11-01; spot-checked)
+
+**The session store is DeepCLI `core.py` webWrapper provenance:**
+`.deepcli/session_store` originates from DeepCLI's `core.py` webWrapper
+machinery. Spot-check (2026-11-01, firsthand code search, consistent):
+`deepcli/session_store.py` exists; `deepcli/deepcli/core.py` references
+`session_store`; webWrapper references live in `deepcli/ci_mode.py` and
+`deepcli/session_manager.py`. Session-history records sourced from the
+store therefore carry webWrapper-route origin in their lineage, even
+when exported onward through the API route — the store's origin is
+DeepCLI webWrapper, ¬ the export surface.

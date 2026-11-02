@@ -50,6 +50,7 @@ def build(root):
     plan = load(root, "ops/quota/allocation-plan.json") or {}
     events_doc = load(root, "ops/quota/rate-limit-events.json") or {}
     nested = load(root, "ops/tracking/nested-family.json") or {}
+    registry = load(root, "ops/quota/registry.json") or {}
 
     provider, service, model = [], [], []
 
@@ -195,6 +196,37 @@ def build(root):
                                        for e in evs if e.get("at")],
                             "provenance": "ops/quota/rate-limit-events.json"})
 
+    # Denominator pass (owner amendment 2026-11-01: ALL Providers).
+    # Every registry model-lane provider is PRESENT in the provider
+    # axis - populated where stamped usage exists, an explicit gap
+    # entry where it does not. Gaps are never absent and never
+    # zero-filled: points stay empty, kind = "gap".
+    reg_providers = {}
+    for r in (registry.get("services") or []):
+        if r.get("lane") == "model" and r.get("provider"):
+            reg_providers.setdefault(fam_slug(r["provider"]),
+                                     r["provider"])
+    have = {s["key"] for s in provider}
+    for slug in sorted(reg_providers):
+        if slug not in have:
+            provider.append({
+                "key": slug,
+                "title": reg_providers[slug] +
+                         " - no stamped usage yet (gap)",
+                "unit": None, "kind": "gap", "metric": None,
+                "points": [],
+                "provenance": "ops/quota/registry.json model lane "
+                              "(denominator - present, unpopulated)"})
+    coverage = {
+        "providers_total": len(reg_providers),
+        "providers_populated": len([s for s in provider
+                                    if s.get("kind") != "gap"]),
+        "providers_gap": len([s for s in provider
+                              if s.get("kind") == "gap"]),
+        "model_series": len(model),
+        "model_populated": len([s for s in model if s.get("points")]),
+    }
+
     for rows in (provider, service, model, events_axis):
         for s in rows:
             ts = [p["t"] for p in s.get("points", []) if p.get("t")]
@@ -216,6 +248,7 @@ def build(root):
                     "experiments/doe/routed-dispatch/records/*.json",
                     "experiments/doe/routed-dispatch/stamps/*.json"],
         "axes": {"provider": provider, "service": service, "model": model, "events": events_axis},
+        "coverage": coverage,
         "notes": {
             "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",
             "readings": "The public readings snapshots "

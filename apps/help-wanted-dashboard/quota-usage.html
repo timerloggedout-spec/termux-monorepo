@@ -44,7 +44,8 @@
 </head>
 <body>
 <header>
-<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html" aria-current="page">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-graphs.html">Quota Graphs</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html" aria-current="page">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/help-wanted/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a>
         <a href="https://timerloggedout-spec.github.io/help-wanted/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers</a><a href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/help-wanted/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/help-wanted/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/help-wanted/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/help-wanted/tracking.html">Tracking</a>
 <a href="https://timerloggedout-spec.github.io/help-wanted/family.html">Family</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
 <div class="hero">
@@ -114,10 +115,36 @@ function idealRemaining(tMs,limit,anchorMs,windowMs){
   const msToReset=((anchorMs-tMs)%windowMs+windowMs)%windowMs;
   return limit*msToReset/windowMs;
 }
+function yTicks(limit){
+  return [...new Set([0,0.25,0.5,0.75,1].map(f=>Math.round(limit*f)))];
+}
+function labelPlace(x,text,w,pad){
+  const est=String(text).length*6.6+4;
+  if(x+8+est<=w-pad) return {anchor:"start",lx:+(x+8).toFixed(1)};
+  if(x-8-est>=pad) return {anchor:"end",lx:+(x-8).toFixed(1)};
+  return {anchor:"middle",lx:+Math.min(Math.max(x,pad+est/2),w-pad-est/2).toFixed(1)};
+}
+function wallLabels(walls,w,pad){
+  const rows=[[],[],[]];
+  return walls.map(q=>{
+    const text="WALL "+q.at, est=text.length*7.4+4;
+    let anchor="start", lx=q.x+11;
+    if(lx+est>w-pad){ anchor="end"; lx=q.x-11; }
+    const left=anchor==="start"?lx:lx-est, right=anchor==="start"?lx+est:lx;
+    let row=0;
+    while(row<rows.length-1 && rows[row].some(b=>left<b[1]+4&&right>b[0]-4)) row++;
+    rows[row].push([left,right]);
+    return {x:+lx.toFixed(1), y:+(q.y+4-row*13).toFixed(1), anchor};
+  });
+}
+function barScale(days){
+  const max=Math.max.apply(null,days.map(d=>d.runs_delta).concat([1]));
+  return {max:max, ticks:[...new Set([0,Math.round(max/2),max])]};
+}
 function stampText(stamp){
   return stamp.established ? ("↻ "+String(stamp.cadence).toUpperCase()) : "NO STAMP — UNMETERED";
 }
-if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText,idealRemaining}; }
+if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText,idealRemaining,yTicks,labelPlace,wallLabels,barScale}; }
 // ==== end pure logic ====
 let PACK=null;
 function svgEl(html){ return html; }
@@ -127,8 +154,11 @@ function renderBurn(){
   let out='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="API core remaining over time">';
   out+='<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
   out+='<line x1="'+P+'" y1="'+P+'" x2="'+P+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
-  out+='<text x="6" y="'+(P+4)+'" fill="var(--muted)" font-size="11">'+esc(s.limit)+'</text>';
-  out+='<text x="6" y="'+(H-P+4)+'" fill="var(--muted)" font-size="11">0</text>';
+  for(const tv of yTicks(s.limit)){
+    const ty=P+(H-P*2)*(1-tv/s.limit);
+    out+='<line x1="'+P+'" y1="'+ty+'" x2="'+(W-P)+'" y2="'+ty+'" stroke="var(--line)" opacity="0.35"/>';
+    out+='<text class="ytick" x="'+(P-8)+'" y="'+(ty+4)+'" text-anchor="end" fill="var(--muted)" font-size="11">'+tv+'</text>';
+  }
   if(s.model){
     const anchor=parseT(s.model.anchor_reset), winMs=s.model.window_ms;
     let fp="";
@@ -143,13 +173,16 @@ function renderBurn(){
     out+='<text x="'+(W-P-150)+'" y="'+(P+12)+'" fill="var(--ok)" font-size="11">flow line = ideal pacing</text>';
   }
   out+='<path d="'+stepPath(g.pts)+'" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="5 4"/>';
+  const wl=wallLabels(g.pts.filter(q=>q.p.kind==="wall"),W,P); let wi=0;
   for(const q of g.pts){
     if(q.p.kind==="wall"){
+      const lp=wl[wi++];
       out+='<path d="M'+q.x+','+(q.y-8)+' L'+(q.x+8)+','+q.y+' L'+q.x+','+(q.y+8)+' L'+(q.x-8)+','+q.y+' Z" fill="var(--bad)"/>';
-      out+='<text x="'+(q.x+11)+'" y="'+(q.y+4)+'" fill="var(--bad)" font-size="11" font-weight="700">WALL '+esc(q.p.at)+'</text>';
+      out+='<text class="walllabel" x="'+lp.x+'" y="'+lp.y+'" text-anchor="'+lp.anchor+'" fill="var(--bad)" font-size="11" font-weight="700">WALL '+esc(q.p.at)+'</text>';
     } else {
       out+='<circle cx="'+q.x+'" cy="'+q.y+'" r="4.5" fill="var(--ok)"/>';
-      out+='<text x="'+(q.x+8)+'" y="'+(q.y-8)+'" fill="var(--muted)" font-size="11">'+esc(q.p.remaining)+' · '+esc(q.p.at)+'</text>';
+      const txt=String(q.p.remaining)+' · '+q.p.at, lp=labelPlace(q.x,txt,W,P);
+      out+='<text class="ptlabel" x="'+lp.lx+'" y="'+(q.y-8)+'" text-anchor="'+lp.anchor+'" fill="var(--muted)" font-size="11">'+esc(q.p.remaining)+' · '+esc(q.p.at)+'</text>';
     }
   }
   out+='</svg>';
@@ -182,6 +215,14 @@ function renderActions(){
   const bars=barGeom(s.days, W, H, P);
   let out='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily reconstructed run increments">';
   out+='<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
+  const sc=barScale(s.days);
+  out+='<line x1="'+P+'" y1="'+P+'" x2="'+P+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
+  for(const tv of sc.ticks){
+    const ty=P+(H-P*2)*(1-tv/sc.max);
+    out+='<line x1="'+P+'" y1="'+ty+'" x2="'+(W-P)+'" y2="'+ty+'" stroke="var(--line)" opacity="0.35"/>';
+    out+='<text class="ytick" x="'+(P-8)+'" y="'+(ty+4)+'" text-anchor="end" fill="var(--muted)" font-size="11">'+tv+'</text>';
+  }
+  out+='<text class="axisname" x="'+P+'" y="'+(P-14)+'" fill="var(--muted)" font-size="11">runs/day</text>';
   for(const b of bars){
     out+='<rect x="'+b.x.toFixed(1)+'" y="'+b.y.toFixed(1)+'" width="'+b.w.toFixed(1)+'" height="'+b.h.toFixed(1)+'" fill="'+(b.d.runs_delta===0?'var(--muted)':'var(--gold)')+'"><title>'+esc(b.d.date)+': +'+esc(b.d.runs_delta)+' runs, +'+esc(b.d.jobs_delta)+' jobs, ~'+esc(b.d.minutes_est)+' job-min est</title></rect>';
     if(b.d.date.endsWith("-02")||b.d.date.endsWith("-09")||b.d.date.endsWith("-16")||b.d.date.endsWith("-23")||b.d.date.endsWith("-29")){

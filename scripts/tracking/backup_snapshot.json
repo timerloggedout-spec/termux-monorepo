@@ -1,0 +1,55 @@
+{
+ "schema": "tracking-backup-snapshot/v1",
+ "read_at": "2026-11-02T08:06:09Z",
+ "status": "error:HTTPError: HTTP Error 404: Not Found",
+ "repo": "timerloggedout-spec/muse-vm-workspace-backup",
+ "export": {
+  "counts": {
+   "bytes": 54451903,
+   "excluded": 55,
+   "manifest_only": 15,
+   "t0": 288,
+   "t1": 46774
+  },
+  "export_id": "exp-20261102T062322Z-65e231",
+  "exported_at": "2026-11-02T06:24:53Z",
+  "gates": {
+   "content_scrub": "pass",
+   "denylist_clean": true,
+   "inventory_match": true,
+   "pass": true
+  }
+ },
+ "drills": [
+  {
+   "checked": 288,
+   "excluded_absent": true,
+   "export_id": "exp-20261102T062322Z-65e231",
+   "mismatched": 0,
+   "mode": "in-memory verification (exec sandbox write denial); shipped restore tool semantics unchanged",
+   "report": "reports/drill-2026-11-01.json",
+   "restored_bytes": 54466842,
+   "t1_checked": 46774,
+   "t1_consistent": 46773,
+   "t1_missing": 0,
+   "verdict": "fail"
+  }
+ ],
+ "commits": [
+  {
+   "at": "2026-11-02T06:33:55Z",
+   "message": "drill 2026-11-01 verdict=fail checked=288 mismatched=0",
+   "sha": "c623495ab3b38a28df82c19c971ca6f3e31f1863"
+  },
+  {
+   "at": "2026-11-02T06:31:21Z",
+   "message": "export exp-20261102T062322Z-65e231 t0=288 t1=46774 gates=pass",
+   "sha": "34a9dd16b5d974a8d8b986d32285f70146dbd488"
+  },
+  {
+   "at": "2026-11-02T06:21:05Z",
+   "message": "init: seed repository for git-data publishing",
+   "sha": "1614e84bff874f35978deeae02769d7515d4cfa5"
+  }
+ ]
+}

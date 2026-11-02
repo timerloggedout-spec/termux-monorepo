@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7fbe73385c61e859d69e9d46f06c99ed8b9e4790c71852ed6db5f7e11402cb78",
-  "workflow_count": 268,
+  "source_fingerprint": "ffb20080638fe508afd7c00c0441138527055f01672a00927df473f5634652af",
+  "workflow_count": 269,
   "workflows": [
     {
       "action_pins": [],
@@ -2893,6 +2893,21 @@
       "triggers": [
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: latency-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "latency-probe",
+      "path": ".github/workflows/latency-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

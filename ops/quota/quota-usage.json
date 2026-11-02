@@ -1,14 +1,12 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-02T06:30:06Z",
+ "generated_at": "2026-11-02T07:58:41Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
- "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
+ "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap decision pending)",
  "registry_context": {
-  "records": 168,
+  "records": 170,
   "pools": 53,
-  "coverage": "164/168 readings rows (registry grew +4 on 2026-11-01; promotion cycle in flight)",
-  "note": "Allocation model Pool x Focus x % (#1884); pools 53 since meta pool PR #2952",
-  "provenance": "quota-specialist pack refresh 2026-11-02"
+  "coverage": "164/170 readings rows (registry at 170 records; promotion cycle carries new records into readings)"
  },
  "series1_api_core": {
   "title": "GitHub API core \u2014 shared PAT bucket",
@@ -189,6 +187,48 @@
   "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
   "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta \u00d7 that day's avg_job_duration_ms / 60000 \u2014 an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
   "days": [
+   {
+    "date": "2026-08-25",
+    "runs_delta": 40,
+    "jobs_delta": 42,
+    "minutes_est": 8
+   },
+   {
+    "date": "2026-08-26",
+    "runs_delta": 40,
+    "jobs_delta": 102,
+    "minutes_est": 20
+   },
+   {
+    "date": "2026-08-27",
+    "runs_delta": 40,
+    "jobs_delta": 51,
+    "minutes_est": 9
+   },
+   {
+    "date": "2026-08-29",
+    "runs_delta": 40,
+    "jobs_delta": 47,
+    "minutes_est": 8
+   },
+   {
+    "date": "2026-09-01",
+    "runs_delta": 40,
+    "jobs_delta": 51,
+    "minutes_est": 10
+   },
+   {
+    "date": "2026-09-30",
+    "runs_delta": 80,
+    "jobs_delta": 117,
+    "minutes_est": 22
+   },
+   {
+    "date": "2026-10-01",
+    "runs_delta": 120,
+    "jobs_delta": 149,
+    "minutes_est": 26
+   },
    {
     "date": "2026-10-02",
     "runs_delta": 40,
@@ -380,11 +420,7 @@
    "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry \u00d74 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
    "detail": "Each collect ran ~30\u201380 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token \u2014 the PAT-bucket burn mechanism."
   },
-  "refresh": {
-   "at": "2026-11-02T06:30:06Z",
-   "by": "quota-specialist pack refresh 2026-11-02",
-   "note": "No 2026-10-30 reconstructed file exists - no 10-30 day row (gap stays a gap). The 10-31 delta spans file(10-31) - file(10-29). The 11-01 file carries identical cumulative corpus values to 10-31 (run_count 1550, total_jobs 2154) - its delta is honestly 0."
-  }
+  "refresh": "days rebuilt deterministically from the actions-performance-reconstructed corpus by scripts/quota_usage_pack.py (auto-refresh); delta = consecutive corpus files, so a day whose predecessor file is absent spans the gap."
  },
  "annotations": [
   {

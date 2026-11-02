@@ -33,7 +33,8 @@ def test_page_renders_layers_events_and_tasks():
                    "atwork-tree", "CK.bars", "CK.line", "CK.stampState",
                    "participant population"):
         assert marker in html
-    assert 'aria-label="Primary"' not in html  # PR-1; chrome PR follows
+    assert 'aria-label="Primary"' in html
+    assert 'quota-swarm.html" aria-current="page">Swarm Quota' in html
 
 
 def test_registry_sitemap_crosslinks():

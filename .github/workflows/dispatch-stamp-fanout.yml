@@ -11,8 +11,17 @@ on:
   workflow_dispatch:
     inputs:
       stamp:
-        description: "Canonical dispatch stamp JSON"
-        required: true
+        description: "Canonical dispatch stamp JSON (phase=dispatch/outcome) or score-fill JSON (phase=score)"
+        required: false
+        type: string
+      phase:
+        description: "dispatch | outcome | score"
+        required: false
+        default: dispatch
+        type: string
+      packet:
+        description: "Evidence packet JSON (phase=score): {dispatch_id, pr, gates, merged, merge_sha, task, diff_summary}"
+        required: false
         type: string
 
 permissions: {}
@@ -39,16 +48,77 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true
       - name: Emit stamp to all plane intakes
+        if: inputs.phase != 'score'
         env:
           STAMP_JSON: ${{ inputs.stamp }}
         run: |
           printf '%s' "$STAMP_JSON" > /tmp/stamp.json
-          python3 scripts/dispatch/stamp_fanout.py --stamp /tmp/stamp.json --head-sha "${{ github.sha }}"
+          python3 scripts/dispatch/stamp_fanout.py --stamp /tmp/stamp.json --head-sha "${{ github.sha }}" --phase "${{ inputs.phase }}"
+      - name: Judge + score-fill (phase=score)
+        if: inputs.phase == 'score'
+        env:
+          PACKET_JSON: ${{ inputs.packet }}
+          COHERE_API_KEY: <redacted>
+        run: |
+          printf '%s' "$PACKET_JSON" > /tmp/packet.json
+          python3 - <<'PYEOF'
+          import json
+          pkt = json.load(open('/tmp/packet.json'))
+          rubric = open('docs/ops/tasks/ates-judge-build.md').read()
+          lines = [rubric, '', '## Evidence packet (committed evidence only)', '',
+                   'dispatch_id: %s' % pkt['dispatch_id'], 'PR: #%s' % pkt.get('pr'),
+                   'merged: %s (merge sha %s)' % (pkt.get('merged'), pkt.get('merge_sha')),
+                   'gates: %s' % json.dumps(pkt.get('gates')), 'task: %s' % pkt.get('task'),
+                   'diff summary: %s' % pkt.get('diff_summary')]
+          open('/tmp/judge-prompt.md', 'w').write('\n'.join(lines))
+          # retain the packet as committed evidence beside the record
+          import pathlib
+          ev = pathlib.Path('experiments/doe/routed-dispatch/evidence')
+          ev.mkdir(parents=True, exist_ok=True)
+          (ev / (pkt['dispatch_id'] + '.json')).write_text(json.dumps(pkt, indent=2) + '\n')
+          PYEOF
+          python3 scripts/ops/provider_invoke.py --provider cohere --prompt-file /tmp/judge-prompt.md --out /tmp/judge-out.md 2>&1 | tee /tmp/judge.log
+          python3 - <<'PYEOF'
+          import json, re, hashlib
+          pkt = json.load(open('/tmp/packet.json'))
+          log = open('/tmp/judge.log').read() + open('/tmp/judge-out.md').read()
+          m = re.search(r'JUDGE_VERDICT (\{.*\})', log)
+          if not m:
+              raise SystemExit('judge produced no JUDGE_VERDICT line')
+          verdict = json.loads(m.group(1))
+          gates = pkt.get('gates') or {}
+          flat = []
+          for v in gates.values():
+              flat += v if isinstance(v, list) else [v]
+          flat = [g for g in flat if g]
+          det = (sum(1 for g in flat if g == 'success') / len(flat)) if flat else 0.0
+          merged = bool(pkt.get('merged'))
+          if merged and det == 1.0:
+              outcome = 'PASS'
+          elif not merged and det < 1.0:
+              outcome = 'FAIL_DETERMINISTIC'
+          elif not merged:
+              outcome = 'INCONCLUSIVE'
+          else:
+              outcome = 'FAIL_DETERMINISTIC'
+          stamp = {"dispatch_id": pkt['dispatch_id'],
+                   "score": {"ates_outcome": outcome, "deterministic_score": det,
+                             "judge_score": float(verdict['judge_score']), "judge_weight": 0.3,
+                             "wrong_commit_penalty": 0.0,
+                             "trace_id": "fanout-score-${{ github.run_id }}",
+                             "task_fingerprint": hashlib.sha256((pkt.get('task') or '').encode()).hexdigest(),
+                             "environment_fingerprint": hashlib.sha256((pkt.get('merge_sha') or '').encode()).hexdigest(),
+                             "judge_provider": "cohere", "judge_model": "catalog-resolved (see judge run log)",
+                             "judge_dispatch_id": "fanout-score-${{ github.run_id }}"}}
+          json.dump(stamp, open('/tmp/score-stamp.json', 'w'))
+          print('score stamp:', json.dumps(stamp))
+          PYEOF
+          python3 scripts/dispatch/stamp_fanout.py --stamp /tmp/score-stamp.json --phase score
       - name: Commit intake updates
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          git add ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records experiments/doe/routed-dispatch/stamps
+          git add ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records experiments/doe/routed-dispatch/stamps experiments/doe/routed-dispatch/evidence
           if git diff --cached --quiet; then
             echo "no intake changes (already emitted)"
           else

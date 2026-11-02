@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T01:38:06Z",
+ "generated_at": "2026-11-02T01:55:10Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T01:38:06Z",
+   "read_at": "2026-11-02T01:55:10Z",
    "merged": 150,
-   "open": 171
+   "open": 173
   },
   "lane_events": {
-   "read_at": "2026-11-02T01:38:06Z",
+   "read_at": "2026-11-02T01:55:10Z",
    "status": "ok",
-   "count": 6583,
+   "count": 6640,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -84,7 +84,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -99,7 +99,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -113,7 +113,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -128,7 +128,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -140,7 +140,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -156,7 +156,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "challenge-entries",
@@ -170,7 +170,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "quota",
@@ -190,7 +190,7 @@
     "quota registry services=168",
     "open PRs: #3342, #3242, #2757, #2340, #2525"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "doe",
@@ -199,18 +199,18 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3409,
-    "sha": "70c1a5172fac",
-    "at": "2026-11-02T00:36:57Z",
-    "title": "DoE bf-1: comparison-0002 (provenance corpus wired)"
+    "pr": 3473,
+    "sha": "48dd6064e002",
+    "at": "2026-11-02T01:47:08Z",
+    "title": "DoE: rule 9 consumption wired to attribution/1.4"
    },
-   "next": "land/close PR #2966 \u2014 [apk-doe] A v0.2.1",
+   "next": "land/close PR #3470 \u2014 data(doe): M5 set amendment \u2014 instance + set fields (DoE threshold test)",
    "next_basis": "open-pr",
    "evidence": [
     "doe DESIGN.json campaigns=16",
-    "open PRs: #2966, #2856, #2857, #740, #1569"
+    "open PRs: #3470, #2966, #2856, #2857, #740"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "doe-nc1",
@@ -222,7 +222,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "tier-1",
@@ -239,7 +239,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "contribution-desk",
@@ -254,7 +254,7 @@
     "desk-feed traversals=10 generated_at=2026-11-01T15:48:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "web-design-viz",
@@ -263,17 +263,17 @@
    "project_id": "webdev-viz",
    "state": "in-flight",
    "last_merge": {
-    "pr": 2168,
-    "sha": "b60d62bf4781",
-    "at": "2026-11-02T00:19:49Z",
-    "title": "chore(dashboards): refresh surface feeds"
+    "pr": 3466,
+    "sha": "ab64c30ccb1d",
+    "at": "2026-11-02T01:44:17Z",
+    "title": "chore(dashboards): mvt feed refresh \u2014 ATES-scored population 0\u21923"
    },
    "next": "land/close PR #2702 \u2014 docs(dashboard): standing preview QA checklist",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "marketing",
@@ -292,7 +292,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "marketing-social",
@@ -304,7 +304,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "swarm",
@@ -313,17 +313,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3462,
-    "sha": "262ee6f157a9",
-    "at": "2026-11-02T01:28:19Z",
-    "title": "fix(dispatch): judge step secret expression"
+    "pr": 3464,
+    "sha": "37b720587522",
+    "at": "2026-11-02T01:41:30Z",
+    "title": "docs(swarm): \u00a721 cycle 2 \u2014 wiring-completion set complete + scored"
    },
-   "next": "land/close PR #3437 \u2014 feat(dispatch): wire gemini-invoke to the stamp fan-out",
+   "next": "land/close PR #3476 \u2014 feat(cert): cert-project workflow + 025 Celestial Bodies build (P-block)",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #3437, #1470"
+    "open PRs: #3476, #3437, #1470"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "providers",
@@ -338,7 +338,7 @@
     "quota registry services=168",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "providers-phrases",
@@ -350,7 +350,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "repo-replay",
@@ -362,7 +362,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "ops",
@@ -376,7 +376,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   },
   {
    "lane": "telemetry",
@@ -385,17 +385,17 @@
    "project_id": "telemetry-ingest",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3455,
-    "sha": "604d47358a9f",
-    "at": "2026-11-02T01:10:43Z",
-    "title": "feat(telemetry): session-history population \u2014 correlation wiring (registries x PR artifacts)"
+    "pr": 3469,
+    "sha": "39102aca30aa",
+    "at": "2026-11-02T01:44:54Z",
+    "title": "feat(telemetry): attribution/1.4 \u2014 corroboration state (marks != proof)"
    },
    "next": "land/close PR #3442 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #3442, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T01:38:06Z"
+   "updated_at": "2026-11-02T01:55:10Z"
   }
  ],
  "doe_join": {
@@ -692,7 +692,7 @@
       }
      }
     ],
-    "experiment_records": 9,
+    "experiment_records": 10,
     "experiment_records_with_instance": 3
    },
    {
@@ -742,6 +742,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 82/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

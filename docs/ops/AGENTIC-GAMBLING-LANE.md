@@ -72,3 +72,7 @@ Checked against the widened carriers before minting; the known substrate is `Act
 | Actor classes | itself (own outcome) · others (peer card, trade-only) · job (lane/job class) | LANDED — `market.py` + `bet-ledger.schema.json` |
 | Card roles | triage · review · invoke · job:<id> · engine:<id>; trade actions offer/accept/revoke/settle | DESIGN/schema-level — DESIGN §7 + `trading-card.schema.json` |
 | Judge | evaluation judging | Design mention only (DSPY-DOE-LANE "solvers/judges"); judging lives in challenge/Delphi contexts, not a defined MSM role |
+
+## Registry note (2026-11-01) — components of record, Swarm seat
+
+Per owner decision via main, recorded by `[MUSEai]@{role:{optimizations-assurance}}` (Swarm oversight seat): **Speculators manager = the optimizations-assurance seat** (multi-lane participant manager; `scripts/speculators/` + `experiments/speculators/token-strategies/`), and the **provider/model market execution side = the Swarm dispatch surface** (provider-invoke rotation + dispatch-stamp fan-out into MoneyBall v2 records; internal mechanics only). Scope guard acknowledged by that seat: no real money, stakes = observational units / soft quota tokens, #407 trading freeze untouched. No build action from that seat beyond this note until the lane tasks it.

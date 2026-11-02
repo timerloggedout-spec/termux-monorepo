@@ -35,6 +35,7 @@ hand-refreshed, or PR-centric.
 | Snapshot fetcher | `scripts/tracking/fetch_snapshots.py` (workflow-side network only) |
 | Snapshots | `scripts/tracking/pr_feed_snapshot.json`, `scripts/tracking/lane_events_snapshot.json` |
 | Seed registry | `ops/tracking/projects.json` — identity + match rules + lane of record **only; no state** |
+| Nested-family record | `ops/tracking/nested-family.json` (`nested-family/v1`) + twin `apps/help-wanted-dashboard/data/nested-family-feed.json` — provider ⊃ model ⊃ {roles, tasks run} with dispatch connection; spec: [NESTED-FAMILY.md](NESTED-FAMILY.md) |
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` |
 | Tests | `tests/test_repo_tracking.py` |
 

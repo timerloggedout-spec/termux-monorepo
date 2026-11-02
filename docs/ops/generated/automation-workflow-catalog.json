@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5f039f5b6fd858551e88f7789f17da4adddaa5ef4cd966c0876e6736377827c2",
+  "source_fingerprint": "712466ed7d5825ea9993f5abc4e554bfeac1570894870029d5fb76421bf4b401",
   "workflow_count": 276,
   "workflows": [
     {
@@ -2970,7 +2970,8 @@
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
-        "oracle"
+        "oracle",
+        "oracle-mathlib"
       ],
       "name": "nse023-oracle",
       "path": ".github/workflows/nse023-oracle.yml",

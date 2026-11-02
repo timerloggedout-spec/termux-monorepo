@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T08:56:33.697343+00:00",
+ "census_at_utc": "2026-11-02T09:31:19.141773+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,22 +13,22 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 2906,
+  "total": 2922,
   "stale": 878,
   "orphan_no_assoc_PR": 349,
   "stale_and_orphan": 85
  },
  "prs": {
-  "total": 3192,
-  "open": 177,
+  "total": 3217,
+  "open": 178,
   "open_draft": 23,
-  "open_draft_share": 0.1299,
+  "open_draft_share": 0.1292,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 66.1
+    "age_days": 66.2
    },
    {
     "number": 578,
@@ -40,19 +40,19 @@
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 40.8
+    "age_days": 40.9
    },
    {
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 40.4
+    "age_days": 40.5
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 40.2
+    "age_days": 40.3
    },
    {
     "number": 762,
@@ -70,13 +70,13 @@
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 38.3
+    "age_days": 38.4
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 32.3
+    "age_days": 32.4
    },
    {
     "number": 970,
@@ -136,25 +136,25 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 0.6
+    "age_days": 0.7
    },
    {
     "number": 3242,
@@ -163,23 +163,23 @@
     "age_days": 0.5
    }
   ],
-  "merged": 2541,
+  "merged": 2565,
   "closed_unmerged": 474,
-  "open_no_closing_ref": 171,
+  "open_no_closing_ref": 172,
   "open_unlinked_issue_target": 144,
-  "open_unlinked_any_ref": 120,
-  "merged_no_closing_ref": 2512,
-  "merged_unlinked_issue_target": 1465,
-  "merged_unlinked_any_ref": 819,
+  "open_unlinked_any_ref": 121,
+  "merged_no_closing_ref": 2536,
+  "merged_unlinked_issue_target": 1480,
+  "merged_unlinked_any_ref": 826,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2466,
+  "merged_head_branch_residual_name_match": 2490,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 473,
-  "open": 392,
-  "open_surface_unlinked": 171,
-  "open_unlinked_strict": 152
+  "total": 478,
+  "open": 396,
+  "open_surface_unlinked": 175,
+  "open_unlinked_strict": 156
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -1498,6 +1498,10 @@
    [
     3577,
     3215
+   ],
+   [
+    3697,
+    3050
    ]
   ],
   "issue_issue_mutual_pairs": 3,

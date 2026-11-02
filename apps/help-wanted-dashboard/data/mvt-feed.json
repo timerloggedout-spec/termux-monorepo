@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "mvt",
- "generated_at": "2026-11-02T01:43:48Z",
+ "generated_at": "2026-11-02T02:02:55Z",
  "sources": [
   "docs/ops/corpus/EXPERIMENT.schema.json",
   ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
@@ -96,15 +96,15 @@
    }
   ],
   "experiment_records": {
-   "committed_records": 66,
-   "routed_dispatch_records": 9,
-   "routed_terminal": 9,
+   "committed_records": 67,
+   "routed_dispatch_records": 10,
+   "routed_terminal": 10,
    "ates_scored": 3,
-   "instance_stamped": 3,
+   "instance_stamped": 6,
    "note": "Population per docs/ops/MVT-ATES-SCORING-INTAKE.md: scoring reads committed records only; a record with no ates_outcome renders unscored on ATES metrics, never synthesized."
   }
  },
  "gaps": [
-  "The experiment loop has never been dispatched (0 runs observed) \u2014 defined-but-not-run renders as exactly that. Committed EXPERIMENT records do exist (66 under experiments/doe/*/records/, incl. the first live routed-dispatch record, terminal), but MVT/ATES scoring population is partial: ates_outcome is set in 3 records and 3 records carry a configured-instance stamp, so ATES scoring renders unscored until routed dispatch emits the intake scoring keys (docs/ops/MVT-ATES-SCORING-INTAKE.md)."
+  "The experiment loop has never been dispatched (0 runs observed) \u2014 defined-but-not-run renders as exactly that. Committed EXPERIMENT records do exist (67 under experiments/doe/*/records/, incl. the first live routed-dispatch record, terminal), but MVT/ATES scoring population is partial: ates_outcome is set in 3 records and 6 records carry a configured-instance stamp, so ATES scoring renders unscored until routed dispatch emits the intake scoring keys (docs/ops/MVT-ATES-SCORING-INTAKE.md)."
  ]
 }

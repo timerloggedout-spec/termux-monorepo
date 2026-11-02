@@ -72,6 +72,9 @@ def main() -> int:
     ap.add_argument("--temporal-json",
                     help="precomputed {engagement, self_host_smoke} runs "
                          "summary (offline generation route)")
+    ap.add_argument("--viz-out",
+                    help="also emit the Viz row-contract twin "
+                         "(results-index-feed/v1) at this path")
     args = ap.parse_args()
     now = datetime.datetime.now(datetime.timezone.utc).strftime(
         "%Y-%m-%dT%H:%M:%SZ")
@@ -178,6 +181,81 @@ def main() -> int:
            "consumer": "viz all-4 results index page (render verbatim)"}
     with open(args.out, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, indent=1, sort_keys=True)
+
+    if args.viz_out:
+        by_id = {s["id"]: s for s in systems}
+        corpus = len(_lines(args.root, "ops/telemetry/session-history.jsonl"))
+        ates_h = by_id["ates"]["headline"]
+        ates_w = {w["file"].split("/")[-1]: w
+                  for w in ates_h.get("workflows", [])}
+
+        def row(label, state, record, at):
+            return {"label": label, "state": state,
+                    "record_of_record": record, "at": at}
+
+        sections = [
+            {"id": "ates", "name": "ATES", "generated_at": now,
+             "note": by_id["ates"]["record_of_record"].get("note"),
+             "rows": [
+                 row("receipt runs",
+                     ates_w.get("ates-phase-b-run-receipt.yml", {}).get("total_runs"),
+                     "apps/tribute-dashboard/data/ates-feed.json",
+                     ates_w.get("ates-phase-b-run-receipt.yml", {}).get("latest_at")),
+                 row("benchmark runs",
+                     ates_w.get("ates-orchestrator-benchmark.yml", {}).get("total_runs"),
+                     "apps/tribute-dashboard/data/ates-feed.json",
+                     ates_w.get("ates-orchestrator-benchmark.yml", {}).get("latest_at")),
+                 row("governance/frame state",
+                     f"{len(ates_h.get('invariants') or [])} invariants",
+                     "apps/tribute-dashboard/data/ates-feed.json",
+                     ates_h.get("feed_generated_at"))]},
+            {"id": "3l0", "name": "3L0", "generated_at": now,
+             "note": by_id["3l0"]["record_of_record"].get("note"),
+             "rows": [
+                 row("staged intake records",
+                     by_id["3l0"]["headline"].get("staged_records"),
+                     "ops/telemetry/session-history-3l0.jsonl", now),
+                 row("confirmed (weights-eligible)",
+                     by_id["3l0"]["headline"].get("confirmed_non_null"),
+                     "ops/telemetry/session-history-3l0.jsonl", now),
+                 row("routed-dispatch stamp corpus",
+                     corpus, "ops/telemetry/session-history.jsonl", now)]},
+            {"id": "temporal", "name": "Temporal", "generated_at": now,
+             "note": by_id["temporal"]["record_of_record"].get("note"),
+             "rows": [
+                 row("engagement runs",
+                     (by_id["temporal"]["headline"].get("engagement") or {})
+                     .get("total_count"),
+                     "Actions: temporal-engagement.yml",
+                     ((by_id["temporal"]["headline"].get("engagement") or {})
+                      .get("latest") or {}).get("at")),
+                 row("self-host smoke runs",
+                     (by_id["temporal"]["headline"].get("self_host_smoke") or {})
+                     .get("total_count"),
+                     "Actions: temporal-self-host-smoke.yml",
+                     ((by_id["temporal"]["headline"].get("self_host_smoke") or {})
+                      .get("latest") or {}).get("at")),
+                 row("persistent instance", "none",
+                     "Actions: temporal-engagement.yml", now)]},
+            {"id": "hindsight", "name": "HindSight", "generated_at": now,
+             "note": by_id["hindsight"]["record_of_record"].get("note"),
+             "rows": [
+                 row("receipts on record",
+                     f"proof attempted {by_id['hindsight']['headline'].get('proof_attempted')}"
+                     f" - ok {by_id['hindsight']['headline'].get('proof_ok')}"
+                     f" - last error {by_id['hindsight']['headline'].get('last_error_status')}",
+                     "ops/telemetry/hindsight-retain-proof.json", now),
+                 row("retained population",
+                     by_id["hindsight"]["headline"].get("retained_units"),
+                     "ops/telemetry/hindsight-retain-state.json", now)]},
+        ]
+        viz = {"schema": "results-index-feed/v1", "generated_at": now,
+               "sections": sections,
+               "source": "ops/telemetry/results-index.json (same builder, "
+                         "same values - render presentation)"}
+        with open(args.viz_out, "w", encoding="utf-8") as fh:
+            json.dump(viz, fh, indent=1, sort_keys=True)
+
     print(json.dumps({"systems": [s["id"] for s in systems],
                       "generated_at": now}))
     return 0

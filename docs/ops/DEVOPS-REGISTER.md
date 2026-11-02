@@ -196,3 +196,17 @@ history queries beyond the last-5 window — method noted for the next pass.
    Fly · Koyeb {last deploy · mechanism · failure class · blocking item}.
 3. CI census repeated on state-change suspicion or weekly-class cadence,
    appended as new rows.
+
+## §4 Deploy-plane ops board (census 2026-11-02T13:45Z, PAT firsthand)
+
+| Plane | Mechanism (workflow) | State | Last deploy evidence | Failure class / blocking item |
+|---|---|---|---|---|
+| GitHub Pages (/tribute/) | `tribute-dashboard-deploy.yml` (38 runs; predecessor `help-wanted-dashboard-deploy.yml` deleted in the rename, 1,266 runs) | **OPERATIONAL, congested** | dispatch run PENDING 13:44Z; push runs 13:43Z ×2 both **cancelled** | Push-burst self-cancellation in hot queues (cancel/success/cancel tail on the predecessor's last runs, 10:52–10:55Z); standing remedy = manual dispatch — exercised as recently as this census |
+| Vercel | `tribute-vercel-prod.yml` (17 runs) · `owner-records-vercel.yml` (5 runs) · `vercel-project-rename.yml` (2 runs) | **OPERATIONAL** | tribute prod dispatch **success 06:18Z** · owner-records final success 07:14Z (SSO-gated project live) · rename+domain-swap 2/2 success | Deploy rate-limit failures observed as non-gate PR-check failures (Stewardship merge census 2026-11-02); prior tribute-prod failures date to 2026-10-22 |
+| Fly.io | `deploy-hindsight.yml` (1 run ever, 2026-09-28 success) · `fly-hindsight-config.yml` | **BLOCKED — card class** | config-apply run 41410355692 **FAILED 2026-11-02T08:04Z** ("trial has ended, please add a credit card") | ∅CC closed class: the on-file HindSight free-model config edit is UNAPPLIED; the Fly app serves its prior config. Unblock = Fly.io support-trial reset (owner request sent 2026-10-27, pending) ∨ card — neither in any lane's hands |
+| Koyeb | `koyeb-hindsight-deploy.yml` (8 runs, all 2026-09) | **DORMANT-BLOCKED — credential** | last runs 2026-09-30: failure ×2 + cancelled; ∅ runs since | **KOYEB_API_TOKEN absent** (owner provisioning item, GATES-REGISTER DECISION-GATE class). This is the live HindSight retain target; its redeploy with the on-file :free config is the armed unblock for the ~10-day free fill (population still 0/388) |
+
+Board discipline: state flips only on run evidence (a deploy run's conclusion),
+not on lane report. Pages congestion and the §1 parked state are the same queue
+phenomenon seen from two planes — a Pages deploy that matters rides dispatch,
+never push.

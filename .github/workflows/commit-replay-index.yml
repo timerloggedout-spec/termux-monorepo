@@ -57,8 +57,8 @@ jobs:
       - name: Self-check (indexer unit tests)
         run: |
           set -euo pipefail
-          python3 -m py_compile scripts/commit_replay/extract.py
-          python3 -m pytest tests/test_commit_replay_extract.py -q || python3 tests/test_commit_replay_extract.py
+          python3 -m py_compile scripts/commit_replay/extract.py scripts/commit_replay/fragments.py scripts/commit_replay/compose.py
+          python3 -m pytest tests/test_commit_replay_extract.py tests/test_commit_replay_p2.py -q || { python3 tests/test_commit_replay_extract.py && python3 tests/test_commit_replay_p2.py; }
       - name: Extract (incremental gindex)
         run: |
           set -euo pipefail
@@ -70,10 +70,19 @@ jobs:
             --index ops/commit-replay/index/termux-monorepo.jsonl \
             --max-commits "${{ inputs.max_commits || '1000' }}" \
             | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Fragments (symbol/range index @ master tip)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/commit_replay/fragments.py \
+            --repo-root . \
+            --repo-name "${{ github.repository }}" \
+            --index ops/commit-replay/index/termux-monorepo.jsonl \
+            --out ops/commit-replay/index/fragments-termux-monorepo.jsonl \
+            | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Commit index to master (single-writer)
         run: |
           set -euo pipefail
-          git add ops/commit-replay/index/termux-monorepo.jsonl
+          git add ops/commit-replay/index/termux-monorepo.jsonl ops/commit-replay/index/fragments-termux-monorepo.jsonl
           if git diff --cached --quiet; then
             echo "index unchanged — nothing to commit" >> "$GITHUB_STEP_SUMMARY"
             exit 0

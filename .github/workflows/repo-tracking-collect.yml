@@ -100,6 +100,8 @@ jobs:
             apps/help-wanted-dashboard/data/nested-family-feed.json \
             ops/tracking/backup-state.json \
             apps/help-wanted-dashboard/data/backup-state-feed.json \
+            ops/tracking/backup-events.jsonl \
+            apps/help-wanted-dashboard/data/backup-events-feed.jsonl \
             scripts/tracking/backup_snapshot.json \
             scripts/tracking/pr_feed_snapshot.json scripts/tracking/lane_events_snapshot.json
           if git diff --cached --quiet; then

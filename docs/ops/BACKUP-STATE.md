@@ -70,6 +70,23 @@ verbatim (a drill verdict of `fail` is recorded as recorded — the
 append during the drill: drift, not defect; the record carries the
 verdict and the leg counts, readers judge).
 
+## Event series (Telemetry twin)
+
+`ops/tracking/backup-events.jsonl` (+ dashboard twin
+`apps/help-wanted-dashboard/data/backup-events-feed.jsonl`,
+byte-identical): the unified chronological series — export + attempt
++ drill, one event per line, ascending by `at`. Built by the same
+generator in the same run (there is exactly one count of anything).
+
+- Relay events pass through **byte-identical** to their
+  `backup-relays.jsonl` lines — never re-serialized (Telemetry's
+  ingest dedupes on sha256(source line); identical lines = zero
+  duplicate measurement records).
+- Drill events are new (the drill is not in the relays substrate):
+  the snapshot drill extract + `kind: "drill"` + `at` paired from the
+  drill commit, serialized canonically (sorted keys, compact
+  separators) so the same drill yields the same bytes every run.
+
 ## Rules
 
 - **Metadata only.** Counts, hashes, verdicts, timestamps, commit

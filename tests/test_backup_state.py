@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "tracking"))
-from backup_state import build  # noqa: E402
+from backup_state import build, events_lines  # noqa: E402
 
 SNAP = {
     "schema": "tracking-backup-snapshot/v1", "read_at": "2026-11-02T07:47:00Z",
@@ -22,7 +22,9 @@ SNAP = {
                 "t1_checked": 46774, "t1_consistent": 46773, "t1_missing": 0,
                 "restored_bytes": 54466842, "mode": "in-memory"}],
     "commits": [{"sha": "oldsha", "at": "2026-11-01T00:00:00Z",
-                 "message": "export exp-0 t0=10 t1=20 gates=pass"}],
+                 "message": "export exp-0 t0=10 t1=20 gates=pass"},
+                {"sha": "drillsha", "at": "2026-11-02T06:33:55Z",
+                 "message": "drill: restore verification 2026-11-01 (in-memory)"}],
 }
 RELAY = {"kind": "export", "export_id": "exp-1", "at": "2026-11-02T06:24:53Z",
          "publish_commit": "pubsha", "state_hash": "hash-1"}
@@ -60,6 +62,24 @@ def test_merge_and_marker():
     d = feed["drills"][0]
     assert d["verdict"] == "fail" and d["t1"]["consistent"] == 46773
     assert feed["summary"]["last_drill_verdict"] == "fail"
+
+
+def test_events_series_byte_identity():
+    base = _tree()
+    lines = events_lines(base)
+    relay_lines = [l for l in (base / "ops" / "tracking" / "backup-relays.jsonl")
+                   .read_text().splitlines() if l.strip()]
+    # relay lines appear byte-identical (Telemetry sha256 dedupe condition)
+    for rl in relay_lines:
+        assert rl in lines
+    drills = [json.loads(l) for l in lines if json.loads(l).get("kind") == "drill"]
+    assert len(drills) == 1 and drills[0]["verdict"] == "fail"
+    assert drills[0]["at"] == "2026-11-02T06:33:55Z"  # paired drill commit
+    # deterministic: same inputs -> same bytes
+    assert events_lines(base) == lines
+    # chronological ascending
+    ats = [str(json.loads(l).get("at")) for l in lines]
+    assert ats == sorted(ats)
 
 
 if __name__ == "__main__":

@@ -26,8 +26,9 @@ EXPERIMENT/intake carriers, consumed here as sources, never re-scored.
   generated_at, generated_by,
   spec: {doc, grouping, task_link},          // this file + join rules, carried in-record
   sources: [{id, path, records_read, records_used}],
-  coverage: {denominator, registry_providers, with_dispatches,
-             zero_dispatch: [..], unregistered_dispatch_providers: [..]},
+  coverage: {denominator, registry_records, registry_providers,
+             with_dispatches, zero_dispatch: [..],
+             unregistered_dispatch_providers: [..]},
   summary: {providers, models, roles, tasks, dispatches,
             registry_providers, zero_dispatch_providers,
             by_outcome{status: n}, by_source{id: n}},
@@ -136,7 +137,13 @@ feeds amend. A registry provider with no dispatch family appears in
 families and registry names is **casefold-exact, no aliases** (v1);
 dispatch providers with no registry match are named in
 `coverage.unregistered_dispatch_providers` (a registry gap signal for
-the Quota lane, not a rollup error). If the registry is unreadable,
+the Quota lane, not a rollup error) and are also named in `gaps[]`.
+The census is a moving count: `coverage` carries the vintage pair
+(`registry_records` model-lane records → `registry_providers`
+distinct) beside the record's `generated_at`, so a coverage fraction
+always shows which census it divides by. Zero-dispatch rows carry no
+outcome/verdict fields at all — no dispatch ⇒ nothing to carry
+(absence, not a zero score). If the registry is unreadable,
 coverage is null, the gap is named in `gaps[]`, and dispatch families
 still publish (fail-soft).
 

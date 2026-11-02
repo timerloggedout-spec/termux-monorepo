@@ -44,8 +44,17 @@ export DONT_PROMPT_WSL_INSTALL=1
 # session wrote main.log but never opened a window / started exthost —
 # baked state is the prime suspect. UD is exported for the probes below.
 export UD=/tmp/vscode-ud-run
-mkdir -p "$UD"
-(dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust \
+mkdir -p "$UD/User"
+# First-run workbench is heavy under software GL (welcome page, walkthrough,
+# update + telemetry chatter) and the GPU process burns until it crashes
+# the window (~3.5 min in pilots 13/14). Pre-seed a minimal, quiet profile.
+cat > "$UD/User/settings.json" <<'JSON'
+{"workbench.startupEditor": "none", "window.restoreWindows": "none",
+ "update.mode": "none", "telemetry.telemetryLevel": "off",
+ "extensions.autoUpdate": false, "extensions.autoCheckUpdates": false,
+ "workbench.enableExperiments": false, "git.enabled": false}
+JSON
+(dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust --use-gl=angle --use-angle=gl-egl \
   --extensions-dir /opt/vscode-extensions \
   /workspace/project > "$EV/code.log" 2>&1 &)
 echo "code launched" >> "$LOG"
@@ -94,12 +103,13 @@ sleep 25
 relaunches=0
 for i in $(seq 1 72); do
   [ -f "$EV/RESULT.json" ] && break
-  if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 3 ]; then
+  if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 4 ]; then
     relaunches=$((relaunches+1))
     echo "watchdog: code tree dead; relaunch #$relaunches" >> "$LOG"
-    (dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust \
+    (dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust --use-gl=angle --use-angle=gl-egl \
       --extensions-dir /opt/vscode-extensions \
       /workspace/project >> "$EV/code.log" 2>&1 &)
+    sleep 20
   fi
   sleep 5
 done

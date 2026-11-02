@@ -56,7 +56,8 @@ function readPositionRaw() {
 
 function positionShowsComplete(raw) {
   if (!raw) return false;
-  return /complete"?\s*[:=]\s*true/.test(raw) || /"stepId"\s*:\s*"1\.1"[^}]*complete/.test(raw);
+  const flat = raw.replace(/\\/g, '');
+  return /"complete"\s*:\s*true/.test(flat);
 }
 
 let SESSION_CANDIDATES = [];

@@ -119,6 +119,10 @@ jobs:
           curl -fsSL -o /tmp/code.tgz \
             "https://update.code.visualstudio.com/1.97.2/linux-x64/stable"
           mkdir -p "$HOME/vscode" && tar -xzf /tmp/code.tgz -C "$HOME/vscode"
+          # CodeRoad's test runner fails the step on ANY stderr from its
+          # exec; npm >= 10 warns about the --reporter flag CodeRoad appends.
+          # Keep npm silent for everything spawned under this HOME.
+          printf 'loglevel=silent\n' > "$HOME/.npmrc"
           CODE="$HOME/vscode/VSCode-linux-x64/bin/code"
           "$CODE" --version | head -2
           curl --compressed -fsSL -o /tmp/coderoad.vsix \

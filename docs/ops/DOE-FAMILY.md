@@ -335,6 +335,33 @@ governs whether a weighted claim may be STATED. The
 dispatch-accumulation duty (dispatch = required accumulation)
 exists to satisfy this standard.
 
+**Selection authority — Scout and the pool feed (owner ruling,
+2026-11-02).** DoE holds authority over Scout, with the pool
+feed. The pool feed is a DoE-governed record — ONE source, no
+parallel versions — carrying per arm: {arm (instance_key),
+class, arm_state per the health gates, n_accumulated vs target
+(accumulation-targets v0), posterior_state (bayesian-updating
+v0)}. Scout selects arms FROM the feed's live state only,
+under DoE rules:
+
+- **Pre-failure health gates:** an arm failing or degrading on
+  its health gate is not selectable.
+- **Accumulation duty:** selection serves the accumulation
+  targets; below-target live arms are the priority surface.
+- **Significance standard:** selection may feed accumulation
+  freely; no claim binds beyond the standard above.
+- **Reroute-prior-to-failure:** on gate degradation, reroute
+  BEFORE failure, not after. A selection made on static
+  grounds, outside live pool state, is VOID — the Gemini
+  failure mode (selection off static grounds while the arm's
+  live capacity state differed) is exactly what this authority
+  exists to prevent.
+
+Scout proposes within the feed; DoE's bars govern what may
+bind. Feed carriage: maintained by the rotation automation
+(Swarm) under this governance; an existing equivalent live
+surface becomes the feed by designation, never a second build.
+
 ## Definitions of record
 
 - **Swarm** (owner definition, 2026-11-01): ALL providers' inference

@@ -123,3 +123,12 @@ The collapse is a **naming/listing convention only**; participant records, walle
 **DoE verdict + watch-item (2026-11-02):** the collapse registry PASSES C1–C5 (DoE, firsthand: additive names-only diff; this charter's records untouched). Watch-item registered as a listing rule: **bookmaker** and **11th man** are name-reserved for ABSENT classes — any listing surface carrying these names must carry the **ABSENT marker**, or the listing mints the class by implication.
 
 **Registry amendment (2026-11-02):** PR #3830 merged 458f5b38b568 (verified in master history; forecast row read firsthand) CORRECTED the forecast row to a distinct OUTPUT class — no forecaster participant class exists (Registry-owned correction of its #3828 mint); Conflicts A (layers) and B (senses separated, ker naming `bookmaker_id`) dispositioned as mirrored here. This lane's mirror already conformed; the amendment is recorded for provenance.
+
+## First book — Challenges (owner directive, 2026-11-02)
+
+The first wagering book is **our challenges**, stood up in the **private ledger first**, ahead of any platform-listing work.
+
+- **Book:** `ops/agentic-gambling/book/challenges-book.json` (`agentic-gambling-book/v1`) — 8 subjects, each with a named resolution source: D1 submission · D2 · D3 · D5 submissions (resolution: `docs/ops/CHALLENGE-ENTRIES-LOG.md`) · D4 milestones (entries log + D4 records) · AMD Academy C1–C5 landings · AMD ROCm exam · AMD league submissions-complete landing (resolution: AMD sub-manager + Certifications ladder records).
+- **Ledger of record 📒:** `ops/agentic-gambling/book/ledger.jsonl` — append-only, in-repo (git history = the private record). **MoneyBall v2 is the scoring surface, not the ledger; Neon is the telemetry/lane-events store, not this ledger.**
+- **Participants:** gambler (canonical, per the naming-collapse registry); every position cites its basis — uncited = invalid. Stakes: observational units / soft quota tokens, internal only; #407 untouched.
+- **State at open:** book_opened recorded in the ledger; positions = 0. Build items: wallet store unimplemented (stakes record against NOT_ESTABLISHED balances until it lands); counterparty side = bookmaker class ABSENT — positions settle vs the observed outcome per resolution source; pool-counterparty mechanics = build item.

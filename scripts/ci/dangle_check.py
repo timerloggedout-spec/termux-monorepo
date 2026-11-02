@@ -35,8 +35,10 @@ import re
 import sys
 from pathlib import Path
 
-TEXT_EXTS = {".py", ".sh", ".md", ".yml", ".yaml", ".json", ".html", ".js",
-             ".ts", ".txt", ".toml", ".cfg", ".ini"}
+# .jsonl ∈ scan sources since the #3751 amendment: series/record files
+# (commit-replay.jsonl class) carried residuals the pointer scan missed.
+TEXT_EXTS = {".py", ".sh", ".md", ".yml", ".yaml", ".json", ".jsonl",
+             ".html", ".js", ".ts", ".txt", ".toml", ".cfg", ".ini"}
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv"}
 # Pointer roots for rename mode: every root where a residual old identifier
 # was observed in the Bundle A qualification run (2026-11-01, vs Docs sweep

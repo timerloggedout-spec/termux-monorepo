@@ -88,3 +88,12 @@ Explicit non-fold: a culled participant's residual/royalty stream is a separate 
 ## Scouts compete (owner, 2026-11-01)
 
 Scouts are **participants** in this lane, not a neutral surface: each scout entry holds its own **wallet** (universal-participant rule), its own **record** = its selection experiments' outcomes, and **comparative standing among scouts = competition** (a standing field is carried per scout entry in lane.json). Scoring/authority side sits with DoE: posteriors over selections, the significance standard applies to scout-edge claims, and culling applies to scouts — a culled scout's wallet goes to the pooled 🪣 per the lifecycle rule above.
+
+## Speculation (owner, 2026-11-01)
+
+Gamblers speculate on **task performance**, priced off the scoring surfaces.
+
+- **Subjects:** task performance outcomes.
+- **Information basis:** the scoring surfaces — AST maps (archwiz graph tensors) · Archaeo / Oracle scores · the other measurement planes' scores (MoneyBall v2 composites, 3L0, Delphi ledgers; referenced, never forked). **Every position cites its basis** (surface + record/artifact ref) so a position's basis is auditable; an uncited position is invalid.
+- **Settlement:** the observed task outcome vs the position (settle action; settlement does not bypass dual-gate).
+- **Gamblers are participants like the rest:** wallet (invariant) · speculation record · standing · cull → wallet to the pooled 🪣.

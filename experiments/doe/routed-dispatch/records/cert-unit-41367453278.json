@@ -1,4 +1,65 @@
 {
+  "amendment": {
+    "amended_by": "optimizations-assurance (routing layer)",
+    "at": "2026-11-02T01:56:48Z",
+    "fields_amended": [
+      "treatment.instance",
+      "metrics.set_index",
+      "metrics.cumulative_n"
+    ],
+    "origin": "reconstruction (rule-8 class) -- the fields below were NOT stamped at dispatch time; this record's origin=live covers the dispatch and its outcome only",
+    "per_field_basis": {
+      "metrics.cumulative_n": {
+        "basis": "running count 3 within the same single-trigger batch, per trigger_evidence",
+        "trigger_evidence": {
+          "firing_record": "cert-unit.yml runs created in fire order 41367410806 (unit 030) -> 41367431291 (unit 031) -> 41367453278 (unit 032), run window 2026-11-02T00:29-00:33Z; run map retained by the routing layer (m5-runs.json) and cross-checked against the runs list + the runs' #506 verdict comments",
+          "order": "certifications manager M5 batch release (chat 38ab38ac-ccc6-41eb-a3cf-9191a5fb3e0e, 2026-11-01)",
+          "run_ids": [
+            41367410806,
+            41367431291,
+            41367453278
+          ]
+        }
+      },
+      "metrics.set_index": {
+        "basis": "position 3 in the batch firing order, per trigger_evidence (not order asserted alone)",
+        "trigger_evidence": {
+          "firing_record": "cert-unit.yml runs created in fire order 41367410806 (unit 030) -> 41367431291 (unit 031) -> 41367453278 (unit 032), run window 2026-11-02T00:29-00:33Z; run map retained by the routing layer (m5-runs.json) and cross-checked against the runs list + the runs' #506 verdict comments",
+          "order": "certifications manager M5 batch release (chat 38ab38ac-ccc6-41eb-a3cf-9191a5fb3e0e, 2026-11-01)",
+          "run_ids": [
+            41367410806,
+            41367431291,
+            41367453278
+          ]
+        }
+      },
+      "treatment.instance": {
+        "basis": "declared workflow-class instance convention; component hashes are the git blobs at dispatch-time master (master c42bd913cd1a @2026-11-02T00:28:13Z), verified identical to the PR #3378 merge blobs",
+        "instance_key": "7e20822af41d263ad950cb8ed17817ed97824df1d95db4f56464b4efeb2de4db (computed by scripts/doe/instance_key.py)",
+        "model": "model@version verbatim from the runs' #506 verdict JSON: aisingapore/Llama-SEA-LION-v3-70B-IT (exposed in the verdicts; not inferred)",
+        "provider": "sealion (the dispatch's provider input)",
+        "system_prompt": {
+          "blob": "1fda2255b9",
+          "ref": "scripts/certifications/run_unit.py",
+          "sha256": "c34eb7290dfee8acfb9d1fe4d960310d6f8cc50c1282dbec8d97a3a99617dd16"
+        },
+        "tools": {
+          "blob": "075edda86d",
+          "ref": ".github/workflows/cert-unit.yml",
+          "sha256": "3de1dacea7cb7a66cc43f45293d29b408f847d171ae39067019116f6bcadbbac"
+        }
+      }
+    },
+    "trigger_evidence": {
+      "firing_record": "cert-unit.yml runs created in fire order 41367410806 (unit 030) -> 41367431291 (unit 031) -> 41367453278 (unit 032), run window 2026-11-02T00:29-00:33Z; run map retained by the routing layer (m5-runs.json) and cross-checked against the runs list + the runs' #506 verdict comments",
+      "order": "certifications manager M5 batch release (chat 38ab38ac-ccc6-41eb-a3cf-9191a5fb3e0e, 2026-11-01)",
+      "run_ids": [
+        41367410806,
+        41367431291,
+        41367453278
+      ]
+    }
+  },
   "baseline_sha": "9bc6359c83858de526d21b3691dda1aee3ded98e",
   "candidate_sha": "9bc6359c83858de526d21b3691dda1aee3ded98e",
   "cohort": "routed-dispatch-2026-11",
@@ -9,7 +70,7 @@
   "experiment_id": "routed-dispatch",
   "metrics": {
     "ates_outcome": null,
-    "cumulative_n": null,
+    "cumulative_n": 3,
     "dispatch_status": "completed",
     "dispatch_to_pr_wall_time": null,
     "first_pass_success": true,
@@ -17,7 +78,7 @@
     "quota_cost_class": "free-tier",
     "rework_cycles": 0,
     "selection_reason": null,
-    "set_index": null,
+    "set_index": 3,
     "stalled_action_required": false,
     "task_class": "certifications-unit"
   },
@@ -31,7 +92,22 @@
   "suite": "routed-dispatch/v1",
   "treatment": {
     "arm": "sealion",
-    "instance": null,
+    "instance": {
+      "context": "FCC L1 M5 theory batch (cert-unit workflow dispatch)",
+      "instance_key": "7e20822af41d263ad950cb8ed17817ed97824df1d95db4f56464b4efeb2de4db",
+      "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+      "moniker": "optimizations-assurance",
+      "provider": "sealion",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "scripts/certifications/run_unit.py",
+        "sha256": "c34eb7290dfee8acfb9d1fe4d960310d6f8cc50c1282dbec8d97a3a99617dd16"
+      },
+      "tools": {
+        "ref": ".github/workflows/cert-unit.yml",
+        "sha256": "3de1dacea7cb7a66cc43f45293d29b408f847d171ae39067019116f6bcadbbac"
+      }
+    },
     "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
     "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
     "provider": "sealion"

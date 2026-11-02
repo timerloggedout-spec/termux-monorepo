@@ -9,7 +9,7 @@ PR) — never on a lane report alone. Owner lane in brackets.
 - [x] Collector proven: bucket split 5000/5000 @ PAT 0 (2026-10-30T02:18Z)
 - [x] Collector recorded: `github.api.app_collector` + #1884 meta-pool slice
 - [x] Collector custody: connector keys/ 0600, fingerprint recorded
-- [ ] Collector standing: first production workflow on app token
+- [x] Collector STANDING 2026-11-02: production `reviewer-metrics-collect` runs succeed on the Collector app token (MIG-02 wiring, PR #2446) — e.g. run 41455502044 (2026-11-02, master): Mint Collector ✓ Collect ✓ receipt ✓ job success; 5 successes in the last 100 master runs at check time (intermittent queue displacement persists — QAC-008 case #1, cadence-owned) [migration-plan]
 
 ## MIG — migration waves (plan §1; gates G1–G5 per item)
 
@@ -43,12 +43,12 @@ Acceptance rule (audit, adopted): an app is not operationally integrated
 merely because it exists in the registry — identity, effective scope,
 execution and evidence must be independently observable.
 
-- [ ] TEL-01 #2407 declaration layer merged (registry.json + emitter + tests) [author lane; review: migration-plan]
+- [x] TEL-01 LANDED VIA SUCCESSORS 2026-11-02: #2407 itself closed-unmerged, but its declaration layer is on master — `ops/github-apps/registry.json` (schema v1, manifest = declared-permissions SSOT per its source_of_truth_policy) + telemetry emitter workflow (landed; hardened #2441; adaptive publication #2448) [migration-plan review]
 - [ ] TEL-02 Collector registered in integration-mesh snapshot/diff (mesh 6h poll consumes registry.json; app visible with no check suites) [mesh lane]
 - [ ] TEL-03 Emitter scheduled + mint-wired: weekly census run on a freshly minted installation token (never a stored token) — feeds MAINT-02 readings [quota + migration-plan] — MINT-WIRING DONE 2026-10-30: mint pattern proven by green probe run 41016897632 (app-id var TERMUX_FLEET_COLLECTOR_APP_ID + secret TERMUX_FLEET_COLLECTOR_PRIVATE_KEY); remains open for census scheduling only.
 - [ ] TEL-04 Live permission readback on installation token vs manifest declarations (drift leg of MAINT-01); declared ≠ observed kept separate [appid]
 - [ ] TEL-05 Negative-path tests pass: missing credentials, revoked installation, inaccessible repository, permission drift [author + appid]
-- [ ] TEL-06 First runtime receipt (plan §1.4 G4 fields) captured on a real Collector-token collection run — closes MIG-01's evidence requirement [migration-plan]
+- [x] TEL-06 FIRST RUNTIME RECEIPT 2026-11-02: G4 receipt step (token source, run id/attempt/SHA, app-bucket reading) executes on real Collector-token production runs — first on shadow run 41024874583 (2026-10-30), standing on production e.g. 41455502044 (2026-11-02) [migration-plan]
 
 ## SEC — provisioning (owner items, names-only)
 

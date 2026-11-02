@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T06:13:30.666453+00:00",
+ "census_at_utc": "2026-11-02T06:41:40.326717+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,13 +13,13 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 2821,
-  "stale": 871,
+  "total": 2835,
+  "stale": 873,
   "orphan_no_assoc_PR": 349,
   "stale_and_orphan": 82
  },
  "prs": {
-  "total": 3058,
+  "total": 3082,
   "open": 176,
   "open_draft": 23,
   "open_draft_share": 0.1307,
@@ -124,7 +124,7 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 2.2
+    "age_days": 2.3
    },
    {
     "number": 2978,
@@ -136,19 +136,19 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 0.8
+    "age_days": 0.9
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 0.8
+    "age_days": 0.9
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 0.8
+    "age_days": 0.9
    },
    {
     "number": 3241,
@@ -163,19 +163,17 @@
     "age_days": 0.4
    }
   ],
-  "merged": 2408,
+  "merged": 2432,
   "closed_unmerged": 474,
   "open_no_closing_ref": 170,
   "open_unlinked_issue_target": 143,
-  "open_unlinked_any_ref": 119,
-  "merged_no_closing_ref": 2379,
-  "merged_unlinked_issue_target": 1387,
-  "merged_unlinked_any_ref": 771,
+  "open_unlinked_any_ref": 118,
+  "merged_no_closing_ref": 2403,
+  "merged_unlinked_issue_target": 1400,
+  "merged_unlinked_any_ref": 780,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2333,
-  "open_head_branch_missing": [
-   3529
-  ]
+  "merged_head_branch_residual_name_match": 2356,
+  "open_head_branch_missing": []
  },
  "issues": {
   "total": 466,

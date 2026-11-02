@@ -93,8 +93,13 @@ jobs:
           HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || steps.continuation.outputs.start_page }}
           MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
           MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
+          EXPECTED_REPOSITORY: ${{ github.repository }}
+          EXPECTED_REF: master
         run: |
           set -euo pipefail
+          # Capture the builder's result separately from stderr. A rate-limited
+          # build emits {"deferred": true, ...} and exits 0; it must never let
+          # the validator consume stale artifacts left in the checkout.
           python -m archwiz.context_relationships.build_index \
             --root . \
             --owner "$GITHUB_REPOSITORY_OWNER" \
@@ -105,7 +110,28 @@ jobs:
             --max-commits "$MAX_COMMITS" \
             --max-comments-per-item 10 \
             --max-cochange-pairs-per-commit 100 \
-            --full-refresh
+            --full-refresh > /tmp/context-backfill-build-result.json
+          cat /tmp/context-backfill-build-result.json
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          result_path = Path("/tmp/context-backfill-build-result.json")
+          try:
+              result = json.loads(result_path.read_text(encoding="utf-8"))
+          except (OSError, json.JSONDecodeError) as exc:
+              raise SystemExit(f"backfill builder did not emit valid JSON result: {exc}")
+          if result.get("deferred") is True:
+              reason = result.get("reason", "unspecified deferral")
+              raise SystemExit(f"backfill collection deferred; refusing to validate stale artifacts: {reason}")
+          required = ("snapshot_id", "history_window", "coverage", "repository", "ref")
+          missing = [field for field in required if field not in result]
+          if missing:
+              raise SystemExit(f"backfill builder result is incomplete; missing: {', '.join(missing)}")
+          if result.get("repository") != os.environ["EXPECTED_REPOSITORY"] or result.get("ref") != os.environ["EXPECTED_REF"]:
+              raise SystemExit("backfill builder result does not match the expected repository/ref")
+          PY
 
       - name: Validate backfill corpus before promotion
         if: steps.continuation.outputs.continue == 'true'

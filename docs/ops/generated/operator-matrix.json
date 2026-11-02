@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:21:00Z",
+  "generated_at": "2026-11-02T13:23:00Z",
   "issues_unlabelled": [
     308,
     388,
@@ -104,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "b7a2c5495b"
+    "sha": "545881105d"
   },
   "prs": [
     {
@@ -184,12 +184,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "00594795a1",
+      "head_sha": "0673e77b05",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3867,
-      "title": "NSE-023 launch: research lane open + packet P-001 (\u2218 associativity)",
-      "updated_at": "2026-11-02T13:19:55Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T13:20:38Z"
     },
     {
       "class": "CANDIDATE",
@@ -1866,20 +1866,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "0673e77b05",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:20:38Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2701,6 +2687,20 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "b4c17860f7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3873,
+      "title": "fix(cert-coderoad-image): split GHCR login/push/inspect into separate steps",
+      "updated_at": "2026-11-02T13:22:22Z"
     }
   ],
   "schema": "operator-matrix/v1",

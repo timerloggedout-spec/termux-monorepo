@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T03:12:29Z",
+ "read_at": "2026-11-02T05:13:37Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3499,
+   "title": "D3 fix: log \u00a73 C3 row Nov 2 => Nov 9 (date conflict closed)",
+   "merged_at": "2026-11-02T04:29:21Z",
+   "updated_at": "2026-11-02T04:29:24Z",
+   "created_at": "2026-11-02T04:29:09Z",
+   "merge_commit_sha": "a3760cbd20248c94f3d417c052573cb045ca0dff",
+   "head_ref": "challenge/d3-c3-row-date-fix-2026-11-01",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3499",
+   "merged": true
+  },
   {
    "number": 3497,
    "title": "feat(cert): 063 Number Guessing Game build/verify (fileset)",
@@ -1939,42 +1952,16 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3343",
    "merged": true
-  },
-  {
-   "number": 3341,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-01T23:43:01Z",
-   "updated_at": "2026-11-01T23:44:38Z",
-   "created_at": "2026-11-01T23:42:57Z",
-   "merge_commit_sha": "507b9d5c2f782452fb9ec3e9a9983c0c0ecc7b28",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3341",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-02T03:11:11Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "6c7730444d8b4d687c38c61c0a8a5c4d14968150",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-02T03:10:50Z",
+   "updated_at": "2026-11-02T05:12:35Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "74353028a8ca76118bfeb1b106fe35339bd98803",
+   "merge_commit_sha": "2798d2c81af22d9cdba4098b755388991797626c",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -1982,12 +1969,51 @@
    "merged": false
   },
   {
+   "number": 3501,
+   "title": "chore(ops): refresh computed countdown lines",
+   "merged_at": null,
+   "updated_at": "2026-11-02T04:32:03Z",
+   "created_at": "2026-11-02T04:31:46Z",
+   "merge_commit_sha": "6b2ef78a9c66fe0f24b010864ae0e0bd47f8ff61",
+   "head_ref": "chore/countdowns-refresh-202611020431",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3501",
+   "merged": false
+  },
+  {
+   "number": 3500,
+   "title": "chore(ops): refresh computed countdown lines",
+   "merged_at": null,
+   "updated_at": "2026-11-02T04:29:45Z",
+   "created_at": "2026-11-02T04:29:26Z",
+   "merge_commit_sha": "7d5dce32f9644ec432bbdaca9f784d56a7b01a26",
+   "head_ref": "chore/countdowns-refresh-202611020429",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3500",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-02T03:14:37Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "023414ec7d496be3195d9820adf0c043a402a3e4",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
    "number": 3442,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-02T03:05:59Z",
+   "updated_at": "2026-11-02T03:13:38Z",
    "created_at": "2026-11-02T00:58:48Z",
-   "merge_commit_sha": "7c7b7994717c5f93862a56eb0b9bfc78d2791929",
+   "merge_commit_sha": "a7fcc1aa905f354b257d29e5746c2aca64cc035c",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 385,
-    "open_prs": 173,
+    "open_prs": 171,
     "pr_classes": {
-      "CANDIDATE": 87,
-      "EXTRACT": 5,
+      "CANDIDATE": 84,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 171,
+      "prs": 169,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T02:00:08Z",
+  "generated_at": "2026-11-02T02:02:18Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "success"
     },
-    "sha": "c582a4e7e6"
+    "sha": "e819f4e167"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "911d803019",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T02:00:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -977,20 +991,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0daadeaa16",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T01:58:30Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1403,34 +1403,6 @@
       "number": 3437,
       "title": "feat(dispatch): wire gemini-invoke to the stamp fan-out",
       "updated_at": "2026-11-02T01:09:20Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a6bca5da04",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3470,
-      "title": "data(doe): M5 set amendment \u2014 instance + set fields (DoE threshold test)",
-      "updated_at": "2026-11-02T01:57:05Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "32e9090868",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3477,
-      "title": "feat(cert): cert-unit stamp learns instance + set inputs (source fix)",
-      "updated_at": "2026-11-02T01:58:49Z"
     },
     {
       "class": "NEED_EVIDENCE",

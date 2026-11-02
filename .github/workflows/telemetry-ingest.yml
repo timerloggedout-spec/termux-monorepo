@@ -45,7 +45,7 @@ jobs:
       - name: Tests
         run: |
           pip install pytest
-          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py tests/test_attribution.py tests/test_retain_payloads.py tests/test_hindsight_verify.py -q
+          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py tests/test_attribution.py tests/test_retain_payloads.py tests/test_hindsight_verify.py tests/test_backup_events.py -q
       - name: Ingest (Provenance + HindSight payloads, separate sinks)
         run: |
           set -euo pipefail
@@ -92,6 +92,16 @@ jobs:
             --files-dir density-files \
             --rfp-feed apps/help-wanted-dashboard/data/delphi-rfp-feed.json \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Backup events -> measurement records (Tracking feed intake)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          python3 -B scripts/telemetry_ingest/backup_events.py \
+            --relays ops/tracking/backup-relays.jsonl \
+            --out ops/telemetry/backup-measurements.jsonl \
+            --receipt ops/telemetry/backup-measurements-receipt.json \
+            --mode live
+
       - name: HindSight retain PROOF (3 units; state-gated, first spend = tested spend)
         id: hs_proof
         env:

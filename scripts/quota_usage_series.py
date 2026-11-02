@@ -7,11 +7,19 @@ only where a usage{} match is exact; activity counts stay labeled
 activity-proxy; missing data stays missing - no zero-fill, no interpolation,
 no inferred model@version. stdlib only.
 
+Freshness stamps (2026-11-02, owner staleness flag): the pack carries
+generated_at (this build), inputs_generated_at (the quota-usage pack's own
+generated_at) and a per-series last_point_at, so the graphs page can show
+pack age and flag stale series instead of presenting frozen data as
+current. Refresh automation: .github/workflows/quota-usage-series-refresh.yml
+(push on inputs + dispatch; no cron).
+
 Usage: python3 scripts/quota_usage_series.py [--root .] [--out PATH]
 """
 import argparse
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 KIND_BY_MATCH = {"exact": "usage-exact", "activity-proxy": "activity-proxy"}
@@ -111,9 +119,18 @@ def build(root):
                             "note": "plan target flow - context only, "
                                     "not usage; plotted only if units match"}
 
+    for rows in (provider, service, model):
+        for s in rows:
+            ts = [p["t"] for p in s.get("points", []) if p.get("t")]
+            s["last_point_at"] = max(ts) if ts else None
+
     pack = {
         "schema": "quota.usage-series/v1",
         "generated_by": "scripts/quota_usage_series.py",
+        "generated_at": datetime.now(timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"),
+        "inputs_generated_at": {
+            "ops/quota/quota-usage.json": usage_pack.get("generated_at")},
         "sources": ["ops/quota/quota-usage.json",
                     "ops/challenge/desk-feed.json",
                     "ops/quota/allocation-plan.json"],

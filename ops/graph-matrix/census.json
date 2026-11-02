@@ -1,6 +1,6 @@
 {
  "schema": "graph-matrix/v1",
- "census_at_utc": "2026-11-02T02:01:21.578172+00:00",
+ "census_at_utc": "2026-11-02T02:04:29.740983+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -11,25 +11,27 @@
   "one_way": "A refs B (issue->issue), B does not ref A; timeline auto-xref excluded"
  },
  "branches": {
-  "total": 2793,
-  "stale": 865,
+  "total": 2795,
+  "stale": 866,
   "orphan_no_assoc_PR": 349,
   "stale_and_orphan": 82
  },
  "prs": {
-  "total": 3008,
-  "open": 171,
-  "merged": 2363,
+  "total": 3012,
+  "open": 172,
+  "merged": 2366,
   "closed_unmerged": 474,
-  "open_no_closing_ref": 165,
-  "open_unlinked_issue_target": 138,
-  "open_unlinked_any_ref": 115,
-  "merged_no_closing_ref": 2334,
-  "merged_unlinked_issue_target": 1368,
+  "open_no_closing_ref": 166,
+  "open_unlinked_issue_target": 139,
+  "open_unlinked_any_ref": 116,
+  "merged_no_closing_ref": 2337,
+  "merged_unlinked_issue_target": 1369,
   "merged_unlinked_any_ref": 760,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2289,
-  "open_head_branch_missing": []
+  "merged_head_branch_residual_name_match": 2292,
+  "open_head_branch_missing": [
+   3483
+  ]
  },
  "issues": {
   "total": 466,

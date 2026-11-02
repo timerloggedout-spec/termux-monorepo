@@ -50,6 +50,38 @@ def filing_spec(fields: dict) -> dict:
     }
 
 
+ISSUE_BODY_LIMIT = 60_000  # GitHub issue bodies cap at 65,536 chars;
+# stay under it (run 41369356763: agora findings exceeded the cap and
+# the findings issue could not be created at all).
+_ELISION = ("… [elided {n} entries — the full findings record is in "
+            "the run's evidence artifact (findings-full.md)]")
+
+
+def cap_findings_markdown(text: str, limit: int = ISSUE_BODY_LIMIT) -> str:
+    """Shrink a findings filing to the issue-body limit by eliding
+    list sections longest-first. Headings (the parser's seam) are
+    never dropped; the unabridged text travels as findings-full.md
+    in the evidence artifact. Returns the (possibly unchanged) text.
+    """
+    if len(text) <= limit:
+        return text
+    sections = re.split(r"(?m)(?=^### )", text)
+    for keep in (100, 40, 15, 5, 2):
+        out = []
+        for sec in sections:
+            lines = sec.splitlines()
+            body = [ln for ln in lines[1:] if ln.strip()]
+            if len(body) > keep + 1:
+                head = [lines[0]] if lines and lines[0].startswith("###") else []
+                elided = len(body) - keep
+                sec = "\n".join(head + body[:keep] +
+                                 ["", _ELISION.format(n=elided), ""])
+            out.append(sec)
+        text = "".join(out) if out[0].startswith("###") else "\n".join(out)
+        if len(text) <= limit:
+            return text
+    return text[:limit]
+
 def _run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
     print("+", " ".join(cmd), flush=True)
     return subprocess.run(cmd, capture_output=True, text=True, **kw)
@@ -89,6 +121,7 @@ def execute(fields: dict, issue_number: int, workdir: Path) -> dict:
                "--out", str(workdir / "findings.json"),
                "--markdown", str(workdir / "findings.md")])
         summary["verdict"] = "no-artifact-found"
+        _finalize_findings(workdir, summary)
         return summary
 
     apk_path = acquisition["path"]
@@ -117,8 +150,21 @@ def execute(fields: dict, issue_number: int, workdir: Path) -> dict:
     record = json.loads(record_path.read_text(encoding="utf-8"))
     summary["verdict"] = record.get("verdict")
     summary["package_id"] = record.get("package_id")
+    _finalize_findings(workdir, summary)
     return summary
 
+
+def _finalize_findings(workdir: Path, summary: dict) -> None:
+    """Write findings-full.md (unabridged) and cap findings.md (the
+    filed body) to the issue-body limit."""
+    md = workdir / "findings.md"
+    text = md.read_text(encoding="utf-8")
+    (workdir / "findings-full.md").write_text(text, encoding="utf-8")
+    capped = cap_findings_markdown(text)
+    summary["findings_chars_full"] = len(text)
+    summary["findings_capped"] = capped != text
+    if capped != text:
+        md.write_text(capped, encoding="utf-8")
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="apk_xref_exec")

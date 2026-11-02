@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ffb20080638fe508afd7c00c0441138527055f01672a00927df473f5634652af",
+  "source_fingerprint": "34e94779672a0fd3db62ebabb4544edaeccbed1098ba87884a053d55a82709aa",
   "workflow_count": 269,
   "workflows": [
     {
@@ -2497,24 +2497,6 @@
     },
     {
       "action_pins": [],
-      "authority": "read-only-or-advisory",
-      "concurrency": "group: help-wanted-audit-staleness cancel-in-progress: false",
-      "domain": "agentic-development",
-      "jobs": [
-        "check"
-      ],
-      "name": "help-wanted-audit-staleness",
-      "path": ".github/workflows/help-wanted-audit-staleness.yml",
-      "schedules": [
-        "41 */2 * * *"
-      ],
-      "triggers": [
-        "schedule",
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
       "authority": "writer",
       "concurrency": "group: user-site-pages-publisher cancel-in-progress: false",
       "domain": "agentic-development",
@@ -2568,42 +2550,6 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: help-wanted-execute cancel-in-progress: false",
-      "domain": "agentic-development",
-      "jobs": [
-        "budget",
-        "claim",
-        "contribute",
-        "fail_closed",
-        "patch-zero-72"
-      ],
-      "name": "help-wanted execute",
-      "path": ".github/workflows/help-wanted-execute.yml",
-      "schedules": [],
-      "triggers": [
-        "repository_dispatch",
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "writer",
-      "concurrency": "group: help-wanted-followup cancel-in-progress: false",
-      "domain": "agentic-development",
-      "jobs": [
-        "poll"
-      ],
-      "name": "help-wanted-followup",
-      "path": ".github/workflows/help-wanted-followup.yml",
-      "schedules": [],
-      "triggers": [
-        "repository_dispatch",
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
       "concurrency": "group: help-wanted-llm-assist cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -2646,23 +2592,6 @@
       "triggers": [
         "repository_dispatch",
         "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [],
-      "authority": "writer",
-      "concurrency": "group: help-wanted-status-refresh cancel-in-progress: true",
-      "domain": "agentic-development",
-      "jobs": [
-        "refresh"
-      ],
-      "name": "help-wanted-status-refresh",
-      "path": ".github/workflows/help-wanted-status-refresh.yml",
-      "schedules": [],
-      "triggers": [
-        "repository_dispatch",
-        "workflow_dispatch",
-        "workflow_run"
       ]
     },
     {
@@ -4706,6 +4635,60 @@
     },
     {
       "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-audit-staleness cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "check"
+      ],
+      "name": "tribute-audit-staleness",
+      "path": ".github/workflows/tribute-audit-staleness.yml",
+      "schedules": [
+        "41 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-execute cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "budget",
+        "claim",
+        "contribute",
+        "fail_closed",
+        "patch-zero-72"
+      ],
+      "name": "tribute execute",
+      "path": ".github/workflows/tribute-execute.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: tribute-followup cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "tribute-followup",
+      "path": ".github/workflows/tribute-followup.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "writer",
       "concurrency": "group: tribute-participation cancel-in-progress: false",
       "domain": "agentic-development",
@@ -4721,6 +4704,23 @@
         "repository_dispatch",
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: tribute-status-refresh cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "refresh"
+      ],
+      "name": "tribute-status-refresh",
+      "path": ".github/workflows/tribute-status-refresh.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

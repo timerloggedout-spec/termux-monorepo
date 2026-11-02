@@ -1,6 +1,6 @@
 {
  "schema": "graph-matrix/v1",
- "census_at_utc": "2026-11-02T00:41:49.223110+00:00",
+ "census_at_utc": "2026-11-02T00:49:00.475794+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -11,31 +11,29 @@
   "one_way": "A refs B (issue->issue), B does not ref A; timeline auto-xref excluded"
  },
  "branches": {
-  "total": 2759,
+  "total": 2762,
   "stale": 864,
   "orphan_no_assoc_PR": 348,
   "stale_and_orphan": 82
  },
  "prs": {
-  "total": 2952,
-  "open": 172,
-  "merged": 2306,
+  "total": 2957,
+  "open": 171,
+  "merged": 2312,
   "closed_unmerged": 474,
-  "open_no_closing_ref": 166,
-  "open_unlinked_issue_target": 139,
-  "open_unlinked_any_ref": 116,
-  "merged_no_closing_ref": 2277,
-  "merged_unlinked_issue_target": 1340,
-  "merged_unlinked_any_ref": 744,
+  "open_no_closing_ref": 165,
+  "open_unlinked_issue_target": 138,
+  "open_unlinked_any_ref": 115,
+  "merged_no_closing_ref": 2283,
+  "merged_unlinked_issue_target": 1343,
+  "merged_unlinked_any_ref": 746,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2231,
-  "open_head_branch_missing": [
-   3418
-  ]
+  "merged_head_branch_residual_name_match": 2238,
+  "open_head_branch_missing": []
  },
  "issues": {
-  "total": 462,
-  "open": 381,
+  "total": 464,
+  "open": 383,
   "open_surface_unlinked": 170,
   "open_unlinked_strict": 151
  },
@@ -1342,7 +1340,7 @@
     272
    ]
   ],
-  "issue_issue_mutual_pairs": 2,
+  "issue_issue_mutual_pairs": 3,
   "stale_and_orphan_branches": [
    "55-testing-environment-termux-sandbox-setup-scripts",
    "admin-mcp/update-language-proposals-cf9b9c9",

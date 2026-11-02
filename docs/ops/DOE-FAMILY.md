@@ -504,6 +504,14 @@ through an admitted campaign design.
   defineAction instance); name-origin "Delphi Desk" = killed
   proposal #42 (2026-10-28) — the candidate carries mechanics,
   no branding. D3-application: B6 (C3 only) arm-gated, unchanged.
+  Params (seat's refs supplement, 2026-11-01): gates =
+  {input-schema, output-schema} for every action, block-on-
+  malformed; blocks = closed template set; log-event = {actor,
+  action, payload-ref, rev} append-only. Home refs: impl =
+  apps/listinglens/src/{schemas.mjs, actions.mjs, pipeline.mjs,
+  ListingStudio.jsx} at master 6ea0e52b0d95 (PR #2616), mirror
+  timerloggedout-spec/listinglens at 59c6c3b0427d; eval = main
+  98387e77 + verify comment 6539405844 on PR #2616.
 - **strands-patterns v0**, incl. the AST-complexity stamp feature
   (candidate; spec: Swarm seat 6628d41d eval, 2026-11-01; full
   eval text at main, sub d3660a72). A 4-component concept set,

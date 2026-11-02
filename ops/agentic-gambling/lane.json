@@ -1,0 +1,21 @@
+{
+ "schema": "agentic-gambling-lane/v1",
+ "lane": "agentic-gambling",
+ "home_seat": {"moniker": "[MUSEai]@{role:{moneyball-plane}}", "chat_id": "cd195597-0afb-4c62-afc2-111fdfcdba66"},
+ "charter": "docs/ops/AGENTIC-GAMBLING-LANE.md",
+ "established": "2026-11-01 (owner decision)",
+ "scope_guard": {
+  "domain": "internal market mechanics over inference and challenge outcomes only",
+  "real_money": false,
+  "external_wagering": false,
+  "stake_unit_kinds": ["observational", "soft_quota_token"],
+  "trading_freeze": "issue #407 trading freeze — untouched, out of scope"
+ },
+ "components": [
+  {"id": "moneyball-winprob-scoring", "home": "ops/moneyball/plane.json", "status": "scoring live; winprob/v2 implemented, method parked (owner 2026-10-28)"},
+  {"id": "model-selection-market", "home": "scripts/model_selection_market/", "status": "partial — offers + observational bets landed; bids/asks open; bookie/audience class open"},
+  {"id": "speculators", "home": "scripts/speculators/ + experiments/speculators/token-strategies/", "status": "landed participant"},
+  {"id": "bets-of-record", "home": "scripts/model_selection_market/market.py BetEntry + ledger.py PerformanceLedger", "status": "partial — record shape landed; durable store open"},
+  {"id": "repo-local-csv-ledger", "home": null, "status": "open — verified absent 2026-11-01 (local 99 csv + in-repo 7 csv censuses); build item: offers/bids/asks/settlements"}
+ ]
+}

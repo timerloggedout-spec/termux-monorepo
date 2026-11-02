@@ -118,6 +118,15 @@ direct-PDF chapter reading as the reading experience.
   schedulers by the open-spaced-repetition org. Default = FSRS;
   SM-2 stays a legitimate simple/predictable baseline — and the
   comparison baseline in our own evals.
+  **Obsidian layer — REQUIRED (owner ruling via main, 2026-11-02):**
+  the Agents SR stack of record = FSRS seeds {py-fsrs agent core ∧
+  ts-fsrs UX layer · SM-2 baseline} + the **Obsidian layer** as the
+  vault surface for the agent SR system — vault-compatible
+  card/notes export ∧ sync points are a REQUIRED component of the
+  SR module, ¬ optional. Seed-census candidates
+  **obsidian-spaced-repetition** ∧ **Obsidian_to_Anki** are promoted
+  candidate-grade ⇒ required seeds for this layer (concepts adapted
+  per the multi-lingual rule; census facts per 2026-10-30).
 - ○ RSVP **multi-pass reading** (owner-shaped 2026-10-30): RSVP
   is not how a syllabus gets read (anti-pattern, §1b) and not a
   single pass over raw PDF either — it runs **section by

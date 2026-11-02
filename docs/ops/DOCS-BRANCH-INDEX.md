@@ -204,6 +204,7 @@ section is hand-maintained and sits outside the generated table above.
 - **Fleet / AppID:** [FLEET-LOGS.md](FLEET-LOGS.md) · [PROFILE-COMPLETION.md](PROFILE-COMPLETION.md) · [COLLECTOR-BOOTSTRAP.md](COLLECTOR-BOOTSTRAP.md) · pilot profiles: [collector](../../ops/github-apps/collector-pilot/PROFILE.md) · [crossreference](../../ops/github-apps/crossreference-pilot/PROFILE.md) · [gate](../../ops/github-apps/gate-pilot/PROFILE.md) · [lifecycle](../../ops/github-apps/lifecycle-pilot/PROFILE.md) · [publisher](../../ops/github-apps/publisher-pilot/PROFILE.md) · [repostory](../../ops/github-apps/repostory-pilot/PROFILE.md) · [reviewer](../../ops/github-apps/reviewer-pilot/PROFILE.md) · [swarm](../../ops/github-apps/swarm-pilot/PROFILE.md)
 
 - **Census class — convention-loaded:** skill-internal reference files (`.agents/skills/*/references/*.md`, `.github/skills/*/references/*.md`, sibling `references.md`) are loaded by the skill loader via directory convention, not by inbound links; orphan/inbound censuses must not flag them as orphans (registered 2026-11-02, orphan re-census v2: 16 files in this class).
+- **Census class — explained import artifact:** `archwiz/branches/\`.md` — a genuine 2026-06-13 session-log fragment (Agent Shell evolution notes) from the device-home import ee1807049f; the mangled filename is shell-quoting residue and itself provenance signal; not a duplicate, not consumed by name anywhere — retained in place, do not re-flag (Recon disposition 2026-11-02, orphan re-census v2).
 
 ## How this is maintained
 

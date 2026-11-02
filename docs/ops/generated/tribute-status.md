@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-11-02T09:01:27Z UTC · receipts=3962 · foreign_open=8 · tributes=132_
+_Generated 2026-11-02T10:38:54Z UTC · receipts=3962 · foreign_open=8 · tributes=132_
 
 ## Tributes (contributor ledger)
 
@@ -58,4 +58,4 @@ _Generated 2026-11-02T09:01:27Z UTC · receipts=3962 · foreign_open=8 · tribut
 
 ## Operational outcomes · actioned=221 skipped=3741 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3675, 'followup_reengage': 51, 'followup_stale_nudge': 138, 'followup_changes': 2, 'followup_lesson': 18, 'followup_skip_system1': 30}`
 
-See docs/ops/HELP-WANTED-TRIBUTE.md
+See docs/ops/TRIBUTE-TRIBUTE.md

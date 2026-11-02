@@ -155,7 +155,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Post build diagnostics to issue 506 (on failure)
-        if: failure()
+        if: ${{ always() && env.CR_OK == 'false' }}
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           UNIT: ${{ inputs.unit }}
@@ -173,7 +173,11 @@ jobs:
               f"CODEROAD_DIAG unit {os.environ['UNIT']} run {os.environ['RUN_ID']} — build/run failure tails\n\n"
               f"--- build-rdb.log ---\n{tail('evidence/build-rdb.log')}\n\n"
               f"--- build-coderoad.log ---\n{tail('evidence/build-coderoad.log')}\n\n"
-              f"--- orchestrate.log ---\n{tail('evidence/orchestrate.log')}"
+              f"--- orchestrate.log ---\n{tail('evidence/orchestrate.log')}\n\n"
+              f"--- RESULT.json ---\n{tail('evidence/RESULT.json', 60)}\n\n"
+              f"--- container.log ---\n{tail('evidence/container.log', 60)}\n\n"
+              f"--- code.log ---\n{tail('evidence/code.log', 40)}\n\n"
+              f"--- session files ---\n{tail('evidence/session-files.txt', 60)}"
           )
           req = urllib.request.Request(
               "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",

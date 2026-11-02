@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T09:47:37Z",
+ "generated_at": "2026-11-02T10:30:03Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T09:47:36Z",
+   "read_at": "2026-11-02T10:30:03Z",
    "merged": 150,
-   "open": 183
+   "open": 184
   },
   "lane_events": {
-   "read_at": "2026-11-02T09:47:36Z",
+   "read_at": "2026-11-02T10:30:03Z",
    "status": "ok",
-   "count": 8011,
+   "count": 8084,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "active": 3,
-   "unknown": 6,
+   "active": 5,
    "landed": 1,
+   "unknown": 4,
    "in-flight": 11
   }
  },
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -77,34 +77,39 @@
    "project_id": "d1-studysprint",
    "state": "active",
    "last_merge": {
-    "pr": 3700,
-    "sha": "868b4a704438",
-    "at": "2026-11-02T09:37:04Z",
-    "title": "desk-feed: D1 RFPs filed (#3695\u2013#3698, delphi-rfp form)"
+    "pr": 3773,
+    "sha": "71f51a7dcafb",
+    "at": "2026-11-02T10:22:49Z",
+    "title": "desk-feed: D1 buffer target (Nov 3 re-sync, \u2205 deadline-day landings)"
    },
-   "next": "Reader MERGED+synced \u00b7 SR: system (balanced) \u00b7 Notes pass: DeepSeek arm tunnel-DOWN \u00d72 skips \u21d2 task submitted to system (issue #3215); tunnel escalated \u21d2 Swarm \u00b7 freeze-hold submission 2026-11-04 23:59 PT \u00b7 TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 \u00b7 SR #3050} in the new form same-turn \u00b7 RFPs FILED (owner order): #3695 RFP-D1-1 impact copy (pre-Nov 4) \u00b7 #3696 RFP-D1-2 originality copy (pre-Nov 4) \u00b7 #3697 RFP-D1-3 reading pipeline \u00a71b (post-Nov 4) \u00b7 #3698 RFP-D1-4 multi-course+countdown+.ics (post-Nov 4) \u2014 Delphi gate evaluation; outputs \u21d2 D1 verification",
+   "next": "Reader MERGED+synced \u00b7 SR: system (balanced) \u00b7 Notes pass: DeepSeek arm tunnel-DOWN \u00d72 skips \u21d2 task submitted to system (issue #3215); tunnel escalated \u21d2 Swarm \u00b7 freeze-hold submission 2026-11-04 23:59 PT \u00b7 TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 \u00b7 SR #3050} in the new form same-turn \u00b7 RFPs FILED (owner order): #3695 RFP-D1-1 impact copy (pre-Nov 4) \u00b7 #3696 RFP-D1-2 originality copy (pre-Nov 4) \u00b7 #3697 RFP-D1-3 reading pipeline \u00a71b (post-Nov 4) \u00b7 #3698 RFP-D1-4 multi-course+countdown+.ics (post-Nov 4) \u2014 Delphi gate evaluation; outputs \u21d2 D1 verification \u00b7 BUFFER TARGET (owner via main, 2026-11-02): #3695/#3696 evaluations must return in time for copy landed + D1-verified by the **Nov 3 re-sync**; final ~24h pre-deadline = buffer only, \u2205 deadline-day copy landings; desk tracks dispatch timing vs Nov 3 \u00ac Nov 4 \u00b7 LANDING TARGET Nov 3 (wall Nov 4 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries-d2",
    "project": "D2 Vultr Agent Rush",
    "domain": "challenges",
    "project_id": "d2-vultr",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) \u00b7 D2 production target \u2205 until owner pick \u00b7 kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo \u2227 new AppID via 7075f9c0 \u2227 Vultr account + $200 gift code (gate D2-NOCARD) \u2227 team} \u00b7 \u2205 fire pre-pick \u00b7 ROUTE \u0394 (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended \u00ac deleted; \u2205 silent reroute beyond this named pair \u00b7 ARMS \u0394 (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip \u00d72, agent \u2205 invoked \u2014 runs 41301295882/41321691938) \u21d2 live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN \u00b7 Gemini OUT \u00b7 DeepSeek DOWN}; restoration \u21d2 desk flags D2 seat same-turn",
+   "state": "active",
+   "last_merge": {
+    "pr": 3776,
+    "sha": "6e9220bc4ee0",
+    "at": "2026-11-02T10:20:09Z",
+    "title": "docs(ops): D2 promo \u2014 buffer rule, submission beat keys off Nov7 landing"
+   },
+   "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) \u00b7 D2 production target \u2205 until owner pick \u00b7 kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo \u2227 new AppID via 7075f9c0 \u2227 Vultr account + $200 gift code (gate D2-NOCARD) \u2227 team} \u00b7 \u2205 fire pre-pick \u00b7 ROUTE \u0394 (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended \u00ac deleted; \u2205 silent reroute beyond this named pair \u00b7 ARMS \u0394 (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip \u00d72, agent \u2205 invoked \u2014 runs 41301295882/41321691938) \u21d2 live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN \u00b7 Gemini OUT \u00b7 DeepSeek DOWN}; restoration \u21d2 desk flags D2 seat same-turn \u00b7 LANDING TARGET Nov 7 (wall: submission \u2264 Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -113,27 +118,32 @@
    "project_id": "d3-listinglens",
    "state": "landed",
    "last_merge": null,
-   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 \u00b7 ROUTE \u0394 (D3 seat, 2026-11-01): batch B1\u2013B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) \u2227 Gemini-CLI build leg OUT); producer-naming req unchanged",
+   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 \u00b7 ROUTE \u0394 (D3 seat, 2026-11-01): batch B1\u2013B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) \u2227 Gemini-CLI build leg OUT); producer-naming req unchanged \u00b7 LANDING TARGET Nov 8 (wall: submission Nov 9 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries-d4",
    "project": "D4 Kiroween (skeleton-crew)",
    "domain": "challenges",
    "project_id": "d4-kiroween",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority \u2191) \u00b7 dispatch AT build window >2026-11-08, \u2205 fire before window \u00b7 AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) \u2014 flagged for dispatch \u00b7 gate D4-ACCOUNTS still open (Kiro ID, \u22642026-12-01T12:00PT) \u00b7 submit 2026-12-04 14:00 PT \u00b7 PROVIDER \u0394 (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) \u2014 at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first",
+   "state": "active",
+   "last_merge": {
+    "pr": 3775,
+    "sha": "671a7b6aee1e",
+    "at": "2026-11-02T10:19:46Z",
+    "title": "[MUSEai]@{role:{marketing-channel}} D4 promo: buffer-rule landings (submit Dec 2, credit Nov 30)"
+   },
+   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority \u2191) \u00b7 dispatch AT build window >2026-11-08, \u2205 fire before window \u00b7 AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) \u2014 flagged for dispatch \u00b7 gate D4-ACCOUNTS still open (Kiro ID, \u22642026-12-01T12:00PT) \u00b7 submit 2026-12-04 14:00 PT \u00b7 PROVIDER \u0394 (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) \u2014 at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first \u00b7 LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -145,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -153,15 +163,20 @@
    "domain": "challenges",
    "project_id": "c11-amd",
    "state": "in-flight",
-   "last_merge": null,
-   "next": "Routes after M3 or when builders idle",
+   "last_merge": {
+    "pr": 3779,
+    "sha": "bdfdc623a9aa",
+    "at": "2026-11-02T10:21:24Z",
+    "title": "docs(guides): evidence index \u2014 owner buffer rule landing targets (-1d) for Academy + ROCm"
+   },
+   "next": "Routes after M3 or when builders idle \u00b7 LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "challenge-entries",
@@ -175,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "quota",
@@ -184,18 +199,18 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3683,
-    "sha": "98e0f640529d",
-    "at": "2026-11-02T09:29:09Z",
-    "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)"
+    "pr": 3713,
+    "sha": "3d10f622c848",
+    "at": "2026-11-02T09:49:45Z",
+    "title": "quota: audit-004 \u2014 F4 state \u2192 production-proven (Registry paced census proof)"
    },
-   "next": "land/close PR #3713 \u2014 quota: audit-004 \u2014 F4 state \u2192 production-proven (Registry paced census proof)",
+   "next": "land/close PR #1441 \u2014 feat(triage): reconcile official quota before dispatch",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=170",
-    "open PRs: #3713, #1441, #3342, #3242, #2757"
+    "open PRs: #1441, #3342, #3242, #2757, #2340"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "doe",
@@ -204,10 +219,10 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3724,
-    "sha": "2254ea4fecec",
-    "at": "2026-11-02T09:46:34Z",
-    "title": "DoE: bayesian-updating v0 family update rule"
+    "pr": 3771,
+    "sha": "f1f0f11ef3f0",
+    "at": "2026-11-02T10:14:13Z",
+    "title": "Agentic Gambling Lane: scout identity keying (DoE frame #3756)"
    },
    "next": "land/close PR #2856 \u2014 doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
    "next_basis": "open-pr",
@@ -215,7 +230,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2856, #2966, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "doe-nc1",
@@ -227,7 +242,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +259,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "contribution-desk",
@@ -252,14 +267,19 @@
    "domain": "desk",
    "project_id": "desk",
    "state": "in-flight",
-   "last_merge": null,
+   "last_merge": {
+    "pr": 3781,
+    "sha": "4cb2161fc6d2",
+    "at": "2026-11-02T10:26:55Z",
+    "title": "desk-feed: owner buffer rule \u2014 landing targets on \u2200 entry rows"
+   },
    "next": "land/close PR #3063 \u2014 viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
    "next_basis": "open-pr",
    "evidence": [
-    "desk-feed traversals=10 generated_at=2026-11-02T09:47:00Z",
+    "desk-feed traversals=10 generated_at=2026-11-02T10:26:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "web-design-viz",
@@ -268,17 +288,17 @@
    "project_id": "webdev-viz",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3645,
-    "sha": "138fb4bf81a2",
-    "at": "2026-11-02T08:28:48Z",
-    "title": "fix(dashboard): backup section keys off summary.last_export_id (newest-first feed)"
+    "pr": 3777,
+    "sha": "7193787cc40e",
+    "at": "2026-11-02T10:20:02Z",
+    "title": "Rule recorded: landing targets ahead of walls (owner, 2026-11-02)"
    },
-   "next": "land/close PR #2702 \u2014 docs(dashboard): standing preview QA checklist",
+   "next": "land/close PR #3768 \u2014 tribute normalization bundle D: dashboard deploy/preview + apps dir + Vercel project names",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #2702, #2461, #1436"
+    "open PRs: #3768, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "marketing",
@@ -292,7 +312,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "marketing-social",
@@ -304,7 +324,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "swarm",
@@ -313,17 +333,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3690,
-    "sha": "743def3365f0",
-    "at": "2026-11-02T09:25:27Z",
-    "title": "Agentic Gambling Lane: registry note \u2014 Speculators manager + Swarm execution side"
+    "pr": 3770,
+    "sha": "c32134670a97",
+    "at": "2026-11-02T10:22:46Z",
+    "title": "feat(dispatch): feed health snapshot emitter (materialized health leg)"
    },
    "next": "land/close PR #3437 \u2014 feat(dispatch): wire gemini-invoke to the stamp fan-out",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "providers",
@@ -343,7 +363,7 @@
     "quota registry services=170",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "providers-phrases",
@@ -355,7 +375,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "repo-replay",
@@ -364,15 +384,15 @@
    "project_id": "repo-replay",
    "state": "active",
    "last_merge": {
-    "pr": 3725,
-    "sha": "9cbd6a1a0f9e",
-    "at": "2026-11-02T09:47:14Z",
-    "title": "Commit Replay P3 \u2014 jit_resolve: symbol-only recipes resolved over the fragment index"
+    "pr": 3780,
+    "sha": "d25f34070362",
+    "at": "2026-11-02T10:23:12Z",
+    "title": "v2-snapshot-pull: GitLab validator pack -> repo-replay-data (Repo Replay V2)"
    },
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "ops",
@@ -386,7 +406,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   },
   {
    "lane": "telemetry",
@@ -395,17 +415,17 @@
    "project_id": "telemetry-ingest",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3681,
-    "sha": "7e6c025e339e",
-    "at": "2026-11-02T09:19:53Z",
-    "title": "tribute normalization bundle C: diff-gate + telemetry-tests + evidence dir rename"
+    "pr": 3744,
+    "sha": "de16a0ea1ead",
+    "at": "2026-11-02T10:07:56Z",
+    "title": "feat(tracking): backup-events.jsonl \u2014 unified event series for Telemetry (shape b)"
    },
    "next": "land/close PR #3442 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #3442, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T09:47:37Z"
+   "updated_at": "2026-11-02T10:30:03Z"
   }
  ],
  "doe_join": {
@@ -784,6 +804,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 83/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 68/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

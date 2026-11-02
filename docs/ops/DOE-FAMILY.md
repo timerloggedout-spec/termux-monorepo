@@ -385,6 +385,18 @@ selects outside the feed. Population state — which arms exist,
 their health, their accumulated n — is the selection substrate:
 the feed is what makes the population selectable.
 
+Team-level selection (owner, 2026-11-02): managers have
+teams they can select — selection operates at TEAM level too.
+A team is a composed selectable unit carried in the pool feed
+{roster - manager - team n vs target - team posterior -
+standing}. A manager's request can name a team directly, or
+Scout assembles / selects one from scouted talent; either way
+the selection is stamped as a selection experiment like any
+other. Team performance is its OWN stratum: a team's record is
+not the sum of its members' records, member-level n never
+substitutes for team-level n, and the significance standard
+judges claims at the team stratum on the team's accumulated n.
+
 Talent frame (owner, 2026-11-02): Scout's work is TALENT
 scouting over the pool population, not mechanical
 request-filling. Arms are evaluated as talent against the
@@ -431,9 +443,28 @@ govern when any of it may be stated as established. Positions
 cite their basis surface per position. No class is scored by
 another class's record, and no class's standing exempts it
 from the bars.
-Feed carriage: maintained by the rotation automation
-(Swarm) under this governance; an existing equivalent live
-surface becomes the feed by designation, never a second build.
+Feed carriage — DESIGNATED (Swarm designation, doe-expert
+accepted 2026-11-02; no second build): the pool feed IS the
+canonical stamp corpus under experiments/doe/routed-dispatch/
+(stamps/ retained verbatim per the backfill doctrine +
+records/), carried by the fan-out automation
+(dispatch-stamp-fanout.yml, Swarm-App authored,
+direct-to-master). Field mapping: instance_key - class =
+task_class - n_accumulated = cumulative_n per stamp chain -
+outcome / posterior legs = records' metrics + score fills
+(native). arm_state (health gates) is single-sourced from the
+quota plane of record (ops/quota/registry.json + usage-series
+readings). Health-leg ruling (doe-expert): the fan-out ALSO
+materializes arm_state into the corpus as append-only snapshot
+records (stamped with source + vintage) whenever a selectable
+arm's joined health state changes and at each dispatch cycle —
+a selection's basis must stay reconstructible after the fact;
+join-at-read remains the live view, the snapshot is the
+citable basis. Instance-1 (Swarm designation, 2026-11-02) =
+Repo-Story's dispatch surface — selection on repo-story issue
+#2 - dispatch - PR #4 - section 8 PASS - merged d2b23dfe7801 —
+the first live instance of the selection loop under the feed,
+designated as such, not a second build.
 
 ## Definitions of record
 
@@ -660,6 +691,30 @@ version and compared continuously until culling retires a version.
   refinement); #1489 weight updates already require
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
+  Shared shape (one record, three resolutions): Bayesian = the
+  record itself; ALE = its typed specialization (quantity =
+  expected loss, ARO x SLE decomposition); risk matrix = the
+  discretized render (posterior-probability bins x severity
+  bins). Views never carry separate estimates; disagreement =
+  defective record, posterior governs. Applications of record:
+  priorities-program value filter (2026-11-02) - Certifications
+  Value Matrices (2026-11-02): every matrix cell IS an
+  expectation record {value - range - n_evidence - basis}; ALE
+  and matrix tiers are derived views of it; unevidenced cells
+  carry INTAKE / HELD labels under the significance standard
+  (never blanks dressed as zeros); tiering (T1 / T2) re-derives
+  from the records by a stated function instead of standing as
+  assertion. Conformity spec held by doe-expert; matrix led by
+  the Certifications manager, rows held by Ladder. SCOPE
+  AMENDMENT (owner, 2026-11-02): the matrix covers the WHOLE
+  certifications category — the cross-surface index population,
+  candidates entering as INTAKE rows — not only enrolled rungs.
+  Most rows therefore start unevidenced, and every INTAKE row
+  must name its evidence_requirement: the evidence that would
+  price it (move it from INTAKE to a posterior). Intake is thus
+  an evidence-accumulation queue under the standard, not a
+  list: a row without a named requirement is a defect of the
+  queue, and accumulation work draws from the requirements.
 
 - **accumulation-targets v0** (owner doctrine, 2026-11-02) —
   dispatch is REQUIRED data accumulation: rotation exists to

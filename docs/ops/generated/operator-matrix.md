@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T10:06:21Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T10:30:22Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `5c31eef0d4` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `50f9784982` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 410 issues, 186 PRs. PR classes: EXTRACT 5 / CANDIDATE 85 / NEED_EVIDENCE 96 / SUPERSEDE 0.
+**Open inventory:** 409 issues, 185 PRs. PR classes: EXTRACT 5 / CANDIDATE 90 / NEED_EVIDENCE 90 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -72,6 +72,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1862 | CANDIDATE | unlabelled | `a4b28f7ef8` | success | success | unknown | 📖 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping |
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
+| #2167 | CANDIDATE | unlabelled | `7c9f539d71` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
@@ -102,7 +103,11 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3675 | CANDIDATE | unlabelled | `a24a2483c3` | success | success | unknown | feat(ci): archwiz dangle_check — repo-side dangle_detector variant (Wave V verif |
 | #3676 | CANDIDATE | unlabelled | `30ae007d4d` | success | success | unknown | feat(ci): archwiz build_repo_index — repo-side build_final_all_profile variant |
 | #3707 | CANDIDATE | unlabelled | `4dadc44f6c` | success | success | unknown | g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeou |
-| #3723 | CANDIDATE | unlabelled | `5526e88bfe` | success | success | unknown | apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs) |
+| #3723 | CANDIDATE | unlabelled | `5526e88bfe` | success | success | dirty | apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs) |
+| #3755 | CANDIDATE | unlabelled | `f9c62712f1` | success | success | unknown | feat(ci): archwiz func_index — repo-side func_indexer variant (ast depth) |
+| #3757 | CANDIDATE | unlabelled | `32224dee89` | success | success | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
+| #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
+| #3763 | CANDIDATE | unlabelled | `50bba792c7` | success | success | unknown | archwiz ⑥: archaeo cursor-mode spec + inert workflow pass-through (context_relat |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -132,7 +137,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1760 | NEED_EVIDENCE | unlabelled | `cc84ecf1b7` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `af7aa6cfee` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2182 | NEED_EVIDENCE | unlabelled | `5607284d96` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
@@ -142,8 +146,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `5bb92c6894` | queued | queued | unknown | chore(delphi): refresh delphi-ledger-feed.json |
-| #2310 | NEED_EVIDENCE | unlabelled | `9c570a798c` | queued | queued | unknown | chore(delphi): refresh delphi-rfp-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `5161141b7d` | queued | queued | unknown | chore(delphi): refresh delphi-ledger-feed.json |
+| #2310 | NEED_EVIDENCE | unlabelled | `abeabb8f75` | queued | queued | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `660d086004` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -187,18 +191,13 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3113 | NEED_EVIDENCE | unlabelled | `019c7ccaf1` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #3209 | NEED_EVIDENCE | unlabelled | `eb6a4d3a9f` | not_reported | not_reported | unknown | chore(cadence): auto-register providers from surface drift |
 | #3342 | NEED_EVIDENCE | unlabelled | `0d8d82592f` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
-| #3442 | NEED_EVIDENCE | unlabelled | `b4721821b5` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3442 | NEED_EVIDENCE | unlabelled | `1e2a5d51c0` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3640 | NEED_EVIDENCE | unlabelled | `ff7c74a44d` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
-| #3729 | NEED_EVIDENCE | unlabelled | `3be520f422` | not_reported | not_reported | clean | docs(swarm): §24 — "use them" (DeepSeek route verified; Claude scoped) |
-| #3739 | NEED_EVIDENCE | unlabelled | `a42f0bb7a8` | queued | queued | unstable | docs(icm): suite timing map rev 2026-11-02b — expectation records (DoE v0 shape) |
-| #3744 | NEED_EVIDENCE | unlabelled | `7b0adefb8c` | queued | in_progress | unknown | feat(tracking): backup-events.jsonl — unified event series for Telemetry (shape  |
-| #3755 | NEED_EVIDENCE | unlabelled | `f9c62712f1` | queued | queued | unstable | feat(ci): archwiz func_index — repo-side func_indexer variant (ast depth) |
-| #3757 | NEED_EVIDENCE | unlabelled | `32224dee89` | queued | queued | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
-| #3758 | NEED_EVIDENCE | unlabelled | `6d20b87039` | queued | queued | unstable | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
-| #3759 | NEED_EVIDENCE | unlabelled | `7fc57f5437` | queued | queued | unstable | feat(dispatch): stamp {requesting_manager · request_id} trace fields (§25.15) |
+| #3768 | NEED_EVIDENCE | unlabelled | `a42a20a956` | failure | success | unknown | tribute normalization bundle D: dashboard deploy/preview + apps dir + Vercel pro |
+| #3782 | NEED_EVIDENCE | unlabelled | `267deb5e85` | queued | queued | unstable | DoE: expectation-record shape + cert matrix conformity |
 
 ## Families (open)
 
@@ -213,6 +212,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 12 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 21 | 184 |
+| unlabelled | 20 | 183 |
 
-**Unlabelled open issues (21):** #308, #388, #389, #1226, #1450, #2185, #2210, #2571, #2732, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3735, #3738, #3751, #3752 — worked oldest-first by the issue-lifecycle lane pass.
+**Unlabelled open issues (20):** #308, #388, #389, #1226, #1450, #2185, #2210, #2571, #2732, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3735, #3751, #3752 — worked oldest-first by the issue-lifecycle lane pass.

@@ -36,8 +36,10 @@ until build receipts land; (d) 4n0n protocol ∀ public artifacts
    Channel: same as beat 1 (FB Page via parent; repo = durable record).
 3. **Blog** — draft in build window; fire: first real `/.kiro` hook/spec
    receipts exist (Bonus Blog target). Final sections fill post-build.
-4. **Submission beat** — fire: D4 seat confirms submission on Devpost
-   (≤ 2026-12-04T14:00PT). Bracketed links fill at that moment only.
+4. **Submission beat** — fire: LANDING 2026-12-02 (owner buffer rule,
+   D4 seat Δ 2026-11-02): D4 seat confirms packet submitted on Devpost.
+   Wall = 2026-12-04T14:00PT (hard deadline, ¬ target). Bracketed
+   links fill at landing only.
 5. **Audience/comment watch** — from first publication: Devpost comments
    ∧ repo issues/stars ∧ social replies, checked per beat; questions
    route ↦ D4 seat for build facts, answered from evidence only.
@@ -90,7 +92,7 @@ approves channel.
 
 > Submitted. 💀✅
 >
-> Skeleton Crew is in for Kiroween 2026, ahead of today's 2026-12-04
+> Skeleton Crew is in for Kiroween 2026, ahead of the 2026-12-04
 > 14:00 PT deadline.
 >
 > A CMDB/reconciliation viewer run by a minimal crew of spec-first Kiro
@@ -154,7 +156,7 @@ in-period on 2026-10-30: https://github.com/timerloggedout-spec/skeleton-crew
 ## 4. Open items
 
 - D4-ACCOUNTS closure (registration ∧ Kiro ID) — accounts lane owns;
-  promo dependency = credit form ≤ 2026-12-01T12:00PT.
+  promo dependency = credit form: landing 2026-11-30 (buffer rule) ∧ deadline 2026-12-01T12:00PT.
 - Publication channel beats 1–2 = RESOLVED (parent, 2026-10-31): fleet
   FB Page Dream In Production via parent publish; repo = durable record;
   Devpost joins when a draft project exists.

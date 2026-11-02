@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T09:47:37Z",
+ "generated_at": "2026-11-02T10:30:04Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -17,8 +17,8 @@
   {
    "id": "campaign-records",
    "path": "experiments/doe/*/records/*.json",
-   "records_read": 57,
-   "records_used": 1
+   "records_read": 60,
+   "records_used": 4
   },
   {
    "id": "stamps",
@@ -139,15 +139,17 @@
    "Jules",
    "Muse",
    "claude-muse",
-   "github-actions"
+   "gemini",
+   "github-actions",
+   "jules"
   ]
  },
  "summary": {
-  "providers": 11,
-  "models": 15,
+  "providers": 13,
+  "models": 17,
   "roles": 2,
-  "tasks": 30,
-  "dispatches": 27,
+  "tasks": 33,
+  "dispatches": 30,
   "registry_providers": 95,
   "zero_dispatch_providers": 89,
   "by_outcome": {
@@ -158,7 +160,7 @@
   "by_source": {
    "desk-usage": 3,
    "records": 26,
-   "campaign-records": 1
+   "campaign-records": 4
   }
  },
  "providers": [
@@ -630,10 +632,34 @@
       "optimizations-assurance"
      ],
      "contexts": [
+      "deepseek-workflow-dispatch",
       "provider-invoke mode=catalog"
      ],
-     "task_count": 3,
+     "task_count": 4,
      "tasks": [
+      {
+       "task_class": null,
+       "role": null,
+       "moniker": null,
+       "context": "deepseek-workflow-dispatch",
+       "dispatch_id": "arm-C",
+       "run_id": null,
+       "workflow": null,
+       "session_id": null,
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "campaign-records",
+       "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-C.json"
+      },
       {
        "task_class": "inference-invoke",
        "role": "builder",
@@ -821,7 +847,49 @@
     }
    ],
    "model_count": 2,
-   "task_count": 6,
+   "task_count": 7,
+   "zero_dispatch": false
+  },
+  {
+   "provider": "gemini",
+   "models": [
+    {
+     "model": "NOT_ESTABLISHED",
+     "roles": [],
+     "monikers": [],
+     "contexts": [
+      "gemini-invoke"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": null,
+       "role": null,
+       "moniker": null,
+       "context": "gemini-invoke",
+       "dispatch_id": "arm-B",
+       "run_id": null,
+       "workflow": null,
+       "session_id": null,
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "campaign-records",
+       "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-B.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1,
    "zero_dispatch": false
   },
   {
@@ -1003,6 +1071,48 @@
    ],
    "model_count": 2,
    "task_count": 5,
+   "zero_dispatch": false
+  },
+  {
+   "provider": "jules",
+   "models": [
+    {
+     "model": "NOT_ESTABLISHED",
+     "roles": [],
+     "monikers": [],
+     "contexts": [
+      "jules-issues"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": null,
+       "role": null,
+       "moniker": null,
+       "context": "jules-issues",
+       "dispatch_id": "arm-A",
+       "run_id": null,
+       "workflow": null,
+       "session_id": null,
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "campaign-records",
+       "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-A.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1,
    "zero_dispatch": false
   },
   {
@@ -1902,7 +2012,7 @@
   }
  ],
  "gaps": [
-  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, claude-muse, github-actions",
+  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, claude-muse, gemini, github-actions, jules",
   "desk-usage rows carry no run_id/dispatch_id (3 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

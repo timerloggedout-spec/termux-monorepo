@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 410,
-    "open_prs": 186,
+    "open_issues": 409,
+    "open_prs": 185,
     "pr_classes": {
-      "CANDIDATE": 85,
+      "CANDIDATE": 90,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 96,
+      "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 21,
-      "prs": 184,
+      "issues": 20,
+      "prs": 183,
       "unlabelled_numbers": [
         308,
         388,
@@ -70,13 +70,12 @@
         3670,
         3673,
         3735,
-        3738,
         3751,
         3752
       ]
     }
   },
-  "generated_at": "2026-11-02T10:06:21Z",
+  "generated_at": "2026-11-02T10:30:22Z",
   "issues_unlabelled": [
     308,
     388,
@@ -96,7 +95,6 @@
     3670,
     3673,
     3735,
-    3738,
     3751,
     3752
   ],
@@ -106,7 +104,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "5c31eef0d4"
+    "sha": "50f9784982"
   },
   "prs": [
     {
@@ -947,6 +945,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "7c9f539d71",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T10:15:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1369,10 +1381,66 @@
       },
       "head_sha": "5526e88bfe",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 3723,
       "title": "apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs)",
       "updated_at": "2026-11-02T09:52:37Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f9c62712f1",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3755,
+      "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
+      "updated_at": "2026-11-02T10:22:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "32224dee89",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3757,
+      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
+      "updated_at": "2026-11-02T10:15:49Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6d20b87039",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3758,
+      "title": "feat(ci): archwiz mirror_report \u2014 repo-side mirror variant (advisory rollup)",
+      "updated_at": "2026-11-02T10:23:55Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "50bba792c7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3763,
+      "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
+      "updated_at": "2026-11-02T10:22:23Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1787,20 +1855,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "af7aa6cfee",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T10:03:53Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "71856c6976",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1927,12 +1981,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "5bb92c6894",
+      "head_sha": "5161141b7d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T10:03:41Z"
+      "updated_at": "2026-11-02T10:23:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1941,12 +1995,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "9c570a798c",
+      "head_sha": "abeabb8f75",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-02T10:04:39Z"
+      "updated_at": "2026-11-02T10:26:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2557,12 +2611,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b4721821b5",
+      "head_sha": "1e2a5d51c0",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T10:00:58Z"
+      "updated_at": "2026-11-02T10:08:32Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2624,43 +2678,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "failure",
+        "smoke": "success"
       },
-      "head_sha": "3be520f422",
-      "labels": [],
-      "mergeable_state": "clean",
-      "number": 3729,
-      "title": "docs(swarm): \u00a724 \u2014 \"use them\" (DeepSeek route verified; Claude scoped)",
-      "updated_at": "2026-11-02T10:05:30Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "a42f0bb7a8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3739,
-      "title": "docs(icm): suite timing map rev 2026-11-02b \u2014 expectation records (DoE v0 shape)",
-      "updated_at": "2026-11-02T10:04:05Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "7b0adefb8c",
+      "head_sha": "a42a20a956",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3744,
-      "title": "feat(tracking): backup-events.jsonl \u2014 unified event series for Telemetry (shape b)",
-      "updated_at": "2026-11-02T10:01:29Z"
+      "number": 3768,
+      "title": "tribute normalization bundle D: dashboard deploy/preview + apps dir + Vercel project names",
+      "updated_at": "2026-11-02T10:24:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2669,54 +2695,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "f9c62712f1",
+      "head_sha": "267deb5e85",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3755,
-      "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
-      "updated_at": "2026-11-02T10:06:09Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "32224dee89",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3757,
-      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
-      "updated_at": "2026-11-02T10:05:28Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "6d20b87039",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3758,
-      "title": "feat(ci): archwiz mirror_report \u2014 repo-side mirror variant (advisory rollup)",
-      "updated_at": "2026-11-02T10:06:09Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "7fc57f5437",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3759,
-      "title": "feat(dispatch): stamp {requesting_manager \u00b7 request_id} trace fields (\u00a725.15)",
-      "updated_at": "2026-11-02T10:06:08Z"
+      "number": 3782,
+      "title": "DoE: expectation-record shape + cert matrix conformity",
+      "updated_at": "2026-11-02T10:30:18Z"
     }
   ],
   "schema": "operator-matrix/v1",

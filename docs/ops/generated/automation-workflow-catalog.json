@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "73be926fbbeb1f9fd347d56e8bc4c9cad02dee9a0336c42cb2ac99c4881c9af7",
-  "workflow_count": 271,
+  "source_fingerprint": "9af1dd7a4222fd455550f3edaaaa39a6b87072e6be8ffb42fce46658d0e27746",
+  "workflow_count": 273,
   "workflows": [
     {
       "action_pins": [],
@@ -4800,6 +4800,32 @@
       "triggers": [
         "workflow_dispatch"
       ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "v2-gitlab-probe",
+      "path": ".github/workflows/v2-gitlab-probe.yml",
+      "schedules": [],
+      "triggers": []
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "pull"
+      ],
+      "name": "v2-snapshot-pull",
+      "path": ".github/workflows/v2-snapshot-pull.yml",
+      "schedules": [],
+      "triggers": []
     },
     {
       "action_pins": [

@@ -378,6 +378,20 @@ version and compared continuously until culling retires a version.
   plane (Linguist), cited not absorbed. Status: active.
   Comparison line: open (v1 is the baseline; its own future
   revisions backfill under rule 8).
+  Identity state (census 2026-11-01, vs `ops/github-apps/
+  PROCESS.json` + `docs/ops/GITHUB-APP-PROCESS.md`, the AppID
+  record of record): dedicated AppID = NONE recorded (8 owned apps
+  registered — Collector, Publisher, Reviewer, Lifecycle, Gate,
+  Swarm, CrossReference, RepoStory; no DoE entry in the register or
+  its allocation queue; the record itself notes other
+  owner-registered apps are not API-enumerable). Dedicated repo =
+  NONE (org repo search `doe` = 0; standing PROCESS.json note: no
+  app has its own repo, RepoStory's entry repo being the first
+  per-entry exception). Publication (owner aside, 2026-11-01): the
+  fleet apps are all published later — publication is a later
+  phase, parked (PROCESS.json later_queue carries "Marketplace
+  publishing of fleet apps" as parked_owner_later); no publication
+  action now.
 
 ## Campaign layout
 

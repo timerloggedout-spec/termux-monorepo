@@ -1,6 +1,6 @@
 {
  "schema": "backup-state/v1",
- "generated_at": "2026-11-02T08:01:46Z",
+ "generated_at": "2026-11-02T08:04:52Z",
  "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/BACKUP-STATE.md",
@@ -16,7 +16,7 @@
    "id": "snapshot",
    "path": "scripts/tracking/backup_snapshot.json",
    "status": "error:HTTPError: HTTP Error 404: Not Found",
-   "read_at": "2026-11-02T08:01:46Z"
+   "read_at": "2026-11-02T08:04:52Z"
   }
  ],
  "marker": {
@@ -36,6 +36,13 @@
    "gates_pass": true,
    "publish_commit": "34a9dd16b5d974a8d8b986d32285f70146dbd488",
    "state_hash": "528188422781f0c54c13bd023f084aa6a74fa0918a48c34a76d6bfdd70f751d5"
+  }
+ ],
+ "failed_attempts": [
+  {
+   "export_id": null,
+   "at": "2026-11-02T08:00:01Z",
+   "reason": null
   }
  ],
  "drills": [
@@ -60,11 +67,12 @@
  "summary": {
   "exports": 1,
   "drills": 1,
+  "failed_attempts": 1,
   "last_export_at": "2026-11-02T06:24:53Z",
   "last_export_id": "exp-20261102T062322Z-65e231",
   "last_drill_verdict": "fail"
  },
  "gaps": [
-  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-02T08:01:46Z): data may be stale; relays remain live"
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-02T08:04:52Z): data may be stale; relays remain live"
  ]
 }

@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T07:16:51.348652+00:00",
+ "census_at_utc": "2026-11-02T07:46:20.722506+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 2854,
-  "stale": 872,
+  "total": 2871,
+  "stale": 873,
   "orphan_no_assoc_PR": 349,
   "stale_and_orphan": 82
  },
  "prs": {
-  "total": 3114,
-  "open": 174,
+  "total": 3140,
+  "open": 181,
   "open_draft": 23,
-  "open_draft_share": 0.1322,
+  "open_draft_share": 0.1271,
   "drafts": [
    {
     "number": 386,
@@ -34,7 +34,7 @@
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 45.9
+    "age_days": 46.0
    },
    {
     "number": 740,
@@ -64,7 +64,7 @@
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 40.1
+    "age_days": 40.2
    },
    {
     "number": 829,
@@ -88,7 +88,7 @@
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 13.0
+    "age_days": 13.1
    },
    {
     "number": 1538,
@@ -112,7 +112,7 @@
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 6.3
+    "age_days": 6.4
    },
    {
     "number": 2461,
@@ -160,19 +160,19 @@
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 0.4
+    "age_days": 0.5
    }
   ],
-  "merged": 2466,
+  "merged": 2485,
   "closed_unmerged": 474,
-  "open_no_closing_ref": 168,
-  "open_unlinked_issue_target": 141,
-  "open_unlinked_any_ref": 118,
-  "merged_no_closing_ref": 2437,
-  "merged_unlinked_issue_target": 1420,
-  "merged_unlinked_any_ref": 793,
+  "open_no_closing_ref": 175,
+  "open_unlinked_issue_target": 147,
+  "open_unlinked_any_ref": 123,
+  "merged_no_closing_ref": 2456,
+  "merged_unlinked_issue_target": 1430,
+  "merged_unlinked_any_ref": 798,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2391,
+  "merged_head_branch_residual_name_match": 2410,
   "open_head_branch_missing": []
  },
  "issues": {

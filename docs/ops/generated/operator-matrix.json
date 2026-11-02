@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 392,
-    "open_prs": 178,
+    "open_prs": 177,
     "pr_classes": {
-      "CANDIDATE": 83,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 88,
+      "CANDIDATE": 84,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 176,
+      "prs": 175,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:09:54Z",
+  "generated_at": "2026-11-02T09:11:57Z",
   "issues_unlabelled": [
     308,
     343,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "a3110ddc87"
+    "sha": "219b6efe21"
   },
   "prs": [
     {
@@ -222,20 +222,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bee36fb973",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:05:14Z"
     },
     {
       "class": "EXTRACT",
@@ -1419,6 +1405,20 @@
       "updated_at": "2026-11-02T01:09:20Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "30ae007d4d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3676,
+      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
+      "updated_at": "2026-11-02T09:10:33Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1828,6 +1828,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "04cddfecac",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T09:11:28Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1954,15 +1968,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "success",
+        "smoke": "in_progress"
       },
-      "head_sha": "bbcdfce637",
+      "head_sha": "3e2292bf05",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T09:06:31Z"
+      "updated_at": "2026-11-02T09:10:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2621,34 +2635,6 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "7b81f1350a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3674,
-      "title": "swarm: fix DeepSeek env expression in provider-invoke (401 root cause)",
-      "updated_at": "2026-11-02T09:06:16Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "30ae007d4d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3676,
-      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
-      "updated_at": "2026-11-02T09:08:47Z"
     }
   ],
   "schema": "operator-matrix/v1",

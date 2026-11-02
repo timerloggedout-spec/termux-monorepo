@@ -86,19 +86,32 @@ echo "GO raised" >> "$LOG"
 # Light early probe only; the full probe block runs after the RESULT wait
 # so it shows end-of-run state (early probes kept missing late exthost).
 sleep 25
-ps aux | grep -iE "code|electron" | grep -v grep | head -5 > "$EV/session-early.txt" 2>&1 || true
+{ ps aux | grep -iE "xvfb|dbus|code|electron" | grep -v grep | head -8; free -m | head -2; } > "$EV/session-early.txt" 2>&1 || true
 
+# RESULT wait with a relaunch watchdog: the VS Code tree has died mid-run
+# in every long pilot (GPU/X crash class); a fresh instance re-fires the
+# driver's onStartupFinished activation against the persisted GO flag.
+relaunches=0
 for i in $(seq 1 72); do
   [ -f "$EV/RESULT.json" ] && break
+  if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 3 ]; then
+    relaunches=$((relaunches+1))
+    echo "watchdog: code tree dead; relaunch #$relaunches" >> "$LOG"
+    (dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust \
+      --extensions-dir /opt/vscode-extensions \
+      /workspace/project >> "$EV/code.log" 2>&1 &)
+  fi
   sleep 5
 done
+echo "watchdog relaunches=$relaunches" >> "$LOG"
 
 {
   echo "== probes (end of run) =="
   cat /proc/version || true
   which dbus-run-session xvfb-run || true
   ls /opt/vscode-extensions 2>/dev/null || true
-  ps aux | grep -iE "code|electron" | grep -v grep | head -8
+  ps aux | grep -iE "xvfb|dbus|code|electron" | grep -v grep | head -10
+  free -m | head -2
   code --no-sandbox --user-data-dir "$UD" --extensions-dir /opt/vscode-extensions --list-extensions 2>&1 | head -10
   echo "-- globalStorage tree --"
   find "$UD"/User/globalStorage -maxdepth 2 2>/dev/null | head -30

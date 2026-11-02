@@ -384,6 +384,25 @@ and dispatch executes the stamped selection. Scout never
 selects outside the feed. Population state — which arms exist,
 their health, their accumulated n — is the selection substrate:
 the feed is what makes the population selectable.
+
+Talent frame (owner, 2026-11-02): Scout's work is TALENT
+scouting over the pool population, not mechanical
+request-filling. Arms are evaluated as talent against the
+bars: **proven** = at/above the class bar with a corroborated
+posterior; **promising** = accumulated evidence favorable but
+below the claim bar (provisional posterior); **unproven** =
+below first-set evidence or INTAKE posterior. Scout surfaces
+talent to managers WITH the basis (the talent read rides the
+selection-experiment record: {talent class - evidence basis -
+feed state}). Deliberately giving unproven arms their looks
+is part of the work: exploration dispatches to under-observed
+talent are how new talent is found AND how their n accumulates
+toward the bars. Exploration share = a named, reported part of
+the accumulation duty (per window: exploration n vs total n in
+the accumulation report), >0 while health-gated unproven arms
+exist, and bounded by the health gates — exploration never
+selects a failing or degrading arm, and exploration dispatches
+are real production work (rule 6), not synthetic burn.
 Feed carriage: maintained by the rotation automation
 (Swarm) under this governance; an existing equivalent live
 surface becomes the feed by designation, never a second build.

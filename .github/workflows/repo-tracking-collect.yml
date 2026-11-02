@@ -18,6 +18,7 @@ on:
     branches: [master]
     paths:
       - 'scripts/tracking/repo_tracking.py'
+      - 'scripts/tracking/nested_family.py'
       - 'scripts/tracking/fetch_snapshots.py'
       - 'ops/tracking/projects.json'
       - 'ops/challenge/coordinator.json'

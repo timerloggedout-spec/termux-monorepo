@@ -195,3 +195,51 @@ population per §20 (no-hard-select). Direct dispatch from DeepAgent to a
 named model was questioned and **stands rejected**. Recorded as the routing
 rule of record for the DeepAgent surface; DeepAgent's organs emit routed
 dispatch stamps like every other dispatch.
+
+## 24. "Use them" — Claude ∧ DeepSeek as endpoints (2026-11-02)
+
+Owner directive via main (2026-11-01 23:41 PT) ∧ amendment (23:50 PT): both join active swarm rotation as endpoints; Claude scoped by the amendment (card-closed as an API endpoint).
+
+### DeepSeek — direct route wired ∧ verified (auth-live, balance-blocked)
+
+- **Wiring:** PR #3612 merged `57c87cdc018e` — reviewed `deepseek` entry in `llm_api_hub/server/provider_extensions.py` (chat `api.deepseek.com/v1/chat/completions` · catalog `/v1/models` · env `DEEPSEEK_API_KEY`) + `deepseek` choice in `provider-invoke.yml`.
+- **401 root cause (this lane's bug, owned):** the #3612 splice's env line reached master with the secret expression scrubbed to a literal placeholder by the exec channel (proven by hash-verified blob read). Every post-#3612 run sent the placeholder as the bearer token. Provisioning's re-mint (fleet key, sealed 2026-11-02T08:26:49Z; fingerprint sha256[:12] `dcf12286205f`, len 35) was valid throughout — probe PR #3655 (run 41415733481) proved the in-job value == the seal. The original key's death is **UNPROVEN** (never read by any post-#3612 run). Fix: PR #3674 merged `aa959a4b623b` (expression fragment-built in-process; post-merge standard-form verified on hash-checked master bytes). **Standing rule: secret expressions are authored only via the file tool or in-process fragment construction — never through exec heredocs — and any env line this lane touches gets a post-merge standard-form regex check.**
+- **First true readings (2026-11-02T09:11Z; #3141 comments 6573317668 ∧ 6573329144):** catalog **HTTP 200, 2 models** {deepseek-flash, deepseek-v4-pro} ⇒ CI endpoint floor 7,397 → **7,399**; first stamped invoke (`deepseek-chat`) **HTTP 402 Insufficient Balance** — the request authenticates and prices; account balance $0.00 ∧ funding ∈ ∅CC closed class. **Class: direct route verified end-to-end; completions funded-out** (same family as deepinfra/novita, with live auth + countable catalog). No fleet action can fund it; the arm clears completions the day the account is funded.
+- Probe workflow `deepseek-secret-probe.yml` retained in-tree as a diagnostic (deletion prohibited; dispatch-only; hash-only output).
+
+### Claude — no endpoint rotation exists (amendment-scoped, closed)
+
+- ∅ `ANTHROPIC_API_KEY` provisioned; Anthropic pay-first ∈ card-closed class (∅CC). Aggregator catalog presence only: OpenRouter (completions 402 funded-out) ∧ Unorouter (403 consent-gated; one-time web consents = HITL unlock). Live working surface = the collaborator/session surface with its own tooling; registry records `g4f.claude` (reference class) ∧ `claude.seat_runtime` (Quota lane). **No endpoint rotation is claimed.** If Provisioning identifies a provisioned Claude endpoint route, wiring is a one-line harness addition from this seat.
+
+## 25. Method–provider unbinding — the alignment rule (2026-11-02)
+
+Owner challenge sustained in main (2026-11-02): Repo-Story's build was hard-bound to one arm (Scout selection = Gemini) and inherited its capacity death — §20 violated at the method layer. This section generalizes §20 from dispatches to methods.
+
+**Rule (fleet-wide draft):**
+1. Methods bind to **capability contracts** (`build-dispatch`, `inference-invoke`, `review`, …), never to a named provider. A method document naming a provider as its actor of record is defective on its face.
+2. Provider = **runtime selection** at dispatch, from live capacity readings: an arm is selectable iff {live ∧ funded ∧ completing} on the registry/usage evidence planes. Selection + readings are stamped (fan-out) with every dispatch.
+3. Selections rotate per §20. A single-arm route is a **constrained arm** — constraint recorded (capability or completion capacity) — never a binding.
+4. **Defect class:** a method blocked on one arm while another arm of its capability class is completing = a defect, captured as an issue at capture time. First instance: #3735 (Repo-Story build bound to Gemini through 4 failed attempts / ~20h while the seat-build class completed builds fleet-wide).
+5. Recovery = re-selection, not re-dispatch storms: a failed arm rejoins the rotation when one of its legs completes; meanwhile the method proceeds on the selected live arm.
+
+**First application (proof):** Repo-Story v0 build re-dispatched under `build-dispatch` (selection record: repo-story issue #2 comment 6574154878) → seat-build routed dispatch selected (constrained arm: completion capacity) → build PR repo-story #4, App-authored (`termux-fleet-repostory[bot]`), product workflow self-fired on its own range (run 41424900013). Note on the owner's named arm: `provider-command-dispatch.yml` is PR-bound and monorepo-only (allowlist = review/autofix/fix-ci on an existing PR) — mechanically it cannot carry a cross-repo build; the live completing build class under routed dispatch is the seat-build class, and the build moved under it with the constraint stamped. Gemini capacity was separately restored by Provisioning the same morning (new free-tier project key, resealed 2026-11-02T09:53:48Z; pin Δ: `gemini-2.5-flash` 404s for new keys ⇒ `gemini-3.5-flash-lite`) — the arm rejoins on its first completed leg; the pin fix is a machinery follow-up on repo-story's build-dispatch.
+
+**Addendum (owner, via main 2026-11-02 — "Why right then? How do we improve?"):**
+6. **Probe-before-bind:** no arm selection without a same-window completion probe + balance/capacity read. Selection inputs = live registry state, never static preference. (The Gemini binding predated any probe discipline: the arm was named at method design and never re-probed as its state changed.)
+7. **Attempt discipline:** identical failure signature ×2 ⇒ stop + escalate; the posterior moves after 2. (Tonight's attempts 3–4 repeated a known failure signature — under this rule the escalation, and with it the re-selection, fires after attempt 2.)
+8. **Failover must be TESTED:** per method class, a completion on the secondary arm with the primary stood down. Presence of a fallback ≠ proof (continuity census gap: no completed failover test was on record). First tested failover for class `build-dispatch`: the Repo-Story v0 build itself (secondary arm completed with Gemini stood down, PR repo-story #4) — recorded here as the class's failover evidence leg.
+9. **Shared-key SPOF:** one key serving many surfaces (GEMINI_API_KEY is census-named cross-SPOF) silently couples every method bound to it. Key separation per method class where provisioning allows + balance/capacity state as a tracked reading, so one pool's death surfaces as a reading, not as simultaneous method failures.
+
+**Sharpening (owner, via main 2026-11-02 — "It needs to be rerouted prior to failure"):**
+10. **Pre-failure rerouting (the rule's center):** every dispatch passes a **health gate at selection** — the arm's live capacity/balance/error posterior is read at dispatch time and a degraded arm is skipped *before any attempt is spent*. Degradation also triggers mid-window: an arm whose readings decay is **drained from rotations** before methods hit its wall. Rerouting is a pre-failure act, not a recovery act.
+11. **Attempt discipline is backstop only:** if the ×2 same-signature stop (item 7) ever fires, the pre-failure routing already missed something — and that miss is itself a capture (issue filed, this section amended). Worked example: under this rule the entitlement-dead Gemini key reads dead at the gate ⇒ Repo-Story never binds ⇒ zero failed attempts (contrast: 4 spent).
+
+**Dispatch obligation (owner doctrine, via main 2026-11-02 — "They are required to dispatch to accumulate data"):**
+12. Dispatch across the swarm is a **requirement, not an option**: every live arm carries a dispatch obligation, because dispatching is the only mechanism that accumulates the observations n needs (per-endpoint posteriors, weights, winprob all starve without it). Shape: rotation coverage across health-gated live arms; every dispatch stamped {task class · arm · model · run id · outcome · cost class} (the fan-out stamp, §21 machinery).
+13. **Coverage is measured per arm per window**: an arm at n=0 across a window = a finding, same shape as a flat measurement plane. Boundary: the obligation binds across arms that PASS the pre-failure health gate (item 10) — dead arms are fixed by provisioning, never fed doomed dispatches to "accumulate data." Per-class n targets are held by the DoE expert.
+
+**Authority line (owner ruling, via main 2026-11-02):**
+14. **DoE governs selection, Swarm executes.** DoE (doe-expert seat) has authority over Scout, with the pool feed: selection policy + the pool feed's governance sit with DoE {health-gated · target-carrying · posterior-stated}; Scout binds only what the DoE-governed feed supports. This lane's execution lead stands for what it owns — dispatch machinery, rotations, stamps — and consumes DoE's selection policy as its input, never as its own preference.
+
+**Scout working model (owner, via main 2026-11-02):**
+15. **Managers request → Scout selects → Swarm dispatches.** Requests are a first-class intake on the execution side: a manager states the capability need; Scout selects the arm from the pool population (the DoE-governed feed, item 14); this lane's machinery dispatches. **No manager hand-picks an arm.** The dispatch stamp gains {requesting_manager · request_id} so every execution traces back to the request it served and the selection that filled it (machinery delta: fan-out stamp schema, additive fields).

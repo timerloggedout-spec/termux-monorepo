@@ -1,18 +1,20 @@
 name: v2-snapshot-pull
-# Repo Replay V2: pull the GitLab validator copy (auth-gated; token lives
-# HERE as GITLAB_TOKEN) as a tree+blob pack and push it to
-# timerloggedout-spec/repo-replay-data/v2-snapshot/ via OPERATOR_GITHUB_TOKEN.
-# Fetch pattern copied from gitlab-governed-reconciliation.yml (oauth2
-# Basic extraheader; token never in a URL, never printed).
+# Repo Replay V2 (pack v2): pull the GitLab validator copy (auth-gated;
+# token lives HERE as GITLAB_TOKEN) for ALL branches as a tree+blob pack
+# and push it to timerloggedout-spec/repo-replay-data/v2-snapshot/ via
+# OPERATOR_GITHUB_TOKEN. Layout: tree/<branch>/<path>; manifest v2
+# carries per-branch head sha + file counts. Fetch pattern copied from
+# gitlab-governed-reconciliation.yml (oauth2 Basic extraheader; token
+# never in a URL, never printed).
 on: workflow_dispatch
 permissions:
   contents: read
 jobs:
   pull:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
-      - name: Fetch GitLab snapshot + pack
+      - name: Fetch GitLab snapshot (all branches) + pack
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
@@ -22,14 +24,23 @@ jobs:
           auth="$(printf 'oauth2:%s' "$GITLAB_TOKEN" | base64 -w 0)"
           git -c http.extraheader="Authorization: Basic $auth" fetch --no-tags --depth 1 \
             "https://gitlab.com/a-group2180532/termux-monorepo.git" \
-            "+refs/heads/master:refs/remotes/gitlab/master"
-          GL_SHA="$(git rev-parse refs/remotes/gitlab/master)"
-          echo "gitlab_sha=$GL_SHA" >> "$GITHUB_ENV"
+            "+refs/heads/*:refs/remotes/gitlab/*"
           mkdir -p ../tree
-          git archive "$GL_SHA" | tar -x -C ../tree
+          : > ../branches.tsv
+          for ref in $(git for-each-ref --format='%(refname)' refs/remotes/gitlab); do
+            br="${ref#refs/remotes/gitlab/}"
+            sha="$(git rev-parse "$ref")"
+            mkdir -p "../tree/$br"
+            git archive "$sha" | tar -x -C "../tree/$br"
+            n="$(find "../tree/$br" -type f | wc -l)"
+            printf '%s\t%s\t%s\n' "$br" "$sha" "$n" >> ../branches.tsv
+            echo "branch $br $sha files=$n"
+          done
           cd ..
           FILES="$(find tree -type f | wc -l)"
           echo "files=$FILES" >> "$GITHUB_ENV"
+          MAIN_SHA="$(awk -F'\t' '$1=="master"{print $2}' branches.tsv)"
+          echo "gitlab_sha=${MAIN_SHA:-unknown}" >> "$GITHUB_ENV"
           tar -czf v2.tar.gz -C tree .
           sha256sum v2.tar.gz | awk '{print $1}' > tar.sha
           BYTES="$(stat -c%s v2.tar.gz)"
@@ -47,9 +58,15 @@ jobs:
           cp chunks/part-* data/v2-snapshot/
           python3 - << 'PY'
           import json, hashlib, os, datetime
-          chunks = sorted(os.listdir('data/v2-snapshot'))
+          branches = {}
+          for line in open('branches.tsv'):
+              br, sha, n = line.rstrip('\n').split('\t')
+              branches[br] = {'head_sha': sha, 'files': int(n)}
+          chunks = sorted(f for f in os.listdir('data/v2-snapshot') if f.startswith('part-'))
           man = {
+            'pack_version': 2,
             'source': 'gitlab.com/a-group2180532/termux-monorepo',
+            'branches': branches,
             'head_sha': os.environ['gitlab_sha'],
             'files': int(os.environ['files']),
             'tar_sha256': open('tar.sha').read().strip(),
@@ -58,12 +75,12 @@ jobs:
             'chunks': [{'name': c, 'sha256': hashlib.sha256(open(f'data/v2-snapshot/{c}','rb').read()).hexdigest()} for c in chunks],
           }
           json.dump(man, open('data/v2-snapshot/MANIFEST.json','w'), indent=1)
-          print(man['head_sha'], man['files'], man['tar_bytes'], len(chunks))
+          print(man['head_sha'], man['files'], man['tar_bytes'], len(chunks), list(branches))
           PY
           cd data
           git config user.name "repo-replay snapshot pull"
           git config user.email "actions@users.noreply.github.com"
           git add v2-snapshot
-          git commit -q -m "v2-snapshot: GitLab validator pack (head ${gitlab_sha}) [skip ci]"
+          git commit -q -m "v2-snapshot: GitLab validator pack v2, all branches (master ${gitlab_sha}) [skip ci]"
           git push -q origin main
           echo "pushed"

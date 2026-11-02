@@ -1,0 +1,17 @@
+{
+ "arm": "A", "provider": "jules", "route": "jules-issues", "version": "0.2.1",
+ "dispatch": {"issue": 2955, "at": "2026-11-01T04:34:44Z", "session": "14411159720978764256"},
+ "pr": {"number": 2966, "author": "google-labs-jules[bot]", "created_at": "2026-11-01T04:48:24Z", "dispatch_to_pr_minutes": 14,
+        "head_pre_rebase": "d128986b7c0eec20f6f2175d2360c3b6b9c4afe2", "diff": {"additions": 43, "deletions": 2, "files": 3},
+        "repo_gate": "success", "termux_smoke": "success"},
+ "spec_compliance": {"runtime_version_display": true, "version_file": true, "changelog": true, "out_of_scope_files": 0},
+ "build_proof": {
+   "run1_dispatch_at_branch": {"run_id": 41422144649, "build_sign_verify": "success", "artifact_id": 13130875610,
+     "release_step": "failure — HTTP 403 Resource not accessible by integration (POST /releases, GITHUB_TOKEN)"},
+   "run2_tag_trigger": {"run_id": 41422211229, "release_created": false, "note": "same failure class; tag apk-v0.2.1 @d128986b retained for re-proof"},
+   "token_class_fix": {"pr": 3722, "merge_sha": "30380e396dae", "change": "release step GH_TOKEN := OPERATOR_GITHUB_TOKEN (interim; ApkRelease AppID = end-state)"},
+   "rebase": "requested of Jules session 14411159720978764256 (2026-11-02, session IN_PROGRESS) to bring fixed workflow onto PR branch",
+   "release": null, "apk_size_bytes": null, "sha256sum_check_on_redownload": null,
+   "signing_mode": "ephemeral-debug (observed in run1 build step)"
+ }
+}

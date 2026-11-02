@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T09:20:51Z",
+ "generated_at": "2026-11-02T09:31:43Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T09:20:50Z",
+   "read_at": "2026-11-02T09:31:43Z",
    "merged": 150,
-   "open": 179
+   "open": 178
   },
   "lane_events": {
-   "read_at": "2026-11-02T09:20:50Z",
+   "read_at": "2026-11-02T09:31:43Z",
    "status": "ok",
-   "count": 7919,
+   "count": 7971,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -77,10 +77,10 @@
    "project_id": "d1-studysprint",
    "state": "active",
    "last_merge": {
-    "pr": 3651,
-    "sha": "8f7c99666da8",
-    "at": "2026-11-02T08:39:56Z",
-    "title": "StudySprint FEATURES: Obsidian layer REQUIRED (Agents SR stack) + SR spec amendment"
+    "pr": 3693,
+    "sha": "092db06ad22d",
+    "at": "2026-11-02T09:30:56Z",
+    "title": "desk-feed: D1 document-of-record (official doc, rubric, timeline, prizes)"
    },
    "next": "Reader MERGED+synced \u00b7 SR: system (balanced) \u00b7 Notes pass: DeepSeek arm tunnel-DOWN \u00d72 skips \u21d2 task submitted to system (issue #3215); tunnel escalated \u21d2 Swarm \u00b7 freeze-hold submission 2026-11-04 23:59 PT \u00b7 TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 \u00b7 SR #3050} in the new form same-turn",
    "next_basis": "record",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +104,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -118,7 +118,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -133,7 +133,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -145,7 +145,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -161,7 +161,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "challenge-entries",
@@ -175,7 +175,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "quota",
@@ -184,18 +184,18 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3677,
-    "sha": "fd327a670d2a",
-    "at": "2026-11-02T09:06:35Z",
-    "title": "feat(dashboard): quota-swarm ALL-providers gap rendering"
+    "pr": 3683,
+    "sha": "98e0f640529d",
+    "at": "2026-11-02T09:29:09Z",
+    "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)"
    },
-   "next": "land/close PR #3683 \u2014 fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
+   "next": "land/close PR #3342 \u2014 feat(ci): add merged branch review audit and quota engine",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=170",
-    "open PRs: #3683, #3342, #3242, #2757, #2340"
+    "open PRs: #3342, #3242, #2757, #2340, #2525"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "doe",
@@ -215,7 +215,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "doe-nc1",
@@ -227,7 +227,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "contribution-desk",
@@ -256,10 +256,10 @@
    "next": "land/close PR #3063 \u2014 viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
    "next_basis": "open-pr",
    "evidence": [
-    "desk-feed traversals=10 generated_at=2026-11-02T07:10:00Z",
+    "desk-feed traversals=10 generated_at=2026-11-02T09:35:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "web-design-viz",
@@ -278,7 +278,7 @@
    "evidence": [
     "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "marketing",
@@ -292,7 +292,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "marketing-social",
@@ -304,7 +304,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "swarm",
@@ -313,17 +313,17 @@
    "project_id": "swarm-f1",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3674,
-    "sha": "aa959a4b623b",
-    "at": "2026-11-02T09:10:31Z",
-    "title": "swarm: fix DeepSeek env expression in provider-invoke (401 root cause)"
+    "pr": 3690,
+    "sha": "743def3365f0",
+    "at": "2026-11-02T09:25:27Z",
+    "title": "Agentic Gambling Lane: registry note \u2014 Speculators manager + Swarm execution side"
    },
    "next": "land/close PR #3437 \u2014 feat(dispatch): wire gemini-invoke to the stamp fan-out",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "providers",
@@ -343,7 +343,7 @@
     "quota registry services=170",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "providers-phrases",
@@ -355,7 +355,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "repo-replay",
@@ -367,7 +367,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "ops",
@@ -381,7 +381,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   },
   {
    "lane": "telemetry",
@@ -400,7 +400,7 @@
    "evidence": [
     "open PRs: #3442, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T09:20:51Z"
+   "updated_at": "2026-11-02T09:31:43Z"
   }
  ],
  "doe_join": {
@@ -779,6 +779,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 85/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 84/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

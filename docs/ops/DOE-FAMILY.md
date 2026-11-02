@@ -691,6 +691,21 @@ version and compared continuously until culling retires a version.
   refinement); #1489 weight updates already require
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
+
+- **ates-improvement-frame v0** (registered 2026-11-02) — ATES
+  improvements under DoE governance; home
+  `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they
+  lived only as work items (issue #3812) + the continuous
+  audit — unversioned. Measured quantity = receipt coverage
+  {workflow coverage over the versioned selected set S -
+  run-level receipt rate per conclusion class - parity gap =
+  rate(success) - rate(failure/cancelled), structurally ~full
+  at open per #3812's success-only emitter}. Improvement
+  proposals = versioned entries {statement - basis -
+  evidence_requirement - state}; unevidenced = HELD (rule 9).
+  Conformity clauses K1-K7 bind Stewardship step 6 (receipt
+  coverage validation). Open owner rulings flagged in-frame:
+  parity target - S governance - Stewardship seat of record.
   Shared shape (one record, three resolutions): Bayesian = the
   record itself; ALE = its typed specialization (quantity =
   expected loss, ARO x SLE decomposition); risk matrix = the

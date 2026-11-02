@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          git add ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records
+          git add ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records experiments/doe/routed-dispatch/stamps
           if git diff --cached --quiet; then
             echo "no intake changes (already emitted)"
           else

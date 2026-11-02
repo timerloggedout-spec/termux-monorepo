@@ -28,7 +28,8 @@
    "ops/3l0/intake.jsonl (3l0-intake/v1)",
    "ops/challenge/desk-feed.json traversals[routed-dispatch].provider_usage[] (DoE live carrier)",
    "experiments/doe/routed-dispatch/records/*.json (EXPERIMENT 1.0; DoE scored records + MVT/ATES intake)",
-   "ops/moneyball/routed-dispatch/*.json (moneyball-plane/v2 score records, one per dispatch; deterministic rubric in the emitter, weights fixed at this intake, quantities null = unidentified; the plane validates on master)"
+   "ops/moneyball/routed-dispatch/*.json (moneyball-plane/v2 score records, one per dispatch; deterministic rubric in the emitter, weights fixed at this intake, quantities null = unidentified; the plane validates on master)",
+   "experiments/doe/routed-dispatch/stamps/*.json (canonical stamp retention \u2014 backfill doctrine: full history re-derivable at every scoring version change; records immutable, versions re-derive scores)"
   ],
   "identity": "Records carry instance_key where the dispatch stamp provides the configured-instance tuple (scripts/doe/instance_key.py); stamps without the tuple group by provider/model and are marked NOT_ESTABLISHED at the instance level."
  },

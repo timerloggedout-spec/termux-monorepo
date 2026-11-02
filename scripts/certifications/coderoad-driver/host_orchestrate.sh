@@ -173,6 +173,9 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
   find "$UD/logs" -type f -iname "*coderoad*" -print0 2>/dev/null | while IFS= read -r -d '' f; do
     echo "== $f =="; tail -60 "$f"
   done
+  find "$UD/logs" -type f -name "tasks.log" -print0 2>/dev/null | while IFS= read -r -d '' f; do
+    echo "== TASKS $f =="; tail -60 "$f"
+  done
   for db in "$UD"/User/workspaceStorage/*/state.vscdb "$UD"/User/globalStorage/state.vscdb; do
     [ -f "$db" ] || continue
     echo "== strings $db (coderoad keys) =="

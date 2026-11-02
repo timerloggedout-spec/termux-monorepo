@@ -59,6 +59,8 @@ def scrub(text: str):
 
 
 def _actor_for(row, body):
+    if row.get("actor") is not None or row.get("actor_evidence"):
+        return row.get("actor"), row.get("actor_evidence") or {"method": None, "detail": {}}
     pseudo_pr = {"title": "", "body": body, "user": {"login": ""}}
     hit = attribution_mod.extract_actor(pseudo_pr)
     if hit["actor"]:

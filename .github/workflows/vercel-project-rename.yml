@@ -1,0 +1,57 @@
+name: vercel-project-rename
+
+# [MUSEai]@{role:{vercel-specialist}} Bundle D window tool: rename-in-place
+# help-wanted-oversight -> tribute-oversight, help-wanted-dash -> tribute-dash
+# (owner ruling 2026-11-02: clean rename, no continuity stub). Project IDs are
+# immutable; settings/deployments persist. Dispatch ONLY on the Repo Org
+# manager's WINDOW word, sequenced with the Bundle D refs merge (PR #3768).
+# Idempotent: a project already at its target name is a no-op pass.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-project-rename
+  cancel-in-progress: false
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      API: https://api.vercel.com
+    steps:
+      - name: Rename both projects (PATCH /v9/projects/{name}) + read-back assert
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "$VERCEL_TOKEN" ] || { echo "::error::VERCEL_TOKEN secret is not set"; exit 1; }
+          auth=(-H "Authorization: Bearer $VERCEL_TOKEN")
+          rename_one () {
+            old="$1"; new="$2"
+            cur=$(curl -s "${auth[@]}" "$API/v9/projects/$old" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('name',''))" 2>/dev/null || true)
+            if [ "$cur" = "$new" ]; then echo "::notice::$old already $new (idempotent pass)"; return 0; fi
+            if [ "$cur" != "$old" ]; then
+              alt=$(curl -s "${auth[@]}" "$API/v9/projects/$new" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('name',''))" 2>/dev/null || true)
+              if [ "$alt" = "$new" ]; then echo "::notice::$new exists; $old not found (already renamed)"; return 0; fi
+              echo "::error::neither $old nor $new resolves (cur='$cur')"; exit 1
+            fi
+            code=$(curl -s -o /tmp/resp.json -w '%{http_code}' -X PATCH "${auth[@]}" -H 'Content-Type: application/json' -d "{\"name\": \"$new\"}" "$API/v9/projects/$old")
+            echo "PATCH $old -> $new = HTTP $code"
+            [ "$code" = "200" ] || { cat /tmp/resp.json; exit 1; }
+            back=$(curl -s "${auth[@]}" "$API/v9/projects/$new" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('name',''), d.get('id',''))")
+            echo "read-back: $back"
+            [ "${back%% *}" = "$new" ] || { echo "::error::read-back mismatch"; exit 1; }
+            echo "::notice::renamed $old -> $new ($back)"
+          }
+          rename_one help-wanted-oversight tribute-oversight
+          rename_one help-wanted-dash tribute-dash
+          {
+            echo "## Vercel project renames (Bundle D window)"
+            echo "- help-wanted-oversight -> tribute-oversight: renamed/read-back asserted"
+            echo "- help-wanted-dash -> tribute-dash: renamed/read-back asserted"
+          } >> "$GITHUB_STEP_SUMMARY"

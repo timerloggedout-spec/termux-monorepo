@@ -4,8 +4,8 @@ from datetime import datetime, timedelta, timezone
 
 from unittest.mock import patch
 
-from scripts.ci import help_wanted_followup
-from scripts.ci.help_wanted_followup import (
+from scripts.ci import tribute_followup
+from scripts.ci.tribute_followup import (
     MARKER, _search_foreign_prs, count_prior_nudges, decide_action,
     filter_maintainer_activity, is_own_repo, latest_approval_ts,
     latest_maintainer_signal, nudge_policy,
@@ -194,7 +194,7 @@ class HelpWantedFollowupPaginationTests(unittest.TestCase):
             requested.append(page)
             return 200, {"items": pages.get(page, []), "total_count": 102}
 
-        with patch.object(help_wanted_followup, "api", fake_api):
+        with patch.object(tribute_followup, "api", fake_api):
             out = _search_foreign_prs("is:closed")
         self.assertEqual(requested, [1, 2])
         self.assertEqual(len(out), 101)

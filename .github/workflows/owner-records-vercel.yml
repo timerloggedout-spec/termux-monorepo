@@ -77,12 +77,14 @@ jobs:
           # 5. Verify page + XML live BEFORE locking.
           ok=""
           for i in 1 2 3 4 5 6; do
-            c1=$(curl -sL -o /dev/null -w "%{http_code}" "$LIVE/owner-records.html?t=$(date +%s)" || true)
-            c2=$(curl -s -o /dev/null -w "%{http_code}" "$LIVE/owner-records.xml?t=$(date +%s)" || true)
-            [ "$c1" = "200" ] && [ "$c2" = "200" ] && { ok=1; break; }
-            sleep 10
+            # Liveness = 200 on-domain (unprotected) OR an SSO challenge
+            # (re-run after the flip: deployment serves, protection on).
+            e1=$(curl -sL -o /dev/null -w "%{url_effective}" "$LIVE/owner-records?t=$(date +%s)" || true)
+            e2=$(curl -sL -o /dev/null -w "%{url_effective}" "$LIVE/owner-records.xml?t=$(date +%s)" || true)
+            case "$e1" in "$LIVE"*|*vercel.com/sso-api*) :;; *) sleep 10; continue;; esac
+            case "$e2" in "$LIVE"*|*vercel.com/sso-api*) ok=1; break;; *) sleep 10;; esac
           done
-          if [ -z "$ok" ]; then echo "::error::post-deploy verify failed (html=$c1 xml=$c2); SSO flip held"; exit 1; fi
+          if [ -z "$ok" ]; then echo "::error::post-deploy verify failed (html_eff=$e1 xml_eff=$e2); SSO flip held"; exit 1; fi
           # 6. Automation bypass secret (create only if none exists; value never logged).
           curl -fsS -H "$AUTH" "$API/v9/projects/$PID?teamId=$SCOPE" > "$RUNNER_TEMP/proj2.json"
           BYPASS=""
@@ -102,8 +104,8 @@ jobs:
           jq -e '.ssoProtection.deploymentType == "all"' "$RUNNER_TEMP/patched.json" >/dev/null \
             || { echo "::error::SSO flip did not take (see patched project read)"; exit 1; }
           # 8. Verify gated: signed-out challenged; bypass (if minted this run) passes.
-          code=$(curl -s -o /dev/null -w "%{http_code}" "$LIVE/owner-records.html?t=$(date +%s)" || true)
-          loc=$(curl -s -o /dev/null -w "%{redirect_url}" "$LIVE/owner-records.html?t=$(date +%s)" || true)
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$LIVE/owner-records?t=$(date +%s)" || true)
+          loc=$(curl -s -o /dev/null -w "%{redirect_url}" "$LIVE/owner-records?t=$(date +%s)" || true)
           case "$code" in 200) echo "::error::signed-out still 200 after SSO flip"; exit 1;; \
             301|302|303|307|401|403) echo "::notice::signed-out challenged ($code)";; \
             308) case "$loc" in *vercel.com*|*sso*) echo "::notice::signed-out challenged (308 -> $loc)";; \

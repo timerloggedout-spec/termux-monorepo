@@ -3069,6 +3069,23 @@
           },
           "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
           "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "mistral",
+          "via": "provider-invoke.yml",
+          "session_id": null,
+          "state": "landed",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch provider-invoke-41392653010: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "not_established"
+          },
+          "model": "mistral-small-latest",
+          "phrases": "NOT_ESTABLISHED"
         }
       ]
     }

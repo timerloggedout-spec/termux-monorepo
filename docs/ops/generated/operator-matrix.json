@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 171,
+    "open_prs": 170,
     "pr_classes": {
       "CANDIDATE": 83,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 82,
+      "NEED_EVIDENCE": 81,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 169,
+      "prs": 168,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:36:10Z",
+  "generated_at": "2026-11-02T00:37:08Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "115e68e50c"
+    "sha": "70c1a5172f"
   },
   "prs": [
     {
@@ -216,12 +216,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "48cc2762b1",
+      "head_sha": "f7d87e8dc1",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3405,
-      "title": "docs(ops): tooling-upgrade requirements \u2014 web-access parity + device-confirmation intermediary",
-      "updated_at": "2026-11-02T00:35:09Z"
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T00:36:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1803,20 +1803,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b3ee658068",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T00:33:48Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "71856c6976",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2533,7 +2519,7 @@
       },
       "head_sha": "c3c90f10af",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 3406,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-02T00:35:45Z"

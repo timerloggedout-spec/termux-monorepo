@@ -45,7 +45,7 @@ jobs:
       - name: Tests
         run: |
           pip install pytest
-          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py tests/test_attribution.py -q
+          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py tests/test_attribution.py tests/test_retain_payloads.py -q
       - name: Ingest (Provenance + HindSight payloads, separate sinks)
         run: |
           set -euo pipefail
@@ -87,6 +87,9 @@ jobs:
           set -euo pipefail
           python3 -B scripts/telemetry_ingest/ingest.py \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --retain-live
+          python3 -B scripts/telemetry_ingest/retain_payloads.py \
+            --file ops/telemetry/density-hindsight.jsonl \
+            --receipt-out ops/telemetry/hindsight-retain-density.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail

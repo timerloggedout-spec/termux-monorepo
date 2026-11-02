@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T07:30:09Z",
+ "generated_at": "2026-11-02T07:48:08Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 19,
-   "records_used": 19
+   "records_read": 20,
+   "records_used": 20
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 18,
+   "records_read": 19,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 19,
+   "records_read": 20,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 30,
+   "records_read": 31,
    "records_used": 3
   }
  ],
@@ -43,7 +43,7 @@
   "denominator": "ops/quota/registry.json \u00b7 lane=model \u00b7 distinct provider",
   "registry_records": 95,
   "registry_providers": 93,
-  "with_dispatches": 4,
+  "with_dispatches": 5,
   "zero_dispatch": [
    "aion",
    "cerebras",
@@ -130,7 +130,6 @@
    "sambanova",
    "siliconflow",
    "typhoon",
-   "unorouter",
    "xfyun",
    "xkiro",
    "zai"
@@ -144,21 +143,21 @@
   ]
  },
  "summary": {
-  "providers": 9,
-  "models": 12,
+  "providers": 10,
+  "models": 13,
   "roles": 2,
-  "tasks": 23,
-  "dispatches": 20,
+  "tasks": 24,
+  "dispatches": 21,
   "registry_providers": 93,
-  "zero_dispatch_providers": 89,
+  "zero_dispatch_providers": 88,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
-   "passed": 16,
+   "passed": 17,
    "failed": 3
   },
   "by_source": {
    "desk-usage": 3,
-   "records": 19,
+   "records": 20,
    "campaign-records": 1
   }
  },
@@ -1022,6 +1021,57 @@
    "zero_dispatch": false
   },
   {
+   "provider": "unorouter",
+   "models": [
+    {
+     "model": "NOT_ESTABLISHED",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "provider-invoke mode=catalog"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=catalog",
+       "dispatch_id": "provider-invoke-41408357473",
+       "run_id": 41408357473,
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-02T07:46:55Z",
+       "outcome": {
+        "status": "passed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41408357473.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1,
+   "zero_dispatch": false
+  },
+  {
    "provider": "aion",
    "models": [],
    "model_count": 0,
@@ -1611,13 +1661,6 @@
   },
   {
    "provider": "typhoon",
-   "models": [],
-   "model_count": 0,
-   "task_count": 0,
-   "zero_dispatch": true
-  },
-  {
-   "provider": "unorouter",
    "models": [],
    "model_count": 0,
    "task_count": 0,

@@ -73,6 +73,10 @@ def test_fanout_populates_all_intakes(tmp_path):
     assert exp["baseline_sha"] == SHA and exp["status"] == "passed"
     assert exp["usage"]["value"] is None  # never fabricated
     assert exp["treatment"]["provider"] == "cohere"
+    # Backfill-consumable: canonical stamp retained + origin carried
+    kept = json.loads((tmp_path / "experiments/doe/routed-dispatch/stamps/test-dispatch-0001.json").read_text())
+    assert kept["dispatch_id"] == "test-dispatch-0001"
+    assert exp["origin"] == "live"
     # DoE desk-feed carrier
     feed = json.loads((tmp_path / "ops/challenge/desk-feed.json").read_text())
     trav = [t for t in feed["traversals"] if t["entry"] == "routed-dispatch"]

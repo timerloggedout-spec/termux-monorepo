@@ -233,10 +233,17 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
             "ates_outcome": None,
         },
     }
+    rec_exp["origin"] = stamp.get("origin", "live")
     rec_dir = root / f"experiments/doe/{CAMPAIGN}/records"
     rec_dir.mkdir(parents=True, exist_ok=True)
     safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in dispatch_id)
     (rec_dir / f"{safe}.json").write_text(json.dumps(rec_exp, indent=2, sort_keys=True) + "\n")
+    # Backfill doctrine: the canonical stamp itself is retained beside the
+    # record, so any future scoring/emitter version can re-derive every
+    # plane's records from the full history (stable stamps, nothing dropped).
+    stamp_dir = root / f"experiments/doe/{CAMPAIGN}/stamps"
+    stamp_dir.mkdir(parents=True, exist_ok=True)
+    (stamp_dir / f"{safe}.json").write_text(json.dumps(stamp, indent=2, sort_keys=True) + "\n")
 
     # ---- 4. DoE live carrier: desk-feed traversal provider_usage ----
     feed_path = root / "ops/challenge/desk-feed.json"

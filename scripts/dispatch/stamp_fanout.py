@@ -122,6 +122,9 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
             "talent_class": stamp.get("talent_class") or NE,
             "exploration": bool(stamp.get("exploration", False)),
         },
+        # Team stratum (PR #3764): stamp-supplied team unit carried verbatim;
+        # team n/posterior are NEVER derived here from member records.
+        "team": stamp.get("team"),
     }
     intake_path.parent.mkdir(parents=True, exist_ok=True)
     with intake_path.open("a") as fh:
@@ -234,6 +237,7 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
         "requesting_manager": stamp.get("requesting_manager"),
         "request_id": stamp.get("request_id"),
         "selection": stamp.get("selection"),
+        "team": stamp.get("team"),
         "talent_class": stamp.get("talent_class"),
         "exploration": bool(stamp.get("exploration", False)),
         "window": None,

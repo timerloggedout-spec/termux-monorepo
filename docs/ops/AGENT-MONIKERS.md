@@ -373,13 +373,20 @@ records cited per row.
 | speculator | alias → gambler | ker: {`scripts/speculators/` implementation (speculative-decoding strategies) · the optimizations-assurance manager seat} — both stay distinct underneath; the charter seats the implementation in-lane as a bettor class |
 | wagerer | alias → gambler | ker ∅ — pure synonym, no fleet binding |
 | bettor | alias → gambler | ker: {Perplexity export schema's bettor-side fields (counterparty `bookmaker_id`)} — schema terms stay in the export |
-| forecaster (`forecast`) | **distinct-class** | Issues unstaked predictions, scored on calibration (Delphi ledgers). Difference vs gambler: no stake, no wallet, no standing/cull — a gambler position is a forecast WITH stake and a cited basis |
+| forecast | **distinct — output class, NOT a participant** | Position content / winprob estimate class (lane feed, PR #3826): names outputs, never participants — collapsing it into a participant listing name breaks record typing. Predictions are issued BY participants and lanes of other classes and scored where those records live (Delphi ledgers score the issuers); there is no forecaster participant class |
 | wager | **distinct-class** (object, not a participant) | The stake-object/entry (Perplexity schema: wager as separate entity; bet-ledger schema folds bet/wager/bid into one entry). Names positions, never participants |
 | bet | alias → wager | The record shape is `BetEntry` (`MarketGraph.place_bet`); listing names the object `wager` |
 | bid | alias → wager | Design-level fold of record (the bid is folded into the bet entry); ker: {no bid/ask price construct exists — Asks absent at every level} |
-| bookmaker | **canonical** (class reserved) | Counterparty / odds-setting side. Class ABSENT in the fleet (open build item — no bookmaker role exists yet); the canonical name is reserved for it |
+| bookmaker | **canonical** (class reserved) | Counterparty / odds-setting side. Class ABSENT in the fleet (open build item — no bookmaker role exists yet); the canonical name is reserved for it, and a listing must not imply an implemented odds-setting role. ker: {`bookmaker_id` in the Perplexity export = an EXTERNAL quote-source identifier, not this class} |
 | bookie | alias → bookmaker | ker ∅ — colloquial form of the same reserved class |
 | 11th man | **distinct-class** | Audience / reserve participant (owner-defined): the non-staking crowd-side seat in the bookie/audience structure. Difference vs gambler: holds no position; may be called in from reserve. Class ABSENT (build item tied to the bookie/audience class); canonical form kept verbatim |
+
+*Speculators* three-way (lane conflict A, dispositioned):
+no single name serves all three senses at record level, by
+design — the LISTING word is `gambler`; the RECORD
+implementation stays `Speculators` under its own key; the
+manager SEAT stays `optimizations-assurance`. The collapse
+joins only the first layer.
 
 ### Cluster M — coordination
 

@@ -53,6 +53,7 @@ def main():
     ap.add_argument("--limit", type=int, default=100, help="max completions this run")
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--timeout", type=int, default=90, help="per-call timeout seconds")
+    ap.add_argument("--deadline", type=int, default=1500, help="global wall-clock deadline seconds; stragglers recorded as DeadlineExceeded and the receipt still writes")
     args = ap.parse_args()
 
     if args.source == "working":
@@ -70,15 +71,22 @@ def main():
     entries = entries[: args.limit]
 
     results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as ex:
-        futures = {ex.submit(probe, e): e for e in entries}
-        for fut in concurrent.futures.as_completed(futures, timeout=args.timeout * max(1, len(entries))):
-            try:
-                results.append(fut.result(timeout=args.timeout))
-            except Exception as exc:
-                prov, model = futures[fut]
-                results.append({"provider": prov, "model": model, "inference_ok": False,
-                                "latency_s": None, "error": type(exc).__name__})
+    ex = concurrent.futures.ThreadPoolExecutor(max_workers=args.workers)
+    futures = {ex.submit(probe, e): e for e in entries}
+    done, not_done = concurrent.futures.wait(futures, timeout=args.deadline)
+    for fut in done:
+        try:
+            results.append(fut.result())
+        except Exception as exc:
+            prov, model = futures[fut]
+            results.append({"provider": prov, "model": model, "inference_ok": False,
+                            "latency_s": None, "error": type(exc).__name__})
+    for fut in not_done:
+        prov, model = futures[fut]
+        results.append({"provider": prov, "model": model, "inference_ok": False,
+                        "latency_s": None, "error": "DeadlineExceeded"})
+        fut.cancel()
+    ex.shutdown(wait=False, cancel_futures=True)
     results.sort(key=lambda r: (r["provider"], r["model"]))
     receipt = {
         "schema": "g4f-inference-smoke/v1",

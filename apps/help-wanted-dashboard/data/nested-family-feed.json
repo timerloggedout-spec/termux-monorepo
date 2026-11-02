@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T07:25:13Z",
+ "generated_at": "2026-11-02T07:30:09Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -41,6 +41,7 @@
  ],
  "coverage": {
   "denominator": "ops/quota/registry.json \u00b7 lane=model \u00b7 distinct provider",
+  "registry_records": 95,
   "registry_providers": 93,
   "with_dispatches": 4,
   "zero_dispatch": [
@@ -1645,6 +1646,7 @@
   }
  ],
  "gaps": [
+  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): DeepSeek, Jules, Muse, claude-muse, github-actions",
   "desk-usage rows carry no run_id/dispatch_id (3 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

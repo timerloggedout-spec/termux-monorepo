@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T07:25:13Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T07:30:08Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T07:25:13Z` (merged 150 · open 174) · lane-events(Neon) status=`ok` count=`7566` read_at=`2026-11-02T07:25:13Z`
+Sources: PR feed read_at=`2026-11-02T07:30:08Z` (merged 150 · open 176) · lane-events(Neon) status=`ok` count=`7595` read_at=`2026-11-02T07:30:08Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3590 `921d84080f90` 2026-11-02T07:23:51Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3469 `39102aca30aa` 2026-11-02T01:44:54Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3589 `80ade4415915` 2026-11-02T07:22:10Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3595 `e586061c299b` 2026-11-02T07:27:52Z | land/close PR #3597 — feat(quota): pack auto-refresh + model-axis population (owner order) |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3497 `69f3835f1a15` 2026-11-02T03:06:36Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3587 `9dda09b44272` 2026-11-02T07:19:27Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |

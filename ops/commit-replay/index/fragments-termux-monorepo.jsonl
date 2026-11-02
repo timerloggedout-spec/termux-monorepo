@@ -1,4 +1,4 @@
-{"commit": "4b0d9c57ac30bb59f593450c4439f0150e5ef339", "files": 2014, "fragments": 9032, "generated_at": "2026-11-02T10:11:26Z", "kind": "header", "repo": "timerloggedout-spec/termux-monorepo", "skipped": 0, "spec": "fragment-index/v1"}
+{"commit": "d25f340703623c1a48ec0b438e9bab66d4e1dfe0", "files": 2015, "fragments": 9036, "generated_at": "2026-11-02T10:24:55Z", "kind": "header", "repo": "timerloggedout-spec/termux-monorepo", "skipped": 0, "spec": "fragment-index/v1"}
 {"blob": "1cb56eea4275bcfaaa500525446438948c2f8dc5", "end_line": 30, "kind": "class", "path": ".github/connectors/connector_manager.py", "start_line": 21, "symbol": "ConnectorInfo"}
 {"blob": "1cb56eea4275bcfaaa500525446438948c2f8dc5", "end_line": 30, "kind": "method", "path": ".github/connectors/connector_manager.py", "start_line": 28, "symbol": "ConnectorInfo.to_dict"}
 {"blob": "1cb56eea4275bcfaaa500525446438948c2f8dc5", "end_line": 413, "kind": "class", "path": ".github/connectors/connector_manager.py", "start_line": 32, "symbol": "ConnectorManager"}
@@ -4244,12 +4244,16 @@
 {"blob": "ecb5bb04f84c8bc8b57b39acd19adceeec2fb4f5", "end_line": 41, "kind": "function", "path": "scripts/delphi/tribute_ingest.py", "start_line": 23, "symbol": "extract"}
 {"blob": "ecb5bb04f84c8bc8b57b39acd19adceeec2fb4f5", "end_line": 52, "kind": "function", "path": "scripts/delphi/tribute_ingest.py", "start_line": 44, "symbol": "read_jsonl"}
 {"blob": "ecb5bb04f84c8bc8b57b39acd19adceeec2fb4f5", "end_line": 73, "kind": "function", "path": "scripts/delphi/tribute_ingest.py", "start_line": 55, "symbol": "main"}
-{"blob": "012c4026328adca49d3cebb954046f8cd2ff6f3b", "end_line": 53, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 38, "symbol": "_instance_key"}
-{"blob": "012c4026328adca49d3cebb954046f8cd2ff6f3b", "end_line": 57, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 56, "symbol": "_status_map"}
-{"blob": "012c4026328adca49d3cebb954046f8cd2ff6f3b", "end_line": 272, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 60, "symbol": "emit"}
-{"blob": "012c4026328adca49d3cebb954046f8cd2ff6f3b", "end_line": 298, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 275, "symbol": "emit_outcome_fill"}
-{"blob": "012c4026328adca49d3cebb954046f8cd2ff6f3b", "end_line": 341, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 301, "symbol": "emit_score_fill"}
-{"blob": "012c4026328adca49d3cebb954046f8cd2ff6f3b", "end_line": 360, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 344, "symbol": "main"}
+{"blob": "7f9b50492fea6f2fee4cf13f9bd0f41886d4305c", "end_line": 47, "kind": "function", "path": "scripts/dispatch/feed_health_snapshot.py", "start_line": 36, "symbol": "arm_state"}
+{"blob": "7f9b50492fea6f2fee4cf13f9bd0f41886d4305c", "end_line": 65, "kind": "function", "path": "scripts/dispatch/feed_health_snapshot.py", "start_line": 50, "symbol": "build_snapshot"}
+{"blob": "7f9b50492fea6f2fee4cf13f9bd0f41886d4305c", "end_line": 80, "kind": "function", "path": "scripts/dispatch/feed_health_snapshot.py", "start_line": 68, "symbol": "last_hash"}
+{"blob": "7f9b50492fea6f2fee4cf13f9bd0f41886d4305c", "end_line": 107, "kind": "function", "path": "scripts/dispatch/feed_health_snapshot.py", "start_line": 83, "symbol": "main"}
+{"blob": "cc6d8fad82804404a56a04c2c4b732b02b23578b", "end_line": 53, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 38, "symbol": "_instance_key"}
+{"blob": "cc6d8fad82804404a56a04c2c4b732b02b23578b", "end_line": 57, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 56, "symbol": "_status_map"}
+{"blob": "cc6d8fad82804404a56a04c2c4b732b02b23578b", "end_line": 292, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 60, "symbol": "emit"}
+{"blob": "cc6d8fad82804404a56a04c2c4b732b02b23578b", "end_line": 318, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 295, "symbol": "emit_outcome_fill"}
+{"blob": "cc6d8fad82804404a56a04c2c4b732b02b23578b", "end_line": 361, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 321, "symbol": "emit_score_fill"}
+{"blob": "cc6d8fad82804404a56a04c2c4b732b02b23578b", "end_line": 380, "kind": "function", "path": "scripts/dispatch/stamp_fanout.py", "start_line": 364, "symbol": "main"}
 {"blob": "b2a8196fe2bde40ea6de4fd2765c6c0c68d14b1e", "end_line": 64, "kind": "function", "path": "scripts/doe/cb1_acceptance.py", "start_line": 63, "symbol": "sha256_file"}
 {"blob": "b2a8196fe2bde40ea6de4fd2765c6c0c68d14b1e", "end_line": 76, "kind": "function", "path": "scripts/doe/cb1_acceptance.py", "start_line": 67, "symbol": "build_fixture"}
 {"blob": "b2a8196fe2bde40ea6de4fd2765c6c0c68d14b1e", "end_line": 83, "kind": "function", "path": "scripts/doe/cb1_acceptance.py", "start_line": 79, "symbol": "run_emitter"}

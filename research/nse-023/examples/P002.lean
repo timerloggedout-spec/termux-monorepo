@@ -1,4 +1,4 @@
-"/- Packet P-002 — first Mathlib packet, compiled against mathlib4 pin
+/- Packet P-002 — first Mathlib packet, compiled against mathlib4 pin
    cc8b65263ab8ef05dd813bccd999400f0303fdcc (toolchain v4.36.0-rc2).
    Fleet claim (mapping table, exact row e ↦ 1): the identity changes
    nothing — (1 : Matrix n n α) * M = M.

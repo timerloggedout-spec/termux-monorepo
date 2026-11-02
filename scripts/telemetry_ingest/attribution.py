@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import re
 
-METHOD_VERSION = "attribution/1.1"
+METHOD_VERSION = "attribution/1.2"
 METHOD = "stamp+trailer+git-author evidence chain (ACP)"
 
 STAMP_RE = re.compile(r"\[MUSEai\]@\{role:\{([^}]+)\}\}")

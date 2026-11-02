@@ -74,3 +74,14 @@ def test_bold_trailers_grok_historical_form():
     r = at.extract_actor(pr)
     assert r["actor"] == "grok" and r["actor_evidence"]["method"] == "trailer"
     assert at.apply_registry(r["actor"]) == ("Grok", True)
+
+def test_agent_identity_trailer_variants():
+    def run(body):
+        r = at.extract_actor({"number": 7, "title": "t", "body": body,
+                              "user": {"login": "timerloggedout-spec"}})
+        return r["actor"], r["actor_evidence"]["method"]
+    assert run("body\nAgent-Identity: Runable\n") == ("runable", "trailer")
+    assert run("Agent-Identity: Grok (Administrator) \u00b7 BIUDL") == ("grok", "trailer")
+    assert run("Agent-Identity: ChatGPT / implementation steward") == ("chatgpt", "trailer")
+    assert run("Agent-Identity: Hark") == ("hark", "trailer")
+    assert run("Agent-Identity: Cue") == ("cue", "trailer")

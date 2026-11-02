@@ -1,0 +1,148 @@
+name: cert-project
+
+# Certifications project builds (Route A, P-block): a project unit executes
+# as a fleet run -- Postgres service, authored build.sql, in-run story
+# assertions (verify.sql), pg_dump, dump round-trip re-verify, solution file
+# committed to the repo, verdict + attribution stamp as a comment on #506.
+on:
+  workflow_dispatch:
+    inputs:
+      unit:
+        description: "Unit number, e.g. 025"
+        required: true
+        type: string
+      slug:
+        description: "Project slug under scripts/certifications/projects/"
+        required: true
+        type: string
+      db_name:
+        description: "Database name the project builds"
+        required: true
+        type: string
+      dump_name:
+        description: "Dump file name, e.g. universe.sql"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: cert-project
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client >/dev/null
+          psql --version; pg_dump --version
+
+      - name: Build database
+        run: |
+          psql -d postgres -v ON_ERROR_STOP=1 -c "CREATE DATABASE ${{ inputs.db_name }}"
+          psql -d "${{ inputs.db_name }}" -v ON_ERROR_STOP=1 \
+            -f "scripts/certifications/projects/${{ inputs.slug }}/build.sql"
+
+      - name: Verify user stories
+        run: |
+          psql -d "${{ inputs.db_name }}" -v ON_ERROR_STOP=1 \
+            -f "scripts/certifications/projects/${{ inputs.slug }}/verify.sql"
+
+      - name: Dump database
+        run: |
+          pg_dump -cC --inserts "${{ inputs.db_name }}" > "${{ inputs.dump_name }}"
+          wc -l "${{ inputs.dump_name }}"; sha256sum "${{ inputs.dump_name }}"
+
+      - name: Round-trip — rebuild from dump and re-verify
+        run: |
+          psql -d postgres -v ON_ERROR_STOP=1 -f "${{ inputs.dump_name }}"
+          psql -d "${{ inputs.db_name }}" -v ON_ERROR_STOP=1 \
+            -f "scripts/certifications/projects/${{ inputs.slug }}/verify.sql"
+
+      - name: Commit solution dump
+        run: |
+          DEST="certifications/solutions/${{ inputs.unit }}-${{ inputs.slug }}"
+          mkdir -p "$DEST"
+          cp "${{ inputs.dump_name }}" "$DEST/${{ inputs.dump_name }}"
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4; do
+            git add "$DEST/${{ inputs.dump_name }}"
+            if git diff --cached --quiet; then echo "dump already on master"; break; fi
+            git commit -m "cert(${{ inputs.unit }}): solution dump ${{ inputs.dump_name }} (fleet build run ${{ github.run_id }})"
+            if git push origin HEAD:master; then echo "pushed"; break; fi
+            echo "push race; refreshing"
+            git fetch origin master
+            git reset --soft origin/master
+          done
+
+      - name: Post verdict to issue 506
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          JOB_STATUS: ${{ job.status }}
+          UNIT: ${{ inputs.unit }}
+          SLUG: ${{ inputs.slug }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+          ok = os.environ.get("JOB_STATUS") == "success"
+          verdict = {
+              "unit": f"{os.environ['UNIT']}-project-{os.environ['SLUG']}",
+              "ok": ok,
+              "steps": 1,
+              "failures": 0 if ok else 1,
+              "model": "fleet-build (postgres 16 service; build.sql authored in-repo)",
+              "missing": {},
+          }
+          body = (
+              "UNIT_VERDICT `" + json.dumps(verdict) + "`\n"
+              f"run: {os.environ['RUN_ID']} · project build "
+              f"(build.sql -> verify.sql stories -> pg_dump -cC --inserts -> "
+              f"round-trip re-verify) · solution committed under "
+              f"certifications/solutions/"
+          )
+          req = urllib.request.Request(
+              "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
+              data=json.dumps({"body": body}).encode(),
+              headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                       "Accept": "application/vnd.github+json",
+                       "Content-Type": "application/json"},
+              method="POST")
+          urllib.request.urlopen(req)
+          print("verdict posted:", verdict)
+          PYEOF

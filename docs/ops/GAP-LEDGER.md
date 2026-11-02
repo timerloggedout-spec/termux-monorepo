@@ -26,12 +26,12 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
 - Evidence: efficacy audit (PR #1736, merged) records the generated audit last
   refreshed 2026-10-25T05:09Z and the status-refresh schedule silent since
   Oct 23 — it missed the SendAm stake closures (2026-10-26).
-  `.github/workflows/help-wanted-status-refresh.yml` exists on master.
+  `.github/workflows/tribute-status-refresh.yml` exists on master.
 - Severity: high (fleet decisions read these diagnostics as current).
 - Fix route: repo-automation fix chat — diagnose the refresh schedule, restore
   it, add a staleness alarm. **Status: closed-on-evidence (2026-10-27).**
   Closure verified firsthand by the Gap Finder: PR #1759 merged 12:39Z
-  (staleness rule + `help-wanted-audit-staleness.yml` watchdog, on master),
+  (staleness rule + `tribute-audit-staleness.yml` watchdog, on master),
   PR #1767 merged 12:43Z (ledger closure), PR #1815 merged 14:16Z
   (age-based firing for the four sibling lanes starved by the
   quota-dispatch-tree cadence move, #1573). Master's generated audit reads

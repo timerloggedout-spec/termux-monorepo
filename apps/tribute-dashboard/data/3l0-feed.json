@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "3l0",
- "generated_at": "2026-11-02T10:59:56Z",
+ "generated_at": "2026-11-02T14:23:13Z",
  "sources": [
   "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
   "scripts/model_router.py + .github/connectors/llm-peers.yaml",
@@ -237,32 +237,25 @@
   },
   "response_history": {
    "record": "docs/ops/generated/reviewer-metrics.json (schema reviewer-metrics/v1) \u2014 the fleet's measured per-response record: every peer-review cycle, whether the provider delivered, and its latency. This is response history as recorded; it is a reviewer surface, and it is not dressed up as a model-intelligence ranking.",
-   "generated_at": "2026-10-28T19:22:47.435932+00:00",
+   "generated_at": "2026-11-02T13:48:00.095909+00:00",
    "window": {
-    "cycles": 32,
+    "cycles": 14,
     "prs_examined": 100
    },
    "providers_ranked": [
     {
      "provider": "coderabbit",
-     "cycles": 29,
-     "delivered": 5,
-     "delivery_rate": 0.1724,
-     "contexts": 4,
+     "cycles": 14,
+     "delivered": 0,
+     "delivery_rate": 0.0,
+     "contexts": 5,
      "by_author_class": {
-      "bot": {
-       "cycles": 2,
+      "user": {
+       "cycles": 14,
        "delivered": 0,
        "delivery_rate": 0.0,
        "median_latency_sec": null,
-       "cooldown_cycles": 1
-      },
-      "user": {
-       "cycles": 27,
-       "delivered": 5,
-       "delivery_rate": 0.1852,
-       "median_latency_sec": 739.0,
-       "cooldown_cycles": 14
+       "cooldown_cycles": 9
       }
      }
     },
@@ -286,196 +279,116 @@
    "history_tail": {
     "coderabbit": [
      {
-      "cycle_id": "pr-1966-bafa2be510cb",
-      "pr": 1966,
-      "started_at": "2026-10-28T06:00:46.000Z",
+      "cycle_id": "pr-2167-24c20733eb5d",
+      "pr": 2167,
+      "started_at": "2026-10-29T21:15:20.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-1966-5b4522719095",
-      "pr": 1966,
-      "started_at": "2026-10-28T06:01:01.000Z",
-      "delivered": true,
-      "latency_sec": 754.0,
-      "cooldown": false
+      "cycle_id": "pr-3755-f9c62712f1f0",
+      "pr": 3755,
+      "started_at": "2026-11-02T10:05:07.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
      },
      {
-      "cycle_id": "pr-1966-c4eff44abe83",
-      "pr": 1966,
-      "started_at": "2026-10-28T17:01:58.000Z",
-      "delivered": true,
-      "latency_sec": 1035.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1966-1736ad5ec8d2",
-      "pr": 1966,
-      "started_at": "2026-10-28T18:01:16.000Z",
+      "cycle_id": "pr-3757-32224dee89e0",
+      "pr": 3757,
+      "started_at": "2026-11-02T10:05:28.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-2126-5dbc0084058f",
-      "pr": 2126,
-      "started_at": "2026-10-28T17:45:39.000Z",
+      "cycle_id": "pr-3676-30ae007d4d64",
+      "pr": 3676,
+      "started_at": "2026-11-02T09:06:19.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-2124-a689c5ebe484",
-      "pr": 2124,
-      "started_at": "2026-10-28T17:35:50.000Z",
+      "cycle_id": "pr-3675-a24a2483c3e6",
+      "pr": 3675,
+      "started_at": "2026-11-02T09:05:35.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-2071-852711677fa9",
-      "pr": 2071,
-      "started_at": "2026-10-28T17:31:18.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2071-852711677fa9",
-      "pr": 2071,
-      "started_at": "2026-10-28T17:31:29.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2056-6b31d83824ce",
-      "pr": 2056,
-      "started_at": "2026-10-28T16:45:31.000Z",
+      "cycle_id": "pr-3859-c1860462cefc",
+      "pr": 3859,
+      "started_at": "2026-11-02T13:10:55.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-2054-a15cc556305f",
-      "pr": 2054,
-      "started_at": "2026-10-28T16:32:12.000Z",
+      "cycle_id": "pr-3853-5317dce16448",
+      "pr": 3853,
+      "started_at": "2026-11-02T13:05:10.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-3852-7596ce6e2f3b",
+      "pr": 3852,
+      "started_at": "2026-11-02T13:04:53.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-3855-f93e7ab4b51a",
+      "pr": 3855,
+      "started_at": "2026-11-02T13:07:25.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-2040-f3db85dab10c",
-      "pr": 2040,
-      "started_at": "2026-10-28T14:44:27.000Z",
+      "cycle_id": "pr-3851-aec367726057",
+      "pr": 3851,
+      "started_at": "2026-11-02T13:04:25.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-2041-47af604c7ff0",
-      "pr": 2041,
-      "started_at": "2026-10-28T14:44:58.000Z",
+      "cycle_id": "pr-3850-d716649e6dde",
+      "pr": 3850,
+      "started_at": "2026-11-02T13:03:54.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-2035-7f8c856bcff6",
-      "pr": 2035,
-      "started_at": "2026-10-28T14:34:18.000Z",
-      "delivered": true,
-      "latency_sec": 491.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-2039-e089a738e167",
-      "pr": 2039,
-      "started_at": "2026-10-28T14:43:27.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2038-e70bccb03426",
-      "pr": 2038,
-      "started_at": "2026-10-28T14:41:36.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2037-bfa25d30ff8a",
-      "pr": 2037,
-      "started_at": "2026-10-28T14:39:48.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2036-f44aaf821e41",
-      "pr": 2036,
-      "started_at": "2026-10-28T14:37:42.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2026-2813af1a699d",
-      "pr": 2026,
-      "started_at": "2026-10-28T13:53:57.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": true
-     },
-     {
-      "cycle_id": "pr-2023-2711cdaafa64",
-      "pr": 2023,
-      "started_at": "2026-10-28T13:33:16.000Z",
+      "cycle_id": "pr-3811-fa648ba9bf58",
+      "pr": 3811,
+      "started_at": "2026-11-02T12:03:07.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-1858-3dc6a7c7b976",
-      "pr": 1858,
-      "started_at": "2026-10-27T23:08:28.000Z",
+      "cycle_id": "pr-3813-2b88367ff4fd",
+      "pr": 3813,
+      "started_at": "2026-11-02T12:05:15.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-1858-00d2cf6d1c15",
-      "pr": 1858,
-      "started_at": "2026-10-28T01:10:12.000Z",
-      "delivered": true,
-      "latency_sec": 460.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1494-8464945ec49b",
-      "pr": 1494,
-      "started_at": "2026-10-21T23:38:29.000Z",
+      "cycle_id": "pr-3798-96a7c770c3d0",
+      "pr": 3798,
+      "started_at": "2026-11-02T11:08:10.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
-     },
-     {
-      "cycle_id": "pr-1498-d7b8022e92c1",
-      "pr": 1498,
-      "started_at": "2026-10-22T06:38:59.000Z",
-      "delivered": true,
-      "latency_sec": 739.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1607-a7609cd0d1c0",
-      "pr": 1607,
-      "started_at": "2026-10-23T23:37:01.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
      }
     ]
    }

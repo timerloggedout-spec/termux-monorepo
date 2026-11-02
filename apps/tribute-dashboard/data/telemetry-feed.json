@@ -1,19 +1,19 @@
 {
  "schema": "telemetry-viz-feed/v1",
  "surface": "telemetry",
- "generated_at": "2026-10-30T07:47:32Z",
+ "generated_at": "2026-11-02T14:23:13Z",
  "sources": [
   {
-   "path": "apps/help-wanted-dashboard/data/status.json",
-   "stamped_at": "2026-10-30T06:24:46Z"
+   "path": "apps/tribute-dashboard/data/status.json",
+   "stamped_at": "2026-11-02T11:06:33Z"
   },
   {
-   "path": "apps/help-wanted-dashboard/data/quota.json",
-   "stamped_at": "2026-10-30T02:47:00.930298+00:00"
+   "path": "apps/tribute-dashboard/data/quota.json",
+   "stamped_at": "2026-11-02T08:16:06.415255+00:00"
   },
   {
-   "path": "apps/help-wanted-dashboard/data/quota-usage.json",
-   "stamped_at": "2026-10-30T02:30:35Z"
+   "path": "apps/tribute-dashboard/data/quota-usage.json",
+   "stamped_at": "2026-11-02T08:20:44Z"
   },
   {
    "path": "scripts/dashboards/workflow_observations.json",
@@ -36,7 +36,7 @@
    "receipts_total": 3962,
    "actioned": 221,
    "skipped": 3741,
-   "quota_readings_total": 156,
+   "quota_readings_total": 170,
    "quota_measured_count": 0,
    "quota_saturation": null,
    "workflows_observed": 5,
@@ -151,7 +151,7 @@
      "followup_lesson": 18,
      "followup_skip_system1": 30
     },
-    "generated_at": "2026-10-30T06:24:46Z"
+    "generated_at": "2026-11-02T11:06:33Z"
    }
   },
   "actions": {
@@ -1762,7 +1762,7 @@
   "outcomes": {
    "lane": "help-wanted",
    "project": "help-wanted-with-tribute",
-   "generated_at": "2026-10-30T06:24:46Z",
+   "generated_at": "2026-11-02T11:06:33Z",
    "receipts": 3962,
    "kinds": {
     "upstream_pr": 12,
@@ -1785,31 +1785,32 @@
    "issues_tracked": 107
   },
   "quota": {
-   "generated_at": "2026-10-30T02:47:00.930298+00:00",
-   "readings_total": 156,
+   "generated_at": "2026-11-02T08:16:06.415255+00:00",
+   "readings_total": 170,
    "by_status": {
-    "unknown": 153,
-    "ok": 3
+    "unknown": 167,
+    "ok": 2,
+    "exhausted": 1
    },
    "by_horizon": {
-    "H1": 150,
+    "H1": 164,
     "H0": 6
    },
    "by_evidence_status": {
-    "attributed_claim": 145,
+    "attributed_claim": 152,
     "confirmed": 6,
-    "early_signal": 5
+    "early_signal": 12
    },
    "measured": [],
-   "unmeasured_count": 156,
+   "unmeasured_count": 170,
    "usage_pack": {
-    "generated_at": "2026-10-30T02:30:35Z",
+    "generated_at": "2026-11-02T08:20:44Z",
     "api_core": {
      "title": "GitHub API core \u2014 shared PAT bucket",
      "limit": 5000,
      "unit": "requests/hour",
      "replenishment": "rolling hourly",
-     "next_reset_observed": "2026-10-30T01:42:09Z",
+     "next_reset_observed": "2026-11-02T07:02:43Z",
      "points": [
       {
        "at": "2026-10-28T23:41:00Z",
@@ -1877,19 +1878,67 @@
        "remaining": 3230,
        "kind": "reported",
        "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+      },
+      {
+       "at": "2026-11-02T06:30:06Z",
+       "remaining": 3871,
+       "kind": "observed",
+       "provenance": "quota-specialist pack refresh 2026-11-02 - PAT helper rate-limit read (used 1129, reset 2026-11-02T07:02:43Z)"
       }
      ],
      "latest_point": {
-      "at": "2026-10-30T01:54:00Z",
-      "remaining": 3230,
-      "kind": "reported",
-      "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+      "at": "2026-11-02T06:30:06Z",
+      "remaining": 3871,
+      "kind": "observed",
+      "provenance": "quota-specialist pack refresh 2026-11-02 - PAT helper rate-limit read (used 1129, reset 2026-11-02T07:02:43Z)"
      }
     },
     "actions_corpus": {
      "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
      "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta \u00d7 that day's avg_job_duration_ms / 60000 \u2014 an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
      "days": [
+      {
+       "date": "2026-08-25",
+       "runs_delta": 40,
+       "jobs_delta": 42,
+       "minutes_est": 8
+      },
+      {
+       "date": "2026-08-26",
+       "runs_delta": 40,
+       "jobs_delta": 102,
+       "minutes_est": 20
+      },
+      {
+       "date": "2026-08-27",
+       "runs_delta": 40,
+       "jobs_delta": 51,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-08-29",
+       "runs_delta": 40,
+       "jobs_delta": 47,
+       "minutes_est": 8
+      },
+      {
+       "date": "2026-09-01",
+       "runs_delta": 40,
+       "jobs_delta": 51,
+       "minutes_est": 10
+      },
+      {
+       "date": "2026-09-30",
+       "runs_delta": 80,
+       "jobs_delta": 117,
+       "minutes_est": 22
+      },
+      {
+       "date": "2026-10-01",
+       "runs_delta": 120,
+       "jobs_delta": 149,
+       "minutes_est": 26
+      },
       {
        "date": "2026-10-02",
        "runs_delta": 40,
@@ -2057,6 +2106,18 @@
        "runs_delta": 40,
        "jobs_delta": 82,
        "minutes_est": 16
+      },
+      {
+       "date": "2026-10-31",
+       "runs_delta": 40,
+       "jobs_delta": 28,
+       "minutes_est": 6
+      },
+      {
+       "date": "2026-11-01",
+       "runs_delta": 0,
+       "jobs_delta": 0,
+       "minutes_est": 0
       }
      ],
      "spike": {
@@ -2108,6 +2169,6 @@
  "gaps": [
   "G3: executions are proxied from the checked-in observations snapshot (read_at 2026-10-27T12:29:50Z, 5 workflows) plus status.json lane receipts; the Neon lane_events table is not page-readable. The consolidated Actions corpus lives in the actions block (Slice 2, G1 partial).",
   "G1 partial: the Actions corpus is a budgeted stride-sample snapshot (read_at 2026-10-30T07:47:29Z, 300 runs sampled, pages [1, 50, 100]); it is not the full run history \u2014 that remains the locally reconstructed daily corpus (quota usage_pack.actions_corpus).",
-  "quota saturation NOT OBSERVED: 0 of 156 readings carry both used and limit; saturation renders as absent, never 0."
+  "quota saturation NOT OBSERVED: 0 of 170 readings carry both used and limit; saturation renders as absent, never 0."
  ]
 }

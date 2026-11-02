@@ -19,6 +19,13 @@ const RESULT = path.join(EV, 'RESULT.json');
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+function phaseLog(msg) {
+  try {
+    fs.appendFileSync(path.join(EV, 'driver.log'),
+      `${new Date().toISOString()} ${msg}\n`);
+  } catch (e) { /* evidence fs is best-effort */ }
+}
+
 function readSession() {
   try {
     if (SESSION && fs.existsSync(SESSION)) return fs.readFileSync(SESSION, 'utf8');
@@ -36,24 +43,40 @@ function sessionShowsComplete(raw) {
 
 async function activate() {
   try { fs.mkdirSync(EV, { recursive: true }); } catch (e) { /* exists */ }
-  if (fs.existsSync(RESULT)) return;
+  phaseLog(`activate() entered; EV=${EV} SESSION=${SESSION || '(unset)'}`);
+  if (fs.existsSync(RESULT)) { phaseLog('RESULT pre-exists; driver exits'); return; }
+  try {
+    await run();
+  } catch (e) {
+    phaseLog(`run() threw: ${e && e.stack ? e.stack : e}`);
+    try {
+      fs.writeFileSync(RESULT, JSON.stringify({ ok: false, detail: `driver exception: ${e}` }));
+    } catch (e2) { /* ignore */ }
+  }
+}
 
+async function run() {
   // Wait for the orchestrator GO flag (solution staged).
   for (let i = 0; i < 300; i++) {
     if (fs.existsSync(GO)) break;
     await sleep(2000);
   }
   if (!fs.existsSync(GO)) {
+    phaseLog('GO flag timeout');
     fs.writeFileSync(RESULT, JSON.stringify({ ok: false, detail: 'GO flag timeout' }));
     return;
   }
+  phaseLog('GO observed');
 
   const cr = vscode.extensions.getExtension('coderoad.coderoad');
+  phaseLog(`getExtension(coderoad.coderoad) -> ${cr ? `found (active=${cr.isActive})` : 'NOT FOUND'}`);
+  phaseLog(`all extension ids: ${vscode.extensions.all.map((x) => x.id).join(', ')}`);
   if (!cr) {
     fs.writeFileSync(RESULT, JSON.stringify({ ok: false, detail: 'coderoad extension not found' }));
     return;
   }
-  if (!cr.isActive) { try { await cr.activate(); } catch (e) { /* continue */ } }
+  if (!cr.isActive) { try { await cr.activate(); } catch (e) { phaseLog(`cr.activate() threw: ${e}`); } }
+  phaseLog(`coderoad active=${cr.isActive}`);
   await sleep(5000);
 
   let attempts = 0;
@@ -63,13 +86,15 @@ async function activate() {
     attempts++;
     try {
       await vscode.commands.executeCommand('coderoad.run_test', { callbacks: { onSuccess: () => {} } });
-    } catch (e) { /* runner may still be going; observe session */ }
+      phaseLog(`run_test attempt ${attempts} returned`);
+    } catch (e) { phaseLog(`run_test attempt ${attempts} threw: ${e}`); }
     // Observe session state for up to ~40s per attempt.
     for (let i = 0; i < 20 && !ok; i++) {
       await sleep(2000);
       lastRaw = readSession();
       if (sessionShowsComplete(lastRaw)) ok = true;
     }
+    phaseLog(`attempt ${attempts} observed: complete=${ok} session_len=${lastRaw.length}`);
   }
 
   fs.writeFileSync(RESULT, JSON.stringify({

@@ -63,6 +63,10 @@
   <div class="head"><h2>Gaps &amp; honesty rules</h2><span class="note">Named gaps, not filled blanks</span></div>
   <div id="gaps"><p class="empty">Loading gaps…</p></div>
 </section>
+<section>
+<h2>Feed history</h2>
+<div class="card"><div id="historychart"></div><p class="dim" id="historystamp"></p></div>
+</section>
 </main>
 <footer><p class="muted">Telemetry · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
 <script>
@@ -148,6 +152,26 @@ async function load(){
   }
 }
 load();
+</script>
+<script src="./chartkit.js"></script>
+<script>
+"use strict";
+// ==== pure logic (node-sim tested) ====
+function parseFeedSeries(text){
+  return text.split("\n").map(s=>s.trim()).filter(Boolean).map(s=>JSON.parse(s))
+    .sort((a,b)=>String(a.generated_at)<String(b.generated_at)?-1:1);
+}
+function seriesPoints(rows,key){ return rows.map(r=>({t:r.generated_at, v:r[key]})).filter(p=>typeof p.v==="number"); }
+if(typeof module!=="undefined"){ module.exports={parseFeedSeries,seriesPoints}; }
+// ==== end pure logic ====
+fetch("./data/telemetry-feed-series.jsonl").then(r=>{ if(!r.ok) throw new Error("series fetch "+r.status); return r.text(); }).then(text=>{
+  const rows=parseFeedSeries(text);
+  document.getElementById("historychart").innerHTML=
+    "<h3>Golden receipts total across feed snapshots</h3>"+CK.line(seriesPoints(rows,"receipts_total"),860,160)+
+    "<h3>Workflow runs observed across feed snapshots</h3>"+CK.line(seriesPoints(rows,"workflow_runs_observed"),860,140);
+  const last=rows[rows.length-1];
+  document.getElementById("historystamp").textContent="Series: "+rows.length+" committed snapshot(s), last "+(last? last.generated_at : "—")+" · "+CK.stampState(last? last.generated_at : null,Date.now())+" · counters verbatim per snapshot (series: data/telemetry-feed-series.jsonl, built by scripts/dashboards/telemetry_feed_series.py).";
+}).catch(e=>{ document.getElementById("historystamp").textContent="History unavailable: "+e.message; });
 </script>
 </body>
 </html>

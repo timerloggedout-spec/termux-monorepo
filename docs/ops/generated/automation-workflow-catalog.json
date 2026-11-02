@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ac8102d353f85f476f30df892b1e8d4b963cf925acf5a63c263a4c85c800e59b",
+  "source_fingerprint": "45f43b790657218632e5af67ef0aaa392d4e2a53d098e41f74dea748b0004b90",
   "workflow_count": 274,
   "workflows": [
     {
@@ -3978,7 +3978,6 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
-        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
@@ -3989,11 +3988,9 @@
       ],
       "name": "Remote knowledge fabric",
       "path": ".github/workflows/remote-knowledge-fabric.yml",
-      "schedules": [
-        "17 6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
+        "push",
         "workflow_dispatch"
       ]
     },

@@ -159,21 +159,27 @@ Owner ruling via main: **Obsidian is required IN OUR SCHEMAS — separate from
 D1.** "This is where project profiles are important." The D1 fold
 (FEATURES.md) is a downstream consumer of this requirement, ¬ its home.
 
-Placement (landed with this record, S1):
+Placement (landed with this record, S1; semantics REFINED by owner, same
+ruling — the refinement below supersedes the first placement's blanket
+mandate):
 - **File:** `ops/projects/profile.schema.json` (`project-profile/v1`).
-- **Field:** `obsidian` — a top-level profile component, sibling of `scope`.
-- **Required semantics:** `obsidian` ∈ the schema's root `required[]`
-  (alongside name · class · scope): a profile WITHOUT a declared Obsidian
-  surface is invalid — not defaulted, not nullable. Inside the component,
-  `vault` + `mode` are themselves required; `mode` ∈ {vault-root ·
-  vault-folder · linked} forces every project to state HOW its knowledge
-  lives in Obsidian (its own vault, a declared folder of a shared vault, or
-  a linked external vault). Optional subfields: folder · canvas ·
-  templates · sync {repo-mirrored · local-only · server}. Fleet surface of
-  record: `bin/obsidian_server.py` (sync=server names it).
-- Rationale in one line: repos/issues/lanes are where a project's WORK is;
-  the vault is where its KNOWLEDGE is — a profile that scopes only work is
-  half a profile.
+- **Field:** the available-surfaces enumeration `properties.surfaces.items.enum`,
+  plus the `obsidian` component definition it gates.
+- **Required semantics (refined):** Obsidian = **an available surface**.
+  What is REQUIRED sits at the SCHEMA level: the surfaces enumeration MUST
+  offer `obsidian` (a required entry of the enum — the schema that loses it
+  is non-conformant). What is NOT required is per-project obligation:
+  whether a given profile binds Obsidian is **that profile's choice** —
+  `surfaces` includes `obsidian` ⇔ the profile obligates it, and then the
+  `obsidian` component becomes mandatory for that profile (schema `allOf`:
+  surfaces ∋ obsidian ⇒ `obsidian` required, with `vault` + `mode`
+  {vault-root · vault-folder · linked} required inside it). Profiles that
+  don't choose it validate clean without it. Root `required[]` =
+  {name · class · scope · surfaces} — every profile must declare its
+  surface set; the set's contents are its own.
+- Rationale in one line: the schema owes every project the KNOWLEDGE
+  surface as an option; each project decides whether its knowledge lives
+  there.
 
 ## 7. FSRS-for-Agents placement (paired ruling, stated ¬ assumed)
 
@@ -183,8 +189,9 @@ The SR rulings travel with the Obsidian requirement; placement is SPLIT:
   algorithm ∈ fsrs|sm-2 · corpus · retention_target}. Corpus defaults to
   `obsidian` — review items derive from the profile's declared vault (term
   banks, study notes, flagged sections), which is exactly why the pairing
-  travels: no vault declaration ⇒ no SR corpus ⇒ the two requirements are
-  one requirement seen from two sides.
+  travels: corpus=obsidian presupposes the profile chose the obsidian
+  surface (schema-enforced, §6 refined) ⇒ the SR policy and the surface
+  choice are one declaration seen from two sides.
 - **Engine: NO, not per-profile.** The scheduler implementation is a shared
   service (py-fsrs agent core + ts-fsrs UX layer per owner rulings
   2026-10-30; SM-2 remains the legitimate baseline + eval comparison). A

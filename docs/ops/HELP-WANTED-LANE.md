@@ -14,17 +14,17 @@ followup (2h)    CHANGES_REQUESTED on foreign PRs only
 llm-assist       live catalog (OR|Felo|Omni) patch plans
 rerequest        re-request review after revise
 status-refresh   evidence + tributes → status.json
-dashboard        https://timerloggedout-spec.github.io/help-wanted/
+dashboard        https://timerloggedout-spec.github.io/tribute/
 ```
 
 | Workflow | Role |
 |----------|------|
 | `help-wanted-scout` | Rank |
-| `help-wanted-execute` | Claim + upstream PR |
-| `help-wanted-followup` | Foreign CHANGES_REQUESTED poll |
+| `tribute-execute` | Claim + upstream PR |
+| `tribute-followup` | Foreign CHANGES_REQUESTED poll |
 | `help-wanted-llm-assist` | Live-catalog model plan on foreign PR |
 | `help-wanted-rerequest` | Re-request reviews |
-| `help-wanted-status-refresh` | Board + tributes + dashboard data |
+| `tribute-status-refresh` | Board + tributes + dashboard data |
 | `help-wanted-dashboard-deploy` | Pages / CDN |
 
 ## Working with others

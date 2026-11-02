@@ -91,7 +91,12 @@
   <div class="card" id="gaps"></div>
 </div>
 
+<section>
+<h2>Panel distribution</h2>
+<div class="card"><div id="paneldist"></div><p class="dim" id="panelstamp"></p></div>
+</section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 "use strict";
 /* ---- pure mapping logic (also exercised by tests under node) ---- */
@@ -311,7 +316,23 @@ if (typeof document !== "undefined") {
     $("admin-count").textContent = `${rows.length} mapping(s) shown`;
   }
 
-  fetch("./data/linguist-panel-feed.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(f => {
+  
+// ==== pure logic (node-sim tested) ====
+function familyDist(feed){
+  const per=(feed.counts&&feed.counts.per_family)||{};
+  const seen=new Set(); const rows=[];
+  (feed.families||[]).forEach(fam=>{ if(fam.id in per){ rows.push({label:fam.id, value:per[fam.id]}); seen.add(fam.id); } });
+  Object.keys(per).forEach(k=>{ if(!seen.has(k)) rows.push({label:k, value:per[k]}); });
+  return rows;
+}
+function panelDist(entries){
+  const counts=new Map();
+  (entries||[]).forEach(e=>{ const p=String(e.direction_panel||e.direction||"definitional"); counts.set(p,(counts.get(p)||0)+1); });
+  return [...counts.entries()].map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value || (a.label<b.label?-1:1));
+}
+if(typeof module!=="undefined"){ module.exports={familyDist,panelDist}; }
+// ==== end pure logic ====
+fetch("./data/linguist-panel-feed.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(f => {
     feed = f; data = feedData(feed);
     const c = data.counts ?? {};
     $("meta").textContent = `Feed ${feed.schema} · generated ${feed.generated_at ?? "—"} · ${data.families.length} families · ${c.entries_included ?? data.entries.length} entries included (${c.entries_total ?? data.entries.length} total)`;
@@ -335,7 +356,13 @@ if (typeof document !== "undefined") {
     $("mode-cols").addEventListener("click", () => { mode = "cols"; $("mode-cols").classList.add("on"); $("mode-intext").classList.remove("on"); render(); });
     $("mode-intext").addEventListener("click", () => { mode = "intext"; $("mode-intext").classList.add("on"); $("mode-cols").classList.remove("on"); render(); });
     render(); renderAdmin();
-  }).catch(() => { $("meta").textContent = "Feed absent."; $("feed-absent").hidden = false; });
+  
+    document.getElementById("paneldist").innerHTML =
+      "<h3>Entries per family (panel counts as issued)</h3>" + CK.bars(familyDist(f), 860) +
+      "<h3>Enumerated entries by direction panel</h3>" + CK.bars(panelDist(f.entries), 860);
+    document.getElementById("panelstamp").textContent =
+      "Feed " + f.generated_at + " · " + CK.stampState(f.generated_at, Date.now()) + " · distribution computed from the feed's counts and entry records as issued.";
+}).catch(() => { $("meta").textContent = "Feed absent."; $("feed-absent").hidden = false; });
 }
 </script>
 </body>

@@ -12,10 +12,17 @@
 # pass. The only dpkg work left is the small Electron library set.
 FROM rdb-alpha:local AS libs
 
+# Library set = the VS Code .deb's Depends list, hand-carried: the
+# tarball resolves no dependencies itself (stage-2 `code --version`
+# failed on the short list in run 41436947278 — libs stage passed,
+# vscode stage failed).
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      xvfb libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils \
+      xvfb libgtk-3-0 libnotify4 libnss3 libnspr4 libxss1 libxtst6 xdg-utils \
       libatspi2.0-0 libuuid1 libsecret-1-0 libasound2 fonts-liberation \
+      libatk1.0-0 libatk-bridge2.0-0 libcairo2 libpango-1.0-0 libdbus-1-3 \
+      libdrm2 libgbm1 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 \
+      libxkbfile1 libxrandr2 libexpat1 \
     && rm -rf /var/lib/apt/lists/*
 
 FROM libs AS vscode

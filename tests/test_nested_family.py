@@ -128,9 +128,11 @@ def test_nesting_and_dedupe():
                                    "context": "intake", "run_id": "intake", "workflow": "intake",
                                    "outcome.gate_call": "intake"}
     cov = feed["coverage"]
-    assert cov["registry_providers"] == 3 and cov["with_dispatches"] == 2
+    assert cov["registry_providers"] == 3 and cov["registry_records"] == 3
+    assert cov["with_dispatches"] == 2
     assert cov["zero_dispatch"] == ["unus"]
     assert cov["unregistered_dispatch_providers"] == ["baseten", "claude-muse", "jules"]
+    assert any("no registry model-lane match" in g for g in feed["gaps"])
     assert feed["summary"]["zero_dispatch_providers"] == 1
     assert feed["summary"]["providers"] == 5  # dispatch-bearing only; zero rows excluded
     unus = next(p for p in feed["providers"] if p["provider"] == "unus")

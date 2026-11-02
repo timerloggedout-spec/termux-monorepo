@@ -89,6 +89,8 @@ Explicit non-fold: a culled participant's residual/royalty stream is a separate 
 
 Scouts are **participants** in this lane, not a neutral surface: each scout entry holds its own **wallet** (universal-participant rule), its own **record** = its selection experiments' outcomes, and **comparative standing among scouts = competition** (a standing field is carried per scout entry in lane.json). Scoring/authority side sits with DoE: posteriors over selections, the significance standard applies to scout-edge claims, and culling applies to scouts — a culled scout's wallet goes to the pooled 🪣 per the lifecycle rule above.
 
+**Identity keying (DoE frame, PR #3756):** selection stamps carry scout identity {scout · manager · request · arm · basis}; outcomes attach per scout; quality = posterior over selection outcomes; standing is comparative. Charter side: scout participant entries and wallet records are **keyed by scout identity** so the cull/posterior machinery can consume them directly; cull reach applies — a culled scout's wallet flows to the pooled 🪣 via the cull record, same as any participant.
+
 ## Speculation (owner, 2026-11-01)
 
 Gamblers speculate on **task performance**, priced off the scoring surfaces.

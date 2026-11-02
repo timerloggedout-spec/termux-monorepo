@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-02T11:16:44Z",
+ "generated_at": "2026-11-02T11:23:42Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-02T08:20:44Z",
   "ops/tracking/nested-family.json": "2026-11-02T11:15:32Z"
@@ -1532,6 +1532,21 @@
     "last_point_at": "2026-11-02T09:14:42Z"
    },
    {
+    "key": "gemini-3.5-flash-lite",
+    "title": "gemini-cli - gemini-3.5-flash-lite - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-02T11:21:00Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-02T11:21:00Z"
+   },
+   {
     "key": "mistral-small-latest",
     "title": "mistral - mistral-small-latest - dispatches (cumulative)",
     "unit": "dispatches",
@@ -1685,8 +1700,8 @@
   "providers_total": 95,
   "providers_populated": 3,
   "providers_gap": 94,
-  "model_series": 10,
-  "model_populated": 10
+  "model_series": 11,
+  "model_populated": 11
  },
  "notes": {
   "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",

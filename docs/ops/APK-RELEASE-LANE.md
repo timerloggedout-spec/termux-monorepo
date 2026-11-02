@@ -1,33 +1,40 @@
-# APK Release Lane
+# APK Release Lane — fleet .APK distribution
 
-`[MUSEai]@{role:{apk-release}}` — fleet `.APK` build → sign → GitHub Release lane. Repo-automation only (VM = sandbox law): all building/signing/releasing runs in `.github/workflows/apk-release.yml` on GitHub runners.
+`[MUSEai]@{role:{apk-release}}` · born 2026-10-31 (recon @master same day) · distributions of the monorepo fleet as installable Android packages.
 
-## Recon @master (2026-10-31, PAT API firsthand)
+## Recon findings (2026-10-31, firsthand via PAT API)
 
-| Surface | State |
-|---|---|
-| Releases | ∅ (`GET /releases` = `[]`) |
-| Tags | ∅ (`GET /tags` = `[]`) |
-| Workflows | ~230; APK-adjacent = only `apk-xref-intake.yml` (RE cross-reference of *external* APKs, `ops/web_adapter_foundry/apk_xref.py`) — ∅ build/release/sign workflow |
-| App sources | `apps/` = 9 web/python surfaces (`studysprint` = Python, `help-wanted-dashboard` = static HTML, …); ∅ `build.gradle`/`settings.gradle`/`AndroidManifest.xml`/`.kt`/`capacitor` anywhere (code-search totals 0) — ∅ native Android app existed |
-| `iDEAL` | ∅ app by that name; search hits = the word "ideal" in docs only |
-| Signing assets | Actions secrets = 62 names (live list 2026-10-31); ∅ Android/keystore name among them (`ANDROID_*`, `*KEYSTORE*`, `APK_*` all absent) — names only, values never read |
+- **GitHub Releases ∅ · tags ∅ · native Android app ∅** (code search ∀ `.kt`/`gradle`/`AndroidManifest.xml`/capacitor = 0; `apps/` = 9 web/Python surfaces; "iDEAL" hits = word-only). Sole APK-touching workflow = `apk-xref-intake.yml` (reverse-engineering xref, ≠ release).
+- Actions secret names (62): ∅ `ANDROID_*`/`KEYSTORE*`/`APK_*` ⇒ signing custody = greenfield.
+- ⇒ This lane is a **greenfield build**, not a repair.
 
-Verdict: greenfield lane. First artifact = new minimal native app `apps/fleet-apk/` (package `com.timerloggedout.fleet`), not a wrapper of an existing app.
+## Surface
 
-## Design
+| Piece | Path | Note |
+|---|---|---|
+| App (master baseline / comparison Arm M) | `apps/fleet-apk/` | pkg `com.timerloggedout.fleet`; `VERSION` file = version source of truth; `src/android/FleetActivity.java` + `src/android/AndroidManifest.xml` (minSdk 24 / targetSdk 34) |
+| Build | `scripts/apk/build_apk.sh` | SDK build-tools direct: `aapt2 compile+link → javac → d8 → zipalign → apksigner sign/verify` + SHA256SUMS; ∅ Gradle, ∅ network fetches |
+| Workflow | `.github/workflows/apk-release.yml` | trigger tag `apk-v*` ∨ `workflow_dispatch`; `permissions.contents: write` only |
+| Tests | `tests/test_apk_lane.py` | manifest/version coherence, workflow trigger + custody hygiene |
 
-- **Build**: `scripts/apk/build_apk.sh` — Android SDK build-tools direct (`aapt2 link` → `javac` → `d8` → `zipalign` → `apksigner sign`+`verify`), preinstalled on `ubuntu-latest`. ∅ Gradle, ∅ AndroidX, ∅ network fetches ⇒ deterministic + fast. Programmatic UI only (∅ `R`/resources).
-- **Versioning**: `apps/fleet-apk/VERSION` semver; versionCode = `major*10000+minor*100+patch`. Tag form `apk-v<semver>`.
-- **Trigger**: push tag `apk-v*` ∨ `workflow_dispatch` (optional version override; prerelease default `true` on dispatch).
-- **Signing custody**: keystore lives only as Actions secrets, referenced by NAME: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`. When present ⇒ `SIGNING_MODE=release-keystore`. When absent ⇒ fail-soft: in-runner **ephemeral** debug keystore (generated per-run, never committed), `SIGNING_MODE=ephemeral-debug`, disclosed in the Release notes + `dist/SIGNING_MODE`. An ephemeral-signed artifact is installable proof, **not** production signing.
-- **Owner provisioning item** (only step that upgrades proof → production): provision the 4 `ANDROID_KEYSTORE_*` secret names above with a real release keystore. ∅ values in chat/files/commits, ever.
-- **Release**: `gh release create apk-v<version>` with `fleet-<version>.apk` + `SHA256SUMS`; job token `contents: write` only; workflow artifact uploaded as backup surface.
+## Signing custody (names ONLY — values never in repo/chat)
 
-## Web presence tie-in
+Production signing activates iff these Actions secret **names** exist (owner provisioning): `ANDROID_KEYSTORE_BASE64` · `ANDROID_KEYSTORE_PASSWORD` · `ANDROID_KEY_ALIAS` · `ANDROID_KEY_PASSWORD`.
 
-Install/download surface = the GitHub Release page (`/releases/tag/apk-v<version>`) until Web Design PM (`f2acba6f`) links it from the fleet web surfaces — coordination routes via main, per tasking; this lane publishes the stable Release URL only.
+∅ provisioned ⇒ workflow fail-softs to an **in-runner ephemeral debug keystore** and stamps `SIGNING_MODE=ephemeral-debug` into release notes + artifact `SIGNING_MODE` file. Ephemeral releases are installable proof artifacts, explicitly **not** production-signed.
 
-## Proof
+## Release flow
 
-First end-to-end run + Release URL are recorded in the landing PR / lane report to main; verify any release with `apksigner verify` + `sha256sum -c SHA256SUMS` against the downloaded artifact.
+1. Tag `apk-v<semver>` (or dispatch with optional semver override; default = `VERSION`).
+2. Workflow builds+signs+verifies, uploads workflow artifact (backup surface), creates GitHub Release `fleet-<semver>.apk` + `SHA256SUMS`.
+3. Verify: re-download release asset ∧ `sha256sum -c SHA256SUMS`.
+
+Token class (amended 2026-11-02): job declares `contents: write`, but in-runner `GITHUB_TOKEN` received HTTP 403 `Resource not accessible by integration` on `POST /releases` for non-master refs (arm-A proof runs 41422144649 + tag run 41422211229; build/sign/verify steps succeeded, artifact uploaded) ⇒ the release step alone uses the provisioned `OPERATOR_GITHUB_TOKEN` secret (PAT-class, name verified in the live secrets census) as an interim. End-state remains the Termux Fleet ApkRelease AppID migration (contents:write app token, QUEUED with AppID lane 7075f9c0).
+
+First proven release: **apk-v0.1.0** (dispatch run 41272927031, 2026-11-01) — `fleet-0.1.0.apk` 8619B, checksum re-download ✓, signing ephemeral-debug disclosed.
+
+Accuracy note (2026-11-02): the first publication attempt of this amendment (branch apk-release/token-class-fix, PR snapshots read as #3722/#3723) landed 0-byte file contents via the contents-API write path ⊕ was merged only in incoherent API snapshots, never in landed content — master-history content reads are the oracle; this v2 republication is content-verified blob-by-blob.
+
+## Parallel-versioning DoE
+
+`experiments/doe/apk-1-parallel-versioning/` — same micro-spec (runtime version display) built by provider dispatch routes (Jules/Gemini/DeepSeek) vs this lane's Muse v0.1.0 as baseline Arm M; evaluator (≠ builders) selects on committed records.

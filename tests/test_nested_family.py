@@ -48,6 +48,15 @@ def _tree() -> Path:
     rdir = base / "experiments" / "doe" / "routed-dispatch" / "records"
     rdir.mkdir(parents=True)
     (rdir / "cert-unit-1.json").write_text(json.dumps(RECORD))  # same dispatch as STAMP: record wins, stamp enriches
+    adir = base / "experiments" / "doe" / "apk-1-x" / "records"
+    adir.mkdir(parents=True)
+    (adir / "arm-M-baseline.json").write_text(json.dumps(
+        {"provider": "claude-muse", "pr": 2946, "route": "claude-authored-baseline", "arm": "M"}))
+    (adir / "SUMMARY.json").write_text(json.dumps({"provider": "claude-muse"}))  # aggregate: skipped by name
+    ldir = base / "experiments" / "doe" / "live-1-x" / "records"
+    ldir.mkdir(parents=True)
+    (ldir / "no-instance.json").write_text(json.dumps(
+        {"treatment": {"instance": None}, "status": "passed"}))  # no provider borne: does not nest
     (base / "ops" / "3l0").mkdir(parents=True)
     intake = dict(STAMP)  # same dispatch via fan-out: must dedupe
     extra = dict(STAMP, dispatch_id="provider-invoke-2", provider="mistral",
@@ -71,11 +80,15 @@ def _tree() -> Path:
 def test_nesting_and_dedupe():
     feed = build(_tree())
     assert feed["schema"] == "nested-family/v1"
-    assert feed["summary"]["providers"] == 4  # sealion, mistral, jules, baseten
-    assert feed["summary"]["tasks"] == 5      # record + stamp-only + intake-extra + 2 desk rows
-    assert feed["summary"]["dispatches"] == 3
+    assert feed["summary"]["providers"] == 5  # sealion, mistral, jules, baseten, claude-muse
+    assert feed["summary"]["tasks"] == 6      # record + campaign + stamp-only + intake-extra + 2 desk rows
+    assert feed["summary"]["dispatches"] == 4
     by_src = feed["summary"]["by_source"]
-    assert by_src == {"records": 1, "stamps": 1, "intake": 1, "desk-usage": 2}
+    assert by_src == {"records": 1, "campaign-records": 1, "stamps": 1, "intake": 1, "desk-usage": 2}
+    apk = next(p for p in feed["providers"] if p["provider"] == "claude-muse")
+    atask = apk["models"][0]["tasks"][0]
+    assert apk["models"][0]["model"] == "NOT_ESTABLISHED" and atask["pr"] == 2946
+    assert atask["source"] == "campaign-records"
     assert feed["summary"]["by_outcome"] == {
         "passed": 1, "completed": 2, "landed": 1, "(prose state — verbatim in tasks)": 1}
     baseten = next(p for p in feed["providers"] if p["provider"] == "baseten")

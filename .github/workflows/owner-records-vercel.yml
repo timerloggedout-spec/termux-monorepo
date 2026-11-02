@@ -81,8 +81,8 @@ jobs:
             # (re-run after the flip: deployment serves, protection on).
             e1=$(curl -sL -o /dev/null -w "%{url_effective}" "$LIVE/owner-records?t=$(date +%s)" || true)
             e2=$(curl -sL -o /dev/null -w "%{url_effective}" "$LIVE/owner-records.xml?t=$(date +%s)" || true)
-            case "$e1" in "$LIVE"*|*vercel.com/sso-api*) :;; *) sleep 10; continue;; esac
-            case "$e2" in "$LIVE"*|*vercel.com/sso-api*) ok=1; break;; *) sleep 10;; esac
+            case "$e1" in "$LIVE"*|*sso-api*|*vercel.com/login*) :;; *) sleep 10; continue;; esac
+            case "$e2" in "$LIVE"*|*sso-api*|*vercel.com/login*) ok=1; break;; *) sleep 10;; esac
           done
           if [ -z "$ok" ]; then echo "::error::post-deploy verify failed (html_eff=$e1 xml_eff=$e2); SSO flip held"; exit 1; fi
           # 6. Automation bypass secret (create only if none exists; value never logged).

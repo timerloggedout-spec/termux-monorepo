@@ -1,21 +1,21 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-10-30T02:30:35Z",
+ "generated_at": "2026-11-02T06:30:06Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
- "built_by": "viz lane (4ed48ba4) — visualizations for everything Web",
+ "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
  "registry_context": {
-  "records": 155,
-  "pools": 52,
-  "coverage": "27/27",
-  "note": "Winning ≈100% (#1884); docs/ops/QUOTA-RECONCILE-2026-10-28.md",
-  "provenance": "quota-specialist pack 2026-10-29"
+  "records": 168,
+  "pools": 53,
+  "coverage": "164/168 readings rows (registry grew +4 on 2026-11-01; promotion cycle in flight)",
+  "note": "Allocation model Pool x Focus x % (#1884); pools 53 since meta pool PR #2952",
+  "provenance": "quota-specialist pack refresh 2026-11-02"
  },
  "series1_api_core": {
-  "title": "GitHub API core — shared PAT bucket",
+  "title": "GitHub API core \u2014 shared PAT bucket",
   "limit": 5000,
   "unit": "requests/hour",
   "replenishment": "rolling hourly",
-  "next_reset_observed": "2026-10-30T01:42:09Z",
+  "next_reset_observed": "2026-11-02T07:02:43Z",
   "points": [
    {
     "at": "2026-10-28T23:41:00Z",
@@ -39,26 +39,26 @@
     "at": "2026-10-29T05:50:14Z",
     "remaining": 0,
     "kind": "wall",
-    "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) — core 403 blocked a pat_publish first call"
+    "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) \u2014 core 403 blocked a pat_publish first call"
    },
    {
     "at": "2026-10-29T11:41:45Z",
     "remaining": 0,
     "kind": "wall",
-    "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) — incident 2: full 5000-call window burned in ~25 min (11:41:45Z–~12:06Z)"
+    "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) \u2014 incident 2: full 5000-call window burned in ~25 min (11:41:45Z\u2013~12:06Z)"
    },
    {
     "at": "2026-10-29T21:39:53Z",
     "remaining": 0,
     "kind": "wall",
-    "provenance": "cadence lane timeline 2026-10-29 — ECC ack run annotation: 'API rate limit exceeded for user ID 233432881'"
+    "provenance": "cadence lane timeline 2026-10-29 \u2014 ECC ack run annotation: 'API rate limit exceeded for user ID 233432881'"
    },
    {
     "at": "2026-10-30T01:32:00Z",
     "remaining": 0,
     "kind": "wall",
     "provenance": "quota-specialist pack 2026-10-29 (~18:32 PT)",
-    "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD — burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
+    "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD \u2014 burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
    },
    {
     "at": "2026-10-30T01:36:00Z",
@@ -70,28 +70,34 @@
     "at": "2026-10-30T01:43:00Z",
     "remaining": 4999,
     "kind": "observed",
-    "provenance": "viz pat_publish preflight read (uncounted /rate_limit) — new window just opened, used 1"
+    "provenance": "viz pat_publish preflight read (uncounted /rate_limit) \u2014 new window just opened, used 1"
    },
    {
     "at": "2026-10-30T01:45:00Z",
     "remaining": 4645,
     "kind": "reported",
-    "provenance": "convergence lane via quota-specialist (verified from reset epochs) — new window, used 355"
+    "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 new window, used 355"
    },
    {
     "at": "2026-10-30T01:54:00Z",
     "remaining": 3230,
     "kind": "reported",
-    "provenance": "convergence lane via quota-specialist (verified from reset epochs) — used 1770, reset 02:42:19Z"
+    "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+   },
+   {
+    "at": "2026-11-02T06:30:06Z",
+    "remaining": 3871,
+    "kind": "observed",
+    "provenance": "quota-specialist pack refresh 2026-11-02 - PAT helper rate-limit read (used 1129, reset 2026-11-02T07:02:43Z)"
    }
   ],
-  "note": "Observed points only — the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) — this line is the PAT user bucket only, never merged with installation or GraphQL spend. Burn shape (convergence, verified from reset epochs): sustained ~120–160 calls/min fleet-wide — the bucket dies over a 30–40 min ramp, then stays dead until the hourly reset. Not a spike; no instant re-exhaustion.",
+  "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend. Burn shape (convergence, verified from reset epochs): sustained ~120\u2013160 calls/min fleet-wide \u2014 the bucket dies over a 30\u201340 min ramp, then stays dead until the hourly reset. Not a spike; no instant re-exhaustion.",
   "bucket": "github.api.user_token",
   "model": {
-   "principle": "Owner principle (2026-10-29 19:10 PT, via cadence lane): the target line is NOT a survival ceiling — it is the replenishment flow line (limit / window, phase-aligned to reset epochs), with cumulative use reaching ~100% exactly at replenishment.",
+   "principle": "Owner principle (2026-10-29 19:10 PT, via cadence lane): the target line is NOT a survival ceiling \u2014 it is the replenishment flow line (limit / window, phase-aligned to reset epochs), with cumulative use reaching ~100% exactly at replenishment.",
    "anchor_reset": "2026-10-30T01:42:09Z",
    "window_ms": 3600000,
-   "ideal": "remaining declines linearly from the limit at window start to 0 exactly at the reset epoch — a diagonal burn-down pacing to zero-at-reset",
+   "ideal": "remaining declines linearly from the limit at window start to 0 exactly at the reset epoch \u2014 a diagonal burn-down pacing to zero-at-reset",
    "faults": {
     "below_line": "actual under the flow line = burn ahead of pace -> burst fault: early death before the reset epoch",
     "above_line": "actual over the flow line late in the window = burn behind pace -> flat fault: quota wasted at replenishment"
@@ -101,20 +107,20 @@
      "at": "2026-10-30T01:32:00Z",
      "ideal_remaining": 846,
      "actual_remaining": 0,
-     "read": "burst fault — bucket dead ~10 min before its reset epoch"
+     "read": "burst fault \u2014 bucket dead ~10 min before its reset epoch"
     },
     {
      "at": "2026-10-30T01:54:00Z",
      "ideal_remaining": 4012,
      "actual_remaining": 3230,
-     "read": "~1.8x pace in the new window (used 1770 vs ~988 ideal) — burst fault forming"
+     "read": "~1.8x pace in the new window (used 1770 vs ~988 ideal) \u2014 burst fault forming"
     }
    ],
    "note": "Reset epochs drift seconds per window (observed resets 01:42:09Z -> 02:42:19Z); the line is phase-aligned to the anchor epoch, not to the clock hour."
   }
  },
  "series2_snapshots": {
-  "title": "Quota readings snapshots — per-service state (status-only; used/reset null across rows)",
+  "title": "Quota readings snapshots \u2014 per-service state (status-only; used/reset null across rows)",
   "services": [
    "github.api.github_token",
    "vercel.deployments",
@@ -153,7 +159,7 @@
     "at": "2026-10-28T23:36:07Z",
     "rows": 155,
     "landed": true,
-    "provenance": "landed via convergence PR #2362 (merged 49089ee5c010, 2026-10-30T01:48:11Z) — master quota-status.json + dashboard twin, pair blob 5d5238c9, 155 readings, generated 2026-10-28T23:36:07Z (viz-verified firsthand)",
+    "provenance": "landed via convergence PR #2362 (merged 49089ee5c010, 2026-10-30T01:48:11Z) \u2014 master quota-status.json + dashboard twin, pair blob 5d5238c9, 155 readings, generated 2026-10-28T23:36:07Z (viz-verified firsthand)",
     "states": {
      "github.api.github_token": "watch",
      "github.actions.cache": "ok",
@@ -162,14 +168,26 @@
      "openrouter.key": "unknown",
      "github.actions.minutes": "unknown"
     },
-    "note": "github.api.github_token recovered exhausted → watch in this snapshot; github.actions.minutes reads unknown in the full 155-row snapshot"
+    "note": "github.api.github_token recovered exhausted \u2192 watch in this snapshot; github.actions.minutes reads unknown in the full 155-row snapshot"
+   },
+   {
+    "at": "2026-10-30T02:47:00.930298+00:00",
+    "rows": 156,
+    "landed": true,
+    "provenance": "landed via convergence promotion 18cc139130 (fresh-census promotion 2026-10-30T02:47:00Z)"
+   },
+   {
+    "at": "2026-11-01T13:23:25.948846+00:00",
+    "rows": 164,
+    "landed": true,
+    "provenance": "landed via convergence promotion 12469317ba (164-row snapshot 2026-11-01)"
    }
   ],
-  "stamp_source": "registry reset fields — snapshot rows carry reset=null by design; stamps never join from the snapshot"
+  "stamp_source": "registry reset fields \u2014 snapshot rows carry reset=null by design; stamps never join from the snapshot"
  },
  "series3_actions": {
-  "title": "Actions run volume — reconstructed corpus (daily increments)",
-  "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta × that day's avg_job_duration_ms / 60000 — an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
+  "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
+  "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta \u00d7 that day's avg_job_duration_ms / 60000 \u2014 an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
   "days": [
    {
     "date": "2026-10-02",
@@ -338,6 +356,18 @@
     "runs_delta": 40,
     "jobs_delta": 82,
     "minutes_est": 16
+   },
+   {
+    "date": "2026-10-31",
+    "runs_delta": 40,
+    "jobs_delta": 28,
+    "minutes_est": 6
+   },
+   {
+    "date": "2026-11-01",
+    "runs_delta": 0,
+    "jobs_delta": 0,
+    "minutes_est": 0
    }
   ],
   "spike": {
@@ -347,8 +377,13 @@
    "workflow": "delphi-gate",
    "fires": "delphi-rfp-feed-collect",
    "provenance": "quota-specialist pack 2026-10-29 + cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322, burst-fix record PR #2341, history-verified per cadence lane)",
-   "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry ×4 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
-   "detail": "Each collect ran ~30–80 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token — the PAT-bucket burn mechanism."
+   "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry \u00d74 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
+   "detail": "Each collect ran ~30\u201380 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token \u2014 the PAT-bucket burn mechanism."
+  },
+  "refresh": {
+   "at": "2026-11-02T06:30:06Z",
+   "by": "quota-specialist pack refresh 2026-11-02",
+   "note": "No 2026-10-30 reconstructed file exists - no 10-30 day row (gap stays a gap). The 10-31 delta spans file(10-31) - file(10-29). The 11-01 file carries identical cumulative corpus values to 10-31 (run_count 1550, total_jobs 2154) - its delta is honestly 0."
   }
  },
  "annotations": [
@@ -356,49 +391,49 @@
    "id": "origin-pat-wall",
    "on": "series1",
    "at": "2026-10-28T23:41:00Z",
-   "text": "PAT wall ↔ multi-lane polling in hot merge hours (quota pack: tier1 steward + viz + quota-convergence publish attempts active). Per-consumer attribution NOT ESTABLISHED — GitHub exposes none to a PAT (cadence lane). Lesson of record: poll sparingly, batch reads, head-SHA check-runs."
+   "text": "PAT wall \u2194 multi-lane polling in hot merge hours (quota pack: tier1 steward + viz + quota-convergence publish attempts active). Per-consumer attribution NOT ESTABLISHED \u2014 GitHub exposes none to a PAT (cadence lane). Lesson of record: poll sparingly, batch reads, head-SHA check-runs."
   },
   {
    "id": "event-fresh-window",
    "on": "series1",
    "at": "2026-10-29T06:00:00Z",
-   "text": "Fresh window: 42 core calls fleet-wide in 77s (~1900/h baseline pace before spikes) — cadence lane timeline, rate-limit record PR #2321/#2322."
+   "text": "Fresh window: 42 core calls fleet-wide in 77s (~1900/h baseline pace before spikes) \u2014 cadence lane timeline, rate-limit record PR #2321/#2322."
   },
   {
    "id": "event-incident2",
    "on": "series1",
    "at": "2026-10-29T11:41:45Z",
-   "text": "Incident 2 (rate-limit lane record): the full 5000-call window burned in ~25 min (11:41:45Z–~12:06Z); the earlier ~1452-call figure was only the forwarding lane's 11:56Z–12:06Z segment. Per-consumer attribution NOT ESTABLISHED."
+   "text": "Incident 2 (rate-limit lane record): the full 5000-call window burned in ~25 min (11:41:45Z\u2013~12:06Z); the earlier ~1452-call figure was only the forwarding lane's 11:56Z\u201312:06Z segment. Per-consumer attribution NOT ESTABLISHED."
   },
   {
    "id": "origin-delphi-storm",
    "on": "series3",
    "at": "2026-10-29T16:30:00Z",
-   "text": "Feed-collect burst ↔ delphi-gate workflow_run storm: 143 runs / 25 min, each firing UNTHROTTLED delphi-rfp-feed-collect (~30–80 installation-token calls); reviewer map crossed 24h staleness mid-storm → orchestrator completions launched ~750-call reviewer-metrics collects on the PAT token. Fixed by PR #2341 (merged 97938a583f50): retry ×4 + 15-min freshness gate loop breaker; 3 workflows re-enabled green."
+   "text": "Feed-collect burst \u2194 delphi-gate workflow_run storm: 143 runs / 25 min, each firing UNTHROTTLED delphi-rfp-feed-collect (~30\u201380 installation-token calls); reviewer map crossed 24h staleness mid-storm \u2192 orchestrator completions launched ~750-call reviewer-metrics collects on the PAT token. Fixed by PR #2341 (merged 97938a583f50): retry \u00d74 + 15-min freshness gate loop breaker; 3 workflows re-enabled green."
   },
   {
    "id": "event-qac007",
    "on": "series1",
    "at": "2026-10-29T23:03:00Z",
-   "text": "QAC-007 (PR #2323): pat_publish derived-reserve preflight enacted — publish defers when remaining < planned calls + limit/10, so lanes stop draining the shared bucket into walls."
+   "text": "QAC-007 (PR #2323): pat_publish derived-reserve preflight enacted \u2014 publish defers when remaining < planned calls + limit/10, so lanes stop draining the shared bucket into walls."
   },
   {
    "id": "origin-vercel-cap",
    "on": "series2",
    "at": "2026-10-20T23:05:00Z",
-   "text": "Vercel cap-trip 2026-10-20 ↔ dashboard deploy bursts (tribute-vercel-prod promotions; registry notes API undercounts enforcement ≥13). OpenRouter free daily cap exhausted the same day."
+   "text": "Vercel cap-trip 2026-10-20 \u2194 dashboard deploy bursts (tribute-vercel-prod promotions; registry notes API undercounts enforcement \u226513). OpenRouter free daily cap exhausted the same day."
   },
   {
    "id": "event-burn-shape",
    "on": "series1",
    "at": "2026-10-30T01:45:00Z",
-   "text": "Burn shape correction (convergence, verified from reset epochs): NO instant re-exhaustion — the new window opened at the 01:42:09Z reset and drained on a sustained ~120–160 calls/min ramp (4999 @01:43Z viz preflight → 4645 @~01:45Z → 3230 @~01:54Z, used 1770). A 5000 bucket dies in ~30–40 min of storm and stays dead until the hourly reset; graph walls as ramps, not spikes. Consistent with the quota lane's firsthand ~150/min, ~32-min burn on 2026-10-29."
+   "text": "Burn shape correction (convergence, verified from reset epochs): NO instant re-exhaustion \u2014 the new window opened at the 01:42:09Z reset and drained on a sustained ~120\u2013160 calls/min ramp (4999 @01:43Z viz preflight \u2192 4645 @~01:45Z \u2192 3230 @~01:54Z, used 1770). A 5000 bucket dies in ~30\u201340 min of storm and stays dead until the hourly reset; graph walls as ramps, not spikes. Consistent with the quota lane's firsthand ~150/min, ~32-min burn on 2026-10-29."
   },
   {
    "id": "model-flow-line",
    "on": "series1",
    "at": "2026-10-30T01:42:09Z",
-   "text": "Model correction (owner principle via cadence lane, 2026-10-29 19:10 PT): the green line is the replenishment FLOW line — limit/window phased to reset epochs, ideal = diagonal to zero-at-reset. Deviations are faults both ways: below = burst (early death; the 01:32Z wall sat at 0 with ~846 ideal remaining), above late = flat (wasted quota). At 01:54Z the new window burned ~1.8x pace — a burst fault forming, visible against the line."
+   "text": "Model correction (owner principle via cadence lane, 2026-10-29 19:10 PT): the green line is the replenishment FLOW line \u2014 limit/window phased to reset epochs, ideal = diagonal to zero-at-reset. Deviations are faults both ways: below = burst (early death; the 01:32Z wall sat at 0 with ~846 ideal remaining), above late = flat (wasted quota). At 01:54Z the new window burned ~1.8x pace \u2014 a burst fault forming, visible against the line."
   }
  ],
  "stamps": [
@@ -423,24 +458,24 @@
   {
    "pool": "openrouter.free_models",
    "cadence": "daily",
-   "detail": "resets UTC midnight — per-record registry reset field (the only daily record confirmed to pin UTC midnight)",
+   "detail": "resets UTC midnight \u2014 per-record registry reset field (the only daily record confirmed to pin UTC midnight)",
    "established": true
   },
   {
    "pool": "daily free tiers (groq, cerebras, airforce, g4f.established)",
    "cadence": "daily",
-   "detail": "daily window; UTC-midnight reset NOT pinned per record (~29 daily-family records, most do not pin UTC — no family-wide UTC stamp)",
+   "detail": "daily window; UTC-midnight reset NOT pinned per record (~29 daily-family records, most do not pin UTC \u2014 no family-wide UTC stamp)",
    "established": true
   },
   {
    "pool": "render.pipeline_minutes",
-   "cadence": "monthly — calendar",
+   "cadence": "monthly \u2014 calendar",
    "detail": "calendar month, resets the 1st",
    "established": true
   },
   {
    "pool": "neon.compute (CU-hours)",
-   "cadence": "monthly — billing",
+   "cadence": "monthly \u2014 billing",
    "detail": "billing month (NOT a 1st-of-month reset)",
    "established": true
   },
@@ -465,17 +500,17 @@
   {
    "pool": "g4f (43 records)",
    "cadence": null,
-   "detail": "NOT ESTABLISHED — no stamp exists; unmetered/unknown. Do not invent one.",
+   "detail": "NOT ESTABLISHED \u2014 no stamp exists; unmetered/unknown. Do not invent one.",
    "established": false
   },
   {
    "pool": "48 of 155 registry records",
    "cadence": null,
-   "detail": "window 'unknown' in the registry — no stamp, by design",
+   "detail": "window 'unknown' in the registry \u2014 no stamp, by design",
    "established": false
   }
  ],
- "stamps_provenance": "registry reset fields — quota-specialist pack 2026-10-29 as corrected by the convergence lane (verified vs current-master registry, 2026-10-29); convergence confirmation closed with the PR #2362 landing — quota lanes report no open inputs (2026-10-29)",
+ "stamps_provenance": "registry reset fields \u2014 quota-specialist pack 2026-10-29 as corrected by the convergence lane (verified vs current-master registry, 2026-10-29); convergence confirmation closed with the PR #2362 landing \u2014 quota lanes report no open inputs (2026-10-29)",
  "pending_inputs": [],
  "buckets": [
   {
@@ -489,7 +524,7 @@
    "name": "github.api.github_token (installation, per-repo)",
    "limit": 1000,
    "unit": "req/hr",
-   "note": "delphi-rfp-feed-collect runs spend here, ~30–80 calls each; 1000/hr per repo",
+   "note": "delphi-rfp-feed-collect runs spend here, ~30\u201380 calls each; 1000/hr per repo",
    "provenance": "cadence lane timeline 2026-10-29"
   },
   {
@@ -503,7 +538,7 @@
    "name": "vercel.deployments",
    "limit": 100,
    "unit": "deployments/day",
-   "note": "rolling 24h daily cap — separate from the API buckets; see state timeline",
+   "note": "rolling 24h daily cap \u2014 separate from the API buckets; see state timeline",
    "provenance": "quota registry / cadence lane graph note"
   }
  ],
@@ -513,14 +548,14 @@
   "sources": "rate-limit record PR #2321/#2322 + burst-fix record PR #2341 (history-verified per cadence lane)"
  },
  "gearbox": {
-  "status": "concept — owner order 2026-10-29 19:27 PT via cadence lane; design only, nothing here is live behavior",
+  "status": "concept \u2014 owner order 2026-10-29 19:27 PT via cadence lane; design only, nothing here is live behavior",
   "doc": "docs/ops/QUOTA-GEARBOX-CONCEPT.md",
-  "admin_designation": "INTERNAL — settings surface only, never public render (challenge admin-metrics precedent)",
+  "admin_designation": "INTERNAL \u2014 settings surface only, never public render (challenge admin-metrics precedent)",
   "metaphor": {
-   "rpm": "burn rate, calls/min per bucket — measured only where a meter exists",
+   "rpm": "burn rate, calls/min per bucket \u2014 measured only where a meter exists",
    "redline": "replenishment flow rate = limit/window, phase-aligned to reset epoch (series1.model)",
    "gear": "priority class in the allocation ladder (allocations focus, ordered in gears[]) ",
-   "shift": "a re-allocation / re-prioritization event — a #1884 re-split record",
+   "shift": "a re-allocation / re-prioritization event \u2014 a #1884 re-split record",
    "tachometer": "per-slice gauge; needle = planner target_flow_per_min where no meter exists"
   },
   "gears": [
@@ -561,10 +596,10 @@
     "subset_filter": "work-type tags checked, or null",
     "input_source": "slider | preset | checkbox-bulk"
    },
-   "state": "type defined; log EMPTY — no re-split tick exercised yet (allocations set_at 2026-10-27)"
+   "state": "type defined; log EMPTY \u2014 no re-split tick exercised yet (allocations set_at 2026-10-27)"
   },
   "mock": {
-   "flag": "MOCK — interaction mock for design review; not telemetry, not live settings",
+   "flag": "MOCK \u2014 interaction mock for design review; not telemetry, not live settings",
    "settings_example": [
     {
      "pool": "github",
@@ -604,11 +639,11 @@
    }
   },
   "honesty": [
-   "per-slice RPM is NOT ESTABLISHED — no per-consumer attribution exists for the shared PAT bucket; tachometers render planner target (target_flow_per_min) or blank, never a measured rate",
+   "per-slice RPM is NOT ESTABLISHED \u2014 no per-consumer attribution exists for the shared PAT bucket; tachometers render planner target (target_flow_per_min) or blank, never a measured rate",
    "gear state is CONFIGURED state (allocations.json), not observed behavior",
    "reserve-as-timing-slack release curve is PROPOSED; today's reserve is a static explicit per-pool remainder",
-   "planner slices[] detail (208 slices / 52 pools, 124 numeric — cadence via quota-specialist PR #2381) not viz-verified at design time; shipped UI must read slices[] itself",
-   "per-consumer moderation (STOP/PAUSE/throttle) is DESIGN-ONLY — per-consumer metering NOT ESTABLISHED, so no live per-consumer rate or halt state renders"
+   "planner slices[] detail (208 slices / 52 pools, 124 numeric \u2014 cadence via quota-specialist PR #2381) not viz-verified at design time; shipped UI must read slices[] itself",
+   "per-consumer moderation (STOP/PAUSE/throttle) is DESIGN-ONLY \u2014 per-consumer metering NOT ESTABLISHED, so no live per-consumer rate or halt state renders"
   ],
   "admin_ui": {
    "refinement": "owner refinement 2026-10-29 19:30 PT via cadence lane",
@@ -646,15 +681,15 @@
     "tags_note": "owner examples (issue, RFP) + the fleet's standing work classes; set is open"
    },
    "guardrail_ruling": {
-    "over_100": "BLOCK with the overage shown — supported by the allocations discipline",
+    "over_100": "BLOCK with the overage shown \u2014 supported by the allocations discipline",
     "auto_balance": "mocked but REJECTED: silently rewriting other slices breaks per-slice audited old->new and the explicit-reserve rule (reserve is computed, never silently absorbed)"
    },
    "consumer_controls": {
-    "requirement": "owner 2026-10-29 19:49 PT — moderate consumption && diagnose",
+    "requirement": "owner 2026-10-29 19:49 PT \u2014 moderate consumption && diagnose",
     "stop": {
      "action": "stop",
      "effect": "gate closed, effective share 0 until explicit release",
-     "case": "runaway consumer — delphi-gate burst 2026-10-29T16:30-16:55Z (143 runs / 25 min)"
+     "case": "runaway consumer \u2014 delphi-gate burst 2026-10-29T16:30-16:55Z (143 runs / 25 min)"
     },
     "pause": {
      "action": "pause",
@@ -665,7 +700,7 @@
     },
     "throttle": {
      "control": "slider, max calls/min per consumer",
-     "distinct_from": "priority share (% of pool flow) — share rations the window, throttle caps instantaneous rate"
+     "distinct_from": "priority share (% of pool flow) \u2014 share rations the window, throttle caps instantaneous rate"
     },
     "audit_event": {
      "fields": [
@@ -681,7 +716,7 @@
      "cites": "#1884",
      "lands_as": "PR"
     },
-    "diagnose_dependency": "NOT ESTABLISHED — per-consumer metering for the shared PAT bucket does not exist; attribution for the 2026-10-29 walls was reconstructed after the fact, not read live. Enforcement + live diagnosis need consumer-tagged gate/dispatch accounting from the quota substrate."
+    "diagnose_dependency": "NOT ESTABLISHED \u2014 per-consumer metering for the shared PAT bucket does not exist; attribution for the 2026-10-29 walls was reconstructed after the fact, not read live. Enforcement + live diagnosis need consumer-tagged gate/dispatch accounting from the quota substrate."
    }
   }
  }

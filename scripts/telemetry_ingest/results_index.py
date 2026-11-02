@@ -75,6 +75,9 @@ def main() -> int:
     ap.add_argument("--viz-out",
                     help="also emit the Viz row-contract twin "
                          "(results-index-feed/v1) at this path")
+    ap.add_argument("--mirror-out",
+                    help="also write a byte-identical mirror of the "
+                         "canonical index at this path")
     args = ap.parse_args()
     now = datetime.datetime.now(datetime.timezone.utc).strftime(
         "%Y-%m-%dT%H:%M:%SZ")
@@ -155,6 +158,8 @@ def main() -> int:
         except Exception:
             temporal["headline"] = {"state": "NOT_ESTABLISHED_THIS_RUN",
                                     "reason": "Actions API unavailable at build"}
+    temporal["headline"]["persistent_instance"] = (
+        "none - no persistent instance; execution is ephemeral in-job")
     systems.append(temporal)
 
     # --- HindSight ---
@@ -177,10 +182,19 @@ def main() -> int:
                      .get("status")},
         "as_of": now})
 
+    surface_pages = {"ates": "ates.html", "3l0": "3l0.html",
+                     "temporal": "telemetry.html",
+                     "hindsight": "telemetry.html"}
+    for s in systems:
+        s["surface_page"] = surface_pages[s["id"]]
     doc = {"schema": SCHEMA, "generated_at": now, "systems": systems,
            "consumer": "viz all-4 results index page (render verbatim)"}
+    payload = json.dumps(doc, indent=1, sort_keys=True)
     with open(args.out, "w", encoding="utf-8") as fh:
-        json.dump(doc, fh, indent=1, sort_keys=True)
+        fh.write(payload)
+    if args.mirror_out:
+        with open(args.mirror_out, "w", encoding="utf-8") as fh:
+            fh.write(payload)
 
     if args.viz_out:
         by_id = {s["id"]: s for s in systems}

@@ -7,11 +7,10 @@ name: quota-usage-series-refresh
 # (2026-10-31) while the quota pages presented it as current.
 # SINGLE-WRITER for ops/quota/usage-series.json +
 # apps/help-wanted-dashboard/data/usage-series.json (byte-identical mirror).
-# Also mirrors the quota-usage pack to its dashboard twin
-# (apps/help-wanted-dashboard/data/quota-usage.json, byte-identical;
-# the pack itself stays the Quota Specialist's hand-built source -
-# this workflow only mirrors it, closing the hand-sync gap PR #3545
-# covered once by hand).
+# The pack is REBUILT from its committed sources by
+# scripts/quota_usage_pack.py (auto-refresh, owner order 2026-11-01;
+# series1 carried verbatim) and mirrored to its dashboard twin
+# (apps/help-wanted-dashboard/data/quota-usage.json, byte-identical).
 # Triggers: push on any generator input + manual dispatch. NO schedule:
 # fleet schedules are thinned by doctrine and by the 2026-10-28 stall, and
 # a derived pack only changes when an input changes.

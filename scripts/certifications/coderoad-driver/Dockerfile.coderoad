@@ -54,7 +54,7 @@ RUN ldd /opt/vscode/VSCode-linux-x64/code > /tmp/ldd.txt 2>&1; \
 FROM extract AS vscode
 
 USER root
-RUN code --no-sandbox --version
+RUN code --no-sandbox --user-data-dir /tmp/vscode-ud --version
 
 FROM vscode AS full
 
@@ -62,6 +62,6 @@ USER root
 RUN mkdir -p /opt/vscode-extensions \
     && curl --compressed -fsSL -o /tmp/coderoad.vsix \
       "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/coderoad/vsextensions/coderoad/latest/vspackage" \
-    && code --no-sandbox --extensions-dir /opt/vscode-extensions --install-extension /tmp/coderoad.vsix \
+    && code --no-sandbox --user-data-dir /tmp/vscode-ud --extensions-dir /opt/vscode-extensions --install-extension /tmp/coderoad.vsix \
     && rm -f /tmp/coderoad.vsix
 COPY driver /opt/vscode-extensions/coderoad-driver

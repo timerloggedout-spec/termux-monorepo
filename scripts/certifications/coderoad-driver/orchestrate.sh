@@ -15,7 +15,7 @@ git config --global --add safe.directory /workspace/project 2>/dev/null
 
 # Launch VS Code (CodeRoad activates on the .freeCodeCamp workspace and
 # auto-loads the tutorial from CODEROAD_TUTORIAL_URL).
-(xvfb-run -a code --no-sandbox --disable-gpu --disable-dev-shm-usage \
+(xvfb-run -a code --no-sandbox --user-data-dir /tmp/vscode-ud --disable-gpu --disable-dev-shm-usage \
   --extensions-dir /opt/vscode-extensions \
   /workspace/project > "$EV/code.log" 2>&1 &)
 echo "code launched" >> "$LOG"

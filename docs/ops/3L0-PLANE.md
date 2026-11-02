@@ -138,7 +138,27 @@ version — a retired version's scores leave the live surfaces, its
 records stay (∅ deletion). Intake records are therefore never
 rewritten by a version change: versions re-derive scores from the
 immutable intake history. `usage` feeds the density
-consideration (signal ÷ tokens, #1784). Population is verified from
+consideration (signal ÷ tokens, #1784).
+
+**Source class 2 — chat provenance / session history (owner GO,
+2026-11-01).** Full chat provenance {thinking steps · tool calls ·
+outcomes, ∀ chats} feeds ForeSight ∧ 3L0. Wiring evidence = repo
+collaborator listings correlated by the telemetry lane (0b0272f1)
+into attributed session-history records; pipeline owner = telemetry,
+capture via API+TOKEN / .APK / webWrapper routes. Intake mapping into
+`3l0-intake/v1`: `origin = "session-history"`, `dispatch_id` =
+session/chat id + turn anchor, actor attribution = telemetry's
+attribution chain (stamp > trailer > git_author > app_bot;
+unknown ⇒ null, ¬ owner-default), `outcome` carried only where the
+session record states one. Fold rules (this plane's, unchanged):
+session-history records are OBSERVATIONAL evidence by default —
+they move weights only when they carry a confirmed outcome
+(`outcome.confirmed ≠ null`) under the same fold as routed
+dispatches; thinking/tool-call content itself is evidence for
+attribution/density, ¬ a score. Append-only ∧ emit-once ∧
+backfill doctrine apply identically; records never rewritten.
+
+Population is verified from
 the feed/ledger, not from routing claims: scoring counts as populated
 when the 3L0 feed's observed block rests on ≥1 live-dispatch outcome
 event beyond #1424.

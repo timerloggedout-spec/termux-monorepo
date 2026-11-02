@@ -38,7 +38,7 @@ function taskRow(t){
   const oc=t.outcome||{};
   return '<div class="task"><span class="muted">'+esc(t.ts||'—')+'</span> <span class="chip">'+esc(oc.status||'unknown')+'</span> <strong>'+esc(t.task_class||'—')+'</strong>'
     +' · role '+esc(t.role||'—')+(t.moniker?(' · '+esc(t.moniker)):'')+(t.context?('<br><span class="muted">'+esc(String(t.context).slice(0,180))+'</span>'):'')
-    +'<br><span class="muted">dispatch '+(t.dispatch_id?esc(t.dispatch_id):'—')+(t.workflow?(' · '+esc(t.workflow)):'')+'</span>'+runLink(t)+'</div>';
+    +'<br><span class="muted">dispatch '+(t.dispatch_id?esc(t.dispatch_id):'NOT ESTABLISHED')+(t.workflow?(' · '+esc(t.workflow)):'')+(t.session_id?(' · session '+esc(t.session_id)):'')+(t.first_pass!=null?(' · first-pass '+(t.first_pass?'✓':'✗')):'')+(t.origin?(' · origin '+esc(t.origin)):'')+'</span>'+runLink(t)+'</div>';
 }
 function modelCard(p,m){
   return '<div class="card"><div class="label">'+esc(m.model)+((m.roles||[]).map(r=>'<span class="chip">'+esc(r)+'</span>').join(''))+'</div>'
@@ -56,12 +56,16 @@ async function load(){
   if(!feed){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch nested-family-feed.json.';return}
   const s=feed.summary||{};
   $('freshness').textContent='Family loaded';
-  $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.providers||0)+' providers · '+(s.models||0)+' models · '+(s.tasks||0)+' tasks · '+(s.dispatches||0)+' dispatches';
+  $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.providers||0)+' providers · '+(s.models||0)+' models · '+(s.tasks||0)+' tasks · '+(s.dispatches||0)+' dispatches'+(s.registry_providers?(' · registry population '+s.registry_providers+' providers, '+(s.zero_dispatch_providers||0)+' with no dispatches'):'');
   const st=CK.stampState(feed.generated_at,Date.now(),86400000);
   $('charts-stamp').textContent='Feed generated '+(feed.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
-  $('chart-providers').innerHTML=CK.bars((feed.providers||[]).map(p=>({label:p.provider,value:p.task_count||0})).sort((a,b)=>b.value-a.value));
+  const provs=feed.providers||[];
+  const active=provs.filter(p=>!p.zero_dispatch&&(p.task_count||0)>0);
+  const zero=provs.filter(p=>p.zero_dispatch||(p.task_count||0)===0);
+  $('chart-providers').innerHTML=CK.bars(active.map(p=>({label:p.provider,value:p.task_count||0})).sort((a,b)=>b.value-a.value));
   $('chart-outcomes').innerHTML=CK.bars(Object.entries(s.by_outcome||{}).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
-  $('family-tree').innerHTML=(feed.providers||[]).map(providerSection).join('');
+  $('family-tree').innerHTML=active.map(providerSection).join('')
+    +(zero.length?('<section aria-labelledby="zero-dispatch"><div class="head"><h2 id="zero-dispatch">No dispatches yet</h2><span class="note">'+zero.length+' of '+((feed.summary&&feed.summary.registry_providers)||provs.length)+' registry providers</span></div><div class="card"><p class="muted">'+zero.map(p=>esc(p.provider)).join(' · ')+'</p><p class="muted">Registry population with zero recorded dispatches - shown, not omitted (full-population standard).</p></div></section>'):'');
   $('gap-list').innerHTML=(feed.gaps||[]).length?('<p class="muted">'+feed.gaps.map(esc).join('<br>')+'</p>'):'<p class="muted">No gaps recorded.</p>';
 }
 load();setInterval(load,60000);

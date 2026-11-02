@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -70,6 +71,9 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
                   if p.get("canonical_model_id") == row.get("canonical_model_id")
                   and p.get("pricing_id") == row.get("pricing_id")), None)
     if price is None:
+        return None
+    actual_cost = row.get("cost_usd")
+    if actual_cost is not None and (isinstance(actual_cost, bool) or not isinstance(actual_cost, (int, float)) or not math.isfinite(actual_cost) or actual_cost < 0):
         return None
     return {
         "session_label": row.get("session_label") or row["call_uid"],

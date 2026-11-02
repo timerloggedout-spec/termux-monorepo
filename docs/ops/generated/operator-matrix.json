@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 385,
-    "open_prs": 177,
+    "open_prs": 176,
     "pr_classes": {
       "CANDIDATE": 84,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 88,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 86,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 175,
+      "prs": 174,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T06:30:37Z",
+  "generated_at": "2026-11-02T06:33:43Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "success"
     },
-    "sha": "f13bb55de7"
+    "sha": "559130a31b"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "df46fe6f8f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3541,
+      "title": "cert: CodeRoad completion leg \u2014 headless real-extension runs on Actions (025 pilot)",
+      "updated_at": "2026-11-02T06:32:54Z"
     },
     {
       "class": "CANDIDATE",
@@ -1800,15 +1814,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "in_progress",
         "smoke": "queued"
       },
-      "head_sha": "437ab04735",
+      "head_sha": "7e5f005b09",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T06:30:17Z"
+      "updated_at": "2026-11-02T06:33:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2593,34 +2607,6 @@
       "number": 3502,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-02T05:16:56Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "df46fe6f8f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3541,
-      "title": "cert: CodeRoad completion leg \u2014 headless real-extension runs on Actions (025 pilot)",
-      "updated_at": "2026-11-02T06:30:17Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "c6085d2e53",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3542,
-      "title": "chore(quota): usage pack refresh (fresh points, series3 to Nov 1)",
-      "updated_at": "2026-11-02T06:30:33Z"
     }
   ],
   "schema": "operator-matrix/v1",

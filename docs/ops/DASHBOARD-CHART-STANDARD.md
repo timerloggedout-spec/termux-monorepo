@@ -43,9 +43,9 @@ keep them; the standard governs data + stamps, not the drawing code.
 | quota-usage.html | ✓ chart; CHAIN GAP: pack refresh is manual | quota-usage.json |
 | admin-graph.html | ✓ graph surface | challenge-admin-metrics.json |
 | countdowns.html | ✓ visual timers off feed | challenge-countdowns-feed.json |
-| quota.html | P1 — headroom + state charts (chartkit) | quota.json |
-| index.html | P1 — status distribution chart (chartkit) | status.json |
-| owner-records.html | P1 — records-by-class bar (chartkit) | owner-records envelope |
+| quota.html | ✓ headroom + state charts (chartkit, PR #3573) | quota.json |
+| index.html | ✓ receipts-by-kind + outcomes charts (chartkit) | status.json |
+| owner-records.html | ✓ records-by-class bar (chartkit) | owner-records envelope |
 | 3l0.html | P2 | 3l0-feed.json |
 | ates.html | P2 | ates-feed.json |
 | doe.html | P2 | doe-feed.json |

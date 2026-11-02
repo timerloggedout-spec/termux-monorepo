@@ -11,9 +11,11 @@
 <body>
 <header><div class="hero"><div><div class="eyebrow">Ops · owner records</div><h1>Owner <span>Records</span></h1><p class="lede">Authorizations, gates, clearances, bets and decisions — one envelope. This page renders L1 metadata only (title, state, holder, source). Record bodies are age ciphertext in the repo store and decrypt client-side, in the owner's browser, on the gated Vercel project — never at build time, never on a server. Classes with no register render NOT_ESTABLISHED; absence is the honest state.</p><div class="links" style="margin-top:1rem"><a class="button" href="./admin.html">Admin</a><a class="button" href="./tracking.html">Tracking</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/index.json">Envelope (index.json)</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/README.md">Store doc</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching envelope.</small></div></div></header>
 <main>
+<section aria-labelledby="charts"><div class="head"><h2 id="charts">Records by class</h2><span class="note" id="charts-stamp">—</span></div><div class="card"><div id="chart-classes"></div></div><p class="muted">Counts from the envelope only — bodies stay ciphertext (chart standard: docs/ops/DASHBOARD-CHART-STANDARD.md).</p></section>
 <div id="classes"></div>
 <footer>Owner Records · envelope: ops/owner-records/index.json (owner-records/v1) · bodies: ops/owner-records/bodies/ (age ciphertext, per-class recipients; private halves live only in the owner's vault + offline backup) · XML surface is Vercel-only (staged into the gated project, never served from Pages) · discovery is Admin + Tracking cross-links only — this page is not in the primary nav (D4)</footer>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const GH='https://github.com/timerloggedout-spec/termux-monorepo/blob/master/';
@@ -43,6 +45,9 @@ async function load(){
   $('freshness').textContent='Envelope loaded';
   $('generated').textContent='Schema '+(env.schema||'—')+' · generated '+(env.generated_at||'—')+' · '+total+' records · bodies stay ciphertext';
   $('classes').innerHTML=(env.classes||[]).map(classSection).join('');
+  const cst=CK.stampState(env.generated_at,Date.now(),86400000);
+  $('charts-stamp').textContent='Envelope generated '+(env.generated_at||'—')+(cst==='STALE'?' · STALE':(cst==='unknown'?' · stamp unknown':''));
+  $('chart-classes').innerHTML=CK.bars((env.classes||[]).map(c=>({label:c.class,value:(c.records||[]).length})));
 }
 load();setInterval(load,60000);
 </script>

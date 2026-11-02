@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wagering Book — Challenge Gantt</title>
+<!--
+  Renders ONLY data/wagering-book.json (schema moneyball.wagering-book/v1),
+  the join of the challenges wagering book (MoneyBall plane,
+  ops/agentic-gambling/book/challenges-book.json) with its calendar
+  anchors (deadline-reminders/v1, Tracking lane), built by
+  scripts/moneyball/wagering_book_feed.py. Bars span open -> knowable;
+  markers are the subject's landing, wall and settle points from the
+  same anchors the calendar fires on, so chart and calendar agree by
+  construction. Forecast is an OUTPUT class (naming-collapse amendment
+  #3830): the gold tick marks where forecasts on a subject score - at
+  settlement, at the issuer's record. There are no forecast rows, and
+  no expectation or win-probability value renders anywhere on this page.
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .chart{width:100%;height:auto;display:block}
+  .chip{display:inline-block;padding:0 8px;border-radius:10px;font-size:11px;border:1px solid var(--line);white-space:nowrap}
+  .chip.stale{border-color:var(--bad);color:var(--bad);font-weight:700}
+  .dim{color:var(--muted)}
+  .fctick{fill:var(--gold)}
+  .legend span{margin-right:1.1rem;white-space:nowrap}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">MoneyBall · Agentic Gambling — Challenges Book</p>
+<h1>The wagering book, on one timeline</h1>
+<p class="lede">Every wagerable subject in the challenges book as a bar from the book's open to the moment its outcome becomes knowable, with the landing, wall and settle points the deadline calendar fires on. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v1</code>) and nothing else. A subject whose knowable is a rule, not a date, renders open-ended — no date is invented for it.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading book…</p>
+<section>
+<div class="head"><h2>Challenge wagering book — Gantt (Nov 2 → Dec 12)</h2></div>
+<div class="card"><div id="gantt"></div>
+<p class="legend dim" id="legend"></p>
+<p class="dim" id="fcnote"></p>
+</div>
+</section>
+<section>
+<div class="head"><h2>Honesty &amp; sources</h2></div>
+<div class="card" id="notes"></div>
+</section>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// ==== pure logic (node-sim tested) ====
+function parseT(s){return Date.parse(s);}
+function staleOf(feed,nowMs){ if(!feed||!feed.generated_at) return false; return (nowMs-parseT(feed.generated_at))>48*3600*1000; }
+function ganttGeom(feed,w){
+  const t0=parseT(feed.horizon.start), t1=parseT(feed.horizon.end);
+  const labelW=370, padR=16, iw=w-labelW-padR;
+  const X=t=>+(labelW+iw*(t-t0)/(t1-t0)).toFixed(1);
+  const ticks=[]; for(let t=t0;t<t1;t+=7*86400000) ticks.push(t); ticks.push(t1);
+  const rows=feed.subjects.map(s=>{
+    const openEnded=s.knowable.kind!=="dated";
+    const endX=openEnded?X(t1):X(parseT(s.knowable.at));
+    return {id:s.id, openX:X(parseT(s.open)), endX:endX, openEnded:openEnded,
+      landingX:s.landing_at?X(parseT(s.landing_at)):null,
+      wallX:s.wall_at?X(parseT(s.wall_at)):null, soft:!!s.wall_soft,
+      settleX:openEnded?null:endX};
+  });
+  return {t0:t0, t1:t1, labelW:labelW, ticks:ticks.map(t=>({x:X(t), label:new Date(t).toISOString().slice(5,10)})), rows:rows};
+}
+if(typeof module!=="undefined"){ module.exports={parseT,staleOf,ganttGeom}; }
+// ==== end pure logic ====
+let FEED=null;
+function trunc(s,n){ s=String(s==null?"":s); return s.length>n? s.slice(0,n-1)+"…" : s; }
+function renderBook(nowMs){
+  const W=1120, g=ganttGeom(FEED,W), rowH=36, headH=24, top=30;
+  const totalH=top+FEED.subjects.length*rowH+Object.keys(FEED.family_label).length*headH+18;
+  let y=top, out='';
+  out+='<svg class="chart" viewBox="0 0 '+W+' '+totalH+'" role="img" aria-label="Wagering book Gantt">';
+  out+='<defs><pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="var(--gold)" opacity="0.25"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--gold)" stroke-width="2" opacity="0.5"/></pattern></defs>';
+  for(const tk of g.ticks){
+    out+='<line x1="'+tk.x+'" y1="'+(top-8)+'" x2="'+tk.x+'" y2="'+(totalH-14)+'" stroke="var(--line)" opacity="0.4"/>';
+    out+='<text x="'+tk.x+'" y="'+(top-14)+'" text-anchor="middle" fill="var(--muted)" font-size="11">'+tk.label+'</text>';
+  }
+  if(nowMs>=g.t0&&nowMs<=g.t1){ const nowX=g.labelW+(W-g.labelW-16)*(nowMs-g.t0)/(g.t1-g.t0);
+    out+='<line class="todayline" x1="'+nowX.toFixed(1)+'" y1="'+(top-8)+'" x2="'+nowX.toFixed(1)+'" y2="'+(totalH-14)+'" stroke="var(--ok)" stroke-width="1.5" opacity="0.7"/>'; }
+  let curFam=null;
+  FEED.subjects.forEach((s,i)=>{
+    const r=g.rows[i];
+    if(s.family!==curFam){ curFam=s.family;
+      out+='<text x="4" y="'+(y+16)+'" fill="var(--gold)" font-size="12" font-weight="700">'+esc(FEED.family_label[s.family]||s.family)+'</text>'; y+=headH; }
+    const cy=y+rowH/2;
+    out+='<g><title>'+esc(s.label)+' · settles by '+esc(s.settles_by)+' · knowable: '+esc(s.knowable.text)+'</title>';
+    out+='<text x="8" y="'+(cy-1)+'" fill="var(--fg,#e6e6e6)" font-size="12">'+esc(trunc(s.label,54))+'</text>';
+    out+='<text x="8" y="'+(cy+13)+'" fill="var(--muted)" font-size="10">knowable: '+esc(trunc(s.knowable.text,44))+' · settles: '+esc(trunc(s.settles_by,30))+'</text>';
+    out+='<rect class="bar" x="'+r.openX+'" y="'+(cy-6)+'" width="'+Math.max(r.endX-r.openX,2)+'" height="12" fill="'+(r.openEnded?'url(#hatch)':'var(--gold)')+'" opacity="'+(r.openEnded?'1':'0.75')+'"/>';
+    if(r.openEnded) out+='<text x="'+(r.endX-4)+'" y="'+(cy+4)+'" text-anchor="end" fill="var(--gold)" font-size="12" font-weight="700">→</text>';
+    if(r.landingX!=null) out+='<path class="landingmark" d="M'+r.landingX+','+(cy-9)+' L'+(r.landingX+6)+','+cy+' L'+r.landingX+','+(cy+9)+' L'+(r.landingX-6)+','+cy+' Z" fill="var(--ok)"/>';
+    if(r.wallX!=null) out+='<path class="wallmark" d="M'+r.wallX+','+(cy-9)+' L'+(r.wallX+7)+','+(cy+8)+' L'+(r.wallX-7)+','+(cy+8)+' Z" fill="'+(r.soft?'none':'var(--bad)')+'" stroke="var(--bad)" stroke-width="1.5"/>';
+    if(r.settleX!=null) out+='<circle class="settlemark" cx="'+r.settleX+'" cy="'+cy+'" r="4.5" fill="var(--fg,#e6e6e6)"/>';
+    const fcX=r.settleX!=null? r.settleX : r.endX;
+    out+='<text class="fctick" x="'+fcX+'" y="'+(cy-11)+'" text-anchor="middle" font-size="11">✦</text>';
+    out+='</g>'; y+=rowH;
+  });
+  out+='</svg>';
+  $("gantt").innerHTML=out;
+  $("legend").innerHTML='<span>▬ bar: open → knowable</span><span>◆ landing</span><span>▲ wall (hollow = soft)</span><span>● settle point</span><span><span class="fctick">✦</span> forecasts score here — at settlement, at the issuer record</span><span>hatched → knowable by rule, date NOT_ESTABLISHED</span>';
+  $("fcnote").textContent='Forecast layer: '+FEED.forecast_layer;
+  $("notes").innerHTML='<ul>'+FEED.honesty.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ul><p class="dim">Sources — book: '+esc(FEED.sources.book)+' · register: '+esc(FEED.sources.register)+'</p>';
+  $("meta").innerHTML='Book opened '+esc(FEED.book.opened)+' · '+FEED.book.subjects+' subjects · feed '+esc(FEED.generated_at)+(staleOf(FEED,nowMs)? ' <span class="chip stale">STALE</span>' : '');
+}
+fetch("./data/wagering-book.json",{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(j=>{ FEED=j; renderBook(Date.now()); }).catch(e=>{ $("meta").innerHTML='<span style="color:var(--bad);font-weight:700">FEED ERROR</span> '+esc(e.message); });
+</script>
+</body>
+</html>

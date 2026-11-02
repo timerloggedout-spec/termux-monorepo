@@ -98,7 +98,8 @@ jobs:
         run: |
           python3 -B scripts/telemetry_ingest/results_index.py \
             --root . \
-            --out ops/telemetry/results-index.json
+            --out ops/telemetry/results-index.json \
+            --viz-out apps/tribute-dashboard/data/results-index-feed.json
 
       - name: Session pointers (validation-lane correlation shape)
         run: |

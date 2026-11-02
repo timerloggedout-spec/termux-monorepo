@@ -64,6 +64,10 @@ jobs:
             [ -f "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json" || true
             printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' \
               "$GITHUB_SHA" "$SHORT" "$GITHUB_REF_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
+            # Stamp the version manifest into the staged copy (Pages parity)
+            # so the promoted production mirror carries channel=production +
+            # real sha/built_at, not the committed dev+unbuilt manifest.
+            python3 "$GITHUB_WORKSPACE/scripts/build_dashboard_manifest.py" --root "$DEST" --channel production --source-ref "$GITHUB_REF_NAME" --source-sha "$GITHUB_SHA" --version-prefix "1.0.1"
             rm -rf .vercel/output
             if URL=$(vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE"); then
               echo "deployed $P -> $URL"

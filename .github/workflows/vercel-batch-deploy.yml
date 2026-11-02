@@ -130,6 +130,11 @@ jobs:
               [ -f "$G/help-wanted-status.json" ] && cp "$G/help-wanted-status.json" "$DEST/data/status.json"
               [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json"
               printf '{"source_sha":"%s","short_sha":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
+              # Stamp the version manifest into the staged copy (Pages parity:
+              # help-wanted-dashboard-deploy stamps its _tribute copy) so the
+              # Vercel mirror reports channel=production + real sha/built_at
+              # instead of the committed dev+unbuilt manifest. Source stays clean.
+              python3 "$GITHUB_WORKSPACE/scripts/build_dashboard_manifest.py" --root "$DEST" --channel production --source-ref "${GITHUB_REF_NAME:-master}" --source-sha "$GITHUB_SHA" --version-prefix "1.0.1" || echo "::warning::version-manifest stamp failed for $P"
             fi
             TS=$(date +%s)
             if vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE" > "$RUNNER_TEMP/$P.url" 2> "$RUNNER_TEMP/$P.err"; then

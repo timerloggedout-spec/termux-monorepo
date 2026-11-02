@@ -1,20 +1,20 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T00:40:00Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T01:09:05Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T00:40:00Z` (merged 150 · open 172) · lane-events(Neon) status=`ok` count=`6366` read_at=`2026-11-02T00:40:00Z`
+Sources: PR feed read_at=`2026-11-02T01:09:05Z` (merged 150 · open 173) · lane-events(Neon) status=`ok` count=`6450` read_at=`2026-11-02T01:09:05Z`
 
-Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknown=6
+Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | Closed as foundation for D1 (StudySprint builds on the D0 package). |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | NOT_ESTABLISHED | Routes after M3 or when builders idle |
-| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | active | #3257 `88e909fb49cc` 2026-11-01T21:30:35Z | Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT |
+| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | unknown | NOT_ESTABLISHED | Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | unknown | NOT_ESTABLISHED | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair · ARMS Δ (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip ×2, agent ∅ invoked — runs 41301295882/41321691938) ⇒ live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN · Gemini OUT · DeepSeek DOWN}; restoration ⇒ desk flags D2 seat same-turn |
-| challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | #3268 `5808254c827f` 2026-11-01T21:38:16Z | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged |
+| challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | unknown | NOT_ESTABLISHED | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first |
-| challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | active | #3272 `5f3084a9fb80` 2026-11-01T21:42:36Z | NOT_ESTABLISHED |
+| challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | active | #3383 `22e19e1cb7d0` 2026-11-02T00:17:58Z | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | in-flight | NOT_ESTABLISHED | land/close PR #3063 — viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) — fixture + schema pins |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
@@ -23,12 +23,12 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknow
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #3332 `ceb0ef30fe28` 2026-11-01T23:41:26Z | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #2907 — fix: scope free-tier opportunity cost to repo work |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | #3276 `dc25e6848b88` 2026-11-01T21:45:22Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3412 `f34391105a5b` 2026-11-02T00:37:28Z | land/close PR #3406 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3280 `bd8a5654b768` 2026-11-01T21:49:34Z | land/close PR #3414 — fix(graph-matrix): census script — retry w/ backoff on GraphQL secondary rate limits |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3453 `6050e1975ae5` 2026-11-02T01:08:47Z | land/close PR #3442 — chore(telemetry): refresh HindSight+Provenance ingest |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3414 `0fd3c4b139fe` 2026-11-02T00:40:17Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3396 `b8afd3fb70a8` 2026-11-02T00:33:39Z | land/close PR #3411 — feat(dispatch): wire provider-invoke to the stamp fan-out |
+| swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3445 `5fd0979ed8a9` 2026-11-02T01:04:46Z | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #2168 `b60d62bf4781` 2026-11-02T00:19:49Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
@@ -55,7 +55,7 @@ Campaigns: 16 · joined: 2 · distinct instances: 9 · providers: Muse, openrout
 | live-4-dispatch-framing | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | nc-1-notation-compliance | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | pilot-1-context-routing-x-compression | NOT_ESTABLISHED (design_only) | | | | | | | | | |
-| routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 1 | 0 |
+| routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 2 | 0 |
 | util-1-provider-rotation | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-1-duckduckgo | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-2-brave | NOT_ESTABLISHED (design_only) | | | | | | | | | |
@@ -63,4 +63,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 9 · providers: Muse, openrout
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 87/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 81/150 (extend ops/tracking/projects.json match rules)

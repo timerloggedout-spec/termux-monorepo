@@ -64,11 +64,12 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Install PostgreSQL client
+      - name: Install PostgreSQL client (major pinned to the service)
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq postgresql-client >/dev/null
-          psql --version; pg_dump --version
+          sudo apt-get install -y -qq postgresql-client-16 >/dev/null
+          echo "/usr/lib/postgresql/16/bin" >> "$GITHUB_PATH"
+          /usr/lib/postgresql/16/bin/psql --version; /usr/lib/postgresql/16/bin/pg_dump --version
 
       - name: Build database
         run: |

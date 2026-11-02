@@ -45,7 +45,7 @@ export DONT_PROMPT_WSL_INSTALL=1
 # baked state is the prime suspect. UD is exported for the probes below.
 export UD=/tmp/vscode-ud-run
 mkdir -p "$UD"
-(dbus-run-session -- xvfb-run -a code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage \
+(dbus-run-session -- xvfb-run -a -s "-screen 0 1024x768x24" code --no-sandbox --user-data-dir "$UD" --disable-gpu --disable-dev-shm-usage --disable-workspace-trust \
   --extensions-dir /opt/vscode-extensions \
   /workspace/project > "$EV/code.log" 2>&1 &)
 echo "code launched" >> "$LOG"
@@ -83,11 +83,18 @@ fi
 touch "$EV/GO"
 echo "GO raised" >> "$LOG"
 
-# Post-launch probes: prove VS Code + extensions actually came up and find
-# CodeRoad's REAL session storage (the env-path guess is uncalibrated).
+# Light early probe only; the full probe block runs after the RESULT wait
+# so it shows end-of-run state (early probes kept missing late exthost).
 sleep 25
+ps aux | grep -iE "code|electron" | grep -v grep | head -5 > "$EV/session-early.txt" 2>&1 || true
+
+for i in $(seq 1 72); do
+  [ -f "$EV/RESULT.json" ] && break
+  sleep 5
+done
+
 {
-  echo "== probes =="
+  echo "== probes (end of run) =="
   cat /proc/version || true
   which dbus-run-session xvfb-run || true
   ls /opt/vscode-extensions 2>/dev/null || true
@@ -98,7 +105,7 @@ sleep 25
   echo "-- coderoad-ish files --"
   find "$UD" /root/.config -iname "*coderoad*" 2>/dev/null | head -20
   echo "-- logs + User trees --"
-  ls -R "$UD"/logs 2>/dev/null | head -30 || echo "(no logs dir)"
+  ls -R "$UD"/logs 2>/dev/null | head -40 || echo "(no logs dir)"
   find "$UD"/User -maxdepth 3 2>/dev/null | head -30
   echo "-- GUI session main.log tail --"
   for d in "$UD"/logs/*/; do
@@ -116,11 +123,6 @@ if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1; then
     --disable-gpu --disable-dev-shm-usage --extensions-dir /opt/vscode-extensions \
     /workspace/project > "$EV/code-fg.txt" 2>&1 || true
 fi
-
-for i in $(seq 1 72); do
-  [ -f "$EV/RESULT.json" ] && break
-  sleep 5
-done
 if [ -f "$EV/RESULT.json" ]; then
   cat "$EV/RESULT.json"
 else

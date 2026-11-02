@@ -92,6 +92,13 @@
   "dispatch": "dispatch.py + llm/adapters: free-only gate FREE_PROVIDERS={gemini, openrouter}; paid routes refused unless explicitly enabled; SystemOne adapter via observatory/decide.py",
   "hindsight": "trial records are retained toward HindSight; live retain currently fails at the HindSight deployment surface (payloads persist in-repo) — GAP, see gaps[]",
   "coded_quirk": "trial.run_trial filters failed jev/kev entries before zipping with artifacts in laya.synthesize — mid-list failures can mispair verdicts (as-coded, unfixed)",
+  "variance_requirement": {
+   "owner_requirement": "2026-11-02: the weighted merger requires variances for optimizations — the 0.7 Jev / 0.3 Kev weights are constants today; optimizing them requires per-source variance data.",
+   "required_fields_per_trial_population": ["jev_score_variance", "kev_score_variance", "jev_kev_covariance", "jev_kev_disagreement_rate"],
+   "carriers": ["trial records", "leaderboard output"],
+   "purpose": "the variance series must exist BEFORE any weight tuning is attempted",
+   "variance_state": "NOT_ESTABLISHED — trial/leaderboard outputs carry no dispersion fields today; completed-trial n is single-digit (first completed trial 2026-10-27), so no tuning-grade series exists"
+  },
   "first_completed_trial": "run 40509162104 SUCCESS 2026-10-27 (OpenRouter free route)"
  },
  "gaps": [

@@ -1,0 +1,54 @@
+{
+  "baseline_sha": "6af762d1e232eaa64827211ea7b6251bcd936233",
+  "candidate_sha": "828113dc46a587e2748c599c8cd03a7904588bf9",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": 2,
+    "dispatch_status": "completed",
+    "quota_cost_class": "metered",
+    "selection_reason": "designed set: complete fan-out wiring across dispatch routes; seat build arm = only live build class (Jules down, Gemini CLI out, DeepSeek tunnel down)",
+    "set_index": 2,
+    "task_class": "build"
+  },
+  "observed_at": "2026-11-02T01:04:53Z",
+  "origin": "live",
+  "outcome": "PR #3428 merged (guard x2 + hygiene success); stamp re-fired under the push-retry fan-out (earlier attempts lost to push races, runs 41369412187/41369817802)",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "Muse",
+    "instance": {
+      "context": "fan-out wiring completion set (build-class)",
+      "instance_key": "1a60e8329fb6c7300ce5611eb6b9a5009b959a9fa032d3f4a8cfbf7801ba0fdd",
+      "model": "Muse Spark 1.3",
+      "moniker": "optimizations-assurance",
+      "provider": "Muse",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md",
+        "sha256": "7d7481cc3c5249afa836867a40c3736721e1fd7bee05fdf40c8cd1ab818823c1"
+      },
+      "tools": {
+        "ref": "scripts/dispatch/instance/build-tools.json",
+        "sha256": "956d13565c31af2d613e2d2db5b0cce7fa0410ea975004e57c2ec1e37a72a9ba"
+      }
+    },
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "Muse Spark 1.3",
+    "provider": "Muse"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

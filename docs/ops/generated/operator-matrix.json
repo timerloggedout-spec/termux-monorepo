@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 401,
-    "open_prs": 177,
+    "open_prs": 179,
     "pr_classes": {
       "CANDIDATE": 86,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 86,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 175,
+      "prs": 177,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:37:31Z",
+  "generated_at": "2026-11-02T09:40:35Z",
   "issues_unlabelled": [
     308,
     343,
@@ -147,10 +147,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "868b4a7044"
+    "sha": "5d40dc9eea"
   },
   "prs": [
     {
@@ -222,6 +222,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "04c56fb72e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T09:37:25Z"
     },
     {
       "class": "CANDIDATE",
@@ -416,10 +430,10 @@
       },
       "head_sha": "e17f7db4a0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1441,
       "title": "feat(triage): reconcile official quota before dispatch",
-      "updated_at": "2026-10-26T23:11:16Z"
+      "updated_at": "2026-11-02T09:39:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -1843,20 +1857,6 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "not_reported",
-        "smoke": "queued"
-      },
-      "head_sha": "04c56fb72e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:37:18Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
         "smoke": "not_reported"
       },
       "head_sha": "71856c6976",
@@ -2573,12 +2573,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8f0cbe90f2",
+      "head_sha": "9e9d1625bd",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T09:35:26Z"
+      "updated_at": "2026-11-02T09:39:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2635,6 +2635,34 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "4dadc44f6c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3707,
+      "title": "g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeout, no artifact)",
+      "updated_at": "2026-11-02T09:40:18Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "c511380b89",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3709,
+      "title": "cert(coderoad): prebuild image to GHCR, pull per run (dpkg-throughput fix)",
+      "updated_at": "2026-11-02T09:38:34Z"
     }
   ],
   "schema": "operator-matrix/v1",

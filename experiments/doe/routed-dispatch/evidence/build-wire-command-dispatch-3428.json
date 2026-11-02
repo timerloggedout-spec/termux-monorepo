@@ -1,0 +1,16 @@
+{
+  "dispatch_id": "build-wire-command-dispatch-3428",
+  "pr": 3428,
+  "merged": true,
+  "merge_sha": "454480be7731705f4c33ebd4374f6d69f5f29123",
+  "gates": {
+    "guard": [
+      "success",
+      "success"
+    ],
+    "hygiene": "success",
+    "ci_tests": null
+  },
+  "task": "build dispatch set 2/3: wire provider-command-dispatch.yml to the stamp fan-out",
+  "diff_summary": "provider-command-dispatch.yml gains a stamp job (needs dispatch, always; Swarm App mint; fan-out dispatch with the run's canonical stamp)"
+}

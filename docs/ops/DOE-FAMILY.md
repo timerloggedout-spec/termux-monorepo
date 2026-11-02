@@ -483,9 +483,39 @@ through an admitted campaign design.
   spec seat: D3 39fc8b89 — spec pull in flight; mechanism
   NOT_ESTABLISHED in this register until the seat's spec lands).
 - **strands-patterns v0**, incl. the AST-complexity stamp feature
-  (candidate; spec seat: Swarm 6628d41d — spec pull in flight;
-  mechanism NOT_ESTABLISHED in this register until the seat's
-  spec lands).
+  (candidate; spec: Swarm seat 6628d41d eval, 2026-11-01; full
+  eval text at main, sub d3660a72). A 4-component concept set,
+  verdicts recorded as the concept's evidence:
+  (1) *Swarm pattern* (Strands Agents SDK, Apache-2.0: co-located
+  agents self-coordinating via shared memory + dynamic peer
+  handoffs; siblings agents-as-tools, Graph, A2A) — DEFER: our
+  Swarm is a provider population coordinated via GitHub, not an
+  in-process runtime; no AWS estate/home; self-organizing handoffs
+  conflict with designed-where-deliberate doctrine. Graph approx
+  our workflow gates (already operated).
+  (2) *AST-complexity stamp feature* — PILOT-WORTHY, SDK-free:
+  Tree-sitter parse of a dispatch's produced diff → per-unit
+  features {cyclomatic (decision-point count), max nesting depth,
+  function size} emitted as extra stamp fields via the existing
+  fan-out; purpose = per-arm reliability/complexity drift across
+  repeat runs of a task class (candidate feature for 3L0/DoE
+  folds). Guardrails: observational-only until corroborated like
+  other stamp features; gaming risk explicit in the source —
+  never a standalone verdict input. Evidence honesty (seat's
+  record): the source article names no Tree-sitter and gives no
+  CI aggregation/thresholds; the cross-run benchmark method is
+  owner synthesis, recorded as such.
+  (3) *Durable session storage (DynamoDB)* — NO FIT (current
+  substrate): our state is git-store + Neon; overlaps HindSight's
+  memory role. Recorded correction: the source makes no
+  cross-region/failover claim — any failover property attributed
+  to this candidate is unevidenced.
+  (4) *OTEL observability pattern* — informational; parallels our
+  stamp telemetry, no registration action.
+  Versioning: v0 = as-evaluated 2026-11-01 by the Swarm seat;
+  verdicts revisable only on new firsthand data (a hosted-runtime
+  decision reopens 1+3; a complexity-feature pilot graduates 2's
+  evidence class).
 
 ```text
 experiments/doe/<campaign-id>/

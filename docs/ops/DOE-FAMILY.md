@@ -698,9 +698,14 @@ version and compared continuously until culling retires a version.
   lived only as work items (issue #3812) + the continuous
   audit — unversioned. Measured quantity = receipt coverage
   {workflow coverage over the versioned selected set S -
-  run-level receipt rate per conclusion class - parity gap =
-  rate(success) - rate(failure/cancelled), structurally ~full
-  at open per #3812's success-only emitter}. Improvement
+  run-level receipt rate per STATUS class - parity gap =
+  status-blind (event-type) success count - status-true
+  success rate; CORRECTED 2026-11-02 (Stewardship firsthand,
+  doe-expert verified vs the emitter script): NO conclusion
+  filter exists — #3812's success-only claim superseded; the
+  gap is measurement, not emission. Denominator at open:
+  1 selected workflow of 271, 9 receipt runs ever, dormant
+  since 2026-10-23, artifact-only output}. Improvement
   proposals = versioned entries {statement - basis -
   evidence_requirement - state}; unevidenced = HELD (rule 9).
   Conformity clauses K1-K7 bind Stewardship step 6 (receipt

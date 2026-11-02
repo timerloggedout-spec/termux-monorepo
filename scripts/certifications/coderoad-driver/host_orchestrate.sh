@@ -170,13 +170,15 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
 {
   echo "== output-channel files =="
   find "$UD/logs" -type f \( -iname "*coderoad*" -o -path "*output*" \) 2>/dev/null | head -10
-  for f in $(find "$UD/logs" -type f -iname "*coderoad*" 2>/dev/null | head -3); do
-    echo "== $f =="; tail -50 "$f"
+  find "$UD/logs" -type f -iname "*coderoad*" -print0 2>/dev/null | while IFS= read -r -d '' f; do
+    echo "== $f =="; tail -60 "$f"
   done
   for db in "$UD"/User/workspaceStorage/*/state.vscdb "$UD"/User/globalStorage/state.vscdb; do
     [ -f "$db" ] || continue
-    echo "== strings $db (coderoad/complete context) =="
-    strings "$db" 2>/dev/null | grep -i "coderoad\|complete\|tutorial" | head -30
+    echo "== strings $db (coderoad keys) =="
+    strings "$db" 2>/dev/null | grep -o "coderoad:[a-zA-Z]*" | sort -u | head -20
+    echo "== strings $db (complete/position context) =="
+    strings "$db" 2>/dev/null | grep -i "\"complete\"\|currentPosition\|step_complete\|tutorial_complete" | head -15
   done
 } > "$EV/coderoad-state.txt" 2>&1 || true
 

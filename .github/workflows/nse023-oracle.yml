@@ -13,12 +13,17 @@ on:
         description: "Example file under research/nse-023/examples/"
         required: true
         default: "P001.lean"
+      dependency:
+        description: "Pinned dependency leg: batteries | mathlib"
+        required: true
+        default: "batteries"
 
 permissions:
   contents: read
 
 jobs:
   oracle:
+    if: inputs.dependency == 'batteries'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -88,4 +93,77 @@ jobs:
         if: always()
         with:
           name: nse023-verdict
+          path: verdict.json
+
+  oracle-mathlib:
+    if: inputs.dependency == 'mathlib'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout pinned Mathlib
+        uses: actions/checkout@v4
+        with:
+          repository: leanprover-community/mathlib4
+          ref: cc8b65263ab8ef05dd813bccd999400f0303fdcc
+          path: mathlib-pin
+      - name: Install elan toolchain (pin's lean-toolchain)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd mathlib-pin
+          elan toolchain install "$(cat lean-toolchain)"
+          elan override set "$(cat lean-toolchain)"
+      - name: Fetch Mathlib build cache (pin-exact)
+        id: build
+        continue-on-error: true
+        run: |
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd mathlib-pin
+          lake exe cache get
+      - name: Compile example against the pin
+        id: compile
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd mathlib-pin
+          lake env lean "$GITHUB_WORKSPACE/research/nse-023/examples/${{ inputs.example }}" > lean-out.txt 2>&1
+          cat lean-out.txt
+      - name: Emit verdict (fail-closed)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          build = "${{ steps.build.outcome }}"
+          comp = "${{ steps.compile.outcome }}"
+          out = ""
+          try:
+              out = open("mathlib-pin/lean-out.txt").read()
+          except Exception:
+              pass
+          if build != "success" or comp == "":
+              verdict = "INCONCLUSIVE"
+          elif comp != "success" or "error" in out.lower():
+              verdict = "FAIL"
+          elif "axioms" in out.lower():
+              verdict = "PASS"
+          else:
+              verdict = "INCONCLUSIVE"
+          rec = {"proposition_example": "${{ inputs.example }}",
+                 "dependency": "mathlib",
+                 "pin": "cc8b65263ab8ef05dd813bccd999400f0303fdcc",
+                 "toolchain": "leanprover/lean4:v4.36.0-rc2",
+                 "build_outcome": build, "compile_outcome": comp,
+                 "lean_output_tail": out[-2000:], "verdict": verdict}
+          open("verdict.json", "w").write(json.dumps(rec, indent=2))
+          print(json.dumps(rec, indent=2))
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as fh:
+              fh.write(f"## NSE-023 oracle verdict (mathlib): {verdict}\n\n```json\n{json.dumps(rec, indent=2)}\n```\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nse023-verdict-mathlib
           path: verdict.json

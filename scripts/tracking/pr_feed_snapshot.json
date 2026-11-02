@@ -1,8 +1,47 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T10:53:22Z",
+ "read_at": "2026-11-02T10:59:12Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3768,
+   "title": "tribute normalization bundle D: dashboard deploy/preview + apps dir + Vercel project names",
+   "merged_at": "2026-11-02T10:57:53Z",
+   "updated_at": "2026-11-02T10:58:28Z",
+   "created_at": "2026-11-02T10:10:55Z",
+   "merge_commit_sha": "6428bbcf6aecd261655c9dfa901054210f005817",
+   "head_ref": "docs/tribute-bundle-d",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3768",
+   "merged": true
+  },
+  {
+   "number": 3793,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T10:57:12Z",
+   "updated_at": "2026-11-02T10:58:01Z",
+   "created_at": "2026-11-02T10:57:07Z",
+   "merge_commit_sha": "7bd71ab3662d4ae62c6d873f93bfa1470b5a09a0",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3793",
+   "merged": true
+  },
+  {
+   "number": 3792,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T10:49:55Z",
+   "updated_at": "2026-11-02T10:53:53Z",
+   "created_at": "2026-11-02T10:49:50Z",
+   "merge_commit_sha": "2c2a73129bf62e476f5d4a2beecaa6f5f30323ac",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3792",
+   "merged": true
+  },
   {
    "number": 3791,
    "title": "feat(vercel): dispatch-only Bundle D project rename tool (standby)",
@@ -14,19 +53,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3791",
-   "merged": true
-  },
-  {
-   "number": 3792,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T10:49:55Z",
-   "updated_at": "2026-11-02T10:50:00Z",
-   "created_at": "2026-11-02T10:49:50Z",
-   "merge_commit_sha": "2c2a73129bf62e476f5d4a2beecaa6f5f30323ac",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3792",
    "merged": true
   },
   {
@@ -1926,42 +1952,29 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3594",
    "merged": true
-  },
-  {
-   "number": 3603,
-   "title": "cert(coderoad): de-hang image builds \u2014 split steps, old-releases sources, drop unminimize, pinned VSIX",
-   "merged_at": "2026-11-02T07:48:36Z",
-   "updated_at": "2026-11-02T07:48:36Z",
-   "created_at": "2026-11-02T07:35:34Z",
-   "merge_commit_sha": "261aaa0e3d7c9bd27b5b1fd4cfc605074598a100",
-   "head_ref": "cert/coderoad-build-fixes",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3603",
-   "merged": true
-  },
-  {
-   "number": 3611,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T07:44:42Z",
-   "updated_at": "2026-11-02T07:46:10Z",
-   "created_at": "2026-11-02T07:44:38Z",
-   "merge_commit_sha": "72a54e612a0f251dc5eb2ec52bdcc018d9541a08",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3611",
-   "merged": true
   }
  ],
  "open": [
   {
+   "number": 3794,
+   "title": "feat(vercel): rename tool also swaps production domains to new names",
+   "merged_at": null,
+   "updated_at": "2026-11-02T10:58:51Z",
+   "created_at": "2026-11-02T10:57:27Z",
+   "merge_commit_sha": "418f9682395c66a4366803b52eb743b32e82b88d",
+   "head_ref": "ops/vercel-rename-domain-swap-2026-11-02",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3794",
+   "merged": false
+  },
+  {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-02T10:52:36Z",
+   "updated_at": "2026-11-02T10:58:22Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "248ebf2a0bef514b83463a8ffec873792a37baee",
+   "merge_commit_sha": "e27666fce0c2802d090769a04d2d7e802c540d82",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -1969,25 +1982,12 @@
    "merged": false
   },
   {
-   "number": 3768,
-   "title": "tribute normalization bundle D: dashboard deploy/preview + apps dir + Vercel project names",
-   "merged_at": null,
-   "updated_at": "2026-11-02T10:52:28Z",
-   "created_at": "2026-11-02T10:10:55Z",
-   "merge_commit_sha": null,
-   "head_ref": "docs/tribute-bundle-d",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3768",
-   "merged": false
-  },
-  {
    "number": 3442,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-02T10:50:18Z",
+   "updated_at": "2026-11-02T10:58:16Z",
    "created_at": "2026-11-02T00:58:48Z",
-   "merge_commit_sha": "dd12e552aaadf8e915c614980b9e8005cd4cb86a",
+   "merge_commit_sha": "7f2bfe2e82b634ec1b36a6803e4b518e73f4a8f8",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],

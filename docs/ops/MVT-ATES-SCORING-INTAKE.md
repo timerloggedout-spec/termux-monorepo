@@ -98,6 +98,30 @@ Canonical record for this doctrine: the DoE expert lane's family
 record (`docs/ops/DOE-FAMILY.md`); this section states its
 application to MVT/ATES intake.
 
+## Attribution corroboration — rule 9 (owner, 2026-11-01)
+
+Canonical: DOE-FAMILY rule 9 ∧ DOE-SCORING-INTAKE §Attribution
+corroboration (PR #3468). Application to this intake: a record that
+carries actor attribution names its basis in `metrics` (scalar keys,
+per the schema's metrics value types):
+
+| metrics key | Format / rule |
+|---|---|
+| `attribution_actor` | actor the row is attributed to |
+| `attribution_legs` | comma-joined legs from the evidence chain {stamp, trailer, manifest, git_author, app_bot} |
+| `attribution_corroborated` | `"true"` / `"false"` — true = ≥2 independent legs agree, or Telemetry's provenance-corroboration verdict |
+
+Rules: **population and outcome scoring are unaffected** — records
+stand as records. **Actor-keyed weighting** (per-actor / per-instance
+roll-ups) consumes only corroborated attribution: a single-leg mark
+is UNCORROBORATED — held out of actor weights and flagged, never
+taken at face value (some signings are false). A record with no
+attribution keys claims no attribution (neither false nor
+corroborated). Current consequence: rows whose only attribution leg
+is their instance stamp (e.g. the routed-dispatch build-wire set)
+count fully for population/outcome and are held out of actor
+weighting until a second leg lands.
+
 ## Population check (how "populated" is judged)
 
 Scoring shows populated when, for a campaign, committed records exist

@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-02T13:55:05Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-02T14:02:32Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `b87249e9ef` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `bc4a6c281a` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 419 issues, 187 PRs. PR classes: EXTRACT 6 / CANDIDATE 86 / NEED_EVIDENCE 95 / SUPERSEDE 0.
+**Open inventory:** 419 issues, 181 PRs. PR classes: EXTRACT 5 / CANDIDATE 87 / NEED_EVIDENCE 89 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -13,31 +13,31 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 
 | PR | Class | Family | Head | Hygiene | Smoke | Mergeable | Title |
 |----|-------|--------|------|---------|-------|-----------|-------|
-| #1469 | EXTRACT | unlabelled | `c7f74de860` | success | success | unstable | test(observatory): restore upstream provenance PR validation |
 | #1498 | EXTRACT | unlabelled | `0a81e9b01c` | success | success | unstable | Antigravity CLI: collaborative use cases, provisioning proposal, offline readine |
 | #1514 | EXTRACT | unlabelled | `13f795adad` | success | success | unstable | feat(antigravity): isolated secondary operational pilot (#1497) |
 | #1540 | EXTRACT | unlabelled | `97c0c5649f` | success | success | unstable | feat(msm): implement MSM-005 paper-point accounting and rebuildable CSV |
 | #1541 | EXTRACT | unlabelled | `e9fb8f1d81` | success | success | unstable | feat: implement THUB-017 Research and existing MSM-005 paper accounting |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
-| #386 | CANDIDATE | other | `3c2511dbab` | success | success | dirty | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
-| #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | dirty | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
-| #527 | CANDIDATE | unlabelled | `60fc3e697b` | success | success | dirty | ops: close admission and pagination stall evidence gaps |
+| #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
+| #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
+| #527 | CANDIDATE | unlabelled | `60fc3e697b` | success | success | unknown | ops: close admission and pagination stall evidence gaps |
 | #578 | CANDIDATE | unlabelled | `47868ebb21` | success | success | unknown | feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster |
-| #605 | CANDIDATE | unlabelled | `b8b624d149` | success | success | dirty | feat(ar-18): extend dynamic capability spine with Paper2Agent research |
+| #605 | CANDIDATE | unlabelled | `b8b624d149` | success | success | unknown | feat(ar-18): extend dynamic capability spine with Paper2Agent research |
 | #752 | CANDIDATE | unlabelled | `b437529907` | success | success | unknown | feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts |
 | #761 | CANDIDATE | unlabelled | `f3473cadfe` | success | success | unknown | lane: Desktop Commander fork + Android execution alternatives |
-| #829 | CANDIDATE | unlabelled | `0c5d29e473` | success | success | dirty | feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support |
+| #829 | CANDIDATE | unlabelled | `0c5d29e473` | success | success | unknown | feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support |
 | #970 | CANDIDATE | unlabelled | `4544ed8201` | success | success | unknown | Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alte |
-| #1278 | CANDIDATE | unlabelled | `e650476044` | success | success | dirty | ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) — REV |
-| #1301 | CANDIDATE | unlabelled | `4d18fdff62` | success | success | dirty | docs(telemetry): add equation registry and Wolfram verification |
+| #1278 | CANDIDATE | unlabelled | `e650476044` | success | success | unknown | ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) — REV |
+| #1301 | CANDIDATE | unlabelled | `4d18fdff62` | success | success | unknown | docs(telemetry): add equation registry and Wolfram verification |
 | #1436 | CANDIDATE | unlabelled | `db77673cf7` | success | success | unknown | feat(dashboard): salvage operational Hindsight dashboard onto current master |
-| #1441 | CANDIDATE | unlabelled | `e17f7db4a0` | success | success | dirty | feat(triage): reconcile official quota before dispatch |
-| #1470 | CANDIDATE | unlabelled | `d2778bcc25` | success | success | dirty | feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| #1494 | CANDIDATE | unlabelled | `8464945ec4` | success | success | dirty | 📖 Linguist: conversational steganography cipher & notation matrices |
+| #1441 | CANDIDATE | unlabelled | `e17f7db4a0` | success | success | unknown | feat(triage): reconcile official quota before dispatch |
+| #1469 | CANDIDATE | unlabelled | `c7f74de860` | success | success | unknown | test(observatory): restore upstream provenance PR validation |
+| #1470 | CANDIDATE | unlabelled | `d2778bcc25` | success | success | unknown | feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
+| #1494 | CANDIDATE | unlabelled | `8464945ec4` | success | success | unknown | 📖 Linguist: conversational steganography cipher & notation matrices |
 | #1499 | CANDIDATE | unlabelled | `0c3049a96f` | success | success | unknown | 🛡️ Sentinel: prevent parent symlink hijacking in obsidian server token read |
 | #1510 | CANDIDATE | unlabelled | `559607ff39` | success | success | unknown | ⚡ Bolt: optimize workflow catalog generation and fingerprint caching |
-| #1513 | CANDIDATE | unlabelled | `04c92a1763` | success | success | dirty | test(observatory): verify Gravitee fork upstream identity |
+| #1513 | CANDIDATE | unlabelled | `04c92a1763` | success | success | unknown | test(observatory): verify Gravitee fork upstream identity |
 | #1516 | CANDIDATE | unlabelled | `47d12cb4e3` | success | success | unknown | feat(orchestration): add deterministic DAG reference primitive |
 | #1531 | CANDIDATE | proposal | `7f18ff5b20` | success | success | unknown | docs: propose Research integration and paper-wallet accounting with native track |
 | #1537 | CANDIDATE | unlabelled | `41f5d318cd` | success | success | unknown | docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel |
@@ -105,25 +105,25 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
 | #3763 | CANDIDATE | unlabelled | `50bba792c7` | success | success | unknown | archwiz ⑥: archaeo cursor-mode spec + inert workflow pass-through (context_relat |
 | #3885 | CANDIDATE | unlabelled | `c48da7b95a` | success | success | unknown | fix(ci): dangle_check TEXT_EXTS += .jsonl — capture #3751 |
-| #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | dirty | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
+| #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
-| #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | dirty | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
-| #92 | NEED_EVIDENCE | unlabelled | `f6935fbc15` | not_reported | not_reported | dirty | sec(workflows): harden permissions, pin SHAs, and fix prompt injection |
-| #103 | NEED_EVIDENCE | unlabelled | `da109a5469` | not_reported | not_reported | dirty | feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_C |
-| #125 | NEED_EVIDENCE | unlabelled | `b7e4709b50` | not_reported | not_reported | dirty | analyze agentic workflows and peer coordination rules |
-| #143 | NEED_EVIDENCE | unlabelled | `c154540e4b` | not_reported | not_reported | dirty | Integrate MCP Agent Mail Coordination Layer in GitHub Actions |
-| #390 | NEED_EVIDENCE | unlabelled | `6b3dcec308` | not_reported | not_reported | dirty | docs: formalize category-theoretic notation sets and cross-domain mappings |
-| #684 | NEED_EVIDENCE | unlabelled | `4e7550f334` | not_reported | not_reported | dirty | ops: unify GitHub Actions operations cadence |
-| #740 | NEED_EVIDENCE | unlabelled | `1116653009` | not_reported | not_reported | dirty | feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter |
-| #762 | NEED_EVIDENCE | unlabelled | `4dc4f9360d` | not_reported | not_reported | dirty | ops: map live plugin connector surface and parity skills |
-| #764 | NEED_EVIDENCE | unlabelled | `623da833f4` | not_reported | not_reported | unstable | lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap |
-| #769 | NEED_EVIDENCE | unlabelled | `0c6249c974` | not_reported | not_reported | dirty | feat(tagging): cron multi-category GitHub tagging refresh |
-| #958 | NEED_EVIDENCE | unlabelled | `8d466671a1` | failure | success | unstable | feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub |
-| #969 | NEED_EVIDENCE | unlabelled | `c57ef4d83c` | not_reported | not_reported | dirty | feat(experiment): Delphic Bayesian Oracle × Observatory lab |
-| #990 | NEED_EVIDENCE | unlabelled | `9d2bb548dd` | not_reported | not_reported | dirty | feat(foresight): wire agent safety, orchestration, provenance, and gated edge la |
-| #1020 | NEED_EVIDENCE | unlabelled | `a0248773ca` | not_reported | not_reported | dirty | feat: close provider continuity and executable routing gaps |
+| #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
+| #92 | NEED_EVIDENCE | unlabelled | `f6935fbc15` | not_reported | not_reported | unknown | sec(workflows): harden permissions, pin SHAs, and fix prompt injection |
+| #103 | NEED_EVIDENCE | unlabelled | `da109a5469` | not_reported | not_reported | unknown | feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_C |
+| #125 | NEED_EVIDENCE | unlabelled | `b7e4709b50` | not_reported | not_reported | unknown | analyze agentic workflows and peer coordination rules |
+| #143 | NEED_EVIDENCE | unlabelled | `c154540e4b` | not_reported | not_reported | unknown | Integrate MCP Agent Mail Coordination Layer in GitHub Actions |
+| #390 | NEED_EVIDENCE | unlabelled | `6b3dcec308` | not_reported | not_reported | unknown | docs: formalize category-theoretic notation sets and cross-domain mappings |
+| #684 | NEED_EVIDENCE | unlabelled | `4e7550f334` | not_reported | not_reported | unknown | ops: unify GitHub Actions operations cadence |
+| #740 | NEED_EVIDENCE | unlabelled | `1116653009` | not_reported | not_reported | unknown | feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter |
+| #762 | NEED_EVIDENCE | unlabelled | `4dc4f9360d` | not_reported | not_reported | unknown | ops: map live plugin connector surface and parity skills |
+| #764 | NEED_EVIDENCE | unlabelled | `623da833f4` | not_reported | not_reported | unknown | lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap |
+| #769 | NEED_EVIDENCE | unlabelled | `0c6249c974` | not_reported | not_reported | unknown | feat(tagging): cron multi-category GitHub tagging refresh |
+| #958 | NEED_EVIDENCE | unlabelled | `8d466671a1` | failure | success | unknown | feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub |
+| #969 | NEED_EVIDENCE | unlabelled | `c57ef4d83c` | not_reported | not_reported | unknown | feat(experiment): Delphic Bayesian Oracle × Observatory lab |
+| #990 | NEED_EVIDENCE | unlabelled | `9d2bb548dd` | not_reported | not_reported | unknown | feat(foresight): wire agent safety, orchestration, provenance, and gated edge la |
+| #1020 | NEED_EVIDENCE | unlabelled | `a0248773ca` | not_reported | not_reported | unknown | feat: close provider continuity and executable routing gaps |
 | #1274 | NEED_EVIDENCE | unlabelled | `61b2d94eb2` | not_reported | not_reported | unknown | [draft reference] planning-queue: Platform201 queue backend (not for deploy) |
-| #1495 | NEED_EVIDENCE | unlabelled | `8c8c2f3078` | not_reported | not_reported | dirty | feat(quota): full mappings, GitHub safeguards and publication visibility |
+| #1495 | NEED_EVIDENCE | unlabelled | `8c8c2f3078` | not_reported | not_reported | unknown | feat(quota): full mappings, GitHub safeguards and publication visibility |
 | #1515 | NEED_EVIDENCE | unlabelled | `62492b4397` | not_reported | not_reported | unknown | feat(ates): correlate Phase C run and event evidence |
 | #1557 | NEED_EVIDENCE | unlabelled | `cafb47148f` | not_reported | not_reported | unknown | ops(actions): hybrid lag-as-notice Tailscale + consolidated matrix upgrade |
 | #1582 | NEED_EVIDENCE | unlabelled | `6eeb0cb739` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
@@ -191,14 +191,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3640 | NEED_EVIDENCE | unlabelled | `433bba95d0` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
-| #3707 | NEED_EVIDENCE | unlabelled | `4dadc44f6c` | not_reported | not_reported | unknown | g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeou |
 | #3890 | NEED_EVIDENCE | unlabelled | `196d0ae8e6` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3899 | NEED_EVIDENCE | unlabelled | `16808d03b4` | not_reported | not_reported | unknown | desk-feed: Repo-Story closeout — v0 SHIPPED |
-| #3903 | NEED_EVIDENCE | unlabelled | `f9d31a29f9` | queued | queued | unknown | docs index: register skill-reference files as convention-loaded census class |
-| #3910 | NEED_EVIDENCE | unlabelled | `7372b8bae8` | queued | queued | unknown | archive(issue-lifecycle): retire board-sync workflow (superseded by generated Op |
 | #3912 | NEED_EVIDENCE | unlabelled | `73d67d5efe` | not_reported | not_reported | unknown | docs(icm): suite map rev 2026-11-02c — Wave 0 results (W1/W2/W3 + Q1 closure) |
-| #3913 | NEED_EVIDENCE | unlabelled | `521696dfe7` | not_reported | not_reported | unknown | docs(github-apps): checkoffs — Collector standing + TEL-01 + TEL-06 (production  |
-| #3914 | NEED_EVIDENCE | unlabelled | `40ff3eb7f4` | not_reported | not_reported | unknown | P-001: Type* → Type (run-2 verdict FAIL = adapter defect, recorded) |
 | #3916 | NEED_EVIDENCE | unlabelled | `1340ec7a5f` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 
 ## Families (open)
@@ -214,6 +208,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 12 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 22 | 185 |
+| unlabelled | 22 | 179 |
 
 **Unlabelled open issues (22):** #308, #388, #389, #1226, #1450, #2185, #2210, #2571, #2732, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3751, #3752, #3906, #3909, #3915 — worked oldest-first by the issue-lifecycle lane pass.

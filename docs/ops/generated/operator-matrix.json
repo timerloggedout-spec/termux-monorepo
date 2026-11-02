@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 419,
-    "open_prs": 187,
+    "open_prs": 181,
     "pr_classes": {
-      "CANDIDATE": 86,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "CANDIDATE": 87,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 22,
-      "prs": 185,
+      "prs": 179,
       "unlabelled_numbers": [
         308,
         388,
@@ -77,7 +77,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:55:05Z",
+  "generated_at": "2026-11-02T14:02:32Z",
   "issues_unlabelled": [
     308,
     388,
@@ -105,26 +105,12 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "b87249e9ef"
+    "sha": "bc4a6c281a"
   },
   "prs": [
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c7f74de860",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1469,
-      "title": "test(observatory): restore upstream provenance PR validation",
-      "updated_at": "2026-10-23T13:34:01Z"
-    },
     {
       "class": "EXTRACT",
       "family": "unlabelled",
@@ -220,7 +206,7 @@
       "labels": [
         "BIUDL"
       ],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 386,
       "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
       "updated_at": "2026-08-30T11:56:02Z"
@@ -234,7 +220,7 @@
       },
       "head_sha": "53b1319d97",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 407,
       "title": "\u26a1 Bolt: optimize Bellman-Ford graph search in arbitrage engine",
       "updated_at": "2026-09-03T20:03:43Z"
@@ -248,7 +234,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-01T13:38:01Z"
@@ -276,7 +262,7 @@
       },
       "head_sha": "b8b624d149",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 605,
       "title": "feat(ar-18): extend dynamic capability spine with Paper2Agent research",
       "updated_at": "2026-10-23T07:40:01Z"
@@ -318,7 +304,7 @@
       },
       "head_sha": "0c5d29e473",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 829,
       "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
       "updated_at": "2026-09-25T01:08:41Z"
@@ -346,7 +332,7 @@
       },
       "head_sha": "e650476044",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1278,
       "title": "ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) \u2014 REVIEW, do not auto-merge",
       "updated_at": "2026-10-23T07:40:09Z"
@@ -360,7 +346,7 @@
       },
       "head_sha": "4d18fdff62",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1301,
       "title": "docs(telemetry): add equation registry and Wolfram verification",
       "updated_at": "2026-10-20T07:17:41Z"
@@ -388,7 +374,7 @@
       },
       "head_sha": "e17f7db4a0",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1441,
       "title": "feat(triage): reconcile official quota before dispatch",
       "updated_at": "2026-11-02T09:40:15Z"
@@ -400,9 +386,23 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "c7f74de860",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1469,
+      "title": "test(observatory): restore upstream provenance PR validation",
+      "updated_at": "2026-10-23T13:34:01Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d2778bcc25",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1470,
       "title": "feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
       "updated_at": "2026-10-23T13:34:11Z"
@@ -416,7 +416,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-01T22:13:01Z"
@@ -458,7 +458,7 @@
       },
       "head_sha": "04c92a1763",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1513,
       "title": "test(observatory): verify Gravitee fork upstream identity",
       "updated_at": "2026-10-22T22:26:02Z"
@@ -1413,7 +1413,7 @@
       },
       "head_sha": "11b61f8139",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 47,
       "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
       "updated_at": "2026-10-23T13:34:06Z"
@@ -1441,7 +1441,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -1455,7 +1455,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -1469,7 +1469,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-01T13:37:52Z"
@@ -1483,7 +1483,7 @@
       },
       "head_sha": "b7e4709b50",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 125,
       "title": "analyze agentic workflows and peer coordination rules",
       "updated_at": "2026-10-24T23:34:10Z"
@@ -1497,7 +1497,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -1511,7 +1511,7 @@
       },
       "head_sha": "6b3dcec308",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 390,
       "title": "docs: formalize category-theoretic notation sets and cross-domain mappings",
       "updated_at": "2026-09-03T22:51:06Z"
@@ -1525,7 +1525,7 @@
       },
       "head_sha": "4e7550f334",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 684,
       "title": "ops: unify GitHub Actions operations cadence",
       "updated_at": "2026-10-23T13:34:16Z"
@@ -1539,7 +1539,7 @@
       },
       "head_sha": "1116653009",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 740,
       "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
       "updated_at": "2026-10-25T00:44:19Z"
@@ -1553,7 +1553,7 @@
       },
       "head_sha": "4dc4f9360d",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 762,
       "title": "ops: map live plugin connector surface and parity skills",
       "updated_at": "2026-09-23T09:26:30Z"
@@ -1567,7 +1567,7 @@
       },
       "head_sha": "623da833f4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 764,
       "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
       "updated_at": "2026-09-23T04:00:16Z"
@@ -1581,7 +1581,7 @@
       },
       "head_sha": "0c6249c974",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 769,
       "title": "feat(tagging): cron multi-category GitHub tagging refresh",
       "updated_at": "2026-10-22T22:26:28Z"
@@ -1595,7 +1595,7 @@
       },
       "head_sha": "8d466671a1",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 958,
       "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
       "updated_at": "2026-10-01T01:05:40Z"
@@ -1609,7 +1609,7 @@
       },
       "head_sha": "c57ef4d83c",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-10-21T04:40:59Z"
@@ -1623,7 +1623,7 @@
       },
       "head_sha": "9d2bb548dd",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 990,
       "title": "feat(foresight): wire agent safety, orchestration, provenance, and gated edge lanes",
       "updated_at": "2026-10-23T07:40:13Z"
@@ -1637,7 +1637,7 @@
       },
       "head_sha": "a0248773ca",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1020,
       "title": "feat: close provider continuity and executable routing gaps",
       "updated_at": "2026-10-23T07:40:17Z"
@@ -1665,7 +1665,7 @@
       },
       "head_sha": "8c8c2f3078",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1495,
       "title": "feat(quota): full mappings, GitHub safeguards and publication visibility",
       "updated_at": "2026-10-26T23:10:29Z"
@@ -2615,68 +2615,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "4dadc44f6c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3707,
-      "title": "g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeout, no artifact)",
-      "updated_at": "2026-11-02T13:46:26Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "196d0ae8e6",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-02T13:45:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "16808d03b4",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3899,
-      "title": "desk-feed: Repo-Story closeout \u2014 v0 SHIPPED",
-      "updated_at": "2026-11-02T13:53:19Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "f9d31a29f9",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3903,
-      "title": "docs index: register skill-reference files as convention-loaded census class",
-      "updated_at": "2026-11-02T13:54:02Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "7372b8bae8",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3910,
-      "title": "archive(issue-lifecycle): retire board-sync workflow (superseded by generated Operator Matrix)",
-      "updated_at": "2026-11-02T13:54:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2699,40 +2643,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "521696dfe7",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3913,
-      "title": "docs(github-apps): checkoffs \u2014 Collector standing + TEL-01 + TEL-06 (production evidence)",
-      "updated_at": "2026-11-02T13:53:35Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "40ff3eb7f4",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3914,
-      "title": "P-001: Type* \u2192 Type (run-2 verdict FAIL = adapter defect, recorded)",
-      "updated_at": "2026-11-02T13:54:19Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "1340ec7a5f",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:54:46Z"
+      "updated_at": "2026-11-02T14:00:14Z"
     }
   ],
   "schema": "operator-matrix/v1",

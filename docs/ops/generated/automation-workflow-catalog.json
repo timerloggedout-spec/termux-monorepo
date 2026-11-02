@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7146c567c89bb66999ed5147fe57961fb63447496b981af4618bcd4acaa8d0cb",
-  "workflow_count": 257,
+  "source_fingerprint": "ff03bed84b54b198db2922684ae1c4cefe39a028a5dea33262f6e08d505a4d98",
+  "workflow_count": 258,
   "workflows": [
     {
       "action_pins": [],
@@ -698,6 +698,7 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "bounded-state-write",
@@ -1640,6 +1641,24 @@
       ],
       "name": "Device Queue Install",
       "path": ".github/workflows/device-queue-install.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: dispatch-stamp-fanout cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "fanout"
+      ],
+      "name": "Dispatch stamp fan-out",
+      "path": ".github/workflows/dispatch-stamp-fanout.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

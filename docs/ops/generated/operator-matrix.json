@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 410,
-    "open_prs": 185,
+    "open_prs": 186,
     "pr_classes": {
       "CANDIDATE": 91,
-      "EXTRACT": 5,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 183,
+      "prs": 184,
       "unlabelled_numbers": [
         308,
         388,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T12:19:51Z",
+  "generated_at": "2026-11-02T12:26:24Z",
   "issues_unlabelled": [
     308,
     388,
@@ -104,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "9b88214923"
+    "sha": "6b04815f43"
   },
   "prs": [
     {
@@ -176,6 +176,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d1dfbeb58b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3818,
+      "title": "Q2: create-github-app-token v1 -> v3 fleet SHA pin (cert-coderoad, cert-project)",
+      "updated_at": "2026-11-02T12:24:42Z"
     },
     {
       "class": "CANDIDATE",
@@ -1866,15 +1880,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "in_progress",
         "smoke": "in_progress"
       },
-      "head_sha": "87f307139e",
+      "head_sha": "2e3b3f0c67",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T12:19:30Z"
+      "updated_at": "2026-11-02T12:25:54Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2613,7 +2627,7 @@
       },
       "head_sha": "959af46d40",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-02T12:19:46Z"

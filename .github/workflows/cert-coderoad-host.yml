@@ -171,7 +171,7 @@ jobs:
           COURSE_REPO: ${{ inputs.course_repo }}
           COURSE_REF: ${{ inputs.course_ref }}
           CODEROAD_WEBHOOK_TOKEN: ${{ secrets.CODEROAD_WEBHOOK_TOKEN }}
-          CODEROAD_TUTORIAL_URL: https://raw.githubusercontent.com/freeCodeCamp/${{ inputs.course_repo }}/${{ inputs.course_ref }}/tutorial.json
+          CODEROAD_TUTORIAL_URL: https://raw.githubusercontent.com/freeCodeCamp/${{ inputs.course_repo }}/main/tutorial.json
           CODEROAD_DISABLE_RUN_ON_SAVE: "true"
           CODEROAD_DRIVER_EVIDENCE: ${{ github.workspace }}/evidence
         run: |

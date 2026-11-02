@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.3",
- "generated_at": "2026-11-02T10:20:00Z",
+ "generated_at": "2026-11-02T10:26:00Z",
  "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -2334,7 +2334,7 @@
      "prizes": "3 × ($5,000 credits + ~$600 swag + certificate), pool $16,800"
     }
    },
-   "next": "Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT · TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 · SR #3050} in the new form same-turn · RFPs FILED (owner order): #3695 RFP-D1-1 impact copy (pre-Nov 4) · #3696 RFP-D1-2 originality copy (pre-Nov 4) · #3697 RFP-D1-3 reading pipeline §1b (post-Nov 4) · #3698 RFP-D1-4 multi-course+countdown+.ics (post-Nov 4) — Delphi gate evaluation; outputs ⇒ D1 verification · BUFFER TARGET (owner via main, 2026-11-02): #3695/#3696 evaluations must return in time for copy landed + D1-verified by the **Nov 3 re-sync**; final ~24h pre-deadline = buffer only, ∅ deadline-day copy landings; desk tracks dispatch timing vs Nov 3 ¬ Nov 4",
+   "next": "Reader MERGED+synced · SR: system (balanced) · Notes pass: DeepSeek arm tunnel-DOWN ×2 skips ⇒ task submitted to system (issue #3215); tunnel escalated ⇒ Swarm · freeze-hold submission 2026-11-04 23:59 PT · TEMPLATE TRIGGER: build requirement filed to system as #3577 (form + issues[opened] consumer per owner directive); on landing desk re-files {notes #3215 · SR #3050} in the new form same-turn · RFPs FILED (owner order): #3695 RFP-D1-1 impact copy (pre-Nov 4) · #3696 RFP-D1-2 originality copy (pre-Nov 4) · #3697 RFP-D1-3 reading pipeline §1b (post-Nov 4) · #3698 RFP-D1-4 multi-course+countdown+.ics (post-Nov 4) — Delphi gate evaluation; outputs ⇒ D1 verification · BUFFER TARGET (owner via main, 2026-11-02): #3695/#3696 evaluations must return in time for copy landed + D1-verified by the **Nov 3 re-sync**; final ~24h pre-deadline = buffer only, ∅ deadline-day copy landings; desk tracks dispatch timing vs Nov 3 ¬ Nov 4 · LANDING TARGET Nov 3 (wall Nov 4 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -2566,7 +2566,7 @@
     "sync": "artifact repo HEAD 59c6c3b0427d = sync commit (viz firsthand)",
     "note": "Authorship: desk-spawned Muse subagents (substituted route; retracted as provider-lane production 2026-10-30). Merge + sync facts stand."
    },
-   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged",
+   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged · LANDING TARGET Nov 8 (wall: submission Nov 9 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": [
     {
      "provider": "Muse — desk-spawned subagents",
@@ -2623,7 +2623,7 @@
     ],
     "note": "P0 scaffold + P1 retrieval + P2 tests landed (40 ok / 2 skip; P3-VALIDATION.md runbook NOT-RUN). AUTHORSHIP: desk-spawned Muse subagents — substituted route (Jules unsteerable, no escalation); provider-lane production credit RETRACTED 2026-10-30."
    },
-   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. Provider route PROVEN on D1 (PR #2635, Jules); future M4 fixes route Jules-only.",
+   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. Provider route PROVEN on D1 (PR #2635, Jules); future M4 fixes route Jules-only. · LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": [
     {
      "provider": "Muse — desk-spawned subagents",
@@ -2670,7 +2670,7 @@
    "evidence": {
     "note": "staged at the desk; gate = M4 submitted or builder idle and not competing; priority M3 over M2 (desk record)"
    },
-   "next": "Routes to a builder lane when the gate opens",
+   "next": "Routes to a builder lane when the gate opens · LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": []
   },
   {
@@ -2690,7 +2690,7 @@
    "evidence": {
     "note": "staged at the desk behind the same gate as M3, lower priority (desk record)"
    },
-   "next": "Routes after M3 or when builders idle",
+   "next": "Routes after M3 or when builders idle · LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": []
   },
   {
@@ -2710,7 +2710,7 @@
    "evidence": {
     "note": "build route per D2 seat record (on owner pick): pick/spec ⇒ Desk ⇒ builder lanes ⇒ monorepo PR ⇒ sync ⇒ D2 verifies. WAF candidate-spec struck from batch queue 2026-11-01 per owner direct; spec packet remains D2 seat material, ¬ queue, ¬ pick."
    },
-   "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair · ARMS Δ (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip ×2, agent ∅ invoked — runs 41301295882/41321691938) ⇒ live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN · Gemini OUT · DeepSeek DOWN}; restoration ⇒ desk flags D2 seat same-turn",
+   "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair · ARMS Δ (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip ×2, agent ∅ invoked — runs 41301295882/41321691938) ⇒ live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN · Gemini OUT · DeepSeek DOWN}; restoration ⇒ desk flags D2 seat same-turn · LANDING TARGET Nov 7 (wall: submission ≤ Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": []
   },
   {
@@ -2732,7 +2732,7 @@
     "batch": "spec pack verified firsthand by desk 2026-11-01: skeleton-crew@main 22a05bd0897a, BUILD-SPEC.md blob b4f45846172f (2,836B) — shape {foundation + apps/conflict-viewer + apps/stamped-report}, tasks T1 foundation -> {T2 viewer, T3 report} -> T4 integration, acceptance S1-S3 + receipt rule {command, exit_code, output sha256, code_paths}",
     "desk": "batch intake registered by desk 2026-11-01 (this row); issue draft held ready-to-fire at window"
    },
-   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first",
+   "next": "BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first · LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it.",
    "provider_usage": []
   },
   {

@@ -841,6 +841,56 @@ def fdroid_apk(package_id: str, fetch=_default_fetch) -> dict | None:
     return prov
 
 
+IZZY_REPO_BASE = "https://apt.izzysoft.de/fdroid/repo"
+
+
+def fdroid_v2_repo_apk(repo_base: str, package_id: str, source: str,
+                       fetch=_default_fetch) -> dict | None:
+    """Latest APK for package_id from an F-Droid-protocol v2 repo
+    (index-v2.json). IzzyOnDroid is the wired instance: an
+    F-Droid-compatible repo whose binaries are developer-built and
+    developer-signed (taken from upstream), unlike f-droid.org's
+    own rebuilds — channel identity is therefore provenance-relevant
+    and recorded. The index carries a per-file sha256, kept as the
+    channel's claim next to the belt's own hash of the bytes."""
+    base = repo_base.rstrip("/")
+    try:
+        doc = _fetch_json(f"{base}/index-v2.json", fetch)
+    except Exception:
+        return None
+    entry = ((doc or {}).get("packages") or {}).get(package_id)
+    if not entry:
+        return None
+    versions = entry.get("versions") or {}
+    if not versions:
+        return None
+    def _code(item):
+        key, val = item
+        try:
+            return int(key)
+        except (TypeError, ValueError):
+            return int((val.get("manifest") or {}).get("versionCode") or 0)
+    key, best = max(versions.items(), key=_code)
+    fileinfo = best.get("file") or {}
+    name = (fileinfo.get("name") or "").lstrip("/")
+    if not name:
+        return None
+    manifest = best.get("manifest") or {}
+    prov = {"source": source, "package_id": package_id,
+            "repo_base": base,
+            "version": manifest.get("versionName", ""),
+            "build": manifest.get("versionCode") or _code((key, best)),
+            "asset_name": name.rsplit("/", 1)[-1],
+            "download_url": f"{base}/{name}"}
+    if fileinfo.get("sha256"):
+        prov["index_sha256"] = fileinfo["sha256"]
+    return prov
+
+
+def izzyondroid_apk(package_id: str, fetch=_default_fetch) -> dict | None:
+    return fdroid_v2_repo_apk(IZZY_REPO_BASE, package_id, "izzyondroid", fetch)
+
+
 def download_artifact(provenance: dict, out_dir: str | Path,
                       fetch=_default_fetch) -> dict:
     """Download + hash. Play URLs are refused outright (no Play scraping)."""
@@ -872,6 +922,21 @@ def acquire(spec: dict, out_dir: str | Path, fetch=_default_fetch) -> dict:
                 prov = gitea_release_apk(spec.get("gitea_url", ""), spec["repo"], fetch)
             elif source == "f-droid" and spec.get("package_id"):
                 prov = fdroid_apk(spec["package_id"], fetch)
+            elif source == "izzyondroid" and spec.get("package_id"):
+                prov = izzyondroid_apk(spec["package_id"], fetch)
+            elif source == "other-store" and spec.get("package_id"):
+                # Alt-store fallback chain: the F-Droid-protocol alt
+                # channels that are wired (IzzyOnDroid, then F-Droid
+                # proper). Aurora (Play-protocol) is not a URL route —
+                # see the toolkit doc's acquisition-routes section.
+                for sub in ("izzyondroid", "f-droid"):
+                    prov = (izzyondroid_apk(spec["package_id"], fetch)
+                            if sub == "izzyondroid"
+                            else fdroid_apk(spec["package_id"], fetch))
+                    if prov is not None:
+                        prov["via"] = f"other-store->{sub}"
+                        break
+                    checked.append(f"other-store/{sub}: no APK asset published")
             elif source == "direct-apk" and spec.get("url"):
                 prov = {"source": "direct-apk",
                         "asset_name": spec["url"].rsplit("/", 1)[-1],

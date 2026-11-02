@@ -32,7 +32,7 @@ body:
     id: artifact_source
     attributes:
       label: Artifact source
-      options: [github-releases, gitea-releases, f-droid, aurora-store, komistore, lizzyondroid, google-play, direct-apk, other-store, none-known]
+      options: [github-releases, gitea-releases, f-droid, aurora-store, komistore, izzyondroid, google-play, direct-apk, other-store, none-known]
     validations: { required: true }
   - type: input
     id: artifact_version

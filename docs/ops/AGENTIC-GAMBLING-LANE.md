@@ -59,3 +59,16 @@ Carriers widened to `docs/proposals/**`, all local design exports, early MoneyBa
 - **Fees:** ∅ after widened search — word-level `fee` = 0 in MSM + team-formation trees; exports carry only unrelated GCP platform-fee lines. Fees stay ABSENT.
 - **Team roster/contracts:** refined to **design-level** — `agent-team-formation/TEAM_CHARTER.md` carries a "Role assignment contract" (task-card + `context_manifest` contracts resolving lane/team/role/agent) and the roster model; packet state = draft / awaiting_review. Roster doc `AGENT-TEAM-ROSTER.md` landed separately.
 - **Pooled buckets:** nearest prior art = MSM-020 "modern USD pools" (Ollama provider balance pools) + `ops/quota` pooled allocation buckets — both are balance/quota pools, not promotion funding. Promotion/incentive/bonus designation stays ABSENT (bonus hits = Kiroween prize context only).
+
+## Roles (owner addendum 4, 2026-11-01)
+
+Checked against the widened carriers before minting; the known substrate is `ActorClass {itself, others, job}`.
+
+| Role | Definition | State |
+|---|---|---|
+| **Critic** | evaluates / challenges entries | ABSENT as named lane role (0 hits MSM proposal + market code); nearest substrate = trading-card role `review` |
+| **Validator** | verifies settlements / records | Function landed as practice (validate_v2 · dual-gate settlement · this seat's per-record verdicts); named role ABSENT in market tree |
+| **11th man** | the audience / reserve participant — crowd-side seat in the bookie/audience structure | ABSENT (owner-defined; build item tied to the open bookie/audience class) |
+| Actor classes | itself (own outcome) · others (peer card, trade-only) · job (lane/job class) | LANDED — `market.py` + `bet-ledger.schema.json` |
+| Card roles | triage · review · invoke · job:<id> · engine:<id>; trade actions offer/accept/revoke/settle | DESIGN/schema-level — DESIGN §7 + `trading-card.schema.json` |
+| Judge | evaluation judging | Design mention only (DSPY-DOE-LANE "solvers/judges"); judging lives in challenge/Delphi contexts, not a defined MSM role |

@@ -60,7 +60,7 @@ jobs:
             ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
             DEST="$W/${ROOT:-.}"; mkdir -p "$DEST/data"
             cp -a "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/." "$DEST/"
-            [ -f "$GITHUB_WORKSPACE/docs/ops/generated/help-wanted-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/help-wanted-status.json" "$DEST/data/status.json" || true
+            [ -f "$GITHUB_WORKSPACE/docs/ops/generated/tribute-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/tribute-status.json" "$DEST/data/status.json" || true
             [ -f "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json" || true
             printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' \
               "$GITHUB_SHA" "$SHORT" "$GITHUB_REF_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"

@@ -179,6 +179,14 @@ echo "watchdog relaunches=$relaunches" >> "$LOG"
     strings "$db" 2>/dev/null | grep -o "coderoad:[a-zA-Z]*" | sort -u | head -20
     echo "== strings $db (complete/position context) =="
     strings "$db" 2>/dev/null | grep -i "\"complete\"\|currentPosition\|step_complete\|tutorial_complete" | head -15
+    echo "== position value window =="
+    python3 - "$db" <<'PYEOF' 2>/dev/null || true
+import sys
+data = open(sys.argv[1], 'rb').read()
+for key in (b'coderoad:position', b'coderoad:currentTutorial'):
+    i = data.find(key)
+    print(key.decode(), '->', data[i:i+400].decode('utf-8', 'replace') if i >= 0 else '(absent)')
+PYEOF
   done
 } > "$EV/coderoad-state.txt" 2>&1 || true
 

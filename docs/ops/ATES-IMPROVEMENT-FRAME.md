@@ -1,8 +1,9 @@
 # ATES Improvement Frame
 
-**`ates-improvement-frame` v0.2** — registered 2026-11-02 under DoE
+**`ates-improvement-frame` v0.3** — registered 2026-11-02 under DoE
 (v0: PR #3844 - mechanism correction: PR #3846 - v0.1: PR
-#3849 - v0.2: this amendment, owner parity ruling).
+#3849 - v0.2: PR #3850, owner parity ruling - v0.3: this
+amendment, S measured).
 governance (see `docs/ops/DOE-FAMILY.md`, Method versions).
 ATES is nested under DoE (leveling of record); this frame is
 its improvement surface.
@@ -56,8 +57,11 @@ ATES receipts are emitted by
 against `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`).
 
 - **Selected set S** = the workflows the receipt machinery
-  selects (v0: the `workflow_run` trigger list of record in
-  the receipt workflow). S is versioned with this frame; a
+  selects. S is an EVIDENCE-MEASURED set (owner word
+  2026-11-02: already measured, not an open ruling): the
+  IMP-001 census establishes it from the trigger record, and
+  Stewardship's step-6 denominator re-derivation is that
+  measurement in progress. S is versioned with this frame; a
   coverage figure without its S version is NOT_ESTABLISHED.
 - **Workflow coverage** (per window) = workflows in S emitting
   at least one receipt / |S|.
@@ -166,9 +170,11 @@ of #3812) — confirmed by main, 2026-11-02.**
   per se: it misreads failed/skipped receipts as completions.
 - **K9 — Sampled verification, stated n.** Parity conformity
   is measured by bounded sampled checks en route to the
-  full-parity target state: every parity claim cites its
-  sample n per status stratum. A parity claim without
-  per-stratum n is non-conformant (significance standard).
+  full-parity target state: samples are drawn per status
+  stratum over the measured S (above), and every parity claim
+  cites its sample n per status stratum. A parity claim
+  without per-stratum n is non-conformant (significance
+  standard).
 - **K6 — Claims follow entry states.** "Improvement landed"
   is stated only when the entry's evidence requirement is met
   and cited; otherwise HELD/PROPOSED language.
@@ -188,12 +194,15 @@ of #3812) — confirmed by main, 2026-11-02.**
    emission decision; the mechanism correction re-based it;
    an interim marking of "dissolved" was superseded by main's
    keep-flagged word, then by this ruling.)
-2. **S governance** — OPEN, flagged not assumed: no ruling
-   yet (owner via main, 2026-11-02) — the v0
-   descriptive-from-trigger-list reading stands until the
-   owner rules. Whether S should be a DoE-designated set
-   (potentially wider: every workflow whose runs should
-   receipt) remains the question.
+2. **S governance** — RESOLVED (owner word via main,
+   2026-11-02: S is "already measured"): S is an
+   evidence-measured set, not a governance choice — the
+   IMP-001 census establishes it from the trigger record and
+   Stewardship's step-6 denominator re-derivation is the
+   measurement in progress; the bounded parity checks sample
+   per stratum over that measured S (K9). The flag CLOSES on
+   this basis and re-opens only if the census contradicts
+   the measured set.
 3. **Stewardship seat of record** — RESOLVED 2026-11-02:
    the Continuous Stewardship seat (takeover of #3812),
    confirmed by main; recorded in the conformity section

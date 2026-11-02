@@ -97,3 +97,32 @@ re-retains upsert (document upsert semantics) and refresh runs are
 idempotent. The earlier scaffold shape (POST /retain) is not a server
 route and failed 316/316; receipts now record endpoint, batch counts,
 and first_error {status, body_excerpt} as exact gate evidence.
+
+## HindSight population deploy — env optimization + gated ramp (2026-11-01)
+
+Requirement (owner): optimizations of env ∧ prior testing BEFORE
+deploy; the first spend must be a tested spend.
+
+Env of record (deploy workflows): Fly `hindsight-termux`
+(https://hindsight-termux.fly.dev) — LLM openrouter/openai/gpt-4o-mini,
+embeddings google/text-embedding-004, reranker rrf · Koyeb
+`hindsight-deepagent` — LLM openrouter/meta-llama/llama-3.1-8b-instruct:free,
+embeddings google/gemini-embedding-001, reranker rrf. The 402 gate is
+the shared OpenRouter balance behind the extraction LLM role.
+
+Cost model (measured corpus): 388 units live (326 ingest + 62 density),
+avg ~290 chars (~75 content tokens/unit); extraction ~1 LLM call/unit
+with prompt overhead dominant (~2k tok in / ~200 out) ⇒ ≈ $0.0004/unit
+on gpt-4o-mini ⇒ **full populate ≈ $0.15–0.20 one-time**; embeddings
+negligible; reranker rrf = $0. Steady-state ≈ $0: retain is
+state-gated — `hindsight-retain-state.json` records
+{document_id: evidence_hash} of retained units, and unchanged units
+are skipped (server upsert would otherwise re-burn extraction on every
+refresh).
+
+Ramp (telemetry-ingest.yml): PROOF (3 units, batch 3) → VERIFY
+(/stats + /llm-requests/stats + recall probe, no burn) → FULL
+(batch 50) only when proof ok AND repo variable
+`HINDSIGHT_POPULATE_FULL == 'true'`. Proof failure records the exact
+gate in `hindsight-retain-proof.json` and stops — no silent stall, no
+unbudgeted burn.

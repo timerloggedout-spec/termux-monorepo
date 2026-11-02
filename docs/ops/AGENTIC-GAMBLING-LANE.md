@@ -82,3 +82,7 @@ Per owner decision via main, recorded by `[MUSEai]@{role:{optimizations-assuranc
 **Cull → pool:** when a participant is culled, its wallet balance transfers into the pooled buckets system (the promotions / incentives / bonuses pool) — culling never destroys wallet value; the balance recycles into the pool. Registered in lane.json on wallets-participant (lifecycle.cull) and pooled-buckets (inflows).
 
 Explicit non-fold: a culled participant's residual/royalty stream is a separate question — it is NOT transferred or extinguished by this rule, and is not folded in without the owner's word.
+
+## Scouts compete (owner, 2026-11-01)
+
+Scouts are **participants** in this lane, not a neutral surface: each scout entry holds its own **wallet** (universal-participant rule), its own **record** = its selection experiments' outcomes, and **comparative standing among scouts = competition** (a standing field is carried per scout entry in lane.json). Scoring/authority side sits with DoE: posteriors over selections, the significance standard applies to scout-edge claims, and culling applies to scouts — a culled scout's wallet goes to the pooled 🪣 per the lifecycle rule above.

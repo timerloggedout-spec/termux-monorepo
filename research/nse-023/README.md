@@ -27,8 +27,10 @@ governed `research/` path the proposal requires before any applied promotion.
 
 ## Input classes
 
-1. **Linguist notation mapping** (matrices · vector stores ⇔ Lean/Mathlib
-   notation, Linguist lane report 2026-11-02): the exact/≈-qualified rows are
+1. **Linguist notation mapping** — landed record:
+   `docs/proposals/active/notation-sets/LEAN-NOTATION-MAPPING.md`
+   (matrices · vector stores ⇔ Lean/Mathlib notation, keyed to
+   census-confirmed surfaces only): the exact/≈-qualified rows are
    the proposition supply. Mathlib-side rows stay NOT_ESTABLISHED — they are
    not oracle inputs until Mathlib is separately admitted. Batteries/core
    rows (composition, function-level claims) are admissible now.

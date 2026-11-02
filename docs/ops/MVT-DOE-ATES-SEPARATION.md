@@ -7,6 +7,19 @@ as its "executed comparisons". This spec assigns every record exactly
 one home surface. Everything cross-surface is a **citation** — a pointer
 with a label — never a copied payload.
 
+## Leveling — separated surfaces, nested family (owner, 2026-11-01)
+
+Separation governs **rendering and ownership**: each record has one
+home surface and cross-surface use is citation-only (above). It does
+NOT make the three surfaces peer planes. Leveling of record (DoE
+expert lane, `docs/ops/DOE-FAMILY.md` Definitions, PR #3398):
+**MVT is one piece nested under DoE, and ATES likewise nested** —
+records and scoreboards represent MVT and ATES inside the DoE
+family, and population roll-ups count **DoE once**, with MVT shown
+as its sub-piece — never as a separate plane tally. A surface feed
+may render its own section in full; any aggregate that spans
+surfaces follows the family counting, not a three-plane sum.
+
 ## The three surfaces, as their records define them
 
 ### ATES — the orchestrator harness

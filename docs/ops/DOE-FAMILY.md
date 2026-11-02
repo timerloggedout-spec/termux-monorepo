@@ -461,6 +461,14 @@ not a run: candidates evolve under rule 8 (versioning, backfill,
 continuous comparison) and culling, and a candidate executes only
 through an admitted campaign design.
 
+POOL (census 2026-11-01): the candidate population is 126
+unique dreambeans cards (145 PNG in Drive, 16 duplicate groups
+flagged-only, no deletions), enumerated with title-level triage
+classes in `docs/ops/DOE-DREAMBEANS-POOL.md` — 4 registered
+(the source cards of the entries below), 14 fit-eval queue,
+5 trading-domain flagged, 103 pool-parked. The pool is the
+denominator for selection evidence over the register.
+
 - **bisociation v0** (candidate; spec: doe-expert fit evaluation
   2026-11-01) — cross-frame generation operator (Koestler): collide
   two unrelated frames' relational structures to generate variants

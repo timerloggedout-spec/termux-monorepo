@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-01T11:18:24.735381Z`
+Observed: `2026-11-02T12:27:23.383625Z`
 
 ## Navigation
 
@@ -16,9 +16,9 @@ Observed: `2026-11-01T11:18:24.735381Z`
 
 ## Changes since previous snapshot
 
-- **Added (1):** `timerloggedout-spec/repo-story`
+- **Added (7):** `timerloggedout-spec/commit-replay`, `timerloggedout-spec/doe`, `timerloggedout-spec/fcc-celestial-bodies-database`, `timerloggedout-spec/fcc-number-guessing-game`, `timerloggedout-spec/fcc-periodic-table-database`, `timerloggedout-spec/fcc-salon-appointment-scheduler`, `timerloggedout-spec/fcc-world-cup-database`
 - **Removed (0):** —
-- **Provenance changed (5):** `frappe/gantt` (issue, starred → starred), `gravitee-io/gravitee-api-management` (issue, starred → starred), `timerloggedout-spec/skeleton-crew` (owned → owned, starred), `timerloggedout-spec/studysprint` (owned → owned, starred), `timerloggedout-spec/termux-monorepo` (issue, owned, starred → owned, starred)
+- **Provenance changed (0):** —
 
 ## Owned
 
@@ -361,6 +361,7 @@ Observed: `2026-11-01T11:18:24.735381Z`
 | [timerloggedout-spec/playwright-github-actions-reporter](https://github.com/timerloggedout-spec/playwright-github-actions-reporter) | owned | browser | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/selenium-boot](https://github.com/timerloggedout-spec/selenium-boot) | owned | browser | medium | upstream-comparison |
 | [timerloggedout-spec/Ciaren](https://github.com/timerloggedout-spec/Ciaren) | owned | context | high | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/commit-replay](https://github.com/timerloggedout-spec/commit-replay) | owned | context | high | — |
 | [timerloggedout-spec/dify-mcp-server_fork](https://github.com/timerloggedout-spec/dify-mcp-server_fork) | owned | context | high | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/knowledge-catalog_fork](https://github.com/timerloggedout-spec/knowledge-catalog_fork) | owned, starred | context | high | upstream-comparison |
 | [timerloggedout-spec/LawBench_fork](https://github.com/timerloggedout-spec/LawBench_fork) | owned | context | high | upstream-comparison |
@@ -445,6 +446,12 @@ Observed: `2026-11-01T11:18:24.735381Z`
 | [timerloggedout-spec/AnkiconnectAndroid_fork](https://github.com/timerloggedout-spec/AnkiconnectAndroid_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/astro-loop_fork](https://github.com/timerloggedout-spec/astro-loop_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-shizuku_fork](https://github.com/timerloggedout-spec/awesome-shizuku_fork) | owned | termux | medium | upstream-comparison |
+| [timerloggedout-spec/doe](https://github.com/timerloggedout-spec/doe) | owned | termux | medium | — |
+| [timerloggedout-spec/fcc-celestial-bodies-database](https://github.com/timerloggedout-spec/fcc-celestial-bodies-database) | owned | termux | medium | — |
+| [timerloggedout-spec/fcc-number-guessing-game](https://github.com/timerloggedout-spec/fcc-number-guessing-game) | owned | termux | medium | — |
+| [timerloggedout-spec/fcc-periodic-table-database](https://github.com/timerloggedout-spec/fcc-periodic-table-database) | owned | termux | medium | — |
+| [timerloggedout-spec/fcc-salon-appointment-scheduler](https://github.com/timerloggedout-spec/fcc-salon-appointment-scheduler) | owned | termux | medium | — |
+| [timerloggedout-spec/fcc-world-cup-database](https://github.com/timerloggedout-spec/fcc-world-cup-database) | owned | termux | medium | — |
 | [timerloggedout-spec/listinglens](https://github.com/timerloggedout-spec/listinglens) | owned | termux | medium | — |
 | [timerloggedout-spec/MAD_fork](https://github.com/timerloggedout-spec/MAD_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/mcp-android-ssh_fork](https://github.com/timerloggedout-spec/mcp-android-ssh_fork) | owned, starred | termux | medium | upstream-comparison |
@@ -1910,6 +1917,7 @@ Observed: `2026-11-01T11:18:24.735381Z`
 | [md-abu-kayser/modern-ebanking-ui](https://github.com/md-abu-kayser/modern-ebanking-ui) | starred | ai, context, developer-tools | high | — |
 | [Natfii/UnrealClaude](https://github.com/Natfii/UnrealClaude) | starred | ai, context, developer-tools | high | — |
 | [Naxxy/workspace-builder-skill](https://github.com/Naxxy/workspace-builder-skill) | starred | ai, context, developer-tools | high | — |
+| [oldwinter/all-cli](https://github.com/oldwinter/all-cli) | starred | ai, context, developer-tools | high | — |
 | [pretrehr/Sports-betting](https://github.com/pretrehr/Sports-betting) | starred | ai, context, developer-tools | high | — |
 | [shuymn/gh-mcp](https://github.com/shuymn/gh-mcp) | starred | ai, context, developer-tools | high | — |
 | [yigitkonur/cli-continues](https://github.com/yigitkonur/cli-continues) | starred | ai, context, developer-tools | high | — |
@@ -1943,7 +1951,6 @@ Observed: `2026-11-01T11:18:24.735381Z`
 | [MrSpaghatti/julius-cli](https://github.com/MrSpaghatti/julius-cli) | starred | ai, developer-tools | medium | — |
 | [nettee/gemini-cli-proxy](https://github.com/nettee/gemini-cli-proxy) | starred | ai, developer-tools | medium | — |
 | [ohmyzsh/ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) | starred | ai, developer-tools | medium | dependency-candidate |
-| [oldwinter/all-cli](https://github.com/oldwinter/all-cli) | starred | ai, developer-tools | medium | — |
 | [OrionStarAI/EasyCode-Server-mini](https://github.com/OrionStarAI/EasyCode-Server-mini) | starred | ai, developer-tools | medium | — |
 | [pacocartones/free-llm-api-hub](https://github.com/pacocartones/free-llm-api-hub) | starred | ai, developer-tools | medium | — |
 | [PaiViji/PythonFinance-PortfolioOptimization](https://github.com/PaiViji/PythonFinance-PortfolioOptimization) | starred | ai, developer-tools | medium | — |
@@ -5035,6 +5042,7 @@ Observed: `2026-11-01T11:18:24.735381Z`
 | [md-abu-kayser/modern-ebanking-ui](https://github.com/md-abu-kayser/modern-ebanking-ui) | starred | ai, context, developer-tools | high | — |
 | [Natfii/UnrealClaude](https://github.com/Natfii/UnrealClaude) | starred | ai, context, developer-tools | high | — |
 | [Naxxy/workspace-builder-skill](https://github.com/Naxxy/workspace-builder-skill) | starred | ai, context, developer-tools | high | — |
+| [oldwinter/all-cli](https://github.com/oldwinter/all-cli) | starred | ai, context, developer-tools | high | — |
 | [pretrehr/Sports-betting](https://github.com/pretrehr/Sports-betting) | starred | ai, context, developer-tools | high | — |
 | [shuymn/gh-mcp](https://github.com/shuymn/gh-mcp) | starred | ai, context, developer-tools | high | — |
 | [timerloggedout-spec/Chat2API](https://github.com/timerloggedout-spec/Chat2API) | owned | ai, context, developer-tools | high | upstream-comparison |
@@ -5199,6 +5207,7 @@ Observed: `2026-11-01T11:18:24.735381Z`
 | [s5-dev/S5](https://github.com/s5-dev/S5) | starred | context | high | — |
 | [sagiegurari/cargo-make](https://github.com/sagiegurari/cargo-make) | starred | context | high | workflow-candidate |
 | [timerloggedout-spec/Ciaren](https://github.com/timerloggedout-spec/Ciaren) | owned | context | high | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/commit-replay](https://github.com/timerloggedout-spec/commit-replay) | owned | context | high | — |
 | [timerloggedout-spec/dify-mcp-server_fork](https://github.com/timerloggedout-spec/dify-mcp-server_fork) | owned | context | high | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/knowledge-catalog_fork](https://github.com/timerloggedout-spec/knowledge-catalog_fork) | owned, starred | context | high | upstream-comparison |
 | [timerloggedout-spec/LawBench_fork](https://github.com/timerloggedout-spec/LawBench_fork) | owned | context | high | upstream-comparison |

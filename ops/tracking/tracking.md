@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T17:33:06Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T17:47:29Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T17:33:05Z` (merged 150 · open 181) · lane-events(Neon) status=`ok` count=`9156` read_at=`2026-11-02T17:33:05Z`
+Sources: PR feed read_at=`2026-11-02T17:47:28Z` (merged 150 · open 182) · lane-events(Neon) status=`ok` count=`9176` read_at=`2026-11-02T17:47:28Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -29,7 +29,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3928 `6635afbb8572` 2026-11-02T14:11:20Z | land/close PR #1441 — feat(triage): reconcile official quota before dispatch |
 | replay | `repo-replay` | Repo Replay | active | #3896 `7b22048ce8ca` 2026-11-02T13:46:27Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | NOT_ESTABLISHED | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3937 `e7f0a4dfecbd` 2026-11-02T14:20:07Z | land/close PR #3939 — chore(dashboards): refresh surface feeds |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3937 `e7f0a4dfecbd` 2026-11-02T14:20:07Z | land/close PR #3969 — ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood) |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 114/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 115/150 (extend ops/tracking/projects.json match rules)

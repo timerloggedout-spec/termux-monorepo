@@ -1,8 +1,34 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T17:33:05Z",
+ "read_at": "2026-11-02T17:47:28Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3971,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T17:37:43Z",
+   "updated_at": "2026-11-02T17:37:56Z",
+   "created_at": "2026-11-02T17:37:38Z",
+   "merge_commit_sha": "4c703d6d9b4c8c769842851193c0a94f18fa3c5a",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3971",
+   "merged": true
+  },
+  {
+   "number": 3970,
+   "title": "fix(cert-coderoad-host): launch Electron ELF directly (not bin/code)",
+   "merged_at": "2026-11-02T17:36:32Z",
+   "updated_at": "2026-11-02T17:36:32Z",
+   "created_at": "2026-11-02T17:35:12Z",
+   "merge_commit_sha": "32badaf69c422f4cb76aaca22b48a748d91c9a83",
+   "head_ref": "fix/coderoad-host-b4",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3970",
+   "merged": true
+  },
   {
    "number": 3967,
    "title": "fix(cert-coderoad-host): B2 self-inflicted --version launches; pg TCP probe",
@@ -1926,35 +1952,22 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3813",
    "merged": true
-  },
-  {
-   "number": 3805,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T11:28:43Z",
-   "updated_at": "2026-11-02T11:54:02Z",
-   "created_at": "2026-11-02T11:28:39Z",
-   "merge_commit_sha": "4cb400f46393a4bf62646c2d8c83be53a1ac7891",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3805",
-   "merged": true
-  },
-  {
-   "number": 3798,
-   "title": "v2-snapshot-pull pack v2: all GitLab branches (Repo Replay V2 lever a)",
-   "merged_at": "2026-11-02T11:08:15Z",
-   "updated_at": "2026-11-02T11:53:24Z",
-   "created_at": "2026-11-02T11:08:10Z",
-   "merge_commit_sha": "663298b2ac30e09659406feefef6123ebfa2814c",
-   "head_ref": "v2-pack-all-branches",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3798",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 3969,
+   "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
+   "merged_at": null,
+   "updated_at": "2026-11-02T17:38:36Z",
+   "created_at": "2026-11-02T17:33:29Z",
+   "merge_commit_sha": "a0b6074c52783fb5d1b3b62df79c40b884c5f701",
+   "head_ref": "ops/vercel-root-directory-sync",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3969",
+   "merged": false
+  },
   {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",

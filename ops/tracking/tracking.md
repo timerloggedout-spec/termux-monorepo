@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-02T00:37:33Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-02T00:40:00Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-02T00:37:32Z` (merged 150 · open 171) · lane-events(Neon) status=`ok` count=`6353` read_at=`2026-11-02T00:37:32Z`
+Sources: PR feed read_at=`2026-11-02T00:40:00Z` (merged 150 · open 172) · lane-events(Neon) status=`ok` count=`6366` read_at=`2026-11-02T00:40:00Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknown=6
 
@@ -26,14 +26,14 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=11 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #3276 `dc25e6848b88` 2026-11-01T21:45:22Z | land/close PR #2167 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #3412 `f34391105a5b` 2026-11-02T00:37:28Z | land/close PR #3406 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3280 `bd8a5654b768` 2026-11-01T21:49:34Z | land/close PR #3342 — feat(ci): add merged branch review audit and quota engine |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #3280 `bd8a5654b768` 2026-11-01T21:49:34Z | land/close PR #3414 — fix(graph-matrix): census script — retry w/ backoff on GraphQL secondary rate limits |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #3396 `b8afd3fb70a8` 2026-11-02T00:33:39Z | land/close PR #3411 — feat(dispatch): wire provider-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #2168 `b60d62bf4781` 2026-11-02T00:19:49Z | land/close PR #2702 — docs(dashboard): standing preview QA checklist |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
-Campaigns: 16 · joined: 1 · distinct instances: 8 · providers: openrouter
+Campaigns: 16 · joined: 2 · distinct instances: 9 · providers: Muse, openrouter
 
 | campaign | provider | model@version | role | prompt (ref#sha12) | moniker | context | instance_key | plan | recorded | dispatched |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -55,7 +55,7 @@ Campaigns: 16 · joined: 1 · distinct instances: 8 · providers: openrouter
 | live-4-dispatch-framing | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | nc-1-notation-compliance | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | pilot-1-context-routing-x-compression | NOT_ESTABLISHED (design_only) | | | | | | | | | |
-| routed-dispatch | NOT_ESTABLISHED (design_only) | | | | | | | | | |
+| routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 1 | 0 |
 | util-1-provider-rotation | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-1-duckduckgo | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-2-brave | NOT_ESTABLISHED (design_only) | | | | | | | | | |

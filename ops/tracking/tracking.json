@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T00:37:33Z",
+ "generated_at": "2026-11-02T00:40:00Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T00:37:32Z",
+   "read_at": "2026-11-02T00:40:00Z",
    "merged": 150,
-   "open": 171
+   "open": 172
   },
   "lane_events": {
-   "read_at": "2026-11-02T00:37:32Z",
+   "read_at": "2026-11-02T00:40:00Z",
    "status": "ok",
-   "count": 6353,
+   "count": 6366,
    "events_in_snapshot": 200
   },
   "records": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +104,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -138,7 +138,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -171,7 +171,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "challenge-entries",
@@ -185,7 +185,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "quota",
@@ -199,13 +199,13 @@
     "at": "2026-11-01T21:49:34Z",
     "title": "docs: archive 7 dated recon/quota snapshots to docs/ops/archive/ (moves only)"
    },
-   "next": "land/close PR #3342 \u2014 feat(ci): add merged branch review audit and quota engine",
+   "next": "land/close PR #3414 \u2014 fix(graph-matrix): census script \u2014 retry w/ backoff on GraphQL secondary rate limits",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=168",
-    "open PRs: #3342, #3242, #2757, #2340, #2525"
+    "open PRs: #3414, #3342, #3242, #2757, #2340"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "doe",
@@ -225,7 +225,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "doe-nc1",
@@ -237,7 +237,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "tier-1",
@@ -254,7 +254,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "contribution-desk",
@@ -269,7 +269,7 @@
     "desk-feed traversals=10 generated_at=2026-11-01T15:48:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "web-design-viz",
@@ -288,7 +288,7 @@
    "evidence": [
     "open PRs: #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "marketing",
@@ -307,7 +307,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "marketing-social",
@@ -319,7 +319,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "swarm",
@@ -338,7 +338,7 @@
    "evidence": [
     "open PRs: #3411, #1470"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "providers",
@@ -358,7 +358,7 @@
     "quota registry services=168",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "providers-phrases",
@@ -370,7 +370,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "repo-replay",
@@ -382,7 +382,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "ops",
@@ -396,7 +396,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   },
   {
    "lane": "telemetry",
@@ -415,15 +415,16 @@
    "evidence": [
     "open PRs: #3406, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T00:37:33Z"
+   "updated_at": "2026-11-02T00:40:00Z"
   }
  ],
  "doe_join": {
   "summary": {
    "campaigns": 16,
-   "campaigns_joined": 1,
-   "distinct_instances": 8,
+   "campaigns_joined": 2,
+   "distinct_instances": 9,
    "providers": [
+    "Muse",
     "openrouter"
    ]
   },
@@ -691,11 +692,28 @@
     "status": "admitted_implementing",
     "moniker": "optimizations-assurance",
     "design_factors": {},
-    "providers": [],
-    "join_state": "design_only",
-    "instances": [],
-    "experiment_records": 3,
-    "experiment_records_with_instance": 0
+    "providers": [
+     "Muse"
+    ],
+    "join_state": "joined",
+    "instances": [
+     {
+      "provider": "Muse",
+      "model_at_version": "Muse Spark 1.3",
+      "role": "builder",
+      "prompt": "docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52",
+      "moniker": "optimizations-assurance",
+      "context": "fan-out wiring completion set (build-class)",
+      "instance_key": "1a60e8329fb6c7300ce5611eb6b9a5009b959a9fa032d3f4a8cfbf7801ba0fdd",
+      "occurrences": {
+       "plan": 0,
+       "record": 1,
+       "dispatch": 0
+      }
+     }
+    ],
+    "experiment_records": 4,
+    "experiment_records_with_instance": 1
    },
    {
     "campaign": "util-1-provider-rotation",

@@ -44,7 +44,9 @@ console.log(JSON.stringify({even:{d:even.dots.length,s:even.segs.length,g:even.s
   withNull:{d:withNull.dots.length},
   gh:{d:ghGeom.dots.length,s:ghGeom.segs.length},
   ev:{d:evGeom.dots.length,c:evGeom.dots[0].cls},
-  labels:{ap:f.kindLabel('activity-proxy'),m:f.kindLabel('measured'),ue:f.kindLabel('usage-exact')}}));
+  labels:{ap:f.kindLabel('activity-proxy'),m:f.kindLabel('measured'),ue:f.kindLabel('usage-exact')},
+  svg1:f.seriesSvg({title:'t',kind:'measured',points:[{t:'2026-10-01T00:00:00Z',v:1},{t:'2026-10-03T00:00:00Z',v:3}]}),
+  ticks:f.axisTicks(0,5000),fmt:f.fmtV(83.34)}));
 """
 
 
@@ -52,7 +54,7 @@ console.log(JSON.stringify({even:{d:even.dots.length,s:even.segs.length,g:even.s
 def test_chart_logic_on_fixture(tmp_path):
     sim = tmp_path / "sim.cjs"
     sim.write_text(ESC_LINE + pure_block()
-                   + ";module.exports={chartGeom,kindLabel,seriesSvg};"
+                   + ";module.exports={chartGeom,kindLabel,seriesSvg,axisTicks,fmtV};"
                      "const f=module.exports;\n" + SIM)
     out = subprocess.run(["node", str(sim), str(FIXTURE)],
                          capture_output=True, text=True)
@@ -70,6 +72,11 @@ def test_chart_logic_on_fixture(tmp_path):
     assert "NOT consumption" in got["labels"]["ap"]
     assert got["labels"]["m"] == "measured"
     assert got["labels"]["ue"] == "usage-exact"
+    # V2 minimal axes (HYBRID E): y ticks carry min/mid/max, x ticks first/last dates.
+    assert got["ticks"] == [0, 2500, 5000] and got["fmt"] == "83.3"
+    assert 'class="ytick"' in got["svg1"] and 'class="xtick"' in got["svg1"]
+    assert ">1<" in got["svg1"] and ">3<" in got["svg1"]
+    assert "2026-10-01" in got["svg1"] and "2026-10-03" in got["svg1"]
 
 
 def test_generator_contract(tmp_path):

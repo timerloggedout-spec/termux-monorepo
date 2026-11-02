@@ -34,6 +34,7 @@ const even=f.chartGeom([{t:'2026-10-01T00:00:00Z',v:1},{t:'2026-10-02T00:00:00Z'
 const gapped=f.chartGeom([{t:'2026-10-01T00:00:00Z',v:1},{t:'2026-10-02T00:00:00Z',v:2},{t:'2026-10-20T00:00:00Z',v:3}],640,180);
 const single=f.chartGeom([{t:'2026-10-01T00:00:00Z',v:5}],640,180);
 const withNull=f.chartGeom([{t:'2026-10-01T00:00:00Z',v:1},{t:'2026-10-02T00:00:00Z',v:null},{t:'2026-10-03T00:00:00Z',v:3}],640,180);
+const evGeom=f.chartGeom([{t:'2026-10-01T00:00:00Z',v:1,class:'core-exhaustion'}],640,180);
 const fx=JSON.parse(require('fs').readFileSync(process.argv[2],'utf8'));
 const gh=fx.axes.provider.find(s=>s.key==='github');
 const ghGeom=f.chartGeom(gh.points,640,180);
@@ -42,6 +43,7 @@ console.log(JSON.stringify({even:{d:even.dots.length,s:even.segs.length,g:even.s
   single:{d:single.dots.length,s:single.segs.length},
   withNull:{d:withNull.dots.length},
   gh:{d:ghGeom.dots.length,s:ghGeom.segs.length},
+  ev:{d:evGeom.dots.length,c:evGeom.dots[0].cls},
   labels:{ap:f.kindLabel('activity-proxy'),m:f.kindLabel('measured'),ue:f.kindLabel('usage-exact')}}));
 """
 
@@ -63,6 +65,8 @@ def test_chart_logic_on_fixture(tmp_path):
     # Null values are dropped (gap), never zero-filled.
     assert got["withNull"] == {"d": 2}
     assert got["gh"] == {"d": 11, "s": 10}
+    # Event points keep their class through the geometry (marker label).
+    assert got["ev"] == {"d": 1, "c": "core-exhaustion"}
     assert "NOT consumption" in got["labels"]["ap"]
     assert got["labels"]["m"] == "measured"
     assert got["labels"]["ue"] == "usage-exact"
@@ -83,6 +87,11 @@ def test_generator_contract(tmp_path):
     assert "NOT ESTABLISHED" in pack["notes"]["model"]
     gh = next(s for s in pack["axes"]["provider"] if s["key"] == "github")
     assert gh["context"]["target_flow_per_min"] > 0
+    # Owner directive 2026-11-01: the 403 must be visible on the graph -
+    # the generator emits an events axis (per-bucket, class-carrying).
+    ev = pack["axes"]["events"]
+    assert ev and all(s["kind"] == "event" for s in ev)
+    assert all(p["v"] == 1 and p["class"] for s in ev for p in s["points"])
 
 
 def test_pack_live_guards_and_mirror():
@@ -100,8 +109,10 @@ def test_page_contract():
     html = PAGE.read_text()
     assert "ops/quota/usage-series.json" in html
     assert "./data/usage-series.json" in html
-    for axis in ("provider", "model", "service"):
+    for axis in ("provider", "model", "service", "events"):
         assert 'data-axis="' + axis + '"' in html
+    assert "rate-limit-events.json" in html
+    assert "rate-limit event" in html
     assert "activity-proxy — NOT consumption" in html
     assert "quota-graphs.html" in QUOTA_PAGE.read_text()
 
@@ -112,7 +123,7 @@ def test_pack_freshness_stamps():
     pack = json.loads(PACK.read_text())
     assert pack["generated_at"].endswith("Z")
     assert pack["inputs_generated_at"]["ops/quota/quota-usage.json"]
-    for axis in ("provider", "service", "model"):
+    for axis in ("provider", "service", "model", "events"):
         for s in pack["axes"][axis]:
             assert s["last_point_at"] == max(p["t"] for p in s["points"])
     html = PAGE.read_text()

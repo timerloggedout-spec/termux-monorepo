@@ -126,6 +126,12 @@
    "home": "ops/agentic-gambling/book/",
    "id": "wagering-book-challenges",
    "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, in-repo git = the private ledger of record. MoneyBall v2 = scoring surface only, NOT the ledger; Neon = telemetry/lane-events store, NOT this ledger.",
+   "publication": {
+    "external_entries": "CLOSED",
+    "feed": "ops/agentic-gambling/book/book-feed.json (agentic-gambling-book-feed/v1)",
+    "ledger": "stays private append-only record of record, unmoved",
+    "mode": "read-only render on fleet web Viz/dev surfaces (owner ruling 2026-11-02)"
+   },
    "status": "OPEN 2026-11-02 (owner directive via main): first book = our challenges, private ledger first, ahead of any platform-listing work. 23 subjects per the challenge-entries-manager authoritative list (subject / settles-by / knowable; unpublished placement dates = NOT_ESTABLISHED). CALENDAR-BOUND (owner extension 2026-11-02): every subject carries its deadline-reminders register anchor set {cushion, landing, wall, final} + a settle field (place earned / official outcome, from the settles-by source, null until resolved); 21/23 anchored, AMD-17/AMD-18 anchors NOT_ESTABLISHED (no register item). Forecast = OUTPUT scored at the issuer's record; anchors are subject data, not a participant class. Positions: 0 at open. Build items: wallet store unimplemented (stakes recorded against NOT_ESTABLISHED balances until it lands); counterparty side = bookmaker class ABSENT \u2014 positions settle vs observed outcome, pool-counterparty mechanics = build item. DOE CONFORMITY SHAPE BUILT (2026-11-02, criteria B1-B5 from doe-expert): one expectation record per subject (Bayesian shape, priors NOT_ESTABLISHED at open), settlement from record_of_record only, Rule 9 + significance binding, winprob values not republished; DoE verdict PASS B1-B5 (2026-11-02) \u2014 entries may open."
   }
  ],

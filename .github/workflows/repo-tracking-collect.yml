@@ -27,6 +27,8 @@ on:
       - 'experiments/doe/*/PLAN*.json'
       - 'experiments/doe/*/records/**'
       - 'experiments/doe/*/dispatch/**'
+      - 'experiments/doe/routed-dispatch/stamps/**'
+      - 'ops/3l0/intake.jsonl'
 
 concurrency:
   group: repo-tracking-collect
@@ -67,8 +69,8 @@ jobs:
       - name: Self-check (generator unit tests)
         run: |
           set -euo pipefail
-          python3 -m py_compile scripts/tracking/repo_tracking.py scripts/tracking/fetch_snapshots.py
-          python3 -m pytest tests/test_repo_tracking.py -q || python3 tests/test_repo_tracking.py
+          python3 -m py_compile scripts/tracking/repo_tracking.py scripts/tracking/fetch_snapshots.py scripts/tracking/nested_family.py
+          python3 -m pytest tests/test_repo_tracking.py tests/test_nested_family.py -q || { python3 tests/test_repo_tracking.py && python3 tests/test_nested_family.py; }
       - name: Refresh observation snapshots (PR feed + Neon lane-events)
         env:
           GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
@@ -78,6 +80,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/tracking/repo_tracking.py
+          python3 -B scripts/tracking/nested_family.py
           {
             echo '## Repo tracking'
             head -n 30 ops/tracking/tracking.md
@@ -87,6 +90,8 @@ jobs:
           set -euo pipefail
           git add ops/tracking/tracking.json ops/tracking/tracking.md \
             apps/help-wanted-dashboard/data/tracking-feed.json \
+            ops/tracking/nested-family.json \
+            apps/help-wanted-dashboard/data/nested-family-feed.json \
             scripts/tracking/pr_feed_snapshot.json scripts/tracking/lane_events_snapshot.json
           if git diff --cached --quiet; then
             echo 'tracking unchanged; no commit'
@@ -105,5 +110,6 @@ jobs:
           path: |
             ops/tracking/tracking.json
             ops/tracking/tracking.md
+            ops/tracking/nested-family.json
           if-no-files-found: ignore
           retention-days: 30

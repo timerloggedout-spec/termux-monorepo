@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 411,
-    "open_prs": 184,
+    "open_prs": 183,
     "pr_classes": {
-      "CANDIDATE": 87,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 90,
+      "CANDIDATE": 88,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 21,
-      "prs": 182,
+      "prs": 181,
       "unlabelled_numbers": [
         308,
         388,
@@ -76,7 +76,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:40:57Z",
+  "generated_at": "2026-11-02T13:44:30Z",
   "issues_unlabelled": [
     308,
     388,
@@ -106,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "1b794749bc"
+    "sha": "ad91b250d8"
   },
   "prs": [
     {
@@ -186,26 +186,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "32224dee89",
+      "head_sha": "f65671b786",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3757,
-      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
-      "updated_at": "2026-11-02T13:40:44Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c48da7b95a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3885,
-      "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
-      "updated_at": "2026-11-02T13:37:17Z"
+      "number": 3891,
+      "title": "nse023-oracle: elan PATH fix (first run INCONCLUSIVE, fail-closed \u2713)",
+      "updated_at": "2026-11-02T13:44:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -1353,20 +1339,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4dadc44f6c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3707,
-      "title": "g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeout, no artifact)",
-      "updated_at": "2026-11-02T09:40:18Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "5526e88bfe",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1386,7 +1358,21 @@
       "mergeable_state": "unknown",
       "number": 3755,
       "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
-      "updated_at": "2026-11-02T13:37:17Z"
+      "updated_at": "2026-11-02T13:42:32Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "32224dee89",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3757,
+      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
+      "updated_at": "2026-11-02T13:40:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -1429,6 +1415,20 @@
       "number": 3789,
       "title": "docs(guides): Certifications Value Matrix \u2014 expectation records for all cert rows + INTAKE category index",
       "updated_at": "2026-11-02T10:45:40Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c48da7b95a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3885,
+      "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
+      "updated_at": "2026-11-02T13:37:17Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1840,15 +1840,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "430db22f6d",
+      "head_sha": "232641e67f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:39:21Z"
+      "updated_at": "2026-11-02T13:44:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2655,20 +2655,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "72b4b6bec9",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3795,
-      "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-02T11:25:03Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "196d0ae8e6",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2683,12 +2669,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "f65671b786",
+      "head_sha": "c58acc33bf",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3891,
-      "title": "nse023-oracle: elan PATH fix (first run INCONCLUSIVE, fail-closed \u2713)",
-      "updated_at": "2026-11-02T13:39:47Z"
+      "number": 3893,
+      "title": "fix(backfill): pin one deterministic source SHA across build, guard, and validation",
+      "updated_at": "2026-11-02T13:43:53Z"
     }
   ],
   "schema": "operator-matrix/v1",

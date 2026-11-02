@@ -1,8 +1,34 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T11:59:01Z",
+ "read_at": "2026-11-02T12:18:08Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3814,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T12:07:12Z",
+   "updated_at": "2026-11-02T12:08:14Z",
+   "created_at": "2026-11-02T12:07:06Z",
+   "merge_commit_sha": "df8556985fa85a7a298697d8de25c40792fb6c9c",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3814",
+   "merged": true
+  },
+  {
+   "number": 3813,
+   "title": "v2-snapshot-pull pack v2: all GitLab branches (Repo Replay V2 lever a)",
+   "merged_at": "2026-11-02T12:05:19Z",
+   "updated_at": "2026-11-02T12:07:28Z",
+   "created_at": "2026-11-02T12:05:15Z",
+   "merge_commit_sha": "b037313f11cbd9f2a99c53d6475e6addf87e4411",
+   "head_ref": "v2-pack-git-objects",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3813",
+   "merged": true
+  },
   {
    "number": 3805,
    "title": "chore(ops): regenerate operator matrix",
@@ -1926,46 +1952,72 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3620",
    "merged": true
-  },
-  {
-   "number": 3630,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T08:09:30Z",
-   "updated_at": "2026-11-02T08:11:24Z",
-   "created_at": "2026-11-02T08:09:24Z",
-   "merge_commit_sha": "b45f4d3e7503581cc73ffc8aa8f819658a0ddc63",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3630",
-   "merged": true
-  },
-  {
-   "number": 3626,
-   "title": "cert(coderoad): revert old-releases rewrite \u2014 focal still served by archive.ubuntu.com (diag-proven)",
-   "merged_at": "2026-11-02T08:10:51Z",
-   "updated_at": "2026-11-02T08:10:51Z",
-   "created_at": "2026-11-02T08:00:54Z",
-   "merge_commit_sha": "9f8ddb868e57e43eae5690ca6ed919164a81f9e6",
-   "head_ref": "cert/coderoad-revert-old-releases",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3626",
-   "merged": true
   }
  ],
  "open": [
   {
+   "number": 3816,
+   "title": "fix(cert-coderoad-image): diag step survives its own replay (pipefail + entrypoint override + image config)",
+   "merged_at": null,
+   "updated_at": "2026-11-02T12:17:51Z",
+   "created_at": "2026-11-02T12:17:02Z",
+   "merge_commit_sha": "d891ae56d426a8196baf978281eaa4364e0c1c4b",
+   "head_ref": "fix/coderoad-diag2",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3816",
+   "merged": false
+  },
+  {
    "number": 2167,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-02T11:53:21Z",
+   "updated_at": "2026-11-02T12:16:57Z",
    "created_at": "2026-10-28T19:26:06Z",
-   "merge_commit_sha": "aa388894486143228669901e41f77ea27a71bc8c",
+   "merge_commit_sha": "48477dd4ce107984c02ba71933f587f85bc6632e",
    "head_ref": "reviewer-metrics/refresh",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-02T12:13:20Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "b1cc227ccee3a250d091da3aa74fe0dc1efe1081",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3815,
+   "title": "fix(backfill): fail closed on deferred corpus builds",
+   "merged_at": null,
+   "updated_at": "2026-11-02T12:09:01Z",
+   "created_at": "2026-11-02T12:07:21Z",
+   "merge_commit_sha": "6b654d8a2353e666fbb55aa29fe444dfe9f9582c",
+   "head_ref": "audit/continuous-repository-audit-2026-11-02-v2",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3815",
+   "merged": false
+  },
+  {
+   "number": 3442,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-02T12:00:32Z",
+   "created_at": "2026-11-02T00:58:48Z",
+   "merge_commit_sha": "0d62b53c5923d2a8d1df49c4f2cd979d4c9cc5c6",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3442",
    "merged": false
   },
   {
@@ -1979,19 +2031,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 3442,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-02T11:45:37Z",
-   "created_at": "2026-11-02T00:58:48Z",
-   "merge_commit_sha": "da34adee63463cb1d2ee133859d4c432d5e4d499",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3442",
    "merged": false
   },
   {
@@ -2031,19 +2070,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3209",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-02T11:18:32Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "347792dd902c9e7254ba09f822671af6e8a58419",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -2247,7 +2273,7 @@
    "merged_at": null,
    "updated_at": "2026-11-01T23:44:38Z",
    "created_at": "2026-11-01T23:43:06Z",
-   "merge_commit_sha": "6998911753eb1642dddd72924e62089c31dd9deb",
+   "merge_commit_sha": "0f2d5e0b7d6567289a6e80190485014816ea6d03",
    "head_ref": "jules-8341641701841473888-ef5533da",
    "author": "google-labs-jules[bot]",
    "labels": [],
@@ -3144,7 +3170,7 @@
    "merged_at": null,
    "updated_at": "2026-10-30T08:11:42Z",
    "created_at": "2026-10-30T08:06:15Z",
-   "merge_commit_sha": "08c050e620eeb278fdba0ef787540c9b5e852fab",
+   "merge_commit_sha": "282a14231a2b9de0264e93c9a3a83cfc38768a6f",
    "head_ref": "bolt-optimize-intake-parsers-8039226525690583466",
    "author": "google-labs-jules[bot]",
    "labels": [],

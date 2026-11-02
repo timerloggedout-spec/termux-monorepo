@@ -111,7 +111,7 @@ def collect_tasks(base: Path):
         if not isinstance(rec, dict) or not rec.get("provider"):
             continue
         if admit(_task_from_stamp(rec, "stamps", f"experiments/doe/routed-dispatch/stamps/{p.name}"),
-                 rec.get("provider"), rec.get("model")):
+                 rec.get("provider"), rec.get("model") or NOT_ESTABLISHED):
             used += 1
     meta.append({"id": "stamps", "path": "experiments/doe/routed-dispatch/stamps/*.json",
                  "records_read": len(files), "records_used": used})
@@ -133,7 +133,7 @@ def collect_tasks(base: Path):
         if not isinstance(rec, dict) or not rec.get("provider"):
             continue
         if admit(_task_from_stamp(rec, "intake", f"ops/3l0/intake.jsonl#{rec.get('dispatch_id')}"),
-                 rec.get("provider"), rec.get("model")):
+                 rec.get("provider"), rec.get("model") or NOT_ESTABLISHED):
             used += 1
     meta.append({"id": "intake", "path": "ops/3l0/intake.jsonl",
                  "records_read": len(rows), "records_used": used})
@@ -147,7 +147,7 @@ def collect_tasks(base: Path):
             if not row.get("provider"):
                 continue
             if admit(_task_from_desk(row, tr.get("entry", "?")),
-                     row.get("provider"), row.get("model")):
+                     row.get("provider"), row.get("model") or NOT_ESTABLISHED):
                 used += 1
     meta.append({"id": "desk-usage", "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
                  "records_read": read, "records_used": used})
@@ -178,7 +178,10 @@ def build(base=None, now=None) -> dict:
                 by_source[t["source"]] = by_source.get(t["source"], 0) + 1
                 st = (t["outcome"] or {}).get("status")
                 if st:
-                    by_outcome[st] = by_outcome.get(st, 0) + 1
+                    # desk-carrier states can be full prose verdicts; the
+                    # summary buckets those, tasks keep them verbatim.
+                    key = st if len(str(st)) <= 40 else "(prose state — verbatim in tasks)"
+                    by_outcome[key] = by_outcome.get(key, 0) + 1
                 roles_all.add(t.get("role"))
                 clean.append({k: v for k, v in t.items() if not k.startswith("_")})
             models.append({

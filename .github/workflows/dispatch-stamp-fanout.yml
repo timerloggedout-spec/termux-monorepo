@@ -79,6 +79,17 @@ jobs:
           PYEOF
           python3 scripts/ops/provider_invoke.py --provider cohere --prompt-file /tmp/judge-prompt.md --out /tmp/judge-out.md 2>&1 | tee /tmp/judge.log
           python3 - <<'PYEOF'
+          import json, pathlib, shutil
+          pkt = json.load(open('/tmp/packet.json'))
+          ev = pathlib.Path('experiments/doe/routed-dispatch/evidence')
+          ev.mkdir(parents=True, exist_ok=True)
+          for src, suffix in (('/tmp/judge.log', 'judge-log'), ('/tmp/judge-out.md', 'judge-out')):
+              try:
+                  shutil.copy(src, ev / (pkt['dispatch_id'] + '-' + suffix + '.txt'))
+              except Exception as e:
+                  print('raw capture note:', src, e)
+          PYEOF
+          python3 - <<'PYEOF'
           import json, re, hashlib
           pkt = json.load(open('/tmp/packet.json'))
           log = open('/tmp/judge.log').read() + open('/tmp/judge-out.md').read()
@@ -127,11 +138,13 @@ jobs:
           PYEOF
           python3 scripts/dispatch/stamp_fanout.py --stamp /tmp/score-stamp.json --phase score
       - name: Snapshot emitted intake changes
+        if: always()
         run: |
           git add -A -- ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch 2>/dev/null || true
           git diff --cached > /tmp/intake.patch
           wc -c /tmp/intake.patch
       - name: Commit intake updates
+        if: always()
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"

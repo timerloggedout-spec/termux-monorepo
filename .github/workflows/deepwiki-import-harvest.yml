@@ -5,11 +5,13 @@ name: DeepWiki.com import harvest (ICM)
 # docs/icm/_meta/deepwiki-import-record.md as dated additive sections and
 # opens a PR when the structure changed. Read-only public MCP surface
 # (no credential). DEVINdeepWiki is a distinct surface and is never touched.
+# Cadence is event/drift-gated (owner convention, 2026-11-01: no fixed-clock
+# schedules): workflow_dispatch + push-to-master on docs/icm/**; the
+# harvest's own change-gate (append only on topic-set change, cheap
+# no-change exit) is the drift gate.
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "41 6 * * 1"
   push:
     branches: [master]
     paths:

@@ -71,11 +71,16 @@ jobs:
           ref: ${{ inputs.course_ref }}
           path: project
 
-      - name: Check out rdb-alpha (environment recipe)
-        uses: actions/checkout@v4
-        with:
-          repository: freeCodeCamp/rdb-alpha
-          path: rdb-alpha
+      - name: Fetch rdb-alpha environment recipe (pinned Dockerfile)
+        # Only the Dockerfile is needed; a full cross-repo checkout of
+        # rdb-alpha failed in run 41400838295 for an unproven runner-side
+        # reason, so the recipe is fetched as a pinned raw file instead.
+        run: |
+          mkdir -p rdb-alpha
+          curl -fsSL "https://raw.githubusercontent.com/freeCodeCamp/rdb-alpha/main/Dockerfile" \
+            -o rdb-alpha/Dockerfile
+          head -3 rdb-alpha/Dockerfile
+          wc -l rdb-alpha/Dockerfile
 
       - name: Check out verified solution repo
         uses: actions/checkout@v4

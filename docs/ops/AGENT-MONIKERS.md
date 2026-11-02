@@ -103,6 +103,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet CrossReference | `Scalpel · CrossReference` | `termux-fleet-crossreference[bot]` | aspect the Index; queued alt Daedalus (below) |
 | Termux Fleet ApkRelease | `Porter · ApkRelease` | — (actor per AppID provisioning record) | aspect the Carrier; queued alt Charon, flagged (below) |
 | Termux Fleet RepoStory | `Chronicler · RepoStory` | `termux-fleet-repostory[bot]` | aspect the Annals; queued alt Clio (below) |
+| Termux Fleet DoE | `Factorial · DoE` | `termux-fleet-doe[bot]` | aspect the Design; queued alt Mendel (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -202,6 +203,33 @@ rule holds (plain lead, mythic queued).
 
 Collision check at issuance: `Chronicler`, `Clio` and the Annals
 appear nowhere in this roster or in the registration registry.
+
+**DoE issuance (2026-11-01, registry lane; provisioning in
+parallel on the AppID lane under owner order via main — new
+specialist app + dedicated repo).** The actor is the Design of
+Experiments plane's own identity on its repo (intake records,
+method versions, backfill runs), so its name is the plain
+technical term for a designed experiment's structure — the pool
+gains another plain lead and the balance rule holds (plain lead,
+historical queued alt).
+
+- canonical: `Factorial` (paired display `Factorial · DoE`)
+- aspect: the Design
+- queued alt: `Mendel` (mark `M3ndel`) — the founder of designed
+  experimental method (the pea-plant factorials); draws only on a
+  registry-lane bounce/rename decision
+- leet marks: `F4ctorial` (single substitution, ranks first) >
+  `Fact0rial` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical `termux-fleet-doe` probed
+  free by the AppID lane); ranked bounce forms if ever needed:
+  `f4ctorial` > `fact0rial`, returning to the registry lane
+- normalized form: DoE — `Termux Fleet DoE` /
+  `termux-fleet-doe[bot]`; install scope = the new DoE repo only,
+  per-entry pattern (provisioning record: AppID lane)
+
+Collision check at issuance: `Factorial`, `Mendel` and the
+Design appear nowhere in this roster or in the registration
+registry.
 
 ## Rules
 

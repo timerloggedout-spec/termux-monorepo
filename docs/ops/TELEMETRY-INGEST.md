@@ -73,3 +73,27 @@ Automation: `.github/workflows/telemetry-ingest.yml` (weekly Wed 07:23Z,
 push on any source path, dispatch) — runs the tests, regenerates, does
 the live HindSight retain as a separate step, and proposes the outputs
 as a refresh PR. It never commits directly to master.
+
+## Token/App history x attribution correlation (2026-11-01)
+
+`ops/telemetry/token-attribution-correlation.json` correlates the
+fleet's token/App action history with the attribution records over the
+599-PR backfill window: the PAT-era GitHub view (every owner-login PR
+attributed to the owner) vs the attributed population. Owner-login PRs
+redistribute across lane actors by stamp/trailer evidence; the
+remainder stays null. App-era actions (per-App `[bot]` logins, own
+rate buckets) self-attribute via the app_bot leg. This correlation is
+the provenance population delta consumed by the DoE competing-backfill
+trigger whenever the attribution method version changes.
+
+## HindSight live retain contract (corrected 2026-11-01)
+
+Live retain uses the deployed server's real contract, verified from
+timerloggedout-spec/hindsight source (hindsight_api/api/http.py):
+`POST /v1/default/banks/{bank_id}/memories` with
+`{"items":[{content, document_id, context, metadata, tags}], "async": true}`
+and Bearer auth; document_id = the telemetry/density unit id, so
+re-retains upsert (document upsert semantics) and refresh runs are
+idempotent. The earlier scaffold shape (POST /retain) is not a server
+route and failed 316/316; receipts now record endpoint, batch counts,
+and first_error {status, body_excerpt} as exact gate evidence.

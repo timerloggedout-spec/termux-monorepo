@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 410,
-    "open_prs": 185,
+    "open_prs": 186,
     "pr_classes": {
-      "CANDIDATE": 92,
-      "EXTRACT": 5,
+      "CANDIDATE": 91,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 183,
+      "prs": 184,
       "unlabelled_numbers": [
         308,
         388,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T12:42:06Z",
+  "generated_at": "2026-11-02T12:43:27Z",
   "issues_unlabelled": [
     308,
     388,
@@ -104,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "3e5e1ffe31"
+    "sha": "f6e1231d1f"
   },
   "prs": [
     {
@@ -176,6 +176,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6646672289",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3836,
+      "title": "fix(cert-coderoad-image): code invocations carry --no-sandbox (Electron refuses root without it)",
+      "updated_at": "2026-11-02T12:43:19Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4779da9839",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3839,
+      "title": "Agentic Gambling Lane: mirror Registry amendment #3830 (forecast correction)",
+      "updated_at": "2026-11-02T12:43:02Z"
     },
     {
       "class": "CANDIDATE",
@@ -937,20 +965,6 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "4221f86e54",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T12:38:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1883,6 +1897,20 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "13106c5af8",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T12:42:12Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "71856c6976",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2687,20 +2715,6 @@
       "number": 3795,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-02T11:25:03Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "6646672289",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3836,
-      "title": "fix(cert-coderoad-image): code invocations carry --no-sandbox (Electron refuses root without it)",
-      "updated_at": "2026-11-02T12:42:01Z"
     }
   ],
   "schema": "operator-matrix/v1",

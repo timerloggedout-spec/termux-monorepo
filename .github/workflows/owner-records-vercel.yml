@@ -62,7 +62,7 @@ jobs:
           cp -a "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/." "$W/"
           mkdir -p "$W/data"
           G="$GITHUB_WORKSPACE/docs/ops/generated"
-          [ -f "$G/help-wanted-status.json" ] && cp "$G/help-wanted-status.json" "$W/data/status.json" || true
+          [ -f "$G/tribute-status.json" ] && cp "$G/tribute-status.json" "$W/data/status.json" || true
           [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$W/data/lane-matrix-status.json" || true
           printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' \
             "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_REF_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$W/data/build.json"

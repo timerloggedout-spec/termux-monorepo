@@ -6,9 +6,12 @@ docs/ops/NESTED-FAMILY.md, schema nested-family/v1).
 Population = existing dispatch records only, no new instrumentation:
   1. records    experiments/doe/routed-dispatch/records/*.json
                 (EXPERIMENT records — scoring-plane record of record)
-  2. stamps     experiments/doe/routed-dispatch/stamps/*.json
-  3. intake     ops/3l0/intake.jsonl (3l0-intake/v1 fan-out copy)
-  4. desk-usage ops/challenge/desk-feed.json traversals[].provider_usage[]
+  2. campaign-records  experiments/doe/*/records/*.json (any other
+                campaign; provider-bearing records only — pre-agreed
+                with the DoE plane so live-3 resumption nests free)
+  3. stamps     experiments/doe/routed-dispatch/stamps/*.json
+  4. intake     ops/3l0/intake.jsonl (3l0-intake/v1 fan-out copy)
+  5. desk-usage ops/challenge/desk-feed.json traversals[].provider_usage[]
 A dispatch counts once, under the highest-priority source carrying it
 (dedupe: dispatch_id, else session_id); lower-priority carriers only
 fill fields the winner left null (enrichment, never overwrite).
@@ -114,6 +117,27 @@ def _task_from_record(rec: dict, stem: str, source_ref: str):
     return t, provider, model
 
 
+def _task_from_campaign(rec: dict, stem: str, source_ref: str, campaign: str):
+    """Campaign EXPERIMENT/arm record -> (task, provider, model).
+    EXPERIMENT shape first (treatment.instance / flat treatment);
+    arm records (apk-1 shape) fall back to top-level provider/pr/route."""
+    t, provider, model = _task_from_record(rec, stem, source_ref)
+    if not provider:
+        provider = rec.get("provider")
+    if not model:
+        model = rec.get("model")
+    if t["pr"] is None and isinstance(rec.get("pr"), int):
+        t["pr"] = rec.get("pr")
+    if t["context"] is None:
+        t["context"] = rec.get("route") or campaign
+    if t["ts"] is None:
+        t["ts"] = rec.get("recorded_at")
+    if t["task_class"] is None:
+        t["task_class"] = rec.get("task_class")
+    t["source"] = "campaign-records"
+    return t, provider, model
+
+
 def _task_from_desk(row: dict, entry: str) -> dict:
     t = _base_task()
     t.update({
@@ -212,7 +236,36 @@ def collect_tasks(base: Path):
     if not rfiles:
         gaps.append("records source empty: experiments/doe/routed-dispatch/records has no files")
 
-    # 2. canonical stamps (dispatches with no EXPERIMENT record)
+    # 2. campaign records (any other experiments/doe/*/records dir):
+    # provider-bearing per-dispatch records only; summary/audit
+    # aggregates are not dispatches and are skipped by name.
+    cdirs = []
+    doe_dir = base / "experiments" / "doe"
+    if doe_dir.exists():
+        cdirs = sorted(p for p in doe_dir.glob("*/records")
+                       if p.parent.name != "routed-dispatch")
+    cread = cused = 0
+    for rdir in cdirs:
+        for p in sorted(rdir.glob("*.json")):
+            cread += 1
+            if p.name == "SUMMARY.json" or p.name.endswith("-audit.json"):
+                continue
+            rec = _read_json(p)
+            if not isinstance(rec, dict):
+                continue
+            ref = f"experiments/doe/{rdir.parent.name}/records/{p.name}"
+            task, provider, model = _task_from_campaign(rec, p.stem, ref, rdir.parent.name)
+            if not provider:
+                continue
+            donor = stamp_by_id.get(p.stem) or intake_by_id.get(p.stem)
+            if donor is not None:
+                _enrich(task, donor)
+            if admit(task, provider, model or NOT_ESTABLISHED):
+                cused += 1
+    meta.append({"id": "campaign-records", "path": "experiments/doe/*/records/*.json",
+                 "records_read": cread, "records_used": cused})
+
+    # 3. canonical stamps (dispatches with no EXPERIMENT record)
     used = 0
     for did, task in stamp_by_id.items():
         if task.get("_g_provider") and admit(task, task["_g_provider"], task["_g_model"]):
@@ -222,7 +275,7 @@ def collect_tasks(base: Path):
     if not sfiles:
         gaps.append("stamps source empty: experiments/doe/routed-dispatch/stamps has no files")
 
-    # 3. 3l0 intake fan-out (dispatches neither record nor stamp carries)
+    # 4. 3l0 intake fan-out (dispatches neither record nor stamp carries)
     used = 0
     for rec in irows:
         if not isinstance(rec, dict) or not rec.get("provider"):
@@ -233,7 +286,7 @@ def collect_tasks(base: Path):
     meta.append({"id": "intake", "path": "ops/3l0/intake.jsonl",
                  "records_read": len(irows), "records_used": used})
 
-    # 4. desk provider_usage carrier
+    # 5. desk provider_usage carrier
     desk = _read_json(base / "ops" / "challenge" / "desk-feed.json") or {}
     read = used = 0
     for tr in desk.get("traversals", []):

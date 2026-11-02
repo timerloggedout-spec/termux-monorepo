@@ -68,15 +68,26 @@ back to `session_id` for desk rows):
    `treatment` provider/model when the instance is unstamped; verdict
    = record `status`; `first_pass` = `metrics.first_pass_success`;
    `origin` carried verbatim; task_class = `metrics.task_class`.
-2. `stamps` — `experiments/doe/routed-dispatch/stamps/*.json`, the
+2. `campaign-records` — `experiments/doe/*/records/*.json` for every
+   other campaign (pre-agreed with the DoE plane, 2026-11-01, so a
+   campaign whose dispatcher emits tuple-bearing EXPERIMENT records —
+   live-3 on resumption — nests automatically). Admit rule: the record
+   must **bear a provider** (`treatment.instance.provider`, else flat
+   `treatment.provider`, else top-level `provider` — the apk-1 arm
+   shape, whose model/role stay NOT_ESTABLISHED); aggregates are not
+   dispatches and are skipped by name (`SUMMARY.json`, `*-audit.json`).
+   Records bearing no provider (live-1 audits, pilot-1, nc-1,
+   live-3 dispatch-0001 today) do not nest here — they join via
+   `doe_join` in the tracking record.
+3. `stamps` — `experiments/doe/routed-dispatch/stamps/*.json`, the
    canonical dispatch stamps (stamp fan-out, Swarm lane). Flat
    3l0-intake-shaped records: {dispatch_id, ts, provider, model,
    endpoint, moniker, role, context, task_class, run{run_id,
    session_id, workflow}, outcome{status, gate_call, confirmed,
    artifact}, quota{pool, slice, cost_class}, instance?}.
-3. `intake` — `ops/3l0/intake.jsonl` (3l0-intake/v1), the fan-out copy;
+4. `intake` — `ops/3l0/intake.jsonl` (3l0-intake/v1), the fan-out copy;
    catches dispatches whose canonical stamp file is absent.
-4. `desk-usage` — `ops/challenge/desk-feed.json`
+5. `desk-usage` — `ops/challenge/desk-feed.json`
    `traversals[].provider_usage[]`, the DoE scoring carrier (util-1
    auditor + routed carrier): {provider, model, role?, moniker?,
    session_id, state, via, context?}. No run_id/dispatch_id on this
@@ -90,11 +101,9 @@ supply them; stamps lack instance_key — records/intake supply it).
 Nothing is ever overwritten.
 
 Non-sources, named: PLAN rows (planned ≠ run — the family lists tasks
-a model **has run**); EXPERIMENT records outside routed-dispatch
-whose instance carries no provider (cannot nest honestly; the
-campaign-native populations join via `doe_join` in the tracking
-record, not here); session-history provenance records (no dispatch
-outcome semantics).
+a model **has run**); campaign records bearing no provider (named
+under campaign-records above); session-history provenance records
+(no dispatch outcome semantics).
 
 ## Rules
 

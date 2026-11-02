@@ -3,8 +3,8 @@
     "open_issues": 409,
     "open_prs": 184,
     "pr_classes": {
-      "CANDIDATE": 89,
-      "EXTRACT": 7,
+      "CANDIDATE": 91,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T11:13:24Z",
+  "generated_at": "2026-11-02T11:20:53Z",
   "issues_unlabelled": [
     308,
     388,
@@ -101,10 +101,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "success",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "9554835acf"
+    "sha": "64a157874c"
   },
   "prs": [
     {
@@ -176,34 +176,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c74c41c306",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T11:11:11Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c4c5cfc19f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3789,
-      "title": "docs(guides): Certifications Value Matrix \u2014 expectation records for all cert rows + INTAKE category index",
-      "updated_at": "2026-11-02T10:45:40Z"
     },
     {
       "class": "CANDIDATE",
@@ -987,6 +959,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "cf685a9ebe",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T11:18:32Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1457,6 +1443,20 @@
       "updated_at": "2026-11-02T10:22:23Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c4c5cfc19f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3789,
+      "title": "docs(guides): Certifications Value Matrix \u2014 expectation records for all cert rows + INTAKE category index",
+      "updated_at": "2026-11-02T10:45:40Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1866,6 +1866,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "9cb613c7b1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T11:20:23Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1992,26 +2006,12 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
-      },
-      "head_sha": "ef74d583b8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T11:12:00Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
       "head_sha": "572598317e",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
       "updated_at": "2026-11-02T11:06:41Z"
@@ -2611,12 +2611,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "fb6f8ff6a2",
+      "head_sha": "3c2a81c325",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T11:07:17Z"
+      "updated_at": "2026-11-02T11:18:54Z"
     },
     {
       "class": "NEED_EVIDENCE",

@@ -1,5 +1,12 @@
 """Nav-uniformity ratchet (owner order 2026-11-01).
 
+Canonical-root rule (owner, 2026-11-01): FLEET-WIDE - every lane and
+every template trigger names ONE canonical root per surface family
+and points canonical links/tags at it; a migrated root is the state
+of record and its former root is a legacy address, never a co-equal
+twin. First application: this dashboard family - canonical root
+/tribute/, /help-wanted/ is legacy.
+
 The header drifted three times (landing froze at 5 links, previews at
 27, matrix.html at 20) because every page carries its own copy of the
 nav and nothing failed when one copy lagged. This test is the lock:
@@ -19,34 +26,34 @@ ANCHOR_RE = re.compile(r'<a[^>]*href="([^"]+)"[^>]*>([^<]+)</a>')
 CANON = [
     ('https://timerloggedout-spec.github.io/', 'Autonomous AI Employees'),
     ('https://timerloggedout-spec.github.io/', 'Marketing'),
-    ('https://timerloggedout-spec.github.io/help-wanted/', 'Ops · Tribute'),
+    ('https://timerloggedout-spec.github.io/tribute/', 'Ops · Tribute'),
     ('https://timerloggedout-spec.github.io/matrix/', 'Lane matrix'),
-    ('https://timerloggedout-spec.github.io/help-wanted/quota.html', 'Quota'),
-    ('https://timerloggedout-spec.github.io/help-wanted/quota-usage.html', 'Quota Usage'),
-    ('https://timerloggedout-spec.github.io/help-wanted/quota-graphs.html', 'Quota Graphs'),
-    ('https://timerloggedout-spec.github.io/help-wanted/quota-swarm.html', 'Swarm Quota'),
-    ('https://timerloggedout-spec.github.io/help-wanted/admin.html', 'Admin'),
-    ('https://timerloggedout-spec.github.io/help-wanted/oracle.html', 'Oracle'),
-    ('https://timerloggedout-spec.github.io/help-wanted/3l0.html', '3L0'),
-    ('https://timerloggedout-spec.github.io/help-wanted/moneyball.html', 'MoneyBall'),
-    ('https://timerloggedout-spec.github.io/help-wanted/mvt.html', 'MVT'),
-    ('https://timerloggedout-spec.github.io/help-wanted/doe.html', 'DoE'),
-    ('https://timerloggedout-spec.github.io/help-wanted/ates.html', 'ATES'),
-    ('https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html', 'Free-tier value'),
-    ('https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html', 'Dispatch Tree'),
-    ('https://timerloggedout-spec.github.io/help-wanted/admin-graph.html', 'Admin Graph'),
-    ('https://timerloggedout-spec.github.io/help-wanted/countdowns.html', 'Countdowns'),
-    ('https://timerloggedout-spec.github.io/help-wanted/linguist.html', 'Linguist'),
-    ('https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html', 'Delphi RFP'),
-    ('https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html', 'Delphi Ledgers'),
-    ('https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html', 'PR Lanes'),
-    ('https://timerloggedout-spec.github.io/help-wanted/proposals.html', 'Proposals'),
-    ('https://timerloggedout-spec.github.io/help-wanted/telemetry.html', 'Telemetry'),
-    ('https://timerloggedout-spec.github.io/help-wanted/desk.html', 'Desk'),
-    ('https://timerloggedout-spec.github.io/help-wanted/tracking.html', 'Tracking'),
-    ('https://timerloggedout-spec.github.io/help-wanted/family.html', 'Family'),
-    ('https://help-wanted-oversight.vercel.app/', 'Vercel deployment'),
-    ('https://timerloggedout-spec.github.io/help-wanted/sitemap.xml', 'Sitemap'),
+    ('https://timerloggedout-spec.github.io/tribute/quota.html', 'Quota'),
+    ('https://timerloggedout-spec.github.io/tribute/quota-usage.html', 'Quota Usage'),
+    ('https://timerloggedout-spec.github.io/tribute/quota-graphs.html', 'Quota Graphs'),
+    ('https://timerloggedout-spec.github.io/tribute/quota-swarm.html', 'Swarm Quota'),
+    ('https://timerloggedout-spec.github.io/tribute/admin.html', 'Admin'),
+    ('https://timerloggedout-spec.github.io/tribute/oracle.html', 'Oracle'),
+    ('https://timerloggedout-spec.github.io/tribute/3l0.html', '3L0'),
+    ('https://timerloggedout-spec.github.io/tribute/moneyball.html', 'MoneyBall'),
+    ('https://timerloggedout-spec.github.io/tribute/mvt.html', 'MVT'),
+    ('https://timerloggedout-spec.github.io/tribute/doe.html', 'DoE'),
+    ('https://timerloggedout-spec.github.io/tribute/ates.html', 'ATES'),
+    ('https://timerloggedout-spec.github.io/tribute/free-tier-value.html', 'Free-tier value'),
+    ('https://timerloggedout-spec.github.io/tribute/dispatch-tree.html', 'Dispatch Tree'),
+    ('https://timerloggedout-spec.github.io/tribute/admin-graph.html', 'Admin Graph'),
+    ('https://timerloggedout-spec.github.io/tribute/countdowns.html', 'Countdowns'),
+    ('https://timerloggedout-spec.github.io/tribute/linguist.html', 'Linguist'),
+    ('https://timerloggedout-spec.github.io/tribute/delphi-rfp.html', 'Delphi RFP'),
+    ('https://timerloggedout-spec.github.io/tribute/delphi-ledger.html', 'Delphi Ledgers'),
+    ('https://timerloggedout-spec.github.io/tribute/pr-lanes.html', 'PR Lanes'),
+    ('https://timerloggedout-spec.github.io/tribute/proposals.html', 'Proposals'),
+    ('https://timerloggedout-spec.github.io/tribute/telemetry.html', 'Telemetry'),
+    ('https://timerloggedout-spec.github.io/tribute/desk.html', 'Desk'),
+    ('https://timerloggedout-spec.github.io/tribute/tracking.html', 'Tracking'),
+    ('https://timerloggedout-spec.github.io/tribute/family.html', 'Family'),
+    ('https://Tribute-oversight.vercel.app/', 'Vercel deployment'),
+    ('https://timerloggedout-spec.github.io/tribute/sitemap.xml', 'Sitemap'),
     ('https://github.com/timerloggedout-spec/termux-monorepo', 'Monorepo'),
 ]
 

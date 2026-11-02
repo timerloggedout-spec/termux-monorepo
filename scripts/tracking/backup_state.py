@@ -18,7 +18,10 @@ Sources (all committed; the generator is offline):
               records its status.
 Single-writer: repo-tracking-collect.yml. Outputs:
 ops/tracking/backup-state.json +
-apps/help-wanted-dashboard/data/backup-state-feed.json (byte-identical).
+apps/help-wanted-dashboard/data/backup-state-feed.json (byte-identical),
+plus the unified event series ops/tracking/backup-events.jsonl +
+apps/help-wanted-dashboard/data/backup-events-feed.jsonl (Telemetry
+consume shape: relay lines byte-identical, drill lines canonical).
 """
 from __future__ import annotations
 
@@ -164,6 +167,48 @@ def build(base=None, now=None) -> dict:
     }
 
 
+def events_lines(base=None) -> list[str]:
+    """Unified chronological event series (Telemetry consume shape (b),
+    2026-11-02): export + attempt + drill, one event per line.
+
+    BYTE CONDITION (Telemetry dedupe key = sha256(source line)): relay
+    lines pass through BYTE-IDENTICAL to ops/tracking/backup-relays.jsonl
+    — never re-serialized. Drill lines are new events (the drill is not
+    in the relays substrate): serialized canonically (sorted keys,
+    compact separators) so the same drill yields the same bytes on
+    every regeneration. Chronological ascending by `at`.
+    """
+    base = base or ROOT
+    events: list[tuple[str, int, str]] = []
+    seq = 0
+    rpath = base / "ops" / "tracking" / "backup-relays.jsonl"
+    if rpath.exists():
+        for raw in rpath.read_text().splitlines():
+            if not raw.strip():
+                continue
+            try:
+                at = json.loads(raw).get("at") or "9999"
+            except Exception:
+                continue
+            events.append((str(at), seq, raw))
+            seq += 1
+    snap = _read_json(base / "scripts" / "tracking" / "backup_snapshot.json")
+    if isinstance(snap, dict):
+        drill_ats = sorted(str(c.get("at"))
+                           for c in snap.get("commits", []) or []
+                           if str(c.get("message") or "").startswith("drill")
+                           and c.get("at"))
+        for i, d in enumerate(snap.get("drills", []) or []):
+            ev = dict(d)
+            ev["kind"] = "drill"
+            ev["at"] = drill_ats[i] if i < len(drill_ats) else None
+            events.append((str(ev["at"] or "9999"), seq,
+                           json.dumps(ev, sort_keys=True, separators=(",", ":"))))
+            seq += 1
+    events.sort(key=lambda e: (e[0], e[1]))
+    return [line for _, _, line in events]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true", help="build in memory only, print summary")
@@ -179,8 +224,12 @@ def main() -> int:
     dash = ROOT / "apps" / "help-wanted-dashboard" / "data"
     dash.mkdir(parents=True, exist_ok=True)
     (dash / "backup-state-feed.json").write_text(out)
+    ev = events_lines()
+    ev_out = "".join(line + "\n" for line in ev)
+    (ROOT / "ops" / "tracking" / "backup-events.jsonl").write_text(ev_out)
+    (dash / "backup-events-feed.jsonl").write_text(ev_out)
     print(f"backup-state: exports={feed['summary']['exports']} drills={feed['summary']['drills']} "
-          f"gaps={len(feed['gaps'])}")
+          f"events={len(ev)} gaps={len(feed['gaps'])}")
     return 0
 
 

@@ -33,6 +33,7 @@ jobs:
         run: |
           curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.elan/bin:$PATH"
           cd batteries-pin
           elan toolchain install "$(cat lean-toolchain)"
           elan override set "$(cat lean-toolchain)"
@@ -40,6 +41,7 @@ jobs:
         id: build
         continue-on-error: true
         run: |
+          export PATH="$HOME/.elan/bin:$PATH"
           cd batteries-pin
           lake build
       - name: Compile example against the pin
@@ -47,6 +49,7 @@ jobs:
         if: steps.build.outcome == 'success'
         continue-on-error: true
         run: |
+          export PATH="$HOME/.elan/bin:$PATH"
           cd batteries-pin
           lake env lean "$GITHUB_WORKSPACE/research/nse-023/examples/${{ inputs.example }}" > lean-out.txt 2>&1
           echo "lean_exit=$?" >> "$GITHUB_ENV"

@@ -38,6 +38,20 @@ match, status}` with status in {measured, estimated, activity_only,
 not_established}; value is null unless measured/estimated. Arms
 that return no usage omit the slot — never fabricate zeros.
 
+## Attribution corroboration (owner, 2026-11-01; DOE-FAMILY rule 9)
+
+Units carrying actor attribution name their basis:
+`attribution {actor, legs[], corroborated}`, legs drawn from the
+attribution evidence chain {stamp, trailer, manifest, git_author,
+app_bot}. `corroborated` = at least two independent legs agree, or
+Telemetry's provenance-corroboration verdict once it lands.
+Single-leg attribution ⇒ `corroborated: false`: the unit still
+counts for population and outcome scoring, but actor-keyed
+weighting MUST exclude or flag it — some signings are false, and
+uncorroborated marks are never taken at face value. A unit with no
+attribution slot claims no attribution (neither false nor
+corroborated).
+
 ## Carriers
 
 - Live stamps: desk-feed `traversals[].provider_usage[]`

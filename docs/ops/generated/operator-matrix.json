@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 410,
-    "open_prs": 185,
+    "open_prs": 183,
     "pr_classes": {
-      "CANDIDATE": 90,
+      "CANDIDATE": 88,
       "EXTRACT": 6,
       "NEED_EVIDENCE": 89,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 183,
+      "prs": 181,
       "unlabelled_numbers": [
         308,
         388,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:25:02Z",
+  "generated_at": "2026-11-02T13:33:08Z",
   "issues_unlabelled": [
     308,
     388,
@@ -101,10 +101,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "eaab3eb612"
+    "sha": "58a8f77beb"
   },
   "prs": [
     {
@@ -184,12 +184,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d61fc425b5",
+      "head_sha": "9bac9304b7",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:23:07Z"
+      "updated_at": "2026-11-02T13:30:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -1329,34 +1329,6 @@
       "number": 3437,
       "title": "feat(dispatch): wire gemini-invoke to the stamp fan-out",
       "updated_at": "2026-11-02T01:09:20Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a24a2483c3",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3675,
-      "title": "feat(ci): archwiz dangle_check \u2014 repo-side dangle_detector variant (Wave V verifier candidate)",
-      "updated_at": "2026-11-02T09:08:15Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "30ae007d4d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3676,
-      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
-      "updated_at": "2026-11-02T09:10:33Z"
     },
     {
       "class": "CANDIDATE",
@@ -2611,12 +2583,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9c5376e5c7",
+      "head_sha": "a50c30dee2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T13:20:49Z"
+      "updated_at": "2026-11-02T13:33:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2692,15 +2664,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "4979ec9b03",
+      "head_sha": "70a63e10e3",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3876,
-      "title": "Agentic Gambling Lane: book render + refresh contract recorded",
-      "updated_at": "2026-11-02T13:24:52Z"
+      "mergeable_state": "unknown",
+      "number": 3883,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-02T13:31:51Z"
     }
   ],
   "schema": "operator-matrix/v1",

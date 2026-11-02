@@ -1,0 +1,88 @@
+{
+  "axes": [
+    {
+      "axis": "relevance",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41364184062",
+        "issue 506 verdict comment"
+      ],
+      "evidence_strength": "limited",
+      "value": 7
+    },
+    {
+      "axis": "evidence_maturity",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41364184062",
+        "issue 506 verdict comment"
+      ],
+      "evidence_strength": "evidenced",
+      "value": 9
+    },
+    {
+      "axis": "survivability",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41364184062",
+        "issue 506 verdict comment"
+      ],
+      "evidence_strength": "evidenced",
+      "value": 8
+    },
+    {
+      "axis": "adoption_cost_inverse",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41364184062",
+        "issue 506 verdict comment"
+      ],
+      "evidence_strength": "evidenced",
+      "value": 10
+    },
+    {
+      "axis": "composability",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41364184062",
+        "issue 506 verdict comment"
+      ],
+      "evidence_strength": "limited",
+      "value": 9
+    }
+  ],
+  "ballot": {
+    "aggregate": null,
+    "relation": "beside_never_merged"
+  },
+  "baseline_id": "desk-feed-only-routing/v1",
+  "composite": 8.35,
+  "opportunity": {
+    "action": "route-dispatch",
+    "context": "certifications-unit: certifications-unit l1-relational-databases-v9/what-is-ci-cd-and-how-does-ci-work-with-github-actions",
+    "decision_time": "2026-11-01T23:52:00Z",
+    "entity_id": "cohere::c4ai-aya-expanse-32b"
+  },
+  "pass_id": "swarm-routing/v2",
+  "point_in_time": {
+    "event_time": "2026-11-01T23:52:00Z",
+    "ingested_at": "2026-11-01T23:52:00Z",
+    "published_at": "2026-11-01T23:52:00Z"
+  },
+  "quantities": {
+    "capability": null,
+    "forecast": null,
+    "incremental_effect": null,
+    "portfolio_marginal_contribution": null,
+    "surplus": null,
+    "value": null
+  },
+  "record_id": "mb-cert-unit-41364184062",
+  "rubric": "scripts/dispatch/stamp_fanout.py (declared tables; quantities null = unidentified)",
+  "schema": "moneyball-plane/v2",
+  "weights": {
+    "axes": {
+      "adoption_cost_inverse": 0.15,
+      "composability": 0.1,
+      "evidence_maturity": 0.25,
+      "relevance": 0.3,
+      "survivability": 0.2
+    },
+    "fixed_at": "swarm-routing/v2 intake 2026-11-01 (owner routing update)"
+  }
+}

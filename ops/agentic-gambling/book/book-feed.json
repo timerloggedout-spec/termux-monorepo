@@ -13,9 +13,14 @@
  "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger.",
  "positions": [],
  "publication": {
-  "b4_note": "DoE B4 (private ledger first) stood until this separate owner ruling; the ruling changes the render surface only \u2014 ledger custody, settlement and entry rules unchanged",
+  "b4_note": "B4 AS RULED (owner 2026-11-02, DoE-discharged): private ledger first stands (ledger of record unchanged, entries internal, stakes observational, no external participation) AND public read-only render authorized. Render conformity R1 values verbatim / R2 true state as-is / R3 no entry path from the public surface.",
   "external_entries": "CLOSED \u2014 publication opens no external entries; positions are fleet-internal only",
   "mode": "read-only render (owner ruling via main, 2026-11-02)",
+  "render_conformity": {
+   "R1": "published values = ledger values verbatim; render computes nothing, re-estimates nothing",
+   "R2": "expectation records display TRUE STATE \u2014 INTAKE/null priors + posteriors as-is, never dressed, interpolated or hidden",
+   "R3": "read-only means read-only \u2014 no entry/position path from the public surface"
+  },
   "surfaces": "fleet web Viz/dev surfaces"
  },
  "publishability_flags": [

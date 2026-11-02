@@ -93,6 +93,13 @@ def _classify(abspath: Path, source: str, tier: str, entries: list):
                             reason="excluded:symlink", sha256=None,
                             size=None))
         return
+    if not abspath.is_file():
+        # Sockets, fifos, devices: no content to back up, and opening
+        # them can block or fail (ENXIO on sockets).
+        entries.append(dict(source=source, tier=tier, exported=False,
+                            reason="excluded:non-regular", sha256=None,
+                            size=None))
+        return
     size = abspath.stat().st_size
     if size > SIZE_GATE:
         entries.append(dict(source=source, tier=tier + "-manifest",

@@ -1,0 +1,2833 @@
+{
+ "schema": "quota.swarm-feed/v1",
+ "generated_at": "2026-11-02T06:53:59Z",
+ "generated_by": "scripts/quota_swarm_feed.py",
+ "spec": {
+  "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
+  "grouping": "family (registry id prefix) > registry records; g4f upstreams nest under the single g4f family",
+  "envelope": "aligned with Tracking nested-family/v1 {schema, generated_at, generated_by, spec, sources, summary, providers, gaps}",
+  "swarm_definition": "owner 2026-11-01: ALL providers' inference model endpoints participating in 3L0 DoE"
+ },
+ "sources": [
+  {
+   "id": "registry",
+   "path": "ops/quota/registry.json",
+   "generated_at": null
+  },
+  {
+   "id": "census",
+   "path": "ops/quota/allocation-verification.json",
+   "generated_at": null
+  },
+  {
+   "id": "readings",
+   "path": "docs/ops/generated/quota-status.json",
+   "generated_at": "2026-11-01T13:23:25.948846+00:00"
+  },
+  {
+   "id": "usage-series",
+   "path": "ops/quota/usage-series.json",
+   "generated_at": "2026-11-02T06:49:47Z"
+  },
+  {
+   "id": "rate-limit-events",
+   "path": "ops/quota/rate-limit-events.json",
+   "generated_at": null
+  }
+ ],
+ "summary": {
+  "registry_model_records": 95,
+  "distinct_providers": 93,
+  "families": 33,
+  "families_direct": 32,
+  "g4f_children": 61,
+  "live_verified_families": 12,
+  "rate_limit_events": 8
+ },
+ "providers": [
+  {
+   "provider": "aion",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "404 no Route matched - route wrong, no key verdict"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "probe run 41263537880"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "route-dead"
+    ]
+   },
+   "records": [
+    {
+     "id": "aion.free_tokens",
+     "provider": "aion",
+     "metric": "Free tier token allowance",
+     "limit": 20000,
+     "unit": "tokens/day",
+     "window": "daily",
+     "reset": "daily (schedule not published)",
+     "live": "none published (no rate-limit headers or usage endpoint documented)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "baseten",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": null,
+   "records": [
+    {
+     "id": "baseten.api",
+     "provider": "baseten",
+     "metric": "Prepaid API credits (pay-as-you-go inference)",
+     "limit": null,
+     "unit": "USD credits (prepaid)",
+     "window": "n/a",
+     "reset": "n/a",
+     "live": "none published",
+     "readings": null,
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "cerebras",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "cerebras.free_tokens",
+     "provider": "cerebras",
+     "metric": "Free Trial token allowance",
+     "limit": 1000000,
+     "unit": "tokens/day",
+     "window": "daily",
+     "reset": "continuous token-bucket replenishment; no fixed reset",
+     "live": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "cloudflare",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "401 code 1000 at /user/tokens/verify; account-scoped token not excluded"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "token verify read, run 41263537880"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "verify-scope"
+    ]
+   },
+   "records": [
+    {
+     "id": "cloudflare.workers_ai",
+     "provider": "cloudflare",
+     "metric": "Workers AI free allocation",
+     "limit": 10000,
+     "unit": "Neurons/day",
+     "window": "daily",
+     "reset": "daily at 00:00 UTC",
+     "live": "none published (no usage API); Workers AI dashboard only",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "cohere",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "not-established - surface exposes no quota/balance object"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "cohere.trial_calls",
+     "provider": "cohere",
+     "metric": "Trial key call allowance",
+     "limit": 1000,
+     "unit": "API calls/month",
+     "window": "monthly",
+     "reset": "monthly",
+     "live": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "deepinfra",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": null,
+   "records": [
+    {
+     "id": "deepinfra.api",
+     "provider": "deepinfra",
+     "metric": "Prepaid API balance (pay-as-you-go inference)",
+     "limit": null,
+     "unit": "USD balance (prepaid)",
+     "window": "n/a",
+     "reset": "n/a",
+     "live": "none published",
+     "readings": null,
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "felo",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "free-equivalent",
+    "evidence": "owner-attested",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "yes (owner-attested exemplar)",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "owner statement 2026-10-31; API attempt edge-blocked (1010) in run 41263537880 - claim-state still unverified firsthand"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "route-blocked",
+     "verify-claim-state"
+    ]
+   },
+   "records": [
+    {
+     "id": "felo.api_credits",
+     "provider": "felo",
+     "metric": "Search API Free Standard credits (daily refill) + intermittent free models",
+     "limit": 200,
+     "unit": "credits/day",
+     "window": "daily",
+     "reset": "daily refill",
+     "live": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "friendli",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": null,
+   "records": [
+    {
+     "id": "friendli.api",
+     "provider": "friendli",
+     "metric": "Prepaid API balance (pay-as-you-go inference)",
+     "limit": null,
+     "unit": "USD balance (prepaid)",
+     "window": "n/a",
+     "reset": "n/a",
+     "live": "none published",
+     "readings": null,
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "g4f",
+   "record_count": 61,
+   "providers_distinct": 61,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "route named in census doc"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "g4f.agenttools",
+     "provider": "g4f/AgentTools",
+     "metric": "g4f provider AgentTools \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 250,
+     "unit": "units",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.airforce",
+     "provider": "g4f/Airforce",
+     "metric": "g4f provider Airforce \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 1000,
+     "unit": "requests",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.antigravity",
+     "provider": "g4f/Antigravity",
+     "metric": "g4f provider Antigravity \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.arena",
+     "provider": "g4f/Arena",
+     "metric": "g4f provider Arena \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.bingcreateimages",
+     "provider": "g4f/BingCreateImages",
+     "metric": "g4f provider BingCreateImages \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.blackboxpro",
+     "provider": "g4f/BlackboxPro",
+     "metric": "g4f provider BlackboxPro \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.blackforestlabs_flux1dev",
+     "provider": "g4f/BlackForestLabs_Flux1Dev",
+     "metric": "g4f provider BlackForestLabs_Flux1Dev \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 2,
+     "unit": "minutes of GPU time",
+     "window": "per day, resets exactly 24 hours after first GPU usage",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.blackforestlabs_flux1kontextdev",
+     "provider": "g4f/BlackForestLabs_Flux1KontextDev",
+     "metric": "g4f provider BlackForestLabs_Flux1KontextDev \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 2,
+     "unit": "minutes of GPU time",
+     "window": "per day, resets exactly 24 hours after first GPU usage",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.bravesearch",
+     "provider": "g4f/BraveSearch",
+     "metric": "g4f provider BraveSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.cachedsearch",
+     "provider": "g4f/CachedSearch",
+     "metric": "g4f provider CachedSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.cerebras",
+     "provider": "g4f/Cerebras",
+     "metric": "g4f provider Cerebras \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.chatgpt",
+     "provider": "g4f/ChatGPT",
+     "metric": "g4f provider ChatGPT \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.claude",
+     "provider": "g4f/Claude",
+     "metric": "g4f provider Claude \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.cloudflare",
+     "provider": "g4f/Cloudflare",
+     "metric": "g4f provider Cloudflare \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.cohereforai_c4ai_command",
+     "provider": "g4f/CohereForAI_C4AI_Command",
+     "metric": "g4f provider CohereForAI_C4AI_Command \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.copilot",
+     "provider": "g4f/Copilot",
+     "metric": "g4f provider Copilot \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.copilotapp",
+     "provider": "g4f/CopilotApp",
+     "metric": "g4f provider CopilotApp \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.deepinfra",
+     "provider": "g4f/DeepInfra",
+     "metric": "g4f provider DeepInfra \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.deepseek",
+     "provider": "g4f/DeepSeek",
+     "metric": "g4f provider DeepSeek \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.elevenlabs",
+     "provider": "g4f/ElevenLabs",
+     "metric": "g4f provider ElevenLabs \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 10000,
+     "unit": "credits",
+     "window": "per month",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.g4fspace",
+     "provider": "g4f/G4FSpace",
+     "metric": "g4f provider G4FSpace \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.gemini",
+     "provider": "g4f/Gemini",
+     "metric": "g4f provider Gemini \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.geminicli",
+     "provider": "g4f/GeminiCLI",
+     "metric": "g4f provider GeminiCLI \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 1000,
+     "unit": "requests",
+     "window": "per user per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.geminipro",
+     "provider": "g4f/GeminiPro",
+     "metric": "g4f provider GeminiPro \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.githubcopilot",
+     "provider": "g4f/GithubCopilot",
+     "metric": "g4f provider GithubCopilot \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 50,
+     "unit": "premium requests (all chat interactions count as premium requests)",
+     "window": "per month",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.glm",
+     "provider": "g4f/GLM",
+     "metric": "g4f provider GLM \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.googleaimode",
+     "provider": "g4f/GoogleAiMode",
+     "metric": "g4f provider GoogleAiMode \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.googlesearch",
+     "provider": "g4f/GoogleSearch",
+     "metric": "g4f provider GoogleSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.grok",
+     "provider": "g4f/Grok",
+     "metric": "g4f provider Grok \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.groq",
+     "provider": "g4f/Groq",
+     "metric": "g4f provider Groq \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 1000,
+     "unit": "requests per day (RPD) for openai/gpt-oss-120b",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.hailuoai",
+     "provider": "g4f/HailuoAI",
+     "metric": "g4f provider HailuoAI \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.huggingchat",
+     "provider": "g4f/HuggingChat",
+     "metric": "g4f provider HuggingChat \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.huggingface",
+     "provider": "g4f/HuggingFace",
+     "metric": "g4f provider HuggingFace \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.huggingfacemedia",
+     "provider": "g4f/HuggingFaceMedia",
+     "metric": "g4f provider HuggingFaceMedia \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.huggingspace",
+     "provider": "g4f/HuggingSpace",
+     "metric": "g4f provider HuggingSpace \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 2,
+     "unit": "GPU-minutes (ZeroGPU)",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.kilocode",
+     "provider": "g4f/KiloCode",
+     "metric": "g4f provider KiloCode \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 200,
+     "unit": "requests",
+     "window": "per hour per IP",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.llm7",
+     "provider": "g4f/LLM7",
+     "metric": "g4f provider LLM7 \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 100000,
+     "unit": "tokens (input + output)",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.markitdown",
+     "provider": "g4f/MarkItDown",
+     "metric": "g4f provider MarkItDown \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.metaai",
+     "provider": "g4f/MetaAI",
+     "metric": "g4f provider MetaAI \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.metaaiaccount",
+     "provider": "g4f/MetaAIAccount",
+     "metric": "g4f provider MetaAIAccount \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.microsoftdesigner",
+     "provider": "g4f/MicrosoftDesigner",
+     "metric": "g4f provider MicrosoftDesigner \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 15,
+     "unit": "boosts (fast AI creations/edits)",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.nvidia",
+     "provider": "g4f/Nvidia",
+     "metric": "g4f provider Nvidia \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 1000,
+     "unit": "API credits",
+     "window": "on sign-up (one-time trial grant)",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.ollama",
+     "provider": "g4f/Ollama",
+     "metric": "g4f provider Ollama \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.omniroute",
+     "provider": "g4f/OmniRoute",
+     "metric": "g4f provider OmniRoute \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.openaifm",
+     "provider": "g4f/OpenAIFM",
+     "metric": "g4f provider OpenAIFM \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.openrouterfree",
+     "provider": "g4f/OpenRouterFree",
+     "metric": "g4f provider OpenRouterFree \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 50,
+     "unit": "requests",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.operaaria",
+     "provider": "g4f/OperaAria",
+     "metric": "g4f provider OperaAria \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 5,
+     "unit": "images",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.perplexity",
+     "provider": "g4f/Perplexity",
+     "metric": "g4f provider Perplexity \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 3,
+     "unit": "Pro Searches",
+     "window": "per day",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.pi",
+     "provider": "g4f/Pi",
+     "metric": "g4f provider Pi \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.pollinations",
+     "provider": "g4f/Pollinations",
+     "metric": "g4f provider Pollinations \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.pollinationsaudio",
+     "provider": "g4f/PollinationsAudio",
+     "metric": "g4f provider PollinationsAudio \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.pollinationsimage",
+     "provider": "g4f/PollinationsImage",
+     "metric": "g4f provider PollinationsImage \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.puter",
+     "provider": "g4f/Puter",
+     "metric": "g4f provider Puter \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.qwen",
+     "provider": "g4f/Qwen",
+     "metric": "g4f provider Qwen \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.relayrouter",
+     "provider": "g4f/RelayRouter",
+     "metric": "g4f provider RelayRouter \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": 2000000,
+     "unit": "tokens",
+     "window": "per account total, with daily sub-caps resetting 00:00 UTC",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.stabilityai_sd35large",
+     "provider": "g4f/StabilityAI_SD35Large",
+     "metric": "g4f provider StabilityAI_SD35Large \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.teachanything",
+     "provider": "g4f/TeachAnything",
+     "metric": "g4f provider TeachAnything \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.vendors",
+     "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+     "metric": "public/web-wrapped endpoints (multi-ai-cli/vendors)",
+     "limit": null,
+     "unit": "unmetered / unknown",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.whiterabbitneo",
+     "provider": "g4f/WhiteRabbitNeo",
+     "metric": "g4f provider WhiteRabbitNeo \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.you",
+     "provider": "g4f/You",
+     "metric": "g4f provider You \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "g4f.yqcloud",
+     "provider": "g4f/Yqcloud",
+     "metric": "g4f provider Yqcloud \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "limit": null,
+     "unit": "unmetered / unknown (NOT ESTABLISHED)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "gemini",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "AI Studio free-quota class; API exposes no balance object"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "gemini.api_free",
+     "provider": "google",
+     "metric": "RPM/TPM/RPD per model, per project",
+     "limit": null,
+     "unit": "per-model",
+     "window": "daily (RPD)",
+     "reset": "midnight",
+     "live": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "github",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "plan=free; PAT 5000/h core, App 5000/h/installation, GITHUB_TOKEN 1000/h/repo; Actions minutes free on public repos (doc)"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "user billing API 404 via PAT (scope)"
+    },
+    "replenishment": {
+     "mechanism": "hourly bucket refill; monthly minutes",
+     "gate": "none for free layer"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "github.copilot.free",
+     "provider": "github",
+     "metric": "Copilot Free allowance",
+     "limit": null,
+     "unit": "requests/month",
+     "window": "monthly",
+     "reset": "unverified",
+     "live": "none (no usage API for Free)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": {
+      "key": "github",
+      "title": "GitHub API core - remaining",
+      "unit": "requests/hour",
+      "kind": "measured",
+      "metric": "remaining",
+      "points": [
+       {
+        "t": "2026-10-28T23:41:00Z",
+        "v": 0
+       },
+       {
+        "t": "2026-10-29T00:32:00Z",
+        "v": 2950
+       },
+       {
+        "t": "2026-10-29T00:37:00Z",
+        "v": 2945
+       },
+       {
+        "t": "2026-10-29T05:50:14Z",
+        "v": 0
+       },
+       {
+        "t": "2026-10-29T11:41:45Z",
+        "v": 0
+       },
+       {
+        "t": "2026-10-29T21:39:53Z",
+        "v": 0
+       },
+       {
+        "t": "2026-10-30T01:32:00Z",
+        "v": 0
+       },
+       {
+        "t": "2026-10-30T01:36:00Z",
+        "v": 0
+       },
+       {
+        "t": "2026-10-30T01:43:00Z",
+        "v": 4999
+       },
+       {
+        "t": "2026-10-30T01:45:00Z",
+        "v": 4645
+       },
+       {
+        "t": "2026-10-30T01:54:00Z",
+        "v": 3230
+       },
+       {
+        "t": "2026-11-02T06:30:06Z",
+        "v": 3871
+       }
+      ],
+      "provenance": "ops/quota/quota-usage.json series1_api_core",
+      "context": {
+       "target_flow_per_min": 83.33333333333333,
+       "source": "ops/quota/allocation-plan.json pool github",
+       "note": "plan target flow - context only, not usage; plotted only if units match"
+      },
+      "last_point_at": "2026-11-02T06:30:06Z"
+     }
+    }
+   ]
+  },
+  {
+   "provider": "groq",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "route edge-blocked (Cloudflare 1010 from Actions egress) - no key verdict"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "probe run 41263537880"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "route-blocked"
+    ]
+   },
+   "records": [
+    {
+     "id": "groq.free_tier",
+     "provider": "groq",
+     "metric": "Free tier rate limits (per model)",
+     "limit": null,
+     "unit": "per-model requests/tokens",
+     "window": "per minute/day",
+     "reset": "x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers",
+     "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-tokens, retry-after (passive adapter implemented)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "huggingface",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "account free: isPro=false, no orgs (whoami-v2)"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "whoami-v2 account object, run 41263537880"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "huggingface.inference_providers",
+     "provider": "huggingface",
+     "metric": "Inference Providers monthly credits",
+     "limit": null,
+     "unit": "monthly credits",
+     "window": "monthly",
+     "reset": "monthly",
+     "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented \u2014 Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "kilo",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "kilo.free_models",
+     "provider": "kilo",
+     "metric": "Free model requests (kilo-auto/free)",
+     "limit": 200,
+     "unit": "requests/hour",
+     "window": "hourly",
+     "reset": "per-hour window (per IP)",
+     "live": "none published",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "llm7",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "not-established - surface exposes no quota/balance object"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "llm7.free_token",
+     "provider": "llm7",
+     "metric": "Free token allowance (turbo models)",
+     "limit": 100000,
+     "unit": "tokens/day",
+     "window": "daily",
+     "reset": "daily",
+     "live": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "meta",
+   "record_count": 3,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "route named in census doc"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "meta.llama_api",
+     "provider": "meta",
+     "metric": "Meta Llama API (RETIRED 2026-07-06; was https://api.llama.com/compat/v1/, LLAMA_API_KEY)",
+     "limit": 0,
+     "unit": "requests",
+     "window": "n/a",
+     "reset": "n/a (retired)",
+     "live": "none (retired; superseded by meta.model_api)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "meta.model_api",
+     "provider": "meta",
+     "metric": "Meta Model API usage \u2014 Muse Spark / Muse Wonder / Muse Voice via https://api.meta.ai/v1 (Responses + Chat Completions + Messages + Files; OpenAI/Anthropic SDK compatible)",
+     "limit": null,
+     "unit": "tokens (metered, public preview)",
+     "window": "n/a",
+     "reset": "unverified \u2014 no published rate-limit counter established 2026-10-30",
+     "live": "none (no usage API established; credential MODEL_API_KEY not provisioned \u2014 owner provisioning item, names-only)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    },
+    {
+     "id": "meta.muse_code",
+     "provider": "meta",
+     "metric": "Muse Code CLI coding agent (terminal agent backed by Muse Spark; install https://dev.meta.ai/install.sh, binary `muse`)",
+     "limit": null,
+     "unit": "tasks (subscription or Meta Model API PAYG)",
+     "window": "monthly (subscription) / metered (PAYG)",
+     "reset": "unverified",
+     "live": "none (auth = browser sign-in or META_API_KEY / muse auth set; credential not provisioned \u2014 owner item, names-only)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "mistral",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "mistral.free_mode",
+     "provider": "mistral",
+     "metric": "Free mode (Experiment) included usage",
+     "limit": null,
+     "unit": "included usage (per model, in-account)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none published (Admin Panel only; Admin API is Enterprise)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "modelscope",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "modelscope.api_inference",
+     "provider": "modelscope",
+     "metric": "API-Inference usage limits",
+     "limit": 2000,
+     "unit": "requests/day",
+     "window": "daily",
+     "reset": "daily (per fleet recon claim)",
+     "live": "none published (not established)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "novita",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": null,
+   "records": [
+    {
+     "id": "novita.api",
+     "provider": "novita",
+     "metric": "Prepaid API balance (pay-as-you-go inference)",
+     "limit": null,
+     "unit": "USD balance (prepaid)",
+     "window": "n/a",
+     "reset": "n/a",
+     "live": "none published",
+     "readings": null,
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "nvidia",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-read",
+    "free_tier": {
+     "state": "active",
+     "limits": "public models surface 200; auth NOT proven by this endpoint"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "probe run 41263537880 (public surface)"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "nvidia.api_catalog",
+     "provider": "nvidia",
+     "metric": "API catalog free model limits (per model, in-account)",
+     "limit": null,
+     "unit": "per-model credits/limits (in-account)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none published",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "omni",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "omni.gateway",
+     "provider": "omni",
+     "metric": "OmniRoute gateway (self-hosted; no own entitlement)",
+     "limit": null,
+     "unit": "n/a (aggregates upstream free tiers)",
+     "window": "n/a",
+     "reset": "n/a",
+     "live": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "openrouter",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "layered",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "free-model allowance 50/day (free_model_daily_requests); key is_free_tier=true Roster hazard verified 2026-11-01: catalog 452 models, DeepSeek 18 all paid (:free = 0), deepseek-r1:free delisted, total :free variants = 14."
+    },
+    "credits": {
+     "available": "paid credits purchasable only",
+     "claimed": "n/a",
+     "balance": 0.0,
+     "source": "GET /api/v1/credits: total_credits 0, total_usage 0.206466965 (account level)"
+    },
+    "replenishment": {
+     "mechanism": "free allowance refills daily; paid balance refills by purchase",
+     "gate": "card purchase for paid layer"
+    },
+    "flags": [
+     "card-required",
+     "free-roster-rotation"
+    ]
+   },
+   "records": [
+    {
+     "id": "openrouter.free_models",
+     "provider": "openrouter",
+     "metric": "free-model (:free) daily request entitlement/counter",
+     "limit": null,
+     "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+     "window": "daily UTC",
+     "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
+     "live": "GET /api/v1/key -> data.free_model_daily_requests {used, limit, remaining} (OPENROUTER_API_KEY); ignore private credit/budget fields and openrouter_metadata",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "confirmed",
+      "horizon": "H0",
+      "observed_at": "2026-11-01T13:23:25.948846+00:00"
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "ovhcloud",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "ovhcloud.ai_endpoints",
+     "provider": "ovhcloud",
+     "metric": "AI Endpoints anonymous rate limit",
+     "limit": 2,
+     "unit": "requests/minute",
+     "window": "per minute",
+     "reset": "per-minute window",
+     "live": "none published; consumption visible in the Control Panel",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "requesty",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "requesty.free_models",
+     "provider": "requesty",
+     "metric": "Free model requests",
+     "limit": 200,
+     "unit": "requests/day",
+     "window": "daily",
+     "reset": "daily",
+     "live": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "routeway",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "not-established - surface exposes no quota/balance object"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "routeway.free_models",
+     "provider": "routeway",
+     "metric": "Free model requests (:free models)",
+     "limit": 200,
+     "unit": "requests/day",
+     "window": "daily",
+     "reset": "UTC midnight (X-RateLimit-Reset-Day)",
+     "live": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "sambanova",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "not-established - surface exposes no quota/balance object"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "sambanova.free_tier",
+     "provider": "sambanova",
+     "metric": "Free Tier requests per model",
+     "limit": 20,
+     "unit": "requests/day per model",
+     "window": "daily",
+     "reset": "daily (x-ratelimit-reset-requests-day header)",
+     "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratelimit-reset-requests-day (passive adapter implemented)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "sealion",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "DNS does not resolve - phantom-route candidate"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "probe run 41263537880"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "route-dead"
+    ]
+   },
+   "records": [
+    {
+     "id": "sealion.api",
+     "provider": "sealion",
+     "metric": "Trial API rate limit",
+     "limit": 10,
+     "unit": "requests/minute per user",
+     "window": "per minute",
+     "reset": "per-minute window",
+     "live": "none published",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "siliconflow",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "key live on canonical .com platform (models 200, runs 41264932179 + provisioning reads); balance not-established - .com /v1/user/info deprecated (410); .cn is a separate platform"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "chain: .cn 401 (platform mismatch, retracted) -> .com user/info 410 deprecated -> .com models 200 key-live"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "siliconflow.free_models",
+     "provider": "siliconflow",
+     "metric": "Free model rate limits (per model)",
+     "limit": null,
+     "unit": "requests/minute + tokens/minute (per model)",
+     "window": "per minute/day",
+     "reset": "per-window",
+     "live": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free values shown in the account console only",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "typhoon",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "typhoon.api",
+     "provider": "typhoon",
+     "metric": "Free research API rate limits (per model)",
+     "limit": 200,
+     "unit": "requests/minute",
+     "window": "per minute",
+     "reset": "per-minute window; 429 error body message carries the retry timestamp",
+     "live": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "unorouter",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "roster carries :free ids (AI-Horde class); balance not exposed"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "unorouter.free_models",
+     "provider": "unorouter",
+     "metric": "Free model rate cap (UnoRouter's own, above upstream)",
+     "limit": 1,
+     "unit": "requests/minute per free model per user",
+     "window": "per minute",
+     "reset": "per-minute window; Retry-After on 429",
+     "live": "Retry-After header on HTTP 429",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "xfyun",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "not-established"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "no-credential"
+    ]
+   },
+   "records": [
+    {
+     "id": "xfyun.spark",
+     "provider": "xfyun",
+     "metric": "Spark Lite free tier + per-capability trials",
+     "limit": null,
+     "unit": "unknown",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "none published (not established)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "xkiro",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "census": {
+    "verdict": "not-established",
+    "evidence": "not-established",
+    "free_tier": {
+     "state": "not-established",
+     "limits": "route edge-blocked (Cloudflare 1010 from Actions egress) - no key verdict"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "probe run 41263537880"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": [
+     "route-blocked"
+    ]
+   },
+   "records": [
+    {
+     "id": "xkiro.free_models",
+     "provider": "xkiro",
+     "metric": "Free model token allowance",
+     "limit": 500000,
+     "unit": "tokens/day",
+     "window": "daily",
+     "reset": "daily reset; free-model requests blocked with 429 until the reset",
+     "live": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  },
+  {
+   "provider": "zai",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": true,
+   "census": {
+    "verdict": "free",
+    "evidence": "api-verified",
+    "free_tier": {
+     "state": "active",
+     "limits": "not-established - surface exposes no quota/balance object"
+    },
+    "credits": {
+     "available": "not-established",
+     "claimed": "not-established",
+     "balance": null,
+     "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+    },
+    "replenishment": {
+     "mechanism": "not-established",
+     "gate": "not-established"
+    },
+    "flags": []
+   },
+   "records": [
+    {
+     "id": "zai.free_models",
+     "provider": "zai",
+     "metric": "Free ($0-priced GLM Flash) model access",
+     "limit": null,
+     "unit": "per-account (unpublished)",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null
+    }
+   ]
+  }
+ ],
+ "events": {
+  "schema": "quota.rate-limit-events/v1",
+  "source": "ops/quota/rate-limit-events.json",
+  "events": [
+   {
+    "at": "2026-10-28T23:41:00Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": 403,
+    "id": "wall-2026-10-28T23:41:00Z-pat",
+    "provenance": "quota-specialist pack 2026-10-29 (ops/quota/quota-usage.json series1 point, kind=wall, remaining=0); Convergence lane firsthand report (via quota-gaps 2026-11-01): publish 403 on this wall, PAT user ID 233432881, context = 155-row promotion publish",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-10-29T05:50:14Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": 403,
+    "id": "wall-2026-10-29T05:50:14Z-pat",
+    "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) - core 403, via ops/quota/quota-usage.json series1 point (kind=wall, remaining=0); fleet incident of record docs/ops/RATE-LIMIT-2026-10-29.md, request 33AF:1CEEDD (via quota-gaps 2026-11-01)",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-10-29T11:41:45Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": null,
+    "id": "wall-2026-10-29T11:41:45Z-pat",
+    "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) - incident 2, via ops/quota/quota-usage.json series1 point (kind=wall, remaining=0)",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-10-29T21:39:53Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": 403,
+    "id": "wall-2026-10-29T21:39:53Z-pat",
+    "provenance": "cadence lane timeline 2026-10-29 - ECC ack run annotation: 'API rate limit exceeded', via ops/quota/quota-usage.json series1 point (kind=wall, remaining=0)",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-10-30T01:32:00Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": null,
+    "id": "wall-2026-10-30T01:32:00Z-pat",
+    "provenance": "quota-specialist pack 2026-10-29 (~18:32 PT) (ops/quota/quota-usage.json series1 point, kind=wall, remaining=0)",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-10-30T01:34:00Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": null,
+    "id": "wall-2026-10-30T01:34:00Z-pat-gaps-defer",
+    "provenance": "quota-gaps lane firsthand (2026-11-01): helper circuit-breaker DEFER on core remaining=0 at read (not an API 403 - the breaker fired first), reset 2026-10-30T01:42:09Z, context = quota-gaps verification pull (STRATEGIZE cycle); same wall episode as the 01:32/01:36 points",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-10-30T01:36:00Z",
+    "bucket": "github.api.user_token",
+    "class": "core-exhaustion",
+    "evidence": "api-observed",
+    "http": null,
+    "id": "wall-2026-10-30T01:36:00Z-pat",
+    "provenance": "viz rate-limit read (used 5000, reset 2026-10-30T01:42:09Z) (ops/quota/quota-usage.json series1 point, kind=observed, remaining=0)",
+    "surface": "REST core"
+   },
+   {
+    "at": "2026-11-02T06:25:00Z",
+    "bucket": "github.api.user_token",
+    "class": "secondary-403",
+    "context": "moniker-versioning usage census - queue cut (RepoStory + signature counts uncounted); lane stopped all API calls per service limits",
+    "evidence": "lane-attested",
+    "http": 403,
+    "id": "census-2026-11-02T06:25:00Z-search-pat",
+    "provenance": "Event #1 of record (owner directive 2026-11-01 22:28 PT). Registry lane (ac8e5e6b) firsthand report to main at 22:25 PT: GitHub Search API secondary limit hit mid-census on involves:<actor> queries over timerloggedout-spec/termux-monorepo. NOT core-bucket exhaustion - PAT core stayed >=3,049 all night (quota-gaps attestation).",
+    "surface": "Search API"
+   }
+  ]
+ },
+ "gaps": [
+  "readings used/remaining are null in the public projection by design (account values withheld); per-provider remaining/usage render only where the census or a usage series establishes them.",
+  "families with no census row carry census=null - their allocation state is not-established, not zero."
+ ]
+}

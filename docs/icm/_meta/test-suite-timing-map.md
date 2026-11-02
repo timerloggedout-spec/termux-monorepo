@@ -17,10 +17,12 @@ Method: durations from check-run timestamps (started_at→completed_at) on sampl
 
 | Item | Duration | Actions-min | Trigger class | Note |
 |---|---|---|---|---|
-| CodeQL advisories (python 172s · actions 80s · js/ts 75s) | Σ 327s (n=1) | ≈5.5 | per-PR | Largest single per-PR draw; ≈700 Actions-min/day at the current-tempo posterior (≈130 PR/day, numbering Δ #3253→#3401 over ≈27h — peak-tempo caveat) |
+| CodeQL advisories (python 172s · actions 80s · js/ts 75s) | Σ 327s (n=1) | ≈5.5 | per-PR | Largest single per-PR draw; the per-day figure is a derived view — see Revision 2026-11-02b (record `pr_tempo_per_day` × this measured draw) |
 | All checks on a code-touching PR head | Σ ≈13–14 min (53 check-runs, PR #3335 head) | ≈13–14 | per-PR | Includes duplicate fan-out instances (ledger ×6, sweep ×2) |
 
 ## Chronic-red price (ALE = SLE × ARO)
+
+> **Superseded as a pricing surface by Revision 2026-11-02b (end of file)** — per the DoE bayesian-updating v0 shape ruling (PR #3724), prices live in expectation records and ALE is a derived view only. This table is retained as the evidence summary the records were built from; where any figure here and a posterior differ, the posterior governs.
 
 | Item | ARO | SLE | ALE | Class |
 |---|---|---|---|---|
@@ -41,3 +43,50 @@ Method: durations from check-run timestamps (started_at→completed_at) on sampl
 - Test census: per-area recursive git trees @master, 2026-11-02 (ICM priorities-window slice 2).
 - Timing sample: check-runs on PR #3335 head `fb27c7f4` (53 runs) + harvest job record 41367735561; failure frequency: PRs #3257–#3401 (factory runs #1–#11).
 - Update protocol: append dated revision sections; never rewrite prior figures (freeze rule — additive only). Multi-head timing pull (10–20 PR heads) is the named next measurement on manager word.
+
+## Revision 2026-11-02b — expectation records (DoE bayesian-updating v0, PR #3724)
+
+Shape ruling applied: per candidate ONE expectation record `{quantity, prior{value,basis}, evidence[]{source,direction,likelihood,corroboration}, posterior{value,range,updated_at,n_evidence}}`. ALE and the risk matrix are derived views of the ARO/SLE posterior pair — no parallel hand-computed numbers; where a view and a posterior disagree, the record is defective and the posterior governs. Weighting per rule 9: corroborated legs update at full strength, single-leg held/provisional, disputed excluded, self-asserted ~no movement; unknowns widen the range, not the point. Unevidenced quantities are labeled **INTAKE**.
+
+### Records
+
+**`baseline5.aro` — failure probability per PR head (baseline-5 red checks)**
+- prior: {value: 0.5, basis: uninformative — chronic-red hypothesis untested at map v0}
+- evidence: [{source: "check-runs on 11 factory PR heads, PRs #3257–#3401 (runs #1–#11)", direction: up, likelihood: "failed on 11/11 heads", corroboration: corroborated (firsthand API check-run records)}]
+- posterior: {value: 0.92, range: 0.75–1.0, updated_at: 2026-11-02, n_evidence: 11}
+
+**`baseline5.sle` — Actions-minutes wasted per occurrence**
+- prior: {value: 2.0, basis: order-of-magnitude placeholder before measurement}
+- evidence: [{source: "check-run durations, PR #3335 head (discover 17s + ledger instances ≈50s + collect-peer-responses 5s + collect redacted PR evidence 11s ≈ 83s)", direction: down, likelihood: "measured Σ ≈1.4 min on the sampled head", corroboration: single-leg (n=1 head) — held provisional}]
+- posterior: {value: 1.4, range: 0.8–2.5, updated_at: 2026-11-02, n_evidence: 1}
+- Note: the governing SLE for priority is gate-signal degradation (these checks are not required gates; merges proceeded on all 11 heads) — a qualitative impact carried in the risk render, not in this minutes record.
+
+**`pr_tempo_per_day` — PRs created per day, repo-wide**
+- prior: {value: 60, basis: fleet-tempo impression, weak}
+- evidence: [{source: "PR numbering Δ #3253→#3401 ≈ 148 created over ≈27h (2026-11-01→02)", direction: up, likelihood: "implies ≈130/day in-window; peak-tempo caveat applies", corroboration: single-leg (one window) — held provisional}]
+- posterior: {value: 130, range: 70–160, updated_at: 2026-11-02, n_evidence: 1}
+
+**`fabric_mint.aro` — failure probability per remote-knowledge-fabric run at App mint**
+- prior: {value: 0.3, basis: mint auth failures usually intermittent/config-local}
+- evidence: [{source: "run records 2026-10-21→26: 6/6 runs failed at mint (APP_PRIVATE_KEY class)", direction: up, likelihood: "6/6 in window", corroboration: corroborated (mgr-relayed run census + ICM's own #3350 fix-pattern proof on the same mint shape)}, {source: "workflow YAML of record, remote-knowledge-fabric.yml: fixed cron `17 6 * * *` still present (flagged by ICM's first cadence pass; confirmed in Cadence timing model v0)", direction: "supports defect-state (second, independent defect on the same workflow)", likelihood: "present at read time", corroboration: corroborated (YAML firsthand + Cadence model)}]
+- posterior: {value: 0.86, range: 0.6–1.0, updated_at: 2026-11-02, n_evidence: 6}
+- **Fix-wave scope (mgr ruling 2026-11-02):** ONE workflow, ONE PR, both defects — mint fix (app-id pattern, proven PR #3350) **+ cadence migration off the fixed cron** (tree tranche ∨ event/floor pattern, per the fleet's established forms; fixed-clock cadence fails the owner's crons-superseded rule). Fix→automate in the same motion; execution sits with the fabric surface's owner, this record is the ICM-side scope of record.
+- `fabric_mint.sle` (minutes): **INTAKE** — runs exit early; no duration evidence carried. ALE therefore not derivable; the item's value class is unblocking (manifest staleness), not minutes.
+
+**`codeql.draw_min_per_pr` — measured draw (not a risk quantity)**
+- evidence: [{source: "check-run durations, PR #3335 head: 172+80+75 = 327s", direction: n/a (measurement), corroboration: single-leg (n=1) — provisional}]
+- posterior: {value: 5.5 min, range: not yet established (n=1), updated_at: 2026-11-02, n_evidence: 1}
+
+### Derived views (computed from the posteriors above; never stored as independent figures)
+
+- **Baseline-5 ALE** = `baseline5.aro` × `baseline5.sle` × `pr_tempo_per_day` = 0.92 × 1.4 × 130 ≈ **170 Actions-min/day**; derived range from posterior ranges ≈ 40–400. (The ≈180 in the superseded table sits inside this range; the record governs.)
+- **CodeQL daily draw** = `codeql.draw_min_per_pr` × `pr_tempo_per_day` = 5.5 × 130 ≈ **715 Actions-min/day**; derived range ≈ 385–880 on tempo range alone (draw range unestablished at n=1).
+- **Risk render (discretized from the posterior pairs):** baseline-5 = likelihood HIGH (ARO posterior 0.92) × impact LOW-minutes / MEDIUM-signal ⇒ fix for signal integrity. Fabric mint = likelihood HIGH (0.86) × impact staleness-class ⇒ unblocking, S-size (fix pattern proven PR #3350).
+
+### INTAKE (unevidenced — no posterior, no price)
+
+- `tribute_telemetry.duration` + its ALE — evidence route: check-runs of any tribute-path PR. (Its deadline-exposure risk statement in the flagged table is a likelihood judgment with its evidence leg stated there; it carries no numeric price until this record exists.)
+- `hygiene_sweep.duration` — route: one tree-fired run's job timestamps.
+- Central-remainder (~340 files) trigger/duration — route: code-search across 270 workflows + ci-sweep script payload.
+- Thin-floor areas' ARO/SLE pairs — route: first incident postmortem per area ∨ coverage/fault-injection pass.
+- `fabric_mint.sle` — route: durations of the failed runs from the Actions run records.

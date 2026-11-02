@@ -1,19 +1,32 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T06:51:07Z",
+ "read_at": "2026-11-02T06:51:59Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
    "number": 3561,
    "title": "chore(ops): regenerate operator matrix",
    "merged_at": "2026-11-02T06:50:39Z",
-   "updated_at": "2026-11-02T06:50:44Z",
+   "updated_at": "2026-11-02T06:51:40Z",
    "created_at": "2026-11-02T06:50:33Z",
    "merge_commit_sha": "4b87fac1b506bd2d24ef886d6067f18cae0d8e39",
    "head_ref": "operator-matrix/auto",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3561",
+   "merged": true
+  },
+  {
+   "number": 3559,
+   "title": "fix(vercel): owner-records verify follows cleanUrls redirect (308) pre-flip",
+   "merged_at": "2026-11-02T06:51:22Z",
+   "updated_at": "2026-11-02T06:51:22Z",
+   "created_at": "2026-11-02T06:47:01Z",
+   "merge_commit_sha": "62b67a222f8086d3d7157b0d47536b2b0829de31",
+   "head_ref": "ops/owner-records-vercel-verify-fix-2026-11-01",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3559",
    "merged": true
   },
   {
@@ -1939,19 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3396",
    "merged": true
-  },
-  {
-   "number": 3403,
-   "title": "docs(ops): gates register \u2014 Devin settings leg resolved; DEVIN_API_KEY = CARD-BLOCK (paid-org)",
-   "merged_at": "2026-11-02T00:33:01Z",
-   "updated_at": "2026-11-02T00:33:12Z",
-   "created_at": "2026-11-02T00:32:35Z",
-   "merge_commit_sha": "0bdcc717207cab4121497d31177c63deab740542",
-   "head_ref": "docs/gates-register-devin-key-2026-11-01",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3403",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,7 +1959,7 @@
    "number": 3562,
    "title": "feat(quota): rate-limit event #1 of record (Registry census Search 403)",
    "merged_at": null,
-   "updated_at": "2026-11-02T06:50:52Z",
+   "updated_at": "2026-11-02T06:51:56Z",
    "created_at": "2026-11-02T06:50:43Z",
    "merge_commit_sha": "fcbd2e260c019048082549e8b9d907665d141fcf",
    "head_ref": "quota/rate-limit-event-001",
@@ -1992,19 +1992,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3560",
-   "merged": false
-  },
-  {
-   "number": 3559,
-   "title": "fix(vercel): owner-records verify follows cleanUrls redirect (308) pre-flip",
-   "merged_at": null,
-   "updated_at": "2026-11-02T06:48:26Z",
-   "created_at": "2026-11-02T06:47:01Z",
-   "merge_commit_sha": "906b2e51a77faf9e726b0dc87af5874556dd1200",
-   "head_ref": "ops/owner-records-vercel-verify-fix-2026-11-01",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3559",
    "merged": false
   },
   {

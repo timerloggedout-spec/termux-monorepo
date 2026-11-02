@@ -16,5 +16,8 @@ RUN curl -fsSL -o /tmp/code.deb \
 
 USER root
 RUN mkdir -p /opt/vscode-extensions \
-    && code --extensions-dir /opt/vscode-extensions --install-extension coderoad.coderoad
+    && curl --compressed -fsSL -o /tmp/coderoad.vsix \
+      "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/coderoad/vsextensions/coderoad/latest/vspackage" \
+    && code --extensions-dir /opt/vscode-extensions --install-extension /tmp/coderoad.vsix \
+    && rm -f /tmp/coderoad.vsix
 COPY driver /opt/vscode-extensions/coderoad-driver

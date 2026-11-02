@@ -65,9 +65,34 @@
 <div class="head"><h2>Recorded gaps</h2></div>
 <div class="card" id="gaps"></div>
 </section>
+<section>
+<div class="head"><h2>Lane-state distribution</h2></div>
+<div class="card"><div id="statedist"></div><p class="dim" id="statestamp"></p></div>
+</section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const fmtAge = m => m == null ? "—" : m < 90 ? Math.round(m) + "m" : m < 2880 ? (m/60).toFixed(1) + "h" : (m/1440).toFixed(1) + "d";
+
+// ==== pure logic (node-sim tested) ====
+const STATE_ORDER=["success","failure","cancelled","in_progress","queued","no runs"];
+function laneState(l){ const r=l.latest_run; if(!r) return "no runs"; return r.conclusion || r.status || "no runs"; }
+function laneStateDist(lanes){
+  const counts=new Map();
+  (lanes||[]).forEach(l=>{ const s=laneState(l); counts.set(s,(counts.get(s)||0)+1); });
+  const keys=[...counts.keys()].sort((a,b)=>{
+    const ia=STATE_ORDER.indexOf(a), ib=STATE_ORDER.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib) || (a<b?-1:1);
+  });
+  return keys.map(k=>({label:k, value:counts.get(k)}));
+}
+function dueDist(lanes){
+  const rows=[{label:"due",value:0},{label:"not due",value:0},{label:"not measured",value:0}];
+  (lanes||[]).forEach(l=>{ if(l.due_at_read===true) rows[0].value++; else if(l.due_at_read===false) rows[1].value++; else rows[2].value++; });
+  return rows;
+}
+if(typeof module!=="undefined"){ module.exports={laneState,laneStateDist,dueDist}; }
+// ==== end pure logic ====
 fetch("./data/dispatch-tree-feed.json").then(r => r.json()).then(feed => {
   const d = feed.data, adm = d.admission, now = adm.now;
   document.getElementById("meta").textContent =
@@ -118,6 +143,12 @@ fetch("./data/dispatch-tree-feed.json").then(r => r.json()).then(feed => {
      anon SELECT visible rows: ${sb.anon_select_visible_rows}. ${sb.note}</p>` +
     feed.gaps.map(g => `<p><code>${g.id}</code> — ${g.detail}</p>`).join("") +
     feed.honesty_rules.map(h => `<p class="dim">· ${h}</p>`).join("");
+
+  document.getElementById("statedist").innerHTML =
+    "<h3>Lanes by latest-run state</h3>" + CK.bars(laneStateDist(d.lanes), 860) +
+    "<h3>Lanes by due state at read</h3>" + CK.bars(dueDist(d.lanes), 860);
+  document.getElementById("statestamp").textContent =
+    "Feed " + feed.generated_at + " · " + CK.stampState(feed.generated_at, Date.now()) + " · distribution computed from the feed's lane records as issued.";
 }).catch(e => { document.getElementById("meta").textContent = "Feed failed to load: " + e; });
 </script>
 </body>

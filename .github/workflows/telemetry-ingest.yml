@@ -117,6 +117,7 @@ jobs:
             --relays ops/tracking/backup-relays.jsonl \
             --out ops/telemetry/backup-measurements.jsonl \
             --receipt ops/telemetry/backup-measurements-receipt.json \
+            --join-out ops/telemetry/backup-measurements-join.json \
             --mode live
 
       - name: HindSight retain PROOF (3 units; state-gated, first spend = tested spend)

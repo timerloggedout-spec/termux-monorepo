@@ -38,6 +38,27 @@ function readSession() {
   return '';
 }
 
+// CodeRoad keeps its machine state in the workspace memento DB
+// (state.vscdb, SQLite). The JSON values sit in plain text inside it:
+// keys "coderoad:currentTutorial" and "coderoad:position" (B10/B11).
+function readPositionRaw() {
+  try {
+    if (!CTX || !CTX.storageUri) return '';
+    const db = path.join(path.dirname(CTX.storageUri.fsPath), 'state.vscdb');
+    if (!fs.existsSync(db)) return '';
+    const buf = fs.readFileSync(db);
+    const text = buf.toString('latin1');
+    const i = text.indexOf('coderoad:position');
+    if (i < 0) return '';
+    return text.slice(i, i + 1200);
+  } catch (e) { return ''; }
+}
+
+function positionShowsComplete(raw) {
+  if (!raw) return false;
+  return /complete"?\s*[:=]\s*true/.test(raw) || /"stepId"\s*:\s*"1\.1"[^}]*complete/.test(raw);
+}
+
 let SESSION_CANDIDATES = [];
 let CTX = null;
 function buildSessionCandidates(context) {
@@ -157,6 +178,12 @@ async function run() {
       await sleep(2000);
       lastRaw = readSession();
       if (sessionShowsComplete(lastRaw)) ok = true;
+      const pos = readPositionRaw();
+      if (pos) {
+        lastRaw = pos;
+        if (positionShowsComplete(pos)) ok = true;
+        if (i === 0) phaseLog(`position after attempt ${attempts}: ${pos.slice(0, 400)}`);
+      }
     }
     phaseLog(`attempt ${attempts} observed: complete=${ok} session_len=${lastRaw.length}`);
   }

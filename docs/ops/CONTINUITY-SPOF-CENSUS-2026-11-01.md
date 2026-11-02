@@ -88,7 +88,8 @@ Asset: ONE classic PAT, name `MUSE_ADMIN_GH`, broad admin scopes, **no expiratio
 - Mitigation — GitHub App specialists (8; custody `~/workspace/custom-connectors/custom.github-app-*`, names-only):
   `Collector 5535733` (collection) · `Gate 5539499` (checks write) · `Lifecycle 5539639` (issues write) · `Publisher 5537873` (contents+PR write; **∅ issues permission ⇒ comment flows still PAT**) · `Reviewer 5539430` (reviews) · `Swarm 5560920` (contents/PR/issues/actions/checks — broadest) · `CrossReference 5564430` (contents read + issues write, apk-xref belts) · `RepoStory 5565297` (repo-story ONLY, ¬ this repo).
   - Migrated ∧ live: Swarm-actor workflows mint via `create-github-app-token` (`cert-unit`, `commit-replay-index`, `graph-matrix-census`; code search `TERMUX_FLEET_SWARM` 13 hits, `create-github-app-token` 28 hits incl. `docs/ops/GITHUB-APP-MIGRATION-PLAN.md`); `github-app-telemetry.yml` scheduled runs success, latest `41359189737` 2026-11-01T22:51Z.
-  - Custody gap: repo store (66 names, 2026-11-01) holds only 3 `TERMUX_FLEET_*_PRIVATE_KEY` secrets — `COLLECTOR` (2026-10-30), `SWARM` (2026-10-31), `CROSSREFERENCE` (2026-11-01) ⇒ Gate/Lifecycle/Publisher/Reviewer keys = local 0600 files on THIS VM only ⇒ §4 coupling.
+  - Custody gap: Actions-store minting copies = **4/8** — termux-monorepo store (66 names, 2026-11-01) holds 3 `TERMUX_FLEET_*_PRIVATE_KEY` secrets (`COLLECTOR` 2026-10-30 · `SWARM` 2026-10-31 · `CROSSREFERENCE` 2026-11-01) ∧ RepoStory's copy `TERMUX_FLEET_REPOSTORY_PRIVATE_KEY` lives on timerloggedout-spec/repo-story (2026-11-01) ⇒ backed {Collector, Swarm, CrossReference, RepoStory}; VM-only = **4/8** {Publisher, Reviewer, Gate, Lifecycle} = local 0600 files on THIS VM only (∀ 8 hold custody `.pem` on the VM) ⇒ §4 coupling.
+  - **ERRATA 2026-11-01:** VM-only count corrected 5→4 (RepoStory backed via `TERMUX_FLEET_REPOSTORY_PRIVATE_KEY` on repo-story, set 2026-11-01T10:29:15Z; original count used a termux-monorepo-only secrets scope ∧ missed it — correct by design, that App is scoped to repo-story only).
   - Other GitHub tokens in store (`OPERATOR_GITHUB_TOKEN`, `ARCHWIZ_GITHUB_TOKEN`, `RECON_INTEL_GITHUB_WRITE_TOKEN`, names only) = ¬ registered Muse routes ⇒ ¬ tested fallback.
 - Redundancy grade: present = partial (Apps cover narrow classes) · TESTED = partial (App telemetry/swarm pilots live; **PAT-outage drill = ∅**).
 - Remediation: `R3.1[S]` Publisher issues-write amendment (UP-01 template per its connector doc) · `R3.2[S]` Actions-store minting copies for Gate/Lifecycle/Reviewer/Collector · `R3.3[M]` PAT rotation runbook + 2nd registered route · `R3.4[M]` migrate top-3 PAT publish lanes → Publisher/Swarm actors.
@@ -134,7 +135,7 @@ Baseline (fleet record): Jules DOWN (entry builds created 3 / completed 0 / erro
 |---|---|---|---|
 | HindSight | ONE OpenRouter credit pool behind both deployments (§1a) | partial — 2 platforms, divergent, Koyeb unauthenticatable, ∅ failover mechanism | **∅** |
 | Provenance | ONE generator workflow + GitHub-as-store (§2) | partial — deterministic regeneration + unmanaged clones | **∅** |
-| PAT | ONE no-expiry admin PAT = ∀ Muse-lane GitHub access (§3) | partial — 8 App specialists, narrow classes, custody split | partial (pilots live; outage drill ∅) |
+| PAT | ONE no-expiry admin PAT = ∀ Muse-lane GitHub access (§3) | partial — 8 App specialists, narrow classes, custody split (4/8 backed, 4/8 VM-only; errata §3) | partial (pilots live; outage drill ∅) |
 | Browser profile | ONE VM profile anchors ∀ console sessions (§4) | partial — stale repo snapshot + token routes | **∅** |
 | Builder arms | 3/4 arms down/degraded/out; command-dispatch alone (§5) | ∅ at census time (1 effective arm) | n/a — lived failure, ¬ drill |
 

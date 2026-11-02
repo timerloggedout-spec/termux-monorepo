@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-02T08:38:20Z",
+ "generated_at": "2026-11-02T08:52:23Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-02T08:20:44Z",
-  "ops/tracking/nested-family.json": "2026-11-02T08:34:48Z"
+  "ops/tracking/nested-family.json": "2026-11-02T08:46:59Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -1510,10 +1510,14 @@
      {
       "t": "2026-11-02T08:31:08Z",
       "v": 1
+     },
+     {
+      "t": "2026-11-02T08:33:21Z",
+      "v": 2
      }
     ],
     "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
-    "last_point_at": "2026-11-02T08:31:08Z"
+    "last_point_at": "2026-11-02T08:33:21Z"
    },
    {
     "key": "mistral-small-latest",

@@ -46,6 +46,7 @@ CANON = [
     ('https://timerloggedout-spec.github.io/tribute/linguist.html', 'Linguist'),
     ('https://timerloggedout-spec.github.io/tribute/delphi-rfp.html', 'Delphi RFP'),
     ('https://timerloggedout-spec.github.io/tribute/delphi-ledger.html', 'Delphi Ledgers'),
+    ('https://timerloggedout-spec.github.io/tribute/classifiers.html', 'Classifiers'),
     ('https://timerloggedout-spec.github.io/tribute/pr-lanes.html', 'PR Lanes'),
     ('https://timerloggedout-spec.github.io/tribute/proposals.html', 'Proposals'),
     ('https://timerloggedout-spec.github.io/tribute/telemetry.html', 'Telemetry'),
@@ -65,7 +66,7 @@ NAV_PAGES = {
     "admin.html", "oracle.html", "3l0.html", "moneyball.html",
     "mvt.html", "doe.html", "ates.html", "free-tier-value.html",
     "dispatch-tree.html", "countdowns.html", "linguist.html",
-    "delphi-rfp.html", "delphi-ledger.html", "pr-lanes.html",
+    "delphi-rfp.html", "delphi-ledger.html", "classifiers.html", "pr-lanes.html",
     "proposals.html", "telemetry.html", "desk.html", "tracking.html",
     "family.html", "quota-swarm.html",
 }

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Tier-1 classifier estate: every classifier unit in the fleet - its group, state, convergence and outputs - rendered from the steward's classifiers feed.">
+<title>Classifiers · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.stat{display:inline-block;margin:.15rem .8rem .15rem 0}.stat strong{font-size:1.25rem}table.units{width:100%;border-collapse:collapse}table.units td,table.units th{padding:.35rem .5rem;border-top:1px solid rgba(127,127,127,.25);vertical-align:top;text-align:left}.role{padding:.5rem 0;border-top:1px solid rgba(127,127,127,.25)}</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Ops · Tier-1 classifiers</div><h1>Classifier <span>Estate</span></h1><p class="lede">Every Tier-1 classifier unit in the fleet - the large list (Laya/Kev and the rest) - with its group, state, convergence and outputs, rendered only from the steward's classifiers feed (classifiers-feed/v1, contract docs/ops/CLASSIFIERS-FEED.md). Nothing is re-counted or re-scored here; the feed's rows are authoritative. Class shares are SHARES, not confidences.</p><div class="links" style="margin-top:1rem"><a class="button" href="./delphi-ledger.html">Delphi Ledgers</a><a class="button" href="./moneyball.html">MoneyBall</a><a class="button" href="./oracle.html">Oracle Panel</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/CLASSIFIERS-FEED.md">Feed contract</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/classifiers/classifiers-feed.json">Feed (ops)</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching classifiers feed.</small></div></div></header>
+<div class="wrap"><nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html" aria-current="page">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav></div>
+<main>
+<section aria-labelledby="census"><div class="head"><h2 id="census">Census</h2><span class="note" id="census-stamp"></span></div>
+<div class="card"><div id="headline-stats"><p class="muted">Loading feed…</p></div><p class="muted" id="correction-note"></p>
+<h3>Units by state</h3><div id="chart-state"></div>
+<h3>Units by group</h3><div id="chart-group"></div></div></section>
+
+<section aria-labelledby="quartet-h"><div class="head"><h2 id="quartet-h">Observatory quartet</h2></div>
+<div class="card" id="quartet"><p class="muted">Loading feed…</p></div></section>
+
+<section aria-labelledby="units-h"><div class="head"><h2 id="units-h">All units</h2><span class="note" id="units-count"></span></div>
+<div class="card"><div class="table-wrap"><table class="units"><thead><tr><th>Unit</th><th>Group</th><th>State</th><th>Converged</th><th>Outputs</th></tr></thead><tbody id="units-body"><tr><td colspan="5" class="muted">Loading feed…</td></tr></tbody></table></div></div></section>
+
+<section aria-labelledby="pct-h"><div class="head"><h2 id="pct-h">%-breakdowns &amp; winners</h2></div>
+<div class="card" id="pct"><p class="muted">Loading feed…</p></div></section>
+
+<section aria-labelledby="gaps-h"><div class="head"><h2 id="gaps-h">What the record does not hold</h2></div>
+<div class="card"><ul id="gaps"></ul><p class="muted" id="honesty"></p></div></section>
+</main>
+<footer><p class="muted">Classifiers · Help-Wanted Oversight · Data: ops/classifiers/classifiers-feed.json (schema classifiers-feed/v1), generated by the Tier-1 classifiers steward (single-writer). This page consumes that feed and nothing else: counts, states and shares render as recorded - never inferred, never re-scored.</p></footer>
+<script src="./chartkit.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(e){}}return null}
+async function load(){
+  const bust=Date.now();
+  const f=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/classifiers/classifiers-feed.json?t='+bust]);
+  if(!f){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch classifiers-feed.json.';return}
+  const h=f.headlines||{};
+  $('freshness').textContent='Classifiers loaded';
+  $('generated').textContent='Schema '+(f.schema||'—')+' · generated '+(f.generated_at||'—')+' · '+(h.estate_units||0)+' units';
+  const st=CK.stampState(f.generated_at,Date.now(),86400000);
+  $('census-stamp').textContent='Feed generated '+(f.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
+  if(f.correction_note)$('correction-note').textContent=f.correction_note;
+  const stat=(n,l)=>'<span class="stat"><strong>'+esc(n)+'</strong> '+esc(l)+'</span>';
+  $('headline-stats').innerHTML=stat(h.estate_units,'estate units')+stat(h.live,'live')+stat(h.dormant,'dormant')+stat(h.dead,'dead')+stat(h.converged,'converged')+stat(h.multi_output,'multi-output');
+  $('chart-state').innerHTML=CK.bars([{label:'live',value:h.live||0},{label:'dormant',value:h.dormant||0},{label:'dead',value:h.dead||0}]);
+  const byGroup={};
+  for(const u of (f.units||[]))byGroup[u.group_name||u.group]=(byGroup[u.group_name||u.group]||0)+1;
+  $('chart-group').innerHTML=CK.bars(Object.entries(byGroup).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+  const q=f.observatory_quartet||{};
+  const role=(t,b)=>'<div class="role"><div class="label">'+esc(t)+'</div><p>'+esc(b)+'</p></div>';
+  let qh=role('Mev — producer',q.mev)+role('Jev — judge',q.jev)+role('Kev — verifier',q.kev)+role('Laya — weighted merger',q.laya);
+  const kv=(k,v)=>'<p class="muted"><strong>'+esc(k)+':</strong> '+esc(typeof v==='string'?v:JSON.stringify(v))+'</p>';
+  for(const k of ['home','pipeline','trial','leaderboard','dispatch','hindsight','coded_quirk','first_completed_trial'])if(q[k]!=null)qh+=kv(k,q[k]);
+  const vr=q.variance_requirement||{};
+  if(vr.owner_requirement||vr.variance_state){
+    qh+='<div class="role"><div class="label">Variance requirement</div>'
+      +(vr.owner_requirement?'<p>'+esc(vr.owner_requirement)+'</p>':'')
+      +(vr.required_fields_per_trial_population?'<p class="muted">Required per trial population: '+vr.required_fields_per_trial_population.map(esc).join(' · ')+'</p>':'')
+      +(vr.variance_state?'<p>Variance state: <strong>'+esc(vr.variance_state)+'</strong> — no dispersion data exists; no variance numbers are rendered.</p>':'')
+      +'</div>';
+  }
+  $('quartet').innerHTML=qh||'<p class="muted">No quartet record in the feed.</p>';
+  $('units-count').textContent=(f.units||[]).length+' units';
+  $('units-body').innerHTML=(f.units||[]).map(u=>'<tr><td><strong>'+esc(u.name)+'</strong><br><span class="muted">'+esc(u.id)+'</span>'+(u.converged_basis?'<br><span class="muted">'+esc(u.converged_basis)+'</span>':'')+'</td><td>'+esc(u.group)+' · '+esc(u.group_name)+'</td><td>'+esc(u.state)+'</td><td>'+(u.converged?'yes':'—')+'</td><td>'+(u.outputs||[]).map(esc).join(' · ')+'</td></tr>').join('');
+  const pct=(f.units||[]).filter(u=>u.pct_breakdown&&u.pct_breakdown.available);
+  const win=(f.units||[]).filter(u=>u.winner&&u.winner.available);
+  let ph='';
+  if((f.honesty||{}).shares)ph+='<p><strong>'+esc(f.honesty.shares)+'</strong></p>';
+  ph+=pct.map(u=>'<p>'+esc(u.name)+' — '+esc(u.pct_breakdown.kind)+(u.pct_breakdown.label?' · '+esc(u.pct_breakdown.label):'')+'</p>').join('')||'<p class="muted">No %-breakdown on record.</p>';
+  if((f.honesty||{}).winner_pct)ph+='<p><strong>'+esc(f.honesty.winner_pct)+'</strong></p>';
+  ph+=win.map(u=>'<p>'+esc(u.name)+' — winner %: '+esc(u.winner.kind)+' · state: <strong>'+esc(u.winner.state)+'</strong></p>').join('');
+  $('pct').innerHTML=ph;
+  $('gaps').innerHTML=(f.gaps||[]).map(g=>'<li>'+esc(g)+'</li>').join('');
+  $('honesty').textContent=f.baseline?('Baseline: '+f.baseline):'';
+}
+load();
+</script>
+</body>
+</html>

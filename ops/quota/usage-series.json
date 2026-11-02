@@ -1,14 +1,15 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-02T06:33:02Z",
+ "generated_at": "2026-11-02T06:49:47Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-02T06:30:06Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
   "ops/challenge/desk-feed.json",
-  "ops/quota/allocation-plan.json"
+  "ops/quota/allocation-plan.json",
+  "ops/quota/rate-limit-events.json"
  ],
  "axes": {
   "provider": [
@@ -430,7 +431,55 @@
     "last_point_at": "2026-11-01"
    }
   ],
-  "model": []
+  "model": [],
+  "events": [
+   {
+    "key": "github.api.user_token",
+    "title": "github.api.user_token - rate-limit events",
+    "unit": "events",
+    "kind": "event",
+    "metric": "events",
+    "points": [
+     {
+      "t": "2026-10-28T23:41:00Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     },
+     {
+      "t": "2026-10-29T05:50:14Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     },
+     {
+      "t": "2026-10-29T11:41:45Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     },
+     {
+      "t": "2026-10-29T21:39:53Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     },
+     {
+      "t": "2026-10-30T01:32:00Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     },
+     {
+      "t": "2026-10-30T01:34:00Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     },
+     {
+      "t": "2026-10-30T01:36:00Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     }
+    ],
+    "provenance": "ops/quota/rate-limit-events.json",
+    "last_point_at": "2026-10-30T01:36:00Z"
+   }
+  ]
  },
  "notes": {
   "model": "Per-model series require a stamped model@version AND a usage{} value on the same record. Jules-class rows carry no model@version (NOT ESTABLISHED) and the Muse rows carry no usage value (waived), so the model axis is empty until live-3 dispatch records (EXPERIMENT rev 1.1 usage{}) land. Empty is the honest state - nothing is inferred.",

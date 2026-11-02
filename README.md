@@ -121,7 +121,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 |---|---|---|
 | **Agent / operator entry (primary)** | [`CLAUDE.md`](CLAUDE.md) | Governance, hard rules, dual gates, adaptive WAIT, skills inventory pointer. **Load this first.** |
 | Task routing (one verified card) | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
-| Linguist / CedrLang surface only | [`AGENTS.hum.md`](AGENTS.hum.md) | Root `AGENTS.md` is deleted (deprecated as primary entry, owner order 2026-10-27); the retained guidance copy is `AGENTS.hum.md` — Linguist compression target + tooling compatibility only. |
+| Linguist / CedrLang surface only | [`CLAUDE.hum.md`](CLAUDE.hum.md) | Root `AGENTS.md` is deleted (deprecated as primary entry, owner order 2026-10-27); the retained guidance copy is `CLAUDE.hum.md` — Linguist compression target + tooling compatibility only. |
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
@@ -130,7 +130,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 | README / docs image optimize | [`docs/ops/IMAGE-ASSET-PIPELINE.md`](docs/ops/IMAGE-ASSET-PIPELINE.md) | Fail-closed resize + validate before embed. |
 | Review safety and tracked-state debt | [`docs/CREDENTIAL-EXPOSURE.md`](docs/CREDENTIAL-EXPOSURE.md) | Credential exposure findings and safe remediation boundary. |
 
-The root README is an entry point, not a duplicate source of truth. **Primary agent entry is [`CLAUDE.md`](CLAUDE.md)** (root `AGENTS.md` is deleted/deprecated — retained copy: [`AGENTS.hum.md`](AGENTS.hum.md)). When this file conflicts with a maintained subsystem map, **the subsystem’s cited canonical source wins**.
+The root README is an entry point, not a duplicate source of truth. **Primary agent entry is [`CLAUDE.md`](CLAUDE.md)** (root `AGENTS.md` is deleted/deprecated — retained copy: [`CLAUDE.hum.md`](CLAUDE.hum.md)). When this file conflicts with a maintained subsystem map, **the subsystem’s cited canonical source wins**.
 
 ---
 

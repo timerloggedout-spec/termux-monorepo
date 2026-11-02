@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-02T11:15:32Z",
+ "generated_at": "2026-11-02T11:30:11Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 26,
-   "records_used": 26
+   "records_read": 27,
+   "records_used": 27
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 25,
+   "records_read": 26,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 26,
+   "records_read": 27,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 37,
+   "records_read": 38,
    "records_used": 3
   }
  ],
@@ -140,26 +140,28 @@
    "Muse",
    "claude-muse",
    "gemini",
+   "gemini-cli",
    "github-actions",
    "jules"
   ]
  },
  "summary": {
-  "providers": 13,
-  "models": 17,
+  "providers": 14,
+  "models": 18,
   "roles": 2,
-  "tasks": 33,
-  "dispatches": 30,
+  "tasks": 34,
+  "dispatches": 31,
   "registry_providers": 95,
   "zero_dispatch_providers": 89,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 3,
    "passed": 23,
-   "failed": 3
+   "failed": 3,
+   "observed": 1
   },
   "by_source": {
    "desk-usage": 3,
-   "records": 26,
+   "records": 27,
    "campaign-records": 4
   }
  },
@@ -884,6 +886,56 @@
        "field_sources": {},
        "source": "campaign-records",
        "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-B.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 1,
+   "zero_dispatch": false
+  },
+  {
+   "provider": "gemini-cli",
+   "models": [
+    {
+     "model": "gemini-3.5-flash-lite",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "NOT_ESTABLISHED"
+     ],
+     "contexts": [
+      "repo-story build-dispatch rejoin leg (issue #2): capability class build-dispatch; arm rejoins rotation on a completed leg (s25.5)"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": null,
+       "role": "builder",
+       "moniker": "NOT_ESTABLISHED",
+       "context": "repo-story build-dispatch rejoin leg (issue #2): capability class build-dispatch; arm rejoins rotation on a completed leg (s25.5)",
+       "dispatch_id": "build-repo-story-gemini-rejoin-20261102",
+       "run_id": 20261102,
+       "workflow": null,
+       "session_id": null,
+       "ts": "2026-11-02T11:21:00Z",
+       "outcome": {
+        "status": "observed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "context": "stamps",
+        "moniker": "intake"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-repo-story-gemini-rejoin-20261102.json"
       }
      ]
     }
@@ -2012,7 +2064,7 @@
   }
  ],
  "gaps": [
-  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, claude-muse, gemini, github-actions, jules",
+  "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, claude-muse, gemini, gemini-cli, github-actions, jules",
   "desk-usage rows carry no run_id/dispatch_id (3 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

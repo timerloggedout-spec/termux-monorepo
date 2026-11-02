@@ -1,8 +1,34 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T18:31:51Z",
+ "read_at": "2026-11-02T18:47:20Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3981,
+   "title": "feat(cert-coderoad-host): CodeRoad output/state evidence capture",
+   "merged_at": "2026-11-02T18:46:22Z",
+   "updated_at": "2026-11-02T18:46:27Z",
+   "created_at": "2026-11-02T18:45:03Z",
+   "merge_commit_sha": "87cf608ad5d9ed8325edf02e60e94a6591421669",
+   "head_ref": "feat/coderoad-host-b10",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3981",
+   "merged": true
+  },
+  {
+   "number": 3979,
+   "title": "fix(cert-coderoad-host): tutorial.json URL uses main, not the workspace branch",
+   "merged_at": "2026-11-02T18:35:31Z",
+   "updated_at": "2026-11-02T18:35:31Z",
+   "created_at": "2026-11-02T18:34:12Z",
+   "merge_commit_sha": "c109e3b8d4ab0563048eb80e8c8a19896f4a1675",
+   "head_ref": "fix/coderoad-host-b9",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3979",
+   "merged": true
+  },
   {
    "number": 3978,
    "title": "chore(ops): regenerate operator matrix",
@@ -1926,35 +1952,22 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3824",
    "merged": true
-  },
-  {
-   "number": 3822,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T12:27:52Z",
-   "updated_at": "2026-11-02T12:29:39Z",
-   "created_at": "2026-11-02T12:27:47Z",
-   "merge_commit_sha": "c2de533262a63f8a753ab8076b29661e0b4cd19a",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3822",
-   "merged": true
-  },
-  {
-   "number": 3815,
-   "title": "fix(backfill): fail closed on deferred corpus builds",
-   "merged_at": "2026-11-02T12:26:57Z",
-   "updated_at": "2026-11-02T12:26:57Z",
-   "created_at": "2026-11-02T12:07:21Z",
-   "merge_commit_sha": "da4eae4a06617430bbd7b53695c79b748ffafa8b",
-   "head_ref": "audit/continuous-repository-audit-2026-11-02-v2",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3815",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 3980,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": null,
+   "updated_at": "2026-11-02T18:37:08Z",
+   "created_at": "2026-11-02T18:36:39Z",
+   "merge_commit_sha": "10e2a1d1e3358d6bfaf2ecf22c2cc186be3b06b6",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3980",
+   "merged": false
+  },
   {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",

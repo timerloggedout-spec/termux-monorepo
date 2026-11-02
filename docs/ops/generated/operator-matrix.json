@@ -3,8 +3,8 @@
     "open_issues": 410,
     "open_prs": 186,
     "pr_classes": {
-      "CANDIDATE": 90,
-      "EXTRACT": 6,
+      "CANDIDATE": 91,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T13:18:14Z",
+  "generated_at": "2026-11-02T13:19:44Z",
   "issues_unlabelled": [
     308,
     388,
@@ -101,10 +101,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "in_progress"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "7b416c374c"
+    "sha": "0d06ce4295"
   },
   "prs": [
     {
@@ -176,20 +176,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bce66da163",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T13:16:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -951,6 +937,20 @@
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bce66da163",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T13:16:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -2692,15 +2692,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
+        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "861a70fd51",
+      "head_sha": "00594795a1",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3866,
-      "title": "viz(moneyball): wagering-book Gantt \u2014 23 subjects, calendar anchors, forecast scoring layer",
-      "updated_at": "2026-11-02T13:18:00Z"
+      "mergeable_state": "unknown",
+      "number": 3867,
+      "title": "NSE-023 launch: research lane open + packet P-001 (\u2218 associativity)",
+      "updated_at": "2026-11-02T13:18:54Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2709,12 +2709,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "00594795a1",
+      "head_sha": "a32c32a1e5",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3867,
-      "title": "NSE-023 launch: research lane open + packet P-001 (\u2218 associativity)",
-      "updated_at": "2026-11-02T13:18:09Z"
+      "mergeable_state": "unknown",
+      "number": 3869,
+      "title": "Agentic Gambling Lane: book publication feed (read-only render extract)",
+      "updated_at": "2026-11-02T13:19:13Z"
     }
   ],
   "schema": "operator-matrix/v1",

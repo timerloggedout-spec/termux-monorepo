@@ -36,5 +36,36 @@ class TestBackupEvents(unittest.TestCase):
         self.assertEqual(len(be.evidence_hash(line)), 64)
 
 
+class TestJoinSidecar(unittest.TestCase):
+    def test_join_sidecar_and_receipt_fields(self):
+        import io
+        import sys
+        import tempfile
+        from contextlib import redirect_stdout
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            relays = td / "relays.jsonl"
+            relays.write_text(json.dumps(
+                {"schema": "backup-state/v1", "kind": "export",
+                 "at": "2026-11-02T06:24:53Z", "state_hash": "abc",
+                 "export_id": "exp-x",
+                 "publish": {"commit": "deadbeef", "repo": "r"}}) + "\n")
+            out = td / "m.jsonl"
+            rec = td / "r.json"
+            join = td / "join.json"
+            argv = ["--relays", str(relays), "--out", str(out),
+                    "--receipt", str(rec),
+                    "--mode", "backfill", "--join-out", str(join)]
+            with patch.object(sys, "argv", ["backup_events.py"] + argv):
+                with io.StringIO() as buf, redirect_stdout(buf):
+                    be.main()
+            r = json.loads(rec.read_text())
+            self.assertIn("resolution_error", r)
+            self.assertEqual(r["join_sidecar_records"], 0)  # no relay map
+            j = json.loads(join.read_text())
+            self.assertEqual(j["schema"], "backup-measurements-join/v1")
+
+
 if __name__ == "__main__":
     unittest.main()

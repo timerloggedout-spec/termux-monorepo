@@ -97,3 +97,7 @@ Gamblers speculate on **task performance**, priced off the scoring surfaces.
 - **Information basis:** the scoring surfaces — AST maps (archwiz graph tensors) · Archaeo / Oracle scores · the other measurement planes' scores (MoneyBall v2 composites, 3L0, Delphi ledgers; referenced, never forked). **Every position cites its basis** (surface + record/artifact ref) so a position's basis is auditable; an uncited position is invalid.
 - **Settlement:** the observed task outcome vs the position (settle action; settlement does not bypass dual-gate).
 - **Gamblers are participants like the rest:** wallet (invariant) · speculation record · standing · cull → wallet to the pooled 🪣.
+
+## Teams (owner, 2026-11-01)
+
+Managers have **teams they can select**. A team is a rostered, selectable unit: {manager · roster · contracts · team record/standing}. A manager selecting a team for a task is a **recorded selection**, stamped like any other selection. Gamblers' task-performance speculation can take a **team as its subject**. Feed/posterior side sits with DoE: a team is its own stratum with its own n bar.

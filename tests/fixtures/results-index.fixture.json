@@ -1,111 +1,105 @@
 {
- "consumer": "viz all-4 results index page (render verbatim)",
- "generated_at": "2026-11-02T13:25:58Z",
- "schema": "results-index/v1",
- "systems": [
+ "generated_at": "2026-11-02T13:26:57Z",
+ "schema": "results-index-feed/v1",
+ "sections": [
   {
-   "as_of": "2026-11-02T00:17:30Z",
-   "headline": {
-    "feed_generated_at": "2026-11-02T00:17:30Z",
-    "invariants": [
-     "abstention availability",
-     "wrong-commit penalty",
-     "required-fragment preservation",
-     "distractor isolation",
-     "deterministic execution failure",
-     "isolated SPAWN behavior",
-     "actor/critic private-context isolation"
-    ],
-    "workflows": [
-     {
-      "file": ".github/workflows/ates-orchestrator-benchmark.yml",
-      "latest_at": "2026-10-22T12:25:12Z",
-      "latest_conclusion": "success",
-      "total_runs": 13
-     },
-     {
-      "file": ".github/workflows/ates-phase-b-run-receipt.yml",
-      "latest_at": "2026-10-23T13:34:25Z",
-      "latest_conclusion": "success",
-      "total_runs": 9
-     },
-     {
-      "file": ".github/workflows/agent-mvt-experiment.yml",
-      "latest_at": null,
-      "latest_conclusion": null,
-      "total_runs": 0
-     }
-    ]
-   },
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "ates",
    "name": "ATES",
-   "record_of_record": {
-    "kind": "feed",
-    "note": "No committed results ledger exists (feed gaps[] of record): benchmark verdicts are asserted inside workflow runs; run receipts publish as 30-day Actions artifacts.",
-    "path": "apps/tribute-dashboard/data/ates-feed.json"
-   }
+   "note": "No committed results ledger exists (feed gaps[] of record): benchmark verdicts are asserted inside workflow runs; run receipts publish as 30-day Actions artifacts.",
+   "rows": [
+    {
+     "at": "2026-10-23T13:34:25Z",
+     "label": "receipt runs",
+     "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+     "state": 9
+    },
+    {
+     "at": "2026-10-22T12:25:12Z",
+     "label": "benchmark runs",
+     "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+     "state": 13
+    },
+    {
+     "at": "2026-11-02T00:17:30Z",
+     "label": "governance/frame state",
+     "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+     "state": "7 invariants"
+    }
+   ]
   },
   {
-   "as_of": "2026-11-02T13:25:58Z",
-   "headline": {
-    "confirmed_non_null": 0,
-    "observational": true,
-    "staged_records": 599
-   },
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "3l0",
    "name": "3L0",
-   "record_of_record": {
-    "kind": "feed",
-    "note": "Staged intake (3l0-intake/v1) from the session-history plane; observational fold - weights derive only where confirmed != null (charter source class 2).",
-    "path": "ops/telemetry/session-history-3l0.jsonl"
-   }
+   "note": "Staged intake (3l0-intake/v1) from the session-history plane; observational fold - weights derive only where confirmed != null (charter source class 2).",
+   "rows": [
+    {
+     "at": "2026-11-02T13:26:57Z",
+     "label": "staged intake records",
+     "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
+     "state": 599
+    },
+    {
+     "at": "2026-11-02T13:26:57Z",
+     "label": "confirmed (weights-eligible)",
+     "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
+     "state": 0
+    },
+    {
+     "at": "2026-11-02T13:26:57Z",
+     "label": "routed-dispatch stamp corpus",
+     "record_of_record": "ops/telemetry/session-history.jsonl",
+     "state": 614
+    }
+   ]
   },
   {
-   "as_of": "2026-11-02T13:25:58Z",
-   "headline": {
-    "engagement": {
-     "latest": {
-      "at": "2026-10-28T22:36:40Z",
-      "conclusion": "success",
-      "event": "workflow_dispatch",
-      "id": 40781288916
-     },
-     "total_count": 2
-    },
-    "self_host_smoke": {
-     "latest": {
-      "at": "2026-10-28T19:59:44Z",
-      "conclusion": "success",
-      "event": "push",
-      "id": 40759259053
-     },
-     "total_count": 21
-    }
-   },
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "temporal",
    "name": "Temporal",
-   "record_of_record": {
-    "kind": "actions-runs",
-    "note": "No results feed exists for Temporal; the run receipts are the record of record.",
-    "ref": "Actions run receipts: temporal-engagement.yml + temporal-self-host-smoke.yml"
-   }
+   "note": "No results feed exists for Temporal; the run receipts are the record of record.",
+   "rows": [
+    {
+     "at": "2026-10-28T22:36:40Z",
+     "label": "engagement runs",
+     "record_of_record": "Actions: temporal-engagement.yml",
+     "state": 2
+    },
+    {
+     "at": "2026-10-28T19:59:44Z",
+     "label": "self-host smoke runs",
+     "record_of_record": "Actions: temporal-self-host-smoke.yml",
+     "state": 21
+    },
+    {
+     "at": "2026-11-02T13:26:57Z",
+     "label": "persistent instance",
+     "record_of_record": "Actions: temporal-engagement.yml",
+     "state": "none"
+    }
+   ]
   },
   {
-   "as_of": "2026-11-02T13:25:58Z",
-   "headline": {
-    "last_error_status": 402,
-    "payloads": 388,
-    "proof_attempted": 3,
-    "proof_ok": 0,
-    "retained_units": 0
-   },
+   "generated_at": "2026-11-02T13:26:57Z",
    "id": "hindsight",
    "name": "HindSight",
-   "record_of_record": {
-    "kind": "receipts",
-    "note": "Retain receipts are the population record; the bank itself is verified via the gated verify step when the proof passes.",
-    "path": "ops/telemetry/hindsight-retain-proof.json + ops/telemetry/hindsight-retain-state.json"
-   }
+   "note": "Retain receipts are the population record; the bank itself is verified via the gated verify step when the proof passes.",
+   "rows": [
+    {
+     "at": "2026-11-02T13:26:57Z",
+     "label": "receipts on record",
+     "record_of_record": "ops/telemetry/hindsight-retain-proof.json",
+     "state": "proof attempted 3 - ok 0 - last error 402"
+    },
+    {
+     "at": "2026-11-02T13:26:57Z",
+     "label": "retained population",
+     "record_of_record": "ops/telemetry/hindsight-retain-state.json",
+     "state": 0
+    }
+   ]
   }
- ]
+ ],
+ "source": "ops/telemetry/results-index.json (same builder, same values - render presentation)"
 }

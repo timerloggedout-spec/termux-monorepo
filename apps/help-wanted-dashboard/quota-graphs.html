@@ -63,7 +63,7 @@ function render(){
     const ctx=s.context?'<p class="muted">Context: plan target flow '+esc(s.context.target_flow_per_min)+'/min ('+esc(s.context.source)+') — context only, not plotted as usage.</p>':'';
     return '<div class="card"><div class="label">'+esc(s.title)+'<span class="chip">'+esc(kindLabel(s.kind))+'</span></div>'
       +seriesSvg(s)
-      +'<p class="muted">'+esc(s.unit||'')+' · '+n+' point'+(n===1?'':'s')+(n===1?' — single observation, no trend implied':'')+'</p>'
+      +'<p class="muted">'+esc(s.unit||'')+' · '+n+' point'+(n===1?'':'s')+(n===1?' — single observation, no trend implied':'')+(s.last_point_at?(' · last '+esc(s.last_point_at)):'')+'</p>'
       +ctx+'<p class="muted">Source: '+esc(s.provenance||'—')+'</p></div>';
   }).join(''):'<div class="card empty">No series on this axis yet — see the note above. Absence is the honest state; nothing is inferred.</div>';
 }
@@ -72,8 +72,11 @@ async function load(){
   const bust=Date.now();
   pack=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/usage-series.json?t='+bust,'./data/usage-series.json?t='+bust]);
   if(!pack){$('freshness').textContent='Pack unavailable';$('generated').textContent='Could not fetch ops/quota/usage-series.json.';return}
-  $('freshness').textContent='Pack loaded';
-  $('generated').textContent='Schema '+(pack.schema||'—')+' · built by '+(pack.generated_by||'—');
+  const lastPts=[];Object.values(pack.axes||{}).forEach(rows=>(rows||[]).forEach(s=>{if(s.last_point_at)lastPts.push(s.last_point_at)}));
+  const lastPoint=lastPts.length?lastPts.sort()[lastPts.length-1]:null;
+  const stale=!!lastPoint&&((Date.now()-new Date(lastPoint).getTime())>48*3600*1000);
+  $('freshness').textContent=stale?('STALE — newest observation '+String(lastPoint).slice(0,10)):'Pack loaded';
+  $('generated').textContent='Schema '+(pack.schema||'—')+' · built by '+(pack.generated_by||'—')+(pack.generated_at?(' · generated '+pack.generated_at):' · generated — (pack predates stamping)')+(lastPoint?(' · newest point '+lastPoint):'')+(stale?'. Series extend when the quota-usage pack refreshes; the readings snapshots carry no usage values by design.':'');
   render();
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{axis=b.dataset.axis;render()}));

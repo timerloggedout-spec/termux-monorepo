@@ -1,0 +1,77 @@
+name: quota-usage-series-refresh
+
+# Usage-series pack refresh (owner staleness flag, 2026-11-02).
+# ops/quota/usage-series.json is DERIVED from the quota-usage pack +
+# desk-feed usage stamps + allocation plan (scripts/quota_usage_series.py),
+# but nothing regenerated it: the pack froze at its last hand build
+# (2026-10-31) while the quota pages presented it as current.
+# SINGLE-WRITER for ops/quota/usage-series.json +
+# apps/help-wanted-dashboard/data/usage-series.json (byte-identical mirror).
+# Triggers: push on any generator input + manual dispatch. NO schedule:
+# fleet schedules are thinned by doctrine and by the 2026-10-28 stall, and
+# a derived pack only changes when an input changes.
+# Pattern: repo-tracking-collect (Swarm app token, direct commit to master;
+# the commit touches only the outputs, which are not trigger paths, so the
+# workflow cannot loop).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'ops/quota/quota-usage.json'
+      - 'ops/challenge/desk-feed.json'
+      - 'ops/quota/allocation-plan.json'
+      - 'scripts/quota_usage_series.py'
+      - '.github/workflows/quota-usage-series-refresh.yml'
+
+concurrency:
+  group: quota-usage-series-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Swarm app token (own 5000/h bucket), not the shared GITHUB_TOKEN
+      # bucket. SEC-03 minting, F1 pattern (mint BEFORE checkout; checkout
+      # persists the credential).
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate the usage-series pack + mirror
+        run: |
+          set -euo pipefail
+          python3 -B scripts/quota_usage_series.py --root .
+          cp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
+          cmp ops/quota/usage-series.json apps/help-wanted-dashboard/data/usage-series.json
+      - name: Commit generated artifacts to master (single-writer)
+        run: |
+          set -euo pipefail
+          git add ops/quota/usage-series.json \
+            apps/help-wanted-dashboard/data/usage-series.json
+          if git diff --cached --quiet; then
+            echo 'usage-series unchanged; no commit'
+            exit 0
+          fi
+          git config user.name 'quota-usage-series-refresh'
+          git config user.email 'actions@github.com'
+          git commit -m 'ops(quota): refresh usage-series pack (auto-derived)'
+          git pull --rebase origin master
+          git push origin HEAD:master

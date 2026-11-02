@@ -1,6 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
+ "generated_at": "2026-11-02T06:15:07Z",
+ "inputs_generated_at": {
+  "ops/quota/quota-usage.json": "2026-10-30T02:30:35Z"
+ },
  "sources": [
   "ops/quota/quota-usage.json",
   "ops/challenge/desk-feed.json",
@@ -65,7 +69,8 @@
      "target_flow_per_min": 83.33333333333333,
      "source": "ops/quota/allocation-plan.json pool github",
      "note": "plan target flow - context only, not usage; plotted only if units match"
-    }
+    },
+    "last_point_at": "2026-10-30T01:54:00Z"
    },
    {
     "key": "jules",
@@ -79,7 +84,8 @@
       "v": 1
      }
     ],
-    "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)"
+    "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)",
+    "last_point_at": "2026-10-31T06:17:14Z"
    },
    {
     "key": "jules",
@@ -93,7 +99,8 @@
       "v": 60
      }
     ],
-    "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)"
+    "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)",
+    "last_point_at": "2026-10-31T06:17:14Z"
    }
   ],
   "service": [
@@ -149,7 +156,8 @@
       "v": 3230
      }
     ],
-    "provenance": "ops/quota/quota-usage.json series1_api_core"
+    "provenance": "ops/quota/quota-usage.json series1_api_core",
+    "last_point_at": "2026-10-30T01:54:00Z"
    },
    {
     "key": "github.actions",
@@ -271,7 +279,8 @@
       "v": 40
      }
     ],
-    "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))"
+    "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
+    "last_point_at": "2026-10-29"
    },
    {
     "key": "github.actions",
@@ -393,7 +402,8 @@
       "v": 16
      }
     ],
-    "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))"
+    "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
+    "last_point_at": "2026-10-29"
    }
   ],
   "model": []

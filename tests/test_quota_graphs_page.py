@@ -104,3 +104,16 @@ def test_page_contract():
         assert 'data-axis="' + axis + '"' in html
     assert "activity-proxy — NOT consumption" in html
     assert "quota-graphs.html" in QUOTA_PAGE.read_text()
+
+
+def test_pack_freshness_stamps():
+    # Owner staleness flag (2026-11-02): the pack must carry its build
+    # stamp + per-series last point, and the page must surface staleness.
+    pack = json.loads(PACK.read_text())
+    assert pack["generated_at"].endswith("Z")
+    assert pack["inputs_generated_at"]["ops/quota/quota-usage.json"]
+    for axis in ("provider", "service", "model"):
+        for s in pack["axes"][axis]:
+            assert s["last_point_at"] == max(p["t"] for p in s["points"])
+    html = PAGE.read_text()
+    assert "STALE" in html and "last_point_at" in html

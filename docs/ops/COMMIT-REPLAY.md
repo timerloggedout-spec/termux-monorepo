@@ -184,15 +184,17 @@ workflow-side (App buckets preferred), chat-side = DESIGN/verify reads only.
   (working: none claimed; `Commit Replay` covers project + method). Schema
   names settled: `commit-store/v1` + g* KEPT (manager ruling 2026-10-31;
   the pre-landing `git-*/v1` proposal is superseded, ∅ rename).
-- **Repo-home extraction — OPEN DECISION, revisit @P3:** home = monorepo for
-  P1–P2 (indexer workflow co-locates w/ primary subject; continuous work ∈
-  Actions). When the engine outgrows `scripts/commit_replay/`, re-evaluate
-  extraction to an own repo (sibling symmetry) — recorded, ¬ blocker.
+- **Repo-home extraction — @P3 REVISIT RULED (manager, 2026-11-02):
+  DEFERRED.** Single-subject `scripts/` engine ⇒ extraction has ∅ benefit
+  now. New trigger: revisit @P3-completion ∨ when a 2nd subject joins
+  (repo-replay index home = that trigger). Home stays monorepo until then.
 - **History model — revisit @P4:** history = git DAG APPROVED provisional
   (manager ruling 2026-10-31). Open case: `edit()` recipes not yet committed
   (uncommitted-recipe state) — decide @P4 whether a staging record under
   `ops/commit-replay/recipes/` suffices or a pre-commit DAG overlay is
-  needed.
+  needed. @P4 FLAG (manager, 2026-11-02): the edit() demo PR must carry
+  this history-DAG note (uncommitted-recipe case, provisional ruling of
+  record).
 - Index hosting granularity: per-subject JSONL vs single fleet file — decide
   at P1 from measured index size @P1 census.
 - GitLab mirror freshness for fill_gap validator duty — verify at P5.

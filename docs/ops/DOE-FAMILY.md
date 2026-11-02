@@ -691,6 +691,21 @@ version and compared continuously until culling retires a version.
   refinement); #1489 weight updates already require
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
+  Shared shape (one record, three resolutions): Bayesian = the
+  record itself; ALE = its typed specialization (quantity =
+  expected loss, ARO x SLE decomposition); risk matrix = the
+  discretized render (posterior-probability bins x severity
+  bins). Views never carry separate estimates; disagreement =
+  defective record, posterior governs. Applications of record:
+  priorities-program value filter (2026-11-02) - Certifications
+  Value Matrices (2026-11-02): every matrix cell IS an
+  expectation record {value - range - n_evidence - basis}; ALE
+  and matrix tiers are derived views of it; unevidenced cells
+  carry INTAKE / HELD labels under the significance standard
+  (never blanks dressed as zeros); tiering (T1 / T2) re-derives
+  from the records by a stated function instead of standing as
+  assertion. Conformity spec held by doe-expert; matrix led by
+  the Certifications manager, rows held by Ladder.
 
 - **accumulation-targets v0** (owner doctrine, 2026-11-02) —
   dispatch is REQUIRED data accumulation: rotation exists to

@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-02T12:44:35Z",
+ "generated_at": "2026-11-02T13:01:34Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-02T12:44:35Z",
+   "read_at": "2026-11-02T13:01:33Z",
    "merged": 150,
    "open": 184
   },
   "lane_events": {
-   "read_at": "2026-11-02T12:44:35Z",
+   "read_at": "2026-11-02T13:01:33Z",
    "status": "ok",
-   "count": 8583,
+   "count": 8627,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,9 +46,9 @@
   },
   "by_state": {
    "closed": 1,
-   "active": 5,
+   "active": 4,
    "landed": 1,
-   "unknown": 4,
+   "unknown": 5,
    "in-flight": 11
   }
  },
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -89,7 +89,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -109,7 +109,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -143,7 +143,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -155,7 +155,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -176,7 +176,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "challenge-entries",
@@ -190,7 +190,7 @@
    "evidence": [
     "open PRs: #2907, #2235"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "quota",
@@ -210,7 +210,7 @@
     "quota registry services=170",
     "open PRs: #1441, #3342, #3242, #2757, #2525"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "doe",
@@ -219,10 +219,10 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 3829,
-    "sha": "3056e4e14cf3",
-    "at": "2026-11-02T12:36:21Z",
-    "title": "Agentic Gambling Lane: naming-collapse conformity boundary (DoE criteria)"
+    "pr": 3846,
+    "sha": "0402b1575596",
+    "at": "2026-11-02T12:59:57Z",
+    "title": "DoE: ATES frame mechanism correction (status field)"
    },
    "next": "land/close PR #2856 \u2014 doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
    "next_basis": "open-pr",
@@ -230,7 +230,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2856, #2966, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "doe-nc1",
@@ -242,24 +242,19 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "tier-1",
    "project": "Tier-1 classifier engine",
    "domain": "classifiers",
    "project_id": "classifiers-tier1",
-   "state": "active",
-   "last_merge": {
-    "pr": 3659,
-    "sha": "75223d81763c",
-    "at": "2026-11-02T08:43:17Z",
-    "title": "feat(dashboard): classifiers.html - Tier-1 classifier estate page"
-   },
+   "state": "unknown",
+   "last_merge": null,
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "contribution-desk",
@@ -279,7 +274,7 @@
     "desk-feed traversals=10 generated_at=2026-11-02T10:37:00Z",
     "open PRs: #3063"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "web-design-viz",
@@ -298,7 +293,7 @@
    "evidence": [
     "open PRs: #3795, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "marketing",
@@ -312,7 +307,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "marketing-social",
@@ -324,7 +319,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "swarm",
@@ -343,7 +338,7 @@
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "providers",
@@ -363,7 +358,7 @@
     "quota registry services=170",
     "open PRs: #2167, #3209, #3113, #2899, #2330"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "providers-phrases",
@@ -375,7 +370,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "repo-replay",
@@ -392,7 +387,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "ops",
@@ -406,7 +401,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   },
   {
    "lane": "telemetry",
@@ -425,7 +420,7 @@
    "evidence": [
     "open PRs: #3442, #1734, #1645, #1469, #990"
    ],
-   "updated_at": "2026-11-02T12:44:35Z"
+   "updated_at": "2026-11-02T13:01:34Z"
   }
  ],
  "doe_join": {
@@ -804,6 +799,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 86/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 87/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

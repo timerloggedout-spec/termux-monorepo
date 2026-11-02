@@ -32,7 +32,7 @@ METHOD_VERSION = "attribution/1.2"
 METHOD = "stamp+trailer+git-author evidence chain (ACP)"
 
 STAMP_RE = re.compile(r"\[MUSEai\]@\{role:\{([^}]+)\}\}")
-AGENT_TRAILER_RE = re.compile(r"^\*{0,2}Agent:\*{0,2}\s*(.+?)\*{0,2}$", re.M)
+AGENT_TRAILER_RE = re.compile(r"^\*{0,2}Agent(?:-Identity)?:\*{0,2}\s*(.+?)\*{0,2}$", re.M)
 SIGNOFF_RE = re.compile(r"^\*{0,2}(?:Signed-off-by|Co-authored-by):\*{0,2}\s*([^<]+?)\s*(?:<([^>]+)>)?\*{0,2}$", re.M)
 
 OWNER_NAMES = {"timerloggedout-spec", "timerloggedout", "loggedout", "logged out"}
@@ -55,6 +55,9 @@ ALIASES = {
     "coderabbit": ("coderabbit",),
     "qodo": ("qodo",),
     "deepagent": ("deepagent",),
+    "hark": ("hark",),
+    "runable": ("runable",),
+    "cue": ("cue",),
 }
 
 

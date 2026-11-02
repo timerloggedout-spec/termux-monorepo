@@ -36,6 +36,7 @@ hand-refreshed, or PR-centric.
 | Snapshots | `scripts/tracking/pr_feed_snapshot.json`, `scripts/tracking/lane_events_snapshot.json` |
 | Seed registry | `ops/tracking/projects.json` — identity + match rules + lane of record **only; no state** |
 | Nested-family record | `ops/tracking/nested-family.json` (`nested-family/v1`) + twin `apps/help-wanted-dashboard/data/nested-family-feed.json` — provider ⊃ model ⊃ {roles, tasks run} with dispatch connection; spec: [NESTED-FAMILY.md](NESTED-FAMILY.md) |
+| Backup-state record | `ops/tracking/backup-state.json` (`backup-state/v1`) + twin `apps/help-wanted-dashboard/data/backup-state-feed.json` — backup export history, drill verdicts, current marker (metadata only); spec: [BACKUP-STATE.md](BACKUP-STATE.md) |
 | Single-writer | `.github/workflows/repo-tracking-collect.yml` |
 | Tests | `tests/test_repo_tracking.py` |
 

@@ -57,6 +57,7 @@ keep them; the standard governs data + stamps, not the drawing code.
 | oracle.html | ✓ proposals + passes by status (chartkit) | oracle-panel-feed.json |
 | delphi-rfp.html | ✓ open RFPs by status + group (chartkit) | delphi-rfp-feed.json |
 | delphi-ledger.html | ✓ events per ledger (chartkit) | delphi-ledger-feed.json |
+| classifiers.html | ✓ census: units by state + by group (chartkit) | classifiers-feed.json (ops/classifiers/) |
 | proposals.html | ✓ proposals by status + priority (chartkit) | proposals-feed.json |
 | free-tier-value.html | ✓ list prices per model (input/output) (chartkit) | free-tier-value.json |
 | admin.html | ✓ feed-freshness: age in hours per consumed feed (chartkit) | all admin feeds |

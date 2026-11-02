@@ -25,10 +25,10 @@ Workflows: scout · execute · followup · llm-assist · rerequest · status-ref
 
 ## Ledger source
 
-Machine: `docs/ops/generated/help-wanted-status.json` → `tributes[]`  
+Machine: `docs/ops/generated/tribute-status.json` → `tributes[]`  
 Human: this doc + live board
 
-Regenerate: `python3 scripts/ci/help_wanted_status.py` (Actions: `help-wanted-status-refresh`).
+Regenerate: `python3 scripts/ci/tribute_status.py` (Actions: `tribute-status-refresh`).
 
 ## Working with others
 

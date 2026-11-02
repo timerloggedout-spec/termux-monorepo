@@ -1,6 +1,6 @@
 ---
 name: approxination-lane
-description: Approxination skill search, generation, contribution feedback, and A/B/C/D tool-layer evaluation. Load with help-wanted-lane + multivariate-doe + blind-agent-evaluation for oversight cohorts.
+description: Approxination skill search, generation, contribution feedback, and A/B/C/D tool-layer evaluation. Load with tribute-lane + multivariate-doe + blind-agent-evaluation for oversight cohorts.
 ---
 
 # Skill: approxination-lane
@@ -96,7 +96,7 @@ Follow `.agents/skills/blind-agent-evaluation/SKILL.md`. Mode labels A–D are t
 
 - `docs/architecture/AGENT-EVALUATION-FRAMEWORK.md` — Oversight family
 - `docs/architecture/AGENT-SELECTION-BLIND-EVALUATION.md` — A/B/C… candidates
-- `.agents/skills/help-wanted-lane/SKILL.md` — external upstream PR delivery
+- `.agents/skills/tribute-lane/SKILL.md` — external upstream PR delivery
 - `.agents/skills/multivariate-doe/SKILL.md` — DOE factors
 - `.agents/skills/find-skills/SKILL.md` — general skills.sh CLI (complementary, not replacement)
 

@@ -25,7 +25,7 @@
 
 The recursive tree contains 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. The repository tree currently contains **no tracked `.skill` archive**.
 
-Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, help-wanted-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
+Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, tribute-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
 
 CI/production paths also include: github-pages-operator, forensic-recovery, pr-evidence-evaluation, and the evidence/provenance/action-effectiveness lanes listed above.
 

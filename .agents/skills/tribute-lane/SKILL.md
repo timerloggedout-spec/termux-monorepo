@@ -1,14 +1,14 @@
 ---
-name: help-wanted-lane
+name: tribute-lane
 description: Select AND EXECUTE external help-wanted / good-first-issue / mutual-thread tasks. Auto-claim + fork + upstream PR is primary. CPPH ranking. Neighbor-safe (idempotent claims, skip closed). Oversight + evaluation. Triggers on help-wanted, external contribution, auto-PR, bounty-hunter precursor, or /continue. Load with evidence-led-monorepo-ops + adaptive-wait.
 ---
 
-# Skill: help-wanted-lane
+# Skill: tribute-lane
 
 **Owner:** Grok Administrator / Oversight Scout + Evaluation population.
 
 **Canonical paths (in-repo — collaborator parity):**
-- `.agents/skills/help-wanted-lane/SKILL.md` ← this file
+- `.agents/skills/tribute-lane/SKILL.md` ← this file
 - `docs/ops/HELP-WANTED-LANE.md`
 - `docs/ops/HELP-WANTED-PARALLEL.md`
 - `docs/ops/HELP-WANTED-STATUS.md` ← living human-review surface

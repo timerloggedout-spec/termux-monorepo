@@ -19,12 +19,12 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `icm-cctv-ops` |
+| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
-| **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `help-wanted-lane` · `github-pages-operator` · `approxination-lane` |
+| **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
-| **Oversight / external contrib** | `help-wanted-lane` | evidence-led + adaptive-wait · living status board |
-| **Dashboard / Pages** | `github-pages-operator` | help-wanted-lane · deploy workflow |
+| **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
+| **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
 | **CI / production recon** | `production-reconciliation` | `action-effectiveness-ledger` · `workflow-orchestration` |
 
@@ -41,7 +41,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | find-skills | `.agents/skills/find-skills/SKILL.md` |
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | github-pages-operator | `.agents/skills/github-pages-operator/SKILL.md` |
-| help-wanted-lane | `.agents/skills/help-wanted-lane/SKILL.md` |
+| help-wanted-lane | `.agents/skills/tribute-lane/SKILL.md` |
 | **icm-cctv-ops** | `.agents/skills/icm-cctv-ops/SKILL.md` |
 | **ml-pipeline-ops** | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |

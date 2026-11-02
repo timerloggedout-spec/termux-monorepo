@@ -17,7 +17,7 @@
 | Admin / Termux stewardship | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
 | Wingman reference/adaptation | `.agents/skills/wingman-project-integration/SKILL.md` |
 | Context relationship evidence | `.agents/skills/context-relationship-graph/SKILL.md` |
-| External contribute (help-wanted) | `.agents/skills/help-wanted-lane/SKILL.md` |
+| External contribute (help-wanted) | `.agents/skills/tribute-lane/SKILL.md` |
 | Web operation -> API/CLI adapter (foundry) | `.agents/skills/web-adapter-foundry/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
 
@@ -43,7 +43,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |
 | Wingman adaptation | `wingman-project-integration` + `context-relationship-graph` |
-| Oversight / external PR | `help-wanted-lane` |
+| Oversight / external PR | `tribute-lane` |
 | Evaluation / DOE | `multivariate-doe` + `blind-agent-evaluation` |
 | Concurrent-agent collision | `minesweeper-ops` |
 

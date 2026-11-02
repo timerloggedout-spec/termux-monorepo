@@ -103,7 +103,7 @@ def classify_receipt_outcome(row: dict) -> str:
 
 
 def lane_git_history() -> list[dict]:
-    paths = ['apps/help-wanted-dashboard/', 'docs/ops/HELP-WANTED-*', '.agents/skills/help-wanted-lane/', '.github/workflows/help-wanted-*', 'scripts/ci/help_wanted_*']
+    paths = ['apps/help-wanted-dashboard/', 'docs/ops/HELP-WANTED-*', '.agents/skills/tribute-lane/', '.github/workflows/help-wanted-*', 'scripts/ci/help_wanted_*']
     try:
         raw = subprocess.check_output(['git','log','--date=iso-strict','--format=%H%x09%aI%x09%an%x09%s','--',*paths], text=True, stderr=subprocess.DEVNULL)
     except (OSError, subprocess.CalledProcessError):
@@ -286,7 +286,7 @@ def main() -> int:
             "status_raw": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/tribute-status.json",
             "tribute_doc": "docs/ops/HELP-WANTED-TRIBUTE.md",
         },
-        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":False,"history_coverage":"lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill","history_count":len(history),"lane_paths":["apps/help-wanted-dashboard/","docs/ops/HELP-WANTED-*",".agents/skills/help-wanted-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/tribute/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
+        "control_surface": {"schema_version":"help-wanted.control-surface.v2","source_sha":source_sha,"source_ref":os.environ.get("GITHUB_REF_NAME","local"),"history_complete":False,"history_coverage":"lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill","history_count":len(history),"lane_paths":["apps/help-wanted-dashboard/","docs/ops/HELP-WANTED-*",".agents/skills/tribute-lane/",".github/workflows/help-wanted-*","scripts/ci/help_wanted_*"],"authority":"GitHub commits, PRs, issues, reviews, checks, Actions and evidence JSONL","projection_only":True,"deployment":[{"name":"GitHub Pages user site","url":"https://timerloggedout-spec.github.io/tribute/","role":"canonical public static ops UI"},{"name":"Vercel","role":"interactive deployment lane","verification":"provider deployment evidence required"},{"name":"Project Pages","url":"https://timerloggedout-spec.github.io/termux-monorepo/","role":"project hub, not dashboard twin"}]},
         "evolution": history,
         "pipeline": [
             "scout",

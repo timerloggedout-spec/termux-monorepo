@@ -27,7 +27,7 @@ def test_page_render_and_dispatch_links():
     html = PAGE.read_text()
     assert "nested-family-feed.json" in html
     for marker in ("providerSection", "modelCard", "taskRow",
-                   "actions/runs/", "blob/master/", "CK.bars",
+                   "actions/runs/", "blob/master/", "CK.bars", "NOT ESTABLISHED", "session ", "zero_dispatch", "No dispatches yet",
                    "CK.stampState", 'id="chart-providers"',
                    'id="chart-outcomes"', "NOT_ESTABLISHED"):
         assert marker in html

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Rate-limit event audits: the register, audited into improvements - findings, owners and states, with coverage state.">
+<title>Event Audits · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.rec{padding:.35rem 0;border-top:1px solid rgba(127,127,127,.25)}</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Ops · quota · event audits</div><h1>Event <span>Audits</span></h1><p class="lede" id="lede">The rate-limit register, audited into improvements. Each audit pass reads the recorded incidents and issues findings — cause, improvement, owner, state. Append-only: findings are never edited away, states move as the work lands.</p><div class="links" style="margin-top:1rem"><a class="button" href="./quota-graphs.html">Quota graphs · events</a><a class="button" href="./quota-swarm.html">Swarm quota</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/rate-limit-events.json">Events register</a><a class="button" href="./data/rate-limit-event-audits.json">Audits feed</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching audits feed.</small></div></div></header>
+<main>
+<section aria-labelledby="coverage"><div class="head"><h2 id="coverage">Coverage</h2><span class="note" id="coverage-stamp">—</span></div>
+<div class="card"><div id="chart-coverage"></div><p class="muted" id="coverage-note">—</p></div>
+<div class="grid grid-2" style="margin-top:1rem"><div class="card"><div class="label">Findings by state</div><div id="chart-states"></div></div>
+<div class="card"><div class="label">Findings by class</div><div id="chart-classes"></div></div></div></section>
+<div id="audit-list"></div>
+<footer>Event Audits · feed: data/rate-limit-event-audits.json (quota.rate-limit-event-audits/v1, twin of ops/quota/rate-limit-event-audits.json; appended by the quota event-audit workflow) + register ops/quota/rate-limit-events.json · charts: chartkit (docs/ops/DASHBOARD-CHART-STANDARD.md) · coverage staleness = register events the latest audit has not covered</footer>
+</main>
+<script src="./chartkit.js"></script>
+<script>
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+function stateHead(state){const s=String(state||'').toLowerCase();if(s.startsWith('landed'))return 'landed';if(s.startsWith('partial'))return 'partial';if(s.startsWith('open'))return 'open';return 'other'}
+function findingCard(f){
+  return '<div class="card"><div class="label">'+esc(f.id||'—')+'<span class="chip">'+esc(f.class||'—')+'</span><span class="chip">'+esc(stateHead(f.state))+'</span></div>'
+    +'<p class="muted">Events covered: '+((f.event_refs||[]).map(esc).join(' · ')||'—')+'</p>'
+    +(f.cause?('<p><strong>Cause.</strong> '+esc(f.cause.pattern||'')+' — bucket '+esc(f.cause.bucket||'')+', surface '+esc(f.cause.surface||'')+'.<br><span class="muted">'+esc(f.cause.lane_behavior||'')+'</span></p>'):'')
+    +'<p><strong>Improvement.</strong> '+esc(f.improvement||'—')+'</p>'
+    +'<p class="muted">Owner: '+esc(f.owner||'—')+'<br>State: '+esc(f.state||'—')+'</p></div>';
+}
+async function load(){
+  const bust=Date.now();
+  const feed=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/apps/help-wanted-dashboard/data/rate-limit-event-audits.json?t='+bust,'./data/rate-limit-event-audits.json?t='+bust]);
+  if(!feed){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch rate-limit-event-audits.json.';return}
+  if(feed.title)$('lede').textContent=feed.title;
+  const audits=(feed.audits||[]).slice().sort((a,b)=>String(b.at).localeCompare(String(a.at)));
+  const latest=audits[0]||{};
+  const reg=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/rate-limit-events.json?t='+bust]);
+  const regCount=reg&&reg.events?reg.events.length:null;
+  const covered=typeof latest.events_covered==='number'?latest.events_covered:null;
+  $('freshness').textContent='Audits loaded';
+  $('generated').textContent='Schema '+(feed.schema||'—')+' · '+audits.length+' audit pass'+(audits.length===1?'':'es')+' · latest '+(latest.at||'—')+' by '+(latest.auditor||'—');
+  const behind=(regCount!=null&&covered!=null)?Math.max(0,regCount-covered):null;
+  $('coverage-stamp').textContent='Latest audit '+(latest.at||'—')+(behind===0?' · coverage CURRENT':(behind!=null?(' · BEHIND — '+behind+' register event(s) not yet audited'):''))+((regCount==null)?' · register unreachable, coverage unverified':'');
+  $('chart-coverage').innerHTML=CK.bars([
+    {label:'Register events',value:regCount!=null?regCount:0},
+    {label:'Covered by latest audit',value:covered!=null?covered:0}]);
+  $('coverage-note').textContent=(regCount!=null&&covered!=null)
+    ?('The register holds '+regCount+' events; the latest audit ('+(latest.at||'—')+') covers '+covered+'. '+(behind===0?'Coverage is complete.':'Coverage lags the register — audits are per-incident passes appended by the audit workflow.'))
+    :'Coverage inputs incomplete — see the audits below.';
+  const findings=audits.flatMap(a=>a.findings||[]);
+  const byState={},byClass={};
+  findings.forEach(f=>{byState[stateHead(f.state)]=(byState[stateHead(f.state)]||0)+1;const c=f.class||'—';byClass[c]=(byClass[c]||0)+1});
+  $('chart-states').innerHTML=CK.bars(Object.entries(byState).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+  $('chart-classes').innerHTML=CK.bars(Object.entries(byClass).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+  $('audit-list').innerHTML=audits.map(a=>'<section aria-labelledby="audit-'+esc(a.at)+'"><div class="head"><h2 id="audit-'+esc(a.at)+'">Audit · '+esc(a.at)+'</h2><span class="note">by '+esc(a.auditor||'—')+' · covers '+(a.events_covered!=null?a.events_covered:'—')+' events</span></div>'
+    +'<div class="grid grid-2">'+(a.findings||[]).map(findingCard).join('')+'</div></section>').join('');
+}
+load();setInterval(load,60000);
+</script>
+</body>
+</html>

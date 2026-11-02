@@ -403,6 +403,21 @@ the accumulation report), >0 while health-gated unproven arms
 exist, and bounded by the health gates — exploration never
 selects a failing or degrading arm, and exploration dispatches
 are real production work (rule 6), not synthetic burn.
+
+Competition frame (owner, 2026-11-02): **Scouts compete.**
+Scouts are themselves scored participants: a scout's
+selections are its record — every selection experiment carries
+the scout's identity in its stamp {scout - manager - request -
+arm - basis}, and dispatch outcomes attach per scout. Scout
+quality = a posterior over its selections' outcomes
+(bayesian-updating v0); competition = comparative standing
+among scouts on those posteriors. The significance standard
+governs scout claims identically: a scout's edge below the
+class n bar is HELD, never stated, and standing claims cite
+{n - stratum - significance basis} or carry the lawful labels.
+Cull reach: scouts are participants — a culled scout's wallet
+flows to the pooled system under the cull wallet consequence,
+named in the cull record like any participant's.
 Feed carriage: maintained by the rotation automation
 (Swarm) under this governance; an existing equivalent live
 surface becomes the feed by designation, never a second build.

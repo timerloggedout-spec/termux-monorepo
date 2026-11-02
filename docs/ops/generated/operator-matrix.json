@@ -3,9 +3,9 @@
     "open_issues": 386,
     "open_prs": 180,
     "pr_classes": {
-      "CANDIDATE": 85,
+      "CANDIDATE": 84,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 89,
+      "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
   },
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T07:56:49Z",
+  "generated_at": "2026-11-02T08:05:05Z",
   "issues_unlabelled": [
     308,
     343,
@@ -135,10 +135,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "71154bfb13"
+    "sha": "af4c46d58e"
   },
   "prs": [
     {
@@ -218,12 +218,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "da745e35e2",
+      "head_sha": "37e882285c",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T07:54:20Z"
+      "number": 3626,
+      "title": "cert(coderoad): revert old-releases rewrite \u2014 focal still served by archive.ubuntu.com (diag-proven)",
+      "updated_at": "2026-11-02T08:04:19Z"
     },
     {
       "class": "CANDIDATE",
@@ -999,20 +999,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "52cb658813",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T07:15:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -1830,6 +1816,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "8e0b996d09",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T08:02:53Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -1951,6 +1951,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "9e7aa64283",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T08:04:40Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2547,12 +2561,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b64431609d",
+      "head_sha": "4b8d567db0",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T07:53:40Z"
+      "updated_at": "2026-11-02T08:01:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2603,20 +2617,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "5680692e94",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3601,
-      "title": "feat(quota): ALL-Providers denominator + pack-builder envelope fix (owner amendment)",
-      "updated_at": "2026-11-02T07:35:26Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "ea2e9d1ee8",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2628,15 +2628,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "ab3c3321d6",
+      "head_sha": "e1682f0d74",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3610,
       "title": "tribute normalization bundle A: dispatch-chain rename + D1 artifacts",
-      "updated_at": "2026-11-02T07:54:51Z"
+      "updated_at": "2026-11-02T08:04:16Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2656,15 +2656,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "5632551efe",
+      "head_sha": "0c71618c79",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3621,
-      "title": "fix(quota): repair pack series4 envelope + builder shape tolerance",
-      "updated_at": "2026-11-02T07:56:39Z"
+      "mergeable_state": "unknown",
+      "number": 3624,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-02T08:01:08Z"
     }
   ],
   "schema": "operator-matrix/v1",

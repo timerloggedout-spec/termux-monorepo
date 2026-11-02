@@ -188,6 +188,13 @@ recipes + indexes stay as the consumer record, sibling pattern with
 repo-replay). P4 itself lands in the monorepo; extraction is the
 immediate follow-up, ∅ mid-P4 move.
 
+**EXTRACTED (2026-11-02):** repo
+https://github.com/timerloggedout-spec/commit-replay — seed commit
+`6ed427090b713cf709840993333cd2ac6f1796e6` (13 files: README, DESIGN,
+config, 5 engine modules, 4 test suites; ∀ blob-verified at seed).
+Engine development continues there; this monorepo copy = the
+import-by-reference consumer record.
+
 ## 9. Open items (¬ blockers)
 
 - Engine name: sibling = RevWright; this plane's engine name = TBD w/ parent
@@ -204,7 +211,11 @@ immediate follow-up, ∅ mid-P4 move.
   `ops/commit-replay/recipes/` suffices or a pre-commit DAG overlay is
   needed. @P4 FLAG (manager, 2026-11-02): the edit() demo PR must carry
   this history-DAG note (uncommitted-recipe case, provisional ruling of
-  record).
+  record). **RULED (manager, 2026-11-02): lane position APPROVED —
+  staging record + `lineage[]` hash chain suffices for v1, ∅ DAG overlay.
+  Condition: lineage is mandatory on every edit() output, and each
+  `parent_recipe_sha256` is verified at compose `--check` against the
+  sibling recipe files (fail-closed if absent/mismatch). CLOSED.**
 - Index hosting granularity: per-subject JSONL vs single fleet file — decide
   at P1 from measured index size @P1 census.
 - GitLab mirror freshness for fill_gap validator duty — verify at P5.

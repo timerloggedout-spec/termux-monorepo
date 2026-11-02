@@ -392,6 +392,17 @@ version and compared continuously until culling retires a version.
   phase, parked (PROCESS.json later_queue carries "Marketplace
   publishing of fleet apps" as parked_owner_later); no publication
   action now.
+  Candidate check (owner, 2026-11-01): a DoE AppID repo (per-app
+  repo pattern) = ABSENT from the record — the pattern exists only
+  as RepoStory's per-entry installation (on the repo-story entry
+  repo, not a per-app repo) and as an undecided PROCESS.json
+  proposal (`timerloggedout-spec/<app-slug>` per-app repos, never
+  executed; no DoE app exists to hold one). A dedicated DoE data
+  repo = ABSENT — experiment/scoring data is homed in this repo
+  (`experiments/doe/*/records/`, campaign records and logs) with
+  lane-events in Neon (a database, not a repo); no record names a
+  DoE data repo. Org repo searches (`doe`, `experiment`, `scoring`,
+  `doe-data`) all return 0.
 
 ## Campaign layout
 

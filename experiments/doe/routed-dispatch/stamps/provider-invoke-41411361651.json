@@ -1,0 +1,29 @@
+{
+  "context": "provider-invoke mode=catalog",
+  "dispatch_id": "provider-invoke-41411361651",
+  "entry": "3141",
+  "model": null,
+  "moniker": "optimizations-assurance",
+  "outcome": {
+    "artifact": "actions run 41411361651",
+    "confirmed": null,
+    "gate_call": null,
+    "status": "completed",
+    "summary": "provider-invoke.yml run 41411361651 result=success"
+  },
+  "provider": "deepseek",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "deepseek",
+    "slice": null
+  },
+  "role": "builder",
+  "run": {
+    "run_id": "41411361651",
+    "session_id": null,
+    "workflow": "provider-invoke.yml"
+  },
+  "task_class": "inference-invoke",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-02T08:16:23Z"
+}

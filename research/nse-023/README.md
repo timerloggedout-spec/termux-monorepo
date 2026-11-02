@@ -45,4 +45,4 @@ governed `research/` path the proposal requires before any applied promotion.
 | Packet | Proposition (fleet claim) | Verdict |
 |---|---|---|
 | [P-001](packets/P-001.md) | ∘ is associative — the (G, ∘) frame axiom | **PASS** (run 41457244573; axioms [Quot.sound]) |
-| [P-002](packets/P-002.md) | `e` ↦ `1`: matrix identity (`1 * M = M`) — first Mathlib packet | PENDING (Mathlib leg) |
+| [P-002](packets/P-002.md) | `e` ↦ `1`: matrix identity (`1 * M = M`) — first Mathlib packet | **PASS** (run 41462666934; axioms [propext, Classical.choice, Quot.sound]) |

@@ -1,8 +1,34 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-02T07:55:22Z",
+ "read_at": "2026-11-02T07:57:01Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 3618,
+   "title": "ops(latency): standing probe instrument + VM baseline 2026-11-01 (state-gated, no cron)",
+   "merged_at": "2026-11-02T07:55:45Z",
+   "updated_at": "2026-11-02T07:55:45Z",
+   "created_at": "2026-11-02T07:53:18Z",
+   "merge_commit_sha": "49af4bc1bdcc8463685300c9a0782d6fc6d64718",
+   "head_ref": "ops/latency-instrument-baseline",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3618",
+   "merged": true
+  },
+  {
+   "number": 3619,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-02T07:53:42Z",
+   "updated_at": "2026-11-02T07:55:32Z",
+   "created_at": "2026-11-02T07:53:37Z",
+   "merge_commit_sha": "13fdf63b05fd9fe1d442d93ce3b355dd7fcbbec7",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3619",
+   "merged": true
+  },
   {
    "number": 3617,
    "title": "feat(tracking): backup-state/v1 \u2014 dashboard records the backups",
@@ -14,19 +40,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3617",
-   "merged": true
-  },
-  {
-   "number": 3619,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T07:53:42Z",
-   "updated_at": "2026-11-02T07:53:47Z",
-   "created_at": "2026-11-02T07:53:37Z",
-   "merge_commit_sha": "13fdf63b05fd9fe1d442d93ce3b355dd7fcbbec7",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3619",
    "merged": true
   },
   {
@@ -1291,6 +1304,19 @@
    "merged": true
   },
   {
+   "number": 3516,
+   "title": "DoE: dual-accumulator arbitration v0 spec fill (Delphi)",
+   "merged_at": "2026-11-02T05:45:05Z",
+   "updated_at": "2026-11-02T05:45:26Z",
+   "created_at": "2026-11-02T05:44:49Z",
+   "merge_commit_sha": "addaff10167b65f39048d16cc47c4ee66524cbee",
+   "head_ref": "doe/dual-accumulator-spec-fill",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3516",
+   "merged": true
+  },
+  {
    "number": 3514,
    "title": "chore(ops): regenerate operator matrix",
    "merged_at": "2026-11-02T05:44:08Z",
@@ -1926,46 +1952,33 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3463",
    "merged": true
-  },
-  {
-   "number": 3462,
-   "title": "fix(dispatch): judge step secret expression",
-   "merged_at": "2026-11-02T01:28:19Z",
-   "updated_at": "2026-11-02T01:28:19Z",
-   "created_at": "2026-11-02T01:26:28Z",
-   "merge_commit_sha": "262ee6f157a98b36838380ca0e7aa05dd0fcb854",
-   "head_ref": "swarm/fanout-judge-secret-fix-20261101",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3462",
-   "merged": true
-  },
-  {
-   "number": 3461,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T01:24:51Z",
-   "updated_at": "2026-11-02T01:25:03Z",
-   "created_at": "2026-11-02T01:24:46Z",
-   "merge_commit_sha": "1d8bf45555daa88098d8c9ea34d2bed98b779b10",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3461",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 3618,
-   "title": "ops(latency): standing probe instrument + VM baseline 2026-11-01 (state-gated, no cron)",
+   "number": 3621,
+   "title": "fix(quota): repair pack series4 envelope + builder shape tolerance",
    "merged_at": null,
-   "updated_at": "2026-11-02T07:55:18Z",
-   "created_at": "2026-11-02T07:53:18Z",
-   "merge_commit_sha": "e25d90f57e0ad1ab3a8046765812f2465ad35861",
-   "head_ref": "ops/latency-instrument-baseline",
+   "updated_at": "2026-11-02T07:56:39Z",
+   "created_at": "2026-11-02T07:55:30Z",
+   "merge_commit_sha": "e82b2d98c4b14b11436aa5c9dbe7c45b75355070",
+   "head_ref": "quota/pack-series4-repair",
    "author": "timerloggedout-spec",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3618",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3621",
+   "merged": false
+  },
+  {
+   "number": 3620,
+   "title": "feat(dashboard): Swarm Quota anchor in every shell nav (chrome)",
+   "merged_at": null,
+   "updated_at": "2026-11-02T07:56:03Z",
+   "created_at": "2026-11-02T07:53:54Z",
+   "merge_commit_sha": "31b3b8317da9335c11e810c059cb417c6ce97e58",
+   "head_ref": "web/quota-swarm-chrome",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3620",
    "merged": false
   },
   {
@@ -1979,19 +1992,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3610",
-   "merged": false
-  },
-  {
-   "number": 3620,
-   "title": "feat(dashboard): Swarm Quota anchor in every shell nav (chrome)",
-   "merged_at": null,
-   "updated_at": "2026-11-02T07:54:47Z",
-   "created_at": "2026-11-02T07:53:54Z",
-   "merge_commit_sha": "31b3b8317da9335c11e810c059cb417c6ce97e58",
-   "head_ref": "web/quota-swarm-chrome",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3620",
    "merged": false
   },
   {

@@ -10,8 +10,11 @@ intakes out:
   1. 3L0        ops/3l0/intake.jsonl                       (3l0-intake/v1, append-only)
   2. DoE        ops/challenge/desk-feed.json               (traversals[].provider_usage[] carrier)
   3. DoE/MVT/ATES experiments/doe/routed-dispatch/records/ (EXPERIMENT schema 1.0 record per dispatch)
-  4. MoneyBall  ops/moneyball/dispatch-intake.jsonl        (scoring-feed intake; rows land UNSCORED —
-                                                            the plane's method work stays the plane's)
+  4. MoneyBall  ops/moneyball/routed-dispatch/<record>.json (moneyball-plane/v2 score record per
+                                                            dispatch, schema docs/schemas/moneyball-score.schema.json;
+                                                            deterministic rubric below, weights fixed at the
+                                                            swarm-routing/v2 intake; winprob/method work
+                                                            stays parked — population only)
 
 Honesty discipline (binding, per the planes' intake specs): a field the
 dispatch does not establish is emitted as null / NOT_ESTABLISHED, never
@@ -113,26 +116,71 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
     with intake_path.open("a") as fh:
         fh.write(json.dumps(rec_3l0, sort_keys=True) + "\n")
 
-    # ---- 2. MoneyBall scoring-feed intake (unscored by design) ----
-    mb_path = root / "ops/moneyball/dispatch-intake.jsonl"
+    # ---- 2. MoneyBall scoring-feed record (moneyball-plane/v2) ----
+    # Rubric (declared, deterministic; weights fixed at intake per the
+    # plane's weight law — fixed_at names this routing update):
+    #   relevance              task-class table (declared below)
+    #   evidence_maturity      outcome evidence: completed+artifact+run -> 9 evidenced;
+    #                          completed -> 6 limited; failed -> 3 limited; else 2 unverified
+    #   survivability          arm state: live -> 8, degraded -> 4, down -> 1, unknown -> 5 unverified
+    #   adoption_cost_inverse  cost class: free-tier 10, free-credit 8, metered 4, funded-out 1, card-gated 0
+    #   composability          task-class table (declared below)
+    # Quantities stay null = unidentified (schema-visible), never invented.
+    MB_WEIGHTS = {"relevance": 0.30, "evidence_maturity": 0.25, "survivability": 0.20,
+                  "adoption_cost_inverse": 0.15, "composability": 0.10}
+    relevance_tbl = {"entry-build": 9, "certifications-unit": 7, "review": 7,
+                     "inference-probe": 6, "docs": 5}
+    composability_tbl = {"certifications-unit": 9, "entry-build": 8, "inference-probe": 7, "review": 6}
+    cost_tbl = {"free-tier": 10, "free-credit": 8, "metered": 4, "funded-out": 1, "card-gated": 0}
+    arm_state = stamp.get("arm_state") or "unknown"
+    surv_tbl = {"live": (8, "evidenced"), "degraded": (4, "limited"), "down": (1, "limited"),
+                "unknown": (5, "unverified")}
+    status = outcome.get("status")
+    if status == "completed" and outcome.get("artifact") and run.get("run_id"):
+        em = (9, "evidenced")
+    elif status == "completed":
+        em = (6, "limited")
+    elif status == "failed":
+        em = (3, "limited")
+    else:
+        em = (2, "unverified")
+    ev_refs = [r for r in (run_url, outcome.get("artifact")) if r]
+    tc = stamp.get("task_class") or ""
+    axes = [
+        {"axis": "relevance", "value": relevance_tbl.get(tc, 5), "evidence_refs": ev_refs or [NE],
+         "evidence_strength": "limited"},
+        {"axis": "evidence_maturity", "value": em[0], "evidence_refs": ev_refs or [NE],
+         "evidence_strength": em[1]},
+        {"axis": "survivability", "value": surv_tbl.get(arm_state, surv_tbl["unknown"])[0],
+         "evidence_refs": ev_refs or [NE], "evidence_strength": surv_tbl.get(arm_state, surv_tbl["unknown"])[1]},
+        {"axis": "adoption_cost_inverse", "value": cost_tbl.get(quota.get("cost_class"), 5),
+         "evidence_refs": ev_refs or [NE],
+         "evidence_strength": "evidenced" if quota.get("cost_class") in cost_tbl else "unverified"},
+        {"axis": "composability", "value": composability_tbl.get(tc, 5), "evidence_refs": ev_refs or [NE],
+         "evidence_strength": "limited"},
+    ]
+    composite = round(sum(MB_WEIGHTS[a["axis"]] * a["value"] for a in axes), 4)
     rec_mb = {
-        "schema": "moneyball-dispatch-intake/v1",
-        "dispatch_id": dispatch_id,
-        "ts": ts,
-        "task_class": stamp.get("task_class"),
-        "provider": provider,
-        "model": model,
-        "run_id": run.get("run_id"),
-        "outcome_status": outcome.get("status"),
-        "quota_cost_class": quota.get("cost_class"),
-        "evidence_refs": [run_url] if run_url else [],
-        "axes": None,
-        "score_state": "unscored",
-        "origin": stamp.get("origin", "live"),
+        "schema": "moneyball-plane/v2",
+        "record_id": f"mb-{dispatch_id}",
+        "pass_id": "swarm-routing/v2",
+        "opportunity": {"entity_id": f"{provider or NE}::{model or NE}", "action": "route-dispatch",
+                        "context": f"{tc}: {stamp.get('context') or ''}".strip(),
+                        "decision_time": ts},
+        "baseline_id": "desk-feed-only-routing/v1",
+        "weights": {"axes": MB_WEIGHTS, "fixed_at": "swarm-routing/v2 intake 2026-11-01 (owner routing update)"},
+        "axes": axes,
+        "composite": composite,
+        "quantities": {"capability": None, "forecast": None, "incremental_effect": None,
+                       "value": None, "surplus": None, "portfolio_marginal_contribution": None},
+        "ballot": {"relation": "beside_never_merged", "aggregate": None},
+        "point_in_time": {"event_time": ts, "published_at": ts, "ingested_at": ts},
+        "rubric": "scripts/dispatch/stamp_fanout.py (declared tables; quantities null = unidentified)",
     }
-    mb_path.parent.mkdir(parents=True, exist_ok=True)
-    with mb_path.open("a") as fh:
-        fh.write(json.dumps(rec_mb, sort_keys=True) + "\n")
+    mb_dir = root / "ops/moneyball/routed-dispatch"
+    mb_dir.mkdir(parents=True, exist_ok=True)
+    safe_mb = "".join(c if c.isalnum() or c in "-_" else "-" for c in dispatch_id)
+    (mb_dir / f"{safe_mb}.json").write_text(json.dumps(rec_mb, indent=2, sort_keys=True) + "\n")
 
     # ---- 3. EXPERIMENT record (DoE scored records + MVT/ATES intake) ----
     baseline = stamp.get("baseline_sha") or head_sha
@@ -213,7 +261,7 @@ def emit(stamp: dict, root: Path, head_sha: str | None = None) -> dict:
     feed_path.write_text(json.dumps(feed, indent=2) + "\n")
 
     return {"dispatch_id": dispatch_id, "emitted": True,
-            "targets": ["ops/3l0/intake.jsonl", "ops/moneyball/dispatch-intake.jsonl",
+            "targets": ["ops/3l0/intake.jsonl", "ops/moneyball/routed-dispatch/<record>.json",
                         f"experiments/doe/{CAMPAIGN}/records/{safe}.json", "ops/challenge/desk-feed.json"]}
 
 

@@ -4,7 +4,7 @@ name: Dispatch stamp fan-out
 # canonical dispatch stamp to every scoring plane's intake — 3L0
 # (ops/3l0/intake.jsonl), DoE (desk-feed provider_usage carrier +
 # EXPERIMENT records), MVT/ATES (EXPERIMENT records), MoneyBall
-# (ops/moneyball/dispatch-intake.jsonl). Commits are authored by the
+# (ops/moneyball/routed-dispatch). Commits are authored by the
 # Termux Fleet Swarm App so downstream collectors trigger.
 
 on:
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          git add ops/3l0/intake.jsonl ops/moneyball/dispatch-intake.jsonl ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records
+          git add ops/3l0/intake.jsonl ops/moneyball/routed-dispatch ops/challenge/desk-feed.json experiments/doe/routed-dispatch/records
           if git diff --cached --quiet; then
             echo "no intake changes (already emitted)"
           else

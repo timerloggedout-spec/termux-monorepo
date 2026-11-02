@@ -50,9 +50,21 @@ def test_fanout_populates_all_intakes(tmp_path):
     assert rec["run"]["run_id"] == "41364184062"
     assert rec["quota"]["cost_class"] == "free-tier"
     assert rec["instance"]["instance_key"] == "NOT_ESTABLISHED"  # no tuple in stamp -> honest NE
-    # MoneyBall: present, unscored
-    mb = json.loads((tmp_path / "ops/moneyball/dispatch-intake.jsonl").read_text().strip())
-    assert mb["score_state"] == "unscored" and mb["axes"] is None
+    # MoneyBall: a valid moneyball-plane/v2 record (quantities unidentified)
+    mb = json.loads((tmp_path / "ops/moneyball/routed-dispatch/test-dispatch-0001.json").read_text())
+    assert mb["schema"] == "moneyball-plane/v2"
+    assert abs(sum(mb["weights"]["axes"].values()) - 1.0) < 1e-9
+    comp = sum(mb["weights"]["axes"][a["axis"]] * a["value"] for a in mb["axes"])
+    assert abs(comp - mb["composite"]) <= 0.05
+    assert all(mb["quantities"][k] is None for k in
+               ("capability", "forecast", "incremental_effect", "value", "surplus",
+                "portfolio_marginal_contribution"))
+    validator = ROOT / "scripts/moneyball/moneyball_v2.py"
+    if validator.exists():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("mbv2", validator)
+        mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+        assert mod.validate_v2(mb) == [], mod.validate_v2(mb)
     # EXPERIMENT record (DoE + MVT/ATES)
     exp = json.loads((tmp_path / "experiments/doe/routed-dispatch/records/test-dispatch-0001.json").read_text())
     for key in ("schema_version", "experiment_id", "observed_at", "baseline_sha",

@@ -166,6 +166,8 @@ Per the Swarm definition (§19) and the no-hard-select principle (§20), dispatc
 - **3L0:** `ops/3l0/intake.jsonl` (`3l0-intake/v1`, append-only, per docs/ops/3L0-PLANE.md intake spec).
 - **DoE:** desk-feed `traversals[routed-dispatch].provider_usage[]` live carrier (DOE-SCORING-INTAKE) + EXPERIMENT scored records.
 - **MVT/ATES:** EXPERIMENT records (schema 1.0) under the `routed-dispatch` campaign (`experiments/doe/routed-dispatch/`, DESIGN declares the SHA convention and the observational-honesty rule).
-- **MoneyBall:** `ops/moneyball/dispatch-intake.jsonl` — the scoring **feed** only; rows land `unscored` (axes null). The plane's winprob method work stays parked (owner, 2026-10-28).
+- **MoneyBall:** `ops/moneyball/routed-dispatch/*.json` — one `moneyball-plane/v2` score record per dispatch (the plane's intake spec, 2026-11-01): canonical axes with weights fixed at this intake, per-axis evidence refs/strength from the stamp, composite recomputed by the plane's validator, quantities null = unidentified. Scoring **feed** population only; the plane's winprob method work stays parked (owner, 2026-10-28).
+
+**Loop closure (owner addendum, 2026-11-01 — "&& we can improve our System"):** population is not the end. Per cycle, the routing layer reads the planes' comparative outputs and applies a routing delta (rotation weights / tranche composition / constrained-arm changes), recording {evidence pointer, delta, expected effect} in this section and the campaign record. A cycle counts complete only when populated evidence ∧ an applied delta are both reported.
 
 Honesty discipline: unestablished fields emit as null / `NOT_ESTABLISHED`, usage values are never fabricated, emission is idempotent per dispatch_id, and origin (`live` vs `backfill{...}`) is carried on every record per the backfill doctrine. Wiring: dispatch workflows chain to the fan-out at completion (cert-unit first; the pattern is one dispatch step per route).

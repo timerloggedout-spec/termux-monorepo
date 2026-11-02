@@ -1,0 +1,41 @@
+{
+  "baseline_sha": "671e30fc9be3c08791b8554590561c1001d896d1",
+  "candidate_sha": "671e30fc9be3c08791b8554590561c1001d896d1",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41413151771"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "inference-invoke"
+  },
+  "observed_at": "2026-11-02T08:33:21Z",
+  "origin": "live",
+  "outcome": "provider-invoke.yml run 41413151771 result=success",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "deepseek",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "deepseek-chat",
+    "provider": "deepseek"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

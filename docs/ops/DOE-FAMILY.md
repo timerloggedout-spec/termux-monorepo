@@ -316,6 +316,25 @@ are levels, kinds are factors.
    never an authorship conflict. Mapping of record:
    DOE-SCORING-INTAKE §Attribution corroboration.
 
+**Standard — statistically significant relevant data is
+mandatory (owner, 2026-11-02).** Any weight-bearing claim,
+score, or decision must rest on data that is BOTH significant
+AND relevant. Significant: n at the class bar
+(accumulation-targets v0 — the estimand's floor / grade /
+claim-grade as applicable). Relevant: the right stratum — n
+accumulated in the wrong class or stratum counts as ZERO for
+the claim at hand (precedent: cadence verdict-share — a
+stratum at n<10 renders its share NOT_ESTABLISHED regardless
+of the pooled total). Below the bar, the only lawful labels
+are HELD - INTAKE - NOT_ESTABLISHED — never dressed as
+established. Every weight-bearing record cites {n - stratum -
+significance basis} or carries one of those labels. Division
+of labor: rule 9 governs whether evidence may weight at all;
+bayesian-updating v0 carries the updating; this standard
+governs whether a weighted claim may be STATED. The
+dispatch-accumulation duty (dispatch = required accumulation)
+exists to satisfy this standard.
+
 ## Definitions of record
 
 - **Swarm** (owner definition, 2026-11-01): ALL providers' inference

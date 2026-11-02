@@ -30,6 +30,7 @@
     ["Linguist", tribute + "linguist.html", "linguist"],
     ["Delphi RFP", tribute + "delphi-rfp.html", "delphi-rfp"],
     ["Delphi ledger", tribute + "delphi-ledger.html", "delphi-ledger"],
+    ["Classifiers", tribute + "classifiers.html", "classifiers"],
     ["PR lanes", tribute + "pr-lanes.html", "pr-lanes"],
     ["Proposals", tribute + "proposals.html", "proposals"],
     ["Telemetry", tribute + "telemetry.html", "telemetry"],

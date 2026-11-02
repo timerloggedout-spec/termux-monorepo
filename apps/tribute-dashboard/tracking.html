@@ -22,7 +22,11 @@
 <section aria-labelledby="doe-join"><div class="head"><h2 id="doe-join">Provider × DoE-setting join</h2><span class="note" id="join-summary">—</span></div><p class="note">Per campaign: the configured instances (provider ∧ model@version ∧ role) its records carry, from treatment.instance stamps in the same feed (doe_join block). Per-instance verdicts do not exist in the sources and are not synthesized — state shown is the campaign DESIGN status plus join coverage; a campaign with no joined instance renders NOT ESTABLISHED.</p><div id="join-block"></div></section>
 <section aria-labelledby="sources"><div class="head"><h2 id="sources">Sources &amp; gaps</h2><span class="note">Feed honesty block, verbatim</span></div><div id="sources-block"></div></section>
 <footer>Tracking Board · source: apps/help-wanted-dashboard/data/tracking-feed.json (== ops/tracking/tracking.json, schema repo-tracking/v1) · single-writer: repo-tracking-collect.yml · states are derived at generation time, never hand-edited</footer>
+<section aria-labelledby="matrix"><div class="head"><h2 id="matrix">State \u00d7 domain</h2></div>
+<div class="card"><div id="matrixchart"></div><p class="dim" id="matrixstamp"></p></div>
+</section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 // ==== pure logic (node-sim tested) ====
@@ -61,12 +65,35 @@ function render(){
   $('sources-block').innerHTML=feed?'<div class="card"><p>pr_feed: '+esc(pf.merged??'—')+' merged · '+esc(pf.open??'—')+' open · read '+esc(pf.read_at||'—')+'</p><p>lane_events: status '+esc(le.status||'—')+' · count '+esc(le.count??'—')+' · events in snapshot '+esc(le.events_in_snapshot??'—')+' · read '+esc(le.read_at||'—')+'</p><p class="muted">records: '+esc((s.records||[]).join(' · '))+'</p><p><strong>Gaps</strong></p><ul>'+(feed.gaps||[]).map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul><p><strong>Honesty rules</strong></p><ul>'+(feed.honesty_rules||[]).map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>':'';
 }
 async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
+
+// ==== pure logic (node-sim tested) ====
+function summaryRows(obj){ return Object.keys(obj||{}).map(k=>({label:k, value:obj[k]})); }
+function matrixRows(feed){
+  const states=Object.keys((feed.summary||{}).by_state||{});
+  const domains=Object.keys((feed.summary||{}).by_domain||{});
+  const counts=new Map();
+  (feed.rows||[]).forEach(r=>{ const k=r.domain+"\u0001"+r.state; counts.set(k,(counts.get(k)||0)+1); });
+  const rows=[];
+  domains.forEach(d=>{ states.forEach(s=>{ rows.push({label:d+" \u00b7 "+s, value:counts.get(d+"\u0001"+s)||0}); }); });
+  return rows;
+}
+if(typeof module!=="undefined"){ module.exports={summaryRows,matrixRows}; }
+// ==== end pure logic ====
+function renderMatrix(){
+  if(!feed) return;
+  document.getElementById("matrixchart").innerHTML =
+    "<h3>Rows by state</h3>" + CK.bars(summaryRows(feed.summary.by_state), 860) +
+    "<h3>Rows by domain</h3>" + CK.bars(summaryRows(feed.summary.by_domain), 860) +
+    "<h3>Domain \u00d7 state (all cells, zeros shown)</h3>" + CK.bars(matrixRows(feed), 860);
+  document.getElementById("matrixstamp").textContent =
+    "Feed " + feed.generated_at + " \u00b7 " + CK.stampState(feed.generated_at, Date.now()) + " \u00b7 matrix computed from the feed's rows as issued; margins equal the feed's summary.";
+}
 async function load(){
   feed=await getJSON(['./data/tracking-feed.json?t='+Date.now()]);
   if(!feed){$('freshness').textContent='Feed unavailable';$('generated').textContent='Could not fetch data/tracking-feed.json.';return}
   $('freshness').textContent='Feed generated '+feed.generated_at;
   $('generated').textContent='Schema '+(feed.schema||'—')+' · '+(feed.generated_by||'');
-  render();
+  render(); renderMatrix();
 }
 $('search').addEventListener('input',render);load();setInterval(load,60000);
 </script>

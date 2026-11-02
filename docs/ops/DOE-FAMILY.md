@@ -480,8 +480,30 @@ through an admitted campaign design.
   Delphi 5565cdf5 — spec pull in flight; mechanism
   NOT_ESTABLISHED in this register until the seat's spec lands).
 - **interface-gates / symmetrical-action-log v0** (candidate;
-  spec seat: D3 39fc8b89 — spec pull in flight; mechanism
-  NOT_ESTABLISHED in this register until the seat's spec lands).
+  spec: D3 seat 39fc8b89 eval, 2026-11-01, from D3/ListingLens
+  ground truth, PR #2616 verified; source eval at main 98387e77).
+  Three components:
+  C1 *schema-gates*: every agent output passes schema validation
+  before render (zod schema + action outputSchema; malformed
+  payload ⇒ blocked and surfaced, no partial render). Instance:
+  {PhotoInput, ListingPackage, ReviseListing} + accept/reject
+  tests.
+  C2 *verified-blocks*: layout is a closed set of pre-styled
+  primitives/templates; the model hydrates slots only
+  {template_id, section_order fixed}; no free-form structure from
+  the model. Instance: {hero-spotlight, gallery-grid} composed
+  hero→story→details→shipping.
+  C3 *symmetrical-action-log*: agent calls and user actions are
+  twin events in ONE append-only log {actor: agent|user, action,
+  payload-ref, rev} feeding the review panel; revision provenance
+  is log-derived. Instance-state GAP: current = {model-id + rev
+  counter} only ⇒ C3 is the novel element of this candidate.
+  Non-fits (seat's record): Builder.io CMS validation-hooks /
+  custom-components SDK = product binding, not part of the
+  candidate (host is framework-agnostic — Agent-Native
+  defineAction instance); name-origin "Delphi Desk" = killed
+  proposal #42 (2026-10-28) — the candidate carries mechanics,
+  no branding. D3-application: B6 (C3 only) arm-gated, unchanged.
 - **strands-patterns v0**, incl. the AST-complexity stamp feature
   (candidate; spec: Swarm seat 6628d41d eval, 2026-11-01; full
   eval text at main, sub d3660a72). A 4-component concept set,

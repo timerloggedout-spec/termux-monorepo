@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 392,
-    "open_prs": 176,
+    "open_prs": 178,
     "pr_classes": {
-      "CANDIDATE": 84,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 86,
+      "CANDIDATE": 83,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 174,
+      "prs": 176,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,14 +91,14 @@
         3577,
         3665,
         3666,
-        3667,
         3668,
         3669,
-        3670
+        3670,
+        3673
       ]
     }
   },
-  "generated_at": "2026-11-02T08:59:35Z",
+  "generated_at": "2026-11-02T09:09:54Z",
   "issues_unlabelled": [
     308,
     343,
@@ -139,18 +139,18 @@
     3577,
     3665,
     3666,
-    3667,
     3668,
     3669,
-    3670
+    3670,
+    3673
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "28c51f4680"
+    "sha": "a3110ddc87"
   },
   "prs": [
     {
@@ -230,12 +230,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8b12382fa9",
+      "head_sha": "bee36fb973",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T08:56:36Z"
+      "updated_at": "2026-11-02T09:05:14Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a24a2483c3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3675,
+      "title": "feat(ci): archwiz dangle_check \u2014 repo-side dangle_detector variant (Wave V verifier candidate)",
+      "updated_at": "2026-11-02T09:08:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1011,20 +1025,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "ea1bf6c555",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T08:14:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1954,6 +1954,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "bbcdfce637",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T09:06:31Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2545,12 +2559,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "eb1e1be6d8",
+      "head_sha": "9b2efe811a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T08:55:57Z"
+      "updated_at": "2026-11-02T09:03:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2601,12 +2615,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ea2e9d1ee8",
+      "head_sha": "ff7c74a44d",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3608,
-      "title": "fix(quota): audit F4 search-window pacer + scheduling standard (audit-003)",
-      "updated_at": "2026-11-02T07:43:15Z"
+      "number": 3640,
+      "title": "chore(proposals): refresh proposals-feed.json",
+      "updated_at": "2026-11-02T08:26:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2615,12 +2629,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ff7c74a44d",
+      "head_sha": "7b81f1350a",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 3640,
-      "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-02T08:26:29Z"
+      "number": 3674,
+      "title": "swarm: fix DeepSeek env expression in provider-invoke (401 root cause)",
+      "updated_at": "2026-11-02T09:06:16Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "30ae007d4d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3676,
+      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
+      "updated_at": "2026-11-02T09:08:47Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "0f73f3428ada65760f2ddaf0d90d4a137ee31e8ac1e6f1cae927b5444a8ee4d3",
-  "workflow_count": 259,
+  "source_fingerprint": "62729b5894ef3081e30fde169718102a4525086580c1595d14f2f7e4ee1e6f80",
+  "workflow_count": 260,
   "workflows": [
     {
       "action_pins": [],
@@ -2370,6 +2370,27 @@
       "schedules": [],
       "triggers": [
         "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: graph-matrix-census cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "census"
+      ],
+      "name": "graph-matrix-census",
+      "path": ".github/workflows/graph-matrix-census.yml",
+      "schedules": [
+        "23 7 * * 4"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

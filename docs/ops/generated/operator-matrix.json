@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T11:28:35Z",
+  "generated_at": "2026-11-02T11:34:53Z",
   "issues_unlabelled": [
     308,
     388,
@@ -101,10 +101,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "409f5f36ef"
+    "sha": "f1fa8ec851"
   },
   "prs": [
     {
@@ -1381,7 +1381,7 @@
       },
       "head_sha": "5526e88bfe",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 3723,
       "title": "apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs)",
       "updated_at": "2026-11-02T09:52:37Z"
@@ -1869,12 +1869,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "bbdbdea4fc",
+      "head_sha": "a3cc039f21",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T11:26:19Z"
+      "updated_at": "2026-11-02T11:32:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2611,12 +2611,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "78c36f60e4",
+      "head_sha": "b93d9702ae",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T11:25:17Z"
+      "updated_at": "2026-11-02T11:34:16Z"
     },
     {
       "class": "NEED_EVIDENCE",

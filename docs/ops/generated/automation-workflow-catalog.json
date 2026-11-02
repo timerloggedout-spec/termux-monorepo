@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6a316d9c3b4fe0a9ddcfcd0255e9b8f4b6d207446af417d29cccf7454c68a2a0",
+  "source_fingerprint": "ac8102d353f85f476f30df892b1e8d4b963cf925acf5a63c263a4c85c800e59b",
   "workflow_count": 274,
   "workflows": [
     {
@@ -711,7 +711,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "bounded-state-write",
       "concurrency": "group: cert-coderoad cancel-in-progress: false",
       "domain": "agentic-development",
@@ -726,7 +728,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: cert-project cancel-in-progress: false",
       "domain": "agentic-development",

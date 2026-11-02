@@ -117,7 +117,7 @@ jobs:
         timeout-minutes: 20
         run: |
           curl -fsSL -o /tmp/code.tgz \
-            "https://update.code.visualstudio.com/1.144.0/linux-x64/stable"
+            "https://update.code.visualstudio.com/1.97.2/linux-x64/stable"
           mkdir -p "$HOME/vscode" && tar -xzf /tmp/code.tgz -C "$HOME/vscode"
           CODE="$HOME/vscode/VSCode-linux-x64/bin/code"
           "$CODE" --version | head -2

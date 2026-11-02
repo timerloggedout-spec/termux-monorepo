@@ -47,7 +47,10 @@
      "updated_at": "2026-11-02",
      "n_evidence": 0
     },
-    "state": "INTAKE"
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "cost-feasibility"
+    ]
    },
    "wall_landing": {
     "quantity": "adopted window (self-paced, no external wall)",
@@ -3840,7 +3843,7 @@
   }
  },
  "tiers": {
-  "function_version": "tiering-function v1 (DOE-FAMILY PR #3782; conformity verdict 2026-11-02, CONDITIONAL PASS)",
+  "function_version": "tiering-function v1 (DOE-FAMILY PR #3782; conformity verdict 2026-11-02, PASS)",
   "derivations": [
    {
     "row": "amd-academy-set",

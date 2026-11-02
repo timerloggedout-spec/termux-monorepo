@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T13:27:20.040273+00:00",
+ "census_at_utc": "2026-11-02T14:37:17.020555+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,70 +13,70 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3042,
-  "stale": 899,
+  "total": 3078,
+  "stale": 905,
   "orphan_no_assoc_PR": 351,
-  "stale_and_orphan": 97
+  "stale_and_orphan": 99
  },
  "prs": {
-  "total": 3382,
-  "open": 186,
+  "total": 3435,
+  "open": 181,
   "open_draft": 23,
-  "open_draft_share": 0.1237,
+  "open_draft_share": 0.1271,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 66.3
+    "age_days": 66.4
    },
    {
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 46.2
+    "age_days": 46.3
    },
    {
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 41.0
+    "age_days": 41.1
    },
    {
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 40.6
+    "age_days": 40.7
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 40.4
+    "age_days": 40.5
    },
    {
     "number": 762,
     "title": "ops: map live plugin connector surface and parity skills",
     "created_at": "2026-09-23T03:33:34Z",
-    "age_days": 40.4
+    "age_days": 40.5
    },
    {
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 40.4
+    "age_days": 40.5
    },
    {
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 38.5
+    "age_days": 38.6
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 32.5
+    "age_days": 32.6
    },
    {
     "number": 970,
@@ -100,7 +100,7 @@
     "number": 1612,
     "title": "docs(research): map new free LLM catalogs to telemetry gates",
     "created_at": "2026-10-24T01:09:43Z",
-    "age_days": 9.5
+    "age_days": 9.6
    },
    {
     "number": 1630,
@@ -124,7 +124,7 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 2.5
+    "age_days": 2.6
    },
    {
     "number": 2978,
@@ -136,52 +136,50 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 1.1
+    "age_days": 1.2
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 1.1
+    "age_days": 1.2
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 1.1
+    "age_days": 1.2
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 0.8
+    "age_days": 0.9
    },
    {
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 0.7
+    "age_days": 0.8
    }
   ],
-  "merged": 2721,
+  "merged": 2779,
   "closed_unmerged": 475,
-  "open_no_closing_ref": 180,
-  "open_unlinked_issue_target": 152,
-  "open_unlinked_any_ref": 128,
-  "merged_no_closing_ref": 2692,
-  "merged_unlinked_issue_target": 1572,
-  "merged_unlinked_any_ref": 895,
+  "open_no_closing_ref": 175,
+  "open_unlinked_issue_target": 147,
+  "open_unlinked_any_ref": 124,
+  "merged_no_closing_ref": 2750,
+  "merged_unlinked_issue_target": 1611,
+  "merged_unlinked_any_ref": 922,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2644,
-  "open_head_branch_missing": [
-   3881
-  ]
+  "merged_head_branch_residual_name_match": 2702,
+  "open_head_branch_missing": []
  },
  "issues": {
-  "total": 496,
-  "open": 410,
-  "open_surface_unlinked": 176,
-  "open_unlinked_strict": 157
+  "total": 506,
+  "open": 418,
+  "open_surface_unlinked": 177,
+  "open_unlinked_strict": 158
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -1564,6 +1562,34 @@
    [
     3722,
     2285
+   ],
+   [
+    3897,
+    2287
+   ],
+   [
+    3900,
+    2289
+   ],
+   [
+    3901,
+    2288
+   ],
+   [
+    3902,
+    2290
+   ],
+   [
+    3905,
+    2292
+   ],
+   [
+    3907,
+    2291
+   ],
+   [
+    3915,
+    3735
    ]
   ],
   "issue_issue_mutual_pairs": 3,
@@ -1579,6 +1605,7 @@
    "backup/tmx-node-primary-20261021/fix-hindsight-async-handlers",
    "backup/tmx-node-primary-20261021/fix-session-store-prune-expired",
    "backup/tmx-node-primary-20261021/fix-test-api-bare-except",
+   "backup/tmx-node-primary-20261021/fix-worktree-base-provenance-master",
    "backup/tmx-node-primary-20261021/fix-wt-bases-load-set-literal",
    "backup/tmx-node-primary-20261021/hindsight-init",
    "backup/tmx-node-primary-20261021/hindsight-wire",
@@ -1599,6 +1626,7 @@
    "bolt-temporal-lag-index-optimization-7092498872592714131",
    "ci-fix-mmdc-chrome-install",
    "ci-fix-workflow-yaml-syntax",
+   "ci/run-test-suite",
    "coderabbitai/chat/325a1f0",
    "coderabbitai/chat/57aa5f9",
    "docs/kimi-cloud-offload-evaluation",

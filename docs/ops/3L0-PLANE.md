@@ -155,7 +155,17 @@ session-history records are OBSERVATIONAL evidence by default —
 they move weights only when they carry a confirmed outcome
 (`outcome.confirmed ≠ null`) under the same fold as routed
 dispatches; thinking/tool-call content itself is evidence for
-attribution/density, ¬ a score. Append-only ∧ emit-once ∧
+attribution/density, ¬ a score. **Corroboration gate (owner,
+2026-11-01): some signings are FALSE** — session-history/attribution
+input carries false-signature risk until provenance corroboration
+lands (Telemetry, priority). Actor-weight movement therefore
+requires a *corroborated* confirmed outcome: an outcome whose actor
+attribution is corroborated by the provenance layer, ¬ attribution
+marks (stamps/trailers/signings) alone. Uncorroborated records —
+including any carrying `confirmed ≠ null` on marks alone — fold as
+observational (weight Δ = 0) until corroboration arrives; the
+corroboration, when it lands, is itself an append-only record, and
+backfill re-derives from it. Append-only ∧ emit-once ∧
 backfill doctrine apply identically; records never rewritten.
 
 Population is verified from

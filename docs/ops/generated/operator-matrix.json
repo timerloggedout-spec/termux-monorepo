@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 392,
-    "open_prs": 178,
+    "open_prs": 177,
     "pr_classes": {
       "CANDIDATE": 86,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 86,
+      "NEED_EVIDENCE": 85,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 176,
+      "prs": 175,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:29:54Z",
+  "generated_at": "2026-11-02T09:31:33Z",
   "issues_unlabelled": [
     308,
     343,
@@ -147,10 +147,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "in_progress"
     },
-    "sha": "e881a1045e"
+    "sha": "294369a244"
   },
   "prs": [
     {
@@ -2547,7 +2547,7 @@
       },
       "head_sha": "eb6a4d3a9f",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-02T09:29:49Z"
@@ -2573,12 +2573,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "c5b1a06b42",
+      "head_sha": "a9765f3b1a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T09:25:30Z"
+      "updated_at": "2026-11-02T09:31:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2635,20 +2635,6 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "d2268353b7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3693,
-      "title": "desk-feed: D1 document-of-record (official doc, rubric, timeline, prizes)",
-      "updated_at": "2026-11-02T09:29:38Z"
     }
   ],
   "schema": "operator-matrix/v1",

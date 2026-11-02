@@ -180,6 +180,8 @@ invented here.
   (flow = limit ÷ window, phase-aligned to the reset epoch; per-slice
   shares per #1884) independently for every app bucket.
 
+**API watch log — 2026-11 (MAINT-03 pass, 2026-11-02):** (1) Stateless installation tokens rolled out complete (changelog 2026-10-02): new app tokens are `ghs_APPID_JWT` format (~520 chars vs 40); endpoint/permissions/expiry unchanged; the temporary `X-GitHub-Stateless-S2S-Token` header is deprecated 2026-11-30 — fleet scan = 0 uses; token-format assumptions in fleet code = 1 test fixture, no production impact; our minters already receive the new format. (2) Webhook IP ranges added to the Meta API (2026-10-29) — receiver design already reads ranges dynamically. (3) Synchronous SBOM API removed 2026-11-13 — fleet usage = 0 (code scan). (4) Actions `ubuntu-latest` → Ubuntu 26.04 — covered by smoke gates. No deprecation items opened; next pass 2026-12.
+
 ### 2.5 Incident playbook (per-bucket separation)
 
 | Incident | Detection | Response | Explicit non-response |

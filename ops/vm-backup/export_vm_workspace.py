@@ -326,6 +326,21 @@ def gh(method, path, body=None):
         except json.JSONDecodeError:
             return e.code, {}
 
+def gh_retry(method, path, body=None, attempts=4):
+    """gh() with backoff retries on transient statuses. Observed in
+    the wild: a 401 from the surrogate proxy mid-publish after dozens
+    of successful calls; a fresh surrogate per attempt clears it."""
+    delay = 3
+    last = (0, {})
+    for _ in range(attempts):
+        st, resp = gh(method, path, body)
+        if st not in (401, 403, 429, 500, 502, 503):
+            return st, resp
+        last = (st, resp)
+        time.sleep(delay)
+        delay *= 3
+    return last
+
 def _git_blob_sha(data: bytes) -> str:
     return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0"
                         + data).hexdigest()
@@ -370,9 +385,9 @@ def publish(staging: Path, repo: str, message: str):
         data = (staging / rel).read_bytes()
         sha = _git_blob_sha(data)
         if sha not in existing_blobs:
-            st, blob = gh("POST", f"/repos/{repo}/git/blobs",
-                          {"content": base64.b64encode(data).decode(),
-                           "encoding": "base64"})
+            st, blob = gh_retry("POST", f"/repos/{repo}/git/blobs",
+                                {"content": base64.b64encode(data).decode(),
+                                 "encoding": "base64"})
             if st not in (200, 201):
                 raise RuntimeError(f"blob create failed for {rel}: {st}")
             sha = blob["sha"]
@@ -501,7 +516,10 @@ def main(argv=None):
                                               time.gmtime()),
                 "files": sorted(entries,
                                 key=lambda e: (e["tier"], e["source"]))}
-    (staging / "MANIFEST.json").write_text(json.dumps(manifest, indent=1))
+    # Compact separators: with ~47k T1 manifest entries, pretty-print
+    # would inflate the MANIFEST blob past comfortable request sizes.
+    (staging / "MANIFEST.json").write_text(
+        json.dumps(manifest, separators=(",", ":")))
     gates = run_gates(entries, staging)
     counts = {
         "t0": sum(1 for e in entries if e["exported"] and e["tier"] == "t0"),
@@ -517,7 +535,8 @@ def main(argv=None):
                   "exported_at": manifest["generated_at"],
                   "home": str(home), "counts": counts, "gates": gates,
                   "publish": None}
-    (staging / "EXPORT.json").write_text(json.dumps(export_doc, indent=1))
+    (staging / "EXPORT.json").write_text(
+        json.dumps(export_doc, separators=(",", ":")))
     if not gates["pass"]:
         print(json.dumps({"export_id": export_id, "gates": gates,
                           "verdict": "ABORT-scrub-gate"}, indent=1))
@@ -532,8 +551,8 @@ def main(argv=None):
         marker.parent.mkdir(parents=True, exist_ok=True)
         marker.write_text(t0_state_hash(home) + "\n")
         export_doc["publish"] = {"repo": args.repo, "commit": sha}
-        (staging / "EXPORT.json").write_text(json.dumps(export_doc,
-                                                        indent=1))
+        (staging / "EXPORT.json").write_text(
+            json.dumps(export_doc, separators=(",", ":")))
     print(json.dumps(result, indent=1))
     return 0
 

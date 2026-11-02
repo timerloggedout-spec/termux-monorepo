@@ -28,12 +28,12 @@ from __future__ import annotations
 
 import re
 
-METHOD_VERSION = "attribution/1"
+METHOD_VERSION = "attribution/1.1"
 METHOD = "stamp+trailer+git-author evidence chain (ACP)"
 
 STAMP_RE = re.compile(r"\[MUSEai\]@\{role:\{([^}]+)\}\}")
-AGENT_TRAILER_RE = re.compile(r"^Agent:\s*(.+)$", re.M)
-SIGNOFF_RE = re.compile(r"^(?:Signed-off-by|Co-authored-by):\s*([^<]+?)\s*(?:<([^>]+)>)?$", re.M)
+AGENT_TRAILER_RE = re.compile(r"^\*{0,2}Agent:\*{0,2}\s*(.+?)\*{0,2}$", re.M)
+SIGNOFF_RE = re.compile(r"^\*{0,2}(?:Signed-off-by|Co-authored-by):\*{0,2}\s*([^<]+?)\s*(?:<([^>]+)>)?\*{0,2}$", re.M)
 
 OWNER_NAMES = {"timerloggedout-spec", "timerloggedout", "loggedout", "logged out"}
 # Registry #3355 distinction: `Grok (OPERATOR)` is the HUMAN OWNER's

@@ -87,8 +87,10 @@ jobs:
           curl -fsS -H "$AUTH" "$API/v9/projects/$PID?teamId=$SCOPE" > "$RUNNER_TEMP/proj2.json"
           BYPASS=""
           if [ "$(jq -r '(.protectionBypass // {}) | length' "$RUNNER_TEMP/proj2.json")" = "0" ]; then
-            curl -fsS -X POST -H "$AUTH" "$API/v9/projects/$PID/protection-bypass?teamId=$SCOPE" > "$RUNNER_TEMP/bypass.json"
-            BYPASS=$(jq -r '.secret // empty' "$RUNNER_TEMP/bypass.json")
+            curl -fsS -X PATCH -H "$AUTH" -H "Content-Type: application/json" \
+              -d '{"generate":{"note":"owner-records-vercel workflow"}}' \
+              "$API/v1/projects/$PID/protection-bypass?teamId=$SCOPE" > "$RUNNER_TEMP/bypass.json"
+            BYPASS=$(jq -r '.protectionBypass | keys[0] // empty' "$RUNNER_TEMP/bypass.json")
             echo "::notice::automation bypass secret created (value not logged)"
           else
             echo "::notice::automation bypass secret already exists (value unrecoverable; in-job bypass verify skipped)"

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 381,
-    "open_prs": 170,
+    "open_prs": 171,
     "pr_classes": {
       "CANDIDATE": 83,
-      "EXTRACT": 5,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 82,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 36,
-      "prs": 168,
+      "prs": 169,
       "unlabelled_numbers": [
         308,
         343,
@@ -91,7 +91,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T00:34:58Z",
+  "generated_at": "2026-11-02T00:36:10Z",
   "issues_unlabelled": [
     308,
     343,
@@ -133,10 +133,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "930983f275"
+    "sha": "115e68e50c"
   },
   "prs": [
     {
@@ -208,6 +208,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "48cc2762b1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3405,
+      "title": "docs(ops): tooling-upgrade requirements \u2014 web-access parity + device-confirmation intermediary",
+      "updated_at": "2026-11-02T00:35:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1791,7 +1805,7 @@
       },
       "head_sha": "b3ee658068",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-11-02T00:33:48Z"
@@ -2517,12 +2531,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "48cc2762b1",
+      "head_sha": "c3c90f10af",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3405,
-      "title": "docs(ops): tooling-upgrade requirements \u2014 web-access parity + device-confirmation intermediary",
-      "updated_at": "2026-11-02T00:34:54Z"
+      "mergeable_state": "dirty",
+      "number": 3406,
+      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+      "updated_at": "2026-11-02T00:35:45Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -3,15 +3,16 @@ name: graph-matrix-census
 # Graph Matrix census (contract: docs/ops/GRAPH-MATRIX.md). SINGLE-WRITER
 # for ops/graph-matrix/census.json (graph-matrix/v1). Linkage integrity
 # only (commits x issues x PRs x branches); never touches other planes.
-# Cadence (decision-tree model, not fixed-cron class): event (push on the
-# census inputs) + weekly floor + manual dispatch.
+# Cadence (owner correction 2026-11-01: fixed clock STRUCK — a weekly
+# schedule fails quota-optimization + dynamic-cadence conventions):
+#   { workflow_dispatch · push-on-script · drift-gated dispatch from
+#     graph-matrix-probe.yml (probe drift Δ ∧ GraphQL headroom ⇒ fire) }
+# State-driven, quota-aware, never clock-driven.
 # Freeze law: census output is dataset signal (KEPT-AS-SIGNAL); this
 # workflow deletes nothing and closes nothing.
 
 on:
   workflow_dispatch: {}
-  schedule:
-    - cron: '23 7 * * 4'
   push:
     branches: [master]
     paths:

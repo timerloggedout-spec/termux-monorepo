@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-02T07:06:00Z",
+ "read_at": "2026-11-02T07:07:11Z",
  "status": "ok",
- "count": 7519,
+ "count": 7520,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "1274cca03d8bbfe1b90f3d5c33f4db63741db4f1",
+   "occurred_at": "2026-11-02 07:04:31+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "00a4d00ee45b5b8245d9f392fa136b2141397fb9",
    "occurred_at": "2026-11-02 06:04:14+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "00a4d00ee45b5b8245d9f392fa136b2141397fb9",
-   "occurred_at": "2026-11-02 06:03:57+00"
   }
  ]
 }

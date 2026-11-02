@@ -348,6 +348,37 @@ version and compared continuously until culling retires a version.
   fresh. Proportion changes are method-definition changes under
   rule 8.** Status: active (restated). Comparison line: open.
 
+- **doe-specialist-methods v1** — the DoE Specialist function,
+  registered reflexively: the versioning apparatus applies to the
+  specialist's own methods. Embodiments of record (census
+  2026-11-01; no artifact literally named "DoE Specialist" exists
+  in the repo — the function is embodied, not a single file):
+  `.agents/skills/multivariate-doe/SKILL.md` (created 2026-08-27,
+  the repo's oldest DoE artifact; enriched 2026-10-28 by mining an
+  external Perplexity research export — NIST/SEMATECH e-Handbook +
+  Microsoft experimentation sources — into `docs/ops/DOE-TAXONOMY.md`
+  and the skill's terminology discipline) ∧ the doe-expert seat
+  with its manager tree (operating lane). Methods under version:
+  pre-registered design-first intake; configured-instance identity
+  (instance_key); automation requirement (rule 5); live-production
+  basis (rule 6); dispatch evidence protocol (rule 7); backfill
+  (rule 8); method registration, version comparison and culling
+  (this section). Existing experiment corpus folded in by citation,
+  never duplicated: `experiments/` (doe campaigns apk-1, cb-1,
+  cmp-register, lab-1, live-1..4, nc-1, pilot-1, util-1, ww-1..3;
+  archwiz-markov-lane; marketing; speculators), `docs/ops/`
+  DOE-COMPONENT-REGISTRY + `ops/doe/component-registry.json`,
+  DOE-RECON-2026-10-31, DOE-SCORING-INTAKE, MVT-DOE-ATES-SEPARATION,
+  and the model-selection-market DSPY-DOE lane (consideration).
+  Adjacent research corpus inventoried: ChatGPT proposal set
+  (9 blobs: chatgpt-initial / chatgpt-droidapp /
+  chatgpt-critical-eval) — contains no DoE-specialist material per
+  census search; the Perplexity thread lands via the taxonomy
+  mining above; Liner-cited research sits in the notation-sets
+  plane (Linguist), cited not absorbed. Status: active.
+  Comparison line: open (v1 is the baseline; its own future
+  revisions backfill under rule 8).
+
 ## Campaign layout
 
 ```text

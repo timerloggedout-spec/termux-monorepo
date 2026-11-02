@@ -1,3 +1,7 @@
+> **Historical audit notice — superseded observations:** This report records the state of PR #523 and repository runtime at its original review window. Do not treat its “zero runs ever,” “frozen since 2026-08-19,” or “Phase B emitter does not exist” statements as current facts. The current `master` contains `.github/workflows/agent-throughput-evidence.yml`; the checked-in runtime observation lists multiple context-relationship-backfill runs, including a 2026-10-24 validation failure and earlier successful no-op runs. These newer facts do not retroactively change the historical evidence below; they supersede its current-state conclusions. See [CONTINUOUS-REPOSITORY-AUDIT-2026-11-02.md](CONTINUOUS-REPOSITORY-AUDIT-2026-11-02.md).
+
+---
+
 # Independent Audit Findings — PR #523 (Phase A–E validation + historical backfill stall audit)
 
 **Auditor:** Tanka collaborator session (parallel to the primary author/agent working PR #523)

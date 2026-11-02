@@ -1,0 +1,4045 @@
+{
+ "schema": "certifications-value-matrix.records/v1",
+ "companion_render": "guides/certifications-value-matrix.mdx",
+ "generated": "2026-11-02",
+ "rows": {
+  "fcc-l1-relational-databases-v9": {
+   "time_cost": {
+    "quantity": "active hours to complete 64 steps + exam",
+    "prior": {
+     "value": 20.5,
+     "range": [
+      14.5,
+      27.0
+     ],
+     "basis_kind": "assumption"
+    },
+    "evidence": [
+     {
+      "source": "Evidence Index L1 window (PR #3301): T measured ~3 min/unit; W/P per-type assumptions",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 20.5,
+     "range": [
+      14.5,
+      27.0
+     ],
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "quota_cost": {
+    "quantity": "Actions minutes total for cert-unit runs",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE"
+   },
+   "wall_landing": {
+    "quantity": "adopted window (self-paced, no external wall)",
+    "prior": {
+     "value": "64/64 by 2026-12-05; exam <= 2026-12-12",
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [
+     {
+      "source": "Evidence Index @master d63a2e19 (PR #3779)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "64/64 by 2026-12-05; exam <= 2026-12-12",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "competition points",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "claim-check: coordinator gates surface (PR #3244)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "claim-check: challenge entries log",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "exam fail => 168h retake cooldown, projects not re-done; W/P gated on Step-1 CodeRoad (root gate live)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "FCC exam rules (issuer)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     },
+     {
+      "source": "Roadmap HELD flags 2026-11-02: 011 VAULT-GATE cleared route-(b) ENV",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "exam fail => 168h retake cooldown, projects not re-done; W/P gated on Step-1 CodeRoad (root gate live)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "units passed / 64",
+    "prior": {
+     "value": 50,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "fleet-logs capture PRs #1-#16 continuous (PR #16: 061 PASSED, 064R complete)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "Actions run manifests per unit (fleet runs, per-model attribution)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": 50,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-set": {
+   "payoff": {
+    "quantity": "League points at >=5 courses (set-level) + podium eligibility",
+    "prior": {
+     "value": 500,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "coordinator gate AMD-ACADEMY-5 (entries lane)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "lablab milestones: +500 at 5 courses; podium $2500/$1500/$1000",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": 500,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   },
+   "wall_landing": {
+    "quantity": "League hard wall",
+    "prior": {
+     "value": "2026-12-01T11:00 PT; set landing 2026-11-28",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02 (buffer rule)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-12-01T11:00 PT; set landing 2026-11-28",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "evidence_state": {
+    "quantity": "courses completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "Roadmap evidence state 2026-11-02: no completion relay received",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c1": {
+   "time_cost": {
+    "quantity": "course duration (active hours)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "course wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-07 -> 2026-11-06",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-07 -> 2026-11-06",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "set membership relation",
+    "prior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 set record",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 (set-level exposure)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "course completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "holder 840bd147: no completion relay yet",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c2": {
+   "time_cost": {
+    "quantity": "course duration (active hours)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "course wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-10 -> 2026-11-09",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-10 -> 2026-11-09",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "set membership relation",
+    "prior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 set record",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 (set-level exposure)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "course completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "holder 840bd147: no completion relay yet",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c3": {
+   "time_cost": {
+    "quantity": "course duration (active hours)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "course wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-13 -> 2026-11-12",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-13 -> 2026-11-12",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "set membership relation",
+    "prior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 set record",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 (set-level exposure)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "course completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "holder 840bd147: no completion relay yet",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c4": {
+   "time_cost": {
+    "quantity": "course duration (active hours)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "course wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-17 -> 2026-11-16",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-17 -> 2026-11-16",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "set membership relation",
+    "prior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 set record",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 (set-level exposure)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "course completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "holder 840bd147: no completion relay yet",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c6": {
+   "time_cost": {
+    "quantity": "course duration (active hours)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "course wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-20 -> 2026-11-19",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-20 -> 2026-11-19",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "set membership relation",
+    "prior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 set record",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 (set-level exposure)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "course completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "holder 840bd147: no completion relay yet",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c7": {
+   "time_cost": {
+    "quantity": "course duration (active hours)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "course wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-20 -> 2026-11-19",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-20 -> 2026-11-19",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "set membership relation",
+    "prior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 set record",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "member of T1 set (derivation attaches to amd-academy-set record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "gate AMD-ACADEMY-5 (set-level exposure)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "set-binary: miss compresses later landings vs 2026-12-01 hard wall",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "course completed",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "holder 840bd147: no completion relay yet",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "amd-academy-c5": {
+   "note": "No separate C5 course of record: the >=5 gate = slots 1-4 + ONE slot-5 course (primary C7, alt C6). This row folds onto the slot-5 primary (amd-academy-c7).",
+   "wall_landing": {
+    "quantity": "slot-5 wall -> buffer-landing",
+    "prior": {
+     "value": "2026-11-20 -> 2026-11-19",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "slot naming of record, plan AMD sub f92553f1 via Roadmap reconcile 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "2026-11-20 -> 2026-11-19",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "evidence_state": {
+    "quantity": "5th completion state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   }
+  },
+  "rocm-certified-associate": {
+   "time_cost": {
+    "quantity": "prep + exam duration (5-module Core ROCm + labs + assessments)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "prep fleet Actions/quota cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "exam wall -> buffer-landing",
+    "prior": {
+     "value": "exam <= 2026-11-28 -> landing 2026-11-25; hard wall 2026-12-01T11:00 PT",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "landing-dates record 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "exam <= 2026-11-28 -> landing 2026-11-25; hard wall 2026-12-01T11:00 PT",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "League points + Credly badge",
+    "prior": {
+     "value": "+500 League pts; separate +500 ADP points (distinct system)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "lablab milestones (+500)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "developer.amd.com: Credly badge, free via AI Academy (verified by 840bd147)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": "+500 League pts; separate +500 ADP points (distinct system)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "loss exposure",
+    "prior": {
+     "value": "exam binary at single sitting in League window; exposure = full +500 if no in-window retake",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "lablab milestones (window)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "exam binary at single sitting in League window; exposure = full +500 if no in-window retake",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1,
+     "retake_policy": "NOT_ESTABLISHED"
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "prep state / Credly",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent",
+     "issuer-page"
+    ]
+   }
+  },
+  "l2-ctf": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "roadmap of record (skeleton windows)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "competition adjacency (no points posterior)",
+    "prior": {
+     "value": "adjacency only (#342 listing)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "issue #342 listing (single source)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "adjacency only (#342 listing)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment / attribution state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   }
+  },
+  "l3-comptia": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "roadmap of record (skeleton windows)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "competition points",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "claim-check: coordinator gates surface",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "claim-check: challenge entries log",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment / attribution state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "l4-bug-bounties": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "roadmap of record (skeleton windows)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "competition adjacency / bounty income",
+    "prior": {
+     "value": "adjacency only (#342 listing); bounty amounts unpriced",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "issue #342 listing (single source)",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "adjacency only (#342 listing); bounty amounts unpriced",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment / attribution state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "l5-oscp": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "roadmap of record (skeleton windows)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "competition points",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "claim-check: coordinator gates surface",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "claim-check: challenge entries log",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment / attribution state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "l6-cissp": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "roadmap of record (skeleton windows)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "NOT_ESTABLISHED (start = prior rung cleared; Role Requirements Plan before spend)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "competition points",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "claim-check: coordinator gates surface",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     },
+     {
+      "source": "claim-check: challenge entries log",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "corroborated"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 2
+    },
+    "state": "CORROBORATED"
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment / attribution state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "plan",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "prize-d5-aha": {
+   "payoff": {
+    "quantity": "prize (win-contingent)",
+    "prior": {
+     "value": "badge + certificate if D5 wins",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "D5 event record: submit 2026-11-19 12:00 PT, awards 2026-11-20",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "badge + certificate if D5 wins",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "wall_landing": {
+    "quantity": "event wall",
+    "prior": {
+     "value": "submit 2026-11-19 12:00 PT; landing n/a (prize-received class)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "Roadmap reconcile 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "submit 2026-11-19 12:00 PT; landing n/a (prize-received class)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "win outcome",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   }
+  },
+  "prize-d1-winner-cert": {
+   "payoff": {
+    "quantity": "prize (win-contingent)",
+    "prior": {
+     "value": "winner certificate if D1 wins",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "D1 event record: deadline 2026-11-04 23:59 PT",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "winner certificate if D1 wins",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "wall_landing": {
+    "quantity": "event wall",
+    "prior": {
+     "value": "deadline 2026-11-04 23:59 PT; landing n/a (prize-received class)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "Roadmap reconcile 2026-11-02",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "deadline 2026-11-04 23:59 PT; landing n/a (prize-received class)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "evidence_state": {
+    "quantity": "win outcome",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "completion-precedent"
+    ]
+   }
+  },
+  "prize-strands-decider": {
+   "evidence_state": {
+    "quantity": "event outcome",
+    "prior": {
+     "value": "CLOSED 2026-10-23, un-earnable (terminal)",
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "Strands event record (closed)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "CLOSED 2026-10-23, un-earnable (terminal)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   },
+   "payoff": {
+    "quantity": "points realized",
+    "prior": {
+     "value": 0,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "Strands event record (closed, 0 = measured event state)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": 0,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "CORROBORATED"
+   }
+  },
+  "intake-fcc-js-algorithms": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "plan"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "plan"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "plan"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "plan"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "plan"
+    ]
+   }
+  },
+  "intake-fcc-remaining-catalogue": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   }
+  },
+  "intake-comptia-wider": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   }
+  },
+  "intake-offsec-wider": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "intake-isc2-wider": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   }
+  },
+  "intake-hackthebox": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "intake-tryhackme": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "intake-picoctf": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   }
+  },
+  "intake-overthewire": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census"
+    ]
+   }
+  },
+  "intake-hackerone": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "intake-bugcrowd": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "cost-feasibility"
+    ]
+   }
+  },
+  "intake-aws": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   }
+  },
+  "intake-google-cloud": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   }
+  },
+  "intake-azure": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   }
+  },
+  "intake-nvidia": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page",
+     "competition-link"
+    ]
+   }
+  }
+ },
+ "tiers": {
+  "function_version": "tiering-function v1 (DOE-FAMILY PR #3782; conformity verdict 2026-11-02, CONDITIONAL PASS)",
+  "derivations": [
+   {
+    "row": "amd-academy-set",
+    "tier": "T1",
+    "records_cited": [
+     "amd-academy-set.payoff",
+     "amd-academy-set.wall_landing"
+    ],
+    "note": "derivation attaches to the SET record (DoE F5); member rows carry the relation only"
+   },
+   {
+    "row": "rocm-certified-associate",
+    "tier": "T1",
+    "records_cited": [
+     "rocm-certified-associate.payoff",
+     "rocm-certified-associate.wall_landing"
+    ]
+   },
+   {
+    "row": "l2-ctf",
+    "tier": "T2",
+    "tier_state": "HELD/provisional (single-leg, DoE F3)",
+    "records_cited": [
+     "l2-ctf.payoff"
+    ]
+   },
+   {
+    "row": "l4-bug-bounties",
+    "tier": "T2",
+    "tier_state": "HELD/provisional (single-leg, DoE F3)",
+    "records_cited": [
+     "l4-bug-bounties.payoff"
+    ]
+   },
+   {
+    "row": "fcc-l1-relational-databases-v9",
+    "tier": "Baseline",
+    "records_cited": [
+     "fcc-l1-relational-databases-v9.payoff"
+    ],
+    "note": "claim-check record completed (corroborated negative) per DoE F4"
+   },
+   {
+    "row": "l3-comptia",
+    "tier": "Baseline",
+    "records_cited": [
+     "l3-comptia.payoff"
+    ],
+    "note": "claim-check completed (corroborated negative)"
+   },
+   {
+    "row": "l5-oscp",
+    "tier": "Baseline",
+    "records_cited": [
+     "l5-oscp.payoff"
+    ],
+    "note": "claim-check completed (corroborated negative)"
+   },
+   {
+    "row": "l6-cissp",
+    "tier": "Baseline",
+    "records_cited": [
+     "l6-cissp.payoff"
+    ],
+    "note": "claim-check completed (corroborated negative)"
+   },
+   {
+    "row": "prize-d5-aha",
+    "tier": "prize-received (class)",
+    "records_cited": [
+     "prize-d5-aha.payoff"
+    ]
+   },
+   {
+    "row": "prize-d1-winner-cert",
+    "tier": "prize-received (class)",
+    "records_cited": [
+     "prize-d1-winner-cert.payoff"
+    ]
+   },
+   {
+    "row": "prize-strands-decider",
+    "tier": "CLOSED (excluded from tiering)",
+    "records_cited": [
+     "prize-strands-decider.evidence_state"
+    ]
+   }
+  ]
+ },
+ "graph": {
+  "nodes": [
+   {
+    "id": "tool:swarm-app-5560920",
+    "kind": "connector/workflow",
+    "state": "LIVE"
+   },
+   {
+    "id": "tool:github-pat-helper",
+    "kind": "tool",
+    "state": "LIVE (read-path DEGRADED 2026-11-02)"
+   },
+   {
+    "id": "arm:cohere-c4ai-aya-expanse-32b",
+    "kind": "provider arm",
+    "state": "LIVE"
+   },
+   {
+    "id": "arm:sealion-llama-sea-lion-v3-70b-it",
+    "kind": "provider arm",
+    "state": "LIVE"
+   },
+   {
+    "id": "arm:jules",
+    "kind": "provider arm",
+    "state": "DOWN (2026-11-01)"
+   },
+   {
+    "id": "arm:gemini-cli",
+    "kind": "provider arm",
+    "state": "OUT (2026-11-01)"
+   },
+   {
+    "id": "arm:deepseek-tunnel",
+    "kind": "provider arm",
+    "state": "DOWN (2026-11-01)"
+   },
+   {
+    "id": "feed:fleet-logs",
+    "kind": "data feed",
+    "state": "LIVE (capture PRs #1-#16)"
+   },
+   {
+    "id": "session:fcc-platform",
+    "kind": "platform session",
+    "state": "LIVE"
+   },
+   {
+    "id": "chain:l1-route-a",
+    "kind": "execution chain (skill pattern)",
+    "state": "LIVE, 50/64 evidenced"
+   }
+  ],
+  "edges": [
+   {
+    "from": "tool:swarm-app-5560920",
+    "to": "chain:l1-route-a",
+    "stratum": "workflow orchestration",
+    "n": 1,
+    "basis": "Actions run record for units 001-061 (run IDs in fleet-logs manifests)",
+    "rule9_state": "corroborated",
+    "criticality": "CRITICAL (n=1, sole evidenced path)"
+   },
+   {
+    "from": "session:fcc-platform",
+    "to": "chain:l1-route-a",
+    "stratum": "submit/verify",
+    "n": 1,
+    "basis": "Route A design of record; platform Passed states 001-061",
+    "rule9_state": "corroborated",
+    "criticality": "CRITICAL (n=1)"
+   },
+   {
+    "from": "arm:cohere-c4ai-aya-expanse-32b",
+    "to": "chain:l1-route-a",
+    "stratum": "provider arm",
+    "n": 2,
+    "basis": "per-unit attribution in fleet-logs manifests (M1-M4 era)",
+    "rule9_state": "corroborated",
+    "criticality": "INTAKE (n>=2, failover neither asserted nor tested; leg counts single-leg/provisional)"
+   },
+   {
+    "from": "arm:sealion-llama-sea-lion-v3-70b-it",
+    "to": "chain:l1-route-a",
+    "stratum": "provider arm",
+    "n": 2,
+    "basis": "per-unit attribution in fleet-logs manifests (M5 era)",
+    "rule9_state": "corroborated",
+    "criticality": "INTAKE (n>=2, failover neither asserted nor tested; leg counts single-leg/provisional)"
+   },
+   {
+    "from": "tool:github-pat-helper",
+    "to": "chain:l1-route-a",
+    "stratum": "repo publish",
+    "n": 1,
+    "basis": "fleet-logs capture PRs #1-#16 merged via PAT helper",
+    "rule9_state": "corroborated",
+    "criticality": "CRITICAL (n=1); state degraded 2026-11-02 => delay watch, not HELD cap (not down/blocked)"
+   },
+   {
+    "from": "feed:fleet-logs",
+    "to": "chain:l1-route-a",
+    "stratum": "evidence feed",
+    "n": 1,
+    "basis": "capture PRs #1-#16",
+    "rule9_state": "corroborated",
+    "criticality": "CRITICAL (n=1)"
+   }
+  ],
+  "criticality_test": "Three states (DoE G1): CRITICAL iff n=1 (sole evidenced path for its stratum) OR failover asserted-but-untested; NON-critical iff >=2 independent evidenced paths AND a failover test record exists; criticality INTAKE = n>=2 AND failover neither asserted nor tested => the dependency leg counts single-leg/provisional in the dependent record (not a HELD cap, not a pass). Re-derived from edge records, never edited.",
+  "leverage": "tool leverage = sum-derived from downstream skill/chain records; no tool-local score field exists in this graph."
+ }
+}

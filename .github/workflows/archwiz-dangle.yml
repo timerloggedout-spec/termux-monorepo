@@ -1,0 +1,74 @@
+name: archwiz dangle check
+
+# Repo-side adaptive variant of archwiz/dangle_detector.py (device-home,
+# SyntaxError-broken at master 2ca24a24) — see scripts/ci/dangle_check.py.
+# Census mode gates NEW dangling references against the recorded baseline
+# (scripts/ci/dangle_baseline.json, scope .github/ + apps/); rename mode is
+# the Wave V verifier: residual old-identifier sweep across workflow
+# trigger surfaces + scripts/docs/apps pointers, strictly read-only.
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/ci/dangle_check.py'
+      - 'scripts/ci/dangle_baseline.json'
+      - 'tests/test_dangle_check.py'
+      - '.github/workflows/**'
+      - 'apps/**'
+      - '.github/workflows/archwiz-dangle.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'census (baseline ratchet) or rename (needs old_ids artifact input via repository_dispatch)'
+        type: choice
+        options: [census]
+        default: census
+  repository_dispatch:
+    types: [archwiz-dangle-check]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: archwiz-dangle-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dangle:
+    name: dangling-reference check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Unit tests (seeded fixtures)
+        run: python3 -B -m unittest discover -s tests -p 'test_dangle_check.py' -v
+
+      - name: Census vs baseline
+        if: github.event_name != 'repository_dispatch'
+        run: |
+          python3 scripts/ci/dangle_check.py \
+            --baseline scripts/ci/dangle_baseline.json \
+            --scope .github/ --scope apps/ \
+            --out dangle-report.json
+
+      - name: Rename verify (dispatch payload {old_ids, client_payload})
+        if: github.event_name == 'repository_dispatch'
+        env:
+          OLD_IDS_JSON: ${{ toJSON(github.event.client_payload.old_ids) }}
+        run: |
+          printf '%s' "$OLD_IDS_JSON" > old-ids.json
+          python3 scripts/ci/dangle_check.py \
+            --mode rename --old-ids old-ids.json \
+            --out dangle-report.json --report-only
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dangle-report
+          path: dangle-report.json
+          if-no-files-found: ignore

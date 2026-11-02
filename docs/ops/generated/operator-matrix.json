@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 408,
-    "open_prs": 183,
+    "open_issues": 410,
+    "open_prs": 186,
     "pr_classes": {
-      "CANDIDATE": 88,
+      "CANDIDATE": 85,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 90,
+      "NEED_EVIDENCE": 96,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 19,
-      "prs": 181,
+      "issues": 21,
+      "prs": 184,
       "unlabelled_numbers": [
         308,
         388,
@@ -70,11 +70,13 @@
         3670,
         3673,
         3735,
-        3738
+        3738,
+        3751,
+        3752
       ]
     }
   },
-  "generated_at": "2026-11-02T09:59:48Z",
+  "generated_at": "2026-11-02T10:06:21Z",
   "issues_unlabelled": [
     308,
     388,
@@ -94,15 +96,17 @@
     3670,
     3673,
     3735,
-    3738
+    3738,
+    3751,
+    3752
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "261c173659"
+    "sha": "5c31eef0d4"
   },
   "prs": [
     {
@@ -957,40 +961,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "5b7a2737cf",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T09:14:15Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-01T13:38:06Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "846b64b1d1",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-02T05:16:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1397,20 +1373,6 @@
       "number": 3723,
       "title": "apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs)",
       "updated_at": "2026-11-02T09:52:37Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "29525890d9",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3729,
-      "title": "docs(swarm): \u00a724 \u2014 \"use them\" (DeepSeek route verified; Claude scoped)",
-      "updated_at": "2026-11-02T09:55:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1825,12 +1787,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "348ec624de",
+      "head_sha": "af7aa6cfee",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:57:34Z"
+      "updated_at": "2026-11-02T10:03:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1957,6 +1919,34 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "5bb92c6894",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-02T10:03:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "9c570a798c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-02T10:04:39Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2567,12 +2557,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1390882baf",
+      "head_sha": "b4721821b5",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T09:55:59Z"
+      "updated_at": "2026-11-02T10:00:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2637,12 +2627,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "117eedd09d",
+      "head_sha": "3be520f422",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3736,
-      "title": "doe(apk-1): records correction \u2014 token-fix v2 facts + arm-B run-2 ack",
-      "updated_at": "2026-11-02T09:57:12Z"
+      "mergeable_state": "clean",
+      "number": 3729,
+      "title": "docs(swarm): \u00a724 \u2014 \"use them\" (DeepSeek route verified; Claude scoped)",
+      "updated_at": "2026-11-02T10:05:30Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2651,12 +2641,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "d5153b0a9c",
+      "head_sha": "a42f0bb7a8",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3739,
       "title": "docs(icm): suite timing map rev 2026-11-02b \u2014 expectation records (DoE v0 shape)",
-      "updated_at": "2026-11-02T09:58:59Z"
+      "updated_at": "2026-11-02T10:04:05Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "7b0adefb8c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3744,
+      "title": "feat(tracking): backup-events.jsonl \u2014 unified event series for Telemetry (shape b)",
+      "updated_at": "2026-11-02T10:01:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2665,12 +2669,54 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "979462c3dc",
+      "head_sha": "f9c62712f1",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3741,
-      "title": "tribute bundle E sweep fix: SKILLS-INVENTORY skill-name cell",
-      "updated_at": "2026-11-02T09:59:19Z"
+      "number": 3755,
+      "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
+      "updated_at": "2026-11-02T10:06:09Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "32224dee89",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3757,
+      "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
+      "updated_at": "2026-11-02T10:05:28Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "6d20b87039",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3758,
+      "title": "feat(ci): archwiz mirror_report \u2014 repo-side mirror variant (advisory rollup)",
+      "updated_at": "2026-11-02T10:06:09Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "7fc57f5437",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3759,
+      "title": "feat(dispatch): stamp {requesting_manager \u00b7 request_id} trace fields (\u00a725.15)",
+      "updated_at": "2026-11-02T10:06:08Z"
     }
   ],
   "schema": "operator-matrix/v1",

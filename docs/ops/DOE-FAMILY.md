@@ -385,6 +385,18 @@ selects outside the feed. Population state — which arms exist,
 their health, their accumulated n — is the selection substrate:
 the feed is what makes the population selectable.
 
+Team-level selection (owner, 2026-11-02): managers have
+teams they can select — selection operates at TEAM level too.
+A team is a composed selectable unit carried in the pool feed
+{roster - manager - team n vs target - team posterior -
+standing}. A manager's request can name a team directly, or
+Scout assembles / selects one from scouted talent; either way
+the selection is stamped as a selection experiment like any
+other. Team performance is its OWN stratum: a team's record is
+not the sum of its members' records, member-level n never
+substitutes for team-level n, and the significance standard
+judges claims at the team stratum on the team's accumulated n.
+
 Talent frame (owner, 2026-11-02): Scout's work is TALENT
 scouting over the pool population, not mechanical
 request-filling. Arms are evaluated as talent against the

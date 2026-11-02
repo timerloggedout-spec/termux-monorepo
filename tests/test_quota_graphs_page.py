@@ -117,3 +117,9 @@ def test_pack_freshness_stamps():
             assert s["last_point_at"] == max(p["t"] for p in s["points"])
     html = PAGE.read_text()
     assert "STALE" in html and "last_point_at" in html
+    # Viz condition (2026-11-02): staleness keys PER-SERIES (a STALE chip
+    # on the series' own card, from its own last_point_at - a fresh series
+    # must not mask a stale one); the header line keys on the OLDEST
+    # last-point, never the newest.
+    assert "sStale" in html and 'chip">STALE' in html
+    assert "oldest observation" in html and "oldest point" in html

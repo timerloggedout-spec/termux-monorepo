@@ -275,8 +275,10 @@ async function loadP2Fresh(){
 async function loadBackup(){
   try{
     const f=await jget('./data/backup-state-feed.json');
-    const ex=(f.exports||[])[(f.exports||[]).length-1];
-    const dr=(f.drills||[])[(f.drills||[]).length-1];
+    const exs=f.exports||[];
+    const ex=exs.find(e=>f.summary&&e.id===f.summary.last_export_id)||exs[0];
+    const drs=f.drills||[];
+    const dr=drs.find(d=>ex&&d.export_id===ex.id)||drs[0];
     const cur=ex&&f.marker&&f.marker.state_hash===ex.state_hash;
     let html='<p class="meta">Feed generated '+esc(f.generated_at)+' · '+(CK.stampState(f.generated_at,Date.now())==='STALE'?'<span class="pill">STALE</span> feed older than 24h':'fresh')+' · schema '+esc(f.schema||'')+'</p>';
     html+='<p>'+(cur?'<span class="pill ok">CURRENT</span> backup covers the current workspace state':'<span class="pill bad">STALE</span> state has moved past the last export - the backup does not cover the current state')+'</p>';
@@ -291,7 +293,8 @@ async function loadBackup(){
         +'<p class="muted">T0 leg: '+esc(dr.t0.checked)+' checked, '+esc(dr.t0.mismatched)+' mismatched, exclusions absent: '+esc(dr.t0.excluded_absent)+' · T1 leg: '+esc(dr.t1.checked)+' checked, '+esc(dr.t1.consistent)+' consistent, '+esc(dr.t1.missing)+' missing · restored '+esc(dr.restored_bytes)+' bytes · '+esc(dr.mode)+'</p>';
     } else html+='<p class="muted">No restore drill on record.</p>';
     const fa=f.failed_attempts||[];
-    html+='<p class="muted">Failed export attempts on record: '+fa.length+(fa.length?(' · latest '+esc(fa[fa.length-1].at)):'')+'</p>';
+    const faLast=fa.reduce((a,b)=>((a&&a.at>b.at)?a:b),null);
+    html+='<p class="muted">Failed export attempts on record: '+fa.length+(faLast?(' · latest '+esc(faLast.at)):'')+'</p>';
     if((f.gaps||[]).length)html+='<p class="muted">Gaps: '+f.gaps.map(esc).join(' · ')+'</p>';
     $('p2-backup').innerHTML=html;
   }catch(e){ $('p2-backup').innerHTML='<p class="muted">Backup-state feed unavailable.</p>'; }

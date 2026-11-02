@@ -66,8 +66,8 @@ jobs:
             --source-ref master \
             --source-sha "$PRODUCTION_SHA" \
             --version-prefix "1.0.1"
-          if [ -f production/docs/ops/generated/help-wanted-status.json ]; then
-            cp production/docs/ops/generated/help-wanted-status.json _production/data/status.json
+          if [ -f production/docs/ops/generated/tribute-status.json ]; then
+            cp production/docs/ops/generated/tribute-status.json _production/data/status.json
           fi
           touch _production/.nojekyll
           cp -a _production/. _user_site/tribute/

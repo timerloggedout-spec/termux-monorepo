@@ -44,6 +44,7 @@ EXPERIMENT/intake carriers, consumed here as sources, never re-scored.
         ts,
         outcome: {status, gate_call, confirmed},
         instance_key,                         // when the source carries one, else null
+        first_pass, origin, pr,               // scoring-plane fields (records source; else null)
         source,                               // source id (below)
         source_ref,                           // repo path of the dispatch record
       }]                                      // sorted by ts
@@ -60,30 +61,45 @@ Priority order; a dispatch is counted **once**, under the highest
 priority source that carries it (dedupe key = `dispatch_id`, falling
 back to `session_id` for desk rows):
 
-1. `stamps` — `experiments/doe/routed-dispatch/stamps/*.json`, the
+1. `records` — `experiments/doe/routed-dispatch/records/*.json`, the
+   EXPERIMENT records: the scoring-plane record of record (DoE expert
+   supply, 2026-11-01). Dispatch key = filename stem (run-id-bearing);
+   identity from `treatment.instance`, falling back to the flat
+   `treatment` provider/model when the instance is unstamped; verdict
+   = record `status`; `first_pass` = `metrics.first_pass_success`;
+   `origin` carried verbatim; task_class = `metrics.task_class`.
+2. `stamps` — `experiments/doe/routed-dispatch/stamps/*.json`, the
    canonical dispatch stamps (stamp fan-out, Swarm lane). Flat
    3l0-intake-shaped records: {dispatch_id, ts, provider, model,
    endpoint, moniker, role, context, task_class, run{run_id,
    session_id, workflow}, outcome{status, gate_call, confirmed,
    artifact}, quota{pool, slice, cost_class}, instance?}.
-2. `intake` — `ops/3l0/intake.jsonl` (3l0-intake/v1), the fan-out copy;
+3. `intake` — `ops/3l0/intake.jsonl` (3l0-intake/v1), the fan-out copy;
    catches dispatches whose canonical stamp file is absent.
-3. `desk-usage` — `ops/challenge/desk-feed.json`
+4. `desk-usage` — `ops/challenge/desk-feed.json`
    `traversals[].provider_usage[]`, the DoE scoring carrier (util-1
    auditor + routed carrier): {provider, model, role?, moniker?,
    session_id, state, via, context?}. No run_id/dispatch_id on this
    carrier: the task entry links by `session_id`, `dispatch_id` =
    null, outcome = {status: state, gate_call: null, confirmed: null}.
 
+**Enrichment:** the winner takes the task; lower-priority carriers
+for the same dispatch only **fill fields the winner left null**
+(records lack task_class/workflow/run_id for some classes — stamps
+supply them; stamps lack instance_key — records/intake supply it).
+Nothing is ever overwritten.
+
 Non-sources, named: PLAN rows (planned ≠ run — the family lists tasks
-a model **has run**); EXPERIMENT records without a provider-bearing
-instance (cannot nest honestly); session-history provenance records
-(no dispatch outcome semantics).
+a model **has run**); EXPERIMENT records outside routed-dispatch
+whose instance carries no provider (cannot nest honestly; the
+campaign-native populations join via `doe_join` in the tracking
+record, not here); session-history provenance records (no dispatch
+outcome semantics).
 
 ## Rules
 
 - **Verbatim identity:** provider/model/role/moniker are copied from
-  the stamp exactly; grouping is provider ⊃ model ⊃ tasks, and a
+  the winning source record exactly; grouping is provider ⊃ model ⊃ tasks, and a
   model's roles are the distinct roles across its tasks. Never
   collapse by model alone across providers (the same model string
   under two providers = two families). A stamp whose model field is

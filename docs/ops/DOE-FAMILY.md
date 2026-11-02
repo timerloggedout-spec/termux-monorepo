@@ -460,7 +460,11 @@ records (stamped with source + vintage) whenever a selectable
 arm's joined health state changes and at each dispatch cycle —
 a selection's basis must stay reconstructible after the fact;
 join-at-read remains the live view, the snapshot is the
-citable basis.
+citable basis. Instance-1 (Swarm designation, 2026-11-02) =
+Repo-Story's dispatch surface — selection on repo-story issue
+#2 - dispatch - PR #4 - section 8 PASS - merged d2b23dfe7801 —
+the first live instance of the selection loop under the feed,
+designated as such, not a second build.
 
 ## Definitions of record
 

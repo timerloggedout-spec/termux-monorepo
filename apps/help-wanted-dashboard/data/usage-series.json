@@ -1,9 +1,9 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-02T06:21:52Z",
+ "generated_at": "2026-11-02T06:33:02Z",
  "inputs_generated_at": {
-  "ops/quota/quota-usage.json": "2026-10-30T02:30:35Z"
+  "ops/quota/quota-usage.json": "2026-11-02T06:30:06Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -62,6 +62,10 @@
      {
       "t": "2026-10-30T01:54:00Z",
       "v": 3230
+     },
+     {
+      "t": "2026-11-02T06:30:06Z",
+      "v": 3871
      }
     ],
     "provenance": "ops/quota/quota-usage.json series1_api_core",
@@ -70,7 +74,7 @@
      "source": "ops/quota/allocation-plan.json pool github",
      "note": "plan target flow - context only, not usage; plotted only if units match"
     },
-    "last_point_at": "2026-10-30T01:54:00Z"
+    "last_point_at": "2026-11-02T06:30:06Z"
    },
    {
     "key": "jules",
@@ -154,10 +158,14 @@
      {
       "t": "2026-10-30T01:54:00Z",
       "v": 3230
+     },
+     {
+      "t": "2026-11-02T06:30:06Z",
+      "v": 3871
      }
     ],
     "provenance": "ops/quota/quota-usage.json series1_api_core",
-    "last_point_at": "2026-10-30T01:54:00Z"
+    "last_point_at": "2026-11-02T06:30:06Z"
    },
    {
     "key": "github.actions",
@@ -277,10 +285,18 @@
      {
       "t": "2026-10-29",
       "v": 40
+     },
+     {
+      "t": "2026-10-31",
+      "v": 40
+     },
+     {
+      "t": "2026-11-01",
+      "v": 0
      }
     ],
     "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
-    "last_point_at": "2026-10-29"
+    "last_point_at": "2026-11-01"
    },
    {
     "key": "github.actions",
@@ -400,10 +416,18 @@
      {
       "t": "2026-10-29",
       "v": 16
+     },
+     {
+      "t": "2026-10-31",
+      "v": 6
+     },
+     {
+      "t": "2026-11-01",
+      "v": 0
      }
     ],
     "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
-    "last_point_at": "2026-10-29"
+    "last_point_at": "2026-11-01"
    }
   ],
   "model": []

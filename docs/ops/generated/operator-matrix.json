@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 386,
-    "open_prs": 176,
+    "open_prs": 178,
     "pr_classes": {
       "CANDIDATE": 85,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 85,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 88,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 37,
-      "prs": 174,
+      "prs": 176,
       "unlabelled_numbers": [
         308,
         343,
@@ -92,7 +92,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T07:35:18Z",
+  "generated_at": "2026-11-02T07:42:17Z",
   "issues_unlabelled": [
     308,
     343,
@@ -135,10 +135,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "efaf55baa2"
+    "sha": "2049c0a679"
   },
   "prs": [
     {
@@ -210,20 +210,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "9e9ff86f78",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T07:34:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1830,6 +1816,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "in_progress"
+      },
+      "head_sha": "6647cf5ab3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T07:40:43Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2605,10 +2605,38 @@
       },
       "head_sha": "5680692e94",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3601,
       "title": "feat(quota): ALL-Providers denominator + pack-builder envelope fix (owner amendment)",
-      "updated_at": "2026-11-02T07:35:03Z"
+      "updated_at": "2026-11-02T07:35:26Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "541ed74424",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3603,
+      "title": "cert(coderoad): de-hang image builds \u2014 split steps, old-releases sources, drop unminimize, pinned VSIX",
+      "updated_at": "2026-11-02T07:41:01Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "cc24f94937",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3606,
+      "title": "docs(swarm): \u00a723 DeepAgent dispatch \u2014 swarm routing restated (owner 2026-11-01)",
+      "updated_at": "2026-11-02T07:41:56Z"
     }
   ],
   "schema": "operator-matrix/v1",

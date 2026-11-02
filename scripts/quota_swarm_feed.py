@@ -92,11 +92,23 @@ def build(root):
                 "usage_series": pts_by_key.get(rec["id"])
                 or pts_by_key.get(fam),
             })
+        fam_bases = set()
+        for r in records:
+            if r.get("readings"):
+                fam_bases.add("readings")
+            if r.get("usage_series"):
+                fam_bases.add("usage-series")
+        if cen:
+            fam_bases.add("census")
         providers.append({
             "provider": fam,
             "record_count": len(records),
             "providers_distinct": len({r.get("provider") for r in recs}),
             "live_verified": verified,
+            "population": {
+                "state": "populated" if fam_bases else "gap",
+                "bases": sorted(fam_bases),
+            },
             "census": ({
                 "verdict": cen.get("verdict"),
                 "evidence": cen.get("evidence"),
@@ -147,6 +159,15 @@ def build(root):
             "g4f_children": len(fams.get("g4f", [])),
             "live_verified_families": live_verified,
             "rate_limit_events": len(events),
+            "families_populated": len([p for p in providers
+                                       if p["population"]["state"]
+                                       == "populated"]),
+            "families_gap": len([p for p in providers
+                                 if p["population"]["state"] == "gap"]),
+            "records_populated": sum(
+                1 for p in providers for r in p["records"]
+                if r.get("readings") or r.get("usage_series")),
+            "records_total": len(model_recs),
         },
         "providers": providers,
         "events": {

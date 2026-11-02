@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 392,
-    "open_prs": 178,
+    "open_prs": 180,
     "pr_classes": {
-      "CANDIDATE": 86,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 85,
+      "CANDIDATE": 87,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 87,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 176,
+      "prs": 178,
       "unlabelled_numbers": [
         308,
         343,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T09:22:20Z",
+  "generated_at": "2026-11-02T09:24:57Z",
   "issues_unlabelled": [
     308,
     343,
@@ -145,12 +145,12 @@
     3673
   ],
   "master": {
-    "functional_gate": "NOT ESTABLISHED",
+    "functional_gate": "GREEN",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "success",
+      "smoke": "success"
     },
-    "sha": "6e49b738f2"
+    "sha": "72c3db3d22"
   },
   "prs": [
     {
@@ -230,26 +230,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4c214c4f81",
+      "head_sha": "e8f29de0c6",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T09:18:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8a05fd9f68",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3683,
-      "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
-      "updated_at": "2026-11-02T09:18:46Z"
+      "number": 3689,
+      "title": "tribute bundle C sweep fix: diff-gate test + pointer residues",
+      "updated_at": "2026-11-02T09:24:40Z"
     },
     {
       "class": "CANDIDATE",
@@ -1461,6 +1447,20 @@
       "updated_at": "2026-11-02T09:10:33Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8a05fd9f68",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3683,
+      "title": "fix(quota): static adapter mapping + manager row for deepseek family (roster 32)",
+      "updated_at": "2026-11-02T09:18:46Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1865,6 +1865,20 @@
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "a4f495fa9e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-02T09:24:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2587,12 +2601,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ab44bf7c41",
+      "head_sha": "27c9c17db5",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "clean",
       "number": 3442,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-02T09:21:17Z"
+      "updated_at": "2026-11-02T09:23:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2649,6 +2663,20 @@
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-02T08:26:29Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "ae4b98cc69",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3690,
+      "title": "Agentic Gambling Lane: registry note \u2014 Speculators manager + Swarm execution side",
+      "updated_at": "2026-11-02T09:24:29Z"
     }
   ],
   "schema": "operator-matrix/v1",

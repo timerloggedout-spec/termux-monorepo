@@ -1,6 +1,6 @@
 {
  "consumer": "viz all-4 results index page (render verbatim)",
- "generated_at": "2026-11-02T13:25:58Z",
+ "generated_at": "2026-11-02T13:26:57Z",
  "schema": "results-index/v1",
  "systems": [
   {
@@ -43,10 +43,11 @@
     "kind": "feed",
     "note": "No committed results ledger exists (feed gaps[] of record): benchmark verdicts are asserted inside workflow runs; run receipts publish as 30-day Actions artifacts.",
     "path": "apps/tribute-dashboard/data/ates-feed.json"
-   }
+   },
+   "surface_page": "ates.html"
   },
   {
-   "as_of": "2026-11-02T13:25:58Z",
+   "as_of": "2026-11-02T13:26:57Z",
    "headline": {
     "confirmed_non_null": 0,
     "observational": true,
@@ -58,10 +59,11 @@
     "kind": "feed",
     "note": "Staged intake (3l0-intake/v1) from the session-history plane; observational fold - weights derive only where confirmed != null (charter source class 2).",
     "path": "ops/telemetry/session-history-3l0.jsonl"
-   }
+   },
+   "surface_page": "3l0.html"
   },
   {
-   "as_of": "2026-11-02T13:25:58Z",
+   "as_of": "2026-11-02T13:26:57Z",
    "headline": {
     "engagement": {
      "latest": {
@@ -72,6 +74,7 @@
      },
      "total_count": 2
     },
+    "persistent_instance": "none - no persistent instance; execution is ephemeral in-job",
     "self_host_smoke": {
      "latest": {
       "at": "2026-10-28T19:59:44Z",
@@ -88,10 +91,11 @@
     "kind": "actions-runs",
     "note": "No results feed exists for Temporal; the run receipts are the record of record.",
     "ref": "Actions run receipts: temporal-engagement.yml + temporal-self-host-smoke.yml"
-   }
+   },
+   "surface_page": "telemetry.html"
   },
   {
-   "as_of": "2026-11-02T13:25:58Z",
+   "as_of": "2026-11-02T13:26:57Z",
    "headline": {
     "last_error_status": 402,
     "payloads": 388,
@@ -105,7 +109,8 @@
     "kind": "receipts",
     "note": "Retain receipts are the population record; the bank itself is verified via the gated verify step when the proof passes.",
     "path": "ops/telemetry/hindsight-retain-proof.json + ops/telemetry/hindsight-retain-state.json"
-   }
+   },
+   "surface_page": "telemetry.html"
   }
  ]
 }

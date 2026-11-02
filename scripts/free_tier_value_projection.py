@@ -115,9 +115,9 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
         reason = "missing_call_identity"
         if call_uid and identity not in seen:
             session = safe_session(row, pricing)
+            seen.add(identity)
             if session:
                 sessions.append(session)
-                seen.add(identity)
                 reason = "published"
             else:
                 reason = "publication_gates_or_exact_model_pricing_not_established"

@@ -147,8 +147,13 @@
 </ul>
 <p class="muted">Still on the backlog, not yet published: served-SHA stamps for the Pages mirrors (P1-5), splitting the index page’s ~1.3&nbsp;MB status payload (P1-6), publish-or-mark decisions for the orphan pages (P2-8), and the programmatic briefing page (scope pending in main chat).</p>
 </section>
+<section>
+<h2>Feed freshness</h2>
+<div id="p2-charts"><p class="muted">Loading feeds…</p></div>
+</section>
 </main>
 <footer><p class="muted">Admin panel · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
+<script src="./chartkit.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -253,8 +258,19 @@ async function loadGearbox(){
     feed('gearbox',true,'LIVE · internal');
   }catch(e){feed('gearbox',false,'UNVERIFIED');$('gearbox-controls').innerHTML='<p class="muted">Quota usage pack could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.</p>'}
 }
+async function loadP2Fresh(){
+  const P2F=[['status.json','./data/status.json'],['quota.json','./data/quota.json'],['quota-usage.json','./data/quota-usage.json'],['provider-quota-coverage.json','./data/provider-quota-coverage.json'],['challenge-admin-metrics.json','./data/challenge-admin-metrics.json']];
+  const rows=[];
+  for(const [name,url] of P2F){
+    try{ const f=await jget(url); const t=new Date(f.generated_at).getTime(); if(isFinite(t)) rows.push({label:name+' ('+CK.stampState(f.generated_at,Date.now())+')',value:+(((Date.now()-t)/3600000).toFixed(1))}); else rows.push({label:name+' (no generated_at)',value:0}); }
+    catch(e){ rows.push({label:name+' (unreachable)',value:0}); }
+  }
+  rows.sort((a,b)=>b.value-a.value);
+  $('p2-charts').innerHTML='<p class="meta">Age in hours of the feeds this panel consumes, at render time · STALE = older than 24h (chart standard).</p><h3>Feed age (hours)</h3>'+CK.bars(rows);
+}
 async function load(){
   await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue(),loadChallenge(),loadGearbox()]);
+  loadP2Fresh();
   $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
 }
 $('refresh').addEventListener('click',load);

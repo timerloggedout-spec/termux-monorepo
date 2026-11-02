@@ -48,6 +48,7 @@
 <ul id="sources" class="feed-list"></ul>
 </section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function load(){
@@ -64,6 +65,15 @@ async function load(){
   document.getElementById("feed-state").textContent = "live · " + f.schema;
   document.getElementById("feed-generated").textContent = f.generated_at;
   const d = f.data, out = [];
+  const p2w = d.weights || {};
+  const p2pos = Object.entries(p2w).filter(([, v]) => typeof v === 'number' && v > 0).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+  const p2pen = Object.entries(p2w).filter(([, v]) => typeof v === 'number' && v < 0).map(([label, value]) => ({label, value: -v})).sort((a, b) => b.value - a.value);
+  if(p2pos.length || p2pen.length){
+    out.push(`<section class="card"><h2>Charts</h2>
+    <p class="meta">Feed generated ${esc(f.generated_at)}${CK.stampState(f.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : ''} · rendered from this page's feed only. Penalties charted by magnitude; signed values are in the weights record above.</p>
+    ${p2pos.length ? `<h3>Positive weights</h3>${CK.bars(p2pos)}` : ''}
+    ${p2pen.length ? `<h3>Penalties (magnitude)</h3>${CK.bars(p2pen)}` : ''}</section>`);
+  }
   out.push(`<section class="card"><h2>What it scores</h2><p>${esc(d.what_it_scores)}</p>
   <p class="meta">Score range: clamped to [${esc(d.clamp.lo)}, ${esc(d.clamp.hi)}] (normalize.clamp). ${esc(d.stale_rule)} (stale_cap ${esc(d.stale_cap)}).</p></section>`);
   const rows = d.signals.map(s => {

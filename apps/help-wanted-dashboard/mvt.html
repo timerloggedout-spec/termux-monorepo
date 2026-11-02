@@ -46,6 +46,7 @@
 <ul id="sources" class="feed-list"></ul>
 </section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function load(){
@@ -62,6 +63,13 @@ async function load(){
   document.getElementById("feed-state").textContent = "live · " + f.schema;
   document.getElementById("feed-generated").textContent = f.generated_at;
   const d = f.data, out = [];
+  const p2rec = d.experiment_records || {};
+  const p2rows = Object.entries(p2rec).filter(([, v]) => typeof v === 'number').map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+  if(p2rows.length){
+    out.push(`<section class="card"><h2>Charts</h2>
+    <p class="meta">Feed generated ${esc(f.generated_at)}${CK.stampState(f.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : ''} · rendered from this page's feed only.</p>
+    <h3>Experiment record population</h3>${CK.bars(p2rows)}</section>`);
+  }
   out.push(`<section class="card"><h2>Method</h2><p>${esc(d.method)}</p></section>`);
   const s = d.experiment_record_schema;
   out.push(`<section class="card"><h2>Experiment record schema</h2>

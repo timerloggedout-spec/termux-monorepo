@@ -52,6 +52,7 @@
 <ul id="sources" class="feed-list"></ul>
 </section>
 </main>
+<script src="./chartkit.js"></script>
 <script>
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function load(){
@@ -68,6 +69,14 @@ async function load(){
   document.getElementById("feed-state").textContent = "live · " + f.schema;
   document.getElementById("feed-generated").textContent = f.generated_at;
   const d = f.data, out = [];
+  const p2rh = d.response_history || {};
+  const p2ranked = p2rh.providers_ranked || [];
+  if(p2ranked.length){
+    const p2cyc = p2ranked.map(r => ({label: r.provider, value: r.cycles || 0})).sort((a, b) => b.value - a.value);
+    out.push(`<section class="card"><h2>Charts</h2>
+    <p class="meta">Feed generated ${esc(f.generated_at)}${CK.stampState(f.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : ''} · rendered from this page's feed only.</p>
+    <h3>Review cycles per provider (response-history window)</h3>${CK.bars(p2cyc)}</section>`);
+  }
   out.push(`<section class="card"><h2>The 3L0 score</h2><p>${esc(d.definition)}</p>
   <div class="chips">${d.components.map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div>
   <p class="meta">${esc(d.pipeline)}</p></section>`);

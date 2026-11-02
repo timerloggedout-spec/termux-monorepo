@@ -127,8 +127,41 @@ jobs:
           "$CODE" --no-sandbox --user-data-dir "$HOME/vsud-install" \
             --extensions-dir "$HOME/vscode-extensions" \
             --install-extension /tmp/coderoad.vsix
-          cp -r mono/scripts/certifications/coderoad-driver/driver \
-            "$HOME/vscode-extensions/termux-fleet.coderoad-driver-0.1.0"
+          # Package the headless driver as a .vsix and install it the same
+          # way: a hand-copied dir is not in extensions.json and the scanner
+          # treats the manifest as authoritative (B1-B5: driver never loaded).
+          python3 - <<'PYEOF'
+          import os, zipfile
+          src = "mono/scripts/certifications/coderoad-driver/driver"
+          out = os.path.expanduser("~/driver.vsix")
+          manifest = '''<?xml version="1.0" encoding="utf-8"?>
+          <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+            <Metadata>
+              <Identity Language="en-US" Id="coderoad-driver" Version="0.1.0" Publisher="termux-fleet"/>
+              <DisplayName>CodeRoad Headless Driver</DisplayName>
+              <Description xml:space="preserve">Headless driver for the CodeRoad completion leg.</Description>
+              <Categories>Other</Categories>
+            </Metadata>
+            <Installation><InstallationTarget Id="Microsoft.VisualStudio.Code"/></Installation>
+            <Dependencies/>
+            <Assets><Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true"/></Assets>
+          </PackageManifest>'''
+          ctypes = '''<?xml version="1.0" encoding="utf-8"?>
+          <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+            <Default Extension="json" ContentType="application/json"/>
+            <Default Extension="js" ContentType="application/javascript"/>
+            <Default Extension="vsixmanifest" ContentType="text/xml"/>
+          </Types>'''
+          with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+              z.writestr("extension.vsixmanifest", manifest)
+              z.writestr("[Content_Types].xml", ctypes)
+              for name in os.listdir(src):
+                  z.write(os.path.join(src, name), f"extension/{name}")
+          print("driver.vsix written", os.path.getsize(out))
+          PYEOF
+          "$CODE" --no-sandbox --user-data-dir "$HOME/vsud-install" \
+            --extensions-dir "$HOME/vscode-extensions" \
+            --install-extension "$HOME/driver.vsix" --force 2>&1 | tail -2
           ls "$HOME/vscode-extensions"
 
       - name: Run CodeRoad completion (host VS Code + container postgres)

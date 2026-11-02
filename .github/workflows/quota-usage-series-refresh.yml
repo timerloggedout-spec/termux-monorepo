@@ -33,6 +33,8 @@ on:
       - 'scripts/quota_usage_pack.py'
       - 'ops/challenge/desk-feed.json'
       - 'ops/quota/allocation-plan.json'
+      - 'ops/quota/allocation-verification.json'
+      - 'scripts/quota_swarm_feed.py'
       - 'scripts/quota_usage_series.py'
       - '.github/workflows/quota-usage-series-refresh.yml'
 
@@ -76,18 +78,22 @@ jobs:
           cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
           cp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
           cmp ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json
+          python3 -B scripts/quota_swarm_feed.py --root .
+          cp ops/quota/swarm-feed.json apps/help-wanted-dashboard/data/swarm-feed.json
+          cmp ops/quota/swarm-feed.json apps/help-wanted-dashboard/data/swarm-feed.json
       - name: Commit generated artifacts to master (single-writer)
         run: |
           set -euo pipefail
           git add ops/quota/usage-series.json ops/quota/quota-usage.json apps/help-wanted-dashboard/data/quota-usage.json \
             apps/help-wanted-dashboard/data/usage-series.json \
-            apps/help-wanted-dashboard/data/quota-usage.json
+            apps/help-wanted-dashboard/data/quota-usage.json \
+            ops/quota/swarm-feed.json apps/help-wanted-dashboard/data/swarm-feed.json
           if git diff --cached --quiet; then
             echo 'usage-series unchanged; no commit'
             exit 0
           fi
           git config user.name 'quota-usage-series-refresh'
           git config user.email 'actions@github.com'
-          git commit -m 'ops(quota): refresh usage-series pack + quota-usage mirror (auto-derived)'
+          git commit -m 'ops(quota): refresh usage-series pack + swarm feed + mirrors (auto-derived)'
           git pull --rebase origin master
           git push origin HEAD:master

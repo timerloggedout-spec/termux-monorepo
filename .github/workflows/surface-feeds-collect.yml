@@ -19,6 +19,11 @@ on:
       - 'scripts/dashboards/surface_feeds.py'
       - 'scripts/dashboards/discrimination_watch.py'
       - 'scripts/dashboards/workflow_observations.json'
+      - 'scripts/dashboards/telemetry_feed.py'
+      - 'scripts/dashboards/telemetry_feed_series.py'
+      - 'apps/tribute-dashboard/data/status.json'
+      - 'apps/tribute-dashboard/data/quota.json'
+      - 'apps/tribute-dashboard/data/quota-usage.json'
       - 'scripts/dashboards/delphi_weights_observation.json'
       - 'ml/pipelines/moneyball/**'
       - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
@@ -55,12 +60,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/dashboards/surface_feeds.py --surface all
+          python3 -B scripts/dashboards/telemetry_feed.py --out-dir apps/tribute-dashboard/data
+          python3 -B scripts/dashboards/telemetry_feed_series.py
       - name: 3L0 discrimination watch (diagnostic trigger)
         run: python3 -B scripts/dashboards/discrimination_watch.py
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          feeds="apps/tribute-dashboard/data/moneyball-feed.json apps/tribute-dashboard/data/3l0-feed.json apps/tribute-dashboard/data/mvt-feed.json apps/tribute-dashboard/data/doe-feed.json apps/tribute-dashboard/data/ates-feed.json"
+          feeds="apps/tribute-dashboard/data/moneyball-feed.json apps/tribute-dashboard/data/3l0-feed.json apps/tribute-dashboard/data/mvt-feed.json apps/tribute-dashboard/data/doe-feed.json apps/tribute-dashboard/data/ates-feed.json apps/tribute-dashboard/data/telemetry-feed.json apps/tribute-dashboard/data/telemetry-feed-series.jsonl"
           if git diff --quiet -- $feeds; then
             echo "feeds unchanged; no refresh PR"
             exit 0

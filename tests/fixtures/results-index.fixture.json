@@ -1,0 +1,111 @@
+{
+ "consumer": "viz all-4 results index page (render verbatim)",
+ "generated_at": "2026-11-02T13:25:58Z",
+ "schema": "results-index/v1",
+ "systems": [
+  {
+   "as_of": "2026-11-02T00:17:30Z",
+   "headline": {
+    "feed_generated_at": "2026-11-02T00:17:30Z",
+    "invariants": [
+     "abstention availability",
+     "wrong-commit penalty",
+     "required-fragment preservation",
+     "distractor isolation",
+     "deterministic execution failure",
+     "isolated SPAWN behavior",
+     "actor/critic private-context isolation"
+    ],
+    "workflows": [
+     {
+      "file": ".github/workflows/ates-orchestrator-benchmark.yml",
+      "latest_at": "2026-10-22T12:25:12Z",
+      "latest_conclusion": "success",
+      "total_runs": 13
+     },
+     {
+      "file": ".github/workflows/ates-phase-b-run-receipt.yml",
+      "latest_at": "2026-10-23T13:34:25Z",
+      "latest_conclusion": "success",
+      "total_runs": 9
+     },
+     {
+      "file": ".github/workflows/agent-mvt-experiment.yml",
+      "latest_at": null,
+      "latest_conclusion": null,
+      "total_runs": 0
+     }
+    ]
+   },
+   "id": "ates",
+   "name": "ATES",
+   "record_of_record": {
+    "kind": "feed",
+    "note": "No committed results ledger exists (feed gaps[] of record): benchmark verdicts are asserted inside workflow runs; run receipts publish as 30-day Actions artifacts.",
+    "path": "apps/tribute-dashboard/data/ates-feed.json"
+   }
+  },
+  {
+   "as_of": "2026-11-02T13:25:58Z",
+   "headline": {
+    "confirmed_non_null": 0,
+    "observational": true,
+    "staged_records": 599
+   },
+   "id": "3l0",
+   "name": "3L0",
+   "record_of_record": {
+    "kind": "feed",
+    "note": "Staged intake (3l0-intake/v1) from the session-history plane; observational fold - weights derive only where confirmed != null (charter source class 2).",
+    "path": "ops/telemetry/session-history-3l0.jsonl"
+   }
+  },
+  {
+   "as_of": "2026-11-02T13:25:58Z",
+   "headline": {
+    "engagement": {
+     "latest": {
+      "at": "2026-10-28T22:36:40Z",
+      "conclusion": "success",
+      "event": "workflow_dispatch",
+      "id": 40781288916
+     },
+     "total_count": 2
+    },
+    "self_host_smoke": {
+     "latest": {
+      "at": "2026-10-28T19:59:44Z",
+      "conclusion": "success",
+      "event": "push",
+      "id": 40759259053
+     },
+     "total_count": 21
+    }
+   },
+   "id": "temporal",
+   "name": "Temporal",
+   "record_of_record": {
+    "kind": "actions-runs",
+    "note": "No results feed exists for Temporal; the run receipts are the record of record.",
+    "ref": "Actions run receipts: temporal-engagement.yml + temporal-self-host-smoke.yml"
+   }
+  },
+  {
+   "as_of": "2026-11-02T13:25:58Z",
+   "headline": {
+    "last_error_status": 402,
+    "payloads": 388,
+    "proof_attempted": 3,
+    "proof_ok": 0,
+    "retained_units": 0
+   },
+   "id": "hindsight",
+   "name": "HindSight",
+   "record_of_record": {
+    "kind": "receipts",
+    "note": "Retain receipts are the population record; the bank itself is verified via the gated verify step when the proof passes.",
+    "path": "ops/telemetry/hindsight-retain-proof.json + ops/telemetry/hindsight-retain-state.json"
+   }
+  }
+ ]
+}

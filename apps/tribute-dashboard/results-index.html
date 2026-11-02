@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results Index — ATES · 3L0 · Temporal · HindSight</title>
+<!--
+  Renders ONLY data/results-index.json (schema results-index/v1), the
+  Telemetry lane's aggregation feed (source: ops/telemetry/
+  results-index.json, regenerated every telemetry-ingest run).
+  Render-verbatim discipline: values are the source values as issued;
+  a 0 renders as 0 and an absent capability renders as its stated
+  none - nothing is hidden, dressed or recomputed. Each system card
+  points at its record of record, whose note carries that system's
+  honesty caveat verbatim.
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .chip{display:inline-block;padding:0 8px;border-radius:10px;font-size:11px;border:1px solid var(--line);white-space:nowrap}
+  .chip.stale{border-color:var(--bad);color:var(--bad);font-weight:700}
+  .dim{color:var(--muted)}
+  table.st{width:100%;border-collapse:collapse;font-size:13px}
+  table.st td,table.st th{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+  .rec{border-left:3px solid var(--gold);padding:.2rem .6rem;margin:.5rem 0}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a>
+<a href="https://timerloggedout-spec.github.io/tribute/wagering-book.html">Wagering Book</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Observatory · Results</p>
+<h1>All-4 results index</h1>
+<p class="lede">The results of ATES, 3L0, Temporal and HindSight on one index — each system rendered verbatim from the Telemetry aggregation feed, each pointing at its record of record. States are shown true: a 0 renders as 0, and a capability that does not exist renders as none. This page consumes <code>data/results-index.json</code> (schema <code>results-index/v1</code>) and nothing else.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading index…</p>
+<div id="systems"></div>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// ==== pure logic (node-sim tested) ====
+function parseT(s){return Date.parse(s);}
+function staleOf(feed,nowMs){ if(!feed||!feed.generated_at) return false; return (nowMs-parseT(feed.generated_at))>48*3600*1000; }
+function fmtVal(v){
+  if(v===null||v===undefined) return "none";
+  if(typeof v==="number") return String(v);
+  if(typeof v==="boolean") return v? "true":"false";
+  if(typeof v==="string") return v;
+  return JSON.stringify(v);
+}
+function rowsFor(sys){
+  const h=sys.headline||{}, rows=[], used=new Set();
+  const add=(k,v)=>{ rows.push({k:k, v:fmtVal(v)}); };
+  if(sys.id==="ates"){
+    (h.workflows||[]).forEach(w=>{ rows.push({k:"Workflow — "+String(w.file||"").split("/").pop(), v:fmtVal(w.total_runs)+" runs · latest "+fmtVal(w.latest_at)+" · "+fmtVal(w.latest_conclusion)}); });
+    used.add("workflows");
+    if(h.invariants){ rows.push({k:"Governance invariants", v:h.invariants.join(" · ")}); used.add("invariants"); }
+  }
+  if(sys.id==="temporal"){
+    for(const key of ["engagement","self_host_smoke"]){
+      const b=h[key]; if(!b) continue;
+      rows.push({k:key.replace(/_/g," "), v:fmtVal(b.total_count)+" runs · latest "+(b.latest? (b.latest.at+" · "+b.latest.conclusion+" · run "+b.latest.id) : "none")});
+      used.add(key);
+    }
+    if("persistent_instance" in h){ rows.push({k:"Persistent instance", v:fmtVal(h.persistent_instance)}); used.add("persistent_instance"); }
+  }
+  for(const k of Object.keys(h)){ if(!used.has(k)) add(k.replace(/_/g," "), h[k]); }
+  return rows;
+}
+if(typeof module!=="undefined"){ module.exports={parseT,staleOf,fmtVal,rowsFor}; }
+// ==== end pure logic ====
+let FEED=null;
+function renderIndex(nowMs){
+  $("systems").innerHTML=FEED.systems.map(sys=>{
+    const rec=sys.record_of_record||{};
+    const ptr=rec.path? '<code>'+esc(rec.path)+'</code>' : esc(rec.ref||"");
+    const rows=rowsFor(sys).map(r=>'<tr><td>'+esc(r.k)+'</td><td>'+esc(r.v)+'</td></tr>').join("");
+    const surf=sys.surface_page? ' · <a href="./'+esc(sys.surface_page)+'">surface</a>' : "";
+    return '<section><div class="head"><h2>'+esc(sys.name||sys.id)+'</h2></div><div class="card">'
+      +'<p class="dim">as of '+esc(sys.as_of||"") + surf+'</p>'
+      +'<table class="st">'+rows+'</table>'
+      +'<div class="rec"><strong>Record of record</strong> ('+esc(rec.kind||"")+'): '+ptr+'<br><span class="dim">'+esc(rec.note||"")+'</span></div>'
+      +'</div></section>';
+  }).join("");
+  $("meta").innerHTML='Feed '+esc(FEED.generated_at)+' · '+FEED.systems.length+' systems · consumer: '+esc(FEED.consumer||"")+(staleOf(FEED,nowMs)? ' <span class="chip stale">STALE</span>' : '');
+}
+fetch("./data/results-index.json",{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(j=>{ FEED=j; renderIndex(Date.now()); }).catch(e=>{ $("meta").innerHTML='<span style="color:var(--bad);font-weight:700">FEED ERROR</span> '+esc(e.message); });
+</script>
+</body>
+</html>

@@ -117,3 +117,28 @@ sit on a panel.
 - **D2 slate candidates** — archetype-grade (GAP-J1);
   the pre-pick mirror read is ONE advisory input beside
   the ⛏️ charter, never binding.
+
+## Continuous improvement — forecast layering (owner, 2026-11-03)
+
+"Must continuously improve 🎯" — applied to the mirror:
+the first run on a subject is a BASELINE, not a verdict.
+While the subject's improvement window is open, the
+mirror RE-RUNS on each material improvement landing;
+every re-run files as a new forecast LAYER (append-only;
+the baseline stays citable, never edited). Done only
+when the window closes (for D1: the Nov 4 23:59 PT
+freeze).
+
+Re-run triggers (D1 line, coordinated with the D1 seat):
+1. Strands proof closes (run-3 receipt with tool chain)
+   ∧ any stamp upgrade;
+2. 0.2.0 cuts green + the release of record advances;
+3. the v1.0.0 cut.
+
+Each layer's record shows the IMPROVEMENT CURVE against
+the baseline: panel score delta + WHICH basis term
+moved — Strands depth · sample content · surfaces (or
+"no basis term moved" when a re-run is flat, which is
+itself the datum). Layers score against the same
+outcome when it publishes; the curve is the improvement
+evidence, the Brier score is the calibration evidence.

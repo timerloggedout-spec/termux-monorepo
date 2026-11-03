@@ -126,6 +126,10 @@ def _request(method: str, url: str, token: str, payload=None):
     req = urllib.request.Request(url, data=data, method=method)
     req.add_header("Authorization", f"Bearer {token}")
     req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("User-Agent",
+                   "dispatch-machinery (timerloggedout-spec/"
+                   "termux-monorepo)")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
     req.add_header("Content-Type", "application/json")
     with urllib.request.urlopen(req) as resp:
         return json.loads(resp.read().decode() or "{}")

@@ -3,9 +3,9 @@
     "open_issues": 519,
     "open_prs": 258,
     "pr_classes": {
-      "CANDIDATE": 121,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 126,
+      "CANDIDATE": 115,
+      "EXTRACT": 16,
+      "NEED_EVIDENCE": 127,
       "SUPERSEDE": 0
     }
   },
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T22:04:53Z",
+  "generated_at": "2026-11-03T22:24:54Z",
   "issues_unlabelled": [
     308,
     388,
@@ -152,7 +152,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "8fa6f7474f"
+    "sha": "b30c6c35ee"
   },
   "prs": [
     {
@@ -232,12 +232,96 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "a6fc20f36f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4018,
+      "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
+      "updated_at": "2026-11-03T02:28:11Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "af69c0cd66",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4019,
+      "title": "feat(api-impact): add SHA-bound API evolution review lane",
+      "updated_at": "2026-11-03T14:29:29Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "deb2d68a51",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4022,
+      "title": "docs(ops): record post-merge backfill remediation checkpoint",
+      "updated_at": "2026-11-03T03:13:16Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b4685fad1b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4055,
+      "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
+      "updated_at": "2026-11-03T03:38:45Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e48109e159",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4085,
+      "title": "docs(architecture): define visual architecture versioning and export standard",
+      "updated_at": "2026-11-03T06:02:22Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b0b3fb4674",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4148,
+      "title": "\u26a1 Bolt: fast-path comment stripping in cadence audit",
+      "updated_at": "2026-11-03T10:16:00Z"
     },
     {
       "class": "EXTRACT",
@@ -294,20 +378,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8bc1f98ff3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4621,
-      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
-      "updated_at": "2026-11-03T21:36:33Z"
     },
     {
       "class": "CANDIDATE",
@@ -1091,20 +1161,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d73646c3cd",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T21:58:21Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "fd02b2c8e0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1303,7 +1359,7 @@
       },
       "head_sha": "af9b38f892",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2907,
       "title": "fix: scope free-tier opportunity cost to repo work",
       "updated_at": "2026-11-03T07:55:22Z"
@@ -1401,7 +1457,7 @@
       },
       "head_sha": "735803941a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3242,
       "title": "feat(quota): harden provider consumption audit",
       "updated_at": "2026-11-03T07:55:24Z"
@@ -1541,7 +1597,7 @@
       },
       "head_sha": "8a75972a42",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4007,
       "title": "Wire invocation observations into Free-Tier Value evidence projection",
       "updated_at": "2026-11-03T01:35:09Z"
@@ -1569,7 +1625,7 @@
       },
       "head_sha": "30f083a538",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4017,
       "title": "feat(ops): map federated AppIDs and independent release lanes",
       "updated_at": "2026-11-03T02:35:03Z"
@@ -1581,37 +1637,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a6fc20f36f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4018,
-      "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
-      "updated_at": "2026-11-03T02:28:11Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "af69c0cd66",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4019,
-      "title": "feat(api-impact): add SHA-bound API evolution review lane",
-      "updated_at": "2026-11-03T14:29:29Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "bfc059bbe9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4020,
       "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
       "updated_at": "2026-11-03T02:19:08Z"
@@ -1623,37 +1651,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "deb2d68a51",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4022,
-      "title": "docs(ops): record post-merge backfill remediation checkpoint",
-      "updated_at": "2026-11-03T03:13:16Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b4685fad1b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4055,
-      "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
-      "updated_at": "2026-11-03T03:38:45Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "e3301f94e9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4083,
       "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
       "updated_at": "2026-11-03T06:01:07Z"
@@ -1667,24 +1667,10 @@
       },
       "head_sha": "d2a830738c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4084,
       "title": "docs(deploy): map Vercel alternatives and staged failover",
       "updated_at": "2026-11-03T05:58:36Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e48109e159",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4085,
-      "title": "docs(architecture): define visual architecture versioning and export standard",
-      "updated_at": "2026-11-03T06:02:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -1713,20 +1699,6 @@
       "number": 4089,
       "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
       "updated_at": "2026-11-03T21:25:03Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b0b3fb4674",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4148,
-      "title": "\u26a1 Bolt: fast-path comment stripping in cadence audit",
-      "updated_at": "2026-11-03T10:16:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -1987,12 +1959,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "8bc1f98ff3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4621,
+      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
+      "updated_at": "2026-11-03T21:36:33Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "7cc7a79979",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4622,
       "title": "docs(ops): queue dependency tiers \u2014 drain-order evidence + tier model + enforcement contract",
-      "updated_at": "2026-11-03T21:40:06Z"
+      "updated_at": "2026-11-03T22:07:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -2006,7 +1992,7 @@
       "mergeable_state": "unknown",
       "number": 4624,
       "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-03T21:44:56Z"
+      "updated_at": "2026-11-03T22:14:02Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2530,15 +2516,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
+        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "defb777172",
+      "head_sha": "b9e3ca4143",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T21:34:26Z"
+      "updated_at": "2026-11-03T22:13:54Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "e26242aaa4",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T22:05:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3177,12 +3177,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "2b1cc98685",
+      "head_sha": "4e48f374fc",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T22:02:36Z"
+      "updated_at": "2026-11-03T22:22:55Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3191,12 +3191,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "ce44d2b84a",
+      "head_sha": "0d897b0880",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T21:34:48Z"
+      "updated_at": "2026-11-03T22:13:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3235,7 +3235,7 @@
       },
       "head_sha": "2ae19e9721",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4016,
       "title": "security(issues): gate advisory triage through deterministic intake firewall",
       "updated_at": "2026-11-03T02:26:04Z"
@@ -3263,7 +3263,7 @@
       },
       "head_sha": "87c1d03307",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4048,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T03:28:17Z"
@@ -3275,12 +3275,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1e248a8749",
+      "head_sha": "4bc972f34b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-03T21:43:55Z"
+      "updated_at": "2026-11-03T22:12:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3560,7 +3560,7 @@
       "mergeable_state": "unknown",
       "number": 4563,
       "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
-      "updated_at": "2026-11-03T21:51:15Z"
+      "updated_at": "2026-11-03T22:08:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3617,20 +3617,6 @@
       "number": 4596,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T20:38:54Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "bfb5b257e1",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4601,
-      "title": "quota: pack consumes the self-count tally (series6, carried verbatim)",
-      "updated_at": "2026-11-03T21:50:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3728,7 +3714,7 @@
       "mergeable_state": "unknown",
       "number": 4634,
       "title": "chore(recon): refresh pinned free-provider research",
-      "updated_at": "2026-11-03T21:54:41Z"
+      "updated_at": "2026-11-03T22:18:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3742,7 +3728,7 @@
       "mergeable_state": "unknown",
       "number": 4635,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T21:55:57Z"
+      "updated_at": "2026-11-03T22:18:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3756,7 +3742,7 @@
       "mergeable_state": "unknown",
       "number": 4637,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T21:58:32Z"
+      "updated_at": "2026-11-03T22:19:17Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3765,12 +3751,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9a5b031799",
+      "head_sha": "6f0388f6a2",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4640,
-      "title": "speculators: provision paper|test wallets + cull waterfall to pool (#195)",
-      "updated_at": "2026-11-03T22:04:38Z"
+      "mergeable_state": "unknown",
+      "number": 4644,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T22:07:53Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "f7906e566a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4646,
+      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
+      "updated_at": "2026-11-03T22:14:55Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T13:21:25.822855+00:00",
+ "census_at_utc": "2026-11-03T14:04:04.986751+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,13 +13,13 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3277,
+  "total": 3288,
   "stale": 1028,
   "orphan_no_assoc_PR": 353,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3738,
+  "total": 3759,
   "open": 204,
   "open_draft": 33,
   "open_draft_share": 0.1618,
@@ -28,7 +28,7 @@
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 67.3
+    "age_days": 67.4
    },
    {
     "number": 578,
@@ -46,7 +46,7 @@
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 41.6
+    "age_days": 41.7
    },
    {
     "number": 761,
@@ -124,7 +124,7 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 3.5
+    "age_days": 3.6
    },
    {
     "number": 2978,
@@ -136,25 +136,25 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 2.1
+    "age_days": 2.2
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 2.1
+    "age_days": 2.2
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 2.1
+    "age_days": 2.2
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 1.8
+    "age_days": 1.9
    },
    {
     "number": 3242,
@@ -166,7 +166,7 @@
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 0.8
+    "age_days": 0.9
    },
    {
     "number": 4007,
@@ -178,7 +178,7 @@
     "number": 4011,
     "title": "docs(proposals): register external agent toolchain integration portfolio",
     "created_at": "2026-11-03T00:16:14Z",
-    "age_days": 0.5
+    "age_days": 0.6
    },
    {
     "number": 4016,
@@ -202,7 +202,7 @@
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 0.4
+    "age_days": 0.5
    },
    {
     "number": 4083,
@@ -220,24 +220,24 @@
     "number": 4089,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T07:59:38Z",
-    "age_days": 0.2
+    "age_days": 0.3
    }
   ],
-  "merged": 3057,
+  "merged": 3078,
   "closed_unmerged": 477,
   "open_no_closing_ref": 198,
   "open_unlinked_issue_target": 165,
   "open_unlinked_any_ref": 139,
-  "merged_no_closing_ref": 3028,
-  "merged_unlinked_issue_target": 1727,
-  "merged_unlinked_any_ref": 1011,
+  "merged_no_closing_ref": 3049,
+  "merged_unlinked_issue_target": 1737,
+  "merged_unlinked_any_ref": 1017,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2978,
+  "merged_head_branch_residual_name_match": 2999,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 574,
-  "open": 470,
+  "total": 575,
+  "open": 471,
   "open_surface_unlinked": 203,
   "open_unlinked_strict": 184
  },
@@ -866,6 +866,30 @@
    [
     1474,
     4295
+   ],
+   [
+    1474,
+    4297
+   ],
+   [
+    1474,
+    4298
+   ],
+   [
+    1474,
+    4299
+   ],
+   [
+    1474,
+    4300
+   ],
+   [
+    1474,
+    4301
+   ],
+   [
+    1474,
+    4302
    ],
    [
     1520,
@@ -2030,6 +2054,38 @@
    [
     4301,
     4225
+   ],
+   [
+    4330,
+    4228
+   ],
+   [
+    4330,
+    4230
+   ],
+   [
+    4330,
+    4231
+   ],
+   [
+    4330,
+    4232
+   ],
+   [
+    4330,
+    4234
+   ],
+   [
+    4330,
+    4237
+   ],
+   [
+    4330,
+    4277
+   ],
+   [
+    4330,
+    4281
    ]
   ],
   "issue_issue_mutual_pairs": 3,

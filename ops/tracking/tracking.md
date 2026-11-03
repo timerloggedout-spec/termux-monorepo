@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T07:45:30Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T08:00:35Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T07:45:29Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10274` read_at=`2026-11-03T07:45:29Z`
+Sources: PR feed read_at=`2026-11-03T08:00:34Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10317` read_at=`2026-11-03T08:00:34Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #2167 `6d24b733af85` 2026-11-02T13:52:46Z | land/close PR #4086 — feat(integrations): add read-only provider evidence adapters |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #4035 `62c8d0ef380f` 2026-11-03T03:17:23Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #4040 `34cb9ac7598b` 2026-11-03T03:19:54Z | land/close PR #4083 — feat(mesh): add quota-bound deployment admission and resiliency contract |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #4040 `34cb9ac7598b` 2026-11-03T03:19:54Z | land/close PR #4089 — feat(mesh): add quota-bound deployment admission and resiliency contract |
 | replay | `repo-replay` | Repo Replay | active | #4001 `4d94a89dfa30` 2026-11-02T22:08:50Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | NOT_ESTABLISHED | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3939 `bfa06f3f90f0` 2026-11-03T03:14:39Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |

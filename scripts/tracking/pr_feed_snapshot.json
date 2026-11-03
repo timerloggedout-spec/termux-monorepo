@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-03T07:45:29Z",
+ "read_at": "2026-11-03T08:00:34Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,12 +1956,25 @@
  ],
  "open": [
   {
+   "number": 4089,
+   "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
+   "merged_at": null,
+   "updated_at": "2026-11-03T08:00:04Z",
+   "created_at": "2026-11-03T07:59:38Z",
+   "merge_commit_sha": "4b5df54a1cee7edb463f91b043baec321f416839",
+   "head_ref": "feat/mesh-resiliency-admission-v2",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4089",
+   "merged": false
+  },
+  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-03T07:22:28Z",
+   "updated_at": "2026-11-03T07:56:49Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "c5dd9b8cf4344e8eb3a24ec29d07b3fc16f1c70d",
+   "merge_commit_sha": "4921833bb84ace13d0535ba63967e1ecc565ad5d",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1969,12 +1982,51 @@
    "merged": false
   },
   {
+   "number": 4088,
+   "title": "fix(ci): distinguish dynamic references from dangling paths",
+   "merged_at": null,
+   "updated_at": "2026-11-03T07:56:15Z",
+   "created_at": "2026-11-03T07:49:45Z",
+   "merge_commit_sha": "23ddf896378d32a016b6bad1b15f26e727af43e7",
+   "head_ref": "fix/archwiz-dynamic-reference-detection",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4088",
+   "merged": false
+  },
+  {
+   "number": 4023,
+   "title": "docs: integrate competitive opportunities and quota reconciliation",
+   "merged_at": null,
+   "updated_at": "2026-11-03T07:55:27Z",
+   "created_at": "2026-11-03T03:09:30Z",
+   "merge_commit_sha": null,
+   "head_ref": "feat/competitive-opportunities-quota-reconciliation",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4023",
+   "merged": false
+  },
+  {
+   "number": 3242,
+   "title": "feat(quota): harden provider consumption audit",
+   "merged_at": null,
+   "updated_at": "2026-11-03T07:55:24Z",
+   "created_at": "2026-11-01T20:33:32Z",
+   "merge_commit_sha": "6593dd8456169ee30c354feb69792db89ed5fc25",
+   "head_ref": "feat/provider-consumption-entitlement-audit",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3242",
+   "merged": false
+  },
+  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-03T07:21:01Z",
+   "updated_at": "2026-11-03T07:51:48Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "c345f1944b8e75cbf9fecffda7bf0f02693672f2",
+   "merge_commit_sha": "92df62fcb5cad633b4184ac769ce048a7794d84c",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -2112,19 +2164,6 @@
    "merged": false
   },
   {
-   "number": 4023,
-   "title": "docs: integrate competitive opportunities and quota reconciliation",
-   "merged_at": null,
-   "updated_at": "2026-11-03T05:47:29Z",
-   "created_at": "2026-11-03T03:09:30Z",
-   "merge_commit_sha": null,
-   "head_ref": "feat/competitive-opportunities-quota-reconciliation",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4023",
-   "merged": false
-  },
-  {
    "number": 4022,
    "title": "docs(ops): record post-merge backfill remediation checkpoint",
    "merged_at": null,
@@ -2138,23 +2177,10 @@
    "merged": false
   },
   {
-   "number": 3242,
-   "title": "feat(quota): harden provider consumption audit",
-   "merged_at": null,
-   "updated_at": "2026-11-03T03:10:09Z",
-   "created_at": "2026-11-01T20:33:32Z",
-   "merge_commit_sha": "6593dd8456169ee30c354feb69792db89ed5fc25",
-   "head_ref": "feat/provider-consumption-entitlement-audit",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3242",
-   "merged": false
-  },
-  {
    "number": 2907,
    "title": "fix: scope free-tier opportunity cost to repo work",
    "merged_at": null,
-   "updated_at": "2026-11-03T03:10:07Z",
+   "updated_at": "2026-11-03T07:55:22Z",
    "created_at": "2026-11-01T02:37:44Z",
    "merge_commit_sha": null,
    "head_ref": "fix/free-tier-value-repo-opportunity-cost",
@@ -4530,32 +4556,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/752",
-   "merged": false
-  },
-  {
-   "number": 390,
-   "title": "docs: formalize category-theoretic notation sets and cross-domain mappings",
-   "merged_at": null,
-   "updated_at": "2026-09-03T22:51:06Z",
-   "created_at": "2026-08-28T06:20:05Z",
-   "merge_commit_sha": null,
-   "head_ref": "jules-225739920541251220-691fb33f",
-   "author": "google-labs-jules[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/390",
-   "merged": false
-  },
-  {
-   "number": 407,
-   "title": "\u26a1 Bolt: optimize Bellman-Ford graph search in arbitrage engine",
-   "merged_at": null,
-   "updated_at": "2026-09-03T20:03:43Z",
-   "created_at": "2026-08-30T08:03:36Z",
-   "merge_commit_sha": null,
-   "head_ref": "bolt-bellman-ford-optimization-15759157835821120866",
-   "author": "google-labs-jules[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/407",
    "merged": false
   }
  ],

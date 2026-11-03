@@ -1,0 +1,65 @@
+name: project-task-dispatch
+
+# Issue #3577: intake + routing receipt for project-task issues.
+# Filing IS the trigger — this workflow validates the intake and posts
+# the receipt; selection/execution happens in the system's existing
+# dispatch machinery. Keyed on the `project-task` label or the
+# `[task]` title prefix, so API-filed replicas of the form body
+# trigger identically (never on form provenance).
+
+on:
+  issues:
+    types: [opened, reopened]
+
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: project-task-dispatch-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: contains(github.event.issue.labels.*.name, 'project-task') || startsWith(github.event.issue.title, '[task]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse + validate the intake
+        id: parse
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          printf '%s' "$ISSUE_BODY" > "$RUNNER_TEMP/issue-body.md"
+          python3 scripts/dispatch/project_task.py \
+            --body-file "$RUNNER_TEMP/issue-body.md" \
+            --issue "${{ github.event.issue.number }}" \
+            --comment-out "$RUNNER_TEMP/comment.md" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Post routing receipt + queue (valid intake)
+        if: steps.parse.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create dispatch-queued --force \
+            --color 0E8A16 \
+            --description "Project task accepted into the system; selection pending/executing" || true
+          gh issue comment "${{ github.event.issue.number }}" \
+            --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "${{ github.event.issue.number }}" \
+            --add-label dispatch-queued
+
+      - name: Post intake diagnosis (malformed intake)
+        if: steps.parse.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create intake-incomplete --force \
+            --color D93F0B \
+            --description "Project-task intake missing required field(s); see the diagnosis comment" || true
+          gh issue comment "${{ github.event.issue.number }}" \
+            --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "${{ github.event.issue.number }}" \
+            --add-label intake-incomplete

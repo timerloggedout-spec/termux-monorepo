@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T03:39:41.901643+00:00",
+ "census_at_utc": "2026-11-03T05:27:24.284354+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,70 +13,70 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3144,
-  "stale": 1018,
+  "total": 3155,
+  "stale": 1021,
   "orphan_no_assoc_PR": 352,
-  "stale_and_orphan": 134
+  "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3536,
-  "open": 195,
+  "total": 3558,
+  "open": 197,
   "open_draft": 30,
-  "open_draft_share": 0.1538,
+  "open_draft_share": 0.1523,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 66.9
+    "age_days": 67.0
    },
    {
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 46.8
+    "age_days": 46.9
    },
    {
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 41.6
+    "age_days": 41.7
    },
    {
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 41.2
+    "age_days": 41.3
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 41.0
+    "age_days": 41.1
    },
    {
     "number": 762,
     "title": "ops: map live plugin connector surface and parity skills",
     "created_at": "2026-09-23T03:33:34Z",
-    "age_days": 41.0
+    "age_days": 41.1
    },
    {
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 41.0
+    "age_days": 41.1
    },
    {
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 39.1
+    "age_days": 39.2
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 33.1
+    "age_days": 33.2
    },
    {
     "number": 970,
@@ -88,7 +88,7 @@
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 13.9
+    "age_days": 14.0
    },
    {
     "number": 1538,
@@ -100,7 +100,7 @@
     "number": 1612,
     "title": "docs(research): map new free LLM catalogs to telemetry gates",
     "created_at": "2026-10-24T01:09:43Z",
-    "age_days": 10.1
+    "age_days": 10.2
    },
    {
     "number": 1630,
@@ -112,7 +112,7 @@
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 7.2
+    "age_days": 7.3
    },
    {
     "number": 2461,
@@ -124,7 +124,7 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 3.1
+    "age_days": 3.2
    },
    {
     "number": 2978,
@@ -136,37 +136,37 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 1.7
+    "age_days": 1.8
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 1.7
+    "age_days": 1.8
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 1.7
+    "age_days": 1.8
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 1.4
+    "age_days": 1.5
    },
    {
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 1.3
+    "age_days": 1.4
    },
    {
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 0.4
+    "age_days": 0.5
    },
    {
     "number": 4007,
@@ -178,19 +178,19 @@
     "number": 4011,
     "title": "docs(proposals): register external agent toolchain integration portfolio",
     "created_at": "2026-11-03T00:16:14Z",
-    "age_days": 0.1
+    "age_days": 0.2
    },
    {
     "number": 4016,
     "title": "security(issues): gate advisory triage through deterministic intake firewall",
     "created_at": "2026-11-03T00:54:04Z",
-    "age_days": 0.1
+    "age_days": 0.2
    },
    {
     "number": 4017,
     "title": "feat(ops): map federated AppIDs and independent release lanes",
     "created_at": "2026-11-03T01:05:41Z",
-    "age_days": 0.1
+    "age_days": 0.2
    },
    {
     "number": 4020,
@@ -202,24 +202,24 @@
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 0.0
+    "age_days": 0.1
    }
   ],
-  "merged": 2864,
+  "merged": 2884,
   "closed_unmerged": 477,
-  "open_no_closing_ref": 189,
-  "open_unlinked_issue_target": 157,
-  "open_unlinked_any_ref": 132,
-  "merged_no_closing_ref": 2835,
-  "merged_unlinked_issue_target": 1653,
-  "merged_unlinked_any_ref": 961,
+  "open_no_closing_ref": 191,
+  "open_unlinked_issue_target": 158,
+  "open_unlinked_any_ref": 133,
+  "merged_no_closing_ref": 2855,
+  "merged_unlinked_issue_target": 1657,
+  "merged_unlinked_any_ref": 964,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2786,
+  "merged_head_branch_residual_name_match": 2806,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 518,
-  "open": 428,
+  "total": 519,
+  "open": 427,
   "open_surface_unlinked": 176,
   "open_unlinked_strict": 157
  },
@@ -1668,6 +1668,10 @@
    [
     4039,
     2298
+   ],
+   [
+    4077,
+    3577
    ]
   ],
   "issue_issue_mutual_pairs": 3,
@@ -1690,6 +1694,7 @@
    "backup/tmx-node-primary-20261021/fix-env-risk-partial-dict",
    "backup/tmx-node-primary-20261021/fix-events-extract-order",
    "backup/tmx-node-primary-20261021/fix-hindsight-async-handlers",
+   "backup/tmx-node-primary-20261021/fix-hygiene-notify-status-timing-62b",
    "backup/tmx-node-primary-20261021/fix-preflight-score-none-env",
    "backup/tmx-node-primary-20261021/fix-session-store-prune-expired",
    "backup/tmx-node-primary-20261021/fix-stream-completion-final-text",

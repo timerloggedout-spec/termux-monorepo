@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-03T03:20:58Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-03T03:24:01Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `ae77670311` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `53e3edae43` (hygiene: in_progress, smoke: success). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 428 issues, 194 PRs. PR classes: EXTRACT 6 / CANDIDATE 96 / NEED_EVIDENCE 92 / SUPERSEDE 0.
+**Open inventory:** 427 issues, 193 PRs. PR classes: EXTRACT 6 / CANDIDATE 95 / NEED_EVIDENCE 92 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -30,7 +30,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #829 | CANDIDATE | unlabelled | `0c5d29e473` | success | success | unknown | feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support |
 | #970 | CANDIDATE | unlabelled | `4544ed8201` | success | success | unknown | Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alte |
 | #1278 | CANDIDATE | unlabelled | `e650476044` | success | success | unknown | ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) — REV |
-| #1301 | CANDIDATE | unlabelled | `4d18fdff62` | success | success | unknown | docs(telemetry): add equation registry and Wolfram verification |
+| #1301 | CANDIDATE | unlabelled | `4d18fdff62` | success | success | dirty | docs(telemetry): add equation registry and Wolfram verification |
 | #1436 | CANDIDATE | unlabelled | `db77673cf7` | success | success | unknown | feat(dashboard): salvage operational Hindsight dashboard onto current master |
 | #1441 | CANDIDATE | unlabelled | `e17f7db4a0` | success | success | unknown | feat(triage): reconcile official quota before dispatch |
 | #1469 | CANDIDATE | unlabelled | `c7f74de860` | success | success | unknown | test(observatory): restore upstream provenance PR validation |
@@ -74,7 +74,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
-| #2263 | CANDIDATE | unlabelled | `885c742400` | success | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
 | #2343 | CANDIDATE | unlabelled | `001ef79704` | success | success | unknown | Add Merged Branch Audit and Timing Quotas Evaluator |
@@ -153,7 +152,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2310 | NEED_EVIDENCE | unlabelled | `f5b7301bcf` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `ab53eb1ed0` | queued | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #2310 | NEED_EVIDENCE | unlabelled | `095a80c101` | queued | queued | unstable | chore(delphi): refresh delphi-rfp-feed.json |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2377 | NEED_EVIDENCE | unlabelled | `529ec2dc60` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -206,7 +206,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
 | #4023 | NEED_EVIDENCE | unlabelled | `57669a24ed` | not_reported | not_reported | unknown | docs: integrate competitive opportunities and quota reconciliation |
-| #4042 | NEED_EVIDENCE | unlabelled | `1aacb87a7f` | queued | queued | unknown | apk-release: finalize workflow (upload assets to PAT-created draft release) |
 
 ## Families (open)
 
@@ -215,12 +214,12 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 84 | 0 |
 | mesh | 7 | 0 |
-| other | 234 | 1 |
+| other | 233 | 1 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 17 | 192 |
+| unlabelled | 17 | 191 |
 
 **Unlabelled open issues (17):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3751, #3752, #4008 — worked oldest-first by the issue-lifecycle lane pass.

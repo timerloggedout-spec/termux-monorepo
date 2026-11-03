@@ -1,9 +1,9 @@
 {
   "counts": {
-    "open_issues": 428,
-    "open_prs": 194,
+    "open_issues": 427,
+    "open_prs": 193,
     "pr_classes": {
-      "CANDIDATE": 96,
+      "CANDIDATE": 95,
       "EXTRACT": 6,
       "NEED_EVIDENCE": 92,
       "SUPERSEDE": 0
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 234,
+      "issues": 233,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 17,
-      "prs": 192,
+      "prs": 191,
       "unlabelled_numbers": [
         308,
         388,
@@ -72,7 +72,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T03:20:58Z",
+  "generated_at": "2026-11-03T03:24:01Z",
   "issues_unlabelled": [
     308,
     388,
@@ -95,10 +95,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "success"
     },
-    "sha": "ae77670311"
+    "sha": "53e3edae43"
   },
   "prs": [
     {
@@ -350,7 +350,7 @@
       },
       "head_sha": "4d18fdff62",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1301,
       "title": "docs(telemetry): add equation registry and Wolfram verification",
       "updated_at": "2026-10-20T07:17:41Z"
@@ -959,20 +959,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "885c742400",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T02:36:05Z"
     },
     {
       "class": "CANDIDATE",
@@ -2070,15 +2056,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "f5b7301bcf",
+      "head_sha": "ab53eb1ed0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T03:21:56Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "095a80c101",
+      "labels": [],
+      "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T02:20:02Z"
+      "updated_at": "2026-11-03T03:23:02Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2807,20 +2807,6 @@
       "number": 4023,
       "title": "docs: integrate competitive opportunities and quota reconciliation",
       "updated_at": "2026-11-03T03:17:28Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "1aacb87a7f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4042,
-      "title": "apk-release: finalize workflow (upload assets to PAT-created draft release)",
-      "updated_at": "2026-11-03T03:20:23Z"
     }
   ],
   "schema": "operator-matrix/v1",

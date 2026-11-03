@@ -26,9 +26,10 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.1.3"
+TUI_VERSION = "0.2.0"
 SURFACE = "studysprint-tui"
 
+from study_geo import surface_calendar_geo  # noqa: E402
 from study_reader import RSVPReader, Section  # noqa: E402
 from study_sr import (build_cards_from_practice_set, export_apkg,  # noqa: E402
                       export_obsidian_vault, review_card)
@@ -78,6 +79,17 @@ def build_state(root: Path | None = None) -> dict:
                 section_id=f"w{w.get('week')}-{abs(hash(topic)) % 9999}",
                 title=topic, content=text,
                 chapter=f"Week {w.get('week')}"))
+    # Calendar + geography (parity iteration 1, #4414): the
+    # bundled example calendar drives the core assembler; a root
+    # without one gets None and the panes say so honestly.
+    calendar_geo = None
+    calendar_file = root / "examples" / "calendar.json"
+    if calendar_file.exists():
+        calendar_doc = json.loads(calendar_file.read_text())
+        topics = [t for w in syllabus.get("weeks") or []
+                  for t in w.get("topics") or []]
+        calendar_geo = surface_calendar_geo(
+            calendar_doc, datetime.now(timezone.utc), topics=topics)
     return {
         "syllabus": syllabus,
         "plan": plan,
@@ -85,6 +97,7 @@ def build_state(root: Path | None = None) -> dict:
         "today": render_today_view(plan),
         "cards": build_cards_from_practice_set(practice),
         "sections": sections,
+        "calendar_geo": calendar_geo,
         "root": root,
     }
 
@@ -103,6 +116,95 @@ def _plan_text(state: dict) -> str:
 
 def _receipt_text(state: dict) -> str:
     return json.dumps(state["trust_receipt"], indent=2, sort_keys=True)
+
+
+_DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+
+def _calendar_text(state: dict) -> str:
+    """Calendar pane (iteration 1, #4414): classes, assessment
+    briefings with ramps + shift notices, today's frequency
+    plan, and the quiet-hours probe — all from the core
+    assembler (study_geo.surface_calendar_geo)."""
+    cg = state.get("calendar_geo")
+    if not cg:
+        return ("No calendar loaded for this course yet. "
+                "Add examples/calendar.json (classes + "
+                "assessments) and this pane binds.")
+    lines = ["Classes:"]
+    for c in cg["classes"]:
+        days = "/".join(_DAY_NAMES[d] for d in c.get("days") or [])
+        lines.append(f"  {c.get('course')}: {days} "
+                     f"{c.get('start')}–{c.get('end')} · "
+                     f"{c.get('location')}")
+    lines += ["", "Assessments (nearest first):"]
+    for b in cg["briefings"]:
+        lines.append(
+            f"  {b['date']} {b['time']} · {b['kind']} — "
+            f"{b['course']} · {b['location']} · "
+            f"{b['days_away']}d away · ramp {b['ramp']['tier']} "
+            f"×{b['ramp']['multiplier']}")
+        if b.get("briefing"):
+            lines.append(f"    ⚠ {b['briefing']}")
+    lines += ["", "Today's question frequency:"]
+    for course, f in sorted(cg["frequency_plan"].items()):
+        lines.append(f"  {course}: {f['per_day']}/day "
+                     f"(base {f['base_per_day']} × "
+                     f"{f['multiplier']}, {f['tier']}"
+                     + (f"; driven by {f['driven_by']}"
+                        if f.get("driven_by") else "") + ")")
+    q = cg.get("quiet_hours")
+    lines += ["", "Quiet hours (probed against the class blocks):"]
+    if q:
+        for n in q["batched"]:
+            lines.append(f"  in-class note {n['at'][11:16]} → held "
+                         f"by {n['held_by']}, released "
+                         f"{n['release_at'][11:16]}")
+        for n in q["delivered"]:
+            lines.append(f"  outside note {n['at'][11:16]} → "
+                         "delivered")
+    else:
+        lines.append("  no class block in the next 7 days to probe")
+    lines += ["", f"Ceiling: {cg['claims_ceiling']}"]
+    return "\n".join(lines)
+
+
+def _routes_text(state: dict) -> str:
+    """Routes pane (iteration 1, #4414): locations, per-assessment
+    routes from the student's origin, and the temple route (loci
+    over the real campus walk) with its audio cues."""
+    cg = state.get("calendar_geo")
+    if not cg:
+        return ("No calendar loaded — routes need the calendar's "
+                "locations first (see the Calendar pane).")
+    lines = ["Locations:"]
+    for r in cg["locations"]:
+        lines.append(f"  {r['location']} — "
+                     + ", ".join(r.get("used_by") or []))
+    lines += ["", f"Routes from {cg.get('origin') or '—'}:"]
+    if cg["routes"]:
+        for r in cg["routes"]:
+            lines.append(
+                f"  {r['assessment_kind']} ({r['course']}) → "
+                f"{r['destination']}: {r['travel_minutes']} min "
+                f"walk + {r['buffer_minutes']} buffer · leave by "
+                f"{r['depart_by'][:10]} {r['depart_by'][11:16]} "
+                f"({r['source']})")
+    else:
+        lines.append("  no routes — the calendar carries no "
+                     "coordinates, so nothing is drawn or faked")
+    temple = cg.get("temple_route")
+    lines += ["", "Temple route (loci over your walk):"]
+    if temple:
+        for p in temple["placements"]:
+            lines.append(f"  {p['position']}. {p['locus']} — "
+                         f"{p['item']}")
+        lines += ["", "Audio cues:"]
+        for cue in cg["audio_cues"]:
+            lines.append(f"  {cue['seq']}. {cue['cue']}")
+    else:
+        lines.append("  no waypoints on this calendar")
+    return "\n".join(lines)
 
 
 try:
@@ -195,6 +297,12 @@ try:
                     yield Button("3 Good", id="grade-3")
                     yield Button("4 Easy", id="grade-4")
                     yield Label("", id="sr-receipt")
+                with TabPane("Calendar", id="tab-calendar"):
+                    yield Static(_calendar_text(self.state),
+                                 id="calendar-text")
+                with TabPane("Routes", id="tab-routes"):
+                    yield Static(_routes_text(self.state),
+                                 id="routes-text")
                 with TabPane("Ingest", id="tab-ingest"):
                     yield Label("Add a syllabus or textbook file — "
                                 "one core path, every surface.",

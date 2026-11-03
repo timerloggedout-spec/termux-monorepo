@@ -222,7 +222,102 @@ def apply_voice_customization(temple_route: dict, transcript: str,
                     transcript=text, route=route)
 
 
+def surface_calendar_geo(doc: dict, now: datetime,
+                         topics=(), base_per_day: float = 6.0) -> dict:
+    """Assemble the surface state for the calendar + geography
+    binding (parity iteration 1, #4414): intake, briefings,
+    frequency plan, quiet-hours probes, location records,
+    assessment routes, and the temple route — one JSON-ready
+    dict every surface renders (TUI at runtime; the web bundle
+    at build time, disclosed there as build-time state).
+
+    The doc may carry the surface extension fields `coords`
+    ({location: [lat, lon]}), `origin` (where routes start),
+    and `waypoints` (the temple walk); without coords, routes
+    are omitted rather than faked — the surfaces render the
+    locations and say why no route is drawn. Quiet hours are
+    probed honestly: one synthetic notification inside today's
+    (or the next) class block and one outside it, run through
+    apply_quiet_hours itself.
+    """
+    from study_calendar import (apply_quiet_hours, assessment_briefings,
+                                frequency_plan, intake_calendar)
+
+    cal = intake_calendar(doc, now)
+    briefings = assessment_briefings(cal, now)
+    plan = frequency_plan(cal, base_per_day, now)["plan"]
+
+    # Quiet-hours probes: find the first class block today or in
+    # the next 7 days; probe inside it and clear of it.
+    probes, probe_day = [], None
+    for offset in range(8):
+        day = (now + timedelta(days=offset)).date()
+        blocks = []
+        for c in cal["classes"]:
+            if day.weekday() in (c.get("days") or []):
+                hh, mm = str(c["start"]).split(":")
+                blocks.append(datetime(day.year, day.month, day.day,
+                                       int(hh), int(mm),
+                                       tzinfo=now.tzinfo))
+        if blocks:
+            probe_day = day
+            probes = [
+                {"id": "probe-in-class",
+                 "at": blocks[0] + timedelta(minutes=15)},
+                {"id": "probe-outside",
+                 "at": blocks[0] - timedelta(hours=2)},
+            ]
+            break
+    quiet = None
+    if probes:
+        raw = apply_quiet_hours(cal, probes, now)
+
+        def _ser(note):
+            out = dict(note)
+            out["at"] = _iso(out["at"])
+            if "release_at" in out:
+                out["release_at"] = _iso(out["release_at"])
+            return out
+
+        quiet = {"probe_day": probe_day.isoformat(),
+                 "delivered": [_ser(n) for n in raw["delivered"]],
+                 "batched": [_ser(n) for n in raw["batched"]],
+                 "suppressed": raw["suppressed"]}
+
+    coords = {k: tuple(v) for k, v in (doc.get("coords") or {}).items()}
+    origin = doc.get("origin")
+    routes = []
+    if coords and origin:
+        for a in cal["assessments"]:
+            try:
+                routes.append(route_to_assessment(
+                    a, origin, now, coords=coords))
+            except ValueError:
+                pass  # a location without coords: no route, no fake
+
+    waypoints = doc.get("waypoints") or []
+    temple, cues = None, []
+    if waypoints:
+        items = [{"term": t} for t in list(topics)[:len(waypoints)]]
+        temple = build_temple_route(waypoints, items, now)
+        cues = audio_cues(temple)
+
+    return {
+        "classes": cal["classes"],
+        "assessments": cal["assessments"],
+        "briefings": briefings,
+        "frequency_plan": plan,
+        "quiet_hours": quiet,
+        "locations": location_records(cal),
+        "routes": routes,
+        "temple_route": temple,
+        "audio_cues": cues,
+        "origin": origin,
+        "claims_ceiling": LOGISTICS_CEILING,
+    }
+
+
 __all__ = ["location_records", "haversine_minutes",
            "route_to_assessment", "build_temple_route",
            "audio_cues", "apply_voice_customization",
-           "GEO_RECEIPT_SCHEMA"]
+           "surface_calendar_geo", "GEO_RECEIPT_SCHEMA"]

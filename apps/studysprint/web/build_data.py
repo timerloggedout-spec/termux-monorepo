@@ -24,6 +24,7 @@ sys.path.insert(0, str(APP_ROOT))
 
 from datetime import date  # noqa: E402
 
+from study_geo import surface_calendar_geo  # noqa: E402
 from study_reader import Section  # noqa: E402
 from study_sr import build_cards_from_practice_set, export_ux_state  # noqa: E402
 from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
@@ -74,6 +75,19 @@ def emit_state(root: Path | None = None) -> dict:
                                  section_id="tmp", title=topic,
                                  content=text).tokens})
     version_file = WEB_DIR / "VERSION"
+    # Calendar + geography (parity iteration 1, #4414): the same
+    # core assembler the TUI runs live; here it is computed at
+    # build time like the rest of the bundle's state (the APK
+    # disclosure covers it: state as of the build).
+    from datetime import datetime, timezone
+    calendar_geo = None
+    calendar_file = root / "examples" / "calendar.json"
+    if calendar_file.exists():
+        topics = [t for w in syllabus.get("weeks") or []
+                  for t in w.get("topics") or []]
+        calendar_geo = surface_calendar_geo(
+            json.loads(calendar_file.read_text()),
+            datetime.now(timezone.utc), topics=topics)
     return {
         "plan_start": date.today().isoformat(),
         "surface": "studysprint-webapp",
@@ -86,6 +100,7 @@ def emit_state(root: Path | None = None) -> dict:
         "sr": {"cards": [c.to_dict() for c in cards],
                "ux_state": ux},
         "reader": {"sections": sections},
+        "calendar_geo": calendar_geo,
     }
 
 

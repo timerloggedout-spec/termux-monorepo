@@ -44,6 +44,8 @@ default or SM-2, scheduler-named receipt after every grade) ·
 | Reading pipeline (§1b) | absent | core module ships in the CLI; not yet surfaced in the TUI |
 | Multi-course / countdown / .ics | absent | core v0.4.0; TUI parity pass pending |
 | Memory methods (x6) | absent | core v0.4.0; TUI parity pass pending |
+| Calendar awareness (§1d) | present | Calendar tab → `surface_calendar_geo` (intake · briefings · frequency · quiet hours), assembled live |
+| Geography (§1d) | present | Routes tab → locations · assessment routes · temple route + audio cues |
 
 ## Verification
 

@@ -105,6 +105,7 @@ engines. An embedded-Python build is not claimed here.
 | Reader (RSVP) | present | bundle Reader view (beyond the filed minimum) |
 | .apkg / vault export | absent | export stays CLI/TUI in this version |
 | v0.4.0 core modules (§1b pipeline, courses, memory methods) | absent | parity pass pending, as on the other surfaces |
+| §1d calendar + geography | present | as webApp (Calendar + Routes views in the bundle, build-time state) |
 
 ## The smoke gate (#4283)
 

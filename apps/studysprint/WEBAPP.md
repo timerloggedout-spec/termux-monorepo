@@ -45,6 +45,8 @@ the bundle serves from the project's Pages site.
 | Reading pipeline (§1b) | absent | core v0.4.0; web parity pass pending |
 | Multi-course / countdown / .ics | absent | core v0.4.0; web parity pass pending |
 | Memory methods (x6) | absent | core v0.4.0; web parity pass pending |
+| Calendar awareness (§1d) | present | Calendar view over the core assembler (build-time state, as the bundle's other state) |
+| Geography (§1d) | present | Routes view — locations · assessment routes · temple route + audio cues (build-time state) |
 
 ## Verification
 

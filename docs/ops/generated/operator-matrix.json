@@ -1,6 +1,6 @@
 {
   "counts": {
-    "open_issues": 427,
+    "open_issues": 428,
     "open_prs": 194,
     "pr_classes": {
       "CANDIDATE": 96,
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 17,
+      "issues": 18,
       "prs": 192,
       "unlabelled_numbers": [
         308,
@@ -68,11 +68,12 @@
         3673,
         3751,
         3752,
-        4008
+        4008,
+        4052
       ]
     }
   },
-  "generated_at": "2026-11-03T03:28:29Z",
+  "generated_at": "2026-11-03T03:30:52Z",
   "issues_unlabelled": [
     308,
     388,
@@ -90,15 +91,16 @@
     3673,
     3751,
     3752,
-    4008
+    4008,
+    4052
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "3096237541"
+    "sha": "2976188180"
   },
   "prs": [
     {
@@ -2070,15 +2072,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "0ddd26a7b6",
+      "head_sha": "a291fafeb8",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T03:27:04Z"
+      "updated_at": "2026-11-03T03:30:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2817,7 +2819,7 @@
       },
       "head_sha": "87c1d03307",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4048,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T03:28:17Z"

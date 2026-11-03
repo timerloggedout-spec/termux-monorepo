@@ -113,7 +113,8 @@ function safeIntakeUrl(value){
 function stageClass(state){ return STAGE_STATES.indexOf(state)>=0 ? state : "pending"; }
 function stageLabel(stage,state){ return stage+" "+(state==="done"?"✓":state==="gated"?"⛔":state==="na"?"—":state==="active"?"…":"·"); }
 function boardRow(t){
-  const chips=STAGES.map((s,i)=>((i? '<span class="arrow">⇒</span>' : "")+'<span class="stage"><span class="chip '+stageClass(t.stages[s])+'">'+esc(stageLabel(s,t.stages[s]))+"</span></span>")).join("");
+  const st=t.stages||{};
+  const chips=STAGES.map((s,i)=>((i? '<span class="arrow">⇒</span>' : "")+'<span class="stage"><span class="chip '+stageClass(st[s])+'">'+esc(stageLabel(s,st[s]))+"</span></span>")).join("");
   return {entry:t.entry, project:t.project, status:t.status, chips};
 }
 function providerCell(t){

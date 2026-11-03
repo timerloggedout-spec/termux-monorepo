@@ -2395,9 +2395,10 @@
         },
         "in_window_development": {
           "rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, \u00ac done; done only at wall/submission close.",
-          "line": "LIVE \u2014 surfaces program in flight {webApp #4092 \u00b7 APK #4093 \u00b7 TUI #4095, \u2200 dispatch-queued} on the v0.3.0 checkpoint; post-Nov 4 RFP builds #3697/#3698 file in form at window",
+          "line": "LIVE \u2014 PRESS-ON (owner overrule 2026-11-03): 6 builds in flight {surfaces #4092/#4093/#4095 \u00b7 RFP builds #4111 (D1-3) \u00b7 #4112 (D1-4) \u00b7 #4113 (D1-5)} as the v0.4.0 batch on the v0.3.0 checkpoint; v1.0.0 tag Nov 4 = submission state; merges continue past it to the 23:59 PT wall",
           "wall": "2026-11-04 23:59 PT submission wall"
-        }
+        },
+        "rfp_d1_5": "#4110 filed 2026-11-03 (memory-methods expansion, v0.4.0 scope); build filed as #4113 under the press-on overrule"
       },
       "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
       "provider_usage": [
@@ -2674,6 +2675,42 @@
           "rework_cycles": null,
           "session_id": "issue-4095",
           "task": "StudySprint TUI surface (Textual tui.py, v0.3.0-matched): runnable in tree + pilot tests + parity checklist + recorded terminal run; routing receipt 6598847704, dispatch-queued (run 41602968237 SUCCESS)"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
+          "dispatched_at": "2026-11-03T01:03:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "session_id": "issue-4111",
+          "task": "RFP-D1-3 build: reading pipeline \u00a71b full (RFP #3697); receipt 6599521444, dispatch-queued"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
+          "dispatched_at": "2026-11-03T01:03:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "session_id": "issue-4112",
+          "task": "RFP-D1-4 build: multi-course intake + exam countdown + .ics (RFP #3698); receipt 6599519546, dispatch-queued"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
+          "dispatched_at": "2026-11-03T01:03:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "session_id": "issue-4113",
+          "task": "RFP-D1-5 build: memory-methods \u22006 (RFP #4110; claims ceilings bind copy); receipt 6599519666, dispatch-queued"
         }
       ]
     },
@@ -3453,7 +3490,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T00:26:48-08:00",
+    "updated_at": "2026-11-03T01:03:59-08:00",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main."
   }
 }

@@ -19,8 +19,8 @@ numbers prove it). Copy rule: benefit → proof → code. Never specs first.
 |---|---|---|---|
 | Muse | 1B tokens, redeem ≤48h of joining, never expires | **1B tokens per use, 30 uses left = up to 30B** | 1 live code (`VDP1DW`), no reserve — single-code programme, rotation impossible until a second code exists |
 | Manus | free plan + invitation access | refer-a-friend credits (amount not firsthand) | link live (§1) |
-| Cue | free early access | NOT ESTABLISHED | 1 live + 1 reserve |
-| Migoo | invite signup + free daily points | NOT ESTABLISHED | 1 live + 2 reserve |
+| Cue | free early access | NOT ESTABLISHED | 1 live + 1 cell_b deployed, 0 reserve (2026-11-03 sweep) |
+| Migoo | invite signup + free daily points | NOT ESTABLISHED | 1 live + 1 cell_b deployed + 1 reserve (2026-11-03 sweep) |
 | CellCog | 200 free credits, no card | NOT ESTABLISHED | link live (§1) |
 
 Muse terms are now firsthand (owner's in-app redeem screen, 2026-10-27):

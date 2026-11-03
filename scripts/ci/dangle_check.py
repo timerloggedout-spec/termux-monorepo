@@ -188,6 +188,19 @@ HTML_REF = re.compile(r"(?:href|src)\s*=\s*\"([^\"]+)\"")
 HTML_ID = re.compile(r"id\s*=\s*\"([^\"]+)\"")
 
 
+def is_dynamic_reference(value):
+    """Return true when a captured attribute is assembled at runtime.
+
+    The census validates literal repository paths only. JavaScript template
+    expressions, concatenations and interpolation helpers are not paths and
+    must not be resolved against the checkout.
+    """
+    return bool(re.search(
+        r"\\$\\{|\\$\\(|(?:^|[\\s])\\+|\\+|\\b(?:esc|safeHref)\\s*\\(",
+        value,
+    ))
+
+
 def slugify(heading):
     s = heading.strip().lower()
     s = re.sub(r"[^\w\s-]", "", s)
@@ -230,6 +243,8 @@ def check_links(root):
             refs = [(m.group(1), text[:m.start()].count("\n") + 1)
                     for m in HTML_REF.finditer(text)]
         for refv, line in refs:
+            if is_dynamic_reference(refv):
+                continue
             if re.match(r"^(https?:|mailto:|tel:|data:|#)", refv):
                 if refv.startswith("#") and len(refv) > 1:
                     anchors = (html_ids(p) if p.suffix == ".html"
@@ -294,6 +309,11 @@ def check_feeds(root):
         feed_refs(data, strings)
         seen = set()
         for s in strings:
+            # Feed descriptions often combine several paths into prose
+            # (for example "a.md + b.py"). Only a single literal path is
+            # eligible for filesystem resolution.
+            if is_dynamic_reference(s) or re.search(r"\\s", s.strip()):
+                continue
             cand = s.split("#")[0].split("?")[0]
             if cand in seen:
                 continue

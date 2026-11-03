@@ -1,0 +1,123 @@
+{
+ "schema": "quota-self-counts/v1",
+ "generated_by": "scripts/quota_self_counts.py",
+ "generated_at": "2026-11-03T19:30:52Z",
+ "method": "self-count: tallies of the fleet's own recorded events from committed sources (owner ruling 2026-11-03). Not provider readings; not estimates. Provider readings govern where present; these counts govern where readings are null.",
+ "providers": {
+  "gemini-cli": {
+   "provider": "gemini-cli",
+   "dispatches": 1,
+   "first_at": "2026-11-02T11:21:00Z",
+   "last_at": "2026-11-02T11:21:00Z",
+   "usage_stamps": 1
+  },
+  "muse": {
+   "provider": "Muse",
+   "dispatches": 3,
+   "first_at": "2026-11-02T00:39:10Z",
+   "last_at": "2026-11-02T01:24:02Z",
+   "usage_stamps": 7
+  },
+  "cohere": {
+   "provider": "cohere",
+   "dispatches": 3,
+   "first_at": "2026-11-02T00:28:57Z",
+   "last_at": "2026-11-02T02:10:16Z",
+   "usage_stamps": 4
+  },
+  "sealion": {
+   "provider": "sealion",
+   "dispatches": 4,
+   "first_at": "2026-11-02T00:33:03Z",
+   "last_at": "2026-11-02T01:19:03Z",
+   "usage_stamps": 4
+  },
+  "baseten": {
+   "provider": "baseten",
+   "dispatches": 1,
+   "first_at": "2026-11-02T01:54:34Z",
+   "last_at": "2026-11-02T01:54:34Z",
+   "usage_stamps": 1
+  },
+  "mistral": {
+   "provider": "mistral",
+   "dispatches": 2,
+   "first_at": "2026-11-02T05:12:54Z",
+   "last_at": "2026-11-02T05:16:30Z",
+   "usage_stamps": 2
+  },
+  "unorouter": {
+   "provider": "unorouter",
+   "dispatches": 1,
+   "first_at": "2026-11-02T07:46:55Z",
+   "last_at": "2026-11-02T07:46:55Z",
+   "usage_stamps": 1
+  },
+  "deepseek": {
+   "provider": "deepseek",
+   "dispatches": 6,
+   "first_at": "2026-11-02T08:16:23Z",
+   "last_at": "2026-11-02T09:14:42Z",
+   "usage_stamps": 7
+  },
+  "scout": {
+   "provider": "Scout / Delphi (owner-named)",
+   "dispatches": 0,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 1
+  },
+  "jules": {
+   "provider": "Jules",
+   "dispatches": 0,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 3
+  },
+  "gemini": {
+   "provider": "Gemini",
+   "dispatches": 0,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 2
+  },
+  "command-dispatch": {
+   "provider": "Command-dispatch (Devin)",
+   "dispatches": 0,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 14
+  },
+  "github-actions": {
+   "provider": "github-actions",
+   "dispatches": 0,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 5
+  }
+ },
+ "buckets": {
+  "github.api.user_token": {
+   "wall_events": 8,
+   "by_class": {
+    "core-exhaustion": 7,
+    "secondary-403": 1
+   },
+   "last_at": "2026-11-02T06:25:00Z"
+  }
+ },
+ "services": {
+  "github.actions": {
+   "runs_total": 1550,
+   "jobs_total": 2154,
+   "corpus_files": 38,
+   "latest_corpus_date": "2026-11-01",
+   "source": "docs/ops/generated/actions-performance-reconstructed-*.json"
+  }
+ },
+ "coverage_notes": [
+  "PAT helper spend logs (spend.jsonl beside the helper) are VM-local and not committed - PAT call volume is NOT tallied here; its wall events are (rate-limit register). Export of the spend log is the follow-up that closes this blind spot.",
+  "Provider-side token/$ consumption is visible only where a dispatch was stamped (routed-dispatch + nested-family carriers); unstamped consumption is not counted and not estimated.",
+  "Dispatch counts are per provider (dispatch records name provider+model, not registry service id); the planner rolls them up to pools by provider."
+ ]
+}

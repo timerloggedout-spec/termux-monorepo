@@ -14,8 +14,11 @@ related_issues:
   - 4008
 related_prs:
   - 4019
+  - 4021
+  - 4086
 related_branches:
   - feat/agent-toolchain-portfolio
+  - feat/agent-toolchain-adapters
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 
@@ -41,13 +44,19 @@ Extend the existing Integration Intelligence system with an evidence-backed port
 - Disposition: implementation of the bounded portfolio and phased plan authorized.
 - Runtime adapters and consequential external actions remain separately gated.
 
+### 2026-11-03 — ATP-002 / ATP-003 implementation
+- Added offline HAPI MCP Registry, Context7, and Context.dev normalizers and provider-observation schema in PR #4086.
+- The HAPI registry sample exposed versioned server records and multiple remote transports; output preserves version/transport identity while forcing `not_reviewed`, `not_admitted`, and `execution_allowed=false`.
+- Context7 normalizer requires exact library ID/version; Context.dev normalizer strips URL query strings/fragments and bounds excerpts.
+- No runtime authentication, provider polling, artifact persistence, server admission, or live provider integration is claimed.
+
 ## Checklist
 
 - [x] Tracking issue #4008 exists
 - [x] Reuse canonical Integration Intelligence branch as base
-- [ ] Registry/catalog/adapter contract updated
-- [ ] Proposal registry and lifecycle validation pass
-- [ ] repo-gate and termux-smoke pass on the same immutable head
+- [x] Registry/catalog/adapter contract updated
+- [ ] Proposal registry and lifecycle validation pass on final adapter head
+- [ ] repo-gate and termux-smoke pass on the same immutable adapter head
 - [ ] Non-author review and current check disposition recorded
 - [ ] Runtime pilots separately authorized and evidenced
 

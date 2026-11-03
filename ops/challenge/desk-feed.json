@@ -2354,10 +2354,18 @@
             "3695",
             "3696"
           ],
-          "d1_verify": "PASS head 5ce8b3e443"
+          "d1_verify": "PASS head 5ce8b3e443",
+          "parity_d1_rerun": {
+            "result": "23/23, drift \u2205",
+            "readme_blob": "83bacad7",
+            "article_blob": "ce53a94e",
+            "by": "D1 seat firsthand re-run",
+            "at": "2026-11-02T19:20:00-08:00",
+            "verdict": "Nov 3 landing copy leg verified closed"
+          }
         }
       },
-      "next": "Nov 3: D1 seat parity re-run confirm (re-sync record). Nov 4: submission (owner hand) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
+      "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
       "provider_usage": [
         {
           "provider": "Muse (in-house, pre-correction)",
@@ -3315,6 +3323,6 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-02T19:19:29-08:00"
+    "updated_at": "2026-11-02T19:20:20-08:00"
   }
 }

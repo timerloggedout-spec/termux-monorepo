@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-03T03:20:15Z",
+ "generated_at": "2026-11-03T03:27:54Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-03T03:20:15Z",
+   "read_at": "2026-11-03T03:27:54Z",
    "merged": 150,
    "open": 194
   },
   "lane_events": {
-   "read_at": "2026-11-03T03:20:15Z",
+   "read_at": "2026-11-03T03:27:54Z",
    "status": "ok",
-   "count": 9884,
+   "count": 9899,
    "events_in_snapshot": 200
   },
   "records": [
@@ -60,12 +60,12 @@
    "project_id": "d0-delphi-oracle",
    "state": "closed",
    "last_merge": {
-    "pr": 3993,
-    "sha": "067ace6f3464",
-    "at": "2026-11-02T22:04:54Z",
-    "title": "desk-feed: D0 Delphi upgrade program (release v1.0.0 done)"
+    "pr": 4046,
+    "sha": "83dff5bcfca9",
+    "at": "2026-11-03T03:26:23Z",
+    "title": "desk-feed: D0 Delphi upgrade program stamp \u2014 legs 1/3/4 done, leg 2 upload-ready"
    },
-   "next": "Closed as foundation for D1 (StudySprint builds on the D0 package). \u00b7 DELPHI UPGRADE (owner order via main, 2026-11-02): leg 3 RELEASE DONE \u2014 v1.0.0 @pin 393e1f4b (release id 432016830, API-verified) \u00b7 leg 1 VIDEO \u21d2 D0 seat (3-beat walkthrough) \u00b7 leg 4 PAGE+BLOG \u21d2 Web Dev PM (names release + video + 2nd story) \u00b7 leg 2 YOUTUBE: upload step needs fleet-channel hand \u2014 flagged \u2191main, \u2205 silent stall \u00b7 claims gate holds (submissions=0)",
+   "next": "Leg 2 only: YouTube upload (owner/channel hand) \u21d2 URL \u21d2 Web Dev embed swap. Program otherwise closed.",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
@@ -73,7 +73,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -82,19 +82,19 @@
    "project_id": "d1-studysprint",
    "state": "active",
    "last_merge": {
-    "pr": 4041,
-    "sha": "2b493aa28202",
-    "at": "2026-11-03T03:19:57Z",
-    "title": "desk-feed: D1 copy landing stamp \u2014 PR #4033 + parity 23/23 + DeepSeek outcome"
+    "pr": 4043,
+    "sha": "d98ae66fc76d",
+    "at": "2026-11-03T03:20:38Z",
+    "title": "desk-feed: D1 parity re-run confirm \u2014 Nov 3 copy leg verified closed"
    },
-   "next": "Nov 3: D1 seat parity re-run confirm (re-sync record). Nov 4: submission (owner hand) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
+   "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
    "next_basis": "record",
    "evidence": [
     "coordinator submission=none",
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -109,7 +109,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -138,7 +138,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -150,7 +150,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -166,7 +166,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "challenge-entries",
@@ -180,7 +180,7 @@
    "evidence": [
     "open PRs: #4023, #2907, #2235"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "quota",
@@ -200,7 +200,7 @@
     "quota registry services=170",
     "open PRs: #3242, #4006, #1441, #3342, #2757"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "doe",
@@ -220,7 +220,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "doe-nc1",
@@ -232,7 +232,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "contribution-desk",
@@ -263,7 +263,7 @@
    "evidence": [
     "desk-feed traversals=10 generated_at=2026-11-02T22:05:00Z"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "web-design-viz",
@@ -282,7 +282,7 @@
    "evidence": [
     "open PRs: #4018, #3969, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "marketing",
@@ -296,7 +296,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "marketing-social",
@@ -308,7 +308,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "swarm",
@@ -322,7 +322,7 @@
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "providers",
@@ -342,7 +342,7 @@
     "quota registry services=170",
     "open PRs: #3991, #3916, #3209, #3113, #2899"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "providers-phrases",
@@ -354,7 +354,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "repo-replay",
@@ -371,7 +371,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "ops",
@@ -385,7 +385,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   },
   {
    "lane": "telemetry",
@@ -404,7 +404,7 @@
    "evidence": [
     "open PRs: #4022, #3890, #1734, #1645, #1469"
    ],
-   "updated_at": "2026-11-03T03:20:15Z"
+   "updated_at": "2026-11-03T03:27:54Z"
   }
  ],
  "doe_join": {

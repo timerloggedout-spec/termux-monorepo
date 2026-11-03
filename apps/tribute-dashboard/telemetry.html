@@ -182,8 +182,9 @@ fetch("./data/telemetry-feed-series.jsonl").then(r=>{ if(!r.ok) throw new Error(
   document.getElementById("historychart").innerHTML=
     "<h3>Golden receipts total across feed snapshots</h3>"+CK.line(seriesPoints(rows,"receipts_total"),860,160)+
     "<h3>Workflow runs observed across feed snapshots</h3>"+CK.line(seriesPoints(rows,"workflow_runs_observed"),860,140);
-  const last=rows[rows.length-1];
-  document.getElementById("historystamp").textContent="Series: "+rows.length+" committed snapshot(s), last "+(last? last.generated_at : "—")+" · "+CK.stampState(last? last.generated_at : null,Date.now())+" · counters verbatim per snapshot (series: data/telemetry-feed-series.jsonl, built by scripts/dashboards/telemetry_feed_series.py).";
+  const lastObserved=key=>[...rows].reverse().find(row=>typeof row[key]==="number"&&Number.isFinite(row[key]));
+  const stampFor=key=>{const point=lastObserved(key);return point?point.generated_at+" "+CK.stampState(point.generated_at,Date.now()):"unknown / no observed point"};
+  document.getElementById("historystamp").textContent="Snapshots: "+rows.length+" · receipts_total: "+stampFor("receipts_total")+" · workflow_runs_observed: "+stampFor("workflow_runs_observed")+" · null observations remain gaps (not zero, not interpolated) · series: data/telemetry-feed-series.jsonl.";
 }).catch(e=>{ document.getElementById("historystamp").textContent="History unavailable: "+e.message; });
 </script>
 </body>

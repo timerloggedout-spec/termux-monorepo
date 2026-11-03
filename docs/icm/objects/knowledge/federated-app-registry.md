@@ -29,6 +29,9 @@ The federated application registry maps product applications that may be maintai
 - [Federated application and release-lane map](../../../ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md)
 - [Machine-readable registry](../../../ops/federated-app-registry.json)
 - [Registry schema](../../../ops/federated-app-registry.schema.json)
+- [Repository discovery census](../../../ops/FEDERATED-APP-REPOSITORY-CENSUS.md)
+- [Machine-readable repository census](../../../ops/federated-app-repository-census.json)
+- [Repository census schema](../../../ops/federated-app-repository-census.schema.json)
 - [GitHub App fleet](../platform/github-app-fleet.md)
 
 ## If you change this

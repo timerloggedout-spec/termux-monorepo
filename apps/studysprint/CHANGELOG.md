@@ -1,5 +1,31 @@
 ## [Unreleased]
 
+### Surfaces 0.2.0 (parity iteration 1, #4414 — calendar + geography)
+
+- **§1d calendar awareness + geography bind on all three
+  surfaces.** One core assembler —
+  `study_geo.surface_calendar_geo` — computes the whole binding
+  from a calendar document: intake, assessment briefings
+  (frequency ramps + SHIFTED time/place notices), the day's
+  frequency plan, quiet-hours probes against the class blocks,
+  deduped locations, per-assessment routes (coordinate
+  estimates with leave-by times), and the temple route (loci
+  placements over the student's real walk) with audio cues.
+- **TUI** gains Calendar and Routes tabs (8 panes), assembled
+  live at runtime. **webApp** gains Calendar and Routes views
+  over the same assembler, computed at build time like the
+  rest of the bundle's state (disclosed in the parity
+  statements). **APK** follows the bundle.
+- Bundled example calendar (`examples/calendar.json`, synthetic
+  like the other examples): BIO 101 Tue/Thu in Science Hall
+  204, a quiz tomorrow (final-stretch ramp ×3), and a final
+  SHIFTED to 18:00 in the Gym Annex — the shift briefing and
+  its route are in the demo data, not just the tests.
+- Honest edges kept: a calendar without coordinates yields
+  locations and NO routes (omitted, never faked); a root
+  without a calendar file renders a named empty state on the
+  new panes/views.
+
 ### Surfaces 0.1.3 (#4412 — APK https-origin asset serving)
 
 - **APK shell serves the bundle from a secure https origin** —

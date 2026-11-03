@@ -259,6 +259,7 @@ async function load() {
   $("#surface-version").textContent =
     state.data.surface_version || "0.1.0";
   renderToday(); renderPlan(); renderReader(); showCard();
+  renderCalendar(); renderRoutes();
   const ux = state.data.sr && state.data.sr.ux_state;
   if (ux && ux.generation && ux.generation !== FSRS_GENERATION) {
     $("#sr-receipt").textContent =
@@ -347,6 +348,78 @@ function renderPlan() {
     "</ul>").join("");
   $("#receipt-body").textContent =
     JSON.stringify(state.data.trust_receipt, null, 2);
+}
+
+/* ---------------- calendar + routes (iteration 1, #4414) */
+// The state carries the core assembler's output verbatim
+// (study_geo.surface_calendar_geo via build_data.py): classes,
+// briefings (ramps + shift notices), the frequency plan,
+// quiet-hours probes, locations, routes, the temple route.
+// Build-time state, like the rest of the bundle — the surfaces
+// that compute live (TUI) say so in their parity statements.
+const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+function renderCalendar() {
+  const cg = state.data.calendar_geo;
+  const el = $("#calendar-body");
+  if (!cg) {
+    el.textContent = "No calendar loaded for this course yet.";
+    return;
+  }
+  const classes = (cg.classes || []).map((c) =>
+    `<li>${c.course}: ${(c.days || []).map((d) => DAY_NAMES[d]).join("/")} ` +
+    `${c.start}–${c.end} · ${c.location}</li>`).join("");
+  const briefings = (cg.briefings || []).map((b) =>
+    `<li>${b.date} ${b.time} · ${b.kind} — ${b.course} · ${b.location} · ` +
+    `${b.days_away}d away · ramp ${b.ramp.tier} ×${b.ramp.multiplier}` +
+    (b.briefing ? `<br>⚠ ${b.briefing}` : "") + "</li>").join("");
+  const freq = Object.entries(cg.frequency_plan || {}).map(([course, f]) =>
+    `<li>${course}: ${f.per_day}/day (base ${f.base_per_day} × ` +
+    `${f.multiplier}, ${f.tier}` +
+    (f.driven_by ? `; driven by ${f.driven_by}` : "") + ")</li>").join("");
+  const q = cg.quiet_hours;
+  const quiet = q ? (q.batched || []).map((n) =>
+      `<li>in-class note ${n.at.slice(11, 16)} → held by ${n.held_by}, ` +
+      `released ${n.release_at.slice(11, 16)}</li>`).join("") +
+    (q.delivered || []).map((n) =>
+      `<li>outside note ${n.at.slice(11, 16)} → delivered</li>`).join("")
+    : "<li>no class block in the next 7 days to probe</li>";
+  el.innerHTML =
+    `<h3>Classes</h3><ul>${classes}</ul>` +
+    `<h3>Assessments (nearest first)</h3><ul>${briefings}</ul>` +
+    `<h3>Today's question frequency</h3><ul>${freq}</ul>` +
+    `<h3>Quiet hours (probed against the class blocks)</h3><ul>${quiet}</ul>` +
+    `<p>Ceiling: ${cg.claims_ceiling}</p>`;
+}
+function renderRoutes() {
+  const cg = state.data.calendar_geo;
+  const el = $("#routes-body");
+  if (!cg) {
+    el.textContent = "No calendar loaded — routes need the " +
+      "calendar's locations first (see the Calendar view).";
+    return;
+  }
+  const locs = (cg.locations || []).map((r) =>
+    `<li>${r.location} — ${(r.used_by || []).join(", ")}</li>`).join("");
+  const routes = (cg.routes || []).length ? (cg.routes || []).map((r) =>
+    `<li>${r.assessment_kind} (${r.course}) → ${r.destination}: ` +
+    `${r.travel_minutes} min walk + ${r.buffer_minutes} buffer · ` +
+    `leave by ${r.depart_by.slice(0, 10)} ${r.depart_by.slice(11, 16)} ` +
+    `(${r.source})</li>`).join("")
+    : "<li>no routes — the calendar carries no coordinates, so " +
+      "nothing is drawn or faked</li>";
+  const temple = cg.temple_route;
+  const templeHtml = temple ?
+    `<h3>Temple route (loci over your walk)</h3><ol>` +
+    temple.placements.map((p) =>
+      `<li>${p.locus} — ${p.item}</li>`).join("") + "</ol>" +
+    `<h3>Audio cues</h3><ol>` +
+    (cg.audio_cues || []).map((c) => `<li>${c.cue}</li>`).join("") +
+    "</ol>"
+    : "<p>no waypoints on this calendar</p>";
+  el.innerHTML =
+    `<h3>Locations</h3><ul>${locs}</ul>` +
+    `<h3>Routes from ${cg.origin || "—"}</h3><ul>${routes}</ul>` +
+    templeHtml;
 }
 
 /* ---------------- reader (RSVP) */

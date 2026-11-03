@@ -1,4 +1,254 @@
 {
+ "calendar_geo": {
+  "assessments": [
+   {
+    "building": "Science Hall",
+    "course": "BIO 101",
+    "date": "2026-11-04",
+    "kind": "quiz",
+    "location": "Science Hall 204",
+    "room": "204",
+    "time": "10:00"
+   },
+   {
+    "building": "Science Hall",
+    "course": "BIO 101",
+    "date": "2026-11-12",
+    "kind": "midterm",
+    "location": "Science Hall 204",
+    "room": "204",
+    "time": "10:00"
+   },
+   {
+    "building": "Gym Annex",
+    "course": "BIO 101",
+    "date": "2026-12-10",
+    "kind": "final",
+    "location": "Gym Annex B",
+    "room": "B",
+    "time": "18:00"
+   }
+  ],
+  "audio_cues": [
+   {
+    "at": "dorm door",
+    "cue": "At the dorm door, picture this: cell structure. Let it stick to the place.",
+    "seq": 1
+   },
+   {
+    "at": "library steps",
+    "cue": "At the library steps, picture this: membranes. Let it stick to the place.",
+    "seq": 2
+   },
+   {
+    "at": "lab bench",
+    "cue": "At the lab bench, picture this: photosynthesis. Let it stick to the place.",
+    "seq": 3
+   }
+  ],
+  "briefings": [
+   {
+    "briefing": null,
+    "changes": [],
+    "course": "BIO 101",
+    "date": "2026-11-04",
+    "days_away": 0.71,
+    "kind": "quiz",
+    "location": "Science Hall 204",
+    "ramp": {
+     "multiplier": 3.0,
+     "tier": "final-stretch"
+    },
+    "shifted": false,
+    "time": "10:00"
+   },
+   {
+    "briefing": null,
+    "changes": [],
+    "course": "BIO 101",
+    "date": "2026-11-12",
+    "days_away": 8.71,
+    "kind": "midterm",
+    "location": "Science Hall 204",
+    "ramp": {
+     "multiplier": 1.5,
+     "tier": "ramp-up"
+    },
+    "shifted": false,
+    "time": "10:00"
+   },
+   {
+    "briefing": "SHIFTED final for BIO 101: time 10:00 -> 18:00; place Science Hall 204 -> Gym Annex B. It is on 2026-12-10 at 18:00 in Gym Annex B \u2014 not the usual class pattern. Frequency is ramped (baseline, x1.0) and the room is new: plan the trip once before the day.",
+    "changes": [
+     "time 10:00 -> 18:00",
+     "place Science Hall 204 -> Gym Annex B"
+    ],
+    "course": "BIO 101",
+    "date": "2026-12-10",
+    "days_away": 37.04,
+    "kind": "final",
+    "location": "Gym Annex B",
+    "ramp": {
+     "multiplier": 1.0,
+     "tier": "baseline"
+    },
+    "shifted": true,
+    "time": "18:00"
+   }
+  ],
+  "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+  "classes": [
+   {
+    "building": "Science Hall",
+    "course": "BIO 101",
+    "days": [
+     1,
+     3
+    ],
+    "end": "11:15",
+    "location": "Science Hall 204",
+    "room": "204",
+    "start": "10:00"
+   }
+  ],
+  "frequency_plan": {
+   "BIO 101": {
+    "base_per_day": 6.0,
+    "driven_by": "quiz on 2026-11-04",
+    "multiplier": 3.0,
+    "per_day": 18.0,
+    "tier": "final-stretch"
+   }
+  },
+  "locations": [
+   {
+    "building": "Gym Annex",
+    "location": "Gym Annex B",
+    "room": "B",
+    "used_by": [
+     "final:BIO 101"
+    ]
+   },
+   {
+    "building": "Science Hall",
+    "location": "Science Hall 204",
+    "room": "204",
+    "used_by": [
+     "class:BIO 101",
+     "quiz:BIO 101",
+     "midterm:BIO 101"
+    ]
+   }
+  ],
+  "origin": "Dorm",
+  "quiet_hours": {
+   "batched": [
+    {
+     "at": "2026-11-03T10:15:00Z",
+     "held_by": "BIO 101",
+     "id": "probe-in-class",
+     "release_at": "2026-11-03T11:15:00Z",
+     "status": "batched"
+    }
+   ],
+   "delivered": [
+    {
+     "at": "2026-11-03T08:00:00Z",
+     "id": "probe-outside",
+     "status": "delivered"
+    }
+   ],
+   "probe_day": "2026-11-03",
+   "suppressed": 1
+  },
+  "routes": [
+   {
+    "assessment_kind": "quiz",
+    "assessment_starts": "2026-11-04T10:00:00Z",
+    "buffer_minutes": 10,
+    "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+    "course": "BIO 101",
+    "depart_by": "2026-11-04T09:44:18Z",
+    "destination": "Science Hall 204",
+    "kind": "route-plan",
+    "observed_at": "2026-11-03T16:59:17Z",
+    "origin": "Dorm",
+    "schema": "studysprint-geo-receipt/v1",
+    "source": "coordinate-estimate",
+    "travel_minutes": 5.7
+   },
+   {
+    "assessment_kind": "midterm",
+    "assessment_starts": "2026-11-12T10:00:00Z",
+    "buffer_minutes": 10,
+    "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+    "course": "BIO 101",
+    "depart_by": "2026-11-12T09:44:18Z",
+    "destination": "Science Hall 204",
+    "kind": "route-plan",
+    "observed_at": "2026-11-03T16:59:17Z",
+    "origin": "Dorm",
+    "schema": "studysprint-geo-receipt/v1",
+    "source": "coordinate-estimate",
+    "travel_minutes": 5.7
+   },
+   {
+    "assessment_kind": "final",
+    "assessment_starts": "2026-12-10T18:00:00Z",
+    "buffer_minutes": 10,
+    "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+    "course": "BIO 101",
+    "depart_by": "2026-12-10T17:36:42Z",
+    "destination": "Gym Annex B",
+    "kind": "route-plan",
+    "observed_at": "2026-11-03T16:59:17Z",
+    "origin": "Dorm",
+    "schema": "studysprint-geo-receipt/v1",
+    "source": "coordinate-estimate",
+    "travel_minutes": 13.3
+   }
+  ],
+  "temple_route": {
+   "claims_ceiling": "ordered/concrete recall, not understanding",
+   "kind": "temple-route",
+   "observed_at": "2026-11-03T16:59:17Z",
+   "placements": [
+    {
+     "chapter": "Campus route",
+     "item": "cell structure",
+     "locus": "dorm door",
+     "position": 1
+    },
+    {
+     "chapter": "Campus route",
+     "item": "membranes",
+     "locus": "library steps",
+     "position": 2
+    },
+    {
+     "chapter": "Campus route",
+     "item": "photosynthesis",
+     "locus": "lab bench",
+     "position": 3
+    }
+   ],
+   "schema": "studysprint-geo-receipt/v1",
+   "waypoints": [
+    {
+     "location": "Dorm",
+     "name": "dorm door"
+    },
+    {
+     "location": "Library",
+     "name": "library steps"
+    },
+    {
+     "location": "Science Hall 204",
+     "name": "lab bench"
+    }
+   ]
+  }
+ },
  "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
  "plan": {
   "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
@@ -797,7 +1047,7 @@
    ],
    "desired_retention": 0.9,
    "format": "ts-fsrs/v1",
-   "generated_at": "2026-11-03T15:18:09Z",
+   "generated_at": "2026-11-03T16:59:17Z",
    "generation": "FSRS-6",
    "parameters": [
     0.212,
@@ -826,7 +1076,7 @@
   }
  },
  "surface": "studysprint-webapp",
- "surface_version": "0.1.3",
+ "surface_version": "0.2.0",
  "today": {
   "actions": [
    {
@@ -870,7 +1120,7 @@
   "items_verified": 8,
   "source_path": "examples/syllabus.json",
   "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-  "verified_at": "2026-11-03T15:18:09Z",
+  "verified_at": "2026-11-03T16:59:17Z",
   "weeks_count": 3
  }
 }

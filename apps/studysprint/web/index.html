@@ -20,6 +20,8 @@
   <button data-view="plan" class="tab">Plan / Receipt</button>
   <button data-view="reader" class="tab">Reader</button>
   <button data-view="sr" class="tab">SR Review</button>
+  <button data-view="calendar" class="tab">Calendar</button>
+  <button data-view="routes" class="tab">Routes</button>
   <button data-view="ingest" class="tab">Ingest</button>
 </nav>
 
@@ -78,6 +80,16 @@
       <button data-grade="4">4 Easy</button>
     </div>
     <p id="sr-receipt" aria-live="polite"></p>
+  </section>
+
+  <section id="view-calendar" class="view hidden">
+    <h2>Calendar</h2>
+    <div id="calendar-body"></div>
+  </section>
+
+  <section id="view-routes" class="view hidden">
+    <h2>Routes</h2>
+    <div id="routes-body"></div>
   </section>
 
   <section id="view-ingest" class="view hidden">

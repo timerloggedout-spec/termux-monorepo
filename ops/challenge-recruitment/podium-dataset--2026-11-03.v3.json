@@ -1,0 +1,252 @@
+{
+ "dataset": "podium dataset of record — stamp-critical outputs for MoneyBall feasibility pass (test-plan C1 field definition: field := gallery submissions, NOT approved registrants)",
+ "editions": [
+  {
+   "edition": "D0 Delphi Oracle (AWS Builder Center, closed)",
+   "field_gallery_submissions": {
+    "reads": [
+     {
+      "n": 40,
+      "as_of": "2026-10-28",
+      "method": "coordinator field_size — public Projects list loaded to exhaustion"
+     },
+     {
+      "n": 30,
+      "as_of": "2026-11-03",
+      "method": "firsthand enumeration, official Projects tab, Load-more exhausted (competition import PR #4550)"
+     }
+    ],
+    "source_availability": "PUBLIC",
+    "status": "DRIFT — both reads stand, never averaged; v1 single-read stamp superseded"
+   },
+   "podium_n": {
+    "n": 5,
+    "basis": "BY DESIGN (prize structure)",
+    "identities": "NOT_ESTABLISHED — 30 enumerated, zero winner badges observed (F-G2); re-check leg = capture #4547"
+   },
+   "row_usable_as_control_set": "PARTIAL — field denominator disputed (30 vs 40); stamp consumers must carry both reads"
+  },
+  {
+   "edition": "D1 StudySprint (AWS Builder Center, closes 2026-11-04 23:59 PT)",
+   "field_gallery_submissions": {
+    "n": 55,
+    "as_of": "2026-11-03",
+    "source_availability": "PUBLIC — Projects tab enumerated (PR #4581)",
+    "status": "ENUMERATED — 55 stands; crossed-row project's own slot NOT_ESTABLISHED (55 vs 56 open, F-G6). Supersedes v2 PENDING + v1 floor n=1."
+   },
+   "podium_n": {
+    "n": 3,
+    "basis": "BY DESIGN (prize structure)",
+    "identities": "PENDING-JUDGING"
+   },
+   "row_usable_as_control_set": "YES w/ slot caveat (F-G6)"
+  },
+  {
+   "edition": "STRANDS-DECIDER (AWS Builder Center, closed 2025-10-23)",
+   "field_gallery_submissions": {
+    "as_of": "2026-10-28",
+    "n": null,
+    "source_availability": "PUBLIC_PARTIAL — Projects surface exists, submitted-project total NOT displayed (coordinator field_size.projects = null)",
+    "status": "NOT_ESTABLISHED"
+   },
+   "podium_n": {
+    "n": null,
+    "status": "NOT_ESTABLISHED — winners not harvested (PatchPilot = field evidence only, placement unknown)"
+   },
+   "row_usable_as_control_set": false
+  },
+  {
+   "edition": "D2 Vultr Agent Rush 2026 (lablab.ai, submissions close 2026-11-08)",
+   "field_gallery_submissions": {
+    "as_of": "2026-11-03",
+    "n": null,
+    "source_availability": "UNPUBLISHED — no public submissions gallery pre-deadline; submission surface = JOIN_GATED (enrolled dashboard). NOTE: approved registrants 2322 (payload counter, 2026-11-03T18:02Z) and /live top-referrers are NOT field rows under C1 and must not be substituted.",
+    "status": "NOT_ESTABLISHED — ceiling stated"
+   },
+   "podium_n": {
+    "n": null,
+    "status": "NOT_ESTABLISHED — event in progress"
+   },
+   "row_usable_as_control_set": false
+  },
+  {
+   "edition": "D3 ListingLens (builder.io, form-only)",
+   "field_gallery_submissions": {
+    "n": null,
+    "source_availability": "NO_SURFACE — no gallery exists; internal submission form only",
+    "status": "NOT_ESTABLISHED — structural"
+   },
+   "podium_n": {
+    "n": null,
+    "status": "NOT_ESTABLISHED — winners/spotlight surface only, post Nov 13"
+   },
+   "row_usable_as_control_set": false
+  },
+  {
+   "edition": "D4 Kiroween (Devpost, submission window open)",
+   "field_gallery_submissions": {
+    "as_of": "2026-10-31T07:43Z",
+    "n": 0,
+    "source_availability": "UNPUBLISHED — Devpost gallery 'managers haven't published this gallery yet' (firsthand read, entries lane PR #2678, re-verified in coordinator)",
+    "status": "ESTABLISHED_ZERO — gallery unpublished, not an empty field"
+   },
+   "podium_n": {
+    "n": null,
+    "status": "NOT_ESTABLISHED — event open"
+   },
+   "row_usable_as_control_set": false
+  },
+  {
+   "edition": "D5 Aha Builder Day (aha.io, kickoff Nov 17)",
+   "field_gallery_submissions": {
+    "n": null,
+    "source_availability": "NO_SURFACE — event page displays no counter or gallery",
+    "status": "NOT_ESTABLISHED — event not started"
+   },
+   "podium_n": {
+    "n": null,
+    "status": "NOT_ESTABLISHED"
+   },
+   "row_usable_as_control_set": false
+  },
+  {
+   "edition": "RAISE your HACK 2025 (lablab.ai × RAISE Summit, Jul 2025, closed)",
+   "field_gallery_submissions": {
+    "n": null,
+    "source_availability": "NOT_CHECKED — lablab submissions gallery for this edition not yet harvested (GAP-L2)",
+    "status": "NOT_ESTABLISHED"
+   },
+   "podium_n": {
+    "n": 3,
+    "scope": "Qubic track only (1st QBuild · 2nd Smart Guard · 3rd Thinkq, qubic.org recap); other tracks' podiums NOT_ESTABLISHED (GAP-L2)"
+   },
+   "row_usable_as_control_set": false
+  },
+  {
+   "edition": "MAD Hack 2025 (Qubic, Madrid, Mar 2025, closed)",
+   "field_gallery_submissions": {
+    "n": null,
+    "source_availability": "NOT_CHECKED",
+    "status": "NOT_ESTABLISHED"
+   },
+   "podium_n": {
+    "n": null,
+    "note": "Kairos 2nd place receipted (kairos-tek.com); full podium n NOT_ESTABLISHED",
+    "status": "PARTIAL"
+   },
+   "row_usable_as_control_set": false
+  }
+ ],
+ "judge_coverage": [
+  {
+   "edition": "D2 Agent Rush 2026",
+   "legs": [
+    {
+     "availability": "PUBLIC",
+     "result": "CHECKED_NONE — no Speakers/Mentors/Judges section on full read (2026-11-03T09:08Z + re-check 18:00Z); sole named human = video-guide speaker (not a judge claim)",
+     "surface": "① event page (lablab.ai)"
+    },
+    {
+     "availability": "PUBLIC",
+     "result": "STAMPED: NOT_FOUND_YET — event in progress, no winners/judges recap exists as of 2026-11-03; organizer channels checked (Vultr community post = criteria only, no names). Resolution window: post-Nov-8 winners announcement.",
+     "surface": "③ sponsor/organizer recaps + announcements"
+    },
+    {
+     "availability": "PUBLIC",
+     "result": "CHECKED_NONE — 10-result web search + listings (devhunt/competehub class ⑥), zero judge names",
+     "surface": "⑤/⑥ discovery + listings"
+    }
+   ],
+   "verdict": "PANEL_PUBLICLY_UNNAMED (GAP-J1) — census leg for test ③ re-issues from this stamp"
+  },
+  {
+   "edition": "RAISE your HACK 2025",
+   "legs": [
+    {
+     "availability": "PUBLIC",
+     "result": "POOL_FOUND — 'Speakers, Mentors & Judges' section, ~40 named w/ title+org; per-person role split NOT_ESTABLISHED on page → POOL_UNRESOLVED (exception: explicit mentor titles)",
+     "surface": "① event page (lablab.ai/event/raise-your-hack, read 2026-11-03T17:19Z)"
+    },
+    {
+     "availability": "PUBLIC",
+     "result": "FOUND (Qubic track) — judges Alber · Talentnodes · Mr.Rose named in partner recap (qubic.org); other tracks' recaps not yet harvested (GAP-J2)",
+     "surface": "③ sponsor recaps"
+    }
+   ],
+   "verdict": "POOL_PUBLIC_ROLE_SPLIT_PARTIAL"
+  },
+  {
+   "edition": "D0 / D1 / STRANDS-DECIDER (AWS Builder Center)",
+   "legs": [
+    {
+     "availability": "PUBLIC",
+     "result": "CHECKED_NONE — no judges named on platform surfaces (fleet recon 2026-10-28; coordinator judges[] = 0 all three)",
+     "surface": "① event pages"
+    },
+    {
+     "availability": "—",
+     "result": "NOT_RUN — no sponsor-recap leg executed for AWS events yet",
+     "surface": "③ sponsor recaps"
+    }
+   ],
+   "verdict": "POOL_UNRESOLVED for D0 (identities unpublished-on-venue, checked 2026-11-03) · D1 PENDING-JUDGING · Decider leg unchanged (CHECKED_NONE / recap NOT_RUN)"
+  },
+  {
+   "edition": "D4 Kiroween (Devpost)",
+   "legs": [
+    {
+     "availability": "PUBLIC",
+     "result": "CHECKED_NONE — no judges named publicly (coordinator judges[] = 0)",
+     "surface": "① event page"
+    },
+    {
+     "availability": "—",
+     "result": "NOT_RUN",
+     "surface": "③ sponsor recaps"
+    }
+   ],
+   "verdict": "NO_PUBLIC_PANEL_IDENTITY (recap leg outstanding)"
+  },
+  {
+   "edition": "D3 / D5",
+   "legs": [
+    {
+     "availability": "NO_SURFACE / event not started",
+     "result": "NOT_RUN — no public judge surface exists to check yet",
+     "surface": "① event pages"
+    }
+   ],
+   "verdict": "NOT_ESTABLISHED — structural"
+  }
+ ],
+ "schema": "challenge-recruitment/podium-dataset-of-record/v1",
+ "scope_note": "Editions = coordinator slate (D0-D5, STRANDS-DECIDER) + podium-research venues (RAISE 2025, MAD Hack 2025). C11/C12 carry no field/podium data yet (coordinator field_size empty) — excluded, named here so the exclusion is explicit.",
+ "version": "2026-11-03.v3",
+ "supersedes": "2026-11-03.v2 (PR #4551) — conflicts preserved, never merged",
+ "changelog": [
+  {
+   "change": "F-G6 (findings register PR #4591): D1 field enumeration LANDED — 55 submitted projects stands (PR #4581, resolution @ bedef6dd8a3f); the crossed-row project's own slot = NOT_ESTABLISHED (55 vs 56 open). D1 field status PENDING → ENUMERATED w/ slot caveat.",
+   "source": "Swarm hand 2026-11-03, register F-G6"
+  },
+  {
+   "change": "F-G2: D0 winners status aligned — NOT_ESTABLISHED (30 enumerated, zero winner badges observed); v2 'UNPUBLISHED-on-venue' wording superseded by this sharper stamp.",
+   "source": "register F-G2, ev PR #4550 + capture #4547"
+  },
+  {
+   "change": "F-G1 confirmed unchanged: D1 placements/identities PENDING-JUDGING (ev PR #4581 + D1 spec Outcomes). F-G5 D0 drift row unchanged (already in v2 reads[]).",
+   "source": "register F-G1/F-G5"
+  },
+  {
+   "change": "F-O7 opportunity row added: two-venue corpus complete (D0 30 + D1 55 enumerated) — cross-venue mining unlocked for the podium program.",
+   "source": "register F-O7"
+  },
+  {
+   "change": "F-N5 improvement note: dual-read differ proposed (drift × crossed-read = one species) — differ surface owned here; Swarm Stage-1 cross-check = seed.",
+   "source": "register F-N5"
+  }
+ ],
+ "program_notes": [
+  "F-O7: two-venue corpus complete (D0 30 + D1 55) — cross-venue mining unlocked",
+  "F-N5: dual-read differ proposed — drift x crossed-read treated as one species; differ surface = this dataset's versioning"
+ ]
+}

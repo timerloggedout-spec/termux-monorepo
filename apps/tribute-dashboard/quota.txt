@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (170 registry records)
+ QUOTA  termux-monorepo  (171 registry records)
  Snapshot generated (not observation time): 2026-11-03T21:34:39.397760+00:00
  Source: apps/tribute-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -1229,6 +1229,13 @@
     again in 24 hours) | reset: rolling
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
+ vultr (1)
+  vultr.account_credit
+    status: No live reading
+    limit (documented): 200 USD
+    window: one-time grant; expires ≈2026-12-03
+    No live reading
+--------------------------------------------------------------------------------
  xfyun (1)
   xfyun.spark
     status: PRIVATE_PREFLIGHT
@@ -1319,6 +1326,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 170 registry records | 1 alert(s) | 170 with a reported reading | 0 with No
+ 171 registry records | 1 alert(s) | 170 with a reported reading | 1 with No
  live reading
 ================================================================================

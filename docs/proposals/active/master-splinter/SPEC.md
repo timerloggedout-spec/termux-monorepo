@@ -1,4 +1,4 @@
-# Master Splinter (control-plane shape) — Scoped Spec Package
+# The AppID control plane (proposer title: "Master Splinter" — not adopted, see EVALUATION.md addendum) — Scoped Spec Package
 
 [MUSEai]@{role:{appid-migration-plan}} · 2026-11-03 · status: spec only — no deploy, no repo, no App, no credential movement under this package
 

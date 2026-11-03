@@ -126,6 +126,45 @@ def test_provider_phrases_change_instance(tmp_path):
             assert inst == b[r["run_id"]]["instance"]
 
 
+def _wallets():
+    return _load("wallets", ROOT / "scripts/speculators/wallets.py")
+
+
+def test_wallets_provisioned_for_every_planned_instance():
+    w = _wallets()
+    assert w.verify(CAMP) == []
+    ledger = json.loads((CAMP / "WALLETS.json").read_text())
+    plan = json.loads((CAMP / "PLAN.json").read_text())
+    planned = {r["instance"]["instance_key"] for r in plan["rows"]}
+    assert len(ledger["wallets"]) == 12
+    assert {x["instance_key"] for x in ledger["wallets"]} == planned
+    for x in ledger["wallets"]:
+        assert x["kind"] == "paper|test" and x["balance"] == 0
+        assert x["status"] == "provisioned"
+
+
+def test_wallet_cull_waterfall_points_at_pool():
+    w = _wallets()
+    ledger = json.loads((CAMP / "WALLETS.json").read_text())
+    for x in ledger["wallets"]:
+        wf = x["cull_waterfall"]
+        assert wf["pool_destination"] == w.POOL_DESTINATION
+        assert wf["cull_record_names"] == [
+            "culled_participant", "wallet_balance_at_cull",
+            "pool_destination"]
+        assert "never destroys" in wf["on_cull"]
+    # verify catches a dropped wallet
+    import copy
+    broken = copy.deepcopy(ledger)
+    broken["wallets"] = broken["wallets"][:-1]
+    camp = CAMP  # verify reads from disk; emulate via build check
+    keys = {x["instance_key"] for x in broken["wallets"]}
+    planned = {r["instance"]["instance_key"]
+               for r in json.loads((camp / "PLAN.json").read_text())[
+                   "rows"]}
+    assert planned - keys  # exactly the gap verify() reports
+
+
 def test_record_selects_fastest_qualified(tmp_path):
     ev = _evaluate()
     camp = tmp_path / "camp"

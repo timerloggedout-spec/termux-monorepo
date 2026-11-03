@@ -17,9 +17,11 @@ What it derives:
 - registry_context: counts from ops/quota/registry.json + readings
   coverage.
 - series1_api_core: CARRIED VERBATIM. Its points are firsthand
-  user-token readings; extending them needs the private-readings tap
-  (owner decision pending separately) - automation never invents
-  series1 points.
+  user-token readings; extending them would need private readings - the
+  private-readings tap is ruled OUT (owner ruling 2026-11-03: we count
+  ourselves for nulls; the tally of record is ops/quota/self-counts.json,
+  consumed - never re-tallied - by this builder's surfaces). Automation
+  never invents series1 points.
 
 generated_at advances ONLY when the derived content changes, so the
 refresh workflow (whose own commit touches a trigger path) cannot
@@ -182,8 +184,8 @@ def main():
         "%Y-%m-%dT%H:%M:%SZ")
     pack.setdefault("schema", "quota-usage/v1")
     pack["built_by"] = ("scripts/quota_usage_pack.py (auto-refresh; "
-                        "series1 carried verbatim - tap decision "
-                        "pending)")
+                        "series1 carried verbatim - tap ruled OUT "
+                        "(owner 2026-11-03; self-counted nulls)")
     text = json.dumps(pack, indent=1) + "\n"
     (Path(a.root) / PACK_REL).write_text(text)
     mirror = Path(a.root) / MIRROR_REL

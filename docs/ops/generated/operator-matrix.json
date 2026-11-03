@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 490,
-    "open_prs": 209,
+    "open_issues": 500,
+    "open_prs": 211,
     "pr_classes": {
-      "CANDIDATE": 108,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "CANDIDATE": 106,
+      "EXTRACT": 9,
+      "NEED_EVIDENCE": 96,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 260,
+      "issues": 270,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 42,
-      "prs": 207,
+      "prs": 209,
       "unlabelled_numbers": [
         308,
         388,
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T16:20:29Z",
+  "generated_at": "2026-11-03T16:45:40Z",
   "issues_unlabelled": [
     308,
     388,
@@ -145,10 +145,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "519363c47d"
+    "sha": "be07fc9193"
   },
   "prs": [
     {
@@ -228,12 +228,54 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "00bb28159a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T16:41:52Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b219e4576b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T16:43:36Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "83ad38a6ce",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4355,
+      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
+      "updated_at": "2026-11-03T14:23:58Z"
     },
     {
       "class": "CANDIDATE",
@@ -288,7 +330,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-03T14:29:56Z"
@@ -767,7 +809,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-03T14:30:39Z"
@@ -995,20 +1037,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "da1704b434",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T15:41:11Z"
     },
     {
       "class": "CANDIDATE",
@@ -1703,20 +1731,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "83ad38a6ce",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4355,
-      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
-      "updated_at": "2026-11-03T14:23:58Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b14e821cd5",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2069,7 +2083,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-03T14:29:49Z"
@@ -2293,7 +2307,7 @@
       },
       "head_sha": "e4faad1217",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
       "updated_at": "2026-11-03T14:38:24Z"
@@ -2946,20 +2960,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "7ab82d6784",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T16:20:07Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3081,6 +3081,34 @@
       "number": 4390,
       "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
       "updated_at": "2026-11-03T15:10:52Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "fd129f7359",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4463,
+      "title": "docs(ereader): scoping spec \u2014 EPUB-as-export, term refs as data not links (#4457)",
+      "updated_at": "2026-11-03T16:44:32Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "da810543a0",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4464,
+      "title": "Feed: canonical builder format (one-time re-emit; kills regen churn)",
+      "updated_at": "2026-11-03T16:45:11Z"
     }
   ],
   "schema": "operator-matrix/v1",

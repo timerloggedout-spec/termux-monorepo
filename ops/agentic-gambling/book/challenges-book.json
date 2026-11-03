@@ -14,10 +14,13 @@
   "criteria": "DoE conformity criteria for the first wagering book (doe-expert, 2026-11-02) \u2014 pass issued by DoE before entries open"
  },
  "exclusions": {
+  "canonical_key": "body contains the verbatim stamp: EGM instance #2 TEST filing (verified present on all six bodies, issues #4297-#4302; DoE quarantine key 2026-11-03)",
+  "canonical_key_sweep": "2026-11-03 re-swept with the canonical + secondary keys over book + feed + ledger + lane.json + charter: 0 hits \u2200",
   "key": "exclusion keys on the TEST STAMP \u2014 any item carrying the instance-#2 test stamp is excluded regardless of filing shape or claimed substance",
-  "reentry": "only via a qualifying change: DoE+main ruling that a substance is real AND entry-material (re-enters via the normal leg), or the owner direct word",
+  "reentry": "qualifying change only: DoE+main ruling that a substance is real AND entry-material \u2014 re-enters via the normal verification-to-RFP leg with test origin noted \u2014 or the owner direct word",
   "rule": "OWNER RULING (via main, 2026-11-03): the six EGM instance-#2 test filings (DoE rubric experiment, test-stamped \u2014 incl. the deliberately refuted claim in perfect filing shape) are REDACTED from this book and all winnings/opportunities surfaces",
   "scope": "money-facing surfaces only; the experiment own record (DoE lane) is untouched",
+  "secondary_key": "surface_id prefix RFP-EGM2-",
   "status_at_registration": "VERIFIED CLEAN 2026-11-03 \u2014 marker scan (EGM / instance-#2 / test-stamp) over book + feed + ledger + lane.json = 0 hits; no instance-#2 item in subjects, ledger, positions or queue (positions 0; subject intake = challenge manager list + C12 only)"
  },
  "ledger_of_record": {

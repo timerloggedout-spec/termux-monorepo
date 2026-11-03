@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a70b9008e8fea993124b5226d2c7246c33b0321cd808a94e23c1fc3c8fdaafe2",
-  "workflow_count": 282,
+  "source_fingerprint": "081641ac896ce1a31dfd92303e64f72d68e0e9e87172e6e3951e9fbb26d391b2",
+  "workflow_count": 283,
   "workflows": [
     {
       "action_pins": [],
@@ -4377,6 +4377,21 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "smoke"
+      ],
+      "name": "studysprint-apk-smoke",
+      "path": ".github/workflows/studysprint-apk-smoke.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

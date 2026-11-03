@@ -11,6 +11,10 @@
   "ledger": "ops/agentic-gambling/book/ledger.jsonl"
  },
  "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger.",
+ "pct_block": {
+  "computed_at": "2026-11-03T14:17:33Z",
+  "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note"
+ },
  "positions": [],
  "publication": {
   "b4_note": "B4 AS RULED (owner 2026-11-02, DoE-discharged): private ledger first stands (ledger of record unchanged, entries internal, stakes observational, no external participation) AND public read-only render authorized. Render conformity R1 values verbatim / R2 true state as-is / R3 no entry path from the public surface.",
@@ -42,6 +46,7 @@
     "register_item": "D1 StudySprint submission",
     "wall": "2026-11-04"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -58,13 +63,20 @@
    "group": "D1 Workshop to Ship (landing Nov 3, wall Nov 4 23:59 PT)",
    "id": "D1-1-submission-landed",
    "knowable": "2026-11-04",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "entries confirmation_ref + coordinator record",
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries confirmation_ref + coordinator record",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-04T23:59:00-08:00",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)"
+   }
   },
   {
    "anchors": {
@@ -77,6 +89,7 @@
     "register_item": "D1 StudySprint submission",
     "wall": "2026-11-04"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -93,13 +106,20 @@
    "group": "D1 Workshop to Ship",
    "id": "D1-2-placement-winner",
    "knowable": "NOT_ESTABLISHED (judging date unpublished)",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Builder Center official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Builder Center official results",
     "value": null
    },
-   "subject": "Placement = winner (top-3) {Y/N}"
+   "subject": "Placement = winner (top-3) {Y/N}",
+   "window": {
+    "wall": "2026-11-04T23:59:00-08:00",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)"
+   }
   },
   {
    "anchors": {
@@ -112,6 +132,7 @@
     "register_item": "D2 Vultr kickoff",
     "wall": null
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -128,13 +149,21 @@
    "group": "D2 Vultr Agent Rush (kickoff Nov 3 15:00Z, landing Nov 7, wall Nov 8 15:00 PT)",
    "id": "D2-3-nocard-account-live",
    "knowable": "2026-11-03 15:00Z",
+   "pct_consumed": null,
+   "pct_note": "degenerate window (instant/point subject) \u2014 no honest percentage",
+   "pct_remaining": null,
    "record_of_record": "D2 seat + gate D2-NOCARD",
    "settle": {
     "field": "place earned / official outcome",
     "source": "D2 seat + gate D2-NOCARD",
     "value": null
    },
-   "subject": "Vultr no-card account live at kickoff {Y/N}"
+   "subject": "Vultr no-card account live at kickoff {Y/N}",
+   "window": {
+    "wall": "2026-11-03T15:00:00Z",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register stage B (kickoff day cushion)"
+   }
   },
   {
    "anchors": {
@@ -147,6 +176,7 @@
     "register_item": "D2 Vultr submission",
     "wall": "2026-11-08"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -163,13 +193,20 @@
    "group": "D2 Vultr Agent Rush",
    "id": "D2-4-submission-landed",
    "knowable": "2026-11-08",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "entries confirmation_ref",
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries confirmation_ref",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-08T15:00:00-08:00",
+    "window_start": "2026-11-04T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -183,6 +220,7 @@
     "register_item": "D2 Vultr submission",
     "wall": "2026-11-08"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -199,13 +237,20 @@
    "group": "D2 Vultr Agent Rush",
    "id": "D2-5-placement-top3",
    "knowable": "NOT_ESTABLISHED (post-close posting)",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "lablab official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "lablab official results",
     "value": null
    },
-   "subject": "Placement top-3 {Y/N}"
+   "subject": "Placement top-3 {Y/N}",
+   "window": {
+    "wall": "2026-11-08T15:00:00-08:00",
+    "window_start": "2026-11-04T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -218,6 +263,7 @@
     "register_item": "D3 ListingLens submission",
     "wall": "2026-11-09"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -234,13 +280,20 @@
    "group": "D3 Builder.io (landing Nov 8, wall Nov 9 23:59 PT)",
    "id": "D3-6-clips-gate-cleared",
    "knowable": "2026-11-08",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "gate D3-CLIPS-STORAGE",
    "settle": {
     "field": "place earned / official outcome",
     "source": "gate D3-CLIPS-STORAGE",
     "value": null
    },
-   "subject": "Clips gate cleared by landing {Y/N}"
+   "subject": "Clips gate cleared by landing {Y/N}",
+   "window": {
+    "wall": "2026-11-08T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -253,6 +306,7 @@
     "register_item": "D3 ListingLens submission",
     "wall": "2026-11-09"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -269,13 +323,20 @@
    "group": "D3 Builder.io",
    "id": "D3-7-feature-batch-b1-b3",
    "knowable": "2026-11-08",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "D3 seat per-PR verification",
    "settle": {
     "field": "place earned / official outcome",
     "source": "D3 seat per-PR verification",
     "value": null
    },
-   "subject": "Feature batch B1-B3 landed by Nov 8 {Y/N}"
+   "subject": "Feature batch B1-B3 landed by Nov 8 {Y/N}",
+   "window": {
+    "wall": "2026-11-08T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -288,6 +349,7 @@
     "register_item": "D3 ListingLens submission",
     "wall": "2026-11-09"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -304,13 +366,20 @@
    "group": "D3 Builder.io",
    "id": "D3-8-submission-landed",
    "knowable": "2026-11-09",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "entries / D3 record",
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries / D3 record",
     "value": null
    },
-   "subject": "Submission landed (form + public Clips URL) by wall {Y/N}"
+   "subject": "Submission landed (form + public Clips URL) by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-09T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -324,6 +393,7 @@
     "register_item": "D3 ListingLens submission",
     "wall": "2026-11-09"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -340,13 +410,20 @@
    "group": "D3 Builder.io",
    "id": "D3-9-placement-paid-tier",
    "knowable": "NOT_ESTABLISHED (post-close TBD)",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Builder.io official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Builder.io official results",
     "value": null
    },
-   "subject": "Placement = paid tier (top-5) {Y/N}"
+   "subject": "Placement = paid tier (top-5) {Y/N}",
+   "window": {
+    "wall": "2026-11-09T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -359,6 +436,7 @@
     "register_item": "D4 Kiro ID credit form",
     "wall": "2026-12-01"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -375,13 +453,20 @@
    "group": "D4 Kiroween (form landing Nov 30, landing Dec 2, wall Dec 4 14:00 PT)",
    "id": "D4-10-credit-form-filed",
    "knowable": "2026-11-30",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Gates / D4 seat",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Gates / D4 seat",
     "value": null
    },
-   "subject": "4,000-credit form filed by Nov 30 {Y/N}"
+   "subject": "4,000-credit form filed by Nov 30 {Y/N}",
+   "window": {
+    "wall": "2026-11-30T23:59:00-08:00",
+    "window_start": "2026-11-27T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -394,6 +479,7 @@
     "register_item": "D4 Kiroween submission",
     "wall": "2026-12-04"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -410,13 +496,20 @@
    "group": "D4 Kiroween",
    "id": "D4-11-skeleton-apps-live",
    "knowable": "2026-12-02",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "D4 seat record",
    "settle": {
     "field": "place earned / official outcome",
     "source": "D4 seat record",
     "value": null
    },
-   "subject": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}"
+   "subject": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}",
+   "window": {
+    "wall": "2026-12-02T23:59:00-08:00",
+    "window_start": "2026-11-29T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -429,6 +522,7 @@
     "register_item": "D4 Kiroween submission",
     "wall": "2026-12-04"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -445,13 +539,20 @@
    "group": "D4 Kiroween",
    "id": "D4-12-submission-landed",
    "knowable": "2026-12-04",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "entries confirmation_ref (Devpost)",
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries confirmation_ref (Devpost)",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-12-04T14:00:00-08:00",
+    "window_start": "2026-11-29T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -465,6 +566,7 @@
     "register_item": "D4 Kiroween submission",
     "wall": "2026-12-04"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -481,13 +583,20 @@
    "group": "D4 Kiroween",
    "id": "D4-13-placement-any-prize",
    "knowable": "NOT_ESTABLISHED (post-close TBD)",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Devpost official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Devpost official results",
     "value": null
    },
-   "subject": "Placement = any prize (overall/category/crew) {Y/N}"
+   "subject": "Placement = any prize (overall/category/crew) {Y/N}",
+   "window": {
+    "wall": "2026-12-04T14:00:00-08:00",
+    "window_start": "2026-11-29T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -500,6 +609,7 @@
     "register_item": "D5 Aha kickoff",
     "wall": null
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -516,13 +626,21 @@
    "group": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
    "id": "D5-14-spot-confirmation",
    "knowable": "on receipt (pending now)",
+   "pct_consumed": null,
+   "pct_note": "degenerate window (instant/point subject) \u2014 no honest percentage",
+   "pct_remaining": null,
    "record_of_record": "entries + gate D5-SPOT",
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries + gate D5-SPOT",
     "value": null
    },
-   "subject": "Spot confirmation received {Y/N}"
+   "subject": "Spot confirmation received {Y/N}",
+   "window": {
+    "wall": "2026-11-17T09:00:00-08:00",
+    "window_start": "2026-11-17T09:00:00-08:00",
+    "window_start_basis": "register stage B (kickoff) \u2014 earliest anchor; spot gates the kickoff"
+   }
   },
   {
    "anchors": {
@@ -535,6 +653,7 @@
     "register_item": "D5 Aha submission",
     "wall": "2026-11-19"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -551,13 +670,20 @@
    "group": "D5 Aha",
    "id": "D5-15-submission-landed",
    "knowable": "2026-11-19",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "entries confirmation_ref",
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries confirmation_ref",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-19T12:00:00-08:00",
+    "window_start": "2026-11-15T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -571,6 +697,7 @@
     "register_item": "D5 Aha submission",
     "wall": "2026-11-19"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -587,17 +714,25 @@
    "group": "D5 Aha",
    "id": "D5-16-placement-winner",
    "knowable": "2026-11-20 11:30 PT (dated)",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Aha official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Aha official results",
     "value": null
    },
-   "subject": "Placement = winner {Y/N}"
+   "subject": "Placement = winner {Y/N}",
+   "window": {
+    "wall": "2026-11-19T12:00:00-08:00",
+    "window_start": "2026-11-15T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": null,
    "anchors_note": "NOT_ESTABLISHED \u2014 no register item for the M1 GPU claim; nearest register coverage starts at the League submission item",
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -614,17 +749,25 @@
    "group": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
    "id": "AMD-17-gpu100-claim",
    "knowable": "2026-11-07",
+   "pct_consumed": 21.0,
+   "pct_remaining": 79.0,
    "record_of_record": "gate AMD-GPU100",
    "settle": {
     "field": "place earned / official outcome",
     "source": "gate AMD-GPU100",
     "value": null
    },
-   "subject": "M1 $100 GPU claim filed by Nov 7 {Y/N}"
+   "subject": "M1 $100 GPU claim filed by Nov 7 {Y/N}",
+   "window": {
+    "wall": "2026-11-07T23:59:00-08:00",
+    "window_start": "2026-11-02T00:00:00-08:00",
+    "window_start_basis": "book intake date (day granularity) \u2014 no register item; earliest honest date = subject opened at book open"
+   }
   },
   {
    "anchors": null,
    "anchors_note": "NOT_ESTABLISHED \u2014 no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)",
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -641,13 +784,20 @@
    "group": "AMD AI League",
    "id": "AMD-18-m4-submitted",
    "knowable": "2026-11-09",
+   "pct_consumed": 15.8,
+   "pct_remaining": 84.2,
    "record_of_record": "AMD seat + League platform",
    "settle": {
     "field": "place earned / official outcome",
     "source": "AMD seat + League platform",
     "value": null
    },
-   "subject": "M4 submitted by Nov 9 target {Y/N}"
+   "subject": "M4 submitted by Nov 9 target {Y/N}",
+   "window": {
+    "wall": "2026-11-09T23:59:00-08:00",
+    "window_start": "2026-11-02T00:00:00-08:00",
+    "window_start_basis": "book intake date (day granularity) \u2014 no register item"
+   }
   },
   {
    "anchors": {
@@ -661,6 +811,7 @@
     "register_item": "AMD Academy C5",
     "wall": "2026-11-20"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -677,13 +828,20 @@
    "group": "AMD AI League",
    "id": "AMD-19-academy-5-complete",
    "knowable": "2026-11-19",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Gates evidence (cert + points) + certs ledger",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Gates evidence (cert + points) + certs ledger",
     "value": null
    },
-   "subject": "Academy >=5 complete by Nov 19 landing {Y/N}"
+   "subject": "Academy >=5 complete by Nov 19 landing {Y/N}",
+   "window": {
+    "wall": "2026-11-19T23:59:00-08:00",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register AMD Academy C1 stage A \u2014 first anchor of the >=5 course set"
+   }
   },
   {
    "anchors": {
@@ -696,6 +854,7 @@
     "register_item": "AMD ROCm exam",
     "wall": "2026-11-28"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -712,13 +871,20 @@
    "group": "AMD AI League",
    "id": "AMD-20-rocm-exam-passed",
    "knowable": "2026-11-25",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "Gates seat 840bd147 evidence",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Gates seat 840bd147 evidence",
     "value": null
    },
-   "subject": "ROCm exam passed by Nov 25 landing {Y/N}"
+   "subject": "ROCm exam passed by Nov 25 landing {Y/N}",
+   "window": {
+    "wall": "2026-11-25T23:59:00-08:00",
+    "window_start": "2026-11-22T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -731,6 +897,7 @@
     "register_item": "AMD AI League submission",
     "wall": "2026-12-01"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -747,13 +914,20 @@
    "group": "AMD AI League",
    "id": "AMD-21-m2-m3-m5-m6-submissions",
    "knowable": "2026-11-28",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "AMD seat records",
    "settle": {
     "field": "place earned / official outcome",
     "source": "AMD seat records",
     "value": null
    },
-   "subject": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}"
+   "subject": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}",
+   "window": {
+    "wall": "2026-11-28T23:59:00-08:00",
+    "window_start": "2026-11-25T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -767,6 +941,7 @@
     "register_item": "AMD AI League submission",
     "wall": "2026-12-01"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -783,13 +958,20 @@
    "group": "AMD AI League",
    "id": "AMD-22-podium",
    "knowable": "2026-12-01 (posting may lag)",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "lablab official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "lablab official results",
     "value": null
    },
-   "subject": "Podium (top-3) at close {Y/N}"
+   "subject": "Podium (top-3) at close {Y/N}",
+   "window": {
+    "wall": "2026-12-01T11:00:00-08:00",
+    "window_start": "2026-11-25T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -805,6 +987,7 @@
     "register_item": "FCC L1 checkpoint (Dec 5) + FCC L1 exam (soft wall Dec 12)",
     "wall": "2026-12-12 (soft)"
    },
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -821,17 +1004,25 @@
    "group": "FCC L1 (baseline milestone)",
    "id": "FCC-23-relational-db-cert",
    "knowable": "at exam pass",
+   "pct_consumed": 0.0,
+   "pct_remaining": 100.0,
    "record_of_record": "certs ledger #506 + FCC verify link",
    "settle": {
     "field": "place earned / official outcome",
     "source": "certs ledger #506 + FCC verify link",
     "value": null
    },
-   "subject": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}"
+   "subject": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}",
+   "window": {
+    "wall": "2026-12-12T23:59:00-08:00",
+    "window_start": "2026-12-02T09:00:00-08:00",
+    "window_start_basis": "register FCC checkpoint stage A \u2014 earliest anchor (soft item)"
+   }
   },
   {
    "anchors": null,
    "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -848,17 +1039,25 @@
    "group": "C12 (graduated 2026-11-03)",
    "id": "C12-24-r1-submission",
    "knowable": "2026-11-15",
+   "pct_consumed": 2.0,
+   "pct_remaining": 98.0,
    "record_of_record": "coordinator + C12 record",
    "settle": {
     "field": "place earned / official outcome",
     "source": "coordinator + C12 record",
     "value": null
    },
-   "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}"
+   "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
+   "window": {
+    "wall": "2026-11-15T23:45:00-08:00",
+    "window_start": "2026-11-03T00:00:00-08:00",
+    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+   }
   },
   {
    "anchors": null,
    "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12",
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -875,17 +1074,25 @@
    "group": "C12 (graduated 2026-11-03)",
    "id": "C12-25-finalist-selection",
    "knowable": "2026-11-21",
+   "pct_consumed": 1.4,
+   "pct_remaining": 98.6,
    "record_of_record": "Devpost official",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Devpost official",
     "value": null
    },
-   "subject": "Finalist selection {Y/N}"
+   "subject": "Finalist selection {Y/N}",
+   "window": {
+    "wall": "2026-11-21T23:59:00-08:00",
+    "window_start": "2026-11-03T00:00:00-08:00",
+    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+   }
   },
   {
    "anchors": null,
    "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12",
+   "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
     "posterior": {
@@ -902,13 +1109,20 @@
    "group": "C12 (graduated 2026-11-03)",
    "id": "C12-26-placement",
    "knowable": "2026-11-30",
+   "pct_consumed": 0.9,
+   "pct_remaining": 99.1,
    "record_of_record": "Devpost official results",
    "settle": {
     "field": "place earned / official outcome",
     "source": "Devpost official results",
     "value": null
    },
-   "subject": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}"
+   "subject": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}",
+   "window": {
+    "wall": "2026-11-30T23:59:00-08:00",
+    "window_start": "2026-11-03T00:00:00-08:00",
+    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+   }
   }
  ]
 }

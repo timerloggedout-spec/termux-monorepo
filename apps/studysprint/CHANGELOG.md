@@ -3,6 +3,34 @@
 All notable changes to StudySprint. Process: `VERSIONING.md`.
 Entries are the GitHub Release notes, verbatim.
 
+## [0.4.0] — 2026-11-03
+
+Fourth versioned state: MINOR feature batch (v0.4.0 batch, part 3 of
+3) — the six memory methods (RFP-D1-5, issue #4113).
+
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
+### Added
+- Memory methods (`study_memory.py`), all six RFP-D1-5 items, each
+  carrying its evidence grade and claims ceiling in code, receipts,
+  and FEATURES: (1) method of loci — chapters -> palace route,
+  term-bank items at loci, walk-mode review of ordered recall
+  (ceiling: ordered/concrete recall, not understanding);
+  (2) Pomodoro session engine — 25/5 blocks x4 + long break,
+  check-in = block completion, adaptive block length (ceiling:
+  pacing/starting, not memory); (3) retrievability notifications —
+  fire at the FSRS threshold with the cue + one-tap grade in the
+  reminder, implementation-intention phrasing; (4) Feynman
+  explain-back graded against verified evidence only (abstain with
+  no evidence, escalate on thin coverage); (5) interleaved
+  quiz/card sessions (deterministic rotation, mixed topics);
+  (6) Leitner boxes — the plain-language onboarding scheduler,
+  receipt-stamped.
+- Tests: `tests/test_study_memory.py` covers every public
+  function in `study_memory.py`.
+
 ## [0.3.0] — 2026-11-02
 
 Third versioned state: MINOR feature batch adding the

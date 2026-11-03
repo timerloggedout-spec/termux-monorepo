@@ -286,13 +286,23 @@ async function runWorkshop(manifestPath) {
         await vscode.commands.executeCommand('coderoad.run_test');
         phaseLog(`step ${entry.step} run_test attempt ${attempt} returned`);
       } catch (e) { phaseLog(`step ${entry.step} run_test threw: ${e}`); }
+      // A passed step stays AT its position with complete=true (the
+      // runner sets {...position, complete: true}); navigation is a
+      // separate set_current_position call (the webview's continue).
       for (let i = 0; i < 20 && !advanced; i++) {
         await sleep(1200);
         const pos = parsePosition();
-        if (!pos) continue;
-        if (pos.levelId !== entry.level) advanced = true;
-        if (pos.complete && idx === steps.length - 1 && pos.levelId === entry.level) advanced = true;
+        if (pos && pos.levelId === entry.level && pos.complete) advanced = true;
       }
+    }
+    if (advanced && idx < steps.length - 1) {
+      const nxt = steps[idx + 1];
+      try {
+        await vscode.commands.executeCommand('coderoad.set_current_position',
+          { levelId: nxt.level, stepId: nxt.step, complete: false });
+        phaseLog(`position -> ${nxt.step}`);
+      } catch (e) { phaseLog(`set_current_position threw: ${e}`); }
+      await sleep(800);
     }
     if (advanced) {
       completed++;

@@ -21,6 +21,7 @@ cadence is set.
 Usage: telemetry_feed_series.py [feed.json] [series.jsonl]
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -30,6 +31,22 @@ SERIES = ROOT / "apps" / "tribute-dashboard" / "data" / "telemetry-feed-series.j
 FIELDS = ("receipts_total", "actioned", "skipped",
           "quota_readings_total", "workflow_runs_observed",
           "actions_failure_rate")
+
+
+def atomic_write(path: Path, content: str):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with temporary.open("w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def row_of(feed):

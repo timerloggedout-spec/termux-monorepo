@@ -254,9 +254,9 @@ def check_links(root):
             refs = [(m.group(1), text[:m.start()].count("\n") + 1)
                     for m in HTML_REF.finditer(text)]
         for refv, line in refs:
-            if is_dynamic_reference(refv):
-                continue
             ref_path, ref_query, ref_anchor = split_reference(refv)
+            if is_dynamic_reference(ref_path):
+                continue
             if re.match(r"^(https?:|mailto:|tel:|data:|#)", refv):
                 if refv.startswith("#") and len(refv) > 1:
                     anchors = (html_ids(p) if p.suffix == ".html"
@@ -323,9 +323,10 @@ def check_feeds(root):
             # Feed descriptions often combine several paths into prose
             # (for example "a.md + b.py"). Only a single literal path is
             # eligible for filesystem resolution.
-            if is_dynamic_reference(s) or is_compound_feed_description(s):
+            cand, query, anchor = split_reference(s)
+            if (is_dynamic_reference(cand) or is_dynamic_reference(anchor)
+                    or is_compound_feed_description(s)):
                 continue
-            cand, _, _ = split_reference(s)
             if cand in seen:
                 continue
             seen.add(cand)

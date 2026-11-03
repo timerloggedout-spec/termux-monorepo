@@ -31,6 +31,49 @@ from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
                          format_trust_receipt, render_today_view)
 
 
+def _memory_bundle(plan: dict, sections: list,
+                   calendar_geo: dict | None) -> dict:
+    """Memory-methods bundle (parity iteration 2, #4415).
+
+    Palace: iteration 1's temple route IS the course's palace —
+    core-built placements over the student's real walk — so it
+    binds directly; without one, the core builds a palace over
+    the plan's topics on its default route. Feynman evidence:
+    the reader sections are the verified text an explanation is
+    graded against on this surface (the sample's sections are
+    the course's own readings)."""
+    from study_memory import LOCI_CLAIMS_CEILING, LOCI_EVIDENCE, \
+        build_palace
+    temple = (calendar_geo or {}).get("temple_route") or {}
+    if temple.get("placements"):
+        palace = {
+            "placements": temple["placements"],
+            "route": [p["locus"] for p in temple["placements"]],
+            "claims_ceiling": temple.get("claims_ceiling")
+            or LOCI_CLAIMS_CEILING,
+            "evidence": LOCI_EVIDENCE,
+            "source": "temple-route",
+        }
+    else:
+        chapters, items = [], {}
+        for w in plan.get("weeks") or []:
+            title = f"Week {w.get('week')}"
+            topics: list = []
+            for s in w.get("sessions") or []:
+                if s["topic"] not in topics:
+                    topics.append(s["topic"])
+            chapters.append(title)
+            items[title] = topics
+        palace = {**build_palace(chapters, items),
+                  "source": "default-route"}
+    return {
+        "palace": palace,
+        "feynman_topics": [
+            {"topic": s["title"], "chapter": s["chapter"],
+             "evidence": s["text"]} for s in sections],
+    }
+
+
 def emit_state(root: Path | None = None) -> dict:
     root = root or APP_ROOT
     syllabus = json.loads((root / "examples" / "syllabus.json")
@@ -101,6 +144,7 @@ def emit_state(root: Path | None = None) -> dict:
                "ux_state": ux},
         "reader": {"sections": sections},
         "calendar_geo": calendar_geo,
+        "memory": _memory_bundle(plan, sections, calendar_geo),
     }
 
 

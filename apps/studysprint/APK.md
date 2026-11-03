@@ -104,7 +104,8 @@ engines. An embedded-Python build is not claimed here.
 | SR cards + review | present | on-device engines over the core UX export |
 | Reader (RSVP) | present | bundle Reader view (beyond the filed minimum) |
 | .apkg / vault export | absent | export stays CLI/TUI in this version |
-| v0.4.0 core modules (§1b pipeline, courses, memory methods) | absent | parity pass pending, as on the other surfaces |
+| v0.4.0 core modules (§1b pipeline, courses) | absent | parity pass pending, as on the other surfaces |
+| Memory methods (§1c) | present | as webApp (Memory view + Leitner in SR + interleaved plan in the bundle, build-time state; iteration 2) |
 | §1d calendar + geography | present | as webApp (Calendar + Routes views in the bundle, build-time state) |
 
 ## The smoke gate (#4283)

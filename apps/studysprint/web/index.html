@@ -20,6 +20,7 @@
   <button data-view="plan" class="tab">Plan / Receipt</button>
   <button data-view="reader" class="tab">Reader</button>
   <button data-view="sr" class="tab">SR Review</button>
+  <button data-view="memory" class="tab">Memory</button>
   <button data-view="calendar" class="tab">Calendar</button>
   <button data-view="routes" class="tab">Routes</button>
   <button data-view="ingest" class="tab">Ingest</button>
@@ -37,6 +38,7 @@
   <section id="view-plan" class="view hidden">
     <h2>Plan</h2>
     <div id="plan-body"></div>
+    <div id="plan-interleaved"></div>
     <h3>Trust receipt — what was fetched</h3>
     <pre id="receipt-body"></pre>
   </section>
@@ -66,6 +68,7 @@
       <select id="sr-scheduler">
         <option value="fsrs" selected>FSRS (default)</option>
         <option value="sm2">SM-2 (baseline)</option>
+        <option value="leitner">Leitner boxes</option>
       </select>
     </label>
     <div id="sr-front" class="card"></div>
@@ -73,13 +76,41 @@
     <div class="row">
       <button id="sr-flip">Flip card</button>
     </div>
-    <div class="row grades">
+    <div class="row grades" id="sr-grades-row">
       <button data-grade="1">1 Again</button>
       <button data-grade="2">2 Hard</button>
       <button data-grade="3">3 Good</button>
       <button data-grade="4">4 Easy</button>
     </div>
+    <div class="row grades hidden" id="sr-leitner-row">
+      <button data-leitner="1">Knew it — up a box</button>
+      <button data-leitner="0">Missed — back to box 1</button>
+    </div>
     <p id="sr-receipt" aria-live="polite"></p>
+  </section>
+
+  <section id="view-memory" class="view hidden">
+    <h2>Memory</h2>
+    <h3>Memory palace — your route</h3>
+    <div id="palace-body"></div>
+    <div class="row">
+      <button id="walk-start">Walk it from memory</button>
+    </div>
+    <div id="walk-area"></div>
+    <p id="walk-receipt" aria-live="polite"></p>
+    <h3>Explain it back (Feynman)</h3>
+    <label>Topic
+      <select id="feynman-topic"></select>
+    </label>
+    <textarea id="feynman-text" rows="4"
+      placeholder="Explain it in your own words, like you're teaching it…"></textarea>
+    <div class="row">
+      <button id="feynman-grade">Grade my explanation</button>
+    </div>
+    <p id="feynman-result" aria-live="polite"></p>
+    <h3>Retrievability reminders</h3>
+    <div id="retrievability-body"></div>
+    <p id="retrievability-status" aria-live="polite"></p>
   </section>
 
   <section id="view-calendar" class="view hidden">

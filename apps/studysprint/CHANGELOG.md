@@ -1,5 +1,34 @@
 ## [Unreleased]
 
+### Surfaces 0.3.0 (parity iteration 2, #4415 — memory methods)
+
+- **§1c memory methods bind on all three surfaces.** The core's
+  five surface-named methods (study_memory) arrive as one
+  Memory surface per client: the palace walk runs over
+  iteration 1's temple route (the student's real walk, core-
+  built placements), scored by the core's ordered-recall rule
+  with misses named and the claims ceiling attached; the
+  Feynman pane grades an explanation by key-term coverage of
+  the verified section text — abstain/escalate/graded, the
+  kernel's discipline, never semantic claims; retrievability
+  reminders fire at R ≤ 0.9 over the student's own reviewed
+  FSRS cards, each carrying a one-tap grade that IS the review.
+- **Leitner rotation joins SR** as the third scheduler on
+  webApp + TUI (boxes 1–5, plain-language move receipts, its
+  own per-card state line), and the **Plan view gains the
+  interleaved session**: today's sessions + due cards mixed by
+  the core's deterministic rotation.
+- **Binding shape:** the TUI runs the real core functions
+  (`walk_review` · `explain_back` ·
+  `retrievability_notifications` · `leitner_review` ·
+  `interleave_sessions`); the webApp/APK run browser ports of
+  the same scorers over the core-built bundle
+  (`state.memory` from `web/build_data.py`), equivalence-pinned
+  by `tests/test_iteration2_memory.py` (node-executed ports vs
+  core outputs on shared fixtures). Foundation stays 0.5.0;
+  `android:versionCode` stays 1 (its bump rides the APK trust
+  line, not the surface line).
+
 ### v1.0.0 content — second bundled sample course (#4593)
 
 - **STAT 210 — Data & Chance (sample, synthetic)** joins BIO

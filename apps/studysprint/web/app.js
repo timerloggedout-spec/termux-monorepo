@@ -182,7 +182,119 @@ function sm2Review(st, quality, now) {
                   .toISOString() };
 }
 
+/* ---------------- memory methods (iteration 2, #4415) */
+// Ports of the core's study_memory scorers, rule-for-rule, over
+// the build-time bundle in state.memory (palace + Feynman
+// evidence assembled by web/build_data.py from the real core).
+// The claims ceilings travel with the methods, as in the core.
+const LEITNER_INTERVALS = { 1: 1, 2: 2, 3: 4, 4: 7, 5: 14 };
+function leitnerReview(st, grade, now) {
+  const box = st && st.box ? st.box : 1;
+  let newBox, plain;
+  if (grade === 1) {
+    newBox = Math.min(5, box + 1);
+    plain = newBox === 5 && box === 5 ?
+      "You knew this one in the top box — it stays in box 5 " +
+      "and comes back in 14 days." :
+      `You knew this one — it moves up to box ${newBox} and ` +
+      `comes back in ${LEITNER_INTERVALS[newBox]} days.`;
+  } else {
+    newBox = 1;
+    plain = "Missed — no problem, it goes back to box 1 and " +
+      "comes back tomorrow. That's how the boxes work.";
+  }
+  return { box: newBox,
+           due: new Date(now.getTime() +
+             LEITNER_INTERVALS[newBox] * 864e5).toISOString(),
+           interval_days: LEITNER_INTERVALS[newBox],
+           plain_language: plain };
+}
+function walkScore(placed, recalled) {
+  // Mirror of study_memory.walk_review: ORDERED recall.
+  let inPosition = 0;
+  for (let i = 0; i < placed.length; i++) {
+    if (i < recalled.length && recalled[i] === placed[i]) inPosition++;
+  }
+  const placedSet = new Set(placed);
+  const recalledPlaced = recalled.filter((r) => placedSet.has(r)).length;
+  const missed = placed.filter((p) => !recalled.includes(p));
+  return { placed: placed.length, correct_in_position: inPosition,
+           recalled_out_of_order: Math.max(0, recalledPlaced - inPosition),
+           missed,
+           ordered_recall: placed.length ?
+             Math.round(inPosition / placed.length * 1000) / 1000 : null };
+}
+const FEYNMAN_STOP = new Set(["the", "a", "an", "of", "to", "in",
+  "is", "are", "and", "or", "it", "its", "that", "this", "by",
+  "for", "on", "as", "be", "with", "from"]);
+function memoryTokens(text) {
+  const out = new Set();
+  for (const t of String(text).toLowerCase().match(/[a-z0-9']+/g) || []) {
+    if (!FEYNMAN_STOP.has(t) && t.length > 2) out.add(t);
+  }
+  return out;
+}
+function explainBack(topic, explanation, evidenceTexts) {
+  // Mirror of study_memory.explain_back: key-term coverage
+  // against VERIFIED evidence only; none -> abstain.
+  const texts = (evidenceTexts || []).filter((t) => t && t.trim());
+  if (!texts.length) {
+    return { verdict: "abstain", coverage: null, missing_terms: [],
+             reason: "no verified evidence for this topic; " +
+                     "nothing to grade against" };
+  }
+  const keyTerms = new Set();
+  for (const t of texts) for (const tok of memoryTokens(t)) keyTerms.add(tok);
+  const used = memoryTokens(explanation);
+  const covered = [...keyTerms].filter((t) => used.has(t));
+  const coverage = keyTerms.size ?
+    Math.round(covered.length / keyTerms.size * 1000) / 1000 : 0;
+  const missing = [...keyTerms].filter((t) => !used.has(t)).sort();
+  if (coverage < 0.5) {
+    return { verdict: "escalate", coverage, missing_terms: missing,
+             guidance: "re-read the verified source, then explain " +
+                       "again covering the missing terms" };
+  }
+  return { verdict: "graded", coverage, missing_terms: missing,
+           guidance: "solid coverage of the verified evidence" };
+}
+function coreRetrievability(stability, elapsedDays) {
+  // study_memory.fsrs_retrievability: R = (1 + (19/81) * t/S) ** -0.5
+  if (stability === null || stability === undefined || stability <= 0) {
+    return 0;
+  }
+  return Math.pow(1 + (19 / 81) * (elapsedDays / stability), -0.5);
+}
+function interleaveOrder(items) {
+  // Mirror of study_memory.interleave_sessions' rotation:
+  // round-robin across topics, never the same topic twice in a
+  // row when avoidable; deterministic, receipt-reproducible.
+  const queues = {};
+  for (const it of items) {
+    (queues[it.topic] = queues[it.topic] || []).push(it);
+  }
+  const topics = Object.keys(queues).sort();
+  const out = [];
+  let last = null;
+  while (topics.some((t) => queues[t].length)) {
+    let chosen = null;
+    for (const t of topics) {
+      if (!queues[t].length) continue;
+      if (chosen === null) { chosen = t; continue; }
+      const tScore = [t === last ? 1 : 0, -queues[t].length];
+      const cScore = [chosen === last ? 1 : 0, -queues[chosen].length];
+      if (tScore[0] < cScore[0] ||
+          (tScore[0] === cScore[0] && tScore[1] < cScore[1])) {
+        chosen = t;
+      }
+    }
+    out.push(queues[chosen].shift());
+    last = chosen;
+  }
+  return out;
+}
 /* ---------------- pure helpers (unit-tested) */
+
 // #4214: the plan advances with the calendar. day_index counts
 // whole days since the bundle's plan_start (stamped by
 // build_data.py), clamped to the plan's length — the Today view
@@ -208,8 +320,12 @@ function todaySessions(plan, dayIndex) {
 // has arrived. Queue order: earliest due first (new cards count
 // as due now). Graded cards leave the queue until their due
 // date — they never recycle inside a session.
+function stateSuffix(scheduler) {
+  return scheduler === "sm2" ? ":sm2" :
+    scheduler === "leitner" ? ":leitner" : "";
+}
 function dueQueue(cards, srState, scheduler, now) {
-  const suffix = scheduler === "sm2" ? ":sm2" : "";
+  const suffix = stateSuffix(scheduler);
   const due = [];
   for (const card of cards) {
     const st = srState[card.card_id + suffix];
@@ -221,7 +337,7 @@ function dueQueue(cards, srState, scheduler, now) {
   return due.map((d) => d.card);
 }
 function nextDueDate(cards, srState, scheduler) {
-  const suffix = scheduler === "sm2" ? ":sm2" : "";
+  const suffix = stateSuffix(scheduler);
   let best = null;
   for (const card of cards) {
     const st = srState[card.card_id + suffix];
@@ -259,7 +375,7 @@ async function load() {
   $("#surface-version").textContent =
     state.data.surface_version || "0.1.0";
   renderToday(); renderPlan(); renderReader(); showCard();
-  renderCalendar(); renderRoutes();
+  renderCalendar(); renderRoutes(); renderMemory();
   const ux = state.data.sr && state.data.sr.ux_state;
   if (ux && ux.generation && ux.generation !== FSRS_GENERATION) {
     $("#sr-receipt").textContent =
@@ -348,6 +464,41 @@ function renderPlan() {
     "</ul>").join("");
   $("#receipt-body").textContent =
     JSON.stringify(state.data.trust_receipt, null, 2);
+  renderInterleaved();
+}
+
+function renderInterleaved() {
+  // Interleaving in the plan view (iteration 2): today's sessions
+  // and the due SR cards mixed round-robin across topics — the
+  // core's rotation (study_memory.interleave_sessions), so no two
+  // consecutive items share a topic when avoidable.
+  const el = $("#plan-interleaved");
+  if (!el) return;
+  const plan = state.data.plan || {};
+  const total = plan.total_sessions ||
+    (plan.weeks || []).reduce((n, w) => n + (w.sessions || []).length, 0);
+  const sessions = todaySessions(plan,
+    computeDayIndex(state.data.plan_start, total, new Date()));
+  const items = sessions.map((s) => ({
+    kind: "session", topic: s.topic,
+    label: `${s.kind}: ${s.topic} (${s.minutes} min)` }));
+  for (const card of dueQueue(state.data.sr.cards, state.srState,
+                               "fsrs", new Date())) {
+    items.push({ kind: "card",
+                 topic: (card.tags || [])[0] ||
+                   (card.source || {}).topic || "sr-cards",
+                 label: `review card: ${card.front}` });
+  }
+  if (!items.length) {
+    el.innerHTML = "<p>Nothing to interleave yet today.</p>";
+    return;
+  }
+  const ordered = interleaveOrder(items);
+  el.innerHTML = "<h3>Interleaved session — today, mixed by " +
+    "topic</h3><ol>" + ordered.map((it) =>
+      `<li>[${it.kind}] ${it.label} <em>(${it.topic})</em></li>`).join("") +
+    "</ol><p>Rotation is deterministic (the core's rule): work " +
+    "the list top to bottom.</p>";
 }
 
 /* ---------------- calendar + routes (iteration 1, #4414) */
@@ -422,6 +573,85 @@ function renderRoutes() {
     templeHtml;
 }
 
+/* ---------------- memory view (iteration 2, #4415) */
+function renderMemory() {
+  const mem = state.data.memory;
+  const palaceEl = $("#palace-body");
+  if (!mem || !mem.palace) {
+    palaceEl.textContent = "No memory palace in this bundle yet.";
+  } else {
+    const p = mem.palace;
+    palaceEl.innerHTML =
+      `<p>Your route (${p.source === "temple-route" ?
+        "your campus walk, from the Routes view" :
+        "the default route"}), one placed item per stop:</p><ol>` +
+      p.placements.map((pl) =>
+        `<li>${pl.locus} — <strong>${pl.item}</strong> ` +
+        `<em>(${pl.chapter})</em></li>`).join("") + "</ol>" +
+      `<p>Claims ceiling: ${p.claims_ceiling}. Evidence: ` +
+      `${p.evidence}</p>`;
+  }
+  const sel = $("#feynman-topic");
+  if (sel && mem) {
+    sel.innerHTML = (mem.feynman_topics || []).map((t, i) =>
+      `<option value="${i}">${t.chapter} — ${t.topic}</option>`).join("");
+  }
+  renderRetrievability();
+}
+
+function renderRetrievability() {
+  // The core's rule: fire at R <= 0.9 over the student's own
+  // reviewed FSRS cards (stability + last review from the
+  // persisted SR state). Unreviewed cards are not threshold
+  // cases — the list says so instead of inventing reminders.
+  const el = $("#retrievability-body");
+  if (!el) return;
+  const now = new Date();
+  const fired = [];
+  let above = 0;
+  for (const card of state.data.sr.cards) {
+    const st = state.srState[card.card_id];
+    if (!st || st.stability === null || st.stability === undefined ||
+        !st.last_review) continue;
+    const elapsed = Math.max(0,
+      (now - new Date(st.last_review)) / 864e5);
+    const r = coreRetrievability(st.stability, elapsed);
+    if (r <= 0.9) fired.push({ card, r });
+    else above++;
+  }
+  if (!fired.length) {
+    el.innerHTML = "<p>No card has fallen to the retrievability " +
+      "threshold (R ≤ 0.9) yet" +
+      (above ? ` — ${above} reviewed card(s) still above it.` : ".") +
+      " Reminders appear here as your reviewed cards fade.</p>";
+    return;
+  }
+  el.innerHTML = fired.map(({ card, r }) =>
+    `<div class="session"><span>When this reminder fires, I will ` +
+    `picture the answer to: <strong>${card.front}</strong> — ` +
+    `then grade myself honestly. (R = ${r.toFixed(3)})</span>` +
+    `<span class="row">` +
+    [1, 2, 3, 4].map((g) =>
+      `<button data-rgrade="${card.card_id}:${g}">${g}</button>`).join("") +
+    "</span></div>").join("");
+}
+
+function gradeFromReminder(cardId, gradeValue) {
+  const card = state.data.sr.cards.find((c) => c.card_id === cardId);
+  if (!card) return;
+  const next = fsrsReview(state.srState[cardId] || null,
+                          gradeValue, new Date());
+  state.srState[cardId] = next;
+  localStorage.setItem("studysprint-sr",
+                       JSON.stringify(state.srState));
+  $("#retrievability-status").textContent =
+    `Receipt: scheduler=fsrs generation=${FSRS_GENERATION} ` +
+    `grade=${gradeValue} via retrievability-notification — ` +
+    `next due ${next.due.slice(0, 10)}.`;
+  renderRetrievability();
+  showCard();
+}
+
 /* ---------------- reader (RSVP) */
 function renderReader(sectionIndex) {
   const sections = state.data.reader.sections;
@@ -484,6 +714,9 @@ function showCard() {
   document.querySelectorAll("[data-grade]").forEach((b) => {
     b.disabled = true;
   });
+  document.querySelectorAll("[data-leitner]").forEach((b) => {
+    b.disabled = true;
+  });
   $("#sr-front").textContent =
     `Card ${state.cardIndex % queue.length + 1} of ${queue.length} ` +
     `due (${total} in deck): ${card.front}`;
@@ -527,6 +760,28 @@ function grade(gradeValue) {
   showCard();
 }
 
+function gradeLeitner(knewIt) {
+  // Leitner rotation in SR (iteration 2): the core's box rules —
+  // knew it -> up a box, missed -> back to box 1; every receipt
+  // explains the move in plain language (study_memory).
+  if (!state.data || !state.flipped) return;
+  const card = currentCard();
+  if (!card) return;
+  const now = new Date();
+  const prev = state.srState[card.card_id + ":leitner"] || null;
+  const next = leitnerReview(prev, knewIt ? 1 : 0, now);
+  state.srState[card.card_id + ":leitner"] =
+    { box: next.box, due: next.due };
+  localStorage.setItem("studysprint-sr",
+                       JSON.stringify(state.srState));
+  $("#sr-receipt").textContent =
+    `Receipt: scheduler=leitner grade=${knewIt ? 1 : 0} — ` +
+    `${next.plain_language} (box ${next.box}, ` +
+    `next due ${next.due.slice(0, 10)})`;
+  state.cardIndex = 0;
+  showCard();
+}
+
 /* ---------------- wiring */
 document.querySelectorAll(".tab").forEach((tab) =>
   tab.addEventListener("click", () => {
@@ -543,9 +798,15 @@ $("#sr-flip").addEventListener("click", () => {
   document.querySelectorAll("[data-grade]").forEach((b) => {
     b.disabled = false;
   });
+  document.querySelectorAll("[data-leitner]").forEach((b) => {
+    b.disabled = false;
+  });
 });
 document.querySelectorAll("[data-grade]").forEach((b) =>
   b.addEventListener("click", () => grade(Number(b.dataset.grade))));
+document.querySelectorAll("[data-leitner]").forEach((b) =>
+  b.addEventListener("click", () =>
+    gradeLeitner(Number(b.dataset.leitner) === 1)));
 // Today actions (#4228), delegated so re-renders keep them live.
 document.addEventListener("click", (e) => {
   if (!state.data) return;
@@ -570,6 +831,12 @@ document.addEventListener("click", (e) => {
 });
 $("#sr-scheduler").addEventListener("change", (e) => {
   state.scheduler = e.target.value;
+  // Leitner grades in boxes, not 1–4: swap the grade rows.
+  const leitner = state.scheduler === "leitner";
+  $("#sr-grades-row").classList.toggle("hidden", leitner);
+  $("#sr-leitner-row").classList.toggle("hidden", !leitner);
+  state.cardIndex = 0;
+  showCard();
 });
 $("#reader-start").addEventListener("click", () => {
   if (state.reader) state.reader.index = 0;
@@ -696,6 +963,75 @@ $("#ingest-confirm").addEventListener("click", () => {
   $("#ingest-status").textContent =
     "Placed. The confirmed records are stored locally " +
     "(ss.ingest.placed) for the calendar.";
+});
+
+// ------------------------------------------------------------ memory
+// Palace walk: the route is shown one locus at a time and the
+// student types what they placed there; scoring is the core's
+// walk_review (ordered recall, misses named).
+state.walk = null;
+$("#walk-start").addEventListener("click", () => {
+  const mem = state.data && state.data.memory;
+  if (!mem || !mem.palace || !mem.palace.placements.length) return;
+  state.walk = { index: 0, recalled: [] };
+  $("#walk-receipt").textContent = "";
+  renderWalkStep();
+});
+function renderWalkStep() {
+  const placements = state.data.memory.palace.placements;
+  const w = state.walk;
+  const area = $("#walk-area");
+  if (w.index >= placements.length) {
+    const placed = placements.map((p) => p.item);
+    const s = walkScore(placed, w.recalled);
+    $("#walk-receipt").textContent =
+      `Walk receipt: placed ${s.placed} · correct in position ` +
+      `${s.correct_in_position} · recalled out of order ` +
+      `${s.recalled_out_of_order} · ordered recall ` +
+      `${s.ordered_recall} · missed: ` +
+      `${s.missed.length ? s.missed.join(", ") : "none"}. ` +
+      `Ceiling: ${state.data.memory.palace.claims_ceiling}.`;
+    area.innerHTML = "";
+    state.walk = null;
+    return;
+  }
+  const p = placements[w.index];
+  area.innerHTML =
+    `<p>Stop ${w.index + 1} of ${placements.length}: ` +
+    `<strong>${p.locus}</strong> — what did you place here?</p>` +
+    `<input id="walk-input" type="text" autocomplete="off">` +
+    `<button id="walk-next">Next stop</button>`;
+  $("#walk-next").addEventListener("click", () => {
+    state.walk.recalled.push($("#walk-input").value.trim());
+    state.walk.index++;
+    renderWalkStep();
+  });
+}
+$("#feynman-grade").addEventListener("click", () => {
+  const mem = state.data && state.data.memory;
+  if (!mem) return;
+  const topic = (mem.feynman_topics || [])[
+    Number($("#feynman-topic").value || 0)];
+  if (!topic) return;
+  const r = explainBack(topic.topic, $("#feynman-text").value,
+                        [topic.evidence]);
+  $("#feynman-result").textContent = r.verdict === "abstain" ?
+    `Verdict: abstain — ${r.reason}.` :
+    `Verdict: ${r.verdict} · coverage ${r.coverage} of the ` +
+    `verified evidence's key terms` +
+    (r.missing_terms.length ?
+      ` · missing: ${r.missing_terms.slice(0, 12).join(", ")}` +
+      (r.missing_terms.length > 12 ? " …" : "") : "") +
+    ` · ${r.guidance}. (Key-term coverage against the verified ` +
+    `text — not semantic grading.)`;
+});
+// Retrievability one-tap grades (delegated: rows re-render).
+document.addEventListener("click", (e) => {
+  const rg = e.target.dataset && e.target.dataset.rgrade;
+  if (rg) {
+    const [cardId, g] = rg.split(":");
+    gradeFromReminder(cardId, Number(g));
+  }
 });
 
 load();

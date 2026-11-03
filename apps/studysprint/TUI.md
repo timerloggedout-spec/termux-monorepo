@@ -38,12 +38,12 @@ default or SM-2, scheduler-named receipt after every grade) ·
 | Today view | present | Today tab, from `render_today_view` |
 | Daily check-in | present | Today tab buttons → `record_daily_checkin` |
 | Reader (RSVP) | present | Reader tab over `RSVPReader` |
-| SR cards + review | present | SR Review tab → `review_card` (FSRS default, SM-2 selectable; receipts name the scheduler) |
+| SR cards + review | present | SR Review tab → `review_card` (FSRS default, SM-2 selectable) + Leitner boxes via `leitner_review`; receipts name the scheduler |
 | .apkg export | present | Export tab → `export_apkg` |
 | Obsidian vault export | present | Export tab → `export_obsidian_vault` |
 | Reading pipeline (§1b) | absent | core module ships in the CLI; not yet surfaced in the TUI |
 | Multi-course / countdown / .ics | absent | core v0.4.0; TUI parity pass pending |
-| Memory methods (x6) | absent | core v0.4.0; TUI parity pass pending |
+| Memory methods (§1c) | present | Memory tab runs the real core: `walk_review` scoring · `explain_back` vs the section text · `retrievability_notifications` over the surface's own FSRS states · Leitner rotation in SR via `leitner_review` · `interleave_sessions` in the Plan pane (iteration 2) |
 | Calendar awareness (§1d) | present | Calendar tab → `surface_calendar_geo` (intake · briefings · frequency · quiet hours), assembled live |
 | Geography (§1d) | present | Routes tab → locations · assessment routes · temple route + audio cues |
 

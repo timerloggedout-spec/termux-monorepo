@@ -5,6 +5,8 @@ body { font-family: system-ui, sans-serif; margin: 0 auto;
        background: #fdfdf8; }
 header h1 { margin-bottom: 0; color: #14532d; }
 button, select { min-height: 48px; min-width: 48px;
+textarea, input[type="text"] { width: 100%; box-sizing: border-box;
+  font: inherit; padding: 8px; margin: 4px 0; }
                  padding: 0.6rem 1rem; font-size: 1rem;
                  border-radius: 0.6rem; border: 1px solid #14532d;
                  background: #eef7ee; cursor: pointer; }

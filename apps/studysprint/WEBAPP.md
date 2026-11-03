@@ -44,7 +44,7 @@ the bundle serves from the project's Pages site.
 | .apkg / vault export | absent | export stays a CLI/TUI surface in this version |
 | Reading pipeline (§1b) | absent | core v0.4.0; web parity pass pending |
 | Multi-course / countdown / .ics | absent | core v0.4.0; web parity pass pending |
-| Memory methods (x6) | absent | core v0.4.0; web parity pass pending |
+| Memory methods (§1c) | present | Memory view: palace walk (iteration-1 temple route) scored by the core's ordered-recall rule · Feynman explain-back graded on key-term coverage of the verified section text (abstain/escalate named) · retrievability reminders at R ≤ 0.9 with one-tap grades · Leitner boxes selectable in SR · interleaved session in the Plan view — browser ports of the core scorers, battery-pinned (iteration 2) |
 | Calendar awareness (§1d) | present | Calendar view over the core assembler (build-time state, as the bundle's other state) |
 | Geography (§1d) | present | Routes view — locations · assessment routes · temple route + audio cues (build-time state) |
 

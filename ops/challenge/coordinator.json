@@ -1085,11 +1085,12 @@
    },
    "field_size": {
     "status": "partial",
-    "participants": 1617,
-    "participants_source": "'Approved 1617' counter, lablab.ai sign-up bar, read 2026-10-28",
+    "participants": 2302,
+    "participants_source": "lablab.ai event page embedded initialParticipants, programmatic GET 2026-11-03 (field_size_scrape method); harvest of record = ops/challenge-recruitment/harvests/D2--2026-11-03.json (PR #4484 merged 699c2c911014). Previous reading 1617 (2026-10-28), delta +685.",
+    "participants_note": "Dual-source same window: the D2 exercise Observatory pass read the live dashboard at 2,308 participants / 601 teams (~17:10Z) vs this scrape 2,302 (17:08Z) - delta 6 = live counter drift (+249 today per Observatory); the scrape value is the field of record, both reads preserved. Winprob denominator updated accordingly (MoneyBall leg flagged).",
     "projects": null,
-    "projects_note": "no project gallery published (event Nov 3-8) \u2014 projects count = OPEN TASK at gallery publish",
-    "fetched_at": "2026-10-28T22:05:00Z"
+    "projects_note": "no project gallery published (event Nov 3-8) - projects count = OPEN TASK at gallery publish; the exercise Observatory pass saw 3 submissions on the live dashboard (count via dashboard, gallery list not public)",
+    "fetched_at": "2026-11-03T09:08:00-08:00"
    },
    "exercise": {
     "run": "run-2026-11-03 (record shape v1, repeatable); record file = ~/workspace/d2-exercise/run-2026-11-03.md (D2 seat); landed interim up-main (submission 01d3206a); recorded here by the entries lane from the firsthand read",

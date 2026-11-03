@@ -68,7 +68,32 @@ Do not emit raw prompts, completions, cookies, tokens, credentials, session tran
 | HAPI MCP Registry | Discovery metadata is not trust approval; pin server/version, inspect provenance and transport, review capabilities/scopes, and require admission policy before execution. |
 | Sprites | Bind environment actions to immutable source SHA; default to disposable isolated environments, deny network by default where feasible, never inject secrets by default, and preserve execution/checkpoint provenance. |
 
-## 6. Validation and promotion
+## 6. Read-only agent-toolchain adapter interface
+
+The first provider adapters live in `scripts/integrations/agent_toolchain.py` and expose pure normalizers:
+
+- `normalize_hapi_server(record, captured_at, provider_request_id=None)`
+- `normalize_context7_document(payload, library_id, version, captured_at, provider_request_id=None)`
+- `normalize_context_dev_result(payload, captured_at, provider_request_id=None)`
+- `validate_observation(observation)`
+
+They accept already-retrieved provider objects. They do not call provider APIs, retain caller queries, execute MCP servers, or grant admission. Each returns the separate [provider observation schema](schemas/provider-observation.schema.json); it is not a replacement for the canonical integration event envelope. Once an approved artifact store persists an observation, a canonical event may reference that artifact through `evidence.artifact_refs`.
+
+HAPI observations use the stable `server-name@version` key, normalize HTTPS remotes, retain only known official registry metadata, and list unknown field names without copying their values. Every HAPI observation is hard-coded to `security_review_status=not_reviewed`, `admission_status=not_admitted`, and `execution_allowed=false`.
+
+Context7 observations require a resolved `/org/project` library ID and an explicit version, either embedded in the ID or supplied separately. Context.dev observations require HTTPS URLs, remove query strings and fragments, bound excerpts, and mark provider content as untrusted. Neither adapter stores the caller's search/documentation query.
+
+CLI examples (provider response JSON is piped on stdin):
+
+```bash
+python3 scripts/integrations/agent_toolchain.py --provider hapi --captured-at 2026-11-03T06:00:00Z < hapi-record.json
+python3 scripts/integrations/agent_toolchain.py --provider context7 --library-id /org/project --version 2.0.0 --captured-at 2026-11-03T06:00:00Z < context7-result.json
+python3 scripts/integrations/agent_toolchain.py --provider context-dev --captured-at 2026-11-03T06:00:00Z < context-result.json
+```
+
+The adapters are offline normalizers only. Connector authentication, runtime reachability, provider request orchestration, storage, and end-to-end validation remain separate lifecycle gates.
+
+## 7. Validation and promotion
 
 Before promotion:
 

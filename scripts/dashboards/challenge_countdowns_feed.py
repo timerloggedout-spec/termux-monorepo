@@ -69,14 +69,21 @@ def load_prizes(root):
         coord = json.loads(path.read_text(encoding="utf-8"))
         for ev in coord.get("events", []):
             p = ev.get("prizes") or {}
+            if not isinstance(p, dict):
+                continue  # non-object prizes record: not consumable here
+            tiers = []
+            for t in p.get("tiers", []):
+                if isinstance(t, dict):
+                    tiers.append({"place": t.get("place"),
+                                  "award": t.get("award"),
+                                  "source_url": t.get("source_url")})
+                else:  # a tier recorded as a bare name passes verbatim
+                    tiers.append({"place": t, "award": None,
+                                  "source_url": None})
             prizes[ev["id"]] = {
                 "status": p.get("status") or "NOT_ESTABLISHED",
                 "pool": p.get("pool"),
-                "tiers": [
-                    {"place": t.get("place"), "award": t.get("award"),
-                     "source_url": t.get("source_url")}
-                    for t in p.get("tiers", [])
-                ],
+                "tiers": tiers,
             }
     return prizes
 

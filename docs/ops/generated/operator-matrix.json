@@ -4,8 +4,8 @@
     "open_prs": 261,
     "pr_classes": {
       "CANDIDATE": 122,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 128,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 129,
       "SUPERSEDE": 0
     }
   },
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T23:04:51Z",
+  "generated_at": "2026-11-03T23:09:37Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "success"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "ed45e52869"
+    "sha": "6c2793e3a8"
   },
   "prs": [
     {
@@ -294,20 +294,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3cac21809c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-03T22:29:49Z"
     },
     {
       "class": "CANDIDATE",
@@ -1525,20 +1511,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0472f12076",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T23:03:36Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2021,6 +1993,20 @@
       "number": 4621,
       "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
       "updated_at": "2026-11-03T21:36:33Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3cac21809c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-03T22:29:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3191,6 +3177,20 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "65a5270032",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T23:07:07Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "8294936e68",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3235,7 +3235,7 @@
       },
       "head_sha": "57669a24ed",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4023,
       "title": "docs: integrate competitive opportunities and quota reconciliation",
       "updated_at": "2026-11-03T20:39:18Z"
@@ -3263,7 +3263,7 @@
       },
       "head_sha": "39701b9191",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-03T22:32:06Z"
@@ -3291,7 +3291,7 @@
       },
       "head_sha": "66f36505cc",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4090,
       "title": "Emit ATES outcome receipts for non-success source runs",
       "updated_at": "2026-11-03T20:57:56Z"
@@ -3613,7 +3613,7 @@
       },
       "head_sha": "4b47ba9f00",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4609,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T21:00:02Z"
@@ -3739,7 +3739,7 @@
       },
       "head_sha": "6f0388f6a2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4644,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:26:45Z"
@@ -3809,7 +3809,7 @@
       },
       "head_sha": "acebe6bea8",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4672,
       "title": "D1 parity iteration 2 \u2192 surfaces 0.3.0: \u00a71c memory methods on all surfaces (#4415)",
       "updated_at": "2026-11-03T23:03:47Z"

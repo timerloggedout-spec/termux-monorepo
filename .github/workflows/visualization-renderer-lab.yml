@@ -37,7 +37,7 @@ jobs:
       - name: Validate deterministic synthetic cohort
         run: python3 scripts/visualization_lab/validate_cohort.py
       - name: Run cohort and snapshot regression tests
-        run: python3 -m unittest tests/test_visualization_lab.py -v
+        run: PYTHONPATH=. python3 -m unittest discover -s tests -p 'test_visualization_lab.py' -v
       - name: Compile validators
         run: python3 -m py_compile scripts/visualization_lab/validate_cohort.py scripts/visualization_lab/validate_dashboard_snapshot.py
       - name: Verify pinned renderer matrix and fixture boundary

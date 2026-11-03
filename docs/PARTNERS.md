@@ -11,6 +11,7 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 | Manus AI | AI employees & agents | Invitation link (UTM-tagged) | https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share | `Manus AI — invitation` (`111111`) — row 1 | Marketing (Chloe) |
 | UnoRouter | LLM routing | 10% of referred top-ups as account balance (no cash payout; balance transfers to main) | https://unorouter.com/register?aff=kHp6 | issued referral badge (dark, MD, SVG) — landing grid | Marketing (Chloe) |
 | Neon | Serverless Postgres | Referral link — offer NOT ESTABLISHED (verify on signup) | https://neon.com/signup?refcode=BZL02IH2 | — | Marketing (Chloe) |
+| Replit | Developer platforms | $20 in credits to the referred user when they upgrade; referrer-side $20 requires a paid plan (not claimable on the free tier) | https://replit.com/refer/timerloggedout | — | Marketing (Chloe) |
 | Grafana | Observability & cloud | Referral code `gr8WEigykKjVGTV` | https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV | `Grafana Cloud — referral sign-up` (`F46800`, grafana logo) — row 2 | Marketing (Chloe) |
 
 ## 1b. Code lanes (invite / referral codes, owner-supplied, free no-CC)
@@ -36,8 +37,8 @@ Route per partner: referral/affiliate programme if one exists → otherwise gift
 | Category | Candidates | Route notes |
 |---|---|---|
 | Generative media | HiggsField, Kling AI, Suno (listed as "Sumo" in #574) | Gift-card redemption & referral programmes |
-| AI app builders | Lovable | Affiliate programme VERIFIED 2026-11-03 (lovable.dev/partners/affiliates): up to $100 per first-time subscriber, application via Impact, link on approval — registry entry `lovable` (programme_verified_not_enrolled); enrolment = main's go |
-| Developer platforms (referral) | Replit | Referral programme VERIFIED 2026-11-03 (replit.com/refer): $20 credits both sides per new paying customer, milestones $100 @5 / $1,000 @50 — registry entry `replit` (programme_verified_not_enrolled); link is account-bound, minting = main's go |
+| AI app builders | Lovable | Affiliate programme VERIFIED 2026-11-03 — Impact offer of record: $50.00 per first-time subscriber (30-day cookie/lock, net-30; the page's 'up to $100' headline has no visible tier in the offer) — registry entry `lovable` (programme_verified_not_enrolled); owner is entering his own details on Impact (decision 2026-11-03); state flips to enrolled on acceptance, link on approval |
+| Developer platforms (referral) | Replit | ENROLLED 2026-11-03 — moved to §1 (active link live); registry entry `replit` (active_link) |
 | LLMs & agent platforms | Moonshot AI (Kimi), Grok, Google, DeepSeek, GenSpark, FELO.ai, OpenRouter, OMNI, Devin.ai, Codex, BlackBoxAI, Dify, Tanka, Stepie, LikeClaw | Kimi: gift-card redemption codes |
 | Cloud, hosting & infra | v0, Vercel, Render, Cloudflare, Firebase, Repl.it, Gitpod / Ona (app.ona.com), Tailscale, Tembo | v0: gifted-usage codes; Ona: coupons |
 | LLM routing | UnoRouter | ACTIVATED 2026-10-28 — moved to §1 (affiliate link live, terms firsthand) |

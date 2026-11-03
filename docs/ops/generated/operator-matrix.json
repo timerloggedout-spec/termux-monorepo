@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 456,
+    "open_issues": 458,
     "open_prs": 204,
     "pr_classes": {
-      "CANDIDATE": 104,
-      "EXTRACT": 7,
+      "CANDIDATE": 105,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 93,
       "SUPERSEDE": 0
     }
@@ -15,7 +15,7 @@
       "unlabelled_numbers": []
     },
     "delphi": {
-      "issues": 86,
+      "issues": 87,
       "unlabelled_numbers": []
     },
     "mesh": {
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 233,
+      "issues": 234,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T11:50:06Z",
+  "generated_at": "2026-11-03T11:55:43Z",
   "issues_unlabelled": [
     308,
     388,
@@ -152,7 +152,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "e38975e081"
+    "sha": "baa08bc5b5"
   },
   "prs": [
     {
@@ -224,20 +224,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "09903011e4",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T11:48:50Z"
     },
     {
       "class": "EXTRACT",
@@ -1027,6 +1013,20 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "5c60f9a6e4",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T11:52:24Z"
     },
     {
       "class": "CANDIDATE",

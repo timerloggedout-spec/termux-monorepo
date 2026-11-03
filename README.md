@@ -125,6 +125,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
+| Federated AppIDs / release lanes | [docs/ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md](docs/ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md) | Product apps, external repositories, UI surfaces, independent release lanes, and automation-identity separation. |
 | Skills + adaptive WAIT | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) · [Superpowers](.agents/skills/superpowers/SKILL.md) | Engineering methodology, ops skills, admission/queue stalls, evidence-led loop. |
 | Integration Intelligence | [`docs/integrations/README.md`](docs/integrations/README.md) | Provider registry, adapter boundaries, event schema, phased integration roadmap. |
 | Deployment lanes (Vercel / Pages) | [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md) | Live Vercel projects, Pages status, hosting identity rules. |

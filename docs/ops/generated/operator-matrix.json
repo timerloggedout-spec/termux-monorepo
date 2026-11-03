@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 470,
-    "open_prs": 204,
+    "open_prs": 205,
     "pr_classes": {
-      "CANDIDATE": 105,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 93,
+      "CANDIDATE": 104,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 202,
+      "prs": 203,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T13:30:35Z",
+  "generated_at": "2026-11-03T13:41:45Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "801ebf17d1"
+    "sha": "558bae19e2"
   },
   "prs": [
     {
@@ -236,6 +236,20 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6375478b39",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4321,
+      "title": "Dual-valence notation: one entity, two readings, \u03ba conversion",
+      "updated_at": "2026-11-03T13:41:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -1011,20 +1025,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "57f393589e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T13:23:05Z"
     },
     {
       "class": "CANDIDATE",
@@ -2248,6 +2248,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "b48fb8e4fb",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T13:41:19Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -2895,12 +2909,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b23c585e88",
+      "head_sha": "6713ef8bf3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T13:19:05Z"
+      "updated_at": "2026-11-03T13:31:19Z"
     },
     {
       "class": "NEED_EVIDENCE",

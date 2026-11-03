@@ -223,9 +223,9 @@
   ],
   "fleet_position": {
    "four_roles_projection": "4 registrations of 100; 20000/h separated installation quota once all installed on termux-monorepo",
-   "owned_apps_established": 8,
+   "owned_apps_established": 10,
    "owned_apps_note": "no REST route lists an account's owned apps; other registrations are NOT ESTABLISHED via API — owner-UI census item of record",
-   "slate_live": "8 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle, Swarm, CrossReference, RepoStory); 35000/h separated installation quota on termux-monorepo (7 apps x 5000/h) + 5000/h on repo-story (RepoStory)"
+   "slate_live": "10 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle, Swarm, CrossReference, RepoStory, DelphiOracle, MoneyBall); 35000/h separated installation quota on termux-monorepo (7 apps x 5000/h) + 5000/h each on repo-story (RepoStory), delphi-oracle (DelphiOracle), moneyball (MoneyBall)"
   },
   "limits": {
    "app_jwt_max_lifetime_min": 10,
@@ -520,7 +520,7 @@
    ]
   }
  },
- "updated_at": "2026-11-03T22:25Z",
+ "updated_at": "2026-11-03T22:41Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",
@@ -598,6 +598,88 @@
     "limit": 5000,
     "remaining": 5000,
     "used": 0
+   },
+   "installations_count": 1,
+   "routes": [
+    "GET /app (App JWT)",
+    "GET /app/installations",
+    "GET /installation/repositories",
+    "GET /rate_limit (installation token)"
+   ]
+  }
+ },
+ "delphioracle": {
+  "app_id": 5602904,
+  "avatar": "avatar.png in delphioracle-pilot package; uploaded 2026-11-03; PNG 1600x1600, 20,587 B <= 1 MB cap",
+  "client_id": "Iv23li5tPLhYDOMaLNAt",
+  "events": [],
+  "installation": {
+   "account": "timerloggedout-spec",
+   "id": 178358203,
+   "repositories": [
+    "delphi-oracle"
+   ],
+   "repository_selection": "selected"
+  },
+  "moniker": "Pythia · DelphiOracle",
+  "moniker_detail": "canonical Pythia; aspect the Utterance; queued alt Seer (mark Se3r); leet marks Pyth1a > Pythi4 (mark layer only); bounces pyth1a > pythi4 not consumed; issued by registry lane 2026-11-03, docs/ops/AGENT-MONIKERS.md (PR #4580)",
+  "name": "Termux Fleet DelphiOracle",
+  "permissions": {
+   "contents": "write",
+   "issues": "write",
+   "metadata": "read",
+   "pull_requests": "write"
+  },
+  "public": true,
+  "role": "competition-entry-actor (D0 Delphi Oracle) - PAIR CLOSURE: repo landed 2026-10-31 (id 1440402618) before the build-start rule's application; AppID leg closed 2026-11-03 on owner direct correction (D0 sub-manager filing)",
+  "slug": "termux-fleet-delphioracle",
+  "verified": {
+   "at": "2026-11-03T22:38Z",
+   "bucket": {
+    "limit": 5000,
+    "remaining": 5000,
+    "used": 0
+   },
+   "installations_count": 1,
+   "routes": [
+    "GET /app (App JWT)",
+    "GET /app/installations",
+    "GET /installation/repositories",
+    "GET /rate_limit (installation token)"
+   ]
+  }
+ },
+ "moneyball": {
+  "app_id": 5602878,
+  "avatar": "avatar.png in moneyball-pilot package; uploaded 2026-11-03; PNG 460x460, 5,807 B <= 1 MB cap",
+  "client_id": "Iv23li4q4FnN7UOvJddY",
+  "events": [],
+  "installation": {
+   "account": "timerloggedout-spec",
+   "id": 178357694,
+   "repositories": [
+    "moneyball"
+   ],
+   "repository_selection": "selected"
+  },
+  "moniker": "Actuary · MoneyBall",
+  "moniker_detail": "canonical Actuary; aspect the Table; queued alt Kelly (mark K3lly); leet marks Actu4ry > 4ctuary (mark layer only); bounces actu4ry > 4ctuary not consumed; issued by registry lane 2026-11-03, docs/ops/AGENT-MONIKERS.md (PR #4645)",
+  "name": "Termux Fleet MoneyBall",
+  "permissions": {
+   "contents": "write",
+   "issues": "write",
+   "metadata": "read",
+   "pull_requests": "write"
+  },
+  "public": true,
+  "role": "competition-entry-actor (MoneyBall site) - owner order via main 2026-11-03; repo timerloggedout-spec/moneyball (id 1444884380) created by the Web3 seat at build start",
+  "slug": "termux-fleet-moneyball",
+  "verified": {
+   "at": "2026-11-03T22:38Z",
+   "bucket": {
+    "limit": 5000,
+    "remaining": 4999,
+    "used": 1
    },
    "installations_count": 1,
    "routes": [

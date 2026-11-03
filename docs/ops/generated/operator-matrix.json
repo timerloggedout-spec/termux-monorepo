@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 436,
-    "open_prs": 206,
+    "open_issues": 435,
+    "open_prs": 204,
     "pr_classes": {
       "CANDIDATE": 105,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "NEED_EVIDENCE": 93,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 239,
+      "issues": 238,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 204,
+      "prs": 202,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T10:36:10Z",
+  "generated_at": "2026-11-03T10:41:01Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "9ea900914f"
+    "sha": "ecf53cc580"
   },
   "prs": [
     {
@@ -969,6 +969,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "8c42f9d819",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T10:34:57Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1649,20 +1663,6 @@
       "updated_at": "2026-11-03T10:16:00Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e4595be4ba",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4163,
-      "title": "feat(studysprint-apk): Android APK surface v0.1.0 (SDK-direct) [#4093]",
-      "updated_at": "2026-11-03T10:33:42Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2193,20 +2193,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "8c42f9d819",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T10:34:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2977,20 +2963,6 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "ad58a870a1",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4165,
-      "title": "chore(ops): regenerate operator matrix",
-      "updated_at": "2026-11-03T10:34:38Z"
     }
   ],
   "schema": "operator-matrix/v1",

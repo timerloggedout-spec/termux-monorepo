@@ -68,6 +68,8 @@ class FreeTierValueProjectionTest(unittest.TestCase):
                            check=True, capture_output=True, text=True)
             data = json.loads(out.read_text(encoding="utf-8"))
             self.assertEqual(len(data["sessions"]), 1)
+            self.assertEqual(data["coverage"][1]["evidence_status"],
+                             "publication_gates_or_exact_model_pricing_or_verified_no_cost_not_established")
             self.assertEqual(data["sessions"][0]["run_uid"], "gha:o/r:10:2")
             self.assertEqual(data["sessions"][0]["call_uid"], "call-1")
             self.assertEqual(data["sessions"][0]["paid_equivalent_usd"], 0.000022)

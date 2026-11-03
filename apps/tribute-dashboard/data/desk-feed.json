@@ -2087,9 +2087,41 @@
               "Pollinations": 1,
               "Yqcloud": 1
             },
-            "provenance": "sandbox VM probe (1 synthetic completion per pair, probed 2026-11-01T15:51Z) - NOT an Actions count; Actions re-verification run 41323654390 (g4f-inference-smoke, source=working) in flight at fold time; its artifact count supersedes the sandbox count on landing",
+            "provenance": "split of record: sandbox-verified 160/160 of the set (sandbox VM probe, PR #3223) vs Actions-verified 83/160 (run 41457191473, artifact 13154370032, observed 2026-11-02T14:23:55Z, receipt schema g4f-inference-smoke/v1); intersection = 83. The Actions run concluded 'cancelled' due to a post-receipt exit-hang (probe threads hang the interpreter; receipt integrity unaffected per provisioning; hard-exit fix = PR #4373, open at restamp). The Actions count supersedes the sandbox count for Actions-egress purposes, per the fold terms.",
             "admission": "compounding pool candidates under the experiment label (FREE-QUOTA-WINDOWS); production admission unchanged (per PR #3223); pool weighting per this catalog",
-            "execution": "scripts/ops/g4f_free_smoke.py + .github/workflows/g4f-inference-smoke.yml (dispatch-only)"
+            "execution": "scripts/ops/g4f_free_smoke.py + .github/workflows/g4f-inference-smoke.yml (dispatch-only)",
+            "actions_verified": {
+              "inference_ok": 83,
+              "attempted": 160,
+              "run": 41457191473,
+              "artifact": 13154370032,
+              "providers_ok": {
+                "Gemini": 18,
+                "AnyProvider": 29,
+                "Perplexity": 12,
+                "KiloCode": 11,
+                "HuggingSpace": 6,
+                "CohereForAI_C4AI_Command": 5,
+                "AgentTools": 1,
+                "Yqcloud": 1
+              },
+              "zero_in_actions": {
+                "PollinationsImage": "17->0",
+                "G4FSpace": "7->0",
+                "BlackForestLabs_Flux1Dev": "2->0",
+                "Pollinations": "1->0"
+              },
+              "error_classes": {
+                "RateLimitError": 32,
+                "PaymentRequiredError": 14,
+                "DeadlineExceeded": 9,
+                "Exception": 9,
+                "AttributeError": 7,
+                "MissingAuthError": 5
+              },
+              "error_note": "RateLimitError bulk = Perplexity via the Actions egress IP; error classes as receipted (83 ok + 76 classed errors; remainder unclassed in the relay)"
+            },
+            "production_admission_changed": false
           }
         },
         "superseded_record": "The previous 17-wired / 72-not-wired block (PR #3086) is retained in git history; its per-provider 'blocker' texts described absence from 2 surfaces only and are NOT wiring facts.",
@@ -3982,12 +4014,22 @@
           "model": "gemini-3.5-flash-lite",
           "phrases": "NOT_ESTABLISHED"
         }
-      ]
+      ],
+      "stages": {
+        "spec": "na",
+        "desk": "na",
+        "builder": "na",
+        "pr": "na",
+        "ci": "na",
+        "merge": "na",
+        "sync": "na",
+        "carrier": "live \u00b7 provider_usage stamp carrier (DoE intake); entries absorbed into this row, not a build pipeline \u2014 standard stage keys na by design, per AMD/DOMINO na-precedent"
+      }
     }
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T13:43:53Z",
+    "updated_at": "2026-11-03T15:04:41Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

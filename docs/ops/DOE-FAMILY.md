@@ -771,6 +771,26 @@ version and compared continuously until culling retires a version.
   selection act - consumes posteriors under the
   significance standard, never the loop's raw metrics.
 
+- **lens-frame + swot-duality v0** (registered 2026-11-03,
+  owner ruling) - home docs/ops/LENS-FRAME.md, the family's
+  lens doctrines, alongside the EGM material. Doctrine: in
+  COMPETITIVE frames (hackathons the type case) the SWOT
+  quadrants are NOT disjoint - Threats and Opportunities
+  can be the same target. Dual valence is MANDATORY: every
+  screened entity carries both readings simultaneously
+  (rival = simultaneously a recruit/assimilation
+  candidate), and the lens must model the CONVERSION
+  MOTION between them (competitive OSINT + potential-
+  involvement recruiting outreach: marketing - BORG tech
+  search). Recruitment clause [owner verbatim bracket]:
+  recruitment != %-pay -> canBconcept assimilate -
+  recruitment is not percentage-of-pay brokerage; in the
+  BORG concept it is assimilation into the collective. A
+  SWOT filing forcing single-valence classification in a
+  competitive frame is MALFORMED (returned, not scored).
+  Scope: competitive frames; disjoint quadrants remain
+  lawful elsewhere.
+
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home
   `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they

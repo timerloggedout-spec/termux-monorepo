@@ -61,6 +61,23 @@ emits a hashed receipt (`evidence/demo-run.json`) — decisions,
 evidence set, plan, quiz — so what the agent judged is exactly what
 you can inspect.
 
+## Impact
+
+One syllabus becomes a 12-session study plan. A daily check-in
+takes about 30 seconds. A missed session is re-planned in one tap
+— never punished.
+
+Plain-language mode explains every plan in simple words first —
+built for students studying in a second language.
+
+Most study tools plan from raw text and invent the rest.
+StudySprint plans only from verified evidence: when a claim about
+your course can't be verified, the agent abstains instead of
+guessing — and every plan carries a receipt showing what it was
+built from. The planning kernel extends the Delphi Oracle from
+the fleet's earlier challenge: evidence-gating that has already
+shipped once.
+
 ## Honesty lines
 
 The demo runs locally and offline; no live deployment of StudySprint
@@ -74,6 +91,15 @@ standalone, and the receipt says which.
 
 Public repo: https://github.com/timerloggedout-spec/studysprint
 Starting-agent (D0) repo: https://github.com/timerloggedout-spec/delphi-oracle
-Demo video (1:10, public): https://www.youtube.com/watch?v=N3HBRV4LOGQ
+**Update — Oct 31, 2026: StudySprint v0.2.0 is out.** Five new
+features, all from the Now list: a trust receipt BEFORE the plan —
+see exactly what your syllabus proved before a single study block
+exists · a Today view with a guilt-free 'I missed this' · time-budget
+reflow (25 or 45 minutes — the plan reshapes around your day) ·
+daily check-in with recovered-weeks streaks · plain-language mode,
+receipts minus the jargon. Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.2.0
+— new v0.2.0 demo:
+Demo video (1:40, public): https://www.youtube.com/watch?v=eFXyOYTpuvg
 Demo: under 3 minutes, scripted in `demo-script.md`, runnable as
 `demo.py`, receipts in `evidence/demo-run.json`.

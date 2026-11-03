@@ -21,6 +21,20 @@ paid_equivalent_usd = input_tokens × input_usd_per_million / 1,000,000 + output
 
 This is a counterfactual API list-price estimate, not cash spent or guaranteed savings. It excludes cached-token discounts, batch pricing, tools, search/grounding, taxes, subscriptions, negotiated rates, and non-token fees unless explicitly modeled.
 
+ 
+### Numerical method and aggregation invariants
+
+- Parse rate-card decimals as decimal values and compute each call with decimal arithmetic; do not use binary floating-point arithmetic for intermediate pricing.
+- Require exactly one rate-card row for the pair `(canonical_model_id, pricing_id)`. Zero matches or multiple matches are withheld; row order is not a tie-breaker.
+- Preserve the full computed per-call amount as `paid_equivalent_usd_exact` (decimal string). The compatibility/display field `paid_equivalent_usd` is rounded to 10 decimal USD places using `ROUND_HALF_UP`.
+- Aggregate from the exact per-call decimal strings, then round the aggregate once. Never derive the canonical aggregate by summing already-rounded display values.
+- At 10 decimal places, a rounded display value has absolute error at most (5\times10^{-11}) USD per call. Summing per-call display values can therefore accumulate up to (n\times5\times10^{-11}) USD worst-case error for (n) calls; exact-first aggregation limits the final aggregate's rounding error to (5\times10^{-11}) USD.
+- Token counts must be nonnegative integers (booleans and floating-point counts are invalid). A missing count remains unknown and blocks value publication. Input and output tokens are priced independently.
+- `VERIFIED_NO_COST` is not inferred from a zero-valued cost field. A positive observed cost contradicts that status and blocks the row; a missing cost remains missing while the independent billing evidence is retained.
+
+Wolfram Language symbolic checks verified linear additivity of the token-price formula and the nearest-quantum rounding bound. These checks validate the mathematics, not the upstream token attribution, pricing source, billing evidence, or publication gates.
+
+
 Time opportunity cost is separate:
 
 - time_invested_value = minutes_invested / 60 × chosen_hourly_rate

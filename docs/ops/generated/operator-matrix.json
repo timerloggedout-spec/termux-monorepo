@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 432,
-    "open_prs": 204,
+    "open_prs": 203,
     "pr_classes": {
       "CANDIDATE": 103,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 202,
+      "prs": 201,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T09:33:59Z",
+  "generated_at": "2026-11-03T09:37:44Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "d3fa1c992b"
+    "sha": "8c475166dc"
   },
   "prs": [
     {
@@ -2173,12 +2173,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "b6e6bac6d1",
+      "head_sha": "b0fa0dcaa9",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T09:32:07Z"
+      "updated_at": "2026-11-03T09:36:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2763,7 +2763,7 @@
       },
       "head_sha": "0d8d82592f",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 3342,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-01T23:44:38Z"
@@ -2949,20 +2949,6 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "cf667f8a89",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4137,
-      "title": "studysprint: evidence refresh at v0.4.0",
-      "updated_at": "2026-11-03T09:33:56Z"
     }
   ],
   "schema": "operator-matrix/v1",

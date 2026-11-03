@@ -14,6 +14,10 @@ What it derives:
   consecutive files; the pack's stated method). Idempotent.
 - series4_rate_limit_events: copied from
   ops/quota/rate-limit-events.json.
+- series6_self_counts: CARRIED from ops/quota/self-counts.json
+  (quota-self-counts/v1) - the fleet's tally of record (owner ruling
+  2026-11-03: we count ourselves for nulls). Carried verbatim and
+  cited; this builder never re-tallies.
 - registry_context: counts from ops/quota/registry.json + readings
   coverage.
 - series1_api_core: CARRIED VERBATIM. Its points are firsthand
@@ -149,6 +153,30 @@ def build(root):
         s5["legs"] = {}
     pack["series5_vultr"] = s5
 
+    # series6_self_counts: the pack copy of the fleet's tally of
+    # record (ops/quota/self-counts.json, quota-self-counts/v1).
+    # Self-counted tallies govern where provider readings are null
+    # (owner ruling 2026-11-03). Carried verbatim; never re-tallied.
+    tally = load(root, "ops/quota/self-counts.json") or {}
+    s6 = {"title": "Self-counted usage - fleet tally of record",
+          "source": "ops/quota/self-counts.json "
+                    "(quota-self-counts/v1) - tallied by "
+                    "scripts/quota_self_counts.py from committed "
+                    "sources; this section is its pack copy, "
+                    "carried verbatim",
+          "note": "Self-counted tallies of recorded events, "
+                  "method-stamped by the tally itself. Not "
+                  "provider readings; heuristics cite this "
+                  "tally, never re-tally."}
+    if tally:
+        s6.update({"generated_at": tally.get("generated_at"),
+                   "method": tally.get("method"),
+                   "providers": tally.get("providers") or {},
+                   "buckets": tally.get("buckets") or {},
+                   "services": tally.get("services") or {},
+                   "coverage_notes": tally.get("coverage_notes")})
+    pack["series6_self_counts"] = s6
+
     n_rec = len(registry.get("services") or [])
     # pools live in the allocation plan, not the registry.
     n_pool = (len(plan.get("pools") or [])
@@ -196,7 +224,9 @@ def main():
           len(pack["series2_snapshots"]["snapshots"]),
           "| series3 days:", len(pack["series3_actions"]["days"]),
           "| series4 events:",
-          len(pack["series4_rate_limit_events"].get("events", [])))
+          len(pack["series4_rate_limit_events"].get("events", [])),
+          "| series6 self-count providers:",
+          len(pack["series6_self_counts"].get("providers", {})))
 
 
 if __name__ == "__main__":

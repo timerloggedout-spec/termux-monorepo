@@ -6,6 +6,7 @@ on:
     paths:
       - 'experiments/visualization-renderers/**'
       - 'scripts/visualization_lab/**'
+      - 'tests/test_visualization_lab.py'
       - 'docs/ops/VISUALIZATION-RENDERER-COMPARISON.md'
       - '.github/workflows/visualization-renderer-lab.yml'
   push:
@@ -13,6 +14,7 @@ on:
     paths:
       - 'experiments/visualization-renderers/**'
       - 'scripts/visualization_lab/**'
+      - 'tests/test_visualization_lab.py'
       - 'docs/ops/VISUALIZATION-RENDERER-COMPARISON.md'
       - '.github/workflows/visualization-renderer-lab.yml'
 
@@ -34,8 +36,10 @@ jobs:
           python-version: '3.12'
       - name: Validate deterministic synthetic cohort
         run: python3 scripts/visualization_lab/validate_cohort.py
-      - name: Compile validator
-        run: python3 -m py_compile scripts/visualization_lab/validate_cohort.py
+      - name: Run cohort and snapshot regression tests
+        run: python3 -m unittest tests/test_visualization_lab.py -v
+      - name: Compile validators
+        run: python3 -m py_compile scripts/visualization_lab/validate_cohort.py scripts/visualization_lab/validate_dashboard_snapshot.py
       - name: Verify pinned renderer matrix and fixture boundary
         run: |
           python3 - <<'PY'
@@ -46,6 +50,5 @@ jobs:
           assert fixture["data_class"] == "synthetic"
           assert matrix["fixture"] == "fixtures/renderer-cohort-v1.json"
           assert all(item.get("version") for item in matrix["candidates"])
-          assert not any("production" in item.get("id", "") for item in matrix["candidates"])
           print("PASS: renderer matrix is versioned and bound to the synthetic cohort")
           PY

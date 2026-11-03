@@ -1,0 +1,51 @@
+name: Visualization Renderer Lab
+
+on:
+  pull_request:
+    branches: [master-staging]
+    paths:
+      - 'experiments/visualization-renderers/**'
+      - 'scripts/visualization_lab/**'
+      - 'docs/ops/VISUALIZATION-RENDERER-COMPARISON.md'
+      - '.github/workflows/visualization-renderer-lab.yml'
+  push:
+    branches: [research/visualization-renderer-lab]
+    paths:
+      - 'experiments/visualization-renderers/**'
+      - 'scripts/visualization_lab/**'
+      - 'docs/ops/VISUALIZATION-RENDERER-COMPARISON.md'
+      - '.github/workflows/visualization-renderer-lab.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visualization-renderer-lab-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cohort-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate deterministic synthetic cohort
+        run: python3 scripts/visualization_lab/validate_cohort.py
+      - name: Compile validator
+        run: python3 -m py_compile scripts/visualization_lab/validate_cohort.py
+      - name: Verify pinned renderer matrix and fixture boundary
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          fixture = json.loads(Path("experiments/visualization-renderers/fixtures/renderer-cohort-v1.json").read_text())
+          matrix = json.loads(Path("experiments/visualization-renderers/renderer-matrix-v1.json").read_text())
+          assert fixture["data_class"] == "synthetic"
+          assert matrix["fixture"] == "fixtures/renderer-cohort-v1.json"
+          assert all(item.get("version") for item in matrix["candidates"])
+          assert not any("production" in item.get("id", "") for item in matrix["candidates"])
+          print("PASS: renderer matrix is versioned and bound to the synthetic cohort")
+          PY

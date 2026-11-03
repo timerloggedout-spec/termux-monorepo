@@ -3,14 +3,14 @@
 Ground truth: the shipped bindings, read from the surfaces'
 own builders (`web/build_data.py`, `tui.py: build_state`, the
 APK bundle = the web bundle) at core **v0.5.0** + surface line
-**0.2.0**. This matrix is the catch-up program's baseline;
+**0.3.0**. This matrix is the catch-up program's baseline;
 every iteration updates it and the per-surface parity
 statements together (standing surface gates). Legend:
 **bound** = the surface runs the real core path ·
 **partial** = a named subset, with the gap stated ·
 **absent** = not on the surface.
 
-| Core capability (FEATURES.md) | CLI/core | webApp 0.2.0 | TUI 0.2.0 | APK 0.2.0 |
+| Core capability (FEATURES.md) | CLI/core | webApp 0.3.0 | TUI 0.3.0 | APK 0.3.0 |
 |---|---|---|---|---|
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |
 | §3 Daily check-in + no-guilt shift | bound | bound (persisted; surface-level shift, core reflow not bound) | bound (persisted; real week/day identity) | as webApp |
@@ -20,7 +20,7 @@ statements together (standing surface gates). Legend:
 | §1 Intake — syllabus/textbook ingestion | bound | bound (in-browser grammar; photos = awaiting-core-ocr, disclosed) | bound (real `ingest_any`, confirm-gated) | bound (native file chooser + camera wiring) |
 | §1b Reading pipeline — finder · OCR · structure · term bank | bound | partial (structure/term bank ride ingestion; finder + OCR + hypothes.is not bound) | partial (same, via the core path; OCR seam unwired) | partial (as webApp) |
 | §1c Multi-course + exam countdowns + .ics export | bound | absent (single bundled course) | absent | absent |
-| §1c Memory methods — loci/palace · Feynman · retrievability notifications · interleaving · Leitner | bound | absent | absent | absent |
+| §1c Memory methods — loci/palace · Feynman · retrievability notifications · interleaving · Leitner | bound | bound (Memory view: palace walk over iteration 1's temple route · Feynman pane · retrievability list with one-tap grades · Leitner in SR · interleaved plan — browser ports battery-pinned to the core) | bound (Memory tab runs the real core functions; Leitner via `leitner_review`; interleave in the Plan pane) | as webApp |
 | §1d Calendar awareness — intake · frequency ramps · shift briefings · quiet hours | bound | bound (build-time state, disclosed) | bound (Calendar pane, live-assembled) | as webApp |
 | §1d Geography — locations · routes · temple routes | bound | bound (build-time state, disclosed) | bound (Routes pane, live-assembled) | as webApp |
 | §1d State recall + stress hardening (OPT-IN, ceilings in FEATURES §1d) | bound | absent | absent | absent |
@@ -32,10 +32,10 @@ statements together (standing surface gates). Legend:
   quiet hours) and locations/routes incl. the temple route;
   webApp gains Calendar + Routes views; the TUI gains panes;
   the APK follows the bundle.
-- **Iteration 2 → surfaces 0.3.0** — §1c memory methods:
-  palace walk (over Iteration 1's routes where present) ·
-  Feynman dialogue pane · retrievability notification list ·
-  Leitner rotation in SR · interleaving in the plan view.
+- **Iteration 2 → surfaces 0.3.0** — §1c memory methods: **LANDED**
+  (this update; #4415) — palace walk (over Iteration 1's temple
+  route) · Feynman dialogue pane · retrievability notification
+  list · Leitner rotation in SR · interleaving in the plan view.
 - **Iteration 3 → surfaces 0.4.0** — §1c multi-course:
   course switcher with per-course state · countdown banner ·
   .ics export (download on web, file on TUI).

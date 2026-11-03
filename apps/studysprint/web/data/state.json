@@ -52,7 +52,7 @@
     "changes": [],
     "course": "BIO 101",
     "date": "2026-11-04",
-    "days_away": 0.71,
+    "days_away": 0.46,
     "kind": "quiz",
     "location": "Science Hall 204",
     "ramp": {
@@ -67,7 +67,7 @@
     "changes": [],
     "course": "BIO 101",
     "date": "2026-11-12",
-    "days_away": 8.71,
+    "days_away": 8.46,
     "kind": "midterm",
     "location": "Science Hall 204",
     "ramp": {
@@ -85,7 +85,7 @@
     ],
     "course": "BIO 101",
     "date": "2026-12-10",
-    "days_away": 37.04,
+    "days_away": 36.8,
     "kind": "final",
     "location": "Gym Annex B",
     "ramp": {
@@ -171,7 +171,7 @@
     "depart_by": "2026-11-04T09:44:18Z",
     "destination": "Science Hall 204",
     "kind": "route-plan",
-    "observed_at": "2026-11-03T16:59:17Z",
+    "observed_at": "2026-11-03T22:54:11Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -186,7 +186,7 @@
     "depart_by": "2026-11-12T09:44:18Z",
     "destination": "Science Hall 204",
     "kind": "route-plan",
-    "observed_at": "2026-11-03T16:59:17Z",
+    "observed_at": "2026-11-03T22:54:11Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -201,7 +201,7 @@
     "depart_by": "2026-12-10T17:36:42Z",
     "destination": "Gym Annex B",
     "kind": "route-plan",
-    "observed_at": "2026-11-03T16:59:17Z",
+    "observed_at": "2026-11-03T22:54:11Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -211,7 +211,7 @@
   "temple_route": {
    "claims_ceiling": "ordered/concrete recall, not understanding",
    "kind": "temple-route",
-   "observed_at": "2026-11-03T16:59:17Z",
+   "observed_at": "2026-11-03T22:54:11Z",
    "placements": [
     {
      "chapter": "Campus route",
@@ -250,6 +250,70 @@
   }
  },
  "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+ "memory": {
+  "feynman_topics": [
+   {
+    "chapter": "Week 1",
+    "evidence": "Every living thing is built from cells, and every cell runs the same basic plan: a membrane-wrapped interior where organelles divide the work. The nucleus stores the DNA \u2014 the instruction set \u2014 while ribosomes build proteins from those instructions. Mitochondria release energy from food molecules, the cytoskeleton gives the cell its shape and moves materials around, and the cytoplasm is the gel where most chemistry happens. Plant cells add a rigid wall and chloroplasts; animal cells do without both. Structure is not decoration \u2014 each part exists because it does a job the whole cell depends on.",
+    "topic": "cell structure"
+   },
+   {
+    "chapter": "Week 1",
+    "evidence": "The cell membrane is a phospholipid bilayer: two sheets of fat-like molecules with their water-loving heads facing out and water-fearing tails facing in. That arrangement makes the membrane selectively permeable \u2014 small uncharged molecules slip through, while ions and large molecules need help from embedded proteins. Channel proteins form pores, carrier proteins shuttle specific cargo, and receptor proteins pass signals inward. Cholesterol tucked between the phospholipids keeps the membrane fluid but stable. The membrane is therefore both a wall and a customs post: it decides what enters, what leaves, and what the cell hears about the world outside.\n\nCheck yourself: What does the cell membrane do? Controls what enters and leaves the cell.",
+    "topic": "membranes"
+   },
+   {
+    "chapter": "Week 2",
+    "evidence": "Photosynthesis is how plants, algae, and some bacteria turn light energy into stored chemical energy. Inside chloroplasts, pigments \u2014 chiefly chlorophyll \u2014 absorb mostly blue and red light, which is why leaves look green. In the light-dependent reactions, water is split, releasing oxygen, and its energy is captured in the carriers ATP and NADPH. The Calvin cycle then spends those carriers to build sugars from carbon dioxide, no light required. The balance sheet: carbon dioxide plus water becomes glucose plus oxygen \u2014 and nearly every food chain on Earth runs on that captured sunlight.",
+    "topic": "photosynthesis"
+   },
+   {
+    "chapter": "Week 2",
+    "evidence": "Cellular respiration releases the energy photosynthesis stored. It runs in three acts. Glycolysis, in the cytoplasm, splits one glucose into two pyruvate molecules and nets a small payment of ATP \u2014 no oxygen needed. The Krebs cycle, in the mitochondrial matrix, strips the pyruvate down to carbon dioxide and loads energy carriers. The electron transport chain then spends those carriers, with oxygen as the final electron acceptor, forming water and driving the bulk of ATP production. Total yield: roughly thirty ATP per glucose \u2014 the cell's spendable currency, earned by controlled burning instead of fire.",
+    "topic": "respiration"
+   },
+   {
+    "chapter": "Week 3",
+    "evidence": "Before a cell can divide, it must copy its DNA \u2014 all of it, once, accurately. The double helix unzips as helicase breaks the hydrogen bonds between base pairs, and each exposed strand becomes a template. DNA polymerase builds the new strand by matching free nucleotides to the template \u2014 A with T, C with G \u2014 but it can only build in one direction, so one strand is made continuously and the other in short Okazaki fragments that ligase later seals. The result is semi-conservative: each daughter molecule keeps one original strand and one new one, and proofreading keeps errors near one in a billion bases.",
+    "topic": "DNA replication"
+   },
+   {
+    "chapter": "Week 3",
+    "evidence": "Mitosis divides one nucleus into two genetically identical nuclei. In prophase the copied chromosomes condense and the spindle \u2014 a scaffold of microtubules \u2014 begins to form. Metaphase lines the chromosomes along the cell's equator, each attached to spindle fibers from both poles, a checkpoint that ensures every daughter gets a full set. Anaphase pulls the sister chromatids apart to opposite poles. Telophase wraps each set in a new nuclear envelope, and cytokinesis then splits the cytoplasm. One cell in, two identical cells out \u2014 the mechanism behind growth, repair, and asexual reproduction.",
+    "topic": "mitosis"
+   }
+  ],
+  "palace": {
+   "claims_ceiling": "ordered/concrete recall, not understanding",
+   "evidence": "Dresler et al. 2017 (Neuron): 26 -> 62 of 72 words, durable 4 months; BJOP 2025 meta-analysis d=0.88 serial recall, GRADE low",
+   "placements": [
+    {
+     "chapter": "Campus route",
+     "item": "cell structure",
+     "locus": "dorm door",
+     "position": 1
+    },
+    {
+     "chapter": "Campus route",
+     "item": "membranes",
+     "locus": "library steps",
+     "position": 2
+    },
+    {
+     "chapter": "Campus route",
+     "item": "photosynthesis",
+     "locus": "lab bench",
+     "position": 3
+    }
+   ],
+   "route": [
+    "dorm door",
+    "library steps",
+    "lab bench"
+   ],
+   "source": "temple-route"
+  }
+ },
  "plan": {
   "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
   "total_sessions": 12,
@@ -1047,7 +1111,7 @@
    ],
    "desired_retention": 0.9,
    "format": "ts-fsrs/v1",
-   "generated_at": "2026-11-03T16:59:17Z",
+   "generated_at": "2026-11-03T22:54:11Z",
    "generation": "FSRS-6",
    "parameters": [
     0.212,
@@ -1076,7 +1140,7 @@
   }
  },
  "surface": "studysprint-webapp",
- "surface_version": "0.2.0",
+ "surface_version": "0.3.0",
  "today": {
   "actions": [
    {
@@ -1120,7 +1184,7 @@
   "items_verified": 8,
   "source_path": "examples/syllabus.json",
   "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-  "verified_at": "2026-11-03T16:59:17Z",
+  "verified_at": "2026-11-03T22:54:11Z",
   "weeks_count": 3
  }
 }

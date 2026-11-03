@@ -26,10 +26,11 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.2.0"
+TUI_VERSION = "0.3.0"
 SURFACE = "studysprint-tui"
 
 from study_geo import surface_calendar_geo  # noqa: E402
+from study_memory import build_palace  # noqa: E402
 from study_reader import RSVPReader, Section  # noqa: E402
 from study_sr import (build_cards_from_practice_set, export_apkg,  # noqa: E402
                       export_obsidian_vault, review_card)
@@ -98,8 +99,34 @@ def build_state(root: Path | None = None) -> dict:
         "cards": build_cards_from_practice_set(practice),
         "sections": sections,
         "calendar_geo": calendar_geo,
+        "memory": _memory_state(plan, calendar_geo),
         "root": root,
     }
+
+
+def _memory_state(plan: dict, calendar_geo: dict | None) -> dict:
+    """Memory-methods state (parity iteration 2, #4415) — mirrors
+    web/build_data.py's bundle rule: iteration 1's temple route
+    IS the course palace where present; otherwise the core
+    builds one over the plan's topics on its default route."""
+    temple = (calendar_geo or {}).get("temple_route") or {}
+    if temple.get("placements"):
+        return {"palace": {
+            "placements": temple["placements"],
+            "route": [p["locus"] for p in temple["placements"]],
+            "claims_ceiling": temple.get("claims_ceiling"),
+            "source": "temple-route"}}
+    chapters, items = [], {}
+    for w in plan.get("weeks") or []:
+        title = f"Week {w.get('week')}"
+        topics: list = []
+        for s in w.get("sessions") or []:
+            if s["topic"] not in topics:
+                topics.append(s["topic"])
+        chapters.append(title)
+        items[title] = topics
+    return {"palace": {**build_palace(chapters, items),
+                       "source": "default-route"}}
 
 
 def _plan_text(state: dict) -> str:
@@ -207,6 +234,45 @@ def _routes_text(state: dict) -> str:
     return "\n".join(lines)
 
 
+def _palace_text(state: dict) -> str:
+    """Memory palace (iteration 2): the core-built placements —
+    walk the route, then score the walk in the pane below."""
+    palace = (state.get("memory") or {}).get("palace") or {}
+    if not palace.get("placements"):
+        return "No memory palace in this bundle yet."
+    lines = [f"Your route ({palace.get('source')}): one placed "
+             "item per stop."]
+    for p in palace["placements"]:
+        lines.append(f"  {p['position']}. {p['locus']} — "
+                     f"{p['item']} ({p['chapter']})")
+    lines += ["", f"Claims ceiling: {palace.get('claims_ceiling')}"]
+    return "\n".join(lines)
+
+
+def _interleaved_text(state: dict) -> str:
+    """Interleaved session (iteration 2): the plan's sessions and
+    the SR cards mixed by the core's rotation
+    (study_memory.interleave_sessions) — no two consecutive
+    items from the same topic when avoidable."""
+    from study_memory import interleave_sessions
+    quiz: dict = {}
+    for w in state["plan"].get("weeks") or []:
+        for s in w.get("sessions") or []:
+            quiz.setdefault(s["topic"], []).append(
+                f"{s['kind']}: {s['topic']} ({s['minutes']} min)")
+    mixed = interleave_sessions(quiz, state["cards"])
+    lines = ["", "Interleaved session — everything, mixed by "
+             f"topic ({mixed['item_count']} items, "
+             f"{mixed['adjacent_same_topic']} same-topic joins):"]
+    for i, item in enumerate(mixed["items"], 1):
+        payload = item["payload"]
+        label = payload if isinstance(payload, str) else \
+            payload.get("front", "card")
+        lines.append(f"  {i}. [{item['kind']}] {label} "
+                     f"({item['topic']})")
+    return "\n".join(lines)
+
+
 try:
     from textual.app import App, ComposeResult
     from textual.widgets import (Button, Footer, Header, Input,
@@ -268,7 +334,9 @@ try:
                                  variant="error")
                     yield Label("", id="checkin-status")
                 with TabPane("Plan / Receipt", id="tab-plan"):
-                    yield Static(_plan_text(self.state), id="plan-text")
+                    yield Static(_plan_text(self.state)
+                                 + _interleaved_text(self.state),
+                                 id="plan-text")
                     yield Label("Trust receipt (what was fetched):",
                                 classes="big")
                     yield Static(_receipt_text(self.state),
@@ -286,7 +354,8 @@ try:
                 with TabPane("SR Review", id="tab-sr"):
                     yield Label("Scheduler:", classes="big")
                     yield Select([("FSRS (default)", "fsrs"),
-                                  ("SM-2 (baseline)", "sm2")],
+                                  ("SM-2 (baseline)", "sm2"),
+                                  ("Leitner boxes", "leitner")],
                                  value="fsrs", id="sr-scheduler",
                                  allow_blank=False)
                     yield Label("", id="sr-front", classes="big")
@@ -296,7 +365,41 @@ try:
                     yield Button("2 Hard", id="grade-2")
                     yield Button("3 Good", id="grade-3")
                     yield Button("4 Easy", id="grade-4")
+                    yield Button("Knew it — up a box",
+                                 id="grade-leitner-1")
+                    yield Button("Missed — back to box 1",
+                                 id="grade-leitner-0")
                     yield Label("", id="sr-receipt")
+                with TabPane("Memory", id="tab-memory"):
+                    yield Static(_palace_text(self.state),
+                                 id="palace-text")
+                    yield Label("Walk it: type the placed items in "
+                                "route order, comma-separated, "
+                                "from memory.")
+                    yield Input(placeholder="item, item, item",
+                                id="walk-input")
+                    yield Button("Score my walk", id="walk-score")
+                    yield Label("", id="walk-result")
+                    yield Label("Explain it back (Feynman):",
+                                classes="big")
+                    yield Select(
+                        [(f"{s.chapter} — {s.title}", s.title)
+                         for s in self.state["sections"]],
+                        value=self.state["sections"][0].title
+                        if self.state["sections"] else None,
+                        id="feynman-topic", allow_blank=False)
+                    yield Input(placeholder="Explain it in your "
+                                            "own words…",
+                                id="feynman-input")
+                    yield Button("Grade my explanation",
+                                 id="feynman-grade")
+                    yield Label("", id="feynman-result")
+                    yield Label("Retrievability reminders:",
+                                classes="big")
+                    yield Static(self._retrievability_text(),
+                                 id="retrievability-text")
+                    yield Button("Refresh reminders",
+                                 id="retrievability-refresh")
                 with TabPane("Calendar", id="tab-calendar"):
                     yield Static(_calendar_text(self.state),
                                  id="calendar-text")
@@ -362,6 +465,11 @@ try:
             card = self._current_card()
             if card is None:
                 return
+            if self.scheduler_name == "leitner":
+                self.query_one("#sr-receipt", Label).update(
+                    "Leitner grades in boxes: use “Knew it — up "
+                    "a box” or “Missed — back to box 1”.")
+                return
             if not self.card_flipped:
                 # Grading unlocks once the answer is visible
                 # (#4234): a grade records recall of an answer
@@ -392,6 +500,63 @@ try:
                 f"grade={receipt['grade']} "
                 f"next due {receipt['due']} "
                 f"(in {receipt['interval_days']} day(s))")
+            self.card_index += 1
+            self._show_card()
+
+        # ------------------------------------------------------ memory
+        def _retrievability_text(self) -> str:
+            """Retrievability reminders (iteration 2): the core's
+            threshold rule over THIS surface's own reviewed FSRS
+            states (per-card states carry stability + last_review
+            from the real review path)."""
+            from study_memory import retrievability_notifications
+            entries = []
+            fronts = {c.card_id: c.front
+                      for c in self.state["cards"]}
+            for (card_id, scheduler), st in \
+                    self.card_states.items():
+                if scheduler != "fsrs" or not isinstance(st, dict):
+                    continue
+                entries.append({
+                    "card_id": card_id, "front": fronts.get(card_id, ""),
+                    "state": {"stability": st.get("stability"),
+                              "last_review": st.get("last_review")}})
+            notes = retrievability_notifications(
+                entries, datetime.now(timezone.utc))
+            if not notes:
+                return ("No card has fallen to the retrievability "
+                        "threshold (R ≤ 0.9) yet. Reminders appear "
+                        "here as your reviewed cards fade.")
+            lines = []
+            for n in notes:
+                lines.append(f"  • {n['text']} "
+                             f"(R = {n['retrievability']})")
+            return "\n".join(lines)
+
+        def _grade_leitner(self, knew_it: bool) -> None:
+            """Leitner rotation (iteration 2): the core's box
+            scheduler (study_memory.leitner_review) — knew it ->
+            up a box, missed -> box 1, plain-language receipt."""
+            from study_memory import leitner_review
+            card = self._current_card()
+            if card is None:
+                return
+            if not self.card_flipped:
+                self.query_one("#sr-receipt", Label).update(
+                    "Flip the card first — grading unlocks once "
+                    "you've seen the answer.")
+                return
+            key = (card.card_id, "leitner")
+            next_state, receipt = leitner_review(
+                card, self.card_states.get(key), 1 if knew_it else 0,
+                datetime.now(timezone.utc))
+            self.card_states[key] = next_state
+            self.query_one("#sr-receipt", Label).update(
+                f"Receipt: scheduler=leitner "
+                f"grade={receipt['grade']} — "
+                f"{receipt['plain_language']} "
+                f"(box {receipt['box']}, next due "
+                f"{receipt['due'][:10]})")
             self.card_index += 1
             self._show_card()
 
@@ -441,6 +606,58 @@ try:
 
         def on_button_pressed(self, event) -> None:
             bid = event.button.id or ""
+            if bid.startswith("grade-leitner-"):
+                self._grade_leitner(bid.endswith("-1"))
+                return
+            if bid == "walk-score":
+                from study_memory import walk_review
+                palace = (self.state.get("memory") or {}).get(
+                    "palace") or {}
+                raw = self.query_one("#walk-input", Input).value
+                recalled = [x.strip() for x in raw.split(",")
+                            if x.strip()]
+                receipt = walk_review(
+                    palace, recalled,
+                    datetime.now(timezone.utc))
+                missed = ", ".join(receipt["missed"]) or "none"
+                self.query_one("#walk-result", Label).update(
+                    f"Walk receipt: placed {receipt['placed']} · "
+                    f"correct in position "
+                    f"{receipt['correct_in_position']} · out of "
+                    f"order {receipt['recalled_out_of_order']} · "
+                    f"ordered recall {receipt['ordered_recall']} · "
+                    f"missed: {missed}.")
+                return
+            if bid == "feynman-grade":
+                from study_memory import explain_back
+                topic = str(self.query_one(
+                    "#feynman-topic", Select).value)
+                section = next(
+                    (s for s in self.state["sections"]
+                     if s.title == topic), None)
+                evidence = [section.content] if section else []
+                receipt = explain_back(
+                    topic,
+                    self.query_one("#feynman-input", Input).value,
+                    evidence, datetime.now(timezone.utc))
+                if receipt["verdict"] == "abstain":
+                    text = f"Verdict: abstain — {receipt['reason']}."
+                else:
+                    missing = ", ".join(
+                        receipt["missing_terms"][:12]) or "none"
+                    text = (f"Verdict: {receipt['verdict']} · "
+                            f"coverage {receipt['coverage']} · "
+                            f"missing: {missing} · "
+                            f"{receipt['guidance']}. (Key-term "
+                            "coverage against the verified text — "
+                            "not semantic grading.)")
+                self.query_one("#feynman-result", Label).update(text)
+                return
+            if bid == "retrievability-refresh":
+                self.query_one("#retrievability-text",
+                               Static).update(
+                    self._retrievability_text())
+                return
             if bid == "ingest-go":
                 self._ingest(confirmed=False)
                 return

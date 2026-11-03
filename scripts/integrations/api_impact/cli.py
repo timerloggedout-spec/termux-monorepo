@@ -11,6 +11,11 @@ from typing import Any
 from .report import DEFAULT_API_PATH_PATTERNS, build_report
 
 
+def _markdown_inline(value: Any) -> str:
+    text = str(value).replace(chr(92), chr(92) * 2).replace('`', chr(92) + '`')
+    return text.replace('|', chr(92) + '|').replace(chr(10), ' ').replace(chr(13), ' ')
+
+
 def render_markdown(report: dict[str, Any]) -> str:
     lines = [
         f"# API Impact Review — PR #{report['pull_request']}", "",
@@ -24,7 +29,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         "> Advisory only: this report does not approve compatibility, merge, deploy, or replace human review and repository gates.",
         "", "## Changed API surface",
     ]
-    lines.extend(f"- `{path}`" for path in report["api_surface_files"])
+    lines.extend(f"- `{_markdown_inline(path)}`" for path in report["api_surface_files"])
     if not report["api_surface_files"]:
         lines.append("- None detected by configured path policy.")
     lines.extend(["", "## API changes", ""])
@@ -32,7 +37,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines.extend(["| Change | Type | Location | Description |", "|---|---|---|---|"])
         for item in report["changes"]:
             cells = [item[k] for k in ("change_id", "change_type", "location", "description")]
-            lines.append("| " + " | ".join(str(v).replace("|", "\\|").replace("\n", " ") for v in cells) + " |")
+            lines.append("| " + " | ".join(_markdown_inline(v) for v in cells) + " |")
     else:
         lines.append("No extracted changes supplied.")
     lines.extend(["", "## Breaking-change classifications", ""])
@@ -53,12 +58,12 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines.append("No impact items supplied.")
     for title, key in (("Missing fields", "missing_fields"), ("Limitations", "limitations"), ("Sanitized provider errors", "errors")):
         lines.extend(["", f"## {title}", ""])
-        lines.extend(f"- {value}" for value in report[key]) if report[key] else lines.append("- None reported.")
+        lines.extend(f"- {_markdown_inline(value)}" for value in report[key]) if report[key] else lines.append("- None reported.")
     lines.extend([
         "", "## Provenance", "",
-        f"- Provider: {report['provenance']['provider']}",
-        f"- Capture: {report['provenance']['capture_method']}",
-        f"- Attribution: {report['provenance']['attribution']}",
+        f"- Provider: {_markdown_inline(report['provenance']['provider'])}",
+        f"- Capture: {_markdown_inline(report['provenance']['capture_method'])}",
+        f"- Attribution: {_markdown_inline(report['provenance']['attribution'])}",
         f"- Evidence records: {len(report['evidence'])}",
         "- Privacy attestation: normalized report excludes raw prompts and secrets.", "",
     ])

@@ -1,334 +1,334 @@
 {
- "ab_test": {
-  "anon": "Pages are third-party profiles: moniker-fronted, isolated, NO cross-links between cell A and B (linkage breaks 4n0n isolation and contaminates the test), no personal identifiers",
-  "cell_A": {
-   "copy": "benefit-first: AI team by tonight, $0 card",
-   "cue_code": "W7AZA",
-   "landing_param": "?ch=fb-a",
-   "migoo_code": "uA3QYP",
-   "name": "sizzle"
+  "ab_test": {
+    "anon": "Pages are third-party profiles: moniker-fronted, isolated, NO cross-links between cell A and B (linkage breaks 4n0n isolation and contaminates the test), no personal identifiers",
+    "cell_A": {
+      "copy": "benefit-first: AI team by tonight, $0 card",
+      "cue_code": "W7AZA",
+      "landing_param": "?ch=fb-a",
+      "migoo_code": "uA3QYP",
+      "name": "sizzle"
+    },
+    "cell_B": {
+      "copy": "numbers-first: 1B tokens, 30 uses, Value Derived board proof",
+      "cue_code": "7RKCJ",
+      "landing_param": "?ch=fb-b",
+      "migoo_code": "Du7Ehu",
+      "name": "steak"
+    },
+    "cell_C": {
+      "codes": "live_code for all programmes (no third code pool exists; attribution via landing param)",
+      "copy": "urgency/mechanic-first: 48h redeem window, code not card",
+      "landing_param": "?ch=fb-c",
+      "name": "mechanic"
+    },
+    "decision_rule": "winner copy becomes default on X/TikTok/Instagram/YouTube after 10 attributed redemptions or 14 days, whichever first",
+    "design": "DoE.MVT 3-cell (owner upgrade from 2-cell A/B, 2026-10-27)",
+    "id": "fb-pages-sizzle-vs-steak-1",
+    "media_rule": "Owner rule 2026-10-27: FB Pages media production = OUTSOURCE (connector or issued request). No fleet quota burn on media generation. Applies to all MVT cells. Current launch posts are text-only (compliant).",
+    "metric": "redemptions per cell (code-level for Cue/Migoo, landing-param for Muse) + landing clicks",
+    "pages": {
+      "fb-a": {
+        "angle": "sizzle",
+        "categories": [
+          "Personal Blog",
+          "Website",
+          "Science, Technology & Engineering"
+        ],
+        "moniker": "account{n0nDreamInProduction}[platform:dream-in-production]",
+        "name": "Dream In Production",
+        "status": "created_verified_connector_2026-10-27"
+      },
+      "fb-b": {
+        "angle": "steak",
+        "categories": [
+          "Computers & Internet Website",
+          "Website",
+          "Personal Blog"
+        ],
+        "moniker": "account{n0nReceiptsCount}[platform:receipts-count]",
+        "name": "Receipts Count",
+        "status": "created_verified_connector_2026-10-27"
+      },
+      "fb-c": {
+        "angle": "mechanic",
+        "categories": [
+          "App Page",
+          "Software Company",
+          "Computers & Internet Website"
+        ],
+        "moniker": "account{n0nCodeNotCard}[platform:code-not-card]",
+        "name": "Code, Not Card",
+        "naming_ruling": "Owner ruling 2026-10-27: the negation in 'Code, Not Card' is a deliberate special test case, OUTSIDE the Positive Performance Psychology Language Framing Structure. A feature, not a violation — do not flag it, do not rename it.",
+        "status": "pending_owner_retry_fb_page_creation_rate_limit_2026-10-27"
+      }
+    },
+    "platform": "Facebook Pages (owner creates 2 Pages; connector has no create command)",
+    "shared": {
+      "migoo_reserve": "TSGDUJ",
+      "muse_code": "VDP1DW (single code, both cells; attribution via landing param only)"
+    },
+    "source": "Page identities assigned by registration-monikers lane, issue #1909",
+    "status": "designed_not_started"
   },
-  "cell_B": {
-   "copy": "numbers-first: 1B tokens, 30 uses, Value Derived board proof",
-   "cue_code": "7RKCJ",
-   "landing_param": "?ch=fb-b",
-   "migoo_code": "Du7Ehu",
-   "name": "steak"
-  },
-  "cell_C": {
-   "codes": "live_code for all programmes (no third code pool exists; attribution via landing param)",
-   "copy": "urgency/mechanic-first: 48h redeem window, code not card",
-   "landing_param": "?ch=fb-c",
-   "name": "mechanic"
-  },
-  "decision_rule": "winner copy becomes default on X/TikTok/Instagram/YouTube after 10 attributed redemptions or 14 days, whichever first",
-  "design": "DoE.MVT 3-cell (owner upgrade from 2-cell A/B, 2026-10-27)",
-  "id": "fb-pages-sizzle-vs-steak-1",
-  "media_rule": "Owner rule 2026-10-27: FB Pages media production = OUTSOURCE (connector or issued request). No fleet quota burn on media generation. Applies to all MVT cells. Current launch posts are text-only (compliant).",
-  "metric": "redemptions per cell (code-level for Cue/Migoo, landing-param for Muse) + landing clicks",
-  "pages": {
-   "fb-a": {
-    "angle": "sizzle",
-    "categories": [
-     "Personal Blog",
-     "Website",
-     "Science, Technology & Engineering"
-    ],
-    "moniker": "account{n0nDreamInProduction}[platform:dream-in-production]",
-    "name": "Dream In Production",
-    "status": "created_verified_connector_2026-10-27"
-   },
-   "fb-b": {
-    "angle": "steak",
-    "categories": [
-     "Computers & Internet Website",
-     "Website",
-     "Personal Blog"
-    ],
-    "moniker": "account{n0nReceiptsCount}[platform:receipts-count]",
-    "name": "Receipts Count",
-    "status": "created_verified_connector_2026-10-27"
-   },
-   "fb-c": {
-    "angle": "mechanic",
-    "categories": [
-     "App Page",
-     "Software Company",
-     "Computers & Internet Website"
-    ],
-    "moniker": "account{n0nCodeNotCard}[platform:code-not-card]",
-    "name": "Code, Not Card",
-    "naming_ruling": "Owner ruling 2026-10-27: the negation in 'Code, Not Card' is a deliberate special test case, OUTSIDE the Positive Performance Psychology Language Framing Structure. A feature, not a violation \u2014 do not flag it, do not rename it.",
-    "status": "pending_owner_retry_fb_page_creation_rate_limit_2026-10-27"
-   }
-  },
-  "platform": "Facebook Pages (owner creates 2 Pages; connector has no create command)",
-  "shared": {
-   "migoo_reserve": "TSGDUJ",
-   "muse_code": "VDP1DW (single code, both cells; attribution via landing param only)"
-  },
-  "source": "Page identities assigned by registration-monikers lane, issue #1909",
-  "status": "designed_not_started"
- },
- "channels": [
-  {
-   "handle": null,
-   "id": "landing",
-   "name": "GitHub Pages landing + repo (PARTNERS/README)",
-   "role": "owned surface, full stack",
-   "status": "live"
-  },
-  {
-   "handle": null,
-   "id": "youtube",
-   "name": "YouTube",
-   "role": "community post listing lanes (PARTNERS section 2); handle NOT ESTABLISHED",
-   "status": "live_post"
-  },
-  {
-   "handle": null,
-   "id": "facebook",
-   "name": "Facebook",
-   "role": "distribution + A/B Pages (below); managed Pages returned by connector 2026-10-27: 0 (empty result, not proof of none)",
-   "status": "owner_stated_account"
-  },
-  {
-   "handle": null,
-   "id": "x",
-   "name": "X",
-   "role": "distribution; handle NOT ESTABLISHED",
-   "status": "owner_stated"
-  },
-  {
-   "handle": null,
-   "id": "tiktok",
-   "name": "TikTok",
-   "role": "distribution; handle NOT ESTABLISHED",
-   "status": "owner_stated"
-  },
-  {
-   "handle": null,
-   "id": "instagram",
-   "name": "Instagram",
-   "role": "distribution; handle NOT ESTABLISHED",
-   "status": "owner_stated"
-  }
- ],
- "owner_lane": "marketing-channel",
- "programs": [
-  {
-   "accrued_value": "1B Muse tokens (1 redemption)",
-   "code_provenance": "Owner-supplied firsthand: Invite friends panel (Invite button, main chat screen), 2026-10-27. Panel states: both sides get 1 billion Muse tokens when the friend redeems within 48 hours of joining; 30 uses left.",
-   "codes": [
+  "channels": [
     {
-     "code": "VDP1DW",
-     "note": " | 2026-11-03 owner sensor: 1 redemption; panel still 30 uses left.",
-     "source": "owner screenshot, Muse 'Invite friends' panel, 2026-10-27 19:47 PDT",
-     "status": "live",
-     "uses_left": 30
-    }
-   ],
-   "fleet_replenishment": "1 billion Muse tokens per redemption; 30 uses left on the live code (firsthand, in-app) = up to 30B tokens",
-   "free_no_cc": "Redeem a friend's code within 48 hours of joining; no card, no payment.",
-   "id": "muse",
-   "mechanic": "invite_code",
-   "name": "Muse (Meta)",
-   "notes": "Top priority per owner. LIVE. Pool: 1 live code, 0 reserves - Muse issues no second code before the first dies (open question since 2026-10-28, unresolved); detection stays owner-panel sensor-fed. No public terms change found 2026-11-03. Sensor 2026-11-03 (owner, firsthand): 1 redemption reported; owner Invite-panel screenshots same day still read 30 uses left, so uses_left is unchanged at 30 (redemptions and uses-left are separate panel facts - the cap is not a simple countdown from 30). Owner posted the invite to YouTube himself 2026-11-03 (channel previously blocked on owner session; now owner-posted).",
-   "priority": 1,
-   "redemptions": 1,
-   "rotation": {
-    "detection_source": "owner-panel (Invite friends 'uses left') \u2014 Muse exposes no redemption API/webhook (audited 2026-10-27)",
-    "engine": "scripts/referral/rotate.py via referral-rotation workflow",
-    "pool_target": 1,
-    "threshold_uses_left": 5
-   },
-   "status": "active_codes",
-   "terms_source": "Firsthand: owner's in-app Redeem screen, 2026-10-27 \u2014 redeem within 48h of joining, both sides get 1B tokens; tokens are a licence for AI usage, not money/stored value/gift card, usable only in Muse, non-transferable, no expiration.",
-   "visitor_reward": "1 billion Muse tokens"
-  },
-  {
-   "codes": [],
-   "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment, monthly settlement + 30-day hold, $100 PayPal minimum - enrolment remains owner-gated (no invitation held).",
-   "free_no_cc": "Free plan, no card.",
-   "id": "manus",
-   "link_ref": "docs/PARTNERS.md section 1 (Manus AI row)",
-   "mechanic": "invitation_link",
-   "name": "Manus AI",
-   "notes": "Already active in PARTNERS / README banner / landing grid.",
-   "priority": 2,
-   "status": "active_link",
-   "terms_source": "Tapfiliate programme ToS (manus.tapfiliate.com/programs/butterfly-effect/tos/) re-verified firsthand 2026-11-03: invitation-only; 10% commission on referred subscription payments up to 365 days; 1,000 free credits bonus for followers via the referral link; eligible plans Basic/Plus/Pro (Enterprise + add-ons excluded); effective July 2026 monthly settlement with 30-day holding period; $100 minimum withdrawal via PayPal; programmatic advertising + unauthorized discounting/cashback prohibited. Separate refer-a-friend invitation link live in docs/PARTNERS.md section 1.",
-   "visitor_reward": "Invitation access; refer-a-friend credit amount third-party reported as 500 credits both sides (not firsthand)"
-  },
-  {
-   "codes": [
-    {
-     "code": "W7AZA",
-     "source": "owner screenshot, Cue 'Invite friends' screen, 2026-10-27",
-     "status": "live"
+      "handle": null,
+      "id": "landing",
+      "name": "GitHub Pages landing + repo (PARTNERS/README)",
+      "role": "owned surface, full stack",
+      "status": "live"
     },
     {
-     "code": "7RKCJ",
-     "source": "owner screenshot, Cue 'Invite friends' screen, 2026-10-27",
-     "status": "live_cell_b"
-    }
-   ],
-   "fleet_replenishment": "NOT ESTABLISHED (no reward programme found; access holders receive extra codes to share)",
-   "free_no_cc": "Early access is free with an invite code; no card.",
-   "id": "cue",
-   "mechanic": "invite_code",
-   "name": "Cue (by Manus)",
-   "notes": "Both owner-supplied codes are DEPLOYED (live + live_cell_b in the MVT cells); reserve pool = 0 (pool-watch alerts on this state). No replenishment route exists except access holders receiving extra codes in-app - sensor = owner in-app invite screen. Public state re-verified 2026-11-03: Cue still free early access with an invite code, access holders receive extra codes to share (Manus launch terms, corroborated in current coverage).",
-   "priority": 3,
-   "rotation": {
-    "detection_source": "in-app invite screen \u2014 no API/webhook (audited 2026-10-27)",
-    "engine": "scripts/referral/rotate.py via referral-rotation workflow",
-    "pool_target": 1,
-    "threshold_uses_left": 5
-   },
-   "status": "active_codes",
-   "terms_source": "Manus 2.0 announcement (manus.im): early access free with invite code; everyone who gets access receives extra invite codes to share.",
-   "visitor_reward": "Early access to Cue (personal agents with own email, phone, wallet, computer)"
-  },
-  {
-   "codes": [
-    {
-     "code": "uA3QYP",
-     "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
-     "status": "live"
+      "handle": null,
+      "id": "youtube",
+      "name": "YouTube",
+      "role": "community post listing lanes (PARTNERS section 2); handle NOT ESTABLISHED",
+      "status": "live_post"
     },
     {
-     "code": "Du7Ehu",
-     "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
-     "status": "live_cell_b"
+      "handle": null,
+      "id": "facebook",
+      "name": "Facebook",
+      "role": "distribution + A/B Pages (below); managed Pages returned by connector 2026-10-27: 0 (empty result, not proof of none)",
+      "status": "owner_stated_account"
     },
     {
-     "code": "TSGDUJ",
-     "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
-     "status": "reserve"
+      "handle": null,
+      "id": "x",
+      "name": "X",
+      "role": "distribution; handle NOT ESTABLISHED",
+      "status": "owner_stated"
+    },
+    {
+      "handle": null,
+      "id": "tiktok",
+      "name": "TikTok",
+      "role": "distribution; handle NOT ESTABLISHED",
+      "status": "owner_stated"
+    },
+    {
+      "handle": null,
+      "id": "instagram",
+      "name": "Instagram",
+      "role": "distribution; handle NOT ESTABLISHED",
+      "status": "owner_stated"
     }
-   ],
-   "fleet_replenishment": "NOT ESTABLISHED (no public reward programme found; fleet codes exist firsthand in-app)",
-   "free_no_cc": "Free entry with invite code; free daily points (amount per third-party directory, not firsthand).",
-   "id": "migoo",
-   "mechanic": "invite_code",
-   "name": "Migoo",
-   "notes": "Corrects census verdict: invite mechanic exists firsthand; reward side stays NOT ESTABLISHED.",
-   "priority": 4,
-   "rotation": {
-    "detection_source": "in-app invite screen \u2014 no API/webhook (audited 2026-10-27)",
-    "engine": "scripts/referral/rotate.py via referral-rotation workflow",
-    "pool_target": 1,
-    "threshold_uses_left": 5
-   },
-   "status": "active_codes",
-   "terms_source": "Firsthand: owner's in-app 'Invite Code' screen, 2026-10-27 (3 codes issued). Public programme terms not found; Migoo ToS (migoo.ai/terms, last modified 2026-10-24) re-checked 2026-11-03: services are freemium, Points are not transferable or refundable, Free Points may be issued/discontinued at Migoo's discretion - no referral reward is established in the ToS.",
-   "visitor_reward": "Invite-code signup access"
-  },
-  {
-   "codes": [],
-   "fleet_replenishment": "NOT ESTABLISHED publicly",
-   "free_no_cc": "200 free credits to start, no card (public site). The 500-credit invitation bonus requires a first purchase \u2014 paid step, listed separately, never counted in the free stack.",
-   "id": "cellcog",
-   "link_ref": "docs/PARTNERS.md section 1 (CellCog row)",
-   "mechanic": "invitation_link",
-   "name": "CellCog",
-   "notes": "Anchor lane. Already active in all three surfaces. The 500-credit bonus requires the invitee's first purchase - a paid step, listed separately, never counted in the free stack.",
-   "priority": 5,
-   "status": "active_link",
-   "terms_source": "CellCog ToS section 4.8 (cellcog.ai/support/terms-of-service, last updated 2026-11-02) verified firsthand 2026-11-03: referral programme on the Referrals page; when an invitee creates a new account AND makes a first purchase (subscription or top-up), both sides become eligible to redeem the referral bonus shown on the Referrals page; referral credits expire 12 months from grant, no cash value, non-transferable; new users only; self-referrals/duplicate accounts prohibited. Public site: 200 free credits to start, no card. Re-verified firsthand 2026-11-03 (affiliate-referrals lane sweep).",
-   "visitor_reward": "500 bonus credits on first purchase (paid step)"
-  },
-  {
-   "codes": [],
-   "fleet_replenishment": "None - no programme exists (verified 2026-11-03).",
-   "free_no_cc": null,
-   "id": "hark",
-   "mechanic": null,
-   "name": "Hark",
-   "notes": "RESOLUTION PROPOSED 2026-11-03 for main's stamp: pending_identity resolves as - public product = Hark Pro by Hark Labs, Inc. (launched 2026-10-06), a DIFFERENT surface from the fleet-internal Hark agent surface, which has no public programme by construction. Neither surface offers a referral/affiliate programme as of 2026-11-03, so there is nothing to enrol in and nothing to list. Maximizing Hark benefits = the free tier + the launch cohort offer (first 100,000 sign-ups got a paid plan free, per launch coverage) only. Re-check cadence: monthly or on Hark product announcements.",
-   "priority": 6,
-   "status": "no_public_programme",
-   "terms_source": "Verified firsthand 2026-11-03: hark.com homepage + /pricing + /privacy-policy + /terms (Terms of Service, Hark Labs, Inc.) crawled; site: search for referral/affiliate/invite/partner returned no programme page; the word 'referral' occurs 0 times in the Terms and 'affiliate' only in the corporate-affiliates sense. The only referral mechanic on hark.com runs merchant->Hark (Privacy Policy: 'Some merchants pay us a referral fee when Hark buys something from them for you') - it is not a programme users can join to refer Hark. Pricing: free tier + $20/mo + $100/mo, all features all plans. No referral/affiliate/partner programme, no attribution window, no payout, no enrolment gate exists to evaluate.",
-   "visitor_reward": null
-  },
-  {
-   "aff_code": "kHp6",
-   "badge_svg": "https://unorouter.com/api/ops/badge/referral?locale=en&theme=dark&size=md&ref=kHp6",
-   "code_provenance": "Owner-supplied via screenshots (Web Design lane relay) 2026-10-28 \u2014 aff code kHp6.",
-   "codes": [],
-   "fleet_replenishment": "10% of referred top-ups as account balance; max recharges Unlimited; NO cash payout \u2014 affiliate balance transfers to main balance",
-   "free_no_cc": null,
-   "id": "unorouter",
-   "link": "https://unorouter.com/register?aff=kHp6",
-   "link_ref": "https://unorouter.com/register?aff=kHp6",
-   "mechanic": "affiliate_link",
-   "name": "UnoRouter",
-   "notes": "ACTIVATED 2026-10-28. Badge (owner-approved, dark/MD/SVG) renders on landing partners grid linking https://unorouter.com/?aff=kHp6 (Web Design lane). Link form corrected 2026-11-03 (Oversight pass note on awesome-muse PR #1): canonical form is /register?aff= per the owner-supplied activation record (PR #2026) and PARTNERS S1; the registry previously carried the bare-domain form.",
-   "priority": 7,
-   "status": "active_link",
-   "terms_source": "Owner screenshots (firsthand) 2026-10-28 via Web Design lane: 10% of referred top-ups as account balance, unlimited recharges, no cash payout, balance->main transfer. Public corroboration 2026-11-03: unorouter.com Discord rewards doc (updated 2026-07-30) confirms 'The website also has an affiliate program that credits commission on referred top-ups to your balance' (dashboard Affiliate page); the percentage itself is not published publicly.",
-   "visitor_reward": "Account via affiliate link (terms firsthand from owner screenshots 2026-10-28)"
-  },
-  {
-   "aff_code": "BZL02IH2",
-   "code_provenance": "Owner-supplied link in chat 2026-10-28 (firsthand).",
-   "codes": [],
-   "fleet_replenishment": null,
-   "free_no_cc": null,
-   "id": "neon",
-   "link": "https://neon.com/signup?refcode=BZL02IH2",
-   "link_ref": "https://neon.com/signup?refcode=BZL02IH2",
-   "mechanic": "referral_link",
-   "name": "Neon",
-   "notes": "Serverless Postgres. Listed at owner direction with offer unverified (Polsia pattern).",
-   "priority": 8,
-   "status": "active_link",
-   "terms_source": "Offer NOT ESTABLISHED - owner supplied the tracked link only (2026-10-28); re-checked 2026-11-03: site:neon.com search returns no referral/affiliate/partner programme page (neon.com = Neon Postgres; same-name Neon One CRM / Brazilian Neon programmes are different companies and do not apply). Verify on signup, never invent.",
-   "visitor_reward": null
-  },
-  {
-   "codes": [],
-   "fleet_replenishment": "Up to $100 cash commission per first-time subscriber referred (tiered bonuses above that).",
-   "free_no_cc": "Application is free via the affiliate platform (Impact); no card or fee stated on the programme page. Commission is paid on paid subscriptions - the visitor side is a paid product, so this lane is a revenue lane, not a free-stack redemption lane.",
-   "id": "lovable",
-   "link": null,
-   "link_ref": "https://lovable.dev/partners/affiliates",
-   "mechanic": "affiliate_link",
-   "name": "Lovable",
-   "notes": "DISCOVERY 2026-11-03 (fleet uses Lovable, connector connected). Application-based: link issued only after approval. Enrolment NOT done - application under a 4n0n identity is main's go decision. Status stays programme_verified_not_enrolled until a tracked link exists.",
-   "offer": "$50.00 per first-time subscriber (Impact offer of record, established 2026-11-03); Lovable's page headline 'up to $100' has no tier or condition visible in the offer",
-   "priority": 9,
-   "status": "programme_verified_not_enrolled",
-   "terms_source": "Official page lovable.dev/partners/affiliates verified firsthand 2026-11-03: 'up to $100 per first-time subscriber', application via Impact (app.impact.com), unique link issued only after approval, real-time reporting dashboard, monthly payouts with a low minimum threshold (amount unpublished). IMPACT OFFER OF RECORD (recon 2026-11-03, read-only, nothing submitted): $50.00 per subscription, default payout - 30-day cookie period, 30-day action lock, payment calculated on the 1st of the month on a net-30 basis; all partner countries accepted; application does not guarantee acceptance; partners must disclose AI-agent-generated content; coupon/cashback/incentive promotion methods forbidden unless expressly authorised; trademark bidding forbidden. GATE (main HOLD ruling): Impact demands First/Last Name + Email + password before account creation; tax (SSN/EIN, W-9/W-8), payout setup, identity verification and the promotion questionnaire all sit behind account creation and could not be read without submitting. Owner decision 2026-11-03: owner enters his own details on Impact himself; lane verifies post-gate demands before any further submission; state flips to enrolled on acceptance.",
-   "visitor_reward": null
-  },
-  {
-   "codes": [],
-   "detection": "Replit account Promotions & Referrals page (owner/in-app sensor only)",
-   "fleet_replenishment": "$20 in Replit credits per new paying customer referred (both sides); milestones $100 at 5 referrals, $1,000 at 50.",
-   "free_no_cc": "Referral link is generated in-product at replit.com/refer; no card to join. The reward triggers only when the referred user becomes a paying Core customer - a paid step on the visitor side, never counted in the free stack.",
-   "id": "replit",
-   "link": "https://replit.com/refer/timerloggedout",
-   "link_ref": "https://replit.com/refer",
-   "mechanic": "referral_link",
-   "name": "Replit",
-   "notes": "ENROLLED 2026-11-03: link live (link field). Referrer-side reward is paid-plan-gated, so on the current free plan the fleet-side maximisation is the visitor-side $20 + link presence; referrer credits accrue claimable only if/when the account holds a paid plan. Milestones ($100 @5 / $1,000 @50) appear on the public page only - unverified in-account, revisit if the signed-in page changes.",
-   "offer": "$20 in credits to the referred user when they upgrade to a paid plan; the referrer-side $20 requires the referrer to be on a paid plan (Replit Core) - not claimable on the free tier",
-   "priority": 10,
-   "status": "active_link",
-   "terms_source": "Public page replit.com/refer verified firsthand 2026-11-03 ($20 credits both sides per new paying customer; milestones $100 at 5 / $1,000 at 50 referrals on the public page). ENROLLED 2026-11-03 (main GO, 4n0n own-surface): referral link minted from the signed-in fleet account (Timerloggedout), Promotions & Referrals settings page: 'They get $20 when they upgrade, and so do you once you're on a paid plan' + 'Upgrade to Replit Core to claim your bonus credits' - the signed-in page states NO milestone schedule, so the public-page milestones are NOT established in-account and are not listed as terms. Credits only, no cash value.",
-   "visitor_reward": "$20 in credits when they upgrade to a paid plan"
-  }
- ],
- "rotation_log": [],
- "rules": [
-  "Free / no credit card entry only in the public stack. Paid steps are never required to redeem a listed code.",
-  "Codes are fleet-owned, supplied by the owner firsthand. Third-party codes are never listed.",
-  "One live code is published per programme; the rest of the pool is held in reserve and rotated in when the live code is reported exhausted.",
-  "No personal identifiers in this registry. Account provenance is recorded as 'owner-supplied' only.",
-  "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
- ],
- "schema": "referral-programs/1",
- "updated_at": "2026-11-03"
+  ],
+  "owner_lane": "marketing-channel",
+  "programs": [
+    {
+      "accrued_value": "1B Muse tokens (1 redemption)",
+      "code_provenance": "Owner-supplied firsthand: Invite friends panel (Invite button, main chat screen), 2026-10-27. Panel states: both sides get 1 billion Muse tokens when the friend redeems within 48 hours of joining; 30 uses left.",
+      "codes": [
+        {
+          "code": "VDP1DW",
+          "note": " | 2026-11-03 owner sensor: 1 redemption; panel still 30 uses left.",
+          "source": "owner screenshot, Muse 'Invite friends' panel, 2026-10-27 19:47 PDT",
+          "status": "live",
+          "uses_left": 30
+        }
+      ],
+      "fleet_replenishment": "1 billion Muse tokens per redemption; 30 uses left on the live code (firsthand, in-app) = up to 30B tokens",
+      "free_no_cc": "Redeem a friend's code within 48 hours of joining; no card, no payment.",
+      "id": "muse",
+      "mechanic": "invite_code",
+      "name": "Muse (Meta)",
+      "notes": "Top priority per owner. LIVE. Pool: 1 live code, 0 reserves - Muse issues no second code before the first dies (open question since 2026-10-28, unresolved); detection stays owner-panel sensor-fed. No public terms change found 2026-11-03. Sensor 2026-11-03 (owner, firsthand): 1 redemption reported; owner Invite-panel screenshots same day still read 30 uses left, so uses_left is unchanged at 30 (redemptions and uses-left are separate panel facts - the cap is not a simple countdown from 30). Owner posted the invite to YouTube himself 2026-11-03 (channel previously blocked on owner session; now owner-posted).",
+      "priority": 1,
+      "redemptions": 1,
+      "rotation": {
+        "detection_source": "owner-panel (Invite friends 'uses left') — Muse exposes no redemption API/webhook (audited 2026-10-27)",
+        "engine": "scripts/referral/rotate.py via referral-rotation workflow",
+        "pool_target": 1,
+        "threshold_uses_left": 5
+      },
+      "status": "active_codes",
+      "terms_source": "Firsthand: owner's in-app Redeem screen, 2026-10-27 — redeem within 48h of joining, both sides get 1B tokens; tokens are a licence for AI usage, not money/stored value/gift card, usable only in Muse, non-transferable, no expiration.",
+      "visitor_reward": "1 billion Muse tokens"
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment, monthly settlement + 30-day hold, $100 PayPal minimum - enrolment remains owner-gated (no invitation held).",
+      "free_no_cc": "Free plan, no card.",
+      "id": "manus",
+      "link_ref": "docs/PARTNERS.md section 1 (Manus AI row)",
+      "mechanic": "invitation_link",
+      "name": "Manus AI",
+      "notes": "Already active in PARTNERS / README banner / landing grid.",
+      "priority": 2,
+      "status": "active_link",
+      "terms_source": "Tapfiliate programme ToS (manus.tapfiliate.com/programs/butterfly-effect/tos/) re-verified firsthand 2026-11-03: invitation-only; 10% commission on referred subscription payments up to 365 days; 1,000 free credits bonus for followers via the referral link; eligible plans Basic/Plus/Pro (Enterprise + add-ons excluded); effective July 2026 monthly settlement with 30-day holding period; $100 minimum withdrawal via PayPal; programmatic advertising + unauthorized discounting/cashback prohibited. Separate refer-a-friend invitation link live in docs/PARTNERS.md section 1.",
+      "visitor_reward": "Invitation access; refer-a-friend credit amount third-party reported as 500 credits both sides (not firsthand)"
+    },
+    {
+      "codes": [
+        {
+          "code": "W7AZA",
+          "source": "owner screenshot, Cue 'Invite friends' screen, 2026-10-27",
+          "status": "live"
+        },
+        {
+          "code": "7RKCJ",
+          "source": "owner screenshot, Cue 'Invite friends' screen, 2026-10-27",
+          "status": "live_cell_b"
+        }
+      ],
+      "fleet_replenishment": "NOT ESTABLISHED (no reward programme found; access holders receive extra codes to share)",
+      "free_no_cc": "Early access is free with an invite code; no card.",
+      "id": "cue",
+      "mechanic": "invite_code",
+      "name": "Cue (by Manus)",
+      "notes": "Both owner-supplied codes are DEPLOYED (live + live_cell_b in the MVT cells); reserve pool = 0 (pool-watch alerts on this state). No replenishment route exists except access holders receiving extra codes in-app - sensor = owner in-app invite screen. Public state re-verified 2026-11-03: Cue still free early access with an invite code, access holders receive extra codes to share (Manus launch terms, corroborated in current coverage).",
+      "priority": 3,
+      "rotation": {
+        "detection_source": "in-app invite screen — no API/webhook (audited 2026-10-27)",
+        "engine": "scripts/referral/rotate.py via referral-rotation workflow",
+        "pool_target": 1,
+        "threshold_uses_left": 5
+      },
+      "status": "active_codes",
+      "terms_source": "Manus 2.0 announcement (manus.im): early access free with invite code; everyone who gets access receives extra invite codes to share.",
+      "visitor_reward": "Early access to Cue (personal agents with own email, phone, wallet, computer)"
+    },
+    {
+      "codes": [
+        {
+          "code": "uA3QYP",
+          "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
+          "status": "live"
+        },
+        {
+          "code": "Du7Ehu",
+          "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
+          "status": "live_cell_b"
+        },
+        {
+          "code": "TSGDUJ",
+          "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
+          "status": "reserve"
+        }
+      ],
+      "fleet_replenishment": "NOT ESTABLISHED (no public reward programme found; fleet codes exist firsthand in-app)",
+      "free_no_cc": "Free entry with invite code; free daily points (amount per third-party directory, not firsthand).",
+      "id": "migoo",
+      "mechanic": "invite_code",
+      "name": "Migoo",
+      "notes": "Corrects census verdict: invite mechanic exists firsthand; reward side stays NOT ESTABLISHED.",
+      "priority": 4,
+      "rotation": {
+        "detection_source": "in-app invite screen — no API/webhook (audited 2026-10-27)",
+        "engine": "scripts/referral/rotate.py via referral-rotation workflow",
+        "pool_target": 1,
+        "threshold_uses_left": 5
+      },
+      "status": "active_codes",
+      "terms_source": "Firsthand: owner's in-app 'Invite Code' screen, 2026-10-27 (3 codes issued). Public programme terms not found; Migoo ToS (migoo.ai/terms, last modified 2026-10-24) re-checked 2026-11-03: services are freemium, Points are not transferable or refundable, Free Points may be issued/discontinued at Migoo's discretion - no referral reward is established in the ToS.",
+      "visitor_reward": "Invite-code signup access"
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "NOT ESTABLISHED publicly",
+      "free_no_cc": "200 free credits to start, no card (public site). The 500-credit invitation bonus requires a first purchase — paid step, listed separately, never counted in the free stack.",
+      "id": "cellcog",
+      "link_ref": "docs/PARTNERS.md section 1 (CellCog row)",
+      "mechanic": "invitation_link",
+      "name": "CellCog",
+      "notes": "Anchor lane. Already active in all three surfaces. The 500-credit bonus requires the invitee's first purchase - a paid step, listed separately, never counted in the free stack.",
+      "priority": 5,
+      "status": "active_link",
+      "terms_source": "CellCog ToS section 4.8 (cellcog.ai/support/terms-of-service, last updated 2026-11-02) verified firsthand 2026-11-03: referral programme on the Referrals page; when an invitee creates a new account AND makes a first purchase (subscription or top-up), both sides become eligible to redeem the referral bonus shown on the Referrals page; referral credits expire 12 months from grant, no cash value, non-transferable; new users only; self-referrals/duplicate accounts prohibited. Public site: 200 free credits to start, no card. Re-verified firsthand 2026-11-03 (affiliate-referrals lane sweep).",
+      "visitor_reward": "500 bonus credits on first purchase (paid step)"
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "None - no programme exists (verified 2026-11-03).",
+      "free_no_cc": null,
+      "id": "hark",
+      "mechanic": null,
+      "name": "Hark",
+      "notes": "RESOLUTION PROPOSED 2026-11-03 for main's stamp: pending_identity resolves as - public product = Hark Pro by Hark Labs, Inc. (launched 2026-10-06), a DIFFERENT surface from the fleet-internal Hark agent surface, which has no public programme by construction. Neither surface offers a referral/affiliate programme as of 2026-11-03, so there is nothing to enrol in and nothing to list. Maximizing Hark benefits = the free tier + the launch cohort offer (first 100,000 sign-ups got a paid plan free, per launch coverage) only. Re-check cadence: monthly or on Hark product announcements.",
+      "priority": 6,
+      "status": "no_public_programme",
+      "terms_source": "Verified firsthand 2026-11-03: hark.com homepage + /pricing + /privacy-policy + /terms (Terms of Service, Hark Labs, Inc.) crawled; site: search for referral/affiliate/invite/partner returned no programme page; the word 'referral' occurs 0 times in the Terms and 'affiliate' only in the corporate-affiliates sense. The only referral mechanic on hark.com runs merchant->Hark (Privacy Policy: 'Some merchants pay us a referral fee when Hark buys something from them for you') - it is not a programme users can join to refer Hark. Pricing: free tier + $20/mo + $100/mo, all features all plans. No referral/affiliate/partner programme, no attribution window, no payout, no enrolment gate exists to evaluate.",
+      "visitor_reward": null
+    },
+    {
+      "aff_code": "kHp6",
+      "badge_svg": "https://unorouter.com/api/ops/badge/referral?locale=en&theme=dark&size=md&ref=kHp6",
+      "code_provenance": "Owner-supplied via screenshots (Web Design lane relay) 2026-10-28 — aff code kHp6.",
+      "codes": [],
+      "fleet_replenishment": "10% of referred top-ups as account balance; max recharges Unlimited; NO cash payout — affiliate balance transfers to main balance",
+      "free_no_cc": null,
+      "id": "unorouter",
+      "link": "https://unorouter.com/register?aff=kHp6",
+      "link_ref": "https://unorouter.com/register?aff=kHp6",
+      "mechanic": "affiliate_link",
+      "name": "UnoRouter",
+      "notes": "ACTIVATED 2026-10-28. Badge (owner-approved, dark/MD/SVG) renders on landing partners grid linking https://unorouter.com/?aff=kHp6 (Web Design lane). Link form corrected 2026-11-03 (Oversight pass note on awesome-muse PR #1): canonical form is /register?aff= per the owner-supplied activation record (PR #2026) and PARTNERS S1; the registry previously carried the bare-domain form.",
+      "priority": 7,
+      "status": "active_link",
+      "terms_source": "Owner screenshots (firsthand) 2026-10-28 via Web Design lane: 10% of referred top-ups as account balance, unlimited recharges, no cash payout, balance->main transfer. Public corroboration 2026-11-03: unorouter.com Discord rewards doc (updated 2026-07-30) confirms 'The website also has an affiliate program that credits commission on referred top-ups to your balance' (dashboard Affiliate page); the percentage itself is not published publicly.",
+      "visitor_reward": "Account via affiliate link (terms firsthand from owner screenshots 2026-10-28)"
+    },
+    {
+      "aff_code": "BZL02IH2",
+      "code_provenance": "Owner-supplied link in chat 2026-10-28 (firsthand).",
+      "codes": [],
+      "fleet_replenishment": null,
+      "free_no_cc": null,
+      "id": "neon",
+      "link": "https://neon.com/signup?refcode=BZL02IH2",
+      "link_ref": "https://neon.com/signup?refcode=BZL02IH2",
+      "mechanic": "referral_link",
+      "name": "Neon",
+      "notes": "Serverless Postgres. Listed at owner direction with offer unverified (Polsia pattern).",
+      "priority": 8,
+      "status": "active_link",
+      "terms_source": "Offer NOT ESTABLISHED - owner supplied the tracked link only (2026-10-28); re-checked 2026-11-03: site:neon.com search returns no referral/affiliate/partner programme page (neon.com = Neon Postgres; same-name Neon One CRM / Brazilian Neon programmes are different companies and do not apply). Verify on signup, never invent.",
+      "visitor_reward": null
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "Up to $100 cash commission per first-time subscriber referred (tiered bonuses above that).",
+      "free_no_cc": "Application is free via the affiliate platform (Impact); no card or fee stated on the programme page. Commission is paid on paid subscriptions - the visitor side is a paid product, so this lane is a revenue lane, not a free-stack redemption lane.",
+      "id": "lovable",
+      "link": null,
+      "link_ref": "https://lovable.dev/partners/affiliates",
+      "mechanic": "affiliate_link",
+      "name": "Lovable",
+      "notes": "APPLICATION SUBMITTED 2026-11-03 (agent-completed under owner directive; Impact ruled owner-identity class, registry PR #4447): dashboard state 'In Review' — not accepted, no tracking link yet. Categorize = creator/individual/editorial content; channel timerloggedout-spec.github.io VERIFIED via meta tag (landing PR #38 merged) + Connected; business model Content/Reviews. Payout (bank EFT) + tax document outstanding — gate payment, not submission; IDV not demanded. On acceptance: status -> active_link with issued link. PRIOR: DISCOVERY 2026-11-03 (fleet uses Lovable, connector connected). Application-based: link issued only after approval. Enrolment NOT done - application under a 4n0n identity is main's go decision. Status stays programme_verified_not_enrolled until a tracked link exists.",
+      "offer": "$50.00 per first-time subscriber (Impact offer of record, established 2026-11-03); Lovable's page headline 'up to $100' has no tier or condition visible in the offer",
+      "priority": 9,
+      "status": "application_submitted",
+      "terms_source": "Official page lovable.dev/partners/affiliates verified firsthand 2026-11-03: 'up to $100 per first-time subscriber', application via Impact (app.impact.com), unique link issued only after approval, real-time reporting dashboard, monthly payouts with a low minimum threshold (amount unpublished). IMPACT OFFER OF RECORD (recon 2026-11-03, read-only, nothing submitted): $50.00 per subscription, default payout - 30-day cookie period, 30-day action lock, payment calculated on the 1st of the month on a net-30 basis; all partner countries accepted; application does not guarantee acceptance; partners must disclose AI-agent-generated content; coupon/cashback/incentive promotion methods forbidden unless expressly authorised; trademark bidding forbidden. GATE (main HOLD ruling): Impact demands First/Last Name + Email + password before account creation; tax (SSN/EIN, W-9/W-8), payout setup, identity verification and the promotion questionnaire all sit behind account creation and could not be read without submitting. Owner decision 2026-11-03: owner enters his own details on Impact himself; lane verifies post-gate demands before any further submission; state flips to enrolled on acceptance.",
+      "visitor_reward": null
+    },
+    {
+      "codes": [],
+      "detection": "Replit account Promotions & Referrals page (owner/in-app sensor only)",
+      "fleet_replenishment": "$20 in Replit credits per new paying customer referred (both sides); milestones $100 at 5 referrals, $1,000 at 50.",
+      "free_no_cc": "Referral link is generated in-product at replit.com/refer; no card to join. The reward triggers only when the referred user becomes a paying Core customer - a paid step on the visitor side, never counted in the free stack.",
+      "id": "replit",
+      "link": "https://replit.com/refer/timerloggedout",
+      "link_ref": "https://replit.com/refer",
+      "mechanic": "referral_link",
+      "name": "Replit",
+      "notes": "ENROLLED 2026-11-03: link live (link field). Referrer-side reward is paid-plan-gated, so on the current free plan the fleet-side maximisation is the visitor-side $20 + link presence; referrer credits accrue claimable only if/when the account holds a paid plan. Milestones ($100 @5 / $1,000 @50) appear on the public page only - unverified in-account, revisit if the signed-in page changes.",
+      "offer": "$20 in credits to the referred user when they upgrade to a paid plan; the referrer-side $20 requires the referrer to be on a paid plan (Replit Core) - not claimable on the free tier",
+      "priority": 10,
+      "status": "active_link",
+      "terms_source": "Public page replit.com/refer verified firsthand 2026-11-03 ($20 credits both sides per new paying customer; milestones $100 at 5 / $1,000 at 50 referrals on the public page). ENROLLED 2026-11-03 (main GO, 4n0n own-surface): referral link minted from the signed-in fleet account (Timerloggedout), Promotions & Referrals settings page: 'They get $20 when they upgrade, and so do you once you're on a paid plan' + 'Upgrade to Replit Core to claim your bonus credits' - the signed-in page states NO milestone schedule, so the public-page milestones are NOT established in-account and are not listed as terms. Credits only, no cash value.",
+      "visitor_reward": "$20 in credits when they upgrade to a paid plan"
+    }
+  ],
+  "rotation_log": [],
+  "rules": [
+    "Free / no credit card entry only in the public stack. Paid steps are never required to redeem a listed code.",
+    "Codes are fleet-owned, supplied by the owner firsthand. Third-party codes are never listed.",
+    "One live code is published per programme; the rest of the pool is held in reserve and rotated in when the live code is reported exhausted.",
+    "No personal identifiers in this registry. Account provenance is recorded as 'owner-supplied' only.",
+    "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
+  ],
+  "schema": "referral-programs/1",
+  "updated_at": "2026-11-03"
 }

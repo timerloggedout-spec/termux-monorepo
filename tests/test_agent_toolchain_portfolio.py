@@ -25,13 +25,13 @@ class AgentToolchainPortfolioTests(unittest.TestCase):
         self.assertEqual(validate_data(json.dumps(BASE), MATRIX), [])
 
     def test_missing_integration_fails(self):
-        data = dict(BASE)
-        data["integrations"] = BASE["integrations"][:-1]
+        data = json.loads(json.dumps(BASE))
+        data["integrations"] = data["integrations"][:-1]
         self.assertTrue(any("missing canonical integration" in x for x in validate_data(json.dumps(data), MATRIX)))
 
     def test_duplicate_id_fails(self):
-        data = dict(BASE)
-        data["integrations"] = BASE["integrations"] + [BASE["integrations"][0]]
+        data = json.loads(json.dumps(BASE))
+        data["integrations"].append(data["integrations"][0])
         self.assertTrue(any("duplicate integration id" in x for x in validate_data(json.dumps(data), MATRIX)))
 
     def test_unknown_discovery_state_fails(self):
@@ -45,10 +45,14 @@ class AgentToolchainPortfolioTests(unittest.TestCase):
         self.assertTrue(any("authority and write_boundary" in x for x in validate_data(json.dumps(data), MATRIX)))
 
     def test_credential_shaped_value_fails(self):
-        self.assertTrue(any("credential-shaped" in x for x in validate_data(json.dumps(BASE) + "\nAKIA1234567890ABCDEF", MATRIX)))
+        data = json.loads(json.dumps(BASE))
+        data["integrations"][0]["next_step"] = "sk-abcdefghijklmnopqrstuvwxyz0123456789"
+        self.assertTrue(any("credential-shaped" in x for x in validate_data(json.dumps(data), MATRIX)))
 
     def test_registry_boolean_shortcut_fails(self):
-        self.assertTrue(any("integrated boolean" in x for x in validate_data(json.dumps(BASE) + '\n"integrated": true', MATRIX)))
+        data = json.loads(json.dumps(BASE))
+        data["integrated"] = True
+        self.assertTrue(any("integrated boolean" in x for x in validate_data(json.dumps(data), MATRIX)))
 
 
 if __name__ == "__main__":

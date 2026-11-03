@@ -94,24 +94,26 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Collect changed paths
+      - name: Collect changed paths from git metadata (no PR checkout)
         id: changed-paths
-        uses: actions/github-script@v7
         env:
-          PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
-        with:
-          github-token: ${{ github.token }}
-          script: |
-            const number = Number(process.env.PR_NUMBER);
-            const files = await github.paginate(github.rest.pulls.listFiles, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: number,
-              per_page: 100
-            });
-            const path = process.env.RUNNER_TEMP + '/api-impact-changed-paths.json';
-            require('fs').writeFileSync(path, JSON.stringify(files.map(file => file.filename)));
-            core.setOutput('path', path);
+          BASE_SHA: ${{ needs.resolve-pr.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.resolve-pr.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$HEAD_SHA"
+          git diff --name-only --diff-filter=ACMR -z "$BASE_SHA...$HEAD_SHA" > "$RUNNER_TEMP/api-impact-changed-paths.nul"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          raw = Path(os.environ["RUNNER_TEMP"], "api-impact-changed-paths.nul").read_bytes()
+          paths = [item.decode("utf-8") for item in raw.split(bytes([0])) if item]
+          target = Path(os.environ["RUNNER_TEMP"], "api-impact-changed-paths.json")
+          target.write_text(json.dumps(paths), encoding="utf-8")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"path={target}\n")
+          PY
 
       - name: Detect analyzer in base revision
         id: analyzer

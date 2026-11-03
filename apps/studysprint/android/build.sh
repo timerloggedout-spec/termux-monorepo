@@ -35,10 +35,7 @@ if [ ! -f "$KS" ]; then
   echo "MISSING: $KS" >&2
   echo "Restore it from the repo (it is committed). Regenerate" >&2
   echo "ONLY as a deliberate identity reset, once, and commit:" >&2
-  echo "  keytool -genkeypair -keystore keystore/studysprint-dev.keystore \" >&2
-  echo "    -alias studysprint -keyalg RSA -keysize 2048 -validity 3650 \" >&2
-  echo "    -storepass android -keypass android \" >&2
-  echo "    -dname \"CN=StudySprint Dev, O=timerloggedout-spec\"" >&2
+  echo '  keytool -genkeypair -keystore keystore/studysprint-dev.keystore -alias studysprint -keyalg RSA -keysize 2048 -validity 3650 -storepass android -keypass android -dname "CN=StudySprint Dev, O=timerloggedout-spec"' >&2
   exit 1
 fi
 

@@ -766,7 +766,32 @@ version and compared continuously until culling retires a version.
   resolution at scoring time - per-role rationale
   disclosure - filer-blind substance pass) route to the
   Delphi lane via main. Instance #2 CLOSED; quarantine
-  stands.
+  stands. DISPOSITION (Delphi lane via main, 2026-11-03):
+  shape-alone accepted UNQUALIFIED by the rubric operator
+  (root cause: gate instrumented for provider-surface
+  RFPs where shape IS the substance; generalized, the
+  substance channel is missing). P3 ADOPT FIRST (vote
+  profiles on the #1474 board + identical-profile
+  collision flags). P1+P2 ADOPT AS ONE GATE CHANGE
+  (verification-record field, resolvable refs only -
+  PR/run/receipt ids, never prose - <=10 citations,
+  hash-cached with resolution results inside the hash;
+  outcome classes verified/contradicted/unresolvable/
+  unreachable, infra-failure neutral-and-stated; scored
+  only via P2 oracle resolution at scoring time;
+  ACCEPTANCE = a B3-replica fixture scores >=2 pts below
+  its shape-only band; reuse the D0 kernel fetch_evidence
+  pattern). P4 ADOPT AS SHADOW (deterministic substance
+  score beside shape, never merged; P1/P2 tallies only;
+  filer-blind; convergence = last-20 cohort median
+  |shape-substance| <=2.0 AND identical-profile rate
+  <10%; awards shape-governed until convergence + a
+  separate promotion ruling). QUARANTINE GUARD (operator
+  requirement): gate recheck SKIPS filings carrying the
+  instance-#2 test stamp (key: body contains "EGM
+  instance #2 TEST filing") - the six are never silently
+  re-scored. Ownership: spec + acceptance review = Delphi
+  seat; build routed by DoE (builder != evaluator).
 
 - **sie-intake (noted 2026-11-03, UNREGISTERED)** - an
   external ChatGPT-session audit proposes SIE (Self-

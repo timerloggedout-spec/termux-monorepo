@@ -76,6 +76,8 @@ def build(reg):
         # it in the registry; absent otherwise, never estimated.
         if p.get("accrued_value") is not None:
             item["accrued_value"] = p["accrued_value"]
+        if p.get("redemptions") is not None:
+            item["redemptions"] = p["redemptions"]
         items.append(item)
     return {
         "schema": "referral-feed/1",

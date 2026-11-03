@@ -574,6 +574,42 @@ Apps), not cluster terms; where a function word also appears
 above (reviewer), the cluster governs the generic class and
 the App keeps its paired moniker.
 
+## Naming rule — Tribute scope + desk rename debt (2026-11-03)
+
+**Owner rule (2026-11-03): "Tribute is foreign repos only."**
+The Tribute name/program covers contributions to FOREIGN
+repositories exclusively (the Z3π0 HELP-WANTED outreach
+campaign). Every other `tribute-*` name bound to an internal
+surface is naming debt. Census of record: 208 `tribute` paths
+on master (git tree, 2026-11-03, this lane) — the campaign's
+own machinery (`.agents/skills/tribute-lane`, the
+`tribute-{execute,scout,claim,followup,participation,…}`
+workflows + `scripts/ci/tribute_*.py`, `docs/ops/TRIBUTE-*.md`
+lane docs, `docs/ops/generated/tribute-*` evidence/status,
+`tribute-*` tests) STANDS under the rule; only the internal
+desk dashboard's names are debt:
+
+| Debt (current) | Ruled target |
+|---|---|
+| `apps/tribute-dashboard/` (whole tree) | `apps/desk-dashboard/` |
+| `.github/workflows/tribute-dashboard-deploy.yml` | `.github/workflows/desk-dashboard-deploy.yml` |
+| `.github/workflows/tribute-dashboard-preview.yml` | `.github/workflows/desk-dashboard-preview.yml` |
+| `.github/workflows/tribute-vercel-prod.yml` (serves the same surface's Vercel prod) | `.github/workflows/desk-vercel-prod.yml` |
+| served URL root `/tribute/` + assembly dir `_tribute/` | `/desk/` + `_desk/` |
+| `docs/ops/TRIBUTE-DASHBOARD.md` | `docs/ops/DESK-DASHBOARD.md` |
+| `scripts/ci/verify_tribute_dashboard.py` | `scripts/ci/verify_desk_dashboard.py` |
+| Vercel projects `tribute-oversight` · `tribute-dash` | `desk-*` family (provisioning names; same pass) |
+
+Already correct (no debt): the surface's page `desk.html` and
+feed `data/desk-feed.json` (+ its byte-identical mirror) —
+they move WITH the tree. Execution: Web Dev lane, POST-FREEZE
+pass only (D1 freeze 2026-11-04 23:59 PT; the deploy pipeline
+was repaired 2026-11-03 — ∅ rename churn inside the freeze
+window). Mechanism per archive law: in-tree move + inbound
+reference sweep; the `/tribute/` → `/desk/` redirect-stub
+question is an execution detail settled at the pass, not
+here.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

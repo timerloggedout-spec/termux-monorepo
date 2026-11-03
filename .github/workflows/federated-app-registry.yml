@@ -18,6 +18,11 @@ on:
     branches: [master]
     paths:
       - "docs/ops/federated-app-registry.json"
+      - "docs/ops/federated-app-repository-census.json"
+      - "docs/ops/federated-app-repository-census.schema.json"
+      - "docs/ops/FEDERATED-APP-REPOSITORY-CENSUS.md"
+      - "scripts/validate_federated_app_census.py"
+      - "tests/test_federated_app_census.py"
       - "docs/ops/federated-app-registry.schema.json"
       - "docs/ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md"
       - "scripts/validate_federated_app_registry.py"

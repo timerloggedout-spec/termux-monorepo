@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-02",
+  "updated_at": "2026-11-03",
   "authority": "repository-maintained-inventory",
   "capability_scope": "current-assistant-session-observations-only",
   "integrations": [
@@ -127,11 +127,12 @@
       "discovery_state": "tool_connected_in_session",
       "session_evidence": "Context.dev connector tools are exposed in the current assistant session; this establishes session availability only.",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
+      "repo_adapter_state": "repo_adapter_implemented",
       "authority": "attributed-research-observation",
       "write_boundary": "Read/search/scrape outputs are untrusted external observations; no repository writes, webhook creation, monitor creation, or external delivery from this adapter.",
-      "next_step": "Define a read-only evidence capture adapter with URL, retrieval timestamp, request identity, source attribution, redaction, and freshness metadata.",
-      "sensitivity": "public-web-content-and-account-usage-metadata"
+      "next_step": "Run exact-head adapter and repository gates; then separately verify least-privilege runtime access before any end-to-end validation.",
+      "sensitivity": "public-web-content-and-account-usage-metadata",
+      "validation_state": "awaiting_ci_validation"
     },
     {
       "id": "context7",
@@ -141,11 +142,12 @@
       "discovery_state": "tool_connected_in_session",
       "session_evidence": "Context7 library resolution and documentation query tools are exposed in the current assistant session.",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
+      "repo_adapter_state": "repo_adapter_implemented",
       "authority": "versioned-documentation-reference-only",
       "write_boundary": "Documentation snippets are advisory and version-scoped; they do not override pinned project dependencies, repository tests, or official upstream specifications.",
-      "next_step": "Add a version-aware documentation evidence format and require exact library ID/version plus retrieval timestamp in implementation notes.",
-      "sensitivity": "public-documentation-and-code-snippets"
+      "next_step": "Run exact-head adapter and repository gates; then separately verify least-privilege runtime access before any end-to-end validation.",
+      "sensitivity": "public-documentation-and-code-snippets",
+      "validation_state": "awaiting_ci_validation"
     },
     {
       "id": "mintlify",
@@ -183,11 +185,12 @@
       "discovery_state": "tool_connected_in_session",
       "session_evidence": "HAPI MCP Registry listing and version-detail tools are exposed in the current assistant session.",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
+      "repo_adapter_state": "repo_adapter_implemented",
       "authority": "discovery-and-metadata-only",
       "write_boundary": "Registry discovery is not trust approval, authentication, permission grant, or server admission; no discovered server is executed or added to allowlists automatically.",
-      "next_step": "Build a read-only MCP metadata normalizer with server/version identity, source, transport, capabilities, update time, and security-review status.",
-      "sensitivity": "public-mcp-metadata-and-security-review"
+      "next_step": "Run exact-head adapter and repository gates; then separately verify least-privilege runtime access before any end-to-end validation.",
+      "sensitivity": "public-mcp-metadata-and-security-review",
+      "validation_state": "awaiting_ci_validation"
     },
     {
       "id": "sprites",

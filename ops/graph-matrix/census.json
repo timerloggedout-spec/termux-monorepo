@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T11:20:19.993710+00:00",
+ "census_at_utc": "2026-11-03T11:51:35.753656+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,13 +13,13 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3227,
+  "total": 3229,
   "stale": 1028,
-  "orphan_no_assoc_PR": 353,
+  "orphan_no_assoc_PR": 352,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3672,
+  "total": 3676,
   "open": 204,
   "open_draft": 33,
   "open_draft_share": 0.1618,
@@ -28,7 +28,7 @@
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 67.2
+    "age_days": 67.3
    },
    {
     "number": 578,
@@ -46,13 +46,13 @@
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 41.5
+    "age_days": 41.6
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 41.3
+    "age_days": 41.4
    },
    {
     "number": 762,
@@ -136,25 +136,25 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 2.0
+    "age_days": 2.1
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 2.0
+    "age_days": 2.1
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 2.0
+    "age_days": 2.1
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 1.7
+    "age_days": 1.8
    },
    {
     "number": 3242,
@@ -166,7 +166,7 @@
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 0.7
+    "age_days": 0.8
    },
    {
     "number": 4007,
@@ -184,7 +184,7 @@
     "number": 4016,
     "title": "security(issues): gate advisory triage through deterministic intake firewall",
     "created_at": "2026-11-03T00:54:04Z",
-    "age_days": 0.4
+    "age_days": 0.5
    },
    {
     "number": 4017,
@@ -202,7 +202,7 @@
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 0.3
+    "age_days": 0.4
    },
    {
     "number": 4083,
@@ -220,26 +220,26 @@
     "number": 4089,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T07:59:38Z",
-    "age_days": 0.1
+    "age_days": 0.2
    }
   ],
-  "merged": 2991,
+  "merged": 2995,
   "closed_unmerged": 477,
   "open_no_closing_ref": 198,
   "open_unlinked_issue_target": 165,
   "open_unlinked_any_ref": 139,
-  "merged_no_closing_ref": 2962,
+  "merged_no_closing_ref": 2966,
   "merged_unlinked_issue_target": 1690,
   "merged_unlinked_any_ref": 986,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2912,
+  "merged_head_branch_residual_name_match": 2916,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 532,
-  "open": 430,
-  "open_surface_unlinked": 178,
-  "open_unlinked_strict": 159
+  "total": 559,
+  "open": 457,
+  "open_surface_unlinked": 201,
+  "open_unlinked_strict": 182
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -1762,6 +1762,86 @@
    [
     4164,
     4113
+   ],
+   [
+    4212,
+    4092
+   ],
+   [
+    4212,
+    4093
+   ],
+   [
+    4212,
+    4095
+   ],
+   [
+    4213,
+    4092
+   ],
+   [
+    4213,
+    4093
+   ],
+   [
+    4220,
+    4093
+   ],
+   [
+    4240,
+    4212
+   ],
+   [
+    4240,
+    4213
+   ],
+   [
+    4240,
+    4214
+   ],
+   [
+    4240,
+    4215
+   ],
+   [
+    4240,
+    4216
+   ],
+   [
+    4240,
+    4217
+   ],
+   [
+    4240,
+    4218
+   ],
+   [
+    4240,
+    4219
+   ],
+   [
+    4240,
+    4220
+   ],
+   [
+    4240,
+    4221
+   ],
+   [
+    4240,
+    4222
+   ],
+   [
+    4240,
+    4223
+   ],
+   [
+    4240,
+    4224
+   ],
+   [
+    4240,
+    4225
    ]
   ],
   "issue_issue_mutual_pairs": 3,

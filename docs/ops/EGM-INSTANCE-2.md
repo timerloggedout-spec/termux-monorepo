@@ -178,3 +178,41 @@ this filer's genuine filings (D1-7/D1-8).
 
 This instance changes no gate behavior; proposals route
 to the Delphi lane via main. Instance #2 CLOSED.
+
+## Disposition (Delphi lane, via main, 2026-11-03)
+
+The rubric operator accepted the shape-alone verdict
+UNQUALIFIED. Root cause of record: the gate was
+instrumented for provider-surface RFPs, where parsed
+shape genuinely is the substance; generalized to all
+filings, the substance channel is simply missing.
+
+- **P3 ADOPT, FIRST** (near-zero cost): per-filing vote
+  profile rendered on the #1474 board + in-line collision
+  flags on identical profiles.
+- **P1+P2 ADOPT AS ONE GATE CHANGE:** a scoreable
+  verification-record field citing RESOLVABLE REFS ONLY
+  (PR / run / receipt ids, never prose), scored ONLY
+  through P2's oracle resolution at scoring time.
+  <=10 citations per filing, hash-cached, resolution
+  results inside the hash inputs. Outcome classes:
+  verified / contradicted / unresolvable / unreachable;
+  infra-failure = neutral-and-stated. ACCEPTANCE TEST:
+  a B3-replica fixture scores >=2 pts below its
+  shape-only band. Reuse the D0 kernel's fetch_evidence
+  resolution pattern.
+- **P4 ADOPT AS SHADOW:** a deterministic substance
+  score beside the shape score, never merged; inputs =
+  P1/P2 tallies only, no free-text rubric; filer-blind.
+  Convergence criterion (registered): last-20 cohort,
+  median |shape - substance| <= 2.0 AND identical-profile
+  rate < 10%. Awards stay shape-governed until
+  convergence + a separate promotion ruling.
+- **QUARANTINE GUARD (operator requirement):** the
+  gate's recheck must SKIP filings carrying the instance
+  #2 test stamp (canonical key: body contains "EGM
+  instance #2 TEST filing"), so the instrument change
+  never silently re-scores the quarantined six.
+- Ownership: spec + acceptance review = Delphi seat;
+  build routed by DoE (builder != evaluator) via
+  route+claim in the EGM pattern.

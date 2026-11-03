@@ -32,6 +32,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Skill | Path |
 |-------|------|
+| api-impact-review | `.agents/skills/api-impact-review/SKILL.md` |
 | adaptive-feedback-cycle | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
 | approxination-lane | `.agents/skills/approxination-lane/SKILL.md` |
@@ -130,6 +131,11 @@ Agent-Identity: Grok (Administrator)
 | **superpowers** | `.agents/skills/superpowers/SKILL.md` | Feature work, bug fixes, refactors, design, TDD, debugging, review, verification, and branch finishing |
 
 The repository-local skill maps the upstream [obra/superpowers](https://github.com/obra/superpowers) methodology to this repository's proposal lifecycle, ICM routing, permissions, dual gates, and adaptive WAIT. It is a repository integration/bootstrap guide; the full upstream skill library and harness hooks should be installed separately for each agent harness. See [the dated design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
+
+## API Impact Review
+
+- `api-impact-review` — PR-scoped API change extraction, breaking-change classification, consumer/test/doc impact mapping, SHA-bound evidence, and privacy-safe report normalization.
+- Workflow: `.github/workflows/api-impact-review.yml`; operations: `docs/integrations/API-IMPACT-REVIEW.md`.
 
 ## Integration Intelligence
 

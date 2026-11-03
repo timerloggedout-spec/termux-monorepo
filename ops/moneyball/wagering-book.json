@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-03T19:06:44Z",
+ "generated_at": "2026-11-03T22:47:10Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 26
@@ -28,13 +28,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 15,
+  "entries": 16,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@1870079ee7e1 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@0e3e329228c3 (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -49,7 +49,7 @@
  ],
  "pct_block": {
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
-  "computed_at": "2026-11-03T19:06:44Z",
+  "computed_at": "2026-11-03T22:47:10Z",
   "upstream_computed_at": "2026-11-03T14:17:33Z",
   "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
  },
@@ -81,10 +81,13 @@
     "quantity": "P(subject resolves Y)",
     "prior_value": null,
     "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
-    "posterior_value": null,
-    "posterior_range": null,
-    "n_evidence": 0,
-    "n_evidence_items": 0
+    "posterior_value": 1.0,
+    "posterior_range": [
+     1,
+     1
+    ],
+    "n_evidence": 1,
+    "n_evidence_items": 1
    },
    "window": {
     "start": "2026-11-03T09:00:00-08:00",
@@ -92,14 +95,14 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 5.4,
-    "remaining": 94.6,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 14.8,
+    "remaining": 85.2,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
-    "value": null
+    "value": "Y \u2014 SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 \u00b7 confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
    }
   },
   {
@@ -139,9 +142,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 5.4,
-    "remaining": 94.6,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 14.8,
+    "remaining": 85.2,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -188,7 +191,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -237,7 +240,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -285,7 +288,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -334,7 +337,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -383,7 +386,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -432,7 +435,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -480,7 +483,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -529,7 +532,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -578,7 +581,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -627,7 +630,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -675,7 +678,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -722,7 +725,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -771,7 +774,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -819,7 +822,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -863,9 +866,9 @@
     "wall": "2026-11-07T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 24.4,
-    "remaining": 75.6,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 26.9,
+    "remaining": 73.1,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -909,9 +912,9 @@
     "wall": "2026-11-09T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 18.3,
-    "remaining": 81.7,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 20.2,
+    "remaining": 79.8,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -958,9 +961,9 @@
     "wall": "2026-11-19T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 0.5,
-    "remaining": 99.5,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 1.5,
+    "remaining": 98.5,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1009,7 +1012,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1058,7 +1061,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1108,7 +1111,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1158,7 +1161,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1202,9 +1205,9 @@
     "wall": "2026-11-15T23:45:00-08:00"
    },
    "window_pct": {
-    "consumed": 3.6,
-    "remaining": 96.4,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 4.7,
+    "remaining": 95.3,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1248,9 +1251,9 @@
     "wall": "2026-11-21T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 2.4,
-    "remaining": 97.6,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 3.2,
+    "remaining": 96.8,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1294,9 +1297,9 @@
     "wall": "2026-11-30T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 1.7,
-    "remaining": 98.3,
-    "computed_at": "2026-11-03T19:06:44Z",
+    "consumed": 2.2,
+    "remaining": 97.8,
+    "computed_at": "2026-11-03T22:47:10Z",
     "note": null
    },
    "settlement": {
@@ -1344,6 +1347,22 @@
    }
   }
  ],
- "settlements": [],
- "feed_settlements": []
+ "settlements": [
+  {
+   "subject_id": "D1-1-submission-landed",
+   "field": "place earned / official outcome",
+   "source": "entries confirmation_ref + coordinator record",
+   "value": "Y \u2014 SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 \u00b7 confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
+  }
+ ],
+ "feed_settlements": [
+  {
+   "subject_id": "D1-1-submission-landed",
+   "outcome": "Y",
+   "value": "Y \u2014 SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 \u00b7 confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
+   "settled_at": "2026-11-03",
+   "source": "record of record: entries confirmation_ref + coordinator record (ops/challenge/coordinator.json @master, stamped PR #4658 merged aea6201d87ed; content of record = corrected version, D1 re-read PASS 2026-11-03 10:56 PT)",
+   "positions_affected": "none open on this subject"
+  }
+ ]
 }

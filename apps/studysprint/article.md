@@ -111,6 +111,12 @@ export, an Obsidian vault surface, and a ts-fsrs seed for the UX
 layer. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.3.0
 — new v0.3.0 demo:
+**Update — Nov 3, 2026: StudySprint v0.5.0 is out.** Calendar
+intake with assessment-frequency ramps and quiet hours, maps +
+temple routes on real geography, state recall + opt-in hardening,
+and ingestion on every surface — CLI, TUI, web picker/camera,
+APK — with confirm-gated syllabus placement. Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.5.0
 **Update — Nov 3, 2026: StudySprint v0.4.0 is out.** The reading
 pipeline (finder → term bank), multi-course planning with exam
 countdowns and .ics export, and memory methods — Temple Memory,

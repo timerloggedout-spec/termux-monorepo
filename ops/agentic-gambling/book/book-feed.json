@@ -39,7 +39,19 @@
     "subject_tier": "top-3 placement per D2-5; amounts per the tiers of record"
    },
    "dilution_note": "stake rises against a FIXED payout => the position dilutes as burn grows: rational spend stops where marginal delta-p(win) per $ approaches 0; past that point extra burn wagers more for the identical return. Allocations argue their marginal delta-p, never their total spend.",
-   "amended": "2026-11-03 (owner refinement via D2 seat: fixed payout + dilution + unspent-neutral)"
+   "amended": "2026-11-03 (owner addendum via D2 seat: expiring-stake x fixed-payout equilibrium + demo-uptime reserve)",
+   "equilibrium": {
+    "model": "expiring stake AND fixed payout — two edges, both real (owner addendum 2026-11-03)",
+    "expiry_edge": "expiry kills salvage value: unspent credit is worth $0 on Dec 4, so hoarding buys nothing",
+    "fixed_payout_edge": "fixed payout caps the return: spend past marginal delta-p ~ 0 still dilutes (per the dilution note)",
+    "equilibrium": "deploy credit wherever it buys delta-p(win) > 0 inside the window",
+    "reserved_slice": {
+     "purpose": "demo-uptime through judging — the ONLY reserved slice with standing value",
+     "window": "demo VM from Nov 8 to credit death ~Dec 3 (~25 days)",
+     "cost_estimate": "~$19.80 @ 2c-4gb plans-API rate / ~$39.60 @ 4c-8gb",
+     "priority": "outranks discretionary burn — a dead demo during judging is a delta-p cliff"
+    }
+   }
   }
  ],
  "publication": {

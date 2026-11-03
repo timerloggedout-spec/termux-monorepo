@@ -91,7 +91,7 @@ jobs:
       - name: Checkout exact PR head
         uses: actions/checkout@v4
         with:
-          ref: refs/pull/${{ needs.resolve-pr.outputs.pr_number }}/head
+          ref: ${{ needs.resolve-pr.outputs.base_sha }}
           fetch-depth: 0
           persist-credentials: false
 

@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-03T19:04:36Z",
+ "generated_at": "2026-11-03T19:06:44Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 26
@@ -28,13 +28,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 14,
+  "entries": 15,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@a1f9a2945db9 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@1870079ee7e1 (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -49,7 +49,7 @@
  ],
  "pct_block": {
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
-  "computed_at": "2026-11-03T19:04:36Z",
+  "computed_at": "2026-11-03T19:06:44Z",
   "upstream_computed_at": "2026-11-03T14:17:33Z",
   "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
  },
@@ -92,9 +92,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 5.3,
-    "remaining": 94.7,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "consumed": 5.4,
+    "remaining": 94.6,
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -139,9 +139,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 5.3,
-    "remaining": 94.7,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "consumed": 5.4,
+    "remaining": 94.6,
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -188,7 +188,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -237,7 +237,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -285,7 +285,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -334,7 +334,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -383,7 +383,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -432,7 +432,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -480,7 +480,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -529,7 +529,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -578,7 +578,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -627,7 +627,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -675,7 +675,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -722,7 +722,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -771,7 +771,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -819,7 +819,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -865,7 +865,7 @@
    "window_pct": {
     "consumed": 24.4,
     "remaining": 75.6,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -911,7 +911,7 @@
    "window_pct": {
     "consumed": 18.3,
     "remaining": 81.7,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -960,7 +960,7 @@
    "window_pct": {
     "consumed": 0.5,
     "remaining": 99.5,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1009,7 +1009,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1058,7 +1058,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1108,7 +1108,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1158,7 +1158,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1204,7 +1204,7 @@
    "window_pct": {
     "consumed": 3.6,
     "remaining": 96.4,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1250,7 +1250,7 @@
    "window_pct": {
     "consumed": 2.4,
     "remaining": 97.6,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1294,9 +1294,9 @@
     "wall": "2026-11-30T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 1.6,
-    "remaining": 98.4,
-    "computed_at": "2026-11-03T19:04:36Z",
+    "consumed": 1.7,
+    "remaining": 98.3,
+    "computed_at": "2026-11-03T19:06:44Z",
     "note": null
    },
    "settlement": {
@@ -1329,7 +1329,19 @@
     "subject_tier": "top-3 placement per D2-5; amounts per the tiers of record"
    },
    "dilution_note": "stake rises against a FIXED payout => the position dilutes as burn grows: rational spend stops where marginal delta-p(win) per $ approaches 0; past that point extra burn wagers more for the identical return. Allocations argue their marginal delta-p, never their total spend.",
-   "amended": "2026-11-03 (owner refinement via D2 seat: fixed payout + dilution + unspent-neutral)"
+   "amended": "2026-11-03 (owner addendum via D2 seat: expiring-stake x fixed-payout equilibrium + demo-uptime reserve)",
+   "equilibrium": {
+    "model": "expiring stake AND fixed payout \u2014 two edges, both real (owner addendum 2026-11-03)",
+    "expiry_edge": "expiry kills salvage value: unspent credit is worth $0 on Dec 4, so hoarding buys nothing",
+    "fixed_payout_edge": "fixed payout caps the return: spend past marginal delta-p ~ 0 still dilutes (per the dilution note)",
+    "equilibrium": "deploy credit wherever it buys delta-p(win) > 0 inside the window",
+    "reserved_slice": {
+     "purpose": "demo-uptime through judging \u2014 the ONLY reserved slice with standing value",
+     "window": "demo VM from Nov 8 to credit death ~Dec 3 (~25 days)",
+     "cost_estimate": "~$19.80 @ 2c-4gb plans-API rate / ~$39.60 @ 4c-8gb",
+     "priority": "outranks discretionary burn \u2014 a dead demo during judging is a delta-p cliff"
+    }
+   }
   }
  ],
  "settlements": [],

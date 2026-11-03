@@ -36,15 +36,29 @@
       "Sid": "WriteTheSpanOwnLogStreams"
     },
     {
-      "Action": [
-        "dynamodb:GetItem",
-        "dynamodb:PutItem"
-      ],
+      "Sid": "AgentStorageItemActions",
       "Effect": "Allow",
-      "Resource": [
-        "arn:aws:dynamodb:us-east-1:000000000000:table/studysprint-receipts"
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query"
       ],
-      "Sid": "ReceiptStoreReadWrite"
+      "Resource": [
+        "arn:aws:dynamodb:us-east-1:000000000000:table/studysprint-agent-storage"
+      ]
+    },
+    {
+      "Sid": "AgentStorageOffloadObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::studysprint-agent-offload/*"
+      ]
     }
   ],
   "Version": "2012-10-17"

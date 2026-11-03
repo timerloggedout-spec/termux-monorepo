@@ -40,6 +40,17 @@ fail-closed floor in §5 a substitution rather than a rewrite. The
 response is the receipt, unenveloped: all three hosts return
 byte-identical receipts for identical executions.
 
+**Session ↔ snapshot mapping.** The runtime's session id (the
+AgentCore header's value, or the body's `session_id` on the other
+hosts) is used *verbatim* as the `SnapshotSessionManager`
+session id (§6). The manager namespaces its writes under
+`session/<session_id>/`, so a session's snapshot lands at the
+storage key `session/<runtime-session-id>/snapshot.json` — one
+mapping, stated once, with no translation table: a recycled
+process that receives the same session id restores the same
+snapshot, and a check-in written in one invocation is read back
+in the next (§6).
+
 ## 2 · Tool schemas — all seven, wire and decoded
 
 `schemas/tools.schema.json` + `schemas/payloads.schema.json`. The
@@ -142,7 +153,7 @@ none beyond the execution role; a non-Bedrock provider key, if
 configured, is one named entry. No value appears in this artifact,
 in git, or in a receipt — ever.
 
-**IAM** (`deployment/iam-policy.json`), four statements, no
+**IAM** (`deployment/iam-policy.json`), five statements, no
 wildcard actions and no bare-wildcard resources (the validator
 checks both):
 
@@ -158,9 +169,19 @@ checks both):
    span's own log group only. (The ARN's trailing `:*` is the
    log-stream suffix inside that one named group — streams are
    addressed no other way; it widens nothing beyond the group.)
-4. `ReceiptStoreReadWrite` — `GetItem`/`PutItem` on the one
-   receipts table. No query, no scan, no delete: receipts are
-   append-and-read, which is what content-stamped evidence wants.
+4. `AgentStorageItemActions` — `dynamodb:PutItem` / `GetItem` /
+   `DeleteItem` / `Query` on the ONE agent-storage table (§6).
+   These are exactly the four operations the persistence backend
+   issues at runtime (its own documentation's policy); listing is
+   a partition `Query` with `begins_with`, so no `Scan` is granted
+   — and no `CreateTable` / `UpdateTable`: the table is
+   pre-created by the deployment (§6), and the runtime role
+   cannot mint infrastructure.
+5. `AgentStorageOffloadObjects` — `s3:PutObject` / `GetObject` /
+   `DeleteObject` on the offload bucket's objects only (§6):
+   values over the 400 KB DynamoDB item limit spill there with a
+   pointer item left in the table. No bucket-level actions, no
+   other bucket.
 
 The account segment (`000000000000`) is the one deploy-time
 substitution, marked here rather than disguised.
@@ -194,6 +215,80 @@ answer, stamped as exactly that; it never degrades to an error
 page. The floor is not an error handler bolted on: it is the
 offline path the system already trusts, promoted to a contract.
 
+## 6 · Persistence — strands-dynamodb-storage, one table
+
+The span's durable state rides **strands-dynamodb-storage**
+(AWS, Apache-2.0; verified at draft time against the package's
+own documentation — the AWS DynamoDB developer guide's Strands
+storage page and the package README at `aws/strands-dynamodb-storage`,
+commit `d858e8e1`): the SDK's unified byte `Storage` contract
+(`write` / `read` / `delete` / `list`) implemented on a single
+DynamoDB table. The spec's floor is strands-agents ≥ 1.48.0,
+the package's stated prerequisite — the span runs 1.63.0.
+
+**The table** (`deployment/create-table.json`, a deployable
+artifact): `studysprint-agent-storage` — string partition key
+`pk`, string sort key `sk`, `PAY_PER_REQUEST`. It is
+**pre-created by the deployment**, never by the runtime: the
+package "holds no CreateTable permission and never creates
+infrastructure" (its docs), and §4's role mirrors that — the
+req-1 gating is unchanged. TTL is enabled once, post-create
+(`deployment/update-time-to-live.json`): the package stamps an
+epoch-seconds **`expireAt`** attribute on items written with a
+TTL, and reads/listings filter already-expired items before
+DynamoDB physically reaps them. A constructor-bound **tenant
+prefix** (`prefix="…"` — or `.namespace("…")` on the instance)
+pins every operation inside one tenant's key space on the
+shared table.
+
+**What lives there.** One `DynamoDBStorage` instance, set once
+on the Agent, backs every stateful subsystem, each under its
+own key prefix — the wiring, verbatim from the package docs:
+
+```python
+from strands import Agent
+from strands.session import SnapshotSessionManager
+from strands.vended_plugins.context_offloader import ContextOffloader
+from strands_dynamodb_storage import DynamoDBStorage
+
+storage = DynamoDBStorage("studysprint-agent-storage",
+                          region_name="us-east-1")
+agent = Agent(
+    storage=storage,
+    session_manager=SnapshotSessionManager(),  # session/
+    plugins=[ContextOffloader()],              # offloader/
+)
+```
+
+- **Snapshots** — `SnapshotSessionManager` snapshots the
+  conversation on every invocation and restores it when the
+  same session returns (§1's mapping). **Check-ins survive
+  runtime teardown** for the same reason: session state is in
+  the table, not in the process, so a recycled Lambda or
+  AgentCore environment resumes exactly where the last one
+  stopped.
+- **Long-term memory** — the Memory Manager speaks the same
+  contract (the package ships `DynamoDBMemoryStore`); semantic
+  recall via a table vector index is available but **not
+  adopted here** (it would add `dynamodb:SearchVectors` and a
+  Bedrock embeddings invocation to §4 — a deliberate
+  non-adoption, recorded so it reads as a decision).
+- **Context offload + transcripts** — oversized tool results
+  under `offloader/`, transcripts under their namespace, same
+  table, same four operations.
+- **S3 offload shape** — values above the 400 KB DynamoDB item
+  limit are offloaded to the configured bucket (constructor
+  argument), with a small pointer item remaining in the table;
+  §4 statement 5 scopes the role to that bucket's objects. If
+  TTL is enabled on offloaded values, the bucket carries a
+  matching lifecycle rule (the package docs' note).
+
+The key mapping is the table's whole trick, and it is the
+package's, not ours: a storage key's first two `/`-separated
+segments become `pk`, the remainder becomes `sk` — point
+operations are single-item calls, and `list` is a native
+partition `Query` with `begins_with`, never a scan.
+
 ## Validation — the acceptance evidence
 
 `python3 validate_schemas.py` (needs `jsonschema`), run at draft
@@ -219,7 +314,9 @@ PASS endpoint PlanRequest vs golden course
 PASS endpoint PlanResponse vs fresh receipt
 PASS endpoint HealthResponse example
 PASS deployment config.example vs DeploymentConfig
-PASS IAM policy: no wildcard actions, no bare-wildcard resources (4 statements)
+PASS IAM policy: no wildcard actions, no bare-wildcard resources (5 statements)
+PASS create-table artifact: pk/sk string keys, PAY_PER_REQUEST
+PASS TTL artifact: expireAt enabled on the same table
 
 ALL SCHEMA VALIDATIONS PASS
 ```

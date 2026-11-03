@@ -1,9 +1,9 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-03T22:47:10Z",
+ "generated_at": "2026-11-03T23:13:53Z",
  "book": {
   "opened": "2026-11-02",
-  "subjects": 26
+  "subjects": 38
  },
  "horizon": {
   "start": "2026-11-02T00:00:00-08:00",
@@ -17,7 +17,8 @@
   "D5": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
   "AMD": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
   "FCC": "FCC L1 (baseline milestone)",
-  "C12": "C12 (graduated 2026-11-03)"
+  "C12": "C12 (graduated 2026-11-03)",
+  "SPEC": "Speculators \u2014 token-strategies-1 campaign (card-performance)"
  },
  "forecast_layer": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) \u2014 calendar anchors are DATA ON THE SUBJECT, not a new participant class",
  "publishability_flags": [
@@ -28,13 +29,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 16,
+  "entries": 17,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@0e3e329228c3 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@47328a063a50 (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -49,7 +50,7 @@
  ],
  "pct_block": {
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
-  "computed_at": "2026-11-03T22:47:10Z",
+  "computed_at": "2026-11-03T23:13:53Z",
   "upstream_computed_at": "2026-11-03T14:17:33Z",
   "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
  },
@@ -95,9 +96,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 14.8,
-    "remaining": 85.2,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 16.0,
+    "remaining": 84.0,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -142,9 +143,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 14.8,
-    "remaining": 85.2,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 16.0,
+    "remaining": 84.0,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -191,7 +192,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -240,7 +241,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -288,7 +289,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -337,7 +338,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -386,7 +387,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -435,7 +436,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -483,7 +484,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -532,7 +533,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -581,7 +582,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -630,7 +631,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -678,7 +679,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -725,7 +726,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -774,7 +775,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -822,7 +823,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -866,9 +867,9 @@
     "wall": "2026-11-07T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 26.9,
-    "remaining": 73.1,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 27.2,
+    "remaining": 72.8,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -912,9 +913,9 @@
     "wall": "2026-11-09T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 20.2,
-    "remaining": 79.8,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 20.4,
+    "remaining": 79.6,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -961,9 +962,9 @@
     "wall": "2026-11-19T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 1.5,
-    "remaining": 98.5,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 1.6,
+    "remaining": 98.4,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1012,7 +1013,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1061,7 +1062,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1111,7 +1112,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1161,7 +1162,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1205,9 +1206,9 @@
     "wall": "2026-11-15T23:45:00-08:00"
    },
    "window_pct": {
-    "consumed": 4.7,
-    "remaining": 95.3,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 4.9,
+    "remaining": 95.1,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1251,9 +1252,9 @@
     "wall": "2026-11-21T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 3.2,
-    "remaining": 96.8,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 3.3,
+    "remaining": 96.7,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
@@ -1297,13 +1298,553 @@
     "wall": "2026-11-30T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 2.2,
-    "remaining": 97.8,
-    "computed_at": "2026-11-03T22:47:10Z",
+    "consumed": 2.3,
+    "remaining": 97.7,
+    "computed_at": "2026-11-03T23:13:53Z",
     "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-01-14db4412",
+   "label": "Campaign acceptance \u2014 Qwen/Qwen3-8B+dflash {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-02-17444309",
+   "label": "Campaign acceptance \u2014 meta-llama/Llama-3.1-8B-Instruct+dspark {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-03-4190442c",
+   "label": "Campaign acceptance \u2014 Qwen/Qwen3-8B+dspark {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-04-7c98617f",
+   "label": "Campaign acceptance \u2014 Qwen/Qwen3-8B+baseline {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-05-7f184a82",
+   "label": "Campaign acceptance \u2014 meta-llama/Llama-3.1-8B-Instruct+dflash {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-06-9b8c1a76",
+   "label": "Campaign acceptance \u2014 meta-llama/Llama-3.1-8B-Instruct+eagle3 {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-07-a7f76711",
+   "label": "Campaign acceptance \u2014 meta-llama/Llama-3.1-8B-Instruct+baseline {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-08-afc8c7d5",
+   "label": "Campaign acceptance \u2014 Qwen/Qwen3-8B+peagle {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-09-cb5bae0d",
+   "label": "Campaign acceptance \u2014 Qwen/Qwen3-8B+eagle3 {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-10-d90bd947",
+   "label": "Campaign acceptance \u2014 meta-llama/Llama-3.1-8B-Instruct+peagle {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-11-f7881722",
+   "label": "Campaign acceptance \u2014 meta-llama/Llama-3.1-8B-Instruct+mtp {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "value": null
+   }
+  },
+  {
+   "id": "SPEC-12-feeed83c",
+   "label": "Campaign acceptance \u2014 Qwen/Qwen3-8B+mtp {Y/N}",
+   "group": "Speculators \u2014 token-strategies-1 campaign (card-performance)",
+   "family": "SPEC",
+   "register_item": null,
+   "settles_by": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "record_of_record": "campaign run records \u2014 experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "rule",
+    "at": null,
+    "text": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at intake \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03",
+    "start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T23:13:53Z",
+    "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
+   },
+   "settlement": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
     "value": null
    }
   }

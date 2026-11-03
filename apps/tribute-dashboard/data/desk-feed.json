@@ -2297,6 +2297,57 @@
     },
     {
       "entry": "D1",
+      "priority_timebox": {
+        "owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders",
+        "wall": "2026-11-04T23:59:00-08:00",
+        "tiers": [
+          {
+            "tier": 0,
+            "name": "BASE",
+            "from": "window open",
+            "effect": "in-window development line active (continuous-development mandate); routine admission"
+          },
+          {
+            "tier": 1,
+            "name": "CUSHION",
+            "at": "2026-11-03T09:00:00-08:00",
+            "reminder": "deadline-d1-cushion-2026-11-03",
+            "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"
+          },
+          {
+            "tier": 2,
+            "name": "WALL-DAY",
+            "at": "2026-11-04T00:00:00-08:00",
+            "reminder": "calendar scheme C (wall-day)",
+            "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"
+          },
+          {
+            "tier": 3,
+            "name": "ESCALATION",
+            "at": "2026-11-04T19:59:00-08:00",
+            "reminder": "deadline-d1-escalation-2026-11-04",
+            "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"
+          },
+          {
+            "tier": 4,
+            "name": "FINAL",
+            "at": "2026-11-04T23:29:00-08:00",
+            "reminder": "deadline-d1-final-2026-11-04",
+            "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+          }
+        ],
+        "step_down_cushion": [
+          {
+            "at": "wall+24h",
+            "tier": 1
+          },
+          {
+            "at": "wall+48h",
+            "tier": 0
+          }
+        ],
+        "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."
+      },
       "project": "StudySprint",
       "artifact_repo": "timerloggedout-spec/studysprint",
       "status": "landed",
@@ -3491,7 +3542,21 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T01:10:30-08:00",
-    "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main."
+    "updated_at": "2026-11-03T09:35:00Z",
+    "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
+    "d1_priority_elevation": {
+      "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",
+      "lane_slice": "allocations.json github pool, slice challenge-entries-manager (claim 6520947956) \u2014 no per-entry D1 slice exists; D1 routing rides this slice",
+      "from": "low/routine (routine/leftover-only class)",
+      "to": "primary",
+      "scope": "D1 in-flight surfaces {#4092, #4093, #4095} + RFP builds {#4111, #4112, #4113 \u2014 batch landed, PRs #4118/#4119/#4120}",
+      "until": "2026-11-04T23:59:00-08:00",
+      "reverts_to": "low/routine unless the owner extends",
+      "justification": "open window + continuous-development mandate + $5,000 AT_RISK resolving at submission",
+      "surfaces": [
+        "ops/quota/allocations.json (priority_override on the slice; PR #4125 merged 05571c734fe2; #1884 record 6599941296)",
+        "dispatcher admission via quota-allocation-planner regeneration from the SSOT"
+      ]
+    }
   }
 }

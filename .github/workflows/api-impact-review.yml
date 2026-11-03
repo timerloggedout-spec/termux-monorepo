@@ -143,34 +143,54 @@ jobs:
           echo "path=$RUNNER_TEMP/api-impact-mapper-input.json" >> "$GITHUB_OUTPUT"
 
       - name: Generate deterministic PR report
+        if: steps.analyzer.outputs.available == 'true'
         env:
           REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
           BASE_SHA: ${{ needs.resolve-pr.outputs.base_sha }}
           HEAD_SHA: ${{ needs.resolve-pr.outputs.head_sha }}
           MAPPER_INPUT_PATH: ${{ steps.mapper.outputs.path }}
+          CHANGED_PATHS_PATH: ${{ steps.changed-paths.outputs.path }}
         run: |
           set -euo pipefail
           mkdir -p artifacts/api-impact
-          args=(
-            --repository "$REPOSITORY"
-            --pr-number "$PR_NUMBER"
-            --base "$BASE_SHA"
-            --head "$HEAD_SHA"
-            --output-json artifacts/api-impact/report.json
-            --output-markdown artifacts/api-impact/report.md
-          )
-          if [ -n "$MAPPER_INPUT_PATH" ]; then
-            args+=(--mapper-input "$MAPPER_INPUT_PATH")
-          fi
-          python3 -m scripts.integrations.api_impact.cli "${args[@]}"
-          cat artifacts/api-impact/report.md >> "$GITHUB_STEP_SUMMARY"
-          state=$(python3 -c 'import json; print(json.load(open("artifacts/api-impact/report.json", encoding="utf-8"))["state"])')
-          if [ "$state" = "analysis_required" ]; then
-            echo "::warning::API surface changed; run API Impact Mapper and submit the SHA-bound envelope using workflow_dispatch."
-          elif [ "$state" = "partial" ]; then
-            echo "::warning::API Impact Mapper report is partial; unresolved findings remain open."
-          fi
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          paths = json.loads(Path(os.environ["CHANGED_PATHS_PATH"]).read_text(encoding="utf-8"))
+          args = [
+              sys.executable, "-m", "scripts.integrations.api_impact.cli",
+              "--repository", os.environ["REPOSITORY"],
+              "--pr-number", os.environ["PR_NUMBER"],
+              "--base", os.environ["BASE_SHA"],
+              "--head", os.environ["HEAD_SHA"],
+              "--output-json", "artifacts/api-impact/report.json",
+              "--output-markdown", "artifacts/api-impact/report.md",
+          ]
+          for path in paths:
+              args.extend(["--changed-path", path])
+          if os.environ.get("MAPPER_INPUT_PATH"):
+              args.extend(["--mapper-input", os.environ["MAPPER_INPUT_PATH"]])
+          subprocess.run(args, check=True)
+          report = json.loads(Path("artifacts/api-impact/report.json").read_text(encoding="utf-8"))
+          summary = Path("artifacts/api-impact/report.md").read_text(encoding="utf-8")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
+              handle.write(summary)
+          if report["state"] == "analysis_required":
+              print("::warning::API surface changed; submit a SHA-bound API Impact Mapper envelope using workflow_dispatch.")
+          elif report["state"] == "partial":
+              print("::warning::API Impact Mapper report is partial; unresolved findings remain open.")
+          PY
+
+      - name: Explain first-install bootstrap boundary
+        if: steps.analyzer.outputs.available != 'true'
+        run: |
+          echo "The analyzer is introduced by this pull request. This first run uses only base-branch code; report execution becomes available after the analyzer lands on the base branch."
+
 
       - name: Upload API impact evidence
         if: always()
@@ -178,5 +198,5 @@ jobs:
         with:
           name: api-impact-pr-${{ needs.resolve-pr.outputs.pr_number }}-${{ needs.resolve-pr.outputs.head_sha }}
           path: artifacts/api-impact/
-          if-no-files-found: error
+          if-no-files-found: ignore
           retention-days: 30

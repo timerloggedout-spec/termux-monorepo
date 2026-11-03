@@ -19,7 +19,7 @@
 | Context.dev | P0 | Connector tools exposed in current session | Offline normalizer implemented; runtime API wiring pending | Attributed web research and evidence retrieval |
 | Context7 | P0 | Documentation tools exposed in current session | Offline normalizer implemented; runtime API wiring pending | Version-aware library documentation |
 | Mintlify | P1 | Documentation tools exposed in current session | Planned | Branch-scoped docs authoring and controlled publishing |
-| Smart Model Router | P1 | Named by operator; no matching session tool exposed | Not started; reconcile with existing router | Model selection policy and evaluation |
+| Smart Model Router | P1 | Named by operator; no separate connector exposed | Existing `scripts/model_router.py` + AR-18 capability spine reused; no parallel adapter | Model selection policy and evaluation |
 | HAPI MCP Registry | P1 | Registry metadata tools exposed in current session | Offline normalizer implemented; server admission remains blocked | MCP discovery, versioning, and provenance |
 | Sprites | P1 | Isolated environment tools exposed in current session | Planned | Reproducible sandboxed development and validation |
 

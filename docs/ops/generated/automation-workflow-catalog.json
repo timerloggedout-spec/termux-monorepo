@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "baedf5db86c72d102526dfe1bd6abe9472fbe7d49b2599ab24a44ff53f4528e1",
-  "workflow_count": 278,
+  "source_fingerprint": "1ae9c00364e4fe9f8e5e6f6caa7b7808ab6986374aadd61685a5825f2913df1d",
+  "workflow_count": 279,
   "workflows": [
     {
       "action_pins": [],
@@ -3481,6 +3481,21 @@
       "triggers": [
         "pull_request",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: project-task-dispatch-${{ github.event.issue.number }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "project-task-dispatch",
+      "path": ".github/workflows/project-task-dispatch.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
       ]
     },
     {

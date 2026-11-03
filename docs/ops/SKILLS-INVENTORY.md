@@ -19,10 +19,10 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
+| **Admin / Grok Administrator** | `superpowers` · `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
-| **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
+| **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |

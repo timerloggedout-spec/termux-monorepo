@@ -120,6 +120,23 @@
    ],
    "id": "audit-004",
    "kind": "state-update (F4 production proof \u2014 consuming-lane evidence)"
+  },
+  {
+   "id": "audit-005",
+   "at": "2026-11-03T19:21:00Z",
+   "auditor": "quota-specialist",
+   "events_covered": 8,
+   "kind": "state-update (F1 production proof \u2014 consuming-lane evidence)",
+   "findings": [
+    {
+     "id": "F1",
+     "event_refs": [
+      "wall-2026-10-28T23:41:00Z-pat"
+     ],
+     "state": "production-proven",
+     "update": "F1 standard-landed \u2192 production-proven: the preflight gate ran FIRST on quota-convergence's 45-op promotion batch (PR #4569 merged 0e400fd9b0f1) \u2014 verdict recorded in the PR body: GO-PUBLISHER, Publisher bucket 4986/5000 remaining after the read; 12 of 15 files rode the Publisher bucket. The 3 .github/workflows files split to a small PAT sub-batch \u2014 platform-forced (GitHub bars App tokens lacking workflows permission from workflow-file writes) \u2227 disclosed in the PR; the standard's PAT-fallback-only term holds (permission-forced, \u00ac bulk on PAT). Verdict line + merge state verified firsthand by quota-specialist 2026-11-03T19:20Z. The 2026-10-28 burst-publish pattern now has its counter-proof in production: bulk rode the App bucket behind a recorded preflight verdict."
+    }
+   ]
   }
  ],
  "schema": "quota.rate-limit-event-audits/v1",

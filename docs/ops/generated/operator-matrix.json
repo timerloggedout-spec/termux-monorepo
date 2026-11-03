@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 505,
-    "open_prs": 210,
+    "open_issues": 506,
+    "open_prs": 211,
     "pr_classes": {
       "CANDIDATE": 105,
-      "EXTRACT": 8,
-      "NEED_EVIDENCE": 97,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 99,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 275,
+      "issues": 276,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 42,
-      "prs": 208,
+      "prs": 209,
       "unlabelled_numbers": [
         308,
         388,
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T16:48:23Z",
+  "generated_at": "2026-11-03T16:53:09Z",
   "issues_unlabelled": [
     308,
     388,
@@ -145,10 +145,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "22254460d5"
+    "sha": "61e0121eab"
   },
   "prs": [
     {
@@ -242,26 +242,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8b446a9aef",
+      "head_sha": "ad6d7be39f",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4442,
-      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
-      "updated_at": "2026-11-03T16:05:10Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "fd129f7359",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4463,
-      "title": "docs(ereader): scoping spec \u2014 EPUB-as-export, term refs as data not links (#4457)",
-      "updated_at": "2026-11-03T16:46:14Z"
+      "number": 4445,
+      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
+      "updated_at": "2026-11-03T16:48:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -1633,20 +1619,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "021763f7f6",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4088,
-      "title": "fix(ci): distinguish dynamic references from dangling paths",
-      "updated_at": "2026-11-03T08:06:07Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "647b85aaea",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1737,6 +1709,20 @@
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-03T15:21:46Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8b446a9aef",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4442,
+      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
+      "updated_at": "2026-11-03T16:05:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2274,12 +2260,12 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
       "head_sha": "9872736d60",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
       "updated_at": "2026-11-03T16:48:04Z"
@@ -2937,7 +2923,7 @@
       },
       "head_sha": "0b3e8d99ab",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T16:00:10Z"
@@ -2949,12 +2935,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "8c85e76dff",
+      "head_sha": "3d83f63a19",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T16:47:25Z"
+      "updated_at": "2026-11-03T16:51:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3010,7 +2996,7 @@
       "mergeable_state": "unknown",
       "number": 4023,
       "title": "docs: integrate competitive opportunities and quota reconciliation",
-      "updated_at": "2026-11-03T07:55:27Z"
+      "updated_at": "2026-11-03T16:48:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3058,6 +3044,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "2426dae07d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4088,
+      "title": "fix(ci): distinguish dynamic references from dangling paths",
+      "updated_at": "2026-11-03T16:51:40Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3089,12 +3089,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "ad6d7be39f",
+      "head_sha": "dfa872a1f5",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4445,
-      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
-      "updated_at": "2026-11-03T16:46:18Z"
+      "number": 4473,
+      "title": "fix(web): FSRS receipt NaN \u2014 grade() passes epoch ms; surfaces 0.1.4 (#4461)",
+      "updated_at": "2026-11-03T16:52:36Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "5600546a95",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4474,
+      "title": "docs(ask): question-sending spec \u2014 compose-never-send, own-syllabus channel (#4462)",
+      "updated_at": "2026-11-03T16:53:03Z"
     }
   ],
   "schema": "operator-matrix/v1",

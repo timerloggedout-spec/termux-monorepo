@@ -218,3 +218,48 @@ an explicit owner ruling.
 - Quant/ML corpus sources above are inputs to the podium pipeline, not
   storage legs; license traps (FRED, Stooq, Dolma, Common Crawl
   inheritance) gate compile-time use.
+
+## Addendum 2026-11-03 — ③ re-send coverage check
+
+Main re-sent brief ③ (quant/ML-specific) after #4611 landed. Audit vs
+master registry (48 rows, blob b8a8f59a): every re-send item maps to a
+landed row; no new rows needed.
+
+Quant → rows:
+- SEC EDGAR bulk data → sec-edgar (nightly bulk ZIPs + JSON APIs;
+  public domain; real-time as filed).
+- FRED → fred (free key, 120/min; AI-training + caching terms trap).
+- Stooq → stooq (bulk daily/hourly/5-min; personal-use-only; 2026
+  automation fragile).
+- Dukascopy/HistData class → dukascopy + histdata (tick→monthly CSV;
+  M1/tick from 2001).
+- Exchange public data archives → binance-vision (daily/monthly ZIPs +
+  CHECKSUMs, no key). NOTE: Binance Vision is the verified bulk-archive
+  exemplar; no second bulk archive verified on this pass — other
+  exchanges' API-only surfaces are not counted as archives.
+- DoltHub → dolthub (public DBs free any size; git-for-data).
+- Open market datasets on the ML hubs → kaggle (base row, ml-hub class,
+  200 GB/dataset) + hf-datasets-source (datasets-server API, Parquet
+  endpoints). Market datasets live ON these hubs as dataset content;
+  no separate row — the hub rows govern.
+
+ML → rows:
+- Common Crawl → common-crawl (monthly crawls; HTTPS free, S3
+  Requester Pays).
+- AWS Open Data Registry → aws-open-data-sponsorship (barter row doubles
+  as source row: Registry entry + S3 access described there; sponsored
+  datasets incl. petabyte class). Cadence + license are per-dataset on
+  the Registry, not a single figure — correctly unstated as a global.
+- Google public datasets → gcp-public-datasets (barter row doubles as
+  source row: BigQuery public-data project, first 1 TB/month queries
+  free; tabular shape only; no SLA). Cadence + license per dataset.
+- UCI repository → uci-ml-repo (per-set DOI; ~86% CC-BY 4.0).
+- Papers With Code → papers-with-code (index only, no storage).
+- LAION/Dolma/RedPajama-class → laion-5b + dolma + redpajama (index vs
+  ImpACT vs inherited-license notes as landed).
+- ModelScope → modelscope (quota NOT_ESTABLISHED, honestly).
+- DagsHub → dagshub (20 GB pricing page governs over varying per-repo
+  docs).
+- lakeFS-class versioning → lakefs (tooling row only, not capacity).
+
+Boundary reaffirmed: cataloging only; trading-lane freeze untouched.

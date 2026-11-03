@@ -56,8 +56,25 @@ close both.
    downgraded in the open; placements NOT_ESTABLISHED until the
    venue publishes (re-check = capture issue); ledger entry
    appended at event close.
-6. **Outcomes** — the spec's Outcomes section filled from the
-   stamped rows (#4550 pattern); unreceiptable sections stay
+6. **Panel Judge Mirror** — spec `docs/ops/
+   PANEL-JUDGE-MIRROR.md` (PR #4584): after the SWOT, before
+   Outcomes. Inputs {entry spec · SWOT of record · judge
+   rows}. Grades bind: person-grade only on receipted
+   identity + per-claim cited signals; venue-archetype
+   labeled otherwise (D2's unnamed panel = GAP-J1). Every
+   verdict stamps {grade · evidence basis · model}; each run
+   files a recorded forecast (test-⑥, append-only) at
+   `experiments/doe/panel-judge-mirror/forecasts/` and
+   reports its dispersion (a non-discriminating panel files
+   a NULL verdict on itself). First runs are baselines;
+   re-runs layer on material improvements while the window
+   is open. The D1 baseline already exists (DoE,
+   venue-archetype, `2026-11-03-d1-studysprint.json`) — the
+   stage CONSUMES it; D1 re-run triggers per the spec
+   (strands proof closes · 0.2.0 cuts green · v1.0.0 cut).
+7. **Outcomes** — the spec's Outcomes section filled from the
+   stamped rows (#4550 pattern), with the mirror read
+   attached as advisory; unreceiptable sections stay
    PENDING with the blocker named.
 
 ## Acceptance
@@ -85,7 +102,7 @@ executed over them literally (record: PR #4581).
   dispatch text (was hand-written from the order — now the
   Stage-1 procedure), row-shaping decisions (now the Stage-2
   schema), cluster assignment (seeded, not improvised), and
-  the record's home (now this flow's Stage-5/6 pattern).
+  the record's home (now this flow's Stage-5/7 pattern).
 - **Gaps exposed, honestly:**
   1. The enumeration crossed two same-author cards on OUR OWN
      entry's row (contested in PR #4581; targeted re-read in

@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T22:57:34.862514+00:00",
+ "census_at_utc": "2026-11-03T23:49:33.053726+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,22 +13,22 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3516,
-  "stale": 1035,
-  "orphan_no_assoc_PR": 355,
-  "stale_and_orphan": 137
+  "total": 3535,
+  "stale": 1038,
+  "orphan_no_assoc_PR": 354,
+  "stale_and_orphan": 138
  },
  "prs": {
-  "total": 4040,
-  "open": 261,
+  "total": 4068,
+  "open": 265,
   "open_draft": 34,
-  "open_draft_share": 0.1303,
+  "open_draft_share": 0.1283,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 67.7
+    "age_days": 67.8
    },
    {
     "number": 578,
@@ -46,13 +46,13 @@
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 42.0
+    "age_days": 42.1
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 41.8
+    "age_days": 41.9
    },
    {
     "number": 762,
@@ -124,7 +124,7 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 3.9
+    "age_days": 4.0
    },
    {
     "number": 2978,
@@ -136,25 +136,25 @@
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 2.5
+    "age_days": 2.6
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 2.5
+    "age_days": 2.6
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 2.5
+    "age_days": 2.6
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 2.2
+    "age_days": 2.3
    },
    {
     "number": 3242,
@@ -166,7 +166,7 @@
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 1.2
+    "age_days": 1.3
    },
    {
     "number": 4007,
@@ -178,13 +178,13 @@
     "number": 4011,
     "title": "docs(proposals): register external agent toolchain integration portfolio",
     "created_at": "2026-11-03T00:16:14Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 4016,
     "title": "security(issues): gate advisory triage through deterministic intake firewall",
     "created_at": "2026-11-03T00:54:04Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 4017,
@@ -202,7 +202,7 @@
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 0.8
+    "age_days": 0.9
    },
    {
     "number": 4083,
@@ -220,7 +220,7 @@
     "number": 4089,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T07:59:38Z",
-    "age_days": 0.6
+    "age_days": 0.7
    },
    {
     "number": 4617,
@@ -229,23 +229,23 @@
     "age_days": 0.1
    }
   ],
-  "merged": 3294,
-  "closed_unmerged": 485,
-  "open_no_closing_ref": 254,
-  "open_unlinked_issue_target": 205,
-  "open_unlinked_any_ref": 175,
-  "merged_no_closing_ref": 3264,
-  "merged_unlinked_issue_target": 1872,
-  "merged_unlinked_any_ref": 1073,
+  "merged": 3316,
+  "closed_unmerged": 487,
+  "open_no_closing_ref": 258,
+  "open_unlinked_issue_target": 209,
+  "open_unlinked_any_ref": 179,
+  "merged_no_closing_ref": 3286,
+  "merged_unlinked_issue_target": 1881,
+  "merged_unlinked_any_ref": 1078,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3213,
+  "merged_head_branch_residual_name_match": 3233,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 627,
-  "open": 522,
-  "open_surface_unlinked": 225,
-  "open_unlinked_strict": 205
+  "total": 629,
+  "open": 524,
+  "open_surface_unlinked": 227,
+  "open_unlinked_strict": 207
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -2379,6 +2379,7 @@
    "fix/peer-orch-event-name-concurrency-20de2a54",
    "fix/peer-orch-event-name-v2",
    "fix/recon-skip-api-unavailable",
+   "fix/sweep-receipt-event-debounce",
    "hindsight-wire",
    "hotfix/ci-comment-1786690260",
    "hotfix/ci-comment-1786690697",

@@ -2,11 +2,11 @@
  "counts": {
   "claimed": 2,
   "escalated": 1,
-  "queued": 0
+  "queued": 1
  },
  "dispatches": [
   {
-   "age_min": 788.1,
+   "age_min": 1076.0,
    "claim": null,
    "entry": "Other",
    "issue": 4077,
@@ -23,7 +23,7 @@
    "title": "[task] LIVE TEST \u2014 project-task intake trigger (done-evidence for #3577)"
   },
   {
-   "age_min": 345.7,
+   "age_min": 633.6,
    "claim": {
     "at": "2026-11-03T12:41:03Z",
     "by": "optimizations-assurance"
@@ -43,7 +43,7 @@
    "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item"
   },
   {
-   "age_min": 281.1,
+   "age_min": 568.9,
    "claim": {
     "at": "2026-11-03T13:47:14Z",
     "by": "optimizations-assurance"
@@ -61,9 +61,26 @@
     "name": "CUSHION"
    },
    "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)"
+  },
+  {
+   "age_min": 33.9,
+   "claim": null,
+   "entry": "Other",
+   "issue": 4655,
+   "stall_events": [],
+   "state": "queued",
+   "thresholds_min": {
+    "escalate": 60,
+    "flag": 30
+   },
+   "tier": {
+    "index": 0,
+    "name": "BASE"
+   },
+   "title": "[task] QUE queue board v1.1 \u2014 per-repo (ss) extension"
   }
  ],
- "generated_at": "2026-11-03T18:29:18Z",
+ "generated_at": "2026-11-03T23:17:10Z",
  "schema": "dispatch-state-feed/v1",
  "source": "dispatch-watchdog"
 }

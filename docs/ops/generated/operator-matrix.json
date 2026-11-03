@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 428,
-    "open_prs": 195,
+    "open_prs": 196,
     "pr_classes": {
       "CANDIDATE": 98,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 91,
+      "NEED_EVIDENCE": 92,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 193,
+      "prs": 194,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T04:15:34Z",
+  "generated_at": "2026-11-03T04:17:11Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "00c1c65a41"
+    "sha": "86d08caefa"
   },
   "prs": [
     {
@@ -2837,6 +2837,20 @@
       "number": 4048,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T03:28:17Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "3af768ef95",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4069,
+      "title": "chore(dashboards): refresh surface feeds",
+      "updated_at": "2026-11-03T04:17:04Z"
     }
   ],
   "schema": "operator-matrix/v1",

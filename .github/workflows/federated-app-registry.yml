@@ -36,6 +36,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install schema validator
+        run: python3 -m pip install --disable-pip-version-check jsonschema==4.23.0
       - name: Validate registry
         run: python3 scripts/validate_federated_app_registry.py
       - name: Run regression tests

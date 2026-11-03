@@ -114,7 +114,9 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
           python3 -B scripts/telemetry_ingest/backup_events.py \
-            --relays ops/tracking/backup-relays.jsonl \
+            --relays ops/tracking/backup-events.jsonl \
+            --relays-repo-path ops/tracking/backup-events.jsonl \
+            --passthrough ops/tracking/backup-relays.jsonl \
             --out ops/telemetry/backup-measurements.jsonl \
             --receipt ops/telemetry/backup-measurements-receipt.json \
             --join-out ops/telemetry/backup-measurements-join.json \

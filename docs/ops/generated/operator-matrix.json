@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 524,
-    "open_prs": 263,
+    "open_prs": 265,
     "pr_classes": {
-      "CANDIDATE": 125,
+      "CANDIDATE": 126,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 127,
+      "NEED_EVIDENCE": 128,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 44,
-      "prs": 261,
+      "prs": 263,
       "unlabelled_numbers": [
         308,
         388,
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T23:47:37Z",
+  "generated_at": "2026-11-03T23:49:47Z",
   "issues_unlabelled": [
     308,
     388,
@@ -152,7 +152,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "715a6fe65d"
+    "sha": "44483daeef"
   },
   "prs": [
     {
@@ -302,12 +302,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6e74215244",
+      "head_sha": "bb25df13db",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4694,
-      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
-      "updated_at": "2026-11-03T23:45:13Z"
+      "number": 4563,
+      "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
+      "updated_at": "2026-11-03T23:48:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -2063,6 +2063,20 @@
       "number": 4690,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-03T23:40:38Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6e74215244",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4694,
+      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
+      "updated_at": "2026-11-03T23:45:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3841,6 +3855,20 @@
       "number": 4686,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:24:54Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "da4dea4119",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4699,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T23:48:13Z"
     }
   ],
   "schema": "operator-matrix/v1",

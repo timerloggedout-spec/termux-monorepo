@@ -28,11 +28,12 @@ mkdir -p "$OUT"
 verdict() { echo "$1" | tee "$OUT/verdict.txt"; }
 
 echo "== boot $AVD (headless) =="
+"$EMU" -list-avds > "$OUT/emulator.log" 2>&1 || true
 ACCEL=off
 [ -w /dev/kvm ] && ACCEL=on
 "$EMU" -avd "$AVD" -no-window -no-audio -no-boot-anim \
   -gpu swiftshader_indirect -accel "$ACCEL" -port 5554 \
-  > "$OUT/emulator.log" 2>&1 &
+  >> "$OUT/emulator.log" 2>&1 &
 EMU_PID=$!
 cleanup() { "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1; \
   kill $EMU_PID >/dev/null 2>&1; }

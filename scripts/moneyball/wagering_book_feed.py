@@ -63,7 +63,8 @@ def _window_pct(window, note, at):
     1dp; remaining = 100 - consumed. Degenerate windows (wall <=
     start: instant/point subjects) carry null + the feed's pct_note -
     never 0 or 100 by default."""
-    if not window:
+    if not window or not window.get("window_start") \
+            or not window.get("wall"):
         return {"consumed": None, "remaining": None,
                 "computed_at": at, "note": note}
     start = _parse(window["window_start"])

@@ -30,6 +30,8 @@ The default factor space is:
 
 Extend it when justified with task family, task instance, scope/ref, tool policy, context budget, concurrency policy, validation policy, and recovery policy.
 
+Canonical expanded matrix: `docs/ops/DOE-QUESTIONS-MATRIX.md` (doe-questions-matrix v1) — 40 nested dimensions in 6 clusters; this factor list is its core projection. DESIGN records cite matrix dimensions by number.
+
 ## Design rules
 
 1. State the hypothesis before running treatments.

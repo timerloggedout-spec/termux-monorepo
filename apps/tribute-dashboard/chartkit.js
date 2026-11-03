@@ -40,7 +40,7 @@ const CK = (() => {
     const minT = pts[0].t, maxT = pts[pts.length - 1].t, spanT = Math.max(1, maxT - minT), spanV = Math.max(1e-9, maxV - minV);
     const X = t => padL + (maxT === minT ? iw / 2 : (t - minT) / spanT * iw);
     const Y = v => padT + ih - (maxV === minV ? ih / 2 : (v - minV) / spanV * ih);
-    const parts = ['<svg class="chart" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Time series chart; missing observations are shown as gaps">'];
+    const parts = ['<svg class="chart" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Time series chart; missing observations are shown as gaps">'];
     [[maxV, Y(maxV)], [midV, Y(midV)], [minV, Y(minV)]].forEach(([v, y]) => {
       parts.push('<line x1="' + padL + '" y1="' + y + '" x2="' + (w - padR) + '" y2="' + y + '" stroke="currentColor" opacity="0.15"/>');
       parts.push('<text x="0" y="' + (y + 4) + '" font-size="11">' + esc(fmt(v)) + '</text>');

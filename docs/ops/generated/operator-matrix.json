@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 473,
+    "open_issues": 474,
     "open_prs": 207,
     "pr_classes": {
-      "CANDIDATE": 107,
-      "EXTRACT": 6,
+      "CANDIDATE": 106,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 43,
+      "issues": 44,
       "prs": 205,
       "unlabelled_numbers": [
         308,
@@ -94,11 +94,12 @@
         4234,
         4235,
         4236,
-        4237
+        4237,
+        4362
       ]
     }
   },
-  "generated_at": "2026-11-03T14:32:18Z",
+  "generated_at": "2026-11-03T14:36:37Z",
   "issues_unlabelled": [
     308,
     388,
@@ -142,7 +143,8 @@
     4234,
     4235,
     4236,
-    4237
+    4237,
+    4362
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -150,7 +152,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "06b7afbc8d"
+    "sha": "1ca9fc04bb"
   },
   "prs": [
     {
@@ -236,6 +238,20 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6dd478edf2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4360,
+      "title": "proposals-feed v2: resolve PR states at collection time",
+      "updated_at": "2026-11-03T14:36:33Z"
     },
     {
       "class": "CANDIDATE",
@@ -378,20 +394,6 @@
       "number": 970,
       "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
       "updated_at": "2026-10-01T12:22:22Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e650476044",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1278,
-      "title": "ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) \u2014 REVIEW, do not auto-merge",
-      "updated_at": "2026-10-23T07:40:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -2277,14 +2279,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "success"
       },
-      "head_sha": "b8167066f6",
+      "head_sha": "23378b53b9",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T14:31:20Z"
+      "updated_at": "2026-11-03T14:35:03Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2925,7 +2927,7 @@
       },
       "head_sha": "f5ec300eff",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-03T13:43:48Z"
@@ -2948,15 +2950,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
+        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "50fc930df3",
+      "head_sha": "1734089e46",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T14:31:41Z"
+      "updated_at": "2026-11-03T14:34:38Z"
     },
     {
       "class": "NEED_EVIDENCE",

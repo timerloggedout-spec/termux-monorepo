@@ -707,10 +707,33 @@ version and compared continuously until culling retires a version.
   configured instance - team - selection path - complexity -
   novelty - decoding - context composition - substrate -
   dependency state - oracle class - provenance - backfill
-  origin - automation binding). DESIGN records cite
-  dimensions by number; unlisted factors enter via matrix
-  amendment, never per-design improvisation; numbers never
-  renumbered.
+  origin - automation binding). DESIGN records cite dimensions by number; unlisted factors enter via matrix amendment, never per-design improvisation; numbers never renumbered.
+
+- **egm-evaluation v0** (registered 2026-11-03, owner order)
+  - Elephant-Goldfish evaluation where the FINDINGS are
+  tested, not only the machinery: home
+  docs/ops/EGM-EVALUATION.md. Goldfish = cold reviewers
+  (artifacts only, zero build context); elephant = the
+  shipped artifacts of record (D1 surfaces v0.1.0: TUI PR
+  #4161 5653241db3a4 - PWA PR #4162 46518482875c - APK PR
+  #4163 c84b8b213505). Pipeline: every finding enters as a
+  CLAIM - verification leg against the artifact itself
+  (source at merged SHA, then served surface, then
+  executable test) - verdicts VERIFIED / PARTIAL (restated
+  to verified scope) / REFUTED - only verified claims
+  convert to RFPs in the delphi:rfp shape, verification
+  record carried into the filing (repairs the
+  fields-not-substance gap of the #3695/#3696 precedent:
+  effective 8.54 on identical field surfaces) - scored by
+  the existing Delphi machinery (roles, /25, veto, shadow
+  bar 15.0) - severity class {blocks-use / degrades-use /
+  polish} from the verification leg, stated on the RFP -
+  REFUTED claims score the REVIEWER (calibration posterior:
+  accuracy = (V + 1/2 P) / total) - awards = score-ranked
+  within severity, routed as route+claim build items
+  (precedent RFP-D1-6, issue #4156). Design pre-registered
+  before findings arrive; post-hoc changes = versioned
+  amendment with reasons.
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

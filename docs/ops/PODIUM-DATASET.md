@@ -49,8 +49,9 @@ lablab.ai public pages ── podium_crawl.py ──> podium-snapshot/v1
   trigger, same pattern as `ops/challenge-participants/schema.sql`).
 - **Snapshots:** `ops/podium/snapshots/<version>.json` in the monorepo
   is the citable record; every consumer pins a dataset version.
-  v1 = `2026-11-03.v1` (49 entities: 4 editions · 9 tiers · 6 judges ·
-  30 projects · 0 conflicts · all-added baseline diff).
+  v1 = `2026-11-03.v1` (55 entities: 4 editions · 9 tiers · 6 judges ·
+  6 judge-persons · 30 projects · 0 conflicts · all-added baseline
+  diff), sha256 `537981b874cb2bd3b0d53e3e0a73760e1b7db8690cba6a93d7bb1016eb1b60f8`.
 
 ## Store
 
@@ -81,3 +82,36 @@ values are never copied across silently).
   source joins — a deliberate conflict surface, not a gap to paper over.
 - Judges parse = (name, title) pairs from the section; org is not
   consistently on the card and is left null rather than guessed.
+
+## MoneyBall alignment (test plan PR #4492, seat cd195597)
+
+- **Version pin:** consumers pin `version` + dataset sha256; a record
+  update re-pins by hash, prior rows keep theirs (plan G6/C5).
+- **Stratum:** edition is never pooled away — entities are keyed per
+  edition; aggregates are consumer-side.
+- **Judge identity:** `judge_person` entities key judges by normalized
+  name across editions (exact-name v1; fuzzy linkage = Splink leg in
+  the tool slate) for repeat-judge detection (test ③). Judge↔track
+  linkage is NOT in lablab public pages — separately pinned if sourced.
+- **Feasibility stamps** ride every dataset (`feasibility{}`): per
+  edition {podium_n · field_n · judge_comments · community_comments} +
+  repeat-judge count. v1: field_n = null (gallery leg below),
+  comments = 0/0 (surface NOT_ESTABLISHED).
+- **EGM exclusion:** EGM instance-#2 test-stamped items (canonical
+  `EGM instance #2 TEST filing`, secondary `RFP-EGM2-`) are excluded
+  by an ingest guard; v1 sources are lablab pages only, so nothing
+  stamped can enter — the guard binds any future source widening.
+- **Coding contamination (G5):** project rows carry the canonical
+  project page URL; feature coding is redone from those pages under
+  `podium-codebook/v1` by the consumers — card text here is evidence,
+  not features.
+
+## Next version scope (v2)
+
+- **Field rows (C1):** per edition, ALL gallery submissions (entries :=
+  gallery submissions, not approved registrants). D2 gallery opens
+  Nov 5 (participant-store record); concluded editions' galleries
+  first, D2 on open. If volume forces sampling: stated random sample
+  with the seed recorded in the dataset record.
+- **Comments leg:** if an app/API comments surface verifies, rows land
+  as kind=comment with author_kind {judge|community} distinguished (C8).

@@ -3,7 +3,9 @@
 **Name of record: QUE** (owner's spelling, 2026-11-03). QUE is a
 first-class named system: the fleet's GitHub Actions queue —
 admission, ordering, hygiene, observability, and spawn discipline
-for every run the fleet creates. Lead: optimizations-assurance.
+for every run the fleet creates — and the measurement plane the
+fleet's efficiency systems read from (see *The measurement
+plane* below). Lead: optimizations-assurance.
 Custody: Cadence (governor) · DevOps (dispatch reliability) ·
 Viz (boards).
 
@@ -76,16 +78,63 @@ chains. Health metric, read off the board: the drain mix —
 real work (success+failure) should be the majority of
 completions; on 2026-11-03 it was **0%**.
 
+## The measurement plane (owner amendment, 2026-11-03)
+
+QUE is not only a control system; it is the fleet's
+**measurement plane for queue behavior** — the substrate the
+efficiency metrics, DoE, 3L0, and MoneyBall read from.
+
+**Events.** Every queue transition emits a receipted event:
+
+```
+{transition: enqueued | admitted | deferred | started |
+             cancelled | completed,
+ workflow, dependency_tier, lane/seat attribution,
+ created_at, started_at, cancel_class (when cancelled),
+ run_id, repo}
+```
+
+**Store.** Append-only, on the lane-events pattern (Neon
+lane-events or a QUE sibling table); **store of record = repo
+snapshots** per the podium precedent — the database is the
+working copy, the repo snapshot is the citable one.
+
+**Consumers (named, with their contracts):**
+
+- **Efficiency metrics — Quota + Cadence seats.** Wait-time
+  distributions, idle-through, and storm attribution become
+  continuous metrics read off the plane, not anecdotes
+  reconstructed during an escalation.
+- **DoE.** Admission and ordering policies are experiments:
+  the plane is where their outcomes are measured (a policy
+  change ships with its before/after read, or it didn't
+  happen).
+- **3L0.** Queue efficiency is a weighting signal — lanes and
+  routes that respect the queue weigh differently from lanes
+  that storm it.
+- **MoneyBall.** Queue behavior is book material: drain
+  outcomes (will this run start within N minutes? will this
+  family's storm clear by the freeze?) are forecastable
+  subjects with receipted resolutions.
+
+**Why the layer is load-bearing:** QUE's own acceptance is
+only testable off the plane. Drain-order compliance,
+cancel-class rates, and queue-age percentiles are READ from
+recorded events, never asserted from memory — the same
+evidence discipline the queue flood violated (phantom list
+statuses) and the plane exists to make impossible.
+
 ## Tranche plan
 
 | Tranche | Scope | Acceptance |
 |---|---|---|
 | **0 — Live unblock** (2026-11-03, DONE) | stale-class cancels · dependency-ordered starts · timers question answered | 350 tier-4 cancels, 0 gates/machines · D1's five: cuts+proof+sync complete, leaf in the hold window · board PR #4621 + tiers PR #4622 open |
-| **1 — Observability complete** | board merged + served · feed v2 (position + per-tier waits) · nav registration (canon pass) | board live on the served site, ages ticking · feed refresh ≤10m sustained a day |
-| **2 — Hygiene automated** | reaper workflow live (single-flight, episodic, receipts to the feed record) · wedged-ancient playbook (disable/re-enable) executed once | 7 days of reap receipts · zero manual cancel sessions across one natural flood |
-| **3 — Admission generalized** | guard projects queue at dispatch · tier-4 fail-soft deferral live · Cadence custody handoff | synthetic storm drill: burst admitted ≤ budget while tier 1–3 waits stay flat (feed-measured) |
-| **4 — Spawn discipline** | top-5 follower families: trigger-level conditions + single-flight groups + stamped budgets | drain mix real-work share ≥50% sustained a week · family spawn/hr inside budget |
-| **5 — Ordering encoded** | per-entry chain declarations consumed by admission (chain heads gate downstream) | a D1-class chain replayed in a drill with zero inversions among stamped runs |
+| **1 — Measurement plane** | transition-event emitter (collector-side, off the Actions API) · append-only store on the lane-events pattern · repo snapshots as store of record · consumer contracts live for Quota/Cadence + DoE | a full day of transitions recorded with ≤1% gaps vs the API census · wait-time percentiles + cancel-class rates published from the plane alone |
+| **2 — Observability complete** | board merged + served · feed v2 (position + per-tier waits) · nav registration (canon pass) | board live on the served site, ages ticking · feed refresh ≤10m sustained a day |
+| **3 — Hygiene automated** | reaper workflow live (single-flight, episodic, receipts to the feed record) · wedged-ancient playbook (disable/re-enable) executed once | 7 days of reap receipts · zero manual cancel sessions across one natural flood |
+| **4 — Admission generalized** | guard projects queue at dispatch · tier-4 fail-soft deferral live · Cadence custody handoff | synthetic storm drill: burst admitted ≤ budget while tier 1–3 waits stay flat (plane-measured) |
+| **5 — Spawn discipline** | top-5 follower families: trigger-level conditions + single-flight groups + stamped budgets | drain mix real-work share ≥50% sustained a week · family spawn/hr inside budget |
+| **6 — Ordering encoded** | per-entry chain declarations consumed by admission (chain heads gate downstream) | a D1-class chain replayed in a drill with zero inversions among stamped runs |
 
 **Guardrail:** D1's freeze work never waits on any tranche
 beyond 0. QUE improves the road; it never parks the traffic.

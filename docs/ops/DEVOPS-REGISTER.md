@@ -248,3 +248,51 @@ Board discipline: state flips only on run evidence (a deploy run's conclusion),
 not on lane report. Pages congestion and the §1 parked state are the same queue
 phenomenon seen from two planes — a Pages deploy that matters rides dispatch,
 never push.
+
+## §5 Default-token exposure register (finding via main, 2026-11-03; census this seat)
+
+**The class:** the default `GITHUB_TOKEN` draws on ONE shared installation
+bucket (1,000 requests/h for this repo) no matter which workflow spends it.
+Exhaustion presents as `API rate limit exceeded for installation` — and jobs
+can die on it **silently** (no failing surface anywhere). Precedents of record:
+the 2026-10-22 fleet-wide exhaustion diagnosis (checks annotating the limit
+from 07:55Z, every unrelated PR red) and the 2026-11-01 apk-xref belt deaths
+(4× HTTP 403 on the shared bucket; fixed by PR #2992's SEC-03 Swarm mint).
+
+**Worked example of the fix (verified at master by this seat):**
+`dispatch-watchdog.yml` — its acceptance runs 403'd silently until its owner
+built a self-diagnosis loop and moved the workflow onto the Termux Fleet Swarm
+App's own bucket (PR #4167 chain, merged). At master the file mints via
+`actions/create-github-app-token` with `TERMUX_FLEET_SWARM_APP_ID` /
+`TERMUX_FLEET_SWARM_PRIVATE_KEY` (lines 38–41) and its API step consumes
+`steps.swarm.outputs.token` (line 45). One residual default-token step remains
+at line 57 — named here as found; whether it is deliberate (diagnosis leg) or
+leftover is the owning lane's call. Fix pattern of record = SEC-03:
+mint-before-checkout under `TERMUX_FLEET_<ROLE>_*`, steps consume the minted
+token; each fleet App carries its own 5,000/h bucket.
+
+**Census 2026-11-03T11:04Z (code search over `.github/workflows`, 311
+workflows):** explicit default-token references (`secrets.GITHUB_TOKEN` ∨
+`github.token`) in **140 files** · app-token minting (`create-github-app-token`)
+in **23 files** · mixed (both) **10** · **default-only = 130 files**:
+
+ace-watch · action-effectiveness-ledger · actions-queue-reaper · actions-run-watcher · agent-continuous-ops · agent-ecc-tools-ops · agent-feedback-linear-sync · agent-runtime-stall-watch · agent-throughput-evidence · agentic-repository-operations-report.lock · apk-release-finalize · apk-release · apk-xref-intake · audit-cycle · automation-docs-continuous-refresh · cadence-lead-lag · cadence-provider-onboarding · cellcog-engineering-health · cellcog-review · cert-coderoad-image · challenge-countdowns-feed-collect · challenge-countdowns-refresh · challenge-osint-watch · comment-quality-sweep · commit-diff-watcher · context-relationship-audit · context-relationship-backfill-watcher · context-relationship-backfill · context-relationship-publish · context-relationship-reconcile · continuous-evaluation · credential-family-probe · deepcli-agent-bridge · deepseek-ci · deepseek-secret-probe · deepseek-termux-agent · delphi-gate · delphi-generate · delphi-intake · delphi-participant-cycle · delphi-signal-bridge · delphi-signal · delphi-tribute-ingest · dependency-phase-dispatch · dependency-phase-evaluate · dependency-phase-project-sync · dispatch-tree-feed-collect · docs-branch-index · doe-cb1-acceptance · doe-live1-audit · doe-live3-autodispatch · doe-nc1-eval · doe-phrase-dispatch · fork-sync-audit · g07-profile-watch · gemini-after-peers · gemini-invoke · gemini-review · gemini-triage · github-telemetry-snapshot · gitlab-governed-reconciliation · hark-enqueue · historical-evaluation-correlation · integration-mesh-poll · issue-lifecycle-triage · issue-observatory · lane-events-recorder · linguist-panel-feed-collect · merge-promotion-queue-v2 · merge-promotion-queue-v3 · merge-promotion-queue · merge-promotion-steward · ml-pr-lane-classify · observer-poller-scheduled · operator-matrix-generate · operator-variable-provision · operator-wake · ops-gitlink-lego-fork · ops-lane-matrix-sweep · oracle-panel-feed-collect · ox-alpha-smoke · peer-review-orchestrator · phantom-secrets-audit · pin-cor-ae-submodules · platform201-support-response-check · pr-change-effectiveness-ledger · pr-evidence-evaluation · pr-scope-guard · project-task-dispatch · proposals-feed-collect · provider-batch · provider-recon-compound · publish-wiki · quota-allocation-planner · re-taxonomy-intake · readme-extractor-image · recon-intel-discovery · recon-intel-reconcile · reconcile-repository-surface · refTemplates-eval · referral-pool-watch · referral-rotation · registration-monikers · repository-observatory · research-intake · rindig-provenance-audit · rindig-source-inventory · shared-observer-poller · she-skill-clobber-heal · surface-feeds-collect · sweep-accountability · tailscale-bridge-probe · target-intake · team-mvt · telemetry-ingest · termux-bridge-connect · tribute-audit-staleness · tribute-dashboard-deploy · tribute-diff-gate · tribute-execute · tribute-followup · tribute-llm-assist · tribute-participation · tribute-rerequest · tribute-scout · tribute-status-refresh · tribute-system1 · v2-gitlab-probe · vercel-quota-probe (all `.yml`)
+
+Method caveats, stated plainly: (a) this is a search-INDEX census and the index
+lags — it classifies `dispatch-watchdog.yml` itself as default-only although
+the file at master mints (verified above); counts are the exposure surface,
+file-level truth is per-file reads. (b) The census covers EXPLICIT references;
+workflows with no token reference still run checkout on the default token —
+REST-bucket exposure concentrates in API-calling steps, and a step-level audit
+is the next sweep refinement.
+
+**Cross-reference to §2 (co-occurrence, causation NOT claimed):** eleven of the
+watch's critical subset ride the default bucket exclusively — telemetry-ingest
+∧ delphi-ledger-feed-collect (both STARVED-leg) · dispatch-tree-feed-collect ·
+operator-matrix-generate · context-relationship-reconcile · observer-poller-
+scheduled · github-telemetry-snapshot · ml-pr-lane-classify · registration-
+monikers · surface-feeds-collect · issue-lifecycle-triage ·
+challenge-countdowns-refresh. Schedule *delivery* is GitHub-side and is not
+explained by this; what the bucket governs is whether their in-job API calls
+succeed once a run starts — the watchdog's silent-403 mode is the failure to
+watch for in these lanes' run logs.

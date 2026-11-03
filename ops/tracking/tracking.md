@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T03:27:54Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T03:32:20Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T03:27:54Z` (merged 150 · open 194) · lane-events(Neon) status=`ok` count=`9899` read_at=`2026-11-03T03:27:54Z`
+Sources: PR feed read_at=`2026-11-03T03:32:20Z` (merged 150 · open 194) · lane-events(Neon) status=`ok` count=`9921` read_at=`2026-11-03T03:32:20Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4002 `f1a21c12069e` 2026-11-03T03:12:26Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4025 `afdc94e26f2f` 2026-11-03T03:13:25Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4051 `691fa9624b00` 2026-11-03T03:29:42Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 117/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 116/150 (extend ops/tracking/projects.json match rules)

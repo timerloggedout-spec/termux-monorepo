@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-03T03:27:54Z",
+ "generated_at": "2026-11-03T03:32:20Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-03T03:27:54Z",
+   "read_at": "2026-11-03T03:32:20Z",
    "merged": 150,
    "open": 194
   },
   "lane_events": {
-   "read_at": "2026-11-03T03:27:54Z",
+   "read_at": "2026-11-03T03:32:20Z",
    "status": "ok",
-   "count": 9899,
+   "count": 9921,
    "events_in_snapshot": 200
   },
   "records": [
@@ -73,7 +73,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #1679"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -94,7 +94,7 @@
     "coordinator event D1 status=active",
     "desk-feed traversal D1 pr=#2606"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -109,7 +109,7 @@
     "coordinator submission=none",
     "coordinator event D2 status=registered"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -123,7 +123,7 @@
    "evidence": [
     "desk-feed traversal D3 pr=#2616"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -138,7 +138,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -150,7 +150,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -166,7 +166,7 @@
     "coordinator event C11 status=active",
     "open PRs: #2578, #2577"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "challenge-entries",
@@ -180,7 +180,7 @@
    "evidence": [
     "open PRs: #4023, #2907, #2235"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "quota",
@@ -200,7 +200,7 @@
     "quota registry services=170",
     "open PRs: #3242, #4006, #1441, #3342, #2757"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "doe",
@@ -209,10 +209,10 @@
    "project_id": "doe-campaigns",
    "state": "in-flight",
    "last_merge": {
-    "pr": 4025,
-    "sha": "afdc94e26f2f",
-    "at": "2026-11-03T03:13:25Z",
-    "title": "ops/moniker-census: tails-3 recount (sparkFlux U=0 via gemini-cli[bot]; DoE retry still 422)"
+    "pr": 4051,
+    "sha": "691fa9624b00",
+    "at": "2026-11-03T03:29:42Z",
+    "title": "doe(apk-1): records 2 \u2014 arm A proof COMPLETE, B/C final no-deliverable"
    },
    "next": "land/close PR #2966 \u2014 [apk-doe] A v0.2.1",
    "next_basis": "open-pr",
@@ -220,7 +220,7 @@
     "doe DESIGN.json campaigns=16",
     "open PRs: #2966, #2856, #2857, #740, #1569"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "doe-nc1",
@@ -232,7 +232,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "tier-1",
@@ -244,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "contribution-desk",
@@ -263,7 +263,7 @@
    "evidence": [
     "desk-feed traversals=10 generated_at=2026-11-02T22:05:00Z"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "web-design-viz",
@@ -282,7 +282,7 @@
    "evidence": [
     "open PRs: #4018, #3969, #2702, #2461, #1436"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "marketing",
@@ -296,7 +296,7 @@
    "evidence": [
     "open PRs: #3032"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "marketing-social",
@@ -308,7 +308,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "swarm",
@@ -322,7 +322,7 @@
    "evidence": [
     "open PRs: #3437, #1470"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "providers",
@@ -342,7 +342,7 @@
     "quota registry services=170",
     "open PRs: #3991, #3916, #3209, #3113, #2899"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "providers-phrases",
@@ -354,7 +354,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "repo-replay",
@@ -371,7 +371,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "ops",
@@ -385,7 +385,7 @@
    "evidence": [
     "open PRs: #1614"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   },
   {
    "lane": "telemetry",
@@ -404,7 +404,7 @@
    "evidence": [
     "open PRs: #4022, #3890, #1734, #1645, #1469"
    ],
-   "updated_at": "2026-11-03T03:27:54Z"
+   "updated_at": "2026-11-03T03:32:20Z"
   }
  ],
  "doe_join": {
@@ -783,6 +783,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 117/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 116/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T09:06:21.559621+00:00",
+ "census_at_utc": "2026-11-03T09:09:15.123454+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3175,
+  "total": 3177,
   "stale": 1028,
   "orphan_no_assoc_PR": 352,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3586,
-  "open": 204,
+  "total": 3589,
+  "open": 206,
   "open_draft": 33,
-  "open_draft_share": 0.1618,
+  "open_draft_share": 0.1602,
   "drafts": [
    {
     "number": 386,
@@ -154,7 +154,7 @@
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 1.6
+    "age_days": 1.7
    },
    {
     "number": 3242,
@@ -223,18 +223,18 @@
     "age_days": 0.0
    }
   ],
-  "merged": 2905,
+  "merged": 2906,
   "closed_unmerged": 477,
-  "open_no_closing_ref": 198,
+  "open_no_closing_ref": 200,
   "open_unlinked_issue_target": 164,
   "open_unlinked_any_ref": 138,
-  "merged_no_closing_ref": 2876,
+  "merged_no_closing_ref": 2877,
   "merged_unlinked_issue_target": 1665,
   "merged_unlinked_any_ref": 971,
   "open_zero_commits": [],
   "merged_head_branch_residual_name_match": 2827,
   "open_head_branch_missing": [
-   4118
+   4120
   ]
  },
  "issues": {

@@ -1,19 +1,32 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-03T05:11:09Z",
+ "read_at": "2026-11-03T05:16:58Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
    "number": 4073,
    "title": "desk-feed: D1 next-version builds dispatched \u2014 SR #3050 + template #3577",
    "merged_at": "2026-11-03T05:10:28Z",
-   "updated_at": "2026-11-03T05:11:05Z",
+   "updated_at": "2026-11-03T05:15:07Z",
    "created_at": "2026-11-03T05:10:21Z",
    "merge_commit_sha": "76fa899e5039b7b0cce38be955f049addba897f7",
    "head_ref": "desk/d1-builds-stamp",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4073",
+   "merged": true
+  },
+  {
+   "number": 4074,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-03T05:11:43Z",
+   "updated_at": "2026-11-03T05:12:02Z",
+   "created_at": "2026-11-03T05:11:37Z",
+   "merge_commit_sha": "675a0a80f9a9bd9c665c854be832e03fbd29314d",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4074",
    "merged": true
   },
   {
@@ -1939,33 +1952,46 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3892",
    "merged": true
-  },
-  {
-   "number": 3894,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-02T13:44:41Z",
-   "updated_at": "2026-11-02T13:44:47Z",
-   "created_at": "2026-11-02T13:44:36Z",
-   "merge_commit_sha": "da48df3a8ffb8c25e3d9619fb42d37e8941fb8d2",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3894",
-   "merged": true
   }
  ],
  "open": [
   {
+   "number": 4076,
+   "title": "feat(dispatch): project-task template trigger (form + intake workflow + parser) [#3577]",
+   "merged_at": null,
+   "updated_at": "2026-11-03T05:16:31Z",
+   "created_at": "2026-11-03T05:16:17Z",
+   "merge_commit_sha": "9e07d96eadb40bbaf20be6a4e2f2d192b4c144de",
+   "head_ref": "feat/project-task-trigger",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4076",
+   "merged": false
+  },
+  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-03T05:08:46Z",
+   "updated_at": "2026-11-03T05:15:50Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "aa756742fd3fa40287404e1d6b9bfbd16bc222ff",
+   "merge_commit_sha": "b24561bfc9aed791d0e62607b5da8a195dcc61d7",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 4075,
+   "title": "feat(studysprint): SR module \u2014 FSRS + SM-2, .apkg, Obsidian vault surface (v0.3.0) [#3050]",
+   "merged_at": null,
+   "updated_at": "2026-11-03T05:15:47Z",
+   "created_at": "2026-11-03T05:14:36Z",
+   "merge_commit_sha": "49716dbda610b254be16b2a734b4ae0a43aee4dc",
+   "head_ref": "feat/d1-study-sr",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4075",
    "merged": false
   },
   {

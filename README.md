@@ -127,6 +127,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
 | Skills + adaptive WAIT | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) · [Superpowers](.agents/skills/superpowers/SKILL.md) | Engineering methodology, ops skills, admission/queue stalls, evidence-led loop. |
 | Integration Intelligence | [`docs/integrations/README.md`](docs/integrations/README.md) | Provider registry, adapter boundaries, event schema, phased integration roadmap. |
+| API Impact Review | [`docs/integrations/API-IMPACT-REVIEW.md`](docs/integrations/API-IMPACT-REVIEW.md) · [skill](.agents/skills/api-impact-review/SKILL.md) | SHA-bound API change, breaking classification, consumer/test/doc impact evidence. |
 | Deployment lanes (Vercel / Pages) | [`docs/DEPLOYMENT-LANES.md`](docs/DEPLOYMENT-LANES.md) | Live Vercel projects, Pages status, hosting identity rules. |
 | README / docs image optimize | [`docs/ops/IMAGE-ASSET-PIPELINE.md`](docs/ops/IMAGE-ASSET-PIPELINE.md) | Fail-closed resize + validate before embed. |
 | Review safety and tracked-state debt | [`docs/CREDENTIAL-EXPOSURE.md`](docs/CREDENTIAL-EXPOSURE.md) | Credential exposure findings and safe remediation boundary. |

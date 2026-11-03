@@ -1213,3 +1213,26 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
+
+  - id: external-agent-toolchain-integration
+    title: Agent toolchain integration portfolio — capability, authority, and evidence mapping
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/external-agent-toolchain-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+    related_issues:
+      - 4008
+    related_prs: []
+    related_branches:
+      - proposal/external-agent-toolchain-integration
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

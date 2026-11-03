@@ -2028,11 +2028,20 @@
       "url": "https://github.com/timerloggedout-spec/ugreen-nas-skills",
       "created_at": "2026-11-03T12:33:22Z",
       "state": "EXISTS but DORMANT \u2014 created by the AppID lane on the Manager's build-start signal before the DEFER ruling landed (crossed signals). NOT the identity anchor.",
-      "verified": "firsthand via PAT API 2026-11-03 by this lane"
+      "verified": "firsthand via PAT API 2026-11-03 by this lane",
+      "id": 1444265749,
+      "contents": "README-only",
+      "placement": "EVIDENCE only \u2014 the event identity fields repo_url/appid stay null per DEFER; residue is not the anchor."
      },
-     "appid": "NOT created \u2014 main stood the create leg down directly with the AppID lane.",
+     "appid": "NOT created \u2014 probe 404 (AppID lane verified).",
      "anchor": "Identity anchor stays {Desk package records + this coordinator record}.",
-     "2sv_touch": "Confirmation pending from the AppID lane; no harm identified yet (Manager reconciliation, 2026-11-03)."
+     "2sv_touch": "Confirmation pending from the AppID lane; no harm identified yet (Manager reconciliation, 2026-11-03).",
+     "temp_branch": {
+      "name": "appid-ugreenskills-manifest",
+      "repo": "timerloggedout-spec/termux-monorepo",
+      "state": "EXISTS (head 28210bb36e55a139b9e8129ce7e2bd7540a684c1) \u2014 left as-is per the AppID lane (verified firsthand 2026-11-03, this lane)"
+     },
+     "moniker_confer": "Registry moniker confer for termux-fleet-ugreenskills[bot] was sent pre-countermand; record-only if it lands (AppID lane via Manager, 2026-11-03)."
     }
    }
   }

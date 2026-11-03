@@ -61,6 +61,11 @@ emits a hashed receipt (`evidence/demo-run.json`) — decisions,
 evidence set, plan, quiz — so what the agent judged is exactly what
 you can inspect.
 
+The reading itself runs through the shipped multi-pass RSVP
+reader (`study_reader.py`, in v0.3.0): section by section — a
+fast skim pass, then a focused re-read — with terms flaggable
+in one tap, feeding the term bank and the SR cards.
+
 ## Impact
 
 One syllabus becomes a 12-session study plan. A daily check-in

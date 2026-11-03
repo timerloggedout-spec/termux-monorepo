@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 472,
-    "open_prs": 205,
+    "open_issues": 473,
+    "open_prs": 208,
     "pr_classes": {
-      "CANDIDATE": 105,
+      "CANDIDATE": 107,
       "EXTRACT": 7,
-      "NEED_EVIDENCE": 93,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 241,
+      "issues": 242,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 203,
+      "prs": 206,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T14:16:54Z",
+  "generated_at": "2026-11-03T14:23:46Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "2ab004300b"
+    "sha": "65822ec5d5"
   },
   "prs": [
     {
@@ -230,12 +230,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d8ea720788",
+      "head_sha": "56193a8eb5",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4021,
-      "title": "feat(integrations): extend governed agent toolchain portfolio",
-      "updated_at": "2026-11-03T02:27:20Z"
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T14:22:37Z"
     },
     {
       "class": "EXTRACT",
@@ -244,12 +244,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a5ee595c7f",
+      "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4340,
-      "title": "docs(apk): signing section \u2014 shared project key documented [#4222]",
-      "updated_at": "2026-11-03T14:14:55Z"
+      "number": 4021,
+      "title": "feat(integrations): extend governed agent toolchain portfolio",
+      "updated_at": "2026-11-03T02:27:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -1033,20 +1033,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9a45022ae4",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T13:48:21Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1727,6 +1713,48 @@
       "updated_at": "2026-11-03T10:16:00Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a5ee595c7f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4340,
+      "title": "docs(apk): signing section \u2014 shared project key documented [#4222]",
+      "updated_at": "2026-11-03T14:14:55Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4b1c021849",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4352,
+      "title": "Delphi gate P3 (EGM-2): vote profiles + collision flags on the board + quarantine guard",
+      "updated_at": "2026-11-03T14:20:09Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b0c68fafe6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4353,
+      "title": "Delphi gate P1+P2 (EGM-2): scoreable verification records via oracle resolution",
+      "updated_at": "2026-11-03T14:21:59Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2257,6 +2285,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "c8e582f9f7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T14:23:17Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2920,20 +2962,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "c8783fc62a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T14:16:40Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3027,6 +3055,20 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "queued"
+      },
+      "head_sha": "83ad38a6ce",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4355,
+      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
+      "updated_at": "2026-11-03T14:22:43Z"
     }
   ],
   "schema": "operator-matrix/v1",

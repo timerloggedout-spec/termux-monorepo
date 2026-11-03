@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (170 registry records)
- Snapshot generated (not observation time): 2026-11-02T08:16:06.415255+00:00
+ Snapshot generated (not observation time): 2026-11-03T19:46:44.808639+00:00
  Source: apps/tribute-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -8,8 +8,8 @@
 
  ALERTS
 --------------------------------------------------------------------------------
- [!! EXHAUSTED] github.api.github_token
-   limit (documented): 1000 requests/hour/repo
+ [!  WATCH] vercel.deployments
+   limit (documented): 100 deployments/day
    used: No live reading
 
  ALL SERVICES
@@ -757,7 +757,7 @@
     contents+pull_requests) | window: hourly | reset: x-ratelimit-reset header
     Public evidence state only; no account balance or runtime admission implied.
   github.api.github_token
-    status: !! EXHAUSTED
+    status: OK
     limit (documented): 1000 requests/hour/repo
     metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
     x-ratelimit-reset header
@@ -1223,7 +1223,7 @@
     metric: build step duration per deployment | window: per-build | reset: n/a
     Public evidence state only; no account balance or runtime admission implied.
   vercel.deployments
-    status: OK
+    status: !  WATCH
     limit (documented): 100 deployments/day
     metric: deployments created | window: rolling 24h (observed: error says try
     again in 24 hours) | reset: rolling

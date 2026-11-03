@@ -51,7 +51,10 @@ def test_mirror_is_byte_identical_to_source():
 def test_page_consumes_only_the_feed():
     html = _html()
     fetches = re.findall(r"fetch\(([^)]*)\)", html)
-    assert fetches == ['"./data/desk-feed.json"'], fetches
+    # the board + chart fetch desk-feed; the Dispatch queue section
+    # fetches dispatch-state-feed.json (test_desk_dispatch_queue.py)
+    allowed = {'"./data/desk-feed.json"', '"./data/dispatch-state-feed.json"'}
+    assert fetches and all(f in allowed for f in fetches), fetches
     for el in ["meta", "model", "roles", "dispatchhow", "intake", "board", "provroll", "prov"]:
         assert f'id="{el}"' in html
 

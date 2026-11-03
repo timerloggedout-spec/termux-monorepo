@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T09:18:12Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T09:27:30Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T09:18:12Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10455` read_at=`2026-11-03T09:18:12Z`
+Sources: PR feed read_at=`2026-11-03T09:27:29Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10488` read_at=`2026-11-03T09:27:29Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknown=7
 
@@ -10,13 +10,13 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=11 · landed=1 · unknow
 |---|---|---|---|---|---|
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | #4071 `df86607c4b1d` 2026-11-03T05:04:50Z | Upgrade program closed 4/4. Standing: none for D0 beyond the standing record. |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | NOT_ESTABLISHED | Routes after M3 or when builders idle · LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
-| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | in-flight | #4118 `e336f5b13bdd` 2026-11-03T09:14:56Z | Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing). |
+| challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | in-flight | #4126 `ffed96963535` 2026-11-03T09:26:01Z | Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing). |
 | challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | unknown | NOT_ESTABLISHED | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target ∅ until owner pick · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · ∅ fire pre-pick · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair · ARMS Δ (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip ×2, agent ∅ invoked — runs 41301295882/41321691938) ⇒ live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN · Gemini OUT · DeepSeek DOWN}; restoration ⇒ desk flags D2 seat same-turn · LANDING TARGET Nov 7 (wall: submission ≤ Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | NOT_ESTABLISHED | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged · LANDING TARGET Nov 8 (wall: submission Nov 9 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | unknown | NOT_ESTABLISHED | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first · LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4100 `5cb53bfa10b6` 2026-11-03T08:27:06Z | NOT_ESTABLISHED |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4127 `15c68e8c2ee8` 2026-11-03T09:26:07Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4068 `a5ab75bf9018` 2026-11-03T04:15:59Z | land/close PR #4055 — doe(apk-1): records 3 — arm-A release identity convergence (431287533) |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 110/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 109/150 (extend ops/tracking/projects.json match rules)

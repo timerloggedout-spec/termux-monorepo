@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 427,
-    "open_prs": 193,
+    "open_prs": 194,
     "pr_classes": {
       "CANDIDATE": 96,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 90,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 92,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 17,
-      "prs": 191,
+      "prs": 192,
       "unlabelled_numbers": [
         308,
         388,
@@ -72,7 +72,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T03:26:43Z",
+  "generated_at": "2026-11-03T03:28:29Z",
   "issues_unlabelled": [
     308,
     388,
@@ -95,10 +95,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "queued"
     },
-    "sha": "72ddebd989"
+    "sha": "3096237541"
   },
   "prs": [
     {
@@ -170,20 +170,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "095a80c101",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T03:25:31Z"
     },
     {
       "class": "EXTRACT",
@@ -981,12 +967,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "ab53eb1ed0",
+      "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T03:21:56Z"
+      "number": 2304,
+      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
+      "updated_at": "2026-11-02T16:18:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -995,12 +981,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b590f3e4c9",
+      "head_sha": "095a80c101",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2304,
-      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
-      "updated_at": "2026-11-02T16:18:00Z"
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T03:26:41Z"
     },
     {
       "class": "CANDIDATE",
@@ -2087,6 +2073,20 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "0ddd26a7b6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T03:27:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "1007521382",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2807,6 +2807,20 @@
       "number": 4023,
       "title": "docs: integrate competitive opportunities and quota reconciliation",
       "updated_at": "2026-11-03T03:17:28Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "87c1d03307",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4048,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T03:28:17Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -520,7 +520,7 @@
    ]
   }
  },
- "updated_at": "2026-11-01T10:30Z",
+ "updated_at": "2026-11-03T22:25Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",
@@ -621,5 +621,19 @@
    "key generation at rotation; per-installation approval of permission additions"
   ],
   "first_live_test": "doe (Factorial - DoE): instance prepped 2026-11-01 (repo doe created, slug termux-fleet-doe free, moniker PR #3375); execution gated on the owner's 2FA hold (2026-11-01), fires on the owner's word"
+ },
+ "control_plane_splinter": {
+  "program": "Splinter - the AppID control plane (intake #4633; name ruled #4636: 'Master Splinter' not adopted, descriptive name stands)",
+  "repo": {
+   "name": "timerloggedout-spec/appid-registrar",
+   "id": 1444893519,
+   "created_at": "2026-11-03T22:20:19Z",
+   "default_branch": "main",
+   "visibility": "private",
+   "route": "PAT API POST /user/repos + contents-API seed - the standard fleet repo-creation route (confirmed by the AppID lane 2026-11-03)",
+   "record": "PR #4648 merged b30c6c35eebe (EVALUATION.md addendum carries the created record)"
+  },
+  "app": "NONE - recorded no-op with rationale, PR #4647 merged 40e84636376b: control-plane software, not a fleet actor identity; reads ride own-JWT custody routes + the Collector read class, writes are a Publisher subset (MIG-07 pattern). Re-trigger: workflow-resident drift-audit automation (MAINT-01 shape) reopens the minting-identity question at the AppID lane; first candidates are an existing SEC-03 pair, not an automatic new app.",
+  "lead": "appid-migration-plan lane (program runs through that seat); AppID lane = App-process authority"
  }
 }

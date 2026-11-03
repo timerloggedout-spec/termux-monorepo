@@ -2,7 +2,7 @@
 
 Proves the fleet's Gemini access drives the StudySprint Strands
 agent end to end: construct the agent, swap its model to
-GeminiModel(gemini-2.5-flash) BEFORE invocation, run the
+GeminiModel(gemini-3.8-flash) BEFORE invocation, run the
 fetch-syllabus -> make_plan prompt, and assert both tools were
 actually called (tool_metrics), not merely registered.
 
@@ -45,7 +45,7 @@ def main() -> int:
         "proof": "studysprint-strands-model-access",
         "issue": 4534,
         "provider": "google-gemini via fleet Actions secret",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.8-flash",
         "strands_agent_available": False,
         "deployment": False,
         "construction_note": (
@@ -70,7 +70,7 @@ def main() -> int:
         from strands.models.gemini import GeminiModel
         agent.model = GeminiModel(
             client_args={"api_key": os.environ["GEMINI_API_KEY"]},
-            model_id="gemini-2.5-flash")
+            model_id="gemini-3.8-flash")
 
         result = agent(PROMPT)
         metrics = getattr(result, "metrics", None)

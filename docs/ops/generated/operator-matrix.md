@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-03T03:16:16Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-03T03:20:58Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `7e2be07b99` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `ae77670311` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 423 issues, 194 PRs. PR classes: EXTRACT 6 / CANDIDATE 96 / NEED_EVIDENCE 92 / SUPERSEDE 0.
+**Open inventory:** 428 issues, 194 PRs. PR classes: EXTRACT 6 / CANDIDATE 96 / NEED_EVIDENCE 92 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -205,8 +205,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
-| #4023 | NEED_EVIDENCE | unlabelled | `7e1f8d0ce3` | not_reported | not_reported | clean | docs: integrate competitive opportunities and quota reconciliation |
-| #4029 | NEED_EVIDENCE | unlabelled | `c745894975` | queued | queued | unstable | feat(comment-quality): repo-wide leg for the weekly sweep (Blocks drops on PRs t |
+| #4023 | NEED_EVIDENCE | unlabelled | `57669a24ed` | not_reported | not_reported | unknown | docs: integrate competitive opportunities and quota reconciliation |
+| #4042 | NEED_EVIDENCE | unlabelled | `1aacb87a7f` | queued | queued | unknown | apk-release: finalize workflow (upload assets to PAT-created draft release) |
 
 ## Families (open)
 
@@ -215,7 +215,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 84 | 0 |
 | mesh | 7 | 0 |
-| other | 229 | 1 |
+| other | 234 | 1 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | research | 13 | 0 |

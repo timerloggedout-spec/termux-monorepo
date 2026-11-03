@@ -67,3 +67,12 @@ ts-fsrs/SM-2 engines. An embedded-Python build is a larger step
   smoke, artifact uploaded (see the workflow).
 - Install/run smoke on a device is the D1 seat's device-lane step
   per the issue's flow.
+
+## Release gates (standing requirement, owner 2026-11-03)
+
+Every iteration of this surface ships only when ALL hold:
+- Demo evidence present: screenshots/screen-recording of the demo in
+  `evidence/<surface>/` in-tree at the release tag.
+- Parity statement present: what this surface rides vs the foundation
+  version it ships against, and what is honestly absent/pending.
+- Tests green for the surface + no foundation regressions.

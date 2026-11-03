@@ -77,3 +77,13 @@ P1 = Web Design, reference implementations. P2 = Web Design on the
 chartkit pattern. Viz-lane pages are built by the viz lane to this
 standard (PM merge by Web Design). Exceptions stand until the owner
 rules otherwise; an exception is a documented state, not an omission.
+
+## Implementation addendum — 2026-11-02 (renderer-lab PR #4018)
+
+- `CK.line` preserves null/missing points as segment breaks; it does not filter them out and connect the surrounding observations. The SVG keeps explicit width/height and min/mid/max ticks plus first/last date labels.
+- `telemetry.html` displays feed state/freshness and a source-provenance table (source path, state, age, timestamp and SHA-256). History series preserve null values through the ChartKit adapter.
+- `telemetry_feed.py` records all five expected committed inputs independently: status, quota, quota-usage, workflow observations and Actions observations. Each source carries byte count, SHA-256, source stamp, age and a state (fresh, stale, missing, invalid, unknown, unavailable or clock-skew).
+- A collection is `complete` only when every expected source is fresh; otherwise it is `partial`. Fresh top-level collection time does not mask stale or missing inputs.
+- Feed, history and Tribute status outputs use atomic replacement so readers see the previous complete file or the new complete file, not a truncated write.
+- The existing collector workflow now includes Actions observations in its push path.
+- This code change does not regenerate the production snapshots. The previously observed zero-byte status files remain an outstanding publication/run-history issue until a trusted status generation is executed and verified.

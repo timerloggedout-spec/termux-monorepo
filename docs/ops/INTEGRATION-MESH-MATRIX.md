@@ -2,6 +2,7 @@
 
 **Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505. **Refreshed 2026-10-23 (sixth pass, ~09:48 PDT):** github-advanced-security first check suites in the 30-head window (5 suites, CodeQL, on `547f54e7`), workflows 200→201 (+`operator-variable-provision`), secrets steady at 37 names, PRs 1,358→1,362, issues steady at 213 — see #1505. **Refreshed 2026-10-23 (seventh pass, ~15:48 PDT):** secrets 37→38 (+`VANTAGE_PAT_GH_SECRETS` — Vantage cost-report lane), workflows 201→205 (+4 verified new files: `vantage-cost-report`, `operator-wake`, `delphi-intake`, `target-intake`), PRs 1,362→1,374, issues 213→220 — see #1505.
 **Refreshed 2026-11-02 (eighth pass, driven by `mesh-refresh` issue #1621 — 28 poll diffs, 2026-10-24→11-02):** secrets 38→**67**, variables 3→**22**, workflows 205→**305** (registry total; phantoms persist), PRs 1,374→**3,091** ∧ true issues 220→**466** (poll census 2026-11-02T06:53Z, fully paginated), codespaces 3→**1**, public repos 677→**711**; check apps **+supabase** (2026-10-25), **+termux-fleet-gate** (2026-10-30), **+termux-fleet-swarm** (2026-11-01) — the fleet's own AppID apps entering the mesh; cross-repo cluster reach 7→**22** of 60 scanned repos; GitLab webhook last code 400→429 (still failing, §9 I2); fleet app bots (publisher/crossreference/swarm) entered the top comment-actor set. §3/§4/§4B owner-firsthand sections unchanged — owner refresh still 2026-10-22. Evidence ↦ poll diffs on #1621/#1505 ∘ live reads 2026-11-02.
+**Refreshed 2026-11-02 (ninth pass, same day — driven by `mesh-refresh` #3992, poll 22:01Z):** environments 14→**16** (+`Preview – tribute-dash`, `Preview – tribute-oversight` — the help-wanted→tribute rename surfacing as new environments), cross-repo reach 22→**24**/60 (core cluster), PRs 3,091→**3,480**, true issues 466→**506**; webhooks linear/buildkite back at **200** (flap continues); GHAS out of the 30-head window again (flap class, §5). Evidence ↦ run 41532844818 ∘ #3992.
 (full pagination, no samples — 1,342 PRs, 207 issues, 2,000 comments, check suites
 across 30 master heads, submitted reviews in two labeled frames) + the installations
 probe (stored-token exercise from inside Actions, Issue #184 comment 6321665538),
@@ -112,7 +113,7 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 |---|---|
 | Repo Dependabot secrets | 0 |
 | Repo Codespaces secrets | **7** (count re-verified 2026-11-02) — `HINDSIGHT_API_KEY`, `HINDSIGHT_API_LLM_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `OPENROUTER_API_KEY`, `TMX_VAULT_AGE_KEY` |
-| Environment secrets × 14 environments | **0 in every environment** (env_Termux-MonoRepo, github-pages, hindsight-prod, Preview ×5, Production ×5, staging) |
+| Environment secrets × 16 environments | **0 in every environment** (env_Termux-MonoRepo, github-pages, hindsight-prod, Preview ×7 — incl. `Preview – tribute-dash` + `Preview – tribute-oversight` added 2026-11-02, Production ×5, staging) |
 | Org Actions secrets (both orgs) | 0 |
 | Org Dependabot secrets (both orgs) | 0 |
 | Org Codespaces secrets (both orgs) | endpoint 404 at census (not available on Free orgs); poll reads since degrade on this section — not re-derived |
@@ -290,9 +291,9 @@ absence from the screenshot portion is expected, not contradictory.
 | Dependabot | `dependabot` / github | 3 contributions; `dependabot.yml` present; Dependabot secrets 0; automated security fixes **disabled** | Dependency lane, partially wired (§9 I6) |
 
 **Cross-repo reach (poll, 60 most-recently-pushed owned repos):** the full
-app cluster's reach grew from **7 repos (2026-10-21) to 22 repos
-(2026-11-02 poll)** — core cluster apps at 22, Hark 19, Codecov 19,
-Buildkite 17, Supabase 17, GitHub Actions 12. Reach = check suites on head
+app cluster's reach grew from **7 repos (2026-10-21) to 24 repos
+(2026-11-02 22:01Z poll; 22 at 06:53Z)** — core cluster apps at 24, Hark 20, Codecov 20,
+Buildkite 19, Supabase 19, GitHub Actions 17. Reach = check suites on head
 commits (effective activity), not installation records. Whole-set
 removal/re-add flaps in the 2026-10-29→30 polls were 30-head
 window-composition artifacts (sets restored in full, +Gate on re-add);
@@ -393,15 +394,15 @@ triggered the apps.
 
 | Piece | State |
 |---|---|
-| Webhooks (4) | **Linear** — all events (`*`), last **429** (flaps 200⇄429 across polls) · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **429** (was 400 until 2026-10-26; still failing — §9 I2) · **ZenHub** — 12 event types, last **422 misconfigured** (unchanged) · **Buildkite** — all events (`*`), last **429** (flaps 200⇄429; id 702058218). All four active; codes read live 2026-11-02 |
+| Webhooks (4) | **Linear** — all events (`*`), last **200** (22:01Z poll; flaps 200⇄429) · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **429** (was 400 until 2026-10-26; still failing — §9 I2) · **ZenHub** — 12 event types, last **422 misconfigured** (unchanged) · **Buildkite** — all events (`*`), last **200** (22:01Z poll; flaps 200⇄429; id 702058218). All four active; codes read live 2026-11-02 |
 | Workflows | **305 registry total** (read live 2026-11-02; 205 at the 2026-10-23 pass — the registry also carries phantom entries for deleted workflow files, so files on master are fewer; active/disabled split not re-derived this pass: 204 active / 1 manually disabled (Merge Promotion Queue) at the Oct-23 pass). Still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only |
-| PR / issue totals (poll census, fully paginated) | **3,091 PRs · 466 true issues** at poll 2026-11-02T06:53Z (search-index counts read 3,220 / 483 the same morning — the index ≠ the census; the census governs). Author split not re-derived this pass (2026-10-23: owner 1,063, Jules 288, CodeRabbit 9, github-actions 5, Dependabot 3, ECC 3, Devin 2, Tembo 1 of 1,374) |
+| PR / issue totals (poll census, fully paginated) | **3,480 PRs · 506 true issues** at poll 2026-11-02T22:01Z (06:53Z census: 3,091 / 466; search-index counts read 3,220 / 483 that morning — the index ≠ the census; the census governs). Author split not re-derived this pass (2026-10-23: owner 1,063, Jules 288, CodeRabbit 9, github-actions 5, Dependabot 3, ECC 3, Devin 2, Tembo 1 of 1,374) |
 | Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 35 PRs carry 251 reviews — Devin 139 (all COMMENTED; 92 still on #143), CodeRabbit 66 (42 CHANGES_REQUESTED / 6 APPROVED / 17 COMMENTED / 1 DISMISSED), owner 26 (24 COMMENTED / 2 APPROVED), Aikido 12, GHAS 7, Qodo 1. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
 | Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume**. Actor-set Δ since: Vercel in/out (2026-10-27), Jules back (2026-10-29), and the **fleet app bots entered the set — `termux-fleet-publisher[bot]` 2026-10-31, `termux-fleet-crossreference[bot]` + `termux-fleet-swarm[bot]` 2026-11-02** (poll actor-set diffs) |
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
 | Pages | Legacy build from `gh-pages` branch, https enforced, `timerloggedout-spec.github.io/termux-monorepo/` |
-| Environments | 14 (listed §2c) — deployment targets exist for tribute-dash / oversight / mcp-hub / termux-monorepo in Preview + Production pairs |
+| Environments | **16** (listed §2c) — deployment targets exist for tribute-dash / oversight / mcp-hub / termux-monorepo in Preview + Production pairs + `Preview – tribute-dash` / `Preview – tribute-oversight` (added 2026-11-02, the rename surfacing) |
 | Deployments (300 sampled) | Mintlify 153 (staging/docs) · Vercel 96 (Preview/Production per app) · GitHub Pages 51 |
 | Branch governance | Ruleset `master-no-rewind` **active** (deletion + non-fast-forward blocked). Classic branch protection on master: **none** (404) — the repo gate + ruleset carry governance instead |
 | Vulnerability alerts | endpoint live (204) · Automated security fixes **disabled** |
@@ -498,7 +499,12 @@ app registry (`ops/github-apps/registry.json`, declarations only) — a
 registry change is a structural diff. **First refresh cycle closed by
 this section's own loop:** `mesh-refresh` #1621 (opened 2026-10-24 on a
 GHAS window flap, 28 diffs accumulated) drove the eighth-pass refresh
-(2026-11-02) recorded in the header.
+(2026-11-02) recorded in the header. Second cycle (#3992, opened
+2026-11-02 22:01Z) closed the same day by the ninth-pass refresh.
+Scheduler note: the 12:41Z + 18:41Z poll slots on 2026-11-02 never
+fired (GitHub scheduler under-delivery; next run landed 21:56Z) — a
+missed slot delays a diff by one cycle, it does not lose it (state
+persists in cache).
 
 ## NOT ESTABLISHED — stated, not filled in
 

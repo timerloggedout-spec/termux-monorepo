@@ -36,22 +36,42 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PYEOF'
-          import json, os, subprocess
-          runs = []
-          for status in ("queued", "in_progress"):
-              page = 1
-              while True:
+          import json, os, subprocess, time
+          # Every page fetch retries once on a bad body (proof run
+          # 41737482551: an API error envelope mid-pagination --
+          # no "workflow_runs" key -- killed this step and, with
+          # it, the admission stamp). If the picture still cannot
+          # be collected, write the collection_error sentinel and
+          # exit 0: the evaluator turns an unknown queue into a
+          # DEFERRED stamp with the reason, never a silent death.
+          def fetch(status, page):
+              for attempt in (1, 2):
                   out = subprocess.run(
                       ["gh", "api", f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs?status={status}&per_page=100&page={page}"],
                       capture_output=True, text=True).stdout
-                  batch = json.loads(out)["workflow_runs"]
+                  try:
+                      return json.loads(out)["workflow_runs"]
+                  except Exception:
+                      if attempt == 2:
+                          return None
+                      time.sleep(5)
+          runs, failed = [], False
+          for status in ("queued", "in_progress"):
+              page = 1
+              while True:
+                  batch = fetch(status, page)
+                  if batch is None:
+                      failed = True
+                      break
                   runs += [{"name": r["name"], "status": r["status"], "created_at": r["created_at"]} for r in batch]
                   if len(batch) < 100:
                       break
                   page += 1
+              if failed:
+                  break
           with open(os.environ["RUNNER_TEMP"] + "/runs.json", "w") as fh:
-              json.dump(runs, fh)
-          print(f"queue picture: {len(runs)} runs")
+              json.dump({"collection_error": True} if failed else runs, fh)
+          print(f"queue picture: {'COLLECTION ERROR' if failed else str(len(runs)) + ' runs'}")
           PYEOF
 
       - name: Evaluate admission

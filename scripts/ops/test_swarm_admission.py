@@ -103,6 +103,39 @@ def test_chain_prior_stage():
     assert d2 == "ADMITTED"
 
 
+def test_collection_error_sentinel_defers(tmp_path):
+    # Regression for proof run 41737482551: the queue-picture
+    # collector can fail (API error body mid-pagination); the
+    # sentinel shape must yield DEFERRED + exit 0, not a crash.
+    import json as _json
+    import subprocess
+
+    tdir = tmp_path / "templates"
+    tdir.mkdir()
+    (tdir / "project-task.yml").write_text(TEMPLATE)
+    runs = tmp_path / "runs.json"
+    runs.write_text(_json.dumps({"collection_error": True}))
+    tiers = tmp_path / "tiers.json"
+    tiers.write_text(_json.dumps(TIERS))
+    comment = tmp_path / "stamp.md"
+    out = tmp_path / "out.txt"
+    script = Path(__file__).parent / "swarm_admission.py"
+    proc = subprocess.run(
+        [sys.executable, str(script),
+         "--templates-dir", str(tdir),
+         "--tiers", str(tiers),
+         "--runs-file", str(runs),
+         "--issue-labels", "project-task",
+         "--issue-title", "[task] x",
+         "--run-url", "https://example.invalid/run/2",
+         "--comment-out", str(comment),
+         "--github-output", str(out)],
+        capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
+    body = comment.read_text()
+    assert "DEFERRED" in body and "collection error" in body
+
+
 def test_missing_tiers_file_defers_not_crashes(tmp_path):
     # Regression for proof run 41731985726: dispatch-tiers.json absent
     # (its PR unmerged) must yield a DEFERRED stamp + exit 0.

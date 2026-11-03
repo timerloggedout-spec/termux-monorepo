@@ -54,3 +54,12 @@ structure; the bundle is complete (every asset the shell/worker
 reference exists); the manifest is installable-shaped; the ≥48px
 rule is in the CSS; `app.js` parses (node --check) and contains the
 FSRS/SM-2 engines and scheduler-named receipts.
+
+## Release gates (standing requirement, owner 2026-11-03)
+
+Every iteration of this surface ships only when ALL hold:
+- Demo evidence present: screenshots/screen-recording of the demo in
+  `evidence/<surface>/` in-tree at the release tag.
+- Parity statement present: what this surface rides vs the foundation
+  version it ships against, and what is honestly absent/pending.
+- Tests green for the surface + no foundation regressions.

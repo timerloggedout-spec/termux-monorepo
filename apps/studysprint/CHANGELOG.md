@@ -1,5 +1,18 @@
 ## [Unreleased]
 
+### App-package A (#4436 — TUI installs as a command)
+
+- **pyproject.toml: the TUI installs via one pipx line** —
+  `pipx install git+https://github.com/timerloggedout-spec/studysprint`
+  exposes `studysprint-tui` (`[project.scripts] → tui:main`). The
+  distribution carries the TUI + the core modules it imports and
+  the bundled example course (data-files); its version is read
+  dynamically from `TUI_VERSION` so it cannot drift. The core CLI
+  (agent.py/demo.py) stays clone-route by design (vendored-oracle
+  path). TUI.md's headline is the pipx one-liner; the clone+pip
+  route demoted to CONTRIBUTING.md as the developer route. Pinned
+  by `tests/test_packaging.py`.
+
 ### Surfaces 0.1.3 (#4412 — APK https-origin asset serving)
 
 - **APK shell serves the bundle from a secure https origin** —

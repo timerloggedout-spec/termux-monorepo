@@ -2735,10 +2735,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
           "dispatched_at": "2026-11-03T01:03:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": false,
+          "rework_cycles": 1,
           "session_id": "issue-4111",
-          "task": "RFP-D1-3 build: reading pipeline \u00a71b full (RFP #3697); receipt 6599521444, dispatch-queued"
+          "task": "RFP-D1-3 build: reading pipeline \u00a71b full (RFP #3697); receipt 6599521444, dispatch-queued",
+          "merged_pr": 4118,
+          "merge_sha": "e336f5b13bdd",
+          "outcome": "landed + parity 31/31"
         },
         {
           "provider": "command-dispatch",
@@ -2747,10 +2750,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
           "dispatched_at": "2026-11-03T01:03:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": false,
+          "rework_cycles": 1,
           "session_id": "issue-4112",
-          "task": "RFP-D1-4 build: multi-course intake + exam countdown + .ics (RFP #3698); receipt 6599519546, dispatch-queued"
+          "task": "RFP-D1-4 build: multi-course intake + exam countdown + .ics (RFP #3698); receipt 6599519546, dispatch-queued",
+          "merged_pr": 4119,
+          "merge_sha": "2fccfdf5ad2c",
+          "outcome": "landed + parity 31/31"
         },
         {
           "provider": "command-dispatch",
@@ -2759,10 +2765,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
           "dispatched_at": "2026-11-03T01:03:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": true,
+          "rework_cycles": 0,
           "session_id": "issue-4113",
-          "task": "RFP-D1-5 build: memory-methods \u22006 (RFP #4110; claims ceilings bind copy); receipt 6599519666, dispatch-queued"
+          "task": "RFP-D1-5 build: memory-methods \u22006 (RFP #4110; claims ceilings bind copy); receipt 6599519666, dispatch-queued",
+          "merged_pr": 4120,
+          "merge_sha": "372b5b962717",
+          "outcome": "landed + parity 31/31"
         }
       ]
     },
@@ -3868,7 +3877,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T09:42:00Z",
+    "updated_at": "2026-11-03T09:47:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

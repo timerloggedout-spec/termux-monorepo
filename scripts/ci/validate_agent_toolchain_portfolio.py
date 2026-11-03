@@ -71,7 +71,7 @@ def validate_data(registry_text: str, matrix_text: str) -> list[str]:
         if pattern.search(combined):
             errors.append("credential-shaped value detected")
             break
-    if "integrated: true" in registry_text.lower():
+    if re.search(r"""["\']?integrated["\']?\s*:\s*true\b""", registry_text, re.IGNORECASE):
         errors.append("ambiguous integrated boolean is prohibited")
     return errors
 

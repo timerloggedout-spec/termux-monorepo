@@ -185,7 +185,7 @@ def main():
     pack.setdefault("schema", "quota-usage/v1")
     pack["built_by"] = ("scripts/quota_usage_pack.py (auto-refresh; "
                         "series1 carried verbatim - tap ruled OUT "
-                        "(owner 2026-11-03; self-counted nulls)"))
+                        "(owner 2026-11-03; self-counted nulls)")
     text = json.dumps(pack, indent=1) + "\n"
     (Path(a.root) / PACK_REL).write_text(text)
     mirror = Path(a.root) / MIRROR_REL

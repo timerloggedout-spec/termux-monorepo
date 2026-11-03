@@ -1,5 +1,12 @@
 ## [Unreleased]
 
+### App-package C — APK release trust (#4438)
+
+- **Hardening**: the WebView's four file/content access flags are set explicitly false in MainActivity (the appassets-only shell needs none; allowContentAccess defaults TRUE when unset) — audit table in APK.md, pinned by tests.
+- **Reproducible build**: SOURCE_DATE_EPOCH pins the bundled state's clock + zip timestamps; two clean builds verified byte-identical locally (SHA-256 in APK.md). release-cut sets the epoch from the tag.
+- **Trust block**: every APK cut now also ships SHA256SUMS + TRUST.md (hash · signer fingerprint · size · versionCode · SDK · no permissions declared · verify/reproduce commands) and a build-provenance attestation; the asset name stays the stable `studysprint.apk`.
+- **versionCode 2** (rule: +1 at every cut, carried in build.sh + APK.md); asset naming verified Obtainium-stable.
+
 ### Surfaces 0.2.0 (parity iteration 1, #4414 — calendar + geography)
 
 - **§1d calendar awareness + geography bind on all three

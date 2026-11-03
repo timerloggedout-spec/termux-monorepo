@@ -19,7 +19,7 @@ def test_manifest_package_and_version():
     assert manifest.get("package") == "org.timerloggedout.studysprint"
     version = (ANDROID / "VERSION").read_text().strip()
     assert manifest.get(f"{NS}versionName") == version
-    assert manifest.get(f"{NS}versionCode") == "1"
+    assert int(manifest.get(f"{NS}versionCode")) >= 2  # #4438: monotonic from the 0.2.0 cut
     activity = manifest.find(".//activity")
     assert activity.get(f"{NS}name") == ".MainActivity"
 
@@ -104,3 +104,18 @@ def test_webview_serves_bundle_state():
     assert "shouldInterceptRequest" in java
     assert "Access-Control-Allow-Origin" in java
     assert '"/android_asset/"' in java or "/android_asset/" in java
+
+
+def test_webview_file_access_hardened_off():
+    """#4438 audit: the shell serves only the appassets https
+    interception, so all four file/content access flags are set
+    explicitly false in code — the audit is a code fact, not a
+    platform-defaults argument (allowContentAccess defaults
+    TRUE when unset)."""
+    java = (ANDROID / "src" / "org" / "timerloggedout"
+            / "studysprint" / "MainActivity.java").read_text()
+    for setter in ("setAllowFileAccess(false)",
+                   "setAllowFileAccessFromFileURLs(false)",
+                   "setAllowUniversalAccessFromFileURLs(false)",
+                   "setAllowContentAccess(false)"):
+        assert setter in java, setter

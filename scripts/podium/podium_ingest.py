@@ -37,6 +37,17 @@ def entity_key(kind: str, *parts: str) -> str:
     return kind + ":" + ":".join(p.strip().lower() for p in parts if p)
 
 
+EGM_MARKERS = ("EGM instance #2 TEST filing", "RFP-EGM2-")
+
+
+def egm_stamped(row: dict) -> bool:
+    """Owner ruling (MoneyBall plan): EGM instance-#2 test-stamped items
+    never enter dataset-derived evidence. Sources are lablab pages, so
+    this is a defensive guard for any future source widening."""
+    blob = json.dumps(row, ensure_ascii=False)
+    return any(m in blob for m in EGM_MARKERS)
+
+
 def normalize(snapshot: dict) -> dict[str, dict]:
     """snapshot rows -> {entity_key: entity} (receipt stripped from the
     hashed content, kept on the entity)."""
@@ -62,9 +73,22 @@ def normalize(snapshot: dict) -> dict[str, dict]:
              "edition": j["slug"]}, j.get("receipt"))
     for p in snapshot.get("projects", []):
         put("project", entity_key("project", p["edition_slug"], p["team_slug"], p["project_slug"]),
-            {"title": p.get("title"), "placement_feed": p.get("placement"),
+            {"title": p.get("title"), "tagline": p.get("tagline"),
+             "placement_feed": p.get("placement"),
              "edition": p["edition_slug"], "team": p["team_slug"],
              "url": p.get("url"), "tech_tags": p.get("tech_tags")}, p.get("receipt"))
+    # judge persons: identity-stable across editions (exact normalized
+    # name, v1) so repeat-judge detection (MoneyBall test 3) can run.
+    persons: dict[str, dict] = {}
+    for j in snapshot.get("judges", []):
+        persons.setdefault(j["name"], {"editions": [], "titles": {}})
+        persons[j["name"]]["editions"].append(j["slug"])
+        persons[j["name"]]["titles"][j["slug"]] = j.get("title")
+    for name, info in persons.items():
+        put("judge_person", entity_key("judge-person", name),
+            {"name": name, "editions": sorted(set(info["editions"])),
+             "titles": info["titles"]},
+            (snapshot.get("judges") or [{}])[0].get("receipt"))
     return ents
 
 
@@ -110,6 +134,13 @@ def main(argv: list[str]) -> int:
     args = ap.parse_args(argv)
 
     snapshot = json.load(open(args.snapshot, encoding="utf-8"))
+    for kind_rows in ("editions", "prize_tiers", "judges", "projects"):
+        kept = [r for r in snapshot.get(kind_rows, []) if not egm_stamped(r)]
+        dropped = len(snapshot.get(kind_rows, [])) - len(kept)
+        if dropped:
+            print(f"EGM guard: dropped {dropped} stamped rows from {kind_rows}",
+                  file=sys.stderr)
+        snapshot[kind_rows] = kept
     prev = None
     if args.previous:
         prev = json.load(open(args.previous, encoding="utf-8"))
@@ -131,6 +162,26 @@ def main(argv: list[str]) -> int:
                         "note": f"changed since {prev.get('version')}",
                     })
     changes = diff(prev, ents)
+    # Feasibility stamps (MoneyBall plan C1/C3/C8): honest counts from
+    # THIS dataset; field n awaits the gallery leg, comments the
+    # comments surface - both recorded as null/0 with the reason in the
+    # design doc, never silently.
+    per_edition: dict[str, dict] = {}
+    for e in ents.values():
+        ed = e["fields"].get("edition") or (
+            e["key"].split(":")[1] if e["kind"] in ("edition", "placement_tier") else None)
+        if not ed:
+            continue
+        slot = per_edition.setdefault(ed, {"podium_n": 0, "field_n": None,
+                                           "judge_comments": 0, "community_comments": 0})
+        if e["kind"] == "project" and e["fields"].get("placement_feed"):
+            slot["podium_n"] += 1
+    repeat_judges = sum(
+        1 for e in ents.values()
+        if e["kind"] == "judge_person" and len(e["fields"].get("editions", [])) > 1)
+    feasibility = {"per_edition": per_edition,
+                   "repeat_judges_exact_name": repeat_judges,
+                   "comments_surface": "NOT_ESTABLISHED (no public comments in server-rendered pages, recon 2026-11-03)"}
     dataset = {
         "envelope": "podium-dataset/v1",
         "version": args.version,
@@ -140,6 +191,7 @@ def main(argv: list[str]) -> int:
             "sources": snapshot.get("sources", []),
         },
         "entities": ents,
+        "feasibility": feasibility,
         "conflicts": conflicts,
         "changes": changes,
     }

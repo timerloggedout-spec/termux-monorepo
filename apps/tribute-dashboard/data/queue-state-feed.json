@@ -1,0 +1,138 @@
+{
+  "schema": "queue-state-feed/v1",
+  "generated_at": "2026-11-03T20:49:14Z",
+  "repo": "timerloggedout-spec/termux-monorepo",
+  "queued": 789,
+  "in_progress": 18,
+  "oldest_queued_at": "2026-11-02T09:37:37Z",
+  "oldest_queued_run": {
+    "id": 41422211036,
+    "workflow": "PR scope guard",
+    "event": "pull_request_target",
+    "status": "queued",
+    "created_at": "2026-11-02T09:37:37Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41422211036"
+  },
+  "wedged_ancient": [
+    {
+      "id": 37655538554,
+      "workflow": "Merge Promotion Queue",
+      "event": "schedule",
+      "status": "queued",
+      "created_at": "2026-10-07T16:57:32Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37655538554"
+    },
+    {
+      "id": 36803855107,
+      "workflow": "PR production ledger",
+      "event": "issue_comment",
+      "status": "queued",
+      "created_at": "2026-10-01T02:01:22Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
+    },
+    {
+      "id": 36803852632,
+      "workflow": "Peer review orchestrator",
+      "event": "issue_comment",
+      "status": "queued",
+      "created_at": "2026-10-01T02:01:19Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
+    }
+  ],
+  "by_workflow_queued": [
+    {
+      "workflow": "Agent Throughput Evidence",
+      "queued": 78
+    },
+    {
+      "workflow": "PR production ledger",
+      "queued": 66
+    },
+    {
+      "workflow": "Peer review orchestrator",
+      "queued": 48
+    },
+    {
+      "workflow": "Context Relationship + Lead/Lag Audit",
+      "queued": 45
+    },
+    {
+      "workflow": "Sweep Accountability",
+      "queued": 41
+    },
+    {
+      "workflow": "Audit Cycle \u2014 Single PR Feed-Forward",
+      "queued": 41
+    },
+    {
+      "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
+      "queued": 39
+    },
+    {
+      "workflow": "lane events recorder",
+      "queued": 35
+    },
+    {
+      "workflow": "RECON INTEL discovery",
+      "queued": 34
+    },
+    {
+      "workflow": "Agent review \u2192 auto Jules",
+      "queued": 32
+    },
+    {
+      "workflow": "PR scope guard",
+      "queued": 32
+    },
+    {
+      "workflow": "Action Effectiveness Ledger",
+      "queued": 32
+    }
+  ],
+  "pinned": [
+    {
+      "id": 41710756278,
+      "workflow": "challenge-countdowns-refresh",
+      "event": "push",
+      "status": "queued",
+      "created_at": "2026-11-03T20:14:39Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41710756278"
+    },
+    {
+      "id": 41710783786,
+      "workflow": "challenge-countdowns-refresh",
+      "event": "push",
+      "status": "queued",
+      "created_at": "2026-11-03T20:14:49Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41710783786"
+    },
+    {
+      "id": 41710783544,
+      "workflow": "challenge-countdowns-feed-collect",
+      "event": "push",
+      "status": "queued",
+      "created_at": "2026-11-03T20:14:49Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41710783544"
+    },
+    {
+      "id": 41711797087,
+      "workflow": "challenge-countdowns-refresh",
+      "event": "push",
+      "status": "queued",
+      "created_at": "2026-11-03T20:21:21Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41711797087"
+    },
+    {
+      "id": 41711816797,
+      "workflow": "challenge-countdowns-refresh",
+      "event": "push",
+      "status": "queued",
+      "created_at": "2026-11-03T20:21:29Z",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41711816797"
+    }
+  ],
+  "recent_completions_mix": {
+    "skipped": 71,
+    "cancelled": 29
+  }
+}

@@ -1,0 +1,63 @@
+# Queue-state feed refresh (owner's queue-timers ask, 2026-11-03;
+# diagnostics: docs/ops via the optimizations-assurance lane).
+# Regenerates apps/tribute-dashboard/data/queue-state-feed.json from
+# the live Actions API and proposes it as a refresh PR — never
+# commits directly (mirrors the dispatch-tree-feed-collect pattern).
+# Honest limit, stated once: the collector rides the same queue it
+# measures, so during a flood the feed ages — the page renders the
+# feed's own age ticking, which is itself the signal.
+name: queue-state-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/dashboards/queue_state_collect.py'
+      - '.github/workflows/queue-state-collect.yml'
+
+concurrency:
+  group: queue-state-collect
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect the queue-state feed (Actions API)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/dashboards/queue_state_collect.py \
+            --out apps/tribute-dashboard/data/queue-state-feed.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/tribute-dashboard/data/queue-state-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="queue-state-feed/refresh"
+          git config user.name "queue-state-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add apps/tribute-dashboard/data/queue-state-feed.json
+          git commit -m "chore(dashboards): refresh queue-state feed"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(dashboards): refresh queue-state feed" \
+            --body "Automated queue-state feed refresh (collector: scripts/dashboards/queue_state_collect.py). Counts and created_at instants are read live at collection time; ages are computed in the browser, never copied forward." \
+            || echo "refresh PR already open"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

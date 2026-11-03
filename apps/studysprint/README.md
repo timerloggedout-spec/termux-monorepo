@@ -31,8 +31,34 @@ kinds, same stamped-evidence shape).
 ## Live assets
 
 - Article (Builder Center): https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk
-- Demo video (YouTube, 1:10, public): https://www.youtube.com/watch?v=N3HBRV4LOGQ
+**Update — Oct 31, 2026: StudySprint v0.2.0 is out.** Five new
+features, all from the Now list: a trust receipt BEFORE the plan —
+see exactly what your syllabus proved before a single study block
+exists · a Today view with a guilt-free 'I missed this' · time-budget
+reflow (25 or 45 minutes — the plan reshapes around your day) ·
+daily check-in with recovered-weeks streaks · plain-language mode,
+receipts minus the jargon. Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.2.0
+— new v0.2.0 demo:
+- Demo video (YouTube, 1:40, public): https://www.youtube.com/watch?v=eFXyOYTpuvg
 - Starting-agent (D0) repo: https://github.com/timerloggedout-spec/delphi-oracle
+
+## Impact
+
+One syllabus becomes a 12-session study plan. A daily check-in
+takes about 30 seconds. A missed session is re-planned in one tap
+— never punished.
+
+Plain-language mode explains every plan in simple words first —
+built for students studying in a second language.
+
+Most study tools plan from raw text and invent the rest.
+StudySprint plans only from verified evidence: when a claim about
+your course can't be verified, the agent abstains instead of
+guessing — and every plan carries a receipt showing what it was
+built from. The planning kernel extends the Delphi Oracle from
+the fleet's earlier challenge: evidence-gating that has already
+shipped once.
 
 ## Product + process
 

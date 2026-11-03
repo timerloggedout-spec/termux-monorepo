@@ -139,8 +139,8 @@ class ApiImpactReportTests(unittest.TestCase):
             self.assertIn("not_applicable", md_path.read_text())
 
     def test_markdown_escapes_path_markup(self):
-        report = build_report(REPO, BASE, HEAD, 42, ["README`section.md"])
-        self.assertIn("README\\`section.md", render_markdown(report))
+        report = build_report(REPO, BASE, HEAD, 42, ["llm_api_hub/server/a|b.md"])
+        self.assertIn("a\\|b.md", render_markdown(report))
 
     def test_markdown_preserves_breaking_classification(self):
         payload = mapper_input()

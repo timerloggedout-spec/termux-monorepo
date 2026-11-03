@@ -1,7 +1,7 @@
 # Integration Registry — termux-monorepo
 
-**Registry:** [registry.json](registry.json)  
-**Contract:** [ADAPTER-CONTRACT.md](ADAPTER-CONTRACT.md)  
+**Registry:** [registry.json](registry.json)
+**Contract:** [ADAPTER-CONTRACT.md](ADAPTER-CONTRACT.md)
 **Status vocabulary:** see the design document linked from [Integration Intelligence](README.md).
 
 ## Prioritized portfolio

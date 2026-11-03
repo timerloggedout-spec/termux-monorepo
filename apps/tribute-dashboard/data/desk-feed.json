@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-03T19:34:00Z",
+  "generated_at": "2026-11-03T22:43:50Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -2304,9 +2304,22 @@
           "leg1_video": "DONE 107.1s 2,340,102B ~/workspace/d0-video/ (D0 seat)",
           "leg4_page": "COMPLETE served-verified (Web Dev PRs #24 b9e707a0 / #25 3e0dd264 / #26 1275bdb4): v1.0.0 named, #upgrade = D0 copy verbatim, walkthrough embedded mp4+cover poster, submissions=0 intact",
           "leg2_youtube": "PUBLISHED https://www.youtube.com/watch?v=AZSeqOI5H9M (LoggedOut Timer, Public, 2026-11-02) \u00b7 embed swap served-verified (landing PR #27 d07ff27f128b) \u00b7 PROGRAM 4/4 CLOSED"
+        },
+        "appid": {
+          "app": "Termux Fleet DelphiOracle",
+          "app_id": 5602904,
+          "slug": "termux-fleet-delphioracle",
+          "installation_id": 178358203,
+          "scope": "timerloggedout-spec/delphi-oracle ONLY (verified via app JWT: installations=1, single-repo scope, bucket 5000/5000)",
+          "perms": "contents/pull_requests/issues write \u00b7 metadata read",
+          "moniker": "Pythia \u00b7 DelphiOracle",
+          "custody": "custom.github-app-delphioracle",
+          "sec03": "sealed on delphi-oracle + read-back verified",
+          "record_pr": 4659,
+          "record_merge_sha": "57af16fadd0c"
         }
       },
-      "next": "IN UPGRADE MAINTENANCE (owner correction 2026-11-03, D0 seat): the 4/4 close was the UPGRADE program's, \u00ac the entry's maintenance life \u00b7 production owner = Optimizations (Swarm seat) \u00b7 outstanding leg: per-entry AppID provisioning (repo \u2713 2026-10-31; AppID never provisioned \u21d2 request filed to the AppID lane 7075f9c0, Repo-Story scope pattern, delphi-oracle only) \u00b7 winners capture leg #4547 unchanged",
+      "next": "IN UPGRADE MAINTENANCE (owner correction 2026-11-03, D0 seat): the 4/4 close was the UPGRADE program's, \u00ac the entry's maintenance life \u00b7 production owner = Optimizations (Swarm seat) \u00b7 PAIR CLOSED 2026-11-03: repo \u2713 (2026-10-31) + per-entry AppID \u2713 (App 5602904 \u00b7 install 178358203, delphi-oracle ONLY; record PR #4659) \u00b7 adoption (workflow mint steps in delphi-oracle) = follow-on PRs via Optimizations \u00b7 winners capture leg #4547 unchanged",
       "provider_usage": [
         {
           "provider": "Scout / Delphi (owner-named)",
@@ -4052,7 +4065,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T19:34:00Z",
+    "updated_at": "2026-11-03T22:43:50Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

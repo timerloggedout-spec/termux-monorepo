@@ -88,16 +88,44 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - name: Checkout exact PR head
+      - name: Checkout base revision
         uses: actions/checkout@v4
         with:
           ref: ${{ needs.resolve-pr.outputs.base_sha }}
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Collect changed paths
+        id: changed-paths
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const number = Number(process.env.PR_NUMBER);
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: number,
+              per_page: 100
+            });
+            const path = process.env.RUNNER_TEMP + '/api-impact-changed-paths.json';
+            require('fs').writeFileSync(path, JSON.stringify(files.map(file => file.filename)));
+            core.setOutput('path', path);
+
+      - name: Detect analyzer in base revision
+        id: analyzer
+        run: |
+          if [ -f scripts/integrations/api_impact/cli.py ] && [ -f config/integrations/api-impact-paths.json ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Prepare optional mapper result
         id: mapper
-        if: github.event_name == 'workflow_dispatch' && inputs.mapper_input_json != ''
+        if: github.event_name == 'workflow_dispatch' && inputs.mapper_input_json != '' && steps.analyzer.outputs.available == 'true'
         env:
           MAPPER_INPUT_JSON: ${{ inputs.mapper_input_json }}
         run: |

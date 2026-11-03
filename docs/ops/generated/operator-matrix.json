@@ -3,9 +3,9 @@
     "open_issues": 484,
     "open_prs": 207,
     "pr_classes": {
-      "CANDIDATE": 106,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "CANDIDATE": 104,
+      "EXTRACT": 9,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T15:54:15Z",
+  "generated_at": "2026-11-03T15:56:29Z",
   "issues_unlabelled": [
     308,
     388,
@@ -146,9 +146,9 @@
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
       "hygiene": "not_reported",
-      "smoke": "queued"
+      "smoke": "not_reported"
     },
-    "sha": "697ac01459"
+    "sha": "b236ca7f5f"
   },
   "prs": [
     {
@@ -228,12 +228,54 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "da1704b434",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T15:41:11Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "606595f38d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T15:53:25Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b14e821cd5",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4424,
+      "title": "chore(proposals): refresh proposals-feed.json",
+      "updated_at": "2026-11-03T15:21:46Z"
     },
     {
       "class": "CANDIDATE",
@@ -1003,20 +1045,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "da1704b434",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T15:41:11Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1711,20 +1739,6 @@
       "updated_at": "2026-11-03T14:23:58Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b14e821cd5",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4424,
-      "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-03T15:21:46Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2097,7 +2111,7 @@
       },
       "head_sha": "dbdee74676",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-03T15:26:27Z"
@@ -2265,7 +2279,7 @@
       },
       "head_sha": "e4faad1217",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
       "updated_at": "2026-11-03T14:38:24Z"
@@ -2839,7 +2853,7 @@
       },
       "head_sha": "e0bf549f8c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-03T14:52:31Z"
@@ -2907,26 +2921,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b13690b2a9",
+      "head_sha": "aa71202a1f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T15:17:58Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "606595f38d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T15:53:25Z"
+      "updated_at": "2026-11-03T15:54:32Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3035,7 +3035,7 @@
       },
       "head_sha": "f8b88eed36",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4374,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
       "updated_at": "2026-11-03T14:44:36Z"
@@ -3049,7 +3049,7 @@
       },
       "head_sha": "740942b930",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 4390,
       "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
       "updated_at": "2026-11-03T15:10:52Z"

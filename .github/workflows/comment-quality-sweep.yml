@@ -26,7 +26,7 @@ permissions:
 jobs:
   sweep:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_REPOSITORY: ${{ github.repository }}
@@ -36,9 +36,9 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ inputs.delete }}" = "true" ]; then
-            python3 -B scripts/comment_quality_sweep.py --delete | tee sweep.json
+            python3 -B scripts/comment_quality_sweep.py --repo-wide-days 8 --delete | tee sweep.json
           else
-            python3 -B scripts/comment_quality_sweep.py | tee sweep.json
+            python3 -B scripts/comment_quality_sweep.py --repo-wide-days 8 | tee sweep.json
           fi
           {
             echo '## Comment-quality sweep'

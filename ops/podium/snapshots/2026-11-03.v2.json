@@ -1,0 +1,2076 @@
+{
+ "envelope": "podium-dataset/v1",
+ "version": "2026-11-03.v2",
+ "generated_from": {
+  "snapshot_captured_at": "2026-11-03T17:30:42Z",
+  "collector": "scraping-tools/podium_crawl.py",
+  "sources": [
+   {
+    "url": "https://lablab.ai/ai-hackathons",
+    "http": 200,
+    "bytes": 943426,
+    "sha256": "4f04e40e85b4521b24120433c20b7531e7c0fd99752c1302d17d469542921237"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+    "http": 200,
+    "bytes": 347940,
+    "sha256": "5626a9a4fe916fdc6bf8fbaaeb0c071e465c5a1a51dadb17930de4decde126db"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+    "http": 200,
+    "bytes": 816927,
+    "sha256": "e412fc67bfd41a20259d99220c9d880ffb1d882c037aa626927108d87ae31903"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon",
+    "http": 200,
+    "bytes": 259989,
+    "sha256": "54bd0740400d9719eb396143cc516462a157a60861c3eaa825c50deb9cfa6a63"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon",
+    "http": 200,
+    "bytes": 341673,
+    "sha256": "fdb93b3151b7f88e48954f4c6302b76b59e9f9010681275069638c03f0e41a28"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon/live",
+    "http": 200,
+    "bytes": 233211,
+    "sha256": "9b3a6b87b4e28690de94edda9c1bb20b8a3765d0c9f0de70458193794481a4df"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+    "http": 200,
+    "bytes": 296113,
+    "sha256": "2be29e6c09efc6e74f59f802c69eafb8351645486e5f44dc7ce73204017584de"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+    "http": 200,
+    "bytes": 276785,
+    "sha256": "62c5754b7539c0e9df9c817eb404cd1dbe4e47bac4e751bc3679d4ff74694978"
+   },
+   {
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+    "http": 200,
+    "bytes": 283812,
+    "sha256": "53ae1f1765da0390a44d338f7c8ac3b8b3f9afb668bf86549e8c905a83617668"
+   },
+   {
+    "url": "https://lablab.ai/apps/recent-winners",
+    "http": 200,
+    "bytes": 381209,
+    "sha256": "9a228f4621f1a2653f1eddcde80d1f2dcd839726dcbcd369737161316f2acdfb"
+   }
+  ]
+ },
+ "entities": {
+  "edition:vultr-hackathon": {
+   "key": "edition:vultr-hackathon",
+   "kind": "edition",
+   "fields": {
+    "title": "Vultr: Agent Rush Hackathon",
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+    "dates_seen": []
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "513ee6f3de20c3024e692bab8eebeccaf206641ece1e1b3ca2cb632232e6661e"
+  },
+  "edition:alpaca-ai-trading-agents-hackathon": {
+   "key": "edition:alpaca-ai-trading-agents-hackathon",
+   "kind": "edition",
+   "fields": {
+    "title": "Alpaca AI Trading Agents Hackathon",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+    "dates_seen": [
+     "Sep 1, 2026"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "f0cfccecfe5046655f69b73fa92eaab7ed0033c1a58674c9ab0947242ded0e44"
+  },
+  "edition:assemblyai-voice-agent-hackathon": {
+   "key": "edition:assemblyai-voice-agent-hackathon",
+   "kind": "edition",
+   "fields": {
+    "title": "AssemblyAI - Voice Agent Hackathon",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon",
+    "dates_seen": [
+     "Sep 1, 2026"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "3e9670720afa084b0fa677af8885ebddb1595c0eb46fe891e13f342a81bed1f5"
+  },
+  "edition:ibm-bob-2-hackathon": {
+   "key": "edition:ibm-bob-2-hackathon",
+   "kind": "edition",
+   "fields": {
+    "title": "IBM Bob 2.0 Hackathon",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon",
+    "dates_seen": [
+     "Sep 1, 2026",
+     "September 27, 2026"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "d59867c636f27c8411253a8697173818cbff2af8a53cf53d7a33347e6c72a69f"
+  },
+  "tier:vultr-hackathon:1st": {
+   "key": "tier:vultr-hackathon:1st",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$5,000",
+     "$3,000"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "bf0f6d0845e564b9c7e9b032351798fa08b035ed031a9d05bfb2f4e922e2baae"
+  },
+  "tier:vultr-hackathon:2nd": {
+   "key": "tier:vultr-hackathon:2nd",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$3,000",
+     "$1,000"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "38a52d1f378e4fde55f631b0d7210375c4aac26102436ac071c4e14d0e5ada26"
+  },
+  "tier:vultr-hackathon:3rd": {
+   "key": "tier:vultr-hackathon:3rd",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$1,000",
+     "$1,000"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "17540eacd25667914471aa330bbd0a5c0449f73ee91d0171a512f82d8598e8c7"
+  },
+  "tier:alpaca-ai-trading-agents-hackathon:1st": {
+   "key": "tier:alpaca-ai-trading-agents-hackathon:1st",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$2,500",
+     "$300"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "de309c71449dd638ac427b03fd786ad61c8c521d241363835f5633fb3a326b96"
+  },
+  "tier:alpaca-ai-trading-agents-hackathon:2nd": {
+   "key": "tier:alpaca-ai-trading-agents-hackathon:2nd",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$1,500",
+     "$1,000"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "79ba0a6ac7c34861315342f1ba655bfdb6e35d25ef080a9c9a584281ab967efe"
+  },
+  "tier:alpaca-ai-trading-agents-hackathon:3rd": {
+   "key": "tier:alpaca-ai-trading-agents-hackathon:3rd",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$1,000",
+     "$500"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "f945868ff740088cb8718a4937ad8d5a9089dbc9963a30e33759d7a1a6bc4e52"
+  },
+  "tier:ibm-bob-2-hackathon:1st": {
+   "key": "tier:ibm-bob-2-hackathon:1st",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$5,000",
+     "$3,000"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "bf0f6d0845e564b9c7e9b032351798fa08b035ed031a9d05bfb2f4e922e2baae"
+  },
+  "tier:ibm-bob-2-hackathon:2nd": {
+   "key": "tier:ibm-bob-2-hackathon:2nd",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$3,000",
+     "$2,000"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "bf620db09875bbd4de99a7cfe173caae0ef8ea04b040a03e21db722868cf3e7a"
+  },
+  "tier:ibm-bob-2-hackathon:3rd": {
+   "key": "tier:ibm-bob-2-hackathon:3rd",
+   "kind": "placement_tier",
+   "fields": {
+    "amounts": [
+     "$2,000",
+     "$100"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "2332e09c89a5b528b3812ba80a02145b0f21e45d195bfc28f456b73ce639e18e"
+  },
+  "judge:alpaca-ai-trading-agents-hackathon:pawel czech": {
+   "key": "judge:alpaca-ai-trading-agents-hackathon:pawel czech",
+   "kind": "judge",
+   "fields": {
+    "name": "Pawel Czech",
+    "title": "CEO",
+    "edition": "alpaca-ai-trading-agents-hackathon"
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "2dd7cc2562a63b7e55448eb9c480100727c2091b4438779b57e148c61de83a70"
+  },
+  "judge:alpaca-ai-trading-agents-hackathon:chiranjeev shah": {
+   "key": "judge:alpaca-ai-trading-agents-hackathon:chiranjeev shah",
+   "kind": "judge",
+   "fields": {
+    "name": "Chiranjeev Shah",
+    "title": "Technical Content Marketing Associate",
+    "edition": "alpaca-ai-trading-agents-hackathon"
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "cf8239516c1f5ac1d5a195cef0866e3d7c8616b9e0596390c1ee4519f4128d44"
+  },
+  "judge:alpaca-ai-trading-agents-hackathon:tony lee": {
+   "key": "judge:alpaca-ai-trading-agents-hackathon:tony lee",
+   "kind": "judge",
+   "fields": {
+    "name": "Tony Lee",
+    "title": "Chief Brokerage Officer",
+    "edition": "alpaca-ai-trading-agents-hackathon"
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "5c6554f2403c71d276e8ace6651297dc097828bcf3517fe84368d9dd4e060491"
+  },
+  "judge:alpaca-ai-trading-agents-hackathon:grace gao": {
+   "key": "judge:alpaca-ai-trading-agents-hackathon:grace gao",
+   "kind": "judge",
+   "fields": {
+    "name": "Grace Gao",
+    "title": "Product Manager",
+    "edition": "alpaca-ai-trading-agents-hackathon"
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "f1109a761d7096af7dddf71d38585d0b7d689d1a6f62b8a2df0f8b66515e975a"
+  },
+  "judge:alpaca-ai-trading-agents-hackathon:brandon meyerowitz": {
+   "key": "judge:alpaca-ai-trading-agents-hackathon:brandon meyerowitz",
+   "kind": "judge",
+   "fields": {
+    "name": "Brandon Meyerowitz",
+    "title": "Team Lead, Trading API",
+    "edition": "alpaca-ai-trading-agents-hackathon"
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "f89baf0215d326e296efc9fd25311192d57b4feb34fd3a01ba2330d2cb0de770"
+  },
+  "judge:alpaca-ai-trading-agents-hackathon:andrea marazzi": {
+   "key": "judge:alpaca-ai-trading-agents-hackathon:andrea marazzi",
+   "kind": "judge",
+   "fields": {
+    "name": "Andrea Marazzi",
+    "title": "Founder and CEO",
+    "edition": "alpaca-ai-trading-agents-hackathon"
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "4210e2befcbe24ed8b9a3046d90eda5625e1401b6448d07acc58ae93135afed1"
+  },
+  "project:assemblyai-voice-agent-hackathon:high-entropy:muninn-living-memory-system-for-technical-work": {
+   "key": "project:assemblyai-voice-agent-hackathon:high-entropy:muninn-living-memory-system-for-technical-work",
+   "kind": "project",
+   "fields": {
+    "title": "Muninn: Living Memory System for Technical Work",
+    "tagline": "An opt-in living memory companion that captures technical discussions, extracts structured claims with ground-truth turn timestamps, weaves a recursive knowledge graph, and proactively resurfaces unfinished tasks and conflicting engineering decisions.",
+    "placement_feed": "1st",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "high-entropy",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/high-entropy/muninn-living-memory-system-for-technical-work",
+    "tech_tags": [
+     "Assemblyai Guardrails API",
+     "Assemblyai Guardrails",
+     "Cloudflare Workers AI"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "046343d12ea837fbc7a56dc678ccaf416b059e8bb3df56038aba467b65f93dee"
+  },
+  "project:assemblyai-voice-agent-hackathon:coffeandcode:beacon-night-shift-on-call-agent-you-can-interrupt": {
+   "key": "project:assemblyai-voice-agent-hackathon:coffeandcode:beacon-night-shift-on-call-agent-you-can-interrupt",
+   "kind": "project",
+   "fields": {
+    "title": "Beacon Night Shift on-call agent you can interrupt",
+    "tagline": "A voice agent with write access to AWS. Answer the phone at 3 AM, say \"approve fix one\", and it applies the fix and proves the recovery. Two-channel recording; the transcript is the safety artifact.",
+    "placement_feed": "1st",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "coffeandcode",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/coffeandcode/beacon-night-shift-on-call-agent-you-can-interrupt",
+    "tech_tags": [
+     "Assemblyai Guardrails API",
+     "AgentOps",
+     "AWS"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "1a7f57c2599009de17c09b452a8a6c00686313b9c5f364efab8fc7555e51e355"
+  },
+  "project:ibm-bob-2-hackathon:solotrace:solotrace-every-requirement-proven": {
+   "key": "project:ibm-bob-2-hackathon:solotrace:solotrace-every-requirement-proven",
+   "kind": "project",
+   "fields": {
+    "title": "SoloTrace: Every Requirement, Proven",
+    "tagline": "SoloTrace turns IBM Bob 2.0 into a compliance auditor: it reads a requirements PDF, proves each requirement with verified file:line evidence, and trusts tests only after they catch deliberate sabotage.",
+    "placement_feed": "3rd",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "solotrace",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/solotrace/solotrace-every-requirement-proven",
+    "tech_tags": [
+     "IBM",
+     "AgentOps"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "5690442aeed8de9c944d12d69e0a958e66f8c299eac7fa710dbafc1702a35405"
+  },
+  "project:ibm-bob-2-hackathon:diff-and-conquer:amend-regulatory-redlines-in-verified-prs-out": {
+   "key": "project:ibm-bob-2-hackathon:diff-and-conquer:amend-regulatory-redlines-in-verified-prs-out",
+   "kind": "project",
+   "fields": {
+    "title": "Amend: Regulatory Redlines In, Verified PRs Out",
+    "tagline": "Amend runs inside IBM Bob and turns a regulation change into a verified pull request. IBM Granite on watsonx.ai drafts obligations from the exact clause text; Amend maps the code each breaks, fixes it test first and proves it with a graded certificate.",
+    "placement_feed": "1st",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "diff-and-conquer",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/diff-and-conquer/amend-regulatory-redlines-in-verified-prs-out",
+    "tech_tags": [
+     "IBM",
+     "IBM watsonx Assistant",
+     "IBM Granite"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "05a05ff197c9e4c8228c9bb0a9b912522037bbeda2c01070c870249582de940a"
+  },
+  "project:ibm-bob-2-hackathon:inbin:inbin-gate-safe-auto-approve-for-ibm-bob": {
+   "key": "project:ibm-bob-2-hackathon:inbin:inbin-gate-safe-auto-approve-for-ibm-bob",
+   "kind": "project",
+   "fields": {
+    "title": "Inbin Gate: safe auto-approve for IBM Bob",
+    "tagline": "A PreToolUse hook that keeps Bob's auto-approve on and refuses any action nobody with authority stated. The developer's signed intent and the repo's own config decide; text Bob read never does. Measured on real chores, a real repo and a public benchmark.",
+    "placement_feed": "2nd",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "inbin",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/inbin/inbin-gate-safe-auto-approve-for-ibm-bob",
+    "tech_tags": [
+     "IBM",
+     "Vercel"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "4888632716bdfd2e14fe578c061062363de27cd763ffd286015abbdbe6d2f382"
+  },
+  "project:assemblyai-voice-agent-hackathon:solorobot:concierge": {
+   "key": "project:assemblyai-voice-agent-hackathon:solorobot:concierge",
+   "kind": "project",
+   "fields": {
+    "title": "Concierge",
+    "tagline": "One phone call, one robot at your door. Concierge is the voice layer for physical AI, starting with hotels: an AssemblyAI agent answers guests in any language, handles requests and sends a delivery robot to the room.",
+    "placement_feed": "1st",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "solorobot",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/solorobot/concierge",
+    "tech_tags": [
+     "Anthropic Claude",
+     "Claude Code",
+     "OpenAI"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "bd05eebf8c09293603c62eb818be163bf8aa1b3ab3ca17df7ed88ba9fcc038d0"
+  },
+  "project:assemblyai-voice-agent-hackathon:clausecatcher:clausecatcher": {
+   "key": "project:assemblyai-voice-agent-hackathon:clausecatcher:clausecatcher",
+   "kind": "project",
+   "fields": {
+    "title": "ClauseCatcher",
+    "tagline": "A voice agent for live sales calls. When a rep promises something the signed contract doesn't allow, it reads the exact clause back out loud seconds later. It quotes the contract word for word and never makes up legal wording.",
+    "placement_feed": "1st",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "clausecatcher",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/clausecatcher/clausecatcher",
+    "tech_tags": [
+     "Gemini AI",
+     "Claude Code",
+     "Assistants API"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "399b19c0c898f8e37d68c88095e7e67a451b42c3c5d4b3d5722868206767f61c"
+  },
+  "project:ai-infra-summit-hackathon:eldersteady-private:eldersteady-private-fall-alert-with-proof": {
+   "key": "project:ai-infra-summit-hackathon:eldersteady-private:eldersteady-private-fall-alert-with-proof",
+   "kind": "project",
+   "fields": {
+    "title": " ElderSteady Private — fall alert with proof",
+    "tagline": "A fall alert for an aging parent's room, on the SiMa Modalix, that proves in bytes no video ever left — and measures the numbers before the fall: sit-to-stand time, time on the floor, company. Family first, not 911.",
+    "placement_feed": "2nd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "eldersteady-private",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/eldersteady-private/eldersteady-private-fall-alert-with-proof",
+    "tech_tags": [
+     "SiMa Modalix MLSoC"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "91a48e19b684bae4fbb1f68d768110a894712f9c53f6df18d040ded43b99ec38"
+  },
+  "project:ai-infra-summit-hackathon:aethon:atheon-from-pencil-to-pixel": {
+   "key": "project:ai-infra-summit-hackathon:aethon:atheon-from-pencil-to-pixel",
+   "kind": "project",
+   "fields": {
+    "title": "Atheon: From Pencil to Pixel",
+    "tagline": "Atheon is a smart pencil system that uses a global-shutter camera, synchronized LED strobe, and computer vision to track handwriting motion and convert physical writing into a digital path in real time.",
+    "placement_feed": "1st",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "aethon",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/aethon/atheon-from-pencil-to-pixel",
+    "tech_tags": [
+     "Qualcomm Snapdragon",
+     "AI/ML API"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "ee2fcf78dfc7f96a0f73d3d72e20658f21ea4f151880f8fbe6cd69afc6425d11"
+  },
+  "project:ai-infra-summit-hackathon:makerai:vla-powered-lego-quality-inspection-robot": {
+   "key": "project:ai-infra-summit-hackathon:makerai:vla-powered-lego-quality-inspection-robot",
+   "kind": "project",
+   "fields": {
+    "title": "VLA-Powered LEGO Quality Inspection Robot",
+    "tagline": "Our system combines SmolVLA and ACT for learning robot movements from a leader. The trainer robot arm learns to identify LEGO blocks, determine whether a piece is perfect or defective, and then pick and place the block onto the corresponding plate.",
+    "placement_feed": "3rd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "makerai",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/makerai/vla-powered-lego-quality-inspection-robot",
+    "tech_tags": [
+     "AI/ML API"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "7af8ec770187e66d8aeadd9afc98d1f74a01ccd36ff8dd76572d14c67b84f4f0"
+  },
+  "project:ai-infra-summit-hackathon:pushvai:ai-conversational-fashion-agent": {
+   "key": "project:ai-infra-summit-hackathon:pushvai:ai-conversational-fashion-agent",
+   "kind": "project",
+   "fields": {
+    "title": "AI Conversational Fashion Agent",
+    "tagline": "A real-time edge AI fashion stylist on Modalix that detects and tracks and selects people, analyzes visible outfits, understands occasion and cultural context, and delivers personalized conversational recommendations.",
+    "placement_feed": "3rd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "pushvai",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/pushvai/ai-conversational-fashion-agent",
+    "tech_tags": [
+     "SiMa Modalix MLSoC",
+     "SiMa Palette Neat",
+     "YOLOv8"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "b02d7740357f9a6aefd25426e4e9844871ac022f2d9f0da4768f9be0696e2b4e"
+  },
+  "project:ai-infra-summit-hackathon:superkings:bimanual-dinner-table-ai-on-intel-edge": {
+   "key": "project:ai-infra-summit-hackathon:superkings:bimanual-dinner-table-ai-on-intel-edge",
+   "kind": "project",
+   "fields": {
+    "title": "Bimanual Dinner-Table AI on Intel Edge",
+    "tagline": "Two SO-101 arms in MuJoCo turn one spoken-style command into a full table setup: drawer, fork hand-over and a two-arm pour. A learned ACT policy runs on OpenVINO INT8 at 1.35 ms on an Intel CPU, 5.2x faster than PyTorch.",
+    "placement_feed": "2nd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "superkings",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/superkings/bimanual-dinner-table-ai-on-intel-edge",
+    "tech_tags": [
+     "OpenVINO",
+     "Intel",
+     "Intel Physical AI Studio"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "af1e9136571eab6608839a00f1338c248268d3e5e9d22ad75e7e41728c51e948"
+  },
+  "project:ai-infra-summit-hackathon:bigbossnass:team-2-lego-anomaly-detection-demo": {
+   "key": "project:ai-infra-summit-hackathon:bigbossnass:team-2-lego-anomaly-detection-demo",
+   "kind": "project",
+   "fields": {
+    "title": "Team 2: Lego anomaly detection demo",
+    "tagline": "Picks a lego, places it in front of a camera that powers an anomaly judge\nIf deemed good lego, places it in the blue box\nIf deemed as anomaly, places it in the red box",
+    "placement_feed": "1st",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "bigbossnass",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/bigbossnass/team-2-lego-anomaly-detection-demo",
+    "tech_tags": [
+     "Intel Physical AI Studio"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "af17bf6e46d81dd3e244ef927894691e3d4503f64a41981a4244ce9fe5881dc6"
+  },
+  "project:ai-infra-summit-hackathon:503-service-unavailable:crowdfix": {
+   "key": "project:ai-infra-summit-hackathon:503-service-unavailable:crowdfix",
+   "kind": "project",
+   "fields": {
+    "title": "CrowdFix",
+    "tagline": "CrowdFix is a voice-first civic platform that uses Speechmatics to turn resident reports into structured evidence, merge duplicate complaints, and connect communities with public-service teams for faster, transparent resolution.",
+    "placement_feed": "3rd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "503-service-unavailable",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/503-service-unavailable/crowdfix",
+    "tech_tags": [
+     "Speechmatics api"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "865d384576b6fe10b5d538bca6afbdf3bbcca1743cff4f987141089354938c74"
+  },
+  "project:ai-infra-summit-hackathon:soloplayer:ten-places-bimanual-vla-table-setting": {
+   "key": "project:ai-infra-summit-hackathon:soloplayer:ten-places-bimanual-vla-table-setting",
+   "kind": "project",
+   "fields": {
+    "title": "Ten Places: Bimanual VLA Table Setting",
+    "tagline": "Say \"set the table, but skip the cup\" and two simulated SO-101 arms do it: drawer, hand-offs, plate, cup. A Qwen3-VL planner and five ACT policies run on one Intel CPU via OpenVINO; speech is Speechmatics. 183 of 200 unseen tables set completely.",
+    "placement_feed": "1st",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "soloplayer",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/soloplayer/ten-places-bimanual-vla-table-setting",
+    "tech_tags": [
+     "Speechmatics api",
+     "OpenVINO",
+     "Qwen3-VL"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "c63d7f9f267b8dfdc175aa68b9bbefe679026ee672689be4c726fe1060171a6b"
+  },
+  "project:ai-infra-summit-hackathon:coffeeandcode:thali-two-arms-that-set-your-table-by-voice": {
+   "key": "project:ai-infra-summit-hackathon:coffeeandcode:thali-two-arms-that-set-your-table-by-voice",
+   "kind": "project",
+   "fields": {
+    "title": "Thali — two arms that set your table by voice",
+    "tagline": "Two SO-101 arms that set your table and pour your drink on a spoken request, and stop mid-pour on one word. For people who can speak but can't reach. Voice by Speechmatics in real time; planning and a separate safety check Intel OpenVINO with Qwen2-VL.",
+    "placement_feed": "2nd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "coffeeandcode",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/coffeeandcode/thali-two-arms-that-set-your-table-by-voice",
+    "tech_tags": [
+     "Intel",
+     "Intel Physical AI Studio",
+     "OpenVINO"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "3750bf66056f8cd5d94309eac2c1316ec88213e5a5603a60a101171a992b92c5"
+  },
+  "project:ai-infra-summit-hackathon:mapllm:mapllm": {
+   "key": "project:ai-infra-summit-hackathon:mapllm:mapllm",
+   "kind": "project",
+   "fields": {
+    "title": "MapLLM",
+    "tagline": "MapIO turns any tactile map into an audio map you explore by touch: a camera tracks your fingertip, an Arduino UNO Q speaks what's there, and a local LLM on Snapdragon X Elite answers open-ended questions with tool-checked facts.",
+    "placement_feed": "3rd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "mapllm",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/mapllm/mapllm",
+    "tech_tags": [
+     "Qualcomm Snapdragon",
+     "Antigravity",
+     "Gemma"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "781ce40d92b21b34d89459e4ef2ad9b971709ad96a4b50321c7d5efda5be755b"
+  },
+  "project:ai-infra-summit-hackathon:homeangelai:homeangelai": {
+   "key": "project:ai-infra-summit-hackathon:homeangelai:homeangelai",
+   "kind": "project",
+   "fields": {
+    "title": "HomeAngelAI",
+    "tagline": "HomeAngel AI is a privacy-first edge fall-detection system that analyzes video locally on SiMa.ai Modalix and sends only text JSON/Telegram alerts to family.",
+    "placement_feed": "1st",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "homeangelai",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/homeangelai/homeangelai",
+    "tech_tags": [
+     "AI/ML API",
+     "Gemma",
+     "Anthropic Claude"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "43cbc1b078e92c1e172626b04564be13a75f6299f36e618a40ee436e3887ed58"
+  },
+  "project:assemblyai-voice-agent-hackathon:runtime-terror:workersaathi-voice-first-legal-aid-navigator": {
+   "key": "project:assemblyai-voice-agent-hackathon:runtime-terror:workersaathi-voice-first-legal-aid-navigator",
+   "kind": "project",
+   "fields": {
+    "title": "WorkerSaathi - Voice-first legal aid navigator",
+    "tagline": "WorkerSaathi is a voice-first legal aid navigator for India’s 450M informal workers. Built on 3 AssemblyAI APIs, it turns Hindi/English speech into rights research, evidence packages, and drafted dispute letters—end-to-end, zero forms.",
+    "placement_feed": "1st",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "runtime-terror",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/runtime-terror/workersaathi-voice-first-legal-aid-navigator",
+    "tech_tags": [
+     "Antigravity",
+     "Qdrant"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "969c5bf0d35a7029a74436f4e3cda93ad4cc59349a8ca5fb86ad14dd6c731001"
+  },
+  "project:ai-infra-summit-hackathon:techies:trustgate-edge": {
+   "key": "project:ai-infra-summit-hackathon:techies:trustgate-edge",
+   "kind": "project",
+   "fields": {
+    "title": "TrustGate Edge",
+    "tagline": "TrustGate Edge is a privacy-first access system for Snapdragon X Elite. It runs face recognition locally on the Hexagon NPU, uses GenieX for optional visitor descriptions, and sends only JSON results to Arduino Uno Q.",
+    "placement_feed": "2nd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "techies",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/techies/trustgate-edge",
+    "tech_tags": [
+     "AI/ML API",
+     "Qualcomm Snapdragon"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "b742abe5536dc27a4255241528c4defa4fd2ca3a24ab360a8167203c96f828be"
+  },
+  "project:ai-infra-summit-hackathon:seoulstack:mise-multimodal-bimanual-physical-ai": {
+   "key": "project:ai-infra-summit-hackathon:seoulstack:mise-multimodal-bimanual-physical-ai",
+   "kind": "project",
+   "fields": {
+    "title": "MISE: Multimodal Bimanual Physical AI",
+    "tagline": "MISE is a bimanual Physical AI system that turns language and vision into coordinated robot actions, using a learned vision-language progress gate, dependency-aware execution, camera-based verification, adaptive recovery, and OpenVINO edge deployment.",
+    "placement_feed": "3rd",
+    "edition": "ai-infra-summit-hackathon",
+    "team": "seoulstack",
+    "url": "https://lablab.ai/ai-hackathons/ai-infra-summit-hackathon/seoulstack/mise-multimodal-bimanual-physical-ai",
+    "tech_tags": [
+     "Intel Physical AI Studio",
+     "OpenVINO",
+     "Codex"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "644dd856096544d4653e69c1a0398c98a03853d60d691c5a275a903c5eae8318"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:trioblessingmiracle:should-ai-buy": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:trioblessingmiracle:should-ai-buy",
+   "kind": "project",
+   "fields": {
+    "title": "Should-AI Buy?",
+    "tagline": "Autonomous AI Trading Council that challenges every trade before capital is deployed.",
+    "placement_feed": "2nd",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "trioblessingmiracle",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/trioblessingmiracle/should-ai-buy",
+    "tech_tags": [
+     "Alpaca",
+     "Antigravity",
+     "Claude Code"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "b1926e1522aebc7e8b72c170669051afd2f55eddbed162e055d40458b7ac6f8e"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:deflow:deflow-autonomous-multi-agent-options-desk": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:deflow:deflow-autonomous-multi-agent-options-desk",
+   "kind": "project",
+   "fields": {
+    "title": "Deflow - Autonomous Multi-Agent Options Desk",
+    "tagline": "Four AI agents propose. Twelve deterministic breakers decide. No model touches capital. Deflow trades the gap between implied and realised volatility with defined-risk spreads on Alpaca paper, and hash-chains every fill and refusal for anyone to verify.",
+    "placement_feed": null,
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "deflow",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/deflow/deflow-autonomous-multi-agent-options-desk",
+    "tech_tags": [
+     "Alpaca",
+     "Featherless",
+     "Claude Code"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "52902624fac64af9bbbf5f3d7d2600e13dd845f44e4fb3d0b17fb569509a121f"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:team-quantus:killswitch-capital": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:team-quantus:killswitch-capital",
+   "kind": "project",
+   "fields": {
+    "title": "Killswitch Capital",
+    "tagline": "An autonomous options trading agent where Claude proposes and fifteen deterministic gates dispose. Reads run through the Alpaca MCP server, every order through the Alpaca CLI; so the model never holds a tool that can place a trade.",
+    "placement_feed": "3rd",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "team-quantus",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/team-quantus/killswitch-capital",
+    "tech_tags": [
+     "Alpaca",
+     "Anthropic Claude",
+     "Featherless"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "273e971d431a37db8ce149ff49002cc54e68a127e050110e2648e9c1a3ed5695"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:razorsedge:autobelay-long-premium-short-leash": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:razorsedge:autobelay-long-premium-short-leash",
+   "kind": "project",
+   "fields": {
+    "title": "Autobelay - Long Premium, Short Leash",
+    "tagline": "An autonomous options agent on Alpaca's MCP server. An open-source model (Featherless) researches bars, chains and news, then proposes defined-risk premium trades; deterministic code sizes, stops and closes every one. +5.1% over the judged week.",
+    "placement_feed": "1st",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "razorsedge",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/razorsedge/autobelay-long-premium-short-leash",
+    "tech_tags": [
+     "Alpaca",
+     "Featherless",
+     "Github Copilot"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "11366fe46f5e63f8f9a042ea883e2ca7582e233ea876d0916962c989c8779be5"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:iskolar:prism": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:iskolar:prism",
+   "kind": "project",
+   "fields": {
+    "title": "PRISM",
+    "tagline": "PRISM combines multi-agent AI with deterministic risk controls to analyze markets, govern trades, explain decisions, and test alternatives through ShadowFund.",
+    "placement_feed": null,
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "iskolar",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/iskolar/prism",
+    "tech_tags": [
+     "Alpaca",
+     "Featherless",
+     "Redis"
+    ],
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    },
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "05a55123e6043064352e3c2eb82a7c57d1628a51f389feb9f92110ffe1e3ff86"
+  },
+  "project:nativebuilder-build-without-limits:3-musketeers:voiceclaim-auditor-real-time-claim-verification": {
+   "key": "project:nativebuilder-build-without-limits:3-musketeers:voiceclaim-auditor-real-time-claim-verification",
+   "kind": "project",
+   "fields": {
+    "title": "VoiceClaim Auditor — Real-Time Claim Verification",
+    "tagline": "VoiceClaim Auditor listens to live conversations, detects factual claims, breaks them into atomic assertions, and verifies them in real time using Speechmatics, Bright Data, and AI/ML API with evidence-backed verdicts and confidence scores.",
+    "placement_feed": "2nd",
+    "edition": "nativebuilder-build-without-limits",
+    "team": "3-musketeers",
+    "url": "https://lablab.ai/ai-hackathons/nativebuilder-build-without-limits/3-musketeers/voiceclaim-auditor-real-time-claim-verification",
+    "tech_tags": [
+     "Codex",
+     "AI/ML API",
+     "Speechmatics api"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "0d7f17169f63c589c1a0486ec7f733354f6d0f772c5dcd1519c4ae231dd304e2"
+  },
+  "project:nativebuilder-build-without-limits:code-cats-cc:discharge-buddy": {
+   "key": "project:nativebuilder-build-without-limits:code-cats-cc:discharge-buddy",
+   "kind": "project",
+   "fields": {
+    "title": "Discharge Buddy",
+    "tagline": "Discharge Buddy turns confusing hospital discharge paperwork into a clear recovery plan: medications, appointments, warning signs. Patients check in daily by talking to their phone, and the app compares what they say against their own instructions.",
+    "placement_feed": "1st",
+    "edition": "nativebuilder-build-without-limits",
+    "team": "code-cats-cc",
+    "url": "https://lablab.ai/ai-hackathons/nativebuilder-build-without-limits/code-cats-cc/discharge-buddy",
+    "tech_tags": [
+     "Speechmatics api",
+     "Featherless",
+     "Builder"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "c94c746ecdb02010eaa84e515d9c733aead1dbaeff3134d9cec5410a06eb861c"
+  },
+  "project:nativebuilder-build-without-limits:py-rates:lootify-ai": {
+   "key": "project:nativebuilder-build-without-limits:py-rates:lootify-ai",
+   "kind": "project",
+   "fields": {
+    "title": "Lootify AI",
+    "tagline": "Lootify is an AI-powered resale platform that helps sellers price items smartly and enables buyers to identify the best deals instantly using deal scores, price insights, and a local marketplace experience.",
+    "placement_feed": "1st",
+    "edition": "nativebuilder-build-without-limits",
+    "team": "py-rates",
+    "url": "https://lablab.ai/ai-hackathons/nativebuilder-build-without-limits/py-rates/lootify-ai",
+    "tech_tags": [
+     "AI/ML API"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "1d74c9ffbb0bc80cbae69fdc8ab98b0ce25496ba0b89297dc39c489b967c1a96"
+  },
+  "project:nativebuilder-build-without-limits:lagoonfront:radarai-competitive-intelligence-copilot": {
+   "key": "project:nativebuilder-build-without-limits:lagoonfront:radarai-competitive-intelligence-copilot",
+   "kind": "project",
+   "fields": {
+    "title": "RadarAI — Competitive Intelligence Copilot",
+    "tagline": "RadarAI is an AI-powered competitive intelligence platform that monitors competitor websites, detects pricing, product and positioning changes, and turns them into actionable battlecards and real-time sales counter-pitches.",
+    "placement_feed": "1st",
+    "edition": "nativebuilder-build-without-limits",
+    "team": "lagoonfront",
+    "url": "https://lablab.ai/ai-hackathons/nativebuilder-build-without-limits/lagoonfront/radarai-competitive-intelligence-copilot",
+    "tech_tags": [
+     "Anthropic Claude",
+     "Featherless",
+     "Bright Data Web Scraper API"
+    ]
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/apps/recent-winners",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "682afb536219c3adecb6e34e347d6f7f8da3a10c517cb0f4e6cc36a66211da12"
+  },
+  "project:vultr-hackathon:blast-radius-zero-solo:blast-radius-zero-sandboxed-agent-runtime": {
+   "key": "project:vultr-hackathon:blast-radius-zero-solo:blast-radius-zero-sandboxed-agent-runtime",
+   "kind": "project",
+   "fields": {
+    "title": "Trifecta Checker - Blast Radius Zero",
+    "edition": "vultr-hackathon",
+    "team": "blast-radius-zero-solo",
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon/blast-radius-zero-solo/blast-radius-zero-sandboxed-agent-runtime",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "ce50b8c0eb276c939210c0a4284b1c6e23fdee71285a125b17c287e42f945bf4"
+  },
+  "project:vultr-hackathon:trifecta-checker:trifecta-checker-blast-radius-zero": {
+   "key": "project:vultr-hackathon:trifecta-checker:trifecta-checker-blast-radius-zero",
+   "kind": "project",
+   "fields": {
+    "title": "Tripwire Sandbox",
+    "edition": "vultr-hackathon",
+    "team": "trifecta-checker",
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon/trifecta-checker/trifecta-checker-blast-radius-zero",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "fed69ec0c9443634c5b911770822e23f56664b89c9661c23efa1fea7c7ceca9e"
+  },
+  "project:vultr-hackathon:cubiczan:tripwire-sandbox": {
+   "key": "project:vultr-hackathon:cubiczan:tripwire-sandbox",
+   "kind": "project",
+   "fields": {
+    "title": "Containment-First Agent Runtime on Vultr",
+    "edition": "vultr-hackathon",
+    "team": "cubiczan",
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon/cubiczan/tripwire-sandbox",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "dc600858b8018a325ad53ee67766e2412ab86d77e9ec9a710aeeb421d0c149be"
+  },
+  "project:vultr-hackathon:arber-arifim:containment-first-agent-runtime-on-vultr": {
+   "key": "project:vultr-hackathon:arber-arifim:containment-first-agent-runtime-on-vultr",
+   "kind": "project",
+   "fields": {
+    "title": null,
+    "edition": "vultr-hackathon",
+    "team": "arber-arifim",
+    "url": "https://lablab.ai/ai-hackathons/vultr-hackathon/arber-arifim/containment-first-agent-runtime-on-vultr",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "c38aeda2e7f3e82b6ae09fd27985e17d517aab400069e1ea8175a41380b9ee98"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:origin-labs:species-evolutionary-quant-research": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:origin-labs:species-evolutionary-quant-research",
+   "kind": "project",
+   "fields": {
+    "title": "Alpha Hunter — Autonomous AI Trading Scientist",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "origin-labs",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/origin-labs/species-evolutionary-quant-research",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "ca0c49009995be65e1e98a91d6ea3f1737c13a9fd92af92301233a17eea05c6f"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:crazyxyz:alpha-hunter-autonomous-ai-trading-scientist": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:crazyxyz:alpha-hunter-autonomous-ai-trading-scientist",
+   "kind": "project",
+   "fields": {
+    "title": "TradePilot AI - Autonomous AI Trading Agent",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "crazyxyz",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/crazyxyz/alpha-hunter-autonomous-ai-trading-scientist",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "1300d05fd45a47c1d9b21bab3c654c40d349fdf2e2a669e2b532936f2c11bd33"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:tradepilot:tradepilot-ai-autonomous-ai-trading-agent": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:tradepilot:tradepilot-ai-autonomous-ai-trading-agent",
+   "kind": "project",
+   "fields": {
+    "title": "QASIX-Alpaca AI Trading Agent",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "tradepilot",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/tradepilot/tradepilot-ai-autonomous-ai-trading-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "ea371443fa4758b0eaebb98a7c806ab3dfa6ba5076058685246c0cd132d63bc8"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:cyberai-builders:qasix-alpaca-ai-trading-agent": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:cyberai-builders:qasix-alpaca-ai-trading-agent",
+   "kind": "project",
+   "fields": {
+    "title": "VegaGuard: Auditable AI Options Agent",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "cyberai-builders",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/cyberai-builders/qasix-alpaca-ai-trading-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "1765898413d15784dae857e4fb9c2518e23f8a1849af11cb4136595fb01e92b3"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:oster:vegaguard-auditable-ai-options-agent": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:oster:vegaguard-auditable-ai-options-agent",
+   "kind": "project",
+   "fields": {
+    "title": "AlphaPilot AI",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "oster",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/oster/vegaguard-auditable-ai-options-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "2ee36ab9806aacd35d34d7af08728ae2f97cfec7ebeeb27e58f488dd1de49c9c"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:quantum-coders:alphapilot-ai": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:quantum-coders:alphapilot-ai",
+   "kind": "project",
+   "fields": {
+    "title": "SentryTheta AI - Autonomous Options Trading Agent",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "quantum-coders",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/quantum-coders/alphapilot-ai",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "4ba2eca13b6bad6771d6f8e2ad670faf40e5b8bf9f4d4b64222b2d6889a9fd9c"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:agent-00trade:sentrytheta-ai-autonomous-options-trading-agent": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:agent-00trade:sentrytheta-ai-autonomous-options-trading-agent",
+   "kind": "project",
+   "fields": {
+    "title": "Elite-Bot: Multi-Asset AI Agent Trading Hub",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "agent-00trade",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/agent-00trade/sentrytheta-ai-autonomous-options-trading-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "9dac1aa3f98e18e90eb413b4a21220df0e2bc341bba3cffefc35fd19a9dd127e"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:teambhairava:elite-bot-multi-asset-ai-agent-trading-hub": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:teambhairava:elite-bot-multi-asset-ai-agent-trading-hub",
+   "kind": "project",
+   "fields": {
+    "title": "Synthetix Alpha",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "teambhairava",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/teambhairava/elite-bot-multi-asset-ai-agent-trading-hub",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "44ce22703ae9058ca23005b5a1d7d6bc3d5a399474237381bbf3fb74fd8292b3"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:synthetix-alpha-agents:synthetix-alpha": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:synthetix-alpha-agents:synthetix-alpha",
+   "kind": "project",
+   "fields": {
+    "title": "trdrbot - a sELF improving options trading agent",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "synthetix-alpha-agents",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/synthetix-alpha-agents/synthetix-alpha",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "20fe0bd9084d003b9746eb88a1cadbc8044f103ed506328535b41366f44aa967"
+  },
+  "project:alpaca-ai-trading-agents-hackathon:trdrbot:trdrbot-a-self-improving-options-trading-agent": {
+   "key": "project:alpaca-ai-trading-agents-hackathon:trdrbot:trdrbot-a-self-improving-options-trading-agent",
+   "kind": "project",
+   "fields": {
+    "title": "Community innovating and building with artificial intelligence",
+    "edition": "alpaca-ai-trading-agents-hackathon",
+    "team": "trdrbot",
+    "url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/trdrbot/trdrbot-a-self-improving-options-trading-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "962e75182bcb84f6e43afdf6e14d13dc26b5433ab8a781144a01171f4baea41a"
+  },
+  "project:assemblyai-voice-agent-hackathon:bulepotan:soba-voice-ai-emotional-companion": {
+   "key": "project:assemblyai-voice-agent-hackathon:bulepotan:soba-voice-ai-emotional-companion",
+   "kind": "project",
+   "fields": {
+    "title": "OmniDesk Real-Time Voice Agent",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "bulepotan",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/bulepotan/soba-voice-ai-emotional-companion",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "d12215f0ba03bf03b1b4d72ed14d4f338240469cc15900234a3407a6c9a94f1d"
+  },
+  "project:assemblyai-voice-agent-hackathon:dot:omnidesk-real-time-voice-agent": {
+   "key": "project:assemblyai-voice-agent-hackathon:dot:omnidesk-real-time-voice-agent",
+   "kind": "project",
+   "fields": {
+    "title": "Goose! Goose! Cook! - Your Voice Sous-Chef",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "dot",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/dot/omnidesk-real-time-voice-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "a55755b6bc17b84b17f0cad7b599799bad7808147971034735718d53d76329ea"
+  },
+  "project:assemblyai-voice-agent-hackathon:hello-kitty:goose-goose-cook-your-voice-sous-chef": {
+   "key": "project:assemblyai-voice-agent-hackathon:hello-kitty:goose-goose-cook-your-voice-sous-chef",
+   "kind": "project",
+   "fields": {
+    "title": "CyberVoice AI",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "hello-kitty",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/hello-kitty/goose-goose-cook-your-voice-sous-chef",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "162ca62d8540d907cc0adbbb30a4dab68705c680a222d71b59d2e0ebb2eb7285"
+  },
+  "project:assemblyai-voice-agent-hackathon:rangers:cybervoice-ai": {
+   "key": "project:assemblyai-voice-agent-hackathon:rangers:cybervoice-ai",
+   "kind": "project",
+   "fields": {
+    "title": "IRIS: a second pair of eyes for browsers",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "rangers",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/rangers/cybervoice-ai",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "2da30e717c5b7dc9c276e239385b8a063303e26bd1247fc38b24b0b50c350d0a"
+  },
+  "project:assemblyai-voice-agent-hackathon:latency-zero:iris-a-second-pair-of-eyes-for-browsers": {
+   "key": "project:assemblyai-voice-agent-hackathon:latency-zero:iris-a-second-pair-of-eyes-for-browsers",
+   "kind": "project",
+   "fields": {
+    "title": "Liora",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "latency-zero",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/latency-zero/iris-a-second-pair-of-eyes-for-browsers",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "7da65a040255f80c776b29d85ef8cddd0a74f8dcc13e39439a9742fda92ba1b2"
+  },
+  "project:assemblyai-voice-agent-hackathon:bloodfang-ronin:liora": {
+   "key": "project:assemblyai-voice-agent-hackathon:bloodfang-ronin:liora",
+   "kind": "project",
+   "fields": {
+    "title": "DockVoice: Voice Copilot for Warehouse Receiving",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "bloodfang-ronin",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/bloodfang-ronin/liora",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "841189d447ae9d8d4118ee330a0d6fbe0f3d8080515df83deee102c37de729b9"
+  },
+  "project:assemblyai-voice-agent-hackathon:a2p-agents-to-people:dockvoice-voice-copilot-for-warehouse-receiving": {
+   "key": "project:assemblyai-voice-agent-hackathon:a2p-agents-to-people:dockvoice-voice-copilot-for-warehouse-receiving",
+   "kind": "project",
+   "fields": {
+    "title": "MEDI-AI",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "a2p-agents-to-people",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/a2p-agents-to-people/dockvoice-voice-copilot-for-warehouse-receiving",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "518a17c78c21743fd0539bf2dc044c7ecf751dc86759f490bdb18b2bf92963aa"
+  },
+  "project:assemblyai-voice-agent-hackathon:mediteam:medi-ai": {
+   "key": "project:assemblyai-voice-agent-hackathon:mediteam:medi-ai",
+   "kind": "project",
+   "fields": {
+    "title": "AlphaForge",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "mediteam",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/mediteam/medi-ai",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "94ee5d88d54c2521b79bea4052714e967ec8ff459a5e51a9fa17dd47d7b4620d"
+  },
+  "project:assemblyai-voice-agent-hackathon:alphaforge:alphaforge": {
+   "key": "project:assemblyai-voice-agent-hackathon:alphaforge:alphaforge",
+   "kind": "project",
+   "fields": {
+    "title": "VoiceCart AI : A Voice-first shopping agent",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "alphaforge",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/alphaforge/alphaforge",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "ec01b50a2bf5e6e3e15d8c3a6f5fcfd4bdc3015a06d914b123b7df3ad16ae80d"
+  },
+  "project:assemblyai-voice-agent-hackathon:voicecart-ai:voicecart-ai-a-voice-first-shopping-agent": {
+   "key": "project:assemblyai-voice-agent-hackathon:voicecart-ai:voicecart-ai-a-voice-first-shopping-agent",
+   "kind": "project",
+   "fields": {
+    "title": "Community innovating and building with artificial intelligence",
+    "edition": "assemblyai-voice-agent-hackathon",
+    "team": "voicecart-ai",
+    "url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/voicecart-ai/voicecart-ai-a-voice-first-shopping-agent",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "9f9af85afb8a72ea60aee4ab4db579c84a20468731ea3e3d837a390f298790af"
+  },
+  "project:ibm-bob-2-hackathon:hexaforge:campusfix-ai-from-complaint-to-campus-care": {
+   "key": "project:ibm-bob-2-hackathon:hexaforge:campusfix-ai-from-complaint-to-campus-care",
+   "kind": "project",
+   "fields": {
+    "title": "DevPartner AI",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "hexaforge",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/hexaforge/campusfix-ai-from-complaint-to-campus-care",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "576214608c60b42aaec646cf46a7f97700f82889f44072d63cf6b4c045954115"
+  },
+  "project:ibm-bob-2-hackathon:team-rookies:devpartner-ai": {
+   "key": "project:ibm-bob-2-hackathon:team-rookies:devpartner-ai",
+   "kind": "project",
+   "fields": {
+    "title": "Shift Handover Pro",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "team-rookies",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/team-rookies/devpartner-ai",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "3f166a43e0d6fbdc70c668a44be10094f89f3de83191e545a18168c81fc24ed8"
+  },
+  "project:ibm-bob-2-hackathon:dhola-minds:shift-handover-pro": {
+   "key": "project:ibm-bob-2-hackathon:dhola-minds:shift-handover-pro",
+   "kind": "project",
+   "fields": {
+    "title": "SystemDNA: Change Anything, Break Nothing",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "dhola-minds",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/dhola-minds/shift-handover-pro",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "da9912bb84aa191a8045979f715493fdd344838b168c933c6cda11961f8876fe"
+  },
+  "project:ibm-bob-2-hackathon:aigarage:systemdna-change-anything-break-nothing": {
+   "key": "project:ibm-bob-2-hackathon:aigarage:systemdna-change-anything-break-nothing",
+   "kind": "project",
+   "fields": {
+    "title": "EchoCode",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "aigarage",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/aigarage/systemdna-change-anything-break-nothing",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "27dd486e6c8aa8c5de80d21dad4930b0a86aa3978a032f65afd6332f4a4b39a7"
+  },
+  "project:ibm-bob-2-hackathon:buffering:echocode": {
+   "key": "project:ibm-bob-2-hackathon:buffering:echocode",
+   "kind": "project",
+   "fields": {
+    "title": "ContractGuard: Zero-Downtime API Schema Repair",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "buffering",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/buffering/echocode",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "77ac2fe854d7cf1dda90230dc3798393fad95a0f8a2de960f6921ea82a4d6268"
+  },
+  "project:ibm-bob-2-hackathon:thinksync:contractguard-zero-downtime-api-schema-repair": {
+   "key": "project:ibm-bob-2-hackathon:thinksync:contractguard-zero-downtime-api-schema-repair",
+   "kind": "project",
+   "fields": {
+    "title": "Cloud Migration Accelerator",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "thinksync",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/thinksync/contractguard-zero-downtime-api-schema-repair",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "08d9bbe4ee777c8a477053e2eb3dfe59b2132fa73bc2f46829090ca4562f2914"
+  },
+  "project:ibm-bob-2-hackathon:domintors:cloud-migration-accelerator": {
+   "key": "project:ibm-bob-2-hackathon:domintors:cloud-migration-accelerator",
+   "kind": "project",
+   "fields": {
+    "title": "Forgeflow",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "domintors",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/domintors/cloud-migration-accelerator",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "3401c56ef9514158aed5d53cd3f061bbd0c2868e74552c54907eef6b4bdb3620"
+  },
+  "project:ibm-bob-2-hackathon:oops-we-coded-again:forgeflow": {
+   "key": "project:ibm-bob-2-hackathon:oops-we-coded-again:forgeflow",
+   "kind": "project",
+   "fields": {
+    "title": "Tursiops",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "oops-we-coded-again",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/oops-we-coded-again/forgeflow",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "002b6b2fabdffc31b13d567cfdc13662cb9bfbf297bf83ffcc8bd154d03601fb"
+  },
+  "project:ibm-bob-2-hackathon:conquest-core:tursiops": {
+   "key": "project:ibm-bob-2-hackathon:conquest-core:tursiops",
+   "kind": "project",
+   "fields": {
+    "title": "DryRun — See Your Codebase Break in 3D",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "conquest-core",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/conquest-core/tursiops",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "7a11a6635690d30670c4556fb6c0a85c5d9bf400ae9fb495d4787ee8856e97cf"
+  },
+  "project:ibm-bob-2-hackathon:team-dot:dryrun-see-your-codebase-break-in-3d": {
+   "key": "project:ibm-bob-2-hackathon:team-dot:dryrun-see-your-codebase-break-in-3d",
+   "kind": "project",
+   "fields": {
+    "title": "Community innovating and building with artificial intelligence",
+    "edition": "ibm-bob-2-hackathon",
+    "team": "team-dot",
+    "url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/team-dot/dryrun-see-your-codebase-break-in-3d",
+    "in_field_gallery": true
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/ibm-bob-2-hackathon/live",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "1a2ef2e13754e336252b5c8f60e5c7cb78f1fd131709dae426efb75679c9b5bc"
+  },
+  "judge-person:pawel czech": {
+   "key": "judge-person:pawel czech",
+   "kind": "judge_person",
+   "fields": {
+    "name": "Pawel Czech",
+    "editions": [
+     "alpaca-ai-trading-agents-hackathon"
+    ],
+    "titles": {
+     "alpaca-ai-trading-agents-hackathon": "CEO"
+    }
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "bf5d34a14b797b48c5ee0ed58bfcf8d8abc46b75c5322d3a5118bc22e5255f26"
+  },
+  "judge-person:chiranjeev shah": {
+   "key": "judge-person:chiranjeev shah",
+   "kind": "judge_person",
+   "fields": {
+    "name": "Chiranjeev Shah",
+    "editions": [
+     "alpaca-ai-trading-agents-hackathon"
+    ],
+    "titles": {
+     "alpaca-ai-trading-agents-hackathon": "Technical Content Marketing Associate"
+    }
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "1a4cce209a9ee96b6fcbd5f127181d87d56001e12c695b530ccc3ccc96309512"
+  },
+  "judge-person:tony lee": {
+   "key": "judge-person:tony lee",
+   "kind": "judge_person",
+   "fields": {
+    "name": "Tony Lee",
+    "editions": [
+     "alpaca-ai-trading-agents-hackathon"
+    ],
+    "titles": {
+     "alpaca-ai-trading-agents-hackathon": "Chief Brokerage Officer"
+    }
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "736f7f2b504a39872894e850b874e97039838fdcaf6b0d13220884a88fd42a89"
+  },
+  "judge-person:grace gao": {
+   "key": "judge-person:grace gao",
+   "kind": "judge_person",
+   "fields": {
+    "name": "Grace Gao",
+    "editions": [
+     "alpaca-ai-trading-agents-hackathon"
+    ],
+    "titles": {
+     "alpaca-ai-trading-agents-hackathon": "Product Manager"
+    }
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "0cccca60eca274bf982d09c7e455829882c5ac25721ff36e1eefbc57a4f65a81"
+  },
+  "judge-person:brandon meyerowitz": {
+   "key": "judge-person:brandon meyerowitz",
+   "kind": "judge_person",
+   "fields": {
+    "name": "Brandon Meyerowitz",
+    "editions": [
+     "alpaca-ai-trading-agents-hackathon"
+    ],
+    "titles": {
+     "alpaca-ai-trading-agents-hackathon": "Team Lead, Trading API"
+    }
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "d687e7ddf5fec0b11ef24e00468425cd6767b48c0849b8910c5832d978b87e68"
+  },
+  "judge-person:andrea marazzi": {
+   "key": "judge-person:andrea marazzi",
+   "kind": "judge_person",
+   "fields": {
+    "name": "Andrea Marazzi",
+    "editions": [
+     "alpaca-ai-trading-agents-hackathon"
+    ],
+    "titles": {
+     "alpaca-ai-trading-agents-hackathon": "Founder and CEO"
+    }
+   },
+   "receipts": [
+    {
+     "source_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+     "captured_at": "2026-11-03T17:30:42Z",
+     "collector": "scraping-tools/podium_crawl.py"
+    }
+   ],
+   "content_hash": "4e6edc9b2f72df6affe405302888097b9a14fec8c506aae846c4dbcd865fa47a"
+  }
+ },
+ "feasibility": {
+  "per_edition": {
+   "vultr-hackathon": {
+    "podium_n": 0,
+    "field_n": 4,
+    "judge_comments": 0,
+    "community_comments": 0
+   },
+   "alpaca-ai-trading-agents-hackathon": {
+    "podium_n": 3,
+    "field_n": 15,
+    "judge_comments": 0,
+    "community_comments": 0
+   },
+   "assemblyai-voice-agent-hackathon": {
+    "podium_n": 5,
+    "field_n": 11,
+    "judge_comments": 0,
+    "community_comments": 0
+   },
+   "ibm-bob-2-hackathon": {
+    "podium_n": 3,
+    "field_n": 13,
+    "judge_comments": 0,
+    "community_comments": 0
+   },
+   "ai-infra-summit-hackathon": {
+    "podium_n": 13,
+    "field_n": 0,
+    "judge_comments": 0,
+    "community_comments": 0
+   },
+   "nativebuilder-build-without-limits": {
+    "podium_n": 4,
+    "field_n": 0,
+    "judge_comments": 0,
+    "community_comments": 0
+   }
+  },
+  "repeat_judges_exact_name": 0,
+  "repeat_judges_with_attributable_picks": 0,
+  "judge_track_linkage": "NOT_ESTABLISHED (no judge<->track assignment on public pages; count 0 is the deliverable stamp)",
+  "category_x_edition_denominators": "NOT_ESTABLISHED (categories not labeled on public surfaces; medal counts are feed-level only)",
+  "editions_with_usable_rubrics": 0,
+  "rubrics_note": "no weighted judging criteria found on crawled edition pages (recon 2026-11-03)",
+  "field_note": "field_n = project anchors server-rendered on the edition /live gallery; a lower bound if the gallery paginates client-side",
+  "comments_surface": "NOT_ESTABLISHED (no public comments in server-rendered pages, recon 2026-11-03)"
+ },
+ "conflicts": [],
+ "changes": {
+  "added": [
+   "project:alpaca-ai-trading-agents-hackathon:agent-00trade:sentrytheta-ai-autonomous-options-trading-agent",
+   "project:alpaca-ai-trading-agents-hackathon:crazyxyz:alpha-hunter-autonomous-ai-trading-scientist",
+   "project:alpaca-ai-trading-agents-hackathon:cyberai-builders:qasix-alpaca-ai-trading-agent",
+   "project:alpaca-ai-trading-agents-hackathon:origin-labs:species-evolutionary-quant-research",
+   "project:alpaca-ai-trading-agents-hackathon:oster:vegaguard-auditable-ai-options-agent",
+   "project:alpaca-ai-trading-agents-hackathon:quantum-coders:alphapilot-ai",
+   "project:alpaca-ai-trading-agents-hackathon:synthetix-alpha-agents:synthetix-alpha",
+   "project:alpaca-ai-trading-agents-hackathon:teambhairava:elite-bot-multi-asset-ai-agent-trading-hub",
+   "project:alpaca-ai-trading-agents-hackathon:tradepilot:tradepilot-ai-autonomous-ai-trading-agent",
+   "project:alpaca-ai-trading-agents-hackathon:trdrbot:trdrbot-a-self-improving-options-trading-agent",
+   "project:assemblyai-voice-agent-hackathon:a2p-agents-to-people:dockvoice-voice-copilot-for-warehouse-receiving",
+   "project:assemblyai-voice-agent-hackathon:alphaforge:alphaforge",
+   "project:assemblyai-voice-agent-hackathon:bloodfang-ronin:liora",
+   "project:assemblyai-voice-agent-hackathon:bulepotan:soba-voice-ai-emotional-companion",
+   "project:assemblyai-voice-agent-hackathon:dot:omnidesk-real-time-voice-agent",
+   "project:assemblyai-voice-agent-hackathon:hello-kitty:goose-goose-cook-your-voice-sous-chef",
+   "project:assemblyai-voice-agent-hackathon:latency-zero:iris-a-second-pair-of-eyes-for-browsers",
+   "project:assemblyai-voice-agent-hackathon:mediteam:medi-ai",
+   "project:assemblyai-voice-agent-hackathon:rangers:cybervoice-ai",
+   "project:assemblyai-voice-agent-hackathon:voicecart-ai:voicecart-ai-a-voice-first-shopping-agent",
+   "project:ibm-bob-2-hackathon:aigarage:systemdna-change-anything-break-nothing",
+   "project:ibm-bob-2-hackathon:buffering:echocode",
+   "project:ibm-bob-2-hackathon:conquest-core:tursiops",
+   "project:ibm-bob-2-hackathon:dhola-minds:shift-handover-pro",
+   "project:ibm-bob-2-hackathon:domintors:cloud-migration-accelerator",
+   "project:ibm-bob-2-hackathon:hexaforge:campusfix-ai-from-complaint-to-campus-care",
+   "project:ibm-bob-2-hackathon:oops-we-coded-again:forgeflow",
+   "project:ibm-bob-2-hackathon:team-dot:dryrun-see-your-codebase-break-in-3d",
+   "project:ibm-bob-2-hackathon:team-rookies:devpartner-ai",
+   "project:ibm-bob-2-hackathon:thinksync:contractguard-zero-downtime-api-schema-repair",
+   "project:vultr-hackathon:arber-arifim:containment-first-agent-runtime-on-vultr",
+   "project:vultr-hackathon:blast-radius-zero-solo:blast-radius-zero-sandboxed-agent-runtime",
+   "project:vultr-hackathon:cubiczan:tripwire-sandbox",
+   "project:vultr-hackathon:trifecta-checker:trifecta-checker-blast-radius-zero"
+  ],
+  "removed": [],
+  "changed": [
+   "project:alpaca-ai-trading-agents-hackathon:deflow:deflow-autonomous-multi-agent-options-desk",
+   "project:alpaca-ai-trading-agents-hackathon:iskolar:prism",
+   "project:alpaca-ai-trading-agents-hackathon:razorsedge:autobelay-long-premium-short-leash",
+   "project:alpaca-ai-trading-agents-hackathon:team-quantus:killswitch-capital",
+   "project:alpaca-ai-trading-agents-hackathon:trioblessingmiracle:should-ai-buy",
+   "project:assemblyai-voice-agent-hackathon:solorobot:concierge",
+   "project:ibm-bob-2-hackathon:diff-and-conquer:amend-regulatory-redlines-in-verified-prs-out",
+   "project:ibm-bob-2-hackathon:inbin:inbin-gate-safe-auto-approve-for-ibm-bob",
+   "project:ibm-bob-2-hackathon:solotrace:solotrace-every-requirement-proven"
+  ],
+  "counts": {
+   "added": 34,
+   "removed": 0,
+   "changed": 9
+  }
+ }
+}

@@ -112,7 +112,9 @@ engines. An embedded-Python build is not claimed here.
 headless emulator, installs the built APK, and asserts the
 state-loaded signals (no "Loading your course…" hang, footer
 version present, process alive), capturing every view as
-screenshots + UI dumps. It runs in Actions via
+screenshots + UI dumps + a screen recording (`smoke.mp4`,
+#4420 — the recording joins every acceptance run and every
+slate-iteration evidence pass). It runs in Actions via
 `.github/workflows/studysprint-apk-smoke.yml` (dispatch with a
 ref + label; KVM runners) — the owner's device smoke stays the
 closer of record, this is the pre-device net.

@@ -5,7 +5,8 @@
 # walks the views, and asserts the state-loaded signals the
 # 2026-11-03 device smoke found missing (#4276): the bundle's
 # build-time state must actually render inside the WebView.
-# Screenshots + UI dumps land in the output dir as artifacts.
+# Screenshots + UI dumps + a screen recording (smoke.mp4,
+# #4420) land in the output dir as artifacts.
 # The owner's device smoke stays the closer of record; this is
 # the pre-device net so the defect class never reaches the
 # owner first.
@@ -35,8 +36,22 @@ ACCEL=off
   -gpu swiftshader_indirect -accel "$ACCEL" -port 5554 \
   >> "$OUT/emulator.log" 2>&1 &
 EMU_PID=$!
-cleanup() { "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1; \
-  kill $EMU_PID >/dev/null 2>&1; }
+REC_STARTED=0
+cleanup() {
+  # Video evidence (#4420, owner standing requirement): stop the
+  # screen recording and pull it BEFORE the emulator dies, on
+  # every exit path -- verdict exits included (the trap fires on
+  # EXIT). SIGINT makes screenrecord finalize the mp4 cleanly.
+  if [ "$REC_STARTED" = "1" ]; then
+    "$ADB" -s emulator-5554 shell pkill -2 screenrecord \
+      >/dev/null 2>&1
+    sleep 2
+    "$ADB" -s emulator-5554 pull /sdcard/smoke.mp4 \
+      "$OUT/smoke.mp4" >/dev/null 2>&1 || true
+  fi
+  "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1
+  kill $EMU_PID >/dev/null 2>&1
+}
 trap cleanup EXIT
 # Bounded waits throughout (hardening after the first CI pair
 # wedged silently in-step): no adb call in this harness may block
@@ -49,6 +64,15 @@ done
 [ "$("$ADB" -s emulator-5554 shell getprop sys.boot_completed \
       2>/dev/null | tr -d '\r')" = "1" ] || { verdict "FAIL: no boot"; exit 1; }
 echo "booted"
+
+echo "== record (video evidence, #4420) =="
+# 175s cap: screenrecord's own ceiling is 180s; the gate's
+# install + launch + per-view walk fits well inside it. If a
+# future gate outgrows the cap, the stills remain the evidence
+# of record and the truncated video says so by its length.
+"$ADB" -s emulator-5554 shell \
+  "screenrecord --time-limit 175 /sdcard/smoke.mp4 >/dev/null 2>&1 &" \
+  >/dev/null 2>&1 && REC_STARTED=1 || true
 
 echo "== install $APK =="
 timeout 300 "$ADB" -s emulator-5554 install -r "$APK" | tee "$OUT/install.log"

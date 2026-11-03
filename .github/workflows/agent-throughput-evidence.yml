@@ -6,8 +6,8 @@ name: Agent Throughput Evidence
 # or executes the triggering workflow's SHA and never writes source/repository
 # state. workflow_run intentionally runs from the default branch; keep this file
 # on master before expecting live completion events.
-# Filter: only process successful conclusions to cut notification volume from
-# non-success cascades while preserving evidence for successes.
+# Observe every completed source run. Successful runs emit sanitized metrics;
+# non-success runs emit provenance-only outcome receipts without inferred metrics.
 on:
   workflow_run:
     workflows:
@@ -35,7 +35,6 @@ concurrency:
 
 jobs:
   emit:
-    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -66,6 +65,13 @@ jobs:
             const run = context.payload.workflow_run;
             if (!run) {
               core.setFailed('workflow_dispatch is supported only as a validation surface; no target run was supplied');
+              return;
+            }
+
+            if (run.conclusion !== 'success') {
+              core.setOutput('skip_reason', 'source_non_success');
+              core.setOutput('emitted', 'false');
+              core.notice(`Source conclusion ${run.conclusion || 'unknown'}: emitting provenance-only outcome receipt.`);
               return;
             }
 
@@ -226,34 +232,22 @@ jobs:
           SOURCE_HEAD_SHA: ${{ github.event.workflow_run.head_sha || '' }}
           SOURCE_WORKFLOW_NAME: ${{ github.event.workflow_run.name || '' }}
           SKIP_REASON: ${{ steps.collect.outputs.skip_reason || 'metadata_unavailable' }}
+          SOURCE_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'unknown' }}
           TASK_BOUNDARY_OUTCOME: ${{ steps.task-boundary.outcome }}
           COLLECT_OUTCOME: ${{ steps.collect.outcome }}
           CHECKOUT_OUTCOME: ${{ steps.checkout-observer.outcome }}
         run: |
-          python3 - <<'PY'
-          import json, os
-          from datetime import datetime, timezone
-          from pathlib import Path
-          receipt = {
-              "schema_version": "ates.observation.v1",
-              "producer": "agent-throughput-evidence",
-              "status": ("failed" if os.environ["COLLECT_OUTCOME"] in ("failure", "skipped") or os.environ["CHECKOUT_OUTCOME"] == "failure" else ("deferred" if os.environ["SKIP_REASON"] == "rate_limited" else "skipped")),
-              "skip_reason": (os.environ["SKIP_REASON"] if os.environ["COLLECT_OUTCOME"] == "success" else "collection_failed"),
-              "collection_outcome": os.environ["COLLECT_OUTCOME"],
-              "checkout_outcome": os.environ["CHECKOUT_OUTCOME"],
-              "source_run_id": int(os.environ["SOURCE_RUN_ID"]),
-              "source_run_attempt": int(os.environ["SOURCE_RUN_ATTEMPT"]),
-              "source_head_sha": os.environ["SOURCE_HEAD_SHA"] or None,
-              "source_workflow_name": os.environ["SOURCE_WORKFLOW_NAME"] or None,
-              "observed_at": datetime.now(timezone.utc).isoformat(),
-              "task_boundary_artifact_outcome": os.environ["TASK_BOUNDARY_OUTCOME"],
-              "metrics_emitted": False,
-              "missing_evidence_policy": "unknown remains unknown; no metrics inferred",
-          }
-          Path("ates-skip-receipt.json").write_text(
-              json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"
-          )
-          PY
+          python3 scripts/ci/ates_outcome_receipt.py \
+            --output ates-skip-receipt.json \
+            --source-run-id "$SOURCE_RUN_ID" \
+            --source-run-attempt "$SOURCE_RUN_ATTEMPT" \
+            --source-head-sha "$SOURCE_HEAD_SHA" \
+            --source-workflow-name "$SOURCE_WORKFLOW_NAME" \
+            --source-conclusion "$SOURCE_CONCLUSION" \
+            --skip-reason "$SKIP_REASON" \
+            --collection-outcome "$COLLECT_OUTCOME" \
+            --checkout-outcome "$CHECKOUT_OUTCOME" \
+            --task-boundary-outcome "$TASK_BOUNDARY_OUTCOME"
 
       - name: Upload ATES outcome receipt
         if: always() && steps.collect.outputs.emitted != 'true'

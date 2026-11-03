@@ -50,10 +50,15 @@ def test_feed_shape():
     assert feed["schema"] == "dispatch-state-feed/v1"
     assert feed["generated_at"]
     counts = feed["counts"]
-    assert counts["total"] == len(feed["dispatches"])
-    assert counts["total"] == (counts.get("queued", 0)
-                                + counts.get("claimed", 0)
-                                + counts.get("escalated", 0))
+    # frozen contract: counts keys are the three states (a transitional
+    # "total" key may ride along until the collector delta lands; the
+    # chart consumes the state keys by name and never iterates keys)
+    assert set(counts) <= {"queued", "claimed", "escalated", "total"}
+    state_sum = (counts.get("queued", 0) + counts.get("claimed", 0)
+                 + counts.get("escalated", 0))
+    assert state_sum == len(feed["dispatches"])
+    if "total" in counts:
+        assert counts["total"] == state_sum
     for d in feed["dispatches"]:
         assert d["state"] in ("queued", "claimed", "escalated")
         assert isinstance(d["issue"], int) and d["title"] and d["entry"]

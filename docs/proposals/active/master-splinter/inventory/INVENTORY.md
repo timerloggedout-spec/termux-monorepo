@@ -4,15 +4,15 @@
 
 | App | ID | Installation | Selection | SEC-03 pair | Declared = Observed |
 |---|---|---|---|---|---|
-| termux-fleet-collector | 5535733 | None | None | True | DRIFT: {'metadata': ('read', None), 'issues': ('read', None), 'checks': ('read', None), 'pull_requests': ('read', None), 'contents': ('read', None), 'actions': ('read', None)} |
-| termux-fleet-publisher | 5537873 | None | None | False | DRIFT: {'metadata': ('read', None), 'pull_requests': ('write', None), 'contents': ('write', None), 'checks': ('read', None)} |
-| termux-fleet-reviewer | 5539430 | None | None | False | DRIFT: {'pull_requests': ('write', None), 'metadata': ('read', None), 'checks': ('read', None)} |
-| termux-fleet-gate | 5539499 | None | None | False | DRIFT: {'metadata': ('read', None), 'checks': ('write', None)} |
-| termux-fleet-lifecycle | 5539639 | None | None | False | DRIFT: {'metadata': ('read', None), 'issues': ('write', None)} |
-| termux-fleet-swarm | 5560920 | None | None | True | DRIFT: {'metadata': ('read', None), 'issues': ('write', None), 'checks': ('write', None), 'pull_requests': ('write', None), 'contents': ('write', None), 'actions': ('write', None)} |
-| termux-fleet-crossreference | 5564430 | None | None | True | DRIFT: {'metadata': ('read', None), 'contents': ('read', None), 'issues': ('write', None)} |
-| termux-fleet-repostory | 5565297 | None | None | other-repo (repo-story) | DRIFT: {'metadata': ('read', None), 'pull_requests': ('write', None), 'contents': ('write', None), 'issues': ('write', None)} |
+| termux-fleet-collector | 5535733 | 176747357 | selected | True | YES |
+| termux-fleet-publisher | 5537873 | 176799777 | selected | False | YES |
+| termux-fleet-reviewer | 5539430 | 176838378 | selected | False | YES |
+| termux-fleet-gate | 5539499 | 176839926 | selected | False | YES |
+| termux-fleet-lifecycle | 5539639 | 176843209 | selected | False | YES |
+| termux-fleet-swarm | 5560920 | 177357774 | selected | True | YES |
+| termux-fleet-crossreference | 5564430 | 177439462 | selected | True | YES |
+| termux-fleet-repostory | 5565297 | 177463385 | selected | other-repo (repo-story) | YES |
 
-Fleet drift (declared vs observed permissions): **none** across all 8 Apps at snapshot time.
+Fleet drift (declared vs observed permissions): **none**.
 Full machine record: `inventory-2026-11-03.json` (schema appid-control-plane/inventory-1).
 Terminal state per program law: this inventory item = **migrated** (executed as dry-run, evidence filed); repo home for the living read model = pending Registry issuance (confer open).

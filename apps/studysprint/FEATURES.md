@@ -133,6 +133,20 @@ learning-gain claim.
   and voice-input route customization (rename/move) as data.
   Ceilings: logistics support + ordered/concrete recall, not
   understanding.
+- ✓ **Varied-context practice + mental reinstatement**:
+  sessions rotate across places/times/materials; a short
+  reinstatement script re-creates the exam room mentally
+  (Smith 1979). Evidence: encoding specificity (Tulving);
+  context effect modest, meta d ≈ 0.28. **Ceiling: not
+  single-room matching, no recall-gain claim.**
+- ✓ **Adaptive hardening (opt-in only)**: graduated
+  stress-inoculation drills (Meichenbaum SIT phases;
+  working-memory protection under pressure, Jha/MMFT) —
+  off by default, opt-in flag on every receipt, pressure
+  elements deterministic per drill. **NO-GUILT binds: pressure
+  never carries penalties; no score/penalty fields exist.**
+  **Ceiling: performance under stress/anxiety, not recall
+  gains.**
 
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic

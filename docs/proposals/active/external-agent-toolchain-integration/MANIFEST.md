@@ -54,6 +54,7 @@ A read-only-first portfolio to map the requested agent/developer tools into the 
 ## Links
 
 - Tracking issue: https://github.com/timerloggedout-spec/termux-monorepo/issues/4008
+- Proposal PR: https://github.com/timerloggedout-spec/termux-monorepo/pull/4013
 - Proposal PR: https://github.com/timerloggedout-spec/termux-monorepo/pull/4011
 - ITEMS: ./ITEMS.md
 - Source: ./source.md

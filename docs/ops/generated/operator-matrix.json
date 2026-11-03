@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 474,
-    "open_prs": 207,
+    "open_prs": 209,
     "pr_classes": {
-      "CANDIDATE": 106,
+      "CANDIDATE": 107,
       "EXTRACT": 7,
-      "NEED_EVIDENCE": 94,
+      "NEED_EVIDENCE": 95,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 242,
+      "issues": 243,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 44,
-      "prs": 205,
+      "issues": 43,
+      "prs": 207,
       "unlabelled_numbers": [
         308,
         388,
@@ -94,12 +94,11 @@
         4234,
         4235,
         4236,
-        4237,
-        4362
+        4237
       ]
     }
   },
-  "generated_at": "2026-11-03T14:36:37Z",
+  "generated_at": "2026-11-03T14:43:17Z",
   "issues_unlabelled": [
     308,
     388,
@@ -143,16 +142,15 @@
     4234,
     4235,
     4236,
-    4237,
-    4362
+    4237
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "in_progress"
     },
-    "sha": "1ca9fc04bb"
+    "sha": "5e9296d5c6"
   },
   "prs": [
     {
@@ -232,12 +230,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d8ea720788",
+      "head_sha": "bed4bae553",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4021,
-      "title": "feat(integrations): extend governed agent toolchain portfolio",
-      "updated_at": "2026-11-03T02:27:20Z"
+      "number": 2857,
+      "title": "doe(live-3): deepseek-ci harvest step \u2014 mirror dispatch outcome to #2830 (ruling (i-a), owners' review)",
+      "updated_at": "2026-11-01T01:53:48Z"
     },
     {
       "class": "EXTRACT",
@@ -246,12 +244,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6dd478edf2",
+      "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4360,
-      "title": "proposals-feed v2: resolve PR states at collection time",
-      "updated_at": "2026-11-03T14:36:33Z"
+      "number": 4021,
+      "title": "feat(integrations): extend governed agent toolchain portfolio",
+      "updated_at": "2026-11-03T02:27:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -1021,12 +1019,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b590f3e4c9",
+      "head_sha": "269aa6085f",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2304,
-      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
-      "updated_at": "2026-11-03T14:29:59Z"
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T14:36:48Z"
     },
     {
       "class": "CANDIDATE",
@@ -1035,12 +1033,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7e4e71b621",
+      "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T11:47:20Z"
+      "number": 2304,
+      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
+      "updated_at": "2026-11-03T14:29:59Z"
     },
     {
       "class": "CANDIDATE",
@@ -1209,20 +1207,6 @@
       "number": 2757,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-10-31T22:20:31Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bed4bae553",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2857,
-      "title": "doe(live-3): deepseek-ci harvest step \u2014 mirror dispatch outcome to #2830 (ruling (i-a), owners' review)",
-      "updated_at": "2026-11-01T01:53:48Z"
     },
     {
       "class": "CANDIDATE",
@@ -1461,6 +1445,20 @@
       "number": 3885,
       "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
       "updated_at": "2026-11-02T13:37:17Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c855e36087",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T14:37:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1741,6 +1739,20 @@
       "number": 4355,
       "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
       "updated_at": "2026-11-03T14:23:58Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6dd478edf2",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4360,
+      "title": "proposals-feed v2: resolve PR states at collection time",
+      "updated_at": "2026-11-03T14:36:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2278,15 +2290,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "23378b53b9",
+      "head_sha": "e4faad1217",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T14:35:03Z"
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T14:38:24Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2759,7 +2771,7 @@
       },
       "head_sha": "fde192fda4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 2856,
       "title": "doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
       "updated_at": "2026-11-02T09:46:47Z"
@@ -2927,7 +2939,7 @@
       },
       "head_sha": "f5ec300eff",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-03T13:43:48Z"
@@ -2939,26 +2951,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d485259c8e",
+      "head_sha": "3ba0cbab4b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T14:24:50Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "1734089e46",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T14:34:38Z"
+      "updated_at": "2026-11-03T14:37:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3057,6 +3055,34 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "598648a5d7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4368,
+      "title": "lane-compounding: record 2026-11-03 decisions (owner delegation to main)",
+      "updated_at": "2026-11-03T14:42:35Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "b295dff7c6",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4369,
+      "title": "Referral sweep 2026-11-03: Hark verdict (no public programme), terms re-verified, Lovable+Replit discovery",
+      "updated_at": "2026-11-03T14:42:30Z"
     }
   ],
   "schema": "operator-matrix/v1",

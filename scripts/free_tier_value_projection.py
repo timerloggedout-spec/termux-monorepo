@@ -234,7 +234,7 @@ def main() -> int:
     result = build(args.root, args.observations, args.source_sha)
     output = args.out or args.root / "apps/tribute-dashboard/data/free-tier-value.json"
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(result, indent=2, sort_keys=False, default=_json_default) + "\\n",
+    output.write_text(json.dumps(result, indent=2, sort_keys=False, default=_json_default) + "\n",
                       encoding="utf-8")
     print(json.dumps(result["source_manifest"], sort_keys=True))
     return 0

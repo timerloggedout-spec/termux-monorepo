@@ -10,6 +10,8 @@ Method: live GitHub API census via the PAT helper at action time (master, 2026-1
 program verification from firsthand / primary-adjacent web sources, cited per offering.
 Referral tokens are referenced by location, never re-printed — names-only discipline.
 
+> **Addendum 2026-11-03** (affiliate-referrals lane; owner-flagged CellCog marketing-residue cleanup): the CellCog-centrism this census recorded as a finding has since been de-centered — landing hero/benefits/footer via landing-repo PR #16 (2026-11-01), and the remaining repo marketing surfaces (PARTNERS anchor tag, README blockquote, project-pages-hub label) in the 2026-11-03 cleanup PR. The census text below stands unedited as the 2026-10-27 record; CellCog's current state = one plain listing among programmes (PARTNERS §1).
+
 ## 1. Census — where the referral surface actually lives
 
 There is no standalone referral page in this repo. The surface is three synced layers:

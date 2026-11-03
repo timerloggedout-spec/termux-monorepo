@@ -23,6 +23,7 @@ console.log(JSON.stringify({
   lineTicks: line.includes('>9<') && line.includes('>5<') && line.includes('>7<'),
   lineDates: line.includes('2026-10-01') && line.includes('2026-10-05'),
   gapSegments: (gap.match(/<path /g)||[]).length === 1 && (gap.match(/<circle /g)||[]).length === 3,
+  lineSize: gap.includes('width=\"640\"') && gap.includes('height=\"180\"'),
   stale: CK.stampState('2026-10-01T00:00:00Z', Date.parse('2026-10-03T00:00:01Z'), 86400000),
   fresh: CK.stampState('2026-10-03T00:00:00Z', Date.parse('2026-10-03T01:00:00Z'), 86400000),
   unknown: CK.stampState(null, Date.now(), 86400000)}));
@@ -38,7 +39,7 @@ def test_chartkit_builders(tmp_path):
     assert out.returncode == 0, out.stderr
     got = json.loads(out.stdout)
     assert got == {"barsMax": True, "barsVal": True, "lineTicks": True,
-                   "lineDates": True, "gapSegments": True, "stale": "STALE", "fresh": "fresh",
+                   "lineDates": True, "gapSegments": True, "lineSize": True, "stale": "STALE", "fresh": "fresh",
                    "unknown": "unknown"}
 
 

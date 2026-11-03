@@ -101,23 +101,41 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Collect changed paths from git metadata (no PR checkout)
+      - name: Collect changed paths from public PR patch (never fetch or checkout PR objects)
         id: changed-paths
         env:
-          BASE_SHA: ${{ needs.resolve-pr.outputs.base_sha }}
-          HEAD_SHA: ${{ needs.resolve-pr.outputs.head_sha }}
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
         run: |
           set -euo pipefail
-          git fetch --no-tags origin "$HEAD_SHA"
-          git diff --name-only --diff-filter=ACMR -z "$BASE_SHA...$HEAD_SHA" > "$RUNNER_TEMP/api-impact-changed-paths.nul"
+          patch="$RUNNER_TEMP/api-impact-pr.patch"
+          curl --fail --location --silent --show-error --max-filesize 20971520 \
+            "https://github.com/$GITHUB_REPOSITORY/pull/$PR_NUMBER.diff" -o "$patch"
           python3 - <<'PY'
           import json
           import os
+          import shlex
           from pathlib import Path
-          raw = Path(os.environ["RUNNER_TEMP"], "api-impact-changed-paths.nul").read_bytes()
-          paths = [item.decode("utf-8") for item in raw.split(bytes([0])) if item]
+
+          patch = Path(os.environ["RUNNER_TEMP"], "api-impact-pr.patch").read_text(encoding="utf-8", errors="strict")
+          paths = set()
+          for line in patch.splitlines():
+              if line.startswith("diff --git "):
+                  try:
+                      fields = shlex.split(line)
+                  except ValueError:
+                      fields = []
+                  if len(fields) == 3:
+                      for field in fields[1:]:
+                          if field.startswith(("a/", "b/")):
+                              paths.add(field[2:])
+              elif line.startswith("+++ b/"):
+                  paths.add(line[6:])
+              elif line.startswith("--- a/"):
+                  paths.add(line[6:])
+              elif line.startswith("rename from ") or line.startswith("rename to "):
+                  paths.add(line.split(" ", 2)[2])
           target = Path(os.environ["RUNNER_TEMP"], "api-impact-changed-paths.json")
-          target.write_text(json.dumps(paths), encoding="utf-8")
+          target.write_text(json.dumps(sorted(paths)), encoding="utf-8")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
               output.write(f"path={target}\n")
           PY

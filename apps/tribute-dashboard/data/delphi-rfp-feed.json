@@ -1,16 +1,17 @@
 {
  "schema": "delphi-rfp-feed/v1",
- "generated_at": "2026-10-29T03:57:33Z",
+ "generated_at": "2026-11-03T17:31:36Z",
  "source": "open GitHub issues labeled delphi:rfp + their gate ledger comments (live census at generation)",
  "summary": {
-  "total_open": 28,
+  "total_open": 45,
   "by_status": {
-   "parked": 26,
-   "shadow": 2
+   "parked": 41,
+   "shadow": 2,
+   "unscored": 2
   },
   "by_group": {
    "surface": 18,
-   "synthetic": 10
+   "synthetic": 27
   }
  },
  "criteria": {
@@ -5639,6 +5640,3167 @@
    },
    "gaps": [],
    "segment": "gantt-dependency-phases"
+  },
+  {
+   "number": 3695,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-1 \u2014 StudySprint: measurable-impact pass (copy, pre-Nov 4)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3695",
+   "created_at": "2026-11-02T09:31:28Z",
+   "surface_id": "RFP-D1-1",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-D1-1"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "copy pass | 2026-11-02 | 2026-11-03 | demo receipts of record\nD1 verification + sync | 2026-11-03 | 2026-11-04 | copy pass"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "n/a"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "Scope creep into the frozen submission surfaces (copy RFPs are text-only; build RFPs are post-freeze)."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "D1 doc-of-record (desk-feed evidence) \u00b7 demo video of record (YouTube eFXyOYTpuvg) \u00b7 FEATURES.md."
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-12-02T10:29Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 8.54 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-12-02T10:29Z"
+    },
+    "effective_score": 8.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 0.0,
+      "effective": 8.54
+     }
+    ],
+    "trigger": "delphi-tick",
+    "input_hash": "4e0f5643b9ed",
+    "comment_id": 6574881314,
+    "created_at": "2026-11-02T10:29:31Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41427635607 / #3695#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41427635607 / #3695#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "1 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41427635607 / #3695#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41427635607 / #3695#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41427635607 / #3695#r1"
+     }
+    ],
+    "oracle": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid. = None , reset n/a  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/3695))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-D1-1",
+      "item_id": "delphi:#3695",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-1 \u2014 StudySprint: measurable-impact pass (copy, pre-Nov 4)",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 8.54 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3695"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3695",
+      "observed_at": "2026-11-02T10:29:30Z",
+      "confidence": 0.34,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-12-02T10:29Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-D1-1 -> parked eff=8.54 band=Backlog rfp=#3695 forecast=fail ts=2026-11-02T10:29:30Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#3695",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-02T10:29:30Z",
+      "ended_at": "2026-11-02T10:29:30Z",
+      "trigger": "delphi-tick"
+     }
+    }
+   },
+   "gaps": []
+  },
+  {
+   "number": 3696,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-2 \u2014 StudySprint: originality contrast (copy, pre-Nov 4)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3696",
+   "created_at": "2026-11-02T09:31:30Z",
+   "surface_id": "RFP-D1-2",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-D1-2"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "copy pass | 2026-11-02 | 2026-11-03 | FEATURES.md + D0 record\nD1 verification + sync | 2026-11-03 | 2026-11-04 | copy pass"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "n/a"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "Scope creep into the frozen submission surfaces (copy RFPs are text-only; build RFPs are post-freeze)."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "FEATURES.md (evidence-gated planning) \u00b7 D0 Decider/oracle record \u00b7 D1 doc-of-record rubric."
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-12-02T10:29Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 8.54 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-12-02T10:29Z"
+    },
+    "effective_score": 8.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 0.0,
+      "effective": 8.54
+     }
+    ],
+    "trigger": "delphi-tick",
+    "input_hash": "9817a3f8b876",
+    "comment_id": 6574882099,
+    "created_at": "2026-11-02T10:29:33Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41427635607 / #3696#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41427635607 / #3696#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "1 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41427635607 / #3696#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41427635607 / #3696#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41427635607 / #3696#r1"
+     }
+    ],
+    "oracle": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid. = None , reset n/a  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/3696))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-D1-2",
+      "item_id": "delphi:#3696",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-2 \u2014 StudySprint: originality contrast (copy, pre-Nov 4)",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 8.54 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3696"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3696",
+      "observed_at": "2026-11-02T10:29:32Z",
+      "confidence": 0.34,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-12-02T10:29Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-D1-2 -> parked eff=8.54 band=Backlog rfp=#3696 forecast=fail ts=2026-11-02T10:29:32Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#3696",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-02T10:29:32Z",
+      "ended_at": "2026-11-02T10:29:32Z",
+      "trigger": "delphi-tick"
+     }
+    }
+   },
+   "gaps": []
+  },
+  {
+   "number": 3697,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-3 \u2014 StudySprint: reading pipeline \u00a71b full build (post-Nov 4)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3697",
+   "created_at": "2026-11-02T09:31:32Z",
+   "surface_id": "RFP-D1-3",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-D1-3"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "build | 2026-11-05 | 2026-11-12 | FEATURES.md \u00a71b (post-freeze)\nD1 verification + sync | 2026-11-12 | 2026-11-14 | build"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "n/a"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "Scope creep into the frozen submission surfaces (copy RFPs are text-only; build RFPs are post-freeze)."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "FEATURES.md \u00a71b \u00b7 shipped reader batch (study_reader.py, PR #3102)."
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-12-02T10:29Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 8.54 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-12-02T10:29Z"
+    },
+    "effective_score": 8.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 0.0,
+      "effective": 8.54
+     }
+    ],
+    "trigger": "delphi-tick",
+    "input_hash": "e35fd6e48f4e",
+    "comment_id": 6574882819,
+    "created_at": "2026-11-02T10:29:35Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41427635607 / #3697#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41427635607 / #3697#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "1 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41427635607 / #3697#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41427635607 / #3697#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41427635607 / #3697#r1"
+     }
+    ],
+    "oracle": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid. = None , reset n/a  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/3697))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-D1-3",
+      "item_id": "delphi:#3697",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-3 \u2014 StudySprint: reading pipeline \u00a71b full build (post-Nov 4)",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 8.54 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3697"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3697",
+      "observed_at": "2026-11-02T10:29:35Z",
+      "confidence": 0.34,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-12-02T10:29Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-D1-3 -> parked eff=8.54 band=Backlog rfp=#3697 forecast=fail ts=2026-11-02T10:29:35Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#3697",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-02T10:29:35Z",
+      "ended_at": "2026-11-02T10:29:35Z",
+      "trigger": "delphi-tick"
+     }
+    }
+   },
+   "gaps": []
+  },
+  {
+   "number": 3698,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-4 \u2014 StudySprint: multi-course intake + exam countdown + .ics export (post-Nov 4)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3698",
+   "created_at": "2026-11-02T09:31:34Z",
+   "surface_id": "RFP-D1-4",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-D1-4"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "build | 2026-11-05 | 2026-11-12 | FEATURES.md (post-freeze)\nD1 verification + sync | 2026-11-12 | 2026-11-14 | build"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "n/a"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "Scope creep into the frozen submission surfaces (copy RFPs are text-only; build RFPs are post-freeze)."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "FEATURES.md \u00b7 v0.2.0 release record."
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-12-02T10:29Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 8.54 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-12-02T10:29Z"
+    },
+    "effective_score": 8.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 0.0,
+      "effective": 8.54
+     }
+    ],
+    "trigger": "delphi-tick",
+    "input_hash": "f221e0c39ee5",
+    "comment_id": 6574883606,
+    "created_at": "2026-11-02T10:29:37Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41427635607 / #3698#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41427635607 / #3698#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "1 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41427635607 / #3698#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41427635607 / #3698#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41427635607 / #3698#r1"
+     }
+    ],
+    "oracle": "n/a \u2014 internal copy/build work on the D1 entry; \u2205 vendor surface bid. = None , reset n/a  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/3698))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-D1-4",
+      "item_id": "delphi:#3698",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-4 \u2014 StudySprint: multi-course intake + exam countdown + .ics export (post-Nov 4)",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 8.54 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3698"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/3698",
+      "observed_at": "2026-11-02T10:29:37Z",
+      "confidence": 0.34,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-12-02T10:29Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-D1-4 -> parked eff=8.54 band=Backlog rfp=#3698 forecast=fail ts=2026-11-02T10:29:37Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#3698",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-02T10:29:37Z",
+      "ended_at": "2026-11-02T10:29:37Z",
+      "trigger": "delphi-tick"
+     }
+    }
+   },
+   "gaps": []
+  },
+  {
+   "number": 4110,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-5 \u2014 Memory-methods expansion (v0.4.0 scope)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4110",
+   "created_at": "2026-11-03T08:57:17Z",
+   "surface_id": null,
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": null
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T10:22Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T10:22Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "opened",
+    "input_hash": "ef9f14afaf2c",
+    "comment_id": 6601057808,
+    "created_at": "2026-11-03T10:22:28Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41618655548 / #4110#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41618655548 / #4110#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41618655548 / #4110#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41618655548 / #4110#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41618655548 / #4110#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4110))",
+    "records": {
+     "foresight": {
+      "resource_id": "issue-4110",
+      "item_id": "delphi:#4110",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-5 \u2014 Memory-methods expansion (v0.4.0 scope)",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4110"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4110",
+      "observed_at": "2026-11-03T10:22:27Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T10:22Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] issue-4110 -> parked eff=9.12 band=Medium rfp=#4110 forecast=fail ts=2026-11-03T10:22:27Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4110",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T10:22:27Z",
+      "ended_at": "2026-11-03T10:22:27Z",
+      "trigger": "opened"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'surface_id' absent from the filing",
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4156,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-6 \u2014 Calendar, geography & state awareness (v0.5.0 scope)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4156",
+   "created_at": "2026-11-03T10:21:54Z",
+   "surface_id": null,
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": null
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T10:22Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T10:22Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "opened",
+    "input_hash": "c502890e742e",
+    "comment_id": 6601058485,
+    "created_at": "2026-11-03T10:22:30Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41618655548 / #4156#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41618655548 / #4156#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41618655548 / #4156#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41618655548 / #4156#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41618655548 / #4156#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4156))",
+    "records": {
+     "foresight": {
+      "resource_id": "issue-4156",
+      "item_id": "delphi:#4156",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-6 \u2014 Calendar, geography & state awareness (v0.5.0 scope)",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4156"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4156",
+      "observed_at": "2026-11-03T10:22:30Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T10:22Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] issue-4156 -> parked eff=9.12 band=Medium rfp=#4156 forecast=fail ts=2026-11-03T10:22:30Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4156",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T10:22:30Z",
+      "ended_at": "2026-11-03T10:22:30Z",
+      "trigger": "opened"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'surface_id' absent from the filing",
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4240,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-7 \u2014 EGM-verified goldfish findings: D1 surfaces v0.1.0 defect batch",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4240",
+   "created_at": "2026-11-03T11:51:37Z",
+   "surface_id": "RFP-D1-7",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-D1-7"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "Findings are build-ready now; sequencing by severity (blocks-use, then degrades-use, then polish). The D1 wall Nov 4 23:59 PT governs the submission surfaces as shipped; these are post-submission build items unless main rules the blocks-use item (#4213) submission-critical."
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T12:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T12:21Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "446a1f2267f8",
+    "comment_id": 6603651582,
+    "created_at": "2026-11-03T12:21:35Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41634987484 / #4240#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41634987484 / #4240#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41634987484 / #4240#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41634987484 / #4240#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41634987484 / #4240#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4240))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-D1-7",
+      "item_id": "delphi:#4240",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-7 \u2014 EGM-verified goldfish findings: D1 surfaces v0.1.0 defect batch",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4240"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4240",
+      "observed_at": "2026-11-03T12:21:34Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T12:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-D1-7 -> parked eff=9.12 band=Medium rfp=#4240 forecast=fail ts=2026-11-03T12:21:34Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4240",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T12:21:34Z",
+      "ended_at": "2026-11-03T12:21:34Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4281,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-8 \u2014 EGM instance #1b: Web Design set (6 new verified + 6 convergent)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4281",
+   "created_at": "2026-11-03T12:42:14Z",
+   "surface_id": "RFP-D1-8",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-D1-8"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane\nBuild sequencing (post-score, main's routing): scheduler-integrity pair first (#4231, #4232 - the method itself), then #4234 (grade validity), #4228 (Today contract), #4230 (Reader content), #4237 (failure state)."
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T12:43Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T12:43Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "0afc5476de70",
+    "comment_id": 6604093401,
+    "created_at": "2026-11-03T12:43:54Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41637798794 / #4281#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41637798794 / #4281#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41637798794 / #4281#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41637798794 / #4281#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41637798794 / #4281#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4281))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-D1-8",
+      "item_id": "delphi:#4281",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-8 \u2014 EGM instance #1b: Web Design set (6 new verified + 6 convergent)",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4281"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4281",
+      "observed_at": "2026-11-03T12:43:54Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T12:43Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-D1-8 -> parked eff=9.12 band=Medium rfp=#4281 forecast=fail ts=2026-11-03T12:43:54Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4281",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T12:43:54Z",
+      "ended_at": "2026-11-03T12:43:54Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4295,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-D1-8 \u2014 historical course-catalog index \u2192 syllabus prediction (confirmable priors)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4295",
+   "created_at": "2026-11-03T12:56:36Z",
+   "surface_id": null,
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": null
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T12:57Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T12:57Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "opened",
+    "input_hash": "32f076134003",
+    "comment_id": 6604390450,
+    "created_at": "2026-11-03T12:57:18Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41639968034 / #4295#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41639968034 / #4295#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41639968034 / #4295#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41639968034 / #4295#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41639968034 / #4295#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4295))",
+    "records": {
+     "foresight": {
+      "resource_id": "issue-4295",
+      "item_id": "delphi:#4295",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-D1-8 \u2014 historical course-catalog index \u2192 syllabus prediction (confirmable priors)",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4295"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4295",
+      "observed_at": "2026-11-03T12:57:17Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T12:57Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] issue-4295 -> parked eff=9.12 band=Medium rfp=#4295 forecast=fail ts=2026-11-03T12:57:17Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4295",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T12:57:17Z",
+      "ended_at": "2026-11-03T12:57:17Z",
+      "trigger": "opened"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'surface_id' absent from the filing",
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4297,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-EGM2-A1 \u2014 EGM instance #2 test filing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4297",
+   "created_at": "2026-11-03T13:05:05Z",
+   "surface_id": "RFP-EGM2-A1",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-EGM2-A1"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T13:48Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T13:48Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "61c4b83b74ad",
+    "comment_id": 6605522967,
+    "created_at": "2026-11-03T13:48:25Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41647480406 / #4297#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41647480406 / #4297#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41647480406 / #4297#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41647480406 / #4297#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41647480406 / #4297#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4297))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-EGM2-A1",
+      "item_id": "delphi:#4297",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-EGM2-A1 \u2014 EGM instance #2 test filing",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4297"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4297",
+      "observed_at": "2026-11-03T13:48:25Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T13:48Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-EGM2-A1 -> parked eff=9.12 band=Medium rfp=#4297 forecast=fail ts=2026-11-03T13:48:25Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4297",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T13:48:25Z",
+      "ended_at": "2026-11-03T13:48:25Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4298,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-EGM2-A2 \u2014 EGM instance #2 test filing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4298",
+   "created_at": "2026-11-03T13:05:07Z",
+   "surface_id": "RFP-EGM2-A2",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-EGM2-A2"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T13:48Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T13:48Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "2af6593b3dcc",
+    "comment_id": 6605523721,
+    "created_at": "2026-11-03T13:48:27Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41647480406 / #4298#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41647480406 / #4298#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41647480406 / #4298#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41647480406 / #4298#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41647480406 / #4298#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4298))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-EGM2-A2",
+      "item_id": "delphi:#4298",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-EGM2-A2 \u2014 EGM instance #2 test filing",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4298"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4298",
+      "observed_at": "2026-11-03T13:48:27Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T13:48Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-EGM2-A2 -> parked eff=9.12 band=Medium rfp=#4298 forecast=fail ts=2026-11-03T13:48:27Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4298",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T13:48:27Z",
+      "ended_at": "2026-11-03T13:48:27Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4299,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-EGM2-A3 \u2014 EGM instance #2 test filing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4299",
+   "created_at": "2026-11-03T13:05:10Z",
+   "surface_id": "RFP-EGM2-A3",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-EGM2-A3"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "panel rounds | T0 | T0 | -"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T13:48Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T13:48Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "e7ad70a54748",
+    "comment_id": 6605524474,
+    "created_at": "2026-11-03T13:48:29Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41647480406 / #4299#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41647480406 / #4299#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41647480406 / #4299#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41647480406 / #4299#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41647480406 / #4299#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4299))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-EGM2-A3",
+      "item_id": "delphi:#4299",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-EGM2-A3 \u2014 EGM instance #2 test filing",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4299"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4299",
+      "observed_at": "2026-11-03T13:48:29Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T13:48Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-EGM2-A3 -> parked eff=9.12 band=Medium rfp=#4299 forecast=fail ts=2026-11-03T13:48:29Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4299",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T13:48:29Z",
+      "ended_at": "2026-11-03T13:48:29Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4300,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-EGM2-B1 \u2014 EGM instance #2 test filing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4300",
+   "created_at": "2026-11-03T13:05:12Z",
+   "surface_id": "RFP-EGM2-B1",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-EGM2-B1"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T13:48Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T13:48Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "19f3d1d7b822",
+    "comment_id": 6605525249,
+    "created_at": "2026-11-03T13:48:31Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41647480406 / #4300#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41647480406 / #4300#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41647480406 / #4300#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41647480406 / #4300#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41647480406 / #4300#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4300))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-EGM2-B1",
+      "item_id": "delphi:#4300",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-EGM2-B1 \u2014 EGM instance #2 test filing",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4300"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4300",
+      "observed_at": "2026-11-03T13:48:31Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T13:48Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-EGM2-B1 -> parked eff=9.12 band=Medium rfp=#4300 forecast=fail ts=2026-11-03T13:48:31Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4300",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T13:48:31Z",
+      "ended_at": "2026-11-03T13:48:31Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4301,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-EGM2-B2 \u2014 EGM instance #2 test filing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4301",
+   "created_at": "2026-11-03T13:05:14Z",
+   "surface_id": "RFP-EGM2-B2",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-EGM2-B2"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T13:48Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T13:48Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "7c30be0ef007",
+    "comment_id": 6605525978,
+    "created_at": "2026-11-03T13:48:33Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41647480406 / #4301#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41647480406 / #4301#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41647480406 / #4301#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41647480406 / #4301#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41647480406 / #4301#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4301))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-EGM2-B2",
+      "item_id": "delphi:#4301",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-EGM2-B2 \u2014 EGM instance #2 test filing",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4301"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4301",
+      "observed_at": "2026-11-03T13:48:33Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T13:48Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-EGM2-B2 -> parked eff=9.12 band=Medium rfp=#4301 forecast=fail ts=2026-11-03T13:48:33Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4301",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T13:48:33Z",
+      "ended_at": "2026-11-03T13:48:33Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4302,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-EGM2-B3 \u2014 EGM instance #2 test filing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4302",
+   "created_at": "2026-11-03T13:05:17Z",
+   "surface_id": "RFP-EGM2-B3",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-EGM2-B3"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-17T13:48Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-17T13:48Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "6f0a30330928",
+    "comment_id": 6605526759,
+    "created_at": "2026-11-03T13:48:35Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-41647480406 / #4302#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-41647480406 / #4302#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-41647480406 / #4302#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-41647480406 / #4302#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-41647480406 / #4302#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/4302))",
+    "records": {
+     "foresight": {
+      "resource_id": "RFP-EGM2-B3",
+      "item_id": "delphi:#4302",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] RFP-EGM2-B3 \u2014 EGM instance #2 test filing",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4302"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4302",
+      "observed_at": "2026-11-03T13:48:35Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-17T13:48Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] RFP-EGM2-B3 -> parked eff=9.12 band=Medium rfp=#4302 forecast=fail ts=2026-11-03T13:48:35Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#4302",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-11-03T13:48:35Z",
+      "ended_at": "2026-11-03T13:48:35Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ]
+  },
+  {
+   "number": 4495,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-SYSREV-C1 \u2014 Podium ML test plan (system review)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4495",
+   "created_at": "2026-11-03T17:19:55Z",
+   "surface_id": "RFP-SYSREV-C1",
+   "lane": null,
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-SYSREV-C1"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "dataset tidy + receipts | 2026-11-04 | 2026-11-08 | none\nfeature-tagging + agreement check | 2026-11-08 | 2026-11-12 | dataset tidy\ntests 1/2/5 pre-registered + run | 2026-11-12 | 2026-11-19 | tagging\ntests 3/4/6 as data allows | 2026-11-19 | 2026-11-30 | tests 1/2/5"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": null,
+   "responses": null,
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing",
+    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
+    "no delphi: status label (shadow/promoted/parked/converged) applied"
+   ]
+  },
+  {
+   "number": 4496,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] RFP-SYSREV-C2 \u2014 Crawl/ingest/store pipeline (system review)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4496",
+   "created_at": "2026-11-03T17:20:04Z",
+   "surface_id": "RFP-SYSREV-C2",
+   "lane": null,
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "RFP-SYSREV-C2"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "source registry + receipts schema | 2026-11-04 | 2026-11-08 | none\ncrawl + change detection v1 | 2026-11-08 | 2026-11-15 | schema\nNeon store + repo snapshots + version pin | 2026-11-15 | 2026-11-22 | v1\nconsumer migration (podium dataset first) | 2026-11-22 | 2026-11-30 | store live"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": null,
+   "responses": null,
+   "gaps": [
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing",
+    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
+    "no delphi: status label (shadow/promoted/parked/converged) applied"
+   ]
   }
  ],
  "segments": {
@@ -6259,6 +9421,24 @@
     "gate_scored": 1
    }
   ],
-  "unassigned": []
+  "unassigned": [
+   3695,
+   3696,
+   3697,
+   3698,
+   4110,
+   4156,
+   4240,
+   4281,
+   4295,
+   4297,
+   4298,
+   4299,
+   4300,
+   4301,
+   4302,
+   4495,
+   4496
+  ]
  }
 }

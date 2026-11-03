@@ -1075,14 +1075,22 @@
    "stake": {
     "kind": "soft_quota_token (provider credit — house money)",
     "instrument": "Vultr credit $200.00, applied 2026-11-03, expires ~2026-12-03 (use-it-or-lose-it; no cash at risk)",
-    "deployment_rule": "the position is taken by SPENDING the credit: every $ of burn (instances + inference, at plans-API rates) is stake deployed on the D2 entry's win expectation; unspent credit at expiry = stake never placed",
+    "deployment_rule": "the position is taken by SPENDING the credit: every $ of burn (instances + inference, at plans-API rates) is stake deployed on the D2 entry's win expectation; unspent credit at expiry = stake never placed — a NEUTRAL state, not a loss (owner refinement 2026-11-03)",
     "metering": "quota wiring provider row vultr {entitlement 200.00 · burn legs instances + inference}; D2 seat supplies daily credit ground-truth in build week",
     "deployed_to_date": null
    },
    "basis": "owner framing direct to the D2 seat 2026-11-03 (the use of the Vultr credits is itself a wager on the win, placed with house credits) + D2 entry records D2-3/D2-4/D2-5 in this book",
    "precondition": "D2-4-submission-landed; resolution source of record = D2 submission confirmation_ref on lablab + official results",
    "opened": "2026-11-03",
-   "status": "open"
+   "status": "open",
+   "payout": {
+    "structure": "FIXED — burn does not raise the win amount by a cent (owner refinement 2026-11-03)",
+    "pool_total": "$14,000",
+    "first_place": "$5,000 cash + $3,000 credits (tiers of record)",
+    "subject_tier": "top-3 placement per D2-5; amounts per the tiers of record"
+   },
+   "dilution_note": "stake rises against a FIXED payout => the position dilutes as burn grows: rational spend stops where marginal delta-p(win) per $ approaches 0; past that point extra burn wagers more for the identical return. Allocations argue their marginal delta-p, never their total spend.",
+   "amended": "2026-11-03 (owner refinement via D2 seat: fixed payout + dilution + unspent-neutral)"
   }
  ]
 }

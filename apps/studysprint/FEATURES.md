@@ -76,6 +76,35 @@ direct-PDF chapter reading as the reading experience.
 
 **Built (v0.4.0, 2026-11-03; RFP-D1-3 / issue #4111):** all six §1b stages are implemented in `study_pipeline.py` with tests — finder (confirm-before-plan) -> OCR intake -> structure -> per-chapter term bank (behind the reader's term-lookup hook) -> term emphasis -> hypothes.is layer. The hypothes.is leg implements option (3) of the #3697 evaluation — API-only annotations over reader sections in the W3C Web Annotation model; the owned client_fork revival and the hosted embed remain view-surface choices that render on top of the same annotation data.
 
+## 1c. Memory methods (RFP-D1-5; built v0.4.0, 2026-11-03)
+
+How material gets encoded, paced, and recalled in the moment —
+`study_memory.py`, all six with tests. Each entry carries its
+evidence grade and its claims ceiling; the ceilings bind the copy.
+
+- ✓ **Method of loci (Temple Memory)**: syllabus chapters -> a
+  palace route; term-bank items placed at loci; walk-mode review
+  scores ordered recall. Evidence: Dresler et al. 2017 (Neuron)
+  26 -> 62 of 72 words, durable 4 months; BJOP 2025 meta-analysis
+  d = 0.88 serial recall, GRADE low. **Ceiling: ordered/concrete
+  recall, not understanding.**
+- ✓ **Pomodoro session engine**: 25/5 blocks x4 + long break;
+  check-in = block completion; adaptive block length on streaks.
+  Evidence: fatigue down ~20%, self-rated focus up; no learning
+  gain proven. **Ceiling: pacing/starting, not memory.**
+- ✓ **Retrievability notifications**: fire when a card's FSRS
+  retrievability crosses the threshold; the reminder carries the
+  cue + a one-tap grade (retrieval inside the reminder) and
+  implementation-intention phrasing.
+- ✓ **Feynman explain-back**: graded against verified evidence
+  only (key-term coverage); no verified evidence -> abstain;
+  thin coverage -> escalate with the missing terms named.
+- ✓ **Interleaved quiz/card sessions**: quiz prompts and due SR
+  cards mixed round-robin across topics, deterministically.
+- ✓ **Leitner boxes**: the plain-language onboarding scheduler —
+  five boxes, knew it -> up, missed -> back to box 1, every move
+  receipt-stamped with a plain-language explanation.
+
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic
 - ✓ Re-plan on missed week (sessions carried forward, flagged)

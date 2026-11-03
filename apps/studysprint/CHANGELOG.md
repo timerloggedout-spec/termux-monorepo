@@ -43,6 +43,23 @@ Implementation Assurance seat), session
   escaping), with a parse-back validator (`validate_ics`).
 - Tests: `tests/test_study_courses.py` covers every public
   function in `study_courses.py`.
+- Memory methods (`study_memory.py`), all six RFP-D1-5 items, each
+  carrying its evidence grade and claims ceiling in code, receipts,
+  and FEATURES: (1) method of loci — chapters -> palace route,
+  term-bank items at loci, walk-mode review of ordered recall
+  (ceiling: ordered/concrete recall, not understanding);
+  (2) Pomodoro session engine — 25/5 blocks x4 + long break,
+  check-in = block completion, adaptive block length (ceiling:
+  pacing/starting, not memory); (3) retrievability notifications —
+  fire at the FSRS threshold with the cue + one-tap grade in the
+  reminder, implementation-intention phrasing; (4) Feynman
+  explain-back graded against verified evidence only (abstain with
+  no evidence, escalate on thin coverage); (5) interleaved
+  quiz/card sessions (deterministic rotation, mixed topics);
+  (6) Leitner boxes — the plain-language onboarding scheduler,
+  receipt-stamped.
+- Tests: `tests/test_study_memory.py` covers every public
+  function in `study_memory.py`.
 
 ## [0.3.0] — 2026-11-02
 

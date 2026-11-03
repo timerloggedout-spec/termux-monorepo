@@ -106,7 +106,7 @@ Before promotion:
 7. Record current workflow/run/job/artifact references.
 8. Re-fetch the final repository and provider state before declaring validated.
 
-## 7. Failure semantics
+## 8. Failure semantics
 
 Never map queued/running to success. Distinguish authentication, admission, queue, execution, effect, pagination, rate-limit, timeout, schema, and provenance failures. Retries must be bounded and idempotent. A provider outage must not corrupt repository-owned evidence or block unrelated lanes.
 

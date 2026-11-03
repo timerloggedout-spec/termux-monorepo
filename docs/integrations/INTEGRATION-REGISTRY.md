@@ -8,7 +8,7 @@
 
 | Integration | Priority | Current evidence | Repository adapter | Intended role |
 |---|---:|---|---|---|
-| Superpowers | P0 | Skill installed in current assistant session | Repository-local skill being added in this branch | Engineering methodology |
+| Superpowers | P0 | Skill installed in current assistant session | Repository-local skill available in master | Engineering methodology |
 | API Impact Mapper | P0 | Connector tools exposed in current session | Implemented (advisory; CI validation pending) | API evolution and PR impact analysis |
 | Domino Data Lab | P1 | No live connector tools exposed in this session; skill docs are available in assistant environment | Planned | Reproducible ML/research operations |
 | EmpirioLabs AI | P1 | Connector tools exposed in current session | Planned | Model/agent research and benchmarking |

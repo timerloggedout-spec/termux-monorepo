@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 519,
+    "open_issues": 520,
     "open_prs": 258,
     "pr_classes": {
       "CANDIDATE": 121,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 126,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 127,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 285,
+      "issues": 286,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T22:34:50Z",
+  "generated_at": "2026-11-03T22:44:51Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "2d22911d4d"
+    "sha": "451a46d5e1"
   },
   "prs": [
     {
@@ -294,20 +294,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7cc7a79979",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4622,
-      "title": "docs(ops): queue dependency tiers \u2014 drain-order evidence + tier model + enforcement contract",
-      "updated_at": "2026-11-03T22:07:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -1069,20 +1055,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b9e3ca4143",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T22:13:54Z"
     },
     {
       "class": "CANDIDATE",
@@ -2001,6 +1973,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "7cc7a79979",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4622,
+      "title": "docs(ops): queue dependency tiers \u2014 drain-order evidence + tier model + enforcement contract",
+      "updated_at": "2026-11-03T22:07:07Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "3cac21809c",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2533,12 +2519,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "c7c8d6a5ed",
+      "head_sha": "e7480ed080",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T22:43:39Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "96b41d528e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T22:28:17Z"
+      "updated_at": "2026-11-03T22:42:52Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3188,15 +3188,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "a6d57fab50",
+      "head_sha": "7517365195",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T22:31:34Z"
+      "updated_at": "2026-11-03T22:41:54Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3770,7 +3770,7 @@
       "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-11-03T22:14:55Z"
+      "updated_at": "2026-11-03T22:39:11Z"
     }
   ],
   "schema": "operator-matrix/v1",

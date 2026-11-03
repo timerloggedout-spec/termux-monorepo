@@ -60,6 +60,21 @@ function positionShowsComplete(raw) {
   return /"complete"\s*:\s*true/.test(flat);
 }
 
+function parsePosition() {
+  const raw = readPositionRaw();
+  if (!raw) return null;
+  const flat = raw.replace(/\\/g, '');
+  const lv = /"levelId"\s*:\s*"([^"]+)"/.exec(flat);
+  const st = /"stepId"\s*:\s*"([^"]+)"/.exec(flat);
+  const cp = /"complete"\s*:\s*(true|false)/.exec(flat);
+  if (!lv && !st) return null;
+  return {
+    levelId: lv ? lv[1] : null,
+    stepId: st ? st[1] : null,
+    complete: cp ? cp[1] === 'true' : false,
+  };
+}
+
 let SESSION_CANDIDATES = [];
 let CTX = null;
 function buildSessionCandidates(context) {
@@ -161,6 +176,16 @@ async function run() {
   }
   phaseLog(`session after start: len=${readSession().length}`);
 
+  // Workshop mode (driver v4): step-loop replay of a manifest through a
+  // real interactive bash (the camper shell contract: HISTFILE at the
+  // workspace parent, course .bashrc prompt hooks maintain test/.cwd and
+  // test/.next_command), one run_test per step, position-gated.
+  const manifestPath = process.env.CODEROAD_MANIFEST_PATH || '';
+  if (manifestPath && fs.existsSync(manifestPath)) {
+    await runWorkshop(manifestPath);
+    return;
+  }
+
   let attempts = 0;
   let ok = false;
   let lastRaw = '';
@@ -195,6 +220,108 @@ async function run() {
     detail: ok ? 'session state shows step complete' : 'no completion marker in session state',
     session_tail: (lastRaw || readSession()).slice(-2000),
   }));
+}
+
+async function runWorkshop(manifestPath) {
+  const man = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const steps = man.steps || [];
+  const folder = (vscode.workspace.workspaceFolders || [])[0];
+  const wsPath = folder ? folder.uri.fsPath : '/workspace/project';
+  const parent = path.dirname(wsPath);
+  phaseLog(`workshop loop: ${steps.length} steps, ws=${wsPath}`);
+
+  // The course setup (run by coderoad.start) installs the camper .bashrc;
+  // wait until its prompt hooks are in place before spawning the shell.
+  const bashrc = path.join(process.env.HOME || '', '.bashrc');
+  for (let i = 0; i < 30; i++) {
+    try {
+      if (fs.readFileSync(bashrc, 'utf8').includes('PROMPT_COMMAND')) break;
+    } catch (e) { /* not yet */ }
+    await sleep(2000);
+  }
+  const { spawn } = require('child_process');
+  const shell = spawn('bash', ['-i'], {
+    cwd: wsPath,
+    env: { ...process.env, TERM: 'dumb', HISTFILE: path.join(parent, '.bash_history') },
+  });
+  shell.stdout.on('data', (d) => phaseLog(`shell-out: ${String(d).slice(0, 160)}`));
+  shell.stderr.on('data', (d) => phaseLog(`shell-err: ${String(d).slice(0, 160)}`));
+  shell.on('exit', (c) => phaseLog(`shell exited rc=${c}`));
+  const send = async (cmd, settle) => {
+    try { shell.stdin.write(cmd + '\n'); } catch (e) { phaseLog(`send failed: ${e}`); }
+    await sleep(settle || 900);
+  };
+  await sleep(2500);
+
+  let completed = 0;
+  const failures = [];
+  let consec = 0;
+  const deadline = Date.now() + 50 * 60 * 1000;
+  for (let idx = 0; idx < steps.length; idx++) {
+    if (Date.now() > deadline) { failures.push('deadline'); break; }
+    const entry = steps[idx];
+    // Sync gate: act only once CodeRoad's position sits at this step.
+    let synced = false;
+    for (let i = 0; i < 25 && !synced; i++) {
+      const pos = parsePosition();
+      if (pos && pos.levelId === entry.level) synced = true;
+      else await sleep(1200);
+    }
+    if (!synced) {
+      failures.push(`${entry.step}:sync`);
+      phaseLog(`step ${entry.step}: position never synced; aborting loop`);
+      break;
+    }
+    let advanced = false;
+    for (let attempt = 1; attempt <= 3 && !advanced; attempt++) {
+      const cmds = (attempt >= 2 && entry.cd_first)
+        ? [entry.cd_first, ...(entry.commands || [])]
+        : (entry.commands || []);
+      for (const c of cmds) {
+        phaseLog(`step ${entry.step} attempt ${attempt}: $ ${c}`);
+        await send(c, 900);
+      }
+      await sleep(1200);
+      try {
+        await vscode.commands.executeCommand('coderoad.run_test');
+        phaseLog(`step ${entry.step} run_test attempt ${attempt} returned`);
+      } catch (e) { phaseLog(`step ${entry.step} run_test threw: ${e}`); }
+      for (let i = 0; i < 20 && !advanced; i++) {
+        await sleep(1200);
+        const pos = parsePosition();
+        if (!pos) continue;
+        if (pos.levelId !== entry.level) advanced = true;
+        if (pos.complete && idx === steps.length - 1 && pos.levelId === entry.level) advanced = true;
+      }
+    }
+    if (advanced) {
+      completed++;
+      consec = 0;
+      phaseLog(`step ${entry.step} ADVANCED (${completed}/${steps.length})`);
+    } else {
+      failures.push(entry.step);
+      consec++;
+      phaseLog(`step ${entry.step} STALLED (${consec} consecutive)`);
+      if (consec >= 3) { phaseLog('3 consecutive stalls; aborting loop'); break; }
+    }
+  }
+  const pos = parsePosition();
+  const lastLevel = steps.length ? steps[steps.length - 1].level : null;
+  const ok = completed === steps.length ||
+    !!(pos && pos.complete && pos.levelId === lastLevel);
+  try { shell.stdin.write('exit\n'); } catch (e) { /* gone */ }
+  try { shell.kill(); } catch (e) { /* gone */ }
+  fs.writeFileSync(RESULT, JSON.stringify({
+    ok,
+    mode: 'workshop-loop',
+    steps_total: steps.length,
+    steps_completed: completed,
+    failures,
+    detail: ok ? 'all steps advanced; final position complete'
+      : `loop ended: ${completed}/${steps.length} advanced`,
+    session_tail: readPositionRaw().slice(-1200),
+  }));
+  phaseLog(`workshop loop done: ok=${ok} completed=${completed}/${steps.length} failures=${failures.join(',')}`);
 }
 
 module.exports = { activate, deactivate: () => {} };

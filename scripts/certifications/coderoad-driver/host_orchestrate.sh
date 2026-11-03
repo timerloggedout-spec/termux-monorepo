@@ -12,7 +12,23 @@ LOG="$EV/orchestrate.log"
 : > "$LOG"
 WS="$GITHUB_WORKSPACE/project"
 
+# --- Workshop fidelity mode ------------------------------------------------
+# Bash workshops hardcode the camper layout (/workspace/project workspace,
+# /workspace/.bash_history, prompt hooks writing test/.cwd). Reproduce that
+# layout literally instead of shimming every absolute path.
+if [ -n "${CODEROAD_MANIFEST_PATH:-}" ]; then
+  sudo mkdir -p /workspace
+  sudo rm -rf /workspace/project
+  sudo cp -a "$WS" /workspace/project
+  sudo touch /workspace/.bash_history
+  sudo chmod 777 /workspace/.bash_history || true
+  sudo chown -R "$(whoami)" /workspace/project /workspace/.bash_history || true
+  WS=/workspace/project
+  echo "fidelity workspace at $WS" >> "$LOG"
+fi
+
 # --- PostgreSQL container: course pg_hba in place, service up ----------
+if [ "${NEEDS_PG:-1}" = "1" ]; then
 docker rm -f pg > /dev/null 2>&1 || true
 docker run -d --name pg \
   -p 5432:5432 \
@@ -34,11 +50,14 @@ for i in $(seq 1 24); do
   sleep 5
 done
 docker exec pg pg_isready >> "$LOG" 2>&1 || true
+fi
 
 # --- Harness deps on host (CodeRoad setup would run this too) -----------
-if [ -f "$WS/.freeCodeCamp/package.json" ]; then
-  (cd "$WS/.freeCodeCamp" && npm install --no-audit --no-fund 2>&1 | tail -3) >> "$LOG" 2>&1 || true
-fi
+for d in "$WS/.freeCodeCamp" "$WS/freeCodeCamp"; do
+  if [ -f "$d/package.json" ]; then
+    (cd "$d" && npm install --no-audit --no-fund 2>&1 | tail -3) >> "$LOG" 2>&1 || true
+  fi
+done
 
 # --- sudo shim: setup.sh's host-mutating lines no-op (logged) -----------
 SHIM="$HOME/shim"
@@ -85,8 +104,10 @@ LAUNCH=(xvfb-run -a -s "-screen 0 1024x768x24" "$CODE" --no-sandbox
 echo "code launched (host)" >> "$LOG"
 
 # --- Stage the verified solution inside the pg container -----------------
+if [ "${NEEDS_PG:-1}" = "1" ]; then
 docker exec pg bash -c "$STAGE_CMD" > "$EV/stage.log" 2>&1
 echo "stage rc=$?" >> "$LOG"
+fi
 
 # TCP probe from the host (the tests connect via localhost:5432 — B2's
 # direct mocha died with ECONNRESET despite a healthy socket-side stage).
@@ -141,7 +162,7 @@ sleep 25
 { ps aux | grep -iE "xvfb|code|electron" | grep -v grep | head -8; free -m | head -2; } \
   > "$EV/session-early.txt" 2>&1 || true
 relaunches=0
-for i in $(seq 1 72); do
+for i in $(seq 1 "${RESULT_WAIT_LOOPS:-72}"); do
   [ -f "$EV/RESULT.json" ] && break
   if ! pgrep -f "VSCode-linux-x64/code" > /dev/null 2>&1 && [ $relaunches -lt 4 ]; then
     relaunches=$((relaunches+1))
@@ -208,6 +229,18 @@ for key in (b'coderoad:position', b'coderoad:currentTutorial'):
 PYEOF
   done
 } > "$EV/coderoad-state.txt" 2>&1 || true
+
+if [ -n "${CODEROAD_MANIFEST_PATH:-}" ]; then
+  {
+    echo "== bash history (workshop replay) =="
+    wc -l /workspace/.bash_history 2>/dev/null || true
+    tail -6 /workspace/.bash_history 2>/dev/null || true
+    echo "== .cwd tail =="
+    tail -6 "$WS/freeCodeCamp/test/.cwd" 2>/dev/null || true
+    echo "== .next_command tail =="
+    tail -6 "$WS/freeCodeCamp/test/.next_command" 2>/dev/null || true
+  } > "$EV/history-tail.txt" 2>&1 || true
+fi
 
 if [ -f "$EV/RESULT.json" ]; then
   cat "$EV/RESULT.json"

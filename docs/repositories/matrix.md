@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-02T12:27:23.383625Z`
+Observed: `2026-11-03T11:57:51.011347Z`
 
 ## Navigation
 
@@ -16,7 +16,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 
 ## Changes since previous snapshot
 
-- **Added (7):** `timerloggedout-spec/commit-replay`, `timerloggedout-spec/doe`, `timerloggedout-spec/fcc-celestial-bodies-database`, `timerloggedout-spec/fcc-number-guessing-game`, `timerloggedout-spec/fcc-periodic-table-database`, `timerloggedout-spec/fcc-salon-appointment-scheduler`, `timerloggedout-spec/fcc-world-cup-database`
+- **Added (16):** `P-r-e-m-i-u-m/open-source-starter-lab`, `q/K-DE-Cyberpunk-Neon`, `q/aws-tutorial`, `q/badatcomputers`, `q/circuitpython-datadog`, `q/dedrop`, `q/django-bcrypt`, `q/django-la-facebook`, `q/django-pagination`, `q/elasticpony`, `q/geo-tutorial`, `q/magtag-home`, `q/pokegb`, `q/q`, `q/q.github.io`, `q/vesta`
 - **Removed (0):** —
 - **Provenance changed (0):** —
 
@@ -1137,7 +1137,6 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [withkynam/vibecode-pro-max-kit](https://github.com/withkynam/vibecode-pro-max-kit) | starred | agent, ai, context, developer-tools | high | workflow-candidate |
 | [xerj-org/xerj](https://github.com/xerj-org/xerj) | starred | agent, ai, context, developer-tools | high | — |
 | [Dicklesworthstone/storage_ballast_helper](https://github.com/Dicklesworthstone/storage_ballast_helper) | starred | agent, ai, context, developer-tools, platform | high | — |
-| [mksglu/context-mode](https://github.com/mksglu/context-mode) | starred | agent, ai, context, developer-tools, platform | high | — |
 | [wheattoast11/openrouter-deep-research-mcp](https://github.com/wheattoast11/openrouter-deep-research-mcp) | starred, watching | agent, ai, context, developer-tools, research | high | — |
 | [tomkabel/google-botguard-security-research](https://github.com/tomkabel/google-botguard-security-research) | starred | agent, ai, context, developer-tools, research, security | high | — |
 | [OthmaneBlial/term_mcp_deepseek](https://github.com/OthmaneBlial/term_mcp_deepseek) | starred | agent, ai, context, developer-tools, security | high | workflow-candidate |
@@ -1362,6 +1361,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [timerloggedout-spec/metatron_fork](https://github.com/timerloggedout-spec/metatron_fork) | owned, starred | agent, context | high | upstream-comparison |
 | [xorq-labs/xorq](https://github.com/xorq-labs/xorq) | starred | agent, context | high | — |
 | [anymorph-ai/Claudable](https://github.com/anymorph-ai/Claudable) | starred | agent, context, developer-tools | high | — |
+| [mksglu/context-mode](https://github.com/mksglu/context-mode) | starred | agent, context, developer-tools | high | — |
 | [Wbaker7702/ReAgent](https://github.com/Wbaker7702/ReAgent) | starred | agent, context, platform | high | upstream-comparison |
 | [timerloggedout-spec/interpretable-context-methodology_fork](https://github.com/timerloggedout-spec/interpretable-context-methodology_fork) | owned, starred | agent, context, research | high | dependency-candidate, upstream-comparison |
 | [adityahimaone/hermes-agent-rtk-caveman](https://github.com/adityahimaone/hermes-agent-rtk-caveman) | starred | agent, developer-tools | medium | — |
@@ -1952,6 +1952,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [nettee/gemini-cli-proxy](https://github.com/nettee/gemini-cli-proxy) | starred | ai, developer-tools | medium | — |
 | [ohmyzsh/ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) | starred | ai, developer-tools | medium | dependency-candidate |
 | [OrionStarAI/EasyCode-Server-mini](https://github.com/OrionStarAI/EasyCode-Server-mini) | starred | ai, developer-tools | medium | — |
+| [P-r-e-m-i-u-m/open-source-starter-lab](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab) | starred | ai, developer-tools | medium | workflow-candidate |
 | [pacocartones/free-llm-api-hub](https://github.com/pacocartones/free-llm-api-hub) | starred | ai, developer-tools | medium | — |
 | [PaiViji/PythonFinance-PortfolioOptimization](https://github.com/PaiViji/PythonFinance-PortfolioOptimization) | starred | ai, developer-tools | medium | — |
 | [raine/anki-llm](https://github.com/raine/anki-llm) | starred | ai, developer-tools | medium | — |
@@ -2138,6 +2139,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [Pamblam/jSQL](https://github.com/Pamblam/jSQL) | starred | context | high | — |
 | [pengxiao-song/LaWGPT](https://github.com/pengxiao-song/LaWGPT) | starred | context | high | — |
 | [personal-coding/Live-Sports-Arbitrage-Bet-Finder](https://github.com/personal-coding/Live-Sports-Arbitrage-Bet-Finder) | starred | context | high | — |
+| [q/django-pagination](https://github.com/q/django-pagination) | starred | context | high | upstream-comparison |
 | [RanTheUnderOne/Interpreted-Context-Methdology](https://github.com/RanTheUnderOne/Interpreted-Context-Methdology) | starred | context | high | — |
 | [rclone/rclone](https://github.com/rclone/rclone) | starred | context | high | — |
 | [ryankrumenacker/sports-betting-arbitrage-project](https://github.com/ryankrumenacker/sports-betting-arbitrage-project) | starred | context | high | — |
@@ -2254,6 +2256,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [Piebald-AI/awesome-gemini-cli-extensions](https://github.com/Piebald-AI/awesome-gemini-cli-extensions) | starred | developer-tools | medium | — |
 | [powoso/Jules-climateandenvironment](https://github.com/powoso/Jules-climateandenvironment) | starred | developer-tools | medium | — |
 | [python-websockets/websockets](https://github.com/python-websockets/websockets) | starred | developer-tools | medium | dependency-candidate |
+| [q/vesta](https://github.com/q/vesta) | starred | developer-tools | medium | — |
 | [rafaelst97/prototype-clinica-jules](https://github.com/rafaelst97/prototype-clinica-jules) | starred | developer-tools | medium | — |
 | [ratatui/ratatui](https://github.com/ratatui/ratatui) | starred | developer-tools | medium | — |
 | [ray0404/jules-cli](https://github.com/ray0404/jules-cli) | starred | developer-tools | medium | — |
@@ -2471,6 +2474,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [MDK-4203/Competition-Schedular](https://github.com/MDK-4203/Competition-Schedular) | starred | security | medium | — |
 | [mytechnotalent/Reverse-Engineering](https://github.com/mytechnotalent/Reverse-Engineering) | starred | security | medium | — |
 | [octo-sts/app](https://github.com/octo-sts/app) | starred | security | medium | — |
+| [q/dedrop](https://github.com/q/dedrop) | starred | security | medium | upstream-comparison |
 | [ruvnet/RuView](https://github.com/ruvnet/RuView) | starred | security | medium | — |
 | [thekozugroup/Entanglement](https://github.com/thekozugroup/Entanglement) | starred, watching | security | medium | — |
 | [tokyoneon/Chimera](https://github.com/tokyoneon/Chimera) | starred | security | medium | — |
@@ -3374,6 +3378,18 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [pseudobabble/org-gantt](https://github.com/pseudobabble/org-gantt) | starred | unclassified | medium | — |
 | [PyGantt/PyGantt](https://github.com/PyGantt/PyGantt) | starred | unclassified | medium | — |
 | [PyPortfolio/PyPortfolioOpt](https://github.com/PyPortfolio/PyPortfolioOpt) | starred | unclassified | medium | — |
+| [q/aws-tutorial](https://github.com/q/aws-tutorial) | starred | unclassified | medium | — |
+| [q/badatcomputers](https://github.com/q/badatcomputers) | starred | unclassified | medium | — |
+| [q/circuitpython-datadog](https://github.com/q/circuitpython-datadog) | starred | unclassified | medium | dependency-candidate |
+| [q/django-bcrypt](https://github.com/q/django-bcrypt) | starred | unclassified | medium | upstream-comparison |
+| [q/django-la-facebook](https://github.com/q/django-la-facebook) | starred | unclassified | medium | upstream-comparison |
+| [q/elasticpony](https://github.com/q/elasticpony) | starred | unclassified | medium | upstream-comparison |
+| [q/geo-tutorial](https://github.com/q/geo-tutorial) | starred | unclassified | medium | — |
+| [q/K-DE-Cyberpunk-Neon](https://github.com/q/K-DE-Cyberpunk-Neon) | starred | unclassified | medium | upstream-comparison |
+| [q/magtag-home](https://github.com/q/magtag-home) | starred | unclassified | medium | — |
+| [q/pokegb](https://github.com/q/pokegb) | starred | unclassified | medium | upstream-comparison |
+| [q/q](https://github.com/q/q) | starred | unclassified | medium | — |
+| [q/q.github.io](https://github.com/q/q.github.io) | starred | unclassified | medium | — |
 | [qiyuangong/Mondrian](https://github.com/qiyuangong/Mondrian) | starred | unclassified | medium | — |
 | [Qt-Widgets/Signal-Processing-Widget-Custom-Charts-Spectrogram-Bar-Chart](https://github.com/Qt-Widgets/Signal-Processing-Widget-Custom-Charts-Spectrogram-Bar-Chart) | starred | unclassified | medium | — |
 | [qt/qt5](https://github.com/qt/qt5) | starred | unclassified | medium | — |
@@ -4856,7 +4872,6 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [withkynam/vibecode-pro-max-kit](https://github.com/withkynam/vibecode-pro-max-kit) | starred | agent, ai, context, developer-tools | high | workflow-candidate |
 | [xerj-org/xerj](https://github.com/xerj-org/xerj) | starred | agent, ai, context, developer-tools | high | — |
 | [Dicklesworthstone/storage_ballast_helper](https://github.com/Dicklesworthstone/storage_ballast_helper) | starred | agent, ai, context, developer-tools, platform | high | — |
-| [mksglu/context-mode](https://github.com/mksglu/context-mode) | starred | agent, ai, context, developer-tools, platform | high | — |
 | [wheattoast11/openrouter-deep-research-mcp](https://github.com/wheattoast11/openrouter-deep-research-mcp) | starred, watching | agent, ai, context, developer-tools, research | high | — |
 | [tomkabel/google-botguard-security-research](https://github.com/tomkabel/google-botguard-security-research) | starred | agent, ai, context, developer-tools, research, security | high | — |
 | [OthmaneBlial/term_mcp_deepseek](https://github.com/OthmaneBlial/term_mcp_deepseek) | starred | agent, ai, context, developer-tools, security | high | workflow-candidate |
@@ -4950,6 +4965,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [timerloggedout-spec/metatron_fork](https://github.com/timerloggedout-spec/metatron_fork) | owned, starred | agent, context | high | upstream-comparison |
 | [xorq-labs/xorq](https://github.com/xorq-labs/xorq) | starred | agent, context | high | — |
 | [anymorph-ai/Claudable](https://github.com/anymorph-ai/Claudable) | starred | agent, context, developer-tools | high | — |
+| [mksglu/context-mode](https://github.com/mksglu/context-mode) | starred | agent, context, developer-tools | high | — |
 | [Wbaker7702/ReAgent](https://github.com/Wbaker7702/ReAgent) | starred | agent, context, platform | high | upstream-comparison |
 | [timerloggedout-spec/interpretable-context-methodology_fork](https://github.com/timerloggedout-spec/interpretable-context-methodology_fork) | owned, starred | agent, context, research | high | dependency-candidate, upstream-comparison |
 | [Enuclea/AGent-Ada](https://github.com/Enuclea/AGent-Ada) | starred | agent, developer-tools, api-management | high | dependency-candidate |
@@ -5201,6 +5217,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [Pamblam/jSQL](https://github.com/Pamblam/jSQL) | starred | context | high | — |
 | [pengxiao-song/LaWGPT](https://github.com/pengxiao-song/LaWGPT) | starred | context | high | — |
 | [personal-coding/Live-Sports-Arbitrage-Bet-Finder](https://github.com/personal-coding/Live-Sports-Arbitrage-Bet-Finder) | starred | context | high | — |
+| [q/django-pagination](https://github.com/q/django-pagination) | starred | context | high | upstream-comparison |
 | [RanTheUnderOne/Interpreted-Context-Methdology](https://github.com/RanTheUnderOne/Interpreted-Context-Methdology) | starred | context | high | — |
 | [rclone/rclone](https://github.com/rclone/rclone) | starred | context | high | — |
 | [ryankrumenacker/sports-betting-arbitrage-project](https://github.com/ryankrumenacker/sports-betting-arbitrage-project) | starred | context | high | — |
@@ -5918,6 +5935,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [lucasholder/fair](https://github.com/lucasholder/fair) | starred | ai, developer-tools | medium | dependency-candidate |
 | [microsoft/BotFramework-WebChat](https://github.com/microsoft/BotFramework-WebChat) | starred | ai, developer-tools | medium | dependency-candidate |
 | [ohmyzsh/ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) | starred | ai, developer-tools | medium | dependency-candidate |
+| [P-r-e-m-i-u-m/open-source-starter-lab](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab) | starred | ai, developer-tools | medium | workflow-candidate |
 | [PaiViji/PythonFinance-PortfolioOptimization](https://github.com/PaiViji/PythonFinance-PortfolioOptimization) | starred | ai, developer-tools | medium | — |
 | [thirdweb-dev/web3-onboard](https://github.com/thirdweb-dev/web3-onboard) | starred | ai, developer-tools | medium | dependency-candidate |
 | [timerloggedout-spec/anki-llm_fork](https://github.com/timerloggedout-spec/anki-llm_fork) | owned | ai, developer-tools | medium | upstream-comparison |
@@ -5998,6 +6016,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [timerloggedout-spec/playwright-github-actions-reporter](https://github.com/timerloggedout-spec/playwright-github-actions-reporter) | owned | browser | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/selenium-boot](https://github.com/timerloggedout-spec/selenium-boot) | owned | browser | medium | upstream-comparison |
 | [Wbaker7702/webdriverio](https://github.com/Wbaker7702/webdriverio) | starred | browser | medium | dependency-candidate, upstream-comparison |
+| [q/django-pagination](https://github.com/q/django-pagination) | starred | context | high | upstream-comparison |
 | [sagiegurari/cargo-make](https://github.com/sagiegurari/cargo-make) | starred | context | high | workflow-candidate |
 | [timerloggedout-spec/Ciaren](https://github.com/timerloggedout-spec/Ciaren) | owned | context | high | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/dify-mcp-server_fork](https://github.com/timerloggedout-spec/dify-mcp-server_fork) | owned | context | high | upstream-comparison, workflow-candidate |
@@ -6136,6 +6155,7 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [timerloggedout-spec/portals](https://github.com/timerloggedout-spec/portals) | owned | research, platform | high | upstream-comparison |
 | [jacobdjwilson/awesome-annual-security-reports](https://github.com/jacobdjwilson/awesome-annual-security-reports) | starred | security | medium | — |
 | [johnbillion/awesome-github-actions-security](https://github.com/johnbillion/awesome-github-actions-security) | starred | security | medium | workflow-candidate |
+| [q/dedrop](https://github.com/q/dedrop) | starred | security | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-github-actions-security_fork](https://github.com/timerloggedout-spec/awesome-github-actions-security_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-workflows_fork](https://github.com/timerloggedout-spec/awesome-workflows_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/soroban-security-scanner](https://github.com/timerloggedout-spec/soroban-security-scanner) | owned | security | medium | upstream-comparison |
@@ -6293,6 +6313,12 @@ Observed: `2026-11-02T12:27:23.383625Z`
 | [ouyangzhiping/Info-extract](https://github.com/ouyangzhiping/Info-extract) | starred | unclassified | medium | upstream-comparison |
 | [p4lang/PI](https://github.com/p4lang/PI) | starred | unclassified | medium | dependency-candidate |
 | [phaserjs/phaser](https://github.com/phaserjs/phaser) | starred | unclassified | medium | dependency-candidate |
+| [q/circuitpython-datadog](https://github.com/q/circuitpython-datadog) | starred | unclassified | medium | dependency-candidate |
+| [q/django-bcrypt](https://github.com/q/django-bcrypt) | starred | unclassified | medium | upstream-comparison |
+| [q/django-la-facebook](https://github.com/q/django-la-facebook) | starred | unclassified | medium | upstream-comparison |
+| [q/elasticpony](https://github.com/q/elasticpony) | starred | unclassified | medium | upstream-comparison |
+| [q/K-DE-Cyberpunk-Neon](https://github.com/q/K-DE-Cyberpunk-Neon) | starred | unclassified | medium | upstream-comparison |
+| [q/pokegb](https://github.com/q/pokegb) | starred | unclassified | medium | upstream-comparison |
 | [realmorrisliu/openrouter-rs](https://github.com/realmorrisliu/openrouter-rs) | starred, watching | unclassified | medium | dependency-candidate |
 | [render-examples/n8n](https://github.com/render-examples/n8n) | starred | unclassified | medium | — |
 | [render-examples/webhook-github-action](https://github.com/render-examples/webhook-github-action) | starred | unclassified | medium | workflow-candidate |

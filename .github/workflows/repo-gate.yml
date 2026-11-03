@@ -58,6 +58,7 @@ jobs:
       - name: Agent toolchain portfolio and adapter contracts
         run: |
           python3 scripts/ci/validate_agent_toolchain_portfolio.py
+          python3 scripts/ci/validate_agent_toolchain_adapters.py
           python3 -m unittest discover -s tests -p 'test_agent_toolchain_portfolio.py' -v
           python3 -B -m unittest discover -s tests -p 'test_agent_toolchain_adapters.py' -v
 

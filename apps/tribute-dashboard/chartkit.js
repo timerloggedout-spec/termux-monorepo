@@ -30,22 +30,35 @@ const CK = (() => {
      y ticks at min/mid/max and x labels at first/last timestamps -
      never an axis-less sparkline. points = [{t, v}]. */
   function line(points, w = 640, h = 180) {
-    const pts = (points || []).filter(p => p && p.t && typeof p.v === 'number' && isFinite(p.v))
-      .map(p => ({ t: new Date(p.t).getTime(), v: p.v, ts: p.t })).filter(p => isFinite(p.t)).sort((a, b) => a.t - b.t);
-    if (!pts.length) return '<p class="muted">No observations on record.</p>';
+    const pts = (points || []).filter(p => p && p.t)
+      .map(p => ({ t: new Date(p.t).getTime(), v: (typeof p.v === 'number' && isFinite(p.v)) ? p.v : null, ts: p.t }))
+      .filter(p => isFinite(p.t)).sort((a, b) => a.t - b.t);
+    const values = pts.filter(p => p.v !== null).map(p => p.v);
+    if (!values.length) return '<p class="muted">No observations on record.</p>';
     const padL = 52, padR = 10, padT = 10, padB = 20, iw = w - padL - padR, ih = h - padT - padB;
-    const minV = Math.min(...pts.map(p => p.v)), maxV = Math.max(...pts.map(p => p.v)), midV = (minV + maxV) / 2;
+    const minV = Math.min(...values), maxV = Math.max(...values), midV = (minV + maxV) / 2;
     const minT = pts[0].t, maxT = pts[pts.length - 1].t, spanT = Math.max(1, maxT - minT), spanV = Math.max(1e-9, maxV - minV);
     const X = t => padL + (maxT === minT ? iw / 2 : (t - minT) / spanT * iw);
     const Y = v => padT + ih - (maxV === minV ? ih / 2 : (v - minV) / spanV * ih);
-    const parts = ['<svg class="chart" viewBox="0 0 ' + w + ' ' + h + '" role="img">'];
+    const parts = ['<svg class="chart" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Time series chart; missing observations are shown as gaps">'];
     [[maxV, Y(maxV)], [midV, Y(midV)], [minV, Y(minV)]].forEach(([v, y]) => {
       parts.push('<line x1="' + padL + '" y1="' + y + '" x2="' + (w - padR) + '" y2="' + y + '" stroke="currentColor" opacity="0.15"/>');
       parts.push('<text x="0" y="' + (y + 4) + '" font-size="11">' + esc(fmt(v)) + '</text>');
     });
-    const seg = pts.map((p, i) => (i ? 'L' : 'M') + X(p.t).toFixed(1) + ' ' + Y(p.v).toFixed(1)).join(' ');
-    parts.push('<path d="' + seg + '" fill="none" stroke="currentColor" stroke-width="1.5"/>');
-    pts.forEach(p => parts.push('<circle cx="' + X(p.t).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="3" fill="currentColor"><title>' + esc(p.ts) + ' · ' + esc(fmt(p.v)) + '</title></circle>'));
+    let segment = [];
+    const flush = () => {
+      if (segment.length > 1) {
+        const path = segment.map((p, i) => (i ? 'L' : 'M') + X(p.t).toFixed(1) + ' ' + Y(p.v).toFixed(1)).join(' ');
+        parts.push('<path d="' + path + '" fill="none" stroke="currentColor" stroke-width="1.5"/>');
+      }
+      segment = [];
+    };
+    pts.forEach(p => {
+      if (p.v === null) { flush(); return; }
+      segment.push(p);
+      parts.push('<circle cx="' + X(p.t).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="3" fill="currentColor"><title>' + esc(p.ts) + ' · ' + esc(fmt(p.v)) + '</title></circle>');
+    });
+    flush();
     parts.push('<text x="' + padL + '" y="' + (h - 4) + '" font-size="10">' + esc(String(pts[0].ts).slice(0, 10)) + '</text>');
     parts.push('<text x="' + (w - padR) + '" y="' + (h - 4) + '" font-size="10" text-anchor="end">' + esc(String(pts[pts.length - 1].ts).slice(0, 10)) + '</text></svg>');
     return parts.join('');

@@ -28,6 +28,9 @@ convention; the file conforms as of app-package D (#4439).
   engine: pipeline, SR, calendar/geo, hardening). The
   foundation line carries the road to v1.0.0 at the D1
   submission; post-1.0.0 it is PATCH-only.
+- `### Integration <n> — <name> (#issue)` — the
+  research-conversion batches (auth/sync, testing, evidence
+  storage, prediction hygiene, schema discipline).
 - `### App-package <letter> — <name> (#issue)` — the
   app-package checklist batches (A packaging · B PWA ·
   C release trust · D docs/budgets · E first-run). These fold

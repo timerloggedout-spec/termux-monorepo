@@ -28,7 +28,8 @@ from study_geo import surface_calendar_geo  # noqa: E402
 from study_reader import Section  # noqa: E402
 from study_sr import build_cards_from_practice_set, export_ux_state  # noqa: E402
 from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
-                         format_trust_receipt, render_today_view)
+                         format_trust_receipt, render_today_view,
+                         stamp_state)
 
 
 def emit_state(root: Path | None = None) -> dict:
@@ -98,7 +99,7 @@ def emit_state(root: Path | None = None) -> dict:
         calendar_geo = surface_calendar_geo(
             json.loads(calendar_file.read_text()),
             now, topics=topics)
-    return {
+    return stamp_state({
         "plan_start": now.date().isoformat(),
         "surface": "studysprint-webapp",
         "surface_version": version_file.read_text().strip()
@@ -111,7 +112,7 @@ def emit_state(root: Path | None = None) -> dict:
                "ux_state": ux},
         "reader": {"sections": sections},
         "calendar_geo": calendar_geo,
-    }
+    })
 
 
 def stamp_service_worker() -> None:

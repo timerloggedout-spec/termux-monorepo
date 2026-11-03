@@ -35,7 +35,7 @@ from study_sr import (build_cards_from_practice_set, export_apkg,  # noqa: E402
                       export_obsidian_vault, review_card)
 from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
                          format_trust_receipt, record_daily_checkin,
-                         render_today_view)
+                         render_today_view, stamp_state)
 
 APP_ROOT = Path(__file__).resolve().parent
 
@@ -90,7 +90,7 @@ def build_state(root: Path | None = None) -> dict:
                   for t in w.get("topics") or []]
         calendar_geo = surface_calendar_geo(
             calendar_doc, datetime.now(timezone.utc), topics=topics)
-    return {
+    return stamp_state({
         "syllabus": syllabus,
         "plan": plan,
         "trust_receipt": format_trust_receipt(evidence),
@@ -99,7 +99,7 @@ def build_state(root: Path | None = None) -> dict:
         "sections": sections,
         "calendar_geo": calendar_geo,
         "root": root,
-    }
+    })
 
 
 def _plan_text(state: dict) -> str:

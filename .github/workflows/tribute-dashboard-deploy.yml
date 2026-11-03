@@ -8,9 +8,12 @@ on:
     branches: [master]
     paths:
       - "apps/tribute-dashboard/**"
+      # LC-002 (lane-compounding, verified LC-001): status data is read
+      # raw from master at page load, so status pushes no longer need a
+      # redeploy. The generated files stay out of the trigger set and a
+      # status.json-only push is carved out of the app glob.
+      - "!apps/tribute-dashboard/data/status.json"
       - "apps/project-pages-hub/**"
-      - "docs/ops/generated/tribute-status.json"
-      - "docs/ops/generated/lane-matrix-status.json"
       - ".github/workflows/tribute-dashboard-deploy.yml"
       - ".github/workflows/tribute-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"

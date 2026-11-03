@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 470,
-    "open_prs": 205,
+    "open_prs": 204,
     "pr_classes": {
       "CANDIDATE": 104,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 203,
+      "prs": 202,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T13:15:38Z",
+  "generated_at": "2026-11-03T13:19:10Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "a8df37477f"
+    "sha": "fcb0e99314"
   },
   "prs": [
     {
@@ -2895,12 +2895,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "05c71e4a15",
+      "head_sha": "b23c585e88",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T13:09:27Z"
+      "updated_at": "2026-11-03T13:19:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3013,20 +3013,6 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "e9898aac3c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4311,
-      "title": "fix(apk): build.sh quoting syntax + javac UTF-8 [#4276]",
-      "updated_at": "2026-11-03T13:15:35Z"
     }
   ],
   "schema": "operator-matrix/v1",

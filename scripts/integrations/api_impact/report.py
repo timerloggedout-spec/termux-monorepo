@@ -123,6 +123,8 @@ def normalize_mapper_input(payload: Any, repository: str, base_sha: str, head_sh
     required = {"repository", "pull_request", "base_sha", "head_sha", "privacy", "results"}
     if required - payload.keys():
         raise ValueError("mapper input missing required fields")
+    if payload.keys() - required:
+        raise ValueError("mapper input contains unsupported fields")
     for key, expected, label in (
         ("repository", repository, "repository"),
         ("pull_request", pull_request, "pull request"),

@@ -60,9 +60,9 @@ if (require.main === module) {
   if (output) {
     fs.appendFileSync(output, Object.entries(result)
       .map(([key, value]) => `${key}=${String(value)}`)
-      .join('\\n') + '\\n');
+      .join('\n') + '\n');
   }
-  process.stdout.write(JSON.stringify(result) + '\\n');
+  process.stdout.write(JSON.stringify(result) + '\n');
 }
 
 module.exports = { classifyIssueEvent };

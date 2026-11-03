@@ -476,3 +476,35 @@ production trigger landed 2026-10-28 (its first five dispatched runs failed
 on a sys.path shadowing bug — `operator/` subpackage vs stdlib — root-caused
 in the workflow's own header; scheduled successes run from 2026-10-29).
 Item 11 is CLOSED with this record.
+
+---
+
+## Addendum 8 (2026-11-02) — queue item 10 recon: gemini-review is wired, command-gated, and unexercised
+
+Item 10 asks restore-or-retire for the gemini-review lane. Recon (live,
+2026-11-02); the ruling itself is the owner's.
+
+State of record:
+
+- `gemini-review.yml` ("Optimized Multi-Provider PR Review") is
+  `workflow_call`-only today and IS wired: `gemini-dispatch.yml` calls it
+  when its dispatcher parses a `review` command (the `@gemini-cli` /
+  `@sparkFlux` comment surface). Its router degrades by design:
+  has-omni = false (OMNI keys absent — item 4), has-openrouter = true,
+  GEMINI_API_KEY provisioned.
+- Execution evidence: the workflow's 26 standalone runs are all from the old
+  push-trigger form — last 2026-08-20, all failure; that form no longer
+  exists. In the current form, the dispatcher's last 100 completed runs hold
+  12 successes, and the three success runs job-checked executed only the
+  dispatch job (review/triage/invoke all skipped — no command issued). The
+  issue_comment stream is ~100% skipped by design (only command comments
+  pass the gate). No review-command execution appears in the sampled record:
+  the lane is dormant by disuse, not proven broken in its current form.
+- Redundancy context: PR review is also covered live by the
+  peer-review-orchestrator, CodeRabbit, and Devin.
+
+Recommendation: RESTORE-VERIFY before any retire call — one controlled
+review command on a test PR settles whether the current form works (cost:
+one comment + one run). Retire, if ruled, follows the archive pattern
+(owner deletion rule), not removal. Item 10 stays OPEN pending the owner's
+restore-or-retire ruling.

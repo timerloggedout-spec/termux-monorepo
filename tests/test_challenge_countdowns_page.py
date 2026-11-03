@@ -98,6 +98,6 @@ def test_submission_block_rendered_when_recorded():
     page is correct on a v1.1 feed without the field."""
     html = _page()
     assert "submissionHTML(e)" in html and "e.submission" in html
-    assert "s.state" in html and "s.at" in html and "s.ref" in html
+    assert "s.state" in html and "s.at" in html and "s.confirmation_ref" in html
     assert "view submission" in html
     assert 'if(!s||!s.state) return "";' in html

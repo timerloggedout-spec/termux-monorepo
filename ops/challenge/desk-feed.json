@@ -2389,7 +2389,9 @@
         "surface_tasks": {
           "webapp": "#4092 (dispatch-queued, receipt 6598811298)",
           "apk": "#4093 (dispatch-queued, receipt 6598811371)",
-          "model": "pacing-matched surfaces ride CLI version numbers (owner, adopted 2026-11-03)"
+          "model": "pacing-matched surfaces ride CLI version numbers (owner, adopted 2026-11-03)",
+          "tui": "#4095 (dispatch-queued, receipt None)",
+          "program": "{CLI \u00b7 webApp #4092 \u00b7 APK #4093 \u00b7 TUI #4095} \u2200 pacing-matched"
         }
       },
       "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
@@ -2655,6 +2657,18 @@
           "rework_cycles": null,
           "session_id": "issue-4093",
           "task": "StudySprint APK surface (v0.3.0-matched): .apk asset on Release 432427628 + device-lane smoke + parity checklist; routing receipt 6598811371, dispatch-queued"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "context": "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)",
+          "dispatched_at": "2026-11-03T00:24:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "session_id": "issue-4095",
+          "task": "StudySprint TUI surface (Textual tui.py, v0.3.0-matched): runnable in tree + pilot tests + parity checklist + recorded terminal run; routing receipt None, dispatch-queued"
         }
       ]
     },
@@ -3404,6 +3418,6 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T00:23:19-08:00"
+    "updated_at": "2026-11-03T00:24:37-08:00"
   }
 }

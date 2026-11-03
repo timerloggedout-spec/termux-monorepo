@@ -100,8 +100,11 @@ def main():
         "paid_fallback_allowed": False,
     }
     Path(args.output).write_text(json.dumps(receipt, indent=1) + "\n")
-    print(json.dumps({k: receipt[k] for k in ("attempted", "inference_ok", "providers_ok")}, indent=1))
-    return 0
+    print(json.dumps({k: receipt[k] for k in ("attempted", "inference_ok", "providers_ok")}, indent=1), flush=True)
+    # Probe threads are non-daemon and some providers ignore timeouts entirely;
+    # interpreter exit would join them and hang until the job timeout even though
+    # the receipt is complete (run 41457191473: receipt at deadline, job killed at 60m).
+    os._exit(0)
 
 if __name__ == "__main__":
     sys.exit(main())

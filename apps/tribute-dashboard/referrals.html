@@ -21,6 +21,7 @@
 .ref-chip.nest{background:#6e7781}
 .ref-chip.exh{background:#cf222e}
 .ref-chip.other{background:#8250df}
+.ref-count{font-weight:700;font-size:1.1em}
 .poolbar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line,#30363d);min-width:90px}
 .poolbar .pb-live{background:#1a7f37}
 .poolbar .pb-reserve{background:#bf8700}
@@ -94,7 +95,13 @@ function refAccess(it){
   if(it.badge_svg) parts.push('<img src="'+esc(it.badge_svg)+'" alt="programme badge" loading="lazy">');
   return parts.join('<br>');
 }
-if(typeof module!=="undefined"){ module.exports={refStateDist,refChip,refPoolModel,refAccess}; }
+function refValueLines(it){
+  let h='';
+  if('accrued_value' in it && it.accrued_value!=null) h+='<br><span class="muted">Accrued: '+esc(it.accrued_value)+'</span>';
+  if('redemptions' in it && it.redemptions!=null) h+='<br><span class="muted">Redemptions:</span> <span class="ref-count">'+esc(it.redemptions)+'</span>';
+  return h;
+}
+if(typeof module!=="undefined"){ module.exports={refStateDist,refChip,refPoolModel,refAccess,refValueLines}; }
 // ==== end pure logic ====
 function poolCell(ph){
   const m=refPoolModel(ph);
@@ -119,13 +126,12 @@ async function load(){
       +'<h3>Programmes by state</h3>'+CK.bars(refStateDist(items));
     $('programmes').innerHTML=items.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Programme</th><th>State</th><th>Access</th><th>Visitor reward</th><th>Fleet replenishment</th><th>Code pool</th></tr></thead><tbody>'
       +items.map(it=>{
-        const accrued=('accrued_value' in it && it.accrued_value!=null)?'<br><span class="muted">Accrued: '+esc(it.accrued_value)+'</span>':'';
         const rots=(it.rotation_events||[]).length?'<br><span class="muted">rotations: '+it.rotation_events.map(e=>esc(typeof e==='string'?e:(e.kind||e.at||''))).filter(Boolean).join(', ')+'</span>':'';
         return '<tr><td><strong>'+esc(it.name)+'</strong><br><span class="muted">'+esc(it.id)+(it.mechanic?' · '+esc(it.mechanic):'')+'</span>'+rots+'</td>'
           +'<td>'+refChip(it.state)+(it.state_detail?'<br><span class="muted">'+esc(it.state_detail)+'</span>':'')+'</td>'
           +'<td>'+(refAccess(it)||'—')+'</td>'
           +'<td>'+(it.visitor_reward?esc(it.visitor_reward):'—')+'</td>'
-          +'<td>'+(it.fleet_replenishment?esc(it.fleet_replenishment):'—')+accrued+'</td>'
+          +'<td>'+(it.fleet_replenishment?esc(it.fleet_replenishment):'—')+refValueLines(it)+'</td>'
           +'<td>'+poolCell(it.pool_health)+'</td></tr>'}).join('')
       +'</tbody></table></div>'
       :'<p class="empty">No programmes in the feed — nothing is shown rather than anything guessed.</p>';

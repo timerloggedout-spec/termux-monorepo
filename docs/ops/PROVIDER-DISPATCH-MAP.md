@@ -195,7 +195,10 @@ shard only — g4f registration shards are claimable across the pool.
 Applied (2026-11-01): **g4f verified pool folded** — 160 inference_ok (provider, model) pairs
 across 12 providers (`data/g4f-working/working-endpoints.json`, PR #3223) join the pool as
 experiment-label candidates (FREE-QUOTA-WINDOWS); production admission unchanged. Provenance =
-sandbox probe; Actions re-verification run 41323654390 in flight — its artifact supersedes.
+sandbox probe; **Actions restamp landed**: 83/160 verified in Actions (run 41457191473,
+artifact 13154370032; zero-in-Actions: PollinationsImage, G4FSpace, Flux1Dev, Pollinations;
+Perplexity bulk rate-limited on the Actions egress IP). Split of record: sandbox 160 /
+Actions 83 / intersection 83; production admission unchanged.
 
 ## Rotation rule (bench-wide)
 

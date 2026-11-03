@@ -138,3 +138,13 @@ Source: DoE expert seat, system review of record docs/ops/SYSTEM-REVIEW-2026-11-
 
 **Interaction with the resequence:** unchanged — all runs still hold for the OSINT layer pass; the gate now reads: current dataset layer + stamps + D1-D7 dispositions (3 = census, 1 = composition/exploratory until holdout + denominators, 6 = forecast-accrual).
 
+
+## Current-layer verification (Tests leg, firsthand @master, 2026-11-03)
+
+- PR #4501 merged d9e690746559 => the v1 layer's HELD status is CLEARED (landed); v2 snapshot sha256 == pin (b8a187aabc4b68...), 89 entities, feasibility read in full.
+- **Test 1 effective strata = 3, not 6:** only alpaca / assemblyai / ibm-bob carry podium>0 and field>0 (podium 3+5+3 = 11 in-stratum); vultr (podium 0) and ai-infra / nativebuilder (field 0) contribute nothing to Fisher / combined-p. Blockers confirmed: G1 re-code outstanding; **a power statement is owed in the test-1 run filing at this size.**
+- **Test 3 blocked-not-run = FINAL for this layer** (repeat attributable picks = 0; linkage NOT_ESTABLISHED; stamp-as-deliverable accepted) — consistent with DoE D1's census descope + data-existence gate.
+- **Test 5 blocked on this layer:** editions_with_usable_rubrics = 0; category names alone are not a weighted rubric. Unblocks only via a weights-bearing source layer OR a filed weights pre-registration from published criteria — which under DoE D6 is exactly a labeled rubric hypothesis with its basis stated.
+- Tests 2 (denominators NOT_ESTABLISHED) and 4 (comments surface NOT_ESTABLISHED) dispositions stand as recorded.
+- **Gate posture unchanged:** this is the current-layer read; binding clearances issue at OSINT pass completion (Swarm template first exercise outstanding).
+

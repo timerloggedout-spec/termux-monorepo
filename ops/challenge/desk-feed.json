@@ -3237,6 +3237,66 @@
       "resubmit_policy": "edit-until-deadline (locks Dec 4 14:00 PT)"
     },
     {
+      "entry": "DOMINO",
+      "project": "Domino Data Lab \u2014 partner/certified-consultant + self-host tracks (applicant: termux-monorepo)",
+      "artifact_repo": null,
+      "status": "prep \u2014 self-paced window (no external wall); research + filing packets prepared, nothing filed",
+      "stages": {
+        "spec": "done",
+        "desk": "done",
+        "builder": "gated",
+        "pr": "na",
+        "ci": "na",
+        "merge": "na",
+        "sync": "na"
+      },
+      "evidence": [
+        "Registry of record: docs/integrations/registry.json id domino-data-lab (P1, research-and-ml-platform; adapter planned, auth-path gate) \u2014 verified @master 2026-11-03.",
+        "Filing packets prepared, NOTHING filed: ~/workspace/domino-prep/partner-registration.md (7,516B) + selfhost-quote.md (7,624B) \u2014 verified on disk 2026-11-03.",
+        "FOSS research waves running (lab-platforms program); T0 BASE triggers = lab VALIDATION.md PASSes landing."
+      ],
+      "next": "T1 CUSHION fires when owner-held fields land (contact/country \u00b7 seats \u00b7 AWS account for self-host) \u2227 PPP checklists green in both packets \u2014 NOTHING files before its packet is complete + verified (Proper Prior Planning = hard precondition). T2: owner files (or explicitly delegates).",
+      "provider_usage": [],
+      "resubmit_policy": "n/a (not a submission event)",
+      "priority_timebox": {
+        "owner_order": "2026-11-03 \u2014 NEW OPPORTUNITY (owner via main): state-triggered priority_timebox for a self-paced window, per the adaptive-pace order",
+        "wall": null,
+        "tiers": [
+          {
+            "tier": 0,
+            "name": "BASE",
+            "at": "now",
+            "reminder": null,
+            "effect": "research + prep",
+            "triggers": "lab VALIDATION.md PASSes landing (lab-platforms program)"
+          },
+          {
+            "tier": 1,
+            "name": "CUSHION",
+            "at": "state: filing-ready",
+            "reminder": null,
+            "effect": "filing-ready \u2014 fires when owner-held fields land (contact/country \u00b7 seats \u00b7 AWS account for self-host) \u2227 PPP checklists green in both packets; NOTHING files before its packet is complete + verified (Proper Prior Planning = hard precondition)"
+          },
+          {
+            "tier": 2,
+            "name": "FILED",
+            "at": "state: filed",
+            "reminder": null,
+            "effect": "owner files (or explicitly delegates); moniker registration flow runs post-qualification"
+          },
+          {
+            "tier": 3,
+            "name": "ESCALATION",
+            "at": "state: response overdue",
+            "reminder": null,
+            "effect": "filed \u2227 response overdue beyond the expected window \u2014 attention steps up, pace compresses"
+          }
+        ],
+        "step_down_cushion": "on stall: pace de-escalates instead of burning attention",
+        "note": "Self-paced window \u2014 NO external wall; tiers are STATE-triggered, not clocked. Auto-trigger mechanics = the fleet's existing state-gated checks + dispatch (cadence law: event/state-driven, no clock crons)."
+      }
+    },
+    {
       "entry": "Repo-Story",
       "project": "Repo-Story \u2014 PR/repo-history narrative (I1 of record, PR #2481)",
       "artifact_repo": "timerloggedout-spec/repo-story",
@@ -3793,7 +3853,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T10:18:00Z",
+    "updated_at": "2026-11-03T10:10:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

@@ -88,10 +88,9 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - name: Checkout base revision
+      - name: Checkout trusted default-branch analyzer
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.resolve-pr.outputs.base_sha }}
           fetch-depth: 0
           persist-credentials: false
 

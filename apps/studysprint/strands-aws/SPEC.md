@@ -40,6 +40,17 @@ fail-closed floor in §5 a substitution rather than a rewrite. The
 response is the receipt, unenveloped: all three hosts return
 byte-identical receipts for identical executions.
 
+**Session ↔ snapshot mapping.** The runtime's session id (the
+AgentCore header's value, or the body's `session_id` on the other
+hosts) is used *verbatim* as the `SnapshotSessionManager`
+session id (§6). The manager namespaces its writes under
+`session/<session_id>/`, so a session's snapshot lands at the
+storage key `session/<runtime-session-id>/snapshot.json` — one
+mapping, stated once, with no translation table: a recycled
+process that receives the same session id restores the same
+snapshot, and a check-in written in one invocation is read back
+in the next (§6).
+
 ## 2 · Tool schemas — all seven, wire and decoded
 
 `schemas/tools.schema.json` + `schemas/payloads.schema.json`. The
@@ -118,6 +129,10 @@ policy* on any live receipt: a production receipt without
 `execution_class` fails review, not parsing. That split is
 deliberate and stated here so no reader mistakes it for laxness.
 
+Receipts persist through the §6 storage backend under a
+`receipts/` namespace — §6 states the deliberate unification
+(one table for session state *and* receipts) and its reasons.
+
 ## 4 · Deployment — config, secret names, least privilege, guardrails
 
 `schemas/deployment.schema.json` · `deployment/config.example.json`
@@ -142,7 +157,7 @@ none beyond the execution role; a non-Bedrock provider key, if
 configured, is one named entry. No value appears in this artifact,
 in git, or in a receipt — ever.
 
-**IAM** (`deployment/iam-policy.json`), four statements, no
+**IAM** (`deployment/iam-policy.json`), five statements, no
 wildcard actions and no bare-wildcard resources (the validator
 checks both):
 
@@ -158,9 +173,27 @@ checks both):
    span's own log group only. (The ARN's trailing `:*` is the
    log-stream suffix inside that one named group — streams are
    addressed no other way; it widens nothing beyond the group.)
-4. `ReceiptStoreReadWrite` — `GetItem`/`PutItem` on the one
-   receipts table. No query, no scan, no delete: receipts are
-   append-and-read, which is what content-stamped evidence wants.
+4. `AgentStorageItemActions` — `dynamodb:PutItem` / `GetItem` /
+   `DeleteItem` / `Query` on the ONE agent-storage table (§6).
+   These are exactly the four operations the persistence backend
+   issues at runtime (its own documentation's policy); listing is
+   a partition `Query` with `begins_with`, so no `Scan` is granted
+   — and no `CreateTable` / `UpdateTable`: the table is
+   pre-created by the deployment (§6), and the runtime role
+   cannot mint infrastructure.
+5. `AgentStorageOffloadObjects` — `s3:PutObject` / `GetObject` /
+   `DeleteObject` on the offload bucket's objects only (§6):
+   values over the 400 KB DynamoDB item limit spill there with a
+   pointer item left in the table. No bucket-level actions, no
+   other bucket.
+
+**The fold, stated here where the policy lives:** an earlier
+draft of this section carried a sixth statement — a
+GetItem/PutItem grant on a separate receipts table. It is gone
+*deliberately, not by omission*: receipts persist through the
+§6 backend in this same table (statements 4–5 already cover
+their lifecycle), and §6's unification paragraph gives the
+reasons. There is no receipts table in this deployment.
 
 The account segment (`000000000000`) is the one deploy-time
 substitution, marked here rather than disguised.
@@ -181,8 +214,11 @@ error page.
 - `GET /health` — liveness plus what is actually true
   (`strands_agent_available`, `deployment`, the configured model).
 - `GET /receipt/{id}` — the stored receipt, byte-identical to the
-  one the invocation returned. An unknown id is the endpoint's
-  only 404.
+  one the invocation returned. "Stored" is mechanical, not
+  implied: the receipt persists as Storage bytes under the
+  `receipts/` prefix in the §6 table (§6 states the unification),
+  and this read is a `GetItem` on that item. An unknown id is the
+  endpoint's only 404.
 
 **The fail-closed floor:** `POST /plan` has *no 5xx shape at all*.
 On any agent or model error — throttling, a down provider, a
@@ -193,6 +229,114 @@ judge's request degrades to the system's most conservative honest
 answer, stamped as exactly that; it never degrades to an error
 page. The floor is not an error handler bolted on: it is the
 offline path the system already trusts, promoted to a contract.
+
+## 6 · Persistence — strands-dynamodb-storage, one table
+
+The span's durable state rides **strands-dynamodb-storage**
+(AWS, Apache-2.0; verified at draft time against the package's
+own documentation — the AWS DynamoDB developer guide's Strands
+storage page and the package README at `aws/strands-dynamodb-storage`,
+commit `d858e8e1`): the SDK's unified byte `Storage` contract
+(`write` / `read` / `delete` / `list`) implemented on a single
+DynamoDB table. The spec's floor is strands-agents ≥ 1.48.0,
+the package's stated prerequisite — the span runs 1.63.0.
+
+**The table** (`deployment/create-table.json`, a deployable
+artifact): `studysprint-agent-storage` — string partition key
+`pk`, string sort key `sk`, `PAY_PER_REQUEST`. It is
+**pre-created by the deployment**, never by the runtime: the
+package "holds no CreateTable permission and never creates
+infrastructure" (its docs), and §4's role mirrors that — the
+req-1 gating is unchanged. TTL is enabled once, post-create
+(`deployment/update-time-to-live.json`): the package stamps an
+epoch-seconds **`expireAt`** attribute on items written with a
+TTL, and reads/listings filter already-expired items before
+DynamoDB physically reaps them. A constructor-bound **tenant
+prefix** (`prefix="…"` — or `.namespace("…")` on the instance)
+pins every operation inside one tenant's key space on the
+shared table.
+
+**What lives there.** One `DynamoDBStorage` instance backs
+every stateful subsystem, each under its own key prefix. The
+wiring follows the package README's own quick-start forms —
+storage passed explicitly to each component:
+
+```python
+from strands import Agent
+from strands.session import SnapshotSessionManager
+from strands.vended_plugins.context_offloader import ContextOffloader
+from strands_dynamodb_storage import DynamoDBStorage
+
+storage = DynamoDBStorage("studysprint-agent-storage",
+                          region_name="us-east-1")
+
+# Sessions persist under session/ (README's Python quick start):
+agent = Agent(
+    session_manager=SnapshotSessionManager(session_id,
+                                           storage=storage))
+
+# The offloader takes the same instance (README's offloader form):
+agent = Agent(plugins=[ContextOffloader(storage=storage)])
+```
+
+(Strands 1.63.0 also accepts an Agent-level `storage=` that
+subsystems inherit; this spec writes the explicit per-component
+form the package documents, so what a screener reads is what
+the package shows.)
+
+- **Snapshots** — `SnapshotSessionManager` snapshots the
+  conversation on every invocation and restores it when the
+  same session returns (§1's mapping). **Check-ins survive
+  runtime teardown** for the same reason: session state is in
+  the table, not in the process, so a recycled Lambda or
+  AgentCore environment resumes exactly where the last one
+  stopped.
+- **Long-term memory** — the Memory Manager speaks the same
+  contract (the package ships `DynamoDBMemoryStore`); semantic
+  recall via a table vector index is available but **not
+  adopted here** (it would add `dynamodb:SearchVectors` and a
+  Bedrock embeddings invocation to §4 — a deliberate
+  non-adoption, recorded so it reads as a decision).
+- **Context offload + transcripts** — oversized tool results
+  under `offloader/`, transcripts under their namespace, same
+  table, same four operations.
+- **S3 offload shape** — values above the 400 KB DynamoDB item
+  limit are offloaded to the configured bucket (constructor
+  argument), with a small pointer item remaining in the table;
+  §4 statement 5 scopes the role to that bucket's objects. If
+  TTL is enabled on offloaded values, the bucket carries a
+  matching lifecycle rule (the package docs' note).
+
+The key mapping is the table's whole trick, and it is the
+package's, not ours: a storage key's first two `/`-separated
+segments become `pk`, the remainder becomes `sk` — point
+operations are single-item calls, and `list` is a native
+partition `Query` with `begins_with`, never a scan.
+
+**One table, deliberately — receipts included.** This section
+unifies what §4 previously kept apart, and says so plainly:
+there is **no separate receipts table**. Receipts persist
+through this same backend, as storage writes under a
+`receipts/` namespace (key `receipts/<request_id>` ⇒ `pk =
+"receipts/<request_id>"`, `sk` = the receipt document name).
+The unification is a decision, with its reasons:
+
+1. The receipt lifecycle is already inside the backend's four
+   operations — `PutItem` when a run issues its receipt,
+   `GetItem` for `GET /receipt/{id}` (§5), `Query` to list a
+   namespace — so a second table would grant a subset of the
+   same actions on a second ARN and buy nothing.
+2. A receipt's integrity never came from table separation: it
+   comes from `receipt_sha256`, the content stamp every receipt
+   carries (§3). Where the bytes sit does not change what
+   proves them.
+3. One table is one IAM surface (§4), one TTL/backup posture,
+   one thing to pre-create — the span's operational shape stays
+   as small as its evidence discipline allows.
+
+§4's former receipts statement was therefore *replaced*, not
+extended: its table is gone from the policy, and this paragraph
+is the record of why.
 
 ## Validation — the acceptance evidence
 
@@ -219,7 +363,9 @@ PASS endpoint PlanRequest vs golden course
 PASS endpoint PlanResponse vs fresh receipt
 PASS endpoint HealthResponse example
 PASS deployment config.example vs DeploymentConfig
-PASS IAM policy: no wildcard actions, no bare-wildcard resources (4 statements)
+PASS IAM policy: no wildcard actions, no bare-wildcard resources (5 statements)
+PASS create-table artifact: pk/sk string keys, PAY_PER_REQUEST
+PASS TTL artifact: expireAt enabled on the same table
 
 ALL SCHEMA VALIDATIONS PASS
 ```

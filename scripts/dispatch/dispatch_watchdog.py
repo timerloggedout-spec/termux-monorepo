@@ -216,6 +216,13 @@ def main(argv=None) -> int:
     if summary:
         with open(summary, "a", encoding="utf-8") as fh:
             fh.write("### Dispatch watchdog\n\n" + table + "\n")
+    errors = [r for r in results
+              if str(r.get("action") or "").startswith("ERROR")]
+    if errors:
+        print(f"watchdog: {len(errors)} action(s) failed — "
+              "the sweep did not fully land; failing the run so "
+              "the failure is loud, not silent")
+        return 1
     return 0
 
 

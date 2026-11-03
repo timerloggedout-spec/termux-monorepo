@@ -69,6 +69,13 @@ class FederatedAppRegistryTests(unittest.TestCase):
         self.assertEqual(app["release_lanes"], [])
         self.assertIsNone(app["product_app_id"])
 
+    def test_github_app_installation_scopes_are_explicit(self):
+        identities = {x["identity_key"]: x for x in self.data["automation_identities"]}
+        self.assertEqual(identities["termux-fleet-repo-story"]["installation_id"], 177463385)
+        self.assertEqual(identities["termux-fleet-repo-story"]["repository_scope"], ["timerloggedout-spec/repo-story"])
+        self.assertEqual(identities["termux-fleet-gate"]["permissions"]["checks"], "write")
+        self.assertEqual(identities["termux-fleet-collector"]["permissions"]["contents"], "read")
+
     def test_output_is_deterministic(self):
         self.assertEqual(validate(self.data, self.schema), validate(json.loads(json.dumps(self.data)), self.schema))
 

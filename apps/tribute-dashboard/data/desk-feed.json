@@ -3786,7 +3786,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T09:55:00Z",
+    "updated_at": "2026-11-03T10:05:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",
@@ -3800,7 +3800,8 @@
       "surfaces": [
         "ops/quota/allocations.json (priority_override on the slice; PR #4125 merged 05571c734fe2; #1884 record 6599941296)",
         "dispatcher admission via quota-allocation-planner regeneration from the SSOT"
-      ]
+      ],
+      "annotation": "SUPERSEDED 2026-11-03 (manager ruling): corrected model of record = desk-feed priority_timebox only (PR #4126); allocations focus winning already 100%; the allocations priority_override (PR #4125) is REVERTED \u2014 this line stands as audit history only."
     }
   }
 }

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6a1fc4a01b4540310b648bc95e4e7fdb317d33a2adc63c11eb8d49835fab808f",
-  "workflow_count": 288,
+  "source_fingerprint": "1f36dd864151ccc3798117795e8eb73caeadff51ff58d425214e0a7c9c0ef2c7",
+  "workflow_count": 289,
   "workflows": [
     {
       "action_pins": [],
@@ -4531,6 +4531,21 @@
         "push",
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: swarm-admission-${{ github.event.issue.number }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "admit"
+      ],
+      "name": "swarm-admission",
+      "path": ".github/workflows/swarm-admission.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
       ]
     },
     {

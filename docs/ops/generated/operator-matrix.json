@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T12:51:06Z",
+  "generated_at": "2026-11-03T12:52:32Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "077a00d826"
+    "sha": "3220fedcf1"
   },
   "prs": [
     {
@@ -2575,7 +2575,7 @@
       },
       "head_sha": "56fce515d8",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2578,
       "title": "docs: integrate AMD and NVIDIA skill workflows",
       "updated_at": "2026-11-01T02:52:15Z"
@@ -3018,15 +3018,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "success"
       },
-      "head_sha": "43c9e64e5b",
+      "head_sha": "6194623586",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4289,
-      "title": "chore(ops): regenerate operator matrix",
-      "updated_at": "2026-11-03T12:50:15Z"
+      "mergeable_state": "unstable",
+      "number": 4290,
+      "title": "fix(studysprint): RFP-D1-7 award batch \u2014 surfaces 0.1.1 [#4277]",
+      "updated_at": "2026-11-03T12:52:17Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -13,9 +13,9 @@ description: "Evidence of record for the Certifications & Roles ladder (#506): p
 
 ## L1 — FreeCodeCamp Relational Databases v9 (Baseline)
 
-State: ENROLLED 2026-11-01 ∘ progress **9/64** ∘ M1 Code Editors COMPLETE 5/5 ∘ Phase 1 velocity checkpoint CLEARED 2026-11-01 ∘ cert = ∅ ∘ exam (unit 065) locked until ∀ 5 P units pass.
+State: ENROLLED 2026-11-01 ∘ progress **50/64** (fleet-logs capture PR #16 merged 2026-11-02; entries table below = first-entry set 001–009, progress since via capture PRs #5–#16) ∘ M1 Code Editors COMPLETE 5/5 ∘ Phase 1 velocity checkpoint CLEARED 2026-11-01 ∘ cert = ∅ ∘ exam (unit 065) locked until ∀ 5 P units pass.
 Plan: [Plan 001](/guides/certifications-plan-l1-freecodecamp) (PR #2564 merged 67f4d8330689; v9 framing supersedes v8-era plan text, pick unchanged).
-Capture: fleet-logs `certifications/l1-relational-databases-v9/` — INDEX.md blob f95e2c6d1b4f ∘ QUEUE.md blob e3389e52a470 (65 items: T39 W9 R6 Q5 P5 E1).
+Capture: fleet-logs `certifications/l1-relational-databases-v9/` — INDEX.md blob f201033e796d ∘ QUEUE.md blob e3389e52a470 (65 items: T39 W9 R6 Q5 P5 E1).
 Attribution ∀ units below: earner `termux-monorepo` ∘ provider `cohere` ∘ model `c4ai-aya-expanse-32b` ∘ skill refs = ∅ ∘ KB refs = ∅.
 
 | unit | type | item | date | FCC Δ | status | fleet run (telemetry ref) | capture ref (fleet-logs) |
@@ -32,7 +32,7 @@ Attribution ∀ units below: earner `termux-monorepo` ∘ provider `cohere` ∘ 
 
 Capture PRs (fleet-logs, merged): #2 unit 001 ∘ #3 units 002/007/008/009 ∘ #4 units 003–006, merge 24fa4b6058a7 (M1 complete, 9/64).
 
-Watch items (¬ entries): 010 re-run pending (Q2 pinned `;`) ∘ 011 (first W) held on Codespaces secret placement — VAULT-GATE log entry 2026-11-01, holder Platforms.
+Resolved since first entry: 010 re-run PASSED (capture batch 4, 10/64) ∘ 011 (first W) pilot PASSED 2026-11-02 via token-free route (VAULT-GATE route-(b) ENV clearance 2026-11-01 superseded Codespaces-secret placement) — see re-price closures below.
 
 ### L1 Window (set at M1 checkpoint, 2026-11-01)
 
@@ -47,13 +47,15 @@ Assumed per-type prices (UNMEASURED — assumptions, re-priced at first instance
 | T ×30 | 3 min | measured | 1.5 h |
 | R ×6 | 5 min | 5–10 min | 0.5 h |
 | Q ×5 | 20 min | 15–30 min | 1.7 h |
-| W ×9 | 45 min | 30–60 min | 6.8 h |
+| W ×9 | MEASURED ≈5.3 s/step (011 pilot) | — | ≈2.2 h runs + per-unit overhead |
 | P ×5 | 120 min | 60–180 min | 10.0 h |
 | E ×1 | 60 min sitting | +168 h retake cooldown (schedule risk, ¬ work) | 1.0 h |
 
 Total active ≈ **20.5 h** (range ≈14.5–27 h). Cadence assumption: ≥5 pipeline sessions/week × ≈2 h active, subordinate to T1 windows (AMD) — L1 = Baseline, parallel ¬ displacing.
 
-**Window proposal: 64/64 by 2026-12-05 ∘ exam sitting ≤2026-12-12 ∘ L1 cleared window 2026-12-05 → 2026-12-12.** Re-price checkpoints: unit 011 (first W) ∧ unit 025 (first P, M3 close) — window re-issued if W/P prices land outside assumed bands.
+**Window (adopted 2026-11-01): 64/64 by 2026-12-05 ∘ exam sitting ≤2026-12-12 ∘ L1 cleared window 2026-12-05 → 2026-12-12.**
+
+Re-price closures (2026-11-02, both checkpoints CLOSED): **P @025** — actuals 5 runs + 5 PRs tuition (client-side friction only), marginal ≈1 run/project ⇒ HOLDS. **W @011** — pilot PASS (fleet run 41574262388; verdict #506 comment 6595129957; 166/166 steps, token-free), measured 15m27s wall @166 steps ≈ 5.3 s/step all-in — BELOW the assumed 30–60 min band; W9 = 1,456 steps ≈ 2.2 h runs + per-unit overhead (vs 6.8 h assumed) ⇒ track total ≈16 h (was ≈20.5 h). **Window re-issued 2026-11-02: HOLDS unchanged — 64/64 by 2026-12-05 ∘ exam ≤2026-12-12, margin widened.**
 
 ## T1 — Competition-Required (deadline-ordered)
 

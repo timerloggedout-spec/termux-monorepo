@@ -27,7 +27,12 @@ Implementation Assurance seat), session
   obsidian-spaced-repetition-format notes (sync state in
   frontmatter, `#flashcards` tag, front `?` back) plus an index
   note; `read_obsidian_card_state` / `import_obsidian_states` read
-  the state back (the vault -> core sync point).
+  the state back (the vault -> core sync point). Device sync
+  points (`ObsidianBridge`, `push_cards_to_vault`,
+  `pull_states_from_vault`) adapt the fleet's existing adapter
+  `bin/obsidian_server.py` (token-authenticated HTTP bridge, port
+  8085, symlink-rejecting token read) — seeded from it, not a
+  cold build.
 - ts-fsrs UX seed: `to_ts_fsrs_state` / `export_ux_state` map
   py-fsrs card state onto the ts-fsrs Card shape for the UX layer.
 - Tests: `tests/test_study_sr.py` covers every public function in

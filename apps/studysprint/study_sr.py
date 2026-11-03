@@ -15,6 +15,12 @@ Obsidian vault surface (markdown notes with sync state in frontmatter,
 readable back through the import sync point); and a ts-fsrs-shaped
 state export that seeds the UX layer.
 
+The bridge sync points adapt the fleet's existing adapter,
+``bin/obsidian_server.py`` @master (blob d47a329c5ff1): a
+token-authenticated HTTP bridge (port 8085, token at
+``~/.obsidian_termux_token``, symlink-rejecting token read) into the
+device that hosts the vault.
+
 Offline and deterministic given an explicit ``now``. ``py-fsrs`` and
 ``genanki`` are imported lazily so the module loads in the app's
 zero-dependency baseline; the functions that need them raise a clear
@@ -23,6 +29,7 @@ error naming the requirement.
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import re
@@ -349,14 +356,10 @@ def export_obsidian_vault(cards, vault_dir, states: dict | None = None,
             "notes": len(written), "scheduler": scheduler}
 
 
-def read_obsidian_card_state(note_path) -> dict:
-    """Parse one vault note's frontmatter back into a sync state
-    {card_id, scheduler, due, interval_days} — the vault -> core
-    sync point."""
-    text = Path(note_path).read_text()
-    m = _FRONTMATTER.match(text)
+def _state_from_text(text: str, origin: str = "note") -> dict:
+    m = _FRONTMATTER.match(text or "")
     if not m:
-        raise ValueError(f"no frontmatter in {note_path}")
+        raise ValueError(f"no frontmatter in {origin}")
     out = {}
     for line in m.group(1).splitlines():
         if ":" not in line:
@@ -372,6 +375,14 @@ def read_obsidian_card_state(note_path) -> dict:
     }
 
 
+def read_obsidian_card_state(note_path) -> dict:
+    """Parse one vault note's frontmatter back into a sync state
+    {card_id, scheduler, due, interval_days} — the vault -> core
+    sync point."""
+    return _state_from_text(Path(note_path).read_text(),
+                            origin=str(note_path))
+
+
 def import_obsidian_states(vault_dir) -> dict:
     """Read every card note under the vault surface back into
     {card_id: sync state}."""
@@ -383,6 +394,117 @@ def import_obsidian_states(vault_dir) -> dict:
         if p.name == "StudySprint SR Index.md":
             continue
         st = read_obsidian_card_state(p)
+        if st["card_id"]:
+            states[st["card_id"]] = st
+    return states
+
+
+
+# ------------------------------------------- Obsidian bridge (seeded from
+# bin/obsidian_server.py @master, blob d47a329c5ff1 — adapt-across: the
+# SR surface speaks the fleet adapter's existing protocol instead of
+# inventing a new one)
+
+BRIDGE_URL = "http://127.0.0.1:8085"
+BRIDGE_TOKEN_FILE = "~/.obsidian_termux_token"
+VAULT_SUBDIR = "StudySprint SR"
+
+
+def load_bridge_token(token_file: str = BRIDGE_TOKEN_FILE):
+    """Read the bridge token exactly as the adapter does: the file
+    must exist and must NOT be a symlink (a symlink could redirect
+    the read to another file). Returns None when unavailable."""
+    p = Path(token_file).expanduser()
+    if p.exists() and not p.is_symlink():
+        return p.read_text(encoding="utf-8").strip()
+    return None
+
+
+class ObsidianBridge:
+    """Client for the fleet Obsidian bridge (bin/obsidian_server.py).
+
+    The bridge is an authenticated command channel into the device
+    hosting the vault: POST {cmd, cwd} with a Bearer token; the
+    adapter runs the command under $HOME and returns {output, cwd}.
+    ``opener`` is injectable for tests: opener(url, data, headers)
+    -> (status, body_text).
+    """
+
+    def __init__(self, url: str = BRIDGE_URL, token: str | None = None,
+                 token_file: str = BRIDGE_TOKEN_FILE, opener=None):
+        self.url = url
+        self.token = token if token is not None else load_bridge_token(token_file)
+        self._opener = opener or self._urllib_opener
+
+    @staticmethod
+    def _urllib_opener(url, data, headers):
+        import urllib.error
+        import urllib.request
+        req = urllib.request.Request(url, data=data, headers=headers,
+                                     method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=35) as resp:
+                return resp.status, resp.read().decode("utf-8", "replace")
+        except urllib.error.HTTPError as e:
+            return e.code, e.read().decode("utf-8", "replace")
+
+    def run(self, cmd: str, cwd: str = "") -> dict:
+        if not self.token:
+            raise RuntimeError(
+                "no Obsidian bridge token (expected "
+                f"{BRIDGE_TOKEN_FILE}, symlink-rejected — see "
+                "bin/obsidian_server.py)")
+        payload = json.dumps({"cmd": cmd, "cwd": cwd}).encode()
+        status, body = self._opener(
+            self.url, payload,
+            {"Authorization": f"Bearer {self.token}",
+             "Content-Type": "application/json"})
+        if status != 200:
+            raise RuntimeError(
+                f"Obsidian bridge HTTP {status}: {body[:160]}")
+        return json.loads(body)
+
+
+def push_cards_to_vault(bridge: ObsidianBridge, vault: str, cards,
+                        states: dict | None = None,
+                        scheduler: str = "fsrs") -> dict:
+    """Sync point (core -> vault): write every card note into the
+    device vault through the bridge. Note bytes travel base64-encoded
+    so no shell quoting can corrupt them. Returns a receipt."""
+    get_scheduler(scheduler)  # validate before spending bridge calls
+    states = states or {}
+    bridge.run(f"mkdir -p '{VAULT_SUBDIR}'", cwd=vault)
+    for card in cards:
+        text = _note_text(card, states.get(card.card_id), scheduler)
+        b64 = base64.b64encode(text.encode()).decode()
+        bridge.run(
+            f"printf '%s' '{b64}' | base64 -d > "
+            f"'{VAULT_SUBDIR}/{card.card_id}.md'", cwd=vault)
+    index_lines = ["# StudySprint SR", "",
+                   f"Scheduler of record: `{scheduler}` - cards: {len(cards)}",
+                   ""]
+    index_lines += [f"- [[{c.card_id}]] - {c.front[:80]}" for c in cards]
+    index = chr(10).join(index_lines) + chr(10)
+    b64 = base64.b64encode(index.encode()).decode()
+    bridge.run(
+        f"printf '%s' '{b64}' | base64 -d > "
+        f"'{VAULT_SUBDIR}/StudySprint SR Index.md'", cwd=vault)
+    return {"vault": vault, "dir": VAULT_SUBDIR, "notes": len(cards),
+            "scheduler": scheduler, "via": "obsidian-bridge"}
+
+
+def pull_states_from_vault(bridge: ObsidianBridge, vault: str) -> dict:
+    """Sync point (vault -> core): list the vault surface through the
+    bridge and read every card note's frontmatter back into
+    {card_id: sync state}."""
+    listing = bridge.run(f"ls -1 '{VAULT_SUBDIR}'", cwd=vault)
+    states = {}
+    for name in (listing.get("output") or "").splitlines():
+        name = name.strip()
+        if not name.endswith(".md") or name == "StudySprint SR Index.md":
+            continue
+        got = bridge.run(f"cat '{VAULT_SUBDIR}/{name}'", cwd=vault)
+        st = _state_from_text(got.get("output") or "", origin=name)
         if st["card_id"]:
             states[st["card_id"]] = st
     return states

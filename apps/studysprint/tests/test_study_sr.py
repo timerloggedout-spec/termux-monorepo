@@ -203,3 +203,90 @@ def test_export_ux_state_document():
     assert all(set(e) == {"card_id", "front", "back", "ts_fsrs"}
                for e in doc["cards"])
     json.dumps(doc)  # the whole document is JSON-serializable
+
+
+# ------------------------------------------- Obsidian bridge (seeded from
+# bin/obsidian_server.py @master, blob d47a329c5ff1)
+
+from study_sr import (ObsidianBridge, load_bridge_token,  # noqa: E402
+                      pull_states_from_vault, push_cards_to_vault)
+
+
+def test_bridge_token_file_rules(tmp_path):
+    tok = tmp_path / "token"
+    tok.write_text("sekrit\n")
+    assert load_bridge_token(str(tok)) == "sekrit"
+    link = tmp_path / "link"
+    link.symlink_to(tok)
+    assert load_bridge_token(str(link)) is None  # symlink rejected
+    assert load_bridge_token(str(tmp_path / "absent")) is None
+
+
+class _FakeBridge:
+    """Stands in for the adapter: records requests, serves a vault."""
+
+    def __init__(self):
+        self.files = {}
+        self.requests = []
+
+    def opener(self, url, data, headers):
+        import base64 as b64
+        import json as js
+        self.requests.append((url, data, headers))
+        payload = js.loads(data)
+        cmd, cwd = payload["cmd"], payload["cwd"]
+        assert headers["Authorization"] == "Bearer tok123"
+        if cmd.startswith("mkdir"):
+            return 200, js.dumps({"output": "", "cwd": cwd})
+        if " | base64 -d > " in cmd:
+            enc = cmd.split("'")[3]
+            name = cmd.rsplit("/", 1)[1].rstrip("'")
+            self.files[name] = b64.b64decode(enc).decode()
+            return 200, js.dumps({"output": "", "cwd": cwd})
+        if cmd.startswith("ls -1"):
+            return 200, js.dumps(
+                {"output": "\n".join(sorted(self.files)), "cwd": cwd})
+        if cmd.startswith("cat "):
+            name = cmd.rsplit("/", 1)[1].rstrip("'")
+            return 200, js.dumps({"output": self.files[name], "cwd": cwd})
+        raise AssertionError(f"unexpected cmd: {cmd}")
+
+
+def test_bridge_push_pull_round_trip():
+    cards = build_cards(QUIZ)
+    fake = _FakeBridge()
+    bridge = ObsidianBridge(token="tok123", opener=fake.opener)
+    _st, receipt = review_card(cards[0], None, 4, scheduler="sm2", now=NOW)
+    states = {cards[0].card_id: {"due": receipt["due"],
+                                 "interval_days": receipt["interval_days"]}}
+    out = push_cards_to_vault(bridge, "vault", cards, states=states,
+                              scheduler="sm2")
+    assert out["via"] == "obsidian-bridge" and out["notes"] == 3
+    assert any(h["Authorization"] == "Bearer tok123"
+               for _u, _d, h in fake.requests)
+    pulled = pull_states_from_vault(bridge, "vault")
+    assert set(pulled) == {c.card_id for c in cards}
+    assert pulled[cards[0].card_id]["due"] == receipt["due"]
+    assert pulled[cards[0].card_id]["scheduler"] == "sm2"
+
+
+def test_bridge_errors_are_loud():
+    def unauthorized(url, data, headers):
+        return 401, "Unauthorized: Invalid Token"
+
+    bridge = ObsidianBridge(token="wrong", opener=unauthorized)
+    try:
+        bridge.run("ls", cwd="vault")
+    except RuntimeError as e:
+        assert "401" in str(e)
+    else:
+        raise AssertionError("401 must raise")
+    tokenless = ObsidianBridge(
+        token=None, token_file="/nonexistent/token",
+        opener=unauthorized)
+    try:
+        tokenless.run("ls")
+    except RuntimeError as e:
+        assert "no Obsidian bridge token" in str(e)
+    else:
+        raise AssertionError("missing token must raise before any call")

@@ -211,10 +211,12 @@ def reconcile(document, *, now=None, stale_after_seconds=None):
 
             interval_events = [e for e in parsed_events
                                if e["provider"] == current["provider"]
+                               and e["scope"] == current["scope"]
                                and e["resource"] == current["resource"]
+                               and e["unit"] == current["unit"]
                                and start < e["_at"] <= end]
             mismatched = [e for e in interval_events
-                          if any(e[field] != current[field] for field in KEY_FIELDS)]
+                          if e["reset_epoch"] != current["reset_epoch"]]
             if mismatched:
                 findings.append(finding(
                     "scope_mismatch", key, interval,

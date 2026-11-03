@@ -14,6 +14,36 @@ Oracle evidence gate + `fetch_evidence`, vendored in `foundation/`)
 with one new tool, `fetch_study_evidence` (syllabus + practice_set
 kinds, same stamped-evidence shape).
 
+## Try it in 60 seconds — three doors
+
+Each door ends at the same working app with the sample
+course loaded. Pick by where you're standing:
+
+**Door 1 — web (no install, ~10 seconds).**
+Open https://timerloggedout-spec.github.io/studysprint/web/
+in any modern browser. The demo course is already there:
+press **Start Today's Sprint**, flip the card, grade it.
+It works offline after the first load.
+
+**Door 2 — terminal (TUI, ~1 minute).**
+```
+git clone https://github.com/timerloggedout-spec/studysprint
+cd studysprint && pip install textual fsrs genanki
+python3 tui.py
+```
+Eight tabs: Today · Plan/Receipt · Reader · SR Review ·
+Calendar · Routes · Ingest · Export. (A one-line
+`pipx install` door lands with the packaging release —
+see TUI.md.)
+
+**Door 3 — Android (APK, ~1 minute).**
+Download `studysprint.apk` (50 KB) from
+https://github.com/timerloggedout-spec/studysprint/releases/tag/apk-v0.1.3
+and open it on the phone; allow the one-time install
+prompt. Verify first if you like — the release carries
+SHA256SUMS + a trust block (APK.md § Release trust).
+Same app as Door 1, on your home screen.
+
 ## Files
 
 | File | Role |

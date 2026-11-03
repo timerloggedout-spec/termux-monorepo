@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+### App-package E — judge path + resilience evidence (#4440)
+
+- **"Try it in 60 seconds" three doors** (README + the landing page's new Try section): web (live link, sample course loaded) · TUI (clone route that works today; the pipx one-liner takes over when the packaging release lands) · APK (the 0.1.3 release, trust block linked). Each door's steps were checked against what is actually live.
+- **Demo-video restructure note** (VIDEO-RESTRUCTURE.md) for the Nov 4 packet: a ≤3-minute shot list reflecting v0.5.0/0.2.0/the working APK, with the honest-edges beat protected in the cut order. Desk consumes if in time; blocks nothing.
+- **Resilience evidence pack**: webApp under a low-end profile (6× CPU throttle, 360×640) — LCP 608 ms, full tab→flip→grade interaction completes, capture at evidence/web/low-end-today.png · TUI at small-terminal geometry (80×24) renders all 8 tabs coherently, evidence/tui/05-today-small-terminal.svg · the TUI device record of record remains the owner's Termux pass (0.1.2, evidence/apk).
+
 ### App-package D — docs + budgets (#4439)
 
 - **CHANGELOG discipline** codified (CHANGELOG-DISCIPLINE.md): one changelog of record, batch sections combine never-squash, the Surfaces/Foundation/App-package naming split; the in-tree file conforms (checked, deviations: none structural).

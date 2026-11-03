@@ -2020,7 +2020,20 @@
     "ruling": "Repo + AppID deferred to the first round that actually builds in a repo. Round 1 identity anchor = the Desk package records + this coordinator record (no repo exists for R1 \u2014 the round is package-only by the event's own rules).",
     "r2_trigger": "If Round 2 also runs package-only, the repo/AppID question RETURNS TO MAIN before R2 build start \u2014 it does not default to provisioned or deferred.",
     "repo_url": null,
-    "appid": null
+    "appid": null,
+    "residue": {
+     "repo": {
+      "name": "ugreen-nas-skills",
+      "full_name": "timerloggedout-spec/ugreen-nas-skills",
+      "url": "https://github.com/timerloggedout-spec/ugreen-nas-skills",
+      "created_at": "2026-11-03T12:33:22Z",
+      "state": "EXISTS but DORMANT \u2014 created by the AppID lane on the Manager's build-start signal before the DEFER ruling landed (crossed signals). NOT the identity anchor.",
+      "verified": "firsthand via PAT API 2026-11-03 by this lane"
+     },
+     "appid": "NOT created \u2014 main stood the create leg down directly with the AppID lane.",
+     "anchor": "Identity anchor stays {Desk package records + this coordinator record}.",
+     "2sv_touch": "Confirmation pending from the AppID lane; no harm identified yet (Manager reconciliation, 2026-11-03)."
+    }
    }
   }
  ],

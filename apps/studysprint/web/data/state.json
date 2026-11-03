@@ -52,7 +52,7 @@
     "changes": [],
     "course": "BIO 101",
     "date": "2026-11-04",
-    "days_away": 0.46,
+    "days_away": 0.44,
     "kind": "quiz",
     "location": "Science Hall 204",
     "ramp": {
@@ -67,7 +67,7 @@
     "changes": [],
     "course": "BIO 101",
     "date": "2026-11-12",
-    "days_away": 8.46,
+    "days_away": 8.44,
     "kind": "midterm",
     "location": "Science Hall 204",
     "ramp": {
@@ -85,7 +85,7 @@
     ],
     "course": "BIO 101",
     "date": "2026-12-10",
-    "days_away": 36.8,
+    "days_away": 36.77,
     "kind": "final",
     "location": "Gym Annex B",
     "ramp": {
@@ -171,7 +171,7 @@
     "depart_by": "2026-11-04T09:44:18Z",
     "destination": "Science Hall 204",
     "kind": "route-plan",
-    "observed_at": "2026-11-03T22:54:11Z",
+    "observed_at": "2026-11-03T23:26:33Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -186,7 +186,7 @@
     "depart_by": "2026-11-12T09:44:18Z",
     "destination": "Science Hall 204",
     "kind": "route-plan",
-    "observed_at": "2026-11-03T22:54:11Z",
+    "observed_at": "2026-11-03T23:26:33Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -201,7 +201,7 @@
     "depart_by": "2026-12-10T17:36:42Z",
     "destination": "Gym Annex B",
     "kind": "route-plan",
-    "observed_at": "2026-11-03T22:54:11Z",
+    "observed_at": "2026-11-03T23:26:33Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -211,7 +211,7 @@
   "temple_route": {
    "claims_ceiling": "ordered/concrete recall, not understanding",
    "kind": "temple-route",
-   "observed_at": "2026-11-03T22:54:11Z",
+   "observed_at": "2026-11-03T23:26:33Z",
    "placements": [
     {
      "chapter": "Campus route",
@@ -250,6 +250,2426 @@
   }
  },
  "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+ "courses": [
+  {
+   "calendar_error": null,
+   "calendar_geo": {
+    "assessments": [
+     {
+      "building": "Science Hall",
+      "course": "BIO 101",
+      "date": "2026-11-04",
+      "kind": "quiz",
+      "location": "Science Hall 204",
+      "room": "204",
+      "time": "10:00"
+     },
+     {
+      "building": "Science Hall",
+      "course": "BIO 101",
+      "date": "2026-11-12",
+      "kind": "midterm",
+      "location": "Science Hall 204",
+      "room": "204",
+      "time": "10:00"
+     },
+     {
+      "building": "Gym Annex",
+      "course": "BIO 101",
+      "date": "2026-12-10",
+      "kind": "final",
+      "location": "Gym Annex B",
+      "room": "B",
+      "time": "18:00"
+     }
+    ],
+    "audio_cues": [
+     {
+      "at": "dorm door",
+      "cue": "At the dorm door, picture this: cell structure. Let it stick to the place.",
+      "seq": 1
+     },
+     {
+      "at": "library steps",
+      "cue": "At the library steps, picture this: membranes. Let it stick to the place.",
+      "seq": 2
+     },
+     {
+      "at": "lab bench",
+      "cue": "At the lab bench, picture this: photosynthesis. Let it stick to the place.",
+      "seq": 3
+     }
+    ],
+    "briefings": [
+     {
+      "briefing": null,
+      "changes": [],
+      "course": "BIO 101",
+      "date": "2026-11-04",
+      "days_away": 0.44,
+      "kind": "quiz",
+      "location": "Science Hall 204",
+      "ramp": {
+       "multiplier": 3.0,
+       "tier": "final-stretch"
+      },
+      "shifted": false,
+      "time": "10:00"
+     },
+     {
+      "briefing": null,
+      "changes": [],
+      "course": "BIO 101",
+      "date": "2026-11-12",
+      "days_away": 8.44,
+      "kind": "midterm",
+      "location": "Science Hall 204",
+      "ramp": {
+       "multiplier": 1.5,
+       "tier": "ramp-up"
+      },
+      "shifted": false,
+      "time": "10:00"
+     },
+     {
+      "briefing": "SHIFTED final for BIO 101: time 10:00 -> 18:00; place Science Hall 204 -> Gym Annex B. It is on 2026-12-10 at 18:00 in Gym Annex B \u2014 not the usual class pattern. Frequency is ramped (baseline, x1.0) and the room is new: plan the trip once before the day.",
+      "changes": [
+       "time 10:00 -> 18:00",
+       "place Science Hall 204 -> Gym Annex B"
+      ],
+      "course": "BIO 101",
+      "date": "2026-12-10",
+      "days_away": 36.77,
+      "kind": "final",
+      "location": "Gym Annex B",
+      "ramp": {
+       "multiplier": 1.0,
+       "tier": "baseline"
+      },
+      "shifted": true,
+      "time": "18:00"
+     }
+    ],
+    "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+    "classes": [
+     {
+      "building": "Science Hall",
+      "course": "BIO 101",
+      "days": [
+       1,
+       3
+      ],
+      "end": "11:15",
+      "location": "Science Hall 204",
+      "room": "204",
+      "start": "10:00"
+     }
+    ],
+    "frequency_plan": {
+     "BIO 101": {
+      "base_per_day": 6.0,
+      "driven_by": "quiz on 2026-11-04",
+      "multiplier": 3.0,
+      "per_day": 18.0,
+      "tier": "final-stretch"
+     }
+    },
+    "locations": [
+     {
+      "building": "Gym Annex",
+      "location": "Gym Annex B",
+      "room": "B",
+      "used_by": [
+       "final:BIO 101"
+      ]
+     },
+     {
+      "building": "Science Hall",
+      "location": "Science Hall 204",
+      "room": "204",
+      "used_by": [
+       "class:BIO 101",
+       "quiz:BIO 101",
+       "midterm:BIO 101"
+      ]
+     }
+    ],
+    "origin": "Dorm",
+    "quiet_hours": {
+     "batched": [
+      {
+       "at": "2026-11-03T10:15:00Z",
+       "held_by": "BIO 101",
+       "id": "probe-in-class",
+       "release_at": "2026-11-03T11:15:00Z",
+       "status": "batched"
+      }
+     ],
+     "delivered": [
+      {
+       "at": "2026-11-03T08:00:00Z",
+       "id": "probe-outside",
+       "status": "delivered"
+      }
+     ],
+     "probe_day": "2026-11-03",
+     "suppressed": 1
+    },
+    "routes": [
+     {
+      "assessment_kind": "quiz",
+      "assessment_starts": "2026-11-04T10:00:00Z",
+      "buffer_minutes": 10,
+      "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+      "course": "BIO 101",
+      "depart_by": "2026-11-04T09:44:18Z",
+      "destination": "Science Hall 204",
+      "kind": "route-plan",
+      "observed_at": "2026-11-03T23:26:33Z",
+      "origin": "Dorm",
+      "schema": "studysprint-geo-receipt/v1",
+      "source": "coordinate-estimate",
+      "travel_minutes": 5.7
+     },
+     {
+      "assessment_kind": "midterm",
+      "assessment_starts": "2026-11-12T10:00:00Z",
+      "buffer_minutes": 10,
+      "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+      "course": "BIO 101",
+      "depart_by": "2026-11-12T09:44:18Z",
+      "destination": "Science Hall 204",
+      "kind": "route-plan",
+      "observed_at": "2026-11-03T23:26:33Z",
+      "origin": "Dorm",
+      "schema": "studysprint-geo-receipt/v1",
+      "source": "coordinate-estimate",
+      "travel_minutes": 5.7
+     },
+     {
+      "assessment_kind": "final",
+      "assessment_starts": "2026-12-10T18:00:00Z",
+      "buffer_minutes": 10,
+      "claims_ceiling": "logistics support (pacing, timing, no-surprises) \u2014 no learning-gain claim",
+      "course": "BIO 101",
+      "depart_by": "2026-12-10T17:36:42Z",
+      "destination": "Gym Annex B",
+      "kind": "route-plan",
+      "observed_at": "2026-11-03T23:26:33Z",
+      "origin": "Dorm",
+      "schema": "studysprint-geo-receipt/v1",
+      "source": "coordinate-estimate",
+      "travel_minutes": 13.3
+     }
+    ],
+    "temple_route": {
+     "claims_ceiling": "ordered/concrete recall, not understanding",
+     "kind": "temple-route",
+     "observed_at": "2026-11-03T23:26:33Z",
+     "placements": [
+      {
+       "chapter": "Campus route",
+       "item": "cell structure",
+       "locus": "dorm door",
+       "position": 1
+      },
+      {
+       "chapter": "Campus route",
+       "item": "membranes",
+       "locus": "library steps",
+       "position": 2
+      },
+      {
+       "chapter": "Campus route",
+       "item": "photosynthesis",
+       "locus": "lab bench",
+       "position": 3
+      }
+     ],
+     "schema": "studysprint-geo-receipt/v1",
+     "waypoints": [
+      {
+       "location": "Dorm",
+       "name": "dorm door"
+      },
+      {
+       "location": "Library",
+       "name": "library steps"
+      },
+      {
+       "location": "Science Hall 204",
+       "name": "lab bench"
+      }
+     ]
+    }
+   },
+   "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+   "memory": {
+    "feynman_topics": [
+     {
+      "chapter": "Week 1",
+      "evidence": "Every living thing is built from cells, and every cell runs the same basic plan: a membrane-wrapped interior where organelles divide the work. The nucleus stores the DNA \u2014 the instruction set \u2014 while ribosomes build proteins from those instructions. Mitochondria release energy from food molecules, the cytoskeleton gives the cell its shape and moves materials around, and the cytoplasm is the gel where most chemistry happens. Plant cells add a rigid wall and chloroplasts; animal cells do without both. Structure is not decoration \u2014 each part exists because it does a job the whole cell depends on.",
+      "topic": "cell structure"
+     },
+     {
+      "chapter": "Week 1",
+      "evidence": "The cell membrane is a phospholipid bilayer: two sheets of fat-like molecules with their water-loving heads facing out and water-fearing tails facing in. That arrangement makes the membrane selectively permeable \u2014 small uncharged molecules slip through, while ions and large molecules need help from embedded proteins. Channel proteins form pores, carrier proteins shuttle specific cargo, and receptor proteins pass signals inward. Cholesterol tucked between the phospholipids keeps the membrane fluid but stable. The membrane is therefore both a wall and a customs post: it decides what enters, what leaves, and what the cell hears about the world outside.\n\nCheck yourself: What does the cell membrane do? Controls what enters and leaves the cell.",
+      "topic": "membranes"
+     },
+     {
+      "chapter": "Week 2",
+      "evidence": "Photosynthesis is how plants, algae, and some bacteria turn light energy into stored chemical energy. Inside chloroplasts, pigments \u2014 chiefly chlorophyll \u2014 absorb mostly blue and red light, which is why leaves look green. In the light-dependent reactions, water is split, releasing oxygen, and its energy is captured in the carriers ATP and NADPH. The Calvin cycle then spends those carriers to build sugars from carbon dioxide, no light required. The balance sheet: carbon dioxide plus water becomes glucose plus oxygen \u2014 and nearly every food chain on Earth runs on that captured sunlight.",
+      "topic": "photosynthesis"
+     },
+     {
+      "chapter": "Week 2",
+      "evidence": "Cellular respiration releases the energy photosynthesis stored. It runs in three acts. Glycolysis, in the cytoplasm, splits one glucose into two pyruvate molecules and nets a small payment of ATP \u2014 no oxygen needed. The Krebs cycle, in the mitochondrial matrix, strips the pyruvate down to carbon dioxide and loads energy carriers. The electron transport chain then spends those carriers, with oxygen as the final electron acceptor, forming water and driving the bulk of ATP production. Total yield: roughly thirty ATP per glucose \u2014 the cell's spendable currency, earned by controlled burning instead of fire.",
+      "topic": "respiration"
+     },
+     {
+      "chapter": "Week 3",
+      "evidence": "Before a cell can divide, it must copy its DNA \u2014 all of it, once, accurately. The double helix unzips as helicase breaks the hydrogen bonds between base pairs, and each exposed strand becomes a template. DNA polymerase builds the new strand by matching free nucleotides to the template \u2014 A with T, C with G \u2014 but it can only build in one direction, so one strand is made continuously and the other in short Okazaki fragments that ligase later seals. The result is semi-conservative: each daughter molecule keeps one original strand and one new one, and proofreading keeps errors near one in a billion bases.",
+      "topic": "DNA replication"
+     },
+     {
+      "chapter": "Week 3",
+      "evidence": "Mitosis divides one nucleus into two genetically identical nuclei. In prophase the copied chromosomes condense and the spindle \u2014 a scaffold of microtubules \u2014 begins to form. Metaphase lines the chromosomes along the cell's equator, each attached to spindle fibers from both poles, a checkpoint that ensures every daughter gets a full set. Anaphase pulls the sister chromatids apart to opposite poles. Telophase wraps each set in a new nuclear envelope, and cytokinesis then splits the cytoplasm. One cell in, two identical cells out \u2014 the mechanism behind growth, repair, and asexual reproduction.",
+      "topic": "mitosis"
+     }
+    ],
+    "palace": {
+     "claims_ceiling": "ordered/concrete recall, not understanding",
+     "evidence": "Dresler et al. 2017 (Neuron): 26 -> 62 of 72 words, durable 4 months; BJOP 2025 meta-analysis d=0.88 serial recall, GRADE low",
+     "placements": [
+      {
+       "chapter": "Campus route",
+       "item": "cell structure",
+       "locus": "dorm door",
+       "position": 1
+      },
+      {
+       "chapter": "Campus route",
+       "item": "membranes",
+       "locus": "library steps",
+       "position": 2
+      },
+      {
+       "chapter": "Campus route",
+       "item": "photosynthesis",
+       "locus": "lab bench",
+       "position": 3
+      }
+     ],
+     "route": [
+      "dorm door",
+      "library steps",
+      "lab bench"
+     ],
+     "source": "temple-route"
+    }
+   },
+   "plan": {
+    "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+    "total_sessions": 12,
+    "weeks": [
+     {
+      "due": "quiz 1",
+      "sessions": [
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "cell structure"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "cell structure"
+       },
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "membranes"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "membranes"
+       }
+      ],
+      "week": 1
+     },
+     {
+      "due": "lab 1",
+      "sessions": [
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "photosynthesis"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "photosynthesis"
+       },
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "respiration"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "respiration"
+       }
+      ],
+      "week": 2
+     },
+     {
+      "due": "midterm",
+      "sessions": [
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "DNA replication"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "DNA replication"
+       },
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "mitosis"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "mitosis"
+       }
+      ],
+      "week": 3
+     }
+    ]
+   },
+   "reader": {
+    "sections": [
+     {
+      "chapter": "Week 1",
+      "text": "Every living thing is built from cells, and every cell runs the same basic plan: a membrane-wrapped interior where organelles divide the work. The nucleus stores the DNA \u2014 the instruction set \u2014 while ribosomes build proteins from those instructions. Mitochondria release energy from food molecules, the cytoskeleton gives the cell its shape and moves materials around, and the cytoplasm is the gel where most chemistry happens. Plant cells add a rigid wall and chloroplasts; animal cells do without both. Structure is not decoration \u2014 each part exists because it does a job the whole cell depends on.",
+      "title": "cell structure",
+      "words": [
+       "Every",
+       "living",
+       "thing",
+       "is",
+       "built",
+       "from",
+       "cells,",
+       "and",
+       "every",
+       "cell",
+       "runs",
+       "the",
+       "same",
+       "basic",
+       "plan:",
+       "a",
+       "membrane-wrapped",
+       "interior",
+       "where",
+       "organelles",
+       "divide",
+       "the",
+       "work.",
+       "The",
+       "nucleus",
+       "stores",
+       "the",
+       "DNA",
+       "\u2014",
+       "the",
+       "instruction",
+       "set",
+       "\u2014",
+       "while",
+       "ribosomes",
+       "build",
+       "proteins",
+       "from",
+       "those",
+       "instructions.",
+       "Mitochondria",
+       "release",
+       "energy",
+       "from",
+       "food",
+       "molecules,",
+       "the",
+       "cytoskeleton",
+       "gives",
+       "the",
+       "cell",
+       "its",
+       "shape",
+       "and",
+       "moves",
+       "materials",
+       "around,",
+       "and",
+       "the",
+       "cytoplasm",
+       "is",
+       "the",
+       "gel",
+       "where",
+       "most",
+       "chemistry",
+       "happens.",
+       "Plant",
+       "cells",
+       "add",
+       "a",
+       "rigid",
+       "wall",
+       "and",
+       "chloroplasts;",
+       "animal",
+       "cells",
+       "do",
+       "without",
+       "both.",
+       "Structure",
+       "is",
+       "not",
+       "decoration",
+       "\u2014",
+       "each",
+       "part",
+       "exists",
+       "because",
+       "it",
+       "does",
+       "a",
+       "job",
+       "the",
+       "whole",
+       "cell",
+       "depends",
+       "on."
+      ]
+     },
+     {
+      "chapter": "Week 1",
+      "text": "The cell membrane is a phospholipid bilayer: two sheets of fat-like molecules with their water-loving heads facing out and water-fearing tails facing in. That arrangement makes the membrane selectively permeable \u2014 small uncharged molecules slip through, while ions and large molecules need help from embedded proteins. Channel proteins form pores, carrier proteins shuttle specific cargo, and receptor proteins pass signals inward. Cholesterol tucked between the phospholipids keeps the membrane fluid but stable. The membrane is therefore both a wall and a customs post: it decides what enters, what leaves, and what the cell hears about the world outside.\n\nCheck yourself: What does the cell membrane do? Controls what enters and leaves the cell.",
+      "title": "membranes",
+      "words": [
+       "The",
+       "cell",
+       "membrane",
+       "is",
+       "a",
+       "phospholipid",
+       "bilayer:",
+       "two",
+       "sheets",
+       "of",
+       "fat-like",
+       "molecules",
+       "with",
+       "their",
+       "water-loving",
+       "heads",
+       "facing",
+       "out",
+       "and",
+       "water-fearing",
+       "tails",
+       "facing",
+       "in.",
+       "That",
+       "arrangement",
+       "makes",
+       "the",
+       "membrane",
+       "selectively",
+       "permeable",
+       "\u2014",
+       "small",
+       "uncharged",
+       "molecules",
+       "slip",
+       "through,",
+       "while",
+       "ions",
+       "and",
+       "large",
+       "molecules",
+       "need",
+       "help",
+       "from",
+       "embedded",
+       "proteins.",
+       "Channel",
+       "proteins",
+       "form",
+       "pores,",
+       "carrier",
+       "proteins",
+       "shuttle",
+       "specific",
+       "cargo,",
+       "and",
+       "receptor",
+       "proteins",
+       "pass",
+       "signals",
+       "inward.",
+       "Cholesterol",
+       "tucked",
+       "between",
+       "the",
+       "phospholipids",
+       "keeps",
+       "the",
+       "membrane",
+       "fluid",
+       "but",
+       "stable.",
+       "The",
+       "membrane",
+       "is",
+       "therefore",
+       "both",
+       "a",
+       "wall",
+       "and",
+       "a",
+       "customs",
+       "post:",
+       "it",
+       "decides",
+       "what",
+       "enters,",
+       "what",
+       "leaves,",
+       "and",
+       "what",
+       "the",
+       "cell",
+       "hears",
+       "about",
+       "the",
+       "world",
+       "outside.",
+       "Check",
+       "yourself:",
+       "What",
+       "does",
+       "the",
+       "cell",
+       "membrane",
+       "do?",
+       "Controls",
+       "what",
+       "enters",
+       "and",
+       "leaves",
+       "the",
+       "cell."
+      ]
+     },
+     {
+      "chapter": "Week 2",
+      "text": "Photosynthesis is how plants, algae, and some bacteria turn light energy into stored chemical energy. Inside chloroplasts, pigments \u2014 chiefly chlorophyll \u2014 absorb mostly blue and red light, which is why leaves look green. In the light-dependent reactions, water is split, releasing oxygen, and its energy is captured in the carriers ATP and NADPH. The Calvin cycle then spends those carriers to build sugars from carbon dioxide, no light required. The balance sheet: carbon dioxide plus water becomes glucose plus oxygen \u2014 and nearly every food chain on Earth runs on that captured sunlight.",
+      "title": "photosynthesis",
+      "words": [
+       "Photosynthesis",
+       "is",
+       "how",
+       "plants,",
+       "algae,",
+       "and",
+       "some",
+       "bacteria",
+       "turn",
+       "light",
+       "energy",
+       "into",
+       "stored",
+       "chemical",
+       "energy.",
+       "Inside",
+       "chloroplasts,",
+       "pigments",
+       "\u2014",
+       "chiefly",
+       "chlorophyll",
+       "\u2014",
+       "absorb",
+       "mostly",
+       "blue",
+       "and",
+       "red",
+       "light,",
+       "which",
+       "is",
+       "why",
+       "leaves",
+       "look",
+       "green.",
+       "In",
+       "the",
+       "light-dependent",
+       "reactions,",
+       "water",
+       "is",
+       "split,",
+       "releasing",
+       "oxygen,",
+       "and",
+       "its",
+       "energy",
+       "is",
+       "captured",
+       "in",
+       "the",
+       "carriers",
+       "ATP",
+       "and",
+       "NADPH.",
+       "The",
+       "Calvin",
+       "cycle",
+       "then",
+       "spends",
+       "those",
+       "carriers",
+       "to",
+       "build",
+       "sugars",
+       "from",
+       "carbon",
+       "dioxide,",
+       "no",
+       "light",
+       "required.",
+       "The",
+       "balance",
+       "sheet:",
+       "carbon",
+       "dioxide",
+       "plus",
+       "water",
+       "becomes",
+       "glucose",
+       "plus",
+       "oxygen",
+       "\u2014",
+       "and",
+       "nearly",
+       "every",
+       "food",
+       "chain",
+       "on",
+       "Earth",
+       "runs",
+       "on",
+       "that",
+       "captured",
+       "sunlight."
+      ]
+     },
+     {
+      "chapter": "Week 2",
+      "text": "Cellular respiration releases the energy photosynthesis stored. It runs in three acts. Glycolysis, in the cytoplasm, splits one glucose into two pyruvate molecules and nets a small payment of ATP \u2014 no oxygen needed. The Krebs cycle, in the mitochondrial matrix, strips the pyruvate down to carbon dioxide and loads energy carriers. The electron transport chain then spends those carriers, with oxygen as the final electron acceptor, forming water and driving the bulk of ATP production. Total yield: roughly thirty ATP per glucose \u2014 the cell's spendable currency, earned by controlled burning instead of fire.",
+      "title": "respiration",
+      "words": [
+       "Cellular",
+       "respiration",
+       "releases",
+       "the",
+       "energy",
+       "photosynthesis",
+       "stored.",
+       "It",
+       "runs",
+       "in",
+       "three",
+       "acts.",
+       "Glycolysis,",
+       "in",
+       "the",
+       "cytoplasm,",
+       "splits",
+       "one",
+       "glucose",
+       "into",
+       "two",
+       "pyruvate",
+       "molecules",
+       "and",
+       "nets",
+       "a",
+       "small",
+       "payment",
+       "of",
+       "ATP",
+       "\u2014",
+       "no",
+       "oxygen",
+       "needed.",
+       "The",
+       "Krebs",
+       "cycle,",
+       "in",
+       "the",
+       "mitochondrial",
+       "matrix,",
+       "strips",
+       "the",
+       "pyruvate",
+       "down",
+       "to",
+       "carbon",
+       "dioxide",
+       "and",
+       "loads",
+       "energy",
+       "carriers.",
+       "The",
+       "electron",
+       "transport",
+       "chain",
+       "then",
+       "spends",
+       "those",
+       "carriers,",
+       "with",
+       "oxygen",
+       "as",
+       "the",
+       "final",
+       "electron",
+       "acceptor,",
+       "forming",
+       "water",
+       "and",
+       "driving",
+       "the",
+       "bulk",
+       "of",
+       "ATP",
+       "production.",
+       "Total",
+       "yield:",
+       "roughly",
+       "thirty",
+       "ATP",
+       "per",
+       "glucose",
+       "\u2014",
+       "the",
+       "cell's",
+       "spendable",
+       "currency,",
+       "earned",
+       "by",
+       "controlled",
+       "burning",
+       "instead",
+       "of",
+       "fire."
+      ]
+     },
+     {
+      "chapter": "Week 3",
+      "text": "Before a cell can divide, it must copy its DNA \u2014 all of it, once, accurately. The double helix unzips as helicase breaks the hydrogen bonds between base pairs, and each exposed strand becomes a template. DNA polymerase builds the new strand by matching free nucleotides to the template \u2014 A with T, C with G \u2014 but it can only build in one direction, so one strand is made continuously and the other in short Okazaki fragments that ligase later seals. The result is semi-conservative: each daughter molecule keeps one original strand and one new one, and proofreading keeps errors near one in a billion bases.",
+      "title": "DNA replication",
+      "words": [
+       "Before",
+       "a",
+       "cell",
+       "can",
+       "divide,",
+       "it",
+       "must",
+       "copy",
+       "its",
+       "DNA",
+       "\u2014",
+       "all",
+       "of",
+       "it,",
+       "once,",
+       "accurately.",
+       "The",
+       "double",
+       "helix",
+       "unzips",
+       "as",
+       "helicase",
+       "breaks",
+       "the",
+       "hydrogen",
+       "bonds",
+       "between",
+       "base",
+       "pairs,",
+       "and",
+       "each",
+       "exposed",
+       "strand",
+       "becomes",
+       "a",
+       "template.",
+       "DNA",
+       "polymerase",
+       "builds",
+       "the",
+       "new",
+       "strand",
+       "by",
+       "matching",
+       "free",
+       "nucleotides",
+       "to",
+       "the",
+       "template",
+       "\u2014",
+       "A",
+       "with",
+       "T,",
+       "C",
+       "with",
+       "G",
+       "\u2014",
+       "but",
+       "it",
+       "can",
+       "only",
+       "build",
+       "in",
+       "one",
+       "direction,",
+       "so",
+       "one",
+       "strand",
+       "is",
+       "made",
+       "continuously",
+       "and",
+       "the",
+       "other",
+       "in",
+       "short",
+       "Okazaki",
+       "fragments",
+       "that",
+       "ligase",
+       "later",
+       "seals.",
+       "The",
+       "result",
+       "is",
+       "semi-conservative:",
+       "each",
+       "daughter",
+       "molecule",
+       "keeps",
+       "one",
+       "original",
+       "strand",
+       "and",
+       "one",
+       "new",
+       "one,",
+       "and",
+       "proofreading",
+       "keeps",
+       "errors",
+       "near",
+       "one",
+       "in",
+       "a",
+       "billion",
+       "bases."
+      ]
+     },
+     {
+      "chapter": "Week 3",
+      "text": "Mitosis divides one nucleus into two genetically identical nuclei. In prophase the copied chromosomes condense and the spindle \u2014 a scaffold of microtubules \u2014 begins to form. Metaphase lines the chromosomes along the cell's equator, each attached to spindle fibers from both poles, a checkpoint that ensures every daughter gets a full set. Anaphase pulls the sister chromatids apart to opposite poles. Telophase wraps each set in a new nuclear envelope, and cytokinesis then splits the cytoplasm. One cell in, two identical cells out \u2014 the mechanism behind growth, repair, and asexual reproduction.",
+      "title": "mitosis",
+      "words": [
+       "Mitosis",
+       "divides",
+       "one",
+       "nucleus",
+       "into",
+       "two",
+       "genetically",
+       "identical",
+       "nuclei.",
+       "In",
+       "prophase",
+       "the",
+       "copied",
+       "chromosomes",
+       "condense",
+       "and",
+       "the",
+       "spindle",
+       "\u2014",
+       "a",
+       "scaffold",
+       "of",
+       "microtubules",
+       "\u2014",
+       "begins",
+       "to",
+       "form.",
+       "Metaphase",
+       "lines",
+       "the",
+       "chromosomes",
+       "along",
+       "the",
+       "cell's",
+       "equator,",
+       "each",
+       "attached",
+       "to",
+       "spindle",
+       "fibers",
+       "from",
+       "both",
+       "poles,",
+       "a",
+       "checkpoint",
+       "that",
+       "ensures",
+       "every",
+       "daughter",
+       "gets",
+       "a",
+       "full",
+       "set.",
+       "Anaphase",
+       "pulls",
+       "the",
+       "sister",
+       "chromatids",
+       "apart",
+       "to",
+       "opposite",
+       "poles.",
+       "Telophase",
+       "wraps",
+       "each",
+       "set",
+       "in",
+       "a",
+       "new",
+       "nuclear",
+       "envelope,",
+       "and",
+       "cytokinesis",
+       "then",
+       "splits",
+       "the",
+       "cytoplasm.",
+       "One",
+       "cell",
+       "in,",
+       "two",
+       "identical",
+       "cells",
+       "out",
+       "\u2014",
+       "the",
+       "mechanism",
+       "behind",
+       "growth,",
+       "repair,",
+       "and",
+       "asexual",
+       "reproduction."
+      ]
+     }
+    ]
+   },
+   "sr": {
+    "cards": [
+     {
+      "back": "Controls what enters and leaves the cell.",
+      "card_id": "8c01afbd0c5aacc5",
+      "front": "What does the cell membrane do?",
+      "source": {
+       "kind": "practice_set",
+       "topic": "cell structure"
+      },
+      "tags": [
+       "cell structure"
+      ]
+     },
+     {
+      "back": "The nucleus.",
+      "card_id": "2844ae10175083af",
+      "front": "Where is DNA stored in a eukaryotic cell?",
+      "source": {
+       "kind": "practice_set",
+       "topic": "cell structure"
+      },
+      "tags": [
+       "cell structure"
+      ]
+     }
+    ],
+    "ux_state": {
+     "cards": [
+      {
+       "back": "Controls what enters and leaves the cell.",
+       "card_id": "8c01afbd0c5aacc5",
+       "front": "What does the cell membrane do?",
+       "ts_fsrs": {
+        "difficulty": null,
+        "due": "",
+        "elapsed_days": 0,
+        "lapses": 0,
+        "last_review": null,
+        "reps": 0,
+        "scheduled_days": 0,
+        "stability": null,
+        "state": "New",
+        "step": null
+       }
+      },
+      {
+       "back": "The nucleus.",
+       "card_id": "2844ae10175083af",
+       "front": "Where is DNA stored in a eukaryotic cell?",
+       "ts_fsrs": {
+        "difficulty": null,
+        "due": "",
+        "elapsed_days": 0,
+        "lapses": 0,
+        "last_review": null,
+        "reps": 0,
+        "scheduled_days": 0,
+        "stability": null,
+        "state": "New",
+        "step": null
+       }
+      }
+     ],
+     "desired_retention": 0.9,
+     "format": "ts-fsrs/v1",
+     "generated_at": "2026-11-03T23:26:33Z",
+     "generation": "FSRS-6",
+     "parameters": [
+      0.212,
+      1.2931,
+      2.3065,
+      8.2956,
+      6.4133,
+      0.8334,
+      3.0194,
+      0.001,
+      1.8722,
+      0.1666,
+      0.796,
+      1.4835,
+      0.0614,
+      0.2629,
+      1.6483,
+      0.6014,
+      1.8729,
+      0.5425,
+      0.0912,
+      0.0658,
+      0.1542
+     ],
+     "scheduler": "fsrs"
+    }
+   },
+   "syllabus": {
+    "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+    "weeks": [
+     {
+      "due": "quiz 1",
+      "topics": [
+       "cell structure",
+       "membranes"
+      ],
+      "week": 1
+     },
+     {
+      "due": "lab 1",
+      "topics": [
+       "photosynthesis",
+       "respiration"
+      ],
+      "week": 2
+     },
+     {
+      "due": "midterm",
+      "topics": [
+       "DNA replication",
+       "mitosis"
+      ],
+      "week": 3
+     }
+    ]
+   },
+   "today": {
+    "actions": [
+     {
+      "action": "start_session",
+      "label": "Start Today's Sprint",
+      "style": "primary"
+     },
+     {
+      "action": "mark_missed",
+      "label": "I missed this",
+      "style": "subtle_no_guilt"
+     }
+    ],
+    "card_title": "Today's Sprint (60 min)",
+    "day_index": 0,
+    "estimated_minutes": 60,
+    "no_guilt_hint": "Life happened? Tap 'I missed this' to seamlessly shift this block without guilt.",
+    "sessions": [
+     {
+      "kind": "learn",
+      "minutes": 45,
+      "topic": "cell structure",
+      "week": 1
+     },
+     {
+      "kind": "retrieve",
+      "minutes": 15,
+      "topic": "cell structure",
+      "week": 1
+     }
+    ]
+   },
+   "trust_receipt": {
+    "content_hash_short": "1991c70a2d85",
+    "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+    "due_dates": [
+     "quiz 1",
+     "lab 1",
+     "midterm"
+    ],
+    "items_verified": 8,
+    "source_path": "examples/syllabus.json",
+    "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
+    "verified_at": "2026-11-03T23:26:33Z",
+    "weeks_count": 3
+   }
+  },
+  {
+   "calendar_error": "assessment kind must be quiz|midterm|final, got 'problem set'",
+   "calendar_geo": null,
+   "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+   "memory": {
+    "feynman_topics": [
+     {
+      "chapter": "Week 1",
+      "evidence": "A sample only speaks for the population it was fairly drawn from. Volunteers differ from the people who stay silent, customers who answer a survey differ from those who ignore it, and a poll of whoever walked past differs from the town. That gap between who got asked and who the claim is about is bias, and no amount of extra data repairs it \u2014 a bigger biased sample is just a more confident wrong answer. Random selection is the repair: when every member of the population has a known, non-zero chance of being picked, the differences average out instead of piling up.",
+      "topic": "sampling and bias"
+     },
+     {
+      "chapter": "Week 1",
+      "evidence": "Before any analysis, name what was actually measured. A variable records one attribute per case: categorical variables sort cases into groups (major, blood type, yes-or-no), while quantitative variables carry numbers where arithmetic means something (height, reaction time, income). The same question can hide different variables \u2014 'hours studied' measured by self-report is not the variable a timestamp log measures. Units and definitions are part of the data: a temperature in Celsius, a score out of 40, and a count of errors behave differently in every later calculation.",
+      "topic": "variables and measurement"
+     },
+     {
+      "chapter": "Week 2",
+      "evidence": "Probability assigns every event a number between 0 and 1, and the whole sample space gets exactly 1. Three rules do most of the work. The complement rule: an event fails to happen with probability 1 minus the chance it happens. The addition rule: disjoint events add \u2014 the chance of either is the sum of their chances. The multiplication rule: independent events multiply \u2014 the chance of both is the product. Most probability errors are rule errors: adding events that overlap, or multiplying events that are not independent, like two draws from the same small deck without replacement.\n\nCheck yourself: What is the complement rule for the probability that an event does NOT happen? One minus the probability that it does happen: P(not A) = 1 - P(A).",
+      "topic": "probability rules"
+     },
+     {
+      "chapter": "Week 2",
+      "evidence": "A random variable turns an uncertain outcome into a number. Roll two dice and the count of sixes is a random variable; so is the sum, the time until the next bus, or whether tomorrow's trial succeeds. Discrete variables take countable values, each with its own probability; continuous ones spread probability over intervals, described by a density curve where area is probability. Two summaries carry most of the story: the mean, the long-run average the values settle toward, and the standard deviation, the typical distance from that mean.",
+      "topic": "random variables"
+     },
+     {
+      "chapter": "Week 3",
+      "evidence": "The normal curve is a symmetric, bell-shaped density fixed by two numbers: its mean, which centers it, and its standard deviation, which sets its spread. Its great convenience is the empirical rule \u2014 about 68% of values fall within one standard deviation of the mean, 95% within two, and 99.7% within three. Standardizing converts any normal value to a z-score, the count of standard deviations from the mean, so one table serves every normal distribution. Many natural measurements and nearly all sample averages lean toward this shape, which is why it anchors the course.",
+      "topic": "the normal distribution"
+     },
+     {
+      "chapter": "Week 3",
+      "evidence": "A statistic computed from a sample \u2014 a mean, a proportion \u2014 is itself a random variable, with its own distribution: the sampling distribution. Draw many samples of the same size and the sample means pile into a shape that is narrower than the population's and, by the central limit theorem, close to normal for large samples whatever the population looked like. Its standard deviation, the standard error, shrinks like 1 over the square root of the sample size: quadrupling the sample halves the wobble. This is the bridge from one sample to an honest claim about a population.",
+      "topic": "sampling distributions"
+     }
+    ],
+    "palace": {
+     "chapters": [
+      "Week 1",
+      "Week 2",
+      "Week 3"
+     ],
+     "claims_ceiling": "ordered/concrete recall, not understanding",
+     "evidence": "Dresler et al. 2017 (Neuron): 26 -> 62 of 72 words, durable 4 months; BJOP 2025 meta-analysis d=0.88 serial recall, GRADE low",
+     "placements": [
+      {
+       "chapter": "Week 1",
+       "item": "sampling and bias",
+       "locus": "front door",
+       "position": 1
+      },
+      {
+       "chapter": "Week 1",
+       "item": "variables and measurement",
+       "locus": "entryway",
+       "position": 2
+      },
+      {
+       "chapter": "Week 2",
+       "item": "probability rules",
+       "locus": "coat rack",
+       "position": 3
+      },
+      {
+       "chapter": "Week 2",
+       "item": "random variables",
+       "locus": "living-room couch",
+       "position": 4
+      },
+      {
+       "chapter": "Week 3",
+       "item": "the normal distribution",
+       "locus": "coffee table",
+       "position": 5
+      },
+      {
+       "chapter": "Week 3",
+       "item": "sampling distributions",
+       "locus": "bookshelf",
+       "position": 6
+      }
+     ],
+     "route": [
+      "front door",
+      "entryway",
+      "coat rack",
+      "living-room couch",
+      "coffee table",
+      "bookshelf"
+     ],
+     "source": "default-route"
+    }
+   },
+   "plan": {
+    "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+    "total_sessions": 12,
+    "weeks": [
+     {
+      "due": "problem set 1",
+      "sessions": [
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "sampling and bias"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "sampling and bias"
+       },
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "variables and measurement"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "variables and measurement"
+       }
+      ],
+      "week": 1
+     },
+     {
+      "due": "problem set 2",
+      "sessions": [
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "probability rules"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "probability rules"
+       },
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "random variables"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "random variables"
+       }
+      ],
+      "week": 2
+     },
+     {
+      "due": "final project",
+      "sessions": [
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "the normal distribution"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "the normal distribution"
+       },
+       {
+        "kind": "learn",
+        "minutes": 45,
+        "topic": "sampling distributions"
+       },
+       {
+        "kind": "retrieve",
+        "minutes": 15,
+        "topic": "sampling distributions"
+       }
+      ],
+      "week": 3
+     }
+    ]
+   },
+   "reader": {
+    "sections": [
+     {
+      "chapter": "Week 1",
+      "text": "A sample only speaks for the population it was fairly drawn from. Volunteers differ from the people who stay silent, customers who answer a survey differ from those who ignore it, and a poll of whoever walked past differs from the town. That gap between who got asked and who the claim is about is bias, and no amount of extra data repairs it \u2014 a bigger biased sample is just a more confident wrong answer. Random selection is the repair: when every member of the population has a known, non-zero chance of being picked, the differences average out instead of piling up.",
+      "title": "sampling and bias",
+      "words": [
+       "A",
+       "sample",
+       "only",
+       "speaks",
+       "for",
+       "the",
+       "population",
+       "it",
+       "was",
+       "fairly",
+       "drawn",
+       "from.",
+       "Volunteers",
+       "differ",
+       "from",
+       "the",
+       "people",
+       "who",
+       "stay",
+       "silent,",
+       "customers",
+       "who",
+       "answer",
+       "a",
+       "survey",
+       "differ",
+       "from",
+       "those",
+       "who",
+       "ignore",
+       "it,",
+       "and",
+       "a",
+       "poll",
+       "of",
+       "whoever",
+       "walked",
+       "past",
+       "differs",
+       "from",
+       "the",
+       "town.",
+       "That",
+       "gap",
+       "between",
+       "who",
+       "got",
+       "asked",
+       "and",
+       "who",
+       "the",
+       "claim",
+       "is",
+       "about",
+       "is",
+       "bias,",
+       "and",
+       "no",
+       "amount",
+       "of",
+       "extra",
+       "data",
+       "repairs",
+       "it",
+       "\u2014",
+       "a",
+       "bigger",
+       "biased",
+       "sample",
+       "is",
+       "just",
+       "a",
+       "more",
+       "confident",
+       "wrong",
+       "answer.",
+       "Random",
+       "selection",
+       "is",
+       "the",
+       "repair:",
+       "when",
+       "every",
+       "member",
+       "of",
+       "the",
+       "population",
+       "has",
+       "a",
+       "known,",
+       "non-zero",
+       "chance",
+       "of",
+       "being",
+       "picked,",
+       "the",
+       "differences",
+       "average",
+       "out",
+       "instead",
+       "of",
+       "piling",
+       "up."
+      ]
+     },
+     {
+      "chapter": "Week 1",
+      "text": "Before any analysis, name what was actually measured. A variable records one attribute per case: categorical variables sort cases into groups (major, blood type, yes-or-no), while quantitative variables carry numbers where arithmetic means something (height, reaction time, income). The same question can hide different variables \u2014 'hours studied' measured by self-report is not the variable a timestamp log measures. Units and definitions are part of the data: a temperature in Celsius, a score out of 40, and a count of errors behave differently in every later calculation.",
+      "title": "variables and measurement",
+      "words": [
+       "Before",
+       "any",
+       "analysis,",
+       "name",
+       "what",
+       "was",
+       "actually",
+       "measured.",
+       "A",
+       "variable",
+       "records",
+       "one",
+       "attribute",
+       "per",
+       "case:",
+       "categorical",
+       "variables",
+       "sort",
+       "cases",
+       "into",
+       "groups",
+       "(major,",
+       "blood",
+       "type,",
+       "yes-or-no),",
+       "while",
+       "quantitative",
+       "variables",
+       "carry",
+       "numbers",
+       "where",
+       "arithmetic",
+       "means",
+       "something",
+       "(height,",
+       "reaction",
+       "time,",
+       "income).",
+       "The",
+       "same",
+       "question",
+       "can",
+       "hide",
+       "different",
+       "variables",
+       "\u2014",
+       "'hours",
+       "studied'",
+       "measured",
+       "by",
+       "self-report",
+       "is",
+       "not",
+       "the",
+       "variable",
+       "a",
+       "timestamp",
+       "log",
+       "measures.",
+       "Units",
+       "and",
+       "definitions",
+       "are",
+       "part",
+       "of",
+       "the",
+       "data:",
+       "a",
+       "temperature",
+       "in",
+       "Celsius,",
+       "a",
+       "score",
+       "out",
+       "of",
+       "40,",
+       "and",
+       "a",
+       "count",
+       "of",
+       "errors",
+       "behave",
+       "differently",
+       "in",
+       "every",
+       "later",
+       "calculation."
+      ]
+     },
+     {
+      "chapter": "Week 2",
+      "text": "Probability assigns every event a number between 0 and 1, and the whole sample space gets exactly 1. Three rules do most of the work. The complement rule: an event fails to happen with probability 1 minus the chance it happens. The addition rule: disjoint events add \u2014 the chance of either is the sum of their chances. The multiplication rule: independent events multiply \u2014 the chance of both is the product. Most probability errors are rule errors: adding events that overlap, or multiplying events that are not independent, like two draws from the same small deck without replacement.\n\nCheck yourself: What is the complement rule for the probability that an event does NOT happen? One minus the probability that it does happen: P(not A) = 1 - P(A).",
+      "title": "probability rules",
+      "words": [
+       "Probability",
+       "assigns",
+       "every",
+       "event",
+       "a",
+       "number",
+       "between",
+       "0",
+       "and",
+       "1,",
+       "and",
+       "the",
+       "whole",
+       "sample",
+       "space",
+       "gets",
+       "exactly",
+       "1.",
+       "Three",
+       "rules",
+       "do",
+       "most",
+       "of",
+       "the",
+       "work.",
+       "The",
+       "complement",
+       "rule:",
+       "an",
+       "event",
+       "fails",
+       "to",
+       "happen",
+       "with",
+       "probability",
+       "1",
+       "minus",
+       "the",
+       "chance",
+       "it",
+       "happens.",
+       "The",
+       "addition",
+       "rule:",
+       "disjoint",
+       "events",
+       "add",
+       "\u2014",
+       "the",
+       "chance",
+       "of",
+       "either",
+       "is",
+       "the",
+       "sum",
+       "of",
+       "their",
+       "chances.",
+       "The",
+       "multiplication",
+       "rule:",
+       "independent",
+       "events",
+       "multiply",
+       "\u2014",
+       "the",
+       "chance",
+       "of",
+       "both",
+       "is",
+       "the",
+       "product.",
+       "Most",
+       "probability",
+       "errors",
+       "are",
+       "rule",
+       "errors:",
+       "adding",
+       "events",
+       "that",
+       "overlap,",
+       "or",
+       "multiplying",
+       "events",
+       "that",
+       "are",
+       "not",
+       "independent,",
+       "like",
+       "two",
+       "draws",
+       "from",
+       "the",
+       "same",
+       "small",
+       "deck",
+       "without",
+       "replacement.",
+       "Check",
+       "yourself:",
+       "What",
+       "is",
+       "the",
+       "complement",
+       "rule",
+       "for",
+       "the",
+       "probability",
+       "that",
+       "an",
+       "event",
+       "does",
+       "NOT",
+       "happen?",
+       "One",
+       "minus",
+       "the",
+       "probability",
+       "that",
+       "it",
+       "does",
+       "happen:",
+       "P(not",
+       "A)",
+       "=",
+       "1",
+       "-",
+       "P(A)."
+      ]
+     },
+     {
+      "chapter": "Week 2",
+      "text": "A random variable turns an uncertain outcome into a number. Roll two dice and the count of sixes is a random variable; so is the sum, the time until the next bus, or whether tomorrow's trial succeeds. Discrete variables take countable values, each with its own probability; continuous ones spread probability over intervals, described by a density curve where area is probability. Two summaries carry most of the story: the mean, the long-run average the values settle toward, and the standard deviation, the typical distance from that mean.",
+      "title": "random variables",
+      "words": [
+       "A",
+       "random",
+       "variable",
+       "turns",
+       "an",
+       "uncertain",
+       "outcome",
+       "into",
+       "a",
+       "number.",
+       "Roll",
+       "two",
+       "dice",
+       "and",
+       "the",
+       "count",
+       "of",
+       "sixes",
+       "is",
+       "a",
+       "random",
+       "variable;",
+       "so",
+       "is",
+       "the",
+       "sum,",
+       "the",
+       "time",
+       "until",
+       "the",
+       "next",
+       "bus,",
+       "or",
+       "whether",
+       "tomorrow's",
+       "trial",
+       "succeeds.",
+       "Discrete",
+       "variables",
+       "take",
+       "countable",
+       "values,",
+       "each",
+       "with",
+       "its",
+       "own",
+       "probability;",
+       "continuous",
+       "ones",
+       "spread",
+       "probability",
+       "over",
+       "intervals,",
+       "described",
+       "by",
+       "a",
+       "density",
+       "curve",
+       "where",
+       "area",
+       "is",
+       "probability.",
+       "Two",
+       "summaries",
+       "carry",
+       "most",
+       "of",
+       "the",
+       "story:",
+       "the",
+       "mean,",
+       "the",
+       "long-run",
+       "average",
+       "the",
+       "values",
+       "settle",
+       "toward,",
+       "and",
+       "the",
+       "standard",
+       "deviation,",
+       "the",
+       "typical",
+       "distance",
+       "from",
+       "that",
+       "mean."
+      ]
+     },
+     {
+      "chapter": "Week 3",
+      "text": "The normal curve is a symmetric, bell-shaped density fixed by two numbers: its mean, which centers it, and its standard deviation, which sets its spread. Its great convenience is the empirical rule \u2014 about 68% of values fall within one standard deviation of the mean, 95% within two, and 99.7% within three. Standardizing converts any normal value to a z-score, the count of standard deviations from the mean, so one table serves every normal distribution. Many natural measurements and nearly all sample averages lean toward this shape, which is why it anchors the course.",
+      "title": "the normal distribution",
+      "words": [
+       "The",
+       "normal",
+       "curve",
+       "is",
+       "a",
+       "symmetric,",
+       "bell-shaped",
+       "density",
+       "fixed",
+       "by",
+       "two",
+       "numbers:",
+       "its",
+       "mean,",
+       "which",
+       "centers",
+       "it,",
+       "and",
+       "its",
+       "standard",
+       "deviation,",
+       "which",
+       "sets",
+       "its",
+       "spread.",
+       "Its",
+       "great",
+       "convenience",
+       "is",
+       "the",
+       "empirical",
+       "rule",
+       "\u2014",
+       "about",
+       "68%",
+       "of",
+       "values",
+       "fall",
+       "within",
+       "one",
+       "standard",
+       "deviation",
+       "of",
+       "the",
+       "mean,",
+       "95%",
+       "within",
+       "two,",
+       "and",
+       "99.7%",
+       "within",
+       "three.",
+       "Standardizing",
+       "converts",
+       "any",
+       "normal",
+       "value",
+       "to",
+       "a",
+       "z-score,",
+       "the",
+       "count",
+       "of",
+       "standard",
+       "deviations",
+       "from",
+       "the",
+       "mean,",
+       "so",
+       "one",
+       "table",
+       "serves",
+       "every",
+       "normal",
+       "distribution.",
+       "Many",
+       "natural",
+       "measurements",
+       "and",
+       "nearly",
+       "all",
+       "sample",
+       "averages",
+       "lean",
+       "toward",
+       "this",
+       "shape,",
+       "which",
+       "is",
+       "why",
+       "it",
+       "anchors",
+       "the",
+       "course."
+      ]
+     },
+     {
+      "chapter": "Week 3",
+      "text": "A statistic computed from a sample \u2014 a mean, a proportion \u2014 is itself a random variable, with its own distribution: the sampling distribution. Draw many samples of the same size and the sample means pile into a shape that is narrower than the population's and, by the central limit theorem, close to normal for large samples whatever the population looked like. Its standard deviation, the standard error, shrinks like 1 over the square root of the sample size: quadrupling the sample halves the wobble. This is the bridge from one sample to an honest claim about a population.",
+      "title": "sampling distributions",
+      "words": [
+       "A",
+       "statistic",
+       "computed",
+       "from",
+       "a",
+       "sample",
+       "\u2014",
+       "a",
+       "mean,",
+       "a",
+       "proportion",
+       "\u2014",
+       "is",
+       "itself",
+       "a",
+       "random",
+       "variable,",
+       "with",
+       "its",
+       "own",
+       "distribution:",
+       "the",
+       "sampling",
+       "distribution.",
+       "Draw",
+       "many",
+       "samples",
+       "of",
+       "the",
+       "same",
+       "size",
+       "and",
+       "the",
+       "sample",
+       "means",
+       "pile",
+       "into",
+       "a",
+       "shape",
+       "that",
+       "is",
+       "narrower",
+       "than",
+       "the",
+       "population's",
+       "and,",
+       "by",
+       "the",
+       "central",
+       "limit",
+       "theorem,",
+       "close",
+       "to",
+       "normal",
+       "for",
+       "large",
+       "samples",
+       "whatever",
+       "the",
+       "population",
+       "looked",
+       "like.",
+       "Its",
+       "standard",
+       "deviation,",
+       "the",
+       "standard",
+       "error,",
+       "shrinks",
+       "like",
+       "1",
+       "over",
+       "the",
+       "square",
+       "root",
+       "of",
+       "the",
+       "sample",
+       "size:",
+       "quadrupling",
+       "the",
+       "sample",
+       "halves",
+       "the",
+       "wobble.",
+       "This",
+       "is",
+       "the",
+       "bridge",
+       "from",
+       "one",
+       "sample",
+       "to",
+       "an",
+       "honest",
+       "claim",
+       "about",
+       "a",
+       "population."
+      ]
+     }
+    ]
+   },
+   "sr": {
+    "cards": [
+     {
+      "back": "Add the probabilities of the individual outcomes that make up the event.",
+      "card_id": "69e1d1894e26eaa5",
+      "front": "How do you find the probability of an event made of several disjoint outcomes?",
+      "source": {
+       "kind": "practice_set",
+       "topic": "probability rules"
+      },
+      "tags": [
+       "probability rules"
+      ]
+     },
+     {
+      "back": "One minus the probability that it does happen: P(not A) = 1 - P(A).",
+      "card_id": "2b3ac11fa81485f4",
+      "front": "What is the complement rule for the probability that an event does NOT happen?",
+      "source": {
+       "kind": "practice_set",
+       "topic": "probability rules"
+      },
+      "tags": [
+       "probability rules"
+      ]
+     }
+    ],
+    "ux_state": {
+     "cards": [
+      {
+       "back": "Add the probabilities of the individual outcomes that make up the event.",
+       "card_id": "69e1d1894e26eaa5",
+       "front": "How do you find the probability of an event made of several disjoint outcomes?",
+       "ts_fsrs": {
+        "difficulty": null,
+        "due": "",
+        "elapsed_days": 0,
+        "lapses": 0,
+        "last_review": null,
+        "reps": 0,
+        "scheduled_days": 0,
+        "stability": null,
+        "state": "New",
+        "step": null
+       }
+      },
+      {
+       "back": "One minus the probability that it does happen: P(not A) = 1 - P(A).",
+       "card_id": "2b3ac11fa81485f4",
+       "front": "What is the complement rule for the probability that an event does NOT happen?",
+       "ts_fsrs": {
+        "difficulty": null,
+        "due": "",
+        "elapsed_days": 0,
+        "lapses": 0,
+        "last_review": null,
+        "reps": 0,
+        "scheduled_days": 0,
+        "stability": null,
+        "state": "New",
+        "step": null
+       }
+      }
+     ],
+     "desired_retention": 0.9,
+     "format": "ts-fsrs/v1",
+     "generated_at": "2026-11-03T23:26:33Z",
+     "generation": "FSRS-6",
+     "parameters": [
+      0.212,
+      1.2931,
+      2.3065,
+      8.2956,
+      6.4133,
+      0.8334,
+      3.0194,
+      0.001,
+      1.8722,
+      0.1666,
+      0.796,
+      1.4835,
+      0.0614,
+      0.2629,
+      1.6483,
+      0.6014,
+      1.8729,
+      0.5425,
+      0.0912,
+      0.0658,
+      0.1542
+     ],
+     "scheduler": "fsrs"
+    }
+   },
+   "syllabus": {
+    "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+    "weeks": [
+     {
+      "due": "problem set 1",
+      "topics": [
+       "sampling and bias",
+       "variables and measurement"
+      ],
+      "week": 1
+     },
+     {
+      "due": "problem set 2",
+      "topics": [
+       "probability rules",
+       "random variables"
+      ],
+      "week": 2
+     },
+     {
+      "due": "final project",
+      "topics": [
+       "the normal distribution",
+       "sampling distributions"
+      ],
+      "week": 3
+     }
+    ]
+   },
+   "today": {
+    "actions": [
+     {
+      "action": "start_session",
+      "label": "Start Today's Sprint",
+      "style": "primary"
+     },
+     {
+      "action": "mark_missed",
+      "label": "I missed this",
+      "style": "subtle_no_guilt"
+     }
+    ],
+    "card_title": "Today's Sprint (60 min)",
+    "day_index": 0,
+    "estimated_minutes": 60,
+    "no_guilt_hint": "Life happened? Tap 'I missed this' to seamlessly shift this block without guilt.",
+    "sessions": [
+     {
+      "kind": "learn",
+      "minutes": 45,
+      "topic": "sampling and bias",
+      "week": 1
+     },
+     {
+      "kind": "retrieve",
+      "minutes": 15,
+      "topic": "sampling and bias",
+      "week": 1
+     }
+    ]
+   },
+   "trust_receipt": {
+    "content_hash_short": "aadbc795463a",
+    "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+    "due_dates": [
+     "problem set 1",
+     "problem set 2",
+     "final project"
+    ],
+    "items_verified": 8,
+    "source_path": "examples/syllabus_stats.json",
+    "trust_statement": "Planned from your verified STAT 210 \u2014 Data & Chance (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash aadbc795463a.",
+    "verified_at": "2026-11-03T23:26:33Z",
+    "weeks_count": 3
+   }
+  }
+ ],
+ "courses_intake": {
+  "conflicts": [],
+  "course_count": 2,
+  "courses": [
+   {
+    "countdown": {
+     "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+     "days_remaining": null,
+     "exam_date": null,
+     "milestones": [],
+     "pace": null,
+     "total_sessions": 12,
+     "urgency": "unset",
+     "weeks_remaining": null
+    },
+    "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+    "plan": {
+     "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+     "total_sessions": 12,
+     "weeks": [
+      {
+       "due": "quiz 1",
+       "sessions": [
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "cell structure"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "cell structure"
+        },
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "membranes"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "membranes"
+        }
+       ],
+       "week": 1
+      },
+      {
+       "due": "lab 1",
+       "sessions": [
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "photosynthesis"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "photosynthesis"
+        },
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "respiration"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "respiration"
+        }
+       ],
+       "week": 2
+      },
+      {
+       "due": "midterm",
+       "sessions": [
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "DNA replication"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "DNA replication"
+        },
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "mitosis"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "mitosis"
+        }
+       ],
+       "week": 3
+      }
+     ]
+    }
+   },
+   {
+    "countdown": {
+     "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+     "days_remaining": null,
+     "exam_date": null,
+     "milestones": [],
+     "pace": null,
+     "total_sessions": 12,
+     "urgency": "unset",
+     "weeks_remaining": null
+    },
+    "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+    "plan": {
+     "course": "STAT 210 \u2014 Data & Chance (sample, synthetic)",
+     "total_sessions": 12,
+     "weeks": [
+      {
+       "due": "problem set 1",
+       "sessions": [
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "sampling and bias"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "sampling and bias"
+        },
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "variables and measurement"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "variables and measurement"
+        }
+       ],
+       "week": 1
+      },
+      {
+       "due": "problem set 2",
+       "sessions": [
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "probability rules"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "probability rules"
+        },
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "random variables"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "random variables"
+        }
+       ],
+       "week": 2
+      },
+      {
+       "due": "final project",
+       "sessions": [
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "the normal distribution"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "the normal distribution"
+        },
+        {
+         "kind": "learn",
+         "minutes": 45,
+         "topic": "sampling distributions"
+        },
+        {
+         "kind": "retrieve",
+         "minutes": 15,
+         "topic": "sampling distributions"
+        }
+       ],
+       "week": 3
+      }
+     ]
+    }
+   }
+  ],
+  "observed_at": "2026-11-03T23:26:33Z",
+  "schema": "studysprint-courses-receipt/v1",
+  "total_sessions": 24
+ },
+ "ics_by_course": {
+  "BIO 101 \u2014 Intro Biology (sample, synthetic)": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudySprint//courses//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:af0646b0620dcc0d@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261103T170000Z\r\nDTEND:20261103T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: cell structure\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c2403163a306ab08@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261104T170000Z\r\nDTEND:20261104T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: cell structure\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:ee301ad5896b1452@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: membranes\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:4547e6b9f74f31e0@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261106T170000Z\r\nDTEND:20261106T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: membranes\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:17b7bc51d5556dae@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261110T170000Z\r\nDTEND:20261110T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: photosynthesis\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a7fa773bfccb277c@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261111T170000Z\r\nDTEND:20261111T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: photosynthesis\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:4f40c374116b3059@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261112T170000Z\r\nDTEND:20261112T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: respiration\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:71e0dc4c6267d220@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261113T170000Z\r\nDTEND:20261113T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: respiration\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:778f2bb413fb0cf1@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261117T170000Z\r\nDTEND:20261117T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: DNA replication\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c688a280a211bfd9@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261118T170000Z\r\nDTEND:20261118T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: DNA replication\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:76235e15581010ae@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261119T170000Z\r\nDTEND:20261119T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: mitosis\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:23f9fc86091e15fd@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261120T170000Z\r\nDTEND:20261120T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: mitosis\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+  "STAT 210 \u2014 Data & Chance (sample, synthetic)": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudySprint//courses//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:66fb9260548ea550@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261103T170000Z\r\nDTEND:20261103T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: sampling and bias\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:13a05c571c3c96a1@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261104T170000Z\r\nDTEND:20261104T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: sampling and bias\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:46fc7523a4bcf7b0@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: variables and measurement\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a899049e03c21c7d@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261106T170000Z\r\nDTEND:20261106T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: variables and measurement\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:478cf67ed05712ce@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261110T170000Z\r\nDTEND:20261110T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: probability rules\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a5ebb9ffc6079624@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261111T170000Z\r\nDTEND:20261111T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: probability rules\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:371d4a60019143d7@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261112T170000Z\r\nDTEND:20261112T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: random variables\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:7f1f34aa7b0244b2@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261113T170000Z\r\nDTEND:20261113T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: random variables\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:5153cba6b1ecccb1@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261117T170000Z\r\nDTEND:20261117T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: the normal distribution\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:26537ef18a773f89@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261118T170000Z\r\nDTEND:20261118T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: the normal distribution\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:2fbcfd01fb0da242@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261119T170000Z\r\nDTEND:20261119T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: sampling distributions\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:587b6350fe4cc7de@studysprint\r\nDTSTAMP:20261103T232633Z\r\nDTSTART:20261120T170000Z\r\nDTEND:20261120T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: sampling distributions\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+ },
  "memory": {
   "feynman_topics": [
    {
@@ -1111,7 +3531,7 @@
    ],
    "desired_retention": 0.9,
    "format": "ts-fsrs/v1",
-   "generated_at": "2026-11-03T22:54:11Z",
+   "generated_at": "2026-11-03T23:26:33Z",
    "generation": "FSRS-6",
    "parameters": [
     0.212,
@@ -1140,7 +3560,7 @@
   }
  },
  "surface": "studysprint-webapp",
- "surface_version": "0.3.0",
+ "surface_version": "0.4.0",
  "today": {
   "actions": [
    {
@@ -1184,7 +3604,7 @@
   "items_verified": 8,
   "source_path": "examples/syllabus.json",
   "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-  "verified_at": "2026-11-03T22:54:11Z",
+  "verified_at": "2026-11-03T23:26:33Z",
   "weeks_count": 3
  }
 }

@@ -42,7 +42,7 @@ default or SM-2, scheduler-named receipt after every grade) ·
 | .apkg export | present | Export tab → `export_apkg` |
 | Obsidian vault export | present | Export tab → `export_obsidian_vault` |
 | Reading pipeline (§1b) | absent | core module ships in the CLI; not yet surfaced in the TUI |
-| Multi-course / countdown / .ics | absent | core v0.4.0; TUI parity pass pending |
+| Multi-course / countdown / .ics | bound (0.4.0) | Courses tab over the real core intake; per-course check-in logs; .ics file export; create-a-course form |
 | Memory methods (§1c) | present | Memory tab runs the real core: `walk_review` scoring · `explain_back` vs the section text · `retrievability_notifications` over the surface's own FSRS states · Leitner rotation in SR via `leitner_review` · `interleave_sessions` in the Plan pane (iteration 2) |
 | Calendar awareness (§1d) | present | Calendar tab → `surface_calendar_geo` (intake · briefings · frequency · quiet hours), assembled live |
 | Geography (§1d) | present | Routes tab → locations · assessment routes · temple route + audio cues |

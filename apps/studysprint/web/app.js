@@ -13,7 +13,18 @@
 const $ = (s) => document.querySelector(s);
 const state = { data: null, cardIndex: 0, flipped: false,
                 scheduler: "fsrs", srState: {}, reader: null,
-                playing: false, timer: null };
+                playing: false, timer: null,
+                activeCourse: null, bundles: [] };
+
+// Per-course persistence keys (iteration 3, #4416): the active
+// course namespaces its SR state + check-ins; the pre-0.4.0
+// global keys are adopted once by the first bundled course.
+function srKey() {
+  return courseStorageKey("studysprint-sr", state.activeCourse);
+}
+function checkinKey() {
+  return courseStorageKey("ss.checkins", state.activeCourse);
+}
 
 /* ---------------- FSRS (pinned generation: FSRS-6) */
 // An in-browser port of the core's PINNED generation (RFP-D1-8
@@ -346,6 +357,96 @@ function nextDueDate(cards, srState, scheduler) {
   return best;
 }
 
+function buildPlanPort(doc, minutesPerDay) {
+  // Mirror of core build_study_plan (study_tools): each topic
+  // gets a learn block (minutesPerDay, default 45) + a retrieve
+  // block (max(15, minutesPerDay // 3)). Battery-pinned to the
+  // core in tests/test_iteration3_courses.py.
+  const mpd = minutesPerDay || 45;
+  const weeks = (doc.weeks || []).map((w) => {
+    const sessions = [];
+    (w.topics || []).forEach((topic) => {
+      sessions.push({ topic: topic, kind: "learn", minutes: mpd });
+      sessions.push({ topic: topic, kind: "retrieve",
+                      minutes: Math.max(15, Math.floor(mpd / 3)) });
+    });
+    return { week: w.week, due: w.due, sessions: sessions };
+  });
+  return { course: doc.course, weeks: weeks,
+           total_sessions: weeks.reduce(
+             (n, w) => n + w.sessions.length, 0) };
+}
+
+function examCountdownPort(doc, todayIso) {
+  // Mirror of core exam_countdown (study_courses): unset without
+  // an exam_date (no invented deadline); milestones at 14/7/3/0
+  // days with the core's labels; pace = total sessions over the
+  // days remaining. Battery-pinned in the iteration-3 tests.
+  const plan = buildPlanPort(doc);
+  const base = { course: doc.course,
+                 exam_date: doc.exam_date || null,
+                 total_sessions: plan.total_sessions };
+  if (!doc.exam_date) {
+    return { ...base, days_remaining: null, weeks_remaining: null,
+             urgency: "unset", milestones: [], pace: null };
+  }
+  const exam = new Date(doc.exam_date + "T00:00:00Z");
+  const today = new Date(todayIso + "T00:00:00Z");
+  const days = Math.round((exam - today) / 86400000);
+  const urgency = days < 0 ? "past" : days === 0 ? "today" :
+    days <= 7 ? "near" : "ahead";
+  const milestones = [[14, "final review begins"],
+                      [7, "mock exam week"],
+                      [3, "light review only"],
+                      [0, "EXAM"]].map(([offset, label]) => {
+    const when = new Date(exam - offset * 86400000);
+    return { label: `${doc.course}: ${label}`,
+             date: when.toISOString().slice(0, 10),
+             days_before_exam: offset,
+             reached: when <= today };
+  });
+  const pace = days > 0 ?
+    { sessions_remaining: plan.total_sessions,
+      days_remaining: days,
+      sessions_per_day: Math.round(
+        plan.total_sessions / days * 100) / 100 } : null;
+  return { ...base, days_remaining: days,
+           weeks_remaining: Math.round(days / 7 * 10) / 10,
+           urgency: urgency, milestones: milestones, pace: pace };
+}
+
+function courseStorageKey(base, course) {
+  // Per-course persistence (iteration 3): SR state and check-ins
+  // live under the course's own key -- one course's progress is
+  // never another's. Isolation-pinned in the iteration-3 tests.
+  return base + "::" + (course || "");
+}
+
+function bundleFromSyllabusPort(doc) {
+  // A user course created on the surface from its syllabus doc:
+  // plan + countdown from the ports above, reader sections as
+  // honest per-topic stubs (the build_data rule: a stub naming
+  // the topic, never another topic's content), SR empty until
+  // cards are ingested, calendar/memory unbound until a bundle
+  // build -- each absence is the view's own honest empty state.
+  const sections = [];
+  (doc.weeks || []).forEach((w) => (w.topics || []).forEach(
+    (topic) => sections.push({
+      title: topic, chapter: `Week ${w.week}`,
+      text: `Week ${w.week} covers ${topic}. The full reading ` +
+        `for this topic arrives with the course text at ` +
+        `ingest; the plan, checks and reviews for it are live ` +
+        `now.`,
+      words: 0 })));
+  return { course: doc.course, syllabus: doc,
+           plan: buildPlanPort(doc), today: null,
+           trust_receipt: null,
+           sr: { cards: [], ux_state: null },
+           reader: { sections: sections },
+           calendar_geo: null, calendar_error: null,
+           memory: null, custom: true };
+}
+
 /* ---------------- loading + rendering */
 async function load() {
   // Failure state (#4237): a failed or unparsable state.json used
@@ -369,11 +470,12 @@ async function load() {
     $("#load-retry").addEventListener("click", () => location.reload());
     return;
   }
-  const saved = localStorage.getItem("studysprint-sr");
-  if (saved) state.srState = JSON.parse(saved);
-  $("#course-name").textContent = state.data.course;
   $("#surface-version").textContent =
     state.data.surface_version || "0.1.0";
+  initCourses();
+}
+
+function renderAll() {
   renderToday(); renderPlan(); renderReader(); showCard();
   renderCalendar(); renderRoutes(); renderMemory();
   const ux = state.data.sr && state.data.sr.ux_state;
@@ -383,6 +485,129 @@ async function load() {
       `${FSRS_GENERATION} but the course data was exported as ` +
       `${ux.generation}. Intervals may differ from the core ` +
       `until the bundle is rebuilt.`;
+  }
+}
+
+function allBundles() {
+  // The course set (iteration 3): the bundled courses from the
+  // state build + the student's own courses, rebuilt from their
+  // stored syllabus docs by the ports on every load.
+  const bundled = state.data.courses && state.data.courses.length ?
+    state.data.courses : [state.data];
+  const customDocs = JSON.parse(
+    localStorage.getItem("ss.custom_courses") || "[]");
+  return bundled.concat(customDocs.map(bundleFromSyllabusPort));
+}
+
+function activateCourse(name, first) {
+  // Rebind the surface to one course of the set: the views keep
+  // reading state.data.*, which now points at the active bundle;
+  // SR state + check-ins load from the course's own keys (the
+  // pre-0.4.0 global keys are adopted once, by the first bundled
+  // course only -- no other course inherits that progress).
+  if (!first && state.activeCourse &&
+      state.activeCourse !== name) {
+    localStorage.setItem(srKey(), JSON.stringify(state.srState));
+  }
+  const bundle = state.bundles.find((b) => b.course === name) ||
+    state.bundles[0];
+  state.activeCourse = bundle.course;
+  ["course", "plan", "today", "sr", "reader", "calendar_geo",
+   "calendar_error", "memory", "trust_receipt"].forEach((k) => {
+    state.data[k] = bundle[k];
+  });
+  const key = srKey();
+  let saved = localStorage.getItem(key);
+  if (!saved && bundle === state.bundles[0]) {
+    saved = localStorage.getItem("studysprint-sr");
+    if (saved) localStorage.setItem(key, saved);
+  }
+  state.srState = saved ? JSON.parse(saved) : {};
+  state.cardIndex = 0;
+  localStorage.setItem("ss.active_course", bundle.course);
+  $("#course-name").textContent = bundle.course;
+  const sel = $("#course-switch");
+  if (sel) sel.value = bundle.course;
+  const cd = countdownFor(bundle);
+  $("#course-countdown").textContent = cd;
+  const ics = (state.data.ics_by_course || {})[bundle.course];
+  const link = $("#course-ics");
+  if (link) {
+    if (ics) {
+      link.href = URL.createObjectURL(new Blob([ics],
+        { type: "text/calendar" }));
+      link.classList.remove("hidden");
+    } else {
+      link.classList.add("hidden");
+    }
+  }
+  renderAll();
+}
+
+function countdownFor(bundle) {
+  const intake = state.data.courses_intake;
+  let cd = null;
+  if (intake && !bundle.custom) {
+    const row = (intake.courses || []).find(
+      (c) => c.course === bundle.course);
+    cd = row && row.countdown;
+  } else if (bundle.syllabus) {
+    cd = examCountdownPort(bundle.syllabus,
+      new Date().toISOString().slice(0, 10));
+  }
+  if (!cd || cd.urgency === "unset") {
+    return "exam date unset";
+  }
+  return `exam ${cd.exam_date} — ${cd.days_remaining} day(s) ` +
+    `(${cd.urgency})`;
+}
+
+function initCourses() {
+  state.bundles = allBundles();
+  const sel = $("#course-switch");
+  if (sel) {
+    sel.innerHTML = state.bundles.map((b) =>
+      `<option value="${b.course}">${b.course}</option>`).join("");
+    sel.addEventListener("change", () =>
+      activateCourse(sel.value, false));
+  }
+  const savedName = localStorage.getItem("ss.active_course");
+  activateCourse(savedName || state.bundles[0].course, true);
+  const addBtn = $("#new-course-add");
+  if (addBtn) {
+    addBtn.addEventListener("click", () => {
+      const status = $("#new-course-status");
+      let doc = null;
+      try {
+        doc = JSON.parse($("#new-course-json").value);
+      } catch (e) {
+        status.textContent = "That is not valid JSON — a course " +
+          "is created from its syllabus document.";
+        return;
+      }
+      if (!doc.course || !Array.isArray(doc.weeks) ||
+          !doc.weeks.some((w) => (w.topics || []).length)) {
+        status.textContent = "A syllabus document needs a " +
+          "course name and weeks with topics.";
+        return;
+      }
+      const docs = JSON.parse(
+        localStorage.getItem("ss.custom_courses") || "[]");
+      docs.push(doc);
+      localStorage.setItem("ss.custom_courses",
+                           JSON.stringify(docs));
+      state.bundles = allBundles();
+      if (sel) {
+        sel.innerHTML = state.bundles.map((b) =>
+          `<option value="${b.course}">${b.course}</option>`).join("");
+      }
+      activateCourse(doc.course, false);
+      status.textContent = `Course created: ${doc.course} — ` +
+        "its plan and countdown follow the same core rules " +
+        "as the bundled courses, and its progress is stored " +
+        "under its own keys. Its .ics export arrives with its " +
+        "first bundle build.";
+    });
   }
 }
 
@@ -409,7 +634,7 @@ function renderToday() {
   // in the core's hint text, honored by the surface.
   const todayKey = new Date().toISOString().slice(0, 10);
   const checkins = JSON.parse(
-    localStorage.getItem("ss.checkins") || "{}");
+    localStorage.getItem(checkinKey()) || "{}");
   const mine = checkins[todayKey] || {};
   $("#today-summary").textContent = sessions.length ?
     `Today (day ${dayIndex + 1}): ${sessions.length} session(s). ` +
@@ -441,11 +666,11 @@ function renderToday() {
   document.querySelectorAll("[data-checkin]").forEach((b) =>
     b.addEventListener("click", () => {
       const all = JSON.parse(
-        localStorage.getItem("ss.checkins") || "{}");
+        localStorage.getItem(checkinKey()) || "{}");
       const day = all[todayKey] || {};
       day[b.dataset.i] = b.dataset.checkin;
       all[todayKey] = day;
-      localStorage.setItem("ss.checkins", JSON.stringify(all));
+      localStorage.setItem(checkinKey(), JSON.stringify(all));
       $("#checkin-status").textContent =
         `Checked in: ${b.dataset.checkin} ` +
         `(session ${Number(b.dataset.i) + 1}) — recorded.` +
@@ -513,7 +738,9 @@ function renderCalendar() {
   const cg = state.data.calendar_geo;
   const el = $("#calendar-body");
   if (!cg) {
-    el.textContent = "No calendar loaded for this course yet.";
+    el.textContent = state.data.calendar_error ?
+      `The core calendar intake refused this course's calendar: ${state.data.calendar_error}. The course itself is unaffected.` :
+      "No calendar loaded for this course yet.";
     return;
   }
   const classes = (cg.classes || []).map((c) =>
@@ -642,7 +869,7 @@ function gradeFromReminder(cardId, gradeValue) {
   const next = fsrsReview(state.srState[cardId] || null,
                           gradeValue, new Date());
   state.srState[cardId] = next;
-  localStorage.setItem("studysprint-sr",
+  localStorage.setItem(srKey(),
                        JSON.stringify(state.srState));
   $("#retrievability-status").textContent =
     `Receipt: scheduler=fsrs generation=${FSRS_GENERATION} ` +
@@ -753,7 +980,7 @@ function grade(gradeValue) {
       `next due ${next.due.slice(0, 10)} ` +
       `(in ${next.interval_days} day(s))`;
   }
-  localStorage.setItem("studysprint-sr",
+  localStorage.setItem(srKey(),
                        JSON.stringify(state.srState));
   $("#sr-receipt").textContent = receipt;
   state.cardIndex = 0;  // the graded card left the due queue
@@ -772,7 +999,7 @@ function gradeLeitner(knewIt) {
   const next = leitnerReview(prev, knewIt ? 1 : 0, now);
   state.srState[card.card_id + ":leitner"] =
     { box: next.box, due: next.due };
-  localStorage.setItem("studysprint-sr",
+  localStorage.setItem(srKey(),
                        JSON.stringify(state.srState));
   $("#sr-receipt").textContent =
     `Receipt: scheduler=leitner grade=${knewIt ? 1 : 0} — ` +
@@ -811,18 +1038,18 @@ document.querySelectorAll("[data-leitner]").forEach((b) =>
 document.addEventListener("click", (e) => {
   if (!state.data) return;
   const todayKey = new Date().toISOString().slice(0, 10);
-  const all = JSON.parse(localStorage.getItem("ss.checkins") || "{}");
+  const all = JSON.parse(localStorage.getItem(checkinKey()) || "{}");
   const day = all[todayKey] || {};
   if (e.target.id === "action-start") {
     day.started = "yes";
     all[todayKey] = day;
-    localStorage.setItem("ss.checkins", JSON.stringify(all));
+    localStorage.setItem(checkinKey(), JSON.stringify(all));
     $("#checkin-status").textContent =
       "Started — block 1 is underway. No timer, no pressure.";
   } else if (e.target.id === "action-missed") {
     day[0] = "missed";
     all[todayKey] = day;
-    localStorage.setItem("ss.checkins", JSON.stringify(all));
+    localStorage.setItem(checkinKey(), JSON.stringify(all));
     renderToday();
     $("#checkin-status").textContent =
       "Checked in: missed (session 1) — recorded. " +

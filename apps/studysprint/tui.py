@@ -26,7 +26,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.3.0"
+TUI_VERSION = "0.4.0"
 SURFACE = "studysprint-tui"
 
 from study_geo import surface_calendar_geo  # noqa: E402
@@ -41,24 +41,42 @@ from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
 APP_ROOT = Path(__file__).resolve().parent
 
 
-def build_state(root: Path | None = None) -> dict:
-    """Assemble the surface state from the core, over the bundled
-    example course (the same data demo.py runs)."""
+def build_state(root: Path | None = None, stem: str = "",
+                syllabus_doc: dict | None = None) -> dict:
+    """Assemble one course's surface state from the core.
+
+    Bundled samples load by examples stem ('' = syllabus.json,
+    '_stats' = syllabus_stats.json); a user course passes its
+    syllabus doc directly (no practice set, no readings, no
+    calendar -- each absence is the panes' own honest empty
+    state)."""
     root = root or APP_ROOT
-    syllabus = json.loads(
-        (root / "examples" / "syllabus.json").read_text())
-    practice = json.loads(
-        (root / "examples" / "practice_set.json").read_text())
-    evidence = fetch_study_evidence(
-        {"kind": "syllabus", "ref": "examples/syllabus.json"}, root=root)
+    if syllabus_doc is not None:
+        syllabus = syllabus_doc
+        practice = {"questions": []}
+        evidence_receipt = (
+            "Local course — created on this surface from its "
+            "syllabus document; nothing was fetched.")
+    else:
+        syllabus = json.loads(
+            (root / "examples" / f"syllabus{stem}.json").read_text())
+        practice = json.loads(
+            (root / "examples" / f"practice_set{stem}.json")
+            .read_text())
+        evidence_receipt = None
+    evidence = None
+    if evidence_receipt is None:
+        evidence = fetch_study_evidence(
+            {"kind": "syllabus", "ref": f"examples/syllabus{stem}.json"},
+            root=root)
     plan = build_study_plan(syllabus)
     # Per-topic readings (#4230), shared with the web builder:
     # examples/readings.json carries one authored passage per
     # syllabus topic; a topic without one gets an honest stub,
     # never another topic's content.
     readings = {}
-    readings_file = root / "examples" / "readings.json"
-    if readings_file.exists():
+    readings_file = root / "examples" / f"readings{stem}.json"
+    if syllabus_doc is None and readings_file.exists():
         readings = json.loads(readings_file.read_text())
     sections = []
     for w in syllabus.get("weeks") or []:
@@ -70,9 +88,9 @@ def build_state(root: Path | None = None) -> dict:
                         "full reading for this topic arrives with "
                         "the course text at ingest; the plan, checks "
                         "and reviews for it are live now.")
-            stem = topic.lower().rstrip("s").split()[-1]
+            stem_word = topic.lower().rstrip("s").split()[-1]
             checks = [q for q in practice.get("questions") or []
-                      if stem in (q["q"] + " " + q["a"]).lower()]
+                      if stem_word in (q["q"] + " " + q["a"]).lower()]
             if checks:
                 text += "\n\nCheck yourself: " + " ".join(
                     q["q"] + " " + q["a"] for q in checks)
@@ -84,24 +102,72 @@ def build_state(root: Path | None = None) -> dict:
     # bundled example calendar drives the core assembler; a root
     # without one gets None and the panes say so honestly.
     calendar_geo = None
-    calendar_file = root / "examples" / "calendar.json"
-    if calendar_file.exists():
+    calendar_error = None
+    calendar_file = root / "examples" / f"calendar{stem}.json"
+    if syllabus_doc is None and calendar_file.exists():
         calendar_doc = json.loads(calendar_file.read_text())
         topics = [t for w in syllabus.get("weeks") or []
                   for t in w.get("topics") or []]
-        calendar_geo = surface_calendar_geo(
-            calendar_doc, datetime.now(timezone.utc), topics=topics)
+        try:
+            calendar_geo = surface_calendar_geo(
+                calendar_doc, datetime.now(timezone.utc),
+                topics=topics)
+        except ValueError as e:
+            # The core calendar intake refused this course's
+            # calendar: record it, ship the course (the web
+            # builder's rule, #4416).
+            calendar_error = str(e)
     return {
+        "course": syllabus.get("course"),
         "syllabus": syllabus,
         "plan": plan,
-        "trust_receipt": format_trust_receipt(evidence),
+        "trust_receipt": evidence_receipt
+        if evidence_receipt is not None
+        else format_trust_receipt(evidence),
         "today": render_today_view(plan),
         "cards": build_cards_from_practice_set(practice),
         "sections": sections,
         "calendar_geo": calendar_geo,
+        "calendar_error": calendar_error,
         "memory": _memory_state(plan, calendar_geo),
         "root": root,
     }
+
+
+def user_courses_dir() -> Path:
+    return Path.home() / ".studysprint" / "courses"
+
+
+def build_course_set(root: Path | None = None) -> dict:
+    """The surface's course set (parity iteration 3, #4416): both
+    bundled samples + the student's own courses (syllabus docs
+    under ~/.studysprint/courses), intaken through the REAL core
+    course-set machinery -- per-course countdowns, merged totals,
+    conflict flags, and a per-course .ics export."""
+    from study_courses import export_ics, intake_courses
+    root = root or APP_ROOT
+    bundles = [build_state(root, stem) for stem in ("", "_stats")]
+    docs = [b["syllabus"] for b in bundles]
+    cdir = user_courses_dir()
+    if cdir.exists():
+        for f in sorted(cdir.glob("*.json")):
+            try:
+                doc = json.loads(f.read_text())
+            except (ValueError, OSError):
+                continue
+            if doc.get("course") and doc.get("weeks"):
+                bundles.append(build_state(root, syllabus_doc=doc))
+                docs.append(doc)
+    intake = intake_courses(docs,
+                            now=datetime.now(timezone.utc))
+    from datetime import date
+    ics = {}
+    for b in bundles:
+        single = {"courses": [c for c in intake["courses"]
+                               if c["course"] == b["course"]]}
+        ics[b["course"]] = export_ics(single,
+                                      date.today().isoformat())
+    return {"bundles": bundles, "intake": intake, "ics": ics}
 
 
 def _memory_state(plan: dict, calendar_geo: dict | None) -> dict:
@@ -155,6 +221,10 @@ def _calendar_text(state: dict) -> str:
     assembler (study_geo.surface_calendar_geo)."""
     cg = state.get("calendar_geo")
     if not cg:
+        if state.get("calendar_error"):
+            return ("The core calendar intake refused this "
+                    f"course's calendar: {state['calendar_error']}. "
+                    "The course itself is unaffected.")
         return ("No calendar loaded for this course yet. "
                 "Add examples/calendar.json (classes + "
                 "assessments) and this pane binds.")
@@ -293,7 +363,11 @@ try:
         def __init__(self, root: Path | None = None,
                      export_dir: Path | None = None, **kwargs):
             super().__init__(**kwargs)
-            self.state = build_state(root)
+            # Multi-course (iteration 3, #4416): the app holds
+            # the whole course set; self.state is the ACTIVE
+            # course's bundle, rebound on a switch.
+            self.course_set = build_course_set(root)
+            self.state = self.course_set["bundles"][0]
             self.card_index = 0
             # #4224: review state is PER CARD (and per scheduler) —
             # a card's own history accumulates; nothing leaks from
@@ -309,13 +383,29 @@ try:
             # #4223: check-ins persist to disk (they used to live
             # only in process memory) and are loaded back at start.
             self._checkin_path = self.export_dir / "checkin-log.json"
-            self.checkin_log: dict = {}
-            if self._checkin_path.exists():
+            # Check-ins are PER COURSE (iteration 3): the file
+            # stores a map course -> the core's check-in log; the
+            # pre-0.4.0 flat log is adopted by the first course.
+            self._checkin_map_path = \
+                self.export_dir / "checkin-logs.json"
+            self.checkin_logs: dict = {}
+            if self._checkin_map_path.exists():
                 try:
-                    self.checkin_log = json.loads(
-                        self._checkin_path.read_text(encoding="utf-8"))
+                    self.checkin_logs = json.loads(
+                        self._checkin_map_path.read_text(
+                            encoding="utf-8"))
                 except (ValueError, OSError):
-                    self.checkin_log = {}
+                    self.checkin_logs = {}
+            elif self._checkin_path.exists():
+                try:
+                    self.checkin_logs = {
+                        self.state["course"]: json.loads(
+                            self._checkin_path.read_text(
+                                encoding="utf-8"))}
+                except (ValueError, OSError):
+                    self.checkin_logs = {}
+            self.checkin_log: dict = self.checkin_logs.get(
+                self.state["course"], {})
             self._ingest_path: str | None = None
 
         # ------------------------------------------------------ layout
@@ -333,6 +423,30 @@ try:
                     yield Button("I missed this", id="checkin-missed",
                                  variant="error")
                     yield Label("", id="checkin-status")
+                with TabPane("Courses", id="tab-courses"):
+                    yield Static(self._courses_text(),
+                                 id="courses-text")
+                    yield Select(
+                        [(b["course"], b["course"])
+                         for b in self.course_set["bundles"]],
+                        value=self.state["course"],
+                        id="course-select", allow_blank=False)
+                    yield Button("Switch course", id="course-switch")
+                    yield Button("Export .ics for active course",
+                                 id="course-ics")
+                    yield Label("New course — name, exam date "
+                                "(optional), topics for week 1 "
+                                "(comma-separated):", classes="big")
+                    yield Input(placeholder="Course name",
+                                id="new-course-name")
+                    yield Input(placeholder="Exam date YYYY-MM-DD "
+                                            "(optional)",
+                                id="new-course-exam")
+                    yield Input(placeholder="topic, topic, topic",
+                                id="new-course-topics")
+                    yield Button("Create course",
+                                 id="new-course-create")
+                    yield Label("", id="courses-status")
                 with TabPane("Plan / Receipt", id="tab-plan"):
                     yield Static(_plan_text(self.state)
                                  + _interleaved_text(self.state),
@@ -430,6 +544,104 @@ try:
 
         def on_mount(self) -> None:
             self._show_card()
+
+        # ---------------------------------------------------- courses
+        def _courses_text(self) -> str:
+            intake = self.course_set["intake"]
+            lines = [f"Course set: {intake['course_count']} "
+                     f"course(s) · {intake['total_sessions']} "
+                     "sessions total"]
+            for row in intake["courses"]:
+                cd = row["countdown"]
+                when = ("exam unset" if cd["urgency"] == "unset"
+                        else f"exam {cd['exam_date']} — "
+                             f"{cd['days_remaining']}d "
+                             f"({cd['urgency']})")
+                mark = ("▶ " if row["course"] ==
+                        self.state["course"] else "  ")
+                lines.append(f"{mark}{row['course']} — "
+                             f"{row['plan']['total_sessions']} "
+                             f"sessions · {when}")
+            for c in intake["conflicts"]:
+                lines.append(f"⚠ conflict: {c['type']} — "
+                             f"{' + '.join(c['courses'])} "
+                             f"(gap {c['gap_days']}d)")
+            return "\n".join(lines)
+
+        def _switch_course(self, name: str) -> None:
+            bundle = next(
+                (b for b in self.course_set["bundles"]
+                 if b["course"] == name), None)
+            if bundle is None or name == self.state["course"]:
+                return
+            self.checkin_logs[self.state["course"]] = \
+                self.checkin_log
+            self.state = bundle
+            self.checkin_log = self.checkin_logs.get(name, {})
+            self.card_index = 0
+            self.card_states = {}
+            self.card_flipped = False
+            self.reader = RSVPReader(self.state["sections"])
+            self.reader_state = None
+            self.query_one("#today-text", Label).update(
+                self._today_text())
+            self.query_one("#plan-text", Static).update(
+                _plan_text(self.state)
+                + _interleaved_text(self.state))
+            self.query_one("#receipt-text", Static).update(
+                _receipt_text(self.state))
+            self.query_one("#palace-text", Static).update(
+                _palace_text(self.state))
+            self.query_one("#calendar-text", Static).update(
+                _calendar_text(self.state))
+            self.query_one("#routes-text", Static).update(
+                _routes_text(self.state))
+            self.query_one("#retrievability-text", Static).update(
+                self._retrievability_text())
+            self.query_one("#courses-text", Static).update(
+                self._courses_text())
+            feynman = self.query_one("#feynman-topic", Select)
+            feynman.set_options(
+                [(f"{s.chapter} — {s.title}", s.title)
+                 for s in self.state["sections"]])
+            self._show_card()
+
+        def _create_course(self) -> None:
+            name = self.query_one("#new-course-name", Input) \
+                .value.strip()
+            exam = self.query_one("#new-course-exam", Input) \
+                .value.strip()
+            topics = [t.strip() for t in self.query_one(
+                "#new-course-topics", Input).value.split(",")
+                if t.strip()]
+            status = self.query_one("#courses-status", Label)
+            if not name or not topics:
+                status.update("A course needs a name and at "
+                              "least one topic.")
+                return
+            doc = {"course": name,
+                   "weeks": [{"week": 1, "topics": topics}]}
+            if exam:
+                doc["exam_date"] = exam
+            cdir = user_courses_dir()
+            cdir.mkdir(parents=True, exist_ok=True)
+            slug = "".join(
+                c if c.isalnum() else "-"
+                for c in name.lower()).strip("-") or "course"
+            (cdir / f"{slug}.json").write_text(
+                json.dumps(doc, indent=1), encoding="utf-8")
+            self.course_set = build_course_set(self.state["root"])
+            sel = self.query_one("#course-select", Select)
+            sel.set_options(
+                [(b["course"], b["course"])
+                 for b in self.course_set["bundles"]])
+            self.query_one("#courses-text", Static).update(
+                self._courses_text())
+            status.update(
+                f"Course created: {name} — saved to "
+                f"{cdir / (slug + '.json')}; switch to it above. "
+                "Its check-ins and reviews live under its own "
+                "name, never another course's.")
 
         # ------------------------------------------------------ today
         def _today_text(self) -> str:
@@ -606,6 +818,29 @@ try:
 
         def on_button_pressed(self, event) -> None:
             bid = event.button.id or ""
+            if bid == "course-switch":
+                sel = self.query_one("#course-select", Select)
+                if sel.value and sel.value != Select.BLANK:
+                    self._switch_course(str(sel.value))
+                    self.query_one("#courses-status", Label) \
+                        .update(f"Active course: {self.state['course']}")
+                return
+            if bid == "course-ics":
+                name = self.state["course"]
+                slug = "".join(
+                    c if c.isalnum() else "-"
+                    for c in name.lower()).strip("-") or "course"
+                self.export_dir.mkdir(parents=True, exist_ok=True)
+                path = self.export_dir / f"{slug}.ics"
+                path.write_text(self.course_set["ics"][name],
+                                encoding="utf-8")
+                self.query_one("#courses-status", Label).update(
+                    f".ics for {name} written to {path} "
+                    "(this course's sessions + milestones only).")
+                return
+            if bid == "new-course-create":
+                self._create_course()
+                return
             if bid.startswith("grade-leitner-"):
                 self._grade_leitner(bid.endswith("-1"))
                 return
@@ -678,8 +913,15 @@ try:
                 self.checkin_log = record_daily_checkin(
                     self.checkin_log, week=week,
                     session_index=day_index, status=status)
-                self._checkin_path.parent.mkdir(parents=True,
-                                                 exist_ok=True)
+                self.checkin_logs[self.state["course"]] = \
+                    self.checkin_log
+                self._checkin_map_path.parent.mkdir(
+                    parents=True, exist_ok=True)
+                self._checkin_map_path.write_text(
+                    json.dumps(self.checkin_logs, indent=1),
+                    encoding="utf-8")
+                # The pre-0.4.0 flat file keeps carrying the
+                # ACTIVE course's log (older builds read it).
                 self._checkin_path.write_text(
                     json.dumps(self.checkin_log, indent=1),
                     encoding="utf-8")

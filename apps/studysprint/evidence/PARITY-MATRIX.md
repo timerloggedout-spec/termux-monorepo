@@ -3,14 +3,14 @@
 Ground truth: the shipped bindings, read from the surfaces'
 own builders (`web/build_data.py`, `tui.py: build_state`, the
 APK bundle = the web bundle) at core **v0.5.0** + surface line
-**0.3.0**. This matrix is the catch-up program's baseline;
+**0.4.0**. This matrix is the catch-up program's baseline;
 every iteration updates it and the per-surface parity
 statements together (standing surface gates). **Owner rule (2026-11-03): this table rides every release body from v1.0.0** — release-cut embeds it verbatim from the cut tag; a pre-matrix tag’s body falls back to a named versions-of-record line. Legend:
 **bound** = the surface runs the real core path ·
 **partial** = a named subset, with the gap stated ·
 **absent** = not on the surface.
 
-| Core capability (FEATURES.md) | CLI/core | webApp 0.3.0 | TUI 0.3.0 | APK 0.3.0 |
+| Core capability (FEATURES.md) | CLI/core | webApp 0.4.0 | TUI 0.4.0 | APK 0.4.0 |
 |---|---|---|---|---|
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |
 | §3 Daily check-in + no-guilt shift | bound | bound (persisted; surface-level shift, core reflow not bound) | bound (persisted; real week/day identity) | as webApp |
@@ -19,7 +19,7 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
 | §1/§3 Reader (sections + RSVP) | bound | bound (all 6 sections, 0.1.1) | bound | as webApp |
 | §1 Intake — syllabus/textbook ingestion | bound | bound (in-browser grammar; photos = awaiting-core-ocr, disclosed) | bound (real `ingest_any`, confirm-gated) | bound (native file chooser + camera wiring) |
 | §1b Reading pipeline — finder · OCR · structure · term bank | bound | partial (structure/term bank ride ingestion; finder + OCR + hypothes.is not bound) | partial (same, via the core path; OCR seam unwired) | partial (as webApp) |
-| §1c Multi-course + exam countdowns + .ics export | bound | absent (single bundled course) | absent | absent |
+| §1c Multi-course + exam countdowns + .ics export | bound | bound (course set = both bundled samples intaken through the core's intake_courses; header switcher rebinds every view; SR + check-ins persist under per-course keys, legacy keys adopted once by the first course; countdown from the intake (port-pinned for user courses); .ics download = the core's per-course export; create-a-course from a syllabus document in Ingest) | bound (Courses tab: the real intake_courses set incl. user courses from ~/.studysprint/courses; switching rebinds all panes; check-ins persist per course in checkin-logs.json (the flat file keeps the active course's log); .ics export writes the active course's calendar file; create-a-course form persists the syllabus doc) | as webApp |
 | §1c Memory methods — loci/palace · Feynman · retrievability notifications · interleaving · Leitner | bound | bound (Memory view: palace walk over iteration 1's temple route · Feynman pane · retrievability list with one-tap grades · Leitner in SR · interleaved plan — browser ports battery-pinned to the core) | bound (Memory tab runs the real core functions; Leitner via `leitner_review`; interleave in the Plan pane) | as webApp |
 | §1d Calendar awareness — intake · frequency ramps · shift briefings · quiet hours | bound | bound (build-time state, disclosed) | bound (Calendar pane, live-assembled) | as webApp |
 | §1d Geography — locations · routes · temple routes | bound | bound (build-time state, disclosed) | bound (Routes pane, live-assembled) | as webApp |
@@ -36,9 +36,10 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
   (this update; #4415) — palace walk (over Iteration 1's temple
   route) · Feynman dialogue pane · retrievability notification
   list · Leitner rotation in SR · interleaving in the plan view.
-- **Iteration 3 → surfaces 0.4.0** — §1c multi-course:
-  course switcher with per-course state · countdown banner ·
-  .ics export (download on web, file on TUI).
+- **Iteration 3 → surfaces 0.4.0** — §1c multi-course: **LANDED**
+  (this update; #4416) — course switcher with per-course state ·
+  countdown banner · .ics export (download on web, file on TUI) ·
+  create-a-course on both surfaces.
 - **Iteration 4 → surfaces 0.5.0** — §1d hardening (opt-in
   surface only, FEATURES ceilings copied verbatim, no-guilt by
   construction) + §1b completion (hypothes.is annotations view;

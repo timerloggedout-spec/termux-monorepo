@@ -5,7 +5,7 @@ own builders (`web/build_data.py`, `tui.py: build_state`, the
 APK bundle = the web bundle) at core **v0.5.0** + surface line
 **0.3.0**. This matrix is the catch-up program's baseline;
 every iteration updates it and the per-surface parity
-statements together (standing surface gates). **Owner rule (2026-11-03): this table rides every release body from v1.0.0** — release-cut embeds it verbatim from the cut tag; a pre-matrix tag’s body falls back to a named versions-of-record line. Legend:
+statements together (standing surface gates). **Owner rule (2026-11-03): this table rides every release body from v1.0.0** — release-cut embeds it verbatim from the cut tag, and a cut whose tag tree lacks this file FAILS. Legend:
 **bound** = the surface runs the real core path ·
 **partial** = a named subset, with the gap stated ·
 **absent** = not on the surface.

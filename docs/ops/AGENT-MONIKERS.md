@@ -105,7 +105,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet ApkRelease | `Porter · ApkRelease` | — (actor per AppID provisioning record) | aspect the Carrier; queued alt Charon, flagged (below) |
 | Termux Fleet RepoStory | `Chronicler · RepoStory` | `termux-fleet-repostory[bot]` | aspect the Annals; queued alt Clio (below) |
 | Termux Fleet DoE | `Factorial · DoE` | `termux-fleet-doe[bot]` | aspect the Design; queued alt Mendel (below) |
-| Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | `termux-fleet-ugreenskills[bot]` | aspect the Well; queued alt Keeper (below) |
+| Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | — (not yet provisioned; deferred 2026-11-03, below) | aspect the Well; queued alt Keeper (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -264,6 +264,18 @@ collides conceptually with the fleet's Secure Vault.
 Collision check at issuance: `Mimir`, `Keeper` and the Well
 appear nowhere in this roster or in the registration
 registry.
+
+**Status (2026-11-03, AppID lane note): provisioning
+COUNTERMANDED by main ruling minutes after issuance — the
+C12 pair is DEFERRED to the first repo-building round
+(R1 = package-only; minting an unused pair ruled cargo). No
+app exists and no PROCESS.json record lands from the AppID
+side. This issuance STANDS as the registry record for the
+not-yet-provisioned identity: if the pair provisions at a
+later round, it lands with `Mimir · UgreenSkills`. The repo
+timerloggedout-spec/ugreen-nas-skills exists (created
+pre-countermand) and stays parked/unused — created under a
+crossed signal, not a precedent.**
 
 ## Identity taxonomy and moniker versioning (adopted, 2026-11-01)
 

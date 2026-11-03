@@ -9,7 +9,7 @@ priority: P1
 reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
-    status: requested
+    status: accepted
   - id: Hark
     role: author+executor
     status: executing
@@ -37,8 +37,17 @@ BIUDL slice (broad → identify lane → thin slice → validate → broaden). T
 ## Non-goals
 
 - No new canonical store; GitHub JSONL / ATES remains authority.
-- No Neon writes or secret changes without operator approval (#1277 stays a no-op).
+- Neon writes within the provisioned lane-events scope are authorized; new Neon write surfaces or secret changes still require operator approval.
 
 ## Quota constraints (see ops/quota/registry.json, PR #1280)
 
 Vercel Hobby 100 deployments/day; repo GITHUB_TOKEN 1,000 requests/hour (exhausted 2026-10-19 03:07 PDT); Neon Free 100 CU-hours/project/month.
+
+## Decisions of record (2026-11-03, owner delegation to main)
+
+1. **Operator-authorizer: ACCEPTED** — 2026-11-03, by owner delegation to main.
+2. **LC-003 … LC-007: AUTHORIZED** to proceed under Hark as executor; outputs through MoneyBall/3L0 as designed.
+3. **LC-002: APPROVED conditioned on firsthand verification of LC-001.** Verification (Docs lane, 2026-11-03): **FAIL** — the served dashboard's raw-first source names `docs/ops/generated/Tribute-status.json` (capital T), which returns 404 on master (the file of record is `tribute-status.json`, lowercase); the page therefore loads its baked fallback copy, so LC-001's mechanism is not live and the served stamp is the baked copy's, not master's. Per the condition, LC-002 is **HELD** and the data-path triggers in `tribute-dashboard-deploy.yml` are NOT dropped.
+4. **LC-008: DECIDED** — overtaken by events: the #1277 Neon lane_events writer is LIVE as the Neon lane-events recorder under the 2026-10-28 end-to-end provisioning (recorder run 40770746018, rows verified; Neon is the primary store per owner scope correction). The keep-no-op branch is dead.
+5. PR #1278 — **DECIDED + CLOSED** by main under this delegation (2026-11-03; close comment 6606592898): superseded by the cadence-law migration — help-wanted-scout.yml and help-wanted-status-refresh.yml retired from master, merge-promotion-queue-v3.yml schedule-free; the PR's ~50-runs/day goal achieved and exceeded. NOT merged (merging would resurrect retired workflows).
+6. **Non-goal clause RESTATED** (not removed): Neon writes within the provisioned lane-events scope are authorized; new Neon write surfaces or secret changes still require operator approval.

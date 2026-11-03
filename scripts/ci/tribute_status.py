@@ -352,7 +352,7 @@ def main() -> int:
             "",
         ]
     )
-    Path(args.out_md).write_text("\n".join(lines), encoding="utf-8")
+    atomic_write(args.out_md, "\n".join(lines))
     print(
         json.dumps(
             {

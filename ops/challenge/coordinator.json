@@ -1956,6 +1956,65 @@
     "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall \u2014 the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-28; wall 2026-12-01T11:00:00-08:00.",
     "resubmit_policy": "EDITABLE until deadline (lablab platform): form fields incl. the container-image reference; image re-pushable to the public registry. Source: lablab.ai Submission Guidelines. Verified 2026-11-03."
    }
+  },
+  {
+   "id": "C12",
+   "name": "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS",
+   "host": "UGREEN",
+   "platform": "Devpost (ugreenhackathon.devpost.com)",
+   "official_url": "https://ai.ugreen.com/pages/ugreen-hackathon",
+   "status": "graduated \u2014 ON SLATE (Manager, 2026-11-03); Round 1 in execution prep",
+   "entrant_moniker": "entrant{timerloggedout}[platform:devpost]",
+   "dates": {
+    "register_build": "2026-10-22 \u2192 2026-11-15",
+    "preliminary_due": "2026-11-15T23:45:00-08:00",
+    "finalists_announced": "2026-11-21",
+    "final_due": "2026-11-30T23:45:00-08:00",
+    "winners": "2026-12-06"
+   },
+   "dates_basis": "Official event page + Devpost submission surface, read firsthand 2026-11-03.",
+   "constraints": "ROUND 1 (due Nov 15 23:45 PT, Devpost): (1) Project Proposal PDF <=1MB, ten items in <=500 English words total; (2) Pre-test Skill Package ZIP per the Uliya Skill Development Standard \u2014 SKILL.md (frontmatter name + description <=1024 chars) + optional linked references; ZIP <=10MB, <=1MB/file, <=100 files; scripts/binaries/manifests PROHIBITED in the package; package need NOT be installable/operational in Round 1; NO repo link, NO video for Round 1. NEW-WORK CLAUSE: idea may pre-date the hackathon, but the submitted Skill + core workflow must be newly developed during it; no reuse of previously developed Skills/materials. ROUND 2 (finalists, invited Nov 21): one assigned remote-NAS testing day Nov 22-28; final ZIP + public YouTube demo <=3 min by Nov 30 23:45 PT; do not delete Round 1 materials.",
+   "gates": [
+    {
+     "id": "C12-REGISTRATION",
+     "state": "open",
+     "text": "Join the hackathon on Devpost (account exists, in-boundary); not yet executed as of graduation."
+    },
+    {
+     "id": "C12-R2-CONDITIONAL",
+     "state": "conditional",
+     "text": "Round 2 exists only if invited as a finalist (Nov 21): one assigned remote-NAS testing day Nov 22-28 + final package/video by Nov 30 23:45 PT."
+    }
+   ],
+   "prizes": {
+    "pool": "$46,000 cash",
+    "tiers": "Grand $20,000 \u00b7 2nd $10,000 \u00b7 3rd $6,000 \u00b7 Most Creative $5,000 x2",
+    "source": "Devpost event page, read firsthand 2026-11-03"
+   },
+   "organizers": [
+    {
+     "name": "UGREEN",
+     "role": "host/sponsor",
+     "source": "official event page"
+    }
+   ],
+   "registration": {
+    "state": "not_yet",
+    "note": "Devpost join pending execution (Desk/registration hand) after graduation 2026-11-03."
+   },
+   "submission": {
+    "state": "none",
+    "landing_target": "2026-11-14",
+    "landing_target_basis": "OWNER RULE (2026-11-02): wall = 2026-11-15T23:45:00-08:00 (Round 1); landing target Nov 14 per Manager assignment 2026-11-03. Final stretch = buffer + submission mechanics only.",
+    "resubmit_policy": "Devpost platform: submissions editable until the deadline (platform-standard modifications clause, cf. Kiroween rules \u00a75 read firsthand); THIS event's own rules page not yet read \u2014 flagged.",
+    "execution": "Desk (writing/package dispatch)"
+   },
+   "brief": "Track 01 Workflow: a UGOS Skill that organizes files and finds information with receipts \u2014 the fleet evidence/receipts discipline (manifests, cited indexes) adapted to a NAS surface (\"Receipts Vault\": folder-dump in, cited searchable evidence index out). Platform-stated Skill purposes match verbatim: \"organize files, find information, and automate everyday tasks\".",
+   "projects": [],
+   "participants": [],
+   "judges": [],
+   "graduation": "GRADUATED to the slate by the Manager 2026-11-03 (from candidate, provisioned same day under the as-if-competed doctrine, PRs #4253/#4255). Execution = Desk. R2 conditional on finalist invitation Nov 21.",
+   "moneyball": {}
   }
  ],
  "derived": {
@@ -2093,38 +2152,6 @@
    "priority": "PRIMARY-supporting while its window is open (per main, 2026-11-03)",
    "basis": "Owner order via main 2026-11-03: DOMINO is an opportunity on the challenge plane; desk-feed row being created by the Desk (a440bcb2). This lane: slate watch + records.",
    "source": "main relay 2026-11-03 (owner order)"
-  },
-  {
-   "id": "C12",
-   "name": "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS",
-   "host": "UGREEN",
-   "platform": "Devpost (ugreenhackathon.devpost.com)",
-   "official_url": "https://ai.ugreen.com/pages/ugreen-hackathon",
-   "status": "candidate \u2014 VIABLE under as-if-competed evaluation (2026-11-03, this lane; supersedes the same-day shallow screen-out)",
-   "dates": {
-    "register_build": "2026-10-22 \u2192 2026-11-15",
-    "preliminary_due": "2026-11-15T23:45:00-08:00",
-    "finalists_announced": "2026-11-21",
-    "final_due": "2026-11-30T23:45:00-08:00",
-    "winners": "2026-12-06"
-   },
-   "requirements": "ROUND 1 (due Nov 15 23:45 PT, Devpost): (1) Project Proposal PDF <=1MB, ten items in <=500 English words total; (2) Pre-test Skill Package ZIP per the Uliya Skill Development Standard \u2014 SKILL.md (frontmatter name + description <=1024 chars) + optional linked references; ZIP <=10MB, <=1MB/file, <=100 files; scripts/binaries/manifests PROHIBITED in the package; package need NOT be installable/operational in Round 1; NO repo link, NO video for Round 1. NEW-WORK CLAUSE: idea may pre-date the hackathon, but the submitted Skill + core workflow must be newly developed during it; no reuse of previously developed Skills/materials. ROUND 2 (finalists, invited Nov 21): one assigned remote-NAS testing day Nov 22-28; final ZIP + public YouTube demo <=3 min by Nov 30 23:45 PT; do not delete Round 1 materials.",
-   "tracks": [
-    "01 Workflow \u2014 automate repetitive work into executable AI workflows",
-    "02 Life",
-    "03 Creativity",
-    "04 Innovation (open)"
-   ],
-   "fit_angle": "Track 01 Workflow: a UGOS Skill that organizes files and finds information with receipts \u2014 the fleet evidence/receipts discipline (manifests, cited indexes) adapted to a NAS surface (\"Receipts Vault\": folder-dump in, cited searchable evidence index out). Platform-stated Skill purposes match verbatim: \"organize files, find information, and automate everyday tasks\".",
-   "gates": "Devpost account EXISTS (timerloggedout, profile complete) => registration in-boundary (no new account, no payment). Build dispatch = Manager/Desk routing call; Round-1 cost is small (a 500-word proposal + a docs-shaped SKILL.md package \u2014 no video, no running code required). SOURCE NOTE: the ai.ugreen.com event page describes a walkthrough video for the preliminary round; the Devpost submission surface (governing) requires NO video in Round 1 \u2014 discrepancy recorded, Devpost governs.",
-   "slate_fit": "Prelim Nov 15 sits in a genuine slate gap (after D3 Nov 9, before D5 kickoff Nov 17). Finalist stage (Nov 22-30) is conditional on selection Nov 21.",
-   "evaluation_basis": "Owner doctrine (2026-11-03): screens evaluate AS IF COMPETED \u2014 full entry-shaped read (eligibility, gates, mechanics, honest standing of our material) before any FAIL. This candidate is the first application; the earlier screen-out read criterion 3 as direct-reuse-only and is superseded.",
-   "source": "Official event page read firsthand 2026-11-03 (ai.ugreen.com/pages/ugreen-hackathon).",
-   "prizes": {
-    "pool": "$46,000 cash",
-    "tiers": "Grand $20,000 \u00b7 2nd $10,000 \u00b7 3rd $6,000 \u00b7 Most Creative $5,000 x2",
-    "source": "Devpost event page, read firsthand 2026-11-03"
-   }
   }
  ],
  "architecture": {

@@ -27,7 +27,12 @@ def test_manifest_package_and_version():
 def test_shell_loads_bundled_webapp():
     java = (ANDROID / "src" / "org" / "timerloggedout" /
             "studysprint" / "MainActivity.java").read_text()
-    assert "file:///android_asset/web/index.html" in java
+    # #4412: the bundle loads from the reserved https origin
+    # (WebViewAssetLoader pattern) -- the file:// origin's fetch
+    # layer blocked the state fetch in older WebViews (#4283).
+    assert ("https://appassets.androidplatform.net"
+            "/assets/web/index.html") in java
+    assert "appassets.androidplatform.net" in java
     assert "setJavaScriptEnabled(true)" in java
     assert "setDomStorageEnabled(true)" in java
     # the bundle it loads exists in the sibling web surface

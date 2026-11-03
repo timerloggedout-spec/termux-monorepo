@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "registry_version": "1.0.0",
+  "registry_version": "1.1.0",
   "authority_note": "System mapping only. Product application identity, owning repository, UI surface identity, release-lane identity, and GitHub automation identity are separate namespaces. An absent monorepo path does not imply an absent external application. Every status is evidence-bounded; unknown remains unknown.",
   "applications": [
     {
@@ -106,6 +106,97 @@
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/OWNER-REQUESTS.md"
       ],
       "notes": "Package name, AppID, owning repository, tag, signing mode, and build route are explicitly not established. Do not infer these from the ArchWiz_fork repository."
+    },
+    {
+      "app_key": "studysprint.agent",
+      "name": "StudySprint",
+      "identity_domain": "product-application",
+      "product_app_id": null,
+      "lifecycle": "active",
+      "organization": {
+        "mode": "separate-repository",
+        "owner": "timerloggedout-spec",
+        "notes": "Independently governed repository with a monorepo parity mirror; external repository owns its VERSION and release procedure."
+      },
+      "repository": {
+        "full_name": "timerloggedout-spec/studysprint",
+        "default_ref": "main",
+        "relationship_status": "verified",
+        "source_role": "canonical application source and independent SemVer/release process"
+      },
+      "surface_ids": [
+        "studysprint.cli-python"
+      ],
+      "release_lanes": [
+        {
+          "lane_id": "studysprint.agent.release",
+          "channel": "github-release",
+          "status": "configured",
+          "version_authority": "VERSION",
+          "artifact_types": [
+            "source-release",
+            "github-release"
+          ],
+          "current_version": "0.2.0",
+          "current_tag": null,
+          "signing_status": "not-applicable",
+          "evidence_refs": [
+            "https://github.com/timerloggedout-spec/studysprint/blob/main/VERSIONING.md",
+            "https://github.com/timerloggedout-spec/studysprint/blob/main/VERSION",
+            "https://github.com/timerloggedout-spec/studysprint/blob/main/CHANGELOG.md"
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "type": "shares-contract-with",
+          "target": "termux.system-map",
+          "status": "verified",
+          "notes": "The application is represented in the monorepo; upstream repository remains the independent version/release authority."
+        }
+      ],
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/studysprint",
+        "https://github.com/timerloggedout-spec/studysprint/blob/main/README.md",
+        "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/studysprint"
+      ],
+      "notes": "Current VERSION is 0.2.0. VERSIONING.md defines a Git tag plus GitHub Release as the release condition; no current tag or release receipt was established in this census, so the lane is configured rather than marked released. Product AppID value is not established."
+    },
+    {
+      "app_key": "listinglens.web",
+      "name": "ListingLens",
+      "identity_domain": "product-application",
+      "product_app_id": null,
+      "lifecycle": "proposed",
+      "organization": {
+        "mode": "separate-repository",
+        "owner": "timerloggedout-spec",
+        "notes": "Dedicated repository and monorepo surface mapping exist; upstream README describes the external project as scaffold only."
+      },
+      "repository": {
+        "full_name": "timerloggedout-spec/listinglens",
+        "default_ref": "main",
+        "relationship_status": "verified",
+        "source_role": "dedicated project/build-brief repository; README says scaffold only"
+      },
+      "surface_ids": [
+        "listinglens.web"
+      ],
+      "release_lanes": [],
+      "relationships": [
+        {
+          "type": "shares-contract-with",
+          "target": "termux.system-map",
+          "status": "candidate",
+          "notes": "Surface is represented in the parallel UI surface proposal; implementation maturity and deployment remain evidence-gated."
+        }
+      ],
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/listinglens",
+        "https://github.com/timerloggedout-spec/listinglens/blob/main/README.md",
+        "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/listinglens"
+      ],
+      "notes": "README explicitly states scaffold only and does not claim implementation. Product AppID, independent release lane, version authority, and deployment are not established."
     }
   ],
   "automation_identities": [

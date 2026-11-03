@@ -37,18 +37,20 @@ EMU_PID=$!
 cleanup() { "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1; \
   kill $EMU_PID >/dev/null 2>&1; }
 trap cleanup EXIT
-"$ADB" wait-for-device
+# Bounded waits throughout (hardening after the first CI pair
+# wedged silently in-step): no adb call in this harness may block
+# forever -- a gate that can hang is a defect in the gate.
 for i in $(seq 1 60); do
   [ "$("$ADB" -s emulator-5554 shell getprop sys.boot_completed \
         2>/dev/null | tr -d '\r')" = "1" ] && break
   sleep 5
 done
 [ "$("$ADB" -s emulator-5554 shell getprop sys.boot_completed \
-      | tr -d '\r')" = "1" ] || { verdict "FAIL: no boot"; exit 1; }
+      2>/dev/null | tr -d '\r')" = "1" ] || { verdict "FAIL: no boot"; exit 1; }
 echo "booted"
 
 echo "== install $APK =="
-"$ADB" -s emulator-5554 install -r "$APK" | tee "$OUT/install.log"
+timeout 300 "$ADB" -s emulator-5554 install -r "$APK" | tee "$OUT/install.log"
 grep -q Success "$OUT/install.log" || { verdict "FAIL: install"; \
   exit 1; }
 
@@ -57,7 +59,7 @@ echo "== launch =="
 sleep 20   # WebView first render + state fetch settle
 
 dump() {  # $1 = view name
-  "$ADB" -s emulator-5554 shell uiautomator dump \
+  timeout 60 "$ADB" -s emulator-5554 shell uiautomator dump \
     "/sdcard/$1.xml" >/dev/null 2>&1
   "$ADB" -s emulator-5554 pull "/sdcard/$1.xml" \
     "$OUT/$1.xml" >/dev/null 2>&1

@@ -25,6 +25,10 @@
 
 Family member: `docs/ops/DOE-FAMILY.md` (Members row + Speculators mapping). `record` ⇒ 1 EXPERIMENT record/run (`docs/ops/corpus/EXPERIMENT.schema.json`, instance-stamped) + SUMMARY. Provider phrases ∘ lab_runner rule: design-declared `provider_phrases` per verifier route ∨ `phrase_layer` (JIT ∘ provider-phrases SSOT) composed into the strategy prompt ∧ hash-covered ⇒ phrased ≠ unphrased instance. This campaign: `provider_phrases {}` = NOT ESTABLISHED (local vLLM routes, ∅ established set) ⇒ PLAN byte-identical pre/post wiring.
 
+## Wallets (paper|test, provisioned 2026-11-03)
+
+Wallet invariant (`ops/agentic-gambling/lane.json` `wallets-participant`): every participant has a wallet. `WALLETS.json` (speculators-wallets/v1) = genesis ledger: **12 paper|test wallets**, 1 per configured instance (keyed `instance_key`), unit soft_quota_token (observational), balance 0, status `provisioned`. Tooling: `scripts/speculators/wallets.py provision|verify`. Cull waterfall ∀ wallets: cull ⇒ balance ⇒ `pooled-buckets (promotions/incentives/bonuses)`, never destroyed; cull record names {culled_participant, wallet_balance_at_cull, pool_destination} (#3747/#3748); residual stream NOT folded. Speculator wallets stay distinct from the gambler class at record level.
+
 ## State
 
 `admitted_design_only` — plan generated (12 cells × 4 tasks = 48 runs, PLAN.json); execution (fork training + vLLM serving) rides GPU/provider lanes ⇒ results.jsonl ⇒ `record` ⇒ records/*.json + SUMMARY.json verdict. Harness dispatches ∅.

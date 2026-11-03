@@ -23,10 +23,21 @@ Every run prints the full queued set with its state — claimed,
 watching, flagged, escalated — which is the acceptance evidence
 that the sweep sees the queue correctly.
 
+ONE ESCALATION SYSTEM, TWO TRIGGER CLASSES (owner addendum,
+2026-11-03): the priority_timebox system (desk-feed rows, PR
+#4126/#4130) escalates on time-to-wall; this watchdog is its
+task-stall trigger. Stall thresholds TIGHTEN with the entry's
+CURRENT tier, read from the timebox of record
+(ops/challenge/desk-feed.json at the checkout): BASE 30/60 ->
+CUSHION 20/40 -> WALL-DAY 10/20 -> ESCALATION 5/10 -> FINAL 0/5
+(flag/escalate minutes). Flag/escalation comments carry the
+tier frame + a machine-readable `stall-event:` line, on the
+issue record where receipts and claims already live.
+
 Runs in Actions (.github/workflows/dispatch-watchdog.yml, every
-15 min + on dispatch) with the workflow token; thresholds via
---flag-min / --escalate-min or WATCHDOG_FLAG_MIN /
-WATCHDOG_ESCALATE_MIN.
+15 min + on dispatch) on the Termux Fleet Swarm App token (the
+default token's rate bucket is exhausted in this repo — see
+#4164). --flag-min / --escalate-min override the BASE tier only.
 """
 
 from __future__ import annotations
@@ -42,9 +53,79 @@ from datetime import datetime, timezone
 API = "https://api.github.com"
 DEFAULT_REPO = "timerloggedout-spec/termux-monorepo"
 CLAIM_MARKER = "PRODUCER CLAIM"
+STALL_EVENT_MARKER = "stall-event:"
+# (flag_min, escalate_min) by ladder position 0..4
+TIER_THRESHOLDS = [(30, 60), (20, 40), (10, 20), (5, 10), (0, 5)]
+TIER_LADDER = ["BASE", "CUSHION", "WALL-DAY", "ESCALATION",
+               "FINAL"]
+DEFAULT_FEED = "ops/challenge/desk-feed.json"
 RECEIPT_MARKER = "ROUTING RECEIPT"
 FLAG_MARKER = "DISPATCH WATCHDOG — FLAG"
 ESCALATION_MARKER = "DISPATCH WATCHDOG — ESCALATION"
+
+
+def load_timeboxes(feed_path: str | None) -> dict:
+    """{entry: priority_timebox} from the desk-feed of record."""
+    if not feed_path:
+        return {}
+    try:
+        with open(feed_path, encoding="utf-8") as fh:
+            feed = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for row in feed.get("traversals") or []:
+        tb = row.get("priority_timebox")
+        if row.get("entry") and tb:
+            out[row["entry"]] = tb
+    return out
+
+
+def entry_of(comments: list) -> str | None:
+    """The entry named on the routing receipt (- entry: D1)."""
+    for c in comments:
+        body = c.get("body") or ""
+        if RECEIPT_MARKER in body:
+            for line in body.splitlines():
+                line = line.strip()
+                if line.startswith("- entry:"):
+                    return line.split(":", 1)[1].strip()
+    return None
+
+
+def current_tier(timebox: dict | None, now: datetime):
+    """(index, name) of the entry's current tier: the highest
+    tier whose `at` is a timestamp already reached. State-
+    triggered tiers (non-timestamp `at`) never advance the clock
+    ladder — they report tier 0."""
+    if not timebox:
+        return (0, "BASE")
+    best = (0, "BASE")
+    for t in timebox.get("tiers") or []:
+        at = t.get("at")
+        if not at:
+            continue
+        try:
+            when = parse_ts(str(at))
+        except ValueError:
+            continue
+        if when <= now and int(t.get("tier", 0)) >= best[0]:
+            best = (int(t.get("tier", 0)), str(t.get("name",
+                                                    "BASE")))
+    return best
+
+
+def thresholds_for(tier_index: int, tier_name: str,
+                   tier_count: int = 5):
+    """Tightening thresholds: by ladder NAME first, else by the
+    tier's scaled position on its own ladder (entries with 6
+    tiers, e.g. D4's GATE tier, still tighten monotonically)."""
+    if tier_name in TIER_LADDER:
+        return TIER_THRESHOLDS[TIER_LADDER.index(tier_name)]
+    if tier_count <= 1:
+        return TIER_THRESHOLDS[0]
+    scaled = round(tier_index / (tier_count - 1) * 4)
+    return TIER_THRESHOLDS[max(0, min(4, scaled))]
 
 
 def parse_ts(value: str) -> datetime:
@@ -74,11 +155,23 @@ def _posted(comments: list, marker: str) -> bool:
 
 
 def classify(issue: dict, comments: list, now: datetime,
-             flag_min: int = 30, escalate_min: int = 60) -> dict:
-    """Pure classification of one queued issue."""
+             flag_min: int = 30, escalate_min: int = 60,
+             timeboxes: dict | None = None) -> dict:
+    """Pure classification of one queued issue. When the issue's
+    entry carries a priority_timebox, the CURRENT tier's
+    thresholds replace the BASE defaults (owner addendum)."""
     since = queued_since(issue, comments)
     age_min = max(0.0, (now - since).total_seconds() / 60.0)
-    base = {"issue": issue["number"], "age_min": round(age_min, 1)}
+    entry = entry_of(comments)
+    tb = (timeboxes or {}).get(entry) if entry else None
+    tier_index, tier_name = current_tier(tb, now)
+    tier_count = len((tb or {}).get("tiers") or []) or 5
+    if tb:
+        flag_min, escalate_min = thresholds_for(
+            tier_index, tier_name, tier_count)
+    base = {"issue": issue["number"], "age_min": round(age_min, 1),
+            "entry": entry, "tier": tier_name,
+            "flag_min": flag_min, "escalate_min": escalate_min}
     if has_claim(issue, comments):
         return {**base, "state": "claimed", "action": None}
     if _posted(comments, ESCALATION_MARKER):
@@ -155,7 +248,8 @@ def _get_all(url: str, token: str) -> list:
 
 
 def sweep(repo: str, token: str, now: datetime, flag_min: int,
-          escalate_min: int, apply: bool = True) -> list:
+          escalate_min: int, apply: bool = True,
+          timeboxes: dict | None = None) -> list:
     issues = _get_all(
         f"{API}/repos/{repo}/issues?state=open"
         f"&labels=dispatch-queued", token)
@@ -167,7 +261,7 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
             f"{API}/repos/{repo}/issues/{issue['number']}/comments",
             token)
         verdict = classify(issue, comments, now, flag_min,
-                           escalate_min)
+                           escalate_min, timeboxes=timeboxes)
         results.append(verdict)
         if not apply or not verdict["action"]:
             continue
@@ -175,11 +269,12 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
         try:
             if verdict["action"] == "flag":
                 _request("POST", f"{base}/comments", token,
-                         {"body": flag_comment(verdict["age_min"])})
+                         {"body": flag_comment(verdict["age_min"],
+                                               verdict)})
             elif verdict["action"] == "escalate":
                 _request("POST", f"{base}/comments", token,
                          {"body": escalation_comment(
-                             issue, verdict["age_min"])})
+                             issue, verdict["age_min"], verdict)})
                 _request("POST", f"{base}/labels", token,
                          {"labels": ["dispatch-escalated"]})
         except Exception as exc:  # one bad action must not kill
@@ -189,10 +284,11 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
 
 
 def render_table(results: list) -> str:
-    lines = ["issue | state | age_min | action",
-             "--- | --- | --- | ---"]
+    lines = ["issue | entry | tier | state | age_min | action",
+             "--- | --- | --- | --- | --- | ---"]
     for r in sorted(results, key=lambda r: r["issue"]):
-        lines.append(f"#{r['issue']} | {r['state']} | "
+        lines.append(f"#{r['issue']} | {r.get('entry') or '—'} | "
+                     f"{r.get('tier') or '—'} | {r['state']} | "
                      f"{r['age_min']} | {r['action'] or '—'}")
     return "\n".join(lines)
 
@@ -209,6 +305,9 @@ def main(argv=None) -> int:
                     default=int(os.environ.get(
                         "WATCHDOG_ESCALATE_MIN", "60")))
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--feed", default=os.environ.get(
+        "WATCHDOG_FEED", DEFAULT_FEED),
+        help="desk-feed.json carrying the priority_timebox rows")
     args = ap.parse_args(argv)
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get(
         "GH_TOKEN")
@@ -217,8 +316,10 @@ def main(argv=None) -> int:
               file=sys.stderr)
         return 2
     now = datetime.now(timezone.utc)
+    timeboxes = load_timeboxes(args.feed)
     results = sweep(args.repo, token, now, args.flag_min,
-                    args.escalate_min, apply=not args.dry_run)
+                    args.escalate_min, apply=not args.dry_run,
+                    timeboxes=timeboxes)
     table = render_table(results)
     print(f"dispatch watchdog @ {now:%Y-%m-%dT%H:%M:%SZ} — "
           f"{len(results)} queued issue(s)")

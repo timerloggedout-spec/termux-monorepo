@@ -88,3 +88,86 @@ def test_receipt_states_the_claim_expectation():
     assert "dispatch-queued" in text
     assert "claim_task.py" in text
     assert "watchdog" in text
+
+
+# ---- priority_timebox riding (owner addendum 2026-11-03) ----
+
+from dispatch_watchdog import (current_tier, entry_of,  # noqa: E402
+                               load_timeboxes, thresholds_for)
+
+D1_TIMEBOX = {
+    "wall": "2026-11-04T23:59:00-08:00",
+    "tiers": [
+        {"tier": 0, "name": "BASE", "from": "window open"},
+        {"tier": 1, "name": "CUSHION",
+         "at": "2026-11-03T09:00:00-08:00"},
+        {"tier": 2, "name": "WALL-DAY",
+         "at": "2026-11-04T00:00:00-08:00"},
+        {"tier": 3, "name": "ESCALATION",
+         "at": "2026-11-04T19:59:00-08:00"},
+        {"tier": 4, "name": "FINAL",
+         "at": "2026-11-04T23:29:00-08:00"},
+    ],
+}
+
+
+def test_entry_parsed_from_receipt():
+    comments = [{"body": "ROUTING RECEIPT\n- entry: D1\n- scope: x",
+                 "created_at": "2026-11-03T00:00:00Z"}]
+    assert entry_of(comments) == "D1"
+    assert entry_of([]) is None
+
+
+def test_current_tier_from_timebox_clock():
+    before = datetime(2026, 11, 3, 8, 0, tzinfo=timezone.utc)
+    assert current_tier(D1_TIMEBOX, before) == (0, "BASE")
+    cushion = datetime(2026, 11, 3, 10, 30, tzinfo=timezone.utc)
+    # 09:00-08:00 == 17:00Z — not yet; use 18:00Z
+    cushion = datetime(2026, 11, 3, 18, 0, tzinfo=timezone.utc)
+    assert current_tier(D1_TIMEBOX, cushion) == (1, "CUSHION")
+    final = datetime(2026, 11, 5, 7, 35, tzinfo=timezone.utc)
+    assert current_tier(D1_TIMEBOX, final) == (4, "FINAL")
+    # state-triggered tiers never advance the clock ladder
+    domino = {"tiers": [{"tier": 0, "name": "BASE", "at": "now"},
+                         {"tier": 1, "name": "CUSHION",
+                          "at": "state: filing-ready"}]}
+    assert current_tier(domino, cushion) == (0, "BASE")
+
+
+def test_thresholds_tighten_with_tier():
+    assert thresholds_for(0, "BASE") == (30, 60)
+    assert thresholds_for(1, "CUSHION") == (20, 40)
+    assert thresholds_for(2, "WALL-DAY") == (10, 20)
+    assert thresholds_for(3, "ESCALATION") == (5, 10)
+    assert thresholds_for(4, "FINAL") == (0, 5)
+    # D4-style 6-tier ladder: GATE tier sits at CUSHION class
+    assert thresholds_for(1, "GATE — Kiro credit form", 6) == (20, 40)
+    assert thresholds_for(5, "FINAL", 6) == (0, 5)
+
+
+def test_classify_uses_tier_thresholds():
+    receipt = {"body": "ROUTING RECEIPT\n- entry: D1",
+               "created_at": "2026-11-03T17:30:00Z"}
+    issue = {"number": 9, "created_at": "2026-11-03T17:30:00Z",
+             "labels": [], "user": {"login": "filer"}}
+    at_1755 = datetime(2026, 11, 3, 17, 55, tzinfo=timezone.utc)
+    # CUSHION tier (since 17:00Z), 25 min unclaimed: BASE would
+    # only watch (flag at 30); CUSHION flags at 20
+    verdict = classify(issue, [receipt], at_1755,
+                       timeboxes={"D1": D1_TIMEBOX})
+    assert verdict["tier"] == "CUSHION"
+    assert verdict["action"] == "flag"
+    # no timebox -> BASE defaults, still watching at 25 min
+    plain = classify(issue, [receipt], at_1755)
+    assert plain["action"] is None and plain["tier"] == "BASE"
+
+
+def test_load_timeboxes_from_feed(tmp_path):
+    feed = tmp_path / "desk-feed.json"
+    feed.write_text('{"traversals": [{"entry": "D1", '
+                    '"priority_timebox": {"wall": "x"}}, '
+                    '{"entry": "D0"}]}')
+    boxes = load_timeboxes(str(feed))
+    assert set(boxes) == {"D1"}
+    assert load_timeboxes("/nonexistent.json") == {}
+    assert load_timeboxes(None) == {}

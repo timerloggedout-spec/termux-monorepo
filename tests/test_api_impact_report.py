@@ -157,7 +157,7 @@ class ApiImpactReportTests(unittest.TestCase):
 
     def test_backslash_paths_are_rejected(self):
         with self.assertRaisesRegex(ValueError, "unsafe changed path"):
-            classify_changed_paths(["llm_api_hub\\\\server\\\\app.py"])
+            classify_changed_paths(["llm_api_hub\\server\\app.py"])
 
     def test_unsupported_mapper_envelope_fields_are_rejected(self):
         payload = mapper_input()

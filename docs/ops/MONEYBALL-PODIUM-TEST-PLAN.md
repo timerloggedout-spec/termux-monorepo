@@ -91,3 +91,13 @@ The re-review was written against amendment #1 (blob 7fd138ac) and crossed amend
 
 **Net state:** review CLOSED. Runnable now (on their artifacts): ② descriptive · ③ pool-overlap fallback (descriptive) · ④ theme inventory. Conditional: ⑤ (rubric-weights filing first). Blocked: ① (G1+G4) · ③ main test (judge↔track) · ⑥ (① unblocking + pre-run filing with named score).
 
+
+## RESEQUENCE (owner, 2026-11-03 09:25 PT via main) — run-gating sits AFTER the OSINT results layer
+
+The design closed ahead of the full harvest; feasibility stamps issued against the partial dataset of record may not survive the completed one. Therefore:
+
+- **ALL runs HOLD** until the OSINT results layer passes = Swarm OSINT template first exercise + the scraping lane dataset build, both landed.
+- On that pass, the feasibility stamps are **RE-ISSUED against the post-pass dataset of record** (new pin) before any test moves; the Tests leg verifies the re-issued stamps as the run gate.
+- Stamps most likely to change: **③ blocked-not-run** (identity harvest may source judge↔track linkage) and **① field rows** (field harvest may fill the denominator).
+- The DESIGN stays closed — this is stamp sequencing, not re-review. No test result, evidence row, or book entry may cite pre-pass stamps after the re-issue.
+

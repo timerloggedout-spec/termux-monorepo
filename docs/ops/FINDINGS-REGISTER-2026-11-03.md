@@ -334,3 +334,14 @@ materials would produce the fleet's first PROVEN-grade
 equivalency at ~zero marginal cost — the equivalence
 standard's cheapest full-dress rehearsal. Route:
 Certifications lane + DoE.
+
+## Pin supersession (2026-11-03)
+
+The dataset pin cited in this register's header (v2) is
+superseded: **dataset `2026-11-03.v3` · PR #4592 merged
+`c95f37703568` · sha256
+`f317dbf47a3636fea02e8acc1feddac41674a0c9596ddd5f632bf1b4030805fc`**
+carries this register's rows (F-G6 → D1 ENUMERATED 55 with
+the slot caveat in-row · F-G2 re-stamped NOT_ESTABLISHED,
+superseding v2's UNPUBLISHED-on-venue wording · F-G1
+confirmed · F-O7 + F-N5 in program_notes). Cite v3.

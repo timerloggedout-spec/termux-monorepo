@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from math import floor
+import re
 from typing import Any
 
 SCHEMA = "deployment-admission-input/v1"
@@ -28,6 +29,8 @@ def _time(value: Any) -> datetime | None:
 
 def _verified_alternate(lane: Any, *, workload: str, source_sha: str) -> bool:
     if not isinstance(lane, dict) or lane.get("status") != "READY":
+        return False
+    if not isinstance(lane.get("lane_id"), str) or not lane.get("lane_id"):
         return False
     if lane.get("source_sha") != source_sha or not source_sha:
         return False
@@ -51,8 +54,10 @@ def evaluate(document: dict[str, Any], *, now: datetime | None = None) -> dict[s
 
     workload = document.get("workload")
     source_sha = document.get("source_sha")
-    if workload not in {"static", "http_api", "mcp"} or not isinstance(source_sha, str) or not source_sha:
-        return _blocked("MISSING_WORKLOAD_OR_SOURCE_SHA")
+    if (workload not in {"static", "http_api", "mcp"}
+            or not isinstance(source_sha, str)
+            or not re.fullmatch(r"[0-9a-fA-F]{40}|[0-9a-fA-F]{64}", source_sha)):
+        return _blocked("MISSING_OR_INVALID_WORKLOAD_SOURCE_SHA")
 
     quota = document.get("quota")
     reason = "QUOTA_EVIDENCE_UNAVAILABLE"
@@ -77,8 +82,9 @@ def evaluate(document: dict[str, Any], *, now: datetime | None = None) -> dict[s
             reason = "QUOTA_NOT_AUTHORITATIVE"
         elif (now - observed_at).total_seconds() < 0 or (now - observed_at).total_seconds() > max_age:
             reason = "QUOTA_OBSERVATION_STALE_OR_FUTURE"
-        elif not isinstance(quota.get("window_id"), str) or not quota.get("window_id"):
-            reason = "QUOTA_WINDOW_UNBOUND"
+        elif (not isinstance(quota.get("window_id"), str) or not quota.get("window_id")
+              or not isinstance(quota.get("scope_id"), str) or not quota.get("scope_id")):
+            reason = "QUOTA_WINDOW_OR_SCOPE_UNBOUND"
         elif used >= floor(limit * safety):
             reason = "QUOTA_SAFETY_THRESHOLD_REACHED"
         else:

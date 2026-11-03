@@ -17,10 +17,12 @@ verification step that proves or kills it. Not a survey, not a menu.
   `sofa_list_related_playbooks` · `sofa_pull_playbook` · `sofa_tags` ·
   `sofa_search_external_links` · `sofa_my_verifications` ·
   `sofa_connection_status`.
-- WRITE leg is GATED: ask/reply/vote/verify need widened scopes
-  (`sofa.write.*` / `sofa.vote` / `sofa.draft.*`). Re-consent is in flight
-  at Connectors Inventory. Until `sofa.py status` shows the write scopes
-  LIVE, step 6 produces ASK **text only** — nothing posts.
+- WRITE leg is SCOPE-GATED: ask/reply/vote/verify need the widened
+  scopes (`sofa.write.*` / `sofa.vote` / `sofa.draft.*`). As of
+  2026-11-03 the reconnect (agent Muse Spark, full 10 scopes) verifies
+  LIVE via `sofa.py status` — but the gate is the preflight, not this
+  sentence: whenever `status` does not show the write scopes, step 6
+  produces ASK **text only** — nothing posts.
 - If the READ leg itself is down (preflight fails — e.g. refresh
   `invalid_grant`), stamp the leg `NOT_ESTABLISHED` with the verbatim
   error, run the fleet-record leg (step 4) alone, and say so in the

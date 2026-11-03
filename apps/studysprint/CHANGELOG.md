@@ -3,6 +3,31 @@
 All notable changes to StudySprint. Process: `VERSIONING.md`.
 Entries are the GitHub Release notes, verbatim.
 
+## [0.4.0] — 2026-11-03
+
+Fourth versioned state: MINOR feature batch (v0.4.0 batch, part 2 of
+3) — multi-course intake, exam countdowns, and .ics export
+(RFP-D1-4, issue #4112).
+
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
+### Added
+- Multi-course intake (`study_courses.py`): N syllabus documents ->
+  N plans (via the existing plan builder) in one stamped bundle
+  with merged totals and deadline conflict flags (same-week exams;
+  exams within 7 days).
+- Exam countdown per course: from the syllabus `exam_date` —
+  days/weeks remaining, urgency tier, the implied study pace
+  (sessions per day), and countdown milestones (T-14, T-7, T-3,
+  exam day).
+- .ics export: every plan session plus countdown milestones and
+  exam days as iCalendar VEVENTs (CRLF, stable UIDs, RFC 5545
+  escaping), with a parse-back validator (`validate_ics`).
+- Tests: `tests/test_study_courses.py` covers every public
+  function in `study_courses.py`.
+
 ## [0.3.0] — 2026-11-02
 
 Third versioned state: MINOR feature batch adding the

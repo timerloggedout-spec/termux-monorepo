@@ -61,7 +61,8 @@ class FreeTierValueProjectionTest(unittest.TestCase):
                 "basksweep_status": "PASS", "publication_status": "PUBLIC_SAFE",
                 "billing_status": "VERIFIED_NO_COST", "cost_usd": 0.0
             }
-            source.write_text(json.dumps(row) + "\n", encoding="utf-8")
+            contradictory = dict(row, call_uid="call-2", cost_usd=0.01)
+            source.write_text(json.dumps(row) + "\n" + json.dumps(contradictory) + "\n", encoding="utf-8")
             out = root / "out.json"
             subprocess.run([sys.executable, str(SCRIPT), "--root", str(root),
                             "--observations", str(source), "--out", str(out)],

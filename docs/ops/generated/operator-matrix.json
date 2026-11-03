@@ -3,9 +3,9 @@
     "open_issues": 427,
     "open_prs": 193,
     "pr_classes": {
-      "CANDIDATE": 95,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 92,
+      "CANDIDATE": 96,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 90,
       "SUPERSEDE": 0
     }
   },
@@ -72,7 +72,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T03:24:01Z",
+  "generated_at": "2026-11-03T03:26:43Z",
   "issues_unlabelled": [
     308,
     388,
@@ -95,10 +95,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "success"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "53e3edae43"
+    "sha": "72ddebd989"
   },
   "prs": [
     {
@@ -170,6 +170,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "095a80c101",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T03:25:31Z"
     },
     {
       "class": "EXTRACT",
@@ -350,7 +364,7 @@
       },
       "head_sha": "4d18fdff62",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1301,
       "title": "docs(telemetry): add equation registry and Wolfram verification",
       "updated_at": "2026-10-20T07:17:41Z"
@@ -959,6 +973,20 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ab53eb1ed0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T03:21:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -2051,34 +2079,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "ab53eb1ed0",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T03:21:56Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "095a80c101",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T03:23:02Z"
     },
     {
       "class": "NEED_EVIDENCE",

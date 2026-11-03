@@ -71,3 +71,8 @@ body:
     attributes:
       label: Evidence links
       description: HindSight/ForeSight records, run URLs, prior evaluations.
+  - type: textarea
+    id: verification_record
+    attributes:
+      label: Verification record
+      description: "Resolvable refs ONLY, one per line: `PR #123`, `run 12345678901`, `receipt 1234567890` (an issue-comment id). Max 10. The gate resolves each ref against its source of record at scoring time: verified counts for the filing, a ref that resolves FALSE (e.g. a PR closed unmerged) counts double against, a nonexistent ref counts against. Prose is ignored — only typed refs are scored (EGM-2 amendment P1+P2)."

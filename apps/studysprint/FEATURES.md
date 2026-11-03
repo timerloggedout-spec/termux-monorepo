@@ -21,6 +21,8 @@ feature below serves that screen or the daily loop around it.
 - ○ Multi-course intake: 4–5 syllabi → one merged calendar with
   conflict flags (two midterms, same week) — **Next, high value**
 
+**Built (v0.4.0, 2026-11-03; RFP-D1-4 / issue #4112):** multi-course intake, per-course exam countdowns, and .ics export of sessions + countdown milestones live in `study_courses.py` with tests — the §1a multi-course item above (N syllabi -> one merged view with conflict flags) plus the countdown/calendar surface.
+
 ## 1b. Reading pipeline (owner design, 2026-10-30)
 The syllabus makes the *plan*; the assigned readings are the
 *material*. Optimized options only — two anti-patterns ruled out
@@ -71,6 +73,8 @@ direct-PDF chapter reading as the reading experience.
   PDF directly); h (API) + via (proxy) = MOAR; annotations are
   W3C Web Annotation JSON-LD — highlight→structured-data is
   native to the model, not a scrape.
+
+**Built (v0.4.0, 2026-11-03; RFP-D1-3 / issue #4111):** all six §1b stages are implemented in `study_pipeline.py` with tests — finder (confirm-before-plan) -> OCR intake -> structure -> per-chapter term bank (behind the reader's term-lookup hook) -> term emphasis -> hypothes.is layer. The hypothes.is leg implements option (3) of the #3697 evaluation — API-only annotations over reader sections in the W3C Web Annotation model; the owned client_fork revival and the hosted embed remain view-surface choices that render on top of the same annotation data.
 
 ## 1c. Memory methods (RFP-D1-5; built v0.4.0, 2026-11-03)
 

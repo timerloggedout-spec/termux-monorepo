@@ -96,7 +96,12 @@ for what was removed.
 2. **Weekly sweep.** `.github/workflows/comment-quality-sweep.yml` runs
    `scripts/comment_quality_sweep.py` weekly (report to the step summary) and on
    dispatch, with an explicit `delete=true` dispatch input for a maintainer-run
-   cleanup of the two removable classes only.
+   cleanup of the two removable classes only. **Repo-wide leg added 2026-11-02:**
+   the Blocks app also drops its pitch on new PRs (recurrence after the
+   2026-10-28 cleanup: PRs #2053–#2056 and #4022/#4023, 6 comments, deleted by
+   hand on discovery), so the sweep now also scans every issue/PR comment from
+   the trailing 8 days (`--repo-wide-days 8`) under the same two classes and
+   the same delete gating.
 3. **Vendor-promo source is an owner UI item.** The Blocks drop is posted by the
    Blocks GitHub App, not by any workflow in this repo, so no repo change can
    stop it; the app-side switch is the "Disable this message" / integration

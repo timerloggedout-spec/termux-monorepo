@@ -1,26 +1,26 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-03T09:32:26Z",
+ "read_at": "2026-11-03T09:33:49Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
-   "number": 4135,
-   "title": "desk-feed: v0.4.0 batch outcome stamps (row format)",
-   "merged_at": "2026-11-03T09:32:03Z",
-   "updated_at": "2026-11-03T09:32:07Z",
-   "created_at": "2026-11-03T09:31:55Z",
-   "merge_commit_sha": "a20c088f09a374c0a1b659294879129e13292751",
-   "head_ref": "desk/stamps-v040-final",
+   "number": 4133,
+   "title": "Agentic Gambling Lane: priority-timebox linkage = book checkpoints",
+   "merged_at": "2026-11-03T09:31:51Z",
+   "updated_at": "2026-11-03T09:33:39Z",
+   "created_at": "2026-11-03T09:30:58Z",
+   "merge_commit_sha": "e9c9ed6b80be3c43ebc9d99c4de45af317b299d5",
+   "head_ref": "agentic-gambling/book-timebox-linkage",
    "author": "timerloggedout-spec",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4135",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4133",
    "merged": true
   },
   {
    "number": 4132,
    "title": "desk-feed: correct #4120 merge sha of record",
    "merged_at": "2026-11-03T09:30:34Z",
-   "updated_at": "2026-11-03T09:32:03Z",
+   "updated_at": "2026-11-03T09:33:32Z",
    "created_at": "2026-11-03T09:30:26Z",
    "merge_commit_sha": "bf0fc113caa1cfb419d9bcb715f2a2cb4be225c6",
    "head_ref": "desk/fix-4120-merge-sha",
@@ -30,16 +30,29 @@
    "merged": true
   },
   {
-   "number": 4133,
-   "title": "Agentic Gambling Lane: priority-timebox linkage = book checkpoints",
-   "merged_at": "2026-11-03T09:31:51Z",
-   "updated_at": "2026-11-03T09:32:02Z",
-   "created_at": "2026-11-03T09:30:58Z",
-   "merge_commit_sha": "e9c9ed6b80be3c43ebc9d99c4de45af317b299d5",
-   "head_ref": "agentic-gambling/book-timebox-linkage",
+   "number": 4135,
+   "title": "desk-feed: v0.4.0 batch outcome stamps (row format)",
+   "merged_at": "2026-11-03T09:32:03Z",
+   "updated_at": "2026-11-03T09:32:58Z",
+   "created_at": "2026-11-03T09:31:55Z",
+   "merge_commit_sha": "a20c088f09a374c0a1b659294879129e13292751",
+   "head_ref": "desk/stamps-v040-final",
    "author": "timerloggedout-spec",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4133",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4135",
+   "merged": true
+  },
+  {
+   "number": 4136,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-03T09:32:33Z",
+   "updated_at": "2026-11-03T09:32:37Z",
+   "created_at": "2026-11-03T09:32:27Z",
+   "merge_commit_sha": "3563977ab9c3966c7ba7d3729d5a8d72c7081d1c",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4136",
    "merged": true
   },
   {
@@ -1939,22 +1952,22 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3946",
    "merged": true
-  },
-  {
-   "number": 3945,
-   "title": "P-002 verdict record: PASS (Mathlib ACTIVE)",
-   "merged_at": "2026-11-02T14:36:33Z",
-   "updated_at": "2026-11-02T14:38:20Z",
-   "created_at": "2026-11-02T14:35:29Z",
-   "merge_commit_sha": "935de4d27039ce04f38e95de13a97ccc1ca6d5cd",
-   "head_ref": "linguist/nse023-p002-verdict",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3945",
-   "merged": true
   }
  ],
  "open": [
+  {
+   "number": 4137,
+   "title": "studysprint: evidence refresh at v0.4.0",
+   "merged_at": null,
+   "updated_at": "2026-11-03T09:33:47Z",
+   "created_at": "2026-11-03T09:33:45Z",
+   "merge_commit_sha": "7322b083aebf65f28a76bd27c8334b5054c4c25f",
+   "head_ref": "desk/ss-evidence-040",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4137",
+   "merged": false
+  },
   {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
@@ -4543,19 +4556,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/761",
-   "merged": false
-  },
-  {
-   "number": 752,
-   "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
-   "merged_at": null,
-   "updated_at": "2026-09-22T22:22:38Z",
-   "created_at": "2026-09-22T22:21:54Z",
-   "merge_commit_sha": "d63f9b80571c47773e43ea69da378729f8fe9fcf",
-   "head_ref": "feat/termux-endpoint-status",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/752",
    "merged": false
   }
  ],

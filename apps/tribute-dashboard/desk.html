@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contribution Desk — Queue, Traversals &amp; Dispatch</title>
 <!--
-  Renders ONLY data/desk-feed.json (schema desk-feed/v1.3), seeded by the
+  Renders ONLY data/desk-feed.json (schema desk-feed/v1.3) plus
+  data/dispatch-state-feed.json (schema dispatch-state-feed/v1) for the
+  Dispatch queue section. The desk feed is seeded by the
   viz lane from firsthand audits of the live record (2026-10-30) and
   refreshed by the Contribution Desk lane as traversals move. The page
   mutates nothing: dispatch opens the intake issue on GitHub, where the
@@ -38,6 +40,10 @@
   .arrow{color:var(--muted);font-size:11px}
   .dispatch{border:1px solid var(--gold);border-radius:8px;padding:.7rem .8rem}
   .dispatch a.btn{display:inline-block;padding:.35rem .9rem;border:1px solid var(--gold);border-radius:6px;color:var(--gold);font-weight:700;text-decoration:none}
+  .chip.esc{border-color:#cf222e;color:#cf222e;font-weight:700}
+  tr.dq-esc td{background:rgba(207,34,46,.08)}
+  td.dq-over{color:#cf222e;font-weight:700}
+  td.dq-flag{color:var(--gold);font-weight:700}
 </style>
 </head>
 <body>
@@ -78,6 +84,12 @@
 <section>
 <h2>Traversal distribution</h2>
 <div class="card"><div id="distchart"></div><p class="dim" id="diststamp"></p></div>
+</section>
+<section>
+<h2>Dispatch queue</h2>
+<p class="dim">Open dispatches as the watchdog last stamped them. Ages read against each row's own flag/escalate thresholds from the feed; nothing is estimated between stamps. An empty stall-events field renders absent — the watchdog's stall ledger populates under issue #4362.</p>
+<div class="card"><div id="dqchart"></div><p class="dim" id="dqstamp"></p></div>
+<div id="dqrows"></div>
 </section>
 <section>
 <h2>Provenance</h2>
@@ -247,6 +259,52 @@ fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "
     "<h3>Stage completions — traversals at done, of "+n+"</h3>"+CK.bars(stageDist(p.traversals),860);
   document.getElementById("diststamp").textContent="Feed "+p.generated_at+" · "+CK.stampState(p.generated_at,Date.now())+" · distribution computed from the feed's traversal records as issued.";
 }).catch(e=>{ document.getElementById("diststamp").textContent="Distribution unavailable: "+e.message; });
+</script>
+
+<script>
+"use strict";
+// ==== pure logic (node-sim tested) ====
+const DQ_ORDER=["escalated","claimed","queued"];
+function dqStateDist(counts){
+  const c=counts||{};
+  return DQ_ORDER.map(s=>({label:s, value:(typeof c[s]==="number"?c[s]:0)}));
+}
+function dqAgeClass(d){
+  const th=d.thresholds_min||{};
+  if(typeof d.age_min!=="number") return "";
+  if(typeof th.escalate==="number" && d.age_min>=th.escalate) return "dq-over";
+  if(typeof th.flag==="number" && d.age_min>=th.flag) return "dq-flag";
+  return "";
+}
+function dqSort(rows){
+  const rank=s=>{const i=DQ_ORDER.indexOf(s); return i<0?99:i};
+  return [...(rows||[])].sort((a,b)=> rank(a.state)-rank(b.state) || (b.age_min||0)-(a.age_min||0));
+}
+function dqClaim(d){ return d.claim? esc(d.claim.by)+" · "+esc(d.claim.at) : "\u2014"; }
+function dqStalls(d){
+  const ev=Array.isArray(d.stall_events)?d.stall_events:[];
+  if(!ev.length) return "\u2014";
+  return ev.length+" · "+ev.map(e=>esc(e.kind||"")).filter(Boolean).join(", ");
+}
+if(typeof module!=="undefined"){ module.exports={dqStateDist,dqAgeClass,dqSort,dqClaim,dqStalls}; }
+// ==== end pure logic ====
+fetch("./data/dispatch-state-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "+r.status); return r.json(); }).then(f=>{
+  document.getElementById("dqchart").innerHTML="<h3>Open dispatches by state</h3>"+CK.bars(dqStateDist(f.counts),860);
+  document.getElementById("dqstamp").textContent="Feed "+f.generated_at+" · "+CK.stampState(f.generated_at,Date.now())+" · dispatch states as stamped by the watchdog ("+(f.source||"")+") \u2014 ages are as of the stamp.";
+  const rows=dqSort(f.dispatches);
+  if(!rows.length){ document.getElementById("dqrows").innerHTML="<p class='dim'>No open dispatches in the feed.</p>"; return; }
+  const GH="https://github.com/timerloggedout-spec/termux-monorepo";
+  document.getElementById("dqrows").innerHTML="<table class='st'><tr><th>Issue</th><th>Title</th><th>Entry</th><th>State</th><th>Claimed by</th><th>Age</th><th>Tier</th><th>Thresholds (flag / escalate)</th><th>Stall events</th></tr>"+
+    rows.map(d=>{
+      const th=d.thresholds_min||{};
+      const age=(typeof d.age_min==="number")? Math.round(d.age_min)+" min" : "\u2014";
+      const thr=((typeof th.flag==="number")?th.flag:"\u2014")+" / "+((typeof th.escalate==="number")?th.escalate:"\u2014")+" min";
+      const tier=d.tier? esc(d.tier.name||"") : "\u2014";
+      return "<tr"+(d.state==="escalated"?" class='dq-esc'":"")+"><td><a href='"+GH+"/issues/"+d.issue+"'>#"+d.issue+"</a></td><td>"+esc(d.title)+"</td><td>"+esc(d.entry)+"</td>"+
+      "<td><span class='chip"+(d.state==="escalated"?" esc":"")+"'>"+esc(d.state)+"</span></td>"+
+      "<td>"+dqClaim(d)+"</td><td class='"+dqAgeClass(d)+"'>"+age+"</td><td>"+tier+"</td><td>"+thr+"</td><td>"+dqStalls(d)+"</td></tr>";
+    }).join("")+"</table>";
+}).catch(e=>{ document.getElementById("dqstamp").textContent="Dispatch queue unavailable: "+e.message; });
 </script>
 </body>
 </html>

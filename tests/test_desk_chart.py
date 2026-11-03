@@ -1,6 +1,6 @@
 """Pins for the desk page traversal-distribution chart (chart standard).
 
-The chart block in desk.html renders ONLY data/desk-feed.json via
+The chart block in desk.html renders data/desk-feed.json via
 chartkit (CK.bars / CK.stampState): entries-by-status and
 stage-completion distributions computed from the feed's traversal
 records as issued. Behavior is pinned against the committed desk
@@ -31,8 +31,12 @@ def _chart_js():
 
 
 def test_page_fetches_only_the_desk_feed():
+    # desk-feed feeds this chart + the board; the Dispatch queue section
+    # (test_desk_dispatch_queue.py) fetches dispatch-state-feed.json.
     fetches = re.findall(r"fetch\(([^)]*)\)", _html())
-    assert fetches and all(f == '"./data/desk-feed.json"' for f in fetches)
+    allowed = {'"./data/desk-feed.json"', '"./data/dispatch-state-feed.json"'}
+    assert fetches and all(f in allowed for f in fetches)
+    assert '"./data/desk-feed.json"' in fetches
 
 
 def test_chart_hooks_present():

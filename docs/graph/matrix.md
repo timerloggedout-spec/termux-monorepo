@@ -2,7 +2,7 @@
 
 > Canonical data: `workspace/llm_map/graph/edges.jsonl` + `graph-index.json`, derived by `scripts/graph/cross_plane_link.py` from the plane indexes. This is a view over existing planes, never a source of truth; signals are research signals, never adoption orders.
 
-Observed (repository index): `2026-11-03T11:57:51.011347Z` · Edges: **25302**
+Observed (repository index): `2026-11-03T11:57:51.011347Z` · Edges: **25303**
 
 ## Edges by type
 
@@ -14,7 +14,7 @@ Observed (repository index): `2026-11-03T11:57:51.011347Z` · Edges: **25302**
 - **watching:** 128
 - **mentions_repo:** 17
 - **submitted_to:** 14
-- **organizes:** 9
+- **organizes:** 10
 - **upstream:** 2
 - **competes_in:** 1
 - **entered_with:** 1
@@ -28,6 +28,7 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 | Event node | Participants | Projects | Status |
 |---|---|---|---|
 | `challenge:event:C11` | None | None | open_task |
+| `challenge:event:C12` | None | None | open_task |
 | `challenge:event:D0` | 252 | 40 | established |
 | `challenge:event:D1` | 324 | 1 | partial |
 | `challenge:event:D2` | 1617 | None | partial |
@@ -48,6 +49,7 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 | `challenge:organizer:devpost` | organizes | `challenge:event:D4` | organizer_role_platform |
 | `challenge:organizer:kiro` | organizes | `challenge:event:D4` | organizer_role_host |
 | `challenge:organizer:lablab-ai` | organizes | `challenge:event:D2` | organizer_role_host |
+| `challenge:organizer:ugreen` | organizes | `challenge:event:C12` | organizer_role_host/sponsor |
 | `challenge:organizer:vultr` | organizes | `challenge:event:D2` | organizer_role_sponsor |
 | `challenge:participant:D1/ladder-practice-sets` | competes_in | `challenge:event:D1` | event_participants_list |
 | `challenge:participant:D1/ladder-practice-sets` | entered_with | `challenge:project:D1/ladder-practice-sets-a-teacher-can-trust` | participant_project |

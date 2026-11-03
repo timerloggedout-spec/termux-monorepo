@@ -9,7 +9,7 @@
    "fork_of": 1,
    "in_domain": 5223,
    "mentions_repo": 17,
-   "organizes": 9,
+   "organizes": 10,
    "owned": 712,
    "same_author_as": 1,
    "starred": 3199,
@@ -17,10 +17,10 @@
    "upstream": 2,
    "watching": 128
   },
-  "edges": 25302,
+  "edges": 25303,
   "entity_endpoints_by_namespace": {
-   "challenge:event": 24,
-   "challenge:organizer": 9,
+   "challenge:event": 25,
+   "challenge:organizer": 10,
    "challenge:participant": 3,
    "challenge:project": 15,
    "domain": 5223,
@@ -34,11 +34,16 @@
  },
  "observed_at": "2026-11-03T11:57:51.011347Z",
  "schema_version": "graph-index/v1",
- "snapshot_hash": "b02291cb59a956b0589bac082ab01a6e127530ccbc103ab7c36734150e34a4d5",
+ "snapshot_hash": "e3c582aa996c20d18ad1552d088d4fac4e4a7309bbfac10e2af9abb7926b5925",
  "sources": {
   "challenge": {
    "field_size_by_event": {
     "challenge:event:C11": {
+     "participants": null,
+     "projects": null,
+     "status": "open_task"
+    },
+    "challenge:event:C12": {
      "participants": null,
      "projects": null,
      "status": "open_task"
@@ -82,9 +87,9 @@
    "observed_at": null,
    "path": "ops/challenge/coordinator.json",
    "tracked_records": {
-    "events": 8,
+    "events": 9,
     "judges": 0,
-    "organizers": 9,
+    "organizers": 10,
     "participants": 1
    }
   },

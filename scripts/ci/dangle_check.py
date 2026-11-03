@@ -191,7 +191,7 @@ HTML_ID = re.compile(r"id\s*=\s*\"([^\"]+)\"")
 def is_dynamic_reference(value):
     """Return true when the path value itself is assembled at runtime."""
     return bool(re.search(
-        r"\$\{|\$\(|(?:^|[\s'"])\+\s*|\s\+\s|"
+        r"\$\{|\$\(|(?:^|[\s\"])\+\s*|\s\+\s|"
         r"\b(?:esc|safeHref)\s*\(",
         value,
     ))

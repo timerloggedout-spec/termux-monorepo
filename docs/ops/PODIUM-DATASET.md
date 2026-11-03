@@ -126,3 +126,51 @@ rubrics = 0}.
   with the seed recorded in the dataset record.
 - **Comments leg:** if an app/API comments surface verifies, rows land
   as kind=comment with author_kind {judge|community} distinguished (C8).
+
+## Tool slate (FIND TOOLS leg, 2026-11-03)
+
+Gate rule: a tool that cannot carry per-row receipts
+`{source_url · captured_at · collector}` through its data flow fails
+the core requirement regardless of other merits. Verdicts:
+BUILD (ours) / ADOPT (integrate) / HOLD (later) / SKIP.
+
+### Crawl
+| tool | verdict | why |
+|---|---|---|
+| podium_crawl.py (stdlib) | **BUILD — shipped** | receipts native; change detection via ingest diff; SSR pages |
+| Crawl4AI (Apache-2.0, self-host) | **ADOPT next** | JS-heavy + login-session leg; hooks-auth documented; diff = external (our ingest) |
+| api-anything (MIT, eval 2026-11-03) | ADOPT candidate | replay tier-1 + heal for learned APIs; browser tier needs direct egress (Actions) |
+| Crawlee (Apache-2.0) | HOLD | SessionPool/login handlers solid; overlaps Crawl4AI leg |
+| TinyFish Fetch/Search | adjunct | public fetch; envelope-level receipts only (wrapper stamps rows); key-blocked |
+| Firecrawl changeTracking | SKIP (core) | only native per-field diff, but paid + snapshots vendor-held; receipts ⚠️ stamped at ingest |
+| changedetection.io (Apache-2.0) | SKIP | real diff engine but daemon-shaped (VM/Actions unfit) + page-text model = **row receipts fail**; tripwire pattern reference only |
+
+### Ingest
+| podium_ingest.py | **BUILD — shipped** | exact-hash dedupe + conflicts preserved + receipts, to spec |
+| Splink (MIT) | **ADOPT (v3 leg)** | Fellegi-Sunter fuzzy dedupe/linkage on DuckDB/Postgres; explainable match weights = the link itself is receipted; receipts ride our tables |
+| dedupe (MIT) | SKIP | active-learning labelling fights automation; upstream inactive since 2024-08 |
+| OpenRefine (BSD-3) | SKIP | interactive; provenance is operation-level, not per-row |
+| frictionless (MIT) | HOLD | contract gate at ingest later; dataset-level metadata only |
+
+### Store
+| Neon Postgres (provisioned) | **KEEP — primary** | append-only + views; receipts are columns; participant-store pattern live |
+| git snapshots in repo | **KEEP — record** | versioned, hash-pinned, citable (dataset_version) |
+| DuckDB | ADOPT | query scratchpad over snapshots; Splink's backend; no native versioning (convention: dated immutable exports) |
+| lakeFS / DVC | SKIP (now) | true data-versioning, unjustified ops weight at this scale; revisit if snapshots outgrow repo |
+
+### Identity resolution
+| judge_person exact-name (ours) | **BUILD — shipped** | deterministic, receipted; variants gap |
+| Splink | **ADOPT (v3)** | calibrated probabilistic person linkage; band adjudication, never auto-merge below threshold |
+| Maigret (MIT) | ADOPT (candidate-gen) | 3,000+ site handle sweep + profile extraction; existence ≠ identity — feeds Splink only; wrapper stamps receipts |
+| Sherlock / socialscan | SKIP (evidence) | URL/boolean lists, no metadata/timestamps; too weak as linkage truth |
+
+### Feature tagging
+Constraint: MoneyBall C2/G5 — coding is redone from canonical project
+pages under frozen `podium-codebook/v1` by consumers; this pipeline
+supplies text (title/tagline/tags + canonical URL), tagging tools are
+draft/assist only, and any tag used as evidence carries its own
+receipt (model id + prompt + codebook version as collector).
+| bart-large-mnli zero-shot (HF, local) | HOLD | $0, multi-label native; pending validation-lane design review |
+| LLM APIs (Mistral verified live; Gemini vault) | ADOPT (adjudicator) | low-confidence band only; pin model + temp 0, record both per tag |
+| sklearn TF-IDF OneVsRest / spaCy textcat | LATER | cheapest once a few hundred checked tags exist to train on |
+| KeyBERT | SKIP (classifier) | keyword extraction, no governed label set; tag suggestion only |

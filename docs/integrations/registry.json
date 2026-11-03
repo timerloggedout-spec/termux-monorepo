@@ -130,9 +130,9 @@
       "repo_adapter_state": "repo_adapter_implemented",
       "authority": "attributed-research-observation",
       "write_boundary": "Read/search/scrape outputs are untrusted external observations; no repository writes, webhook creation, monitor creation, or external delivery from this adapter.",
-      "next_step": "Run exact-head adapter and repository gates; then separately verify least-privilege runtime access before any end-to-end validation.",
+      "next_step": "Verify least-privilege provider authentication and runtime reachability in the intended execution environment before any end-to-end validation.",
       "sensitivity": "public-web-content-and-account-usage-metadata",
-      "validation_state": "awaiting_ci_validation"
+      "validation_state": "tested"
     },
     {
       "id": "context7",
@@ -145,9 +145,9 @@
       "repo_adapter_state": "repo_adapter_implemented",
       "authority": "versioned-documentation-reference-only",
       "write_boundary": "Documentation snippets are advisory and version-scoped; they do not override pinned project dependencies, repository tests, or official upstream specifications.",
-      "next_step": "Run exact-head adapter and repository gates; then separately verify least-privilege runtime access before any end-to-end validation.",
+      "next_step": "Verify least-privilege provider authentication and runtime reachability in the intended execution environment before any end-to-end validation.",
       "sensitivity": "public-documentation-and-code-snippets",
-      "validation_state": "awaiting_ci_validation"
+      "validation_state": "tested"
     },
     {
       "id": "mintlify",
@@ -188,9 +188,9 @@
       "repo_adapter_state": "repo_adapter_implemented",
       "authority": "discovery-and-metadata-only",
       "write_boundary": "Registry discovery is not trust approval, authentication, permission grant, or server admission; no discovered server is executed or added to allowlists automatically.",
-      "next_step": "Run exact-head adapter and repository gates; then separately verify least-privilege runtime access before any end-to-end validation.",
+      "next_step": "Verify least-privilege provider authentication and runtime reachability in the intended execution environment before any end-to-end validation.",
       "sensitivity": "public-mcp-metadata-and-security-review",
-      "validation_state": "awaiting_ci_validation"
+      "validation_state": "tested"
     },
     {
       "id": "sprites",

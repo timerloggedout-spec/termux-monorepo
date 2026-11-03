@@ -3,8 +3,8 @@
     "open_issues": 524,
     "open_prs": 265,
     "pr_classes": {
-      "CANDIDATE": 126,
-      "EXTRACT": 11,
+      "CANDIDATE": 127,
+      "EXTRACT": 10,
       "NEED_EVIDENCE": 128,
       "SUPERSEDE": 0
     }
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T23:49:47Z",
+  "generated_at": "2026-11-03T23:52:13Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "queued"
     },
-    "sha": "44483daeef"
+    "sha": "0be7c1e97f"
   },
   "prs": [
     {
@@ -294,20 +294,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bb25df13db",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4563,
-      "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
-      "updated_at": "2026-11-03T23:48:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -1937,6 +1923,20 @@
       "number": 4533,
       "title": "feat(doe): webApp variant B \u2014 doctrine-stripped chrome, same state, panel record (#4478)",
       "updated_at": "2026-11-03T18:40:48Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bb25df13db",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4563,
+      "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
+      "updated_at": "2026-11-03T23:48:00Z"
     },
     {
       "class": "CANDIDATE",

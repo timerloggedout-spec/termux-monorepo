@@ -1,334 +1,334 @@
 {
- "ab_test": {
-  "anon": "Pages are third-party profiles: moniker-fronted, isolated, NO cross-links between cell A and B (linkage breaks 4n0n isolation and contaminates the test), no personal identifiers",
-  "cell_A": {
-   "copy": "benefit-first: AI team by tonight, $0 card",
-   "cue_code": "W7AZA",
-   "landing_param": "?ch=fb-a",
-   "migoo_code": "uA3QYP",
-   "name": "sizzle"
+  "schema": "referral-feed/1",
+  "generated_at": "2026-11-03T16:40:00Z",
+  "source": "config/referral_programs.json",
+  "items": [
+    {
+      "id": "muse",
+      "name": "Muse (Meta)",
+      "status": "active_codes",
+      "mechanic": "invite_code",
+      "free_no_cc": "Redeem a friend's code within 48 hours of joining; no card, no payment.",
+      "visitor_reward": "1 billion Muse tokens",
+      "fleet_replenishment": "1 billion Muse tokens per redemption; 30 uses left on the live code (firsthand, in-app) = up to 30B tokens",
+      "live_code": "VDP1DW",
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": null,
+      "link": null,
+      "badge_svg": null,
+      "state": "live",
+      "state_detail": "active_codes",
+      "pool_health": {
+        "live": 1,
+        "reserve": 0,
+        "exhausted": 0
+      },
+      "rotation_events": [],
+      "accrued_value": "1B Muse tokens (1 redemption)",
+      "redemptions": 1
+    },
+    {
+      "id": "manus",
+      "name": "Manus AI",
+      "status": "active_link",
+      "mechanic": "invitation_link",
+      "free_no_cc": "Free plan, no card.",
+      "visitor_reward": "Invitation access; refer-a-friend credit amount third-party reported as 500 credits both sides (not firsthand)",
+      "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment, monthly settlement + 30-day hold, $100 PayPal minimum - enrolment remains owner-gated (no invitation held).",
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": "docs/PARTNERS.md section 1 (Manus AI row)",
+      "link": null,
+      "badge_svg": null,
+      "state": "live",
+      "state_detail": "active_link",
+      "pool_health": null,
+      "rotation_events": []
+    },
+    {
+      "id": "cue",
+      "name": "Cue (by Manus)",
+      "status": "active_codes",
+      "mechanic": "invite_code",
+      "free_no_cc": "Early access is free with an invite code; no card.",
+      "visitor_reward": "Early access to Cue (personal agents with own email, phone, wallet, computer)",
+      "fleet_replenishment": "NOT ESTABLISHED (no reward programme found; access holders receive extra codes to share)",
+      "live_code": "W7AZA",
+      "cell_b_code": "7RKCJ",
+      "reserve_codes": 0,
+      "link_ref": null,
+      "link": null,
+      "badge_svg": null,
+      "state": "live",
+      "state_detail": "active_codes",
+      "pool_health": {
+        "live": 2,
+        "reserve": 0,
+        "exhausted": 0
+      },
+      "rotation_events": []
+    },
+    {
+      "id": "migoo",
+      "name": "Migoo",
+      "status": "active_codes",
+      "mechanic": "invite_code",
+      "free_no_cc": "Free entry with invite code; free daily points (amount per third-party directory, not firsthand).",
+      "visitor_reward": "Invite-code signup access",
+      "fleet_replenishment": "NOT ESTABLISHED (no public reward programme found; fleet codes exist firsthand in-app)",
+      "live_code": "uA3QYP",
+      "cell_b_code": "Du7Ehu",
+      "reserve_codes": 1,
+      "link_ref": null,
+      "link": null,
+      "badge_svg": null,
+      "state": "live",
+      "state_detail": "active_codes",
+      "pool_health": {
+        "live": 2,
+        "reserve": 1,
+        "exhausted": 0
+      },
+      "rotation_events": []
+    },
+    {
+      "id": "cellcog",
+      "name": "CellCog",
+      "status": "active_link",
+      "mechanic": "invitation_link",
+      "free_no_cc": "200 free credits to start, no card (public site). The 500-credit invitation bonus requires a first purchase — paid step, listed separately, never counted in the free stack.",
+      "visitor_reward": "500 bonus credits on first purchase (paid step)",
+      "fleet_replenishment": "NOT ESTABLISHED publicly",
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": "docs/PARTNERS.md section 1 (CellCog row)",
+      "link": null,
+      "badge_svg": null,
+      "state": "live",
+      "state_detail": "active_link",
+      "pool_health": null,
+      "rotation_events": []
+    },
+    {
+      "id": "hark",
+      "name": "Hark",
+      "status": "no_public_programme",
+      "mechanic": null,
+      "free_no_cc": null,
+      "visitor_reward": null,
+      "fleet_replenishment": "None - no programme exists (verified 2026-11-03).",
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": null,
+      "link": null,
+      "badge_svg": null,
+      "state": "no_public_programme",
+      "state_detail": "no_public_programme",
+      "pool_health": null,
+      "rotation_events": []
+    },
+    {
+      "id": "unorouter",
+      "name": "UnoRouter",
+      "status": "active_link",
+      "mechanic": "affiliate_link",
+      "free_no_cc": null,
+      "visitor_reward": "Account via affiliate link (terms firsthand from owner screenshots 2026-10-28)",
+      "fleet_replenishment": "10% of referred top-ups as account balance; max recharges Unlimited; NO cash payout — affiliate balance transfers to main balance",
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": "https://unorouter.com/register?aff=kHp6",
+      "link": "https://unorouter.com/register?aff=kHp6",
+      "badge_svg": "https://unorouter.com/api/ops/badge/referral?locale=en&theme=dark&size=md&ref=kHp6",
+      "state": "live",
+      "state_detail": "active_link",
+      "pool_health": null,
+      "rotation_events": []
+    },
+    {
+      "id": "neon",
+      "name": "Neon",
+      "status": "active_link",
+      "mechanic": "referral_link",
+      "free_no_cc": null,
+      "visitor_reward": null,
+      "fleet_replenishment": null,
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": "https://neon.com/signup?refcode=BZL02IH2",
+      "link": "https://neon.com/signup?refcode=BZL02IH2",
+      "badge_svg": null,
+      "state": "not-established",
+      "state_detail": "active_link",
+      "pool_health": null,
+      "rotation_events": []
+    },
+    {
+      "id": "lovable",
+      "name": "Lovable",
+      "status": "application_submitted",
+      "mechanic": "affiliate_link",
+      "free_no_cc": "Application is free via the affiliate platform (Impact); no card or fee stated on the programme page. Commission is paid on paid subscriptions - the visitor side is a paid product, so this lane is a revenue lane, not a free-stack redemption lane.",
+      "visitor_reward": null,
+      "fleet_replenishment": "Up to $100 cash commission per first-time subscriber referred (tiered bonuses above that).",
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": "https://lovable.dev/partners/affiliates",
+      "link": null,
+      "badge_svg": null,
+      "state": "pending",
+      "state_detail": "application_submitted",
+      "pool_health": null,
+      "rotation_events": []
+    },
+    {
+      "id": "replit",
+      "name": "Replit",
+      "status": "active_link",
+      "mechanic": "referral_link",
+      "free_no_cc": "Referral link is generated in-product at replit.com/refer; no card to join. The reward triggers only when the referred user becomes a paying Core customer - a paid step on the visitor side, never counted in the free stack.",
+      "visitor_reward": "$20 in credits when they upgrade to a paid plan",
+      "fleet_replenishment": "$20 in Replit credits per new paying customer referred (both sides); milestones $100 at 5 referrals, $1,000 at 50.",
+      "live_code": null,
+      "cell_b_code": null,
+      "reserve_codes": 0,
+      "link_ref": "https://replit.com/refer",
+      "link": "https://replit.com/refer/timerloggedout",
+      "badge_svg": null,
+      "state": "live",
+      "state_detail": "active_link",
+      "pool_health": null,
+      "rotation_events": []
+    }
+  ],
+  "channels": [
+    {
+      "handle": null,
+      "id": "landing",
+      "name": "GitHub Pages landing + repo (PARTNERS/README)",
+      "role": "owned surface, full stack",
+      "status": "live"
+    },
+    {
+      "handle": null,
+      "id": "youtube",
+      "name": "YouTube",
+      "role": "community post listing lanes (PARTNERS section 2); handle NOT ESTABLISHED",
+      "status": "live_post"
+    },
+    {
+      "handle": null,
+      "id": "facebook",
+      "name": "Facebook",
+      "role": "distribution + A/B Pages (below); managed Pages returned by connector 2026-10-27: 0 (empty result, not proof of none)",
+      "status": "owner_stated_account"
+    },
+    {
+      "handle": null,
+      "id": "x",
+      "name": "X",
+      "role": "distribution; handle NOT ESTABLISHED",
+      "status": "owner_stated"
+    },
+    {
+      "handle": null,
+      "id": "tiktok",
+      "name": "TikTok",
+      "role": "distribution; handle NOT ESTABLISHED",
+      "status": "owner_stated"
+    },
+    {
+      "handle": null,
+      "id": "instagram",
+      "name": "Instagram",
+      "role": "distribution; handle NOT ESTABLISHED",
+      "status": "owner_stated"
+    }
+  ],
+  "ab_test": {
+    "anon": "Pages are third-party profiles: moniker-fronted, isolated, NO cross-links between cell A and B (linkage breaks 4n0n isolation and contaminates the test), no personal identifiers",
+    "cell_A": {
+      "copy": "benefit-first: AI team by tonight, $0 card",
+      "cue_code": "W7AZA",
+      "landing_param": "?ch=fb-a",
+      "migoo_code": "uA3QYP",
+      "name": "sizzle"
+    },
+    "cell_B": {
+      "copy": "numbers-first: 1B tokens, 30 uses, Value Derived board proof",
+      "cue_code": "7RKCJ",
+      "landing_param": "?ch=fb-b",
+      "migoo_code": "Du7Ehu",
+      "name": "steak"
+    },
+    "cell_C": {
+      "codes": "live_code for all programmes (no third code pool exists; attribution via landing param)",
+      "copy": "urgency/mechanic-first: 48h redeem window, code not card",
+      "landing_param": "?ch=fb-c",
+      "name": "mechanic"
+    },
+    "decision_rule": "winner copy becomes default on X/TikTok/Instagram/YouTube after 10 attributed redemptions or 14 days, whichever first",
+    "design": "DoE.MVT 3-cell (owner upgrade from 2-cell A/B, 2026-10-27)",
+    "id": "fb-pages-sizzle-vs-steak-1",
+    "media_rule": "Owner rule 2026-10-27: FB Pages media production = OUTSOURCE (connector or issued request). No fleet quota burn on media generation. Applies to all MVT cells. Current launch posts are text-only (compliant).",
+    "metric": "redemptions per cell (code-level for Cue/Migoo, landing-param for Muse) + landing clicks",
+    "pages": {
+      "fb-a": {
+        "angle": "sizzle",
+        "categories": [
+          "Personal Blog",
+          "Website",
+          "Science, Technology & Engineering"
+        ],
+        "moniker": "account{n0nDreamInProduction}[platform:dream-in-production]",
+        "name": "Dream In Production",
+        "status": "created_verified_connector_2026-10-27"
+      },
+      "fb-b": {
+        "angle": "steak",
+        "categories": [
+          "Computers & Internet Website",
+          "Website",
+          "Personal Blog"
+        ],
+        "moniker": "account{n0nReceiptsCount}[platform:receipts-count]",
+        "name": "Receipts Count",
+        "status": "created_verified_connector_2026-10-27"
+      },
+      "fb-c": {
+        "angle": "mechanic",
+        "categories": [
+          "App Page",
+          "Software Company",
+          "Computers & Internet Website"
+        ],
+        "moniker": "account{n0nCodeNotCard}[platform:code-not-card]",
+        "name": "Code, Not Card",
+        "naming_ruling": "Owner ruling 2026-10-27: the negation in 'Code, Not Card' is a deliberate special test case, OUTSIDE the Positive Performance Psychology Language Framing Structure. A feature, not a violation — do not flag it, do not rename it.",
+        "status": "pending_owner_retry_fb_page_creation_rate_limit_2026-10-27"
+      }
+    },
+    "platform": "Facebook Pages (owner creates 2 Pages; connector has no create command)",
+    "shared": {
+      "migoo_reserve": "TSGDUJ",
+      "muse_code": "VDP1DW (single code, both cells; attribution via landing param only)"
+    },
+    "source": "Page identities assigned by registration-monikers lane, issue #1909",
+    "status": "designed_not_started"
   },
-  "cell_B": {
-   "copy": "numbers-first: 1B tokens, 30 uses, Value Derived board proof",
-   "cue_code": "7RKCJ",
-   "landing_param": "?ch=fb-b",
-   "migoo_code": "Du7Ehu",
-   "name": "steak"
-  },
-  "cell_C": {
-   "codes": "live_code for all programmes (no third code pool exists; attribution via landing param)",
-   "copy": "urgency/mechanic-first: 48h redeem window, code not card",
-   "landing_param": "?ch=fb-c",
-   "name": "mechanic"
-  },
-  "decision_rule": "winner copy becomes default on X/TikTok/Instagram/YouTube after 10 attributed redemptions or 14 days, whichever first",
-  "design": "DoE.MVT 3-cell (owner upgrade from 2-cell A/B, 2026-10-27)",
-  "id": "fb-pages-sizzle-vs-steak-1",
-  "media_rule": "Owner rule 2026-10-27: FB Pages media production = OUTSOURCE (connector or issued request). No fleet quota burn on media generation. Applies to all MVT cells. Current launch posts are text-only (compliant).",
-  "metric": "redemptions per cell (code-level for Cue/Migoo, landing-param for Muse) + landing clicks",
-  "pages": {
-   "fb-a": {
-    "angle": "sizzle",
-    "categories": [
-     "Personal Blog",
-     "Website",
-     "Science, Technology & Engineering"
-    ],
-    "moniker": "account{n0nDreamInProduction}[platform:dream-in-production]",
-    "name": "Dream In Production",
-    "status": "created_verified_connector_2026-10-27"
-   },
-   "fb-b": {
-    "angle": "steak",
-    "categories": [
-     "Computers & Internet Website",
-     "Website",
-     "Personal Blog"
-    ],
-    "moniker": "account{n0nReceiptsCount}[platform:receipts-count]",
-    "name": "Receipts Count",
-    "status": "created_verified_connector_2026-10-27"
-   },
-   "fb-c": {
-    "angle": "mechanic",
-    "categories": [
-     "App Page",
-     "Software Company",
-     "Computers & Internet Website"
-    ],
-    "moniker": "account{n0nCodeNotCard}[platform:code-not-card]",
-    "name": "Code, Not Card",
-    "naming_ruling": "Owner ruling 2026-10-27: the negation in 'Code, Not Card' is a deliberate special test case, OUTSIDE the Positive Performance Psychology Language Framing Structure. A feature, not a violation \u2014 do not flag it, do not rename it.",
-    "status": "pending_owner_retry_fb_page_creation_rate_limit_2026-10-27"
-   }
-  },
-  "platform": "Facebook Pages (owner creates 2 Pages; connector has no create command)",
-  "shared": {
-   "migoo_reserve": "TSGDUJ",
-   "muse_code": "VDP1DW (single code, both cells; attribution via landing param only)"
-  },
-  "source": "Page identities assigned by registration-monikers lane, issue #1909",
-  "status": "designed_not_started"
- },
- "channels": [
-  {
-   "handle": null,
-   "id": "landing",
-   "name": "GitHub Pages landing + repo (PARTNERS/README)",
-   "role": "owned surface, full stack",
-   "status": "live"
-  },
-  {
-   "handle": null,
-   "id": "youtube",
-   "name": "YouTube",
-   "role": "community post listing lanes (PARTNERS section 2); handle NOT ESTABLISHED",
-   "status": "live_post"
-  },
-  {
-   "handle": null,
-   "id": "facebook",
-   "name": "Facebook",
-   "role": "distribution + A/B Pages (below); managed Pages returned by connector 2026-10-27: 0 (empty result, not proof of none)",
-   "status": "owner_stated_account"
-  },
-  {
-   "handle": null,
-   "id": "x",
-   "name": "X",
-   "role": "distribution; handle NOT ESTABLISHED",
-   "status": "owner_stated"
-  },
-  {
-   "handle": null,
-   "id": "tiktok",
-   "name": "TikTok",
-   "role": "distribution; handle NOT ESTABLISHED",
-   "status": "owner_stated"
-  },
-  {
-   "handle": null,
-   "id": "instagram",
-   "name": "Instagram",
-   "role": "distribution; handle NOT ESTABLISHED",
-   "status": "owner_stated"
-  }
- ],
- "generated_at": "2026-11-03T15:57:31Z",
- "items": [
-  {
-   "accrued_value": "1B Muse tokens (1 redemption)",
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": "1 billion Muse tokens per redemption; 30 uses left on the live code (firsthand, in-app) = up to 30B tokens",
-   "free_no_cc": "Redeem a friend's code within 48 hours of joining; no card, no payment.",
-   "id": "muse",
-   "link": null,
-   "link_ref": null,
-   "live_code": "VDP1DW",
-   "mechanic": "invite_code",
-   "name": "Muse (Meta)",
-   "pool_health": {
-    "exhausted": 0,
-    "live": 1,
-    "reserve": 0
-   },
-   "redemptions": 1,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_codes",
-   "status": "active_codes",
-   "visitor_reward": "1 billion Muse tokens"
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment, monthly settlement + 30-day hold, $100 PayPal minimum - enrolment remains owner-gated (no invitation held).",
-   "free_no_cc": "Free plan, no card.",
-   "id": "manus",
-   "link": null,
-   "link_ref": "docs/PARTNERS.md section 1 (Manus AI row)",
-   "live_code": null,
-   "mechanic": "invitation_link",
-   "name": "Manus AI",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_link",
-   "status": "active_link",
-   "visitor_reward": "Invitation access; refer-a-friend credit amount third-party reported as 500 credits both sides (not firsthand)"
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": "7RKCJ",
-   "fleet_replenishment": "NOT ESTABLISHED (no reward programme found; access holders receive extra codes to share)",
-   "free_no_cc": "Early access is free with an invite code; no card.",
-   "id": "cue",
-   "link": null,
-   "link_ref": null,
-   "live_code": "W7AZA",
-   "mechanic": "invite_code",
-   "name": "Cue (by Manus)",
-   "pool_health": {
-    "exhausted": 0,
-    "live": 2,
-    "reserve": 0
-   },
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_codes",
-   "status": "active_codes",
-   "visitor_reward": "Early access to Cue (personal agents with own email, phone, wallet, computer)"
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": "Du7Ehu",
-   "fleet_replenishment": "NOT ESTABLISHED (no public reward programme found; fleet codes exist firsthand in-app)",
-   "free_no_cc": "Free entry with invite code; free daily points (amount per third-party directory, not firsthand).",
-   "id": "migoo",
-   "link": null,
-   "link_ref": null,
-   "live_code": "uA3QYP",
-   "mechanic": "invite_code",
-   "name": "Migoo",
-   "pool_health": {
-    "exhausted": 0,
-    "live": 2,
-    "reserve": 1
-   },
-   "reserve_codes": 1,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_codes",
-   "status": "active_codes",
-   "visitor_reward": "Invite-code signup access"
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": "NOT ESTABLISHED publicly",
-   "free_no_cc": "200 free credits to start, no card (public site). The 500-credit invitation bonus requires a first purchase \u2014 paid step, listed separately, never counted in the free stack.",
-   "id": "cellcog",
-   "link": null,
-   "link_ref": "docs/PARTNERS.md section 1 (CellCog row)",
-   "live_code": null,
-   "mechanic": "invitation_link",
-   "name": "CellCog",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_link",
-   "status": "active_link",
-   "visitor_reward": "500 bonus credits on first purchase (paid step)"
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": "None - no programme exists (verified 2026-11-03).",
-   "free_no_cc": null,
-   "id": "hark",
-   "link": null,
-   "link_ref": null,
-   "live_code": null,
-   "mechanic": null,
-   "name": "Hark",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "no_public_programme",
-   "state_detail": "no_public_programme",
-   "status": "no_public_programme",
-   "visitor_reward": null
-  },
-  {
-   "badge_svg": "https://unorouter.com/api/ops/badge/referral?locale=en&theme=dark&size=md&ref=kHp6",
-   "cell_b_code": null,
-   "fleet_replenishment": "10% of referred top-ups as account balance; max recharges Unlimited; NO cash payout \u2014 affiliate balance transfers to main balance",
-   "free_no_cc": null,
-   "id": "unorouter",
-   "link": "https://unorouter.com/register?aff=kHp6",
-   "link_ref": "https://unorouter.com/register?aff=kHp6",
-   "live_code": null,
-   "mechanic": "affiliate_link",
-   "name": "UnoRouter",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_link",
-   "status": "active_link",
-   "visitor_reward": "Account via affiliate link (terms firsthand from owner screenshots 2026-10-28)"
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": null,
-   "free_no_cc": null,
-   "id": "neon",
-   "link": "https://neon.com/signup?refcode=BZL02IH2",
-   "link_ref": "https://neon.com/signup?refcode=BZL02IH2",
-   "live_code": null,
-   "mechanic": "referral_link",
-   "name": "Neon",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "not-established",
-   "state_detail": "active_link",
-   "status": "active_link",
-   "visitor_reward": null
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": "Up to $100 cash commission per first-time subscriber referred (tiered bonuses above that).",
-   "free_no_cc": "Application is free via the affiliate platform (Impact); no card or fee stated on the programme page. Commission is paid on paid subscriptions - the visitor side is a paid product, so this lane is a revenue lane, not a free-stack redemption lane.",
-   "id": "lovable",
-   "link": null,
-   "link_ref": "https://lovable.dev/partners/affiliates",
-   "live_code": null,
-   "mechanic": "affiliate_link",
-   "name": "Lovable",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "pending",
-   "state_detail": "programme_verified_not_enrolled",
-   "status": "programme_verified_not_enrolled",
-   "visitor_reward": null
-  },
-  {
-   "badge_svg": null,
-   "cell_b_code": null,
-   "fleet_replenishment": "$20 in Replit credits per new paying customer referred (both sides); milestones $100 at 5 referrals, $1,000 at 50.",
-   "free_no_cc": "Referral link is generated in-product at replit.com/refer; no card to join. The reward triggers only when the referred user becomes a paying Core customer - a paid step on the visitor side, never counted in the free stack.",
-   "id": "replit",
-   "link": "https://replit.com/refer/timerloggedout",
-   "link_ref": "https://replit.com/refer",
-   "live_code": null,
-   "mechanic": "referral_link",
-   "name": "Replit",
-   "pool_health": null,
-   "reserve_codes": 0,
-   "rotation_events": [],
-   "state": "live",
-   "state_detail": "active_link",
-   "status": "active_link",
-   "visitor_reward": "$20 in credits when they upgrade to a paid plan"
-  }
- ],
- "rotation_log": [],
- "rules": [
-  "Free / no credit card entry only in the public stack. Paid steps are never required to redeem a listed code.",
-  "Codes are fleet-owned, supplied by the owner firsthand. Third-party codes are never listed.",
-  "One live code is published per programme; the rest of the pool is held in reserve and rotated in when the live code is reported exhausted.",
-  "No personal identifiers in this registry. Account provenance is recorded as 'owner-supplied' only.",
-  "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
- ],
- "schema": "referral-feed/1",
- "source": "config/referral_programs.json"
+  "rules": [
+    "Free / no credit card entry only in the public stack. Paid steps are never required to redeem a listed code.",
+    "Codes are fleet-owned, supplied by the owner firsthand. Third-party codes are never listed.",
+    "One live code is published per programme; the rest of the pool is held in reserve and rotated in when the live code is reported exhausted.",
+    "No personal identifiers in this registry. Account provenance is recorded as 'owner-supplied' only.",
+    "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
+  ],
+  "rotation_log": []
 }

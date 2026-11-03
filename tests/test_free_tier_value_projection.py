@@ -124,6 +124,22 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(data["sessions"], [])
             self.assertEqual(data["source_manifest"]["withheld_count"], 4)
 
+    def test_aggregate_is_summed_exactly_then_rounded_once(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.fixture(root, [{
+                "pricing_id": "price-a", "canonical_model_id": "provider/model-a",
+                "input_usd_per_million": 0.00001, "output_usd_per_million": 0
+            }])
+            rows = [self.row(call_uid=f"tiny-{i}", tokens_in=1, tokens_out=0)
+                    for i in range(6)]
+            data = self.run_projection(root, rows)
+            self.assertEqual(len(data["sessions"]), 6)
+            self.assertEqual(data["sessions"][0]["paid_equivalent_usd"], 0.0)
+            self.assertEqual(data["sessions"][0]["paid_equivalent_usd_exact"], "0.00000000001")
+            self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.00000000006")
+            self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.0000000001)
+
     def test_duplicate_call_identity_is_counted_once(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)

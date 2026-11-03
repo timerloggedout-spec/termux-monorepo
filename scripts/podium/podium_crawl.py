@@ -200,6 +200,30 @@ def parse_winners_feed(raw_html: str, captured_at: str) -> list[dict]:
     return out
 
 
+def parse_live_gallery(raw_html: str, slug: str, captured_at: str) -> list[dict]:
+    """Field gallery = the edition /live page: every project anchor is a
+    gallery submission (MoneyBall C1: entries := gallery submissions)."""
+    url = f"{BASE}/ai-hackathons/{slug}/live"
+    r = receipt(url, captured_at)
+    out: list[dict] = []
+    seen = set()
+    anchors = list(CARD_RE.finditer(raw_html))
+    for idx, a in enumerate(anchors):
+        path, edition, team, project = a.group(1), a.group(2), a.group(3), a.group(4)
+        if edition != slug or path in seen:
+            continue
+        seen.add(path)
+        end = anchors[idx + 1].start() if idx + 1 < len(anchors) else a.start() + 20000
+        block = raw_html[a.start() : end]
+        tm = re.search(r'alt="([^"]{3,120})"', block)
+        out.append({
+            "edition_slug": edition, "team_slug": team, "project_slug": project,
+            "title": html.unescape(tm.group(1)) if tm else None,
+            "url": BASE + path, "receipt": r,
+        })
+    return out
+
+
 # ---------------- main ----------------
 
 def main(argv: list[str]) -> int:
@@ -216,7 +240,7 @@ def main(argv: list[str]) -> int:
         "collector": COLLECTOR,
         "sources": [],
         "editions": [], "prize_tiers": [], "judges": [], "projects": [],
-        "errors": [],
+        "field_projects": [], "errors": [],
     }
 
     def get(url: str) -> str | None:
@@ -244,6 +268,11 @@ def main(argv: list[str]) -> int:
         snapshot["prize_tiers"] += parsed["prize_tiers"]
         snapshot["judges"] += parsed["judges"]
 
+    for slug in [s.strip() for s in args.editions.split(",") if s.strip()]:
+        live = get(f"{BASE}/ai-hackathons/{slug}/live")
+        if live:
+            snapshot["field_projects"] += parse_live_gallery(live, slug, captured)
+
     winners = get(f"{BASE}/apps/recent-winners")
     if winners:
         snapshot["projects"] = parse_winners_feed(winners, captured)
@@ -256,6 +285,7 @@ def main(argv: list[str]) -> int:
             f.write(out + "\n")
         print(f"snapshot: editions={len(snapshot['editions'])} tiers={len(snapshot['prize_tiers'])} "
               f"judges={len(snapshot['judges'])} projects={len(snapshot['projects'])} "
+              f"field={len(snapshot['field_projects'])} "
               f"errors={len(snapshot['errors'])}", file=sys.stderr)
     return 0
 

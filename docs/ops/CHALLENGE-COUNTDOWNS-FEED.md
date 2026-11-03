@@ -38,7 +38,7 @@ forward from a previous feed.
     (tiers published on the official page) or `NOT_ESTABLISHED`.
   - `submission` — the entry's recorded submission, parsed from the
     log's `<!-- submission-data:<id> state=<STATE> at=<instant>
-    ref=<url> -->` line: `{state, at, confirmation_ref}`, or `null`
+    ref=<url> -->` line: `{state, at, ref}`, or `null`
     when the log records no submission for the entry.
 
 ## Honesty rules

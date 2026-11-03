@@ -53,3 +53,6 @@ Producer of record for the program: Swarm Optimizations &
 Implementation Assurance seat, session
 6628d41d-9519-4881-9063-3afe501df815 (claim #4282 comment
 6604280926).
+## Dispositions (owner review gate, 2026-11-03)
+
+- **SR exports — webApp/APK:** absent here; home = the named post-freeze patch **#4673** (it-4 does not absorb it; freeze path protected). Every other row’s home: it-2 memory · it-3 multi-course · it-4 hardening + §1b.

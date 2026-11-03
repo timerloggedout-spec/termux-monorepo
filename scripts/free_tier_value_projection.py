@@ -67,11 +67,21 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
         return None
     if row["outcome_status"] not in ("SUCCESS", "SUCCEEDED"):
         return None
+    if row.get("billing_status") != "VERIFIED_NO_COST":
+        return None
     price = next((p for p in pricing
                   if p.get("canonical_model_id") == row.get("canonical_model_id")
                   and p.get("pricing_id") == row.get("pricing_id")), None)
     if price is None:
         return None
+    input_rate = price.get("input_usd_per_million")
+    output_rate = price.get("output_usd_per_million")
+    if any(isinstance(v, bool) or not isinstance(v, (int, float))
+           or not math.isfinite(v) or v < 0 for v in (input_rate, output_rate)):
+        return None
+    paid_equivalent = (
+        row["tokens_in"] * input_rate + row["tokens_out"] * output_rate
+    ) / 1_000_000
     actual_cost = row.get("cost_usd")
     if actual_cost is not None and (isinstance(actual_cost, bool) or not isinstance(actual_cost, (int, float)) or not math.isfinite(actual_cost) or actual_cost < 0):
         return None
@@ -90,8 +100,9 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
         "publication_status": row["publication_status"],
         "billing_status": row.get("billing_status", "UNKNOWN"),
         "cost_usd": row.get("cost_usd"),
+        "paid_equivalent_usd": round(paid_equivalent, 10),
         "pricing_id": row["pricing_id"],
-        "source_sha": row.get("source_sha"),
+        "source_sha": row.get("source_sha") or row.get("head_sha"),
         "source_run_attempt": f"{row['run_id']}:{row['run_attempt']}",
         "observed_at": row.get("timestamp"),
         "evidence_url": row.get("evidence_url"),
@@ -113,16 +124,17 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
         call_uid = row.get("call_uid")
         identity = (str(run_id), str(attempt), str(call_uid or request_id or ""))
         reason = "missing_call_identity"
-        if call_uid and identity not in seen:
-            session = safe_session(row, pricing)
-            seen.add(identity)
-            if session:
-                sessions.append(session)
-                reason = "published"
-            else:
-                reason = "publication_gates_or_exact_model_pricing_not_established"
-        elif identity in seen:
+        if identity in seen:
             reason = "duplicate_call_identity"
+        else:
+            seen.add(identity)
+            if call_uid:
+                session = safe_session(row, pricing)
+                if session:
+                    sessions.append(session)
+                    reason = "published"
+                else:
+                    reason = "publication_gates_or_exact_model_pricing_or_verified_no_cost_not_established"
         coverage.append({
             "run_id": run_id,
             "run_attempt": attempt,

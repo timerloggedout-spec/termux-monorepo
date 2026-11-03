@@ -157,7 +157,7 @@ class ApiImpactReportTests(unittest.TestCase):
 
     def test_control_characters_in_paths_are_rejected(self):
         with self.assertRaisesRegex(ValueError, "unsafe changed path"):
-            classify_changed_paths(["README.md\\n## injected"])
+            classify_changed_paths(["README.md" + chr(10) + "heading"])
 
     def test_backslash_paths_are_rejected(self):
         with self.assertRaisesRegex(ValueError, "unsafe changed path"):

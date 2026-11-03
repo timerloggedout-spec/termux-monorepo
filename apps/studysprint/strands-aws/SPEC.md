@@ -129,6 +129,10 @@ policy* on any live receipt: a production receipt without
 `execution_class` fails review, not parsing. That split is
 deliberate and stated here so no reader mistakes it for laxness.
 
+Receipts persist through the §6 storage backend under a
+`receipts/` namespace — §6 states the deliberate unification
+(one table for session state *and* receipts) and its reasons.
+
 ## 4 · Deployment — config, secret names, least privilege, guardrails
 
 `schemas/deployment.schema.json` · `deployment/config.example.json`
@@ -288,6 +292,31 @@ package's, not ours: a storage key's first two `/`-separated
 segments become `pk`, the remainder becomes `sk` — point
 operations are single-item calls, and `list` is a native
 partition `Query` with `begins_with`, never a scan.
+
+**One table, deliberately — receipts included.** This section
+unifies what §4 previously kept apart, and says so plainly:
+there is **no separate receipts table**. Receipts persist
+through this same backend, as storage writes under a
+`receipts/` namespace (key `receipts/<request_id>` ⇒ `pk =
+"receipts/<request_id>"`, `sk` = the receipt document name).
+The unification is a decision, with its reasons:
+
+1. The receipt lifecycle is already inside the backend's four
+   operations — `PutItem` when a run issues its receipt,
+   `GetItem` for `GET /receipt/{id}` (§5), `Query` to list a
+   namespace — so a second table would grant a subset of the
+   same actions on a second ARN and buy nothing.
+2. A receipt's integrity never came from table separation: it
+   comes from `receipt_sha256`, the content stamp every receipt
+   carries (§3). Where the bytes sit does not change what
+   proves them.
+3. One table is one IAM surface (§4), one TTL/backup posture,
+   one thing to pre-create — the span's operational shape stays
+   as small as its evidence discipline allows.
+
+§4's former receipts statement was therefore *replaced*, not
+extended: its table is gone from the policy, and this paragraph
+is the record of why.
 
 ## Validation — the acceptance evidence
 

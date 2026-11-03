@@ -237,7 +237,7 @@ jobs:
           COLLECT_OUTCOME: ${{ steps.collect.outcome }}
           CHECKOUT_OUTCOME: ${{ steps.checkout-observer.outcome }}
         run: |
-          python3 scripts/ci/ates_outcome_receipt.py \
+          python3 scripts/ci/ates_outcome_receipt_cli.py \
             --output ates-skip-receipt.json \
             --source-run-id "$SOURCE_RUN_ID" \
             --source-run-attempt "$SOURCE_RUN_ATTEMPT" \

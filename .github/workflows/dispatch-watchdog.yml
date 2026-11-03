@@ -37,7 +37,7 @@ jobs:
         id: swarm
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
         with:
-          client-id: ${{ vars.TERMUX_FLEET_SWARM_CLIENT_ID }}
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
           private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
           repositories: termux-monorepo
       - name: Sweep the dispatch queue
@@ -58,7 +58,10 @@ jobs:
         run: |
           python3 - <<'PY'
           import json, os, urllib.request
-          log = open("/tmp/sweep.log").read()[-3000:]
+          try:
+              log = open("/tmp/sweep.log").read()[-3000:]
+          except OSError:
+              log = "(sweep log absent — the failure happened before or outside the sweep step)"
           body = ("[MUSEai]@{role:{dispatch-watchdog}} SWEEP FAILURE "
                   "DIAGNOSTIC (self-report from the workflow run):\n\n```\n"
                   + log + "\n```")

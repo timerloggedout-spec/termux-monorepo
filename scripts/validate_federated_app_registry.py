@@ -106,6 +106,15 @@ def validate(data: dict[str, Any], schema: dict[str, Any] | None = None) -> list
                 if pair in automation_ids:
                     errors.append(f"duplicate automation numeric id: {pair}")
                 automation_ids.add(pair)
+        installation_id = identity.get("installation_id")
+        if installation_id is not None and (type(installation_id) is not int or installation_id < 1):
+            errors.append(f"{where}.installation_id must be a positive integer or null")
+        for repo_name in identity.get("repository_scope", []):
+            if not isinstance(repo_name, str) or not REPO.fullmatch(repo_name):
+                errors.append(f"{where}.repository_scope entries must be owner/repository")
+        for permission, access in identity.get("permissions", {}).items():
+            if access not in {"read", "write", "none"}:
+                errors.append(f"{where}.permissions.{permission} is invalid")
         for ref in identity.get("evidence_refs", []):
             if not isinstance(ref, str) or not URI.fullmatch(ref):
                 errors.append(f"{where}: evidence reference must be an https URI")

@@ -91,6 +91,13 @@
       "url": "https://en.wikipedia.org/wiki/Group_theory",
       "source_type": "encyclopedia_overview",
       "authority": "Wikipedia (orientation only; verify normative claims against Dummit & Foote / Fraleigh)"
+    },
+    {
+      "source_id": "owner-doctrine-dual-valence-2026-11-03",
+      "title": "Owner doctrine: dual valence (Threat && Opportunity as one target, two readings), 2026-11-03, relayed via main",
+      "url": "docs/proposals/active/notation-sets/DUAL-VALENCE.md",
+      "source_type": "owner_doctrine",
+      "authority": "Owner (fleet doctrine); notation treatment = Linguist lane; evaluative frame = DoE"
     }
   ],
   "concepts": [
@@ -352,6 +359,54 @@
       "source_ids": [
         "dummit-foote-abstract-algebra",
         "fraleigh-abstract-algebra"
+      ]
+    },
+    {
+      "concept_id": "dual_valence.valence_reading",
+      "domain_id": "dual_valence",
+      "preferred_label": "valence reading",
+      "definition": "A stance-indexed state of one entity under one frame: E^T (read as threat) or E^O (read as opportunity). A reading is a property of the pair (entity, frame), never of the entity alone. Default frame = house frame; a foreign frame's reading carries its index: E^T_f.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "dual_valence.dual_valence_target",
+      "domain_id": "dual_valence",
+      "preferred_label": "dual-valence target",
+      "definition": "One entity holding both valence readings simultaneously: E^{T∧O}. The two readings are both true at once and neither discharges the other; the notation keeps both projections available (contrast a single-valence label, which collapses the pair to one reading).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "dual_valence.conversion_operator",
+      "domain_id": "dual_valence",
+      "preferred_label": "valence conversion operator",
+      "definition": "κ_{T→O} : E^T ⇢ E^O — a morphism between valence readings of the SAME entity whose object-component is the identity (id_E): the operator changes the relationship/stance, not the entity. κ is not ≅: it is not invertible in-frame; the reverse conversion is a distinct operator κ' (escalation), never written κ⁻¹. Conversions compose by ∘ (pipelines), associatively — the (G, ∘) frame law. A conversion record MUST name ker κ: what the source reading held that the target reading drops.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "dual_valence.assimilation",
+      "domain_id": "dual_valence",
+      "preferred_label": "assimilation (conversion, competitive instance)",
+      "definition": "The competitive-frame instance of κ_{T→O}: OSINT + recruiting outreach converts a threat-reading into an opportunity-reading of the same entity (assimilation, ¬ %-pay brokerage — κ carries no price term; it is a relational operator, not a transaction).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
       ]
     }
   ],
@@ -1267,6 +1322,188 @@
         "dummit-foote-abstract-algebra",
         "fraleigh-abstract-algebra"
       ]
+    },
+    {
+      "label_id": "lbl-dv-valence_reading-preferred_formal",
+      "concept_id": "dual_valence.valence_reading",
+      "text": "valence reading",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-valence_reading-preferred_plain_language",
+      "concept_id": "dual_valence.valence_reading",
+      "text": "how we currently read them: threat or opportunity",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-valence_reading-symbolic_notation",
+      "concept_id": "dual_valence.valence_reading",
+      "text": "E^T | E^O (frame-indexed: E^T_f)",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-dual_valence_target-preferred_formal",
+      "concept_id": "dual_valence.dual_valence_target",
+      "text": "dual-valence target",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-dual_valence_target-preferred_plain_language",
+      "concept_id": "dual_valence.dual_valence_target",
+      "text": "both a threat and an opportunity at once",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-dual_valence_target-symbolic_notation",
+      "concept_id": "dual_valence.dual_valence_target",
+      "text": "E^{T∧O}",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-conversion_operator-preferred_formal",
+      "concept_id": "dual_valence.conversion_operator",
+      "text": "valence conversion operator",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-conversion_operator-preferred_plain_language",
+      "concept_id": "dual_valence.conversion_operator",
+      "text": "the move that turns the relationship from threat to opportunity",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-conversion_operator-symbolic_notation",
+      "concept_id": "dual_valence.conversion_operator",
+      "text": "κ_{T→O} : E^T ⇢ E^O, object part = id_E",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-conversion_operator-alternative_synonym",
+      "concept_id": "dual_valence.conversion_operator",
+      "text": "conversion",
+      "label_type": "alternative_synonym",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-assimilation-preferred_formal",
+      "concept_id": "dual_valence.assimilation",
+      "text": "assimilation",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-assimilation-preferred_plain_language",
+      "concept_id": "dual_valence.assimilation",
+      "text": "bringing them in: learn them (OSINT), then reach out",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-dv-assimilation-symbolic_notation",
+      "concept_id": "dual_valence.assimilation",
+      "text": "κ_assim = κ_{T→O} via OSINT ∘ outreach",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
     }
   ],
   "mappings": [
@@ -1362,6 +1599,44 @@
         "dummit-foote-abstract-algebra",
         "fraleigh-abstract-algebra",
         "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-dv-conversion-morphism",
+      "source_concept_id": "dual_valence.conversion_operator",
+      "target_concept_id": "category_theory.morphism",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.7,
+      "evidence_note": "κ is a morphism in the category of readings over a fixed object E (slice over E): its object-component is id_E and its work is entirely in the arrow. Composition of conversions = morphism composition.",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-dv-conversion-homomorphism",
+      "source_concept_id": "dual_valence.conversion_operator",
+      "target_concept_id": "group_theory.homomorphism",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.5,
+      "evidence_note": "κ preserves the operator-side structure (pipelines compose: κ2 ∘ κ1 is a conversion) while acting as identity on the object — homomorphism-like on relationships, NOT a map between two entities. ker rule carries over: a lossy conversion names ker κ.",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-dv-target-action",
+      "source_concept_id": "dual_valence.dual_valence_target",
+      "target_concept_id": "group_theory.group_action",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.4,
+      "evidence_note": "A frame acting on an entity's readings resembles a group action G ↷ X: the actor (frame/house) moves the state, the underlying entity is the fixed carrier. Valence readings = points of the acted-on set.",
+      "source_ids": [
+        "owner-doctrine-dual-valence-2026-11-03"
       ]
     }
   ]

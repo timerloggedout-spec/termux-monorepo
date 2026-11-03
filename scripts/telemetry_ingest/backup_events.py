@@ -195,7 +195,7 @@ def main() -> int:
     total = existing + new
     receipt = {
         "schema": SCHEMA,
-        "source_feed": RELAYS_PATH,
+        "source_feed": args.relays_repo_path,
         "source_owner": "tracking lane (backup-state/v1 render source)",
         "records_total": len(total),
         "records_new": len(new),

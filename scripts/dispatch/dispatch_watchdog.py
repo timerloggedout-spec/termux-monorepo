@@ -82,7 +82,10 @@ def load_timeboxes(feed_path: str | None) -> dict:
 
 
 def entry_of(comments: list) -> str | None:
-    """The entry named on the routing receipt (- entry: D1)."""
+    """The entry named on the routing receipt (- entry: D1).
+    Filers sometimes write a descriptive string ("D1 StudySprint
+    — v0.5.0 batch B of 3 ...") — the raw value is returned here;
+    match_entry() resolves it to a timebox key."""
     for c in comments:
         body = c.get("body") or ""
         if RECEIPT_MARKER in body:
@@ -91,6 +94,21 @@ def entry_of(comments: list) -> str | None:
                 if line.startswith("- entry:"):
                     return line.split(":", 1)[1].strip()
     return None
+
+
+def match_entry(raw: str | None, timeboxes: dict) -> str | None:
+    """Resolve a receipt's entry string to a timebox key: exact
+    match, else the longest key the string starts with (the
+    descriptive-filing form), else the first token."""
+    if not raw:
+        return None
+    if raw in timeboxes:
+        return raw
+    for key in sorted(timeboxes, key=len, reverse=True):
+        if raw.startswith(key):
+            return key
+    first = raw.split()[0] if raw.split() else ""
+    return first if first in timeboxes else None
 
 
 def current_tier(timebox: dict | None, now: datetime):
@@ -162,7 +180,8 @@ def classify(issue: dict, comments: list, now: datetime,
     thresholds replace the BASE defaults (owner addendum)."""
     since = queued_since(issue, comments)
     age_min = max(0.0, (now - since).total_seconds() / 60.0)
-    entry = entry_of(comments)
+    raw_entry = entry_of(comments)
+    entry = match_entry(raw_entry, timeboxes or {})
     tb = (timeboxes or {}).get(entry) if entry else None
     tier_index, tier_name = current_tier(tb, now)
     tier_count = len((tb or {}).get("tiers") or []) or 5

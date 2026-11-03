@@ -171,3 +171,27 @@ def test_load_timeboxes_from_feed(tmp_path):
     assert set(boxes) == {"D1"}
     assert load_timeboxes("/nonexistent.json") == {}
     assert load_timeboxes(None) == {}
+
+
+def test_match_entry_resolves_descriptive_filings():
+    from dispatch_watchdog import match_entry
+    boxes = {"D1": {}, "AMD M2": {}, "DOMINO": {}}
+    assert match_entry("D1", boxes) == "D1"
+    assert match_entry(
+        "D1 StudySprint — v0.5.0 batch B of 3 (RFP-D1-6)", boxes) \
+        == "D1"
+    assert match_entry("AMD M2 — something", boxes) == "AMD M2"
+    assert match_entry("Other", boxes) is None
+    assert match_entry(None, boxes) is None
+    # classify() reports the MATCHED key, not the raw string
+    receipt = {"body": "ROUTING RECEIPT\n- entry: D1 StudySprint "
+                       "— batch B",
+               "created_at": "2026-11-03T17:30:00Z"}
+    issue = {"number": 10, "created_at": "2026-11-03T17:30:00Z",
+             "labels": [], "user": {"login": "filer"}}
+    at = datetime(2026, 11, 3, 17, 55, tzinfo=timezone.utc)
+    verdict = classify(issue, [receipt], at,
+                       timeboxes={"D1": D1_TIMEBOX})
+    assert verdict["entry"] == "D1"
+    assert verdict["tier"] == "CUSHION"
+    assert verdict["action"] == "flag"

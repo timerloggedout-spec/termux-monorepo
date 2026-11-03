@@ -155,6 +155,15 @@ def live_foreign_prs(state: str = "open") -> list[dict]:
                     "number": it.get("number"),
                     "repo": full,
                     "state": state,
+                    # The search item carries the PR's merged_at:
+                    # a closed PR that merged is a MERGED tribute,
+                    # not a failure (diagnostics 2026-11-03 -- the
+                    # ledger's closed bucket silently absorbed 20
+                    # merges because this field went unread).
+                    "merged": bool(
+                        (it.get("pull_request") or {}).get("merged_at")),
+                    "merged_at": (it.get("pull_request") or {})
+                    .get("merged_at"),
                     "updated_at": it.get("updated_at"),
                     "tribute": True,
                 }
@@ -217,7 +226,11 @@ def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: l
         entry["repo"] = p.get("repo")
         entry["number"] = p.get("number")
         entry["title"] = p.get("title")
-        entry["state"] = p.get("state")
+        # State of record: open | merged | closed. "merged" is a
+        # first-class state, never folded into "closed".
+        entry["state"] = "merged" if p.get("merged") else p.get("state")
+        if p.get("merged_at"):
+            entry["merged_at"] = p.get("merged_at")
 
     tributes = list(by_pr.values())
     tributes.sort(key=lambda x: x.get("last_ts") or "", reverse=True)
@@ -265,6 +278,8 @@ def main() -> int:
         "outcome_semantics": "actioned/skipped/failed are operational receipt states, not successful tribute counts",
         "foreign_open_prs": foreign,
         "foreign_open_count": len(foreign),
+        "foreign_merged_count": sum(
+            1 for t in tributes if t.get("state") == "merged"),
         "tributes": tributes,
         "tribute_count": len(tributes),
         "issues": {

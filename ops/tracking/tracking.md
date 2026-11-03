@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T09:30:06Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T09:32:27Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T09:30:06Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10496` read_at=`2026-11-03T09:30:06Z`
+Sources: PR feed read_at=`2026-11-03T09:32:26Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10503` read_at=`2026-11-03T09:32:26Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -16,7 +16,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | unknown | NOT_ESTABLISHED | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first · LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4127 `15c68e8c2ee8` 2026-11-03T09:26:07Z | NOT_ESTABLISHED |
+| desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4135 `a20c088f09a3` 2026-11-03T09:32:03Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4068 `a5ab75bf9018` 2026-11-03T04:15:59Z | land/close PR #4055 — doe(apk-1): records 3 — arm-A release identity convergence (431287533) |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 110/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 108/150 (extend ops/tracking/projects.json match rules)

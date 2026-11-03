@@ -6,7 +6,8 @@
 > admission rule) — not a copy of this file.
 
 Single source of truth for every Vercel project deployed from this org's
-repos. A "lane" is one Vercel project — each has exactly one Root Directory,
+repos. Provider alternatives and the staged failover policy are documented in
+[docs/ops/VERCEL-ALTERNATIVES-AND-FAILOVER.md](ops/VERCEL-ALTERNATIVES-AND-FAILOVER.md). A "lane" is one Vercel project — each has exactly one Root Directory,
 so a monorepo with independent deployables needs one lane per deployable,
 not one project reused for everything. Add a row here whenever a new lane
 is created; update it whenever a lane's purpose or Root Directory changes.
@@ -31,6 +32,7 @@ source of truth.
 | **GitHub Pages** | Static publication for the project hub, matrix, and Help-Wanted dashboard | `.github/workflows/tribute-dashboard-deploy.yml` configures `gh-pages` and mirrors static routes into `timerloggedout-spec.github.io`; the `gh-pages` branch exists. The latest run/deployment evidence was not returned in the current RECON pass. | **CONFIGURED / PUBLICATION UNVERIFIED** — workflow and branch exist; verify the published URLs and source SHA before declaring LIVE. Static-only fallback; not a compatible replacement for MCP/application services. |
 | **Render** | Candidate application/service hosting surface | The current deployment-lane SSOT has no Render project or production lane recorded | **AVAILABLE/CANDIDATE, UNPROVEN HERE** — do not describe a Render deployment as live until its project, root, branch, URL, and verification evidence are recorded |
 | **Cloudflare / Cloudflare Pages** | Candidate static/edge publication and front-door/WAF surface | No live Cloudflare project is recorded in the deployment-lane SSOT | **AVAILABLE/CANDIDATE, UNPROVEN HERE** — record the exact product (Pages, Workers, etc.), project, source/root, branch, domain, and verification evidence before promotion |
+| **Netlify** | Static/Jamstack alternative | Current Free plan is credit-based (300 credits/month with hard pause); no repo production lane is recorded. | **CANDIDATE / NOT ENABLED** — not an automatic cure for provider quota exhaustion; see the failover plan |
 | **Hex** | Analytics / Moneyball evidence layer, not primary application hosting | `docs/ops/HEX-MONEYBALL-INTEGRATION.md` and `hex-moneyball-evidence.yml` define the evidence contract | **INTEGRATED EVIDENCE SURFACE** — GitHub Actions remains execution/orchestration; durable audit retention remains outside Hex where required |
 | **GitHub Wiki / DeepWiki / Devin Wiki** | Documentation and discovery surfaces | Root README and `wiki/` publisher define their distinct trust boundaries | **DOCUMENTATION SURFACES** — generated/discovery content never becomes implementation authority without repository evidence |
 
@@ -79,7 +81,7 @@ purpose silently stops serving whatever it served before — that mistake is
 exactly what created the ambiguity this file exists to prevent (see
 `docs/proposals/active/vercel-lane-topology/DEBATE.md` for the incident).
 
-The same identity rule applies to Render, Cloudflare, GitHub Pages, or any
+The same identity rule applies to Render, Cloudflare, Netlify, GitHub Pages, or any
 future hosting provider: one independently deployable artifact gets one
 explicitly named lane and one recorded source boundary.
 

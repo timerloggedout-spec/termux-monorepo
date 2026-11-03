@@ -1,9 +1,9 @@
 {
   "counts": {
-    "open_issues": 462,
-    "open_prs": 205,
+    "open_issues": 464,
+    "open_prs": 206,
     "pr_classes": {
-      "CANDIDATE": 105,
+      "CANDIDATE": 106,
       "EXTRACT": 6,
       "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
@@ -15,7 +15,7 @@
       "unlabelled_numbers": []
     },
     "delphi": {
-      "issues": 88,
+      "issues": 89,
       "unlabelled_numbers": []
     },
     "mesh": {
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 238,
+      "issues": 239,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 203,
+      "prs": 204,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T12:52:32Z",
+  "generated_at": "2026-11-03T13:05:21Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "3220fedcf1"
+    "sha": "b502fb2abb"
   },
   "prs": [
     {
@@ -1019,12 +1019,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "fdb95585b2",
+      "head_sha": "e2df17e4bd",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T12:43:50Z"
+      "updated_at": "2026-11-03T13:00:57Z"
     },
     {
       "class": "CANDIDATE",
@@ -1711,6 +1711,20 @@
       "number": 4148,
       "title": "\u26a1 Bolt: fast-path comment stripping in cadence audit",
       "updated_at": "2026-11-03T10:16:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a70ceb8df8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4292,
+      "title": "docs(studysprint): surface parity matrix [#4282]",
+      "updated_at": "2026-11-03T12:55:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3018,15 +3032,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "failure",
         "smoke": "success"
       },
       "head_sha": "6194623586",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4290,
       "title": "fix(studysprint): RFP-D1-7 award batch \u2014 surfaces 0.1.1 [#4277]",
-      "updated_at": "2026-11-03T12:52:17Z"
+      "updated_at": "2026-11-03T12:53:20Z"
     }
   ],
   "schema": "operator-matrix/v1",

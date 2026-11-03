@@ -3,7 +3,7 @@
  "counts": {
   "expectation_records": 26,
   "positions": 1,
-  "settlements": 0,
+  "settlements": 1,
   "subjects": 26
  },
  "generated_from": {
@@ -72,7 +72,16 @@
   "ledger bookkeeping-event notes (internal routing language) are NOT carried in this feed — only positions/settlements arrays render"
  ],
  "schema": "agentic-gambling-book-feed/v1",
- "settlements": [],
+ "settlements": [
+  {
+   "subject_id": "D1-1-submission-landed",
+   "outcome": "Y",
+   "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
+   "settled_at": "2026-11-03",
+   "source": "record of record: entries confirmation_ref + coordinator record (ops/challenge/coordinator.json @master, stamped PR #4658 merged aea6201d87ed; content of record = corrected version, D1 re-read PASS 2026-11-03 10:56 PT)",
+   "positions_affected": "none open on this subject"
+  }
+ ],
  "subjects": [
   {
    "anchors": {
@@ -86,11 +95,19 @@
    },
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
-    "evidence": [],
+    "evidence": [
+     {
+      "ref": "coordinator record of record @master (PR #4658 merged aea6201d87ed)",
+      "note": "settlement of record: submission SUBMITTED - PUBLISHED 2026-11-03T10:01:00-08:00, confirmation_ref as in settle.value; realized outcome Y."
+     }
+    ],
     "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
+     "value": 1.0,
+     "range": [
+      1,
+      1
+     ],
+     "n_evidence": 1
     },
     "prior": {
      "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
@@ -107,7 +124,7 @@
    "settle": {
     "field": "place earned / official outcome",
     "source": "entries confirmation_ref + coordinator record",
-    "value": null
+    "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
    },
    "subject": "Submission landed by wall {Y/N}",
    "window": {

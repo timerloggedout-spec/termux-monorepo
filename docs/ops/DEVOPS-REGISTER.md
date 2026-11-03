@@ -296,3 +296,85 @@ challenge-countdowns-refresh. Schedule *delivery* is GitHub-side and is not
 explained by this; what the bucket governs is whether their in-job API calls
 succeed once a run starts — the watchdog's silent-403 mode is the failure to
 watch for in these lanes' run logs.
+
+### §5.1 Classification of the 130 — OPTIMIZE / MIGRATE / BOTH / NEITHER (2026-11-03)
+
+Owner question via main, answered jointly with the AppID migration lane
+(coordination of record, 2026-11-03): per consumer class, legitimacy-tested —
+(1) volume maps to real work product? (2) self-triggering cascade share vs
+external demand? (3) re-fetch where a feed/artifact already carries the data?
+Migration never legitimizes waste: amplified classes optimize first.
+
+**Volume evidence:** all-time run totals per workflow (PAT, 2026-11-03).
+Thirteen files read exactly 40,000 = the per-workflow runs `total_count`
+SATURATION cap (recorded as ≥40,000, not counts). Run volume ≠ API calls
+(per-run intensity = MIG-11, open) — volume is the ranking evidence, the
+legitimacy tests are the verdict evidence.
+
+**Corrections folded in (per-file reads beat the §5 index census):**
+`delphi-ledger-feed-collect` already Swarm-mints (it was in §5's MIXED set;
+§5's cross-reference line implying it rides default-only was this seat's
+error, corrected here — credit: migration lane's firsthand read).
+`ml-pr-lane-classify` (OPERATOR PAT primary) and `registration-monikers`
+(multi-bucket ARCHWIZ/OPERATOR/default) are NOT default-only consumers —
+class K below. True default-only population = 128 + these 2 corrected out.
+
+**TOP MOVERS (run volume):** the saturated-13 (≥40,000): action-effectiveness-
+ledger · agent-ecc-tools-ops · agent-throughput-evidence · audit-cycle ·
+cellcog-review · context-relationship-audit · deepseek-ci · deepseek-termux-
+agent · lane-events-recorder · ox-alpha-smoke · peer-review-orchestrator ·
+pr-evidence-evaluation · sweep-accountability — then actions-run-watcher
+37,996 · delphi-gate 32,234 · operator-variable-provision 27,629 ·
+operator-wake 27,586 · delphi-intake 27,549 · phantom-secrets-audit 26,057 ·
+research-intake 20,659 · delphi-signal-bridge 16,918 · recon-intel-discovery
+16,036 · pr-change-effectiveness-ledger 13,938 · pr-scope-guard 12,811 ·
+merge-promotion-queue-v3 6,537. The head of the table is the fleet's own
+meta-machinery — recorders, Delphi, operator machinery — not external-demand
+surfaces.
+
+| Class | n | Verdict | Basis (legitimacy tests) |
+|---|---|---|---|
+| A — per-run recorders / mesh-records-itself | 19 | **OPTIMIZE FIRST; migration refused until bounded** | Volume ≈ fleet run volume itself: they fire BECAUSE other workflows ran (cascade ~total). Products = ledgers/evidence; some have named consumers (lane-events → Neon), several are consumer-thin mills (migration lane: migrate only with a named consumer). Fix = event-payload consumption, sampling, single-writer batching (telemetry-ingest pattern). A bigger bucket here legitimizes amplification. |
+| B — dispatch / promotion / operator machinery | 13 | **BOTH** | Real work product (fleet throughput). OPTIMIZE leg: THREE merge-promotion generations coexist (v1+v2+v3) — retire v1/v2 (archive rules) and consolidate; operator-wake/provision (27.6k runs each) get a per-run call audit before any move. MIGRATE leg: v3 + dispatch family = Swarm fit, READY (SEC-03 pair exists); operator-matrix-generate + quota-allocation-planner = Publisher fit, DESIGN-GATED. dispatch-watchdog = the §5 worked example, already migrated — its residual line-57 default step is its only default-bucket leg left. |
+| C — Delphi family | 7 | **BOTH, split by leg** | Product = DoE experiment/ledger records (real). participant-cycle = self-triggering BY DESIGN (cycle bounds = the optimization); gate (32k) = external PR/check demand → Gate fit is identity-graduation only (MIG-09), PROVISIONING-GATED and narrow; collector legs split to Collector reads. |
+| D — PR review / evidence machinery | 8 | **BOTH** | External demand (real PRs) ∧ starved in bursts. MIGRATE (provisioning-gated): review-shaped writes → Reviewer (orchestrator's EVIDENCE leg only per MIG-08; operator steps stay identity-bound); pr-scope-guard = pure check poster → Gate. OPTIMIZE leg: evidence re-fetch — reviewer-metrics feed already carries much of it. peer-review-orchestrator is a top mover (≥40k). |
+| E — feed collectors / pollers / snapshots | 20 | **OPTIMIZE primary; BOTH for the priority wave** | Products = feeds consumed fleet-wide (real), but the class disease is (3): re-fetching what landed feeds already carry + cadence excess. Priority wave (§2-critical ∩ clean fit, agreed with migration lane): telemetry-ingest (Collector reads / Publisher write-leg split) · dispatch-tree-feed-collect · surface-feeds-collect · github-telemetry-snapshot · observer-poller-scheduled (cadence frozen in the same PR) · challenge-countdowns-refresh. repository-observatory's /user legs = NOT-MIGRATABLE (MIG-01) — stays. recon-intel-discovery (16k) = class top mover: cadence/dedup first. |
+| F — provider invocation | 8 | **NEITHER (bucket)** | Providers key on requester identity (migration lane) — a bucket move does not apply; their GitHub-API draw is incidental to provider spend. Exception flagged: ox-alpha-smoke ≥40,000 runs for a SMOKE = cadence amplification suspect → OPTIMIZE its cadence. deepseek-ci / deepseek-termux-agent (≥40k each) = per-PR provider CI; legitimacy rides the provider lanes' own accounting. |
+| G — intakes / issue-admin services | 14 | **Split: MIGRATE (provisioning-gated) for the 403-evidenced writer; OPTIMIZE for the firehoses; NEITHER for the tail** | issue-lifecycle-triage = 403-evidenced (installation-403 failures, lane-log-verified) → Lifecycle fit, priority wave. research-intake (20,659) + phantom-secrets-audit (26,057) = volumes no intake/audit semantics justify → trigger-breadth/cadence OPTIMIZE first. hark-enqueue + tribute-followup/rerequest → Lifecycle fit when provisioned. apk-xref-intake = RE lane's belt-swap call, not this classification's. Episodic probes/admin = NEITHER. |
+| H — build / image / deploy incidental | 15 | **NEITHER** | REST draw ≈ 0 (checkout + build + artifact mechanics) or episodic by design. apk-release family: migration already QUEUED on its own track (ApkRelease App, owner GO of record) — not counted here. tribute-dashboard-deploy's problem is queue congestion (§4), not the bucket. |
+| I — context-relationship / backfill family | 5 | **BOTH, Stewardship-gated** | OPTIMIZE primary = Stewardship #3812's fresh-output isolation (ends the re-fetch); write legs = Publisher fit (DESIGN-GATED) and land with step 4, where this seat's day-2 ops begin. (context-relationship-audit sits in A by behavior.) |
+| J — dormant / refused | 2 | **NEITHER now** | agent-continuous-ops: 622 lifetime, 0 runs/24 h, dormant since 2026-10-23 — REFUSE migration until rate-bounded by design (coordinated ruling); reactivation is Stewardship's call (its dormancy starves ATES receipts). actions-queue-reaper: ∅ cron (config gap, §2) — Swarm fit IF re-armed. |
+| K — corrected OUT of default-only | 2 | **NEITHER (not consumers of this bucket)** | ml-pr-lane-classify = OPERATOR PAT primary; registration-monikers = multi-bucket. Index-census artifacts; per-file truth governs. |
+| L — DoE evaluation family | 9 | **BOTH-lite** | Products = experiment records (real, DoE-owned). Dispatch legs (live3-autodispatch, phrase-dispatch) = Swarm fit READY when DoE wants them; audit/eval legs = OPTIMIZE cadence (they are measurement of measurement — class-A discipline at class-L scale). |
+| M — Tribute ops family | 8 | **Split: MIGRATE-gated for two; OPTIMIZE for the chain** | tribute-diff-gate → Gate fit (provisioning-gated, pure check class); tribute-status-refresh → Publisher fit (design-gated); execute/scout/followup-chain volume = self-triggering campaign chains → OPTIMIZE chain amplification first. |
+
+**Readiness tiers (migration lane feasibility, verified names-only):**
+SEC-03 Actions pairs exist ONLY for {Collector · Swarm · CrossReference}
+⇒ Swarm/Collector fits = READY · Gate/Reviewer/Lifecycle fits =
+PROVISIONING-GATED (owner sealed-box act; AppID lane prepares) · Publisher
+fits = DESIGN-GATED (no Actions pair by design, MIG-07; in-Actions mint
+changes the publish-identity model). Permission bounds applied per manifest:
+Gate = checks-write only · Lifecycle = issues-write only · Reviewer =
+review-shaped writes only · Collector = read-only (any write step = SPLIT
+migration) · Swarm = dispatch/actor shapes only, not a catch-all writer ·
+new App = ∅ (every starved class fits an existing specialist).
+
+**Identity warning (migration lane, carried into every MIGRATE verdict):**
+GITHUB_TOKEN-authored events never trigger downstream workflows; App-authored
+events DO. Migration can switch ON inert workflow_run chains — every migration
+PR must name the chains it activates.
+
+Class membership (partition of the §5 130, verified complete by construction):
+A: action-effectiveness-ledger · agent-ecc-tools-ops · agent-throughput-evidence · audit-cycle · context-relationship-audit · lane-events-recorder · pr-change-effectiveness-ledger · sweep-accountability · actions-run-watcher · cadence-lead-lag · cellcog-engineering-health · commit-diff-watcher · referral-pool-watch · ace-watch · agent-runtime-stall-watch · agentic-repository-operations-report.lock · cadence-provider-onboarding · challenge-osint-watch · g07-profile-watch
+B: operator-variable-provision · operator-wake · merge-promotion-queue · merge-promotion-queue-v2 · merge-promotion-queue-v3 · merge-promotion-steward · project-task-dispatch · dependency-phase-dispatch · dependency-phase-evaluate · dependency-phase-project-sync · operator-matrix-generate · quota-allocation-planner · dispatch-watchdog
+C: delphi-gate · delphi-generate · delphi-intake · delphi-participant-cycle · delphi-signal · delphi-signal-bridge · delphi-tribute-ingest
+D: peer-review-orchestrator · pr-evidence-evaluation · cellcog-review · pr-scope-guard · gemini-review · gemini-triage · gemini-after-peers · comment-quality-sweep
+E: telemetry-ingest · dispatch-tree-feed-collect · surface-feeds-collect · observer-poller-scheduled · shared-observer-poller · github-telemetry-snapshot · integration-mesh-poll · recon-intel-discovery · recon-intel-reconcile · repository-observatory · rindig-provenance-audit · rindig-source-inventory · oracle-panel-feed-collect · proposals-feed-collect · linguist-panel-feed-collect · challenge-countdowns-feed-collect · challenge-countdowns-refresh · fork-sync-audit · provider-recon-compound · ops-lane-matrix-sweep
+F: deepseek-ci · deepseek-termux-agent · deepseek-secret-probe · gemini-invoke · provider-batch · ox-alpha-smoke · deepcli-agent-bridge · termux-bridge-connect
+G: issue-lifecycle-triage · research-intake · target-intake · issue-observatory · phantom-secrets-audit · credential-family-probe · re-taxonomy-intake · hark-enqueue · tribute-followup · tribute-rerequest · agent-feedback-linear-sync · platform201-support-response-check · apk-xref-intake · referral-rotation
+H: cert-coderoad-image · readme-extractor-image · apk-release · apk-release-finalize · tribute-dashboard-deploy · publish-wiki · vercel-quota-probe · tailscale-bridge-probe · v2-gitlab-probe · gitlab-governed-reconciliation · pin-cor-ae-submodules · ops-gitlink-lego-fork · she-skill-clobber-heal · docs-branch-index · automation-docs-continuous-refresh
+I: context-relationship-backfill · context-relationship-backfill-watcher · context-relationship-publish · context-relationship-reconcile · reconcile-repository-surface
+J: agent-continuous-ops · actions-queue-reaper
+K: ml-pr-lane-classify · registration-monikers
+L: doe-cb1-acceptance · doe-live1-audit · doe-live3-autodispatch · doe-nc1-eval · doe-phrase-dispatch · continuous-evaluation · historical-evaluation-correlation · team-mvt · refTemplates-eval
+M: tribute-execute · tribute-scout · tribute-status-refresh · tribute-system1 · tribute-participation · tribute-llm-assist · tribute-diff-gate · tribute-audit-staleness

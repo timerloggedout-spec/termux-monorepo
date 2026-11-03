@@ -111,6 +111,12 @@ export, an Obsidian vault surface, and a ts-fsrs seed for the UX
 layer. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.3.0
 — new v0.3.0 demo:
-Demo video (2:33, public): https://www.youtube.com/watch?v=AKCqOCXAFu0
+**Update — Nov 3, 2026: StudySprint v0.4.0 is out.** The reading
+pipeline (finder → term bank), multi-course planning with exam
+countdowns and .ics export, and memory methods — Temple Memory,
+Pomodoro pacing, and reminders that carry the memory cue. Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.4.0
+— new v0.4.0 demo:
+Demo video (2:54, public): https://www.youtube.com/watch?v=WK9LMwpvHUk
 Demo: under 3 minutes, scripted in `demo-script.md`, runnable as
 `demo.py`, receipts in `evidence/demo-run.json`.

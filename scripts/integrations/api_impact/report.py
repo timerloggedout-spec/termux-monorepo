@@ -37,7 +37,7 @@ PROHIBITED_KEYS = (
 
 
 def _safe_path(value: Any) -> str:
-    if not isinstance(value, str) or not value or "\\" in value or "\x00" in value:
+    if not isinstance(value, str) or not value or "\\" in value or "\x00" in value or any(ord(ch) < 32 or ord(ch) == 127 for ch in value):
         raise ValueError("unsafe changed path")
     if any(part in {"", ".", ".."} for part in value.split("/")):
         raise ValueError("unsafe changed path")

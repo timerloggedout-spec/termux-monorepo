@@ -220,6 +220,7 @@
   ],
   "acknowledged_unmapped_quota_providers": {
     "github": "GitHub platform quota records (ci/ops lanes plus the github.copilot.free model record) are platform quotas, not a catalog provider family; copilot is onboarded separately as kind=review.",
-    "meta": "Meta records (meta.llama_api RETIRED 2026-07-06, do-not-route; meta.model_api + meta.muse_code registered 2026-10-30, PR #2641) have no provisioned keys (MODEL_API_KEY / META_API_KEY are owner provisioning items) and no catalog provider family; acknowledged unmapped until keys land, then onboard as its own family."
+    "meta": "Meta records (meta.llama_api RETIRED 2026-07-06, do-not-route; meta.model_api + meta.muse_code registered 2026-10-30, PR #2641) have no provisioned keys (MODEL_API_KEY / META_API_KEY are owner provisioning items) and no catalog provider family; acknowledged unmapped until keys land, then onboard as its own family.",
+    "claude": "seat-runtime record (claude.seat_runtime) = external agent seat runtime, not a fleet-managed model pool \u2014 acknowledged unmapped per quota-specialist ruling 2026-11-03 (their PR #4577 records the same ruling in ops/quota/registry.json)"
   }
 }

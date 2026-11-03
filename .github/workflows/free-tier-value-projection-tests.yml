@@ -33,6 +33,6 @@ jobs:
           scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
           if not scripts:
               raise SystemExit('no inline dashboard script found')
-          Path('/tmp/free-tier-value-board.js').write_text('\\n'.join(scripts), encoding='utf-8')
+          Path('/tmp/free-tier-value-board.js').write_text('\n'.join(scripts), encoding='utf-8')
           PY
           node --check /tmp/free-tier-value-board.js

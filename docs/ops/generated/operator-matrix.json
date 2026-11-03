@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 471,
-    "open_prs": 204,
+    "open_prs": 205,
     "pr_classes": {
       "CANDIDATE": 105,
-      "EXTRACT": 6,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 93,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 202,
+      "prs": 203,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T13:50:23Z",
+  "generated_at": "2026-11-03T13:58:45Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "4bdbe74ac8"
+    "sha": "74ac8f350c"
   },
   "prs": [
     {
@@ -236,6 +236,20 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "cd1c777925",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4333,
+      "title": "RFP-D1-8 set 2: scheduler integrity + web contract fixes \u2014 surfaces 0.1.2 [#4330]",
+      "updated_at": "2026-11-03T13:58:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -2897,7 +2911,7 @@
       },
       "head_sha": "86d7b7ba62",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T13:49:40Z"
@@ -2906,15 +2920,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "1340ec7a5f",
+      "head_sha": "20aa5b259f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-02T14:00:14Z"
+      "updated_at": "2026-11-03T13:58:21Z"
     },
     {
       "class": "NEED_EVIDENCE",

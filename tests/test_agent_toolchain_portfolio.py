@@ -46,7 +46,7 @@ class AgentToolchainPortfolioTests(unittest.TestCase):
 
     def test_credential_shaped_value_fails(self):
         data = json.loads(json.dumps(BASE))
-        data["integrations"][0]["next_step"] = "sk-abcdefghijklmnopqrstuvwxyz0123456789"
+        data["integrations"][0]["next_step"] = "sk-" + ("a" * 36)
         self.assertTrue(any("credential-shaped" in x for x in validate_data(json.dumps(data), MATRIX)))
 
     def test_registry_boolean_shortcut_fails(self):

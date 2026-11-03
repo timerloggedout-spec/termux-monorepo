@@ -8,6 +8,8 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.
 - [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.
+- [API Impact Review](API-IMPACT-REVIEW.md) — P0 PR analysis lane, assistant workflow, report states, and promotion criteria.
+- [Mapper input schema](schemas/api-impact-mapper-input.schema.json) and [normalized report schema](schemas/api-impact-report.schema.json).
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
 
 ## Authority model

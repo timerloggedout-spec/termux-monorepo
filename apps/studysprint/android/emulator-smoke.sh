@@ -42,12 +42,25 @@ cleanup() {
   # screen recording and pull it BEFORE the emulator dies, on
   # every exit path -- verdict exits included (the trap fires on
   # EXIT). SIGINT makes screenrecord finalize the mp4 cleanly.
+  # Attempt 3 landed NO mp4 with every step /dev/null'd -- the
+  # mechanics now log into the artifact (record.log) and the pull
+  # retries once, so a silent no-video run cannot recur.
   if [ "$REC_STARTED" = "1" ]; then
-    "$ADB" -s emulator-5554 shell pkill -2 screenrecord \
-      >/dev/null 2>&1
-    sleep 2
-    "$ADB" -s emulator-5554 pull /sdcard/smoke.mp4 \
-      "$OUT/smoke.mp4" >/dev/null 2>&1 || true
+    {
+      echo "-- cleanup: stop + pull --"
+      "$ADB" -s emulator-5554 shell pkill -2 screenrecord 2>&1
+      sleep 3
+      "$ADB" -s emulator-5554 shell ls -la /sdcard/smoke.mp4 2>&1
+      "$ADB" -s emulator-5554 pull /sdcard/smoke.mp4 \
+        "$OUT/smoke.mp4" 2>&1
+      if [ ! -s "$OUT/smoke.mp4" ]; then
+        echo "-- pull retry after settle --"
+        sleep 3
+        "$ADB" -s emulator-5554 pull /sdcard/smoke.mp4 \
+          "$OUT/smoke.mp4" 2>&1
+      fi
+      ls -la "$OUT/smoke.mp4" 2>&1
+    } >> "$OUT/record.log" 2>&1 || true
   fi
   "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1
   kill $EMU_PID >/dev/null 2>&1
@@ -70,9 +83,18 @@ echo "== record (video evidence, #4420) =="
 # install + launch + per-view walk fits well inside it. If a
 # future gate outgrows the cap, the stills remain the evidence
 # of record and the truncated video says so by its length.
+# The screenrecord stderr goes to a device-side file (never
+# /dev/null) and the start is verified by the file's presence,
+# both logged to record.log in the artifact.
 "$ADB" -s emulator-5554 shell \
-  "screenrecord --time-limit 175 /sdcard/smoke.mp4 >/dev/null 2>&1 &" \
+  "screenrecord --time-limit 175 /sdcard/smoke.mp4 >/sdcard/screenrecord.log 2>&1 &" \
   >/dev/null 2>&1 && REC_STARTED=1 || true
+{
+  echo "-- record start (REC_STARTED=$REC_STARTED) --"
+  sleep 1
+  "$ADB" -s emulator-5554 shell ls -la /sdcard/smoke.mp4 2>&1
+  "$ADB" -s emulator-5554 shell cat /sdcard/screenrecord.log 2>&1
+} > "$OUT/record.log" 2>&1 || true
 
 echo "== install $APK =="
 timeout 300 "$ADB" -s emulator-5554 install -r "$APK" | tee "$OUT/install.log"
@@ -126,11 +148,20 @@ echo "== assertions =="
 ALL="$OUT/all-text.txt"
 cat "$OUT"/*.xml 2>/dev/null | tr '<' '\n' | grep -o 'text="[^"]*"' \
   > "$ALL" || true
-if grep -q "Loading your course" "$ALL"; then
+# Signals are checked on the JOINED text: uiautomator splits the
+# footer into sibling nodes (attempt 3: "surface version " and
+# "0.1.3" arrived as separate text= values), so a line-wise grep
+# can never match the version signal even when the app renders
+# fully. Joining the node values with spaces restores the
+# sentence the user sees.
+JOINED="$OUT/all-joined.txt"
+sed 's/^text="//; s/"$//' "$ALL" | tr '\n' ' ' > "$JOINED" || true
+if grep -q "Loading your course" "$JOINED"; then
   verdict "FAIL: state never loaded (#4276 signature present)"
   exit 1
 fi
-if ! grep -Eq 'surface version [0-9]+\.[0-9]+\.[0-9]+' "$ALL"; then
+if ! grep -Eq 'surface version[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+' \
+    "$JOINED"; then
   verdict "FAIL: footer version blank (#4276 signature)"
   exit 1
 fi

@@ -5,9 +5,10 @@ Entries are the GitHub Release notes, verbatim.
 
 ## [0.5.0] — 2026-11-03
 
-Fifth versioned state: MINOR feature batch (v0.5.0 batch, parts 1+2 of 3) — the calendar core
+Fifth versioned state: MINOR feature batch (v0.5.0 batch, parts 1+2+3 of 3) — the calendar core
 (build A, issue #4157) + maps and temple routes (build B,
-issue #4158) of RFP-D1-6.
+issue #4158) + state recall and hardening (build C, issue
+#4159) of RFP-D1-6.
 
 Provider credit: command-dispatch (Swarm Optimizations &
 Implementation Assurance seat), session
@@ -39,6 +40,19 @@ Implementation Assurance seat), session
   recall, not understanding).
 - Tests: `tests/test_study_geo.py` covers every public function
   in `study_geo.py`.
+- State recall + hardening (`study_hardening.py`), RFP-D1-6
+  item 6 as its own mode: varied-context practice rotation +
+  the Smith (1979) mental-reinstatement script (encoding
+  specificity; context effect modest, meta d~0.28 — NOT
+  single-room matching), and adaptive hardening as graduated
+  stress-inoculation drills (SIT phases 1-3) — OPT-IN ONLY, off
+  by default, the flag in every receipt; NO-GUILT by
+  construction (no score/penalty fields exist; pressure never
+  carries penalties). Ceiling: performance under
+  stress/anxiety, not recall gains.
+- Tests: `tests/test_study_hardening.py` covers every public
+  function in `study_hardening.py`, incl. the opt-in refusal and
+  the no-guilt field ban.
 
 ## [0.4.0] — 2026-11-03
 

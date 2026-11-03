@@ -26,11 +26,23 @@ on:
         type: string
       solution_repo:
         description: "Solution repo name under timerloggedout-spec/, e.g. fcc-celestial-bodies-database"
-        required: true
+        required: false
+        default: ""
         type: string
       stage_cmd:
         description: "Command staging the solution (executed inside the pg container)"
-        required: true
+        required: false
+        default: ""
+        type: string
+      manifest:
+        description: "Workshop mode: monorepo path of the step manifest (driver v4 loop replay)"
+        required: false
+        default: ""
+        type: string
+      needs_pg:
+        description: "Whether the run needs the postgres container"
+        required: false
+        default: "true"
         type: string
       course_ref:
         description: "Course repo ref pinned by tutorial.json (config.repo.branch)"
@@ -73,6 +85,7 @@ jobs:
           path: project
 
       - name: Check out verified solution repo
+        if: inputs.solution_repo != ''
         uses: actions/checkout@v4
         with:
           repository: timerloggedout-spec/${{ inputs.solution_repo }}
@@ -104,6 +117,7 @@ jobs:
             -f stamp="$STAMP" -f phase=dispatch
 
       - name: Pull prebuilt CodeRoad image (postgres side)
+        if: inputs.needs_pg == 'true'
         timeout-minutes: 15
         run: |
           mkdir -p evidence && chmod 777 evidence
@@ -174,11 +188,19 @@ jobs:
           STAGE_CMD: ${{ inputs.stage_cmd }}
           COURSE_REPO: ${{ inputs.course_repo }}
           COURSE_REF: ${{ inputs.course_ref }}
+          NEEDS_PG: ${{ inputs.needs_pg == 'true' && '1' || '0' }}
+          MANIFEST_SRC: ${{ inputs.manifest }}
+          RESULT_WAIT_LOOPS: ${{ inputs.manifest != '' && '620' || '72' }}
           CODEROAD_WEBHOOK_TOKEN: ${{ secrets.CODEROAD_WEBHOOK_TOKEN }}
           CODEROAD_TUTORIAL_URL: https://raw.githubusercontent.com/freeCodeCamp/${{ inputs.course_repo }}/main/tutorial.json
           CODEROAD_DISABLE_RUN_ON_SAVE: "true"
           CODEROAD_DRIVER_EVIDENCE: ${{ github.workspace }}/evidence
         run: |
+          if [ -n "$MANIFEST_SRC" ]; then
+            cp "mono/$MANIFEST_SRC" evidence/manifest.json
+            export CODEROAD_MANIFEST_PATH="$GITHUB_WORKSPACE/evidence/manifest.json"
+            echo "workshop mode: manifest $MANIFEST_SRC"
+          fi
           if [ -n "$CODEROAD_WEBHOOK_TOKEN" ]; then
             echo "TOKEN_PRESENT=true" >> "$GITHUB_ENV"
           else
@@ -233,7 +255,8 @@ jobs:
               f"--- pg-container.log ---\n{tail('evidence/pg-container.log', 35)}\n\n"
               f"--- coderoad-state.txt ---\n{tail('evidence/coderoad-state.txt', 80)}\n\n"
               f"--- tap-cr-stderr.txt ---\n{tail('evidence/tap-cr-stderr.txt', 30)}\n\n"
-              f"--- tap-cr-stdout.txt (tail) ---\n{tail('evidence/tap-cr-stdout.txt', 12)}"
+              f"--- tap-cr-stdout.txt (tail) ---\n{tail('evidence/tap-cr-stdout.txt', 12)}\n\n"
+              f"--- history-tail.txt ---\n{tail('evidence/history-tail.txt', 25)}"
           )
           req = urllib.request.Request(
               "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/506/comments",
@@ -256,12 +279,22 @@ jobs:
           python3 - <<'PYEOF'
           import json, os, urllib.request
           ok = os.environ.get("CR_OK") == "true"
+          steps, failures = 1, (0 if ok else 1)
+          model = "coderoad (Actions host VS Code; container postgres; headless driver)"
+          try:
+              res = json.load(open("evidence/RESULT.json"))
+              if res.get("mode") == "workshop-loop":
+                  steps = res.get("steps_completed", 0)
+                  failures = len(res.get("failures", []))
+                  model = "coderoad (Actions host VS Code; workshop loop driver v4)"
+          except Exception:
+              pass
           verdict = {
               "unit": f"{os.environ['UNIT']}-coderoad",
               "ok": ok,
-              "steps": 1,
-              "failures": 0 if ok else 1,
-              "model": "coderoad (Actions host VS Code; container postgres; headless driver)",
+              "steps": steps,
+              "failures": failures,
+              "model": model,
               "missing": {},
           }
           body = (

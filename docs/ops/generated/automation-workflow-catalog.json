@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ff0cd4f6cc2f81eb96a1c4f60057219f254c4cbd47ce01b18504950e8b8d4227",
-  "workflow_count": 281,
+  "source_fingerprint": "a70b9008e8fea993124b5226d2c7246c33b0321cd808a94e23c1fc3c8fdaafe2",
+  "workflow_count": 282,
   "workflows": [
     {
       "action_pins": [],
@@ -2019,6 +2019,26 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: egm-review-dispatch cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake",
+        "sweep"
+      ],
+      "name": "egm-review-dispatch",
+      "path": ".github/workflows/egm-review-dispatch.yml",
+      "schedules": [
+        "*/30 * * * *"
+      ],
+      "triggers": [
+        "issues",
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {

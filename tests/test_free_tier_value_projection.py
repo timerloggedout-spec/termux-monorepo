@@ -157,6 +157,17 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.00000000006")
             self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.0000000001)
 
+    def test_half_quantum_rounds_away_from_zero(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.fixture(root, [{
+                "pricing_id": "price-a", "canonical_model_id": "provider/model-a",
+                "input_usd_per_million": 0.00005, "output_usd_per_million": 0
+            }])
+            data = self.run_projection(root, [self.row(tokens_in=1, tokens_out=0)])
+            self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.00000000005")
+            self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.0000000001)
+
     def test_duplicate_call_identity_is_counted_once(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)

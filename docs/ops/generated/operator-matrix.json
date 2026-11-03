@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 519,
-    "open_prs": 253,
+    "open_prs": 258,
     "pr_classes": {
-      "CANDIDATE": 115,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 128,
+      "CANDIDATE": 121,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 126,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 44,
-      "prs": 251,
+      "prs": 256,
       "unlabelled_numbers": [
         308,
         388,
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T21:04:12Z",
+  "generated_at": "2026-11-03T22:04:53Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "db712a07ee"
+    "sha": "8fa6f7474f"
   },
   "prs": [
     {
@@ -294,6 +294,20 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8bc1f98ff3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4621,
+      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
+      "updated_at": "2026-11-03T21:36:33Z"
     },
     {
       "class": "CANDIDATE",
@@ -1077,6 +1091,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "d73646c3cd",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T21:58:21Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "fd02b2c8e0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1679,6 +1707,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "1f0e963aa5",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4089,
+      "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
+      "updated_at": "2026-11-03T21:25:03Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b0b3fb4674",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1880,7 +1922,7 @@
       "mergeable_state": "unknown",
       "number": 4573,
       "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
-      "updated_at": "2026-11-03T20:37:29Z"
+      "updated_at": "2026-11-03T21:16:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -1909,6 +1951,62 @@
       "number": 4578,
       "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
       "updated_at": "2026-11-03T20:13:50Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173ad9eaba",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4615,
+      "title": "fix(ci): harden dangling-reference detection on current master",
+      "updated_at": "2026-11-03T21:20:15Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "062ba02ebd",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4617,
+      "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
+      "updated_at": "2026-11-03T21:24:25Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7cc7a79979",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4622,
+      "title": "docs(ops): queue dependency tiers \u2014 drain-order evidence + tier model + enforcement contract",
+      "updated_at": "2026-11-03T21:40:06Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3cac21809c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-03T21:44:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2351,20 +2449,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "5607284d96",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2182,
-      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-10-30T23:34:22Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "e9efa35753",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2421,12 +2505,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e1d36f6c2f",
+      "head_sha": "accd359670",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-10-31T05:01:05Z"
+      "updated_at": "2026-11-03T21:50:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2446,29 +2530,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "in_progress",
         "smoke": "queued"
       },
-      "head_sha": "2fc4ca76b4",
+      "head_sha": "defb777172",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T20:45:15Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "c3a0af396c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T20:37:37Z"
+      "updated_at": "2026-11-03T21:34:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3107,12 +3177,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b9c8386b36",
+      "head_sha": "2b1cc98685",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T20:16:25Z"
+      "updated_at": "2026-11-03T22:02:36Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3121,12 +3191,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "69e680c727",
+      "head_sha": "ce44d2b84a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T20:49:37Z"
+      "updated_at": "2026-11-03T21:34:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3205,12 +3275,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "2250b6838e",
+      "head_sha": "1e248a8749",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-03T20:57:38Z"
+      "updated_at": "2026-11-03T21:43:55Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3225,20 +3295,6 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "1f0e963aa5",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4089,
-      "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
-      "updated_at": "2026-11-03T20:41:18Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3499,6 +3555,20 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "db0f08ed6e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4563,
+      "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
+      "updated_at": "2026-11-03T21:51:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "3979927ea7",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3519,20 +3589,6 @@
       "number": 4571,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T19:46:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "queued"
-      },
-      "head_sha": "5ef19a458f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4583,
-      "title": "quota: strike the series1 private-readings tap (owner ruling: self-counted nulls)",
-      "updated_at": "2026-11-03T21:01:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3566,15 +3622,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
       "head_sha": "bfb5b257e1",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4601,
       "title": "quota: pack consumes the self-count tally (series6, carried verbatim)",
-      "updated_at": "2026-11-03T21:01:53Z"
+      "updated_at": "2026-11-03T21:50:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3594,62 +3650,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "173ad9eaba",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4615,
-      "title": "fix(ci): harden dangling-reference detection on current master",
-      "updated_at": "2026-11-03T20:41:40Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "062ba02ebd",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4617,
-      "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
-      "updated_at": "2026-11-03T20:45:17Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "8bc1f98ff3",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4621,
-      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
-      "updated_at": "2026-11-03T20:53:09Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "7cc7a79979",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4622,
-      "title": "docs(ops): queue dependency tiers \u2014 drain-order evidence + tier model + enforcement contract",
-      "updated_at": "2026-11-03T20:59:21Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3658,21 +3658,7 @@
       "mergeable_state": "unknown",
       "number": 4623,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T20:54:16Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "3cac21809c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-03T20:57:35Z"
+      "updated_at": "2026-11-03T21:38:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3686,7 +3672,7 @@
       "mergeable_state": "unknown",
       "number": 4626,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T20:59:36Z"
+      "updated_at": "2026-11-03T21:48:55Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3700,7 +3686,91 @@
       "mergeable_state": "unknown",
       "number": 4627,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T20:59:55Z"
+      "updated_at": "2026-11-03T21:49:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "eb5582a725",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4630,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T21:53:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "9a3060f2b6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4631,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T22:01:21Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "fab182c9f2",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4634,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-11-03T21:54:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "2f3e775337",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4635,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T21:55:57Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "945a6b13de",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4637,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T21:58:32Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "9a5b031799",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4640,
+      "title": "speculators: provision paper|test wallets + cull waterfall to pool (#195)",
+      "updated_at": "2026-11-03T22:04:38Z"
     }
   ],
   "schema": "operator-matrix/v1",

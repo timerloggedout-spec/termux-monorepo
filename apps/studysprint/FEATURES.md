@@ -123,6 +123,16 @@ learning-gain claim.
 - ✓ **Quiet hours**: notifications landing inside a scheduled
   class are suppressed and batched to just after the block,
   receipt-stamped.
+- ✓ **Maps**: location records for classes + assessments from
+  the student's own calendar (open data first); route +
+  travel-time assistance to the assessment room — injected
+  travel provider, offline coordinate estimate by default.
+- ✓ **Temple routes on real geography**: the method of loci over
+  the student's actual campus path — waypoints as loci, term-bank
+  items placed along the walk, an audio-cue script for the walk,
+  and voice-input route customization (rename/move) as data.
+  Ceilings: logistics support + ordered/concrete recall, not
+  understanding.
 
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic

@@ -607,5 +607,19 @@
     "GET /rate_limit (installation token)"
    ]
   }
+ },
+ "creation_flow_amendment": {
+  "date": "2026-11-03",
+  "spec": "docs/ops/GITHUB-APP-PROCESS.md section 1A",
+  "default": "manifest-flow-first for every creation; manual settings form = fallback for platform anomalies only",
+  "template": "ops/github-apps/manifest-template.json",
+  "excluded_route": "raw form-POST replay / scripted settings-form automation (CSRF/session fragility + credential discipline)",
+  "owner_touch_remains": [
+   "create confirmation in the owner's signed-in session (+ any sudo/2SV challenge GitHub interposes - ownership anchor, no API exists)",
+   "installation consent + repository selection",
+   "avatar upload",
+   "key generation at rotation; per-installation approval of permission additions"
+  ],
+  "first_live_test": "doe (Factorial - DoE): instance prepped 2026-11-01 (repo doe created, slug termux-fleet-doe free, moniker PR #3375); execution gated on the owner's 2FA hold (2026-11-01), fires on the owner's word"
  }
 }

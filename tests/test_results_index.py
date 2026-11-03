@@ -39,7 +39,14 @@ class TestResultsIndex(unittest.TestCase):
         hs = next(s for s in d["systems"] if s["id"] == "hindsight")
         self.assertEqual(hs["headline"]["retained_units"], 0)
         l30 = next(s for s in d["systems"] if s["id"] == "3l0")
-        self.assertEqual(l30["headline"]["staged_records"], 599)
+        staged_src = (ROOT / "ops/telemetry/session-history-3l0.jsonl")
+        if staged_src.exists():
+            # invariant vs the source of record, not a frozen count
+            n = len([l for l in staged_src.read_text().splitlines()
+                     if l.strip()])
+            self.assertEqual(l30["headline"]["staged_records"], n)
+        else:
+            self.assertGreaterEqual(l30["headline"]["staged_records"], 599)
         self.assertEqual(l30["headline"]["confirmed_non_null"], 0)
         tp = next(s for s in d["systems"] if s["id"] == "temporal")
         self.assertEqual(tp["record_of_record"]["kind"], "actions-runs")

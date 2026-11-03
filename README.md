@@ -289,3 +289,9 @@ The preserved pre-rebuild branch [`archive/pr232-pre-master-rebuild-20260817`](h
 [6]: https://docs.devin.ai/work-with-devin/deepwiki "Devin DeepWiki documentation"
 [7]: docs/agentic/repository-surface-reconciliation.md "Repository-surface reconciliation"
 [8]: docs/agentic/devin-wiki-access-reconciliation.md "Devin Wiki access reconciliation"
+
+
+## Federated applications
+
+- [Application and release-lane map](docs/ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md)
+- [Repository discovery census](docs/ops/FEDERATED-APP-REPOSITORY-CENSUS.md) — 714 repositories discovered; product identities remain evidence-gated.

@@ -148,3 +148,11 @@ Source: DoE expert seat, system review of record docs/ops/SYSTEM-REVIEW-2026-11-
 - Tests 2 (denominators NOT_ESTABLISHED) and 4 (comments surface NOT_ESTABLISHED) dispositions stand as recorded.
 - **Gate posture unchanged:** this is the current-layer read; binding clearances issue at OSINT pass completion (Swarm template first exercise outstanding).
 
+
+## Registered evidence input (DoE, owner probe 2026-11-03; PR #4588) — judge-criteria alignment
+
+- **What it is:** an EVIDENCE input to tests 1 and 5 (not a seventh test). At a venue's placements publication: winners' coded features (FROZEN codebook, current version) are read against the venue's VERBATIM rubric / import of record, yielding {over-index on stated criteria - deviation = taste terms}. The read separates "the venue rewarded what it said it rewards" from "the venue rewarded unstated taste."
+- **Capture hooks:** D0 (PR #4547) and D1 at judging close (Nov 18) — each files a per-venue dataset layer in the podium dataset citing {placements ref - codebook version - rubric import ref}. This plan's layers are the of-record copy.
+- **Rails:** per-judge fidelity ONLY where picks are attributable (today = 0 attributable, per the current layer) — never manufactured. Runs obey the resequence gate (stamps re-issue first; the gate reads the current layer).
+- **Consumers (one computation, two consumers):** tests 1 and 5 here; the mirror consumes the same read as its venue-level criteria-fidelity parameter.
+

@@ -5,8 +5,10 @@
 | Need | Path |
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
+| **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
+| Superpowers engineering workflow | `.agents/skills/superpowers/SKILL.md` |
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
@@ -38,7 +40,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 
 | Role | Load first |
 |------|------------|
-| Collaborator | `adaptive-feedback-cycle` → dual-gate |
+| Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |
@@ -49,9 +51,9 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 
 Do not keep skill policy only in local `.grok/skills/` mirrors — **master is SSOT**.
 
-**BIUDL = Broad → Integrate → Validate → Develop → Learn.**  
-Fully Continuous Automated Development Evaluation Environment.  
-AVOID HITL YOLO MODE YEET AUTOAPPROVE.  
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+Fully Continuous Automated Development Evaluation Environment.
+AVOID HITL YOLO MODE YEET AUTOAPPROVE.
 Agent-Identity: Grok (Administrator)
 
 ## Shared wait-loop invariant

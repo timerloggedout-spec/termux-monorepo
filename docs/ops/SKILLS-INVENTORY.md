@@ -19,10 +19,10 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 
 | Role | Load first | Then |
 |------|------------|------|
-| **Admin / Grok Administrator** | `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
+| **Admin / Grok Administrator** | `superpowers` · `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
-| **Collaborator** | `adaptive-feedback-cycle` | dual-gate · `find-skills` |
+| **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
@@ -121,3 +121,21 @@ The treatment registry composes existing evidence, wait, relationship, and workf
 - Open PRs monitored; promote only on current-SHA dual-gate + mergeable
 
 Agent-Identity: Grok (Administrator)
+
+
+## Superpowers — engineering methodology
+
+| Skill | Path | Load when |
+|---|---|---|
+| **superpowers** | `.agents/skills/superpowers/SKILL.md` | Feature work, bug fixes, refactors, design, TDD, debugging, review, verification, and branch finishing |
+
+The repository-local skill maps the upstream [obra/superpowers](https://github.com/obra/superpowers) methodology to this repository's proposal lifecycle, ICM routing, permissions, dual gates, and adaptive WAIT. It is a repository integration/bootstrap guide; the full upstream skill library and harness hooks should be installed separately for each agent harness. See [the dated design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
+
+## Integration Intelligence
+
+- Human-readable catalog: `docs/integrations/INTEGRATION-REGISTRY.md`
+- Machine-readable registry: `docs/integrations/registry.json`
+- Adapter contract: `docs/integrations/ADAPTER-CONTRACT.md`
+- Normalized event schema: `docs/integrations/schemas/integration-event.schema.json`
+
+Session-local tool availability is not proof of repository adapter implementation or production access.

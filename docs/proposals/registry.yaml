@@ -1,6 +1,6 @@
 version: 1
-updated_at: '2026-10-27T13:52:00Z'
-updated_by: tier1-classifiers-steward
+updated_at: '2026-11-02T00:00:00Z'
+updated_by: ChatGPT
 proposals:
   - id: agent-contributor-provenance
     title: Evidence-backed agent contributor attribution and source citation ledger
@@ -1158,7 +1158,7 @@ proposals:
     author: oracle-method
     status: in_review
     priority: P1
-    path: docs/proposals/active/marketing-strategy-tactics-strict-separation
+    path: active/marketing-strategy-tactics-strict-separation/
     reviewers:
       - id: timerloggedout-spec/operator-authorizer/requested
         role: owner
@@ -1178,7 +1178,7 @@ proposals:
     author: oracle-method
     status: in_review
     priority: P1
-    path: docs/proposals/active/marketing-strategy-tactics-attributed-tiered
+    path: active/marketing-strategy-tactics-attributed-tiered/
     reviewers:
       - id: timerloggedout-spec/operator-authorizer/requested
         role: owner
@@ -1198,7 +1198,7 @@ proposals:
     author: oracle-method
     status: in_review
     priority: P1
-    path: docs/proposals/active/marketing-strategy-tactics-partner-forward-blend
+    path: active/marketing-strategy-tactics-partner-forward-blend/
     reviewers:
       - id: timerloggedout-spec/operator-authorizer/requested
         role: owner
@@ -1213,3 +1213,19 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
+  - id: integration-intelligence-superpowers
+    title: "Integration Intelligence foundation and Superpowers engineering methodology"
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/integration-intelligence-superpowers/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/integration-intelligence-superpowers
+    gates_required:
+      - repo-gate
+      - termux-smoke

@@ -196,15 +196,17 @@ jobs:
           CODEROAD_DISABLE_RUN_ON_SAVE: "true"
           CODEROAD_DRIVER_EVIDENCE: ${{ github.workspace }}/evidence
         run: |
-          if [ -n "$MANIFEST_SRC" ]; then
-            cp "mono/$MANIFEST_SRC" evidence/manifest.json
-            export CODEROAD_MANIFEST_PATH="$GITHUB_WORKSPACE/evidence/manifest.json"
-            echo "workshop mode: manifest $MANIFEST_SRC"
-          fi
+          mkdir -p evidence && chmod 777 evidence
+          echo "CR_OK=false" >> "$GITHUB_ENV"
           if [ -n "$CODEROAD_WEBHOOK_TOKEN" ]; then
             echo "TOKEN_PRESENT=true" >> "$GITHUB_ENV"
           else
             echo "TOKEN_PRESENT=false" >> "$GITHUB_ENV"
+          fi
+          if [ -n "$MANIFEST_SRC" ]; then
+            cp "mono/$MANIFEST_SRC" evidence/manifest.json
+            export CODEROAD_MANIFEST_PATH="$GITHUB_WORKSPACE/evidence/manifest.json"
+            echo "workshop mode: manifest $MANIFEST_SRC"
           fi
           bash mono/scripts/certifications/coderoad-driver/host_orchestrate.sh \
             | tee evidence/orchestrate-stdout.txt

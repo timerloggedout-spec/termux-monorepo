@@ -2682,7 +2682,8 @@
           "merge_sha": "372b5b962717",
           "outcome": "landed + parity 31/31"
         }
-      ]
+      ],
+      "resubmit_policy": "article editable \u00b7 project Publish FINAL"
     },
     {
       "entry": "D3",
@@ -2790,7 +2791,8 @@
           },
           "instance_key": null
         }
-      ]
+      ],
+      "resubmit_policy": "SUBMIT-ONCE \u2014 complete + receipt-verified at first send"
     },
     {
       "entry": "AMD M4",
@@ -2905,7 +2907,8 @@
           },
           "instance_key": null
         }
-      ]
+      ],
+      "resubmit_policy": "edit-until-deadline"
     },
     {
       "entry": "AMD M3",
@@ -2983,7 +2986,8 @@
         }
       },
       "next": "Routes to a builder lane when the gate opens \u00b7 LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
-      "provider_usage": []
+      "provider_usage": [],
+      "resubmit_policy": "edit-until-deadline"
     },
     {
       "entry": "AMD M2",
@@ -3061,7 +3065,8 @@
         }
       },
       "next": "Routes after M3 or when builders idle \u00b7 LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
-      "provider_usage": []
+      "provider_usage": [],
+      "resubmit_policy": "edit-until-deadline"
     },
     {
       "entry": "D2",
@@ -3139,7 +3144,8 @@
         }
       },
       "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) \u00b7 D2 production target \u2205 until owner pick \u00b7 kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo \u2227 new AppID via 7075f9c0 \u2227 Vultr account + $200 gift code (gate D2-NOCARD) \u2227 team} \u00b7 \u2205 fire pre-pick \u00b7 ROUTE \u0394 (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended \u00ac deleted; \u2205 silent reroute beyond this named pair \u00b7 ARMS \u0394 (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip \u00d72, agent \u2205 invoked \u2014 runs 41301295882/41321691938) \u21d2 live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN \u00b7 Gemini OUT \u00b7 DeepSeek DOWN}; restoration \u21d2 desk flags D2 seat same-turn \u00b7 LANDING TARGET Nov 7 (wall: submission \u2264 Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
-      "provider_usage": []
+      "provider_usage": [],
+      "resubmit_policy": "edit-until-deadline"
     },
     {
       "entry": "D4",
@@ -3227,7 +3233,8 @@
         }
       },
       "next": "BATCH QUEUED (owner batch order 2026-11-01, priority \u2191) \u00b7 dispatch AT build window >2026-11-08, \u2205 fire before window \u00b7 AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) \u2014 flagged for dispatch \u00b7 gate D4-ACCOUNTS still open (Kiro ID, \u22642026-12-01T12:00PT) \u00b7 submit 2026-12-04 14:00 PT \u00b7 PROVIDER \u0394 (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) \u2014 at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first \u00b7 LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
-      "provider_usage": []
+      "provider_usage": [],
+      "resubmit_policy": "edit-until-deadline (locks Dec 4 14:00 PT)"
     },
     {
       "entry": "Repo-Story",
@@ -3786,7 +3793,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T10:12:00Z",
+    "updated_at": "2026-11-03T10:15:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

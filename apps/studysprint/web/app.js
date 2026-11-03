@@ -430,7 +430,11 @@ function grade(gradeValue) {
       (c) => c.card_id === key) || {}).ts_fsrs || {};
     const prev = state.srState[key] ||
       (ux.stability != null ? ux : null);
-    const next = fsrsReview(prev, gradeValue, now);
+    // fsrsReview's contract is epoch ms (nowMs): passing the
+    // Date itself string-concatenates the due math and the
+    // receipt reads "in NaN day(s)" (#4461). SM-2 takes the
+    // Date; the two contracts differ on purpose.
+    const next = fsrsReview(prev, gradeValue, now.getTime());
     state.srState[key] = next;
     receipt = `Receipt: scheduler=fsrs generation=${FSRS_GENERATION} grade=${gradeValue} ` +
       `next due ${next.due.slice(0, 10)} ` +

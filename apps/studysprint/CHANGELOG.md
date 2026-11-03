@@ -1,5 +1,21 @@
 ## [Unreleased]
 
+### Surfaces 0.1.4 (#4461 — FSRS receipt NaN fix)
+
+- **Web bundle: the FSRS receipt no longer reads "in NaN
+  day(s)".** Found on the 0.1.3 device smoke (D1 frame-read):
+  `grade()` passed a `Date` object where `fsrsReview`'s
+  contract is epoch milliseconds — the due math
+  string-concatenated, `scheduled_days` came out NaN, and the
+  lenient date parse kept the due date looking plausible so
+  nothing threw. SM-2 was unaffected (its reviewer takes the
+  Date). One-line fix at the call site (`now.getTime()`), the
+  differing contracts now commented, and a regression test
+  drives the port through the caller's contract (the core↔web
+  battery calls with numeric ms and could not see the type
+  error). Patch content is web-bundle-only; all surfaces carry
+  0.1.4 per the in-tree versioning convention.
+
 ### Surfaces 0.1.3 (#4412 — APK https-origin asset serving)
 
 - **APK shell serves the bundle from a secure https origin** —

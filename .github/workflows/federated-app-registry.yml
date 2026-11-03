@@ -41,4 +41,4 @@ jobs:
       - name: Validate registry
         run: python3 scripts/validate_federated_app_registry.py
       - name: Run regression tests
-        run: python3 -m unittest tests.test_federated_app_registry -v
+        run: python3 -m unittest discover -s tests -p 'test_federated_app_registry.py' -v

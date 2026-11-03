@@ -21,6 +21,89 @@ Landed prerequisites: PR #2361 (pilot package), #2369 (manifest tool +
 routes), #2385 (registry record `github.api.app_collector`), #2387
 (provisioning record) — all read back merged via the app token itself.
 
+## 1A. Creation flow of record — manifest-flow-first (amendment 2026-11-03)
+
+Assessment (AppID lane, owner question via main): the manifest flow has
+been the creation route of record since the pilot (PR #2369) and in fact
+created the live fleet — Collector from the pilot package, Publisher
+from the quota lane, Reviewer/Gate/Lifecycle/Swarm/CrossReference/
+RepoStory from this lane. What the record lacked was the flow fixed
+end-to-end in one place: the steps, the exact points where the owner's
+session remains in the loop, and the excluded alternative. This section
+is that fix. Default for every future creation: **manifest-flow-first**;
+the manual settings form is a fallback for platform anomalies only.
+
+**Step by step — the two routes.**
+
+Manual web form (fallback only):
+
+1. In the owner's signed-in session, hand-fill the multi-field form at
+   `settings/apps/new` (name, homepage URL, description, webhook URL,
+   the full permissions grid, visibility) from the package of record —
+   re-keyed per app, so the grid can drift from the package.
+2. Create click; the app exists with no key yet.
+3. Settings → "Generate a private key" → the browser **downloads a .pem
+   file**; the key has crossed a page surface and a downloads folder.
+4. Client secret: "Generate a client secret" → the value is **shown on
+   the page and transcribed by hand** into custody (error + leak
+   surface; a transcription mistake is silent until first use).
+5. Install from the app's settings page (repository selection).
+6. Avatar upload (web-only in every route).
+
+Manifest flow (the default):
+
+1. The lane composes the manifest from
+   `ops/github-apps/manifest-template.json` (placeholders substituted).
+   The manifest is **non-secret** and reviewable as a file before
+   anything fires.
+2. **One signed-in web confirmation:** a single form POST carries the
+   manifest to `settings/apps/new`; GitHub renders one confirmation
+   showing exactly the composed name + permissions → one Create click.
+3. GitHub redirects to the manifest's `redirect_url` carrying a
+   **one-time code** (single-use, ~15 minutes).
+4. `POST /app-manifests/{code}/conversions` — unauthenticated by design
+   (the code is the capability) — returns id, slug, client_id,
+   client_secret, webhook_secret and a **freshly generated private
+   key**. The lane tool writes the secret material **directly into
+   0600 custody files**; values are never displayed, never transcribed,
+   never in chat, files, or logs.
+5. Install consent in the owner's session (repository selection = the
+   scope decision of record).
+6. Everything after is API: SEC-03 sealed-box pair, custody connector,
+   records by PR. Avatar upload remains the one web-only extra.
+
+**Where the owner's session / 2SV touch remains — and why it stays.**
+(a) The Create confirmation click and any sudo-mode / two-factor
+challenge GitHub interposes on that session: app creation is an
+*account act* and GitHub exposes **no API for it** — the signed-in
+owner session is the platform's ownership anchor, not a process defect
+(e.g. the two-factor checkup that gated the DoE creation on 2026-11-01
+and sits under the owner's 2FA hold). (b) Installation consent +
+repository selection. (c) Avatar upload. (d) Lifecycle residuals of
+record: private-key generation at rotation (§2) and per-installation
+approval of permission *additions* (§3). No route removes (a)–(d);
+anything claiming to is replaying the owner's session, which is the
+excluded route below.
+
+**Excluded route.** Raw form-POST replay / scripted automation of the
+settings forms (API-Anything-style) is **not** a fleet route: CSRF
+tokens and session binding make it fragile, and it drags credential
+values across page surfaces (key download, secret reveal-and-copy),
+violating the names-only custody discipline (§2). The manifest flow is
+GitHub's vendor-sanctioned web→API bridge: the web step carries only a
+declarative, non-secret manifest, and every secret is born in the
+conversion response and lands in custody programmatically.
+
+**Template + first live test.** Template:
+`ops/github-apps/manifest-template.json` (a wrapper — the lane tool
+consumes its `.manifest` object after substitution; `hook_attributes`
+is omitted entirely, as GitHub rejects `{active: false}` without a
+webhook URL). First live test under this amendment: the DoE specialist
+app (`Factorial · DoE`) — instance prepped 2026-11-01 (repo
+`timerloggedout-spec/doe` created, slug `termux-fleet-doe` probed free,
+moniker issued PR #3375, manifest composed in-lane); **execution is
+gated on the owner's 2FA hold** and fires on the owner's word.
+
 ## 2. Custody (queue item 1 — DONE)
 
 - The bootstrap PEM and client secret moved out of the quota lane's

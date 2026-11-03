@@ -80,7 +80,7 @@ async function load(){
     const r=await fetch('./data/telemetry-feed.json',{cache:'no-store'});
     if(!r.ok)throw new Error(r.status);
     const f=await r.json(),d=f.data||{},g=d.golden||{},ex=d.executions||{},ac=d.actions||{},oc=d.outcomes||{},q=d.quota||{};
-    $('meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · surface '+(f.surface||'');
+    $('meta').textContent='Feed '+(f.schema||'')+' · state '+(f.state||'unknown')+' · freshness '+(f.freshness||'unknown')+' · generated '+(f.generated_at||'')+' · surface '+(f.surface||'');
     let sat=g.quota_saturation==null?'<span class="pill bad">NOT OBSERVED</span>':esc(g.quota_saturation);
     $('golden').innerHTML=
       card('Receipts',num(g.receipts_total),'lane receipts in the record')+
@@ -139,6 +139,12 @@ async function load(){
     $('quota').innerHTML=qh;
     let gh='';
     for(const gap of (f.gaps||[])){gh+='<p>'+esc(gap)+'</p>'}
+    const sourceRows=f.sources||[];
+    if(sourceRows.length){
+      gh+='<h3>Source provenance</h3><div class="table-wrap"><table class="table"><thead><tr><th>Source</th><th>State</th><th>Age (h)</th><th>Stamp</th><th>SHA-256</th></tr></thead><tbody>';
+      for(const source of sourceRows){gh+='<tr><td>'+esc(source.path)+'</td><td>'+esc(source.state||'unknown')+'</td><td>'+num(source.age_hours)+'</td><td>'+esc(source.stamped_at||'—')+'</td><td><code>'+esc(source.source_sha256||'—')+'</code></td></tr>'}
+      gh+='</tbody></table></div>';
+    }
     gh+='<h3>Honesty rules</h3><ul>';for(const rule of (f.honesty_rules||[])){gh+='<li>'+esc(rule)+'</li>'}gh+='</ul>';
     $('gaps').innerHTML=gh;
   }catch(e){
@@ -161,7 +167,7 @@ function parseFeedSeries(text){
   return text.split("\n").map(s=>s.trim()).filter(Boolean).map(s=>JSON.parse(s))
     .sort((a,b)=>String(a.generated_at)<String(b.generated_at)?-1:1);
 }
-function seriesPoints(rows,key){ return rows.map(r=>({t:r.generated_at, v:r[key]})).filter(p=>typeof p.v==="number"); }
+function seriesPoints(rows,key){ return rows.map(r=>({t:r.generated_at, v:(typeof r[key]==="number" && Number.isFinite(r[key]))?r[key]:null})); }
 if(typeof module!=="undefined"){ module.exports={parseFeedSeries,seriesPoints}; }
 // ==== end pure logic ====
 fetch("./data/telemetry-feed-series.jsonl").then(r=>{ if(!r.ok) throw new Error("series fetch "+r.status); return r.text(); }).then(text=>{

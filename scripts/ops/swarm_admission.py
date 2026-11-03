@@ -212,12 +212,17 @@ def main(argv):
     if not block:
         out = {"matched": "false"}
     else:
-        tiers_doc = json.loads(pathlib.Path(a.tiers).read_text())
-        runs = json.loads(pathlib.Path(a.runs_file).read_text())
+        # Fail-soft covers EVERYTHING past the match — including the
+        # tiers/runs loads (proof run 41731985726: dispatch-tiers.json
+        # not yet on master crashed the evaluator before the defer
+        # path could stamp; a missing dependency must DEFER with the
+        # reason, never crash silent).
         try:
+            tiers_doc = json.loads(pathlib.Path(a.tiers).read_text())
+            runs = json.loads(pathlib.Path(a.runs_file).read_text())
             decision, reasons, facts = evaluate(block, tiers_doc, runs)
         except Exception as e:  # fail-soft: defer, never admit blind
-            decision, reasons, facts = "DEFERRED", [f"admission evaluation error: {e}"], {"tier": block["que_tier"], "queued_depth": -1, "after": {}, "chain": {}}
+            decision, reasons, facts = "DEFERRED", [f"admission evaluation error: {type(e).__name__}: {e}"], {"tier": block["que_tier"], "queued_depth": -1, "after": {}, "chain": {}}
         pathlib.Path(a.comment_out).write_text(stamp(fname, block, decision, reasons, facts, a.run_url))
         out = {
             "matched": "true",

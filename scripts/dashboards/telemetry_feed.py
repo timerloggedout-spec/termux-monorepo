@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,6 +45,23 @@ HONESTY = [
     "Workflow run counts are API observations stamped with their read time, not live claims.",
     "Derived values are labeled derived and computed from the source fields named beside them.",
 ]
+
+
+def atomic_write(path: Path, content: str) -> None:
+    """Atomically replace a generated feed; readers see old or complete new bytes."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with temporary.open("w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def _now() -> str:

@@ -96,3 +96,85 @@ the numbers: a scoreable verification-record field; oracle
 resolution of cited evidence at scoring time; shape-class
 normalization). Amendments are PROPOSALS to the Delphi
 lane via main; this instance changes no gate behavior.
+
+## Results (collected 2026-11-03, ledgers on the six issues)
+
+ALL SIX filings: **effective 9.12 / 25 - award parked -
+converged round 1 - veto false**, with the IDENTICAL
+per-role vote profile {OPERATOR 9 - builder 9 - reviewer
+12 - Scout 15 - cost_auditor 3}:
+
+| cell | issue | substance | shape | effective |
+|---|---|---|---|---|
+| A1 | #4297 | #4231 FSRS drift (verified, measured) | full/embedded | 9.12 |
+| A2 | #4298 | same substance | full/referenced | 9.12 |
+| A3 | #4299 | same substance | sparse | 9.12 |
+| B1 | #4300 | #4213 empty release assets (verified-strong, blocks-use) | full template | 9.12 |
+| B2 | #4301 | #4225 parity.md version drift (verified-weak, polish) | full template | 9.12 |
+| B3 | #4302 | FALSE claim (refuted below) | full template | 9.12 |
+
+- ARM A spread (shape varies, substance constant): 0.00.
+- ARM B spread (substance varies, shape constant): 0.00.
+- B3 sits exactly ON the B1-B2 band (a single point).
+
+## Decision-rule verdict
+
+Pre-registered rule: "B3 effective within/above the
+B1-B2 band => rubric reads shape alone, proven; B3 >=2
+pts under B2 => a substance channel exists." B3 = B1 =
+B2 = 9.12. **VERDICT: the Delphi rubric, as instrumented,
+reads SHAPE ALONE - proven under the pre-registered
+rule.** No role's vote moved for any manipulation:
+not for a measured scheduler-integrity defect, not for
+a blocks-use release failure, not for a polish item,
+and not for a claim that is flatly false.
+
+Corroborating pattern: RFP-D1-7 (#4240) and RFP-D1-8
+(#4281) also scored exactly 9.12 with the same profile,
+and the earlier copy filings #3695/#3696 scored
+8.54 = 8.54. Every observed score in this series is a
+constant of its filing-shape class (filer + template
+class), not a function of content: two shape classes,
+two constants {9.12, 8.54}.
+
+## B3 refutation (published, per REFUTED discipline)
+
+B3's claim - "the shipped APK declares the INTERNET
+permission and loads remote content" - is FALSE,
+verified firsthand before filing: AndroidManifest.xml
+@master contains ZERO <uses-permission> elements;
+MainActivity loads only file:///android_asset/web/
+index.html. The rubric awarded this refuted claim the
+identical score and profile as a verified blocks-use
+defect. B3 stands published as REFUTED; it never
+converts (TEST quarantine stands).
+
+## Blinding disclosure
+
+Panel voters were blind to the cell structure, arms,
+and hypotheses. They were NOT blind to test status:
+every filing carried the instance TEST stamp (required
+for the quarantine). The stamp demonstrably did not
+affect scoring either - the six scored identically to
+this filer's genuine filings (D1-7/D1-8).
+
+## Rubric amendment proposals (priced from this measurement; for the Delphi lane via main)
+
+- P1: a SCOREABLE VERIFICATION-RECORD FIELD in the
+  filing shape {oracle, evidence_refs, verdict} that the
+  panel is instructed on - today the filing shape gives
+  the panel no substance channel to read.
+- P2: ORACLE RESOLUTION AT SCORING TIME - the gate
+  resolves cited evidence (issue / file / API) before
+  voting, so a filing whose central claim resolves
+  FALSE is mechanically distinguishable from a verified
+  one (B3 is the existence proof of the gap).
+- P3: PER-ROLE RATIONALE DISCLOSURE in the ledger -
+  identical profiles across unlike filings should be
+  detectable in-line, not by running an experiment.
+- P4: a FILER-BLIND SUBSTANCE PASS - a second scoring
+  pass over a shape-stripped substance summary, reported
+  alongside the shape score until the two converge.
+
+This instance changes no gate behavior; proposals route
+to the Delphi lane via main. Instance #2 CLOSED.

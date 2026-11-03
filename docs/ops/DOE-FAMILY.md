@@ -748,7 +748,25 @@ version and compared continuously until culling retires a version.
   within/above the B1-B2 band = shape alone proven). Owner
   guardrails: filings stamped TEST at instance level,
   nothing converts to awards or build items, refutation
-  published in the pre-registration + close-out.
+  published in the pre-registration + close-out. RESULTS
+  + CLOSE-OUT (2026-11-03, same doc): all six filings
+  scored effective 9.12, parked, r1, veto false, IDENTICAL
+  vote profile {OPERATOR 9 - builder 9 - reviewer 12 -
+  Scout 15 - cost_auditor 3}; ARM A spread 0.00; ARM B
+  spread 0.00; B3 (the refuted false claim) = B1 (verified
+  blocks-use) = B2 (verified polish) = 9.12. DECISION-RULE
+  VERDICT: the Delphi rubric as instrumented reads SHAPE
+  ALONE - PROVEN under the pre-registered rule (B3 within
+  the B1-B2 band). Corroboration: D1-7 + D1-8 also 9.12
+  same profile; #3695/#3696 = 8.54 = 8.54 - scores are
+  constants of filing-shape class {9.12, 8.54}, not
+  functions of content. B3 refutation republished in the
+  close-out (REFUTED discipline). Amendment proposals
+  P1-P4 (scoreable verification-record field - oracle
+  resolution at scoring time - per-role rationale
+  disclosure - filer-blind substance pass) route to the
+  Delphi lane via main. Instance #2 CLOSED; quarantine
+  stands.
 
 - **sie-intake (noted 2026-11-03, UNREGISTERED)** - an
   external ChatGPT-session audit proposes SIE (Self-

@@ -18,6 +18,15 @@ on:
       - 'experiments/visualization-renderers/**'
       - 'scripts/visualization_lab/**'
       - 'tests/test_visualization_lab.py'
+      - 'tests/test_telemetry_feed_resilience.py'
+      - 'tests/test_tribute_status_atomic_write.py'
+      - 'tests/test_chartkit.py'
+      - 'apps/tribute-dashboard/chartkit.js'
+      - 'apps/tribute-dashboard/telemetry.html'
+      - 'scripts/dashboards/telemetry_feed.py'
+      - 'scripts/dashboards/telemetry_feed_series.py'
+      - 'scripts/ci/tribute_status.py'
+      - '.github/workflows/surface-feeds-collect.yml'
       - 'docs/ops/VISUALIZATION-RENDERER-COMPARISON.md'
       - '.github/workflows/visualization-renderer-lab.yml'
 
@@ -47,9 +56,9 @@ jobs:
           import re
           from pathlib import Path
           html = Path("experiments/visualization-renderers/index.html").read_text()
-          blocks = re.findall(r"<script(?:\\s[^>]*)?>(.*?)</script>", html, re.S)
+          blocks = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", html, re.S)
           assert blocks, "no inline renderer script found"
-          Path("/tmp/renderer-lab.js").write_text("\\n".join(blocks))
+          Path("/tmp/renderer-lab.mjs").write_text("\n".join(blocks))
           PY
           node --check --input-type=module < /tmp/renderer-lab.mjs
       - name: Run telemetry ingestion and atomic publication tests

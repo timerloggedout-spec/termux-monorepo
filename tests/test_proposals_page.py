@@ -1,4 +1,4 @@
-"""Pins for the proposals index page (proposals-feed/v1).
+"""Pins for the proposals index page (proposals-feed/v2; v1 tolerated).
 
 The page renders ONLY data/proposals-feed.json, collected from the
 registry of record. Filter facets are built from the feed's own
@@ -43,7 +43,7 @@ def test_filters_built_from_feed_values():
 
 def test_feed_matches_registry_of_record():
     feed = json.loads(FEED.read_text())
-    assert feed["schema"] == "proposals-feed/v1"
+    assert feed["schema"] in ("proposals-feed/v1", "proposals-feed/v2")
     assert feed["counts"]["total"] == len(feed["proposals"])
     for p in feed["proposals"]:
         assert p["url"] == ("https://github.com/timerloggedout-spec/termux-monorepo"
@@ -154,3 +154,39 @@ def test_feed_outcome_shape_when_present():
         assert isinstance(outcome.get("scores"), dict)
         for v in outcome["scores"].values():
             assert isinstance(v, (int, float))
+
+def test_pr_state_chips_shape_tolerant(tmp_path):
+    """proposals-feed/v2: prs entries are {number, state, merged_at}.
+    merged = purple chip, open = green, closed-unmerged = red,
+    unknown = NO chip; a v1 bare number renders the link alone."""
+    import shutil
+    if not shutil.which("node"):
+        import pytest
+        pytest.skip("Node required")
+    html = _html()
+    for cls in ("pr-chip merged", "pr-chip open", "pr-chip closed"):
+        assert cls in html
+    m = re.search(r"// ==== pure logic \(node-sim tested\) ====([\s\S]*?)"
+                  r"// ==== end pure logic ====", html)
+    assert m, "pure-logic markers missing"
+    esc_line = re.search(r"const esc=[^\n]*", html).group(0)
+    sim = tmp_path / "sim_pr.cjs"
+    sim.write_text(esc_line + m.group(1)
+                   + ";module.exports={prLink};\n"
+                   + "const GH='https://github.com/timerloggedout-spec/termux-monorepo';\n"
+                   + "console.log(JSON.stringify({"
+                     "bare: prLink(123, GH),"
+                     "merged: prLink({number:5,state:'merged',merged_at:'2026-11-01T00:00:00Z'}, GH),"
+                     "open: prLink({number:6,state:'open',merged_at:null}, GH),"
+                     "closed: prLink({number:7,state:'closed-unmerged',merged_at:null}, GH),"
+                     "unknown: prLink({number:8,state:'unknown',merged_at:null}, GH)}));\n")
+    out = subprocess.run(["node", str(sim)], capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    got = json.loads(out.stdout)
+    assert got["bare"].endswith('PR #123</a>') and "pr-chip" not in got["bare"]
+    assert 'class="pr-chip merged"' in got["merged"]
+    assert 'title="merged 2026-11-01T00:00:00Z"' in got["merged"]
+    assert 'class="pr-chip open"' in got["open"]
+    assert 'class="pr-chip closed"' in got["closed"]
+    assert "pr-chip" not in got["unknown"] and 'PR #8</a>' in got["unknown"]
+

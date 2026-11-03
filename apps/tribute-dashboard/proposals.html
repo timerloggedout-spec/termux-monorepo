@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Proposals — Registry Index</title>
 <!--
-  Renders ONLY data/proposals-feed.json (schema proposals-feed/v1,
+  Renders ONLY data/proposals-feed.json (schema proposals-feed/v2; v1 entries tolerated,
   contract docs/ops/PROPOSALS-FEED.md). The feed is collected from the
   registry of record (docs/proposals/registry.yaml) and the pass
   records under docs/proposals/passes/ by
@@ -14,6 +14,12 @@
   filters what the feed carries and computes nothing else.
 -->
 <link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+.pr-chip{font-size:.72em;padding:.08em .55em;border-radius:1em;color:#fff;vertical-align:middle;white-space:nowrap}
+.pr-chip.merged{background:#8250df}
+.pr-chip.open{background:#1a7f37}
+.pr-chip.closed{background:#cf222e}
+</style>
 </head>
 <body>
 <nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
@@ -54,12 +60,12 @@
 
 <section>
   <div class="head"><h2>How this page works</h2></div>
-  <p class="note">This page renders <code>data/proposals-feed.json</code> (schema <code>proposals-feed/v1</code>), collected from <code>docs/proposals/registry.yaml</code> and <code>docs/proposals/passes/*/pass.json</code> by <code>scripts/proposals/proposals_feed.py</code> (contract: <code>docs/ops/PROPOSALS-FEED.md</code>). The collector runs on every push to <code>docs/proposals/**</code> and proposes the refreshed feed as a PR. Registry values are carried verbatim; where the feed is empty, nothing is shown rather than anything guessed.</p>
+  <p class="note">This page renders <code>data/proposals-feed.json</code> (schema <code>proposals-feed/v2</code>; v1 bare-number PR entries still render, without state chips), collected from <code>docs/proposals/registry.yaml</code> and <code>docs/proposals/passes/*/pass.json</code> by <code>scripts/proposals/proposals_feed.py</code> (contract: <code>docs/ops/PROPOSALS-FEED.md</code>). The collector runs on every push to <code>docs/proposals/**</code> and proposes the refreshed feed as a PR. Registry values are carried verbatim; where the feed is empty, nothing is shown rather than anything guessed.</p>
 </section>
 </main>
 
 <footer>
-  Proposals index · registry of record: docs/proposals/registry.yaml · feed: proposals-feed/v1 · page renders the feed verbatim.
+  Proposals index · registry of record: docs/proposals/registry.yaml · feed: proposals-feed/v2 · page renders the feed verbatim.
 </footer>
 
 <script src="./chartkit.js"></script>
@@ -94,6 +100,15 @@ function outcomeCell(pass){
     return g.candidates.length>1?'<strong>'+g.score.toFixed(3)+' — TIED</strong>: '+names:g.score.toFixed(3)+' — '+names;
   }).join('<br>');
 }
+function prLink(entry,gh){
+  const isObj=entry&&typeof entry==='object';
+  const n=isObj?entry.number:entry;
+  const st=isObj?entry.state:null;
+  const cls=st==='merged'?'pr-chip merged':st==='open'?'pr-chip open':st==='closed-unmerged'?'pr-chip closed':null;
+  let h='<a href="'+gh+'/pull/'+n+'">PR #'+n+'</a>';
+  if(cls){const t=st==='merged'&&entry.merged_at?' title="merged '+esc(entry.merged_at)+'"':'';h+=' <span class="'+cls+'"'+t+'>'+st+'</span>'}
+  return h;
+}
 // ==== end pure logic ==== 
 let FEED=null;
 function statusPill(s){
@@ -107,7 +122,7 @@ function render(){
   $('proposals').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Proposal</th><th>Status</th><th>Priority</th><th>Author</th><th>Related</th></tr></thead><tbody>'+
     rows.map(p=>{
       const rel=[...(p.issues||[]).map(n=>'<a href="'+GH+'/issues/'+n+'">#'+n+'</a>'),
-                 ...(p.prs||[]).map(n=>'<a href="'+GH+'/pull/'+n+'">PR #'+n+'</a>')].join(' · ');
+                 ...(p.prs||[]).map(e=>prLink(e,GH))].join(' · ');
       return '<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.title)+'</strong></a><br><span class="muted">'+esc(p.id)+' · '+esc(p.path)+'</span></td>'+
         '<td>'+statusPill(p.status)+'</td><td>'+esc(p.priority)+'</td><td>'+esc(p.author)+'</td>'+
         '<td>'+(rel||'—')+'</td></tr>'}).join('')+

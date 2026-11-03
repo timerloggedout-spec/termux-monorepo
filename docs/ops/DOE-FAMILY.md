@@ -925,7 +925,47 @@ version and compared continuously until culling retires a version.
   Delphi: BOTH 9.12, identical profiles - the shape-class
   constant (10/10 doe-expert filings), recorded as
   carrying no discriminating signal; verdicts rest on the
-  adversarial pass + data checks.
+  adversarial pass + data checks. Addendum (PR #4525):
+  the judge identity ceiling is venue-disclosure-bound
+  (test 3 closed BY CONSTRUCTION for Agent Rush-class
+  venues) - exact enumeration mandated at n=11 - tagging
+  agreement = the G2 kappa instrument (double-code >=30%,
+  issue #4524).
+
+- **panel-judge-mirror v0** (registered 2026-11-03, owner
+  directive) - home docs/ops/PANEL-JUDGE-MIRROR.md. A
+  mirror panel: simulated replicas of known judges
+  pre-scoring our entries (BULL = mirror-jury
+  construction, personas deliberate and surface
+  objections/enthusiasms per persona; EKMAN = behavioral
+  science leg, personas modeled from OBSERVABLE SIGNALS
+  ONLY - receipted podium history, public statements/
+  writing, role/employer incentives, venue behavior;
+  every preference claim cites its signal, uncited =
+  fabrication, struck). GRADES (binding): PERSON-GRADE
+  only where identity + signal are receipt-established
+  (RAISE pool = the candidate set: Debnath - Cochrane +
+  ~40 rows, POOL_UNRESOLVED flagged, never silently
+  resolved); VENUE-ARCHETYPE where the panel is
+  NOT_ESTABLISHED - D2 = PANEL_PUBLICLY_UNNAMED, gap
+  GAP-J1 - labeled on every output, no fabricated named
+  judges or preferences. Every mirror verdict stamps
+  {grade - evidence basis - model}; mirrors are models,
+  never the real judge's view. EXPERIMENT SHAPE: mirror
+  scores = RECORDED FORECASTS (test-6 machinery: filed
+  pre-outcome, Brier/hit-rate at outcome, LOEO across
+  venues as n grows); person-grade mirrors carry test-3
+  effect estimates, archetype stays descriptive.
+  SHAPE-CONSTANT WARNING (binding): a panel scoring
+  everything alike carries no signal - every run reports
+  dispersion; a non-discriminating run files a NULL
+  verdict on itself. FIRST RUN (2026-11-03): D1
+  StudySprint, venue-archetype (panel unpublished),
+  forecast pjm-2026-11-03-d1-studysprint filed pre-freeze
+  (3 archetype seats, mean 61.7/100, spread 10 -
+  DISCRIMINATES; outcome probabilities podium .20 /
+  finalist .35 / none .45; scored at judging close
+  2026-11-18).
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

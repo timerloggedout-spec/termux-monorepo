@@ -56,6 +56,11 @@ class HapiRegistryNormalizerTests(unittest.TestCase):
         self.assertEqual(result["trust"]["admission_status"], "not_admitted")
         self.assertFalse(result["trust"]["execution_allowed"])
 
+    def test_duplicate_remote_pairs_are_removed(self):
+        self.record["server"]["remotes"].append(dict(self.record["server"]["remotes"][0]))
+        result = normalize_hapi_server(self.record, CAPTURED)
+        self.assertEqual(len(result["data"]["remotes"]), 2)
+
     def test_unknown_fields_are_named_but_values_are_not_copied(self):
         result = normalize_hapi_server(self.record, CAPTURED)
         self.assertIn("futureField", result["data"]["unmapped_field_names"])
@@ -170,6 +175,14 @@ class ContextEvidenceNormalizerTests(unittest.TestCase):
         for url in ("https://user:pass@example.org/path", "file:///etc/passwd", "javascript:alert(1)"):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 normalize_context_dev_result({"url": url}, CAPTURED)
+
+    def test_secret_shaped_excerpt_text_is_redacted(self):
+        result = normalize_context_dev_result(
+            {"url": "https://example.org", "snippet": "credential " + "sk-" + ("a" * 36)},
+            CAPTURED,
+        )
+        self.assertIn("[REDACTED]", result["data"]["excerpt"])
+        self.assertFalse(validate_observation(result))
 
     def test_context_dev_bounds_excerpt_and_marks_truncation(self):
         result = normalize_context_dev_result(

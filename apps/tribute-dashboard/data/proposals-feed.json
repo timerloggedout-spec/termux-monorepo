@@ -1,25 +1,25 @@
 {
- "schema": "proposals-feed/v1",
- "generated_at": "2026-11-01T08:20:32Z",
+ "schema": "proposals-feed/v2",
+ "generated_at": "2026-11-03T14:50:02Z",
  "source": "docs/proposals/registry.yaml",
- "registry_updated_at": "2026-10-27T13:52:00Z",
- "registry_updated_by": "tier1-classifiers-steward",
+ "registry_updated_at": "2026-11-02T00:00:00Z",
+ "registry_updated_by": "ChatGPT",
  "counts": {
-  "total": 59,
+  "total": 60,
   "by_status": {
    "in_review": 18,
    "posted": 18,
    "executing": 19,
    "draft": 2,
-   "accepted": 2
+   "accepted": 3
   },
   "by_priority": {
-   "P1": 44,
+   "P1": 45,
    "P0": 6,
    "P2": 9
   },
   "by_author": {
-   "ChatGPT": 12,
+   "ChatGPT": 13,
    "grok": 7,
    "timerloggedout-spec": 9,
    "Manus": 3,
@@ -48,7 +48,11 @@
     1241
    ],
    "prs": [
-    1244
+    {
+     "number": 1244,
+     "state": "merged",
+     "merged_at": "2026-10-18T06:20:26Z"
+    }
    ]
   },
   {
@@ -74,10 +78,26 @@
     934
    ],
    "prs": [
-    935,
-    938,
-    940,
-    955
+    {
+     "number": 935,
+     "state": "merged",
+     "merged_at": "2026-09-30T17:14:55Z"
+    },
+    {
+     "number": 938,
+     "state": "merged",
+     "merged_at": "2026-09-30T18:15:42Z"
+    },
+    {
+     "number": 940,
+     "state": "merged",
+     "merged_at": "2026-09-30T18:20:35Z"
+    },
+    {
+     "number": 955,
+     "state": "merged",
+     "merged_at": "2026-10-01T00:16:45Z"
+    }
    ]
   },
   {
@@ -93,11 +113,31 @@
     772
    ],
    "prs": [
-    817,
-    787,
-    746,
-    682,
-    432
+    {
+     "number": 817,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 787,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 746,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 682,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 432,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -121,7 +161,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/approxination-integration/",
    "issues": [],
    "prs": [
-    614
+    {
+     "number": 614,
+     "state": "merged",
+     "merged_at": "2026-09-18T22:02:25Z"
+    }
    ]
   },
   {
@@ -134,7 +178,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/bifrost-gateway-integration/",
    "issues": [],
    "prs": [
-    611
+    {
+     "number": 611,
+     "state": "merged",
+     "merged_at": "2026-09-18T21:36:05Z"
+    }
    ]
   },
   {
@@ -180,8 +228,16 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/context-relationship-graph/",
    "issues": [],
    "prs": [
-    232,
-    1286
+    {
+     "number": 232,
+     "state": "merged",
+     "merged_at": "2026-08-18T00:49:30Z"
+    },
+    {
+     "number": 1286,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -194,7 +250,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/manus-critical-eval/",
    "issues": [],
    "prs": [
-    13
+    {
+     "number": 13,
+     "state": "merged",
+     "merged_at": "2026-08-06T07:07:13Z"
+    }
    ]
   },
   {
@@ -212,8 +272,16 @@
     91
    ],
    "prs": [
-    72,
-    81
+    {
+     "number": 72,
+     "state": "merged",
+     "merged_at": "2026-08-20T15:24:35Z"
+    },
+    {
+     "number": 81,
+     "state": "open",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -237,13 +305,41 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-critical-eval/",
    "issues": [],
    "prs": [
-    2,
-    3,
-    5,
-    6,
-    9,
-    10,
-    11
+    {
+     "number": 2,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 3,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 5,
+     "state": "merged",
+     "merged_at": "2026-08-04T02:46:36Z"
+    },
+    {
+     "number": 6,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 9,
+     "state": "merged",
+     "merged_at": "2026-08-03T07:14:07Z"
+    },
+    {
+     "number": 10,
+     "state": "merged",
+     "merged_at": "2026-08-03T07:12:11Z"
+    },
+    {
+     "number": 11,
+     "state": "merged",
+     "merged_at": "2026-08-02T22:21:43Z"
+    }
    ]
   },
   {
@@ -267,8 +363,16 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-droidapp/",
    "issues": [],
    "prs": [
-    1,
-    2
+    {
+     "number": 1,
+     "state": "merged",
+     "merged_at": "2026-08-01T15:38:18Z"
+    },
+    {
+     "number": 2,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -292,7 +396,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/icm-architect-integration/",
    "issues": [],
    "prs": [
-    232
+    {
+     "number": 232,
+     "state": "merged",
+     "merged_at": "2026-08-18T00:49:30Z"
+    }
    ]
   },
   {
@@ -308,12 +416,36 @@
     175
    ],
    "prs": [
-    193,
-    81,
-    92,
-    143,
-    72,
-    232
+    {
+     "number": 193,
+     "state": "merged",
+     "merged_at": "2026-08-13T22:23:54Z"
+    },
+    {
+     "number": 81,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 92,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 143,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 72,
+     "state": "merged",
+     "merged_at": "2026-08-20T15:24:35Z"
+    },
+    {
+     "number": 232,
+     "state": "merged",
+     "merged_at": "2026-08-18T00:49:30Z"
+    }
    ]
   },
   {
@@ -337,7 +469,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/gantt-dependency-phases/",
    "issues": [],
    "prs": [
-    248
+    {
+     "number": 248,
+     "state": "merged",
+     "merged_at": "2026-08-19T04:01:08Z"
+    }
    ]
   },
   {
@@ -361,7 +497,11 @@
     274
    ],
    "prs": [
-    322
+    {
+     "number": 322,
+     "state": "merged",
+     "merged_at": "2026-08-22T22:10:22Z"
+    }
    ]
   },
   {
@@ -376,7 +516,11 @@
     292
    ],
    "prs": [
-    329
+    {
+     "number": 329,
+     "state": "merged",
+     "merged_at": "2026-08-23T06:10:29Z"
+    }
    ]
   },
   {
@@ -389,9 +533,21 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/vercel-lane-topology/",
    "issues": [],
    "prs": [
-    442,
-    445,
-    446
+    {
+     "number": 442,
+     "state": "merged",
+     "merged_at": "2026-09-07T09:06:16Z"
+    },
+    {
+     "number": 445,
+     "state": "merged",
+     "merged_at": "2026-09-07T10:29:30Z"
+    },
+    {
+     "number": 446,
+     "state": "merged",
+     "merged_at": "2026-09-07T18:50:16Z"
+    }
    ]
   },
   {
@@ -404,7 +560,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/demo-portal/",
    "issues": [],
    "prs": [
-    447
+    {
+     "number": 447,
+     "state": "merged",
+     "merged_at": "2026-09-07T18:49:06Z"
+    }
    ]
   },
   {
@@ -417,7 +577,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agentic-scoped-access/",
    "issues": [],
    "prs": [
-    492
+    {
+     "number": 492,
+     "state": "merged",
+     "merged_at": "2026-09-14T01:17:09Z"
+    }
    ]
   },
   {
@@ -430,7 +594,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/tier4-scope-review/",
    "issues": [],
    "prs": [
-    492
+    {
+     "number": 492,
+     "state": "merged",
+     "merged_at": "2026-09-14T01:17:09Z"
+    }
    ]
   },
   {
@@ -456,7 +624,11 @@
     621
    ],
    "prs": [
-    695
+    {
+     "number": 695,
+     "state": "merged",
+     "merged_at": "2026-09-22T13:06:22Z"
+    }
    ]
   },
   {
@@ -480,11 +652,31 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/lane-compounding/",
    "issues": [],
    "prs": [
-    1244,
-    1274,
-    1277,
-    1278,
-    1280
+    {
+     "number": 1244,
+     "state": "merged",
+     "merged_at": "2026-10-18T06:20:26Z"
+    },
+    {
+     "number": 1274,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 1277,
+     "state": "merged",
+     "merged_at": "2026-10-19T09:50:38Z"
+    },
+    {
+     "number": 1278,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1280,
+     "state": "merged",
+     "merged_at": "2026-10-19T10:09:35Z"
+    }
    ]
   },
   {
@@ -510,7 +702,11 @@
     966
    ],
    "prs": [
-    967
+    {
+     "number": 967,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -534,7 +730,11 @@
     950
    ],
    "prs": [
-    937
+    {
+     "number": 937,
+     "state": "merged",
+     "merged_at": "2026-09-30T19:15:50Z"
+    }
    ]
   },
   {
@@ -551,7 +751,11 @@
     243
    ],
    "prs": [
-    131
+    {
+     "number": 131,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -564,7 +768,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ops-hitl-control-plane/",
    "issues": [],
    "prs": [
-    739
+    {
+     "number": 739,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -577,7 +785,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/arrhythmic-zero-token-search/",
    "issues": [],
    "prs": [
-    685
+    {
+     "number": 685,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
    ]
   },
   {
@@ -590,9 +802,21 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/codespaces-enablement/",
    "issues": [],
    "prs": [
-    499,
-    530,
-    531
+    {
+     "number": 499,
+     "state": "merged",
+     "merged_at": "2026-09-14T01:17:14Z"
+    },
+    {
+     "number": 530,
+     "state": "merged",
+     "merged_at": "2026-09-15T17:47:39Z"
+    },
+    {
+     "number": 531,
+     "state": "merged",
+     "merged_at": "2026-09-15T17:50:46Z"
+    }
    ]
   },
   {
@@ -605,7 +829,11 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/aws-free-tier-strands-delphi-oracle/",
    "issues": [],
    "prs": [
-    1611
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    }
    ]
   },
   {
@@ -620,9 +848,21 @@
     1573
    ],
    "prs": [
-    1574,
-    1575,
-    1576
+    {
+     "number": 1574,
+     "state": "merged",
+     "merged_at": "2026-10-23T16:44:27Z"
+    },
+    {
+     "number": 1575,
+     "state": "merged",
+     "merged_at": "2026-10-23T16:45:02Z"
+    },
+    {
+     "number": 1576,
+     "state": "merged",
+     "merged_at": "2026-10-23T16:45:08Z"
+    }
    ]
   },
   {
@@ -635,10 +875,26 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/delphi-desk-builder-io/",
    "issues": [],
    "prs": [
-    1620,
-    1655,
-    1701,
-    1702
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1701,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:08:58Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
    ]
   },
   {
@@ -654,9 +910,21 @@
     1489
    ],
    "prs": [
-    1611,
-    1620,
-    1702
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    },
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
    ]
   },
   {
@@ -672,9 +940,21 @@
     1489
    ],
    "prs": [
-    1611,
-    1620,
-    1702
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    },
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
    ]
   },
   {
@@ -690,9 +970,21 @@
     1489
    ],
    "prs": [
-    1611,
-    1620,
-    1702
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    },
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
    ]
   },
   {
@@ -705,9 +997,21 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/system-one-classifier-census/",
    "issues": [],
    "prs": [
-    1754,
-    1782,
-    1786
+    {
+     "number": 1754,
+     "state": "merged",
+     "merged_at": "2026-10-27T12:35:11Z"
+    },
+    {
+     "number": 1782,
+     "state": "merged",
+     "merged_at": "2026-10-27T13:06:21Z"
+    },
+    {
+     "number": 1786,
+     "state": "merged",
+     "merged_at": "2026-10-27T13:09:53Z"
+    }
    ]
   },
   {
@@ -724,7 +1028,11 @@
     1596
    ],
    "prs": [
-    1848
+    {
+     "number": 1848,
+     "state": "merged",
+     "merged_at": "2026-10-27T16:00:55Z"
+    }
    ]
   },
   {
@@ -741,8 +1049,16 @@
     1489
    ],
    "prs": [
-    1867,
-    1886
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
    ]
   },
   {
@@ -759,8 +1075,16 @@
     1489
    ],
    "prs": [
-    1867,
-    1886
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
    ]
   },
   {
@@ -777,8 +1101,16 @@
     1489
    ],
    "prs": [
-    1867,
-    1886
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
    ]
   },
   {
@@ -795,8 +1127,16 @@
     1489
    ],
    "prs": [
-    1867,
-    1886
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
    ]
   },
   {
@@ -813,8 +1153,16 @@
     1489
    ],
    "prs": [
-    1867,
-    1886
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
    ]
   },
   {
@@ -832,8 +1180,16 @@
     1571
    ],
    "prs": [
-    1589,
-    2409
+    {
+     "number": 1589,
+     "state": "merged",
+     "merged_at": "2026-10-27T12:20:28Z"
+    },
+    {
+     "number": 2409,
+     "state": "merged",
+     "merged_at": "2026-10-30T05:11:30Z"
+    }
    ]
   },
   {
@@ -849,10 +1205,26 @@
     1489
    ],
    "prs": [
-    1655,
-    1697,
-    1699,
-    1707
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1697,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:00:19Z"
+    },
+    {
+     "number": 1699,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:05:59Z"
+    },
+    {
+     "number": 1707,
+     "state": "merged",
+     "merged_at": "2026-10-27T08:17:43Z"
+    }
    ]
   },
   {
@@ -868,10 +1240,26 @@
     1489
    ],
    "prs": [
-    1655,
-    1697,
-    1699,
-    1707
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1697,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:00:19Z"
+    },
+    {
+     "number": 1699,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:05:59Z"
+    },
+    {
+     "number": 1707,
+     "state": "merged",
+     "merged_at": "2026-10-27T08:17:43Z"
+    }
    ]
   },
   {
@@ -887,10 +1275,26 @@
     1489
    ],
    "prs": [
-    1655,
-    1697,
-    1699,
-    1707
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1697,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:00:19Z"
+    },
+    {
+     "number": 1699,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:05:59Z"
+    },
+    {
+     "number": 1707,
+     "state": "merged",
+     "merged_at": "2026-10-27T08:17:43Z"
+    }
    ]
   },
   {
@@ -899,8 +1303,8 @@
    "author": "oracle-method",
    "status": "in_review",
    "priority": "P1",
-   "path": "docs/proposals/active/marketing-strategy-tactics-strict-separation",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/docs/proposals/active/marketing-strategy-tactics-strict-separation",
+   "path": "active/marketing-strategy-tactics-strict-separation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/marketing-strategy-tactics-strict-separation/",
    "issues": [
     574,
     1487,
@@ -914,8 +1318,8 @@
    "author": "oracle-method",
    "status": "in_review",
    "priority": "P1",
-   "path": "docs/proposals/active/marketing-strategy-tactics-attributed-tiered",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/docs/proposals/active/marketing-strategy-tactics-attributed-tiered",
+   "path": "active/marketing-strategy-tactics-attributed-tiered/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/marketing-strategy-tactics-attributed-tiered/",
    "issues": [
     574,
     1487,
@@ -929,13 +1333,24 @@
    "author": "oracle-method",
    "status": "in_review",
    "priority": "P1",
-   "path": "docs/proposals/active/marketing-strategy-tactics-partner-forward-blend",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/docs/proposals/active/marketing-strategy-tactics-partner-forward-blend",
+   "path": "active/marketing-strategy-tactics-partner-forward-blend/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/marketing-strategy-tactics-partner-forward-blend/",
    "issues": [
     574,
     1487,
     1489
    ],
+   "prs": []
+  },
+  {
+   "id": "integration-intelligence-superpowers",
+   "title": "Integration Intelligence foundation and Superpowers engineering methodology",
+   "author": "ChatGPT",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/integration-intelligence-superpowers/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/integration-intelligence-superpowers/",
+   "issues": [],
    "prs": []
   }
  ],

@@ -74,6 +74,8 @@ direct-PDF chapter reading as the reading experience.
   W3C Web Annotation JSON-LD — highlight→structured-data is
   native to the model, not a scrape.
 
+**Built (v0.4.0, 2026-11-03; RFP-D1-3 / issue #4111):** all six §1b stages are implemented in `study_pipeline.py` with tests — finder (confirm-before-plan) -> OCR intake -> structure -> per-chapter term bank (behind the reader's term-lookup hook) -> term emphasis -> hypothes.is layer. The hypothes.is leg implements option (3) of the #3697 evaluation — API-only annotations over reader sections in the W3C Web Annotation model; the owned client_fork revival and the hosted embed remain view-surface choices that render on top of the same annotation data.
+
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic
 - ✓ Re-plan on missed week (sessions carried forward, flagged)

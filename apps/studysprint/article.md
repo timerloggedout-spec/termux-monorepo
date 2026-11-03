@@ -111,6 +111,6 @@ export, an Obsidian vault surface, and a ts-fsrs seed for the UX
 layer. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.3.0
 — new v0.3.0 demo:
-Demo video (2:05, public): https://www.youtube.com/watch?v=cgfp7uZPffw
+Demo video (2:33, public): https://www.youtube.com/watch?v=AKCqOCXAFu0
 Demo: under 3 minutes, scripted in `demo-script.md`, runnable as
 `demo.py`, receipts in `evidence/demo-run.json`.

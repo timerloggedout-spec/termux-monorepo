@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "fcbb2a0a9c61f75e4a41e4063977f38037d2dfef2e7eb42c85fc133b6deb68f1",
-  "workflow_count": 277,
+  "source_fingerprint": "5ca3662989c3273334d4d4454b92d41dcc3a9294a77eaed9dc8bf73ed771637d",
+  "workflow_count": 278,
   "workflows": [
     {
       "action_pins": [],
@@ -415,6 +415,23 @@
       ],
       "name": "allocation-verification-probe",
       "path": ".github/workflows/allocation-verification-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "finalize"
+      ],
+      "name": "apk-release-finalize",
+      "path": ".github/workflows/apk-release-finalize.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

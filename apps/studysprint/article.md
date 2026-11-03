@@ -118,5 +118,6 @@ Pomodoro pacing, and reminders that carry the memory cue. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.4.0
 — new v0.4.0 demo:
 Demo video (2:54, public): https://www.youtube.com/watch?v=WK9LMwpvHUk
+Try it in your browser: the StudySprint web app (v0.1.0) — the same plan, trust receipt, and spaced repetition, running live: https://timerloggedout-spec.github.io/studysprint/web/
 Demo: under 3 minutes, scripted in `demo-script.md`, runnable as
 `demo.py`, receipts in `evidence/demo-run.json`.

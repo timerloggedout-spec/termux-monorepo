@@ -93,6 +93,7 @@ def test_receipt_states_the_claim_expectation():
 # ---- priority_timebox riding (owner addendum 2026-11-03) ----
 
 from dispatch_watchdog import (current_tier, entry_of,  # noqa: E402
+                               escalation_comment, flag_comment,
                                load_timeboxes, thresholds_for)
 
 D1_TIMEBOX = {
@@ -286,3 +287,38 @@ def test_write_feed_only_on_content_change(tmp_path):
     changed = build_feed([{"issue": 1, "state": "claimed"}], NOW)
     assert write_feed(changed, str(tmp_path)) is True
     assert canon.read_bytes() == mirror.read_bytes() != first
+
+
+# ---- #4362: flag/escalation comment contract ----
+
+def _verdict(tier="CUSHION", flag=20, esc=40):
+    return {"tier": tier, "flag_min": flag, "escalate_min": esc}
+
+
+def test_flag_escalation_comments_accept_the_sweep_call_shape():
+    # sweep() calls flag_comment(age, verdict) and
+    # escalation_comment(issue, age, verdict) positionally; before
+    # #4362 both builders took one argument fewer and every
+    # flag/escalate action died on TypeError -> ERROR row.
+    issue = {"number": 99, "user": {"login": "filer"}}
+    flag = flag_comment(45.0, _verdict())
+    esc = escalation_comment(issue, 90.0, _verdict())
+    assert "Tier frame: CUSHION" in flag and "Tier frame: CUSHION" in esc
+    assert "stall-event: flag " in flag
+    assert "stall-event: escalation " in esc
+    # the flag text quotes the tier's real escalation threshold,
+    # not the BASE hardcode
+    assert "Escalation follows at 40 minutes" in flag
+
+
+def test_stall_events_round_trip_through_the_feed_collector():
+    issue = {"number": 99, "user": {"login": "filer"}}
+    comments = [
+        {"created_at": "2026-11-03T10:00:00Z",
+         "body": flag_comment(45.0, _verdict())},
+        {"created_at": "2026-11-03T10:30:00Z",
+         "body": escalation_comment(issue, 90.0, _verdict())},
+    ]
+    events = stall_events_of(comments)
+    assert [e["kind"] for e in events] == ["flag", "escalation"]
+    assert events[0]["at"] == "2026-11-03T10:00:00Z"

@@ -205,7 +205,22 @@ def classify(issue: dict, comments: list, now: datetime,
     return {**base, "state": "watching", "action": None}
 
 
-def flag_comment(age_min: float) -> str:
+def _tier_frame(verdict):
+    """(tier, flag_min, escalate_min) from a classify() verdict,
+    with BASE defaults for verdict-less callers."""
+    v = verdict or {}
+    return (v.get("tier") or "BASE", int(v.get("flag_min", 30)),
+            int(v.get("escalate_min", 60)))
+
+
+def flag_comment(age_min: float, verdict=None) -> str:
+    # The verdict parameter is the sweep's call shape (#4362: the
+    # builders took one argument fewer than sweep passes, so every
+    # flag/escalate action died on TypeError). The comment carries
+    # the tier frame + the machine-readable stall-event line the
+    # module docstring promises (the #4350 feed collector scans
+    # comments for it).
+    tier, flag_min, esc_min = _tier_frame(verdict)
     return (
         f"[MUSEai]@{{role:{{dispatch-watchdog}}}} {FLAG_MARKER} — "
         f"this task has sat `dispatch-queued` UNCLAIMED for "
@@ -214,12 +229,20 @@ def flag_comment(age_min: float) -> str:
         "(claim comment + `dispatch-claimed` label, via "
         "`scripts/dispatch/claim_task.py`). The producing seat "
         "should claim at pickup; the filing seat should confirm a "
-        "claim exists. Escalation follows at 60 minutes unclaimed."
+        f"claim exists. Escalation follows at {esc_min} minutes "
+        "unclaimed.\n\n"
+        f"Tier frame: {tier} — thresholds flag {flag_min} min / "
+        f"escalate {esc_min} min (priority_timebox, "
+        "ops/challenge/desk-feed.json).\n\n"
+        f"stall-event: flag tier={tier} age_min={age_min:.0f} "
+        f"flag_min={flag_min} escalate_min={esc_min}"
     )
 
 
-def escalation_comment(issue: dict, age_min: float) -> str:
+def escalation_comment(issue: dict, age_min: float,
+                       verdict=None) -> str:
     author = (issue.get("user") or {}).get("login", "unknown")
+    tier, flag_min, esc_min = _tier_frame(verdict)
     return (
         f"[MUSEai]@{{role:{{dispatch-watchdog}}}} "
         f"{ESCALATION_MARKER} — this task has sat `dispatch-queued` "
@@ -230,7 +253,13 @@ def escalation_comment(issue: dict, age_min: float) -> str:
         "this signal (instance of record: the 2026-11-03 D1 "
         "surface stall, issue #4164). Remedy: a producing seat "
         "claims via `scripts/dispatch/claim_task.py`, or the "
-        "filing seat routes it to a named seat directly."
+        "filing seat routes it to a named seat directly.\n\n"
+        f"Tier frame: {tier} — thresholds flag {flag_min} min / "
+        f"escalate {esc_min} min (priority_timebox, "
+        "ops/challenge/desk-feed.json).\n\n"
+        f"stall-event: escalation tier={tier} "
+        f"age_min={age_min:.0f} flag_min={flag_min} "
+        f"escalate_min={esc_min}"
     )
 
 

@@ -37,24 +37,26 @@ jobs:
         run: |
           python3 - <<'PYEOF'
           import json, os, subprocess, time
-          # Every page fetch retries once on a bad body (proof run
-          # 41737482551: an API error envelope mid-pagination --
-          # no "workflow_runs" key -- killed this step and, with
-          # it, the admission stamp). If the picture still cannot
-          # be collected, write the collection_error sentinel and
-          # exit 0: the evaluator turns an unknown queue into a
-          # DEFERRED stamp with the reason, never a silent death.
+          # Page fetches retry with backoff on a bad body (proof
+          # runs 41737482551 + 41738428894: API error envelopes
+          # mid-pagination -- no "workflow_runs" key -- kept
+          # killing collection even at one retry per 100-run
+          # page; pages are now 50 with 4 attempts at 5/10/20s).
+          # If the picture still cannot be collected, write the
+          # collection_error sentinel and exit 0: the evaluator
+          # turns an unknown queue into a DEFERRED stamp with
+          # the reason, never a silent death.
           def fetch(status, page):
-              for attempt in (1, 2):
+              for attempt, wait in ((1, 5), (2, 10), (3, 20), (4, 0)):
                   out = subprocess.run(
-                      ["gh", "api", f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs?status={status}&per_page=100&page={page}"],
+                      ["gh", "api", f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs?status={status}&per_page=50&page={page}"],
                       capture_output=True, text=True).stdout
                   try:
                       return json.loads(out)["workflow_runs"]
                   except Exception:
-                      if attempt == 2:
+                      if attempt == 4:
                           return None
-                      time.sleep(5)
+                      time.sleep(wait)
           runs, failed = [], False
           for status in ("queued", "in_progress"):
               page = 1
@@ -64,7 +66,7 @@ jobs:
                       failed = True
                       break
                   runs += [{"name": r["name"], "status": r["status"], "created_at": r["created_at"]} for r in batch]
-                  if len(batch) < 100:
+                  if len(batch) < 50:
                       break
                   page += 1
               if failed:

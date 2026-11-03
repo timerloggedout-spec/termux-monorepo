@@ -18,18 +18,18 @@ STATE_MAP = {
     "active_link": "live",
     "code_pending": "exhausted",
     "pending_identity": "pending",
-    "no_public_programme": "pending",
+    "no_public_programme": "no_public_programme",
     "programme_verified_not_enrolled": "pending",
 }
 
 
 def viz_state(p):
-    """Visualization state {live|pending|not-established|exhausted}.
+    """Visualization state {live|pending|not-established|exhausted|no_public_programme}.
 
     Derived, never hand-set: an all-exhausted code pool is exhausted even
     if the registry status lags; a live link whose offer itself is
-    NOT ESTABLISHED renders not-established; Hark renders pending with
-    its pending_identity detail until main stamps the resolution.
+    NOT ESTABLISHED renders not-established. Hark's no_public_programme
+    resolution was stamped by main 2026-11-03 and renders as its own state.
     """
     codes = p.get("codes", [])
     if codes and all(c["status"] == "exhausted" for c in codes):

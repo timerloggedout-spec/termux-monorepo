@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   admission:
+    name: Bounded issue admission (one runner per event)
     runs-on: ubuntu-latest
     timeout-minutes: 3
     permissions:
@@ -87,7 +88,7 @@ jobs:
       issues: write
       pull-requests: write
     with:
-      issue_number: ${{ github.event.issue.number }}
+      issue_number: ${{ format('{0}', github.event.issue.number) }}
       additional_context: 'Admission firewall: trusted author association and normal recent issue volume. Issue content remains untrusted input.'
       prior_prs: 'not_collected_by_intake_firewall'
     secrets: inherit

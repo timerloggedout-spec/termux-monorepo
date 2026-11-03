@@ -1,0 +1,730 @@
+{
+ "schema": "quota-vultr-usage/v1",
+ "generated_by": "scripts/quota_vultr_usage.py",
+ "generated_at": "2026-11-03T19:00:52Z",
+ "plans": {
+  "source": "https://api.vultr.com/v2/plans",
+  "pulled_at": "2026-11-03T19:00:52Z",
+  "stale": false,
+  "rates": {
+   "vc2-1c-0.5gb-free": {
+    "hourly": 0,
+    "monthly": 0,
+    "type": "vc2"
+   },
+   "vc2-1c-0.5gb-v6": {
+    "hourly": 0.003,
+    "monthly": 2.5,
+    "type": "vc2"
+   },
+   "vc2-1c-0.5gb": {
+    "hourly": 0.005,
+    "monthly": 3.5,
+    "type": "vc2"
+   },
+   "vc2-1c-1gb": {
+    "hourly": 0.007,
+    "monthly": 5,
+    "type": "vc2"
+   },
+   "vc2-1c-2gb": {
+    "hourly": 0.014,
+    "monthly": 10,
+    "type": "vc2"
+   },
+   "vc2-2c-2gb": {
+    "hourly": 0.021,
+    "monthly": 15,
+    "type": "vc2"
+   },
+   "vc2-2c-4gb": {
+    "hourly": 0.027,
+    "monthly": 20,
+    "type": "vc2"
+   },
+   "vc2-4c-8gb": {
+    "hourly": 0.055,
+    "monthly": 40,
+    "type": "vc2"
+   },
+   "vc2-6c-16gb": {
+    "hourly": 0.11,
+    "monthly": 80,
+    "type": "vc2"
+   },
+   "vc2-8c-32gb": {
+    "hourly": 0.219,
+    "monthly": 160,
+    "type": "vc2"
+   },
+   "vc2-16c-64gb": {
+    "hourly": 0.438,
+    "monthly": 320,
+    "type": "vc2"
+   },
+   "vc2-24c-96gb": {
+    "hourly": 0.877,
+    "monthly": 640,
+    "type": "vc2"
+   },
+   "vhf-1c-1gb": {
+    "hourly": 0.008,
+    "monthly": 6,
+    "type": "vhf"
+   },
+   "vhf-1c-2gb": {
+    "hourly": 0.016,
+    "monthly": 12,
+    "type": "vhf"
+   },
+   "vhf-2c-2gb": {
+    "hourly": 0.025,
+    "monthly": 18,
+    "type": "vhf"
+   },
+   "vhf-2c-4gb": {
+    "hourly": 0.033,
+    "monthly": 24,
+    "type": "vhf"
+   },
+   "vhf-3c-8gb": {
+    "hourly": 0.066,
+    "monthly": 48,
+    "type": "vhf"
+   },
+   "vhf-4c-16gb": {
+    "hourly": 0.132,
+    "monthly": 96,
+    "type": "vhf"
+   },
+   "vhf-6c-24gb": {
+    "hourly": 0.197,
+    "monthly": 144,
+    "type": "vhf"
+   },
+   "vhf-8c-32gb": {
+    "hourly": 0.263,
+    "monthly": 192,
+    "type": "vhf"
+   },
+   "vhf-12c-48gb": {
+    "hourly": 0.351,
+    "monthly": 256,
+    "type": "vhf"
+   },
+   "vhf-16c-58gb": {
+    "hourly": 0.438,
+    "monthly": 320,
+    "type": "vhf"
+   },
+   "vhp-1c-1gb-amd": {
+    "hourly": 0.008,
+    "monthly": 6,
+    "type": "vhp"
+   },
+   "vhp-1c-2gb-amd": {
+    "hourly": 0.016,
+    "monthly": 12,
+    "type": "vhp"
+   },
+   "vhp-2c-2gb-amd": {
+    "hourly": 0.025,
+    "monthly": 18,
+    "type": "vhp"
+   },
+   "vhp-2c-4gb-amd": {
+    "hourly": 0.033,
+    "monthly": 24,
+    "type": "vhp"
+   },
+   "vhp-4c-8gb-amd": {
+    "hourly": 0.066,
+    "monthly": 48,
+    "type": "vhp"
+   },
+   "vhp-4c-12gb-amd": {
+    "hourly": 0.099,
+    "monthly": 72,
+    "type": "vhp"
+   },
+   "vhp-8c-16gb-amd": {
+    "hourly": 0.132,
+    "monthly": 96,
+    "type": "vhp"
+   },
+   "vhp-12c-24gb-amd": {
+    "hourly": 0.197,
+    "monthly": 144,
+    "type": "vhp"
+   },
+   "vhp-1c-1gb-intel": {
+    "hourly": 0.008,
+    "monthly": 6,
+    "type": "vhp"
+   },
+   "vhp-1c-2gb-intel": {
+    "hourly": 0.016,
+    "monthly": 12,
+    "type": "vhp"
+   },
+   "vhp-2c-2gb-intel": {
+    "hourly": 0.025,
+    "monthly": 18,
+    "type": "vhp"
+   },
+   "vhp-2c-4gb-intel": {
+    "hourly": 0.033,
+    "monthly": 24,
+    "type": "vhp"
+   },
+   "vhp-4c-8gb-intel": {
+    "hourly": 0.066,
+    "monthly": 48,
+    "type": "vhp"
+   },
+   "vhp-4c-12gb-intel": {
+    "hourly": 0.099,
+    "monthly": 72,
+    "type": "vhp"
+   },
+   "vhp-8c-16gb-intel": {
+    "hourly": 0.132,
+    "monthly": 96,
+    "type": "vhp"
+   },
+   "vhp-12c-24gb-intel": {
+    "hourly": 0.197,
+    "monthly": 144,
+    "type": "vhp"
+   },
+   "voc-c-1c-2gb-25s-amd": {
+    "hourly": 0.038,
+    "monthly": 28,
+    "type": "voc"
+   },
+   "voc-g-1c-4gb-30s-amd": {
+    "hourly": 0.041,
+    "monthly": 30,
+    "type": "voc"
+   },
+   "voc-m-1c-8gb-50s-amd": {
+    "hourly": 0.055,
+    "monthly": 40,
+    "type": "voc"
+   },
+   "voc-c-2c-4gb-50s-amd": {
+    "hourly": 0.055,
+    "monthly": 40,
+    "type": "voc"
+   },
+   "voc-g-2c-8gb-50s-amd": {
+    "hourly": 0.082,
+    "monthly": 60,
+    "type": "voc"
+   },
+   "voc-c-2c-4gb-75s-amd": {
+    "hourly": 0.062,
+    "monthly": 45,
+    "type": "voc"
+   },
+   "voc-c-4c-8gb-75s-amd": {
+    "hourly": 0.11,
+    "monthly": 80,
+    "type": "voc"
+   },
+   "voc-g-4c-16gb-80s-amd": {
+    "hourly": 0.164,
+    "monthly": 120,
+    "type": "voc"
+   },
+   "voc-m-2c-16gb-100s-amd": {
+    "hourly": 0.11,
+    "monthly": 80,
+    "type": "voc"
+   },
+   "voc-s-1c-8gb-150s-amd": {
+    "hourly": 0.103,
+    "monthly": 75,
+    "type": "voc"
+   },
+   "voc-c-4c-8gb-150s-amd": {
+    "hourly": 0.123,
+    "monthly": 90,
+    "type": "voc"
+   },
+   "voc-c-8c-16gb-150s-amd": {
+    "hourly": 0.219,
+    "monthly": 160,
+    "type": "voc"
+   },
+   "voc-g-8c-32gb-160s-amd": {
+    "hourly": 0.329,
+    "monthly": 240,
+    "type": "voc"
+   },
+   "voc-m-2c-16gb-200s-amd": {
+    "hourly": 0.137,
+    "monthly": 100,
+    "type": "voc"
+   },
+   "voc-m-4c-32gb-200s-amd": {
+    "hourly": 0.219,
+    "monthly": 160,
+    "type": "voc"
+   },
+   "voc-c-8c-16gb-300s-amd": {
+    "hourly": 0.247,
+    "monthly": 180,
+    "type": "voc"
+   },
+   "voc-c-16c-32gb-300s-amd": {
+    "hourly": 0.438,
+    "monthly": 320,
+    "type": "voc"
+   },
+   "voc-s-2c-16gb-320s-amd": {
+    "hourly": 0.171,
+    "monthly": 125,
+    "type": "voc"
+   },
+   "voc-g-16c-64gb-320s-amd": {
+    "hourly": 0.658,
+    "monthly": 480,
+    "type": "voc"
+   },
+   "voc-m-2c-16gb-400s-amd": {
+    "hourly": 0.171,
+    "monthly": 125,
+    "type": "voc"
+   },
+   "voc-m-4c-32gb-400s-amd": {
+    "hourly": 0.267,
+    "monthly": 195,
+    "type": "voc"
+   },
+   "voc-m-8c-64gb-400s-amd": {
+    "hourly": 0.438,
+    "monthly": 320,
+    "type": "voc"
+   },
+   "voc-s-2c-16gb-480s-amd": {
+    "hourly": 0.212,
+    "monthly": 155,
+    "type": "voc"
+   },
+   "voc-g-24c-96gb-480s-amd": {
+    "hourly": 0.986,
+    "monthly": 720,
+    "type": "voc"
+   },
+   "voc-c-16c-32gb-500s-amd": {
+    "hourly": 0.493,
+    "monthly": 360,
+    "type": "voc"
+   },
+   "voc-c-32c-64gb-500s-amd": {
+    "hourly": 0.877,
+    "monthly": 640,
+    "type": "voc"
+   },
+   "voc-s-4c-32gb-640s-amd": {
+    "hourly": 0.342,
+    "monthly": 250,
+    "type": "voc"
+   },
+   "voc-g-32c-128gb-640s-amd": {
+    "hourly": 1.315,
+    "monthly": 960,
+    "type": "voc"
+   },
+   "voc-g-40c-160gb-768s-amd": {
+    "hourly": 1.644,
+    "monthly": 1200,
+    "type": "voc"
+   },
+   "voc-m-4c-32gb-800s-amd": {
+    "hourly": 0.342,
+    "monthly": 250,
+    "type": "voc"
+   },
+   "voc-m-8c-64gb-800s-amd": {
+    "hourly": 0.534,
+    "monthly": 390,
+    "type": "voc"
+   },
+   "voc-m-16c-128gb-800s-amd": {
+    "hourly": 0.877,
+    "monthly": 640,
+    "type": "voc"
+   },
+   "voc-s-4c-32gb-960s-amd": {
+    "hourly": 0.425,
+    "monthly": 310,
+    "type": "voc"
+   },
+   "voc-g-64c-192gb-960s-amd": {
+    "hourly": 2.63,
+    "monthly": 1920,
+    "type": "voc"
+   },
+   "voc-c-32c-64gb-1000s-amd": {
+    "hourly": 0.986,
+    "monthly": 720,
+    "type": "voc"
+   },
+   "voc-m-24c-192gb-1200s-amd": {
+    "hourly": 1.315,
+    "monthly": 960,
+    "type": "voc"
+   },
+   "voc-s-8c-64gb-1280s-amd": {
+    "hourly": 0.685,
+    "monthly": 500,
+    "type": "voc"
+   },
+   "voc-g-96c-256gb-1280s-amd": {
+    "hourly": 5.26,
+    "monthly": 3840,
+    "type": "voc"
+   },
+   "voc-m-8c-64gb-1600s-amd": {
+    "hourly": 0.685,
+    "monthly": 500,
+    "type": "voc"
+   },
+   "voc-m-16c-128gb-1600s-amd": {
+    "hourly": 1.075,
+    "monthly": 785,
+    "type": "voc"
+   },
+   "voc-m-32c-256gb-1600s-amd": {
+    "hourly": 1.753,
+    "monthly": 1280,
+    "type": "voc"
+   },
+   "voc-s-8c-64gb-1920s-amd": {
+    "hourly": 0.849,
+    "monthly": 620,
+    "type": "voc"
+   },
+   "voc-m-24c-192gb-2400s-amd": {
+    "hourly": 1.61,
+    "monthly": 1175,
+    "type": "voc"
+   },
+   "voc-s-16c-128gb-2560s-amd": {
+    "hourly": 1.37,
+    "monthly": 1000,
+    "type": "voc"
+   },
+   "voc-m-16c-128gb-3200s-amd": {
+    "hourly": 1.37,
+    "monthly": 1000,
+    "type": "voc"
+   },
+   "voc-m-32c-256gb-3200s-amd": {
+    "hourly": 2.144,
+    "monthly": 1565,
+    "type": "voc"
+   },
+   "voc-s-16c-128gb-3840s-amd": {
+    "hourly": 1.699,
+    "monthly": 1240,
+    "type": "voc"
+   },
+   "voc-s-24c-192gb-3840s-amd": {
+    "hourly": 2.055,
+    "monthly": 1500,
+    "type": "voc"
+   },
+   "voc-m-24c-192gb-4800s-amd": {
+    "hourly": 2.055,
+    "monthly": 1500,
+    "type": "voc"
+   },
+   "voc-s-24c-192gb-5760s-amd": {
+    "hourly": 2.534,
+    "monthly": 1850,
+    "type": "voc"
+   },
+   "voc-s-32c-256gb-5760s-amd": {
+    "hourly": 2.74,
+    "monthly": 2000,
+    "type": "voc"
+   },
+   "vcg-l40s-16c-180g-48vram": {
+    "hourly": 1.671,
+    "monthly": 1122.91,
+    "type": "vcg"
+   },
+   "vcg-a16-6c-60g-16vram": {
+    "hourly": 0.471,
+    "monthly": 344,
+    "type": "vdm"
+   },
+   "vcg-a16-12c-120g-32vram": {
+    "hourly": 0.942,
+    "monthly": 688,
+    "type": "vdm"
+   },
+   "vcg-a100-12c-120g-80vram": {
+    "hourly": 2.397,
+    "monthly": 1750,
+    "type": "vdm"
+   },
+   "vcg-a40-24c-120g-48vram": {
+    "hourly": 1.712,
+    "monthly": 1250,
+    "type": "vdm"
+   },
+   "vcg-a40-96c-480g-192vram": {
+    "hourly": 6.849,
+    "monthly": 5000,
+    "type": "vdm"
+   },
+   "vcg-a16-96c-960g-256vram": {
+    "hourly": 7.534,
+    "monthly": 5500,
+    "type": "vdm"
+   },
+   "vcg-a100-96c-960g-640vram": {
+    "hourly": 19.178,
+    "monthly": 14000,
+    "type": "vdm"
+   },
+   "vcg-h100-216c-1914gb-640vram": {
+    "hourly": 23.92,
+    "monthly": 16074.24,
+    "type": "vdm"
+   },
+   "vcg-b200-248c-2826g-1536vram": {
+    "hourly": 68,
+    "monthly": 45696,
+    "type": "vdm"
+   },
+   "vcg-mi355x-252c-2872g-2304vram": {
+    "hourly": 20.72,
+    "monthly": 15125.6,
+    "type": "vdm"
+   },
+   "vcg-mi325x-252c-2872g-1536vram": {
+    "hourly": 36.92,
+    "monthly": 24810.24,
+    "type": "vdm"
+   },
+   "vx1-g-2c-8g": {
+    "hourly": 0.06,
+    "monthly": 43.8,
+    "type": "vx1"
+   },
+   "vx1-m-2c-16g": {
+    "hourly": 0.08,
+    "monthly": 58.4,
+    "type": "vx1"
+   },
+   "vx1-g-4c-16g": {
+    "hourly": 0.12,
+    "monthly": 87.6,
+    "type": "vx1"
+   },
+   "vx1-m-4c-32gb": {
+    "hourly": 0.16,
+    "monthly": 116.8,
+    "type": "vx1"
+   },
+   "vx1-g-8c-32g": {
+    "hourly": 0.24,
+    "monthly": 175.2,
+    "type": "vx1"
+   },
+   "vx1-m-8c-64gb": {
+    "hourly": 0.32,
+    "monthly": 233.6,
+    "type": "vx1"
+   },
+   "vx1-g-16c-64g": {
+    "hourly": 0.48,
+    "monthly": 350.4,
+    "type": "vx1"
+   },
+   "vx1-m-16c-128gb": {
+    "hourly": 0.64,
+    "monthly": 467.2,
+    "type": "vx1"
+   },
+   "vx1-g-32c-128g": {
+    "hourly": 0.96,
+    "monthly": 700.8,
+    "type": "vx1"
+   },
+   "vx1-m-32c-256gb": {
+    "hourly": 1.28,
+    "monthly": 934.4,
+    "type": "vx1"
+   },
+   "vx1-g-48c-192g": {
+    "hourly": 1.44,
+    "monthly": 1051.2,
+    "type": "vx1"
+   },
+   "vx1-m-48c-384gb": {
+    "hourly": 1.92,
+    "monthly": 1401.6,
+    "type": "vx1"
+   },
+   "vx1-g-64c-256g": {
+    "hourly": 1.92,
+    "monthly": 1401.6,
+    "type": "vx1"
+   },
+   "vx1-m-64c-512gb": {
+    "hourly": 2.56,
+    "monthly": 1868.8,
+    "type": "vx1"
+   },
+   "vx1-g-96c-384g": {
+    "hourly": 2.88,
+    "monthly": 2102.4,
+    "type": "vx1"
+   },
+   "vx1-m-96c-768gb": {
+    "hourly": 3.84,
+    "monthly": 2803.2,
+    "type": "vx1"
+   },
+   "vx1-g-192c-768g": {
+    "hourly": 5.76,
+    "monthly": 4204.8,
+    "type": "vx1"
+   },
+   "vx1-m-192c-1536gb": {
+    "hourly": 7.68,
+    "monthly": 5606.4,
+    "type": "vx1"
+   },
+   "vx1-g-2c-8g-120s": {
+    "hourly": 0.076,
+    "monthly": 55.48,
+    "type": "vx1"
+   },
+   "vx1-m-2c-16g-120s": {
+    "hourly": 0.096,
+    "monthly": 70.08,
+    "type": "vx1"
+   },
+   "vx1-g-4c-16g-240s": {
+    "hourly": 0.153,
+    "monthly": 111.69,
+    "type": "vx1"
+   },
+   "vx1-m-4c-32g-240s": {
+    "hourly": 0.193,
+    "monthly": 140.89,
+    "type": "vx1"
+   },
+   "vx1-g-8c-32g-480s": {
+    "hourly": 0.306,
+    "monthly": 223.38,
+    "type": "vx1"
+   },
+   "vx1-m-8c-64g-480s": {
+    "hourly": 0.386,
+    "monthly": 281.78,
+    "type": "vx1"
+   },
+   "vx1-g-16c-64g-960s": {
+    "hourly": 0.612,
+    "monthly": 446.76,
+    "type": "vx1"
+   },
+   "vx1-m-16c-128g-960s": {
+    "hourly": 0.772,
+    "monthly": 563.56,
+    "type": "vx1"
+   },
+   "vx1-g-32c-128g-1920s": {
+    "hourly": 1.223,
+    "monthly": 892.79,
+    "type": "vx1"
+   },
+   "vx1-m-32c-256g-1920s": {
+    "hourly": 1.543,
+    "monthly": 1126.39,
+    "type": "vx1"
+   },
+   "vx1-g-48c-192g-2880s": {
+    "hourly": 1.835,
+    "monthly": 1339.55,
+    "type": "vx1"
+   },
+   "vx1-m-48c-384g-2880s": {
+    "hourly": 2.315,
+    "monthly": 1689.95,
+    "type": "vx1"
+   },
+   "vx1-g-64c-256g-3840s": {
+    "hourly": 2.446,
+    "monthly": 1785.58,
+    "type": "vx1"
+   },
+   "vx1-m-64c-512g-3840s": {
+    "hourly": 3.086,
+    "monthly": 2252.78,
+    "type": "vx1"
+   },
+   "vx1-g-96c-384g-5760s": {
+    "hourly": 3.669,
+    "monthly": 2678.37,
+    "type": "vx1"
+   },
+   "vx1-m-96c-768g-5760s": {
+    "hourly": 4.629,
+    "monthly": 3379.17,
+    "type": "vx1"
+   },
+   "vx1-m-192c-1536g-11520s": {
+    "hourly": 9.258,
+    "monthly": 6758.34,
+    "type": "vx1"
+   },
+   "vx1-g-192c-768g-11520s": {
+    "hourly": 7.338,
+    "monthly": 5356.74,
+    "type": "vx1"
+   },
+   "vcg-l40s-32c-375g-96vram": {
+    "hourly": 3.342,
+    "monthly": 2245.82,
+    "type": "vcg"
+   },
+   "vcg-l40s-64c-750g-192vram": {
+    "hourly": 6.684,
+    "monthly": 4491.65,
+    "type": "vcg"
+   }
+  }
+ },
+ "legs": {
+  "instances": {
+   "state": "gap",
+   "unit": "USD",
+   "kind": "estimated",
+   "formula": "sum over instances of plans[plan].hourly x meter hours (date_created -> date_destroyed|now)",
+   "reason": "account API key not provisioned - owner's Vultr API key is a vault provisioning item (Console); leg stays an explicit gap until it lands",
+   "points": []
+  },
+  "serverless": {
+   "state": "gap",
+   "unit": "USD",
+   "kind": "measured",
+   "formula": "sum over models of (tokens_in x rate_in + tokens_out x rate_out) / 1e6; per-model rates pulled from the API/Console at read time",
+   "reason": "account API key not provisioned - owner's Vultr API key is a vault provisioning item (Console); leg stays an explicit gap until it lands",
+   "points": []
+  },
+  "account_balance": {
+   "state": "gap",
+   "unit": "USD",
+   "reason": "account-API balance leg stays an explicit gap until the owner's API key lands in the vault (provisioning item, owner's hand in Console)"
+  }
+ }
+}

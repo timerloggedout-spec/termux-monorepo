@@ -127,6 +127,26 @@ def build(root):
     s4["events"] = events.get("events", [])
     pack["series4_rate_limit_events"] = s4
 
+    # series5_vultr: the pack copy of the Vultr collector's record
+    # (ops/quota/vultr-usage.json, quota-vultr-usage/v1) - legs stay
+    # explicit gaps until the account key lands; nothing derived here.
+    vultr = load(root, "ops/quota/vultr-usage.json") or {}
+    s5 = {"title": "Vultr usage - instance + serverless $ burn",
+          "source": "ops/quota/vultr-usage.json "
+                    "(quota-vultr-usage/v1) - collected by "
+                    "scripts/quota_vultr_usage.py; plans rates pulled "
+                    "from api.vultr.com/v2/plans at read time",
+          "note": "Account legs (instances, serverless, balance) "
+                  "are explicit gaps until the owner's Vultr API "
+                  "key is provisioned; rates are never hardcoded."}
+    if vultr:
+        s5.update({"generated_at": vultr.get("generated_at"),
+                   "plans": vultr.get("plans"),
+                   "legs": vultr.get("legs") or {}})
+    else:
+        s5["legs"] = {}
+    pack["series5_vultr"] = s5
+
     n_rec = len(registry.get("services") or [])
     # pools live in the allocation plan, not the registry.
     n_pool = (len(plan.get("pools") or [])

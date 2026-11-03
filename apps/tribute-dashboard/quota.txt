@@ -1,7 +1,7 @@
 ================================================================================
  QUOTA  termux-monorepo  (170 registry records)
- Snapshot generated (not observation time): 2026-11-01T13:23:25.948846+00:00
- Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
+ Snapshot generated (not observation time): 2026-11-02T08:16:06.415255+00:00
+ Source: apps/tribute-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
 ================================================================================
@@ -24,24 +24,21 @@
 --------------------------------------------------------------------------------
  Claude (1)
   claude.seat_runtime
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a dispatches (consumption NOT ESTABLISHED)
     metric: Inference dispatches via the Muse seat runtime (endpoint Muse::Muse
     Spark 1.3; metered, seat-runtime pool) | window: seat plan window (not
     exposed) | reset: not exposed
-    No live reading (live source: routed-dispatch stamps + nested-family
-    carriers; usage-series model axis carries the activity-proxy counts; no
-    passive quota reader)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  DeepSeek (1)
   deepseek.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a requests/tokens (NOT ESTABLISHED)
     metric: Inference via the direct DeepSeek API route (distinct from the g4f
     route g4f.deepseek and the CI build arm deepseek.build_dispatch) | window:
     provider-side (not established) | reset: not established
-    No live reading (live source: nested-family carriers + dispatch records; no
-    passive quota reader)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  aion (1)
   aion.free_tokens
@@ -92,11 +89,11 @@
 --------------------------------------------------------------------------------
  baseten (1)
   baseten.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a USD credits (prepaid)
     metric: Prepaid API credits (pay-as-you-go inference) | window: n/a | reset:
     n/a
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  cerebras (1)
   cerebras.free_tokens
@@ -159,11 +156,11 @@
 --------------------------------------------------------------------------------
  deepinfra (1)
   deepinfra.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a USD balance (prepaid)
     metric: Prepaid API balance (pay-as-you-go inference) | window: n/a | reset:
     n/a
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  deno (1)
   deno.deploy_requests
@@ -214,11 +211,11 @@
 --------------------------------------------------------------------------------
  friendli (1)
   friendli.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a USD balance (prepaid)
     metric: Prepaid API balance (pay-as-you-go inference) | window: n/a | reset:
     n/a
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/AgentTools (1)
   g4f.agenttools
@@ -947,11 +944,11 @@
 --------------------------------------------------------------------------------
  novita (1)
   novita.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a USD balance (prepaid)
     metric: Prepaid API balance (pay-as-you-go inference) | window: n/a | reset:
     n/a
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  nvidia (1)
   nvidia.api_catalog
@@ -1269,6 +1266,8 @@
   parser; registry: cohere.trial_calls
   deepinfra: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: deepinfra.api
+  deepseek: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: deepseek.api
   felo: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
   registry: felo.api_credits
   friendli: Manager / ChronoMancer; official_documentation_only; no passive
@@ -1320,6 +1319,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 170 registry records | 1 alert(s) | 164 with a reported reading | 6 with No
+ 170 registry records | 1 alert(s) | 170 with a reported reading | 0 with No
  live reading
 ================================================================================

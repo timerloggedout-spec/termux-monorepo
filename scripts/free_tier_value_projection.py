@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP, localcontext
 from pathlib import Path
@@ -94,9 +95,29 @@ def exact_price(pricing: list[dict[str, Any]], canonical_model_id: str,
 def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str, Any] | None:
     if any(row.get(key) != expected for key, expected in GATES.items()):
         return None
-    required_strings = ("call_uid", "run_id", "repository", "provider", "model_id",
+    required_strings = ("call_uid", "run_id", "repository", "workflow", "provider", "model_id",
                         "model_version_pin", "canonical_model_id", "pricing_id")
     if any(not nonempty_string(row.get(key)) for key in required_strings):
+        return None
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", row["repository"]):
+        return None
+    if not row["run_id"].isdigit():
+        return None
+    source_sha = row.get("source_sha") or row.get("head_sha")
+    if not isinstance(source_sha, str) or not re.fullmatch(r"[0-9a-fA-F]{40}", source_sha):
+        return None
+    observed_at = row.get("timestamp") or row.get("observed_at")
+    if not isinstance(observed_at, str) or not observed_at.endswith("Z"):
+        return None
+    try:
+        datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    elapsed = decimal_rate(row.get("elapsed_seconds"))
+    if elapsed is None and row.get("latency_ms") is not None:
+        latency = decimal_rate(row.get("latency_ms"))
+        elapsed = latency / Decimal(1000) if latency is not None else None
+    if elapsed is None or not math.isfinite(float(elapsed)):
         return None
     if not nonnegative_int(row.get("run_attempt")) or row["run_attempt"] < 1:
         return None
@@ -135,25 +156,23 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
     return {
         "session_label": row.get("session_label") or row["call_uid"],
         "run_uid": f"gha:{row['repository']}:{row['run_id']}:{row['run_attempt']}",
-        "call_uid": row["call_uid"],
+        "workflow": row["workflow"],
+        "source_sha": source_sha,
+        "observed_at": observed_at,
         "provider": row["provider"],
         "model_id": row["model_id"],
-        "model_version_pin": row["model_version_pin"],
+        "canonical_model_id": row["canonical_model_id"],
         "input_tokens": row["tokens_in"],
         "output_tokens": row["tokens_out"],
+        "elapsed_seconds": float(elapsed),
         "outcome_status": row["outcome_status"],
+        "evidence_url": f"https://github.com/{row['repository']}/actions/runs/{row['run_id']}",
         "validation_status": row["validation_status"],
         "basksweep_status": row["basksweep_status"],
         "publication_status": row["publication_status"],
         "billing_status": row["billing_status"],
-        "cost_usd": actual_cost,
-        "paid_equivalent_usd": paid_equivalent_number,
-        "paid_equivalent_usd_exact": paid_equivalent_exact,
         "pricing_id": row["pricing_id"],
-        "source_sha": row.get("source_sha") or row.get("head_sha"),
-        "source_run_attempt": f"{row['run_id']}:{row['run_attempt']}",
-        "observed_at": row.get("timestamp"),
-        "evidence_url": row.get("evidence_url"),
+        "_paid_equivalent_usd_exact": paid_equivalent_exact,
     }
 
 
@@ -217,7 +236,9 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
     # The numeric fields remain presentation-friendly compatibility values.
     with localcontext() as ctx:
         ctx.prec = 50
-        exact_total = sum((Decimal(s["paid_equivalent_usd_exact"]) for s in sessions), Decimal(0))
+        exact_total = sum((Decimal(s["_paid_equivalent_usd_exact"]) for s in sessions), Decimal(0))
+        for session in sessions:
+            session.pop("_paid_equivalent_usd_exact", None)
         exact_total_text = format(exact_total, "f")
         rounded_total = exact_total.quantize(VALUE_QUANTUM, rounding=ROUND_HALF_UP)
     board["sessions"] = sessions

@@ -27,6 +27,7 @@ const state = { data: null, cardIndex: 0, flipped: false,
 // uses; interval rounding follows Python's round() (banker's), as
 // in the library.
 const FSRS_GENERATION = "FSRS-6";
+const STATE_SCHEMA_VERSION = "studysprint-state/1";
 const FSRS_W = [0.212, 1.2931, 2.3065, 8.2956, 6.4133, 0.8334, 3.0194,
   0.001, 1.8722, 0.1666, 0.796, 1.4835, 0.0614, 0.2629, 1.6483, 0.6014,
   1.8729, 0.5425, 0.0912, 0.0658, 0.1542];
@@ -241,6 +242,20 @@ async function load() {
       throw new Error(`data/state.json answered HTTP ${resp.status}`);
     }
     state.data = await resp.json();
+    // Schema discipline (#4470): state written under a
+    // different schema_version is refused loudly -- it lands
+    // in the named failure state below, never rendered
+    // best-effort. An absent version is a pre-discipline
+    // bundle and is accepted as legacy: the bundle ships
+    // with this reader, so absence means "older", not
+    // "foreign".
+    const foundSchema = state.data.schema_version;
+    if (foundSchema && foundSchema !== STATE_SCHEMA_VERSION) {
+      throw new Error(
+        `course data schema ${foundSchema} -- this app reads ` +
+        `${STATE_SCHEMA_VERSION}. Rebuild or update the app; ` +
+        `nothing was rendered from mismatched data`);
+    }
   } catch (err) {
     $("#course-name").textContent = "Couldn't load your course data";
     $("#app").insertAdjacentHTML("afterbegin",

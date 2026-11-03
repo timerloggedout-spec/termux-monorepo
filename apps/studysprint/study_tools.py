@@ -31,6 +31,36 @@ from pathlib import Path
 SCHEMA = "studysprint-evidence-set/v1"
 TTL_SECONDS = 900
 
+# Schema_version discipline (#4470): every synced/stored
+# artifact class carries an explicit version and readers
+# refuse-or-migrate LOUDLY on mismatch -- never silent
+# best-effort. The state class is stamped here; the full
+# class inventory lives in SCHEMA-VERSIONS.md.
+STATE_SCHEMA_VERSION = "studysprint-state/1"
+
+
+def stamp_state(doc: dict) -> dict:
+    """Mark a state document with the current schema version
+    (producers call this; it is the only way a state becomes
+    current)."""
+    doc["schema_version"] = STATE_SCHEMA_VERSION
+    return doc
+
+
+def validate_state(doc: dict) -> dict:
+    """Refuse a state whose schema_version is not current --
+    a present-but-different version raises, and so does a
+    missing one: pre-discipline artifacts migrate explicitly
+    at their producer (re-stamp on rebuild), never by a
+    reader quietly guessing."""
+    found = doc.get("schema_version")
+    if found != STATE_SCHEMA_VERSION:
+        raise ValueError(
+            f"state schema mismatch: expected "
+            f"{STATE_SCHEMA_VERSION}, found {found!r} -- "
+            f"refusing to read it silently")
+    return doc
+
 
 def _iso(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

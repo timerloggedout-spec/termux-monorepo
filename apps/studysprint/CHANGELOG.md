@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Integration 5 — schema_version discipline (#4470)
+
+- **One discipline, inventoried** (SCHEMA-VERSIONS.md): every synced/stored artifact class carries an explicit version; readers refuse-or-migrate loudly — never silent best-effort.
+- **State class stamped end to end**: core constant `STATE_SCHEMA_VERSION = studysprint-state/1`; both emitters (bundle + TUI) stamp via `stamp_state()`; core readers get `validate_state()` (raises on mismatch AND on absence — migration happens at the producer, by rebuild); the web reader refuses a present-but-different version through the named load-failure state (absent = pre-discipline legacy, accepted — the bundle ships with its reader). Cross-language constant pin in tests.
+
 ### App-package E — judge path + resilience evidence (#4440)
 
 - **"Try it in 60 seconds" three doors** (README + the landing page's new Try section): web (live link, sample course loaded) · TUI (clone route that works today; the pipx one-liner takes over when the packaging release lands) · APK (the 0.1.3 release, trust block linked). Each door's steps were checked against what is actually live.

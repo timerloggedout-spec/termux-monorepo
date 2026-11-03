@@ -2013,8 +2013,15 @@
    "projects": [],
    "participants": [],
    "judges": [],
-   "graduation": "GRADUATED to the slate by the Manager 2026-11-03 (from candidate, provisioned same day under the as-if-competed doctrine, PRs #4253/#4255). Execution = Desk. R2 conditional on finalist invitation Nov 21.",
-   "moneyball": {}
+   "graduation": "GRADUATED to the slate by the Manager 2026-11-03 (from candidate, provisioned same day under the as-if-competed doctrine, PRs #4253/#4255). Execution = Desk. R2 conditional on finalist invitation Nov 21. Repo/AppID: DEFERRED per main ruling (see repo_appid_provisioning).",
+   "moneyball": {},
+   "repo_appid_provisioning": {
+    "state": "DEFERRED \u2014 MAIN RULING 2026-11-03 (supersedes the same-day \"fired at build start\" note)",
+    "ruling": "Repo + AppID deferred to the first round that actually builds in a repo. Round 1 identity anchor = the Desk package records + this coordinator record (no repo exists for R1 \u2014 the round is package-only by the event's own rules).",
+    "r2_trigger": "If Round 2 also runs package-only, the repo/AppID question RETURNS TO MAIN before R2 build start \u2014 it does not default to provisioned or deferred.",
+    "repo_url": null,
+    "appid": null
+   }
   }
  ],
  "derived": {

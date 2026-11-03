@@ -214,3 +214,55 @@ console.log("ok");
     f.write_text(sim, encoding="utf-8")
     r = subprocess.run(["node", str(f)], capture_output=True, text=True)
     assert r.returncode == 0 and "ok" in r.stdout, r.stderr
+
+
+def _extract_fn(src, name):
+    """Brace-matched extraction of one function declaration."""
+    i = src.find(f"function {name}(")
+    assert i > -1, name
+    j = src.find("{", i)
+    depth, k = 0, j
+    while True:
+        c = src[k]
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return src[i:k + 1]
+        k += 1
+
+
+def test_board_row_tolerates_missing_or_free_text_stages(tmp_path):
+    """Regression pin for the 2026-11-03 served outage: the live feed's
+    routed-dispatch traversal carries NO stages object; boardRow's
+    unguarded read blanked the whole page. Web Design's guard (#4400,
+    t.stages||{}) must hold: stages-less and free-text-stage rows
+    render (unknown -> pending) instead of throwing."""
+    html = _html()
+    blk = [b for b in re.findall(r"<script>(.*?)</script>", html, re.S)
+           if "function boardRow" in b][0]
+    stages = re.search(r"const STAGES=\[[^\]]*\];", blk).group(0)
+    states = re.search(r"const STAGE_STATES=\[[^\]]*\];", blk).group(0)
+    esc_stub = ('const esc=s=>String(s==null?"":s)'
+                '.replace(/&/g,"&amp;").replace(/</g,"&lt;");')
+    parts = [stages, states, esc_stub,
+             _extract_fn(blk, "stageClass"), _extract_fn(blk, "stageLabel"),
+             _extract_fn(blk, "boardRow")]
+    run = tmp_path / "run.cjs"
+    run.write_text("\n".join(parts) + """
+const ok = r => typeof r.chips === "string" && r.chips.includes("chip");
+const a = boardRow({entry: "routed-dispatch", status: "live",
+                    title: "t"});
+const b = boardRow({entry: "x", status: "queued",
+                    stages: {spec: "free text value"}});
+const c = boardRow({entry: "y", status: "landed",
+                    stages: {spec: "done", desk: "done", builder: "done",
+                             pr: "done", ci: "done", merge: "done",
+                             sync: "done"}});
+console.log(JSON.stringify({a_ok: ok(a), b_ok: ok(b), c_ok: ok(c)}));
+""")
+    r = subprocess.run(["node", str(run)], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    res = json.loads(r.stdout.strip())
+    assert res == {"a_ok": True, "b_ok": True, "c_ok": True}

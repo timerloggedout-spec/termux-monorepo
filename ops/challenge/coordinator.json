@@ -1521,29 +1521,79 @@
     "status": "ESTABLISHED",
     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30) (s.8 Prizes)",
     "pool": "$94,000 cash + subscription/credit prizes (announced as $100,000 in cash prizes)",
-    "tiers": {
-     "overall": [
-      "1st $30,000",
-      "2nd $20,000",
-      "3rd $10,000"
-     ],
-     "category": [
-      "Best Resurrection $5,000",
-      "Best Frankenstein $5,000",
-      "Best Skeleton Crew $5,000",
-      "Best Costume Contest $5,000"
-     ],
-     "bonus": [
-      "Best Startup Project $10,000",
-      "Best Ghost of Kiroween Past $2,000",
-      "Best Kiro Crew App $1,000",
-      "Best Demo $1,000",
-      "Best Student Project: 1-year Kiro Pro Max subscription (~$1,500) x4",
-      "Bonus Blog Prize: 2,000 Kiro credits x100",
-      "Social Blitz Prize: 3-month Kiro Pro+ subscription x5"
-     ]
-    },
-    "note": "One Overall OR one Category prize per project, plus any number of Bonus prizes."
+    "tiers": [
+     {
+      "place": "Overall - 1st",
+      "award": "$30,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Overall - 2nd",
+      "award": "$20,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Overall - 3rd",
+      "award": "$10,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Category - Best Resurrection",
+      "award": "$5,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Category - Best Frankenstein",
+      "award": "$5,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Category - Best Skeleton Crew",
+      "award": "$5,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Category - Best Costume Contest",
+      "award": "$5,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Best Startup Project",
+      "award": "$10,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Best Ghost of Kiroween Past",
+      "award": "$2,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Best Kiro Crew App",
+      "award": "$1,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Best Demo",
+      "award": "$1,000",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Best Student Project",
+      "award": "1-year Kiro Pro Max subscription (~$1,500) x4",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Bonus Blog Prize",
+      "award": "2,000 Kiro credits x100",
+      "source_url": "https://kiroween.devpost.com/rules"
+     },
+     {
+      "place": "Bonus - Social Blitz Prize",
+      "award": "3-month Kiro Pro+ subscription x5",
+      "source_url": "https://kiroween.devpost.com/rules"
+     }
+    ],
+    "notes": "Normalized to the fleet {place, award, source_url} tier shape 2026-11-03 (entries lane, per Desk data note / PR #4625). One Overall OR one Category prize per project, plus any number of Bonus prizes."
    },
    "moneyball": {
     "schema": "moneyball-plane/v2",
@@ -1966,7 +2016,58 @@
    "oversight": "Manager oversight direct (ruling 2026-10-30); promotion to slate = owner call; NOT a D-numbered packet",
    "packet": "challenge-entries lane: brief + per-match rules firsthand before any build (see log s.3 C11 packet)",
    "platform": "lablab.ai",
-   "prizes": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) | per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 | Referral Leaders $1,000/$600/$400 | ROCm Certified Associate credential",
+   "prizes": {
+    "status": "ESTABLISHED",
+    "pool": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) + per-Match awards + Referral Leaders $1,000/$600/$400",
+    "tiers": [
+     {
+      "place": "League 1st",
+      "award": "$2,500",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "League 2nd",
+      "award": "$1,500",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "League 3rd",
+      "award": "$1,000",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "Per-Match 1st",
+      "award": "$500 cash",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "Per-Match 2nd",
+      "award": "$250 GPU credits",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "Per-Match top-50",
+      "award": "$100 GPU credits",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "Referral 1st",
+      "award": "$1,000",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "Referral 2nd",
+      "award": "$600",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     },
+     {
+      "place": "Referral 3rd",
+      "award": "$400",
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
+     }
+    ],
+    "notes": "Normalized from a plain string to the fleet object shape 2026-11-03 (entries lane, per Desk data note / PR #4625). Plus: ROCm Certified Associate credential (+500 pts)."
+   },
    "registration": {
     "by": "challenge-entries lane, owner order via main",
     "evidence": "platform notification verbatim: 'You've been approved for the hackathon'; participant counter displayed 6287",

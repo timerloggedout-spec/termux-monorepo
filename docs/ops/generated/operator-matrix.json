@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 458,
-    "open_prs": 205,
+    "open_issues": 463,
+    "open_prs": 208,
     "pr_classes": {
       "CANDIDATE": 104,
-      "EXTRACT": 6,
+      "EXTRACT": 9,
       "NEED_EVIDENCE": 95,
       "SUPERSEDE": 0
     }
@@ -15,7 +15,7 @@
       "unlabelled_numbers": []
     },
     "delphi": {
-      "issues": 87,
+      "issues": 88,
       "unlabelled_numbers": []
     },
     "mesh": {
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 235,
+      "issues": 239,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 203,
+      "prs": 206,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T12:35:26Z",
+  "generated_at": "2026-11-03T12:46:25Z",
   "issues_unlabelled": [
     308,
     388,
@@ -147,10 +147,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "74dd9dc7be"
+    "sha": "a2aaa8f6d4"
   },
   "prs": [
     {
@@ -236,6 +236,48 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "20ed75a6c6",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4273,
+      "title": "feat(c12): Receipts Vault R1 package [#4261]",
+      "updated_at": "2026-11-03T12:41:24Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b6f69f714c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4275,
+      "title": "studysprint: APK device-smoke evidence pack (owner device)",
+      "updated_at": "2026-11-03T12:42:54Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6a178f139f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4284,
+      "title": "studysprint TUI: owner-device run evidence (Termux)",
+      "updated_at": "2026-11-03T12:45:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -2234,15 +2276,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "49ece6d26f",
+      "head_sha": "fdb95585b2",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T12:34:38Z"
+      "updated_at": "2026-11-03T12:43:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3021,12 +3063,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "4d7c4b51b8",
+      "head_sha": "09c501f91d",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4264,
-      "title": "C12 residue exact (AppID-lane verified): evidence placement, identity fields null",
-      "updated_at": "2026-11-03T12:35:23Z"
+      "mergeable_state": "unknown",
+      "number": 4280,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-03T12:43:51Z"
     }
   ],
   "schema": "operator-matrix/v1",

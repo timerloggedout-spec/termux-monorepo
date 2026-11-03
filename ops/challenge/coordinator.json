@@ -1088,8 +1088,8 @@
     "participants": 2302,
     "participants_source": "lablab.ai event page embedded initialParticipants, programmatic GET 2026-11-03 (field_size_scrape method); harvest of record = ops/challenge-recruitment/harvests/D2--2026-11-03.json (PR #4484 merged 699c2c911014). Previous reading 1617 (2026-10-28), delta +685.",
     "participants_note": "Dual-source same window: the D2 exercise Observatory pass read the live dashboard at 2,308 participants / 601 teams (~17:10Z) vs this scrape 2,302 (17:08Z) - delta 6 = live counter drift (+249 today per Observatory); the scrape value is the field of record, both reads preserved. Winprob denominator updated accordingly (MoneyBall leg flagged).",
-    "projects": null,
-    "projects_note": "no project gallery published (event Nov 3-8) - projects count = OPEN TASK at gallery publish; the exercise Observatory pass saw 3 submissions on the live dashboard (count via dashboard, gallery list not public)",
+    "projects": 4,
+    "projects_note": "Gallery LIVE on /live day 1: 4 in-field projects per the podium dataset pin 2026-11-03.v2 (sha256 b8a187aabc4b68ca8f987baae45ab633df78c52b9bd50c2b42e389072fb27995; crawl 2026-11-03T17:30:42Z) - all C1 containment runtimes (Trifecta Checker - Blast Radius Zero; Tripwire Sandbox; Containment-First Agent Runtime on Vultr x2 teams). The exercise Observatory dashboard read 3 submissions ~20 min earlier - the 4th indexed between reads. Tiers in the dataset cross-match the record (1st $5,000+$3,000cr; 2nd $3,000+$1,000cr; 3rd $1,000+$1,000cr); podium_n 0 (winners pending); judges not posted yet.",
     "fetched_at": "2026-11-03T09:08:00-08:00"
    },
    "exercise": {
@@ -1142,7 +1142,8 @@
      "moneyball_book": "format requested of MoneyBall lane; reply pending; book entry lands on their shape; winprob denominator delta files with it",
      "historic_podium": "DONE (2026-11-03, D2 seat; public sources only). Agent Rush = first edition (no prior found, high-conf); judges named = 0 (criteria only); named Vultr staffer Sanskriti Harmukh; brief codifies \"an agent that only chats is a demo; an agent that executes safely is a product\"; C1-B prescribes vision-verify then human approval before final actions. Milan AI Agent Olympics (May 2026): Vultr track 1st = Deals Machine (Kyle Dow, solo; dual-sourced 1st in Vultr AND Speechmatics tracks, ~2,000 builders); overall 1st LUNA AI; 3rd SENTINEL. REFUTATION: the Observatory pass RAISE line (\"proof-grounded retrieval w/ generator-verifier separation / Ariadne\") was a cross-injected lablab module artifact - REFUTED; RAISE YOUR HACK (Jul 2025) Vultr 1st = Unmask (HR hiring verification), triple-sourced; a conflicting Vortex IQ Vultr-track claim flagged, unresolved publicly. PATTERN TEST (n=11 placed projects; P=proof-grounded, E=enterprise workflow, H=approval gate): P 10/11 >=partial; E 10/11 >=partial; H WEAK as stated (yes 1, partial 5, no 5) - recurs as human-IN-loop, not formal gates. Verdict: hypothesis PARTIALLY holds; the Agent Rush brief is the first to codify all three. Slate read: A (adversarial proof artifacts) and E (audit pack + controller approval) map strongest; B gains from C1-B prescribed H step; D approval routing on-brief. RANKING HELD A>C>B>E>F>D."
     },
-    "note": "Event-page delta flagged by D2 seat: page Events block now reads 16:00Z-23:00Z (prior settled read 15:00Z-22:00Z); deadline of record unchanged (Nov 8 15:00 PT); flagged, not overturned."
+    "note": "Event-page delta flagged by D2 seat: page Events block now reads 16:00Z-23:00Z (prior settled read 15:00Z-22:00Z); deadline of record unchanged (Nov 8 15:00 PT); flagged, not overturned.",
+    "podium_dataset": "scraping-tools podium dataset (PR #4501 merged d9e690746559): pin ops/podium/snapshots/2026-11-03.v2.json sha256 b8a187aabc4b68ca8f987baae45ab633df78c52b9bd50c2b42e389072fb27995 - verified firsthand by this lane. Daily re-crawl 07:23Z + dispatch appends versions through Nov 8; cite pins per version in this record."
    }
   },
   {

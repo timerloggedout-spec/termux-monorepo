@@ -14,20 +14,27 @@ spec.loader.exec_module(be)
 
 class TestBackupEvents(unittest.TestCase):
     def test_backfill_shape_and_join(self):
+        # The measurements file is APPEND-ONLY and grows with the relays
+        # feed: pin the backfill PREFIX (first 9 records, immutable),
+        # never the total (a total pin blocked the whole ingest pipeline
+        # when the file grew 9 -> 24, 2026-11-02).
         rows = [json.loads(l) for l in
                 (ROOT / "ops/telemetry/backup-measurements.jsonl")
                 .read_text().strip().splitlines()]
-        self.assertEqual(len(rows), 9)
-        exp = rows[0]
+        self.assertGreaterEqual(len(rows), 9)
+        backfill = rows[:9]
+        exp = backfill[0]
         self.assertEqual(exp["schema"], "backup-measurement/v1")
         self.assertEqual(exp["kind"], "export")
         self.assertEqual(exp["export_id"], "exp-20261102T062322Z-65e231")
         self.assertEqual(exp["publish_commit"],
                          "34a9dd16b5d974a8d8b986d32285f70146dbd488")
-        self.assertTrue(all(r["join"]["relay_resolved"] for r in rows))
-        self.assertTrue(all(r["relay_commit"] for r in rows))
+        self.assertTrue(all(r["join"]["relay_resolved"] for r in backfill))
+        self.assertTrue(all(r["relay_commit"] for r in backfill))
         self.assertEqual(
-            sum(1 for r in rows if r["kind"] == "export_failed"), 8)
+            sum(1 for r in backfill if r["kind"] == "export_failed"), 8)
+        self.assertTrue(all(r["schema"] == "backup-measurement/v1"
+                            for r in rows))
 
     def test_evidence_hash_matches_source_line(self):
         line = '{"kind": "export", "at": "t"}'

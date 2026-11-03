@@ -115,6 +115,23 @@ def build_cards_from_practice_set(practice_set: dict,
     return build_cards(items, source=src)
 
 
+# ------------------------------------------------------- FSRS generation
+# The FSRS generation is PINNED (RFP-D1-8 #4231): the parameter tuple
+# below IS the generation — the scheduler is constructed with exactly
+# these parameters and fuzzing OFF, so a py-fsrs upgrade cannot drift
+# the schedules silently (a test asserts the tuple still equals the
+# library's shipped defaults). Receipts and the UX export name the
+# generation; the web surface ports THIS generation and checks the
+# stamp on load.
+FSRS_GENERATION = "FSRS-6"
+FSRS_PARAMETERS = (
+    0.212, 1.2931, 2.3065, 8.2956, 6.4133, 0.8334, 3.0194, 0.001,
+    1.8722, 0.1666, 0.796, 1.4835, 0.0614, 0.2629, 1.6483, 0.6014,
+    1.8729, 0.5425, 0.0912, 0.0658, 0.1542,
+)
+FSRS_DESIRED_RETENTION = 0.9
+
+
 # ------------------------------------------------------------ schedulers
 
 class Scheduler:
@@ -205,7 +222,12 @@ class FSRSScheduler(Scheduler):
     def _scheduler(self):
         fsrs = self._fsrs
         if hasattr(fsrs, "Scheduler"):
-            return fsrs.Scheduler()
+            # Pinned generation (see FSRS_PARAMETERS): explicit
+            # parameters + deterministic intervals (fuzzing off), so
+            # the core, the receipts and the web port agree exactly.
+            return fsrs.Scheduler(parameters=FSRS_PARAMETERS,
+                                  desired_retention=FSRS_DESIRED_RETENTION,
+                                  enable_fuzzing=False)
         return fsrs.FSRS()  # py-fsrs < 4 API
 
     def new_state(self) -> dict:
@@ -230,8 +252,10 @@ class FSRSScheduler(Scheduler):
         if due.tzinfo is None:
             due = due.replace(tzinfo=timezone.utc)
         interval = (due - now).total_seconds() / 86400.0
-        return st, self._receipt(card, grade, now, due,
-                                 round(interval, 4), st)
+        receipt = self._receipt(card, grade, now, due,
+                                round(interval, 4), st)
+        receipt["fsrs_generation"] = FSRS_GENERATION
+        return st, receipt
 
 
 def get_scheduler(name: str) -> Scheduler:
@@ -552,6 +576,7 @@ def to_ts_fsrs_state(fsrs_state: dict, now: datetime | None = None) -> dict:
         "lapses": fsrs_state.get("lapses", 0),
         "state": state_name,
         "last_review": last_review,
+        "step": fsrs_state.get("step"),
     }
 
 
@@ -563,6 +588,9 @@ def export_ux_state(cards, states: dict, now: datetime | None = None) -> dict:
     return {
         "format": "ts-fsrs/v1",
         "scheduler": "fsrs",
+        "generation": FSRS_GENERATION,
+        "parameters": list(FSRS_PARAMETERS),
+        "desired_retention": FSRS_DESIRED_RETENTION,
         "generated_at": _iso(now),
         "cards": [
             {"card_id": c.card_id, "front": c.front, "back": c.back,

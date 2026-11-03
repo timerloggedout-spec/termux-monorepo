@@ -26,7 +26,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.1.1"
+TUI_VERSION = "0.1.2"
 SURFACE = "studysprint-tui"
 
 from study_reader import RSVPReader, Section  # noqa: E402
@@ -50,12 +50,30 @@ def build_state(root: Path | None = None) -> dict:
     evidence = fetch_study_evidence(
         {"kind": "syllabus", "ref": "examples/syllabus.json"}, root=root)
     plan = build_study_plan(syllabus)
+    # Per-topic readings (#4230), shared with the web builder:
+    # examples/readings.json carries one authored passage per
+    # syllabus topic; a topic without one gets an honest stub,
+    # never another topic's content.
+    readings = {}
+    readings_file = root / "examples" / "readings.json"
+    if readings_file.exists():
+        readings = json.loads(readings_file.read_text())
     sections = []
     for w in syllabus.get("weeks") or []:
         for topic in w.get("topics") or []:
-            text = (f"{topic}. " + " ".join(
-                q["q"] + " " + q["a"] for q in practice.get("questions")
-                or []))
+            if readings.get(topic):
+                text = readings[topic]
+            else:
+                text = (f"Week {w.get('week')} covers {topic}. The "
+                        "full reading for this topic arrives with "
+                        "the course text at ingest; the plan, checks "
+                        "and reviews for it are live now.")
+            stem = topic.lower().rstrip("s").split()[-1]
+            checks = [q for q in practice.get("questions") or []
+                      if stem in (q["q"] + " " + q["a"]).lower()]
+            if checks:
+                text += "\n\nCheck yourself: " + " ".join(
+                    q["q"] + " " + q["a"] for q in checks)
             sections.append(Section(
                 section_id=f"w{w.get('week')}-{abs(hash(topic)) % 9999}",
                 title=topic, content=text,
@@ -236,8 +254,19 @@ try:
             card = self._current_card()
             if card is None:
                 return
+            if not self.card_flipped:
+                # Grading unlocks once the answer is visible
+                # (#4234): a grade records recall of an answer
+                # the learner has seen.
+                self.query_one("#sr-receipt", Label).update(
+                    "Flip the card first — grading unlocks once "
+                    "you've seen the answer.")
+                return
             if self.scheduler_name == "sm2":
-                grade = {1: 1, 2: 3, 3: 4, 4: 5}[grade]
+                # The map preserves the core's SM-2 pass boundary
+                # (quality < 3 resets): Hard (2) does NOT pass.
+                # (#4232; the old map put Hard on quality 3.)
+                grade = {1: 1, 2: 2, 3: 3, 4: 5}[grade]
             # #4224: this card's OWN stored state goes in; the
             # resulting state is stored back under this card. The
             # previous implementation shared one app-level state
@@ -248,8 +277,10 @@ try:
                 scheduler=self.scheduler_name,
                 now=datetime.now(timezone.utc))
             self.card_states[key] = next_state
+            generation = receipt.get("fsrs_generation")
+            gen_text = f" generation={generation}" if generation else ""
             self.query_one("#sr-receipt", Label).update(
-                f"Receipt: scheduler={receipt['scheduler']} "
+                f"Receipt: scheduler={receipt['scheduler']}{gen_text} "
                 f"grade={receipt['grade']} "
                 f"next due {receipt['due']} "
                 f"(in {receipt['interval_days']} day(s))")

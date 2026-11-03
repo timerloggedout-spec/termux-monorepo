@@ -15,68 +15,155 @@ const state = { data: null, cardIndex: 0, flipped: false,
                 scheduler: "fsrs", srState: {}, reader: null,
                 playing: false, timer: null };
 
-/* ---------------- FSRS (ts-fsrs formulas, FSRS-5 default weights) */
-const FSRS_W = [0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345,
-  1.4604, 0.0046, 1.54575, 0.1192, 1.01925, 1.9395, 0.11, 0.29605,
-  2.2698, 0.2315, 2.9898, 0.51655, 0.6621];
-const FSRS_FACTOR = 19 / 81, FSRS_DECAY = -0.5, RETENTION = 0.9;
-
-function fsrsInitDifficulty(g) {
-  return Math.min(10, Math.max(1,
-    FSRS_W[4] - Math.exp(FSRS_W[5] * (g - 1)) + 1));
+/* ---------------- FSRS (pinned generation: FSRS-6) */
+// An in-browser port of the core's PINNED generation (RFP-D1-8
+// #4231): FSRS-6, mirroring the py-fsrs Scheduler the core
+// constructs in apps/studysprint/study_sr.py with FSRS_PARAMETERS
+// pinned, desired retention 0.9 and fuzzing off. The seed export
+// stamps its generation; load() warns in the SR view if it ever
+// differs from FSRS_GENERATION here, so drift between the surface
+// and the core is visible instead of silent. Learning steps (1m,
+// 10m) and relearning steps (10m) are the library defaults the core
+// uses; interval rounding follows Python's round() (banker's), as
+// in the library.
+const FSRS_GENERATION = "FSRS-6";
+const FSRS_W = [0.212, 1.2931, 2.3065, 8.2956, 6.4133, 0.8334, 3.0194,
+  0.001, 1.8722, 0.1666, 0.796, 1.4835, 0.0614, 0.2629, 1.6483, 0.6014,
+  1.8729, 0.5425, 0.0912, 0.0658, 0.1542];
+const FSRS_RETENTION = 0.9;
+const FSRS_DECAY = -FSRS_W[20];
+const FSRS_FACTOR = Math.pow(0.9, 1 / FSRS_DECAY) - 1;
+const LEARNING_STEPS_MIN = [1, 10];
+const RELEARNING_STEPS_MIN = [10];
+const clampD = (d) => Math.min(10, Math.max(1, d));
+const clampS = (v) => Math.max(0.001, v);
+function pyRound(x) {
+  const f = Math.floor(x), d = x - f;
+  return d > 0.5 ? f + 1 : d < 0.5 ? f : (f % 2 === 0 ? f : f + 1);
+}
+function fsrsInitD(grade, clamp = true) {
+  const d = FSRS_W[4] - Math.exp(FSRS_W[5] * (grade - 1)) + 1;
+  return clamp ? clampD(d) : d;
 }
 function fsrsRetrievability(stability, elapsedDays) {
-  if (!stability || stability <= 0) return 0;
-  return Math.pow(1 + FSRS_FACTOR * (elapsedDays / stability),
-                  FSRS_DECAY);
+  return Math.pow(1 + FSRS_FACTOR * elapsedDays / stability, FSRS_DECAY);
 }
-function fsrsInterval(stability) {
-  const days = (stability / FSRS_FACTOR) *
-    (Math.pow(RETENTION, 1 / FSRS_DECAY) - 1);
-  return Math.max(1, Math.round(days));
+function fsrsIntervalDays(stability) {
+  const days = pyRound((stability / FSRS_FACTOR) *
+    (Math.pow(FSRS_RETENTION, 1 / FSRS_DECAY) - 1));
+  return Math.min(36500, Math.max(1, days));
 }
-function fsrsReview(st, grade, now) {
-  const w = FSRS_W;
-  if (!st || st.stability == null) {
-    const s = w[grade - 1];
-    return { stability: s, difficulty: fsrsInitDifficulty(grade),
-             state: "Review", reps: 1, lapses: 0,
-             due: new Date(now.getTime() + fsrsInterval(s) * 864e5)
-                    .toISOString(),
-             last_review: now.toISOString(),
-             scheduled_days: fsrsInterval(s) };
-  }
-  const last = new Date(st.last_review || now);
-  const elapsed = Math.max(0, (now - last) / 864e5);
-  const R = fsrsRetrievability(st.stability, elapsed);
-  const dPrime = st.difficulty +
-    (-w[6] * (grade - 3)) * (10 - st.difficulty) / 9;
-  const dTarget = fsrsInitDifficulty(4);
-  let dNew = w[7] * dTarget + (1 - w[7]) * dPrime;
-  dNew = Math.min(10, Math.max(1, dNew));
-  let sNew;
+function fsrsNextD(difficulty, grade) {
+  const arg1 = fsrsInitD(4, false);
+  const delta = -FSRS_W[6] * (grade - 3);
+  const arg2 = difficulty + (10 - difficulty) * delta / 9;
+  return clampD(FSRS_W[7] * arg1 + (1 - FSRS_W[7]) * arg2);
+}
+function fsrsShortTerm(stability, grade) {
+  let inc = Math.exp(FSRS_W[17] * (grade - 3 + FSRS_W[18])) *
+    Math.pow(stability, -FSRS_W[19]);
+  if (grade >= 2) inc = Math.max(inc, 1);
+  return clampS(stability * inc);
+}
+function fsrsNextS(difficulty, stability, retrievability, grade) {
+  let next;
   if (grade === 1) {
-    sNew = w[11] * Math.pow(dNew, -w[12]) *
-      (Math.pow(st.stability + 1, w[13]) - 1) *
-      Math.exp(w[14] * (1 - R));
-    st.lapses = (st.lapses || 0) + 1;
+    const longTerm = FSRS_W[11] * Math.pow(difficulty, -FSRS_W[12]) *
+      (Math.pow(stability + 1, FSRS_W[13]) - 1) *
+      Math.exp((1 - retrievability) * FSRS_W[14]);
+    const shortTerm = stability / Math.exp(FSRS_W[17] * FSRS_W[18]);
+    next = Math.min(longTerm, shortTerm);
   } else {
-    const hard = grade === 2 ? w[15] : 1;
-    const easy = grade === 4 ? w[16] : 1;
-    sNew = st.stability * (Math.exp(w[8]) * (11 - dNew) *
-      Math.pow(st.stability, -w[9]) *
-      (Math.exp(w[10] * (1 - R)) - 1) * hard * easy + 1);
+    const hardPenalty = grade === 2 ? FSRS_W[15] : 1;
+    const easyBonus = grade === 4 ? FSRS_W[16] : 1;
+    next = stability * (1 + Math.exp(FSRS_W[8]) * (11 - difficulty) *
+      Math.pow(stability, -FSRS_W[9]) *
+      (Math.exp((1 - retrievability) * FSRS_W[10]) - 1) *
+      hardPenalty * easyBonus);
   }
-  const interval = fsrsInterval(sNew);
-  return { stability: sNew, difficulty: dNew, state: "Review",
-           reps: (st.reps || 0) + 1, lapses: st.lapses || 0,
-           due: new Date(now.getTime() + interval * 864e5)
-                  .toISOString(),
-           last_review: now.toISOString(),
-           scheduled_days: interval };
+  return clampS(next);
 }
 
-/* ---------------- SM-2 (the core baseline, rule-for-rule) */
+function fsrsReview(prev, grade, nowMs) {
+  // Mirrors py-fsrs Scheduler.review_card over the UX state shape.
+  const s = prev ? { ...prev } : { due: "", stability: null,
+    difficulty: null, elapsed_days: 0, scheduled_days: 0, reps: 0,
+    lapses: 0, state: "New", last_review: null, step: 0 };
+  let cardState = s.state === "New" ? "Learning" : s.state;
+  let step = s.state === "New" ? 0 : s.step;
+  const daysSince = s.last_review ?
+    Math.floor((nowMs - Date.parse(s.last_review)) / 86400000) : null;
+  const steps = cardState === "Relearning" ? RELEARNING_STEPS_MIN :
+    LEARNING_STEPS_MIN;
+  let dueMs;
+  if (cardState === "Learning" || cardState === "Relearning") {
+    if (s.stability === null || s.difficulty === null) {
+      s.stability = clampS(FSRS_W[grade - 1]);
+      s.difficulty = fsrsInitD(grade);
+    } else if (daysSince !== null && daysSince < 1) {
+      s.stability = fsrsShortTerm(s.stability, grade);
+      s.difficulty = fsrsNextD(s.difficulty, grade);
+    } else {
+      const r = fsrsRetrievability(s.stability, daysSince || 0);
+      s.stability = fsrsNextS(s.difficulty, s.stability, r, grade);
+      s.difficulty = fsrsNextD(s.difficulty, grade);
+    }
+    if (steps.length === 0 || (step >= steps.length && grade >= 2)) {
+      cardState = "Review"; step = null;
+      dueMs = nowMs + fsrsIntervalDays(s.stability) * 86400000;
+    } else if (grade === 1) {
+      step = 0;
+      dueMs = nowMs + steps[0] * 60000;
+    } else if (grade === 2) {
+      if (step === 0 && steps.length === 1) {
+        dueMs = nowMs + steps[0] * 1.5 * 60000;
+      } else if (step === 0 && steps.length >= 2) {
+        dueMs = nowMs + (steps[0] + steps[1]) / 2 * 60000;
+      } else {
+        dueMs = nowMs + steps[step] * 60000;
+      }
+    } else if (grade === 3) {
+      if (step + 1 === steps.length) {
+        cardState = "Review"; step = null;
+        dueMs = nowMs + fsrsIntervalDays(s.stability) * 86400000;
+      } else {
+        step += 1;
+        dueMs = nowMs + steps[step] * 60000;
+      }
+    } else {
+      cardState = "Review"; step = null;
+      dueMs = nowMs + fsrsIntervalDays(s.stability) * 86400000;
+    }
+  } else {
+    if (daysSince !== null && daysSince < 1) {
+      s.stability = fsrsShortTerm(s.stability, grade);
+    } else {
+      const r = fsrsRetrievability(s.stability, daysSince || 0);
+      s.stability = fsrsNextS(s.difficulty, s.stability, r, grade);
+    }
+    s.difficulty = fsrsNextD(s.difficulty, grade);
+    if (grade === 1) {
+      s.lapses += 1;
+      if (RELEARNING_STEPS_MIN.length === 0) {
+        dueMs = nowMs + fsrsIntervalDays(s.stability) * 86400000;
+      } else {
+        cardState = "Relearning"; step = 0;
+        dueMs = nowMs + RELEARNING_STEPS_MIN[0] * 60000;
+      }
+    } else {
+      dueMs = nowMs + fsrsIntervalDays(s.stability) * 86400000;
+    }
+  }
+  s.elapsed_days = daysSince || 0;
+  s.scheduled_days = (dueMs - nowMs) / 86400000;
+  s.reps += 1;
+  s.state = cardState;
+  s.step = cardState === "Review" ? null : step;
+  s.due = new Date(dueMs).toISOString();
+  s.last_review = new Date(nowMs).toISOString();
+  return s;
+}
+
 function sm2Review(st, quality, now) {
   st = st || { repetitions: 0, easiness: 2.5, interval_days: 0 };
   let ef = st.easiness + (0.1 - (5 - quality) *
@@ -145,14 +232,41 @@ function nextDueDate(cards, srState, scheduler) {
 
 /* ---------------- loading + rendering */
 async function load() {
-  const resp = await fetch("data/state.json");
-  state.data = await resp.json();
+  // Failure state (#4237): a failed or unparsable state.json used
+  // to leave every view empty under a permanent "Loading your
+  // course..." -- now the failure is named, explained, retryable.
+  try {
+    const resp = await fetch("data/state.json");
+    if (!resp.ok) {
+      throw new Error(`data/state.json answered HTTP ${resp.status}`);
+    }
+    state.data = await resp.json();
+  } catch (err) {
+    $("#course-name").textContent = "Couldn't load your course data";
+    $("#app").insertAdjacentHTML("afterbegin",
+      `<section id="load-error"><h3>Something went wrong loading ` +
+      `your course</h3><p>${err.message} -- the app data ` +
+      `(data/state.json) didn't arrive or didn't parse. Nothing ` +
+      `is lost: your saved progress lives in this browser, not ` +
+      `in that file.</p>` +
+      `<button id="load-retry" class="primary">Retry</button></section>`);
+    $("#load-retry").addEventListener("click", () => location.reload());
+    return;
+  }
   const saved = localStorage.getItem("studysprint-sr");
   if (saved) state.srState = JSON.parse(saved);
   $("#course-name").textContent = state.data.course;
   $("#surface-version").textContent =
     state.data.surface_version || "0.1.0";
   renderToday(); renderPlan(); renderReader(); showCard();
+  const ux = state.data.sr && state.data.sr.ux_state;
+  if (ux && ux.generation && ux.generation !== FSRS_GENERATION) {
+    $("#sr-receipt").textContent =
+      `Scheduler generation mismatch: this app schedules with ` +
+      `${FSRS_GENERATION} but the course data was exported as ` +
+      `${ux.generation}. Intervals may differ from the core ` +
+      `until the bundle is rebuilt.`;
+  }
 }
 
 function renderToday() {
@@ -185,7 +299,16 @@ function renderToday() {
     `First up: ${sessions[0].kind} — ${sessions[0].topic} ` +
     `(${sessions[0].minutes} min)` :
     "Nothing scheduled today.";
-  $("#today-sessions").innerHTML = sessions.map((s, i) => {
+  // The core's designed Today actions ship in state.today.actions
+  // and render here (#4228): the primary start, and the subtle
+  // no-guilt "I missed this" whose shift the check-ins apply.
+  const todayActions = ((state.data.today || {}).actions || [])
+    .map((a) => a.style === "primary"
+      ? `<button id="action-start" class="primary">${a.label}</button>`
+      : `<button id="action-missed">${a.label}</button>`).join("");
+  $("#today-sessions").innerHTML =
+    (todayActions ? `<div class="row">${todayActions}</div>` : "") +
+    sessions.map((s, i) => {
     const mark = mine[i];
     const shifted = mark === "missed" ?
       ` <em>(shifted to tomorrow — no guilt)</em>` : "";
@@ -283,12 +406,20 @@ function showCard() {
   const queue = dueQueue(state.data.sr.cards, state.srState,
                          state.scheduler, new Date());
   state.flipped = false;
+  // Grading stays locked until the answer is visible (#4234): a
+  // grade records recall of an answer the learner has seen.
+  document.querySelectorAll("[data-grade]").forEach((b) => {
+    b.disabled = true;
+  });
   $("#sr-front").textContent =
     `Card ${state.cardIndex % queue.length + 1} of ${queue.length} ` +
     `due (${total} in deck): ${card.front}`;
   $("#sr-back").classList.add("hidden");
 }
 function grade(gradeValue) {
+  // Belt and braces with the disabled buttons (#4234 + #4237):
+  // never grade pre-flip, never grade without loaded data.
+  if (!state.data || !state.flipped) return;
   const card = currentCard();
   if (!card) return;  // nothing due — grading is a no-op (#4218)
   const now = new Date();
@@ -301,11 +432,14 @@ function grade(gradeValue) {
       (ux.stability != null ? ux : null);
     const next = fsrsReview(prev, gradeValue, now);
     state.srState[key] = next;
-    receipt = `Receipt: scheduler=fsrs grade=${gradeValue} ` +
+    receipt = `Receipt: scheduler=fsrs generation=${FSRS_GENERATION} grade=${gradeValue} ` +
       `next due ${next.due.slice(0, 10)} ` +
       `(in ${next.scheduled_days} day(s))`;
   } else {
-    const quality = { 1: 1, 2: 3, 3: 4, 4: 5 }[gradeValue];
+    // SM-2 qualities: the map preserves the core's pass boundary
+    // (quality < 3 resets repetitions) --Again 1, Hard 2 (still a
+    // reset: it does NOT pass), Good 3 (the bare pass), Easy 5.
+    const quality = { 1: 1, 2: 2, 3: 3, 4: 5 }[gradeValue];
     const prev = state.srState[key + ":sm2"] || null;
     const next = sm2Review(prev, quality, now);
     state.srState[key + ":sm2"] = next;
@@ -333,9 +467,34 @@ $("#sr-flip").addEventListener("click", () => {
   $("#sr-back").textContent = currentCard().back;
   $("#sr-back").classList.remove("hidden");
   state.flipped = true;
+  document.querySelectorAll("[data-grade]").forEach((b) => {
+    b.disabled = false;
+  });
 });
 document.querySelectorAll("[data-grade]").forEach((b) =>
   b.addEventListener("click", () => grade(Number(b.dataset.grade))));
+// Today actions (#4228), delegated so re-renders keep them live.
+document.addEventListener("click", (e) => {
+  if (!state.data) return;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const all = JSON.parse(localStorage.getItem("ss.checkins") || "{}");
+  const day = all[todayKey] || {};
+  if (e.target.id === "action-start") {
+    day.started = "yes";
+    all[todayKey] = day;
+    localStorage.setItem("ss.checkins", JSON.stringify(all));
+    $("#checkin-status").textContent =
+      "Started — block 1 is underway. No timer, no pressure.";
+  } else if (e.target.id === "action-missed") {
+    day[0] = "missed";
+    all[todayKey] = day;
+    localStorage.setItem("ss.checkins", JSON.stringify(all));
+    renderToday();
+    $("#checkin-status").textContent =
+      "Checked in: missed (session 1) — recorded. " +
+      "Shifted to tomorrow, without guilt.";
+  }
+});
 $("#sr-scheduler").addEventListener("change", (e) => {
   state.scheduler = e.target.value;
 });

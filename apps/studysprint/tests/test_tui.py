@@ -25,7 +25,7 @@ def test_build_state_uses_core():
     assert state["cards"]  # SR cards from the practice set
     assert state["sections"]  # reader sections
     assert state["trust_receipt"] is not None
-    assert TUI_VERSION == "0.1.1"
+    assert TUI_VERSION == "0.1.2"
 
 
 def _run(coro_fn):
@@ -70,6 +70,10 @@ def test_tui_checkin_and_sr_grade(tmp_path):
             # scheduler switch to SM-2 and grade again
             select = app.query_one("#sr-scheduler")
             select.value = "sm2"
+            await pilot.pause()
+            # grading is flip-gated (#4234): flip the fresh card
+            # before grading it under SM-2
+            await pilot.click("#sr-flip")
             await pilot.pause()
             await pilot.click("#grade-4")
             await pilot.pause()

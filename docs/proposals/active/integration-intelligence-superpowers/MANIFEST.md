@@ -53,5 +53,5 @@ This is a documentation-and-contract foundation. It does not claim that external
 ## Links
 
 - ITEMS: ./ITEMS.md
-- Design: ../../../../superpowers/specs/2026-11-02-integration-intelligence-design.md
-- Plan: ../../../../superpowers/plans/2026-11-02-integration-intelligence.md
+- Design: ../../../superpowers/specs/2026-11-02-integration-intelligence-design.md
+- Plan: ../../../superpowers/plans/2026-11-02-integration-intelligence.md

@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 435,
-    "open_prs": 203,
+    "open_prs": 206,
     "pr_classes": {
       "CANDIDATE": 104,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 93,
+      "NEED_EVIDENCE": 96,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 201,
+      "prs": 204,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T09:06:42Z",
+  "generated_at": "2026-11-03T09:11:47Z",
   "issues_unlabelled": [
     308,
     388,
@@ -98,9 +98,9 @@
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
       "hygiene": "queued",
-      "smoke": "in_progress"
+      "smoke": "queued"
     },
-    "sha": "bc990b250d"
+    "sha": "dce6b2d797"
   },
   "prs": [
     {
@@ -2831,12 +2831,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "fc6edbad4d",
+      "head_sha": "70264f7eba",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T09:06:00Z"
+      "updated_at": "2026-11-03T09:11:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2949,6 +2949,48 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "e67aba1164",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4118,
+      "title": "feat(studysprint): reading pipeline \u00a71b full (RFP-D1-3) \u2014 v0.4.0 batch 1/3 [#4111]",
+      "updated_at": "2026-11-03T09:11:06Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "d975aa0663",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4119,
+      "title": "feat(studysprint): multi-course intake + exam countdown + .ics (RFP-D1-4) \u2014 v0.4.0 batch 2/3 [#4112]",
+      "updated_at": "2026-11-03T09:11:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "12b76dec64",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4120,
+      "title": "feat(studysprint): memory methods x6 (RFP-D1-5) \u2014 v0.4.0 batch 3/3 [#4113]",
+      "updated_at": "2026-11-03T09:11:14Z"
     }
   ],
   "schema": "operator-matrix/v1",

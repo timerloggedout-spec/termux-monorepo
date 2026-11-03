@@ -1,7 +1,7 @@
 # Integration Intelligence — Implementation Plan
 
-**Design:** [2026-11-02-integration-intelligence-design.md](../specs/2026-11-02-integration-intelligence-design.md)  
-**Proposal:** IIS-001  
+**Design:** [2026-11-02-integration-intelligence-design.md](../specs/2026-11-02-integration-intelligence-design.md)
+**Proposal:** IIS-001
 **Branch:** `feat/integration-intelligence-superpowers`
 
 ## Task 1 — Register the work

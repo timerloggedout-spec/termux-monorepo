@@ -11,7 +11,9 @@ This record reconciles GitHub-native searches for `ICM` and `Interpreted` across
 
 ## Search interpretation
 
-The GitHub search result for `ICM` returns #4, #103, and #232. The broader `Interpreted` search also returns #47 plus PRs whose match occurs in an old snapshot, an incidental body reference, or wider historical context. They should not be treated as duplicate implementation branches.
+The GitHub search result for `ICM` returns #4, #103, and #232. The broader `Interpreted` search also returns #47 plus PRs whose match occurs in an old snapshot, an incidental body reference, or wider historical context. PR #485 is recorded separately as an adjacent merged delivery. These should not be treated as duplicate implementation branches.
+
+Live status recheck on 2026-11-02: #47 and #103 remain open and not mergeable; #232 is merged (2026-08-18); #485 is merged (2026-09-19).
 
 > **Canonical decision:** the current custom reference Gitlinks remain at `refTemplates/smods/`. PR #4 and #47 supply historical metadata-placement context; PR #103 supplies a pending CAVEMAN-workspace relationship. No content is copied from, merged with, or assumed from any of those PRs.
 

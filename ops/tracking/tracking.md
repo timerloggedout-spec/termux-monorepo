@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T06:00:40Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T06:15:54Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T06:00:39Z` (merged 150 · open 199) · lane-events(Neon) status=`ok` count=`10153` read_at=`2026-11-03T06:00:39Z`
+Sources: PR feed read_at=`2026-11-03T06:15:54Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`10175` read_at=`2026-11-03T06:15:54Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -23,7 +23,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #4023 — docs: integrate competitive opportunities and quota reconciliation |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | #2167 `6d24b733af85` 2026-11-02T13:52:46Z | land/close PR #3991 — chore(recon): refresh pinned free-provider research |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | #2167 `6d24b733af85` 2026-11-02T13:52:46Z | land/close PR #4086 — feat(integrations): add read-only provider evidence adapters |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #4035 `62c8d0ef380f` 2026-11-03T03:17:23Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #4040 `34cb9ac7598b` 2026-11-03T03:19:54Z | land/close PR #4083 — feat(mesh): add quota-bound deployment admission and resiliency contract |

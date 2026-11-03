@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 423,
-    "open_prs": 193,
+    "open_prs": 194,
     "pr_classes": {
-      "CANDIDATE": 95,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 91,
+      "CANDIDATE": 96,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 92,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 17,
-      "prs": 191,
+      "prs": 192,
       "unlabelled_numbers": [
         308,
         388,
@@ -72,7 +72,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T03:14:46Z",
+  "generated_at": "2026-11-03T03:16:16Z",
   "issues_unlabelled": [
     308,
     388,
@@ -95,10 +95,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "bfa06f3f90"
+    "sha": "7e2be07b99"
   },
   "prs": [
     {
@@ -170,20 +170,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "2d0ab5288e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2966,
-      "title": "[apk-doe] A v0.2.1",
-      "updated_at": "2026-11-02T15:21:30Z"
     },
     {
       "class": "EXTRACT",
@@ -1211,6 +1197,20 @@
       "number": 2907,
       "title": "fix: scope free-tier opportunity cost to repo work",
       "updated_at": "2026-11-03T03:10:07Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "2d0ab5288e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2966,
+      "title": "[apk-doe] A v0.2.1",
+      "updated_at": "2026-11-02T15:21:30Z"
     },
     {
       "class": "CANDIDATE",
@@ -2798,15 +2798,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "7e1f8d0ce3",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 4023,
+      "title": "docs: integrate competitive opportunities and quota reconciliation",
+      "updated_at": "2026-11-03T03:15:45Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "7650796f1f",
+      "head_sha": "c745894975",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4023,
-      "title": "docs: integrate competitive opportunities and quota reconciliation",
-      "updated_at": "2026-11-03T03:14:40Z"
+      "mergeable_state": "unstable",
+      "number": 4029,
+      "title": "feat(comment-quality): repo-wide leg for the weekly sweep (Blocks drops on PRs too)",
+      "updated_at": "2026-11-03T03:16:10Z"
     }
   ],
   "schema": "operator-matrix/v1",

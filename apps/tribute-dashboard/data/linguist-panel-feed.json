@@ -1,6 +1,6 @@
 {
  "schema": "linguist-panel-feed/v1",
- "generated_at": "2026-11-02T22:04:03Z",
+ "generated_at": "2026-11-03T13:44:00Z",
  "generator": "scripts/linguist/linguist_panel_feed.py",
  "contract": "docs/ops/LINGUIST-PANEL-FEED.md",
  "sources": {
@@ -60,8 +60,8 @@
  ],
  "counts": {
   "families": 15,
-  "entries_total": 7646,
-  "entries_included": 359,
+  "entries_total": 7666,
+  "entries_included": 379,
   "per_family": {
    "cedrlang-symbol": 32,
    "cedrlang-compression": 31,
@@ -73,9 +73,9 @@
    "grimoire-protocol-terms": 11,
    "grimoire-orchestra-crosswalk": 16,
    "cedar-pointer-commands": 45,
-   "nomenclature-concepts": 22,
-   "nomenclature-labels": 66,
-   "nomenclature-mappings": 7,
+   "nomenclature-concepts": 26,
+   "nomenclature-labels": 79,
+   "nomenclature-mappings": 10,
    "routing-notation": 23,
    "archwiz-pointer-index": 7287
   }
@@ -578,12 +578,12 @@
    "direction": "definitional",
    "direction_panel": null,
    "canonical_source": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-   "entry_count": 22,
+   "entry_count": 26,
    "entries_included": true,
    "round_trip": {
     "verified": 0,
     "failed": 0,
-    "not_applicable": 22
+    "not_applicable": 26
    },
    "note": "candidate-status research data (SKOS-aligned); not runtime authority"
   },
@@ -603,12 +603,12 @@
    "direction": "definitional",
    "direction_panel": null,
    "canonical_source": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-   "entry_count": 66,
+   "entry_count": 79,
    "entries_included": true,
    "round_trip": {
     "verified": 0,
     "failed": 0,
-    "not_applicable": 66
+    "not_applicable": 79
    }
   },
   {
@@ -627,12 +627,12 @@
    "direction": "definitional",
    "direction_panel": null,
    "canonical_source": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-   "entry_count": 7,
+   "entry_count": 10,
    "entries_included": true,
    "round_trip": {
     "verified": 0,
     "failed": 0,
-    "not_applicable": 7
+    "not_applicable": 10
    }
   },
   {
@@ -6769,8 +6769,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 98",
-    "line": 98
+    "detail": "line 105",
+    "line": 105
    },
    "round_trip_verified": null,
    "concept_id": "category_theory.morphism",
@@ -6796,8 +6796,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 109",
-    "line": 109
+    "detail": "line 116",
+    "line": 116
    },
    "round_trip_verified": null,
    "concept_id": "category_theory.composition",
@@ -6823,8 +6823,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 120",
-    "line": 120
+    "detail": "line 127",
+    "line": 127
    },
    "round_trip_verified": null,
    "concept_id": "functional_programming.left_to_right_composition",
@@ -6850,8 +6850,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 131",
-    "line": 131
+    "detail": "line 138",
+    "line": 138
    },
    "round_trip_verified": null,
    "concept_id": "haskell.monadic_bind",
@@ -6877,8 +6877,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 142",
-    "line": 142
+    "detail": "line 149",
+    "line": 149
    },
    "round_trip_verified": null,
    "concept_id": "knowledge_organization.lexical_label",
@@ -6904,8 +6904,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 154",
-    "line": 154
+    "detail": "line 161",
+    "line": 161
    },
    "round_trip_verified": null,
    "concept_id": "knowledge_organization.controlled_vocabulary",
@@ -6931,8 +6931,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 166",
-    "line": 166
+    "detail": "line 173",
+    "line": 173
    },
    "round_trip_verified": null,
    "concept_id": "terminology.colloquial_to_formal_mapping",
@@ -6958,8 +6958,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 178",
-    "line": 178
+    "detail": "line 185",
+    "line": 185
    },
    "round_trip_verified": null,
    "concept_id": "linguistics.near_synonymy",
@@ -6985,8 +6985,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 190",
-    "line": 190
+    "detail": "line 197",
+    "line": 197
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.group",
@@ -7012,8 +7012,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 202",
-    "line": 202
+    "detail": "line 209",
+    "line": 209
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.identity_element",
@@ -7039,8 +7039,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 214",
-    "line": 214
+    "detail": "line 221",
+    "line": 221
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.inverse",
@@ -7066,8 +7066,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 226",
-    "line": 226
+    "detail": "line 233",
+    "line": 233
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.binary_operation",
@@ -7093,8 +7093,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 238",
-    "line": 238
+    "detail": "line 245",
+    "line": 245
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.subgroup",
@@ -7120,8 +7120,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 250",
-    "line": 250
+    "detail": "line 257",
+    "line": 257
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.normal_subgroup",
@@ -7147,8 +7147,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 262",
-    "line": 262
+    "detail": "line 269",
+    "line": 269
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.quotient_group",
@@ -7174,8 +7174,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 274",
-    "line": 274
+    "detail": "line 281",
+    "line": 281
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.homomorphism",
@@ -7201,8 +7201,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 286",
-    "line": 286
+    "detail": "line 293",
+    "line": 293
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.isomorphism",
@@ -7228,8 +7228,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 298",
-    "line": 298
+    "detail": "line 305",
+    "line": 305
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.abelian_group",
@@ -7255,8 +7255,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 310",
-    "line": 310
+    "detail": "line 317",
+    "line": 317
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.group_action",
@@ -7282,8 +7282,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 322",
-    "line": 322
+    "detail": "line 329",
+    "line": 329
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.symmetry_group",
@@ -7309,8 +7309,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 334",
-    "line": 334
+    "detail": "line 341",
+    "line": 341
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.category_of_groups",
@@ -7336,12 +7336,120 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 346",
-    "line": 346
+    "detail": "line 353",
+    "line": 353
    },
    "round_trip_verified": null,
    "concept_id": "group_theory.kernel",
    "domain_id": "group_theory",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:valence-reading",
+   "family": "nomenclature-concepts",
+   "family_id": "nomenclature-concepts",
+   "source": "valence reading",
+   "variants": [
+    "dual_valence.valence_reading"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "valence reading",
+   "match_type": "literal",
+   "match_variants": [
+    "dual_valence.valence_reading"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 365",
+    "line": 365
+   },
+   "round_trip_verified": null,
+   "concept_id": "dual_valence.valence_reading",
+   "domain_id": "dual_valence",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:dual-valence-target",
+   "family": "nomenclature-concepts",
+   "family_id": "nomenclature-concepts",
+   "source": "dual-valence target",
+   "variants": [
+    "dual_valence.dual_valence_target"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "dual-valence target",
+   "match_type": "literal",
+   "match_variants": [
+    "dual_valence.dual_valence_target"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 377",
+    "line": 377
+   },
+   "round_trip_verified": null,
+   "concept_id": "dual_valence.dual_valence_target",
+   "domain_id": "dual_valence",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:valence-conversion-operator",
+   "family": "nomenclature-concepts",
+   "family_id": "nomenclature-concepts",
+   "source": "valence conversion operator",
+   "variants": [
+    "dual_valence.conversion_operator"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "valence conversion operator",
+   "match_type": "literal",
+   "match_variants": [
+    "dual_valence.conversion_operator"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 389",
+    "line": 389
+   },
+   "round_trip_verified": null,
+   "concept_id": "dual_valence.conversion_operator",
+   "domain_id": "dual_valence",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:assimilation-conversion-competitive-instance",
+   "family": "nomenclature-concepts",
+   "family_id": "nomenclature-concepts",
+   "source": "assimilation (conversion, competitive instance)",
+   "variants": [
+    "dual_valence.assimilation"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "assimilation (conversion, competitive instance)",
+   "match_type": "literal",
+   "match_variants": [
+    "dual_valence.assimilation"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 401",
+    "line": 401
+   },
+   "round_trip_verified": null,
+   "concept_id": "dual_valence.assimilation",
+   "domain_id": "dual_valence",
    "status": "candidate"
   },
   {
@@ -7363,8 +7471,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 360",
-    "line": 360
+    "detail": "line 415",
+    "line": 415
    },
    "round_trip_verified": null,
    "label_id": "lbl-morphism-formal",
@@ -7391,8 +7499,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 373",
-    "line": 373
+    "detail": "line 428",
+    "line": 428
    },
    "round_trip_verified": null,
    "label_id": "lbl-morphism-arrow",
@@ -7419,8 +7527,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 386",
-    "line": 386
+    "detail": "line 441",
+    "line": 441
    },
    "round_trip_verified": null,
    "label_id": "lbl-morphism-plain",
@@ -7447,8 +7555,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 399",
-    "line": 399
+    "detail": "line 454",
+    "line": 454
    },
    "round_trip_verified": null,
    "label_id": "lbl-compose-plain",
@@ -7475,8 +7583,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 412",
-    "line": 412
+    "detail": "line 467",
+    "line": 467
    },
    "round_trip_verified": null,
    "label_id": "lbl-compose-ad-hoc",
@@ -7503,8 +7611,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 425",
-    "line": 425
+    "detail": "line 480",
+    "line": 480
    },
    "round_trip_verified": null,
    "label_id": "lbl-bind-symbol",
@@ -7531,8 +7639,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 438",
-    "line": 438
+    "detail": "line 493",
+    "line": 493
    },
    "round_trip_verified": null,
    "label_id": "lbl-lexical-label-formal",
@@ -7559,8 +7667,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 451",
-    "line": 451
+    "detail": "line 506",
+    "line": 506
    },
    "round_trip_verified": null,
    "label_id": "lbl-lexical-label-plain",
@@ -7587,8 +7695,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 464",
-    "line": 464
+    "detail": "line 519",
+    "line": 519
    },
    "round_trip_verified": null,
    "label_id": "lbl-controlled-vocab-formal",
@@ -7615,8 +7723,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 477",
-    "line": 477
+    "detail": "line 532",
+    "line": 532
    },
    "round_trip_verified": null,
    "label_id": "lbl-controlled-vocab-plain",
@@ -7643,8 +7751,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 491",
-    "line": 491
+    "detail": "line 546",
+    "line": 546
    },
    "round_trip_verified": null,
    "label_id": "lbl-colloquial-to-formal",
@@ -7671,8 +7779,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 504",
-    "line": 504
+    "detail": "line 559",
+    "line": 559
    },
    "round_trip_verified": null,
    "label_id": "lbl-colloquial-wetlab",
@@ -7699,8 +7807,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 517",
-    "line": 517
+    "detail": "line 572",
+    "line": 572
    },
    "round_trip_verified": null,
    "label_id": "lbl-near-synonymy-formal",
@@ -7727,8 +7835,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 530",
-    "line": 530
+    "detail": "line 585",
+    "line": 585
    },
    "round_trip_verified": null,
    "label_id": "lbl-near-synonymy-plain",
@@ -7755,8 +7863,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 544",
-    "line": 544
+    "detail": "line 599",
+    "line": 599
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-group-formal",
@@ -7783,8 +7891,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 558",
-    "line": 558
+    "detail": "line 613",
+    "line": 613
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-group-plain",
@@ -7811,8 +7919,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 572",
-    "line": 572
+    "detail": "line 627",
+    "line": 627
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-group-symbol",
@@ -7839,8 +7947,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 586",
-    "line": 586
+    "detail": "line 641",
+    "line": 641
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-identity-element-formal",
@@ -7867,8 +7975,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 600",
-    "line": 600
+    "detail": "line 655",
+    "line": 655
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-identity-element-plain",
@@ -7895,8 +8003,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 614",
-    "line": 614
+    "detail": "line 669",
+    "line": 669
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-identity-symbol",
@@ -7923,8 +8031,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 628",
-    "line": 628
+    "detail": "line 683",
+    "line": 683
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-inverse-formal",
@@ -7951,8 +8059,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 642",
-    "line": 642
+    "detail": "line 697",
+    "line": 697
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-inverse-plain",
@@ -7979,8 +8087,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 656",
-    "line": 656
+    "detail": "line 711",
+    "line": 711
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-inverse-symbol",
@@ -8007,8 +8115,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 670",
-    "line": 670
+    "detail": "line 725",
+    "line": 725
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-binary-operation-formal",
@@ -8035,8 +8143,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 684",
-    "line": 684
+    "detail": "line 739",
+    "line": 739
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-binary-operation-plain",
@@ -8063,8 +8171,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 698",
-    "line": 698
+    "detail": "line 753",
+    "line": 753
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-operation-symbol",
@@ -8091,8 +8199,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 712",
-    "line": 712
+    "detail": "line 767",
+    "line": 767
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-subgroup-formal",
@@ -8119,8 +8227,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 726",
-    "line": 726
+    "detail": "line 781",
+    "line": 781
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-subgroup-plain",
@@ -8147,8 +8255,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 740",
-    "line": 740
+    "detail": "line 795",
+    "line": 795
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-subgroup-symbol",
@@ -8175,8 +8283,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 754",
-    "line": 754
+    "detail": "line 809",
+    "line": 809
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-normal-subgroup-formal",
@@ -8203,8 +8311,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 768",
-    "line": 768
+    "detail": "line 823",
+    "line": 823
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-normal-subgroup-plain",
@@ -8231,8 +8339,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 782",
-    "line": 782
+    "detail": "line 837",
+    "line": 837
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-normal-symbol",
@@ -8259,8 +8367,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 796",
-    "line": 796
+    "detail": "line 851",
+    "line": 851
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-quotient-group-formal",
@@ -8287,8 +8395,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 810",
-    "line": 810
+    "detail": "line 865",
+    "line": 865
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-quotient-group-plain",
@@ -8315,8 +8423,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 824",
-    "line": 824
+    "detail": "line 879",
+    "line": 879
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-quotient-symbol",
@@ -8343,8 +8451,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 838",
-    "line": 838
+    "detail": "line 893",
+    "line": 893
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-homomorphism-formal",
@@ -8371,8 +8479,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 852",
-    "line": 852
+    "detail": "line 907",
+    "line": 907
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-homomorphism-plain",
@@ -8399,8 +8507,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 866",
-    "line": 866
+    "detail": "line 921",
+    "line": 921
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-homomorphism-symbol",
@@ -8427,8 +8535,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 880",
-    "line": 880
+    "detail": "line 935",
+    "line": 935
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-isomorphism-formal",
@@ -8455,8 +8563,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 894",
-    "line": 894
+    "detail": "line 949",
+    "line": 949
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-isomorphism-plain",
@@ -8483,8 +8591,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 908",
-    "line": 908
+    "detail": "line 963",
+    "line": 963
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-isomorphism-symbol",
@@ -8511,8 +8619,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 922",
-    "line": 922
+    "detail": "line 977",
+    "line": 977
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-abelian-group-formal",
@@ -8539,8 +8647,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 936",
-    "line": 936
+    "detail": "line 991",
+    "line": 991
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-abelian-group-plain",
@@ -8567,8 +8675,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 950",
-    "line": 950
+    "detail": "line 1005",
+    "line": 1005
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-group-action-formal",
@@ -8595,8 +8703,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 964",
-    "line": 964
+    "detail": "line 1019",
+    "line": 1019
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-group-action-plain",
@@ -8623,8 +8731,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 978",
-    "line": 978
+    "detail": "line 1033",
+    "line": 1033
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-action-symbol",
@@ -8651,8 +8759,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 992",
-    "line": 992
+    "detail": "line 1047",
+    "line": 1047
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-symmetry-group-formal",
@@ -8679,8 +8787,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1006",
-    "line": 1006
+    "detail": "line 1061",
+    "line": 1061
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-symmetry-group-plain",
@@ -8707,8 +8815,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1020",
-    "line": 1020
+    "detail": "line 1075",
+    "line": 1075
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-symmetry-symbol",
@@ -8735,8 +8843,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1034",
-    "line": 1034
+    "detail": "line 1089",
+    "line": 1089
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-category-of-groups-formal",
@@ -8763,8 +8871,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1048",
-    "line": 1048
+    "detail": "line 1103",
+    "line": 1103
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-category-of-groups-plain",
@@ -8791,8 +8899,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1062",
-    "line": 1062
+    "detail": "line 1117",
+    "line": 1117
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-grp-symbol",
@@ -8819,8 +8927,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1076",
-    "line": 1076
+    "detail": "line 1131",
+    "line": 1131
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-abelian-synonym",
@@ -8847,8 +8955,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1090",
-    "line": 1090
+    "detail": "line 1145",
+    "line": 1145
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-identity-synonym",
@@ -8875,8 +8983,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1104",
-    "line": 1104
+    "detail": "line 1159",
+    "line": 1159
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-operation-synonym",
@@ -8903,8 +9011,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1118",
-    "line": 1118
+    "detail": "line 1173",
+    "line": 1173
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-kernel-formal",
@@ -8931,8 +9039,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1132",
-    "line": 1132
+    "detail": "line 1187",
+    "line": 1187
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-kernel-plain",
@@ -8959,8 +9067,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1146",
-    "line": 1146
+    "detail": "line 1201",
+    "line": 1201
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-kernel-symbol",
@@ -8987,8 +9095,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1160",
-    "line": 1160
+    "detail": "line 1215",
+    "line": 1215
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-group-frame",
@@ -9015,8 +9123,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1174",
-    "line": 1174
+    "detail": "line 1229",
+    "line": 1229
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-identity-op",
@@ -9043,8 +9151,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1188",
-    "line": 1188
+    "detail": "line 1243",
+    "line": 1243
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-inverse-op",
@@ -9071,8 +9179,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1202",
-    "line": 1202
+    "detail": "line 1257",
+    "line": 1257
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-operation-closure",
@@ -9099,8 +9207,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1216",
-    "line": 1216
+    "detail": "line 1271",
+    "line": 1271
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-subgroup-generated",
@@ -9127,8 +9235,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1230",
-    "line": 1230
+    "detail": "line 1285",
+    "line": 1285
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-normal-alt-symbol",
@@ -9155,8 +9263,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1244",
-    "line": 1244
+    "detail": "line 1299",
+    "line": 1299
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-homomorphism-op",
@@ -9183,13 +9291,377 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1258",
-    "line": 1258
+    "detail": "line 1313",
+    "line": 1313
    },
    "round_trip_verified": null,
    "label_id": "lbl-gt-isomorphism-proofgate",
    "concept_id": "group_theory.isomorphism",
    "label_type": "ad_hoc",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:valence-reading",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "valence reading",
+   "variants": [
+    "lbl-dv-valence_reading-preferred_formal"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "valence reading",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-valence_reading-preferred_formal"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1327",
+    "line": 1327
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-valence_reading-preferred_formal",
+   "concept_id": "dual_valence.valence_reading",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:how-we-currently-read-them-threat-or-opportunity",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "how we currently read them: threat or opportunity",
+   "variants": [
+    "lbl-dv-valence_reading-preferred_plain_language"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "how we currently read them: threat or opportunity",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-valence_reading-preferred_plain_language"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1341",
+    "line": 1341
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-valence_reading-preferred_plain_language",
+   "concept_id": "dual_valence.valence_reading",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:e-t-e-o-frame-indexed-e-t-f",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "E^T | E^O (frame-indexed: E^T_f)",
+   "variants": [
+    "lbl-dv-valence_reading-symbolic_notation"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "E^T | E^O (frame-indexed: E^T_f)",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-valence_reading-symbolic_notation"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1355",
+    "line": 1355
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-valence_reading-symbolic_notation",
+   "concept_id": "dual_valence.valence_reading",
+   "label_type": "symbolic_notation",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:dual-valence-target",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "dual-valence target",
+   "variants": [
+    "lbl-dv-dual_valence_target-preferred_formal"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "dual-valence target",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-dual_valence_target-preferred_formal"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1369",
+    "line": 1369
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-dual_valence_target-preferred_formal",
+   "concept_id": "dual_valence.dual_valence_target",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:both-a-threat-and-an-opportunity-at-once",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "both a threat and an opportunity at once",
+   "variants": [
+    "lbl-dv-dual_valence_target-preferred_plain_language"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "both a threat and an opportunity at once",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-dual_valence_target-preferred_plain_language"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1383",
+    "line": 1383
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-dual_valence_target-preferred_plain_language",
+   "concept_id": "dual_valence.dual_valence_target",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:e-t-o",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "E^{T∧O}",
+   "variants": [
+    "lbl-dv-dual_valence_target-symbolic_notation"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "E^{T∧O}",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-dual_valence_target-symbolic_notation"
+   ],
+   "granularity": "token",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1397",
+    "line": 1397
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-dual_valence_target-symbolic_notation",
+   "concept_id": "dual_valence.dual_valence_target",
+   "label_type": "symbolic_notation",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:valence-conversion-operator",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "valence conversion operator",
+   "variants": [
+    "lbl-dv-conversion_operator-preferred_formal"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "valence conversion operator",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-conversion_operator-preferred_formal"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1411",
+    "line": 1411
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-conversion_operator-preferred_formal",
+   "concept_id": "dual_valence.conversion_operator",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:the-move-that-turns-the-relationship-from-threat-to-opportunity",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "the move that turns the relationship from threat to opportunity",
+   "variants": [
+    "lbl-dv-conversion_operator-preferred_plain_language"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "the move that turns the relationship from threat to opportunity",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-conversion_operator-preferred_plain_language"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1425",
+    "line": 1425
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-conversion_operator-preferred_plain_language",
+   "concept_id": "dual_valence.conversion_operator",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:t-o-e-t-e-o-object-part-id-e",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "κ_{T→O} : E^T ⇢ E^O, object part = id_E",
+   "variants": [
+    "lbl-dv-conversion_operator-symbolic_notation"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "κ_{T→O} : E^T ⇢ E^O, object part = id_E",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-conversion_operator-symbolic_notation"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1439",
+    "line": 1439
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-conversion_operator-symbolic_notation",
+   "concept_id": "dual_valence.conversion_operator",
+   "label_type": "symbolic_notation",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:conversion",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "conversion",
+   "variants": [
+    "lbl-dv-conversion_operator-alternative_synonym"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "conversion",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-conversion_operator-alternative_synonym"
+   ],
+   "granularity": "token",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1453",
+    "line": 1453
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-conversion_operator-alternative_synonym",
+   "concept_id": "dual_valence.conversion_operator",
+   "label_type": "alternative_synonym",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:assimilation",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "assimilation",
+   "variants": [
+    "lbl-dv-assimilation-preferred_formal"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "assimilation",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-assimilation-preferred_formal"
+   ],
+   "granularity": "token",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1467",
+    "line": 1467
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-assimilation-preferred_formal",
+   "concept_id": "dual_valence.assimilation",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:bringing-them-in-learn-them-osint-then-reach-out",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "bringing them in: learn them (OSINT), then reach out",
+   "variants": [
+    "lbl-dv-assimilation-preferred_plain_language"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "bringing them in: learn them (OSINT), then reach out",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-assimilation-preferred_plain_language"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1481",
+    "line": 1481
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-assimilation-preferred_plain_language",
+   "concept_id": "dual_valence.assimilation",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:assim-t-o-via-osint-outreach",
+   "family": "nomenclature-labels",
+   "family_id": "nomenclature-labels",
+   "source": "κ_assim = κ_{T→O} via OSINT ∘ outreach",
+   "variants": [
+    "lbl-dv-assimilation-symbolic_notation"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "κ_assim = κ_{T→O} via OSINT ∘ outreach",
+   "match_type": "literal",
+   "match_variants": [
+    "lbl-dv-assimilation-symbolic_notation"
+   ],
+   "granularity": "phrase",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1495",
+    "line": 1495
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-dv-assimilation-symbolic_notation",
+   "concept_id": "dual_valence.assimilation",
+   "label_type": "symbolic_notation",
    "status": "candidate"
   },
   {
@@ -9211,8 +9683,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1274",
-    "line": 1274
+    "detail": "line 1511",
+    "line": 1511
    },
    "round_trip_verified": null,
    "mapping_id": "map-morphism-arrow",
@@ -9239,8 +9711,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1286",
-    "line": 1286
+    "detail": "line 1523",
+    "line": 1523
    },
    "round_trip_verified": null,
    "mapping_id": "map-bind-not-compose",
@@ -9267,8 +9739,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1298",
-    "line": 1298
+    "detail": "line 1535",
+    "line": 1535
    },
    "round_trip_verified": null,
    "mapping_id": "map-gt-operation-composition",
@@ -9295,8 +9767,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1312",
-    "line": 1312
+    "detail": "line 1549",
+    "line": 1549
    },
    "round_trip_verified": null,
    "mapping_id": "map-gt-identity-morphism",
@@ -9323,8 +9795,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1326",
-    "line": 1326
+    "detail": "line 1563",
+    "line": 1563
    },
    "round_trip_verified": null,
    "mapping_id": "map-gt-grp-morphism",
@@ -9351,8 +9823,8 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1340",
-    "line": 1340
+    "detail": "line 1577",
+    "line": 1577
    },
    "round_trip_verified": null,
    "mapping_id": "map-gt-group-monoid-adjacency",
@@ -9379,13 +9851,97 @@
    "provenance": {
     "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
     "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
-    "detail": "line 1354",
-    "line": 1354
+    "detail": "line 1591",
+    "line": 1591
    },
    "round_trip_verified": null,
    "mapping_id": "map-gt-kernel-normal",
    "relation": "related_match",
    "confidence": 0.6,
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-mappings:dual-valence-conversion-operator",
+   "family": "nomenclature-mappings",
+   "family_id": "nomenclature-mappings",
+   "source": "dual_valence.conversion_operator",
+   "variants": [
+    "category_theory.morphism"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "dual_valence.conversion_operator",
+   "match_type": "literal",
+   "match_variants": [
+    "category_theory.morphism"
+   ],
+   "granularity": "token",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1605",
+    "line": 1605
+   },
+   "round_trip_verified": null,
+   "mapping_id": "map-dv-conversion-morphism",
+   "relation": "related_match",
+   "confidence": 0.7,
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-mappings:dual-valence-conversion-operator",
+   "family": "nomenclature-mappings",
+   "family_id": "nomenclature-mappings",
+   "source": "dual_valence.conversion_operator",
+   "variants": [
+    "group_theory.homomorphism"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "dual_valence.conversion_operator",
+   "match_type": "literal",
+   "match_variants": [
+    "group_theory.homomorphism"
+   ],
+   "granularity": "token",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1618",
+    "line": 1618
+   },
+   "round_trip_verified": null,
+   "mapping_id": "map-dv-conversion-homomorphism",
+   "relation": "related_match",
+   "confidence": 0.5,
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-mappings:dual-valence-dual-valence-target",
+   "family": "nomenclature-mappings",
+   "family_id": "nomenclature-mappings",
+   "source": "dual_valence.dual_valence_target",
+   "variants": [
+    "group_theory.group_action"
+   ],
+   "direction": "definitional",
+   "direction_panel": null,
+   "match": "dual_valence.dual_valence_target",
+   "match_type": "literal",
+   "match_variants": [
+    "group_theory.group_action"
+   ],
+   "granularity": "token",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "detail": "line 1631",
+    "line": 1631
+   },
+   "round_trip_verified": null,
+   "mapping_id": "map-dv-target-action",
+   "relation": "related_match",
+   "confidence": 0.4,
    "status": "candidate"
   },
   {

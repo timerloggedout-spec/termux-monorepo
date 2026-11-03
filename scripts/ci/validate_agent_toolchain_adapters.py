@@ -61,9 +61,15 @@ def main() -> int:
         if errors:
             print(f"FAIL: {observation.get('integration_id')}: {'; '.join(errors)}", file=sys.stderr)
             return 1
-        serialized = json.dumps(observation, sort_keys=True)
-        if "redact" in serialized or "api_key" in serialized:
-            print("FAIL: query-bearing URL material survived normalization", file=sys.stderr)
+        url_values = []
+        if observation["integration_id"] == "hapi-mcp-registry":
+            url_values.extend(remote["endpoint"] for remote in observation["data"]["remotes"])
+        elif observation["integration_id"] == "context7":
+            url_values.extend(ref["url"] for ref in observation["data"]["source_refs"])
+        else:
+            url_values.append(observation["data"]["canonical_url"])
+        if any("?" in url or "#" in url for url in url_values):
+            print("FAIL: query string or fragment survived URL normalization", file=sys.stderr)
             return 1
     hapi = fixtures[0]
     if hapi["trust"] != {

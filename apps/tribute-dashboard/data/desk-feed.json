@@ -2395,10 +2395,11 @@
         },
         "in_window_development": {
           "rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, \u00ac done; done only at wall/submission close.",
-          "line": "LIVE \u2014 PRESS-ON (owner overrule 2026-11-03): 6 builds in flight {surfaces #4092/#4093/#4095 \u00b7 RFP builds #4111 (D1-3) \u00b7 #4112 (D1-4) \u00b7 #4113 (D1-5)} as the v0.4.0 batch on the v0.3.0 checkpoint; v1.0.0 tag Nov 4 = submission state; merges continue past it to the 23:59 PT wall",
+          "line": "LIVE \u2014 PRESS-ON (owner overrule 2026-11-03): 6 builds in flight {surfaces #4092/#4093/#4095 \u00b7 RFP builds #4111 (D1-3) \u00b7 #4112 (D1-4) \u00b7 #4113 (D1-5)} \u2014 versioning of record (owner correction): v0.3.0 released \u21d2 v0.4.0 batch (releases as its own step) \u21d2 v1.0.0 at the Nov 4 submission containing the full road \u00b7 post-1.0.0 PATCH only (VERSIONING.md freeze)",
           "wall": "2026-11-04 23:59 PT submission wall"
         },
-        "rfp_d1_5": "#4110 filed 2026-11-03 (memory-methods expansion, v0.4.0 scope); build filed as #4113 under the press-on overrule"
+        "rfp_d1_5": "#4110 filed 2026-11-03 (memory-methods expansion, v0.4.0 scope); build filed as #4113 under the press-on overrule",
+        "versioning_model": "v0.3.0 released (432427628) \u21d2 v0.4.0 = surfaces + RFP builds batch, releases as its own step \u21d2 v1.0.0 at Nov 4 submission = full road \u00b7 post-1.0.0 PATCH only"
       },
       "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
       "provider_usage": [
@@ -3490,7 +3491,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T01:03:59-08:00",
+    "updated_at": "2026-11-03T01:04:55-08:00",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main."
   }
 }

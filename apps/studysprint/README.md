@@ -40,7 +40,13 @@ daily check-in with recovered-weeks streaks · plain-language mode,
 receipts minus the jargon. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.2.0
 — new v0.2.0 demo:
-- Demo video (YouTube, 1:40, public): https://www.youtube.com/watch?v=eFXyOYTpuvg
+**Update — Nov 2, 2026: StudySprint v0.3.0 is out.** Spaced
+repetition, built on the plan: FSRS + SM-2 schedulers, Anki .apkg
+export, an Obsidian vault surface, and a ts-fsrs seed for the UX
+layer. Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.3.0
+— new v0.3.0 demo:
+- Demo video (YouTube, 2:05, public): https://www.youtube.com/watch?v=cgfp7uZPffw
 - Starting-agent (D0) repo: https://github.com/timerloggedout-spec/delphi-oracle
 
 ## Impact

@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 428,
-    "open_prs": 196,
+    "open_prs": 195,
     "pr_classes": {
-      "CANDIDATE": 97,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 92,
+      "CANDIDATE": 98,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 91,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 194,
+      "prs": 193,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T03:36:07Z",
+  "generated_at": "2026-11-03T03:38:11Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "473b319f4f"
+    "sha": "ed977197c0"
   },
   "prs": [
     {
@@ -186,20 +186,6 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b4685fad1b",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4055,
-      "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
-      "updated_at": "2026-11-03T03:35:32Z"
     },
     {
       "class": "CANDIDATE",
@@ -1565,6 +1551,20 @@
       "updated_at": "2026-11-03T03:13:16Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b4685fad1b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4055,
+      "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
+      "updated_at": "2026-11-03T03:35:32Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2837,20 +2837,6 @@
       "number": 4048,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T03:28:17Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "265a583200",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4057,
-      "title": "fix(cert-coderoad-host): evidence dir + early CR_OK default",
-      "updated_at": "2026-11-03T03:35:41Z"
     }
   ],
   "schema": "operator-matrix/v1",

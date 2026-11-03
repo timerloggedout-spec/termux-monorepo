@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 518,
-    "open_prs": 251,
+    "open_issues": 519,
+    "open_prs": 249,
     "pr_classes": {
-      "CANDIDATE": 118,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 123,
+      "CANDIDATE": 116,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 121,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 284,
+      "issues": 285,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 44,
-      "prs": 249,
+      "prs": 247,
       "unlabelled_numbers": [
         308,
         388,
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T19:40:10Z",
+  "generated_at": "2026-11-03T20:26:18Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "e0f3ca0718"
+    "sha": "a3f5ae647b"
   },
   "prs": [
     {
@@ -294,6 +294,34 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c54019fb7d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4563,
+      "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
+      "updated_at": "2026-11-03T20:21:21Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b8ca196aeb",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4582,
+      "title": "quota: readings promotion productized \u2014 probe\u2192convert\u2192promote workflow (state-gated, Swarm writer)",
+      "updated_at": "2026-11-03T20:24:03Z"
     },
     {
       "class": "CANDIDATE",
@@ -1861,20 +1889,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6d35b6c1a2",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4497,
-      "title": "recruitment: podium identity layer \u2014 judges + linkage gap map (2026-11-03)",
-      "updated_at": "2026-11-03T18:43:42Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "adaf74d40d",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1903,20 +1917,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "ae32ae453b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4527,
-      "title": "recruitment: OSINT template acceptance run \u2014 D2 legs re-run + diff vs #4484/#4497",
-      "updated_at": "2026-11-03T18:25:13Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "6b395fd6c0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1931,12 +1931,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "bb146cf94f",
+      "head_sha": "c3f82c9c81",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4551,
-      "title": "recruitment: podium dataset of record v2 \u2014 D0 drift + Builder Center podium rows",
-      "updated_at": "2026-11-03T19:09:18Z"
+      "number": 4575,
+      "title": "cadence: surface G1 saturation in dispatch tree (escalation axis 4)",
+      "updated_at": "2026-11-03T20:05:32Z"
     },
     {
       "class": "CANDIDATE",
@@ -1945,12 +1945,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "fa4216a111",
+      "head_sha": "13482eb34c",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4555,
-      "title": "fix(strands-proof): gemini-3.8-flash \u2014 the model the provider's 404 names (#4534)",
-      "updated_at": "2026-11-03T19:26:07Z"
+      "number": 4578,
+      "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
+      "updated_at": "2026-11-03T20:13:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2491,26 +2491,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "e7ccf3ef64",
+      "head_sha": "e7bce37602",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T19:21:12Z"
+      "updated_at": "2026-11-03T20:03:01Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "28cc1cd22f",
+      "head_sha": "6a5b434714",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T19:18:32Z"
+      "updated_at": "2026-11-03T19:52:30Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3149,12 +3149,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "168c35b767",
+      "head_sha": "b9c8386b36",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T19:34:51Z"
+      "updated_at": "2026-11-03T20:16:25Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3163,12 +3163,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "10253e5685",
+      "head_sha": "a130a8626f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T19:28:14Z"
+      "updated_at": "2026-11-03T20:03:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3247,12 +3247,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3af768ef95",
+      "head_sha": "324c39dd57",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-03T04:17:10Z"
+      "updated_at": "2026-11-03T19:53:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3415,20 +3415,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d642569e4b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4529,
-      "title": "recruitment: podium dataset of record v1 \u2014 field rows (C1) + judge coverage stamps",
-      "updated_at": "2026-11-03T18:26:19Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "f1951f6ecb",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3524,20 +3510,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "c54019fb7d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4563,
-      "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
-      "updated_at": "2026-11-03T19:40:07Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3546,7 +3518,7 @@
       "mergeable_state": "unknown",
       "number": 4570,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T19:09:32Z"
+      "updated_at": "2026-11-03T19:46:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3560,105 +3532,21 @@
       "mergeable_state": "unknown",
       "number": 4571,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T19:14:58Z"
+      "updated_at": "2026-11-03T19:46:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
       },
-      "head_sha": "b82d239886",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4572,
-      "title": "quota: audit-005 \u2014 F1 state \u2192 production-proven (preflight verdict on PR #4569)",
-      "updated_at": "2026-11-03T19:20:23Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b367cdf2b2",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4573,
-      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
-      "updated_at": "2026-11-03T19:36:57Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "08c14b4ec4",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4574,
-      "title": "quota: fly pool dead-entitlement correction (registry limit 0)",
-      "updated_at": "2026-11-03T19:31:19Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "c3f82c9c81",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4575,
-      "title": "cadence: surface G1 saturation in dispatch tree (escalation axis 4)",
-      "updated_at": "2026-11-03T19:35:12Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "14c6c57734",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4576,
-      "title": "feat(quota): self-count layer for null readings (owner ruling 2026-11-03)",
-      "updated_at": "2026-11-03T19:32:55Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "13482eb34c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4578,
-      "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
-      "updated_at": "2026-11-03T19:39:38Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b8ca196aeb",
+      "head_sha": "c0451e6ea6",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4582,
-      "title": "quota: readings promotion productized \u2014 probe\u2192convert\u2192promote workflow (state-gated, Swarm writer)",
-      "updated_at": "2026-11-03T19:40:08Z"
+      "number": 4573,
+      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
+      "updated_at": "2026-11-03T19:57:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3667,12 +3555,96 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "3751bc65be",
+      "head_sha": "5ef19a458f",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4583,
       "title": "quota: strike the series1 private-readings tap (owner ruling: self-counted nulls)",
-      "updated_at": "2026-11-03T19:39:10Z"
+      "updated_at": "2026-11-03T20:14:53Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "4eb6d55d0e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4589,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T19:47:55Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "f2e4429873",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4594,
+      "title": "ops(quota): promote readings snapshot 2026-11-03 (probe run 41701517462)",
+      "updated_at": "2026-11-03T19:50:58Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "62788f5f02",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4596,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T19:54:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "f8d86a16fb",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4599,
+      "title": "fix(studysprint): strands proof run 4 \u2014 gemini-3.5-flash-lite + sdk version (supersedes #4555)",
+      "updated_at": "2026-11-03T20:03:37Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "bfb5b257e1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4601,
+      "title": "quota: pack consumes the self-count tally (series6, carried verbatim)",
+      "updated_at": "2026-11-03T20:14:46Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "4b47ba9f00",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4609,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T20:26:15Z"
     }
   ],
   "schema": "operator-matrix/v1",

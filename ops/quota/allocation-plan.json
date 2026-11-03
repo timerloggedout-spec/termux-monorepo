@@ -1,8 +1,8 @@
 {
  "schema": "quota-allocation-plan/v1",
- "generated_at": "2026-11-01T13:32:49Z",
+ "generated_at": "2026-11-03T19:31:27Z",
  "issue": 1884,
- "registry_records": 164,
+ "registry_records": 170,
  "pools": [
   {
    "id": "aion",
@@ -47,7 +47,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "aws",
@@ -94,7 +111,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "aws.credits",
@@ -139,7 +173,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "azure",
@@ -184,7 +235,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "azure.credit",
@@ -229,7 +297,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "cerebras",
@@ -274,7 +359,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "cloudflare",
@@ -326,7 +428,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "cohere",
@@ -371,7 +490,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 3,
+     "usage_stamps": 4,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
   },
   {
    "id": "deno",
@@ -416,7 +552,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "digitalocean",
@@ -461,7 +614,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "digitalocean.credit",
@@ -506,7 +676,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "felo.credits",
@@ -551,7 +738,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "fly",
@@ -596,7 +800,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "g4f-vendors",
@@ -701,7 +922,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "gcp",
@@ -748,7 +986,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "github",
@@ -1397,7 +1652,24 @@
     }
    ],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 8
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "matched",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": true
+   }
   },
   {
    "id": "github.codespaces",
@@ -1443,7 +1715,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "google",
@@ -1503,7 +1792,24 @@
     }
    ],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": true
+   }
   },
   {
    "id": "grafana",
@@ -1548,7 +1854,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "groq",
@@ -1593,7 +1916,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "huggingface",
@@ -1639,7 +1979,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "kilo",
@@ -1684,7 +2041,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "koyeb",
@@ -1729,7 +2103,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "llm7",
@@ -1774,7 +2165,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "mistral",
@@ -1819,7 +2227,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 2,
+     "usage_stamps": 2,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
   },
   {
    "id": "modelscope",
@@ -1864,7 +2289,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "neon",
@@ -1912,7 +2354,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "netlify.credits",
@@ -1957,7 +2416,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "nvidia",
@@ -2002,7 +2478,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "ollama",
@@ -2047,7 +2540,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "omni",
@@ -2092,7 +2602,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "openrouter",
@@ -2138,7 +2665,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "oracle",
@@ -2185,7 +2729,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "ovhcloud",
@@ -2230,7 +2791,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "partners.credits",
@@ -2275,7 +2853,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "render",
@@ -2324,7 +2919,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "requesty",
@@ -2369,7 +2981,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "routeway",
@@ -2414,7 +3043,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "sambanova",
@@ -2459,7 +3105,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "sealion",
@@ -2504,7 +3167,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 4,
+     "usage_stamps": 4,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
   },
   {
    "id": "siliconflow",
@@ -2549,7 +3229,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "supabase",
@@ -2598,7 +3295,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "turso",
@@ -2646,7 +3360,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "typhoon",
@@ -2691,7 +3422,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "unorouter",
@@ -2736,7 +3484,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 1,
+     "usage_stamps": 1,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
   },
   {
    "id": "upstash",
@@ -2784,7 +3549,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "vercel",
@@ -2844,7 +3626,24 @@
     }
    ],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": true
+   }
   },
   {
    "id": "xfyun",
@@ -2889,7 +3688,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "xkiro",
@@ -2934,7 +3750,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "zai",
@@ -2979,7 +3812,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "platform201",
@@ -3037,7 +3887,24 @@
     }
    ],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": true
+   }
   },
   {
    "id": "pinecone",
@@ -3086,7 +3953,24 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   },
   {
    "id": "meta",
@@ -3132,7 +4016,396 @@
    ],
    "lane_slices": [],
    "stranded": null,
-   "release_to": null
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "deepinfra",
+   "class": "B",
+   "services": [
+    "deepinfra.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "novita",
+   "class": "B",
+   "services": [
+    "novita.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "friendli",
+   "class": "B",
+   "services": [
+    "friendli.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "baseten",
+   "class": "B",
+   "services": [
+    "baseten.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 1,
+     "usage_stamps": 1,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "deepseek",
+   "class": "B",
+   "services": [
+    "deepseek.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 6,
+     "usage_stamps": 7,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "claude",
+   "class": "B",
+   "services": [
+    "claude.seat_runtime"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
   }
  ],
  "triggers_fired": [
@@ -3153,5 +4426,10 @@
    "action": "convergence executes the matching allocations change citing #1884 + this plan record"
   }
  ],
- "rules": "Pacing/stranded per docs/ops/QUOTA-ALLOCATION-PLANNING.md; stranded null = NOT ESTABLISHED (no numeric reading), never invented."
+ "self_counts": {
+  "source": "ops/quota/self-counts.json",
+  "generated_at": "2026-11-03T19:30:52Z",
+  "method": "self-count"
+ },
+ "rules": "Pacing/stranded per docs/ops/QUOTA-ALLOCATION-PLANNING.md; stranded null = NOT ESTABLISHED (no numeric reading), never invented. Self-count layer (owner ruling 2026-11-03): counts are tallies of the fleet's own recorded events, stamped method=self-count, and govern where provider readings are null; matching flags are a labeled heuristic layer above the counts."
 }

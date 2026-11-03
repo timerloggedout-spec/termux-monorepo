@@ -35,21 +35,23 @@ jobs:
       - name: Install test runner
         run: python3 -m pip install -q pytest
       - name: Tests
-        run: python3 -m pytest tests/test_quota_allocation_planner.py tests/test_quota_allocations.py -q
+        run: python3 -m pytest tests/test_quota_allocation_planner.py tests/test_quota_allocations.py tests/test_quota_self_counts.py -q
+      - name: Tally self-counts (owner ruling 2026-11-03)
+        run: python3 scripts/quota_self_counts.py
       - name: Recompute allocation plan
         run: python3 scripts/quota_allocation_planner.py
       - name: Refresh-PR if changed
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet -- ops/quota/allocation-plan.json; then
+          if git diff --quiet -- ops/quota/allocation-plan.json ops/quota/self-counts.json; then
             echo "plan unchanged"; exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin quota/allocation-plan-refresh || true
           git checkout -B quota/allocation-plan-refresh
-          git add ops/quota/allocation-plan.json
+          git add ops/quota/allocation-plan.json ops/quota/self-counts.json
           git commit -m "quota: allocation plan refresh (automated, #1884)"
           git push --force-with-lease origin quota/allocation-plan-refresh
           gh pr view quota/allocation-plan-refresh --json number >/dev/null 2>&1 || \

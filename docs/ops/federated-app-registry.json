@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "registry_version": "1.1.0",
+  "registry_version": "1.2.0",
   "authority_note": "System mapping only. Product application identity, owning repository, UI surface identity, release-lane identity, and GitHub automation identity are separate namespaces. An absent monorepo path does not imply an absent external application. Every status is evidence-bounded; unknown remains unknown.",
   "applications": [
     {
@@ -208,7 +208,19 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 177357774,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo"
+      ],
+      "permissions": {
+        "actions": "write",
+        "checks": "write",
+        "contents": "write",
+        "issues": "write",
+        "metadata": "read",
+        "pull_requests": "write"
+      }
     },
     {
       "identity_key": "termux-fleet-collector",
@@ -218,7 +230,20 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 176747357,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo",
+        "timerloggedout-spec/repo-replay"
+      ],
+      "permissions": {
+        "actions": "read",
+        "checks": "read",
+        "contents": "read",
+        "issues": "read",
+        "metadata": "read",
+        "pull_requests": "read"
+      }
     },
     {
       "identity_key": "termux-fleet-publisher",
@@ -228,7 +253,18 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 176799777,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo",
+        "timerloggedout-spec/repo-replay"
+      ],
+      "permissions": {
+        "checks": "read",
+        "contents": "write",
+        "metadata": "read",
+        "pull_requests": "write"
+      }
     },
     {
       "identity_key": "termux-fleet-reviewer",
@@ -238,7 +274,16 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 176838378,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo"
+      ],
+      "permissions": {
+        "checks": "read",
+        "metadata": "read",
+        "pull_requests": "write"
+      }
     },
     {
       "identity_key": "termux-fleet-gate",
@@ -248,7 +293,15 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 176839926,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo"
+      ],
+      "permissions": {
+        "checks": "write",
+        "metadata": "read"
+      }
     },
     {
       "identity_key": "termux-fleet-lifecycle",
@@ -258,7 +311,15 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 176843209,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo"
+      ],
+      "permissions": {
+        "issues": "write",
+        "metadata": "read"
+      }
     },
     {
       "identity_key": "termux-fleet-crossreference",
@@ -268,7 +329,16 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 177439462,
+      "repository_scope": [
+        "timerloggedout-spec/termux-monorepo"
+      ],
+      "permissions": {
+        "contents": "read",
+        "issues": "write",
+        "metadata": "read"
+      }
     },
     {
       "identity_key": "termux-fleet-repo-story",
@@ -278,7 +348,17 @@
       "status": "active",
       "evidence_refs": [
         "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
-      ]
+      ],
+      "installation_id": 177463385,
+      "repository_scope": [
+        "timerloggedout-spec/repo-story"
+      ],
+      "permissions": {
+        "contents": "write",
+        "issues": "write",
+        "metadata": "read",
+        "pull_requests": "write"
+      }
     }
   ]
 }

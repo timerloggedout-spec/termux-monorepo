@@ -2,7 +2,7 @@
 
 Proves the fleet's Gemini access drives the StudySprint Strands
 agent end to end: construct the agent, swap its model to
-GeminiModel(gemini-2.5-flash) BEFORE invocation, run the
+GeminiModel(gemini-3.5-flash-lite) BEFORE invocation, run the
 fetch-syllabus -> make_plan prompt, and assert both tools were
 actually called (tool_metrics), not merely registered.
 
@@ -45,7 +45,7 @@ def main() -> int:
         "proof": "studysprint-strands-model-access",
         "issue": 4534,
         "provider": "google-gemini via fleet Actions secret",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.5-flash-lite",
         "strands_agent_available": False,
         "deployment": False,
         "construction_note": (
@@ -58,8 +58,15 @@ def main() -> int:
         "tools_called": [],
     }
     try:
-        import strands
-        receipt["sdk"] = getattr(strands, "__version__", "unknown")
+        import strands  # noqa: F401
+        # strands exposes no __version__ (runs 1-3 stamped
+        # "unknown"); the version of record is the installed
+        # distribution's metadata.
+        from importlib.metadata import version as _dist_version
+        try:
+            receipt["sdk"] = f"strands-agents {_dist_version('strands-agents')}"
+        except Exception:
+            receipt["sdk"] = "unknown"
         from agent import build_strands_agent
         agent = build_strands_agent()
         if agent is None:
@@ -70,7 +77,7 @@ def main() -> int:
         from strands.models.gemini import GeminiModel
         agent.model = GeminiModel(
             client_args={"api_key": os.environ["GEMINI_API_KEY"]},
-            model_id="gemini-2.5-flash")
+            model_id="gemini-3.5-flash-lite")
 
         result = agent(PROMPT)
         metrics = getattr(result, "metrics", None)

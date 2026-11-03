@@ -31,7 +31,7 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 | `challenge:event:C12` | None | None | open_task |
 | `challenge:event:D0` | 252 | 40 | established |
 | `challenge:event:D1` | 324 | 1 | partial |
-| `challenge:event:D2` | 1617 | None | partial |
+| `challenge:event:D2` | 2302 | None | partial |
 | `challenge:event:D3` | None | None | open_task |
 | `challenge:event:D4` | 1909 | 0 | established |
 | `challenge:event:D5` | None | None | open_task |

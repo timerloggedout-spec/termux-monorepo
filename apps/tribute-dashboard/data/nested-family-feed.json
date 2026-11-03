@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-03T08:48:24Z",
+ "generated_at": "2026-11-03T09:05:03Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -35,8 +35,8 @@
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 44,
-   "records_used": 9
+   "records_read": 47,
+   "records_used": 12
   }
  ],
  "coverage": {
@@ -151,7 +151,7 @@
   "providers": 16,
   "models": 20,
   "roles": 4,
-  "tasks": 40,
+  "tasks": 43,
   "dispatches": 31,
   "registry_providers": 95,
   "zero_dispatch_providers": 89,
@@ -162,7 +162,7 @@
    "observed": 1
   },
   "by_source": {
-   "desk-usage": 9,
+   "desk-usage": 12,
    "records": 27,
    "campaign-records": 4
   }
@@ -683,9 +683,10 @@
      ],
      "contexts": [
       "D1 next-version build (owner 'Get it built' via main, D1 seat production order 2026-11-02 21:09 PT)",
+      "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
       "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)"
      ],
-     "task_count": 5,
+     "task_count": 8,
      "tasks": [
       {
        "task_class": "desk-traversal",
@@ -801,12 +802,81 @@
        "field_sources": {},
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "challenge-entries-manager",
+       "moniker": "challenge-entries-manager",
+       "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4111",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "challenge-entries-manager",
+       "moniker": "challenge-entries-manager",
+       "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4112",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "challenge-entries-manager",
+       "moniker": "challenge-entries-manager",
+       "context": "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4113",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
       }
      ]
     }
    ],
    "model_count": 1,
-   "task_count": 5,
+   "task_count": 8,
    "zero_dispatch": false
   },
   {
@@ -2252,6 +2322,6 @@
  ],
  "gaps": [
   "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch, claude-muse, command-dispatch, gemini, gemini-cli, github-actions, jules",
-  "desk-usage rows carry no run_id/dispatch_id (9 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
+  "desk-usage rows carry no run_id/dispatch_id (12 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

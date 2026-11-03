@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6831aa37abaa3105614c3f90bcca7184db9bf3ef6ed5046bd9291dd45c23dc31",
-  "workflow_count": 284,
+  "source_fingerprint": "ad1158648d9b67840429c402fc1a96713391736211d1ef74b038ca0789a62afd",
+  "workflow_count": 286,
   "workflows": [
     {
       "action_pins": [],
@@ -3857,6 +3857,24 @@
     },
     {
       "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: quota-vultr-usage cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "quota-vultr-usage",
+      "path": ".github/workflows/quota-vultr-usage.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
       ],
       "authority": "read-only-or-advisory",
@@ -4426,6 +4444,21 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "proof"
+      ],
+      "name": "studysprint-strands-proof",
+      "path": ".github/workflows/studysprint-strands-proof.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

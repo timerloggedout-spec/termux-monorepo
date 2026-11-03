@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ad1158648d9b67840429c402fc1a96713391736211d1ef74b038ca0789a62afd",
+  "source_fingerprint": "f6ea9326c90d72376aa42c4f3f9ede63be15fec22fd59efa19bc98eb9538f518",
   "workflow_count": 286,
   "workflows": [
     {
@@ -4770,7 +4770,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "group: user-site-pages-publisher cancel-in-progress: false",
+      "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
         "enable-pages",
@@ -4791,7 +4791,7 @@
         "peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: user-site-pages-publisher cancel-in-progress: false",
+      "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
         "publish-preview"
@@ -4976,7 +4976,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: tribute-vercel-prod cancel-in-progress: true",
+      "concurrency": "group: tribute-vercel-prod cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "promote"

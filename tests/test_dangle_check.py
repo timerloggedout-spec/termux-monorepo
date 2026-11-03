@@ -90,6 +90,8 @@ class RenameFixture(unittest.TestCase):
         write(self.root, "scripts/caller.py",
               "# dispatches old-flow-run to Old Flow\nprint('x')\n")
         write(self.root, "docs/note.md", "See the Old Flow docs.\n")
+        write(self.root, "ops/series.jsonl",
+              '{"lane": "old-flow"}\n{"lane": "new-flow"}\n')
         self.old_ids = [{"old": "Old Flow"}, {"old": "old-flow"},
                         {"old": "old_flow"}]
 
@@ -115,6 +117,8 @@ class RenameFixture(unittest.TestCase):
                dc.check_pointers(self.root, self.old_ids, set())}
         self.assertIn(("scripts/caller.py", "old-flow"), got)
         self.assertIn(("docs/note.md", "Old Flow"), got)
+        # #3751: .jsonl series files are pointer-scan sources.
+        self.assertIn(("ops/series.jsonl", "old-flow"), got)
 
 
 class BaselineRatchet(unittest.TestCase):

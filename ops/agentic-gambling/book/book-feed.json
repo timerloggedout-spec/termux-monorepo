@@ -1,10 +1,10 @@
 {
  "book": "challenges-book",
  "counts": {
-  "expectation_records": 26,
+  "expectation_records": 38,
   "positions": 1,
   "settlements": 1,
-  "subjects": 26
+  "subjects": 38
  },
  "generated_from": {
   "book": "ops/agentic-gambling/book/challenges-book.json",
@@ -1183,6 +1183,474 @@
     "window_start": "2026-11-03T00:00:00-08:00",
     "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
    }
+  },
+  {
+   "id": "SPEC-01-14db4412",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — Qwen/Qwen3-8B+dflash {Y/N}",
+   "participant": "Qwen/Qwen3-8B+dflash",
+   "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
+   "wallet_id": "paper:14db44122346ac5a",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-02-17444309",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+dspark {Y/N}",
+   "participant": "meta-llama/Llama-3.1-8B-Instruct+dspark",
+   "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
+   "wallet_id": "paper:1744430907f07318",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-03-4190442c",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — Qwen/Qwen3-8B+dspark {Y/N}",
+   "participant": "Qwen/Qwen3-8B+dspark",
+   "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
+   "wallet_id": "paper:4190442cc17496b0",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-04-7c98617f",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — Qwen/Qwen3-8B+baseline {Y/N}",
+   "participant": "Qwen/Qwen3-8B+baseline",
+   "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
+   "wallet_id": "paper:7c98617f7bf96e05",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-05-7f184a82",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+dflash {Y/N}",
+   "participant": "meta-llama/Llama-3.1-8B-Instruct+dflash",
+   "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
+   "wallet_id": "paper:7f184a82c1ad9ee2",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-06-9b8c1a76",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+eagle3 {Y/N}",
+   "participant": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
+   "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
+   "wallet_id": "paper:9b8c1a767c008908",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-07-a7f76711",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+baseline {Y/N}",
+   "participant": "meta-llama/Llama-3.1-8B-Instruct+baseline",
+   "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
+   "wallet_id": "paper:a7f767112f17eaa7",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-08-afc8c7d5",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — Qwen/Qwen3-8B+peagle {Y/N}",
+   "participant": "Qwen/Qwen3-8B+peagle",
+   "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
+   "wallet_id": "paper:afc8c7d582b1c12e",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-09-cb5bae0d",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — Qwen/Qwen3-8B+eagle3 {Y/N}",
+   "participant": "Qwen/Qwen3-8B+eagle3",
+   "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
+   "wallet_id": "paper:cb5bae0dfbd57701",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-10-d90bd947",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+peagle {Y/N}",
+   "participant": "meta-llama/Llama-3.1-8B-Instruct+peagle",
+   "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
+   "wallet_id": "paper:d90bd947843c74be",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-11-f7881722",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+mtp {Y/N}",
+   "participant": "meta-llama/Llama-3.1-8B-Instruct+mtp",
+   "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
+   "wallet_id": "paper:f78817221babda31",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "SPEC-12-feeed83c",
+   "group": "Speculators — token-strategies-1 campaign (card-performance)",
+   "subject": "Campaign acceptance — Qwen/Qwen3-8B+mtp {Y/N}",
+   "participant": "Qwen/Qwen3-8B+mtp",
+   "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
+   "wallet_id": "paper:feeed83cbefe2ba2",
+   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+   "settle": {
+    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+    "value": null
+   },
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at intake — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-03",
+    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+    "wall": null
+   },
+   "computed_at": "2026-11-03T14:17:33Z",
+   "pct_consumed": null,
+   "pct_remaining": null,
+   "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
   }
  ]
 }

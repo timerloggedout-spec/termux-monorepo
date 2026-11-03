@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/schemas/provider-observation.schema.json",
+  "title": "Termux Monorepo Provider Observation",
+  "description": "Normalized, attributed provider observation. Provider data remains untrusted and does not confer execution or promotion authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integration_id", "record_type", "record_key", "observation_id", "observed_at", "source", "identity", "data", "trust", "privacy"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "integration_id": {"enum": ["hapi-mcp-registry", "context7", "context-dev"]},
+    "record_type": {"type": "string", "minLength": 1, "maxLength": 100},
+    "record_key": {"type": "string", "minLength": 1, "maxLength": 500},
+    "observation_id": {"type": "string", "pattern": "^(hapi-mcp-registry|context7|context-dev):[a-f0-9]{64}$"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "capture_method", "provider_request_id", "attribution"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1, "maxLength": 200},
+        "capture_method": {"type": "string", "minLength": 1, "maxLength": 200},
+        "provider_request_id": {"type": ["string", "null"], "maxLength": 256},
+        "attribution": {"enum": ["direct", "provider_reported", "derived", "unknown"]}
+      }
+    },
+    "identity": {"type": "object", "minProperties": 1},
+    "data": {"type": "object"},
+    "trust": {"type": "object"},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "contains_raw_prompt", "contains_secret", "redaction_applied"],
+      "properties": {
+        "classification": {"enum": ["public", "internal", "confidential", "restricted"]},
+        "contains_raw_prompt": {"type": "boolean", "const": false},
+        "contains_secret": {"type": "boolean", "const": false},
+        "redaction_applied": {"type": "boolean"}
+      }
+    }
+  }
+}

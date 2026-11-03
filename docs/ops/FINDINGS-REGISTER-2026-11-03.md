@@ -279,3 +279,58 @@ D1 seat ahead of the Nov 4 23:59 PT freeze. The register
 re-opens on every material landing (mirror layers · 0.2.0
 read-backs · judging outcomes) under the
 continuous-improvement mandate.*
+
+## Addendum — DoE legs (filed 2026-11-03, same pass)
+
+Source: DoE expert seat, companion brief to this pass.
+These entries extend §③; nothing above is edited.
+
+**Alignment wire — LANDED.** PR #4588 merged `a4b4d85d0801`:
+per-venue alignment layers hook at placements publication
+{D0 capture #4547 · D1 judging close}; the mirror consumes
+criteria-fidelity from those layers; tests ①/⑤ consume the
+evidence. F-N2's instrument is therefore BUILT, not
+proposed — what remains is the outcomes landing.
+
+**F-N2 sharpened — the calibration datum.** Scored-forecast
+n across the fleet today ≈ **0**: the wagering book's 23
+expectation records sit INTAKE (null priors/posteriors at
+open, ∅ positions); the D1 mirror baseline is the fleet's
+first fully-stamped, pre-outcome, probability-bearing
+forecast of record (scorable Nov 18). The novel improvement
+is therefore wider than the mirror: route ALL
+expectation-bearing artifacts through the recorded-forecast
+machinery (filed pre-outcome · Brier/hit-rate at outcome) —
+calibration becomes a measured fleet quantity within 2–3
+outcome cycles instead of a rhetorical one.
+
+**Mirror-delta reads (extends F-N2).** As each D1 layer
+files (triggers ①②③ to the freeze) and the Nov 18 outcome
+lands, the seam yields two reads no other instrument
+produces: the IMPROVEMENT CURVE (panel-score Δ attributed
+per basis term {Strands depth · sample content · surfaces}
+— which improvements actually move a panel read, measured)
+∧ the venue's CRITERIA FIDELITY (from the D1 alignment
+layer: whether the real picks track the stated rubric or
+the taste terms — feeding every future archetype panel).
+Entry effort allocatable by measured panel-response per
+basis term instead of by intuition.
+
+**F-N7 — ABM equivalency rehearsal (a second ABM; do not
+confuse with F-N3's field simulation).** Assessed by DoE
+under equivalence-proof v0 (PR #4342): the SFI ABM
+open-equivalency claim today = CLAIM-grade, honestly short
+of PROVEN — leg (a) syllabus-of-record decomposition NOT
+yet executed · leg (b) open-materials index partially built
+(Certifications PR #4343: 5 firsthand-verified entries incl.
+archived materials + Mesa/NetLogo corpora) · leg (c)
+executed verification = ∅ receipts · the credential itself
+GATED (tuition-card ∨ discretionary scholarship; session
+archived, next run unannounced). Verdict: the LEARNING path
+is walkable today at zero cost; the CREDENTIAL path is
+closed until a non-card route or a live session opens. The
+seam: legs (a)+(c) executed on the archived-session
+materials would produce the fleet's first PROVEN-grade
+equivalency at ~zero marginal cost — the equivalence
+standard's cheapest full-dress rehearsal. Route:
+Certifications lane + DoE.

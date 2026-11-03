@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-02T22:05:00Z",
+  "generated_at": "2026-11-03T15:09:39Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -4034,14 +4034,14 @@
         "pr": "na",
         "ci": "na",
         "merge": "na",
-        "sync": "na",
-        "carrier": "live \u00b7 provider_usage stamp carrier (DoE intake); entries absorbed into this row, not a build pipeline \u2014 standard stage keys na by design, per AMD/DOMINO na-precedent"
-      }
+        "sync": "na"
+      },
+      "stages_note": "live \u00b7 provider_usage stamp carrier (DoE intake); entries absorbed into this row, not a build pipeline \u2014 standard stage keys na by design, per AMD/DOMINO na-precedent"
     }
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T15:07:19Z",
+    "updated_at": "2026-11-03T15:09:39Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

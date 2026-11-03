@@ -117,12 +117,19 @@ async function load(){
       ah+='<div class="table-wrap"><table class="table"><thead><tr><th>Workflow</th><th>Runs</th><th>Concluded</th><th>Failures</th><th>Fail rate</th><th>Rate/hr</th><th>Dur median</th><th>Dur p95</th><th>Dur mean</th><th>Dur excluded</th><th>Latest</th></tr></thead><tbody>';
       for(const path of Object.keys(ac.workflows)){
         const wf=ac.workflows[path],red=wf.red||{},dur=red.duration_s||{},lat=wf.latest||{};
-        const latest=lat.created_at?esc(lat.created_at)+' · '+(lat.conclusion==null?esc(lat.status||''):esc(lat.conclusion))+' · '+esc(lat.event||'')+(lat.html_url?' · <a href="'+esc(lat.html_url)+'">run</a>':''):'—';
+        const latest=lat.created_at?esc(lat.created_at)+' · '+(lat.conclusion==null?esc(lat.status||''):esc(lat.conclusion))+' · '+esc(lat.event||'')+(lat.html_url?' · <a data-run-url="'+esc(lat.html_url)+'">run</a>':''):'—';
         ah+='<tr><td>'+esc(wf.name||path)+'</td><td>'+num(wf.runs)+'</td><td>'+num(wf.concluded)+'</td><td>'+num(wf.failures)+'</td><td>'+num(wf.failure_rate)+'</td><td>'+num(red.sample_rate_per_hour)+'</td><td>'+num(dur.median)+'</td><td>'+num(dur.p95)+'</td><td>'+num(dur.mean)+'</td><td>'+num(wf.duration_excluded)+'</td><td>'+latest+'</td></tr>';
       }
       ah+='</tbody></table></div>';
     }
     $('actions').innerHTML=ah;
+    $('actions').querySelectorAll('[data-run-url]').forEach(link=>{
+      try{
+        const url=new URL(link.getAttribute('data-run-url'));
+        if(url.protocol==='https:'&&url.hostname==='github.com'){link.href=url.href;link.target='_blank';link.rel='noopener noreferrer'}
+        else link.replaceWith(document.createTextNode('run unavailable'));
+      }catch(_){link.replaceWith(document.createTextNode('run unavailable'))}
+    });
     $('out-note').textContent='Lane '+(oc.lane||'')+' · project '+(oc.project||'')+' · generated '+(oc.generated_at||'');
     let oh='<p>'+card('Receipts',num(oc.receipts),'')+card('Actioned',num((oc.outcomes||{}).actioned),'')+card('Skipped',num((oc.outcomes||{}).skipped),'')+'</p>';
     oh+='<p class="muted">'+esc(oc.outcome_semantics||'')+'</p>';

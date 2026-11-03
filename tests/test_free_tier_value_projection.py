@@ -43,7 +43,7 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(data["sessions"], [])
             self.assertEqual(data["coverage"][0]["tokens_in"], 12)
             self.assertEqual(data["coverage"][0]["evidence_status"],
-                             "publication_gates_or_exact_model_pricing_not_established")
+                             "publication_gates_or_exact_model_pricing_or_verified_no_cost_not_established")
             self.assertEqual(data["source_manifest"]["withheld_count"], 1)
 
     def test_only_fully_gated_exact_call_is_published(self):
@@ -70,6 +70,8 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(len(data["sessions"]), 1)
             self.assertEqual(data["sessions"][0]["run_uid"], "gha:o/r:10:2")
             self.assertEqual(data["sessions"][0]["call_uid"], "call-1")
+            self.assertEqual(data["sessions"][0]["paid_equivalent_usd"], 0.000022)
+            self.assertEqual(data["sessions"][0]["billing_status"], "VERIFIED_NO_COST")
 
 
 if __name__ == "__main__":

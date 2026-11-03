@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "1ae9c00364e4fe9f8e5e6f6caa7b7808ab6986374aadd61685a5825f2913df1d",
-  "workflow_count": 279,
+  "source_fingerprint": "e89b8e4c40ef334d3bc0b514e4b7fd98eb1349b592f14b4b552aa0f18567a0fd",
+  "workflow_count": 281,
   "workflows": [
     {
       "action_pins": [],
@@ -1807,6 +1807,24 @@
       ],
       "triggers": [
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "dispatch-watchdog",
+      "path": ".github/workflows/dispatch-watchdog.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]
@@ -4336,6 +4354,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "build-apk"
+      ],
+      "name": "studysprint-apk",
+      "path": ".github/workflows/studysprint-apk.yml",
+      "schedules": [],
+      "triggers": [
         "push",
         "workflow_dispatch"
       ]

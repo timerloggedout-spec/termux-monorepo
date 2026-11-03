@@ -45,7 +45,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines.extend(["| Change | Category | Confidence | Rationale |", "|---|---|---|---|"])
         for item in report["classifications"]:
             cells = [item[k] for k in ("change_id", "category", "confidence", "rationale")]
-            lines.append("| " + " | ".join(str(v).replace("|", "\\|").replace("\n", " ") for v in cells) + " |")
+            lines.append("| " + " | ".join(_markdown_inline(v) for v in cells) + " |")
     else:
         lines.append("No classifications supplied.")
     lines.extend(["", "## Consumer, test, and documentation impacts", ""])
@@ -53,7 +53,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines.extend(["| Impact | Change | Affected object | Priority | Status | Recommended action |", "|---|---|---|---|---|---|"])
         for item in report["impacts"]:
             cells = [item[k] for k in ("impact_id", "change_id", "affected_object", "priority", "status", "recommended_action")]
-            lines.append("| " + " | ".join(str(v).replace("|", "\\|").replace("\n", " ") for v in cells) + " |")
+            lines.append("| " + " | ".join(_markdown_inline(v) for v in cells) + " |")
     else:
         lines.append("No impact items supplied.")
     for title, key in (("Missing fields", "missing_fields"), ("Limitations", "limitations"), ("Sanitized provider errors", "errors")):

@@ -220,6 +220,14 @@ def main(argv):
         try:
             tiers_doc = json.loads(pathlib.Path(a.tiers).read_text())
             runs = json.loads(pathlib.Path(a.runs_file).read_text())
+            if isinstance(runs, dict) and runs.get("collection_error"):
+                # The queue picture could not be collected (proof
+                # run 41737482551: an API error body mid-pagination
+                # killed the collector step, and with it the
+                # stamp). Unknown queue => DEFER with the reason,
+                # never admit blind, never die silent.
+                raise RuntimeError(
+                    "queue picture unavailable: collection error")
             decision, reasons, facts = evaluate(block, tiers_doc, runs)
         except Exception as e:  # fail-soft: defer, never admit blind
             decision, reasons, facts = "DEFERRED", [f"admission evaluation error: {type(e).__name__}: {e}"], {"tier": block["que_tier"], "queued_depth": -1, "after": {}, "chain": {}}

@@ -476,6 +476,8 @@ this log is the human view of the same verified state.
   that step and surfaces — the card rule is the gate, and the halt is the
   evidence it fired.
 
+- **D2 EXERCISE RUN-1 (2026-11-03, D2 seat; record = ~/workspace/d2-exercise/run-2026-11-03.md, shape v1; verified firsthand by this lane):** 6 fresh candidates generated + screened as-if-competed **6/6 PASS** (dual-valence SWOT in the run record) — A Canary Patch Gauntlet (C1) · B Quarantine Browser Clerk (C1) · C Dependency Detox Chamber (C1) · D Pipeline Rescue Tower (C2) · E Three-Way Match Room (C2) · F Renewal Risk Desk (C2). Delphi-shaped scoring ADVISORY (raw B>A>C=E>F>D; risk-adjusted delivered ranking **A > C > B > E > F > D**). **Owner override charter (2026-11-03 09:09 PT): the slate is advisory, never binding — the owner pick is unconstrained.** Pending legs: Observatory pass running · OSINT requested (Recruitment, observation-only) · MoneyBall book format requested. Event-page delta flagged: the page Events block now reads 16:00Z–23:00Z vs the settled 15:00Z–22:00Z; deadline of record unchanged (Nov 8, 15:00 PT).
+
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->

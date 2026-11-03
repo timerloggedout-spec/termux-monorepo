@@ -1,6 +1,6 @@
 # Federated Application & Release-Lane Map
 
-**Status:** initial evidence-backed inventory  
+**Status:** evidence-backed application seed plus exhaustive repository discovery census  
 **Authority:** Termux monorepo system map; application repositories and release records remain authoritative for implementation and release facts.
 
 ## Purpose
@@ -50,7 +50,7 @@ The ArchWiz_fork repository is a named reference/fork and is not assumed to be t
 
 The initial registry also records the GitHub App fleet in a distinct automation_identities collection. Those identities are automation actors, not user-facing products.
 
-## Registry contract
+## Repository discovery census\n\n- [FEDERATED-APP-REPOSITORY-CENSUS.md](FEDERATED-APP-REPOSITORY-CENSUS.md) documents the census method and review queue.\n- [federated-app-repository-census.json](federated-app-repository-census.json) preserves all 714 unique repository records and 165 non-fork-named review candidates.\n- [Schema](federated-app-repository-census.schema.json) and [validator](../../scripts/validate_federated_app_census.py) enforce counts, uniqueness, owner scope, and the no-invented-AppID rule.\n- A repository name is a lead, not proof of a product; fork-named repositories are not automatically excluded.\n\n## Registry contract
 
 Machine-readable source: federated-app-registry.json  
 Schema: federated-app-registry.schema.json
@@ -92,8 +92,8 @@ Every release lane is independently versioned. A change to one AppID's release c
 ## Open evidence gaps
 
 - Exact AppID and owning repository for ArchWiz APK.
-- Whether the AppID dispatched for Repo-Story is a product application ID or a platform identity; retain the source record's terminology until the AppID lane supplies its namespace and value.
-- Complete inventory of separately organized UI/UX applications and their independent release lanes. This initial seed is deliberately not presented as exhaustive.
+- RepoStory 5565297 is confirmed as a GitHub App automation identity installed on `timerloggedout-spec/repo-story`; `PROCESS.json` describes it as an entry-repository-scoped automation identity. It is not evidence of a product AppID.
+- Adjudicate all 714 discovered repositories (165 non-fork-named review leads) against product identity, UI surface, ownership, and release evidence. Repository discovery is exhaustive for the captured search pages; product classification remains open.
 
 ## Safety
 

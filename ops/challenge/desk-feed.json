@@ -3363,6 +3363,67 @@
       }
     },
     {
+      "entry": "C12",
+      "project": "Receipts Vault \u2014 SKILL.md package (Uliya standard)",
+      "artifact_repo": null,
+      "status": "slate-assigned (COMPETE) \u00b7 build dispatched",
+      "stages": {
+        "verdict": "GRADUATED \u00b7 COMPETE (Opportunity Mgr, 2026-11-03)",
+        "r1-package": "dispatched \u2014 proposal PDF \u2264500w/10 items + SKILL.md package ZIP (need-not-run)",
+        "build": "in-window build \u2014 \u2205 reuse of prior Skills/materials (hard constraint)"
+      },
+      "evidence": [
+        "slate assignment via manager 2026-11-03 \u00b7 angle Receipts Vault \u00b7 Track 01 Workflow (organize files / find information / automate tasks) \u00b7 build task issue #4261 (project-task form) \u00b7 execution home = Desk (writing/package dispatch, \u2205 production)"
+      ],
+      "next": "producer claim + build \u21d2 package complete + verified by landing Nov 14 \u00b7 R2 risk: finalist path Nov 21\u219230 overlaps D5/D4 landings \u2014 schedule, \u00ac skip",
+      "provider_usage": [
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "optimizations-assurance",
+          "role": "package build (Swarm Optimizations & Implementation Assurance)",
+          "dispatched_at": "2026-11-03T12:35:26Z",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "session_id": "issue-4261",
+          "context": "C12 R1 package \u2014 Receipts Vault proposal PDF + SKILL.md ZIP (Uliya standard), genuinely in-window build, \u2205 reuse."
+        }
+      ],
+      "priority_timebox": {
+        "wall": "2026-11-15T23:45:00-08:00",
+        "landing": "2026-11-14",
+        "tiers": [
+          {
+            "tier": 0,
+            "name": "BASE",
+            "from": "now"
+          },
+          {
+            "tier": 1,
+            "name": "CUSHION",
+            "from": "2026-11-14T09:00:00-08:00"
+          },
+          {
+            "tier": 2,
+            "name": "WALL-DAY",
+            "from": "2026-11-15T00:00:00-08:00"
+          },
+          {
+            "tier": 3,
+            "name": "ESCALATION",
+            "from": "2026-11-15T19:45:00-08:00"
+          },
+          {
+            "tier": 4,
+            "name": "FINAL",
+            "from": "2026-11-15T23:15:00-08:00"
+          }
+        ],
+        "step_down": "wall+24h \u21d2 tier 1 \u00b7 wall+48h \u21d2 tier 0"
+      },
+      "resubmit_policy": "NOT ESTABLISHED \u2014 confirm at filing"
+    },
+    {
       "entry": "Repo-Story",
       "project": "Repo-Story \u2014 PR/repo-history narrative (I1 of record, PR #2481)",
       "artifact_repo": "timerloggedout-spec/repo-story",
@@ -3919,7 +3980,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T12:12:02Z",
+    "updated_at": "2026-11-03T12:35:26Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

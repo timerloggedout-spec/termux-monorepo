@@ -131,6 +131,164 @@ def sign(vote: dict, rfp: str, rnd: int, session: str) -> dict:
     return vote
 
 
+# ------------------------------------------------- vote profiles (P3) + quarantine
+QUARANTINE_STAMP = "EGM instance #2 TEST filing"
+QUARANTINE_PREFIX = "RFP-EGM2-"
+
+
+def vote_profile(votes: list[dict] | None) -> str | None:
+    """Canonical per-filing vote profile (EGM-2 disposition, P3): the final
+    round's per-role (impact x importance, veto) vector as one stable string.
+    Two filings share a profile iff every role voted identically -- the
+    shape-alone signature EGM instance #2 exposed."""
+    if not votes:
+        return None
+    parts = []
+    for v in sorted(votes, key=lambda x: x["role"]):
+        parts.append(f"{v['role']}={v['impact']}x{v['importance']}" + ("!" if v.get("veto") else ""))
+    return " ".join(parts)
+
+
+def profile_collisions(rows: list[dict]) -> dict[str, list[int]]:
+    """profile -> [issue numbers] for profiles shared by >= 2 filings."""
+    groups: dict[str, list[int]] = {}
+    for r in rows:
+        p = r.get("profile")
+        if p:
+            groups.setdefault(p, []).append(r["number"])
+    return {p: sorted(ns) for p, ns in groups.items() if len(ns) >= 2}
+
+
+def is_quarantined(issue: dict, surface: dict) -> bool:
+    """EGM instance #2 test filings are never re-scored by the amended
+    instrument (operator quarantine guard, every leg). Canonical key: the
+    test stamp in the filing body; secondary: the RFP-EGM2- surface prefix."""
+    return QUARANTINE_STAMP in (issue.get("body") or "") or str(surface.get("id", "")).startswith(QUARANTINE_PREFIX)
+
+
+# ------------------------------------------- verification records (P1+P2, EGM-2)
+# A filing may cite RESOLVABLE REFS ONLY (PR / run / receipt ids) in its
+# verification-record field. Prose is never parsed as evidence and never
+# scored. At scoring time each ref is resolved against its source of record
+# (the D0 kernel's fetch_evidence pattern: resolve the cited id, compare the
+# state it actually carries). Outcome classes: verified / contradicted /
+# unresolvable (the ref does not exist) / unreachable (infra failure --
+# neutral-and-stated, never scored).
+MAX_CITATIONS = 10
+_CITE_PATTERNS = ((r"\bPR\s+#(\d+)", "pr"), (r"\brun\s+(\d{6,})", "run"), (r"\breceipt\s+(\d{6,})", "receipt"))
+
+
+class InfraError(Exception):
+    """Resolution infrastructure failure: the outcome is unreachable (neutral)."""
+
+
+def parse_verification(text: str) -> list[dict]:
+    """Extract typed citations from a verification-record field. Strict
+    grammar, deduped in order, capped at MAX_CITATIONS; anything else in the
+    field is ignored (never prose)."""
+    found: list[tuple[int, dict]] = []
+    for pat, kind in _CITE_PATTERNS:
+        for m in re.finditer(pat, text or "", re.I):
+            found.append((m.start(), {"kind": kind, "id": int(m.group(1))}))
+    seen, out = set(), []
+    for _, ref in sorted(found):
+        key = (ref["kind"], ref["id"])
+        if key not in seen:
+            seen.add(key)
+            out.append(ref)
+    return out[:MAX_CITATIONS]
+
+
+def resolve_citation(ref: dict, fetch) -> str:
+    """fetch(kind, id) -> state dict; raises LookupError when the ref does not
+    exist, InfraError on infrastructure failure."""
+    try:
+        st = fetch(ref["kind"], ref["id"])
+    except LookupError:
+        return "unresolvable"
+    except InfraError:
+        return "unreachable"
+    if ref["kind"] == "pr":
+        if st.get("merged"):
+            return "verified"
+        return "contradicted" if st.get("state") == "closed" else "verified"
+    if ref["kind"] == "run":
+        return "contradicted" if st.get("conclusion") in ("failure", "cancelled", "timed_out") else "verified"
+    return "verified"  # receipt: existence at its source of record is the check
+
+
+def verification_adjustment(tallies: dict) -> float:
+    """Deterministic score effect of a verification record. Verified refs
+    count for the filing, contradicted refs count double against, refs that
+    do not exist count against once; unreachable refs are excluded entirely
+    (infra failure is neutral). Bounded to [-4, +2] so one false central
+    claim (a single contradicted citation) moves a filing >= 2 pts below its
+    shape-only band -- the EGM-2 B3 acceptance line."""
+    v, c, u = tallies.get("verified", 0), tallies.get("contradicted", 0), tallies.get("unresolvable", 0)
+    n = v + c + u
+    if n == 0:
+        return 0.0
+    return round(max(-4.0, min(2.0, 2.0 * (v - 2 * c - u) / n)), 2)
+
+
+def verification_block(surface: dict, fetch=None) -> dict:
+    """Resolve a surface's citations into tallies + the score adjustment.
+    fetch=None (offline) leaves the record unresolved and stated as such;
+    the adjustment is then 0 -- verification is scored ONLY through oracle
+    resolution at scoring time."""
+    cites = list((surface.get("verification") or {}).get("citations") or [])
+    if fetch is None:
+        return {"resolved": False, "note": "not resolved (no resolver at scoring time)",
+                "citations": [dict(r, outcome=None) for r in cites],
+                "tallies": {"verified": 0, "contradicted": 0, "unresolvable": 0, "unreachable": 0},
+                "adjustment": 0.0}
+    results, tallies = [], {"verified": 0, "contradicted": 0, "unresolvable": 0, "unreachable": 0}
+    for ref in cites:
+        outcome = resolve_citation(ref, fetch)
+        tallies[outcome] += 1
+        results.append(dict(ref, outcome=outcome))
+    return {"resolved": True, "citations": results, "tallies": tallies,
+            "adjustment": verification_adjustment(tallies)}
+
+
+def band_of(e: float) -> str:
+    return "P0" if e >= 20 else "High" if e >= 15 else "Medium" if e >= 9 else "Backlog"
+
+
+# ------------------------------------------------ substance score (P4 shadow, EGM-2)
+def substance_score(vb: dict | None) -> float | None:
+    """Deterministic substance score /25, SHADOW ONLY: reported beside the
+    shape score, never merged into it, never governing an award. Inputs are
+    the P1/P2 tallies ONLY (no free-text rubric); filer-blind. None when the
+    filing carries no resolvable substance channel (no citations, unresolved
+    offline, or every citation unreachable) -- absence is stated, never
+    imputed."""
+    if not vb or not vb.get("resolved"):
+        return None
+    t = vb["tallies"]
+    n = t["verified"] + t["contradicted"] + t["unresolvable"]
+    if n == 0:
+        return None
+    units = (t["verified"] - 2 * t["contradicted"] - t["unresolvable"]) / n
+    return round(25.0 * max(0.0, min(1.0, units)), 2)
+
+
+def convergence(rows: list[dict]) -> dict | None:
+    """The registered P4 convergence readout over the last-20 cohort: median
+    |shape - substance| (criterion <= 2.0) and the identical-profile rate
+    (criterion < 10%). Informational only -- awards stay shape-governed
+    until convergence AND a separate promotion ruling."""
+    scored = [r for r in rows if r.get("shape") is not None and r.get("substance") is not None]
+    if not scored:
+        return None
+    cohort = sorted(scored, key=lambda r: r["number"])[-20:]
+    gaps = [abs(r["shape"] - r["substance"]) for r in cohort]
+    profiled = [r for r in rows if r.get("profile")]
+    colliding = sum(len(ns) for ns in profile_collisions(rows).values())
+    return {"cohort": len(cohort), "median_gap": round(statistics.median(gaps), 2),
+            "identical_profile_rate": round(100.0 * colliding / len(profiled), 1) if profiled else None}
+
+
 # ---------------------------------------------------------------- weights + rounds
 def role_weight(r: dict) -> float:
     return float(r.get("base", 1.0)) * (0.5 + float(r.get("gate_pass_rate", 0.5))) * (float(r.get("elo", 1500)) / 1500.0)
@@ -182,7 +340,7 @@ def delphi(surface: dict, panel: dict, rfp: str = "local", session: str = "local
 def award(result: dict, surface: dict, panel: dict, at: dt.datetime | None = None) -> dict:
     at = at or now()
     a, e = panel["award"], result["effective_score"]
-    band = "P0" if e >= 20 else "High" if e >= 15 else "Medium" if e >= 9 else "Backlog"
+    band = band_of(e)
     if result["veto"]:
         days = a["park_recheck_days"]["backlog"]
         out = {"decision": "parked", "why": "cost auditor veto: needs money or a card"}
@@ -223,6 +381,7 @@ def records(result: dict, aw: dict, surface: dict, oracle_facts: dict, rfp: str)
                      f"forecast={'pass' if aw['decision'] == 'shadow' else 'fail'} ts={ts}"}
     mb = {"contract_version": "3l0.moneyball.v1", "task_id": f"delphi:{rfp}", "agent_id": "delphi-panel",
           "terminal_state": aw["decision"], "status": "converged" if result["converged"] else "max_rounds",
+          "verification": result.get("verification"), "shape_score": result.get("shape_score"),
           "started_at": ts, "ended_at": ts, "trigger": os.environ.get("DELPHI_REASON", "manual")}
     return {"foresight": fs, "hindsight": hs, "moneyball": mb, "oracle": oracle_facts}
 
@@ -230,6 +389,16 @@ def records(result: dict, aw: dict, surface: dict, oracle_facts: dict, rfp: str)
 def score_surface(s: dict, panel: dict, registry: dict | None, readings: dict | None, rfp: str, session: str, budget=None) -> dict:
     facts = oracle(s, registry, readings)
     res = delphi(s, panel, rfp, session, budget)
+    # P1+P2: the verification record adjusts the shape score ONLY through
+    # oracle resolution. _run pre-resolves into s["verification_block"] (so
+    # the results sit inside the input hash); anywhere else the record is
+    # unresolved-and-stated with a neutral adjustment.
+    vb = s.get("verification_block") or verification_block(s, None)
+    res["shape_score"] = res["effective_score"]
+    res["verification"] = vb
+    res["substance_score"] = substance_score(vb)  # P4 shadow: reported, never merged
+    if vb.get("adjustment"):
+        res["effective_score"] = round(max(0.0, min(25.0, res["shape_score"] + vb["adjustment"])), 2)
     aw = award(res, s, panel)
     return {"rfp": rfp, "surface": s["id"], "title": s["title"], "result": res, "award": aw,
             "records": records(res, aw, s, facts, rfp)}
@@ -356,14 +525,31 @@ def board_md(rows: list[dict], at: str, radar: list[dict] | None = None) -> str:
     """Results board: one row per open RFP, newest ledger state. Regenerated, never hand-edited."""
     order = {"shadow": 0, "parked": 1, "pending": 2}
     rows = sorted(rows, key=lambda r: (order.get(r["decision"], 3), -(r["effective"] or 0), r["number"]))
+    collisions = profile_collisions(rows)
     lines = [BOARD_MARK, f"Generated by delphi-gate at {at}. Ledger of record: the newest `{LEDGER_MARK}` comment on each RFP.", "",
-             "| RFP | Surface | Effective /25 | Award | Band | Recheck |", "|---|---|---|---|---|---|"]
+             "| RFP | Surface | Effective /25 | Substance (shadow) /25 | Award | Band | Recheck | Vote profile |", "|---|---|---|---|---|---|---|---|"]
     for r in rows:
+        prof = r.get("profile")
+        cell = "-"
+        if prof:
+            cell = f"`{prof}`"
+            if prof in collisions:
+                others = ", ".join(f"#{n}" for n in collisions[prof] if n != r["number"])
+                cell += f" ⚠ identical to {others}"
         lines.append(f"| #{r['number']} | `{r['surface']}` | {r['effective'] if r['effective'] is not None else '-'} | "
-                     f"{r['decision']} | {r.get('band') or '-'} | {r.get('recheck') or '-'} |")
+                     f"{r['substance'] if r.get('substance') is not None else '-'} | "
+                     f"{r['decision']} | {r.get('band') or '-'} | {r.get('recheck') or '-'} | {cell} |")
     sh = sum(r["decision"] == "shadow" for r in rows)
     lines += ["", f"{len(rows)} open RFPs · {sh} shadow · {sum(r['decision'] == 'parked' for r in rows)} parked · "
               f"{sum(r['decision'] == 'pending' for r in rows)} pending. Rubric-only panel (MSM-018); awards are advisory."]
+    for prof, ns in sorted(collisions.items(), key=lambda kv: kv[1][0]):
+        lines.append(f"⚠ identical vote profiles: {' ≡ '.join(f'#{n}' for n in ns)} — `{prof}` (shape-alone collision, EGM-2 P3).")
+    conv = convergence(rows)
+    if conv:
+        rate = f"{conv['identical_profile_rate']}%" if conv["identical_profile_rate"] is not None else "n/a"
+        lines.append(f"P4 shadow convergence (last-{conv['cohort']} cohort): median |shape−substance| = {conv['median_gap']} "
+                     f"(criterion ≤2.0) · identical-profile rate {rate} (criterion <10%). Awards remain shape-governed; "
+                     "the substance score is a shadow readout, never merged.")
     if radar:
         lines += ["", f"### Radar: {len(radar)} surfaces with no RFP yet",
                   "File one with the Delphi Oracle RFP issue form to put a surface through the gate.", "",
@@ -404,11 +590,12 @@ def parse_form(body: str) -> dict:
 def surface_from_issue(issue: dict, catalog: dict) -> dict:
     f = parse_form(issue.get("body", ""))
     sid = (f.get("surface_id") or "").strip()
+    cites = parse_verification(f.get("verification_record", ""))
     if sid in catalog:
-        return catalog[sid]
+        return dict(catalog[sid], verification={"citations": cites})
     m = re.search(r"\[delphi:rfp\]\s*([a-z0-9._-]+)", issue.get("title", ""))
     if m and m.group(1) in catalog:
-        return catalog[m.group(1)]
+        return dict(catalog[m.group(1)], verification={"citations": cites})
     # unknown surface: oracle has no sourced facts, rubric scores from the form only
     lock = re.search(r"\d", f.get("lock_in", "") or "3")
     return {"id": sid or f"issue-{issue['number']}", "title": issue["title"], "lane": f.get("lane", "unknown"),
@@ -418,7 +605,8 @@ def surface_from_issue(issue: dict, catalog: dict) -> dict:
             "auth": {"actions_secret": f.get("auth_from_actions") or None, "present": None},
             "lock_in": int(lock.group(0)) if lock else 3, "fit": 3, "headroom": 3,
             "failure_modes": [x.strip("-* ") for x in (f.get("failure_modes") or "").splitlines() if x.strip()],
-            "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
+            "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False,
+            "verification": {"citations": cites}}
 
 
 def quantize_roles(roles: dict) -> dict:
@@ -434,19 +622,59 @@ def input_hash(s: dict, roles: dict, registry: dict, readings: dict) -> str:
     return hashlib.sha256(blob.encode()).hexdigest()[:12]
 
 
+def _verification_line(r: dict) -> str:
+    """One-line verification record for the ledger comment (P1+P2)."""
+    vb = r.get("verification")
+    if not vb or not vb.get("citations"):
+        return "**verification:** no citations filed (shape-only score)"
+    if not vb.get("resolved"):
+        return f"**verification:** {len(vb['citations'])} citation(s) filed, {vb.get('note', 'unresolved')} — adjustment 0 (neutral)"
+    t = vb["tallies"]
+    return (f"**verification:** {t['verified']} verified · {t['contradicted']} contradicted · {t['unresolvable']} unresolvable · "
+            f"{t['unreachable']} unreachable (neutral) — adjustment {vb['adjustment']:+.2f} on shape score {r.get('shape_score')} "
+            f"(shape-only band {band_of(r.get('shape_score') or 0)})")
+
+
+def gh_fetch(gh: "GH"):
+    """Oracle-resolution fetch for Actions mode: a citation resolves against
+    its source of record (PR / workflow run / receipt comment)."""
+    def fetch(kind: str, ident: int) -> dict:
+        try:
+            if kind == "pr":
+                pr = gh.req("GET", f"/pulls/{ident}")
+                return {"merged": bool(pr.get("merged_at")), "state": pr.get("state")}
+            if kind == "run":
+                run = gh.req("GET", f"/actions/runs/{ident}")
+                return {"conclusion": run.get("conclusion"), "status": run.get("status")}
+            c = gh.req("GET", f"/issues/comments/{ident}")
+            return {"exists": bool(c.get("id"))}
+        except RateLimited:
+            raise InfraError("rate limited") from None
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                raise LookupError(f"{kind} {ident} not found") from None
+            raise InfraError(f"http {e.code}") from None
+        except Exception:
+            raise InfraError("fetch failed") from None
+    return fetch
+
+
 def comment_md(out: dict, ih: str, reason: str) -> str:
     r, a = out["result"], out["award"]
     lines = [LEDGER_MARK, f"### Delphi round result: `{out['surface']}`", "",
              f"**Award:** {a['decision']}" + (f" at {int(a['traffic_share']*100)}% traffic share" if a.get("traffic_share") else "")
              + (f", recheck after {a['recheck_after']}" if a.get("recheck_after") else "")
              + (f". Blocked on {a['blocked_on']}" if a.get("blocked_on") else "") + f". Band {a['band']}.",
-             f"**effective_score** {r['effective_score']} / 25 · converged {r['converged']} after {len(r['rounds'])} round(s) · trigger `{reason}`", "",
+             f"**effective_score** {r['effective_score']} / 25 · converged {r['converged']} after {len(r['rounds'])} round(s) · trigger `{reason}`"
+             + (f" · **substance (shadow)** {r['substance_score']} / 25" if r.get("substance_score") is not None else " · **substance (shadow)** — (no resolved citations)"),
+             _verification_line(r), "",
              "| Round | Median | IQR | Effective |", "|---|---|---|---|"]
     lines += [f"| {h['round']} | {h['median']} | {h['iqr']} | {h['effective']} |" for h in r["rounds"]]
     o = out["records"]["oracle"]["documented"]
     lines += ["", f"Oracle: {o['metric']} = {o['limit']} {o['unit']}, reset {o['reset']} {o['zone']} ([source]({o['source']}))", "",
               "<details><summary>Signed votes + HindSight/ForeSight/3l0.moneyball.v1 records</summary>", "", "```json",
-              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"], "award": a,
+              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "shape_score": r.get("shape_score"),
+                          "substance_score": r.get("substance_score"), "final_votes": r["rounds"][-1]["votes"], "award": a,
                           "records": {k: v for k, v in out["records"].items() if k != "oracle"}}, indent=1), "```", "</details>"]
     return "\n".join(lines)
 
@@ -562,11 +790,27 @@ def _run(args) -> int:
     try:
         for issue in sorted(issues, key=lambda i: i["number"]):
             s = surface_from_issue(issue, catalog)
+            if is_quarantined(issue, s):
+                # quarantine guard (EGM-2): display the ledger state of record,
+                # never re-score a test filing with the amended instrument
+                prev = last_ledger(gh, issue["number"])
+                a = (prev or {}).get("award", {})
+                board.append({"number": issue["number"], "surface": s["id"], "effective": (prev or {}).get("effective_score"),
+                              "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after"),
+                              "profile": vote_profile((prev or {}).get("final_votes")),
+                              "shape": (prev or {}).get("shape_score"), "substance": (prev or {}).get("substance_score")})
+                summary.append(f"#{issue['number']} {s['id']}: QUARANTINED (EGM instance #2 test filing) -- re-score skipped")
+                continue
             if done >= plan["max_rfps_per_run"]:
                 pending += 1
                 board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
                 continue
             try:
+                # P1+P2: resolve the verification record BEFORE the input hash
+                # so the resolution results sit inside the hash inputs
+                # (hash-cached: same citations + same resolutions => unchanged).
+                if (s.get("verification") or {}).get("citations"):
+                    s["verification_block"] = verification_block(s, gh_fetch(gh))
                 ih = input_hash(s, roles, registry, readings)
                 prev = last_ledger(gh, issue["number"])
                 due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
@@ -574,7 +818,9 @@ def _run(args) -> int:
                     summary.append(f"#{issue['number']} {s['id']}: unchanged")
                     a = prev.get("award", {})
                     board.append({"number": issue["number"], "surface": s["id"], "effective": prev.get("effective_score"),
-                                  "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
+                                  "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after"),
+                                  "profile": vote_profile(prev.get("final_votes")),
+                                  "shape": prev.get("shape_score"), "substance": prev.get("substance_score")})
                     continue
                 out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
                 gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
@@ -590,7 +836,9 @@ def _run(args) -> int:
                 summary.append(f"#{issue['number']} {s['id']}: {out['award']['decision']} eff={out['result']['effective_score']}")
                 a = out["award"]
                 board.append({"number": issue["number"], "surface": s["id"], "effective": out["result"]["effective_score"],
-                              "decision": a["decision"], "band": a.get("band"), "recheck": a.get("recheck_after")})
+                              "decision": a["decision"], "band": a.get("band"), "recheck": a.get("recheck_after"),
+                              "profile": vote_profile(out["result"]["rounds"][-1]["votes"]),
+                              "shape": out["result"].get("shape_score"), "substance": out["result"].get("substance_score")})
                 done += 1
             except RateLimited as e:
                 # one 403/429 on a single issue defers only that issue; the run continues

@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-03T11:06:31Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-03T11:08:42Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `f7dfdd4f5e` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `9a87fd0ffc` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 433 issues, 205 PRs. PR classes: EXTRACT 6 / CANDIDATE 105 / NEED_EVIDENCE 94 / SUPERSEDE 0.
+**Open inventory:** 433 issues, 206 PRs. PR classes: EXTRACT 6 / CANDIDATE 106 / NEED_EVIDENCE 94 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -124,6 +124,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4089 | CANDIDATE | unlabelled | `647b85aaea` | success | success | unknown | feat(mesh): add quota-bound deployment admission and resiliency contract |
 | #4090 | CANDIDATE | unlabelled | `2f21b5e5be` | success | success | unknown | Emit ATES outcome receipts for non-success source runs |
 | #4148 | CANDIDATE | unlabelled | `b0b3fb4674` | success | success | unknown | ⚡ Bolt: fast-path comment stripping in cadence audit |
+| #4193 | CANDIDATE | unlabelled | `f06010d07f` | success | success | dirty | feat(studysprint): maps + temple routes (RFP-D1-6 ④⑤) — v0.5.0 batch 2/3 [#4158] |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -217,7 +218,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4048 | NEED_EVIDENCE | unlabelled | `87c1d03307` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4069 | NEED_EVIDENCE | unlabelled | `3af768ef95` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #4086 | NEED_EVIDENCE | unlabelled | `cc9bf99810` | not_reported | not_reported | unstable | feat(integrations): add read-only provider evidence adapters |
-| #4191 | NEED_EVIDENCE | unlabelled | `c53d4616a3` | not_reported | not_reported | unstable | feat(studysprint): calendar core (RFP-D1-6 ①②③) — v0.5.0 batch 1/3 [#4157] |
+| #4194 | NEED_EVIDENCE | unlabelled | `4b35496c64` | in_progress | queued | unstable | feat(studysprint): state recall + adaptive hardening (RFP-D1-6 ⑥) — v0.5.0 batch |
 
 ## Families (open)
 
@@ -232,6 +233,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 18 | 203 |
+| unlabelled | 18 | 204 |
 
 **Unlabelled open issues (18):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3751, #3752, #4008, #4052 — worked oldest-first by the issue-lifecycle lane pass.

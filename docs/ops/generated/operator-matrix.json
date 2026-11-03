@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 433,
-    "open_prs": 205,
+    "open_prs": 206,
     "pr_classes": {
-      "CANDIDATE": 105,
+      "CANDIDATE": 106,
       "EXTRACT": 6,
       "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 203,
+      "prs": 204,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T11:06:31Z",
+  "generated_at": "2026-11-03T11:08:42Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "f7dfdd4f5e"
+    "sha": "9a87fd0ffc"
   },
   "prs": [
     {
@@ -1663,6 +1663,20 @@
       "updated_at": "2026-11-03T10:16:00Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f06010d07f",
+      "labels": [],
+      "mergeable_state": "dirty",
+      "number": 4193,
+      "title": "feat(studysprint): maps + temple routes (RFP-D1-6 \u2463\u2464) \u2014 v0.5.0 batch 2/3 [#4158]",
+      "updated_at": "2026-11-03T11:08:29Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2968,15 +2982,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "queued"
       },
-      "head_sha": "c53d4616a3",
+      "head_sha": "4b35496c64",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4191,
-      "title": "feat(studysprint): calendar core (RFP-D1-6 \u2460\u2461\u2462) \u2014 v0.5.0 batch 1/3 [#4157]",
-      "updated_at": "2026-11-03T11:05:47Z"
+      "number": 4194,
+      "title": "feat(studysprint): state recall + adaptive hardening (RFP-D1-6 \u2465) \u2014 v0.5.0 batch 3/3 [#4159]",
+      "updated_at": "2026-11-03T11:08:40Z"
     }
   ],
   "schema": "operator-matrix/v1",

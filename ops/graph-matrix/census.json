@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T15:14:12.778315+00:00",
+ "census_at_utc": "2026-11-03T16:33:13.989944+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,22 +13,22 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3335,
-  "stale": 1028,
+  "total": 3347,
+  "stale": 1029,
   "orphan_no_assoc_PR": 354,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3827,
-  "open": 207,
+  "total": 3849,
+  "open": 209,
   "open_draft": 33,
-  "open_draft_share": 0.1594,
+  "open_draft_share": 0.1579,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 67.4
+    "age_days": 67.5
    },
    {
     "number": 578,
@@ -46,7 +46,7 @@
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 41.7
+    "age_days": 41.8
    },
    {
     "number": 761,
@@ -82,7 +82,7 @@
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 33.1
+    "age_days": 33.2
    },
    {
     "number": 1301,
@@ -106,7 +106,7 @@
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 10.3
+    "age_days": 10.4
    },
    {
     "number": 1677,
@@ -124,37 +124,37 @@
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 3.6
+    "age_days": 3.7
    },
    {
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 2.3
+    "age_days": 2.4
    },
    {
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 2.2
+    "age_days": 2.3
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 2.2
+    "age_days": 2.3
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 2.2
+    "age_days": 2.3
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 1.9
+    "age_days": 2.0
    },
    {
     "number": 3242,
@@ -166,25 +166,25 @@
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 4007,
     "title": "Wire invocation observations into Free-Tier Value evidence projection",
     "created_at": "2026-11-02T23:43:35Z",
-    "age_days": 0.6
+    "age_days": 0.7
    },
    {
     "number": 4011,
     "title": "docs(proposals): register external agent toolchain integration portfolio",
     "created_at": "2026-11-03T00:16:14Z",
-    "age_days": 0.6
+    "age_days": 0.7
    },
    {
     "number": 4016,
     "title": "security(issues): gate advisory triage through deterministic intake firewall",
     "created_at": "2026-11-03T00:54:04Z",
-    "age_days": 0.6
+    "age_days": 0.7
    },
    {
     "number": 4017,
@@ -196,13 +196,13 @@
     "number": 4020,
     "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
     "created_at": "2026-11-03T02:17:58Z",
-    "age_days": 0.5
+    "age_days": 0.6
    },
    {
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 0.5
+    "age_days": 0.6
    },
    {
     "number": 4083,
@@ -220,28 +220,26 @@
     "number": 4089,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T07:59:38Z",
-    "age_days": 0.3
+    "age_days": 0.4
    }
   ],
-  "merged": 3141,
+  "merged": 3161,
   "closed_unmerged": 479,
-  "open_no_closing_ref": 201,
+  "open_no_closing_ref": 203,
   "open_unlinked_issue_target": 165,
-  "open_unlinked_any_ref": 139,
-  "merged_no_closing_ref": 3111,
-  "merged_unlinked_issue_target": 1775,
-  "merged_unlinked_any_ref": 1033,
+  "open_unlinked_any_ref": 140,
+  "merged_no_closing_ref": 3131,
+  "merged_unlinked_issue_target": 1780,
+  "merged_unlinked_any_ref": 1034,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3062,
-  "open_head_branch_missing": [
-   4421
-  ]
+  "merged_head_branch_residual_name_match": 3082,
+  "open_head_branch_missing": []
  },
  "issues": {
-  "total": 589,
-  "open": 484,
-  "open_surface_unlinked": 204,
-  "open_unlinked_strict": 185
+  "total": 603,
+  "open": 498,
+  "open_surface_unlinked": 211,
+  "open_unlinked_strict": 192
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -2189,6 +2187,38 @@
    [
     4420,
     4417
+   ],
+   [
+    4443,
+    4276
+   ],
+   [
+    4443,
+    4283
+   ],
+   [
+    4450,
+    2281
+   ],
+   [
+    4451,
+    2279
+   ],
+   [
+    4452,
+    2275
+   ],
+   [
+    4453,
+    2284
+   ],
+   [
+    4454,
+    2303
+   ],
+   [
+    4456,
+    4455
    ]
   ],
   "issue_issue_mutual_pairs": 3,

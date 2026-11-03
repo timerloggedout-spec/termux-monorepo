@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-02T00:00:00Z'
+updated_at: '2026-11-02T18:30:00Z'
 updated_by: ChatGPT
 proposals:
   - id: agent-contributor-provenance
@@ -1242,6 +1242,27 @@ proposals:
     related_prs: []
     related_branches:
       - feat/api-impact-review-lane
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
+
+  - id: agent-toolchain-portfolio
+    title: "Agent toolchain portfolio — Context, Mintlify, model routing, MCP discovery, and isolated execution"
+    author: ChatGPT
+    status: executing
+    priority: P0
+    path: active/agent-toolchain-portfolio/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 4008
+    related_prs:
+      - 4019
+    related_branches:
+      - feat/agent-toolchain-portfolio
     gates_required:
       - proposal-lifecycle
       - repo-gate

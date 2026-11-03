@@ -943,7 +943,7 @@
      "blocks": "any D2 participation step that would require a payment instrument",
      "owner": "challenge-entries lane",
      "status": "open",
-     "evidence": "Official page (read 2026-10-28): each participant receives $200 in free Vultr credits via gift code at kickoff; account creation is email + password. Any payment-instrument step halts the packet."
+     "evidence": "Official page (read 2026-10-28): each participant receives $200 in free Vultr credits via gift code at kickoff; account creation is email + password. Any payment-instrument step halts the packet. UPDATE 2026-11-03: Vultr account owner-created in-console (10:03 PT); the no-card question is now formally put to Vultr support via an owner-started ticket (completion via main); gift-code redemption gated on the answer unless the console proves card-free firsthand. Gate stays OPEN pending the answer."
     }
    ],
    "prizes": {
@@ -1133,7 +1133,7 @@
       "moment": "renewal blocked 45d early (uplift clause + missing SOC 2 surfaced)"
      }
     ],
-    "screen": "as-if-competed full read: 6/6 PASS - eligibility/gates/mechanics clear for all; discriminators = build-risk + field crowding + demo legibility, not eligibility. Dual-valence SWOT per candidate in the run record. Vultr account + gift code = kickoff mechanics shared by all candidates (owner password step outstanding - gates ALL equally).",
+    "screen": "as-if-competed full read: 6/6 PASS - eligibility/gates/mechanics clear for all; discriminators = build-risk + field crowding + demo legibility, not eligibility. Dual-valence SWOT per candidate in the run record. Vultr account + gift code = kickoff mechanics shared by all candidates. STATE MOVED 2026-11-03 10:03 PT: account owner-created in-console; gift-code redemption gated on the Vultr support answer to the D2-NOCARD question (owner-started ticket, completion via main) unless the console proves card-free firsthand.",
     "scoring": "Delphi-shaped, ADVISORY. Pre-Observatory raw: B 48 > A 46 > C 45 = E 45 > F 41 > D 40. POST-Observatory revised raw: B 46 = E 46 > A 45 > C 44 > D 42 = F 42 (FieldRoom: C1 crowded-confirmed A 5->4, C 6->5, B 8->6 w/ Vex; C2 room up D 4->6, E 6->7, F 6->7). DELIVERED RANKING HELD (risk-adjusted): 1 A, 2 C, 3 B, 4 E, 5 F, 6 D. If the owner weights Presentation-risk at zero, B/E overtake - stated in the run record so the override math is transparent. POST-OSINT revision: C FieldRoom 6->7 est. (no detox signal in sample), revised raw C 44->45 (ties A). Delivered ranking unchanged: A > C > B > E > F > D.",
     "resources": "budget = $200 Vultr credits; per-candidate envelopes $15-50 (run record section 7); arms = command-dispatch alone (Jules DOWN, DeepSeek tunnel DOWN, Gemini OUT); new repo+AppID at build start post-pick.",
     "pending_legs": {
@@ -1144,6 +1144,11 @@
     },
     "note": "Event-page delta flagged by D2 seat: page Events block now reads 16:00Z-23:00Z (prior settled read 15:00Z-22:00Z); deadline of record unchanged (Nov 8 15:00 PT); flagged, not overturned.",
     "podium_dataset": "scraping-tools podium dataset (PR #4501 merged d9e690746559): pin ops/podium/snapshots/2026-11-03.v2.json sha256 b8a187aabc4b68ca8f987baae45ab633df78c52b9bd50c2b42e389072fb27995 - verified firsthand by this lane. Daily re-crawl 07:23Z + dispatch appends versions through Nov 8; cite pins per version in this record."
+   },
+   "vultr_account": {
+    "state": "OWNER-CREATED / IN-CONSOLE (2026-11-03 10:03 PT, via main) - supersedes every prior \"not created\" framing on this record. Exact creation state per the owner's next report (not yet of record).",
+    "nocard_question": "Support ticket OWNER-STARTED in-console (completion via main): is the $200 participant gift code redeemable without billing-card verification? Gift-code redemption is GATED on the answer unless the console proves card-free firsthand.",
+    "source": "D2 seat record delta 2026-11-03 10:04 PT relaying main/owner."
    }
   },
   {

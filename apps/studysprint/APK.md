@@ -42,6 +42,36 @@ link → javac → d8 → zipalign → apksigner + verify → content smoke
 `.github/workflows/studysprint-apk.yml` builds on dispatch / on
 android+web changes and uploads the `studysprint-apk` artifact.
 
+## Signing — the project key (collaborators: read this first)
+
+Every StudySprint APK build signs with the project's committed
+DEV keystore:
+
+- **Path:** `android/keystore/studysprint-dev.keystore`
+- **Alias:** `studysprint`
+- **Password:** `android` (also in `android/build.sh`, which fails
+  loudly if the keystore is missing)
+- **Certificate SHA-256:**
+  `74623c3e84997c495c9aa2bb46891dfd4b3308b7614ac28cb438ff590caf908b`
+
+This is deliberate (owner ruling, 2026-11-03): the key is a
+**shared project signing key**, public on purpose. It protects
+update continuity, not secrecy — the app is sideload-distributed,
+holds no secrets, and never ships through Play.
+
+**The one rule: all builds sign with this key.** Android refuses
+to install an update signed by a different key over an existing
+install, so a build signed with anything else (an ephemeral CI
+key, a local keytool key) silently breaks the update path for
+every installed copy. If `build.sh` cannot find the keystore it
+stops — never substitute another key to get a build out.
+
+**Rotation** (deliberate, breaking): a new key means existing
+installs cannot update in place — they must uninstall and
+reinstall. Rotate only in a single change that swaps the
+keystore file, updates this section and the fingerprint above,
+and is announced as a breaking change for installed copies.
+
 ## What's on-device
 
 - The full webApp bundle (Today / Plan+Receipt / Reader / SR

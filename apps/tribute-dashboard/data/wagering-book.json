@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-03T12:40:44Z",
+ "generated_at": "2026-11-03T14:20:13Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 26
@@ -28,13 +28,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 9,
+  "entries": 12,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@0b0b4d8e6028 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@031297d756a8 (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -44,8 +44,15 @@
   "Forecast is an OUTPUT class (naming-collapse amendment #3830): forecasts score at each subject's settlement, at the issuer's record. There are no forecast rows.",
   "Date-only knowables render at end of day PT, except 'by wall' subjects, which resolve at the wall instant.",
   "An expectation whose prior and posterior are both null is in INTAKE state and renders as INTAKE (no estimate) - never as a number, never as 0.",
+  "Window consumption (% remaining) is computed from each subject's window anchors at feed build (pct_block computed_at) and shades the window span of its bar; degenerate windows (wall at or before start - instant subjects) carry no percentage: never 0, never 100 by default.",
   "The ledger's bookkeeping-event notes are internal routing language and do not render (MoneyBall publishability flag 4); the ledger is carried by reference - path + entry count - and only its positions/settlements extracts render."
  ],
+ "pct_block": {
+  "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
+  "computed_at": "2026-11-03T14:20:13Z",
+  "upstream_computed_at": "2026-11-03T14:17:33Z",
+  "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
+ },
  "subjects": [
   {
    "id": "D1-1-submission-landed",
@@ -78,6 +85,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03T09:00:00-08:00",
+    "start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)",
+    "wall": "2026-11-04T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -115,6 +133,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-03T09:00:00-08:00",
+    "start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)",
+    "wall": "2026-11-04T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -150,6 +179,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03T09:00:00-08:00",
+    "start_basis": "register stage B (kickoff day cushion)",
+    "wall": "2026-11-03T15:00:00Z"
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -189,6 +229,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-04T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-08T15:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -225,6 +276,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-04T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-08T15:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -264,6 +326,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-05T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-08T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -301,6 +374,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-05T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-08T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -340,6 +424,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-05T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-09T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -376,6 +471,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-05T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-09T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -415,6 +521,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-27T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-30T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -452,6 +569,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-29T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-12-02T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -491,6 +619,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-29T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-12-04T14:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -528,6 +667,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-29T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-12-04T14:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -563,6 +713,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-17T09:00:00-08:00",
+    "start_basis": "register stage B (kickoff) \u2014 earliest anchor; spot gates the kickoff",
+    "wall": "2026-11-17T09:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": null,
+    "remaining": null,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -602,6 +763,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-15T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-19T12:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -639,6 +811,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-15T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-19T12:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -674,6 +857,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-02T00:00:00-08:00",
+    "start_basis": "book intake date (day granularity) \u2014 no register item; earliest honest date = subject opened at book open",
+    "wall": "2026-11-07T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 21.1,
+    "remaining": 78.9,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -708,6 +902,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-02T00:00:00-08:00",
+    "start_basis": "book intake date (day granularity) \u2014 no register item",
+    "wall": "2026-11-09T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 15.8,
+    "remaining": 84.2,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -747,6 +952,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-03T09:00:00-08:00",
+    "start_basis": "register AMD Academy C1 stage A \u2014 first anchor of the >=5 course set",
+    "wall": "2026-11-19T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -785,6 +1001,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-22T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-25T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -822,6 +1049,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-25T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-11-28T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -862,6 +1100,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-25T09:00:00-08:00",
+    "start_basis": "register stage A (cushion-3d)",
+    "wall": "2026-12-01T11:00:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -901,6 +1150,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-12-02T09:00:00-08:00",
+    "start_basis": "register FCC checkpoint stage A \u2014 earliest anchor (soft item)",
+    "wall": "2026-12-12T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.0,
+    "remaining": 100.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -935,6 +1195,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03T00:00:00-08:00",
+    "start_basis": "slate graduation/intake date (day granularity) \u2014 no register item",
+    "wall": "2026-11-15T23:45:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 2.0,
+    "remaining": 98.0,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",
@@ -971,6 +1242,17 @@
     "n_evidence": 0,
     "n_evidence_items": 0
    },
+   "window": {
+    "start": "2026-11-03T00:00:00-08:00",
+    "start_basis": "slate graduation/intake date (day granularity) \u2014 no register item",
+    "wall": "2026-11-21T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 1.4,
+    "remaining": 98.6,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
+   },
    "settlement": {
     "field": "place earned / official outcome",
     "value": null
@@ -1005,6 +1287,17 @@
     "posterior_range": null,
     "n_evidence": 0,
     "n_evidence_items": 0
+   },
+   "window": {
+    "start": "2026-11-03T00:00:00-08:00",
+    "start_basis": "slate graduation/intake date (day granularity) \u2014 no register item",
+    "wall": "2026-11-30T23:59:00-08:00"
+   },
+   "window_pct": {
+    "consumed": 0.9,
+    "remaining": 99.1,
+    "computed_at": "2026-11-03T14:20:13Z",
+    "note": null
    },
    "settlement": {
     "field": "place earned / official outcome",

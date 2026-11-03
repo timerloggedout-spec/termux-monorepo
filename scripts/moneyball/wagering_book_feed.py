@@ -56,6 +56,28 @@ def _knowable(raw, label, wall_at, wall_date):
     return out
 
 
+def _window_pct(window, note, at):
+    """Window consumption at instant `at`, from the anchors alone.
+
+    consumed = clamp(100 * (at - start) / (wall - start), 0, 100),
+    1dp; remaining = 100 - consumed. Degenerate windows (wall <=
+    start: instant/point subjects) carry null + the feed's pct_note -
+    never 0 or 100 by default."""
+    if not window:
+        return {"consumed": None, "remaining": None,
+                "computed_at": at, "note": note}
+    start = _parse(window["window_start"])
+    wall = _parse(window["wall"])
+    if wall <= start:
+        return {"consumed": None, "remaining": None,
+                "computed_at": at, "note": note}
+    consumed = round(min(100.0, max(0.0, (_parse(at) - start)
+                 .total_seconds() / (wall - start).total_seconds()
+                 * 100)), 1)
+    return {"consumed": consumed, "remaining": round(100 - consumed, 1),
+            "computed_at": at, "note": None}
+
+
 def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
     subjects = []
     family_label = {}
@@ -111,7 +133,20 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
                 "posterior_range": exp["posterior"]["range"],
                 "n_evidence": exp["posterior"]["n_evidence"],
                 "n_evidence_items": len(exp["evidence"])},
+            "window": ({"start": s["window"]["window_start"],
+                        "start_basis": s["window"]["window_start_basis"],
+                        "wall": s["window"]["wall"]}
+                       if s.get("window") else None),
+            "window_pct": _window_pct(s.get("window"),
+                                      s.get("pct_note"), generated_at),
             "settlement": {"field": stl["field"], "value": stl["value"]}})
+    pct_block = {"rule": bookfeed["pct_block"]["rule"],
+                 "computed_at": generated_at,
+                 "upstream_computed_at":
+                     bookfeed["pct_block"]["computed_at"],
+                 "method": "recomputed by this generator from the "
+                           "window anchors at build time; the upstream "
+                           "feed's stamped pct is proof-of-shape only"}
     positions = bookfeed["positions"]
     feed_settlements = bookfeed["settlements"]
     return {
@@ -155,11 +190,18 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
             "An expectation whose prior and posterior are both null is in "
             "INTAKE state and renders as INTAKE (no estimate) - never as "
             "a number, never as 0.",
+            "Window consumption (% remaining) is computed from each "
+            "subject's window anchors at feed build (pct_block "
+            "computed_at) and shades the window span of its bar; "
+            "degenerate windows (wall at or before start - instant "
+            "subjects) carry no percentage: never 0, never 100 by "
+            "default.",
             "The ledger's bookkeeping-event notes are internal routing "
             "language and do not render (MoneyBall publishability flag "
             "4); the ledger is carried by reference - path + entry "
             "count - and only its positions/settlements extracts "
             "render."],
+        "pct_block": pct_block,
         "subjects": subjects,
         "positions": positions,
         "settlements": settlements,

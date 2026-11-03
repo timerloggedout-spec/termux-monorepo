@@ -92,7 +92,7 @@ def build_feed(root):
     for m in SUBMISSION_RE.finditer(text):
         submissions[m.group(1)] = {
             "state": m.group(2), "at": m.group(3),
-            "confirmation_ref": m.group(4)}
+            "ref": m.group(4)}
     entries = []
     for e in mod.parse_entries(text):
         status = (e["status"] or "").strip().upper()

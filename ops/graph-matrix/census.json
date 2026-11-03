@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T09:09:15.123454+00:00",
+ "census_at_utc": "2026-11-03T09:39:01.514895+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,22 +13,22 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3177,
+  "total": 3193,
   "stale": 1028,
-  "orphan_no_assoc_PR": 352,
+  "orphan_no_assoc_PR": 353,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3589,
-  "open": 206,
+  "total": 3614,
+  "open": 203,
   "open_draft": 33,
-  "open_draft_share": 0.1602,
+  "open_draft_share": 0.1626,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 67.1
+    "age_days": 67.2
    },
    {
     "number": 578,
@@ -40,25 +40,25 @@
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 41.8
+    "age_days": 41.9
    },
    {
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 41.4
+    "age_days": 41.5
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 41.2
+    "age_days": 41.3
    },
    {
     "number": 762,
     "title": "ops: map live plugin connector surface and parity skills",
     "created_at": "2026-09-23T03:33:34Z",
-    "age_days": 41.2
+    "age_days": 41.3
    },
    {
     "number": 764,
@@ -70,13 +70,13 @@
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 39.3
+    "age_days": 39.4
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 33.3
+    "age_days": 33.4
    },
    {
     "number": 970,
@@ -100,7 +100,7 @@
     "number": 1612,
     "title": "docs(research): map new free LLM catalogs to telemetry gates",
     "created_at": "2026-10-24T01:09:43Z",
-    "age_days": 10.3
+    "age_days": 10.4
    },
    {
     "number": 1630,
@@ -166,7 +166,7 @@
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 0.6
+    "age_days": 0.7
    },
    {
     "number": 4007,
@@ -184,13 +184,13 @@
     "number": 4016,
     "title": "security(issues): gate advisory triage through deterministic intake firewall",
     "created_at": "2026-11-03T00:54:04Z",
-    "age_days": 0.3
+    "age_days": 0.4
    },
    {
     "number": 4017,
     "title": "feat(ops): map federated AppIDs and independent release lanes",
     "created_at": "2026-11-03T01:05:41Z",
-    "age_days": 0.3
+    "age_days": 0.4
    },
    {
     "number": 4020,
@@ -202,44 +202,42 @@
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 0.2
+    "age_days": 0.3
    },
    {
     "number": 4083,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T05:53:37Z",
-    "age_days": 0.1
+    "age_days": 0.2
    },
    {
     "number": 4084,
     "title": "docs(deploy): map Vercel alternatives and staged failover",
     "created_at": "2026-11-03T05:57:12Z",
-    "age_days": 0.1
+    "age_days": 0.2
    },
    {
     "number": 4089,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T07:59:38Z",
-    "age_days": 0.0
+    "age_days": 0.1
    }
   ],
-  "merged": 2906,
+  "merged": 2934,
   "closed_unmerged": 477,
-  "open_no_closing_ref": 200,
+  "open_no_closing_ref": 197,
   "open_unlinked_issue_target": 164,
   "open_unlinked_any_ref": 138,
-  "merged_no_closing_ref": 2877,
-  "merged_unlinked_issue_target": 1665,
-  "merged_unlinked_any_ref": 971,
+  "merged_no_closing_ref": 2905,
+  "merged_unlinked_issue_target": 1678,
+  "merged_unlinked_any_ref": 976,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2827,
-  "open_head_branch_missing": [
-   4120
-  ]
+  "merged_head_branch_residual_name_match": 2856,
+  "open_head_branch_missing": []
  },
  "issues": {
   "total": 527,
-  "open": 435,
+  "open": 432,
   "open_surface_unlinked": 180,
   "open_unlinked_strict": 161
  },

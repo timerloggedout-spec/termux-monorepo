@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 474,
+    "open_issues": 478,
     "open_prs": 209,
     "pr_classes": {
-      "CANDIDATE": 107,
-      "EXTRACT": 7,
-      "NEED_EVIDENCE": 95,
+      "CANDIDATE": 106,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 97,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 243,
+      "issues": 248,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 43,
+      "issues": 42,
       "prs": 207,
       "unlabelled_numbers": [
         308,
@@ -66,7 +66,6 @@
         3669,
         3670,
         3673,
-        3751,
         3752,
         4008,
         4052,
@@ -98,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T14:43:17Z",
+  "generated_at": "2026-11-03T14:46:09Z",
   "issues_unlabelled": [
     308,
     388,
@@ -114,7 +113,6 @@
     3669,
     3670,
     3673,
-    3751,
     3752,
     4008,
     4052,
@@ -147,10 +145,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "5e9296d5c6"
+    "sha": "37d75257c0"
   },
   "prs": [
     {
@@ -222,20 +220,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bed4bae553",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2857,
-      "title": "doe(live-3): deepseek-ci harvest step \u2014 mirror dispatch outcome to #2830 (ruling (i-a), owners' review)",
-      "updated_at": "2026-11-01T01:53:48Z"
     },
     {
       "class": "EXTRACT",
@@ -1215,6 +1199,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "bed4bae553",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2857,
+      "title": "doe(live-3): deepseek-ci harvest step \u2014 mirror dispatch outcome to #2830 (ruling (i-a), owners' review)",
+      "updated_at": "2026-11-01T01:53:48Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "538790f31c",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1431,20 +1429,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c48da7b95a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3885,
-      "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
-      "updated_at": "2026-11-02T13:37:17Z"
     },
     {
       "class": "CANDIDATE",
@@ -1739,20 +1723,6 @@
       "number": 4355,
       "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
       "updated_at": "2026-11-03T14:23:58Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "6dd478edf2",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4360,
-      "title": "proposals-feed v2: resolve PR states at collection time",
-      "updated_at": "2026-11-03T14:36:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2771,7 +2741,7 @@
       },
       "head_sha": "fde192fda4",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2856,
       "title": "doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
       "updated_at": "2026-11-02T09:46:47Z"
@@ -3060,15 +3030,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "598648a5d7",
+      "head_sha": "0c57659e84",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4368,
       "title": "lane-compounding: record 2026-11-03 decisions (owner delegation to main)",
-      "updated_at": "2026-11-03T14:42:35Z"
+      "updated_at": "2026-11-03T14:44:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3077,12 +3047,40 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "b295dff7c6",
+      "head_sha": "29faaf4ee8",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4369,
-      "title": "Referral sweep 2026-11-03: Hark verdict (no public programme), terms re-verified, Lovable+Replit discovery",
-      "updated_at": "2026-11-03T14:42:30Z"
+      "number": 4371,
+      "title": "fix(watchdog): flag/escalation builders take the sweep verdict + emit stall-event (#4362)",
+      "updated_at": "2026-11-03T14:45:55Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
+      },
+      "head_sha": "d45473e5ee",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4373,
+      "title": "g4f smoke: hard-exit after receipt write (probe threads hang interpreter exit)",
+      "updated_at": "2026-11-03T14:44:36Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "f8b88eed36",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4374,
+      "title": "chore(linguist): refresh linguist-panel-feed.json",
+      "updated_at": "2026-11-03T14:44:36Z"
     }
   ],
   "schema": "operator-matrix/v1",

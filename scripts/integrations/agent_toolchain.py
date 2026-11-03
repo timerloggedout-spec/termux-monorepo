@@ -240,7 +240,7 @@ def normalize_context7_document(payload: dict[str, Any], library_id: str,
         raise ValueError("Context7 title must be text")
     parts = library_id.split("/")
     return _observation(
-        "context7", "versioned_documentation_reference", f"{parts[1]}/{parts[2]}@{resolved}",
+        "context7", "versioned_documentation_reference", f"/{parts[1]}/{parts[2]}@{resolved}",
         captured_at, "Context7", "resolved_library_documentation", provider_request_id,
         {"library_id": library_id, "version": resolved},
         {"title": _redact_text(title)[:300], "excerpt": excerpt, "truncated": truncated, "source_refs": refs},

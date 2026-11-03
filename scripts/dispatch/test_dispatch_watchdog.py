@@ -268,8 +268,7 @@ def test_feed_stall_events_and_counts():
                        {"issue": 1, "state": "queued"}], NOW)
     assert feed["schema"] == "dispatch-state-feed/v1"
     assert feed["source"] == "dispatch-watchdog"
-    assert feed["counts"] == {"queued": 1, "claimed": 1,
-                              "escalated": 0, "total": 2}
+    assert feed["counts"] == {"queued": 1, "claimed": 1, "escalated": 0}
     assert [d["issue"] for d in feed["dispatches"]] == [1, 2]
 
 

@@ -413,7 +413,10 @@ def build_feed(rows: list, now: datetime) -> dict:
     return {"schema": FEED_SCHEMA,
             "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "source": "dispatch-watchdog",
-            "counts": {**counts, "total": len(rows)},
+            # frozen envelope (#4350 schema freeze): counts keyed by
+            # state EXACTLY -- the distribution chart consumes the
+            # keys directly, so no extra keys (no total) ride along
+            "counts": counts,
             "dispatches": sorted(rows, key=lambda r: r["issue"])}
 
 

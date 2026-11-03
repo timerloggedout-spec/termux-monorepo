@@ -1,19 +1,45 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-03T09:27:29Z",
+ "read_at": "2026-11-03T09:28:42Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 4128,
+   "title": "desk-feed: D1 priority-elevation ledger line",
+   "merged_at": "2026-11-03T09:27:28Z",
+   "updated_at": "2026-11-03T09:28:13Z",
+   "created_at": "2026-11-03T09:27:20Z",
+   "merge_commit_sha": "452e28471cf61d23938a43e5de23a2eb05c330a1",
+   "head_ref": "desk/d1-priority-ledger",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4128",
+   "merged": true
+  },
   {
    "number": 4127,
    "title": "desk-feed: v0.4.0 batch outcome stamps",
    "merged_at": "2026-11-03T09:26:07Z",
-   "updated_at": "2026-11-03T09:27:05Z",
+   "updated_at": "2026-11-03T09:27:58Z",
    "created_at": "2026-11-03T09:25:58Z",
    "merge_commit_sha": "15c68e8c2ee85a127ca905bf586025d6f09cc630",
    "head_ref": "desk/stamps-v040-batch",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4127",
+   "merged": true
+  },
+  {
+   "number": 4129,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-03T09:27:45Z",
+   "updated_at": "2026-11-03T09:27:50Z",
+   "created_at": "2026-11-03T09:27:39Z",
+   "merge_commit_sha": "8239560f2362283795895f08e26ade82288d2222",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4129",
    "merged": true
   },
   {
@@ -1926,55 +1952,16 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3938",
    "merged": true
-  },
-  {
-   "number": 3927,
-   "title": "viz(desk): traversal distribution chart \u2014 chartkit, stamp/STALE (chart standard)",
-   "merged_at": "2026-11-02T14:09:18Z",
-   "updated_at": "2026-11-02T14:27:12Z",
-   "created_at": "2026-11-02T14:08:44Z",
-   "merge_commit_sha": "7571d0d01e800677740622ebd3caa440baffefd9",
-   "head_ref": "viz/desk-chart",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3927",
-   "merged": true
-  },
-  {
-   "number": 3937,
-   "title": "feat(dashboards): telemetry-viz feed refresh cadence wired into surface-feeds-collect",
-   "merged_at": "2026-11-02T14:20:07Z",
-   "updated_at": "2026-11-02T14:23:42Z",
-   "created_at": "2026-11-02T14:20:04Z",
-   "merge_commit_sha": "e7f0a4dfecbd86190412f13acc12d72db6c6b388",
-   "head_ref": "telemetry-ingest/telemetry-feed-cadence",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3937",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 4128,
-   "title": "desk-feed: D1 priority-elevation ledger line",
-   "merged_at": null,
-   "updated_at": "2026-11-03T09:27:26Z",
-   "created_at": "2026-11-03T09:27:20Z",
-   "merge_commit_sha": "443356cbb128eaba2f9162500d7daf9e292d29a9",
-   "head_ref": "desk/d1-priority-ledger",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4128",
-   "merged": false
-  },
-  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-03T09:25:58Z",
+   "updated_at": "2026-11-03T09:27:44Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "ae7d36b097a415534fa68c5808db039c04380c90",
+   "merge_commit_sha": "dea5107f5535e8ae503c12e82fb440b6de1ad5a0",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -4556,6 +4543,19 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/761",
+   "merged": false
+  },
+  {
+   "number": 752,
+   "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
+   "merged_at": null,
+   "updated_at": "2026-09-22T22:22:38Z",
+   "created_at": "2026-09-22T22:21:54Z",
+   "merge_commit_sha": "d63f9b80571c47773e43ea69da378729f8fe9fcf",
+   "head_ref": "feat/termux-endpoint-status",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/752",
    "merged": false
   }
  ],

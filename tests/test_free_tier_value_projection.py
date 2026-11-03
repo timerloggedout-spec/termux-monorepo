@@ -29,6 +29,8 @@ class FreeTierValueProjectionTest(unittest.TestCase):
         row = {
             "run_id": "10", "run_attempt": 2, "repository": "o/r",
             "timestamp": "2026-11-02T00:00:00Z", "call_uid": "call-1",
+            "workflow": "Continuous Evaluation", "head_sha": "a" * 40,
+            "latency_ms": 500,
             "provider": "provider-a", "model_id": "model-a",
             "model_version_pin": "model-a@v1",
             "canonical_model_id": "provider/model-a", "pricing_id": "price-a",
@@ -72,10 +74,15 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(len(data["sessions"]), 1)
             session = data["sessions"][0]
             self.assertEqual(session["run_uid"], "gha:o/r:10:2")
-            self.assertEqual(session["call_uid"], "call-1")
-            self.assertEqual(session["paid_equivalent_usd"], 0.000022)
-            self.assertEqual(session["cost_usd"], 0)
+            self.assertEqual(session["session_label"], "call-1")
+            self.assertEqual(session["elapsed_seconds"], 0.5)
+            self.assertEqual(session["source_sha"], "a" * 40)
+            self.assertEqual(session["evidence_url"], "https://github.com/o/r/actions/runs/10")
+            self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.000022)
+            self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.000022")
             self.assertEqual(session["billing_status"], "VERIFIED_NO_COST")
+            self.assertNotIn("call_uid", session)
+            self.assertNotIn("cost_usd", session)
             self.assertEqual(data["source_manifest"]["value_rounding"], "ROUND_HALF_UP")
 
     def test_positive_actual_cost_contradicts_verified_no_cost(self):
@@ -135,8 +142,7 @@ class FreeTierValueProjectionTest(unittest.TestCase):
                     for i in range(6)]
             data = self.run_projection(root, rows)
             self.assertEqual(len(data["sessions"]), 6)
-            self.assertEqual(data["sessions"][0]["paid_equivalent_usd"], 0.0)
-            self.assertEqual(data["sessions"][0]["paid_equivalent_usd_exact"], "0.00000000001")
+            self.assertEqual(data["sessions"][0]["elapsed_seconds"], 0.5)
             self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.00000000006")
             self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.0000000001)
 

@@ -138,6 +138,10 @@ class ApiImpactReportTests(unittest.TestCase):
             self.assertEqual(json.loads(json_path.read_text())["state"], "not_applicable")
             self.assertIn("not_applicable", md_path.read_text())
 
+    def test_markdown_escapes_path_markup(self):
+        report = build_report(REPO, BASE, HEAD, 42, ["README`section.md"])
+        self.assertIn("README\\`section.md", render_markdown(report))
+
     def test_markdown_preserves_breaking_classification(self):
         payload = mapper_input()
         payload["results"]["classification"]["classifications"][0]["category"] = "changed_response_field"

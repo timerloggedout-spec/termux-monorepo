@@ -2681,6 +2681,42 @@
           "merged_pr": 4120,
           "merge_sha": "372b5b962717",
           "outcome": "landed + parity 31/31"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "dispatched_at": "2026-11-03T02:24:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "usage": null,
+          "session_id": "issue-4157",
+          "context": "D1 v0.5.0 batch A \u2014 calendar core (RFP-D1-6 \u2460\u2461\u2462, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "dispatched_at": "2026-11-03T02:24:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "usage": null,
+          "session_id": "issue-4158",
+          "context": "D1 v0.5.0 batch B \u2014 maps + temple routes (RFP-D1-6 \u2463\u2464, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt"
+        },
+        {
+          "provider": "command-dispatch",
+          "model": "system-selection",
+          "moniker": "challenge-entries-manager",
+          "role": "challenge-entries-manager",
+          "dispatched_at": "2026-11-03T02:24:00-08:00",
+          "first_pass_success": null,
+          "rework_cycles": null,
+          "usage": null,
+          "session_id": "issue-4159",
+          "context": "D1 v0.5.0 batch C \u2014 state recall + adaptive hardening (RFP-D1-6 \u2465, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt 6601124863 (reopen re-trigger)"
         }
       ],
       "resubmit_policy": "article editable \u00b7 project Publish FINAL"
@@ -3853,7 +3889,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T10:10:00Z",
+    "updated_at": "2026-11-03T10:26:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

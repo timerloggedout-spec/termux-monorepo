@@ -1055,6 +1055,21 @@
    },
    "verdict": "not-established",
    "flags": []
+  },
+  {
+   "provider": "vultr",
+   "status": "not-established",
+   "services": [
+    "vultr.account_credit"
+   ],
+   "credits": {
+    "state": "owner-attested-applied",
+    "claimed": "$200.00 applied 2026-11-03 (owner Console-verified firsthand)",
+    "spent": null,
+    "remaining": null
+   },
+   "source": "account billing API api.vultr.com/v2/account - requires the owner's Vultr account API key (provisioning item: enable API in Console, key to vault); until keyed, balance/usage not-established and the quota surfaces render the row as an explicit gap (ALL-Providers rule)",
+   "last_verified": "2026-11-03"
   }
  ]
 }

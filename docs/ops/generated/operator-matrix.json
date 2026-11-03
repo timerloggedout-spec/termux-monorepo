@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 522,
-    "open_prs": 260,
+    "open_issues": 523,
+    "open_prs": 261,
     "pr_classes": {
-      "CANDIDATE": 115,
-      "EXTRACT": 18,
-      "NEED_EVIDENCE": 127,
+      "CANDIDATE": 122,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 128,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 287,
+      "issues": 288,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 44,
-      "prs": 258,
+      "prs": 259,
       "unlabelled_numbers": [
         308,
         388,
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T22:57:17Z",
+  "generated_at": "2026-11-03T23:04:51Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "success"
     },
-    "sha": "ed08583b23"
+    "sha": "ed45e52869"
   },
   "prs": [
     {
@@ -232,48 +232,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e7480ed080",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T22:43:39Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "96b41d528e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T22:42:52Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "4d89feea8a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T22:49:58Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -336,62 +294,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c0451e6ea6",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4573,
-      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
-      "updated_at": "2026-11-03T21:16:22Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "13482eb34c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4578,
-      "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
-      "updated_at": "2026-11-03T20:13:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "173ad9eaba",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4615,
-      "title": "fix(ci): harden dangling-reference detection on current master",
-      "updated_at": "2026-11-03T21:20:15Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8bc1f98ff3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4621,
-      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
-      "updated_at": "2026-11-03T21:36:33Z"
     },
     {
       "class": "EXTRACT",
@@ -1175,12 +1077,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "e7480ed080",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T22:43:39Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "96b41d528e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T22:42:52Z"
     },
     {
       "class": "CANDIDATE",
@@ -1595,6 +1525,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "0472f12076",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T23:03:36Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1793,7 +1737,7 @@
       },
       "head_sha": "1f0e963aa5",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4089,
       "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
       "updated_at": "2026-11-03T21:25:03Z"
@@ -2001,6 +1945,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "c0451e6ea6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4573,
+      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
+      "updated_at": "2026-11-03T21:16:22Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "c3f82c9c81",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2015,12 +1973,54 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "13482eb34c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4578,
+      "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
+      "updated_at": "2026-11-03T20:13:50Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173ad9eaba",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4615,
+      "title": "fix(ci): harden dangling-reference detection on current master",
+      "updated_at": "2026-11-03T21:20:15Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "062ba02ebd",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4617,
       "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
       "updated_at": "2026-11-03T21:24:25Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8bc1f98ff3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4621,
+      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
+      "updated_at": "2026-11-03T21:36:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2521,7 +2521,7 @@
       },
       "head_sha": "0f45b63561",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-03T22:55:11Z"
@@ -3179,7 +3179,7 @@
       },
       "head_sha": "fd96138454",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T22:56:49Z"
@@ -3235,7 +3235,7 @@
       },
       "head_sha": "57669a24ed",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4023,
       "title": "docs: integrate competitive opportunities and quota reconciliation",
       "updated_at": "2026-11-03T20:39:18Z"
@@ -3291,7 +3291,7 @@
       },
       "head_sha": "66f36505cc",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4090,
       "title": "Emit ATES outcome receipts for non-success source runs",
       "updated_at": "2026-11-03T20:57:56Z"
@@ -3541,12 +3541,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "db0f08ed6e",
+      "head_sha": "a2c3655f84",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4563,
       "title": "quota: wire vultr \u2014 registry record, Winning/D2 pool, census gap row, quota.txt regen",
-      "updated_at": "2026-11-03T22:27:15Z"
+      "updated_at": "2026-11-03T22:57:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3613,7 +3613,7 @@
       },
       "head_sha": "4b47ba9f00",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4609,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T21:00:02Z"
@@ -3627,7 +3627,7 @@
       },
       "head_sha": "5f58e4ea56",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4623,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T21:38:56Z"
@@ -3641,7 +3641,7 @@
       },
       "head_sha": "ff39b00c75",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4626,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T21:48:55Z"
@@ -3655,7 +3655,7 @@
       },
       "head_sha": "e63a489dbf",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4627,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T21:49:04Z"
@@ -3669,7 +3669,7 @@
       },
       "head_sha": "eb5582a725",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4630,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T21:53:03Z"
@@ -3683,7 +3683,7 @@
       },
       "head_sha": "9a3060f2b6",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4631,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:01:21Z"
@@ -3697,7 +3697,7 @@
       },
       "head_sha": "fab182c9f2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4634,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-03T22:18:19Z"
@@ -3711,7 +3711,7 @@
       },
       "head_sha": "2f3e775337",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4635,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:18:47Z"
@@ -3725,7 +3725,7 @@
       },
       "head_sha": "945a6b13de",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4637,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:19:17Z"
@@ -3753,7 +3753,7 @@
       },
       "head_sha": "2dbcb6c097",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-03T22:49:14Z"
@@ -3767,7 +3767,7 @@
       },
       "head_sha": "ed7de200b9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4663,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:50:52Z"
@@ -3781,7 +3781,7 @@
       },
       "head_sha": "d7c97fb814",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4664,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:51:04Z"
@@ -3795,10 +3795,24 @@
       },
       "head_sha": "fed92480f8",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4670,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:57:08Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "acebe6bea8",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4672,
+      "title": "D1 parity iteration 2 \u2192 surfaces 0.3.0: \u00a71c memory methods on all surfaces (#4415)",
+      "updated_at": "2026-11-03T23:03:47Z"
     }
   ],
   "schema": "operator-matrix/v1",

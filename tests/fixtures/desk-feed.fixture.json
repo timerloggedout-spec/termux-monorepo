@@ -1,18 +1,18 @@
 {
- "schema": "desk-feed/v1.2",
+ "schema": "desk-feed/v1.3",
  "generated_at": "2026-10-31T07:45:00Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
   "name": "Contribution Desk",
   "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
-  "model": "termux-monorepo = the contestant under test (HQ + build/test body). Build code is produced ONLY by repo provider lanes (88 providers wired, ops/quota/registry.json) — primary Jules via agent-jules-on-issues; Gemini/DeepSeek dispatch wired; provider-command-dispatch for polish. Muse seats NEVER author build code (owner correction 2026-10-30: substituted Muse-subagent production retracted). The Desk is a UI/UX surface: it renders contribution state and routes specs; it executes nothing.",
+  "model": "Fleet provider lanes execute all build/edit work via monorepo PRs — dispatch resolution = COMPLETE catalog (dispatch.provider_catalog, v1.3): every dispatch-capable surface classed proven / wired-unproven / triggerable, plus the registry model bench (91 records / 89 distinct providers) as inference-only reachable via provider-batch / provider-availability. Bench-wide rotation: no provider takes 2 consecutive dispatches for the same entry. Muse seats never author build code.",
   "roles": {
    "owner": "authorization of record (direct orders only; a halt lifts only by the owner)",
    "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
    "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
    "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
-   "provider_lanes": "Jules / Gemini / DeepSeek / command-dispatch — author ALL build code via monorepo PRs",
+   "provider_lanes": "Structured catalog = dispatch.provider_catalog (v1.3, complete). Summary: proven build/fix {Jules, Gemini dispatch, DeepSeek termux-agent, DeepAgent bridge+task} · proven review {CodeRabbit, Qodo, Devin, Gemini-after-peers, CellCog, peer-review-orchestrator, ECC Tools} · proven arms {provider-batch (dispatch HELD per #2672 until contracts green), provider-availability, provider-command-dispatch} · owner-named {Scout/Delphi} · wired-unproven {gemini-invoke, gemini-triage, gemini-review} · triggerable {gemini-interactions-smoke, openrouter-free-counter-batch-probe, cadence-provider-onboarding, provider-recon-compound, quota-dispatch-tree} · inference-only = registry model bench via the named arms. Rotation bench-wide, provider + reason stamped per dispatch.",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [
@@ -28,7 +28,614 @@
  "dispatch": {
   "how": "A dispatch is a GitHub issue spec routed via the orchestration surfaces to a provider lane; the provider authors a monorepo PR naming provider + session id; sub-manager verifies (provenance first); desk tracks merge on merge-clear and artifact sync. This page mutates nothing. Instance stamp is part of the dispatch record (DoE configured-instance identity, PR #2656): every dispatch carries provider + session_id + model@version verbatim + system_prompt_ref + tools_ref (ref scheme: repo path or prompt:<moniker>:<slug> / tools:<moniker>:<slug>, always with the SHA-256 of the exact dispatched content; compact stamp <ref>#<sha256[:12]>; instance_key via scripts/doe/instance_key.py). No stamp => no dispatch (telemetry gate, 2026-10-30 23:10 PT).",
   "intake_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/new?title=%5BDESK%20DISPATCH%5D%20%3Centry%3E%3A%20%3Cone-line%20spec%3E&body=Entry%3A%20%0ASpec%20%28what%20to%20build%29%3A%20%0ABuilder%20ask%20%28lane%20or%20any%29%3A%20%0AProvider%20%2B%20session_id%3A%20%0AModel%40version%20%28verbatim%29%3A%20%0AInstance%20stamp%20-%20system_prompt_ref%20%28%3Cref%3E%23%3Csha256%5B%3A12%5D%3E%29%3A%20%0AInstance%20stamp%20-%20tools_ref%20%28%3Cref%3E%23%3Csha256%5B%3A12%5D%3E%29%3A%20%0ADeadline%20/%20checkpoint%3A%20%0AEvidence%20links%3A%20%0A%0ADesk%20route%3A%20sub-manager%20spec%20check%20%3D%3E%20desk%20routes%20to%20builder%20lane%20%3D%3E%20monorepo%20PR%20%3D%3E%20desk%20verifies%20%3D%3E%20merge%20on%20merge-clear%20%3D%3E%20artifact%20sync.",
-  "intake_label": "New dispatch (GitHub issue)"
+  "intake_label": "New dispatch (GitHub issue)",
+  "provider_catalog": {
+   "note": "COMPLETE catalog (owner order 2026-11-01, fix seat 5f3a3217): provider_lanes = every dispatch-capable surface in the Provider Index, honestly classed. Classes: proven = triggered and completed with cited evidence; wired-unproven = wired in-repo, no successful run yet (gets bounded proof dispatches, not production-critical work); triggerable = a live trigger exists (dispatch/schedule/event) but the surface is support-class or never fired; inference-only = registry model records reachable only through a named dispatch arm (provider-batch / provider-availability / openrouter probe) until a proof dispatch promotes them.",
+   "census": {
+    "at": "2026-11-01T11:22Z",
+    "master": "ff76abef797ea3dadcfa85f44ac035a05cd9064b",
+    "registry": {
+     "path": "ops/quota/registry.json",
+     "blob": "0f892261dbddbb6e704b7430506423ae19e4c0d7",
+     "services_total": 164,
+     "lanes": {
+      "ci": 9,
+      "ops": 8,
+      "model": 91,
+      "deploy": 22,
+      "data": 30,
+      "model-balance": 1,
+      "model-observation": 1,
+      "observability": 1,
+      "partner": 1
+     },
+     "model_records": 91,
+     "model_distinct_providers": 89,
+     "distinct_providers_all_lanes": 110
+    },
+    "provider_workflows_in_repo": 18,
+    "provider_workflows_list": [
+     "agent-jules-on-issues",
+     "agent-pr-jules-handoff",
+     "agent-review-auto-jules",
+     "cadence-provider-onboarding",
+     "deepagent-task",
+     "deepseek-ci",
+     "deepseek-termux-agent",
+     "gemini-after-peers",
+     "gemini-dispatch",
+     "gemini-interactions-smoke",
+     "gemini-invoke",
+     "gemini-review",
+     "gemini-triage",
+     "provider-availability",
+     "provider-batch",
+     "provider-command-dispatch",
+     "provider-recon-compound",
+     "reconcile-devin-wiki-access"
+    ],
+    "census_note": "Registry figures are firsthand at the census master (they supersede the 161-record / 89-model brief figures, which were an earlier snapshot: 89 = model-lane distinct providers). Run totals for high-frequency event workflows hit the Actions API 40,000 cap and are not cited; cited totals are exact-count workflows only."
+   },
+   "rotation_rule": {
+    "rule": "Bench-wide: no provider takes 2 consecutive dispatches for the same entry, across ALL catalog lanes (supersedes the 2026-10-31 rule, which capped repeats inside the 4-lane funnel only).",
+    "selection": "Task-fit across the full catalog: (1) match task class to lanes; (2) proven lanes carry production work; (3) wired-unproven / triggerable surfaces receive bounded, DoE-stamped proof dispatches instead of permanent exile — a first success promotes them to proven at the next feed refresh; (4) inference-only registry providers are selectable for inference/eval tasks via their named dispatch arm, stamped with provider + model@version; (5) every dispatch stamps provider + surface + selection reason + session/run id (telemetry gate: no stamp => no dispatch).",
+    "reselection_d1": "D1 pending dispatches re-selected under the widened bench (fix seat review 2026-11-01): DeepSeek fix-pass (deepseek-termux-agent run 41301295882, success) and Gemini SR module (issue #3050, gemini-dispatch run 41301369671, success) STAND — two distinct providers, rotation-valid, both already fired. The NEXT D1 dispatch must go to a proven lane outside {DeepSeek, Gemini} for its task class (fix: CodeRabbit / Devin / command-dispatch / Jules; feature: Jules / DeepAgent-task), stamped with the reason."
+   },
+   "lanes": [
+    {
+     "id": "jules",
+     "provider": "Jules (Google)",
+     "task_classes": [
+      "build",
+      "fix"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "agent-jules-on-issues.yml",
+      "agent-pr-jules-handoff.yml",
+      "agent-review-auto-jules.yml"
+     ],
+     "trigger": "issue + `jules` label, or @jules comment",
+     "evidence": "Sessions 17326020844735872479 (PR #2635, merged 2c0894d2e7d3) + 7007935780300107338 (PR #2731); agent-jules-on-issues last_success run 41296280415 @2026-11-01T10:10Z (firsthand PAT census 2026-11-01T11:22Z)"
+    },
+    {
+     "id": "gemini-dispatch",
+     "provider": "Gemini (Google)",
+     "task_classes": [
+      "build",
+      "feature",
+      "invoke"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "gemini-dispatch.yml"
+     ],
+     "trigger": "workflow_dispatch / issue dispatch (@gemini-cli)",
+     "evidence": "D1 SR module dispatch run 41301369671 success @2026-11-01T11:19Z (issue #3050); last_success run 41301486059 @2026-11-01T11:20Z"
+    },
+    {
+     "id": "gemini-after-peers",
+     "provider": "Gemini (Google)",
+     "task_classes": [
+      "review-second-pass"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "gemini-after-peers.yml"
+     ],
+     "trigger": "workflow_dispatch (pr_number + head_sha + cycle_id inputs)",
+     "evidence": "1,269 runs; last_success run 41299982052 @2026-11-01T11:00Z"
+    },
+    {
+     "id": "deepseek-termux-agent",
+     "provider": "DeepSeek",
+     "task_classes": [
+      "fix",
+      "build"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "deepseek-termux-agent.yml"
+     ],
+     "trigger": "workflow_dispatch",
+     "evidence": "D1 fix-pass run 41301295882 success @2026-11-01T11:18Z; workflow_dispatch subset 20 runs 18 success per D1 census"
+    },
+    {
+     "id": "deepseek-ci",
+     "provider": "DeepSeek",
+     "task_classes": [
+      "invoke",
+      "review",
+      "orchestration"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "deepseek-ci.yml"
+     ],
+     "trigger": "workflow events / dispatch (deepCore router role)",
+     "evidence": "last_success run 41301485914 @2026-11-01T11:20Z"
+    },
+    {
+     "id": "deepagent-bridge",
+     "provider": "DeepAgent (DeepCLI)",
+     "task_classes": [
+      "device",
+      "task"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "deepcli-agent-bridge.yml"
+     ],
+     "trigger": "workflow_dispatch / bridge trigger",
+     "evidence": "158 runs; last_success run 39989289180 @2026-10-23T16:44Z",
+     "caveat": "Bridge greens include skip-exits: per-dispatch execution is verified at PR level, never from run color alone."
+    },
+    {
+     "id": "deepagent-task",
+     "provider": "DeepAgent (DeepCLI)",
+     "task_classes": [
+      "task",
+      "build"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "deepagent-task.yml"
+     ],
+     "trigger": "workflow_dispatch",
+     "evidence": "First success run 41301564332 @2026-11-01T11:21Z (proof dispatch in the 2026-11-01 widening window; previously 0 runs)"
+    },
+    {
+     "id": "provider-batch",
+     "provider": "Registry bench (multi-provider)",
+     "task_classes": [
+      "inference",
+      "batch-probe",
+      "eval"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "provider-batch.yml"
+     ],
+     "trigger": "workflow_dispatch",
+     "evidence": "250 runs; last_success run 40710434190 @2026-10-28T14:53Z; latest-100 mixed 49 success / 50 failure (D1 census) — per-dispatch verification required",
+     "caveat": "DISPATCH HOLD (Desk recognition @a27cf6d1): dispatches held per issue #2672 until its contracts job is green — arm is proven, dispatch suspended until the hold lifts. This is the dispatch arm that reaches inference-only registry providers; a batch run proves the arm, not each provider in it."
+    },
+    {
+     "id": "provider-availability",
+     "provider": "Registry bench (multi-provider)",
+     "task_classes": [
+      "probe",
+      "catalog"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "provider-availability.yml"
+     ],
+     "trigger": "workflow_dispatch / schedule",
+     "evidence": "93 runs; last_success run 40704824602 @2026-10-28T14:19Z"
+    },
+    {
+     "id": "provider-command-dispatch",
+     "provider": "Command route (CodeRabbit / Qodo / Devin)",
+     "task_classes": [
+      "fix",
+      "review"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "provider-command-dispatch.yml",
+      ".github/agentic/provider-command-library.json"
+     ],
+     "trigger": "workflow_dispatch / PR comment commands (allowlisted, head-SHA bound)",
+     "evidence": "1 run, success run 39170909023 @2026-10-18T22:08Z (n=1, stale — freshness flag; re-proof on next use)",
+     "caveat": "Generic route into the command-library providers; branch_write commands require confirm per library."
+    },
+    {
+     "id": "coderabbit",
+     "provider": "CodeRabbit",
+     "task_classes": [
+      "review",
+      "fix"
+     ],
+     "class": "proven",
+     "surfaces": [
+      ".github/agentic/provider-command-library.json",
+      "peer-review-orchestrator.yml"
+     ],
+     "trigger": "@coderabbitai commands / PR events (default required peer reviewer)",
+     "evidence": "Triggered-today per Swarm census 2026-11-01; command library carries review + autofix + fix-ci + merge-conflict commands"
+    },
+    {
+     "id": "qodo",
+     "provider": "Qodo",
+     "task_classes": [
+      "review"
+     ],
+     "class": "proven",
+     "surfaces": [
+      ".github/agentic/provider-command-library.json",
+      "peer-review-orchestrator.yml"
+     ],
+     "trigger": "@qodo commands / opt-in PR review",
+     "evidence": "Triggered-today per Swarm census 2026-11-01; tracked review cycles since 2026-10-24"
+    },
+    {
+     "id": "devin",
+     "provider": "Devin",
+     "task_classes": [
+      "review",
+      "fix",
+      "wiki"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "reconcile-devin-wiki-access.yml",
+      ".github/agentic/provider-command-library.json"
+     ],
+     "trigger": "PR review app / command route; wiki reconcile on schedule + workflow_dispatch",
+     "evidence": "Wiki reconcile: 778 runs, last_success run 41301566618 @2026-11-01T11:21Z. Historical dominant formal reviewer.",
+     "caveat": "Review-trigger today = NOT_ESTABLISHED per Swarm census 2026-11-01 (triggered-today set = Jules/Gemini/DeepSeek CI/Qodo/CodeRabbit); wiki surface proven today."
+    },
+    {
+     "id": "cellcog-review",
+     "provider": "CellCog",
+     "task_classes": [
+      "review"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "cellcog-review.yml"
+     ],
+     "trigger": "pull_request / issue_comment / workflow_dispatch",
+     "evidence": "30,220 runs; last_success run 41301485944 @2026-11-01T11:20Z"
+    },
+    {
+     "id": "peer-review-orchestrator",
+     "provider": "Peer-review orchestrator (Qodo / Devin / CodeRabbit / Gemini)",
+     "task_classes": [
+      "review-routing"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "peer-review-orchestrator.yml"
+     ],
+     "trigger": "pull_request / pull_request_target / issue_comment / pull_request_review",
+     "evidence": "last_success run 41301622846 @2026-11-01T11:22Z"
+    },
+    {
+     "id": "ecc-tools",
+     "provider": "ECC Tools",
+     "task_classes": [
+      "review",
+      "audit-ops"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "agent-ecc-tools-ops.yml"
+     ],
+     "trigger": "comment commands",
+     "evidence": "last_success run 41301536037 @2026-11-01T11:21Z; findings mirrored to check runs"
+    },
+    {
+     "id": "scout-delphi",
+     "provider": "Scout / Delphi (owner-named)",
+     "task_classes": [
+      "build",
+      "verify"
+     ],
+     "class": "proven",
+     "surfaces": [
+      "owner-named lane route (no single workflow)"
+     ],
+     "trigger": "owner / manager assignment",
+     "evidence": "D0 traversal of record in this feed (PR #1702; delphi-oracle port @393e1f4b, builder != evaluator)"
+    },
+    {
+     "id": "gemini-invoke",
+     "provider": "Gemini (Google)",
+     "task_classes": [
+      "invoke"
+     ],
+     "class": "wired-unproven",
+     "surfaces": [
+      "gemini-invoke.yml"
+     ],
+     "trigger": "workflow_call only (via gemini-dispatch / review callers) — no direct dispatch trigger",
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp"
+    },
+    {
+     "id": "gemini-triage",
+     "provider": "Gemini (Google)",
+     "task_classes": [
+      "triage"
+     ],
+     "class": "wired-unproven",
+     "surfaces": [
+      "gemini-triage.yml"
+     ],
+     "trigger": "workflow_call only",
+     "evidence": "0 runs at census; promotion = first caller-routed run with a DoE stamp"
+    },
+    {
+     "id": "gemini-review",
+     "provider": "Gemini (Google)",
+     "task_classes": [
+      "review"
+     ],
+     "class": "wired-unproven",
+     "surfaces": [
+      "gemini-review.yml"
+     ],
+     "trigger": "PR events (workflow file present)",
+     "evidence": "26 runs, 0 successes; last run failure @2026-08-20 — wired, never proven; promotion = first success run"
+    },
+    {
+     "id": "gemini-interactions-smoke",
+     "provider": "Gemini (Google)",
+     "task_classes": [
+      "smoke",
+      "probe"
+     ],
+     "class": "triggerable",
+     "surfaces": [
+      "gemini-interactions-smoke.yml"
+     ],
+     "trigger": "workflow_dispatch (model input)",
+     "evidence": "0 runs at census; trigger exists, never fired"
+    },
+    {
+     "id": "openrouter-free-counter-batch-probe",
+     "provider": "OpenRouter",
+     "task_classes": [
+      "probe",
+      "inference"
+     ],
+     "class": "triggerable",
+     "surfaces": [
+      "openrouter-free-counter-batch-probe.yml"
+     ],
+     "trigger": "workflow_dispatch",
+     "evidence": "0 runs at census; trigger exists, never fired"
+    },
+    {
+     "id": "cadence-provider-onboarding",
+     "provider": "Cadence onboarding (registry bench)",
+     "task_classes": [
+      "onboarding",
+      "promotion"
+     ],
+     "class": "triggerable",
+     "surfaces": [
+      "cadence-provider-onboarding.yml"
+     ],
+     "trigger": "workflow_dispatch / schedule / push on registry paths",
+     "evidence": "8 runs; last_success run 41016525562 @2026-10-30 — the promotion arm: inference-only -> wired"
+    },
+    {
+     "id": "provider-recon-compound",
+     "provider": "Provider recon (registry bench)",
+     "task_classes": [
+      "recon",
+      "catalog"
+     ],
+     "class": "triggerable",
+     "surfaces": [
+      "provider-recon-compound.yml"
+     ],
+     "trigger": "workflow_dispatch / workflow_run / PR paths",
+     "evidence": "57 runs; last_success run 40556385337 @2026-10-27"
+    },
+    {
+     "id": "quota-dispatch-tree",
+     "provider": "Quota dispatch tree (routing support)",
+     "task_classes": [
+      "routing",
+      "quota-gate"
+     ],
+     "class": "triggerable",
+     "surfaces": [
+      "quota-dispatch-tree.yml"
+     ],
+     "trigger": "workflow events / dispatch",
+     "evidence": "51 runs; last_success run 41287565039 @2026-11-01T09:08Z — support surface, not a build lane"
+    }
+   ],
+   "inference_only": {
+    "class": "inference-only",
+    "dispatch_via": [
+     "provider-batch",
+     "provider-availability",
+     "openrouter-free-counter-batch-probe"
+    ],
+    "promotion": "cadence-provider-onboarding + one DoE-stamped proof dispatch via a named arm -> wired-unproven/proven at next refresh",
+    "model_records": 91,
+    "distinct_providers": [
+     "aion",
+     "cerebras",
+     "cloudflare",
+     "cohere",
+     "felo",
+     "g4f/AgentTools",
+     "g4f/Airforce",
+     "g4f/Antigravity",
+     "g4f/Arena",
+     "g4f/BingCreateImages",
+     "g4f/BlackForestLabs_Flux1Dev",
+     "g4f/BlackForestLabs_Flux1KontextDev",
+     "g4f/BlackboxPro",
+     "g4f/BraveSearch",
+     "g4f/CachedSearch",
+     "g4f/Cerebras",
+     "g4f/ChatGPT",
+     "g4f/Claude",
+     "g4f/Cloudflare",
+     "g4f/CohereForAI_C4AI_Command",
+     "g4f/Copilot",
+     "g4f/CopilotApp",
+     "g4f/DeepInfra",
+     "g4f/DeepSeek",
+     "g4f/ElevenLabs",
+     "g4f/G4FSpace",
+     "g4f/GLM",
+     "g4f/Gemini",
+     "g4f/GeminiCLI",
+     "g4f/GeminiPro",
+     "g4f/GithubCopilot",
+     "g4f/GoogleAiMode",
+     "g4f/GoogleSearch",
+     "g4f/Grok",
+     "g4f/Groq",
+     "g4f/HailuoAI",
+     "g4f/HuggingChat",
+     "g4f/HuggingFace",
+     "g4f/HuggingFaceMedia",
+     "g4f/HuggingSpace",
+     "g4f/KiloCode",
+     "g4f/LLM7",
+     "g4f/MarkItDown",
+     "g4f/MetaAI",
+     "g4f/MetaAIAccount",
+     "g4f/MicrosoftDesigner",
+     "g4f/Nvidia",
+     "g4f/Ollama",
+     "g4f/OmniRoute",
+     "g4f/OpenAIFM",
+     "g4f/OpenRouterFree",
+     "g4f/OperaAria",
+     "g4f/Perplexity",
+     "g4f/Pi",
+     "g4f/Pollinations",
+     "g4f/PollinationsAudio",
+     "g4f/PollinationsImage",
+     "g4f/Puter",
+     "g4f/Qwen",
+     "g4f/RelayRouter",
+     "g4f/StabilityAI_SD35Large",
+     "g4f/TeachAnything",
+     "g4f/WhiteRabbitNeo",
+     "g4f/You",
+     "g4f/Yqcloud",
+     "github",
+     "google",
+     "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+     "groq",
+     "huggingface",
+     "kilo",
+     "llm7",
+     "meta",
+     "mistral",
+     "modelscope",
+     "nvidia",
+     "omni",
+     "openrouter",
+     "ovhcloud",
+     "requesty",
+     "routeway",
+     "sambanova",
+     "sealion",
+     "siliconflow",
+     "typhoon",
+     "unorouter",
+     "xfyun",
+     "xkiro",
+     "zai"
+    ],
+    "registry_ids": [
+     "aion.free_tokens",
+     "cerebras.free_tokens",
+     "cloudflare.workers_ai",
+     "cohere.trial_calls",
+     "felo.api_credits",
+     "g4f.agenttools",
+     "g4f.airforce",
+     "g4f.antigravity",
+     "g4f.arena",
+     "g4f.bingcreateimages",
+     "g4f.blackboxpro",
+     "g4f.blackforestlabs_flux1dev",
+     "g4f.blackforestlabs_flux1kontextdev",
+     "g4f.bravesearch",
+     "g4f.cachedsearch",
+     "g4f.cerebras",
+     "g4f.chatgpt",
+     "g4f.claude",
+     "g4f.cloudflare",
+     "g4f.cohereforai_c4ai_command",
+     "g4f.copilot",
+     "g4f.copilotapp",
+     "g4f.deepinfra",
+     "g4f.deepseek",
+     "g4f.elevenlabs",
+     "g4f.g4fspace",
+     "g4f.gemini",
+     "g4f.geminicli",
+     "g4f.geminipro",
+     "g4f.githubcopilot",
+     "g4f.glm",
+     "g4f.googleaimode",
+     "g4f.googlesearch",
+     "g4f.grok",
+     "g4f.groq",
+     "g4f.hailuoai",
+     "g4f.huggingchat",
+     "g4f.huggingface",
+     "g4f.huggingfacemedia",
+     "g4f.huggingspace",
+     "g4f.kilocode",
+     "g4f.llm7",
+     "g4f.markitdown",
+     "g4f.metaai",
+     "g4f.metaaiaccount",
+     "g4f.microsoftdesigner",
+     "g4f.nvidia",
+     "g4f.ollama",
+     "g4f.omniroute",
+     "g4f.openaifm",
+     "g4f.openrouterfree",
+     "g4f.operaaria",
+     "g4f.perplexity",
+     "g4f.pi",
+     "g4f.pollinations",
+     "g4f.pollinationsaudio",
+     "g4f.pollinationsimage",
+     "g4f.puter",
+     "g4f.qwen",
+     "g4f.relayrouter",
+     "g4f.stabilityai_sd35large",
+     "g4f.teachanything",
+     "g4f.vendors",
+     "g4f.whiterabbitneo",
+     "g4f.you",
+     "g4f.yqcloud",
+     "gemini.api_free",
+     "github.copilot.free",
+     "groq.free_tier",
+     "huggingface.inference_providers",
+     "kilo.free_models",
+     "llm7.free_token",
+     "meta.llama_api",
+     "meta.model_api",
+     "meta.muse_code",
+     "mistral.free_mode",
+     "modelscope.api_inference",
+     "nvidia.api_catalog",
+     "omni.gateway",
+     "openrouter.free_models",
+     "ovhcloud.ai_endpoints",
+     "requesty.free_models",
+     "routeway.free_models",
+     "sambanova.free_tier",
+     "sealion.api",
+     "siliconflow.free_models",
+     "typhoon.api",
+     "unorouter.free_models",
+     "xfyun.spark",
+     "xkiro.free_models",
+     "zai.free_models"
+    ],
+    "note": "provider-batch arm currently under the #2672 dispatch hold; provider-availability + openrouter probe arms remain live routes."
+   }
+  }
  },
  "traversals": [
   {

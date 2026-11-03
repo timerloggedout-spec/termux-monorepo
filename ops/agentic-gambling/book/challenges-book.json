@@ -25,6 +25,18 @@
   "settlement": "observed outcome per the subject's resolution source vs the position; settle action; settlement does not bypass dual-gate",
   "stakes": "observational units / soft quota tokens only; internal only"
  },
+ "priority_timebox_linkage": {
+  "checkpoint_rule": "at each tier boundary for a subject: (1) review/revise its ONE expectation record \u2014 evidence legs appended, posterior updated per B1 (no parallel numbers); (2) first entries open at a checkpoint only with basis cited per B2 + the subject record cited; (3) settlement still ONLY from record_of_record at knowable (B3), tiers never settle",
+  "relation": "the book subjects are the same slate viewed as stakes; the desk-feed tier boundaries are this book expectation checkpoints",
+  "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 7 traversals carry it, walls match this book subjects)",
+  "tier_anchor_map": {
+   "BASE": "window open \u2014 before the first cushion anchor",
+   "CUSHION": "subject anchors.cushion (register stages A/B)",
+   "ESCALATION": "register stage D (wall-4h)",
+   "FINAL": "subject anchors.final (register stage E, wall-30m); step-down cushion after each wall",
+   "WALL-DAY": "subject anchors.wall (register stage C)"
+  }
+ },
  "schema": "agentic-gambling-book/v1",
  "scope_guard": "internal only; no real money, no external wagering; #407 trading freeze untouched",
  "subjects": [

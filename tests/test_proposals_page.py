@@ -1,4 +1,4 @@
-"""Pins for the proposals index page (proposals-feed/v2; v1 tolerated).
+"""Pins for the proposals index page (proposals-feed/v2).
 
 The page renders ONLY data/proposals-feed.json, collected from the
 registry of record. Filter facets are built from the feed's own
@@ -43,7 +43,7 @@ def test_filters_built_from_feed_values():
 
 def test_feed_matches_registry_of_record():
     feed = json.loads(FEED.read_text())
-    assert feed["schema"] in ("proposals-feed/v1", "proposals-feed/v2")
+    assert feed["schema"] == "proposals-feed/v2"
     assert feed["counts"]["total"] == len(feed["proposals"])
     for p in feed["proposals"]:
         assert p["url"] == ("https://github.com/timerloggedout-spec/termux-monorepo"
@@ -189,4 +189,21 @@ def test_pr_state_chips_shape_tolerant(tmp_path):
     assert 'class="pr-chip open"' in got["open"]
     assert 'class="pr-chip closed"' in got["closed"]
     assert "pr-chip" not in got["unknown"] and 'PR #8</a>' in got["unknown"]
+
+def test_feed_prs_shape_v2():
+    """proposals-feed/v2 contract: every prs entry is an object whose
+    state was resolved at collection; merged_at is set iff merged."""
+    feed = json.loads(FEED.read_text())
+    seen = 0
+    for p in feed["proposals"]:
+        for e in p.get("prs") or []:
+            seen += 1
+            assert isinstance(e, dict), (p["id"], e)
+            assert isinstance(e["number"], int)
+            assert e["state"] in ("open", "merged", "closed-unmerged", "unknown")
+            if e["state"] == "merged":
+                assert isinstance(e["merged_at"], str) and e["merged_at"]
+            else:
+                assert e["merged_at"] is None
+    assert seen > 0
 

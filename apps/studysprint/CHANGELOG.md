@@ -5,8 +5,9 @@ Entries are the GitHub Release notes, verbatim.
 
 ## [0.5.0] — 2026-11-03
 
-Fifth versioned state: MINOR feature batch (v0.5.0 batch, part 1 of
-3) — the calendar core of RFP-D1-6 (issue #4157).
+Fifth versioned state: MINOR feature batch (v0.5.0 batch, parts 1+2 of 3) — the calendar core
+(build A, issue #4157) + maps and temple routes (build B,
+issue #4158) of RFP-D1-6.
 
 Provider credit: command-dispatch (Swarm Optimizations &
 Implementation Assurance seat), session
@@ -26,6 +27,18 @@ Implementation Assurance seat), session
   no learning-gain claim.
 - Tests: `tests/test_study_calendar.py` covers every public
   function in `study_calendar.py`.
+- Geography (`study_geo.py`), RFP-D1-6 items 4-5, consuming the
+  calendar core's records: (4) location records for classes +
+  assessments (from the student's own calendar — open data first)
+  + route/travel-time assistance to the assessment room (injected
+  travel provider; offline coordinate estimate by default);
+  (5) temple routes on real geography — the method of loci over
+  the student's actual campus path, an audio-cue script for the
+  walk, and voice-input customization (rename/move) as data.
+  Ceilings: logistics support + the loci ceiling (ordered/concrete
+  recall, not understanding).
+- Tests: `tests/test_study_geo.py` covers every public function
+  in `study_geo.py`.
 
 ## [0.4.0] — 2026-11-03
 

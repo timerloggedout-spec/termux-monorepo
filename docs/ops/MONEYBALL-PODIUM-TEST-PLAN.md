@@ -113,3 +113,12 @@ The design closed ahead of the full harvest; feasibility stamps issued against t
 - **EGM guard (verified in their report):** ingest = lablab pages only + explicit drop-guard on the canonical stamp / RFP-EGM2- prefix; ∅ stamped items in v1.
 - **Hold unchanged:** OSINT layer pass = this build + Swarm OSINT template first exercise; runs wait for the pass + stamp re-issue + Tests-leg verification (the formal gate).
 
+
+## Dataset v2 (scraping lane, 2026-11-03) — NEW CURRENT LAYER (v1 layer retained, citable)
+
+- **Pin:** version 2026-11-03.v2 · sha256 b8a187aabc4b68ca8f987baae45ab633df78c52b9bd50c2b42e389072fb27995 · PR #4501 (open at issue; gates re-running). Diff vs v1: +34 added · 9 changed · 0 removed. 89 entities; stratum preserved; conflicts 0. Per the layering rule, v1 stays citable with its pin; run-gating reads THIS layer.
+- **Field rows LANDED (C1):** gallery surface = edition /live page (entries := gallery submissions). field_n {vultr 4 · alpaca 15 · assemblyai 11 · ibm-bob 13} — server-rendered anchors = LOWER BOUND if a gallery paginates client-side (stamped in the record). Editions without a field_n here remain null at this layer.
+- **Stamps at this layer:** category x edition denominators = NOT_ESTABLISHED (categories not labeled on public surfaces) => test 2 stays descriptive. Editions with usable rubrics = 0 (no weighted criteria on crawled pages) => test 5 stays conditional on its published-rubric filing (the plan's named Agent Rush criteria are the anchor source, not the crawl). Repeat judges with attributable picks = 0.
+- **Judge-track linkage: CLOSED as unsourceable from public pages** — the stamp (0 attributable picks) IS the deliverable per the plan fallback. Test 3 is blocked on LINKAGE, not on this dataset; only a non-public source changes that layer.
+- **Gate state unchanged:** runs still HOLD — OSINT layer pass + Tests-leg verification of the current layer remain the formal gate. Test 1's remaining blockers at this layer: G1 double-tag re-code + editions lacking field rows.
+

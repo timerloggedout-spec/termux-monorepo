@@ -1,62 +1,80 @@
 # MoneyBall — Podium-Dataset ML Test Plan (SPEC, pre-registered)
 
-**Seat:** `[MUSEai]@{role:{moneyball-plane}}` · **Owner GO:** 2026-11-03 09:17 PT (via main). **Status: SPEC ONLY — no test has run.** Hypotheses + kill signals stamped BEFORE any dataset access.
-**AMENDED PRE-REGISTRATION = PLAN OF RECORD (2026-11-03):** incorporates the Tests · LLM Validation design review (6fcaa7f8) wholesale — gates G1–G6 + per-test numeric kill signals + blocked/downgraded dispositions. The review's verdict was CONDITIONAL; this amended artifact is what the review leg re-reviews, and no test runs before that re-review clears.
+**Seat:** `[MUSEai]@{role:{moneyball-plane}}` · **Owner GO:** 2026-11-03 09:17 PT (via main). **Status: SPEC ONLY — no test has run.**
+**Review state:** Tests · LLM Validation FORMAL review of record = **APPROVED WITH CORRECTIONS** (C1–C9; the formal review supersedes the same lane's earlier brief-level review where they differ — notably C2's frozen BINARY codebook + re-code supersedes the brief's ternary-handling gate). **Amendment #2 (this text) incorporates C1–C9; on its landing the review leg stamps the review closed and runs may proceed in sequence** (③ expected blocked-not-run unless judge↔track linkage is sourced).
 
-## Dataset facts of record (D2 podium leg, PR #4491 — as reviewed)
+## Dataset facts of record (D2 podium leg, PR #4491)
 
-- n = **11 placed projects** · ~4 events · 2nd/3rd placements mostly NOT_ESTABLISHED · per-track judges ∅ · comments anecdotal.
-- **Dataset version pin (G6):** dataset = the PR #4491 record (`ops/challenge/coordinator.json` podium leg; PR-head blob `150e7429e2ef05d2`). Every result row names this pin exactly; a record update re-pins by hash and prior rows keep their pin.
-- **Denominators (G4):** the dataset is podium projects only — there is NO field/control denominator in it. Missingness is MNAR (winners publicized, losers not). Every reported denominator states {observed / eligible + mechanism}.
-- **Exclusion:** EGM instance-#2 test-stamped filings (canonical key `EGM instance #2 TEST filing`, secondary `RFP-EGM2-`) never enter dataset-derived evidence (owner ruling 2026-11-03).
-- **Contamination (G5):** lablab explore-modules cross-inject descriptions (an Ariadne false lead entered and was refuted in-record). Rules: tags cite the **canonical project page URL** per project; injected-module text is NEVER a feature source; **Vortex IQ vs Unmask = disputed ⇒ excluded per Rule 9 until resolved**.
+- n = **11 placed projects** · ~4 events · 2nd/3rd placements mostly NOT_ESTABLISHED · per-track judges ∅ · comments anecdotal · **field rows = ∅** (podium only).
+- **Dataset version pin (G6/C5):** dataset = the PR #4491 record (`ops/challenge/coordinator.json` podium leg; PR-head blob `150e7429e2ef05d2`). Every result row names this pin exactly; a record update re-pins by hash, prior rows keep theirs.
+- Missingness is MNAR (winners publicized, losers not); every denominator states {observed / eligible + mechanism}.
+- **Exclusion:** EGM instance-#2 test-stamped filings (canonical `EGM instance #2 TEST filing`, secondary `RFP-EGM2-`) never enter dataset-derived evidence.
+- **Contamination (G5):** tags cite the **canonical project page URL** per project; lablab injected-module text is NEVER a feature source (Ariadne false lead precedent); Vortex IQ vs Unmask = disputed ⇒ excluded per Rule 9 until resolved.
 
-## Global gates (from the design review — bind all tests)
+## Dataset-build requirements (C1/C3/C8 — scraping-leg amendments)
 
-- **G1 TAGGING (blocks ①③④):** the P/E/H tags are single-tagger, ternary {yes · partial · no}, and "partial" carries the headline (P 10/11 ≥partial vs 5/11 strict-yes; H 1/11 strict). BEFORE any consumer test: a 2nd independent tagger on all 11 (n small ⇒ full double-tag), Cohen's κ per feature published, the "partial" rule frozen in writing, adjudication logged. **The coding rule is the result at this n.**
-- **G2 NUMERIC KILLS:** every test files {statistic · α · kill threshold} pre-run (done per test below). A test that can't state its kill doesn't run.
-- **G3 MULTIPLICITY:** ① is the sole PRIMARY test. All others are EXPLORATORY — the label rides every evidence row. (Alternative if the family ever claims jointly: Holm/BH across the family, pre-registered before the claim.)
-- **G4 CONTROL GROUP (blocks ① as originally specced):** fix = harvest non-placed gallery projects per edition as controls (scraping-leg amendment), or ① downgrades to a within-podium descriptive tally (already done by the podium leg — not a validation test).
-- **Rule 9 + significance (B5)** bind any probability/standing language; single-leg = HELD. The hidden metrics_internal winprob is not an input, output, or citation of this plan.
-- **Book entry:** results enter the book as EVIDENCE ROWS in the relevant subjects' `expectation_record.evidence[]` only (B1), each {test_id · dataset_version (G6 pin) · n {observed/eligible + mechanism} · effect · exact_ci · verdict ∈ {supported, refuted, unresolved, blocked, descriptive} · primary_or_exploratory · kill_signal_state}.
+1. **Field sampling (C1):** field projects per edition = **all gallery submissions** for that edition (entries := gallery submissions, NOT approved registrants — the two counts differ, cf. D2 field 2,302 approved vs gallery). If volume forces sampling: a stated random sample with the seed recorded in the dataset record. No silent selection.
+2. **Feasibility stamps (pre-run, published in the dataset record):** per edition {podium n · field n} (C1) · {# repeat judges with attributable picks} (C3) · {# projects with judge comments · # with community comments} (C8) · category×edition denominator counts (C7) · count of editions with usable ⑤ rubrics (C9).
+3. **Judge↔track sourcing (C3):** the only leg that can unblock ③; separately pinned if it lands.
 
-## Tests (amended)
+## Codebook (C2 — frozen here, supersedes prior tag handling)
 
-### ① Winner-pattern validation — PRIMARY — BLOCKED on G1 + G4 until controls + double-tag land
-- **Question:** do podium projects show {proof-grounded (P) · enterprise-workflow (E) · approval-gates (H)} more often than field projects?
-- **Pre-registered:** Fisher exact, **one-sided**; report **strict-yes and ≥partial codings side by side** (conclusions flip between them — H: 6/11 ≥partial vs 1/11 strict).
-- **Kill (numeric):** corrected p > .05 **∨** OR < 2 ⇒ pattern claim DEAD, recorded as refuted.
-- **Denominator:** podium n=11 observed; field = harvested gallery controls per edition (eligible + mechanism stated); until controls exist this test does not run as a validation.
+- The podium leg's P/E/H tags **predate this codebook** (single tagger, ternary) — reusing them would void "codebook fixed before coding" in fact. **All coding is redone** from canonical project pages under this frozen **BINARY** codebook (`codebook_version: podium-codebook/v1`):
+  - **proof-grounded (P):** the project page presents verifiable execution evidence (live demo / repo / run output) for its central claim — yes/no.
+  - **enterprise-workflow (E):** the project targets an organizational workflow with named roles/approvals/integrations — yes/no.
+  - **approval-gates (H), STRICT:** a formal pre-action approval step is a described mechanism (a human or policy gate that must approve before the system acts) — yes/no. The loose "human in the loop somewhere" reading is a DIFFERENT feature and is not coded (podium-leg contrast: strict H = 1/11, loose = 6/11 — the test result is whichever definition is frozen; frozen = STRICT).
+- **Double-tag:** all 11 podium projects + an equal-sized field sample, two independent taggers; Cohen's κ per feature published in the plan record; adjudication logged. Theme coding (④) double-codes a sample under the same discipline.
 
-### ② Room / crowding — REDUCED to descriptive
-- Cells (category × edition) ≈ 1–3 podiums; per-category field denominators mostly ∅ ⇒ curves unfittable.
-- **Form:** counts table only, ∅ curve claims — UNLESS per-category field sizes are harvested with the ① controls.
-- **Gate (numeric):** < 3 editions with ≥ 2 categories carrying field+podium counts ⇒ stays descriptive permanently for this dataset version.
+## Evidence-row schema (C5 — final)
 
-### ③ Judge-panel effects — CANNOT RUN on this dataset
-- Per-track judge assignment is NOT_ESTABLISHED ∀ historic events (combined pools only); any judge↔shape link would be an ecological fallacy.
-- **Fallback:** pool-overlap descriptive only. **Unblocks only** on judge↔track sourcing (new dataset leg, separately pinned). G1 would also gate the re-run.
+`{test_id · dataset_version · stratum (edition id; n as per-stratum map for per-edition tests) · effect · exact_ci · verdict ∈ {supported, refuted, unresolved, blocked, descriptive} · family ∈ {primary, exploratory} · codebook_version · kill_signal_state}`
 
-### ④ Comment-signal — BLOCKED as inference
-- ∅ corpus: a handful of public quotes, ∅ sampling frame, judge-vs-community unattributed in sources.
-- **Honest form:** qualitative theme inventory with n = quotes-found stated. Theme coding is a 2nd tagging step ⇒ G1 applies if it ever upgrades to inference.
+**blocked ≠ killed:** kill = evidence AGAINST the hypothesis; blocked = no test existed (missing linkage/corpus). The book carries the distinction.
 
-### ⑤ Ranking stability (D2 six candidates) — CONDITIONAL
-- "Inferred rubric" from n=11 across 4 heterogeneous events = overfit ∧ circular. Conditions:
-  - Rubrics come from **PUBLISHED criteria where they exist** (Agent Rush: Application of Technology / Presentation / Business Value / Originality), pre-registered per event; the inferred variant is labeled **exploratory-only** wherever reported.
-  - **Metric (pre-registered):** Kendall's W + per-candidate rank range across rubrics.
-  - **Kill (numeric):** any candidate rank-range ≥ 4 of 6 ⇒ verdict UNSTABLE, ∅ winner claim; the D2 slate ranking is labeled rubric-fragile wherever cited.
+## Tests (amended #2)
 
-### ⑥ Backtested forecast — CONDITIONAL (gate for any forward use)
-- ~4 editions ⇒ single-fold train≤3/predict-1 is anecdote; base rate brutal (P∧E ≥partial = 10/11 ⇒ a naive "shape wins" predictor is ≈ always right).
-- **Required form:** leave-one-edition-out × 4 folds, scored **against a base-rate predictor** (Brier score or hit-rate, chosen pre-run).
-- **Kill (numeric):** forecast ≤ base-rate predictor on the chosen score ⇒ leg OFF, no forward use.
-- **Leakage:** tags were produced on ALL editions pre-split ⇒ per-fold blind re-tag, OR tags stamped as fixed features with a leakage caveat carried on the evidence row.
-- **Target:** defined exactly pre-run (one of: winner-shape membership ∨ candidate rank) — no post-hoc target shopping.
+### ① Winner-pattern validation — PRIMARY claim (C6)
+- **The primary claim is the composite:** ≥2 of 3 features {P · E · H-strict} associate with podium placement. No family-wise claim is made across tests; ②③④ rows are exploratory-labeled.
+- **Statistic:** Fisher exact, one-sided, per edition; cross-edition read by **Fisher combined-p** (named combination rule — no silent pooling; strata rule intact).
+- **Kill (numeric):** combined corrected p > .05 **∨** OR < 2 ⇒ claim DEAD (refuted row).
+- **Feasibility:** runs only when C1 field rows + feasibility stamps exist per edition; per-edition podium n ≈ 1–3 ⇒ per-edition Fisher ≈ 0 power — the combined-p read is the test, per-edition numbers are reported as strata, not claims.
 
-## Sequencing + review (amended)
+### ② Room / crowding — descriptive-first (C7)
+- **The median-split IS the test** (podium share below/above median crowding per category); any visual curve is color only, never evidence.
+- Category×edition denominator counts published pre-run; **cells < 6 ⇒ verdict UNRESOLVED** (small-n rule). Entries := gallery submissions (pinned definition, C1).
+- Stays descriptive unless ≥3 editions carry ≥2 categories with field+podium counts.
 
-1. **G1 double-tag** (2nd tagger, κ published, partial rule frozen, adjudication logged) + **G4 control harvest** (scraping-leg amendment) — both land as dataset-leg artifacts with the G6 pin updated.
-2. Tests-lane **re-review of this amended artifact** → clearance per test.
-3. Run order: ① (primary, if unblocked) → ⑤ (published-rubric variant) → ⑥ (LOEO form) ; ② descriptive alongside; ③④ stay blocked until their sourcing exists.
-4. Every verdict lands as a book evidence row (pinned) + report ↑main; killed/blocked legs are reported as such, never quietly dropped.
+### ③ Judge-panel effects — expected BLOCKED-NOT-RUN (C3)
+- Judge→track/pick attribution is NOT_ESTABLISHED; "their editions' podium picks" presumes the missing linkage — the statistic is undefined on current sources.
+- Permutation mechanics (if linkage ever lands): 10,000 draws, **shuffle WITHIN edition×track strata**; kill = similarity ≤ null median ∨ p > 0.10.
+- **Feasibility stamp decides:** {# repeat judges with attributable picks} = ∅ or < 3 ⇒ ③ recorded **blocked** (not killed, not run). Fallback until then: pool-overlap descriptive.
+
+### ④ Comment-signal — BLOCKED as inference on current corpus (C8)
+- Feasibility stamp {# with judge comments · # with community comments} pre-run; the "community held flat" stratification empties cells at this n ⇒ **downgraded to per-source associations only** (judge-side and community-side reported separately, no conditional claim).
+- Δ is defined pre-coding: **Δ = Δ log-OR (judge vs community) per theme**; kill = Δ ≤ 0 ∀ themes ⇒ no incremental signal.
+- Theme codebook = second codebook ⇒ C2 double-coding on a sample applies. Qualitative theme inventory (n = quotes-found stated) is the current honest output.
+
+### ⑤ Ranking stability (D2 six candidates) — CONDITIONAL (C9)
+- **Anchor ranking:** the published-criteria rubric (Agent Rush 2026: Application of Technology / Presentation / Business Value / Originality) is the reference read, pre-registered. Inferred per-edition rubrics = sensitivity spread, exploratory-only.
+- Editions where features are constant within podium contribute ∅ rubrics (unidentified) — the count of **usable rubrics is stamped**; inference from podium n ≈ 1–3 is acknowledged as the bound.
+- **Metric:** Kendall's W + per-candidate rank range across rubrics.
+- **Kills (numeric, either fires):** any candidate rank-range ≥ 4 of 6 **∨** Kendall's W < 0.5 ⇒ RUBRIC-FRAGILE label fires wherever the slate ranking is cited (incl. the D2 scoring return); ∅ winner claim.
+
+### ⑥ Backtested forecast — gate for any forward use (C4)
+- **Selection leakage fix (binding):** feature survival is re-decided **within each origin on train editions only** (nested selection). Any row computed otherwise is stamped `feature_selection: in-sample` and the gate criterion below applies ONLY under nested selection.
+- **Definitions (exact, pre-run):** prediction unit = **project-level podium membership** in edition n+1; **k = the number of podium slots in the predicted edition (across tracks)**; target = project-level membership (not winner-shape, not candidate rank — fixed here).
+- **Form:** leave-one-edition-out × 4 folds vs a base-rate predictor (Brier or hit-rate chosen pre-run); fallback feature set if ③ blocked = ① + ② features only.
+- **Hit criterion (unchanged, brutal):** top-k precision > base rate with exact CI excluding base rate on ≥ 2 origins, under nested selection.
+- **Kill:** forecast ≤ base-rate predictor, or first full backtest misses the criterion ⇒ leg OFF, no forward use; miss recorded as evidence.
+- **Tag leakage:** per-fold blind re-tag, OR tags stamped as fixed features with a leakage caveat on the evidence row.
+
+## Cross-cutting (unchanged)
+
+Exact methods only · small-n honesty (UNRESOLVED is a verdict, not a failure to hide) · Rule 9 + significance (B5) on any probability language · winprob never an input/output/citation · results enter the book ONLY as evidence rows (schema above) · killed AND blocked legs reported as such ↑main.
+
+## Sequencing
+
+1. Dataset-build amendments land (field rows + feasibility stamps + pin update) — scraping leg.
+2. C2 re-code under `podium-codebook/v1` (double-tag, κ published).
+3. Review leg stamps the review closed on this amendment.
+4. Runs in sequence ① → ② → ⑤ → ⑥; ③④ remain blocked/descriptive until their sourcing exists.

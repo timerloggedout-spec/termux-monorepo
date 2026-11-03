@@ -196,7 +196,7 @@ def is_dynamic_reference(value):
     must not be resolved against the checkout.
     """
     return bool(re.search(
-        r"\\$\\{|\\$\\(|(?:^|[\\s])\\+|\\+|\\b(?:esc|safeHref)\\s*\\(",
+        r"\$\{|\$\(|(?:^|\s)\+|\+|\b(?:esc|safeHref)\s*\(",
         value,
     ))
 
@@ -312,7 +312,7 @@ def check_feeds(root):
             # Feed descriptions often combine several paths into prose
             # (for example "a.md + b.py"). Only a single literal path is
             # eligible for filesystem resolution.
-            if is_dynamic_reference(s) or re.search(r"\\s", s.strip()):
+            if is_dynamic_reference(s) or re.search(r"\s", s.strip()):
                 continue
             cand = s.split("#")[0].split("?")[0]
             if cand in seen:

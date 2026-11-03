@@ -1,0 +1,312 @@
+{
+  "$defs": {
+    "CheckinEntry": {
+      "properties": {
+        "session_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "done",
+            "partial",
+            "missed"
+          ]
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "week": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "week",
+        "session_index",
+        "status"
+      ],
+      "type": "object"
+    },
+    "CheckinLog": {
+      "description": "The checkin_session input and output (the tool returns the updated log).",
+      "properties": {
+        "completed_weeks": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/CheckinEntry"
+          },
+          "type": "array"
+        },
+        "recovered_weeks": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "streak_metric": {
+          "type": "string"
+        },
+        "total_checkins": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "entries"
+      ],
+      "type": "object"
+    },
+    "CourseDocument": {
+      "description": "A parsed syllabus: the make_plan / make_quiz input (post-decode).",
+      "properties": {
+        "course": {
+          "type": "string"
+        },
+        "weeks": {
+          "items": {
+            "$ref": "#/$defs/CourseWeek"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "course",
+        "weeks"
+      ],
+      "type": "object"
+    },
+    "CourseWeek": {
+      "properties": {
+        "due": {
+          "type": "string"
+        },
+        "topics": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "week": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "week",
+        "topics"
+      ],
+      "type": "object"
+    },
+    "EvidenceItem": {
+      "description": "One stamped claim in an evidence set: the fetch_syllabus_evidence output element.",
+      "properties": {
+        "claim": {
+          "type": "string"
+        },
+        "fresh_until": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "observed_at": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "source"
+          ]
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "value": {}
+      },
+      "required": [
+        "claim",
+        "value",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "EvidenceItems": {
+      "description": "What fetch_syllabus_evidence returns (post-decode): the evidence set's items array.",
+      "items": {
+        "$ref": "#/$defs/EvidenceItem"
+      },
+      "type": "array"
+    },
+    "PlanDocument": {
+      "description": "The make_plan output; replan / get_today_view / adjust_time_budget input and (re)output. Variant keys from the replan (carried_sessions) and adjust (minutes_per_day) passes are optional members of the one shape.",
+      "properties": {
+        "carried_sessions": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "course": {
+          "type": "string"
+        },
+        "minutes_per_day": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "total_sessions": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "weeks": {
+          "items": {
+            "$ref": "#/$defs/PlanWeek"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "course",
+        "weeks",
+        "total_sessions"
+      ],
+      "type": "object"
+    },
+    "PlanWeek": {
+      "properties": {
+        "due": {
+          "type": "string"
+        },
+        "sessions": {
+          "items": {
+            "$ref": "#/$defs/Session"
+          },
+          "type": "array"
+        },
+        "week": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "week",
+        "sessions"
+      ],
+      "type": "object"
+    },
+    "QuizDocument": {
+      "description": "The make_quiz output for one week.",
+      "properties": {
+        "questions": {
+          "items": {
+            "properties": {
+              "prompt": {
+                "type": "string"
+              },
+              "topic": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "topic",
+              "prompt"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "week": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "week",
+        "questions"
+      ],
+      "type": "object"
+    },
+    "Session": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "minutes": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "week": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "topic",
+        "kind",
+        "minutes"
+      ],
+      "type": "object"
+    },
+    "TodayView": {
+      "description": "The get_today_view output: the single daily card.",
+      "properties": {
+        "actions": {
+          "items": {
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "card_title": {
+          "type": "string"
+        },
+        "day_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "estimated_minutes": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "no_guilt_hint": {
+          "type": "string"
+        },
+        "sessions": {
+          "items": {
+            "$ref": "#/$defs/Session"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "card_title",
+        "day_index",
+        "sessions"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "studysprint/strands-aws/payloads.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The named payloads the seven agent tools exchange. Derived from the golden instances in ../golden/ (captured from live offline tool I/O against examples/syllabus.json), never invented: every required key and type below is observed in a golden file, and ../validate_schemas.py proves it.",
+  "title": "StudySprint shared payloads"
+}

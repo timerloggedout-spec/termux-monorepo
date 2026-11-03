@@ -3,6 +3,19 @@
 Owner-ordered 2026-10-30. This is the process of record for
 timerloggedout-spec/studysprint.
 
+## Surface version lines are independent (owner overrule, 2026-11-03)
+
+The three surfaces (TUI · webApp · APK) version on their OWN
+SemVer lines (`tui.py:TUI_VERSION` · `web/VERSION` ·
+`android/VERSION` + manifest `versionName`), with their own
+patch releases, separate from the foundation road above. This
+OVERRIDES the filed surface specs (#4092/#4093/#4095), whose
+"join at CLI v0.3.0 and pace-match" language is superseded and
+should not be read as current policy (#4212). The justification
+of record lives here and in each surface doc's version-line
+note; the specs themselves were never amended because the
+overrule post-dates their closure.
+
 ## Scheme: SemVer, pre-1.0 until submission
 
 - `MAJOR.MINOR.PATCH` (semver.org). Source of truth = the `VERSION`

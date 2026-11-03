@@ -63,3 +63,39 @@ def test_file_chooser_wiring_for_ingest():
     # the bundle it serves carries the ingest inputs it wires up
     html = (ROOT / "web" / "index.html").read_text()
     assert 'id="ingest-camera"' in html
+
+
+# ------------------------------------------------------ RFP-D1-7 award batch
+def test_signing_keystore_is_committed_and_stable():
+    ks = ANDROID / "keystore" / "studysprint-dev.keystore"
+    assert ks.exists() and ks.stat().st_size > 1000  # #4222
+    build = (ANDROID / "build.sh").read_text()
+    assert "keystore/studysprint-dev.keystore" in build
+    assert "generated per build environment" not in build
+    assert "MISSING" in build  # fails loudly instead of diverging
+
+
+def test_launcher_icon_is_brand_not_stock():
+    manifest = (ANDROID / "AndroidManifest.xml").read_text()
+    assert 'android:icon="@drawable/ic_launcher"' in manifest
+    assert "sym_def_app_icon" not in manifest
+    icon = ANDROID / "res" / "drawable" / "ic_launcher.xml"
+    assert icon.exists()
+    assert "aapt2\" compile --dir res" in (ANDROID / "build.sh").read_text()
+
+
+def test_apk_evidence_record_in_tree():
+    record = (ROOT / "evidence" / "apk" / "README.md").read_text()
+    assert "41621272959" in record  # the CI build run (#4221)
+    assert "SHA-256" in record
+    assert "SMOKE.md" in record  # the device smoke is the record
+
+
+def test_webview_serves_bundle_state():
+    """The device smoke's defect: state.json must be fetchable
+    inside the WebView (SMOKE.md, 2026-11-03)."""
+    java = (ANDROID / "src" / "org" / "timerloggedout"
+            / "studysprint" / "MainActivity.java").read_text()
+    assert "shouldInterceptRequest" in java
+    assert "Access-Control-Allow-Origin" in java
+    assert '"/android_asset/"' in java or "/android_asset/" in java

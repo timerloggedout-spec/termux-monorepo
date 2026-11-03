@@ -6,9 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * StudySprint APK surface (issue #4093).
@@ -26,6 +33,19 @@ import android.webkit.WebViewClient;
  * WebChromeClient.onShowFileChooser to the system chooser and
  * returns the picked/captured URIs to the page — the capture /
  * picker wiring for this surface.
+ *
+ * Device-smoke fix (evidence/apk/SMOKE.md, 2026-11-03): the
+ * bundle's fetch("data/state.json") never completed inside the
+ * WebView — a page loaded from a file:/// origin may not fetch
+ * sibling files under the WebView's file-origin rules, so every
+ * view sat at "Loading your course..." with an empty version
+ * footer (the same bundle rendered fully in mobile Chrome). The
+ * shell's WebViewClient now intercepts requests under its own
+ * /android_asset/web/ path and serves them from the APK assets
+ * with an Access-Control-Allow-Origin header — the
+ * dependency-free equivalent of serving the bundle over a local
+ * origin. Interception is scoped to the app's own asset path;
+ * everything else falls through untouched.
  */
 public class MainActivity extends Activity {
 
@@ -41,7 +61,43 @@ public class MainActivity extends Activity {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public WebResourceResponse shouldInterceptRequest(
+                    WebView view, WebResourceRequest request) {
+                String path = request.getUrl().getPath();
+                String prefix = "/android_asset/";
+                if (path == null || !path.startsWith(prefix)) {
+                    return null;
+                }
+                String asset = path.substring(prefix.length());
+                if (!asset.startsWith("web/")) {
+                    return null;
+                }
+                try {
+                    InputStream in = getAssets().open(asset);
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Access-Control-Allow-Origin", "*");
+                    return new WebResourceResponse(mimeFor(asset),
+                            "utf-8", 200, "OK", headers, in);
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+
+            private String mimeFor(String asset) {
+                if (asset.endsWith(".html")) return "text/html";
+                if (asset.endsWith(".js")) return "text/javascript";
+                if (asset.endsWith(".css")) return "text/css";
+                if (asset.endsWith(".json")) return "application/json";
+                if (asset.endsWith(".webmanifest")) {
+                    return "application/manifest+json";
+                }
+                if (asset.endsWith(".png")) return "image/png";
+                if (asset.endsWith(".svg")) return "image/svg+xml";
+                return "application/octet-stream";
+            }
+        });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onShowFileChooser(

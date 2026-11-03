@@ -26,7 +26,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.1.0"
+TUI_VERSION = "0.1.1"
 SURFACE = "studysprint-tui"
 
 from study_reader import RSVPReader, Section  # noqa: E402
@@ -108,9 +108,11 @@ try:
                      export_dir: Path | None = None, **kwargs):
             super().__init__(**kwargs)
             self.state = build_state(root)
-            self.checkin_log: dict = {}
             self.card_index = 0
-            self.card_state = None
+            # #4224: review state is PER CARD (and per scheduler) —
+            # a card's own history accumulates; nothing leaks from
+            # the previous card's grade, nothing is discarded.
+            self.card_states: dict = {}
             self.card_flipped = False
             self.scheduler_name = "fsrs"
             self.reader = RSVPReader(self.state["sections"])
@@ -118,6 +120,16 @@ try:
             self.export_dir = Path(export_dir) if export_dir else \
                 (self.state["root"] / "exports")
             self._timer = None
+            # #4223: check-ins persist to disk (they used to live
+            # only in process memory) and are loaded back at start.
+            self._checkin_path = self.export_dir / "checkin-log.json"
+            self.checkin_log: dict = {}
+            if self._checkin_path.exists():
+                try:
+                    self.checkin_log = json.loads(
+                        self._checkin_path.read_text(encoding="utf-8"))
+                except (ValueError, OSError):
+                    self.checkin_log = {}
             self._ingest_path: str | None = None
 
         # ------------------------------------------------------ layout
@@ -226,24 +238,30 @@ try:
                 return
             if self.scheduler_name == "sm2":
                 grade = {1: 1, 2: 3, 3: 4, 4: 5}[grade]
-            self.card_state, receipt = review_card(
-                card, self.card_state, grade,
+            # #4224: this card's OWN stored state goes in; the
+            # resulting state is stored back under this card. The
+            # previous implementation shared one app-level state
+            # across cards and then discarded it.
+            key = (card.card_id, self.scheduler_name)
+            next_state, receipt = review_card(
+                card, self.card_states.get(key), grade,
                 scheduler=self.scheduler_name,
                 now=datetime.now(timezone.utc))
+            self.card_states[key] = next_state
             self.query_one("#sr-receipt", Label).update(
                 f"Receipt: scheduler={receipt['scheduler']} "
                 f"grade={receipt['grade']} "
                 f"next due {receipt['due']} "
                 f"(in {receipt['interval_days']} day(s))")
             self.card_index += 1
-            self.card_state = None
             self._show_card()
 
         # ------------------------------------------------------ events
         def on_select_changed(self, event) -> None:
             if event.select.id == "sr-scheduler":
+                # per-card states are keyed by scheduler (#4224),
+                # so switching schedulers needs no reset at all
                 self.scheduler_name = str(event.value)
-                self.card_state = None
 
         # ------------------------------------------------------ ingest
         def _ingest(self, confirmed: bool) -> None:
@@ -294,13 +312,26 @@ try:
                 status = bid.replace("checkin-", "")
                 status = {"done": "done", "partial": "partial",
                           "missed": "missed"}[status]
+                # #4223: record against TODAY's actual identity
+                # (the week + day the surface is showing), not a
+                # hardcoded week 1 / session 0 — and persist.
+                today = self.state["today"]
+                sessions = today.get("sessions") or [{}]
+                week = sessions[0].get("week", 1)
+                day_index = today.get("day_index", 0)
                 self.checkin_log = record_daily_checkin(
-                    self.checkin_log, week=1, session_index=0,
-                    status=status)
+                    self.checkin_log, week=week,
+                    session_index=day_index, status=status)
+                self._checkin_path.parent.mkdir(parents=True,
+                                                 exist_ok=True)
+                self._checkin_path.write_text(
+                    json.dumps(self.checkin_log, indent=1),
+                    encoding="utf-8")
                 entries = self.checkin_log.get("entries") or []
                 self.query_one("#checkin-status", Label).update(
-                    f"Checked in: {status}. "
-                    f"{len(entries)} check-in(s) logged.")
+                    f"Checked in: {status} (week {week}, "
+                    f"day {day_index + 1}). "
+                    f"{len(entries)} check-in(s) logged + saved.")
             elif bid == "sr-flip":
                 card = self._current_card()
                 if card is not None:

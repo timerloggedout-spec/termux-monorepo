@@ -14,12 +14,15 @@ Surface version line: independent (see WEBAPP.md / VERSION).
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
 WEB_DIR = Path(__file__).resolve().parent
 APP_ROOT = WEB_DIR.parent
 sys.path.insert(0, str(APP_ROOT))
+
+from datetime import date  # noqa: E402
 
 from study_reader import Section  # noqa: E402
 from study_sr import build_cards_from_practice_set, export_ux_state  # noqa: E402
@@ -52,6 +55,7 @@ def emit_state(root: Path | None = None) -> dict:
                                  content=text).tokens})
     version_file = WEB_DIR / "VERSION"
     return {
+        "plan_start": date.today().isoformat(),
         "surface": "studysprint-webapp",
         "surface_version": version_file.read_text().strip()
         if version_file.exists() else "0.1.0",
@@ -65,10 +69,27 @@ def emit_state(root: Path | None = None) -> dict:
     }
 
 
+def stamp_service_worker() -> None:
+    """Keep the service worker's cache identity on the surface
+    version line (#4219): the cache name carries web/VERSION, so
+    a new surface release can never be pinned behind the first
+    build's cache. Runs wherever the bundle is (re)built."""
+    sw_path = WEB_DIR / "sw.js"
+    if not sw_path.exists():
+        return
+    version = (WEB_DIR / "VERSION").read_text().strip()
+    text = sw_path.read_text()
+    stamped = re.sub(r"studysprint-webapp-v[0-9.]+",
+                     f"studysprint-webapp-v{version}", text)
+    if stamped != text:
+        sw_path.write_text(stamped)
+
+
 def main() -> None:
     out = WEB_DIR / "data" / "state.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(emit_state(), indent=1, sort_keys=True))
+    stamp_service_worker()
     print(f"wrote {out}")
 
 

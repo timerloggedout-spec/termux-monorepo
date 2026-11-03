@@ -1,7 +1,12 @@
 /* StudySprint webApp service worker — offline after first load.
- * Cache-first for the app shell + baked core state; the study data
- * in localStorage (SR review state) is never cached here. */
-const CACHE = "studysprint-webapp-v1";
+ * #4219: the cache name carries the surface version (build_data.py
+ * stamps it from web/VERSION at bundle build), so a new release
+ * replaces the cache instead of being pinned behind the first
+ * build's. Fetch strategy: data/state.json is NETWORK-FIRST (a
+ * refreshed plan reaches installed users; the cache is only the
+ * offline fallback); the shell uses stale-while-revalidate. The
+ * study data in localStorage is never cached here. */
+const CACHE = "studysprint-webapp-v0.1.1";
 const SHELL = [
   "./",
   "index.html",
@@ -27,7 +32,27 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+  if (url.pathname.endsWith("data/state.json")) {
+    // network-first: fresh core state wins; cache is the fallback
+    event.respondWith(
+      fetch(event.request).then((resp) => {
+        const copy = resp.clone();
+        caches.open(CACHE).then((cache) =>
+          cache.put(event.request, copy));
+        return resp;
+      }).catch(() => caches.match(event.request)));
+    return;
+  }
+  // stale-while-revalidate for the shell
   event.respondWith(
-    caches.match(event.request).then((hit) =>
-      hit || fetch(event.request)));
+    caches.match(event.request).then((hit) => {
+      const refresh = fetch(event.request).then((resp) => {
+        const copy = resp.clone();
+        caches.open(CACHE).then((cache) =>
+          cache.put(event.request, copy));
+        return resp;
+      }).catch(() => hit);
+      return hit || refresh;
+    }));
 });

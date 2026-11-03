@@ -81,7 +81,7 @@ def test_node_sim_against_live_feed(tmp_path):
     harness.write_text(esc_line + "\n" + logic)
     out = tmp_path / "run.cjs"
     out.write_text("""
-const {refStateDist, refChip, refPoolModel, refAccess} = require("./harness.cjs");
+const {refStateDist, refChip, refPoolModel, refAccess, refValueLines} = require("./harness.cjs");
 const feed = require(process.argv[2]);
 const items = feed.items;
 console.log(JSON.stringify({
@@ -91,6 +91,7 @@ console.log(JSON.stringify({
   poolsNullFeed: items.filter(i => i.pool_health === null).length,
   futureChip: refChip("no_public_programme"),
   harkChip: refChip(items.find(i => i.id === "hark").state),
+  valueLines: Object.fromEntries(items.map(i => [i.id, refValueLines(i)])),
 }));
 """)
     r = subprocess.run(["node", str(out), str(FEED)],
@@ -110,3 +111,16 @@ console.log(JSON.stringify({
     hark = [i for i in feed["items"] if i["id"] == "hark"][0]
     assert hark["state"] in res["harkChip"]
     assert hark["state_detail"] == "no_public_programme"
+    # value lines (accrued + redemptions counter) render present-only:
+    # exactly the programmes whose feed items carry the fields
+    for it in feed["items"]:
+        lines = res["valueLines"][it["id"]]
+        if "accrued_value" in it and it["accrued_value"] is not None:
+            assert "Accrued: " in lines and it["accrued_value"] in lines
+        else:
+            assert "Accrued:" not in lines
+        if "redemptions" in it and it["redemptions"] is not None:
+            assert 'class="ref-count"' in lines
+            assert ">" + str(it["redemptions"]) + "<" in lines
+        else:
+            assert "ref-count" not in lines

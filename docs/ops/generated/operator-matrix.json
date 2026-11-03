@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 432,
-    "open_prs": 204,
+    "open_prs": 203,
     "pr_classes": {
       "CANDIDATE": 103,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 95,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 202,
+      "prs": 201,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T09:31:04Z",
+  "generated_at": "2026-11-03T09:32:23Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "092dc645d5"
+    "sha": "26d334724a"
   },
   "prs": [
     {
@@ -2175,7 +2175,7 @@
       },
       "head_sha": "bc44c84ff0",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
       "updated_at": "2026-11-03T09:30:46Z"
@@ -2949,20 +2949,6 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "efa278042e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4133,
-      "title": "Agentic Gambling Lane: priority-timebox linkage = book checkpoints",
-      "updated_at": "2026-11-03T09:31:02Z"
     }
   ],
   "schema": "operator-matrix/v1",

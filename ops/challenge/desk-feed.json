@@ -2632,10 +2632,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)",
           "dispatched_at": "2026-11-03T00:24:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": true,
+          "rework_cycles": 0,
           "session_id": "issue-4095",
-          "task": "StudySprint TUI surface (Textual tui.py, v0.3.0-matched): runnable in tree + pilot tests + parity checklist + recorded terminal run; routing receipt 6598847704, dispatch-queued (run 41602968237 SUCCESS)"
+          "task": "StudySprint TUI surface (Textual tui.py, v0.3.0-matched): runnable in tree + pilot tests + parity checklist + recorded terminal run; routing receipt 6598847704, dispatch-queued (run 41602968237 SUCCESS)",
+          "merged_pr": 4161,
+          "merge_sha": "5653241db3a4",
+          "outcome": "landed; TUI 0.1.0 release id 432554871 (tag tui-v0.1.0); parity 36/36"
         },
         {
           "provider": "command-dispatch",
@@ -3889,7 +3892,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T10:26:00Z",
+    "updated_at": "2026-11-03T10:36:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

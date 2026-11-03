@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 523,
-    "open_prs": 261,
+    "open_prs": 260,
     "pr_classes": {
-      "CANDIDATE": 122,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 129,
+      "CANDIDATE": 121,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 127,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 44,
-      "prs": 259,
+      "prs": 258,
       "unlabelled_numbers": [
         308,
         388,
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T23:09:37Z",
+  "generated_at": "2026-11-03T23:11:53Z",
   "issues_unlabelled": [
     308,
     388,
@@ -152,7 +152,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "6c2793e3a8"
+    "sha": "e30a9c7a14"
   },
   "prs": [
     {
@@ -294,6 +294,34 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c0451e6ea6",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4573,
+      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
+      "updated_at": "2026-11-03T21:16:22Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173ad9eaba",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4615,
+      "title": "fix(ci): harden dangling-reference detection on current master",
+      "updated_at": "2026-11-03T21:20:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1511,6 +1539,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "9339e565af",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T23:09:57Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1709,7 +1751,7 @@
       },
       "head_sha": "1f0e963aa5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4089,
       "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
       "updated_at": "2026-11-03T21:25:03Z"
@@ -1917,20 +1959,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c0451e6ea6",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4573,
-      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
-      "updated_at": "2026-11-03T21:16:22Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "c3f82c9c81",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1959,23 +1987,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "173ad9eaba",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4615,
-      "title": "fix(ci): harden dangling-reference detection on current master",
-      "updated_at": "2026-11-03T21:20:15Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "062ba02ebd",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4617,
       "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
       "updated_at": "2026-11-03T21:24:25Z"
@@ -3177,20 +3191,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "65a5270032",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T23:07:07Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "8294936e68",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3235,7 +3235,7 @@
       },
       "head_sha": "57669a24ed",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4023,
       "title": "docs: integrate competitive opportunities and quota reconciliation",
       "updated_at": "2026-11-03T20:39:18Z"
@@ -3291,7 +3291,7 @@
       },
       "head_sha": "66f36505cc",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4090,
       "title": "Emit ATES outcome receipts for non-success source runs",
       "updated_at": "2026-11-03T20:57:56Z"
@@ -3799,20 +3799,6 @@
       "number": 4670,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:57:08Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "acebe6bea8",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4672,
-      "title": "D1 parity iteration 2 \u2192 surfaces 0.3.0: \u00a71c memory methods on all surfaces (#4415)",
-      "updated_at": "2026-11-03T23:03:47Z"
     }
   ],
   "schema": "operator-matrix/v1",

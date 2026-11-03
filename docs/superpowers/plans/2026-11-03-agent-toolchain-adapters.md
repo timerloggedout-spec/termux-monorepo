@@ -34,20 +34,20 @@
 ### Task 1: Shared provider-observation contract and HAPI normalizer
 
 **Files:**
-- Create: `scripts/integrations/__init__.py`
+- Existing: `scripts/integrations/__init__.py`
 - Create: `scripts/integrations/agent_toolchain.py`
 - Create: `docs/integrations/schemas/provider-observation.schema.json`
 - Test: `tests/test_agent_toolchain_adapters.py`
-- Fixture: `tests/fixtures/agent_toolchain/hapi-server.json`
+- Fixture inputs: synthetic HAPI records embedded in `tests/test_agent_toolchain_adapters.py`
 
 **Interfaces:**
 - `normalize_hapi_server(record: dict, captured_at: str, provider_request_id: str | None = None) -> dict`
 - `validate_observation(observation: dict) -> list[str]`
 - HAPI output must include stable `name@version`, normalized remotes, registry-reported metadata, `security_review_status=not_reviewed`, `admission_status=not_admitted`, and `execution_allowed=false`.
 
-- [ ] Write HAPI tests for stable identity, multiple versions, transport preservation, safe endpoint normalization, unknown-field names, and fail-closed malformed records.
+- [x] Write HAPI tests for stable identity, multiple versions, transport preservation, safe endpoint normalization, unknown-field names, and fail-closed malformed records.
 - [ ] Run tests and confirm expected missing-module failures.
-- [ ] Implement the shared envelope and HAPI normalizer with Python standard library only.
+- [x] Implement the shared envelope and HAPI normalizer with Python standard library only.
 - [ ] Run focused tests and verify all HAPI assertions pass.
 
 ### Task 2: Context.dev and Context7 evidence normalizers
@@ -55,16 +55,16 @@
 **Files:**
 - Modify: `scripts/integrations/agent_toolchain.py`
 - Test: `tests/test_agent_toolchain_adapters.py`
-- Fixtures: `tests/fixtures/agent_toolchain/context7-document.json`, `tests/fixtures/agent_toolchain/context-dev-result.json`
+- Fixture inputs: synthetic Context7 and Context.dev payloads embedded in `tests/test_agent_toolchain_adapters.py`
 
 **Interfaces:**
 - `normalize_context7_document(payload: dict, library_id: str, version: str | None, captured_at: str, provider_request_id: str | None = None) -> dict`
 - `normalize_context_dev_result(payload: dict, captured_at: str, provider_request_id: str | None = None) -> dict`
 - Context7 records exact library ID/version and source refs; Context.dev records canonical HTTP(S) URL, bounded excerpt, retrieval timestamp, request ID, and query-redaction state. Neither stores the caller's query.
 
-- [ ] Write tests for version resolution, missing version, conflicting version, source references, URL credentials, query stripping, truncation, and untrusted-content marking.
+- [x] Write tests for version resolution, missing version, conflicting version, source references, URL credentials, query stripping, truncation, and untrusted-content marking.
 - [ ] Run tests and confirm expected failures.
-- [ ] Implement both normalizers using the shared envelope.
+- [x] Implement both normalizers using the shared envelope.
 - [ ] Run focused tests and verify all evidence assertions pass.
 
 ### Task 3: CI contract, registry lifecycle, and operator documentation
@@ -79,9 +79,9 @@
 - Modify: `docs/proposals/active/agent-toolchain-portfolio/MANIFEST.md`
 - Test: `tests/test_agent_toolchain_adapters.py`
 
-- [ ] Add offline adapter tests and observation validation to repo-gate.
-- [ ] Verify registry adapter states reflect implementation only, not authentication or runtime validation.
-- [ ] Document invocation, schemas, trust boundaries, and non-goals.
+- [x] Add offline adapter tests and observation validation to repo-gate.
+- [x] Verify registry adapter states reflect implementation only, not authentication or runtime validation.
+- [x] Document invocation, schemas, trust boundaries, and non-goals.
 - [ ] Run adapter validator, focused tests, proposal lifecycle, repo-gate, and Termux smoke on one immutable commit.
 - [ ] Record exact-head evidence and open a stacked PR; do not merge or promote without required human review and existing repository policy.
 

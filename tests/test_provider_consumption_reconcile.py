@@ -29,9 +29,9 @@ def coverage(start, end, reset="r1", scope="app:1", unit="requests",
 
 def doc(events=None, cov=None, snaps=None):
     start, end = "2026-11-02T10:00:00Z", "2026-11-02T10:05:00Z"
-    return {"snapshots": snaps or [snapshot(start, 10), snapshot(end, 15)],
-            "events": events or [event("2026-11-02T10:02:00Z", 5)],
-            "coverage": cov or [coverage(start, end)]}
+    return {"snapshots": snaps if snaps is not None else [snapshot(start, 10), snapshot(end, 15)],
+            "events": events if events is not None else [event("2026-11-02T10:02:00Z", 5)],
+            "coverage": cov if cov is not None else [coverage(start, end)]}
 
 
 def test_exact_delta_reconciles_and_is_deterministic():
@@ -133,3 +133,26 @@ def test_invalid_naive_timestamp_rejected():
         assert "timezone" in str(exc)
     else:
         raise AssertionError("naive timestamp must be rejected")
+
+
+def test_complete_coverage_with_no_events_keeps_provider_delta_as_residual():
+    result = pcr.reconcile(doc(events=[]))
+    finding = result["findings"][0]
+    assert finding["kind"] == "positive_residual"
+    assert finding["observed_delta"] == 5
+    assert finding["attributed_total"] == 0
+    assert finding["residual"] == 5
+
+
+def test_distinct_account_scopes_are_reconciled_independently():
+    start, end = "2026-11-02T10:00:00Z", "2026-11-02T10:05:00Z"
+    snapshots = [snapshot(start, 10, scope="app:1"),
+                 snapshot(end, 15, scope="app:1"),
+                 snapshot(start, 20, scope="app:2"),
+                 snapshot(end, 27, scope="app:2")]
+    events = [event("2026-11-02T10:02:00Z", 5, scope="app:1"),
+              event("2026-11-02T10:03:00Z", 7, scope="app:2")]
+    coverages = [coverage(start, end, scope="app:1"),
+                 coverage(start, end, scope="app:2")]
+    result = pcr.reconcile(doc(events=events, cov=coverages, snaps=snapshots))
+    assert [row["kind"] for row in result["findings"]] == ["reconciled", "reconciled"]

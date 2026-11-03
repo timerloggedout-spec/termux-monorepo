@@ -48,7 +48,7 @@
 - [x] Write HAPI tests for stable identity, multiple versions, transport preservation, safe endpoint normalization, unknown-field names, and fail-closed malformed records.
 - [ ] Run tests and confirm expected missing-module failures.
 - [x] Implement the shared envelope and HAPI normalizer with Python standard library only.
-- [ ] Run focused tests and verify all HAPI assertions pass.
+- [x] Run focused tests and verify all HAPI assertions pass (19/19 adapter tests on exact head).
 
 ### Task 2: Context.dev and Context7 evidence normalizers
 
@@ -65,7 +65,7 @@
 - [x] Write tests for version resolution, missing version, conflicting version, source references, URL credentials, query stripping, truncation, and untrusted-content marking.
 - [ ] Run tests and confirm expected failures.
 - [x] Implement both normalizers using the shared envelope.
-- [ ] Run focused tests and verify all evidence assertions pass.
+- [x] Run focused tests and verify all evidence assertions pass (19/19 adapter tests on exact head).
 
 ### Task 3: CI contract, registry lifecycle, and operator documentation
 
@@ -82,8 +82,8 @@
 - [x] Add offline adapter tests and observation validation to repo-gate.
 - [x] Verify registry adapter states reflect implementation only, not authentication or runtime validation.
 - [x] Document invocation, schemas, trust boundaries, and non-goals.
-- [ ] Run adapter validator, focused tests, proposal lifecycle, repo-gate, and Termux smoke on one immutable commit.
-- [ ] Record exact-head evidence and open a stacked PR; do not merge or promote without required human review and existing repository policy.
+- [x] Run adapter validator, focused tests, proposal lifecycle, repo-gate, and Termux smoke on one immutable commit.
+- [x] Record exact-head evidence and open a stacked PR (#4086); merge and promotion remain gated on required human review and existing repository policy.
 
 ## Non-goals for this tranche
 

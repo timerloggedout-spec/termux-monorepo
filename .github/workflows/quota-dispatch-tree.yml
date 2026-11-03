@@ -206,6 +206,9 @@ jobs:
             // little history it falls back to the designed 6h cadence.
             let paStaleMin = 1e9;
             let paThresholdMin = 360;
+            let paRawThresholdMin = 360;
+            let paMedianGapMin = -1;
+            let paG1Saturated = false;
             try {
               const lastPa = await github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner, repo: context.repo.repo,
@@ -220,7 +223,19 @@ jobs:
               if (gaps.length >= 2) {
                 gaps.sort((a, b) => a - b);
                 const med = gaps[Math.floor(gaps.length / 2)];
-                paThresholdMin = Math.min(720, Math.max(120, Math.round(1.5 * med)));
+                paRawThresholdMin = Math.round(1.5 * med);
+                paThresholdMin = Math.min(720, Math.max(120, paRawThresholdMin));
+                paMedianGapMin = Math.round(med);
+              }
+              // Saturation surfacing (cadence escalation 2026-11-03, axis 4):
+              // when 1.5x median exceeds the 720m clamp, the adaptive signal
+              // carries no information — the threshold degenerates to the
+              // constant 720 (the fixed-pattern failure class). Surface it
+              // as a warning + a g1{} record in the admission artifact
+              // instead of saturating silently. Behavior unchanged.
+              paG1Saturated = paRawThresholdMin > 720;
+              if (paG1Saturated) {
+                core.warning(`G1 saturated: 1.5x median gap ${paRawThresholdMin}m > 720m clamp (median gap ${paMedianGapMin}m) — provider-availability cadence defective, threshold is the constant 720m`);
               }
               core.info(`provider-availability age=${Math.round(paStaleMin)}m threshold=${paThresholdMin}m (median of ${gaps.length} gaps)`);
             } catch (_) { /* unreadable run history = treat as stale */ }
@@ -254,6 +269,7 @@ jobs:
                 generated_at: new Date().toISOString(),
                 global_inflight: admissionResult.global_inflight,
                 global_cap: admissionResult.global_cap,
+                g1: { median_gap_min: paMedianGapMin, raw_threshold_min: paRawThresholdMin, threshold_min: Math.round(paThresholdMin), saturated: paG1Saturated },
                 records: admissionResult.records
               }, null, 2));
             } catch (_) { /* the artifact is evidence, never a gate */ }

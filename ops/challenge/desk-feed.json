@@ -2375,7 +2375,8 @@
           "build1_sr": "#3050 as amended (Obsidian REQUIRED, ruling 6572659199)",
           "build2_template": "#3577",
           "route": "command-dispatch via Swarm (sole live arm)",
-          "flow": "PR appearance \u21d2 desk flags D1 \u21d2 D1 verify \u21d2 desk merge \u21d2 sync \u21d2 parity"
+          "flow": "PR appearance \u21d2 desk flags D1 \u21d2 D1 verify \u21d2 desk merge \u21d2 sync \u21d2 parity",
+          "status": "build1 SR LANDED (PR #4075 2aa1e77bf9cb, parity 25/25, #3050 CLOSED) \u00b7 build2 template LANDED (PR #4076 0cea0327f9ac; live test-issue evidence pending \u21d2 #3577)"
         }
       },
       "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
@@ -2595,10 +2596,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 next-version build (owner 'Get it built' via main, D1 seat production order 2026-11-02 21:09 PT)",
           "dispatched_at": "2026-11-02T21:09:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": false,
+          "rework_cycles": 1,
           "session_id": "issue-3050",
-          "task": "SR module study_sr.py (FSRS default + SM-2 baseline + Obsidian vault surface REQUIRED + genanki) + VERSION 0.3.0 + CHANGELOG; routed via Swarm to system selection"
+          "task": "SR module study_sr.py (FSRS default + SM-2 baseline + Obsidian vault surface REQUIRED + genanki) + VERSION 0.3.0 + CHANGELOG; routed via Swarm to system selection",
+          "completed_at": "2026-11-02T21:22:00-08:00",
+          "result_summary": "PR #4075 merged 2aa1e77bf9cb; D1 verify HOLD (F1 version literal + F2 apkg tag crash) \u2192 1 fix round \u2192 PASS 43/43; synced, parity 25/25; producer Swarm seat-build session 6628d41d",
+          "producer": "Swarm Optimizations & Implementation Assurance seat (seat-build)"
         },
         {
           "provider": "command-dispatch",
@@ -2607,10 +2611,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 next-version build (owner 'Get it built' via main, D1 seat production order 2026-11-02 21:09 PT)",
           "dispatched_at": "2026-11-02T21:09:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": true,
+          "rework_cycles": 0,
           "session_id": "issue-3577",
-          "task": "project-task issue template + dispatch workflow + parser tests + live test-issue; routed via Swarm to system selection"
+          "task": "project-task issue template + dispatch workflow + parser tests + live test-issue; routed via Swarm to system selection",
+          "completed_at": "2026-11-02T21:19:00-08:00",
+          "result_summary": "PR #4076 merged 0cea0327f9ac first-pass (D1 VERIFY PASS); live test-issue done-evidence pending from Swarm \u21d2 #3577",
+          "producer": "Swarm Optimizations & Implementation Assurance seat (seat-build)"
         }
       ]
     },
@@ -3360,6 +3367,6 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-02T21:09:58-08:00"
+    "updated_at": "2026-11-02T21:23:20-08:00"
   }
 }

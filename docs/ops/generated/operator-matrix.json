@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 478,
-    "open_prs": 206,
+    "open_issues": 483,
+    "open_prs": 207,
     "pr_classes": {
-      "CANDIDATE": 106,
+      "CANDIDATE": 105,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 94,
+      "NEED_EVIDENCE": 96,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 248,
+      "issues": 253,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 42,
-      "prs": 204,
+      "prs": 205,
       "unlabelled_numbers": [
         308,
         388,
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T15:10:25Z",
+  "generated_at": "2026-11-03T15:14:07Z",
   "issues_unlabelled": [
     308,
     388,
@@ -148,7 +148,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "49a7ed2405"
+    "sha": "9b3785d4e4"
   },
   "prs": [
     {
@@ -599,7 +599,7 @@
       },
       "head_sha": "2177e62206",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
       "updated_at": "2026-11-03T14:29:40Z"
@@ -1711,20 +1711,6 @@
       "updated_at": "2026-11-03T14:23:58Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "df3f08f5af",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4390,
-      "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
-      "updated_at": "2026-11-03T14:58:23Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1789,7 +1775,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-03T14:29:46Z"
@@ -2041,7 +2027,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-03T14:29:49Z"
@@ -2907,12 +2893,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "679bb43b64",
+      "head_sha": "a04b38d087",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T15:09:55Z"
+      "updated_at": "2026-11-03T15:10:51Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2921,12 +2907,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "335cc38dbe",
+      "head_sha": "538874885b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T15:08:15Z"
+      "updated_at": "2026-11-03T15:13:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3039,6 +3025,34 @@
       "number": 4374,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
       "updated_at": "2026-11-03T14:44:36Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "740942b930",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4390,
+      "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
+      "updated_at": "2026-11-03T15:10:52Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "queued"
+      },
+      "head_sha": "366613e6dd",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4418,
+      "title": "chore(proposals): refresh proposals-feed.json",
+      "updated_at": "2026-11-03T15:13:04Z"
     }
   ],
   "schema": "operator-matrix/v1",

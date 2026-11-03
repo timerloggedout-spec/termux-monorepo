@@ -104,8 +104,8 @@ The implementation must test at least:
 ## Rollout sequence
 
 1. Validate existing source shapes and record inventory without writing.
-2. Add a pure reconciliation function over supplied snapshots/events.
-3. Add deterministic fixtures for every acceptance case above.
-4. Emit append-only findings to the existing ledger/projection path.
+2. Add the pure reconciliation module at scripts/provider_consumption_reconcile.py; it accepts normalized snapshots, events, and coverage assertions and emits deterministic findings without polling or mutating a ledger.
+3. Run tests/test_provider_consumption_reconcile.py for same-scope matches, residuals, reset boundaries, counter regression, scope mismatch, incomplete coverage, stale readings, activity exclusion, stable event replay, and timezone validation.
+4. Integrate append-only findings with the existing ledger/projection path only after its storage contract and source adapters are reviewed.
 5. Add a read-only Moneyball view only after finding lineage and coverage tests pass.
 6. Enable any scheduled collection or runtime integration only through a separate approved code/workflow proposal.

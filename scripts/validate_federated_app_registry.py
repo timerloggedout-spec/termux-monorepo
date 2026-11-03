@@ -121,6 +121,19 @@ def main() -> int:
     if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
         print("unexpected JSON Schema dialect", file=sys.stderr)
         return 2
+    try:
+        import jsonschema
+        jsonschema.Draft202012Validator.check_schema(schema)
+        jsonschema.validate(instance=data, schema=schema)
+    except ImportError:
+        print("jsonschema dependency is required for schema validation", file=sys.stderr)
+        return 2
+    except jsonschema.ValidationError as exc:
+        print(f"JSON Schema validation failed: {exc.message}", file=sys.stderr)
+        return 1
+    except jsonschema.SchemaError as exc:
+        print(f"JSON Schema is invalid: {exc.message}", file=sys.stderr)
+        return 2
     errors = validate(data, schema)
     if errors:
         for error in errors:

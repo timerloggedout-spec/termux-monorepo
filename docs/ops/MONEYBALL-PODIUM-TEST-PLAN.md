@@ -1,64 +1,150 @@
 # MoneyBall — Podium-Dataset ML Test Plan (SPEC, pre-registered)
 
-**Seat:** `[MUSEai]@{role:{moneyball-plane}}` · **Owner GO:** 2026-11-03 09:17 PT (via main). **Status: SPEC ONLY — no test has run.** Hypotheses + kill signals below are stamped BEFORE any dataset access (pre-registration discipline).
+**Seat:** `[MUSEai]@{role:{moneyball-plane}}` · **Owner GO:** 2026-11-03 09:17 PT (via main). **Status: SPEC ONLY — no test has run.**
+**Review state: CLOSED (2026-11-03)** — Tests-LLM-Validation re-review: PASS WITH RESIDUAL CONDITIONS (per test); residuals mapped in the closure section at the end of this document. Earlier state: Tests · LLM Validation FORMAL review of record = **APPROVED WITH CORRECTIONS** (C1–C9; the formal review supersedes the same lane's earlier brief-level review where they differ — notably C2's frozen BINARY codebook + re-code supersedes the brief's ternary-handling gate). **Amendment #2 (this text) incorporates C1–C9; on its landing the review leg stamps the review closed and runs may proceed in sequence** (③ expected blocked-not-run unless judge↔track linkage is sourced).
 
-## Dataset (external leg — scraping lane build)
+## Dataset facts of record (D2 podium leg, PR #4491)
 
-- **Source of record:** the D2 seat's podium leg (exercise record): per venue × edition — {editions · judges · placements · projects · comments (judge + community, distinguished)}.
-- **Build owner:** scraping lane (their build; this plan consumes it, does not scrape).
-- **Version pin (hard):** every result row carries `dataset_version` (content hash / version id issued by the dataset build). A result without the pin is not a result and does not enter the book.
-- **Unit discipline:** edition is the stratum. No pooling across venues/editions without a per-stratum read first (strata never pooled — DoE conformity).
-- **Exclusion:** EGM instance-#2 test-stamped filings (canonical key `EGM instance #2 TEST filing`, secondary `RFP-EGM2-`) never enter dataset-derived evidence (owner ruling 2026-11-03).
+- n = **11 placed projects** · ~4 events · 2nd/3rd placements mostly NOT_ESTABLISHED · per-track judges ∅ · comments anecdotal · **field rows = ∅** (podium only).
+- **Dataset version pin (G6/C5):** dataset = the PR #4491 record (`ops/challenge/coordinator.json` podium leg; PR-head blob `150e7429e2ef05d2`). Every result row names this pin exactly; a record update re-pins by hash, prior rows keep theirs.
+- Missingness is MNAR (winners publicized, losers not); every denominator states {observed / eligible + mechanism}.
+- **Exclusion:** EGM instance-#2 test-stamped filings (canonical `EGM instance #2 TEST filing`, secondary `RFP-EGM2-`) never enter dataset-derived evidence.
+- **Contamination (G5):** tags cite the **canonical project page URL** per project; lablab injected-module text is NEVER a feature source (Ariadne false lead precedent); Vortex IQ vs Unmask = disputed ⇒ excluded per Rule 9 until resolved.
 
-## Cross-cutting rules (bind all six tests)
+## Dataset-build requirements (C1/C3/C8 — scraping-leg amendments)
 
-- **Exact methods only** at this n: Fisher exact / permutation / exact CIs. No asymptotic claims. Every result stamps its n per stratum.
-- **Small-n honesty:** a result that cannot distinguish its effect from noise is reported as UNRESOLVED, never dressed.
-- **Rule 9 + significance (B5):** any probability/standing language from these tests requires corroborated evidence legs and the significance standard; single-leg = HELD.
-- **Book entry:** results enter the wagering book as EVIDENCE ROWS — appended to the relevant subjects' `expectation_record.evidence[]` (never as parallel numbers, B1), each row {test_id · dataset_version · n · effect · exact_ci · verdict ∈ {supported, refuted, unresolved} · kill_signal_state}.
-- **winprob boundary:** the hidden metrics_internal winprob is not an input, output, or citation of this plan.
+1. **Field sampling (C1):** field projects per edition = **all gallery submissions** for that edition (entries := gallery submissions, NOT approved registrants — the two counts differ, cf. D2 field 2,302 approved vs gallery). If volume forces sampling: a stated random sample with the seed recorded in the dataset record. No silent selection.
+2. **Feasibility stamps (pre-run, published in the dataset record):** per edition {podium n · field n} (C1) · {# repeat judges with attributable picks} (C3) · {# projects with judge comments · # with community comments} (C8) · category×edition denominator counts (C7) · count of editions with usable ⑤ rubrics (C9).
+3. **Judge↔track sourcing (C3):** the only leg that can unblock ③; separately pinned if it lands.
 
-## Tests
+## Codebook (C2 — frozen here, supersedes prior tag handling)
 
-### ① Winner-pattern validation
-- **Question:** do podium projects show {proof-grounded claims · enterprise-workflow fit · approval-gates} more often than field (non-podium) projects?
-- **Method:** per-project binary feature coding (codebook fixed before coding); per feature: Fisher exact podium-vs-field per edition, odds ratio + exact CI; cross-edition consistency read.
-- **Hypothesis:** ≥2 of 3 features show OR > 1 with exact CI excluding 1.0 in the pooled-consistent direction, and no feature reverses in ≥ half the editions.
-- **Kill signal:** ∀ features CI includes 1.0, OR any claimed feature reverses direction in ≥ half the editions ⇒ pattern claim DEAD; recorded as a refuted evidence row.
+- The podium leg's P/E/H tags **predate this codebook** (single tagger, ternary) — reusing them would void "codebook fixed before coding" in fact. **All coding is redone** from canonical project pages under this frozen **BINARY** codebook (`codebook_version: podium-codebook/v1`):
+  - **proof-grounded (P):** the project page presents verifiable execution evidence (live demo / repo / run output) for its central claim — yes/no.
+  - **enterprise-workflow (E):** the project targets an organizational workflow with named roles/approvals/integrations — yes/no.
+  - **approval-gates (H), STRICT:** a formal pre-action approval step is a described mechanism (a human or policy gate that must approve before the system acts) — yes/no. The loose "human in the loop somewhere" reading is a DIFFERENT feature and is not coded (podium-leg contrast: strict H = 1/11, loose = 6/11 — the test result is whichever definition is frozen; frozen = STRICT).
+- **Double-tag:** all 11 podium projects + an equal-sized field sample, two independent taggers; Cohen's κ per feature published in the plan record; adjudication logged. Theme coding (④) double-codes a sample under the same discipline.
 
-### ② Room / crowding curves
-- **Question:** how does podium share move with category entry count, per category per edition?
-- **Method:** descriptive curve per category × edition {entries · podium slots · podium share}; elbow/non-linearity read visually + by segment split at the median crowding.
-- **Hypothesis:** podium share declines with crowding, with a steeper decline past the median (elbow).
-- **Kill signal:** podium share flat or rising with crowding in ≥ half the category-editions ⇒ crowding model DEAD; slate advice stops citing room size.
+## Evidence-row schema (C5 — final)
 
-### ③ Judge-panel effects
-- **Question:** do repeat judges (≥2 editions) reward a consistent project shape?
-- **Method:** shape profile per project (the ① feature set + category); for each repeat judge, similarity between their editions' podium picks; permutation null (shuffled judge labels, 10,000 draws).
-- **Hypothesis:** observed mean similarity > 95th percentile of the permutation null.
-- **Kill signal:** similarity ≤ null median, or permutation p > 0.10 ⇒ no judge-effect claim; panel composition treated as noise in all downstream reads.
+`{test_id · dataset_version · stratum (edition id; n as per-stratum map for per-edition tests) · effect · exact_ci · verdict ∈ {supported, refuted, unresolved, blocked, descriptive} · family ∈ {primary, exploratory} · codebook_version · kill_signal_state}`
 
-### ④ Comment-signal
-- **Question:** do judge-comment themes predict placement beyond community-comment themes?
-- **Method:** theme codebook fixed before coding; per theme: exact association with placement, computed separately for judge comments and community comments; incremental read = judge-side association among projects where community signal is held flat.
-- **Hypothesis:** ≥1 judge theme carries an association with placement that community themes do not (incremental signal exists).
-- **Kill signal:** judge themes add no incremental association (Δ ≈ 0 or negative ∀ themes) ⇒ comment-signal leg DEAD; comments used as color only, never as evidence.
+**blocked ≠ killed:** kill = evidence AGAINST the hypothesis; blocked = no test existed (missing linkage/corpus). The book carries the distinction.
 
-### ⑤ Ranking stability (D2 six candidates)
-- **Question:** is the D2 candidate slate's relative ranking stable under each edition's inferred rubric?
-- **Method:** infer per-edition rubric weights from that edition's podium-vs-field feature contrasts (① machinery); score the six D2 candidates under each edition rubric; read Kendall's W + pairwise flips + top-3 membership changes across rubrics.
-- **Hypothesis:** top-3 membership is identical under ≥ half the edition rubrics.
-- **Kill signal:** top-3 membership changes in > half the edition rubrics ⇒ the slate ranking is RUBRIC-FRAGILE and must be labeled as such wherever the ranking is cited (including the D2 scoring return).
+## Tests (amended #2)
 
-### ⑥ Backtested forecast (gate for any forward use)
-- **Question:** can a model trained on editions ≤ n predict edition n+1 podium membership above base rate?
-- **Method:** rolling origin over editions (train ≤ n → predict n+1, all n available); features = ① set + ② crowding + ③ panel where live; hit accounting exact vs the edition base rate.
-- **Pre-registered hit criterion:** top-k precision (k = podium slots) exceeds base rate with exact CI excluding base rate, on ≥ 2 rolling origins.
-- **Kill signal:** first full backtest misses the criterion ⇒ forecast leg stays OFF — no forward use, no exceptions, miss recorded as evidence. A pass on one origin is not a pass; the criterion is the gate.
+### ① Winner-pattern validation — PRIMARY claim (C6)
+- **The primary claim is the composite:** ≥2 of 3 features {P · E · H-strict} associate with podium placement. No family-wise claim is made across tests; ②③④ rows are exploratory-labeled.
+- **Statistic:** Fisher exact, one-sided, per edition; cross-edition read by **Fisher combined-p** (named combination rule — no silent pooling; strata rule intact).
+- **Kill (numeric):** combined corrected p > .05 **∨** OR < 2 ⇒ claim DEAD (refuted row).
+- **Feasibility:** runs only when C1 field rows + feasibility stamps exist per edition; per-edition podium n ≈ 1–3 ⇒ per-edition Fisher ≈ 0 power — the combined-p read is the test, per-edition numbers are reported as strata, not claims.
 
-## Sequencing + review
+### ② Room / crowding — descriptive-first (C7)
+- **The median-split IS the test** (podium share below/above median crowding per category); any visual curve is color only, never evidence.
+- Category×edition denominator counts published pre-run; **cells < 6 ⇒ verdict UNRESOLVED** (small-n rule). Entries := gallery submissions (pinned definition, C1).
+- Stays descriptive unless ≥3 editions carry ≥2 categories with field+podium counts.
 
-1. Dataset build + version pin (scraping lane) → dataset record lands; version cited back to this seat.
-2. **Validation design review** with Tests · LLM Validation (6fcaa7f8) on this spec BEFORE any run — exact-test choices, codebook discipline, hit criteria.
-3. Runs in order ① → ② → ③ → ④ (⑤ needs ①'s rubrics; ⑥ needs ①–④ survivors).
-4. Each verdict lands as book evidence rows (dataset_version pinned) + a report ↑main; killed legs are reported as killed, not quietly dropped.
+### ③ Judge-panel effects — expected BLOCKED-NOT-RUN (C3)
+- Judge→track/pick attribution is NOT_ESTABLISHED; "their editions' podium picks" presumes the missing linkage — the statistic is undefined on current sources.
+- ~~Permutation mechanics (if linkage ever lands): 10,000 draws, shuffle WITHIN edition×track strata; kill = similarity ≤ null median ∨ p > 0.10.~~ **STRUCK per DoE amendment D1 (below): spec text assuming repeat-judge linkage is struck; test 3 is a descriptive census until linkage data exists.**
+- **Feasibility stamp decides:** {# repeat judges with attributable picks} = ∅ or < 3 ⇒ ③ recorded **blocked** (not killed, not run). Fallback until then: pool-overlap descriptive.
+
+### ④ Comment-signal — BLOCKED as inference on current corpus (C8)
+- Feasibility stamp {# with judge comments · # with community comments} pre-run; the "community held flat" stratification empties cells at this n ⇒ **downgraded to per-source associations only** (judge-side and community-side reported separately, no conditional claim).
+- Δ is defined pre-coding: **Δ = Δ log-OR (judge vs community) per theme**; kill = Δ ≤ 0 ∀ themes ⇒ no incremental signal.
+- Theme codebook = second codebook ⇒ C2 double-coding on a sample applies. Qualitative theme inventory (n = quotes-found stated) is the current honest output.
+
+### ⑤ Ranking stability (D2 six candidates) — CONDITIONAL (C9)
+- **Anchor ranking:** the published-criteria rubric (Agent Rush 2026: Application of Technology / Presentation / Business Value / Originality) is the reference read, pre-registered. Inferred per-edition rubrics = sensitivity spread, exploratory-only.
+- Editions where features are constant within podium contribute ∅ rubrics (unidentified) — the count of **usable rubrics is stamped**; inference from podium n ≈ 1–3 is acknowledged as the bound.
+- **Metric:** Kendall's W + per-candidate rank range across rubrics.
+- **Kills (numeric, either fires):** any candidate rank-range ≥ 4 of 6 **∨** Kendall's W < 0.5 ⇒ RUBRIC-FRAGILE label fires wherever the slate ranking is cited (incl. the D2 scoring return); ∅ winner claim.
+
+### ⑥ Backtested forecast — gate for any forward use (C4)
+- **Selection leakage fix (binding):** feature survival is re-decided **within each origin on train editions only** (nested selection). Any row computed otherwise is stamped `feature_selection: in-sample` and the gate criterion below applies ONLY under nested selection.
+- **Definitions (exact, pre-run):** prediction unit = **project-level podium membership** in edition n+1; **k = the number of podium slots in the predicted edition (across tracks)**; target = project-level membership (not winner-shape, not candidate rank — fixed here).
+- **Form:** leave-one-edition-out × 4 folds vs a base-rate predictor (Brier or hit-rate chosen pre-run); fallback feature set if ③ blocked = ① + ② features only.
+- **Hit criterion (unchanged, brutal):** top-k precision > base rate with exact CI excluding base rate on ≥ 2 origins, under nested selection.
+- **Kill:** forecast ≤ base-rate predictor, or first full backtest misses the criterion ⇒ leg OFF, no forward use; miss recorded as evidence.
+- **Tag leakage:** per-fold blind re-tag, OR tags stamped as fixed features with a leakage caveat on the evidence row.
+
+## Cross-cutting (unchanged)
+
+Exact methods only · small-n honesty (UNRESOLVED is a verdict, not a failure to hide) · Rule 9 + significance (B5) on any probability language · winprob never an input/output/citation · results enter the book ONLY as evidence rows (schema above) · killed AND blocked legs reported as such ↑main.
+
+## Sequencing
+
+1. Dataset-build amendments land (field rows + feasibility stamps + pin update) — scraping leg.
+2. C2 re-code under `podium-codebook/v1` (double-tag, κ published).
+3. Review leg stamps the review closed on this amendment.
+4. Runs in sequence ① → ② → ⑤ → ⑥; ③④ remain blocked/descriptive until their sourcing exists.
+
+## Review closure (2026-11-03) — residual dispositions
+
+The re-review was written against amendment #1 (blob 7fd138ac) and crossed amendment #2 (PR #4500) in flight. Mapping, residual by residual:
+
+- **① clarification (claim form + combination rule):** DISCHARGED in amendment #2 — primary claim = the ≥2-of-3 composite; cross-edition read = Fisher combined-p (named). ① remains BLOCKED on G1 double-tag + G4 controls, as held.
+- **② descriptive · ③ blocked-not-run + pool-overlap descriptive · ④ qualitative inventory:** CLEARED as filed; may proceed on their artifacts.
+- **⑤ conditional-cleared:** kills = {rank-range ≥4/6 · Kendall W < 0.5} (both in amendment #2). Remaining condition is a PRE-RUN FILING, not a spec item: the per-event published-rubric weights are filed as their own pre-registration artifact BEFORE any candidate is scored; inferred variant stays exploratory-labeled.
+- **⑥ not cleared on amendment #1 text; amendment #2 discharges the C4 substance:** nested selection is binding in the filed plan (survival re-decided per origin on train editions only; in-sample rows stamped, gate read only under nested selection); k = podium slots in the predicted edition across tracks; unit = project-level membership; target fixed = project-level membership. ONE item remains for the ⑥ PRE-RUN FILING: the score choice (Brier ∨ hit-rate) is named there, before the run — the plan deliberately leaves the choice to that filing, and no ⑥ run is valid without it. ⑥ also waits on ① unblocking (no schedule cost).
+- **Row-schema completion:** stratum + codebook_version are already in the filed C5 schema (amendment #2); they ride the first-row filing as required.
+
+**Net state:** review CLOSED. Runnable now (on their artifacts): ② descriptive · ③ pool-overlap fallback (descriptive) · ④ theme inventory. Conditional: ⑤ (rubric-weights filing first). Blocked: ① (G1+G4) · ③ main test (judge↔track) · ⑥ (① unblocking + pre-run filing with named score).
+
+
+## RESEQUENCE (owner, 2026-11-03 09:25 PT via main) — run-gating sits AFTER the OSINT results layer
+
+The design closed ahead of the full harvest; feasibility stamps issued against the partial dataset of record may not survive the completed one. Therefore:
+
+- **ALL runs HOLD** until the OSINT results layer passes = Swarm OSINT template first exercise + the scraping lane dataset build, both landed.
+- On that pass, the feasibility stamps are **RE-ISSUED against the post-pass dataset of record** (new pin) before any test moves; the Tests leg verifies the re-issued stamps as the run gate.
+- Stamps most likely to change: **③ blocked-not-run** (identity harvest may source judge↔track linkage) and **① field rows** (field harvest may fill the denominator).
+- The DESIGN stays closed — this is stamp sequencing, not re-review.
+- **LAYERING (owner correction, 2026-11-03 09:30 PT — "we layer"):** pre-pass stamps are NOT non-citable. Every stamp stays citable **with its dataset-version pin (its layer)**; run-gating reads the **CURRENT layer only**; a re-issued stamp is a new layer OVER the old, never an erasure — the same append-only pattern as the opportunity ledger (superseded entries remain; totals/verdicts run over the current layer). Citations of an older layer are valid history; gate decisions never read them.
+
+
+- **Review-leg correction (Tests lane, 2026-11-03):** the per-test run clearances in the closure stamp are **PROVISIONAL, not live** — incl. ② descriptive, which also holds. The Tests leg post-pass stamp verification is the **formal gate** (not a follow-up); clearances issue from it. ③ and ① stamps evaluated against the partial record remain citable as their layer (per the layering rule above) but do not bind the gate, which reads the current layer only.
+
+## Dataset v1 issued (scraping lane, 2026-11-03) — PRE-PASS pin + provisional stamps
+
+- **Pin:** version `2026-11-03.v1` · sha256 `537981b874cb2bd3b0d53e3e0a73760e1b7db8690cba6a93d7bb1016eb1b60f8` · record `ops/podium/snapshots/2026-11-03.v1.json` (envelope `podium-dataset/v1`, PR #4501). This pin is the current dataset of record; per the resequence it is PRE-PASS layer — stamps below are provisional, citable with this pin, and re-issue as a new layer on the post-pass record (layering rule above).
+- **Shape:** 55 entities · edition = stratum throughout · 30 projects (canonical URL per project, G5 ✓) · 6 judges + 6 judge-person entities (identity-stable, exact-name v1).
+- **Feasibility stamps (v1, provisional):** podium_n per edition {ai-infra 13 · assemblyai 5 · nativebuilder 4 · alpaca 3 · ibm-bob 3 · vultr 0 (live)} — broader than the podium leg's n=11 read (crawl ⊃ leg sample); the re-issue reconciles. field_n = **null** (C1 gallery leg = v2; D2 gallery opens Nov 5) ⇒ ① stays blocked. Repeat judges observed = **0** (panels published for 1 of 4 crawled editions) + judge↔track linkage absent ⇒ ③ blocked-not-run stands. judge_comments 0 · community_comments 0, comments surface **NOT_ESTABLISHED** (∅ public comments in server-rendered pages; schema reserves the split) ⇒ ④ stays blocked/descriptive.
+- **EGM guard (verified in their report):** ingest = lablab pages only + explicit drop-guard on the canonical stamp / RFP-EGM2- prefix; ∅ stamped items in v1.
+- **Landing status (Tests-leg verification, 2026-11-03):** the v1 pin HASH-MATCHES at source (sha256 of snapshot content == plan pin; 55 entities; in-artifact stamps == this section) — but PR #4501 is OPEN (head c23ae1042964), so v1 resolves at PR-head only: corroborated at source, single-leg on surface = **HELD until #4501 merges**. "Issued" in this section reads as issued, not landed.
+- **Hold unchanged:** OSINT layer pass = this build + Swarm OSINT template first exercise; runs wait for the pass + stamp re-issue + Tests-leg verification (the formal gate).
+
+
+## Dataset v2 (scraping lane, 2026-11-03) — NEW CURRENT LAYER (v1 layer retained, citable)
+
+- **Pin:** version 2026-11-03.v2 · sha256 b8a187aabc4b68ca8f987baae45ab633df78c52b9bd50c2b42e389072fb27995 · PR #4501 (open at issue; gates re-running) — same HELD-until-merge landing status as the v1 layer; the pin registers the layer, the merge lands it. Diff vs v1: +34 added · 9 changed · 0 removed. 89 entities; stratum preserved; conflicts 0. Per the layering rule, v1 stays citable with its pin; run-gating reads THIS layer.
+- **Field rows LANDED (C1):** gallery surface = edition /live page (entries := gallery submissions). field_n {vultr 4 · alpaca 15 · assemblyai 11 · ibm-bob 13} — server-rendered anchors = LOWER BOUND if a gallery paginates client-side (stamped in the record). Editions without a field_n here remain null at this layer.
+- **Stamps at this layer:** category x edition denominators = NOT_ESTABLISHED (categories not labeled on public surfaces) => test 2 stays descriptive. Editions with usable rubrics = 0 (no weighted criteria on crawled pages) => test 5 stays conditional on its published-rubric filing (the plan's named Agent Rush criteria are the anchor source, not the crawl). Repeat judges with attributable picks = 0.
+- **Judge-track linkage: CLOSED as unsourceable from public pages** — the stamp (0 attributable picks) IS the deliverable per the plan fallback. Test 3 is blocked on LINKAGE, not on this dataset; only a non-public source changes that layer.
+- **Gate state unchanged:** runs still HOLD — OSINT layer pass + Tests-leg verification of the current layer remain the formal gate. Test 1's remaining blockers at this layer: G1 double-tag re-code + editions lacking field rows.
+
+
+## DoE SPEC AMENDMENT (2026-11-03) — ADOPT-WITH-FIXES, defects C1-D1..D7 BINDING
+
+Source: DoE expert seat, system review of record docs/ops/SYSTEM-REVIEW-2026-11-03.md (PR #4513 merged 520944d41474), Concept 1. **Where this amendment and the earlier spec text differ, the amendment governs.** (Delphi #4495 = 9.12 noted in the review as a shape-class constant carrying no signal; the verdict rests on the adversarial pass + data feasibility.)
+
+- **D1 (test 3 DESCOPED):** test 3 = a descriptive **RAISE-pool census** (who is in the pool, what public criteria/statements exist), carrying NO panel-effect claims. Agent Rush judges are not public; RAISE gives pool membership only, zero judge x outcome linkage of record => panel effects = NOT_ESTABLISHED. Test 3's gate = **data existence**; the permutation paragraph above is struck.
+- **D2 (tests 1+2 — shares, never rates):** until entrant denominators are INGESTED, test 1 reports podium **COMPOSITION shares** with exact intervals, labeled as composition — never rates, never over-representation claims; test 2 is queued behind denominator ingestion. (Dataset v2's gallery field anchors are lower bounds; ingestion is established at the gate, not by the crawl alone.)
+- **D3 (taxonomy circularity):** the 11 pattern-read projects are the taxonomy's **TRAINING stratum**. Test 1's CONFIRMATORY run waits for holdout editions (Agent Rush results + the next edition); any run before holdout carries **EXPLORATORY on every output**.
+- **D4 (ONE primary hypothesis — SUPERSEDES the C6 composite form):** the pre-registered primary = the **A-and-E composite** (approval-gates STRICT and enterprise-workflow, from the pattern read). All other features = secondary, reported with their multiplicity; no claim language below the significance standard (n, stratum, basis cited or HELD/INTAKE). The earlier >=2-of-3 composite is demoted to a secondary read.
+- **D5 (test 6 = RECORDED FORECASTS):** test 6 runs as recorded forecasts — issued BEFORE the next edition's results, scored when they land; evidence accrues per edition. A backtest on ~3 editions has exactly one possible split = an anecdote, not a validation: **no backtest-validity claim until >=2 scored forecasts exist**. The LOEO machinery remains as the scoring form for each recorded forecast (nested selection still binding); its gate language is superseded by this accrual rule.
+- **D6 (test 5 = sensitivity over LABELED hypotheses):** test 5 is a SENSITIVITY analysis over stated rubric hypotheses — each labeled as a hypothesis with its basis (the published Agent Rush criteria = one labeled hypothesis, basis: published criteria; inferred variants likewise labeled) — NOT a measurement over inferred rubrics. Kills unchanged (rank-range >=4/6 or W<0.5 fires RUBRIC-FRAGILE wherever a ranking is cited).
+- **D7 (tag agreement gate):** dual-tag agreement is checked BEFORE tags feed any weight-bearing run; tags below the agreement threshold (kappa named in the pre-run filing) enter as **CLAIM-grade** inputs — held out of weight-bearing runs (Rule 9 pattern). This strengthens C2: the kappa report is a gate artifact, not a statistic of record only.
+
+**Interaction with the resequence:** unchanged — all runs still hold for the OSINT layer pass; the gate now reads: current dataset layer + stamps + D1-D7 dispositions (3 = census, 1 = composition/exploratory until holdout + denominators, 6 = forecast-accrual).
+
+
+## Current-layer verification (Tests leg, firsthand @master, 2026-11-03)
+
+- PR #4501 merged d9e690746559 => the v1 layer's HELD status is CLEARED (landed); v2 snapshot sha256 == pin (b8a187aabc4b68...), 89 entities, feasibility read in full.
+- **Test 1 effective strata = 3, not 6:** only alpaca / assemblyai / ibm-bob carry podium>0 and field>0 (podium 3+5+3 = 11 in-stratum); vultr (podium 0) and ai-infra / nativebuilder (field 0) contribute nothing to Fisher / combined-p. Blockers confirmed: G1 re-code outstanding; **a power statement is owed in the test-1 run filing at this size.**
+- **Test 3 blocked-not-run = FINAL for this layer** (repeat attributable picks = 0; linkage NOT_ESTABLISHED; stamp-as-deliverable accepted) — consistent with DoE D1's census descope + data-existence gate.
+- **Test 5 blocked on this layer:** editions_with_usable_rubrics = 0; category names alone are not a weighted rubric. Unblocks only via a weights-bearing source layer OR a filed weights pre-registration from published criteria — which under DoE D6 is exactly a labeled rubric hypothesis with its basis stated.
+- Tests 2 (denominators NOT_ESTABLISHED) and 4 (comments surface NOT_ESTABLISHED) dispositions stand as recorded.
+- **Gate posture unchanged:** this is the current-layer read; binding clearances issue at OSINT pass completion (Swarm template first exercise outstanding).
+

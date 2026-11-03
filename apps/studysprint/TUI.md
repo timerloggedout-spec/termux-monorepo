@@ -9,12 +9,18 @@ foundation road {core v0.3.0 ⇒ v0.4.0 ⇒ v1.0.0}. Surface version =
 `TUI_VERSION` in `tui.py` — currently **0.1.0** — with its own
 releases.
 
-## Run
+## Install + run (one line)
+
+Copy-paste install — clone, dependencies, launch:
 
 ```
-pip install textual          # plus the core requirements (fsrs, genanki)
-python3 tui.py
+git clone https://github.com/timerloggedout-spec/studysprint.git && cd studysprint && pip install textual fsrs genanki && python3 tui.py
 ```
+
+(Verified verbatim from a clean environment 2026-11-03: fresh clone
+→ deps → the TUI boots to the Today screen. Already cloned? Just
+`pip install textual fsrs genanki && python3 tui.py` from the repo
+root.)
 
 Screens (tabs): **Today** (today's sessions + one-tap check-in) ·
 **Plan / Receipt** (the plan and the trust receipt — evidence one

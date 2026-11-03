@@ -105,6 +105,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet ApkRelease | `Porter · ApkRelease` | — (actor per AppID provisioning record) | aspect the Carrier; queued alt Charon, flagged (below) |
 | Termux Fleet RepoStory | `Chronicler · RepoStory` | `termux-fleet-repostory[bot]` | aspect the Annals; queued alt Clio (below) |
 | Termux Fleet DoE | `Factorial · DoE` | `termux-fleet-doe[bot]` | aspect the Design; queued alt Mendel (below) |
+| Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | `termux-fleet-ugreenskills[bot]` | aspect the Well; queued alt Keeper (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -230,6 +231,38 @@ historical queued alt).
 
 Collision check at issuance: `Factorial`, `Mendel` and the
 Design appear nowhere in this roster or in the registration
+registry.
+
+**UgreenSkills issuance (2026-11-03, registry lane; C12 =
+UGREEN Hackathon 2026 entry AppID, provisioning in parallel on
+the AppID lane under the build-start rule — per-entry pattern,
+RepoStory precedent).** The actor keeps the entry's
+skill-store on the NAS (UGOS skills package; contents / pull
+requests / issues write on the entry repo), so its name is
+the mythic keeper of stored memory — the fleet's memory kept
+at the well — with a plain-register queued alt, so the family
+itself holds the pool's balance (mythic lead, plain alt).
+
+- canonical: `Mimir` (paired display `Mimir · UgreenSkills`)
+- aspect: the Well
+- queued alt: `Keeper` (mark `Keep3r`) — the plain name for
+  the same keeping work; draws only on a registry-lane
+  bounce/rename decision
+- leet marks: `M1mir` (single substitution, ranks first) >
+  `Mim1r` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical
+  `termux-fleet-ugreenskills` probed free by the AppID lane);
+  ranked bounce forms if ever needed: `m1mir` > `mim1r`,
+  returning to the registry lane
+- normalized form: UgreenSkills — `Termux Fleet UgreenSkills`
+  / `termux-fleet-ugreenskills[bot]`; install scope =
+  timerloggedout-spec/ugreen-nas-skills ONLY, per-entry
+  pattern (provisioning record: AppID lane)
+
+Considered and not chosen: `Vault` (plain candidate) —
+collides conceptually with the fleet's Secure Vault.
+Collision check at issuance: `Mimir`, `Keeper` and the Well
+appear nowhere in this roster or in the registration
 registry.
 
 ## Identity taxonomy and moniker versioning (adopted, 2026-11-01)

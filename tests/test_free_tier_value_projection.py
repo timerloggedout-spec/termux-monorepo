@@ -61,7 +61,7 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             }])
             self.assertEqual(data["sessions"], [])
             self.assertEqual(data["coverage"][0]["tokens_in"], 12)
-            self.assertIn("not_established", data["coverage"][0]["evidence_status"])
+            self.assertEqual(data["coverage"][0]["evidence_status"], "missing_call_identity")
             self.assertEqual(data["source_manifest"]["withheld_count"], 1)
 
     def test_exact_decimal_paid_equivalent_and_cost_separation(self):

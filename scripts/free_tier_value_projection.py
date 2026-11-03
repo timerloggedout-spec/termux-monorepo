@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP, localcontext
 from pathlib import Path
@@ -125,7 +126,11 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
             Decimal(row["tokens_in"]) * input_rate
             + Decimal(row["tokens_out"]) * output_rate
         ) / Decimal(1_000_000)
-        paid_equivalent = paid_equivalent.quantize(VALUE_QUANTUM, rounding=ROUND_HALF_UP)
+        paid_equivalent_exact = format(paid_equivalent, "f")
+        paid_equivalent_display = paid_equivalent.quantize(VALUE_QUANTUM, rounding=ROUND_HALF_UP)
+        paid_equivalent_number = float(paid_equivalent_display)
+        if not math.isfinite(paid_equivalent_number):
+            return None
 
     return {
         "session_label": row.get("session_label") or row["call_uid"],
@@ -142,7 +147,8 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
         "publication_status": row["publication_status"],
         "billing_status": row["billing_status"],
         "cost_usd": actual_cost,
-        "paid_equivalent_usd": float(paid_equivalent),
+        "paid_equivalent_usd": paid_equivalent_number,
+        "paid_equivalent_usd_exact": paid_equivalent_exact,
         "pricing_id": row["pricing_id"],
         "source_sha": row.get("source_sha") or row.get("head_sha"),
         "source_run_attempt": f"{row['run_id']}:{row['run_attempt']}",
@@ -207,8 +213,23 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
             "model_version_status": "NOT_ESTABLISHED" if not row.get("model_version_pin") else "ESTABLISHED",
         })
 
+    # Preserve exact per-call values for reducers and round the aggregate once.
+    # The numeric fields remain presentation-friendly compatibility values.
+    with localcontext() as ctx:
+        ctx.prec = 50
+        exact_total = sum((Decimal(s["paid_equivalent_usd_exact"]) for s in sessions), Decimal(0))
+        exact_total_text = format(exact_total, "f")
+        rounded_total = exact_total.quantize(VALUE_QUANTUM, rounding=ROUND_HALF_UP)
     board["sessions"] = sessions
     board["coverage"] = coverage
+    board["totals"] = {
+        "published_session_count": len(sessions),
+        "input_tokens": sum(s["input_tokens"] for s in sessions),
+        "output_tokens": sum(s["output_tokens"] for s in sessions),
+        "paid_equivalent_usd": float(rounded_total),
+        "paid_equivalent_usd_exact": exact_total_text,
+        "rounding": "ROUND_HALF_UP to 10 decimal USD places after exact aggregation",
+    }
     board["generated_at"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     board["source_sha"] = source_sha
     board["source_manifest"] = {

@@ -76,7 +76,17 @@ def stranded_estimate(used, limit, winning_forecast):
     return max(limit - used - winning_forecast, 0)
 
 
-def plan(registry, allocations, readings, countdowns=None, now=None):
+def provider_slug(provider):
+    out = []
+    for ch in str(provider).strip().lower():
+        if ch in " (":
+            break
+        out.append(ch)
+    return "".join(out) or "unknown"
+
+
+def plan(registry, allocations, readings, countdowns=None, now=None,
+         self_counts=None):
     now = now or datetime.now(timezone.utc)
     reg = {s["id"]: s for s in registry["services"]}
     read = {r["resource_id"]: r for r in readings.get("readings", [])}
@@ -133,6 +143,58 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
                 "priority": order.get(a["focus"], 99),
                 "flow_per_min": (flow * a["pct"] / 100.0) if flow is not None else None,
             })
+        # Self-count layer (owner ruling 2026-11-03): tallies of the
+        # fleet's own recorded events (ops/quota/self-counts.json)
+        # govern where provider readings are null. The matching flag
+        # is a labeled HEURISTIC above the counts - it is derived
+        # from them, never a reading, and revises as counts accrue.
+        pool_self_counts, pool_matching = None, {
+            "layer": "heuristic", "flag": "no-data",
+            "rule": "v1: self-counted activity vs lane-slice claims"}
+        if self_counts:
+            totals = {"dispatches": 0, "usage_stamps": 0,
+                      "wall_events": 0}
+            covered = False
+            provs = self_counts.get("providers") or {}
+            buckets = self_counts.get("buckets") or {}
+            svc_counts = self_counts.get("services") or {}
+            for s in services:
+                pc = provs.get(provider_slug(s.get("provider")))
+                if pc is not None:
+                    covered = True
+                    totals["dispatches"] += pc.get("dispatches", 0)
+                    totals["usage_stamps"] += pc.get(
+                        "usage_stamps", 0)
+                bc = buckets.get(s["id"])
+                if bc is not None:
+                    covered = True
+                    totals["wall_events"] += bc.get(
+                        "wall_events", 0)
+                if svc_counts.get(s["id"]):
+                    covered = True
+            pool_self_counts = {
+                "method": "self-count",
+                "source": "ops/quota/self-counts.json",
+                "tallied_at": self_counts.get("generated_at"),
+                "totals": totals}
+            activity = any(totals.values())
+            claimed = bool(pool.get("slices"))
+            if not covered:
+                flag = "no-data"
+            elif activity and claimed:
+                flag = "matched"
+            elif activity:
+                flag = "unmatched-activity"
+            elif claimed:
+                flag = "claimed-no-activity"
+            else:
+                flag = "unmatched-entitlement"
+            pool_matching = {
+                "layer": "heuristic", "flag": flag,
+                "rule": "v1: self-counted activity vs lane-slice "
+                        "claims",
+                "activity_observed": activity,
+                "slice_claimed": claimed}
         pools_out.append({
             "id": pool["id"], "class": cls,
             "services": pool["services"],
@@ -146,6 +208,8 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
             # focus slices above.
             "lane_slices": pool.get("slices", []),
             "stranded": stranded, "release_to": release_to,
+            "self_counts": pool_self_counts,
+            "matching": pool_matching,
         })
     # Standing AppID slice assignment (planner route, settled with
     # cadence + repo-replay 2026-10-30): the repo-replay project draws
@@ -189,8 +253,16 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
         "registry_records": len(reg),
         "pools": pools_out,
         "triggers_fired": triggers,
+        "self_counts": ({"source": "ops/quota/self-counts.json",
+                         "generated_at": self_counts.get("generated_at"),
+                         "method": "self-count"}
+                        if self_counts else None),
         "rules": "Pacing/stranded per docs/ops/QUOTA-ALLOCATION-PLANNING.md; "
-                 "stranded null = NOT ESTABLISHED (no numeric reading), never invented.",
+                 "stranded null = NOT ESTABLISHED (no numeric reading), never invented. "
+                 "Self-count layer (owner ruling 2026-11-03): counts are tallies of the "
+                 "fleet's own recorded events, stamped method=self-count, and govern "
+                 "where provider readings are null; matching flags are a labeled "
+                 "heuristic layer above the counts.",
     }
 
 
@@ -200,6 +272,8 @@ def main(argv=None):
     ap.add_argument("--allocations", default=str(ROOT / "ops/quota/allocations.json"))
     ap.add_argument("--readings", default=str(ROOT / "docs/ops/generated/quota-status.json"))
     ap.add_argument("--countdowns", default=None)
+    ap.add_argument("--self-counts",
+                    default=str(ROOT / "ops/quota/self-counts.json"))
     ap.add_argument("--out", default=str(ROOT / "ops/quota/allocation-plan.json"))
     ap.add_argument("--check", action="store_true",
                     help="exit 1 if the committed plan differs from a fresh computation (ignoring generated_at)")
@@ -210,7 +284,11 @@ def main(argv=None):
     countdowns = json.loads(Path(a.countdowns).read_text()) if a.countdowns else None
     if isinstance(countdowns, dict):
         countdowns = countdowns.get("countdowns")
-    result = plan(registry, allocations, readings, countdowns)
+    self_counts = None
+    if a.self_counts and Path(a.self_counts).exists():
+        self_counts = json.loads(Path(a.self_counts).read_text())
+    result = plan(registry, allocations, readings, countdowns,
+                  self_counts=self_counts)
     if a.check:
         try:
             committed = json.loads(Path(a.out).read_text())

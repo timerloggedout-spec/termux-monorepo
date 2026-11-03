@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T09:42:03.287900+00:00",
+ "census_at_utc": "2026-11-03T10:47:07.628828+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3193,
+  "total": 3209,
   "stale": 1028,
   "orphan_no_assoc_PR": 352,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3615,
-  "open": 203,
+  "total": 3640,
+  "open": 204,
   "open_draft": 33,
-  "open_draft_share": 0.1626,
+  "open_draft_share": 0.1618,
   "drafts": [
    {
     "number": 386,
@@ -34,7 +34,7 @@
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 47.0
+    "age_days": 47.1
    },
    {
     "number": 740,
@@ -64,7 +64,7 @@
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 41.2
+    "age_days": 41.3
    },
    {
     "number": 829,
@@ -88,13 +88,13 @@
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 14.1
+    "age_days": 14.2
    },
    {
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 12.0
+    "age_days": 12.1
    },
    {
     "number": 1612,
@@ -106,19 +106,19 @@
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 10.1
+    "age_days": 10.2
    },
    {
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 7.4
+    "age_days": 7.5
    },
    {
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 4.0
+    "age_days": 4.1
    },
    {
     "number": 2578,
@@ -160,7 +160,7 @@
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 1.5
+    "age_days": 1.6
    },
    {
     "number": 3969,
@@ -172,7 +172,7 @@
     "number": 4007,
     "title": "Wire invocation observations into Free-Tier Value evidence projection",
     "created_at": "2026-11-02T23:43:35Z",
-    "age_days": 0.4
+    "age_days": 0.5
    },
    {
     "number": 4011,
@@ -196,7 +196,7 @@
     "number": 4020,
     "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
     "created_at": "2026-11-03T02:17:58Z",
-    "age_days": 0.3
+    "age_days": 0.4
    },
    {
     "number": 4023,
@@ -223,23 +223,23 @@
     "age_days": 0.1
    }
   ],
-  "merged": 2935,
+  "merged": 2959,
   "closed_unmerged": 477,
-  "open_no_closing_ref": 197,
-  "open_unlinked_issue_target": 164,
-  "open_unlinked_any_ref": 138,
-  "merged_no_closing_ref": 2906,
-  "merged_unlinked_issue_target": 1678,
-  "merged_unlinked_any_ref": 976,
+  "open_no_closing_ref": 198,
+  "open_unlinked_issue_target": 165,
+  "open_unlinked_any_ref": 139,
+  "merged_no_closing_ref": 2930,
+  "merged_unlinked_issue_target": 1684,
+  "merged_unlinked_any_ref": 981,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2857,
+  "merged_head_branch_residual_name_match": 2881,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 527,
-  "open": 432,
-  "open_surface_unlinked": 180,
-  "open_unlinked_strict": 161
+  "total": 532,
+  "open": 434,
+  "open_surface_unlinked": 178,
+  "open_unlinked_strict": 159
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -846,6 +846,14 @@
    [
     1474,
     3698
+   ],
+   [
+    1474,
+    4110
+   ],
+   [
+    1474,
+    4156
    ],
    [
     1520,
@@ -1710,6 +1718,50 @@
    [
     4113,
     4110
+   ],
+   [
+    4157,
+    4156
+   ],
+   [
+    4158,
+    4156
+   ],
+   [
+    4159,
+    4156
+   ],
+   [
+    4164,
+    3577
+   ],
+   [
+    4164,
+    4077
+   ],
+   [
+    4164,
+    4092
+   ],
+   [
+    4164,
+    4093
+   ],
+   [
+    4164,
+    4095
+   ],
+   [
+    4164,
+    4111
+   ],
+   [
+    4164,
+    4112
+   ],
+   [
+    4164,
+    4113
    ]
   ],
   "issue_issue_mutual_pairs": 3,

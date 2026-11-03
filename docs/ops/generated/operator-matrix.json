@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 433,
+    "open_issues": 432,
     "open_prs": 206,
     "pr_classes": {
       "CANDIDATE": 106,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 94,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 93,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 236,
+      "issues": 235,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T11:08:42Z",
+  "generated_at": "2026-11-03T11:10:39Z",
   "issues_unlabelled": [
     308,
     388,
@@ -100,7 +100,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "9a87fd0ffc"
+    "sha": "04146937f1"
   },
   "prs": [
     {
@@ -186,6 +186,20 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4b35496c64",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4194,
+      "title": "feat(studysprint): state recall + adaptive hardening (RFP-D1-6 \u2465) \u2014 v0.5.0 batch 3/3 [#4159]",
+      "updated_at": "2026-11-03T11:09:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -2859,12 +2873,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "c0fa4c0777",
+      "head_sha": "b7fb5f6d80",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T10:54:47Z"
+      "updated_at": "2026-11-03T11:10:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2977,20 +2991,6 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "4b35496c64",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4194,
-      "title": "feat(studysprint): state recall + adaptive hardening (RFP-D1-6 \u2465) \u2014 v0.5.0 batch 3/3 [#4159]",
-      "updated_at": "2026-11-03T11:08:40Z"
     }
   ],
   "schema": "operator-matrix/v1",

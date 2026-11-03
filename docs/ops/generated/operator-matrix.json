@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 514,
-    "open_prs": 230,
+    "open_issues": 517,
+    "open_prs": 234,
     "pr_classes": {
-      "CANDIDATE": 112,
+      "CANDIDATE": 114,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 108,
+      "NEED_EVIDENCE": 110,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 281,
+      "issues": 284,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 228,
+      "prs": 232,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T18:08:03Z",
+  "generated_at": "2026-11-03T18:35:13Z",
   "issues_unlabelled": [
     308,
     388,
@@ -147,10 +147,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "db2a5675c5"
+    "sha": "ba27a45990"
   },
   "prs": [
     {
@@ -230,20 +230,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f42bdacfe3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T18:04:53Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -292,6 +278,20 @@
       "number": 4516,
       "title": "feat(schema): integration 5 \u2014 schema_version discipline, state stamped end-to-end (#4470)",
       "updated_at": "2026-11-03T18:01:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b7306c42b9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4521,
+      "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
+      "updated_at": "2026-11-03T18:12:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1859,12 +1859,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "210a78aca4",
+      "head_sha": "adaf74d40d",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4497,
-      "title": "recruitment: podium identity layer \u2014 judges + linkage gap map (2026-11-03)",
-      "updated_at": "2026-11-03T17:39:01Z"
+      "number": 4523,
+      "title": "docs(research): podium dataset & test systems \u2014 swarm research record",
+      "updated_at": "2026-11-03T18:23:42Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "dee53f6f3e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4526,
+      "title": "docs(osint): OSINT dispatch template + D2 worked example",
+      "updated_at": "2026-11-03T18:33:02Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ae32ae453b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4527,
+      "title": "recruitment: OSINT template acceptance run \u2014 D2 legs re-run + diff vs #4484/#4497",
+      "updated_at": "2026-11-03T18:25:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2405,12 +2433,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "1d74d1125a",
+      "head_sha": "8c39eaa502",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T17:49:21Z"
+      "updated_at": "2026-11-03T18:14:50Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "cdd79afdb7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T18:08:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3049,12 +3091,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d92880bfdf",
+      "head_sha": "87fd21c58e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T17:51:30Z"
+      "updated_at": "2026-11-03T18:19:25Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3063,12 +3105,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "e270053cf1",
+      "head_sha": "ceeb0afe46",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T18:04:39Z"
+      "updated_at": "2026-11-03T18:29:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3214,6 +3256,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "6d35b6c1a2",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4497,
+      "title": "recruitment: podium identity layer \u2014 judges + linkage gap map (2026-11-03)",
+      "updated_at": "2026-11-03T18:17:37Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3284,20 +3340,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b7306c42b9",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4521,
-      "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
-      "updated_at": "2026-11-03T18:07:11Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3306,49 +3348,7 @@
       "mergeable_state": "unknown",
       "number": 4522,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T17:48:24Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "adaf74d40d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4523,
-      "title": "docs(research): podium dataset & test systems \u2014 swarm research record",
-      "updated_at": "2026-11-03T18:00:55Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "dee53f6f3e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4526,
-      "title": "docs(osint): OSINT dispatch template + D2 worked example",
-      "updated_at": "2026-11-03T18:07:09Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "ae32ae453b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4527,
-      "title": "recruitment: OSINT template acceptance run \u2014 D2 legs re-run + diff vs #4484/#4497",
-      "updated_at": "2026-11-03T18:03:45Z"
+      "updated_at": "2026-11-03T18:14:35Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3359,10 +3359,10 @@
       },
       "head_sha": "683e746b1a",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4528,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-11-03T18:05:01Z"
+      "updated_at": "2026-11-03T18:26:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3373,10 +3373,66 @@
       },
       "head_sha": "d642569e4b",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4529,
       "title": "recruitment: podium dataset of record v1 \u2014 field rows (C1) + judge coverage stamps",
-      "updated_at": "2026-11-03T18:06:06Z"
+      "updated_at": "2026-11-03T18:26:19Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "6b395fd6c0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4533,
+      "title": "feat(doe): webApp variant B \u2014 doctrine-stripped chrome, same state, panel record (#4478)",
+      "updated_at": "2026-11-03T18:18:33Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "f1951f6ecb",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4539,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T18:26:09Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "e2d3233bdf",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4542,
+      "title": "spec(strands-aws): AWS schema set for the Strands production span (#4537)",
+      "updated_at": "2026-11-03T18:34:16Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "cdfe816c2d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4543,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T18:30:37Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -26,6 +26,7 @@
   .badge.open{border-color:var(--gold);color:var(--gold)} .dim{color:var(--muted)}
   .cd-when{font-size:13px;color:var(--muted)}
   .prizes{margin-top:.55rem;border-top:1px solid var(--line);padding-top:.45rem}
+  .submission{margin-top:.55rem;border-top:1px solid var(--line);padding-top:.45rem}
   .pz-pool{margin:.25rem 0;font-weight:600}
   .pz-ne{margin:.25rem 0;color:var(--gold);font-weight:700;letter-spacing:.02em}
   .pz-tiers{margin:.25rem 0;padding-left:17px}
@@ -185,6 +186,13 @@ function prizesHTML(e){
   if(p&&p.tiers&&p.tiers.length) h+='<ul class="pz-tiers">'+p.tiers.map(t=>'<li><strong>'+esc(t.place)+'</strong> \u2014 '+esc(t.award)+(t.source_url?' <a href="'+esc(t.source_url)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join("")+'</ul>';
   return h+'</div>';
 }
+function submissionHTML(e){
+  const s=e.submission; if(!s) return "";
+  let h='<div class="submission"><span class="badge ok">'+esc(s.state||"SUBMITTED")+'</span>';
+  if(s.at) h+=' <span class="dim">'+esc(fmtInstant(s.at))+'</span>';
+  if(s.confirmation_ref) h+='<br><a href="'+esc(s.confirmation_ref)+'" target="_blank" rel="noopener">Confirmation</a>';
+  return h+'</div>';
+}
 let ENTRIES=[];
 function render(){
   $("cards").innerHTML=ENTRIES.map(e=>
@@ -195,6 +203,7 @@ function render(){
     '<div class="cd-value" data-role="value"></div>'+
     '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
     prizesHTML(e)+
+    submissionHTML(e)+
     '</div>').join("");
   renderGantt();
   renderLanes();

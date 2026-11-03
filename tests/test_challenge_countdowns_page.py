@@ -87,3 +87,39 @@ def test_prizes_block_rendered_never_omitted():
             assert pz["tiers"] or pz["pool"]
         for tier in pz["tiers"]:
             assert tier["place"] and tier["award"]
+
+def test_submission_render_v12():
+    """Feed v1.2: a non-null submission renders state + instant + confirmation
+    link on the entry card; null (or absent) renders nothing."""
+    import subprocess
+    import tempfile
+    html = _page()
+    assert "function submissionHTML(e)" in html
+    assert "submissionHTML(e)+" in html, "render() must append the submission block"
+    def grab(pat):
+        m = re.search(pat, html)
+        assert m, pat
+        return m.group(0)
+    esc_line = grab(r"const esc=[^\n]*")
+    pt_line = grab(r"const PT=[^\n]*")
+    fmt_line = grab(r"function fmtInstant[^\n]*")
+    fn = grab(r"function submissionHTML\(e\)\{[\s\S]*?\n\}")
+    harness = esc_line + "\n" + pt_line + "\n" + fmt_line + "\n" + fn + """
+const d1 = {submission: {state: "SUBMITTED", at: "2026-11-03T18:01:00Z",
+  confirmation_ref: "https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"}};
+process.stdout.write(JSON.stringify({
+  d1: submissionHTML(d1),
+  nul: submissionHTML({submission: null}),
+  absent: submissionHTML({}),
+}));"""
+    with tempfile.NamedTemporaryFile("w", suffix=".cjs", delete=False) as fh:
+        fh.write(harness)
+        path = fh.name
+    out = subprocess.run(["node", path], capture_output=True, text=True, timeout=60)
+    assert out.returncode == 0, out.stderr
+    res = json.loads(out.stdout)
+    assert "SUBMITTED" in res["d1"] and "badge ok" in res["d1"]
+    assert "Nov 3" in res["d1"], res["d1"]  # the recorded instant, PT-formatted
+    assert "https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint" in res["d1"]
+    assert res["nul"] == "" and res["absent"] == ""
+

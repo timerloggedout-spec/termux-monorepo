@@ -750,6 +750,27 @@ version and compared continuously until culling retires a version.
   nothing converts to awards or build items, refutation
   published in the pre-registration + close-out.
 
+- **sie-intake (noted 2026-11-03, UNREGISTERED)** - an
+  external ChatGPT-session audit proposes SIE (Self-
+  Improving Engine) over the SHE machinery: a closed
+  observe-experiment-evaluate-learn loop whose EXPERIMENT/
+  EVALUATE legs name DOE/MVT + AEF + independent
+  verification and whose promotion leg is evidence-gated.
+  Intake of record: ~/workspace/sie-intake/CHATGPT-AUDIT-
+  2026-11-03.md (main-held). Status: no registered
+  proposal, no Linear TER-*, NOT adopted; its
+  staging-spine strategy is an open owner ruling, outside
+  this frame. If/when it registers, its evaluation design
+  comes to DoE before any build. Frame requirements stated
+  at intake: (1) the EVALUATE leg's verifier must sit
+  OUTSIDE the loop's own promotion path (a loop that
+  scores itself reads its own shape - the EGM lesson);
+  (2) self-generated evidence enters as SELF-ASSERTED
+  (likelihood ~1) until externally corroborated
+  (bayesian-updating v0 + rule 9), and promotion - a
+  selection act - consumes posteriors under the
+  significance standard, never the loop's raw metrics.
+
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home
   `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they

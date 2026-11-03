@@ -192,6 +192,27 @@ def main() -> int:
     if not ok:
         FAILURES.append("IAM wildcards")
 
+    # the deployment artifacts: create-table + TTL shapes (§6)
+    ct = load(HERE / "deployment" / "create-table.json")
+    attrs = {a["AttributeName"]: a["AttributeType"]
+             for a in ct["AttributeDefinitions"]}
+    keys = {k["AttributeName"]: k["KeyType"] for k in ct["KeySchema"]}
+    ok = (attrs == {"pk": "S", "sk": "S"}
+          and keys == {"pk": "HASH", "sk": "RANGE"}
+          and ct["BillingMode"] == "PAY_PER_REQUEST")
+    print(("PASS " if ok else "FAIL ")
+          + "create-table artifact: pk/sk string keys, PAY_PER_REQUEST")
+    if not ok:
+        FAILURES.append("create-table shape")
+    ttl = load(HERE / "deployment" / "update-time-to-live.json")
+    ok = (ttl["TimeToLiveSpecification"]
+          == {"Enabled": True, "AttributeName": "expireAt"}
+          and ttl["TableName"] == ct["TableName"])
+    print(("PASS " if ok else "FAIL ")
+          + "TTL artifact: expireAt enabled on the same table")
+    if not ok:
+        FAILURES.append("ttl shape")
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} FAILURE(S): {FAILURES}")

@@ -1,1 +1,29 @@
-{"aws_region":"us-east-1","cost_guardrails":{"alarm":{"daily_charge_threshold_usd":10,"daily_invocations_threshold":800,"evaluation_periods":1,"metric":"invocation_count","notify_topic_name":"studysprint-prod-alarms"},"concurrency_cap":5,"daily_invocation_cap":1000,"max_tokens_per_request":4096,"window":{"ends":"2026-11-23","starts":"2026-11-09"}},"evidence_root":"/var/task/apps/studysprint","log_level":"INFO","model_id":"us.anthropic.claude-sonnet-4-5-20250929-v1:0","provider":"bedrock","runtime_host":"agentcore"}
+{
+  "aws_region": "us-east-1",
+  "cost_guardrails": {
+    "alarm": {
+      "daily_charge_threshold_usd": 10,
+      "daily_invocations_threshold": 800,
+      "evaluation_periods": 1,
+      "metric": "invocation_count",
+      "notify_topic_name": "studysprint-prod-alarms"
+    },
+    "concurrency_cap": 5,
+    "daily_invocation_cap": 1000,
+    "max_tokens_per_request": 4096,
+    "window": {
+      "ends": "2026-11-23",
+      "starts": "2026-11-09"
+    }
+  },
+  "evidence_root": "/var/task/apps/studysprint",
+  "log_level": "INFO",
+  "model_id": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+  "provider": "bedrock",
+  "runtime_host": "agentcore",
+  "storage": {
+    "table": "studysprint-agent-storage",
+    "ttl_attribute": "expireAt",
+    "offload_bucket": "studysprint-agent-offload"
+  }
+}

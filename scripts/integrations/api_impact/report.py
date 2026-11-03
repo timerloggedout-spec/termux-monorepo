@@ -134,10 +134,14 @@ def normalize_mapper_input(payload: Any, repository: str, base_sha: str, head_sh
         if payload[key] != expected:
             raise ValueError(f"{label} mismatch")
     privacy = _mapping(payload["privacy"], "privacy")
+    if privacy.keys() - {"contains_raw_prompt", "contains_secret", "redaction_applied"}:
+        raise ValueError("privacy contains unsupported fields")
     if privacy.get("contains_raw_prompt") is not False or privacy.get("contains_secret") is not False:
         raise ValueError("privacy attestation must explicitly exclude raw prompts and secrets")
 
     results = _mapping(payload["results"], "results")
+    if results.keys() != {"extraction", "classification", "impact_map"}:
+        raise ValueError("results must contain exactly extraction, classification, and impact_map")
     for name in ("extraction", "classification", "impact_map"):
         if _mapping(results.get(name), f"results.{name}").get("status") not in STAGE_STATUSES:
             raise ValueError(f"invalid {name} status")

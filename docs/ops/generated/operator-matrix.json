@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 422,
-    "open_prs": 190,
+    "open_issues": 423,
+    "open_prs": 197,
     "pr_classes": {
-      "CANDIDATE": 92,
+      "CANDIDATE": 97,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 92,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -41,7 +41,7 @@
       "unlabelled_numbers": []
     },
     "security": {
-      "issues": 11,
+      "issues": 12,
       "unlabelled_numbers": []
     },
     "temporal": {
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 17,
-      "prs": 188,
+      "prs": 195,
       "unlabelled_numbers": [
         308,
         388,
@@ -72,7 +72,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T00:24:45Z",
+  "generated_at": "2026-11-03T03:13:21Z",
   "issues_unlabelled": [
     308,
     388,
@@ -98,7 +98,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "79369417ad"
+    "sha": "cdb30d00fe"
   },
   "prs": [
     {
@@ -127,7 +127,7 @@
       "mergeable_state": "unstable",
       "number": 1514,
       "title": "feat(antigravity): isolated secondary operational pilot (#1497)",
-      "updated_at": "2026-11-01T13:38:10Z"
+      "updated_at": "2026-11-03T01:05:23Z"
     },
     {
       "class": "EXTRACT",
@@ -178,12 +178,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "72bb6e0260",
+      "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T00:23:34Z"
+      "number": 4021,
+      "title": "feat(integrations): extend governed agent toolchain portfolio",
+      "updated_at": "2026-11-03T02:27:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -967,6 +967,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "885c742400",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T02:36:05Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1182,7 +1196,7 @@
       "mergeable_state": "unknown",
       "number": 2907,
       "title": "fix: scope free-tier opportunity cost to repo work",
-      "updated_at": "2026-11-01T20:35:02Z"
+      "updated_at": "2026-11-03T03:10:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -1261,20 +1275,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "89202fe235",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3063,
-      "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
-      "updated_at": "2026-11-02T22:08:39Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "4d6928bf5b",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1294,7 +1294,7 @@
       "mergeable_state": "unknown",
       "number": 3242,
       "title": "feat(quota): harden provider consumption audit",
-      "updated_at": "2026-11-01T20:38:07Z"
+      "updated_at": "2026-11-03T03:10:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1429,20 +1429,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "887b44c6c0",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3995,
-      "title": "docs(github-apps): TEL-03 checked \u2014 emitter scheduled + mint-wired (dual-sign)",
-      "updated_at": "2026-11-02T22:08:18Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "658953af69",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1457,12 +1443,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "ac11d16016",
+      "head_sha": "8a75972a42",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4007,
       "title": "Wire invocation observations into Free-Tier Value evidence projection",
-      "updated_at": "2026-11-03T00:03:54Z"
+      "updated_at": "2026-11-03T01:35:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1477,6 +1463,90 @@
       "number": 4011,
       "title": "docs(proposals): register external agent toolchain integration portfolio",
       "updated_at": "2026-11-03T00:17:49Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "30f083a538",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4017,
+      "title": "feat(ops): map federated AppIDs and independent release lanes",
+      "updated_at": "2026-11-03T02:35:03Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a6fc20f36f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4018,
+      "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
+      "updated_at": "2026-11-03T02:28:11Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "af69c0cd66",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4019,
+      "title": "feat(api-impact): add SHA-bound API evolution review lane",
+      "updated_at": "2026-11-03T01:53:26Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bfc059bbe9",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4020,
+      "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
+      "updated_at": "2026-11-03T02:19:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "deb2d68a51",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4022,
+      "title": "docs(ops): record post-merge backfill remediation checkpoint",
+      "updated_at": "2026-11-03T03:13:15Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "779c499153",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4023,
+      "title": "docs: integrate competitive opportunities and quota reconciliation",
+      "updated_at": "2026-11-03T03:13:09Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2017,12 +2087,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "de666a8889",
+      "head_sha": "f5b7301bcf",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T00:03:05Z"
+      "updated_at": "2026-11-03T02:20:02Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2731,20 +2801,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1c350ea60e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4002,
-      "title": "viz(desk): adopt desk-feed v1.3 on the tribute tree (re-issues #3063)",
-      "updated_at": "2026-11-02T22:14:38Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "896275319a",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2759,12 +2815,54 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f721277ce1",
+      "head_sha": "2ae19e9721",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4013,
-      "title": "docs(proposals): register external agent toolchain integration portfolio",
-      "updated_at": "2026-11-03T00:19:51Z"
+      "number": 4016,
+      "title": "security(issues): gate advisory triage through deterministic intake firewall",
+      "updated_at": "2026-11-03T02:26:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "a2b71653ec",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4024,
+      "title": "feat(cert-coderoad-host): tranche prep (local trust + psql shim)",
+      "updated_at": "2026-11-03T03:12:59Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "ea6a8de14a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4025,
+      "title": "ops/moniker-census: tails-3 recount (sparkFlux U=0 via gemini-cli[bot]; DoE retry still 422)",
+      "updated_at": "2026-11-03T03:13:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "c57383166c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4026,
+      "title": "docs(ops): enumeration addendum 8 \u2014 gemini-review recon, restore-verify recommended (item 10)",
+      "updated_at": "2026-11-03T03:13:15Z"
     }
   ],
   "schema": "operator-matrix/v1",

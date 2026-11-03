@@ -132,5 +132,21 @@ class BaselineRatchet(unittest.TestCase):
             self.assertEqual(rc2, 0)
 
 
+
+class DynamicReferenceFixture(unittest.TestCase):
+    def test_runtime_generated_html_links_are_not_filesystem_paths(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            write(root, 'apps/page.html', '<a href="${GH}${esc(doc.path)}">x</a>\n<a href="\' + esc(record.url) + \'">y</a>\n<a href="missing.html">z</a>')
+            findings = dc.check_links(root)
+        self.assertEqual([f['ref'] for f in findings], ['missing.html'])
+
+    def test_compound_feed_descriptions_are_not_single_paths(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            write(root, 'apps/data/feed.json', json.dumps({'description': 'docs/a.md + scripts/b.py', 'missing': 'scripts/actually-missing.py'}))
+            findings = dc.check_feeds(root)
+        self.assertEqual([f['ref'] for f in findings], ['scripts/actually-missing.py'])
+
 if __name__ == "__main__":
     unittest.main()

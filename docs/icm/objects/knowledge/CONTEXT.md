@@ -4,6 +4,8 @@ One job: route orientation, documentation, and index questions to the owning nav
 
 ## Inputs
 
+- Federated application/AppID and release-lane map: [FEDERATED-APP-AND-RELEASE-LANE-MAP.md](../../../ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md).
+
 - Object index: [`../_index.md`](../_index.md)
 - Root navigation: [`../../../../README.md`](../../../../README.md)
 - Map contract: [`../../CONTEXT.md`](../../CONTEXT.md)

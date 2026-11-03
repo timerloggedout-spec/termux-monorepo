@@ -84,6 +84,7 @@ jobs:
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
           echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_ref=$BASE_REF" >> "$GITHUB_OUTPUT"
 
   report:
     needs: resolve-pr

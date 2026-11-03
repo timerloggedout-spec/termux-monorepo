@@ -86,6 +86,17 @@ class DeploymentAdmissionTests(unittest.TestCase):
         data["alternates"] = [lane]
         self.assertEqual(evaluate(data, now=NOW)["decision"], "BLOCK_OPTIONAL_DEPLOYMENT")
 
+    def test_malformed_workload_and_alternate_evidence_fail_closed(self):
+        data = document(); data["workload"] = []
+        self.assertEqual(evaluate(data, now=NOW)["decision"], "BLOCK_OPTIONAL_DEPLOYMENT")
+        data = document(); data["alternates"] = {"provider": "cloudflare"}
+        self.assertEqual(evaluate(data, now=NOW)["reason"], "ALTERNATE_EVIDENCE_MALFORMED")
+
+    def test_non_finite_safety_fraction_and_naive_clock_fail_closed(self):
+        data = document(); data["safety_fraction"] = float("nan")
+        self.assertEqual(evaluate(data, now=NOW)["reason"], "QUOTA_EVIDENCE_MALFORMED")
+        self.assertEqual(evaluate(document(), now=datetime(2026, 11, 2, 12, 0))["reason"], "INVALID_EVALUATION_TIME")
+
     def test_decision_never_mutates_traffic(self):
         for data in (document(), {**document(), "quota": None}):
             self.assertIs(evaluate(data, now=NOW)["traffic_mutated"], False)

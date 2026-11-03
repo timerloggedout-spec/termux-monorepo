@@ -82,6 +82,38 @@ def build(root):
                                           "series3_actions (" +
                                           s3.get("title", "") + ")"})
 
+    # Vultr legs (owner order via D2 seat, 2026-11-03): the pack's
+    # series5_vultr copy of ops/quota/vultr-usage.json. Populated
+    # legs render as USD burn series; unprovisioned legs stay
+    # explicit gap entries - present, never zero-filled.
+    s5 = usage_pack.get("series5_vultr") or {}
+    for leg_key, leg_title in (("instances", "Vultr instances"),
+                               ("serverless",
+                                "Vultr serverless inference")):
+        leg = (s5.get("legs") or {}).get(leg_key) or {}
+        pts = [{"t": p["t"], "v": p["v"]}
+               for p in leg.get("points", [])
+               if p.get("t") and p.get("v") is not None]
+        if pts:
+            service.append({
+                "key": "vultr." + leg_key,
+                "title": leg_title + " - $ burn",
+                "unit": "USD", "kind": leg.get("kind", "estimated"),
+                "metric": "usd_burn", "points": pts,
+                "provenance": "ops/quota/vultr-usage.json via "
+                              "quota-usage pack series5_vultr"})
+        else:
+            service.append({
+                "key": "vultr." + leg_key,
+                "title": leg_title + " - $ burn (gap)",
+                "unit": "USD", "kind": "gap", "metric": "usd_burn",
+                "points": [],
+                "provenance": "ops/quota/vultr-usage.json via "
+                              "quota-usage pack series5_vultr "
+                              "(explicit gap: " +
+                              str(leg.get("reason",
+                                          "not established")) + ")"})
+
     for trav in desk.get("traversals", []):
         for row in trav.get("provider_usage", []):
             u = row.get("usage") or {}
@@ -241,6 +273,7 @@ def build(root):
             "ops/quota/quota-usage.json": usage_pack.get("generated_at"),
             "ops/tracking/nested-family.json": nested.get("generated_at")},
         "sources": ["ops/quota/quota-usage.json",
+                    "ops/quota/vultr-usage.json",
                     "ops/challenge/desk-feed.json",
                     "ops/quota/allocation-plan.json",
                     "ops/quota/rate-limit-events.json",

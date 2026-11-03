@@ -81,5 +81,13 @@
  "verifiers": [
   "Qwen/Qwen3-8B",
   "meta-llama/Llama-3.1-8B-Instruct"
- ]
+ ],
+ "wallets": {
+  "cull_waterfall": "cull -> wallet balance -> pooled-buckets (promotions/incentives/bonuses); culling never destroys value; cull record names {culled_participant, wallet_balance_at_cull, pool_destination} (PRs #3747/#3748); residual stream NOT folded",
+  "keying": "instance_key \u2014 one wallet per configured instance (12), never per bare model",
+  "kind": "paper|test",
+  "ledger": "experiments/speculators/token-strategies/WALLETS.json (speculators-wallets/v1, scripts/speculators/wallets.py provision|verify)",
+  "rule": "wallet invariant, ops/agentic-gambling/lane.json wallets-participant; speculator wallets distinct from gambler class at record level",
+  "unit": "soft_quota_token (observational); genesis balance 0; no real value moves"
+ }
 }

@@ -76,6 +76,56 @@ def _results(plan, speed: dict[str, float], *,
     return lines
 
 
+def test_record_emits_experiment_records(tmp_path):
+    ev = _evaluate()
+    camp = tmp_path / "camp"
+    shutil.copytree(CAMP, camp)
+    plan = ev.build_plan(camp)
+    speed = {"baseline": 1.0, "eagle3": 1.3, "peagle": 1.6,
+             "dflash": 1.5, "dspark": 1.45, "mtp": 1.25}
+    res = tmp_path / "results.jsonl"
+    res.write_text("\n".join(_results(plan, speed)) + "\n")
+    ev.record(camp, res)
+    import jsonschema
+    schema = json.loads(
+        (ROOT / "docs/ops/corpus/EXPERIMENT.schema.json").read_text())
+    recs = list((camp / "records").glob("*.json"))
+    assert len(recs) == 48
+    for rp in recs:
+        rec = json.loads(rp.read_text())
+        jsonschema.validate(rec, schema)
+        assert rec["treatment"]["instance"]["instance_key"]
+        assert rec["metrics"]["lossless_violation"] == 0
+
+
+def test_provider_phrases_change_instance(tmp_path):
+    ev = _evaluate()
+    camp = tmp_path / "camp"
+    shutil.copytree(CAMP, camp)
+    base = ev.build_plan(camp)
+    design = json.loads((camp / "DESIGN.json").read_text())
+    design["provider_phrases"] = {"Qwen/Qwen3-8B": {
+        "prefix": "Build the Future Now. Make it so.",
+        "suffix": "Show me what you got. GB"}}
+    (camp / "DESIGN.json").write_text(json.dumps(design))
+    phrased = ev.build_plan(camp)
+    b = {r["run_id"]: r for r in base["rows"]}
+    for r in phrased["rows"]:
+        inst = r["instance"]
+        if r["factors"]["verifier"] == "Qwen/Qwen3-8B":
+            assert inst["instance_key"] != (
+                b[r["run_id"]]["instance"]["instance_key"])
+            assert "(+ provider phrases)" in (
+                inst["system_prompt"]["ref"])
+            composed = ("Build the Future Now. Make it so.\n\n"
+                        + ev.strategy_prompt(r["factors"]["strategy"])
+                        + "\n\nShow me what you got. GB")
+            assert inst["system_prompt"]["sha256"] == (
+                ev.IK.sha256_text(composed))
+        else:
+            assert inst == b[r["run_id"]]["instance"]
+
+
 def test_record_selects_fastest_qualified(tmp_path):
     ev = _evaluate()
     camp = tmp_path / "camp"

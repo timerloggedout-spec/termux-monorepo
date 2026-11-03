@@ -37,3 +37,33 @@ can be the same target.
 - **Scope.** The mandate binds COMPETITIVE frames. Outside
   them, disjoint quadrants remain lawful; the duality is
   available, not forced.
+
+## TAK — identification leg (opened + closed 2026-11-03)
+
+Referent stamped CLAIM at intake; candidates enumerated,
+internal-first:
+
+1. **The owner's initiative T.A.K. = "Taktikal Awareness
+   Kit"** — the owner's own naming (owner statement
+   2026-10-23, of record in the fleet memory: claim
+   c4e320344c9a51481f9466630512f990, quote "T.A.K.
+   (Taktikal Awareness Kit)"). VERIFIED: for a fleet-coined
+   term the owner's naming is the source of record
+   (internal-first establishment). The K-spelling is the
+   owner's and is load-bearing — it distinguishes the
+   initiative from candidate 2.
+2. The DoD **Team Awareness Kit** (ATAK family; originally
+   "Tactical Assault Kit") — a real external taxonomy with
+   the shared-picture semantics the OSINT context suggests,
+   and the plausible inspiration shape. Status: NEAR-
+   NAMESAKE, not the fleet referent. Collision watch: in
+   external/OSINT contexts "TAK" will be read as this kit;
+   fleet usage means candidate 1.
+3. No other candidate survived enumeration (no fleet
+   artifact, taxonomy, or source carries another TAK).
+
+Identification result: **fleet referent = Taktikal
+Awareness Kit (owner initiative)**. Its SCOPE — what the
+kit contains — is NOT_ESTABLISHED in the available record
+(name + ownership + date only): scope enters as INTAKE,
+never assumed from the namesake's contents.

@@ -789,7 +789,23 @@ version and compared continuously until culling retires a version.
   SWOT filing forcing single-valence classification in a
   competitive frame is MALFORMED (returned, not scored).
   Scope: competitive frames; disjoint quadrants remain
-  lawful elsewhere.
+  lawful elsewhere. LENS TEMPLATE TRIGGER landed same day
+  (docs/ops/LENS-TEMPLATE-TRIGGER.md, modeled on the EGM
+  trigger PRs #4238/#4241): lens intake runs on STANDING
+  AUTHORITY (gate correction, owner via main - the owner's
+  input is a lens's DOCTRINE, not a permission; a lens type
+  arising from fleet work self-triggers intake, CLAIM
+  status + identification leg when its referent is
+  unpinned); filings carry {lens_filing} stamps and fire by
+  class. TAK IDENTIFICATION (leg opened + closed 2026-11-03,
+  recorded in LENS-FRAME.md): fleet referent = the owner's
+  initiative T.A.K. = "Taktikal Awareness Kit" (owner's own
+  naming 2026-10-23, claim c4e320344c9a - internal-first
+  verification); the DoD Team Awareness Kit (ATAK) is a
+  NEAR-NAMESAKE, not the referent (collision watch in
+  OSINT contexts); TAK scope = NOT_ESTABLISHED (INTAKE,
+  never assumed from the namesake); TAK doctrine
+  unregistered.
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

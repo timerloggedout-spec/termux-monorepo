@@ -1,0 +1,103 @@
+name: studysprint-epub-evidence
+
+# Evidence run for the EPUB reader edition (#4472, spec #4463
+# section 6): generate the bundled course's edition from core
+# state, validate it with EpubCheck (zero errors required),
+# and render a chapter with calibre -- the checks a suite
+# cannot do for itself. Runs in Actions because a JDK is
+# provisioned there for the APK build. The artifact carries
+# the .epub, the EpubCheck report, and the chapter render;
+# the desk files them into evidence/epub/ in-tree.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to build the edition from"
+        required: false
+        default: "master"
+
+concurrency:
+  group: studysprint-epub-evidence
+  cancel-in-progress: false
+
+jobs:
+  epub-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Set up JDK 17 (for EpubCheck)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Core deps
+        run: pip install fsrs genanki
+
+      - name: Generate the bundled edition from core state
+        working-directory: apps/studysprint
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/epub-out"
+          python3 - <<'PYEOF'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, ".")
+          import tui
+          from study_sr import export_epub
+          state = tui.build_state(Path("."))
+          receipt = export_epub(
+              state["sections"],
+              Path("../../epub-out/studysprint-reader.epub"),
+              title=state["plan"].get("course") or "StudySprint course",
+              surface_version=tui.TUI_VERSION,
+              course_note="Sample course bundled with "
+                          "StudySprint (synthetic).")
+          print("receipt:", receipt)
+          PYEOF
+          ls -la "$GITHUB_WORKSPACE/epub-out"
+
+      - name: EpubCheck — zero errors required
+        run: |
+          set -euo pipefail
+          curl -sSL -o /tmp/epubcheck.zip \
+            https://github.com/w3c/epubcheck/releases/download/v5.2.1/epubcheck-5.2.1.zip
+          unzip -q /tmp/epubcheck.zip -d /tmp
+          set +e
+          java -jar /tmp/epubcheck-5.2.1/epubcheck.jar \
+            "$GITHUB_WORKSPACE/epub-out/studysprint-reader.epub" \
+            > "$GITHUB_WORKSPACE/epub-out/epubcheck.txt" 2>&1
+          rc=$?
+          set -e
+          cat "$GITHUB_WORKSPACE/epub-out/epubcheck.txt"
+          echo "epubcheck exit: $rc"
+          grep -q "No errors or warnings" \
+            "$GITHUB_WORKSPACE/epub-out/epubcheck.txt" || {
+            echo "EPUBCHECK DID NOT PASS CLEAN"; exit 1; }
+
+      - name: Render a chapter with calibre
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq calibre poppler-utils > /dev/null
+          ebook-convert "$GITHUB_WORKSPACE/epub-out/studysprint-reader.epub" \
+            "$GITHUB_WORKSPACE/epub-out/render.pdf"
+          pdftoppm -png -r 60 -f 2 -l 2 \
+            "$GITHUB_WORKSPACE/epub-out/render.pdf" \
+            "$GITHUB_WORKSPACE/epub-out/chapter"
+          mv "$GITHUB_WORKSPACE/epub-out/chapter-2.png" \
+             "$GITHUB_WORKSPACE/epub-out/chapter-render.png"
+          rm -f "$GITHUB_WORKSPACE/epub-out/render.pdf"
+          ls -la "$GITHUB_WORKSPACE/epub-out"
+
+      - name: Upload the evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: epub-evidence
+          path: epub-out/
+          if-no-files-found: warn

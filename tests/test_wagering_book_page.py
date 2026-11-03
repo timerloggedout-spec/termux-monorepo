@@ -46,7 +46,7 @@ def test_feed_shape_and_counts():
     feed = _feed()
     assert feed["schema"] == "moneyball.wagering-book/v2"
     subs = feed["subjects"]
-    assert len(subs) == feed["book"]["subjects"] == 23
+    assert len(subs) == feed["book"]["subjects"] == 26
     fams = {}
     for s in subs:
         fams[s["family"]] = fams.get(s["family"], 0) + 1
@@ -151,7 +151,7 @@ console.log(JSON.stringify({
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     res = json.loads(r.stdout.strip())
-    assert res["n"] == 23 and res["ticks"] == 7
+    assert res["n"] == 26 and res["ticks"] == 7
     assert res["d1_settle_is_wall"] and res["placement_open_ended"]
     assert res["kickoff_no_wall"] and res["d5_settle_after_wall"]
     assert res["fcc_soft"] and res["intake_state"] == "INTAKE"

@@ -1,9 +1,9 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-02T13:23:24Z",
+ "generated_at": "2026-11-03T12:37:42Z",
  "book": {
   "opened": "2026-11-02",
-  "subjects": 23
+  "subjects": 26
  },
  "horizon": {
   "start": "2026-11-02T00:00:00-08:00",
@@ -16,7 +16,8 @@
   "D4": "D4 Kiroween (form landing Nov 30, landing Dec 2, wall Dec 4 14:00 PT)",
   "D5": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
   "AMD": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
-  "FCC": "FCC L1 (baseline milestone)"
+  "FCC": "FCC L1 (baseline milestone)",
+  "C12": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)"
  },
  "forecast_layer": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) \u2014 calendar anchors are DATA ON THE SUBJECT, not a new participant class",
  "publishability_flags": [
@@ -27,13 +28,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 7,
+  "entries": 9,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@8c45e46dbcf7 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@600bfc92f43e (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -891,6 +892,111 @@
     "text": "at exam pass"
    },
    "anchors_note": "soft item: register carries A/B stages only (checkpoint Dec 5 + exam soft wall Dec 12); no D/E stages",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
+  },
+  {
+   "id": "C12-24-r1-submission",
+   "label": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
+   "group": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)",
+   "family": "C12",
+   "register_item": null,
+   "settles_by": "coordinator + C12 record",
+   "record_of_record": "coordinator + C12 record",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-15",
+    "at": "2026-11-15T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
+  },
+  {
+   "id": "C12-25-finalist-selection",
+   "label": "Finalist selection {Y/N}",
+   "group": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)",
+   "family": "C12",
+   "register_item": null,
+   "settles_by": "Devpost official",
+   "record_of_record": "Devpost official",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-21",
+    "at": "2026-11-21T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12",
+   "expectation": {
+    "quantity": "P(subject resolves Y)",
+    "prior_value": null,
+    "prior_basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+    "posterior_value": null,
+    "posterior_range": null,
+    "n_evidence": 0,
+    "n_evidence_items": 0
+   },
+   "settlement": {
+    "field": "place earned / official outcome",
+    "value": null
+   }
+  },
+  {
+   "id": "C12-26-placement",
+   "label": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}",
+   "group": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)",
+   "family": "C12",
+   "register_item": null,
+   "settles_by": "Devpost official results",
+   "record_of_record": "Devpost official results",
+   "open": "2026-11-02T00:00:00-08:00",
+   "landing_at": null,
+   "wall_at": null,
+   "wall_soft": false,
+   "final_at": null,
+   "cushions": [],
+   "knowable": {
+    "kind": "dated",
+    "text": "2026-11-30",
+    "at": "2026-11-30T23:59:00-08:00",
+    "basis": "date-only knowable = end of day PT"
+   },
+   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12",
    "expectation": {
     "quantity": "P(subject resolves Y)",
     "prior_value": null,

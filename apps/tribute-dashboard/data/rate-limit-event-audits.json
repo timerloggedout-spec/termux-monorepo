@@ -105,6 +105,23 @@
    "kind": "state-update (owner directive 2026-11-01: prioritize FIX from Audits)"
   },
   {
+   "at": "2026-11-02T07:41:54Z",
+   "auditor": "quota-specialist",
+   "events_covered": 8,
+   "findings": [
+    {
+     "event_refs": [
+      "census-2026-11-02T06:25:00Z-search-pat"
+     ],
+     "id": "F4",
+     "state": "machinery-landed",
+     "update": "Search-window scheduling landed: scripts/quota_search_pacer.py (Pacer: token-bucket 24/min default under the 30/min cap, secondary-limit backoff to the API-named reset, never retry inside a closed window; Checkpoint: per-unit JSON watermarks, resume-after-cut; planners: window-pull batching preferred over per-key fan-out) + docs/ops/SEARCH-WINDOW-SCHEDULING.md (the three rules: batch, pace, checkpoint). Unit-verified (pacing math, planners, schedule estimate). Remaining: Registry lane census adoption (owner: registry lane ac8e5e6b + quota-specialist spec) - first paced census is the production proof."
+    }
+   ],
+   "id": "audit-003",
+   "kind": "state-update (owner directive 2026-11-01: prioritize FIX from Audits)"
+  },
+  {
    "at": "2026-11-02T09:42:00Z",
    "auditor": "quota-specialist",
    "events_covered": 8,

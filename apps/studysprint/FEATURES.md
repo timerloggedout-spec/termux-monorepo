@@ -105,6 +105,25 @@ evidence grade and its claims ceiling; the ceilings bind the copy.
   five boxes, knew it -> up, missed -> back to box 1, every move
   receipt-stamped with a plain-language explanation.
 
+## 1d. Calendar, geography, state (RFP-D1-6; built v0.5.0, 2026-11-03)
+
+Where and when studying happens, as first-class records —
+`study_calendar.py` (build A). Claims ceiling for the whole
+section: logistics support (pacing, timing, no-surprises) — no
+learning-gain claim.
+
+- ✓ **Calendar intake**: class meetings {days · times ·
+  building/room} and assessments {quiz/midterm/final · date ·
+  time · location} normalized into records the geography leg
+  consumes.
+- ✓ **Assessment-frequency engine**: question/card frequency
+  ramps in deterministic tiers as an assessment approaches; an
+  assessment at a shifted time or place gets an explicit ramp +
+  a briefing naming the shift.
+- ✓ **Quiet hours**: notifications landing inside a scheduled
+  class are suppressed and batched to just after the block,
+  receipt-stamped.
+
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic
 - ✓ Re-plan on missed week (sessions carried forward, flagged)

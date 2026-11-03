@@ -1,0 +1,42 @@
+name: Hindsight dashboard safety
+
+on:
+  pull_request:
+    paths:
+      - 'deepcli/tools/hindsight-lifecycle/**'
+      - 'tests/test_hindsight_dashboard_safety.py'
+      - 'tests/test_hindsight_purge_safety.py'
+      - '.github/workflows/hindsight-dashboard-safety.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hindsight-dashboard-safety-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Ensure disposable PostgreSQL test tools
+        run: |
+          sudo apt-get update -qq
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql postgresql-client
+          python3 - <<'PY'
+          import os
+          import sys
+          sys.path.insert(0, 'tests')
+          from test_hindsight_purge_safety import INITDB, PG_CTL, PSQL
+          assert os.geteuid() != 0, 'PostgreSQL tests require an unprivileged user'
+          assert INITDB and PG_CTL and PSQL, 'PostgreSQL regression tests must not skip'
+          PY
+      - name: Verify read-only observer contracts
+        run: bash deepcli/tools/hindsight-lifecycle/dashboard/verify.sh
+      - name: Run observer receipts and disposable-database regressions
+        run: python3 -m unittest discover -s tests -p 'test_hindsight_*_safety.py' -v

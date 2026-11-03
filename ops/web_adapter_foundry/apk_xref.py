@@ -482,7 +482,13 @@ def scan_repo_tree(root: str | Path, signatures: dict | None = None) -> dict:
                        if d not in (".git", "node_modules", "build", ".gradle")]
         for fn in filenames:
             p = Path(dirpath) / fn
-            if p.suffix.lower() not in TEXT_EXTS or p.stat().st_size > 2_000_000:
+            try:
+                size = p.stat().st_size
+            except OSError:
+                continue  # dangling symlink / vanished file — the
+                # target tree's broken links are not readable evidence
+                # (relagent tree, run 41677228439: scan-repo died here)
+            if p.suffix.lower() not in TEXT_EXTS or size > 2_000_000:
                 continue
             try:
                 t = p.read_text(encoding="utf-8", errors="replace")

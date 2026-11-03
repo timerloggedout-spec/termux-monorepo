@@ -879,6 +879,25 @@ version and compared continuously until culling retires a version.
   emerged actor network enters the picture UNVALENCED;
   dual-valence reading assigns from evidence.
 
+- **equivalence-proof v0** (registered 2026-11-03, owner-
+  named method type) - home docs/ops/EQUIVALENCE-PROOF.md,
+  registered alongside the lens material. For OPEN-
+  EQUIVALENCY builds (free/open materials walked against
+  a gated credential's syllabus): an equivalency claim is
+  PROVEN only when (a) the target's requirements
+  decompose from a SYLLABUS OF RECORD (issuer source, not
+  a summary), (b) EVERY requirement maps to a resolvable
+  open source OR sits in the gap register BY NAME (silence
+  about a requirement = defect), (c) the verification leg
+  EXECUTED artifacts from the open materials (receipts,
+  not intentions), and (d) the claim states its boundary
+  - learning-equivalence proven, credential-equivalence
+  NEVER claimed. Anything short = CLAIM-grade, stamped as
+  such. Coverage reported PER REQUIREMENT CLASS, never a
+  single % over unlike classes (K9 parity discipline).
+  Method holder: the Certifications lane. Instance #1:
+  SFI ABM.
+
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home
   `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they

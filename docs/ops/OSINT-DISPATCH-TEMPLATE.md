@@ -104,7 +104,7 @@ reference, never duplicated here**.
 | Web archives | Wayback CDX + snapshot fetch | archive-diff tooling only with the false-mismatch caveat stamped |
 | Search / username | browser search | username-check tools (sherlock-class; awesome-osint §Username Check) — **lead generation only**, output never enters a record unconfirmed by a class-1/2 source |
 | Extraction | trafilatura-class for page bodies | per the podium tools ranking |
-| **Fetcher router** | **per-domain method binding** — plain HTTP (curl) hits Cloudflare 403 on lablab.ai; the working route there is the text-extraction fetch (browser.open class). The router, not the operator's memory, carries which fetcher serves which domain | bindings added on first proven failure |
+| **Fetcher router** | **per-domain method binding** — the router, not the operator's memory, carries which fetcher serves which domain. Bindings of record: **lablab.ai → HTTP + browser UA, or the text-extraction fetch (browser.open class); default-UA curl = known-fail** (the 403 binds to the default curl UA, not to HTTP itself — refined at the acceptance run, 2026-11-03: browser-UA fetch returned 200, payload counter extracted) | bindings added on first proven failure; refined on firsthand correction |
 | **Payload-embedded counters** | named extraction pattern: platform pages may be JS/client-rendered with counters in the embedded page payload (e.g. `initialParticipants`) invisible to naive scrapers — record WHICH method extracted each counter | — |
 
 A tool joins the registry when a dispatch needed it, its charter

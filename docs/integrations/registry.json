@@ -171,11 +171,18 @@
       "discovery_state": "discovered",
       "session_evidence": "Named by the operator; no matching Smart Model Router connector tool was exposed in this session. Existing repository model-selection/provider-routing authorities must be inspected before any new router is proposed.",
       "repo_skill_path": null,
-      "repo_adapter_state": "not_started",
+      "repo_adapter_state": "existing_authority_reused",
       "authority": "candidate-routing-policy-and-evaluation-only",
       "write_boundary": "No model switch, provider credential use, paid inference, traffic routing, or production policy mutation; candidate recommendations require benchmark evidence and existing router authority.",
-      "next_step": "Reconcile against docs/ops/ROUTING-ORCHESTRATION-MAP.md and model-selection-market before deciding whether this is a provider, policy, or duplicate capability.",
-      "sensitivity": "model-routing-policy-and-cost-metadata"
+      "next_step": "Reuse the existing AR-18 observe-only router and its regression suite; do not add a parallel router. Re-open only if a distinct provider identity and API contract are supplied.",
+      "sensitivity": "model-routing-policy-and-cost-metadata",
+      "reconciliation_state": "existing_router_found",
+      "existing_authority_paths": [
+        "scripts/model_router.py",
+        "scripts/capability_spine.py",
+        "docs/proposals/active/actions-refinements/AR-18-CAPABILITY-SPINE.md",
+        "docs/ops/ROUTING-ORCHESTRATION-MAP.md"
+      ]
     },
     {
       "id": "hapi-mcp-registry",

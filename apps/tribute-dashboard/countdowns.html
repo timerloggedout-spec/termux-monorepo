@@ -197,7 +197,7 @@ function submissionHTML(e){
   if(!s||!s.state) return "";
   let h='<div class="submission"><span class="cd-label">Submission</span><p class="sub-line"><span class="badge ok">'+esc(s.state)+'</span>';
   if(s.at) h+=' <span class="dim">'+esc(fmtInstant(s.at))+'</span>';
-  if(s.ref) h+=' · <a href="'+esc(s.ref)+'" target="_blank" rel="noopener">view submission</a>';
+  const ref=s.confirmation_ref||s.ref; if(ref) h+=' · <a href="'+esc(ref)+'" target="_blank" rel="noopener">view submission</a>';
   return h+'</p></div>';
 }
 let ENTRIES=[];

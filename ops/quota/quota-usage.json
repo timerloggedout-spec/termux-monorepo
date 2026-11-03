@@ -1,12 +1,12 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-03T22:22:30Z",
+ "generated_at": "2026-11-03T23:53:28Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
  "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap ruled OUT (owner 2026-11-03; self-counted nulls)",
  "registry_context": {
-  "records": 170,
+  "records": 171,
   "pools": 59,
-  "coverage": "170/170 readings rows (registry at 170 records; promotion cycle carries new records into readings)"
+  "coverage": "171/171 readings rows (registry at 171 records; promotion cycle carries new records into readings)"
  },
  "series1_api_core": {
   "title": "GitHub API core \u2014 shared PAT bucket",
@@ -195,6 +195,12 @@
    {
     "at": "2026-11-03T21:34:39.397760+00:00",
     "rows": 170,
+    "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
+    "provenance": "vercel-quota-probe readings generation"
+   },
+   {
+    "at": "2026-11-03T23:53:07.554910+00:00",
+    "rows": 171,
     "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
     "provenance": "vercel-quota-probe readings generation"
    }

@@ -25,12 +25,15 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA = "challenge-countdowns-feed/v1.1"
+SCHEMA = "challenge-countdowns-feed/v1.2"
 LOG_REL = "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 COORD_REL = "ops/challenge/coordinator.json"
 EMITTER_REL = "scripts/challenge_entries/countdowns.py"
 STATUS_WORDS = ("COMPLETED", "CLOSED", "IN PROGRESS", "REGISTERING",
                 "BLOCKED", "IN REVIEW", "PENDING")
+
+SUBMISSION_RE = re.compile(
+    r"<!-- submission-data:(D\d+) state=(\S+) at=(\S+) ref=(\S+) -->")
 
 
 def load_emitter(root):
@@ -85,6 +88,11 @@ def build_feed(root):
     titles = {}
     for m in mod.HEADER_RE.finditer(text):
         titles[m.group(1)] = display_title(m.group(2))
+    submissions = {}
+    for m in SUBMISSION_RE.finditer(text):
+        submissions[m.group(1)] = {
+            "state": m.group(2), "at": m.group(3),
+            "confirmation_ref": m.group(4)}
     entries = []
     for e in mod.parse_entries(text):
         status = (e["status"] or "").strip().upper()
@@ -96,6 +104,7 @@ def build_feed(root):
             "closes": e["closes"].isoformat() if e["closes"] else None,
             "prizes": prizes.get(e["id"], {
                 "status": "NOT_ESTABLISHED", "pool": None, "tiers": []}),
+            "submission": submissions.get(e["id"]),
         })
     entries.sort(key=lambda e: int(e["id"][1:]))
     return {

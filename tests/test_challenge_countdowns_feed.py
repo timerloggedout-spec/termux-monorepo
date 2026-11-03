@@ -39,7 +39,7 @@ def test_feed_matches_collector_rerun():
 
 def test_feed_schema_and_source():
     feed = _feed()
-    assert feed["schema"] == "challenge-countdowns-feed/v1.1"
+    assert feed["schema"] == "challenge-countdowns-feed/v1.2"
     assert feed["source"] == "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 
 

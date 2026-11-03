@@ -143,4 +143,6 @@ Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/down
 
 Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
 
+API evolution review skill: `.agents/skills/api-impact-review/SKILL.md`. Load it for API contract, client/server, protocol, schema, or public integration changes. Its mapper calls are assistant-session operations; the CI workflow validates SHA-bound supplied results and does not claim direct MCP access.
+
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.

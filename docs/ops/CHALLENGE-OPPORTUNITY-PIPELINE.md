@@ -67,3 +67,37 @@ recon's rows (consumed, not re-run) and diffs against the
 lane-crafted path: same rows, same stamps, and the hand-steps
 the packaging removes enumerated — or the remaining gap list
 stated. Result appended here on completion.
+
+### Acceptance result — D1 field run, 2026-11-03
+
+Ran the same evening the skill was packaged. The recon
+(dispatched as lane-craft at 11:18 PT, before the skill
+existed) returned 55 rows; the packaged Stages 1–3 were then
+executed over them literally (record: PR #4581).
+
+- **Same rows ✓** — the pipeline consumed the recon's rows
+  unchanged; no re-reads, no row diverged.
+- **Same stamps ✓** — cluster tally (education 15 ·
+  climate-heat 5 · climate-agri 11 · devops 1 · other 23) and
+  TAK tracks (SyllabusSync · Ladder · CloudOps Swarm ·
+  StudyBuddy) produced from the rows per Stages 2–3.
+- **Hand-steps the packaging removes** (next run): the
+  dispatch text (was hand-written from the order — now the
+  Stage-1 procedure), row-shaping decisions (now the Stage-2
+  schema), cluster assignment (seeded, not improvised), and
+  the record's home (now this flow's Stage-5/6 pattern).
+- **Gaps exposed, honestly:**
+  1. The enumeration crossed two same-author cards on OUR OWN
+     entry's row (contested in PR #4581; targeted re-read in
+     flight). The triple-check rule caught it — via a human
+     noticing. **Fixed in the skill**: Stage 1 now carries an
+     own-entry cross-check step (verify our row against the
+     submission of record before use).
+  2. Sidebar repo/demo URLs are not always extractable from
+     page text; ~15 rows carry "link present, URL not
+     extracted". A targeted link-extraction second pass is a
+     Stage-2 refinement — recorded, not yet built.
+  3. At field size 55, full-verbatim bodies for every row are
+     not achievable in one pass (page-view truncation); the
+     priority row is verbatim, the rest section-complete with
+     truncations marked — the schema's stated compromise.

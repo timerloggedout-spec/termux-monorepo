@@ -733,7 +733,22 @@ version and compared continuously until culling retires a version.
   within severity, routed as route+claim build items
   (precedent RFP-D1-6, issue #4156). Design pre-registered
   before findings arrive; post-hoc changes = versioned
-  amendment with reasons.
+  amendment with reasons. INSTANCE #2 (pre-registered
+  2026-11-03, docs/ops/EGM-INSTANCE-2.md): the Delphi rubric
+  itself under test - instance #1's two verified batches
+  scored identically (9.12 = 9.12, cf. 8.54 = 8.54 on
+  #3695/#3696). ARM A: one verified-strong substance (#4231
+  FSRS drift) filed in 3 shapes (full/embedded -
+  full/referenced - sparse) = pure shape sensitivity. ARM
+  B: identical shape, 3 substances (verified-strong #4213 -
+  verified-weak #4225 - a REFUTED claim in perfect shape,
+  refuted firsthand pre-filing: the APK INTERNET-permission
+  claim, manifest carries zero uses-permission elements) =
+  substance sensitivity; decision rule fixed in advance (B3
+  within/above the B1-B2 band = shape alone proven). Owner
+  guardrails: filings stamped TEST at instance level,
+  nothing converts to awards or build items, refutation
+  published in the pre-registration + close-out.
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

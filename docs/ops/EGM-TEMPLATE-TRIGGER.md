@@ -45,9 +45,17 @@ then stamp the same issue, in order:
 | Leg | Stamp | Content |
 |---|---|---|
 | Elephant | `ELEPHANT PACKET` comment | artifacts of record at merged SHAs + referenced sources — the oracle set |
-| Goldfish | `GOLDFISH CLAIMS` comment per seat | zero-context attestation (`context consulted: artifacts + referenced sources only`) + `reviewer seat:` + one claim per finding, stamped {finding id · surface · reviewer seat · claim text · alleged location} per the frame |
-| DoE | `DOE VERDICT` comment per claim | {claim id · oracle · evidence · verdict: VERIFIED / PARTIAL / REFUTED}; oracle authority order per the frame: artifact source at merged SHA → served surface → executable test |
+| Goldfish | `GOLDFISH CLAIMS` comment per seat | zero-context attestation (`context consulted: artifacts + referenced sources only`) + one hook stamp per finding (DoE hooks): `egm_claim: {frame: "egm-evaluation/v0", instance, surface, artifact_sha, reviewer_seat, claim_id, alleged_location}` + the claim text |
+| DoE | one hook stamp per claim | `egm_verdict: {claim_id, oracle: source\|served\|test, verdict: VERIFIED\|PARTIAL\|REFUTED, evidence_ref, severity: blocks-use\|degrades-use\|polish (VERIFIED/PARTIAL only), verifier_seat}`; oracle authority order per the frame: artifact source at merged SHA → served surface → executable test |
+| Close-out | `egm_run:` stamp (sweep-posted) | {instance · claims n · V/P/R counts · per-seat reviewer calibration · scored RFP set + awards} |
 | Awards | scored RFP filings | only VERIFIED / PARTIAL-restated claims convert (delphi:rfp shape, verification record carried in); wins return as route+claim build items |
+
+Runs are parameterized against the frame **version**
+(`egm-evaluation/v0`), never a copied snapshot of the frame
+text: stamps cite the version, the machinery keys on it, and a
+claim stamped against another version does not count. Verdict
+stamps missing the severity on a VERIFIED/PARTIAL verdict are
+malformed and do not count either.
 
 Reviewer calibration is part of the record: REFUTED claims
 score the reviewer (accuracy = (VERIFIED + ½·PARTIAL) / total

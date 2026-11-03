@@ -4,7 +4,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from egm_review import (ATTESTATION, evaluate, parse_issue_body,
-                        receipt_comment, validate)
+                        receipt_comment, run_closeout_comment,
+                        validate)
 
 FORM_PATH = (Path(__file__).resolve().parents[2]
              / ".github" / "ISSUE_TEMPLATE" / "egm-review.yml")
@@ -49,12 +50,27 @@ def _c(body, at):
 PACKET = _c("ELEPHANT PACKET\n- artifacts: web @ 46518482875c", T0)
 
 
-def _claims(seat, ids=("F1",), attest=True):
+def _claims(seat, ids=("F1",), attest=True, frame="egm-evaluation/v0"):
     lines = ["GOLDFISH CLAIMS", f"reviewer seat: {seat}"]
     if attest:
         lines.append(ATTESTATION)
-    lines += [f"- finding — claim id: {i}" for i in ids]
+    for i in ids:
+        lines.append(
+            f'egm_claim: {{frame: "{frame}", instance: #7, '
+            f"surface: web, artifact_sha: 46518482875c, "
+            f"reviewer_seat: {seat}, claim_id: {i}, "
+            f"alleged_location: reader pane}}")
+        lines.append(f"claim text for {i}")
     return _c("\n".join(lines), T0 + timedelta(hours=1))
+
+
+def _verdict(cid, verdict, severity="polish", oracle="source"):
+    sev = f", severity: {severity}" if severity else ""
+    return _c(
+        f"egm_verdict: {{claim_id: {cid}, oracle: {oracle}, "
+        f"verdict: {verdict}, evidence_ref: src@{cid}{sev}, "
+        f"verifier_seat: doe}}",
+        T0 + timedelta(hours=3))
 
 
 def test_form_has_no_provider_field():
@@ -85,15 +101,20 @@ def test_receipt_stamps_legs_and_fail_closed():
     assert "DOE VERIFICATION — MANDATORY" in receipt
     assert "FAIL-CLOSED" in receipt
     assert "claim window: 24h" in receipt
+    assert "egm_claim:" in receipt and "egm_verdict:" in receipt
+    assert "egm_run:" in receipt
 
 
 def test_leg_states():
     assert evaluate([], T0)["state"] == "awaiting-packet"
-    # packet, no goldfish yet, inside window
     assert evaluate([PACKET], T0 + timedelta(hours=2))["state"] \
         == "goldfish-open"
     # unattested claims do NOT count a seat
     ev = evaluate([PACKET, _claims("viz", attest=False)],
+                  T0 + timedelta(hours=2))
+    assert ev["goldfish_seats"] == 0
+    # off-frame claims do NOT count (frame-version pin)
+    ev = evaluate([PACKET, _claims("viz", frame="egm-eval/v9")],
                   T0 + timedelta(hours=2))
     assert ev["goldfish_seats"] == 0
     # one attested seat: still open; two: DoE leg pending
@@ -103,27 +124,32 @@ def test_leg_states():
     ev = evaluate([PACKET, _claims("viz"), _claims("webdesign")],
                   T0 + timedelta(hours=2))
     assert ev["state"] == "doe-pending"
-    assert ev["unverdicted"] == ["F1", "F1"] or \
-        set(ev["unverdicted"]) == {"F1"}
-    verdict = _c("DOE VERDICT\nclaim id: F1\nverdict: VERIFIED",
-                 T0 + timedelta(hours=3))
+    # verdict without severity on VERIFIED is malformed: no count
     ev = evaluate([PACKET, _claims("viz", ("F1",)),
-                   _claims("webdesign", ("F2",)), verdict],
+                   _claims("webdesign", ("F2",)),
+                   _verdict("F1", "VERIFIED", severity=None)],
                   T0 + timedelta(hours=3))
-    assert ev["state"] == "doe-pending"  # F2 unverdicted
-    verdict2 = _c("DOE VERDICT\nclaim id: F2\nverdict: REFUTED",
-                  T0 + timedelta(hours=3))
+    assert ev["verdicts"] == 0
+    assert ev["state"] == "doe-pending"
+    # full verdict coverage -> complete + calibration
     ev = evaluate([PACKET, _claims("viz", ("F1",)),
-                   _claims("webdesign", ("F2",)), verdict,
-                   verdict2], T0 + timedelta(hours=3))
+                   _claims("webdesign", ("F2",)),
+                   _verdict("F1", "VERIFIED"),
+                   _verdict("F2", "REFUTED", severity=None)],
+                  T0 + timedelta(hours=3))
     assert ev["state"] == "complete"
+    assert ev["counts"] == {"VERIFIED": 1, "PARTIAL": 0,
+                            "REFUTED": 1}
+    assert ev["calibration"]["viz"]["accuracy"] == 1.0
+    assert ev["calibration"]["webdesign"]["accuracy"] == 0.0
+    close = run_closeout_comment(7, ev)
+    assert "egm_run:" in close and "egm-evaluation/v0" in close
 
 
 def test_fail_closed_after_window():
     ev = evaluate([PACKET, _claims("viz")],
                   T0 + timedelta(hours=25))
     assert ev["state"] == "blocked-no-fresh-context"
-    # but never blocked once 2 seats attested, even late verdicts
     ev = evaluate([PACKET, _claims("viz"), _claims("webdesign")],
                   T0 + timedelta(hours=72))
     assert ev["state"] == "doe-pending"

@@ -70,11 +70,68 @@ BLOCKED_LABEL = "egm-blocked"
 ATTESTATION = "context consulted: artifacts + referenced sources only"
 MIN_GOLDFISH = 2
 VERDICTS = ("VERIFIED", "PARTIAL", "REFUTED")
+# DoE hooks (frame = the template's evaluation core): runs are
+# parameterized against the frame VERSION — stamps cite it, the
+# machinery keys on it, the frame text is never copied in.
+FRAME_VERSION = "egm-evaluation/v0"
+CLAIM_STAMP = "egm_claim:"
+VERDICT_STAMP = "egm_verdict:"
+RUN_STAMP = "egm_run:"
+ORACLES = ("source", "served", "test")
+SEVERITIES = ("blocks-use", "degrades-use", "polish")
 
 _CLAIM_ID = re.compile(r"claim id:\s*(\S+)", re.I)
 _SEAT = re.compile(r"reviewer seat:\s*(.+)", re.I)
 _VERDICT = re.compile(r"verdict:\s*(VERIFIED|PARTIAL|REFUTED)",
                       re.I)
+
+
+def _stamp_fields(line: str) -> dict:
+    """Parse the {k: v, ...} body of a one-line hook stamp."""
+    body = line.split("{", 1)[1].rsplit("}", 1)[0]         if "{" in line and "}" in line else ""
+    out = {}
+    for part in body.split(","):
+        if ":" in part:
+            k, v = part.split(":", 1)
+            out[k.strip()] = v.strip().strip('"')
+    return out
+
+
+def parse_claim_stamps(body: str) -> list:
+    """egm_claim stamps pinned to the current frame version.
+    A claim stamped against another frame version does not
+    count — runs parameterize against the version."""
+    claims = []
+    for line in (body or "").splitlines():
+        if CLAIM_STAMP not in line:
+            continue
+        f = _stamp_fields(line)
+        if f.get("frame") != FRAME_VERSION:
+            continue
+        if f.get("claim_id") and f.get("reviewer_seat"):
+            claims.append(f)
+    return claims
+
+
+def parse_verdict_stamps(body: str) -> list:
+    """egm_verdict stamps, validated against the hook schema:
+    oracle in {source|served|test}; severity REQUIRED on
+    VERIFIED/PARTIAL (absent there = malformed, not counted)."""
+    out = []
+    for line in (body or "").splitlines():
+        if VERDICT_STAMP not in line:
+            continue
+        f = _stamp_fields(line)
+        if not f.get("claim_id"):
+            continue
+        if f.get("verdict") not in VERDICTS:
+            continue
+        if f.get("oracle") not in ORACLES:
+            continue
+        if f["verdict"] in ("VERIFIED", "PARTIAL") and                 f.get("severity") not in SEVERITIES:
+            continue
+        out.append(f)
+    return out
 
 
 def parse_issue_body(body: str) -> dict:
@@ -135,18 +192,24 @@ def receipt_comment(issue_number: int, fields: dict) -> str:
         "2. GOLDFISH — >=2 reviewer seats with ZERO build context "
         "post `GOLDFISH CLAIMS` comments (artifacts + referenced "
         "sources ONLY), each carrying the attestation line "
-        f"`{ATTESTATION}` and one claim per finding, stamped "
-        "{finding id · surface · reviewer seat · claim text · "
-        "alleged location}.\n"
+        f"`{ATTESTATION}` and one hook stamp per finding: "
+        "`egm_claim: {frame: \"egm-evaluation/v0\", instance, "
+        "surface, artifact_sha, reviewer_seat, claim_id, "
+        "alleged_location}` + the claim text.\n"
         "3. DOE VERIFICATION — MANDATORY, no bypass: the DoE leg "
-        "posts a `DOE VERDICT` per claim {claim id · oracle · "
-        "evidence · verdict: VERIFIED | PARTIAL | REFUTED}. Only "
+        "posts one hook stamp per claim: `egm_verdict: {claim_id, "
+        "oracle: source|served|test, verdict: VERIFIED|PARTIAL|"
+        "REFUTED, evidence_ref, severity: blocks-use|degrades-use"
+        "|polish (VERIFIED/PARTIAL only), verifier_seat}`. Only "
         "VERIFIED and PARTIAL-restated claims convert to scored "
         "RFPs; REFUTED claims score the reviewer's calibration "
         "(accuracy = (VERIFIED + ½·PARTIAL) / total claims).\n"
         "4. AWARDS — converted RFPs that win return as route+claim "
         "build items (project-task form + dispatch together, per "
-        "the interim rule).\n\n"
+        "the interim rule). When every claim carries a verdict "
+        "the sweep posts the `egm_run:` close-out stamp {instance "
+        "· claim counts V/P/R · per-seat reviewer calibration · "
+        "scored set}.\n\n"
         "FAIL-CLOSED: if fewer than 2 fresh-context seats attest "
         f"within {window}h of the packet, the review leg does not "
         "run and the sweep records `EGM BLOCKED — NO FRESH "
@@ -181,35 +244,63 @@ def evaluate(comments: list, now: datetime,
 
     States: awaiting-packet · goldfish-open · doe-pending ·
     complete · blocked-no-fresh-context (window lapsed with
-    <MIN_GOLDFISH attested seats). A claims comment counts a
-    seat ONLY with the zero-context attestation — memory-lessness
-    is the method, so an unattested review is not a goldfish.
+    <MIN_GOLDFISH attested seats). A seat counts ONLY from a
+    GOLDFISH CLAIMS comment carrying the zero-context
+    attestation AND >=1 egm_claim stamp pinned to the current
+    frame version — memory-lessness is the method, so an
+    unattested or off-frame review is not a goldfish. Verdicts
+    count only as schema-valid egm_verdict stamps. When every
+    claim carries a verdict the run is complete and the
+    calibration table (per-seat (V + ½·P) / total) is computed
+    for the egm_run close-out stamp.
     """
     packet_at = None
     seats = set()
-    claims = []
+    claim_seat = {}
     verdicts = {}
     blocked_posted = False
+    run_posted = False
     for c in comments:
         body = c.get("body") or ""
         if PACKET_MARKER in body and packet_at is None:
             packet_at = _ts(c)
         if BLOCKED_MARKER in body:
             blocked_posted = True
-        if CLAIMS_MARKER in body and ATTESTATION in body:
-            m = _SEAT.search(body)
-            if m:
-                seats.add(m.group(1).strip())
-            claims.extend(_CLAIM_ID.findall(body))
-        if VERDICT_MARKER in body:
-            ids = _CLAIM_ID.findall(body)
-            v = _VERDICT.search(body)
-            if ids and v:
-                verdicts[ids[0]] = v.group(1).upper()
+        if RUN_STAMP in body:
+            run_posted = True
+        stamps = parse_claim_stamps(body)
+        if CLAIMS_MARKER in body and ATTESTATION in body and \
+                stamps:
+            seats.update(st["reviewer_seat"] for st in stamps)
+        for st in stamps:
+            claim_seat[st["claim_id"]] = st["reviewer_seat"]
+        for vs in parse_verdict_stamps(body):
+            verdicts[vs["claim_id"]] = vs["verdict"]
+    claims = sorted(claim_seat)
+    calibration = {}
+    for cid, seat in claim_seat.items():
+        cal = calibration.setdefault(
+            seat, {"claims": 0, "VERIFIED": 0, "PARTIAL": 0,
+                   "REFUTED": 0, "accuracy": None})
+        cal["claims"] += 1
+        if cid in verdicts:
+            cal[verdicts[cid]] += 1
+    for cal in calibration.values():
+        verdicted = (cal["VERIFIED"] + cal["PARTIAL"]
+                     + cal["REFUTED"])
+        if cal["claims"] and verdicted == cal["claims"]:
+            cal["accuracy"] = round(
+                (cal["VERIFIED"] + 0.5 * cal["PARTIAL"])
+                / cal["claims"], 4)
     base = {"goldfish_seats": len(seats), "claims": len(claims),
             "verdicts": len(verdicts),
-            "unverdicted": [c for c in claims if c not in verdicts],
-            "blocked_posted": blocked_posted}
+            "unverdicted": [c for c in claims
+                            if c not in verdicts],
+            "blocked_posted": blocked_posted,
+            "run_posted": run_posted,
+            "calibration": calibration,
+            "counts": {v: sum(1 for x in verdicts.values()
+                               if x == v) for v in VERDICTS}}
     if packet_at is None:
         return {**base, "state": "awaiting-packet"}
     if len(seats) >= MIN_GOLDFISH:
@@ -219,6 +310,29 @@ def evaluate(comments: list, now: datetime,
     if now > packet_at + timedelta(hours=window_hours):
         return {**base, "state": "blocked-no-fresh-context"}
     return {**base, "state": "goldfish-open"}
+
+
+def run_closeout_comment(issue_number: int, ev: dict) -> str:
+    cal = "; ".join(
+        f"{seat}: claims {c['claims']} · V {c['VERIFIED']} · "
+        f"P {c['PARTIAL']} · R {c['REFUTED']} · accuracy "
+        f"{c['accuracy']}"
+        for seat, c in sorted(ev["calibration"].items()))
+    counts = ev["counts"]
+    return (
+        "[MUSEai]@{role:{egm-dispatch}} RUN CLOSE-OUT — every "
+        "claim carries a verdict; the scored set (incl. REFUTED "
+        "claims, published per the frame) converts from here.\n\n"
+        f"{RUN_STAMP} {{instance: #{issue_number}, frame: "
+        f"{FRAME_VERSION}, claims: {ev['claims']}, VERIFIED: "
+        f"{counts['VERIFIED']}, PARTIAL: {counts['PARTIAL']}, "
+        f"REFUTED: {counts['REFUTED']}, calibration: "
+        f"{{{cal}}}}}\n\n"
+        "Conversion: VERIFIED and PARTIAL-restated claims become "
+        "scored RFPs in the delphi:rfp shape with their "
+        "verification records carried in; award winners return "
+        "as route+claim build items."
+    )
 
 
 def blocked_comment(ev: dict, window_hours: int) -> str:
@@ -274,6 +388,13 @@ def sweep(repo: str, token: str, now: datetime,
         window = claim_window_hours(fields)
         ev = evaluate(comments, now, window)
         action = ""
+        if ev["state"] == "complete" and not ev["run_posted"]:
+            action = "post-run-closeout"
+            if apply:
+                _request("POST",
+                         f"/repos/{repo}/issues/{num}/comments",
+                         token,
+                         {"body": run_closeout_comment(num, ev)})
         if ev["state"] == "blocked-no-fresh-context" and \
                 not ev["blocked_posted"]:
             action = "post-blocked-record"

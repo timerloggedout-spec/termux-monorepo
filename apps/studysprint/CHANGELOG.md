@@ -1,5 +1,18 @@
 ## [Unreleased]
 
+### v1.0.0 content — second bundled sample course (#4593)
+
+- **STAT 210 — Data & Chance (sample, synthetic)** joins BIO
+  101 as the second bundled example course: a structurally
+  different subject AND assessment shape (weekly problem
+  sets + a final project, vs quiz/lab/midterm), riding the
+  same pipeline with no new code paths — fixtures
+  `examples/{syllabus,calendar,readings,practice_set}_stats.json`
+  + demo evidence in `tests/test_second_sample.py` (ingest →
+  plan → SR over the new fixtures; counters Findings
+  Register F-O4 cap 1, the mirror baseline's "single sample
+  course" cap).
+
 ### Surfaces 0.2.0 (parity iteration 1, #4414 — calendar + geography)
 
 - **§1d calendar awareness + geography bind on all three

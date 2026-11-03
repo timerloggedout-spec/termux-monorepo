@@ -34,7 +34,7 @@ FIELDS = ("receipts_total", "actioned", "skipped",
 
 def row_of(feed):
     golden = (feed.get("data") or {}).get("golden") or {}
-    row = {"generated_at": feed.get("generated_at")}
+    row = {"generated_at": feed.get("generated_at"), "state": feed.get("state", "unknown"), "freshness": feed.get("freshness", "unknown"), "sources": feed.get("sources", [])}
     for f in FIELDS:
         row[f] = golden.get(f)
     return row

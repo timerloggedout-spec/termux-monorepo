@@ -45,6 +45,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -268,7 +269,8 @@ def _get_all(url: str, token: str) -> list:
 
 def sweep(repo: str, token: str, now: datetime, flag_min: int,
           escalate_min: int, apply: bool = True,
-          timeboxes: dict | None = None) -> list:
+          timeboxes: dict | None = None,
+          feed_sink: list | None = None) -> list:
     issues = _get_all(
         f"{API}/repos/{repo}/issues?state=open"
         f"&labels=dispatch-queued", token)
@@ -282,6 +284,9 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
         verdict = classify(issue, comments, now, flag_min,
                            escalate_min, timeboxes=timeboxes)
         results.append(verdict)
+        if feed_sink is not None:
+            feed_sink.append(feed_row(issue, comments, verdict,
+                                      timeboxes, now))
         if not apply or not verdict["action"]:
             continue
         base = f"{API}/repos/{repo}/issues/{issue['number']}"
@@ -300,6 +305,114 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
             verdict["action"] = f"ERROR: {exc}"  # the whole sweep;
             verdict["state"] = "error"          # surface it instead
     return results
+
+
+# ------------------------------------------------- dispatch-state feed (#4350)
+# Schema dispatch-state-feed/v1: the web-visible stamp of the state this
+# sweep already computes. The collector reuses classify / current_tier /
+# thresholds_for / has_claim verbatim -- it re-derives NOTHING. Absent
+# values stay null, never zero-filled. The watchdog writes the feed ONLY
+# when its content changed (generated_at excluded), and the workflow
+# commits that write (canon + dashboard mirror, byte-identical).
+FEED_SCHEMA = "dispatch-state-feed/v1"
+FEED_PATHS = ("ops/challenge/dispatch-state-feed.json",
+              "apps/tribute-dashboard/data/dispatch-state-feed.json")
+_FEED_STATES = {"claimed": "claimed", "escalated": "escalated"}
+
+
+def claim_of(comments: list) -> dict | None:
+    """The claim of record from the first PRODUCER CLAIM comment:
+    {by, at} -- by = the claiming role (header or `- role:` line, else
+    the `- producer:` line), at = the comment's `- claimed at:` stamp,
+    else the comment's own creation time. None when no claim comment
+    exists (a label-only claim carries no by/at of record)."""
+    for c in comments:
+        body = c.get("body") or ""
+        if CLAIM_MARKER not in body:
+            continue
+        by = None
+        for pat in (r"@\{role:\{([^}]+)\}\}", r"^-\s*role:\s*(.+)$",
+                    r"^-\s*producer:\s*(.+)$"):
+            m = re.search(pat, body, re.M)
+            if m:
+                by = m.group(1).strip()
+                break
+        m = re.search(r"^-\s*claimed at:\s*(\S+)", body, re.M)
+        return {"by": by, "at": m.group(1) if m else c.get("created_at")}
+    return None
+
+
+def stall_events_of(comments: list) -> list:
+    """Machine stall events: one {at, kind} per `stall-event:` line in
+    the issue's comments (at = the carrying comment's creation time,
+    kind = the line's first token after the marker)."""
+    out = []
+    for c in comments:
+        for line in (c.get("body") or "").splitlines():
+            line = line.strip()
+            if line.startswith(STALL_EVENT_MARKER):
+                rest = line[len(STALL_EVENT_MARKER):].strip()
+                kind = rest.split()[0].rstrip(":,") if rest else "stall"
+                out.append({"at": c.get("created_at"), "kind": kind})
+    return out
+
+
+def feed_row(issue: dict, comments: list, verdict: dict,
+             timeboxes: dict | None, now: datetime) -> dict:
+    """One feed row for an open dispatch, from the sweep's verdict."""
+    tb = (timeboxes or {}).get(verdict.get("entry")) \
+        if verdict.get("entry") else None
+    tier_index, tier_name = current_tier(tb, now)
+    return {
+        "issue": issue["number"],
+        "title": issue.get("title"),
+        "entry": entry_of(comments),
+        "state": _FEED_STATES.get(verdict["state"], "queued"),
+        "claim": claim_of(comments),
+        "age_min": verdict["age_min"],
+        "tier": {"index": tier_index, "name": tier_name},
+        "thresholds_min": {"flag": verdict["flag_min"],
+                           "escalate": verdict["escalate_min"]},
+        "stall_events": stall_events_of(comments),
+    }
+
+
+def build_feed(rows: list, now: datetime) -> dict:
+    counts = {"queued": 0, "claimed": 0, "escalated": 0}
+    for r in rows:
+        counts[r["state"]] += 1
+    return {"schema": FEED_SCHEMA,
+            "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "source": "dispatch-watchdog",
+            "counts": {**counts, "total": len(rows)},
+            "dispatches": sorted(rows, key=lambda r: r["issue"])}
+
+
+def feed_fingerprint(feed: dict) -> str:
+    """Content identity excluding generated_at: the change gate."""
+    stable = {k: v for k, v in feed.items() if k != "generated_at"}
+    return json.dumps(stable, sort_keys=True)
+
+
+def write_feed(feed: dict, root: str = ".") -> bool:
+    """Stamp the feed at BOTH paths (byte-identical) ONLY when its
+    content changed vs the canon file of record. Returns True when a
+    write landed."""
+    canon = os.path.join(root, FEED_PATHS[0])
+    try:
+        with open(canon, encoding="utf-8") as fh:
+            existing = json.load(fh)
+        if feed_fingerprint(existing) == feed_fingerprint(feed):
+            return False
+    except (OSError, ValueError):
+        pass
+    blob = json.dumps(feed, indent=1, sort_keys=True) + "\n"
+    for rel in FEED_PATHS:
+        path = os.path.join(root, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(blob)
+    return True
 
 
 def render_table(results: list) -> str:
@@ -336,9 +449,14 @@ def main(argv=None) -> int:
         return 2
     now = datetime.now(timezone.utc)
     timeboxes = load_timeboxes(args.feed)
+    feed_rows: list = []
     results = sweep(args.repo, token, now, args.flag_min,
                     args.escalate_min, apply=not args.dry_run,
-                    timeboxes=timeboxes)
+                    timeboxes=timeboxes, feed_sink=feed_rows)
+    if not args.dry_run:
+        stamped = write_feed(build_feed(feed_rows, now))
+        print(f"dispatch-state feed: {'stamped (content changed)' if stamped else 'unchanged — no write'} "
+              f"({len(feed_rows)} open dispatch(es))")
     table = render_table(results)
     print(f"dispatch watchdog @ {now:%Y-%m-%dT%H:%M:%SZ} — "
           f"{len(results)} queued issue(s)")

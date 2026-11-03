@@ -195,3 +195,94 @@ def test_match_entry_resolves_descriptive_filings():
     assert verdict["entry"] == "D1"
     assert verdict["tier"] == "CUSHION"
     assert verdict["action"] == "flag"
+
+
+# ------------------------------------------- dispatch-state feed (#4350)
+
+from dispatch_watchdog import (build_feed, claim_of, feed_row,  # noqa: E402
+                               stall_events_of, write_feed)
+
+_RECEIPT_D1 = "ROUTING RECEIPT — task accepted\n\n- entry: D1\n"
+_CLAIM = ("[MUSEai]@{role:{optimizations-assurance}} PRODUCER CLAIM — "
+          "dispatch pickup.\n\n- resolved provider: command-dispatch\n"
+          "- producer: command-dispatch seat-build (Swarm)\n"
+          "- session: sess-9\n- claimed at: 2026-11-03T11:30:00Z")
+
+
+def _row(issue, comments, timeboxes=None):
+    verdict = classify(issue, comments, NOW, timeboxes=timeboxes)
+    return feed_row(issue, comments, verdict, timeboxes, NOW)
+
+
+def test_feed_classifies_queued_claimed_escalated():
+    queued = _row(_issue(number=11, minutes_old=10),
+                  [_comment(_RECEIPT_D1, 10)])
+    assert queued["state"] == "queued" and queued["claim"] is None
+    assert queued["entry"] == "D1" and queued["age_min"] == 10.0
+    assert queued["tier"] == {"index": 0, "name": "BASE"}
+    assert queued["thresholds_min"] == {"flag": 30, "escalate": 60}
+
+    claimed = _row(_issue(number=12, minutes_old=300),
+                   [_comment(_RECEIPT_D1, 300), _comment(_CLAIM, 290)])
+    assert claimed["state"] == "claimed"
+    assert claimed["claim"] == {"by": "optimizations-assurance",
+                                "at": "2026-11-03T11:30:00Z"}
+
+    escalated = _row(_issue(number=13, minutes_old=120),
+                     [_comment(_RECEIPT_D1, 120),
+                      _comment("DISPATCH WATCHDOG — ESCALATION — ...", 5)])
+    assert escalated["state"] == "escalated" and escalated["claim"] is None
+
+
+def test_feed_tier_resolved_thresholds():
+    tb = {"D1": {"tiers": [{"tier": 0, "name": "BASE",
+                            "at": "2026-11-02T00:00:00Z"},
+                           {"tier": 1, "name": "CUSHION",
+                            "at": "2026-11-03T09:00:00Z"}]}}
+    row = _row(_issue(number=14, minutes_old=10),
+               [_comment(_RECEIPT_D1, 10)], timeboxes=tb)
+    assert row["tier"] == {"index": 1, "name": "CUSHION"}
+    assert row["thresholds_min"] == {"flag": 20, "escalate": 40}
+
+
+def test_feed_null_honesty():
+    bare = _row(_issue(number=15, minutes_old=10), [])
+    assert bare["entry"] is None and bare["claim"] is None
+    assert bare["stall_events"] == []
+    by_label = _row(_issue(number=16, minutes_old=300,
+                           labels=("dispatch-claimed",)),
+                    [_comment(_RECEIPT_D1, 300)])
+    assert by_label["state"] == "claimed" and by_label["claim"] is None
+    assert claim_of([_comment("no claim here", 1)]) is None
+
+
+def test_feed_stall_events_and_counts():
+    comments = [_comment(_RECEIPT_D1, 90),
+                _comment("watchdog note\nstall-event: flag tier=BASE", 30),
+                _comment("stall-event: escalation", 5)]
+    assert stall_events_of(comments) == [
+        {"at": comments[1]["created_at"], "kind": "flag"},
+        {"at": comments[2]["created_at"], "kind": "escalation"}]
+    feed = build_feed([{"issue": 2, "state": "claimed"},
+                       {"issue": 1, "state": "queued"}], NOW)
+    assert feed["schema"] == "dispatch-state-feed/v1"
+    assert feed["source"] == "dispatch-watchdog"
+    assert feed["counts"] == {"queued": 1, "claimed": 1,
+                              "escalated": 0, "total": 2}
+    assert [d["issue"] for d in feed["dispatches"]] == [1, 2]
+
+
+def test_write_feed_only_on_content_change(tmp_path):
+    rows = [{"issue": 1, "state": "queued"}]
+    feed = build_feed(rows, NOW)
+    assert write_feed(feed, str(tmp_path)) is True
+    canon = tmp_path / "ops/challenge/dispatch-state-feed.json"
+    mirror = tmp_path / "apps/tribute-dashboard/data/dispatch-state-feed.json"
+    assert canon.read_bytes() == mirror.read_bytes()
+    first = canon.read_bytes()
+    later = build_feed(rows, NOW + timedelta(minutes=15))
+    assert write_feed(later, str(tmp_path)) is False  # only generated_at moved
+    assert canon.read_bytes() == first
+    changed = build_feed([{"issue": 1, "state": "claimed"}], NOW)
+    assert write_feed(changed, str(tmp_path)) is True
+    assert canon.read_bytes() == mirror.read_bytes() != first

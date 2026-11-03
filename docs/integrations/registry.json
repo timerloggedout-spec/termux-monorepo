@@ -28,11 +28,12 @@
       "discovery_state": "tool_connected_in_session",
       "session_evidence": "extract_api_changes, classify_breaking_changes, and generate_impact_map tools are exposed in the current session.",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
+      "repo_adapter_state": "repo_adapter_implemented",
       "authority": "advisory-analysis-only",
       "write_boundary": "Consumes supplied diffs/specifications; no independent repository crawling, code mutation, or merge authority.",
-      "next_step": "Build a PR workflow adapter with fixtures and explicit consumer/test/documentation impact evidence.",
-      "sensitivity": "public-source-and-repository-diff"
+      "next_step": "Validate the read-only detector/normalizer workflow on real PRs; keep advisory until reliability is measured and a CI-callable provider interface is established.",
+      "sensitivity": "public-source-and-repository-diff",
+      "validation_state": "awaiting_ci_validation"
     },
     {
       "id": "domino-data-lab",

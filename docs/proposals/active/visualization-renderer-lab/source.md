@@ -20,7 +20,7 @@ The operator requested a full web-surface audit and visual upgrade, with live/la
 
 ## Branch topology warning
 
-GitHub compare reports `master-staging` and `master` diverged, with the compare capped at 10,000 commits (master-staging reported 10,497 ahead and 54 behind at collection). The dashboard implementation files were found on `master` but were not found at their expected paths on `master-staging`. This proposal therefore creates an isolated research scaffold only. No wholesale branch merge or production promotion is implied.
+GitHub compare reports `master-staging` and `master` diverged, with the compare capped at 10,000 commits (master reported 10,497 commits ahead of master-staging, while master-staging had 54 commits not in master at collection). The dashboard implementation files were found on `master` but were not found at their expected paths on `master-staging`. This proposal therefore creates an isolated research scaffold only. No wholesale branch merge or production promotion is implied.
 
 ## Renderer shortlist
 

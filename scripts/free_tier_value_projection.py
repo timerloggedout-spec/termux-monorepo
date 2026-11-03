@@ -95,9 +95,12 @@ def exact_price(pricing: list[dict[str, Any]], canonical_model_id: str,
 def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str, Any] | None:
     if any(row.get(key) != expected for key, expected in GATES.items()):
         return None
-    required_strings = ("call_uid", "run_id", "repository", "workflow", "provider", "model_id",
+    required_strings = ("call_uid", "run_id", "repository", "workflow", "provider",
                         "model_version_pin", "canonical_model_id", "pricing_id")
     if any(not nonempty_string(row.get(key)) for key in required_strings):
+        return None
+    model_id = row.get("model_id") or row.get("requested_model")
+    if not nonempty_string(model_id):
         return None
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", row["repository"]):
         return None
@@ -160,7 +163,7 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
         "source_sha": source_sha,
         "observed_at": observed_at,
         "provider": row["provider"],
-        "model_id": row["model_id"],
+        "model_id": model_id,
         "canonical_model_id": row["canonical_model_id"],
         "input_tokens": row["tokens_in"],
         "output_tokens": row["tokens_out"],

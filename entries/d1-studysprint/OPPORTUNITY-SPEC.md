@@ -106,3 +106,7 @@ StudySprint **extends the D0 starting agent, the Delphi Oracle**: its determinis
 ## Open line at spec time (to the Nov 4 23:59 PT freeze)
 
 Published-body correction re-verify → v1.0.0 cut on the richest green tree (it-1 0.2.0 in-tree; 0.2.0 surface cuts pending the sync-parity repair) → v1.0.0 Update block into the Body → the live article's currency edit → frozen-state verification at the freeze → Gate 1 (week of Nov 9).
+
+## Outcomes — PENDING-JUDGING (section held open)
+
+**Stamped 2026-11-03: PENDING-JUDGING.** The official scoring is imported now (see Scoring — both frames, verbatim). Entries · placements · winners are not yet knowable: the submission window runs to Nov 4, 23:59 PT; judging follows (Rules: November 5–18 · About: Gate 1 week of Nov 9, Gate 2 week of Nov 16; winners on or about Nov 19 per Rules / week of Nov 23 per About). This section fills from Swarm's exact competition import when the official results publish. It is **held open by design** — the spec does not close before the import lands.

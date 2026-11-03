@@ -72,3 +72,7 @@ Mechanics: a Builder Center project submission (project form, including the demo
 ## D0 in D1's proof chain (the owner's wiring note)
 
 D1 (StudySprint) extends this agent: the gate and `fetch_evidence` are vendored **verbatim** in StudySprint's `foundation/`, and D1's article discloses the starting agent in its own section. D0 is therefore D1's prerequisite layer — its completion record (this spec + the 4/4 artifact set) is part of D1's provenance evidence. D1's Opportunity Spec: `entries/d1-studysprint/OPPORTUNITY-SPEC.md`.
+
+## Outcomes — AWAITING IMPORT (section held open)
+
+**Stamped 2026-11-03: the event concluded October 26, 2026; this section fills from Swarm's exact competition import** (official scoring — already carried in this spec — · entries · placements · winners: the 5 winning projects × their $200-valued awards) when the import lands. It is **held open by design** — the spec does not close before the import lands. Our own outcome does not wait on the import and is already of record above: not_submitted ⇒ $0 won; the import completes the field's official results, not ours.

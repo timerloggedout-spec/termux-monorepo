@@ -155,5 +155,30 @@ class ApiImpactReportTests(unittest.TestCase):
             self.assertEqual(result, 2)
 
 
+    def test_backslash_paths_are_rejected(self):
+        with self.assertRaisesRegex(ValueError, "unsafe changed path"):
+            classify_changed_paths(["llm_api_hub\\\\server\\\\app.py"])
+
+    def test_unsupported_mapper_envelope_fields_are_rejected(self):
+        payload = mapper_input()
+        payload["extra"] = "not allowed"
+        with self.assertRaisesRegex(ValueError, "unsupported fields"):
+            build_report(REPO, BASE, HEAD, 42, PATHS, payload)
+
+    def test_unsupported_privacy_fields_are_rejected(self):
+        payload = mapper_input()
+        payload["privacy"]["note"] = "not allowed"
+        with self.assertRaisesRegex(ValueError, "privacy contains unsupported fields"):
+            build_report(REPO, BASE, HEAD, 42, PATHS, payload)
+
+    def test_credential_shaped_evidence_is_rejected(self):
+        payload = mapper_input()
+        payload["results"]["extraction"]["evidence"] = [{
+            "evidence_id": "E-SECRET", "quote": "ghp_123456789012345678901234567890", "source": "fixture"
+        }]
+        with self.assertRaisesRegex(ValueError, "credential-shaped value"):
+            build_report(REPO, BASE, HEAD, 42, PATHS, payload)
+
+
 if __name__ == "__main__":
     unittest.main()

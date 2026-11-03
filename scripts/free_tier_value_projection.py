@@ -151,10 +151,6 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
             + Decimal(row["tokens_out"]) * output_rate
         ) / Decimal(1_000_000)
         paid_equivalent_exact = format(paid_equivalent, "f")
-        paid_equivalent_display = paid_equivalent.quantize(VALUE_QUANTUM, rounding=ROUND_HALF_UP)
-        paid_equivalent_number = float(paid_equivalent_display)
-        if not math.isfinite(paid_equivalent_number):
-            return None
 
     return {
         "session_label": row.get("session_label") or row["call_uid"],
@@ -244,6 +240,9 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
             session.pop("_paid_equivalent_usd_exact", None)
         exact_total_text = format(exact_total, "f")
         rounded_total = exact_total.quantize(VALUE_QUANTUM, rounding=ROUND_HALF_UP)
+        rounded_total_number = float(rounded_total)
+        if sessions and not math.isfinite(rounded_total_number):
+            raise ValueError("aggregate paid-equivalent value exceeds finite JSON number range")
     board["sessions"] = sessions
     board["coverage"] = coverage
     board["totals"] = {
@@ -251,7 +250,7 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
         "published_session_count": len(sessions),
         "input_tokens": sum(s["input_tokens"] for s in sessions) if sessions else None,
         "output_tokens": sum(s["output_tokens"] for s in sessions) if sessions else None,
-        "paid_equivalent_usd": float(rounded_total) if sessions else None,
+        "paid_equivalent_usd": rounded_total_number if sessions else None,
         "paid_equivalent_usd_exact": exact_total_text if sessions else None,
         "rounding": "ROUND_HALF_UP to 10 decimal USD places after exact aggregation",
     }

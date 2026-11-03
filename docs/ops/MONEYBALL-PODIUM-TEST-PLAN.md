@@ -101,3 +101,5 @@ The design closed ahead of the full harvest; feasibility stamps issued against t
 - Stamps most likely to change: **③ blocked-not-run** (identity harvest may source judge↔track linkage) and **① field rows** (field harvest may fill the denominator).
 - The DESIGN stays closed — this is stamp sequencing, not re-review. No test result, evidence row, or book entry may cite pre-pass stamps after the re-issue.
 
+
+- **Review-leg correction (Tests lane, 2026-11-03):** the per-test run clearances in the closure stamp are **PROVISIONAL, not live** — incl. ② descriptive, which also holds. The Tests leg post-pass stamp verification is the **formal gate** (not a follow-up); clearances issue from it. ③ and ① stamps evaluated against the partial record do not bind.

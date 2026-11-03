@@ -1,0 +1,196 @@
+{
+  "schema": "challenge-recruitment/harvest/v1",
+  "event_id": "D2",
+  "event": "Vultr: Agent Rush Hackathon (lablab.ai)",
+  "fetched_at": "2026-11-03T09:08:00-08:00",
+  "field_size": {
+    "approved_participants": 2302,
+    "previous_reading": {
+      "count": 1617,
+      "at": "2026-10-28"
+    },
+    "delta": 685,
+    "source": "lablab.ai event page embedded initialParticipants, programmatic GET 2026-11-03 (field_size_scrape method)"
+  },
+  "population": {
+    "registrant_participant_list": {
+      "count": null,
+      "status": "NOT_PUBLIC \u2014 lablab participant discovery = enrolled dashboard (login) + Discord (join-gated); count-only publicly"
+    },
+    "team_formations": {
+      "count": null,
+      "status": "NOT_ESTABLISHED \u2014 no public team list on event page (teams 1-6 form on dashboard/Discord)"
+    },
+    "judges": {
+      "count": 0,
+      "status": "none named on official page; judging criteria only"
+    },
+    "public_project_signals_github": {
+      "count_search_1": 34,
+      "query_1": "vultr agent rush",
+      "count_search_2": 15,
+      "query_2": "agent-rush hackathon",
+      "note": "public repos self-describing as event entries; signals, NOT verified lablab submissions; all sampled 0 stars"
+    }
+  },
+  "signals": [
+    {
+      "repo": "victrvondoom/Vultr-Agent-Rush",
+      "created_at": "2026-10-28",
+      "note": "sandboxed code/browser agent, containment demo",
+      "source_url": "https://github.com/victrvondoom/Vultr-Agent-Rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "arifiarber-sYn/vultr-agent-rush",
+      "created_at": "2026-11-02",
+      "note": "containment-first runtime: FastAPI control + hardened Docker; pushed 2026-11-03",
+      "source_url": "https://github.com/arifiarber-sYn/vultr-agent-rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "BrickerP/vultr-agent-rush",
+      "created_at": "2026-10-22",
+      "note": "Blast Radius Zero sandboxed code-execution agent",
+      "source_url": "https://github.com/BrickerP/vultr-agent-rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "alexvec/vultr-agent-rush",
+      "created_at": "2026-11-03",
+      "note": "Padded Cell: untrusted-file analysis agent; pushed kickoff day",
+      "source_url": "https://github.com/alexvec/vultr-agent-rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "Zhiyilang/vultr-agent-rush",
+      "created_at": "2026-10-30",
+      "note": "Blast Radius Zero web agent, writes & runs code",
+      "source_url": "https://github.com/Zhiyilang/vultr-agent-rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "Pawnnwap/cage",
+      "created_at": "2026-10-21",
+      "note": "containment-first coding-agent control plane",
+      "source_url": "https://github.com/Pawnnwap/cage",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "Yarrroo/witness",
+      "created_at": "2026-10-14",
+      "note": "proof for every claim in an agent's PR",
+      "source_url": "https://github.com/Yarrroo/witness",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "EnioAguiar/prove-it",
+      "created_at": "2026-10-28",
+      "note": "AI code reviewer proving claims in Vultr sandbox (= example direction 'Prove-It Code Reviewer')",
+      "source_url": "https://github.com/EnioAguiar/prove-it",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "nomadZyt/research-with-receipts",
+      "created_at": "2026-11-02",
+      "note": "Research with Receipts (Blast Radius Zero; = playbook example direction)",
+      "source_url": "https://github.com/nomadZyt/research-with-receipts",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "kosoyyagent/agentrush",
+      "created_at": "2026-10-30",
+      "note": "sandboxed execution agent (Blast Radius Zero)",
+      "source_url": "https://github.com/kosoyyagent/agentrush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "akmalkhaniub/vultr-swarm-agentic",
+      "created_at": "2026-10-06",
+      "note": "autonomous CloudOps multi-agent swarm",
+      "source_url": "https://github.com/akmalkhaniub/vultr-swarm-agentic",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "gfdy22888-design/ledgerpilot-agent-rush",
+      "created_at": "2026-11-02",
+      "note": "evidence-based procurement reconciliation (Future of Work)",
+      "source_url": "https://github.com/gfdy22888-design/ledgerpilot-agent-rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "huangcong9911/dealwatch-agent",
+      "created_at": "2026-11-03",
+      "note": "VPS deal watcher, gVisor-sandboxed browser",
+      "source_url": "https://github.com/huangcong9911/dealwatch-agent",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "mtalha05-phy/PhysSandbox-Vultr-Agent-Rush-hackathon",
+      "created_at": "2026-11-03",
+      "note": "AI scientific troubleshooting platform",
+      "source_url": "https://github.com/mtalha05-phy/PhysSandbox-Vultr-Agent-Rush-hackathon",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "ASAYMAN69/blasted",
+      "created_at": "2026-11-02",
+      "note": "Sandboxed Agent Studio (Challenge 1)",
+      "source_url": "https://github.com/ASAYMAN69/blasted",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "repo": "Jsjk112344/proofdesk",
+      "created_at": "2026-11-03",
+      "note": "proof desk (created kickoff day)",
+      "source_url": "https://github.com/Jsjk112344/proofdesk",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    }
+  ],
+  "dual_valence_readings": {
+    "doctrine": "dual-valence (owner 2026-11-03; LENS-FRAME #4320): readings both valences; ACTIONS observation-only (recruit-scope #2237/#2239) \u2014 assessments only below",
+    "field_level": {
+      "threat": "2302 approved (+685 in 6d) vs 3 cash places ($5k/$3k/$1k + credits) = deep field; repo signals cluster hard on Challenge 1 Blast Radius Zero containment (majority of signals) \u2014 the exact pattern-space of sandboxed execution; early repos (Oct 6-22) had 2-4wk head starts",
+      "opportunity": "same cluster = assimilation surface: containment/sandbox builders are composability-adjacent to fleet patterns (sandboxed execution, receipts/proof \u2014 cf. prove-it, witness, research-with-receipts mirroring playbook example directions); readings recorded for post-event assessment, no outreach (scope rule)"
+    },
+    "named_signals": [
+      {
+        "entity": "EnioAguiar/prove-it",
+        "threat": "direct playbook-named direction (Prove-It Code Reviewer) executed early (Oct 28)",
+        "opportunity": "proof-by-execution = receipts discipline; high composability-fit reading"
+      },
+      {
+        "entity": "Yarrroo/witness",
+        "threat": "earliest signal (Oct 14), attestation angle overlaps fleet witness patterns",
+        "opportunity": "claim-proof for agent PRs = BORG-tech-search/marketing adjacency reading"
+      },
+      {
+        "entity": "arifiarber-sYn/vultr-agent-rush",
+        "threat": "active kickoff-day pushes; hardened-Docker containment runtime = direct C1 rival shape",
+        "opportunity": "control-layer + sandbox composition reading; assimilation candidacy = assessment only"
+      },
+      {
+        "entity": "nomadZyt/research-with-receipts",
+        "threat": "playbook-named direction taken (Research with Receipts)",
+        "opportunity": "receipts-evidence pattern adjacency reading"
+      }
+    ]
+  },
+  "observatory_pass": "GitHub API /search/repositories (programmatic) 2026-11-03 = field repo emergence: 34 + 15 hits, creation span 2026-09-16..2026-11-03, kickoff-day creations/pushes live (alexvec, mtalha05-phy, Jsjk112344, huangcong9911)",
+  "discord_field": "LabLab Discord (event page links discord.gg) = join-gated; no public read taken; status NOT_ESTABLISHED",
+  "sources": [
+    {
+      "url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "url": "https://api.github.com/search/repositories?q=vultr+agent+rush",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    },
+    {
+      "url": "https://api.github.com/search/repositories?q=agent-rush+hackathon",
+      "fetched_at": "2026-11-03T09:08:00-08:00"
+    }
+  ],
+  "coordinator_packet": "field_size.participants 1617 -> 2302 (source + fetched_at above) routed to entries lane (coordinator single-writer) for landing; participants[] stays 0 until lablab exposes a public list/gallery"
+}

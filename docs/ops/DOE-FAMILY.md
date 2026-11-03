@@ -818,7 +818,23 @@ version and compared continuously until culling retires a version.
   (dispatch-tree - tracking - telemetry pages, CANDIDATE
   binding); composition with SWOT duality = the picture is
   where dual-valence targets get tracked, conversion =
-  a dated state change on the track.
+  a dated state change on the track. NAMING RESOLVED
+  (owner word 2026-11-03, "Ours with a 'k' yes"): the lens
+  is OURS = T.A.K. = Taktikal Awareness Kit (K = the fleet
+  coinage + distinguishing mark); the C-spelling belongs
+  to the DoD namesake; relation upgraded from
+  NOT_ESTABLISHED to resolved-on-owner-word, both records
+  preserved. SCOPE SEED #1 (owner-input via the trigger;
+  scope still INTAKE): reference domains = DoD TAK/
+  procurement domains FOR PROCUREMENT CONCEPTS; entity-
+  signal sources = SAM.gov procurement + other procurement
+  concepts; named detection function = ACTOR NETWORK
+  EMERGENCE SIGNALS DETECTION (new entities/registrations/
+  relationships in procurement + registration data =
+  emergence signals on the picture). Composition addendum:
+  emergence detection is where T.A.K. feeds SWOT - a newly
+  emerged actor network enters the picture UNVALENCED;
+  dual-valence reading assigns from evidence.
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

@@ -50,8 +50,11 @@ Intake stamp (a new lens type entering):
 - `swot` — SWOT with the duality doctrine (LENS-FRAME.md):
   competitive frames ⇒ dual valence mandatory,
   single-valence filings malformed.
-- `tak` — TAK = Tactical Awareness Kit (owner-identified
-  2026-11-03; lens registered in LENS-FRAME.md): the
-  shared tactical-awareness / common-operating-picture
-  lens. TAK filings carry the {lens_filing} stamp with
-  lens_id "tak" and cite the picture surface they read.
+- `tak` — T.A.K. = Taktikal Awareness Kit (OURS, K-spelling;
+  naming resolved on the owner's word 2026-11-03; lens
+  registered in LENS-FRAME.md): the shared tactical-
+  awareness / common-operating-picture lens, scope seed #1
+  = actor network emergence signals detection over
+  procurement/registration data. T.A.K. filings carry the
+  {lens_filing} stamp with lens_id "tak" and cite the
+  picture surface they read.

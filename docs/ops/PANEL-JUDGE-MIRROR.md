@@ -184,3 +184,18 @@ Filing + consumption:
   gate — intake stamps re-issue first; this section
   registers the quantity and its hooks, it does not
   itself fire a run.
+
+## Parallel instrument: F-N3 field-simulation forecasts
+
+The field-simulation ABM (findings register F-N3,
+sensitivity-only verdict) may run as a RECORDED,
+archetype-labeled forecast in parallel with a mirror
+baseline — it gates nothing and its pre-outcome value
+is CALIBRATION, not direction: it cross-checks the
+mirror's probability read against an explicit field
+model whose assumptions are stated in the record
+(field size and score distribution are priors, never
+measurements). First run: fn3-2026-11-03-d1-field-sim
+(baseline score 61.7 held fixed; the sim's robust
+outputs = the mirror-vs-field divergence + the score-
+response slope, not its point probabilities).

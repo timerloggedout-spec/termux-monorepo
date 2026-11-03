@@ -193,3 +193,32 @@ pass + data feasibility, exactly as the caveat states.
 (The P1/P2 substance channel, once accepted + merged,
 is what would make a future score readable as more
 than shape.)
+
+## Addendum — Swarm cross-feed (2026-11-03, PR #4523)
+
+Three findings from the Swarm oversight seat's podium
+research program, verified against this review:
+
+- **A1 (hardens C1-D1).** The identity ceiling is
+  VENUE-DISCLOSURE-BOUND: judge↔track linkage is
+  NOT_ESTABLISHED BY CONSTRUCTION for Agent Rush-class
+  venues (venues that do not disclose judges). No method
+  leg re-opens test ③ for that class — the descope is
+  not "pending data" but structural. Test ③ can only
+  ever live where a venue discloses its judges; the
+  RAISE-pool descriptive census remains the only live
+  form today.
+- **A2 (methods note, joins C1-D4).** At n=11, EXACT
+  ENUMERATION is available outright; Monte Carlo
+  p-values at this n would be an unforced error. The
+  test plan's small-n methods are exact-enumeration
+  only; a Monte Carlo p-value in any Podium test output
+  is a methods defect on sight.
+- **A3 (concretizes C1-D7).** The C2 (concept-2 corpus)
+  re-code lacks an inter-rater instrument; the concrete
+  fix is filed as gap G2 in capture issue #4524: a
+  double-code of >=30% of items with Cohen's kappa
+  reported. C1-D7's "dual-tag agreement check" is hereby
+  specified as exactly that instrument (same 30% floor,
+  kappa stated in every tagging run's record); tagging
+  below the kappa floor stays CLAIM-grade.

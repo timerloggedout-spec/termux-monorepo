@@ -50,10 +50,12 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         id: manual
         uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
         with:
           github-token: ${{ github.token }}
           script: |
-            const number = Number('${{ inputs.pr_number }}');
+            const number = Number(process.env.PR_NUMBER);
             if (!Number.isSafeInteger(number) || number < 1) throw new Error('Invalid PR number');
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,

@@ -87,3 +87,17 @@ def test_prizes_block_rendered_never_omitted():
             assert pz["tiers"] or pz["pool"]
         for tier in pz["tiers"]:
             assert tier["place"] and tier["award"]
+
+
+def test_submission_block_rendered_when_recorded():
+    """Feed v1.2 carriage: an entry's recorded submission state
+    (from the log's submission-data line, carried by the collector)
+    renders on its card — state chip, the recorded instant, and the
+    reference link. No recorded submission -> nothing rendered
+    (absent stays absent); the block must stay defensive so the
+    page is correct on a v1.1 feed without the field."""
+    html = _page()
+    assert "submissionHTML(e)" in html and "e.submission" in html
+    assert "s.state" in html and "s.at" in html and "s.ref" in html
+    assert "view submission" in html
+    assert 'if(!s||!s.state) return "";' in html

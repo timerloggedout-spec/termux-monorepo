@@ -15,6 +15,11 @@
   card renders its entry's prizes block verbatim from the feed —
   tier lines and the pool line when present; an unpublished prize
   set renders as NOT_ESTABLISHED, never blank, never omitted.
+  Submission block (feed v1.2 carriage): when an entry carries
+  submission {state, at, ref} — a recorded fact from the log, not a
+  computed state — the card renders it (state chip, the instant in
+  PT, the reference link). An entry with no submission recorded
+  renders nothing there: absent stays absent.
 -->
 <link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
 <style>
@@ -30,6 +35,8 @@
   .pz-ne{margin:.25rem 0;color:var(--gold);font-weight:700;letter-spacing:.02em}
   .pz-tiers{margin:.25rem 0;padding-left:17px}
   .pz-tiers li{margin:.18rem 0}
+  .submission{margin-top:.55rem;border-top:1px solid var(--line);padding-top:.45rem}
+  .sub-line{margin:.25rem 0}
   .gantt-wrap{overflow-x:auto}
   .g-label{fill:var(--fg);font-size:11px}
   .g-axis{fill:var(--muted);font-size:10px}
@@ -185,6 +192,14 @@ function prizesHTML(e){
   if(p&&p.tiers&&p.tiers.length) h+='<ul class="pz-tiers">'+p.tiers.map(t=>'<li><strong>'+esc(t.place)+'</strong> \u2014 '+esc(t.award)+(t.source_url?' <a href="'+esc(t.source_url)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join("")+'</ul>';
   return h+'</div>';
 }
+function submissionHTML(e){
+  const s=e.submission;
+  if(!s||!s.state) return "";
+  let h='<div class="submission"><span class="cd-label">Submission</span><p class="sub-line"><span class="badge ok">'+esc(s.state)+'</span>';
+  if(s.at) h+=' <span class="dim">'+esc(fmtInstant(s.at))+'</span>';
+  if(s.ref) h+=' · <a href="'+esc(s.ref)+'" target="_blank" rel="noopener">view submission</a>';
+  return h+'</p></div>';
+}
 let ENTRIES=[];
 function render(){
   $("cards").innerHTML=ENTRIES.map(e=>
@@ -195,6 +210,7 @@ function render(){
     '<div class="cd-value" data-role="value"></div>'+
     '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
     prizesHTML(e)+
+    submissionHTML(e)+
     '</div>').join("");
   renderGantt();
   renderLanes();

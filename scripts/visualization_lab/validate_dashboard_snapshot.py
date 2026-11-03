@@ -6,9 +6,10 @@ import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
 
 
-def inspect_snapshot(path: Path, now: datetime | None = None,
+def inspect_snapshot(path: Path, now: Optional[datetime] = None,
                      max_age_hours: float = 24.0) -> dict:
     now = now or datetime.now(timezone.utc)
     result = {"path": str(path), "state": "invalid", "errors": [], "warnings": []}

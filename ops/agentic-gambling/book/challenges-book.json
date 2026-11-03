@@ -82,7 +82,12 @@
     "source": "entries confirmation_ref + coordinator record",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-04T23:59:00-08:00",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)"
+   }
   },
   {
    "anchors": {
@@ -117,7 +122,12 @@
     "source": "Builder Center official results",
     "value": null
    },
-   "subject": "Placement = winner (top-3) {Y/N}"
+   "subject": "Placement = winner (top-3) {Y/N}",
+   "window": {
+    "wall": "2026-11-04T23:59:00-08:00",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)"
+   }
   },
   {
    "anchors": {
@@ -152,7 +162,12 @@
     "source": "D2 seat + gate D2-NOCARD",
     "value": null
    },
-   "subject": "Vultr no-card account live at kickoff {Y/N}"
+   "subject": "Vultr no-card account live at kickoff {Y/N}",
+   "window": {
+    "wall": "2026-11-03T15:00:00Z",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register stage B (kickoff day cushion)"
+   }
   },
   {
    "anchors": {
@@ -187,7 +202,12 @@
     "source": "entries confirmation_ref",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-08T15:00:00-08:00",
+    "window_start": "2026-11-04T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -223,7 +243,12 @@
     "source": "lablab official results",
     "value": null
    },
-   "subject": "Placement top-3 {Y/N}"
+   "subject": "Placement top-3 {Y/N}",
+   "window": {
+    "wall": "2026-11-08T15:00:00-08:00",
+    "window_start": "2026-11-04T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -258,7 +283,12 @@
     "source": "gate D3-CLIPS-STORAGE",
     "value": null
    },
-   "subject": "Clips gate cleared by landing {Y/N}"
+   "subject": "Clips gate cleared by landing {Y/N}",
+   "window": {
+    "wall": "2026-11-08T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -293,7 +323,12 @@
     "source": "D3 seat per-PR verification",
     "value": null
    },
-   "subject": "Feature batch B1-B3 landed by Nov 8 {Y/N}"
+   "subject": "Feature batch B1-B3 landed by Nov 8 {Y/N}",
+   "window": {
+    "wall": "2026-11-08T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -328,7 +363,12 @@
     "source": "entries / D3 record",
     "value": null
    },
-   "subject": "Submission landed (form + public Clips URL) by wall {Y/N}"
+   "subject": "Submission landed (form + public Clips URL) by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-09T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -364,7 +404,12 @@
     "source": "Builder.io official results",
     "value": null
    },
-   "subject": "Placement = paid tier (top-5) {Y/N}"
+   "subject": "Placement = paid tier (top-5) {Y/N}",
+   "window": {
+    "wall": "2026-11-09T23:59:00-08:00",
+    "window_start": "2026-11-05T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -399,7 +444,12 @@
     "source": "Gates / D4 seat",
     "value": null
    },
-   "subject": "4,000-credit form filed by Nov 30 {Y/N}"
+   "subject": "4,000-credit form filed by Nov 30 {Y/N}",
+   "window": {
+    "wall": "2026-11-30T23:59:00-08:00",
+    "window_start": "2026-11-27T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -434,7 +484,12 @@
     "source": "D4 seat record",
     "value": null
    },
-   "subject": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}"
+   "subject": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}",
+   "window": {
+    "wall": "2026-12-02T23:59:00-08:00",
+    "window_start": "2026-11-29T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -469,7 +524,12 @@
     "source": "entries confirmation_ref (Devpost)",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-12-04T14:00:00-08:00",
+    "window_start": "2026-11-29T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -505,7 +565,12 @@
     "source": "Devpost official results",
     "value": null
    },
-   "subject": "Placement = any prize (overall/category/crew) {Y/N}"
+   "subject": "Placement = any prize (overall/category/crew) {Y/N}",
+   "window": {
+    "wall": "2026-12-04T14:00:00-08:00",
+    "window_start": "2026-11-29T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -540,7 +605,12 @@
     "source": "entries + gate D5-SPOT",
     "value": null
    },
-   "subject": "Spot confirmation received {Y/N}"
+   "subject": "Spot confirmation received {Y/N}",
+   "window": {
+    "wall": "2026-11-17T09:00:00-08:00",
+    "window_start": "2026-11-17T09:00:00-08:00",
+    "window_start_basis": "register stage B (kickoff) \u2014 earliest anchor; spot gates the kickoff"
+   }
   },
   {
    "anchors": {
@@ -575,7 +645,12 @@
     "source": "entries confirmation_ref",
     "value": null
    },
-   "subject": "Submission landed by wall {Y/N}"
+   "subject": "Submission landed by wall {Y/N}",
+   "window": {
+    "wall": "2026-11-19T12:00:00-08:00",
+    "window_start": "2026-11-15T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -611,7 +686,12 @@
     "source": "Aha official results",
     "value": null
    },
-   "subject": "Placement = winner {Y/N}"
+   "subject": "Placement = winner {Y/N}",
+   "window": {
+    "wall": "2026-11-19T12:00:00-08:00",
+    "window_start": "2026-11-15T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": null,
@@ -638,7 +718,12 @@
     "source": "gate AMD-GPU100",
     "value": null
    },
-   "subject": "M1 $100 GPU claim filed by Nov 7 {Y/N}"
+   "subject": "M1 $100 GPU claim filed by Nov 7 {Y/N}",
+   "window": {
+    "wall": "2026-11-07T23:59:00-08:00",
+    "window_start": "2026-11-02T00:00:00-08:00",
+    "window_start_basis": "book intake date (day granularity) \u2014 no register item; earliest honest date = subject opened at book open"
+   }
   },
   {
    "anchors": null,
@@ -665,7 +750,12 @@
     "source": "AMD seat + League platform",
     "value": null
    },
-   "subject": "M4 submitted by Nov 9 target {Y/N}"
+   "subject": "M4 submitted by Nov 9 target {Y/N}",
+   "window": {
+    "wall": "2026-11-09T23:59:00-08:00",
+    "window_start": "2026-11-02T00:00:00-08:00",
+    "window_start_basis": "book intake date (day granularity) \u2014 no register item"
+   }
   },
   {
    "anchors": {
@@ -701,7 +791,12 @@
     "source": "Gates evidence (cert + points) + certs ledger",
     "value": null
    },
-   "subject": "Academy >=5 complete by Nov 19 landing {Y/N}"
+   "subject": "Academy >=5 complete by Nov 19 landing {Y/N}",
+   "window": {
+    "wall": "2026-11-19T23:59:00-08:00",
+    "window_start": "2026-11-03T09:00:00-08:00",
+    "window_start_basis": "register AMD Academy C1 stage A \u2014 first anchor of the >=5 course set"
+   }
   },
   {
    "anchors": {
@@ -736,7 +831,12 @@
     "source": "Gates seat 840bd147 evidence",
     "value": null
    },
-   "subject": "ROCm exam passed by Nov 25 landing {Y/N}"
+   "subject": "ROCm exam passed by Nov 25 landing {Y/N}",
+   "window": {
+    "wall": "2026-11-25T23:59:00-08:00",
+    "window_start": "2026-11-22T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -771,7 +871,12 @@
     "source": "AMD seat records",
     "value": null
    },
-   "subject": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}"
+   "subject": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}",
+   "window": {
+    "wall": "2026-11-28T23:59:00-08:00",
+    "window_start": "2026-11-25T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -807,7 +912,12 @@
     "source": "lablab official results",
     "value": null
    },
-   "subject": "Podium (top-3) at close {Y/N}"
+   "subject": "Podium (top-3) at close {Y/N}",
+   "window": {
+    "wall": "2026-12-01T11:00:00-08:00",
+    "window_start": "2026-11-25T09:00:00-08:00",
+    "window_start_basis": "register stage A (cushion-3d)"
+   }
   },
   {
    "anchors": {
@@ -845,7 +955,12 @@
     "source": "certs ledger #506 + FCC verify link",
     "value": null
    },
-   "subject": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}"
+   "subject": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}",
+   "window": {
+    "wall": "2026-12-12T23:59:00-08:00",
+    "window_start": "2026-12-02T09:00:00-08:00",
+    "window_start_basis": "register FCC checkpoint stage A \u2014 earliest anchor (soft item)"
+   }
   },
   {
    "anchors": null,
@@ -872,7 +987,12 @@
     "source": "coordinator + C12 record",
     "value": null
    },
-   "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}"
+   "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
+   "window": {
+    "wall": "2026-11-15T23:45:00-08:00",
+    "window_start": "2026-11-03T00:00:00-08:00",
+    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+   }
   },
   {
    "anchors": null,
@@ -899,7 +1019,12 @@
     "source": "Devpost official",
     "value": null
    },
-   "subject": "Finalist selection {Y/N}"
+   "subject": "Finalist selection {Y/N}",
+   "window": {
+    "wall": "2026-11-21T23:59:00-08:00",
+    "window_start": "2026-11-03T00:00:00-08:00",
+    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+   }
   },
   {
    "anchors": null,
@@ -926,8 +1051,14 @@
     "source": "Devpost official results",
     "value": null
    },
-   "subject": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}"
+   "subject": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}",
+   "window": {
+    "wall": "2026-11-30T23:59:00-08:00",
+    "window_start": "2026-11-03T00:00:00-08:00",
+    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+   }
   }
  ],
- "subjects_source": "challenge-entries-manager (9cb1c873) authoritative list 2026-11-02 \u2014 subject, settles-by, knowable; walls/landings per buffer rule; placement dates unpublished = NOT_ESTABLISHED + C12 addition (challenge-entries-manager 2026-11-03: subjects 24-26)"
+ "subjects_source": "challenge-entries-manager (9cb1c873) authoritative list 2026-11-02 \u2014 subject, settles-by, knowable; walls/landings per buffer rule; placement dates unpublished = NOT_ESTABLISHED + C12 addition (challenge-entries-manager 2026-11-03: subjects 24-26)",
+ "window_note": "window anchors (owner Gantt build via main 2026-11-03): every subject carries {window_start, window_start_basis, wall}. Starts are the earliest honest date of record (register stage A/B anchor, or intake/graduation date where no register item exists) \u2014 never invented. pct_consumed/pct_remaining are computed at FEED build time in book-feed.json (computed_at stamped), never hand-entered, and never in the book itself."
 }

@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-03T12:37:42Z",
+ "generated_at": "2026-11-03T12:40:44Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 26
@@ -17,7 +17,7 @@
   "D5": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
   "AMD": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
   "FCC": "FCC L1 (baseline milestone)",
-  "C12": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)"
+  "C12": "C12 (graduated 2026-11-03)"
  },
  "forecast_layer": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) \u2014 calendar anchors are DATA ON THE SUBJECT, not a new participant class",
  "publishability_flags": [
@@ -34,7 +34,7 @@
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@600bfc92f43e (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@0b0b4d8e6028 (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -909,7 +909,7 @@
   {
    "id": "C12-24-r1-submission",
    "label": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
-   "group": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)",
+   "group": "C12 (graduated 2026-11-03)",
    "family": "C12",
    "register_item": null,
    "settles_by": "coordinator + C12 record",
@@ -944,7 +944,7 @@
   {
    "id": "C12-25-finalist-selection",
    "label": "Finalist selection {Y/N}",
-   "group": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)",
+   "group": "C12 (graduated 2026-11-03)",
    "family": "C12",
    "register_item": null,
    "settles_by": "Devpost official",
@@ -979,7 +979,7 @@
   {
    "id": "C12-26-placement",
    "label": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}",
-   "group": "C12 (graduated to slate 2026-11-03; wall Nov 15 23:45 PT, buffer landing Nov 14)",
+   "group": "C12 (graduated 2026-11-03)",
    "family": "C12",
    "register_item": null,
    "settles_by": "Devpost official results",

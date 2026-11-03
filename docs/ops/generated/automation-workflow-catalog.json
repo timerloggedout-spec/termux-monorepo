@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7a0a4381cec0a2edf81ced18958e7828ecad557c497c5bf98ce5297ff1b66dba",
+  "source_fingerprint": "4ba863ab1db8a7679562c5ecc662af4baec279d4ffb73b567fbd985af70334f7",
   "workflow_count": 281,
   "workflows": [
     {
@@ -1812,7 +1812,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "bounded-state-write",
       "concurrency": "",
       "domain": "agentic-development",

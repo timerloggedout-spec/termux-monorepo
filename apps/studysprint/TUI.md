@@ -60,6 +60,10 @@ default or SM-2, scheduler-named receipt after every grade) ·
 Every iteration of this surface ships only when ALL hold:
 - Demo evidence present: screenshots/screen-recording of the demo in
   `evidence/<surface>/` in-tree at the release tag.
+- Device frames land header-cropped, always: the status/notification
+  band is cropped before any device capture is committed, and frames
+  are swept for other PII (notification content, names, account
+  hints) before they land.
 - Parity statement present: what this surface rides vs the foundation
   version it ships against, and what is honestly absent/pending.
 - Tests green for the surface + no foundation regressions.

@@ -2296,7 +2296,7 @@
       ]
     },
     {
-      "entry": "D1",
+      "entry": "D1", "priority_timebox": {"owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders", "wall": "2026-11-04T23:59:00-08:00", "tiers": [{"tier": 0, "name": "BASE", "from": "window open", "effect": "in-window development line active (continuous-development mandate); routine admission"}, {"tier": 1, "name": "CUSHION", "at": "2026-11-03T09:00:00-08:00", "reminder": "deadline-d1-cushion-2026-11-03", "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"}, {"tier": 2, "name": "WALL-DAY", "at": "2026-11-04T00:00:00-08:00", "reminder": "calendar scheme C (wall-day)", "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"}, {"tier": 3, "name": "ESCALATION", "at": "2026-11-04T19:59:00-08:00", "reminder": "deadline-d1-escalation-2026-11-04", "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"}, {"tier": 4, "name": "FINAL", "at": "2026-11-04T23:29:00-08:00", "reminder": "deadline-d1-final-2026-11-04", "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"}], "step_down_cushion": [{"at": "wall+24h", "tier": 1}, {"at": "wall+48h", "tier": 0}], "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."},
       "project": "StudySprint",
       "artifact_repo": "timerloggedout-spec/studysprint",
       "status": "landed",

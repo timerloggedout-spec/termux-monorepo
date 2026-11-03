@@ -186,10 +186,14 @@ def parse_winners_feed(raw_html: str, captured_at: str) -> list[dict]:
         tm = re.search(r'alt="([^"]{3,120})"', block[block.find('href="' + path) :] or block)
         title = html.unescape(tm.group(1)) if tm else None
         tags = [html.unescape(t) for t in TAG_RE.findall(block)][:12]
+        tagline = None
+        pm = re.search(r"<p[^>]*>([^<>{}]{30,400})</p>", block)
+        if pm:
+            tagline = html.unescape(pm.group(1)).strip()
         out.append(
             {
                 "edition_slug": edition, "team_slug": team, "project_slug": project,
-                "title": title, "placement": medal,
+                "title": title, "tagline": tagline, "placement": medal,
                 "url": BASE + path, "tech_tags": tags, "receipt": r,
             }
         )

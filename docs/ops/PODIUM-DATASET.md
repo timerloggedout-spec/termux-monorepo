@@ -106,7 +106,18 @@ values are never copied across silently).
   `podium-codebook/v1` by the consumers — card text here is evidence,
   not features.
 
-## Next version scope (v2)
+## Amendment v2 (2026-11-03, MoneyBall plan amendment #2)
+
+Dataset `2026-11-03.v2` (sha256 `b8a187aabc4b68ca8f987baae45ab633df78c52b9bd50c2b42e389072fb27995`,
+diff vs v1: +34 added · 9 changed · 0 removed) adds: **field rows**
+(per-edition `/live` gallery anchors — entries := gallery submissions;
+vultr field already 4 on day 1, alpaca 15, assemblyai 11, ibm-bob 13)
+∧ expanded feasibility stamps {repeat judges with attributable picks
+= 0 · judge↔track linkage NOT_ESTABLISHED (stamp = the deliverable) ·
+category×edition denominators NOT_ESTABLISHED · editions with usable
+rubrics = 0}.
+
+## Next version scope (v3)
 
 - **Field rows (C1):** per edition, ALL gallery submissions (entries :=
   gallery submissions, not approved registrants). D2 gallery opens

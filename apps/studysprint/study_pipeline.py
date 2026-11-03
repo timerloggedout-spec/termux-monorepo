@@ -573,11 +573,224 @@ def run_pipeline(text_ref: dict, upload_path=None, glossary_text: str = "",
     return bundle
 
 
+# ------------------------------------------------- syllabus parse (D)
+
+_WEEKDAY_WORDS = {
+    "mon": "Mon", "monday": "Mon", "tue": "Tue", "tues": "Tue",
+    "tuesday": "Tue", "wed": "Wed", "wednesday": "Wed",
+    "thu": "Thu", "thur": "Thu", "thurs": "Thu", "thursday": "Thu",
+    "fri": "Fri", "friday": "Fri", "sat": "Sat", "saturday": "Sat",
+    "sun": "Sun", "sunday": "Sun",
+}
+_COURSE_RE = re.compile(r"\b([A-Z]{2,4})\s*(\d{2,4}[A-Z]?)\b")
+_TIME_RANGE_RE = re.compile(
+    r"(\d{1,2}):(\d{2})\s*([AaPp][Mm])?\s*[-\u2013]\s*"
+    r"(\d{1,2}):(\d{2})\s*([AaPp][Mm])?")
+_TIME_RE = re.compile(r"(\d{1,2}):(\d{2})\s*([AaPp][Mm])?")
+_ISO_DATE_RE = re.compile(r"\b(20\d{2})-(\d{2})-(\d{2})\b")
+_MONTH_DATE_RE = re.compile(
+    r"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+"
+    r"(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(20\d{2}))?", re.I)
+_ROOM_RE = re.compile(r"\b(?:Room|Rm\.?)\s*([A-Za-z0-9-]+)", re.I)
+_KIND_RE = re.compile(r"\b(quiz|midterm|final)\b", re.I)
+_MONTHS = {m: i + 1 for i, m in enumerate(
+    ("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep",
+     "oct", "nov", "dec"))}
+
+
+def _to_24h(hour: int, minute: int, ampm: str | None) -> str:
+    if ampm:
+        ap = ampm.lower()
+        if ap == "pm" and hour != 12:
+            hour += 12
+        elif ap == "am" and hour == 12:
+            hour = 0
+    return f"{hour:02d}:{minute:02d}"
+
+
+def _place_parts(text: str):
+    """(building, room) from the text after a time/date fragment."""
+    room = None
+    m = _ROOM_RE.search(text)
+    if m:
+        room = m.group(1)
+        text = (text[:m.start()] + text[m.end():])
+    building = re.sub(r"^[\s,;@\-–—]+|[\s,;]+$", "", text)
+    building = re.sub(r"\s+", " ", building).strip(" ,;")
+    return (building or None), room
+
+
+def parse_syllabus_text(text: str, now: datetime | None = None) -> dict:
+    """Parse syllabus text (incl. OCR output) into a study_calendar
+    intake doc {classes, assessments} — CONSERVATIVE line grammar:
+
+    - a course code (e.g. `BIO 101`) on a line sets the course for
+      the records that follow it;
+    - a line with weekday names + a time range is a class meeting
+      (building/room read from the text after the range);
+    - a line naming quiz|midterm|final + a date (ISO or
+      `Nov 20[, 2026]`) is an assessment.
+
+    Lines that match nothing are returned as `unmatched` — the
+    parser never guesses a record it cannot ground. Output feeds
+    study_calendar.intake_calendar unchanged (build D, #4242).
+    """
+    now = now or datetime.now(timezone.utc)
+    classes, assessments, unmatched = [], [], []
+    course = None
+    for raw in (text or "").splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        cm = _COURSE_RE.search(line)
+        if cm:
+            course = f"{cm.group(1)} {cm.group(2)}"
+        days = [d for token in re.findall(r"[A-Za-z]+", line)
+                if (d := _WEEKDAY_WORDS.get(token.lower()))]
+        tr = _TIME_RANGE_RE.search(line)
+        if days and tr:
+            start = _to_24h(int(tr.group(1)), int(tr.group(2)),
+                            tr.group(3) or tr.group(6))
+            end = _to_24h(int(tr.group(4)), int(tr.group(5)),
+                          tr.group(6) or tr.group(3))
+            building, room = _place_parts(line[tr.end():])
+            classes.append({"course": course, "days": days,
+                            "start": start, "end": end,
+                            "building": building, "room": room})
+            continue
+        km = _KIND_RE.search(line)
+        dm = _ISO_DATE_RE.search(line) or _MONTH_DATE_RE.search(line)
+        if km and dm:
+            if dm.re is _ISO_DATE_RE:
+                date = dm.group(0)
+            else:
+                year = int(dm.group(3) or now.year)
+                date = (f"{year:04d}-{_MONTHS[dm.group(1).lower()[:3]]:02d}"
+                        f"-{int(dm.group(2)):02d}")
+            tm = _TIME_RE.search(line[dm.end():]) or \
+                _TIME_RE.search(line)
+            when = (_to_24h(int(tm.group(1)), int(tm.group(2)),
+                            tm.group(3)) if tm else None)
+            building, room = _place_parts(line[dm.end():])
+            assessments.append({"course": course,
+                                "kind": km.group(1).lower(),
+                                "date": date, "time": when,
+                                "building": building, "room": room})
+            continue
+        unmatched.append(line)
+    return {"doc": {"classes": classes, "assessments": assessments},
+            "counts": {"classes": len(classes),
+                       "assessments": len(assessments),
+                       "unmatched": len(unmatched)},
+            "unmatched": unmatched}
+
+
+def place_syllabus(parsed: dict, confirmed: bool = False,
+                   now: datetime | None = None) -> dict:
+    """CONFIRM-GATED placement of a parsed syllabus.
+
+    No confirmation => NO placement: the records are reported as
+    awaiting the student's confirm and nothing enters the
+    calendar. Confirmed => the doc goes through
+    study_calendar.intake_calendar and the calendar receipt is
+    the placement record."""
+    from study_calendar import intake_calendar
+    now = now or datetime.now(timezone.utc)
+    counts = parsed.get("counts") or {}
+    if not confirmed:
+        return _receipt("syllabus-placement", now, placed=False,
+                        awaiting="student-confirm",
+                        classes=counts.get("classes", 0),
+                        assessments=counts.get("assessments", 0))
+    calendar = intake_calendar(parsed["doc"], now)
+    return _receipt("syllabus-placement", now, placed=True,
+                    calendar=calendar)
+
+
+def run_syllabus_upload(path, confirmed: bool = False, ocr_fn=None,
+                        pdf_text_fn=None,
+                        now: datetime | None = None) -> dict:
+    """Upload => ingest => syllabus parse => confirm-gated
+    placement. Provenance is stamped on every receipt: text that
+    arrived through OCR carries `source: ocr`."""
+    now = now or datetime.now(timezone.utc)
+    ingest = ingest_upload(path, ocr_fn=ocr_fn,
+                           pdf_text_fn=pdf_text_fn, now=now)
+    text = ingest.pop("text")
+    source = "ocr" if ingest.get("kind") == "ocr-image" else "upload"
+    parsed = parse_syllabus_text(text, now=now)
+    placement = place_syllabus(parsed, confirmed=confirmed, now=now)
+    return {"ingest": ingest, "provenance": {"source": source},
+            "parse": {"counts": parsed["counts"],
+                      "unmatched": parsed["unmatched"]},
+            "placement": placement,
+            "receipt": _receipt("syllabus-upload", now, flow="syllabus",
+                                placed=placement.get("placed", False),
+                                provenance=source)}
+
+
+def ingest_any(path, confirmed: bool = False, ocr_fn=None,
+               pdf_text_fn=None, now: datetime | None = None) -> dict:
+    """THE one core ingestion path every surface calls (build D):
+    an upload that parses as a syllabus takes the syllabus flow
+    (records + confirm-gated placement); anything else takes the
+    textbook content flow (structure => term bank => SR cards).
+    The edition finder stays a separate leg (run_pipeline)."""
+    now = now or datetime.now(timezone.utc)
+    probe = ingest_upload(path, ocr_fn=ocr_fn, pdf_text_fn=pdf_text_fn,
+                          now=now)
+    text = probe.pop("text")
+    parsed = parse_syllabus_text(text, now=now)
+    if parsed["counts"]["classes"] or parsed["counts"]["assessments"]:
+        placement = place_syllabus(parsed, confirmed=confirmed,
+                                   now=now)
+        source = ("ocr" if probe.get("kind") == "ocr-image"
+                  else "upload")
+        return {"flow": "syllabus", "ingest": probe,
+                "provenance": {"source": source},
+                "parse": {"counts": parsed["counts"],
+                          "unmatched": parsed["unmatched"]},
+                "placement": placement,
+                "receipt": _receipt("ingest-any", now, flow="syllabus",
+                                    placed=placement.get("placed",
+                                                           False))}
+    structure = extract_structure(text)
+    # a single-file textbook carries its back matter inline: a
+    # bare "Glossary" / "Index" heading switches the sink, and
+    # that text becomes the term bank's spine (build_term_bank's
+    # contract: glossary terms join the chapters they appear in)
+    glossary_lines, index_lines, sink = [], [], None
+    for line in text.splitlines():
+        head = line.strip().lower().rstrip(":")
+        if head == "glossary":
+            sink = glossary_lines
+            continue
+        if head == "index":
+            sink = index_lines
+            continue
+        if sink is not None:
+            sink.append(line)
+    bank = build_term_bank(structure, "\n".join(glossary_lines),
+                           "\n".join(index_lines), now=now)
+    cards = term_bank_cards(bank)
+    return {"flow": "textbook", "ingest": probe,
+            "provenance": {"source": "ocr" if probe.get("kind")
+                           == "ocr-image" else "upload"},
+            "structure": {"chapters": len(structure.get("chapters")
+                                           or [])},
+            "term_bank": {"terms": bank["receipt"]["terms"]},
+            "sr_cards": len(cards),
+            "receipt": _receipt("ingest-any", now, flow="textbook",
+                                sr_cards=len(cards))}
+
+
 __all__ = [
     "find_editions", "confirm_edition", "ingest_upload", "tesseract_ocr",
     "extract_structure", "to_reader_sections", "build_term_bank",
     "make_term_lookup", "term_bank_cards", "emphasize_terms",
     "term_tap_payload", "make_annotation", "annotation_to_card",
     "flagged_term_annotation", "HypothesisClient", "run_pipeline",
+    "parse_syllabus_text", "place_syllabus", "run_syllabus_upload",
+    "ingest_any",
     "PIPELINE_RECEIPT_SCHEMA",
 ]

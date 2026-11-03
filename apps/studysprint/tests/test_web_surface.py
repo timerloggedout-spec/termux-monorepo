@@ -72,3 +72,17 @@ def test_app_js_engines_and_syntax():
     if node:
         subprocess.run([node, "--check", str(WEB / "app.js")],
                        check=True)
+
+
+def test_web_ingest_legs():
+    html = (WEB / "index.html").read_text()
+    assert 'id="ingest-file"' in html
+    assert 'accept=".txt,.md,text/plain"' in html
+    assert 'id="ingest-camera"' in html
+    assert 'accept="image/*" capture="environment"' in html
+    assert 'id="ingest-confirm"' in html
+    js = (WEB / "app.js").read_text()
+    assert "function parseSyllabus" in js
+    assert "ss.ingest.pending" in js  # confirm gate: pending first
+    assert "ss.ingest.placed" in js   # placed only on confirm
+    assert "awaiting-core-ocr" in js  # captures are honest, not parsed

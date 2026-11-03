@@ -254,3 +254,97 @@ def test_run_pipeline_bundle(tmp_path):
     assert bundle["sr_cards"] >= 2
     assert bundle["receipt"]["stage"] == "pipeline"
     json.dumps(bundle)  # the whole bundle is JSON-serializable
+
+
+# ---- build D (#4242): syllabus parse + confirm-gated placement ----
+
+SYLLABUS_TEXT = """BIO 101 — Intro Biology
+Lectures: Mon Wed 10:00-11:15, Science Building, Room 204
+Lab: Fri 13:00-14:30, Science Building, Room 110
+Midterm: 2026-11-20 18:00, Science Building
+Final exam: Dec 12, 9:00 AM, Science Building
+Bring a pencil.
+"""
+
+
+def test_parse_syllabus_text_records():
+    from study_pipeline import parse_syllabus_text
+    parsed = parse_syllabus_text(SYLLABUS_TEXT)
+    assert parsed["counts"]["classes"] == 2
+    assert parsed["counts"]["assessments"] == 2
+    first = parsed["doc"]["classes"][0]
+    assert first["course"] == "BIO 101"
+    assert first["days"] == ["Mon", "Wed"]
+    assert first["start"] == "10:00" and first["end"] == "11:15"
+    assert first["building"] == "Science Building"
+    assert first["room"] == "204"
+    kinds = {a["kind"] for a in parsed["doc"]["assessments"]}
+    assert kinds == {"midterm", "final"}
+    final = [a for a in parsed["doc"]["assessments"]
+             if a["kind"] == "final"][0]
+    assert final["date"].endswith("-12-12")
+    assert final["time"] == "09:00"
+    assert "Bring a pencil." in parsed["unmatched"]
+
+
+def test_place_syllabus_is_confirm_gated():
+    from study_pipeline import parse_syllabus_text, place_syllabus
+    parsed = parse_syllabus_text(SYLLABUS_TEXT)
+    held = place_syllabus(parsed, confirmed=False)
+    assert held["placed"] is False
+    assert held["awaiting"] == "student-confirm"
+    assert "calendar" not in held
+    placed = place_syllabus(parsed, confirmed=True)
+    assert placed["placed"] is True
+    cal = placed["calendar"]
+    assert cal["receipt"]["classes"] == 2
+    assert cal["receipt"]["assessments"] == 2
+
+
+def test_run_syllabus_upload_ocr_provenance(tmp_path):
+    from study_pipeline import run_syllabus_upload
+    img = tmp_path / "syllabus.png"
+    img.write_bytes(b"fake-png")
+    out = run_syllabus_upload(img, ocr_fn=lambda p: SYLLABUS_TEXT)
+    assert out["provenance"] == {"source": "ocr"}
+    assert out["ingest"]["kind"] == "ocr-image"
+    assert out["placement"]["placed"] is False  # no confirm given
+    out2 = run_syllabus_upload(img, confirmed=True,
+                               ocr_fn=lambda p: SYLLABUS_TEXT)
+    assert out2["placement"]["placed"] is True
+
+
+def test_ingest_any_dispatches_by_content(tmp_path):
+    from study_pipeline import ingest_any
+    syl = tmp_path / "syllabus.txt"
+    syl.write_text(SYLLABUS_TEXT, encoding="utf-8")
+    out = ingest_any(str(syl))
+    assert out["flow"] == "syllabus"
+    assert out["placement"]["placed"] is False
+    book = tmp_path / "chapter.txt"
+    book.write_text(
+        "Chapter 1: Cells\nThe cell is the unit of life.\n"
+        "Glossary\nCell: the unit of life\n", encoding="utf-8")
+    out = ingest_any(str(book))
+    assert out["flow"] == "textbook"
+    assert out["sr_cards"] >= 1
+
+
+def test_cli_ingest_command(tmp_path):
+    import json as _json
+    import subprocess
+    import sys as _sys
+    syl = tmp_path / "syllabus.txt"
+    syl.write_text(SYLLABUS_TEXT, encoding="utf-8")
+    proc = subprocess.run(
+        [_sys.executable, str(ROOT / "demo.py"), "ingest", str(syl)],
+        capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
+    out = _json.loads(proc.stdout)
+    assert out["flow"] == "syllabus"
+    assert out["placement"]["placed"] is False
+    proc = subprocess.run(
+        [_sys.executable, str(ROOT / "demo.py"), "ingest", str(syl),
+         "--confirm"], capture_output=True, text=True)
+    out = _json.loads(proc.stdout)
+    assert out["placement"]["placed"] is True

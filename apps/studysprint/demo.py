@@ -34,7 +34,28 @@ SCENARIOS = [
 ]
 
 
+def ingest_command(argv: list) -> int:
+    """CLI ingest (build D leg 1): `demo.py ingest <path>
+    [--confirm]` — one core path (study_pipeline.ingest_any):
+    a syllabus upload parses to calendar records and places ONLY
+    with --confirm (confirm-gated); a textbook upload runs the
+    content flow (structure -> term bank -> SR cards). Receipts
+    print as JSON."""
+    import sys
+    if not argv:
+        print("usage: demo.py ingest <path> [--confirm]",
+              file=sys.stderr)
+        return 2
+    from study_pipeline import ingest_any
+    result = ingest_any(argv[0], confirmed="--confirm" in argv)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
 def main() -> None:
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "ingest":
+        raise SystemExit(ingest_command(sys.argv[2:]))
     out = {"demo": "studysprint", "scenarios": []}
     for s in SCENARIOS:
         request = {k: s[k] for k in ("id", "action", "risk_tier",

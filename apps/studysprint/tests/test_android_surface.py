@@ -51,3 +51,15 @@ def test_workflow_builds_and_uploads():
     assert "upload-artifact" in text
     assert "apksigner verify" in text
     assert "android-34" in text and "34.0.0" in text
+
+
+def test_file_chooser_wiring_for_ingest():
+    java = (ANDROID / "src" / "org" / "timerloggedout" /
+            "studysprint" / "MainActivity.java").read_text()
+    assert "WebChromeClient" in java
+    assert "onShowFileChooser" in java
+    assert "onActivityResult" in java
+    assert "ValueCallback" in java
+    # the bundle it serves carries the ingest inputs it wires up
+    html = (ROOT / "web" / "index.html").read_text()
+    assert 'id="ingest-camera"' in html

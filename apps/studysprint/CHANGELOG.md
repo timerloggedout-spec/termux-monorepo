@@ -5,10 +5,11 @@ Entries are the GitHub Release notes, verbatim.
 
 ## [0.5.0] — 2026-11-03
 
-Fifth versioned state: MINOR feature batch (v0.5.0 batch, parts 1+2+3 of 3) — the calendar core
+Fifth versioned state: MINOR feature batch (v0.5.0 batch, parts 1+2+3+4 of 4) — the calendar core
 (build A, issue #4157) + maps and temple routes (build B,
 issue #4158) + state recall and hardening (build C, issue
-#4159) of RFP-D1-6.
+#4159) + ingestion on every surface (build D, issue #4242)
+of RFP-D1-6.
 
 Provider credit: command-dispatch (Swarm Optimizations &
 Implementation Assurance seat), session
@@ -53,6 +54,25 @@ Implementation Assurance seat), session
 - Tests: `tests/test_study_hardening.py` covers every public
   function in `study_hardening.py`, incl. the opt-in refusal and
   the no-guilt field ban.
+- Ingestion on every surface (build D, issue #4242), one core
+  path (`study_pipeline.ingest_any` / `run_syllabus_upload`):
+  syllabus text — typed or OCR'd from a photographed page
+  (provenance `source: ocr`) — parses into `study_calendar`
+  records {times · buildings · kinds} and places ONLY on the
+  student's confirm (confirm-gated placement; no confirm ⇒ no
+  placement); textbook uploads run the content flow (structure
+  → term bank → SR cards). Surface legs: CLI `ingest` command
+  on the demo/agent entry; a TUI Ingest screen (file-path entry
+  + Confirm placement); the webApp Ingest view (file picker +
+  camera capture — text parses in-browser under the same line
+  grammar; photographs are recorded as awaiting core OCR, OCR
+  does not run in the browser); the APK shell wires the system
+  file chooser / camera to the bundle's inputs
+  (WebChromeClient.onShowFileChooser).
+- Tests: syllabus parse + confirm gate + OCR provenance +
+  per-surface legs in `tests/test_study_pipeline.py`,
+  `tests/test_tui.py`, `tests/test_web_surface.py`,
+  `tests/test_android_surface.py`.
 
 ## [0.4.0] — 2026-11-03
 

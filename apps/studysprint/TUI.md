@@ -48,3 +48,12 @@ default or SM-2, scheduler-named receipt after every grade) ·
   `evidence/tui/02-sr-review.svg` (Textual screenshot exports of a
   live pilot session: Today screen; SR review after a grade, with
   the scheduler-named receipt visible).
+
+## Release gates (standing requirement, owner 2026-11-03)
+
+Every iteration of this surface ships only when ALL hold:
+- Demo evidence present: screenshots/screen-recording of the demo in
+  `evidence/<surface>/` in-tree at the release tag.
+- Parity statement present: what this surface rides vs the foundation
+  version it ships against, and what is honestly absent/pending.
+- Tests green for the surface + no foundation regressions.

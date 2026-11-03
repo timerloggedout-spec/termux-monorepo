@@ -30,6 +30,7 @@ import argparse
 import json
 import os
 import sys
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
@@ -65,8 +66,14 @@ def _request(method: str, url: str, token: str, payload=None):
                    "termux-monorepo)")
     req.add_header("X-GitHub-Api-Version", "2022-11-28")
     req.add_header("Content-Type", "application/json")
-    with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read().decode() or "{}")
+    try:
+        with urllib.request.urlopen(req) as resp:
+            return json.loads(resp.read().decode() or "{}")
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode(errors="replace")[:400]
+        raise RuntimeError(
+            f"GitHub API {method} {url} -> {exc.code}: {body}"
+        ) from exc
 
 
 def claim(repo: str, issue: int, role: str, producer: str,

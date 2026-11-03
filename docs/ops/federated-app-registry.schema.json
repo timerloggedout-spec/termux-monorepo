@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/federated-app-registry.schema.json",
+  "title": "Termux Federated Application Registry",
+  "description": "System-level mapping of independently organized product applications, their UI surfaces, repositories, and release lanes. Distinguishes product AppIDs from GitHub App automation identities.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_version",
+    "authority_note",
+    "applications",
+    "automation_identities"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "registry_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "app_key",
+          "name",
+          "identity_domain",
+          "lifecycle",
+          "organization",
+          "repository",
+          "surface_ids",
+          "release_lanes",
+          "relationships",
+          "evidence_refs"
+        ],
+        "properties": {
+          "app_key": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identity_domain": {
+            "const": "product-application"
+          },
+          "product_app_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lifecycle": {
+            "enum": [
+              "proposed",
+              "active",
+              "released",
+              "deprecated",
+              "retired",
+              "unknown"
+            ]
+          },
+          "organization": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "owner"
+            ],
+            "properties": {
+              "mode": {
+                "enum": [
+                  "monorepo",
+                  "separate-repository",
+                  "separate-organization",
+                  "federated",
+                  "unknown"
+                ]
+              },
+              "owner": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          },
+          "repository": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "full_name",
+              "default_ref",
+              "relationship_status"
+            ],
+            "properties": {
+              "full_name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[^/]+/[^/]+$"
+              },
+              "default_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "relationship_status": {
+                "enum": [
+                  "verified",
+                  "candidate",
+                  "not-established",
+                  "not-applicable"
+                ]
+              },
+              "source_role": {
+                "type": "string"
+              }
+            }
+          },
+          "surface_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "release_lanes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "lane_id",
+                "channel",
+                "status",
+                "version_authority",
+                "artifact_types",
+                "evidence_refs"
+              ],
+              "properties": {
+                "lane_id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+                },
+                "channel": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "status": {
+                  "enum": [
+                    "proposed",
+                    "configured",
+                    "building",
+                    "released",
+                    "blocked",
+                    "retired",
+                    "unknown"
+                  ]
+                },
+                "version_authority": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "artifact_types": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "current_version": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "current_tag": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "signing_status": {
+                  "enum": [
+                    "production",
+                    "debug-ephemeral",
+                    "unsigned",
+                    "not-applicable",
+                    "unknown"
+                  ]
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "target",
+                "status",
+                "notes"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "depends-on",
+                    "integrates-with",
+                    "ingests-into",
+                    "derived-from",
+                    "publishes-to",
+                    "shares-contract-with"
+                  ]
+                },
+                "target": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "verified",
+                    "candidate",
+                    "planned",
+                    "not-established"
+                  ]
+                },
+                "notes": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "automation_identities": {
+      "description": "GitHub App or other automation identities. These are not product applications and do not inherit product UI/release semantics.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "identity_key",
+          "platform",
+          "numeric_id",
+          "role",
+          "status",
+          "evidence_refs"
+        ],
+        "properties": {
+          "identity_key": {
+            "type": "string"
+          },
+          "platform": {
+            "enum": [
+              "github-app",
+              "gitlab-app",
+              "other"
+            ]
+          },
+          "numeric_id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "role": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "provisioned",
+              "planned",
+              "unknown",
+              "retired"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      }
+    }
+  }
+}

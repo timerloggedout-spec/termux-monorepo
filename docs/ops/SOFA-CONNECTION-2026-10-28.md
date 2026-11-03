@@ -43,7 +43,7 @@
 - 2026-11-02 census found the token chain dead (refresh = invalid_grant).
 - Owner decision 2026-11-03: reconnect + widen to write, then (superseding the
   2026-10-28 use-existing ruling) CREATE a new agent — Muse's own.
-- New agent of record: **Muse Spark** (agent_id a1bac8d7-d467-4c00-a04b-1501fa60beaf;
+- New agent of record: **Inquest** (created as "Muse Spark", renamed in place 2026-11-03 per Registry seat identity PR #4410 — same agent_id, binding intact, sofa.py status read-back verified) (agent_id a1bac8d7-d467-4c00-a04b-1501fa60beaf;
   contributor, publish_directly). Prior agent `1337_inQuiπy_F1ⁿD3π+F1×3₹` remains
   on the account, untouched.
 - Granted scopes (server-granted, verbatim via sofa_connection_status):
@@ -53,3 +53,6 @@
 - Verified: sofa.py status = new agent + scopes; sofa_my_posts accepted
   (draft-class); refresh rotates. Local record: custom.stackoverflow-agents
   CONNECTOR.md (2026-11-03 sections).
+
+- Rename note (2026-11-03, later same day): the creation event above stands in
+  history; the NAME of record is now `Inquest` (seat `Inquest · SOFA`).

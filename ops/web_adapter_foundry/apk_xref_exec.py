@@ -37,14 +37,42 @@ def parse_filing(body: str) -> dict:
     return fields
 
 
-def filing_spec(fields: dict) -> dict:
+_MISSING = {"", "none", "none-known", "n/a", "unknown"}
+_PKG_RE = re.compile(r"\b[a-z][a-z0-9]*(?:\.[a-z0-9_]+){2,}\b")
+_NOT_PKG_TLD = {"com", "org", "net", "io", "de", "dev", "app", "html",
+                "json", "md", "py", "yml", "yaml", "apk"}
+
+
+def _scan_package_id(body: str) -> str:
+    """Fallback: find a package-id-shaped token in the filing body
+    (URLs stripped first, file/TLD endings rejected). Filing #2297's
+    2026-11-03 run reached the belt with package_id empty although
+    the package existed on the filed route — a silent spec gap that
+    must not recur: if the Package ID field is unusable, the body
+    itself is the next source of truth."""
+    text = re.sub(r"https?://\S+", " ", body or "")
+    for m in _PKG_RE.finditer(text):
+        tok = m.group(0)
+        if tok.rsplit(".", 1)[-1] in _NOT_PKG_TLD:
+            continue
+        return tok
+    return ""
+
+
+def filing_spec(fields: dict, body: str = "") -> dict:
     """The acquire spec + run identity from a parsed request filing."""
+    package_id = fields.get("Package ID", "").strip()
+    via = "field"
+    if package_id.lower() in _MISSING:
+        package_id = _scan_package_id(body)
+        via = "body-scan" if package_id else "none"
     return {
         "target_id": fields.get("Target ID", "").strip(),
         "repo": fields.get("Target repo URL", "").strip(),
         "source": fields.get("Artifact source", "none-known").strip()
         or "none-known",
-        "package_id": fields.get("Package ID", "").strip(),
+        "package_id": package_id,
+        "package_id_via": via,
         "evidence": fields.get("Evidence expectation", "reproduced").strip()
         or "reproduced",
     }
@@ -95,10 +123,11 @@ def _belt(args: list[str], expect: tuple[int, ...] = (0,)) -> subprocess.Complet
     return r
 
 
-def execute(fields: dict, issue_number: int, workdir: Path) -> dict:
+def execute(fields: dict, issue_number: int, workdir: Path,
+            body: str = "") -> dict:
     """Run the belt pipeline. Returns the run summary dict; writes
     findings.md + findings.json into workdir."""
-    spec = filing_spec(fields)
+    spec = filing_spec(fields, body)
     if not spec["target_id"]:
         raise ValueError("filing has no Target ID")
     workdir.mkdir(parents=True, exist_ok=True)
@@ -109,6 +138,9 @@ def execute(fields: dict, issue_number: int, workdir: Path) -> dict:
     acquisition = json.loads(acq.stdout)
     summary = {"target_id": spec["target_id"], "issue": issue_number,
                "source": spec["source"],
+               "spec_package_id": spec["package_id"],
+               "spec_package_id_via": spec["package_id_via"],
+               "spec_repo": spec["repo"],
                "acquisition_status": acquisition.get("status")}
     common = ["--target-id", spec["target_id"],
               "--xref-issue", f"#{issue_number}",
@@ -174,7 +206,7 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     body = Path(args.issue_body).read_text(encoding="utf-8")
     summary = execute(parse_filing(body), args.issue_number,
-                      Path(args.workdir))
+                      Path(args.workdir), body)
     print(json.dumps(summary, indent=1, sort_keys=True))
     return 0
 

@@ -61,6 +61,7 @@ def test_filing_spec_defaults():
     assert spec == {"target_id": "agora",
                     "repo": "https://github.com/newo-ether/Agora",
                     "source": "github-releases", "package_id": "",
+                    "package_id_via": "none",
                     "evidence": "reproduced"}
 
 
@@ -88,3 +89,22 @@ def test_cap_findings_markdown_elides_lists_keeps_headings():
 def test_cap_findings_markdown_small_is_untouched():
     text = "### Target ID\n\nx\n"
     assert ex.cap_findings_markdown(text) == text
+
+
+def test_filing_spec_body_scan_fallback():
+    fields = {"Target ID": "relagent", "Artifact source": "f-droid",
+              "Package ID": "none-known",
+              "Target repo URL": "https://gitlab.com/RmMsr/relagent"}
+    body = ("### Package ID\n\nnone-known\n\n### Source claims to check\n\n"
+            "package org.venkado.relagent ships on f-droid.org — "
+            "see https://apt.izzysoft.de/fdroid/repo for the mirror")
+    spec = ex.filing_spec(fields, body)
+    assert spec["package_id"] == "org.venkado.relagent"
+    assert spec["package_id_via"] == "body-scan"
+
+
+def test_filing_spec_field_wins_over_scan():
+    fields = {"Target ID": "x", "Package ID": "com.example.right"}
+    spec = ex.filing_spec(fields, "body mentions com.example.wrong here")
+    assert spec["package_id"] == "com.example.right"
+    assert spec["package_id_via"] == "field"

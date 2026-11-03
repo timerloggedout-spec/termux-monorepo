@@ -124,7 +124,8 @@ class FreeTierValueProjectionTest(unittest.TestCase):
                 "input_usd_per_million": 0.1, "output_usd_per_million": 0.2
             }])
             data = self.run_projection(root, [self.row(tokens_in=1_000_000, tokens_out=1_000_000)])
-            self.assertEqual(data["sessions"][0]["paid_equivalent_usd"], 0.3)
+            self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.3)
+            self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.3")
 
     def test_invalid_token_types_and_attempts_are_withheld(self):
         with TemporaryDirectory() as tmp:

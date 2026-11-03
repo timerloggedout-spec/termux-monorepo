@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T04:01:39Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T04:17:43Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T04:01:36Z` (merged 150 · open 195) · lane-events(Neon) status=`ok` count=`9977` read_at=`2026-11-03T04:01:36Z`
+Sources: PR feed read_at=`2026-11-03T04:17:42Z` (merged 150 · open 196) · lane-events(Neon) status=`ok` count=`9995` read_at=`2026-11-03T04:17:42Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4002 `f1a21c12069e` 2026-11-03T03:12:26Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4056 `15eacd75431c` 2026-11-03T03:35:12Z | land/close PR #4055 — doe(apk-1): records 3 — arm-A release identity convergence (431287533) |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4068 `a5ab75bf9018` 2026-11-03T04:15:59Z | land/close PR #4055 — doe(apk-1): records 3 — arm-A release identity convergence (431287533) |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -29,7 +29,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #4040 `34cb9ac7598b` 2026-11-03T03:19:54Z | land/close PR #3242 — feat(quota): harden provider consumption audit |
 | replay | `repo-replay` | Repo Replay | active | #4001 `4d94a89dfa30` 2026-11-02T22:08:50Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | NOT_ESTABLISHED | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3939 `bfa06f3f90f0` 2026-11-03T03:14:39Z | land/close PR #4018 — feat(viz): upgrade renderer preview and harden telemetry snapshots |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #3939 `bfa06f3f90f0` 2026-11-03T03:14:39Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
@@ -65,4 +65,4 @@ Campaigns: 16 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 119/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 120/150 (extend ops/tracking/projects.json match rules)

@@ -1,0 +1,106 @@
+name: egm-review-dispatch
+
+# EGM template trigger (owner order 2026-11-03; frame:
+# docs/ops/EGM-EVALUATION.md; spec: docs/ops/EGM-TEMPLATE-TRIGGER.md).
+# Filing the egm-review form IS the trigger: the intake job stamps
+# the instance (legs + fail-closed rule) on the issue; the sweep
+# job enforces the fail-closed leg (a review with <2 attested
+# zero-context goldfish inside the claim window does not run, and
+# the record says so). Keyed on the `egm-review` label or the
+# `[egm]` title prefix, never on form provenance.
+#
+# Auth: Termux Fleet Swarm App token (own 5,000/hr bucket) — the
+# default GITHUB_TOKEN bucket is exhausted by this repo's workflow
+# volume (issue #4164 record).
+
+on:
+  issues:
+    types: [opened, reopened]
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: egm-review-dispatch
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'egm-review') || startsWith(github.event.issue.title, '[egm]'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse + validate the intake
+        id: parse
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          printf '%s' "$ISSUE_BODY" > "$RUNNER_TEMP/issue-body.md"
+          python3 scripts/dispatch/egm_review.py \
+            --body-file "$RUNNER_TEMP/issue-body.md" \
+            --issue "${{ github.event.issue.number }}" \
+            --comment-out "$RUNNER_TEMP/comment.md" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+
+      - name: Post instance stamp (valid intake)
+        if: steps.parse.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh label create egm-instance --force \
+            --color 5319E7 \
+            --description "EGM instance stamped; legs run on this issue" || true
+          gh issue comment "${{ github.event.issue.number }}" \
+            --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "${{ github.event.issue.number }}" \
+            --add-label egm-instance
+
+      - name: Post intake diagnosis (malformed intake)
+        if: steps.parse.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh label create intake-incomplete --force \
+            --color D93F0B \
+            --description "EGM intake missing/invalid field(s); see the diagnosis comment" || true
+          gh issue comment "${{ github.event.issue.number }}" \
+            --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "${{ github.event.issue.number }}" \
+            --add-label intake-incomplete
+
+  sweep:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+
+      - name: Fail-closed sweep
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          python3 scripts/dispatch/egm_review.py sweep \
+            --repo "${{ github.repository }}" \
+            | tee -a "$GITHUB_STEP_SUMMARY"

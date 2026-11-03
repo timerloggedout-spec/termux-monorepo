@@ -14,7 +14,7 @@
  "consumers": [
   {
    "consumer": "challenge-entries participant tracking",
-   "declaration": "docs/ops/CHALLENGE-SCHEMA.md \u2014 judges/signals section (owner, 2026-10-28): participant tracking is a MoneyBall lane for competitions",
+   "declaration": "docs/ops/CHALLENGE-SCHEMA.md — judges/signals section (owner, 2026-10-28): participant tracking is a MoneyBall lane for competitions",
    "internal_metric": {
     "adaptive_rule": "recompute in the same PR as the input change; overwrite in place; computed_at >= latest input change or stale",
     "adaptive_triggers": [
@@ -35,7 +35,7 @@
     "method": "winprob/v2",
     "name": "win_probability",
     "non_render_contract": "metrics_internal excluded by construction from challenge-countdowns-feed, dashboard pages, log section 4, manager briefs and Neon ledger views; never multiplied into any displayed figure (no EV)",
-    "owner_ruling": "2026-10-28 via challenge-entries-manager: MoneyBall-side metric; separate column; adaptive; SILENT + HIDDEN \u2014 never rendered on feeds/pages/briefs/ledger. OWNER CRITIQUE 2026-10-28: winprob/v1 read as LOTTERY probability (slots/field base rate) \u2014 wrong model; these are TALENT-BASED measurements with unknowns. winprob/v2 supersedes v1; v1 estimates are superseded, not deleted (basis history).",
+    "owner_ruling": "2026-10-28 via challenge-entries-manager: MoneyBall-side metric; separate column; adaptive; SILENT + HIDDEN — never rendered on feeds/pages/briefs/ledger. OWNER CRITIQUE 2026-10-28: winprob/v1 read as LOTTERY probability (slots/field base rate) — wrong model; these are TALENT-BASED measurements with unknowns. winprob/v2 supersedes v1; v1 estimates are superseded, not deleted (basis history).",
     "shape": {
      "basis": "string",
      "computed_at": "ISO timestamp",
@@ -67,7 +67,7 @@
     "supersedes": "winprob/v1 (base-rate point estimates; landed #2229/#2244/#2246, marked superseded by the implementing PR)",
     "worked_values_2026-10-28": {
      "D0": {
-      "basis": "realized: closed, not_submitted (v1 printed 0.025 for a settled event \u2014 the clearest v1 defect)",
+      "basis": "realized: closed, not_submitted (v1 printed 0.025 for a settled event — the clearest v1 defect)",
       "confidence": "high",
       "estimate": 0,
       "range": [
@@ -94,7 +94,7 @@
       ]
      },
      "D3": {
-      "basis": "no sourced denominator \u2014 no prior exists",
+      "basis": "no sourced denominator — no prior exists",
       "confidence": "none",
       "estimate": null,
       "range": null
@@ -109,7 +109,7 @@
       ]
      },
      "D5": {
-      "basis": "no sourced denominator \u2014 no prior exists",
+      "basis": "no sourced denominator — no prior exists",
       "confidence": "none",
       "estimate": null,
       "range": null
@@ -127,7 +127,7 @@
    },
    "lane_chat_id": "a33d3ca1",
    "pattern_for_consumer": {
-    "not_this": "ml/pipelines/moneyball/ PR-triage scorer \u2014 its weights (dual_gate_green 40 etc) are PR-domain constants; verbatim reuse refused, domain mismatch. explain.py is pattern ancestry only.",
+    "not_this": "ml/pipelines/moneyball/ PR-triage scorer — its weights (dual_gate_green 40 etc) are PR-domain constants; verbatim reuse refused, domain mismatch. explain.py is pattern ancestry only.",
     "participant_axes_starting_proposal": {
      "law": "starting proposal mirroring canonical weights; FIXED at event intake and recorded in the event record before any score is published; never adjusted after seeing scores",
      "sources": {
@@ -188,7 +188,7 @@
   },
   {
    "ballot": "three-way tie at 25.0",
-   "effect": "identical candidate profiles; stayed tied \u2014 no separation claimed",
+   "effect": "identical candidate profiles; stayed tied — no separation claimed",
    "moneyball_weighted": null,
    "pass_id": "strands-rfp-response",
    "record": "docs/proposals/passes/strands-rfp-response/pass.json",
@@ -221,7 +221,7 @@
   "plane_3l0": {
    "access": "in-repo artifacts only, never chat relays",
    "relation": "separate functional plane; separate seat, separate records; NOT a merge",
-   "seam": "ml/pipelines/moneyball/quota_weights.py (contract 3l0.moneyball.v1; docs/ops/HEX-MONEYBALL-INTEGRATION.md) \u2014 quota multipliers over 3L0 Elo x role scores, neutral 1.0 without live evidence",
+   "seam": "ml/pipelines/moneyball/quota_weights.py (contract 3l0.moneyball.v1; docs/ops/HEX-MONEYBALL-INTEGRATION.md) — quota multipliers over 3L0 Elo x role scores, neutral 1.0 without live evidence",
    "seat_chat_id": "c96257e5"
   },
   "pr_triage_scorer": {
@@ -232,5 +232,15 @@
    ],
    "relation": "separate domain sharing the name; explain.py is the explainability pattern source; this plane does not own its weights"
   }
- }
+ },
+ "custody": [
+  {
+   "artifact": "agent trading cards feed — timerloggedout-spec/moneyball repo: scripts/generate_cards_feed.py + data/cards-feed.json",
+   "transferred": "2026-11-03 (owner correction via main; Web3 seat 779d33ad; registered moneyball docs/DESIGN.md section 9.1, moneyball PR #9 merged 73b584522d28)",
+   "first_feed": "moneyball PR #6: 29 cards; graduated v2 set = {h3yVern U352, c0deHound U1663, d3vinForge U163} matching Registry graduations; Collector skipped (no moniker in Registry => no card); Actuary card INTAKE / all stats null",
+   "conformity_verified": "2026-11-03 firsthand by this seat: sources = Registry SSOT + book-feed (26 subjects / 0 settlements); population scope states the Registry boundary; no card carries a non-null brier/forecast value (B5 clean); stats null = true INTAKE state, never dressed",
+   "refresh_rule": "refresh custody = this seat; going forward refresh rides the fleet feed-machinery patterns (build_feed / dispatch-state-feed class) on this seat's cadence — the bespoke generator stands as the v1 artifact; its logic folds into the machinery here, the Web3 seat does not re-author it",
+   "intake_route": "QUE-fed drain subjects + card-performance subjects (DESIGN section 1.1): listing proposals route to this seat for Book-side intake (B1 expectation record + record_of_record) BEFORE any site listing"
+  }
+ ]
 }

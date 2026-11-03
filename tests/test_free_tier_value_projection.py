@@ -84,6 +84,8 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.000022)
             self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.000022")
             self.assertEqual(session["billing_status"], "VERIFIED_NO_COST")
+            self.assertNotIn("paid_equivalent_usd", session)
+            self.assertNotIn("model_version_pin", session)
             self.assertEqual(set(session), {
                 "session_label", "run_uid", "workflow", "source_sha", "observed_at",
                 "provider", "model_id", "canonical_model_id", "input_tokens",

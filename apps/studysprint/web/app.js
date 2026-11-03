@@ -546,6 +546,48 @@ $("#sr-flip").addEventListener("click", () => {
 });
 document.querySelectorAll("[data-grade]").forEach((b) =>
   b.addEventListener("click", () => grade(Number(b.dataset.grade))));
+
+/* ---------------- install prompt (app-package B, #4437) */
+// Custom prompt, platform-honest: Chromium fires
+// beforeinstallprompt (we hold it and offer our own button);
+// iOS Safari never fires it, so iOS gets the Share ->
+// Add-to-Home-Screen instructions instead; an already-installed
+// app (standalone display) sees neither. No fake button where
+// the platform offers no path.
+let deferredInstall = null;
+const isStandalone = window.matchMedia(
+  "(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstall = e;
+  if (isStandalone) return;
+  $("#install-go").classList.remove("hidden");
+  $("#install-card").classList.remove("hidden");
+});
+window.addEventListener("appinstalled", () => {
+  deferredInstall = null;
+  $("#install-card").classList.add("hidden");
+});
+$("#install-go").addEventListener("click", async () => {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  await deferredInstall.userChoice;
+  deferredInstall = null;
+  $("#install-card").classList.add("hidden");
+});
+$("#install-dismiss").addEventListener("click", () => {
+  $("#install-card").classList.add("hidden");
+});
+if (!isStandalone) {
+  const ua = window.navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) ||
+    (ua.includes("Macintosh") && "ontouchend" in document);
+  if (isIOS) {
+    $("#install-ios").classList.remove("hidden");
+    $("#install-card").classList.remove("hidden");
+  }
+}
 // Today actions (#4228), delegated so re-renders keep them live.
 document.addEventListener("click", (e) => {
   if (!state.data) return;

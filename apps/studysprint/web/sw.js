@@ -5,23 +5,37 @@
  * build's. Fetch strategy: data/state.json is NETWORK-FIRST (a
  * refreshed plan reaches installed users; the cache is only the
  * offline fallback); the shell uses stale-while-revalidate. The
- * study data in localStorage is never cached here. */
+ * study data in localStorage is never cached here.
+ *
+ * App-package B (#4437): updates no longer apply silently. The
+ * new worker WAITS (no skipWaiting on install); the page notices
+ * via the registration and shows the update toast; only when the
+ * user taps it does the page post SKIP_WAITING and reload onto
+ * the new version. Navigations that fail with nothing cached
+ * land on the custom offline page. */
 const CACHE = "studysprint-webapp-v0.2.0";
 const SHELL = [
   "./",
   "index.html",
+  "offline.html",
   "styles.css",
   "app.js",
   "manifest.webmanifest",
   "data/state.json",
   "icons/icon-192.png",
   "icons/icon-512.png",
+  "icons/icon-maskable-512.png",
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(SHELL))
-      .then(() => self.skipWaiting()));
+    caches.open(CACHE).then((cache) => cache.addAll(SHELL)));
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener("activate", (event) => {
@@ -42,6 +56,15 @@ self.addEventListener("fetch", (event) => {
           cache.put(event.request, copy));
         return resp;
       }).catch(() => caches.match(event.request)));
+    return;
+  }
+  if (event.request.mode === "navigate") {
+    // page loads: cache (stale-while-revalidate below covers
+    // refresh) or the custom offline page — never a dead end
+    event.respondWith(
+      caches.match(event.request).then((hit) => hit ||
+        fetch(event.request).catch(() =>
+          caches.match("offline.html"))));
     return;
   }
   // stale-while-revalidate for the shell

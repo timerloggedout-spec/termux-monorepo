@@ -1,5 +1,30 @@
 ## [Unreleased]
 
+### App-package B (#4437 — PWA install + update polish, webApp)
+
+- **Richer install**: the manifest gains real screenshots of
+  the shipped views (narrow + wide) and a **dedicated maskable
+  icon** — full-bleed theme background with the glyph composed
+  inside the safe circle (measured: farthest glyph pixel at
+  radius 190 of the 204.8 safe radius), replacing the
+  any-purpose icon's double duty.
+- **Custom install prompt, platform-honest**: the app holds
+  `beforeinstallprompt` and offers its own Install button;
+  iOS — which never fires that event — gets the Share → Add to
+  Home Screen instruction card; an installed (standalone)
+  instance sees neither; no fake button where the platform
+  offers no path.
+- **Updates ask first**: the service worker no longer
+  skip-waits on install — a new version WAITS, the page shows
+  an update toast, and only the tap posts SKIP_WAITING and
+  reloads. (First installs still activate immediately; the
+  reload guard distinguishes an update takeover from the
+  first claim — a distinction the evidence drill caught
+  pre-ship, when the naive version reloaded the first load.)
+- **Custom offline page** precached with the shell;
+  navigations that miss every cache land there instead of a
+  browser dead end.
+
 ### Surfaces 0.2.0 (parity iteration 1, #4414 — calendar + geography)
 
 - **§1d calendar awareness + geography bind on all three

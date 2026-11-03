@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { classifyIssueEvent } = require('./intake_admission');
+const { classifyIssueEvent } = require('../../scripts/issue_lifecycle/intake_admission');
 
 function event(overrides = {}) {
   return {

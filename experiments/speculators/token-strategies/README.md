@@ -21,6 +21,10 @@
 
 ∀ speculative rows: lossless ∵ verifier checks ∀ drafted tokens in one forward pass ∧ accepted ≡ verifier-only output. `record` enforces it: `output_match ≠ true` ⇒ cell disqualified, ¬ selected at any speed.
 
+## DoE wiring (2026-11-02)
+
+Family member: `docs/ops/DOE-FAMILY.md` (Members row + Speculators mapping). `record` ⇒ 1 EXPERIMENT record/run (`docs/ops/corpus/EXPERIMENT.schema.json`, instance-stamped) + SUMMARY. Provider phrases ∘ lab_runner rule: design-declared `provider_phrases` per verifier route ∨ `phrase_layer` (JIT ∘ provider-phrases SSOT) composed into the strategy prompt ∧ hash-covered ⇒ phrased ≠ unphrased instance. This campaign: `provider_phrases {}` = NOT ESTABLISHED (local vLLM routes, ∅ established set) ⇒ PLAN byte-identical pre/post wiring.
+
 ## State
 
-`admitted_design_only` — plan generated (12 cells × 4 tasks = 48 runs, PLAN.json); execution (fork training + vLLM serving) rides GPU/provider lanes ⇒ results.jsonl ⇒ `record` ⇒ SUMMARY.json verdict. Harness dispatches ∅.
+`admitted_design_only` — plan generated (12 cells × 4 tasks = 48 runs, PLAN.json); execution (fork training + vLLM serving) rides GPU/provider lanes ⇒ results.jsonl ⇒ `record` ⇒ records/*.json + SUMMARY.json verdict. Harness dispatches ∅.

@@ -29,6 +29,7 @@ propagations recorded as design events in the campaign record.
 | cmp-register — standing register of comparison examples evaluated over time (owner order 2026-11-01) | register | open — CMP-1 SKILL.md vs *.skill packaging · CMP-2 new-competition routing (dedicated opportunity channel vs fold-in; first instance .approxination) | `experiments/doe/cmp-register/` |
 | nc-1-notation-compliance — notation-drift detection stack (L3 GH classifier ∧ L2 transcript sweep ⇒ L1 main relay-validation) | campaign | admitted 2026-10-31 — design-only, **pre-registered**; owner order via main: the detection TEST is a DoE experiment homed here; Tier-1 builds L3+L2; verdict ↦ main on first runs | `experiments/doe/nc-1-notation-compliance/` |
 | live-2-prlane-tuning — classifier rule/threshold tuning (joint w/ tier1-classifiers-steward) | campaign | admitted 2026-10-31 — design-only, **pre-registered**; replay factorial over frozen pr-lane snapshots (live series = non-stationary, steward caveat); phase-2 levels by amendment after rule-file read; phase-3 sibling (decide/laya weighted merger, 0.7 Jev + 0.3 Kev): VARIANCE PRECONDITION (owner, 2026-11-02) — weight optimization blocked-by-design until variance inputs exist {per-judge score variance - judge-pair covariance/disagreement}, supplied by the phase-3 trial population (trial records carrying dispersion fields); no weight optimization on constants alone | `experiments/doe/live-2-prlane-tuning/` |
+| token-strategies-1 — Speculators: multiple token strategies (speculative decoding) × verifiers (#195) | campaign | admitted 2026-10-30 — design-only, **pre-registered**; DoE-wired 2026-11-02 (EXPERIMENT records + provider-phrases wiring in the harness; execution rides GPU/provider lanes) | `experiments/speculators/token-strategies/` |
 | Future design classes | campaign types | taxonomy in `docs/ops/DOE-TAXONOMY.md`: implemented generators today = full factorial + Taguchi L9 (fractional orthogonal array); fractional factorial, Plackett–Burman, sequential = skill-named, no generator; foldover, central composite, Box–Behnken, RSM, mixture, split-plot, Latin hypercube = candidates. Randomized assignment (`mvt_shuffle`) is an assignment mechanism, not a design class | DoE surface |
 
 ## Family-level shared
@@ -1068,3 +1069,32 @@ Cohort comparisons (`docs/evaluations/swe-performance/COHORTS.md`)
 must group by (reference@revision, model_id), never model_id
 alone: the same model under mini-swe-agent vs swe-agent is two
 configured instances.
+
+### Speculators mapping (2026-11-02)
+
+The Speculators harness (`scripts/speculators/evaluate.py`,
+campaign `token-strategies-1`, issue #195) evaluates speculative-
+decoding token strategies from `timerloggedout-spec/
+speculators_fork` (@ c13304cf3ec2) against verifier models. Its
+registry (`scripts/speculators/strategies.py`) is the schema
+surface: each strategy entry is a configured draft-side, so the
+canonical registry JSON → `system_prompt` ref
+(`scripts/speculators/strategies.py#<strategy>`; sha256 over the
+canonical entry); `provider` = `speculators_fork`; `model` =
+`<verifier>+<strategy>` (verbatim pair — the same verifier under
+eagle3 vs dflash is two configured instances); fork train +
+vLLM serve → `tools` ref `tools:speculators:evaluate`; `role` =
+`evaluation`; the campaign → `context`; `moniker` = `speculators`.
+Provider phrases follow the family rule above: a design may
+declare `provider_phrases` per verifier route or a `phrase_layer`
+block (JIT layer over the provider-phrases SSOT) — composed into
+the strategy prompt and covered by its hash; the token-
+strategies-1 routes are local vLLM serving routes with **no
+established phrase set**, so its design records
+`provider_phrases: {}` (NOT ESTABLISHED, not silently skipped).
+`record` emits one EXPERIMENT record per run (acceptance rate,
+mean accepted length, speedup, lossless flag in metrics) plus
+SUMMARY with the pre-registered selection rule; the lossless
+gate — any run whose output differs from verifier-only decoding
+disqualifies its cell — is the campaign's validity condition,
+not a metric preference.

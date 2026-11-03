@@ -18,6 +18,12 @@ freshness window, and a hash. The gate allows — and StudySprint builds
 the plan (learn + retrieve per topic), a week-1 recall quiz, and a
 re-plan that carries missed week 1 into week 2."
 
+**The reader — multi-pass RSVP.** "The plan points at the
+reading; the reader works section by section: pass 1 skims fast
+to map the section, pass 2 re-reads slower for comprehension —
+and any term can be flagged in one tap, feeding the term bank
+and the SR cards."
+
 **2:10 — Scenario 3: the class rule (30s).** "A credential-mutation
 request, evidence fetched and material — still ESCALATE. Evidence
 never outranks the action class."

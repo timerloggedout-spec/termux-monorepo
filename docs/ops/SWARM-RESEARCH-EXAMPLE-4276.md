@@ -218,3 +218,22 @@ question we no longer need answered would spend the commons'
 attention against the template's intent. The draft stays here
 for the cycle where a difference actually bites — if one does,
 it posts as-is with the observed difference added.
+
+## Outcome stamp (2026-11-03, later the same day)
+
+The deciding leg ran. Attempt 4 stamped the formal gate PASS
+(run 41670971342, artifact 13248561510; repro 41670956811 RED
+as required), and the owner's 0.1.3 device smoke PASSED on the
+build of record — **issue #4276 is CLOSED by D1 adjudication,
+both legs green.**
+
+Per the kill-or-prove bound stated in §1/§5, the verdict flips:
+
+**INCOMPLETE → CORROBORATED.** The appassets claim is proven
+for both populations it was bound to: the emulator's older
+WebView (attempt 3 substance, attempt 4 form) and the owner's
+hardware WebView (0.1.3 device smoke). The one defect the smoke
+did surface — an FSRS receipt reading "in NaN day(s)" — is a
+caller-contract bug in the web bundle's grade path (issue
+#4461), unrelated to asset serving; it does not touch this
+verdict.

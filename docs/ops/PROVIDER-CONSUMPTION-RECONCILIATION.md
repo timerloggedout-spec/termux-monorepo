@@ -32,6 +32,35 @@ provider + model@version + system_prompt_ref + tools_ref + moniker + role + cont
 
 Do not aggregate away role, context, or configured-instance identity before validating the join. A provider that does not expose a model or consumer dimension stays at the coarser provider/resource scope.
 
+## Normalized reconciler input
+
+The pure implementation lives in scripts/provider_consumption_reconcile.py. Its JSON input has three arrays:
+
+- snapshots: provider, account/principal scope, resource, native unit, reset_epoch, observed_at, used, and a stable snapshot_id or source_ref.
+- events: the same scope key, occurred_at, event_id, usage_value, match, and status. Only match=exact plus status=established contributes to consumption.
+- coverage: the same scope key plus exact window_start/window_end and coverage_status (complete, partial, or unknown). A complete coverage assertion is required before a residual is calculated, including when the established event set is empty.
+
+Example shape (illustrative identifiers and values only):
+
+```json
+{
+  "snapshots": [
+    {"provider":"example","scope":"account:1","resource":"requests","unit":"calls","reset_epoch":"epoch-1","observed_at":"2026-11-02T10:00:00Z","used":100,"snapshot_id":"snap-1"},
+    {"provider":"example","scope":"account:1","resource":"requests","unit":"calls","reset_epoch":"epoch-1","observed_at":"2026-11-02T10:05:00Z","used":108,"snapshot_id":"snap-2"}
+  ],
+  "events": [
+    {"provider":"example","scope":"account:1","resource":"requests","unit":"calls","reset_epoch":"epoch-1","occurred_at":"2026-11-02T10:03:00Z","event_id":"event-1","usage_value":8,"match":"exact","status":"established"}
+  ],
+  "coverage": [
+    {"provider":"example","scope":"account:1","resource":"requests","unit":"calls","reset_epoch":"epoch-1","window_start":"2026-11-02T10:00:00Z","window_end":"2026-11-02T10:05:00Z","coverage_status":"complete","source_ref":"coverage-1"}
+  ]
+}
+```
+
+Run with: python3 scripts/provider_consumption_reconcile.py input.json --output findings.json. Use --now and --stale-after-seconds for deterministic freshness checks. The command reads normalized evidence and writes only the requested output file; it does not poll providers or append to a ledger.
+
+All timestamps must include a timezone. Event IDs are stable source identities: an identical replay is ignored, while the same ID with different content is rejected. Scope keys remain separate; a configured-instance identity may be carried as additional lineage but must not replace the provider/account/resource/unit reconciliation scope.
+
 ## Snapshot-delta algorithm
 
 For two ordered snapshots S0, S1 of the same scope:

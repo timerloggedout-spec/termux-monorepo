@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 471,
-    "open_prs": 205,
+    "open_prs": 206,
     "pr_classes": {
-      "CANDIDATE": 105,
+      "CANDIDATE": 106,
       "EXTRACT": 7,
       "NEED_EVIDENCE": 93,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 43,
-      "prs": 203,
+      "prs": 204,
       "unlabelled_numbers": [
         308,
         388,
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T13:58:45Z",
+  "generated_at": "2026-11-03T14:02:34Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "74ac8f350c"
+    "sha": "922f826cc7"
   },
   "prs": [
     {
@@ -249,7 +249,7 @@
       "mergeable_state": "unstable",
       "number": 4333,
       "title": "RFP-D1-8 set 2: scheduler integrity + web contract fixes \u2014 surfaces 0.1.2 [#4330]",
-      "updated_at": "2026-11-03T13:58:15Z"
+      "updated_at": "2026-11-03T13:59:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -1487,6 +1487,20 @@
       "number": 3885,
       "title": "fix(ci): dangle_check TEXT_EXTS += .jsonl \u2014 capture #3751",
       "updated_at": "2026-11-02T13:37:17Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a8591f12ae",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T14:02:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -2920,20 +2934,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "20aa5b259f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T13:58:21Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3027,6 +3027,20 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "c8abd65987",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4337,
+      "title": "APK emulator smoke gate: harness + workflow [#4283]",
+      "updated_at": "2026-11-03T14:02:14Z"
     }
   ],
   "schema": "operator-matrix/v1",

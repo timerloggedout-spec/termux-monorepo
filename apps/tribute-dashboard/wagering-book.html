@@ -90,10 +90,16 @@ function ganttGeom(feed,w){
   const rows=feed.subjects.map(s=>{
     const openEnded=s.knowable.kind!=="dated";
     const endX=openEnded?X(t1):X(parseT(s.knowable.at));
+    const winX0=s.window?X(parseT(s.window.start)):null;
+    const winX1=s.window?X(parseT(s.window.wall)):null;
+    const pctC=s.window_pct?s.window_pct.consumed:null;
+    const pctR=s.window_pct?s.window_pct.remaining:null;
+    const consumedX=(pctC!=null&&winX0!=null)? +(winX0+(winX1-winX0)*pctC/100).toFixed(1):null;
     return {id:s.id, openX:X(parseT(s.open)), endX:endX, openEnded:openEnded,
       landingX:s.landing_at?X(parseT(s.landing_at)):null,
       wallX:s.wall_at?X(parseT(s.wall_at)):null, soft:!!s.wall_soft,
-      settleX:openEnded?null:endX};
+      settleX:openEnded?null:endX,
+      winX0:winX0, winX1:winX1, pctC:pctC, pctR:pctR, consumedX:consumedX};
   });
   return {t0:t0, t1:t1, labelW:labelW, ticks:ticks.map(t=>({x:X(t), label:new Date(t).toISOString().slice(5,10)})), rows:rows};
 }
@@ -131,6 +137,8 @@ function renderBook(nowMs){
     out+='<text x="8" y="'+(cy+13)+'" fill="var(--muted)" font-size="10">knowable: '+esc(trunc(s.knowable.text,44))+' · settles: '+esc(trunc(s.settles_by,30))+'</text>';
     out+='<rect class="bar" x="'+r.openX+'" y="'+(cy-6)+'" width="'+Math.max(r.endX-r.openX,2)+'" height="12" fill="'+(r.openEnded?'url(#hatch)':'var(--gold)')+'" opacity="'+(r.openEnded?'1':'0.75')+'"/>';
     if(r.openEnded) out+='<text x="'+(r.endX-4)+'" y="'+(cy+4)+'" text-anchor="end" fill="var(--gold)" font-size="12" font-weight="700">→</text>';
+    if(r.consumedX!=null&&r.consumedX>r.winX0) out+='<rect class="winconsumed" x="'+r.winX0+'" y="'+(cy-6)+'" width="'+(r.consumedX-r.winX0)+'" height="12" fill="var(--bad)" opacity="0.45"/>';
+    if(r.pctR!=null){ const lx=Math.min(r.winX1,r.endX); if(lx>W-90){ out+='<text class="pctleft" x="'+(lx-6)+'" y="'+(cy+4)+'" text-anchor="end" fill="var(--muted)" font-size="11">'+r.pctR+'% left</text>'; } else { out+='<text class="pctleft" x="'+(lx+6)+'" y="'+(cy+4)+'" fill="var(--muted)" font-size="11">'+r.pctR+'% left</text>'; } }
     if(r.landingX!=null) out+='<path class="landingmark" d="M'+r.landingX+','+(cy-9)+' L'+(r.landingX+6)+','+cy+' L'+r.landingX+','+(cy+9)+' L'+(r.landingX-6)+','+cy+' Z" fill="var(--ok)"/>';
     if(r.wallX!=null) out+='<path class="wallmark" d="M'+r.wallX+','+(cy-9)+' L'+(r.wallX+7)+','+(cy+8)+' L'+(r.wallX-7)+','+(cy+8)+' Z" fill="'+(r.soft?'none':'var(--bad)')+'" stroke="var(--bad)" stroke-width="1.5"/>';
     if(r.settleX!=null) out+='<circle class="settlemark" cx="'+r.settleX+'" cy="'+cy+'" r="4.5" fill="var(--fg,#e6e6e6)"/>';
@@ -140,12 +148,12 @@ function renderBook(nowMs){
   });
   out+='</svg>';
   $("gantt").innerHTML=out;
-  $("legend").innerHTML='<span>▬ bar: open → knowable</span><span>◆ landing</span><span>▲ wall (hollow = soft)</span><span>● settle point</span><span><span class="fctick">✦</span> forecasts score here — at settlement, at the issuer record</span><span>hatched → knowable by rule, date NOT_ESTABLISHED</span>';
+  $("legend").innerHTML='<span>▬ bar: open → knowable</span><span>◆ landing</span><span>▲ wall (hollow = soft)</span><span>● settle point</span><span><span class="fctick">✦</span> forecasts score here — at settlement, at the issuer record</span><span>hatched → knowable by rule, date NOT_ESTABLISHED</span><span>dark shade: window consumed at feed build</span><span>“N% left”: window remaining (feed build stamp)</span>';
   $("fcnote").textContent='Forecast layer: '+FEED.forecast_layer;
-  $("booktable").innerHTML='<table class="st"><tr><th>Subject</th><th>Record of record</th><th>Knowable</th><th>Expectation — '+esc(FEED.subjects[0].expectation.quantity)+'</th><th>Settlement</th></tr>'+FEED.subjects.map(s=>{
+  $("booktable").innerHTML='<table class="st"><tr><th>Subject</th><th>Record of record</th><th>Knowable</th><th>Expectation — '+esc(FEED.subjects[0].expectation.quantity)+'</th><th>Window</th><th>Settlement</th></tr>'+FEED.subjects.map(s=>{
     const st=expectationState(s.expectation);
     const cell=st==="INTAKE"? '<span class="chip intake">INTAKE</span> <span class="dim">no estimate</span>' : esc(expectationText(s.expectation));
-    return '<tr><td>'+esc(s.label)+'<br><span class="dim">'+esc(s.id)+'</span></td><td>'+esc(s.record_of_record||s.settles_by)+'</td><td>'+esc(s.knowable.text)+'</td><td title="'+esc(s.expectation.prior_basis)+'">'+cell+'<br><span class="dim">evidence items: '+s.expectation.n_evidence_items+'</span></td><td>'+(s.settlement.value==null? '<span class="dim">open — '+esc(s.settlement.field)+'</span>' : esc(String(s.settlement.value)))+'</td></tr>';
+    return '<tr><td>'+esc(s.label)+'<br><span class="dim">'+esc(s.id)+'</span></td><td>'+esc(s.record_of_record||s.settles_by)+'</td><td>'+esc(s.knowable.text)+'</td><td title="'+esc(s.expectation.prior_basis)+'">'+cell+'<br><span class="dim">evidence items: '+s.expectation.n_evidence_items+'</span></td><td>'+(s.window_pct&&s.window_pct.remaining!=null? s.window_pct.remaining+'% left<br><span class="dim">window '+esc(s.window.start.slice(0,10))+' → '+esc(s.window.wall.slice(0,10))+'</span>' : '<span class="dim">'+esc(s.window_pct?(s.window_pct.note||'no window'):'no window')+'</span>')+'</td><td>'+(s.settlement.value==null? '<span class="dim">open — '+esc(s.settlement.field)+'</span>' : esc(String(s.settlement.value)))+'</td></tr>';
   }).join('')+'</table>';
   $("positions").innerHTML=FEED.positions.length? '<table class="st"><tr><th>Position</th></tr>'+FEED.positions.map(e=>'<tr><td>'+esc(trunc(JSON.stringify(e),400))+'</td></tr>').join('')+'</table>' : '<p class="dim">No positions opened yet. Positions appear here as they open in the ledger of record.</p>';
   const stl=FEED.settlements.concat(FEED.feed_settlements);

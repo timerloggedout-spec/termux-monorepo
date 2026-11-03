@@ -167,3 +167,51 @@ def test_render_hooks_present():
                  'class="chip intake"', 'id="booktable"', 'id="positions"',
                  'id="settlements"', "moneyball.wagering-book/v2"]:
         assert hook in html, hook
+
+
+def test_window_pct_feed():
+    feed = _feed()
+    assert feed["pct_block"]["computed_at"] == feed["generated_at"]
+    for s in feed["subjects"]:
+        assert s["window"] and s["window"]["start"] and s["window"]["wall"]
+        wp = s["window_pct"]
+        if wp["consumed"] is None:
+            assert wp["remaining"] is None and wp["note"]
+        else:
+            assert abs(wp["consumed"] + wp["remaining"] - 100.0) < 0.11
+    by = {s["id"]: s for s in feed["subjects"]}
+    assert by["D2-3-nocard-account-live"]["window_pct"]["consumed"] is None
+    assert by["D5-14-spot-confirmation"]["window_pct"]["consumed"] is None
+
+
+def test_window_pct_sim(tmp_path):
+    html = _html()
+    logic = html.split("// ==== pure logic (node-sim tested) ====")[1] \
+        .split("// ==== end pure logic ====")[0]
+    harness = tmp_path / "harness.cjs"
+    harness.write_text(logic)
+    out = tmp_path / "run.cjs"
+    out.write_text("""
+const {ganttGeom} = require("./harness.cjs");
+const feed = require(process.argv[2]);
+const g = ganttGeom(feed, 1120);
+const by = {}; g.rows.forEach(r => by[r.id] = r);
+const a = by["AMD-17-gpu100-claim"], d = by["D2-3-nocard-account-live"];
+console.log(JSON.stringify({
+  amd17_pctR: a.pctR,
+  amd17_frac: +(((a.consumedX - a.winX0) / (a.winX1 - a.winX0)) * 100)
+                 .toFixed(1),
+  d23_consumedX: d.consumedX, d23_pctR: d.pctR}));
+""")
+    fixtures = json.loads(FIXTURE.read_text())
+    fpath = tmp_path / "fixture.json"
+    fpath.write_text(json.dumps(fixtures))
+    r = subprocess.run(["node", str(out), str(fpath)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    res = json.loads(r.stdout.strip())
+    amd = {s["id"]: s for s in fixtures["subjects"]}[
+        "AMD-17-gpu100-claim"]
+    assert res["amd17_pctR"] == amd["window_pct"]["remaining"]
+    assert abs(res["amd17_frac"] - amd["window_pct"]["consumed"]) < 0.15
+    assert res["d23_consumedX"] is None and res["d23_pctR"] is None

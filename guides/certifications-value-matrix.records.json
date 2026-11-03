@@ -20,16 +20,20 @@
       "direction": "support",
       "strength": "partial",
       "rule9_state": "single-leg"
+     },
+     {
+      "source": "011 W pilot PASS, run 41574262388 (cert-coderoad-host, success, 2026-11-03T03:47-04:02Z): 166 steps in 15m27s = 5.3 s/step; W x9 = 1,456 steps ~= 2.2h + overhead (ladder firsthand read of run record)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
      }
     ],
     "posterior": {
-     "value": 20.5,
-     "range": [
-      14.5,
-      27.0
-     ],
+     "value": 16.0,
+     "range": null,
      "updated_at": "2026-11-02",
-     "n_evidence": 1
+     "n_evidence": 2,
+     "basis_note": "re-issued 2026-11-02: W basis assumption->measured (011 pilot run 41574262388); P basis still assumption (120 min/unit, re-price at 025); total range re-issue pending first P"
     },
     "state": "PROVISIONAL"
    },
@@ -65,13 +69,19 @@
       "direction": "support",
       "strength": "full",
       "rule9_state": "corroborated"
+     },
+     {
+      "source": "window re-issue 2026-11-02 (mgr): 64/64 <=2026-12-05, exam <=2026-12-12 HOLDS at measured W basis; total ~=16h",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
      }
     ],
     "posterior": {
      "value": "64/64 by 2026-12-05; exam <= 2026-12-12",
      "range": null,
      "updated_at": "2026-11-02",
-     "n_evidence": 1
+     "n_evidence": 2
     },
     "state": "PROVISIONAL"
    },

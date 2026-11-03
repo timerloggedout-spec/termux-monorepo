@@ -56,6 +56,34 @@ class TelemetrySourceReadTests(unittest.TestCase):
         self.assertEqual(source["age_hours"], 1.0)
         self.assertEqual(len(source["source_sha256"]), 64)
 
+    def test_missing_source_is_named(self):
+        with tempfile.TemporaryDirectory() as folder:
+            gaps, sources = [], []
+            with patch("scripts.dashboards.telemetry_feed.ROOT", Path(folder)):
+                value = _read_json("absent.json", gaps, sources, now=self.now)
+        self.assertIsNone(value)
+        self.assertEqual(sources[0]["state"], "missing")
+        self.assertTrue(any("absent.json" in gap for gap in gaps))
+
+    def test_future_timestamp_is_clock_skew(self):
+        with tempfile.TemporaryDirectory() as folder:
+            value, gaps, source = self._read(folder, "future.json",
+                '{"generated_at":"2026-11-02T15:00:00Z"}')
+        self.assertEqual(source["state"], "clock_skew")
+        self.assertLess(source["age_hours"], -1)
+
+    def test_missing_timestamp_is_unknown(self):
+        with tempfile.TemporaryDirectory() as folder:
+            value, gaps, source = self._read(folder, "unknown.json", '{"items":[]}')
+        self.assertEqual(source["state"], "unknown")
+        self.assertIsNotNone(value)
+
+    def test_non_object_json_root_is_invalid(self):
+        with tempfile.TemporaryDirectory() as folder:
+            value, gaps, source = self._read(folder, "array.json", '[]')
+        self.assertIsNone(value)
+        self.assertEqual(source["state"], "invalid")
+
 
 if __name__ == "__main__":
     unittest.main()

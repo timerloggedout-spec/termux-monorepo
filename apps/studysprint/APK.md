@@ -70,6 +70,17 @@ engines. An embedded-Python build is not claimed here.
 | .apkg / vault export | absent | export stays CLI/TUI in this version |
 | v0.4.0 core modules (§1b pipeline, courses, memory methods) | absent | parity pass pending, as on the other surfaces |
 
+## The smoke gate (#4283)
+
+`android/emulator-smoke.sh` is the release gate: it boots a
+headless emulator, installs the built APK, and asserts the
+state-loaded signals (no "Loading your course…" hang, footer
+version present, process alive), capturing every view as
+screenshots + UI dumps. It runs in Actions via
+`.github/workflows/studysprint-apk-smoke.yml` (dispatch with a
+ref + label; KVM runners) — the owner's device smoke stays the
+closer of record, this is the pre-device net.
+
 ## Verification
 
 - `tests/test_android_surface.py`: manifest/package/version

@@ -235,7 +235,7 @@ fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "
 <script>
 "use strict";
 // ==== pure logic (node-sim tested) ====
-const STATUS_ORDER=["queued","in-progress","gated","landed","shipped","live"];
+const STATUS_ORDER=["prep","staged","queued","in-progress","gated","landed","shipped","live"];
 const DIST_STAGES=["spec","desk","builder","pr","ci","merge","sync"];
 function statusDist(traversals){
   const counts=new Map();

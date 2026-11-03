@@ -81,8 +81,13 @@ class FreeTierValueProjectionTest(unittest.TestCase):
             self.assertEqual(data["totals"]["paid_equivalent_usd"], 0.000022)
             self.assertEqual(data["totals"]["paid_equivalent_usd_exact"], "0.000022")
             self.assertEqual(session["billing_status"], "VERIFIED_NO_COST")
-            self.assertNotIn("call_uid", session)
-            self.assertNotIn("cost_usd", session)
+            self.assertEqual(set(session), {
+                "session_label", "run_uid", "workflow", "source_sha", "observed_at",
+                "provider", "model_id", "canonical_model_id", "input_tokens",
+                "output_tokens", "elapsed_seconds", "outcome_status", "evidence_url",
+                "validation_status", "basksweep_status", "publication_status",
+                "billing_status", "pricing_id"
+            })
             self.assertEqual(data["source_manifest"]["value_rounding"], "ROUND_HALF_UP")
 
     def test_positive_actual_cost_contradicts_verified_no_cost(self):

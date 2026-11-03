@@ -74,6 +74,25 @@ Implementation Assurance seat), session
   `tests/test_tui.py`, `tests/test_web_surface.py`,
   `tests/test_android_surface.py`.
 
+### Surface patch line 0.1.1 (RFP-D1-7 award batch, #4277)
+
+The three surfaces patch to **0.1.1** on their independent lines
+(VERSIONING.md): webApp SR review is due-aware and never recycles
+a graded card in-session (#4218) · TUI SR review state is
+per-card and accumulates (#4224) · webApp check-ins persist and
+a missed session shifts (#4215) · TUI check-ins record today's
+real week/day and persist to disk (#4223) · webApp Today
+advances with the calendar from `plan_start` (#4214) · the
+service-worker cache carries the surface version and state.json
+is network-first (#4219) · all six Reader sections are
+reachable (#4217) · the APK signs with the committed project
+keystore and ships a brand launcher icon (#4222) · APK.md leads
+with its build-time-core architecture (#4220) · the webApp
+discloses its bundled sample course on the first screen (#4216).
+Records: surface version-line ruling in VERSIONING.md (#4212) ·
+APK evidence record in-tree (#4221) · web parity statement names
+foundation v0.5.0 (#4225).
+
 ## [0.4.0] — 2026-11-03
 
 Fourth versioned state: MINOR feature batch (v0.4.0 batch) — the

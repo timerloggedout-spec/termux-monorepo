@@ -6,7 +6,7 @@ functions the CLI calls, no forked logic (`tui.py`).
 **Version line: independent.** This surface versions on its own
 SemVer line (owner overrule 2026-11-03), separate from the
 foundation road {core v0.3.0 ⇒ v0.4.0 ⇒ v1.0.0}. Surface version =
-`TUI_VERSION` in `tui.py` — currently **0.1.0** — with its own
+`TUI_VERSION` in `tui.py` — currently **0.1.1** — with its own
 releases.
 
 ## Install + run (one line)

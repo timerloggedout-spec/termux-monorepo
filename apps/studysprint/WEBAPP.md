@@ -7,7 +7,7 @@ rather than reimplementing them (`web/`).
 **Version line: independent.** This surface versions on its own
 SemVer line (owner overrule 2026-11-03), separate from the
 foundation road {core v0.3.0 ⇒ v0.4.0 ⇒ v1.0.0}. Surface version =
-`web/VERSION` — currently **0.1.0** — with its own releases;
+`web/VERSION` — currently **0.1.1** — with its own releases;
 deployable bundles attach to the surface's own release.
 
 ## How it works

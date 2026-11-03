@@ -86,3 +86,73 @@ def test_web_ingest_legs():
     assert "ss.ingest.pending" in js  # confirm gate: pending first
     assert "ss.ingest.placed" in js   # placed only on confirm
     assert "awaiting-core-ocr" in js  # captures are honest, not parsed
+
+
+# ------------------------------------------------------ RFP-D1-7 award batch
+def test_state_carries_plan_start_and_surface_version():
+    from build_data import emit_state
+    state = emit_state(ROOT)
+    assert state["plan_start"]  # #4214: Today advances from here
+    assert state["surface_version"] == "0.1.1"
+
+
+def test_service_worker_cache_is_versioned_and_state_network_first():
+    sw = (WEB / "sw.js").read_text()
+    version = (WEB / "VERSION").read_text().strip()
+    assert f"studysprint-webapp-v{version}" in sw  # #4219
+    assert "network-first" in sw and "data/state.json" in sw
+
+
+def test_js_pure_helpers_behavior():
+    """The due-queue + day-index helpers are pure functions —
+    exercise them for real in node (extracted from app.js)."""
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("node not available")
+    app_js = (WEB / "app.js").read_text()
+    start = app_js.index("function computeDayIndex")
+    end = app_js.index("/* ---------------- loading")
+    helpers = app_js[start:end]
+    script = helpers + """
+const assert = require("assert");
+// #4214: three days after plan start, 12 sessions -> day 3
+assert.strictEqual(computeDayIndex("2026-11-01", 12,
+  new Date("2026-11-04T12:00:00")), 3);
+assert.strictEqual(computeDayIndex("2026-11-01", 12,
+  new Date("2027-01-01T00:00:00")), 5);  // clamped to plan end
+// #4218: a card graded to tomorrow is NOT in today's queue;
+// a new card is; earliest due first
+const cards = [{card_id: "a"}, {card_id: "b"}, {card_id: "c"}];
+const sr = { a: {due: "2999-01-01T00:00:00.000Z"},
+             c: {due: "2020-01-01T00:00:00.000Z"} };
+const q = dueQueue(cards, sr, "fsrs", new Date());
+assert.deepStrictEqual(q.map((c) => c.card_id), ["c", "b"]);
+assert.strictEqual(nextDueDate(cards, sr, "fsrs"),
+                   "2020-01-01T00:00:00.000Z");
+console.log("helpers ok");
+"""
+    proc = subprocess.run([node, "-e", script], capture_output=True,
+                          text=True, timeout=60)
+    assert proc.returncode == 0, proc.stderr
+
+
+def test_today_checkins_persist_and_sample_disclosed():
+    app_js = (WEB / "app.js").read_text()
+    assert "ss.checkins" in app_js  # #4215: recorded, not cosmetic
+    assert "shifted to tomorrow" in app_js  # the no-guilt shift
+    html = (WEB / "index.html").read_text()
+    assert 'id="sample-disclosure"' in html  # #4216
+    assert 'id="reader-section-select"' in html  # #4217
+    assert 'id="reader-prev"' in html and 'id="reader-next"' in html
+
+
+def test_parity_statement_names_true_foundation():
+    parity = (ROOT / "evidence" / "web" / "parity.md").read_text()
+    version = (ROOT / "VERSION").read_text().strip()
+    assert f"Rides the foundation (v{version}" in parity  # #4225
+    assert "(v0.4.0" not in parity
+
+
+def test_versioning_doc_records_surface_ruling():
+    doc = (ROOT / "VERSIONING.md").read_text()
+    assert "Surface version lines are independent" in doc  # #4212

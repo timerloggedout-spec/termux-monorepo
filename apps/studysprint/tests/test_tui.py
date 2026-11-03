@@ -25,7 +25,7 @@ def test_build_state_uses_core():
     assert state["cards"]  # SR cards from the practice set
     assert state["sections"]  # reader sections
     assert state["trust_receipt"] is not None
-    assert TUI_VERSION == "0.1.0"
+    assert TUI_VERSION == "0.1.1"
 
 
 def _run(coro_fn):
@@ -137,3 +137,60 @@ def test_tui_ingest_screen_confirm_gate(tmp_path):
             assert "Placed on the calendar" in placement
 
     _run(scenario)
+
+
+def test_sr_state_is_per_card_and_accumulates(tmp_path):
+    """#4224: grading card B must not touch card A's state, and
+    re-grading card A continues from A's own history."""
+    from tui import StudySprintTUI
+
+    async def scenario():
+        app = StudySprintTUI(root=ROOT, export_dir=tmp_path)
+        async with app.run_test(size=(110, 42)) as pilot:
+            await pilot.pause()
+            await _activate(app, pilot, "tab-sr")
+            await pilot.click("#sr-flip")
+            await pilot.click("#grade-4")
+            await pilot.pause()
+            assert len(app.card_states) == 1
+            key_a = next(iter(app.card_states))
+            state_a = app.card_states[key_a]
+            # second card: grade it too
+            await pilot.click("#sr-flip")
+            await pilot.click("#grade-4")
+            await pilot.pause()
+            assert len(app.card_states) == 2
+            assert app.card_states[key_a] is state_a  # untouched
+            # back to card A (2-card deck wraps): re-grade; A's
+            # state is replaced by A's OWN next state
+            await pilot.click("#sr-flip")
+            await pilot.click("#grade-1")
+            await pilot.pause()
+            assert app.card_states[key_a] is not state_a
+    _run(scenario)
+
+
+def test_checkin_records_today_and_persists(tmp_path):
+    """#4223: the check-in lands on today's real week/day and
+    survives a restart (loaded back from disk)."""
+    from tui import StudySprintTUI
+
+    async def scenario():
+        app = StudySprintTUI(root=ROOT, export_dir=tmp_path)
+        async with app.run_test(size=(110, 42)) as pilot:
+            await pilot.pause()
+            await pilot.click("#checkin-done")
+            await pilot.pause()
+            entries = app.checkin_log.get("entries") or []
+            assert entries
+            today = app.state["today"]
+            assert entries[-1]["week"] == \
+                today["sessions"][0]["week"]
+            assert entries[-1]["session_index"] == \
+                today["day_index"]
+            assert (tmp_path / "checkin-log.json").exists()
+            return len(entries)
+    count = _run(scenario)
+    app2 = StudySprintTUI(root=ROOT, export_dir=tmp_path)
+    loaded = app2.checkin_log.get("entries") or []
+    assert len(loaded) == count

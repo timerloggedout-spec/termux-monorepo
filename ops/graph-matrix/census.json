@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T12:48:46.392443+00:00",
+ "census_at_utc": "2026-11-03T13:21:25.822855+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3263,
+  "total": 3277,
   "stale": 1028,
   "orphan_no_assoc_PR": 353,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3718,
-  "open": 206,
+  "total": 3738,
+  "open": 204,
   "open_draft": 33,
-  "open_draft_share": 0.1602,
+  "open_draft_share": 0.1618,
   "drafts": [
    {
     "number": 386,
@@ -82,7 +82,7 @@
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 33.0
+    "age_days": 33.1
    },
    {
     "number": 1301,
@@ -106,7 +106,7 @@
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 10.2
+    "age_days": 10.3
    },
    {
     "number": 1677,
@@ -130,7 +130,7 @@
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 2.2
+    "age_days": 2.3
    },
    {
     "number": 3034,
@@ -172,7 +172,7 @@
     "number": 4007,
     "title": "Wire invocation observations into Free-Tier Value evidence projection",
     "created_at": "2026-11-02T23:43:35Z",
-    "age_days": 0.5
+    "age_days": 0.6
    },
    {
     "number": 4011,
@@ -196,7 +196,7 @@
     "number": 4020,
     "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
     "created_at": "2026-11-03T02:17:58Z",
-    "age_days": 0.4
+    "age_days": 0.5
    },
    {
     "number": 4023,
@@ -223,23 +223,23 @@
     "age_days": 0.2
    }
   ],
-  "merged": 3035,
+  "merged": 3057,
   "closed_unmerged": 477,
-  "open_no_closing_ref": 200,
-  "open_unlinked_issue_target": 166,
+  "open_no_closing_ref": 198,
+  "open_unlinked_issue_target": 165,
   "open_unlinked_any_ref": 139,
-  "merged_no_closing_ref": 3006,
-  "merged_unlinked_issue_target": 1717,
-  "merged_unlinked_any_ref": 1005,
+  "merged_no_closing_ref": 3028,
+  "merged_unlinked_issue_target": 1727,
+  "merged_unlinked_any_ref": 1011,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2956,
+  "merged_head_branch_residual_name_match": 2978,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 566,
-  "open": 462,
-  "open_surface_unlinked": 202,
-  "open_unlinked_strict": 183
+  "total": 574,
+  "open": 470,
+  "open_surface_unlinked": 203,
+  "open_unlinked_strict": 184
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -862,6 +862,10 @@
    [
     1474,
     4281
+   ],
+   [
+    1474,
+    4295
    ],
    [
     1520,
@@ -1990,6 +1994,42 @@
    [
     4283,
     4276
+   ],
+   [
+    4294,
+    4276
+   ],
+   [
+    4294,
+    4282
+   ],
+   [
+    4294,
+    4283
+   ],
+   [
+    4297,
+    4231
+   ],
+   [
+    4298,
+    4231
+   ],
+   [
+    4299,
+    4231
+   ],
+   [
+    4300,
+    4213
+   ],
+   [
+    4300,
+    4240
+   ],
+   [
+    4301,
+    4225
    ]
   ],
   "issue_issue_mutual_pairs": 3,

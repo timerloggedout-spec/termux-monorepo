@@ -50,6 +50,15 @@ class HapiRegistryNormalizerTests(unittest.TestCase):
         )
         self.assertEqual(result["source"]["provider_request_id"], "req-hapi-1")
 
+    def test_preserves_stale_registry_timestamp_without_promoting_it(self):
+        result = normalize_hapi_server(self.record, CAPTURED)
+        self.assertEqual(
+            result["data"]["registry_metadata"]["updatedAt"],
+            "2026-10-02T00:00:00Z",
+        )
+        self.assertEqual(result["observed_at"], CAPTURED)
+        self.assertEqual(result["trust"]["security_review_status"], "not_reviewed")
+
     def test_discovery_never_implies_security_or_execution_admission(self):
         result = normalize_hapi_server(self.record, CAPTURED)
         self.assertEqual(result["trust"]["security_review_status"], "not_reviewed")

@@ -56,6 +56,19 @@ class FederatedAppRegistryTests(unittest.TestCase):
         data["applications"][0]["repository"]["full_name"] = "not-a-repository"
         self.assertTrue(any("owner/repository" in e for e in validate(data, self.schema)))
 
+    def test_independent_studysprint_release_lane_is_registered(self):
+        app = next(a for a in self.data["applications"] if a["app_key"] == "studysprint.agent")
+        self.assertEqual(app["repository"]["full_name"], "timerloggedout-spec/studysprint")
+        self.assertEqual(app["release_lanes"][0]["current_version"], "0.2.0")
+        self.assertIsNone(app["product_app_id"])
+        self.assertEqual(app["release_lanes"][0]["status"], "configured")
+
+    def test_listinglens_scaffold_is_not_misrepresented_as_released(self):
+        app = next(a for a in self.data["applications"] if a["app_key"] == "listinglens.web")
+        self.assertEqual(app["lifecycle"], "proposed")
+        self.assertEqual(app["release_lanes"], [])
+        self.assertIsNone(app["product_app_id"])
+
     def test_output_is_deterministic(self):
         self.assertEqual(validate(self.data, self.schema), validate(json.loads(json.dumps(self.data)), self.schema))
 

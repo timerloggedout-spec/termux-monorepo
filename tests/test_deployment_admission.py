@@ -1,5 +1,9 @@
 import unittest
+import sys
+from pathlib import Path
 from datetime import datetime, timezone
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.ci.deployment_admission import SCHEMA, evaluate
 
@@ -18,6 +22,7 @@ def document():
             "provider": "vercel", "resource_id": "vercel.deployments",
             "authority": "provider_enforcement", "used": 20, "limit": 100,
             "window_id": "team:rolling-24h:2026-11-02T12Z",
+            "scope_id": "vercel-team:verified",
             "observed_at": "2026-11-02T11:59:00Z",
         },
         "alternates": [],

@@ -6,7 +6,7 @@
 | VIZ-02 | P0 | Publish an isolated browser lab with D3 baseline and alternative renderer adapters. | in_progress | `experiments/visualization-renderers/index.html`; pinned CDN versions; no canonical feed access |
 | VIZ-03 | P1 | Inventory all published web surfaces, source feeds, writers, freshness, navigation, and deployment targets. | todo | Evidence-backed surface registry with verified/candidate/unresolved distinctions |
 | VIZ-04 | P1 | Compare D3, Observable Plot, Vega-Lite, ECharts, Cytoscape, Sigma, and existing ChartKit against the same workload cohort. | todo | Correctness, accessibility, interaction, payload, render-time, memory and maintenance scorecard |
-| VIZ-05 | P1 | Harden snapshot publication against empty/malformed/provenance-free outputs; revalidate Tribute status writer. | todo | Focused tests and workflow evidence; never turn missing evidence into zero |
+| VIZ-05 | P1 | Harden snapshot publication against empty/malformed/provenance-free outputs; revalidate Tribute status writer. | in_progress | Standalone fail-closed validator + regression tests; canonical writer integration remains open |
 | VIZ-06 | P1 | Upgrade shared web design tokens, navigation, responsive layout and accessible graph states. | todo | Screenshot/keyboard/contrast checks on representative surfaces |
 | VIZ-07 | P2 | Evaluate Netlify, Render, Supabase/Neon, Cloudinary, Temporal and API tooling only against demonstrated requirements. | todo | Provider decision records; no duplicate production services or unnecessary paid resources |
 

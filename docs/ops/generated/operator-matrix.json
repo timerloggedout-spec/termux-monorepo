@@ -1,17 +1,17 @@
 {
   "counts": {
-    "open_issues": 419,
-    "open_prs": 185,
+    "open_issues": 422,
+    "open_prs": 190,
     "pr_classes": {
-      "CANDIDATE": 90,
-      "EXTRACT": 5,
-      "NEED_EVIDENCE": 90,
+      "CANDIDATE": 92,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 92,
       "SUPERSEDE": 0
     }
   },
   "families": {
     "ci": {
-      "issues": 11,
+      "issues": 12,
       "unlabelled_numbers": []
     },
     "delphi": {
@@ -41,7 +41,7 @@
       "unlabelled_numbers": []
     },
     "security": {
-      "issues": 10,
+      "issues": 11,
       "unlabelled_numbers": []
     },
     "temporal": {
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 16,
-      "prs": 183,
+      "issues": 17,
+      "prs": 188,
       "unlabelled_numbers": [
         308,
         388,
@@ -67,11 +67,12 @@
         3670,
         3673,
         3751,
-        3752
+        3752,
+        4008
       ]
     }
   },
-  "generated_at": "2026-11-02T22:15:34Z",
+  "generated_at": "2026-11-03T00:24:45Z",
   "issues_unlabelled": [
     308,
     388,
@@ -88,7 +89,8 @@
     3670,
     3673,
     3751,
-    3752
+    3752,
+    4008
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -96,7 +98,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "79a2849d0c"
+    "sha": "79369417ad"
   },
   "prs": [
     {
@@ -168,6 +170,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "72bb6e0260",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T00:23:34Z"
     },
     {
       "class": "CANDIDATE",
@@ -965,20 +981,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8af8d12b20",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-02T21:47:47Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "fd02b2c8e0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1261,7 +1263,7 @@
       },
       "head_sha": "89202fe235",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 3063,
       "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
       "updated_at": "2026-11-02T22:08:39Z"
@@ -1433,6 +1435,48 @@
       "number": 3995,
       "title": "docs(github-apps): TEL-03 checked \u2014 emitter scheduled + mint-wired (dual-sign)",
       "updated_at": "2026-11-02T22:08:18Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "658953af69",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4006,
+      "title": "Implement Merged Branch Review Audit and Production Quota Engine",
+      "updated_at": "2026-11-02T23:30:44Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ac11d16016",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4007,
+      "title": "Wire invocation observations into Free-Tier Value evidence projection",
+      "updated_at": "2026-11-03T00:03:54Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "93eb60aa94",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4011,
+      "title": "docs(proposals): register external agent toolchain integration portfolio",
+      "updated_at": "2026-11-03T00:17:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1970,15 +2014,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "5f1546e349",
+      "head_sha": "de666a8889",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-02T22:15:05Z"
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T00:03:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2617,12 +2661,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "aa24706a1e",
+      "head_sha": "e05fab2e3a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3640,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-02T14:26:13Z"
+      "updated_at": "2026-11-03T00:24:12Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2689,10 +2733,38 @@
       },
       "head_sha": "1c350ea60e",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4002,
       "title": "viz(desk): adopt desk-feed v1.3 on the tribute tree (re-issues #3063)",
       "updated_at": "2026-11-02T22:14:38Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "896275319a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4005,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-02T23:24:23Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "f721277ce1",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4013,
+      "title": "docs(proposals): register external agent toolchain integration portfolio",
+      "updated_at": "2026-11-03T00:19:51Z"
     }
   ],
   "schema": "operator-matrix/v1",

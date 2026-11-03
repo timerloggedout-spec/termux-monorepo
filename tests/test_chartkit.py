@@ -51,6 +51,14 @@ def test_quota_page_chart_wiring():
         assert marker in html
 
 
+def test_telemetry_history_uses_per_series_last_observed_stamp():
+    html = (APP / "telemetry.html").read_text()
+    assert "lastObserved=key" in html
+    assert 'stampFor("receipts_total")' in html
+    assert 'stampFor("workflow_runs_observed")' in html
+    assert "null observations remain gaps" in html
+
+
 def test_standard_doc_covers_family():
     doc = DOC.read_text()
     for page in ("quota.html", "index.html", "owner-records.html",

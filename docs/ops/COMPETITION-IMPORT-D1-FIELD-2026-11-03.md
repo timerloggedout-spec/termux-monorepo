@@ -22,7 +22,7 @@ exhausted read). Roster order preserved below.
 - **education: 15** — CodeThozhan · StudySprint ⚠ (see flag) ·
   TamilEdu · ExamAccess · LearnBridge · KalviMate · LuminaLab ·
   Thiran · Learnova · ArivuBridge · SyllabusSync AI · AI
-  Interview Coach · StudyBuddy · Ladder (+ the contested row)
+  Interview Coach · StudyBuddy · Ladder (incl. our own entry)
 - **climate-heat: 5** — HeatSafe Shift · HeatShield Madurai ·
   Madurai HeatShield · HeatShield Sentinel · Nafas
 - **climate-agri: 11** — Mugil · MazhaiMitra · FasalRakshak ·
@@ -45,21 +45,24 @@ MazhaiMitra). Six projects run NO Bedrock model at all
 (Thiran · KrishiRakshak · AI Interview Coach ·
 KrishiRakshak-weather · Sukoon · Voice guard — Gemini/Ollama).
 
-## ⚠ Contested row — StudySprint (roster #2)
+## Row #2 — StudySprint (OURS) — contest RESOLVED 2026-11-03
 
-The recon's read at our own project URL
-(builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/
-studysprint) returned another team's content (team
-"GIREESHEE" · 30-day-plan body · Amplify/S3 endpoint · video
-0q8U0UoBxxA · repo Gireeshee/StudySprint). That contradicts
-the D1 seat's firsthand PASS on the same page the same morning
-(our Body · webapp endpoint · WK9LMwpvHUk embed). The same
-author owns Learnova (#21). Status: CONTESTED — a crossed read
-between same-author cards is the working species; a firsthand
-verification read of the URL is in flight and this section is
-corrected on its return. Do not cite row #2's content for any
-project until then. (Our own entry's state of record is
-unchanged: the published submission, D1-verified 2026-11-03.)
+The recon's first read at our project URL returned another
+team's content (team "GIREESHEE" · 30-day-plan body ·
+Amplify/S3 endpoint · video 0q8U0UoBxxA) — a crossed read in
+the bulk pass. A targeted firsthand re-read of the URL
+(2026-11-03 19:34–19:36 UTC) settles it — the page is OURS,
+exactly as published: title "StudySprint" · tags agents,
+strands, educational, machine-learning, trust-policy ·
+video **WK9LMwpvHUk** · endpoint
+**https://timerloggedout-spec.github.io/studysprint/webapp/0.1.0/**
+· Body opens "StudySprint — a study plan you can trust, built
+with the Strands Agents SDK. This is a real, grounded study
+plan, not a chatbot with a calendar bolted on." The crossed
+content's owner also holds Learnova (#21); whether that
+project occupies a separate roster slot is NOT_ESTABLISHED
+from these reads — the field count (55, exhausted) and every
+other row are unaffected.
 
 ## TAK tracks (Stage 3 — material rivals)
 
@@ -147,7 +150,7 @@ tests. Surfaces: 2 apps (backend + frontend) on Supabase.
 ## Rows — full field (roster order; SyllabusSync = #23, above)
 
 1. **CodeThozhan** — builder.aws.com/project/3LbnWYQX4ZRORUAT4lc7q3E5ZS8/codethozhan · Desc: "Tamil-first coding friend for Class 6–12 learners who don't have English-medium coaching." · Tags: none shown · Team: 1 (name not displayed) · 0/0 · Models: Bedrock Nova Lite, id us.amazon.nova-lite-v1:0 (BedrockModel → Agent → tools analyze_code/learning_plan/read_repo → CLI + FastAPI + Streamlit) · Live: NO (local Streamlit/CLI, "not yet deployed") · Repo: github.com/abdul100205/CodeThozhan · Video: none.
-2. **StudySprint** ⚠ CONTESTED — see flag section. Not cited.
+2. **StudySprint (OURS)** — builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint · Tags: agents, strands, educational, machine-learning, trust-policy · Video: youtube.com/watch?v=WK9LMwpvHUk · Endpoint: timerloggedout-spec.github.io/studysprint/webapp/0.1.0 · Body opens: "StudySprint — a study plan you can trust, built with the Strands Agents SDK…" (Verified firsthand 19:34–19:36 UTC after the bulk pass crossed this row — see the resolution section.)
 3. **Mugil** — Desc: "Tamil-first, multi-agent AI system that protects smallholder farmers from climate risk." · Tags: none · Team: Dhanush Raman B · 0/0 · Models: Bedrock Nova 2 Lite + Translate (agents: Weather Forecaster, Crop Doctor, Market Strategist, Safety Guardian) · Results claimed: 100%/95%/90% vs 0% baseline · Live: NO (local CLI/Streamlit, "prototype") · Repo: github.com/User-Dhanush-06/mugil.
 4. **MazhaiMitra** — Desc: "Tamil-first AI climate intelligence for smallholder farmers (floods, drought, heat)." · Tags: strands-agents, amazon-bedrock, social-good · Team: 1 (name not displayed) · 0/0 · Models: Nova 2 Lite + Translate · Body near-identical in structure/results to Mugil (same 100/95/90 claims) · Live: Streamlit demo (weather-app-….streamlit.app) · Repo: github.com/Shreejaisiva/Weather-app.
 5. **FasalRakshak** — Desc: "Voice-first crop doctor: photo diagnosis, Hindi explanations, offline-first." · Tags: none · Team: Prakhar Shukla · 0/0 · Models: Nova Lite (primary), Nova Pro (comparison), Transcribe, Polly · Live: YES — xodqri8mc2.execute-api.us-east-1.amazonaws.com (no login) · Repo: github.com/Prakhar2025/FasalRakshak · Video: youtu.be/QCazkh270jQ.

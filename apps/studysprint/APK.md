@@ -142,3 +142,9 @@ Every iteration of this surface ships only when ALL hold:
 - Parity statement present: what this surface rides vs the foundation
   version it ships against, and what is honestly absent/pending.
 - Tests green for the surface + no foundation regressions.
+- **Parity table in every release body (owner rule, 2026-11-03):** from
+  v1.0.0 onward, every release of record for this surface carries the
+  current surface×core parity table (`evidence/PARITY-MATRIX.md`,
+  embedded verbatim from the cut tag by the studysprint repo's
+  release-cut machinery). A cut from a pre-matrix tag falls back to a
+  named versions-of-record line. Patch cuts included.

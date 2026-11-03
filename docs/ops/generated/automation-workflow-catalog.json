@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f51e891df3da01f85658285d7e45d16ff37e433cb6051c2b6904e9e395ee084e",
-  "workflow_count": 287,
+  "source_fingerprint": "6a1fc4a01b4540310b648bc95e4e7fdb317d33a2adc63c11eb8d49835fab808f",
+  "workflow_count": 288,
   "workflows": [
     {
       "action_pins": [],
@@ -488,6 +488,21 @@
       "schedules": [],
       "triggers": [
         "issues"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "load"
+      ],
+      "name": "appid-control-plane-inventory",
+      "path": ".github/workflows/appid-control-plane-inventory.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

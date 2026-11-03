@@ -77,6 +77,11 @@ def normalize(snapshot: dict) -> dict[str, dict]:
              "placement_feed": p.get("placement"),
              "edition": p["edition_slug"], "team": p["team_slug"],
              "url": p.get("url"), "tech_tags": p.get("tech_tags")}, p.get("receipt"))
+    for p in snapshot.get("field_projects", []):
+        put("project", entity_key("project", p["edition_slug"], p["team_slug"], p["project_slug"]),
+            {"title": p.get("title"), "edition": p["edition_slug"],
+             "team": p["team_slug"], "url": p.get("url"),
+             "in_field_gallery": True}, p.get("receipt"))
     # judge persons: identity-stable across editions (exact normalized
     # name, v1) so repeat-judge detection (MoneyBall test 3) can run.
     persons: dict[str, dict] = {}
@@ -172,15 +177,23 @@ def main(argv: list[str]) -> int:
             e["key"].split(":")[1] if e["kind"] in ("edition", "placement_tier") else None)
         if not ed:
             continue
-        slot = per_edition.setdefault(ed, {"podium_n": 0, "field_n": None,
+        slot = per_edition.setdefault(ed, {"podium_n": 0, "field_n": 0,
                                            "judge_comments": 0, "community_comments": 0})
         if e["kind"] == "project" and e["fields"].get("placement_feed"):
             slot["podium_n"] += 1
+        if e["kind"] == "project" and e["fields"].get("in_field_gallery"):
+            slot["field_n"] += 1
     repeat_judges = sum(
         1 for e in ents.values()
         if e["kind"] == "judge_person" and len(e["fields"].get("editions", [])) > 1)
     feasibility = {"per_edition": per_edition,
                    "repeat_judges_exact_name": repeat_judges,
+                   "repeat_judges_with_attributable_picks": 0,
+                   "judge_track_linkage": "NOT_ESTABLISHED (no judge<->track assignment on public pages; count 0 is the deliverable stamp)",
+                   "category_x_edition_denominators": "NOT_ESTABLISHED (categories not labeled on public surfaces; medal counts are feed-level only)",
+                   "editions_with_usable_rubrics": 0,
+                   "rubrics_note": "no weighted judging criteria found on crawled edition pages (recon 2026-11-03)",
+                   "field_note": "field_n = project anchors server-rendered on the edition /live gallery; a lower bound if the gallery paginates client-side",
                    "comments_surface": "NOT_ESTABLISHED (no public comments in server-rendered pages, recon 2026-11-03)"}
     dataset = {
         "envelope": "podium-dataset/v1",

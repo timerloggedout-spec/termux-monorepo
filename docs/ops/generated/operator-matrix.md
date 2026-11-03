@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-03T11:03:16Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-03T11:06:31Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `d432aa60d1` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `f7dfdd4f5e` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 434 issues, 204 PRs. PR classes: EXTRACT 6 / CANDIDATE 105 / NEED_EVIDENCE 93 / SUPERSEDE 0.
+**Open inventory:** 433 issues, 205 PRs. PR classes: EXTRACT 6 / CANDIDATE 105 / NEED_EVIDENCE 94 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -217,6 +217,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4048 | NEED_EVIDENCE | unlabelled | `87c1d03307` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4069 | NEED_EVIDENCE | unlabelled | `3af768ef95` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #4086 | NEED_EVIDENCE | unlabelled | `cc9bf99810` | not_reported | not_reported | unstable | feat(integrations): add read-only provider evidence adapters |
+| #4191 | NEED_EVIDENCE | unlabelled | `c53d4616a3` | not_reported | not_reported | unstable | feat(studysprint): calendar core (RFP-D1-6 ①②③) — v0.5.0 batch 1/3 [#4157] |
 
 ## Families (open)
 
@@ -225,12 +226,12 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 86 | 0 |
 | mesh | 7 | 0 |
-| other | 237 | 1 |
+| other | 236 | 1 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 18 | 202 |
+| unlabelled | 18 | 203 |
 
 **Unlabelled open issues (18):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3751, #3752, #4008, #4052 — worked oldest-first by the issue-lifecycle lane pass.

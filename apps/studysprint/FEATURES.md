@@ -277,6 +277,14 @@ learning-gain claim.
 - ○ "I'm lost" button → maps the current topic to campus resources
   (tutoring center hours, office hours from the syllabus itself) — Next
 
+## Surface parity (program of record, #4282)
+
+The per-surface binding state vs this document lives in
+`evidence/PARITY-MATRIX.md` (iteration 0 baseline at core
+v0.5.0 / surfaces 0.1.1, with the catch-up slate). The matrix
+and the three parity statements update together on every
+surface iteration.
+
 ## UX principles (binding on every screen)
 1. Today first. The plan is a means; *today* is the product.
 2. No guilt mechanics. Missed = re-planned, never red, never a

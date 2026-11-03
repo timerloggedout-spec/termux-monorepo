@@ -94,3 +94,127 @@ consume the registry; this note is the reasoning behind it.
 4. Kaggle account (no card) ⇒ podium dataset lane.
 Each is a separate owner-visible provisioning step, per the freemium-prep
 doctrine (wire in-repo first, then sign up).
+
+## Addendum 2026-11-03 — extensions ①②③④ (registry 15 → 48 rows)
+
+Leads pass: simon987 + all-the-data awesome-datahoarding lists mined.
+Reddit r/LinuxTeck thread read still pending (browser task, read-only);
+failure modes below come from vendor terms + secondary practitioner reads.
+Reddit haul folds in as a follow-up annotation, not a blocker.
+
+### ① MEGA — the encrypted private plane
+
+20 GB free, permanent while active; no card at signup; zero-knowledge E2E
+(client-side encryption, user holds keys). Automation: MEGAcmd CLI
+(Win/Mac/Linux) + open SDKs/clients; rclone as third-party transport.
+Transfer quota: MEGA publishes NO fixed free figure (secondary reads vary
+~1 GB/day to ~5 GB/month); over-quota downloads throttle/pause.
+Dormancy, read firsthand from the Help Centre page (updated 2026-06-19):
+free account itself never expires, but inactivity triggers warning emails
+and eventual DATA deletion — whole process takes at least 10 months from
+last activity; any login/app use resets it. Over-storage: view-only lock
+after 30 days, deletion after 45 more (secondary). Achievement bonuses
+(+5 GB each) expire after 365 days — never counted as base allowance.
+Fit: BEST encrypted private fit for session exports/small archives;
+never a sole copy (dormancy + transfer quota); not a public plane.
+
+### ② P2P / decentralized — durability frame
+
+In this class "free" means bytes live where someone pins or seeds them.
+Stamp per row: who holds bytes · persistence mechanism · keep-alive cost.
+- WebTorrent: browser BitTorrent over WebRTC (Desktop bridges to TCP/uTP
+  swarms). Swarm-only; transport encrypted, CONTENT plaintext to peers —
+  public-by-default, no content encryption.
+- BitTorrent Speed / BTT (TRON variant): 2018 TRON acquisition, BTT 2019.
+  Bidders pay BTT for speed, seeders earn for staying — an incentive, not
+  a persistence guarantee. Content still public-by-default.
+- S5 on Sia: content-addressed layer over Sia; s5-rs v1.0.0-beta.1 (Nov
+  2025, Foundation grant complete). Sia contracts = collateral-backed
+  while funded; S5 FS layer = E2EE snapshots/sharding/sync over untrusted
+  nodes. Base blobs NOT auto-encrypted — state the layer per use. No
+  ordinary free tier: "free" = self-hosted node or community pinning.
+  Sia storage ~$2/TB-month class (secondary).
+- Iroh (n0-computer): BLAKE3 addressing, QUIC/TLS 1.3, BlobTickets
+  (hash + node + size). Transport encrypted; blobs NOT encrypted at rest
+  by default; anyone with a ticket fetches. No built-in pinning network —
+  provider node must stay online.
+- IPFS: pin-or-gone. Adding a file does NOT replicate it. Retrieval
+  evidence (secondary practitioner reads): dedicated gateways sub-second
+  to ~500 ms; public gateways 1–5 s typical; GB+ files slow/unreliable
+  over public gateways; gateway dependence partially re-centralizes.
+  Managed pinning ~$15/TB-month class.
+- Pinata free: 1 GB, 500 files, 10 GB bandwidth, 10K req/month, 1 gateway.
+  Paid Picnic $20/month = 1 TB. Terms carry no uptime guarantee.
+- Filebase free: 5 GB pooled (S3 + IPFS), 100K Class A + 1M Class B ops,
+  S3 egress free, no card (comparison reads). Sia-network buckets have NO
+  free tier. Pinned-file cap reads vary 500–1,000.
+- web3.storage / Storacha: WINDING DOWN — do not start new pins.
+  Team joined Filecoin Foundation Apr 2026; w3s.link gateway shut
+  2026-05-31 (project ADR source).
+- Academic Torrents: free account; publisher seeds. 400+ TB claimed.
+  Webseed URLs backstop swarms. BEST fit for very large public sets.
+- Syncthing: self-host mesh anchor. Bytes on fleet devices, transport
+  encrypted, at-rest = device's own. Private sync, not public distribution.
+Fleet split: PUBLIC artifact distribution (datasets, app packages,
+snapshots) = fit; private storage = only MEGA + S5-FS (encrypted legs).
+Transport encryption is NOT content privacy — stated per candidate.
+
+### ③ Quant + ML data sources — SOURCES, not storage (trading freeze untouched)
+
+Quant: EDGAR (free, no key, User-Agent required, ≤10 req/s, bulk ZIPs,
+public domain — cleanest) · FRED (free key, 120/min; TERMS TRAP: current
+Services Terms reportedly bar AI/ML training use + caching/archiving —
+re-read live terms before ML use; older API terms lack the clauses) ·
+Stooq (free bulk daily/hourly/5-min; personal-use-only, redistribution
+needs consent; automation fragile 2026 — JS proof-of-work, scripted CSV
+denied, pandas-datareader reader removed Jun 2026) · Dukascopy (free
+tick→monthly CSV, 60+ instruments, 2003–2006 earliest, per-day downloads)
+· HistData (free M1/tick from 2001; redistribution terms NOT_ESTABLISHED;
+bulk API paid) · Binance Vision (free, no key, daily/monthly ZIPs +
+CHECKSUMs; Binance.US terms bar specified commercial uses) · DoltHub
+(public DBs free any size; private first 100 MB free, then paid).
+ML: UCI (570+ sets, ~86% CC-BY 4.0, per-set DOI) · Common Crawl (300B+
+pages, 10+ PB; HTTPS free no account, S3 Requester Pays + rate limits
+since Nov 2023; content inherits page copyrights) · LAION-5B (5.85B
+pairs, INDEX of URLs + alt text, not hosted media; reconstruct via
+img2dataset) · Dolma (3T tokens; ImpACT license — contact + intended-use
+agreement, NOT clean open source) · RedPajama-1T (1.2T tokens, 2.67 TB;
+Apache 2.0 covers the MODELS, dataset licenses inherited) · HF Datasets
+(source-role row; licenses per card) · Papers With Code (index only, no
+storage) · DagsHub (free 20 GB per pricing page; per-repo doc figures
+vary 10 vs 100 GB — flagged, pricing governs) · ModelScope (43k+ public
+datasets counted Sep 2026; storage quota NOT_ESTABLISHED) · lakeFS
+(tooling row only — versioning layer over your own object store).
+
+### ④ Openness barter — public access is the price
+
+EXPLICIT (application/curation): AWS Open Data Sponsorship (AWS pays
+storage + egress, 2-year term renewable; application + Registry entry +
+docs; FLEET BLOCKER: needs an AWS account — creation deferred pending
+explicit owner approval) · Google Public Dataset Program (Google pays
+BigQuery storage; readers pay queries, first 1 TB/month free; tabular
+shape only; no SLA; self-serve public sharing is NOT barter — you pay) ·
+Azure Open Datasets / Planetary Computer (Microsoft pays storage;
+curated onboarding, no open application found; Pro bring-your-own-data
+is a SEPARATE paid service; free Hub retired).
+STRUCTURAL (public = free by design): Harvard Dataverse (free worldwide;
+1 TB per researcher, 2.5 TB Harvard; 2.5 GB/file; DOI; default CC0) ·
+data.world (public projects/datasets unlimited incl. free; REACH CAVEAT:
+community content moved behind a login wall — "public" now means
+account-holders, not the open web; per-dataset max NOT_ESTABLISHED) ·
+plus base-registry members Kaggle, HF public, Zenodo, GitHub, Internet
+Archive, OpenML, and amendment members DoltHub public, DagsHub public.
+Fleet pairing: podium datasets = publication-eligible NOW; compiling ML
+datasets = candidates AT COMPILE (license + privacy review then);
+session/telemetry corpora = PRIVACY-HELD, never barter candidates absent
+an explicit owner ruling.
+
+### Amended fit summary
+
+- Private encrypted plane: MEGA 20 GB (dormancy clock) + S5-FS (contract).
+- Public distribution at zero marginal cost: IPFS pins (Pinata 1 GB +
+  Filebase 5 GB) for small artifacts; WebTorrent/Academic Torrents for
+  large public sets; barter programs for DOI-grade permanent sets.
+- Quant/ML corpus sources above are inputs to the podium pipeline, not
+  storage legs; license traps (FRED, Stooq, Dolma, Common Crawl
+  inheritance) gate compile-time use.

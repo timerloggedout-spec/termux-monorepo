@@ -1,1 +1,1160 @@
-{"card_gate_legend":"none = no payment method needed for the free allowance; required = CARD-GATED closed class (owner rule 2026-10-26: never routed around); not_established = not verified on this pass","fit_summary":{"backup_plane":"GitLab mirror (in use) + Archive.org public snapshots + B2 10 GB; Drive is headroom-bound (≈1 GiB free) and cannot serve as a bulk leg","closed_class":"Cloudflare R2 (card-gated); Storj (trial-only + vendor Chapter 11 — no permanent free tier)","evidence_media":"GitHub Releases (fleet pattern today) + Internet Archive for permanent public copies","ml_datasets_compiling":"HF private 100 GB is the only large free PRIVATE plane in the set (needs write-scoped token); chunked GitHub releases for public artifacts; B2 10 GB as small overflow","podium_datasets":"Kaggle (200 GB/dataset, competition-native) + Zenodo (50 GB/record, DOI) primary; HF public for community-facing datasets","session_exports":"privacy-sensitive: HF private / B2 only; never the public-by-design hubs"},"generated_at":"2026-11-03","generator":"enumeration lane recon (owner spark 2026-11-03); terms verified firsthand from vendor pages/docs on the generated_at date; fleet_state from fleet records + live account reads","rows":[{"api":"S3-compatible + native B2 API; application keys; rclone/aws-cli drop-in","card_gate":"none","class":"object","durability":"vendor object storage, 11-nines design claims; single-provider copy rules apply (never sole copy of record)","fit":{"backup_plane":"fit (append-only buckets + Object Lock)","evidence_media":"fit","ml_datasets_private":"ok-small (10 GB plane)","podium_datasets":"ok-small","session_exports":"fit (private, S3 tooling)"},"fleet_state":"no account (catalog pass only, no signup)","free_allowance":"10 GB storage, permanent; egress free up to 3x average stored; 2,500 Class D calls/day free","id":"backblaze-b2","limits":"single object up to 10 TB via multipart; beyond free: $6.95/TB-month, egress past 3x $0.01/GB; no minimum retention, no minimum charge","name":"Backblaze B2","sources":["backblaze.com pricing + B2 signup page (no credit card required)","backblaze.com blog: free image hosting with B2 (10 GB free never expires)"]},{"api":"S3-compatible + Workers bindings","card_gate":"required","card_gate_stamp":"CARD-GATED — CLOSED CLASS: R2 activation requires a payment method on file (dashboard checkout; API returns error 10042 until enabled). Not routed around per owner card rule.","class":"object","durability":"vendor object storage","fit":{"backup_plane":"closed","evidence_media":"closed","ml_datasets_private":"closed","podium_datasets":"closed","session_exports":"closed"},"fleet_state":"CLOUDFLARE_API_TOKEN provisioned (provider catalog), but R2 itself not enabled and cannot be without a payment method","free_allowance":"10 GB-month Standard storage; 1M Class A + 10M Class B ops/month; egress free","id":"cloudflare-r2","limits":"free tier Standard class only; beyond free $0.015/GB-month + per-op pricing","name":"Cloudflare R2","sources":["developers.cloudflare.com/r2/pricing","developers.cloudflare.com billing/get-started (payment method required to purchase products, incl. the $0 R2 subscription)","firsthand-verified fresh-account report: dashboard enable flow requires card/PayPal"]},{"api":"S3-compatible gateway; Object Mount","card_gate":"none","class":"object","durability":"erasure-coded across distributed nodes (11-nines design claim) BUT vendor risk: Storj Labs filed Chapter 11 reorganisation 2026-07-26 — never a sole copy","fit":{"backup_plane":"no (vendor risk, no permanent free tier)","evidence_media":"trial-only","ml_datasets_private":"trial-only","podium_datasets":"trial-only","session_exports":"no (vendor risk)"},"fleet_state":"no account","free_allowance":"NONE permanent — 30-day trial (25 GB), no card for trial","id":"storj","limits":"after trial $7/TB storage + $7/TB egress, $5/month account minimum, 30-day minimum retention on Standard","name":"Storj","sources":["storj.io/pricing (free trial, no credit card required)","storj.io blog: voluntary financial restructuring 2026-07-26"]},{"api":"huggingface_hub Python/JS, REST API, git + LFS/Xet; datasets/models/buckets repo types","card_gate":"none","class":"ml-hub","durability":"git-versioned repos; vendor custody","fit":{"backup_plane":"no (public-value policy)","evidence_media":"ok (Spaces/datasets, not primary)","ml_datasets_private":"BEST free fit (100 GB private)","podium_datasets":"fit (public datasets)","session_exports":"fit (private repos, gated datasets)"},"fleet_state":"ACCOUNT EXISTS (timerloggedout-hf); HUGGINGFACE_TOKEN provisioned but read/inference-scoped (fleet-read) — uploads need a write-scoped token (provisioning act)","free_allowance":"public repos: best-effort (docs: usually up to ~5 TB for impactful work, abuse mitigations, community-value expectation); private repos: 100 GB included","id":"huggingface-hub","limits":"private beyond 100 GB is paid ($25/TB-month class on PRO); public bulk with low community value can be curtailed — not a backup plane","name":"Hugging Face Hub","sources":["huggingface.co/docs/hub/en/storage-limits (free user/org: public best-effort, private 100 GB)"]},{"api":"kaggle CLI + API (datasets create/version/download); notebook outputs as dataset sources","card_gate":"none","class":"ml-hub","durability":"versioned datasets; Google custody","fit":{"backup_plane":"no","evidence_media":"no","ml_datasets_private":"ok (200 GB private quota)","podium_datasets":"BEST fit (competition-native, citable)","session_exports":"no (wrong shape/privacy posture)"},"fleet_state":"no fleet account recorded (catalog pass only)","free_allowance":"200 GB per dataset; private quota 200 GB total (datasets) + 200 GB (models); public datasets up to 200 GB each, more via quota-request program","id":"kaggle","limits":"public-by-design platform (private exists but discovery/competition surface is the point); dataset-shaped content only","name":"Kaggle Datasets/Models","sources":["kaggle.com/docs/datasets (200 GB per dataset limit)","kaggle product announcement: private quota doubled to 200 GB, public upload max 200 GB","kaggle dataset quota request program post"]},{"api":"REST deposition API; GitHub release auto-archiving; DOI per record + concept DOI","card_gate":"none","class":"archive","durability":"CERN custody; retention = lifetime of the repository (CERN programme horizon); DOI permanence","fit":{"backup_plane":"ok for release snapshots (GitHub auto-archive)","evidence_media":"fit (published evidence drops)","ml_datasets_private":"ok for frozen published snapshots only","podium_datasets":"BEST fit (DOI-citable drops)","session_exports":"restricted records possible; not primary"},"fleet_state":"no account (catalog pass only)","free_allowance":"50 GB per record, up to 100 files per record; unlimited records in practice; larger quota on request","id":"zenodo","limits":"research-output framing + license required; restricted-access records possible but platform is preservation/publication, not working storage","name":"Zenodo (CERN)","sources":["help.zenodo.org deposit docs (50 GB per record, 100 files)","CERN/EPFL library guides (retention for lifetime of host organisation)"]},{"api":"REST API + Python/R packages; API key from free account","card_gate":"none","class":"ml-hub","durability":"community platform custody","fit":{"backup_plane":"no","evidence_media":"no","ml_datasets_private":"no","podium_datasets":"ok for tabular benchmark publishing","session_exports":"no"},"fleet_state":"no account","free_allowance":"NOT_ESTABLISHED (no published storage quota found on this pass)","id":"openml","limits":"tabular benchmark datasets (ARFF/CSV) with automatic metadata extraction; public-by-design (in_preparation until verified); dataset-shaped only, small-to-mid scale","name":"OpenML","sources":["docs.openml.org concepts/data (upload via API, status lifecycle)","openml.github.io intro (free account + API key)"]},{"api":"IAS3 (S3-like) API + internetarchive Python library + Metadata API","card_gate":"none","class":"archive","durability":"non-profit preservation mission, multi-copy storage; account incidents on record (2024 admin-error account deletions — items survived, accounts did not)","fit":{"backup_plane":"fit for public artifacts (release/source snapshots)","evidence_media":"BEST fit (permanent public evidence/media archive)","ml_datasets_private":"no (public)","podium_datasets":"ok (public preservation copies)","session_exports":"no (public)"},"fleet_state":"no account (catalog pass only)","free_allowance":"no storage fee; items up to 500 files or 500 GB per item; up to 5,000 files/day uploads","id":"internet-archive","limits":"public-by-default preservation library; content policies (thematically cohesive items; no mirroring of not-at-risk online material); not private storage","name":"Internet Archive (archive.org)","sources":["help.archive.org uploading guidance (500 files / 500 GB per item, 5,000 files/day)","archive.org API docs (IAS3)"]},{"api":"REST Releases API + git tags; fleet PAT/App routes already live","card_gate":"none","class":"archive","durability":"GitHub custody; fleet already publishes APK releases this way (release of record pattern)","fit":{"backup_plane":"fit (checksummed split-part archives pattern)","evidence_media":"BEST fit (already the fleet pattern)","ml_datasets_private":"private repos only; public pattern is public","podium_datasets":"ok (chunked drops)","session_exports":"no (unless private repo)"},"fleet_state":"IN USE (studysprint APK releases; delphi-oracle etc.)","free_allowance":"no total size or bandwidth limit documented; each asset < 2 GiB; up to 1,000 assets per release","id":"github-releases","limits":"per-asset 2 GiB cap (split larger payloads into parts); release-shaped (versioned drops), public repos = public assets","name":"GitHub Releases","sources":["GitHub Docs: About releases (each file under 2 GB; no limit on total size or bandwidth)"]},{"api":"git-lfs protocol; usage via billing API","card_gate":"none","class":"object","durability":"GitHub custody","fit":{"backup_plane":"no (bandwidth metered on restore)","evidence_media":"marginal","ml_datasets_private":"marginal","podium_datasets":"marginal (1 GB)","session_exports":"marginal"},"fleet_state":"available on the owner account; not used as a storage plane","free_allowance":"1 GB storage + 1 GB bandwidth/month per account, free","id":"github-lfs","limits":"past free bandwidth without data packs, LFS is disabled until next month; per-file max 2 GB on Free plan","name":"GitHub Git LFS","sources":["GitHub Docs: About storage and bandwidth usage (1 GB free storage + 1 GB/month bandwidth)"]},{"api":"git + REST API","card_gate":"not_established","class":"archive","durability":"GitLab custody","fit":{"backup_plane":"fit (already a fleet mirror leg)","evidence_media":"no","ml_datasets_private":"no","podium_datasets":"no","session_exports":"ok (private project mirrors)"},"fleet_state":"IN USE as repo validator/mirror (gitlab.com/a-group2180532/termux-monorepo — Repo Replay V2 copy)","free_allowance":"10 GB storage per project (repo + LFS combined) on free tier (third-party comparison figure; not re-read on gitlab.com this pass)","id":"gitlab","limits":"per-project cap shapes it as a mirror plane, not bulk storage","name":"GitLab.com (free tier)","sources":["GitHub-vs-GitLab LFS limits comparison (GitLab free 10 GB per project)","fleet record: Repo Replay validators (2026-10-29)"]},{"api":"Drive API via connected gws CLI; rclone-compatible","card_gate":"none","class":"connected","durability":"Google custody","fit":{"backup_plane":"no (headroom)","evidence_media":"in use (recordings intake), headroom-bound","ml_datasets_private":"no (headroom)","podium_datasets":"no (headroom)","session_exports":"ok (small, already used)"},"fleet_state":"CONNECTED (timerloggedout@gmail.com) — owner's screen recordings already land here","free_allowance":"15 GiB account-wide (consumer free tier, shared with Gmail/Photos)","id":"google-drive","limits":"LIVE READ 2026-11-03: quota 16,106,127,360 B, used 15,013,242,745 B account-wide (Drive itself 2,295,747,883 B) — headroom ≈ 1 GiB: effectively full","name":"Google Drive (connected)","sources":["live Drive about.get via connected CLI, 2026-11-03T19:52Z"]},{"api":"Dropbox MCP/content APIs via connector","card_gate":"none","class":"connected","durability":"Dropbox custody","fit":{"backup_plane":"not_established","evidence_media":"ok","ml_datasets_private":"not_established","podium_datasets":"not_established","session_exports":"ok (file drop patterns)"},"fleet_state":"CONNECTED (connector live); quota unchecked","free_allowance":"NOT_ESTABLISHED (connected plan/quota not exposed by the connector's reviewed tools on this pass)","id":"dropbox","limits":"plan-dependent; check account before relying on any figure","name":"Dropbox (connected)","sources":["fleet connector registry (dropbox connected)"]},{"api":"Neon REST API + Postgres wire; custom.neon connector live","card_gate":"none","class":"db-adjacent","durability":"Neon/Databricks custody; branching + instant restore (6h window on free)","fit":{"backup_plane":"fit for structured stores (lane-events class)","evidence_media":"no","ml_datasets_private":"metadata/features only (rows, not blobs)","podium_datasets":"no","session_exports":"metadata only"},"fleet_state":"PROVISIONED + LIVE (lane-events store; org org-cold-cloud-22262540)","free_allowance":"DB storage 1 GB per project, 20 GB account total (100 projects); object storage 5 GB per project on current pricing reads","id":"neon","limits":"database-shaped storage (not a file plane); compute 100 CU-hours/project-month; scale-to-zero on free","name":"Neon (connected)","sources":["neon.com/pricing reads 2026-11-02/03 (free: 1 GB/project after 2026-10-05 raise, 20 GB total; 5 GB object storage per project)","fleet record: Neon provisioned 2026-10-28"]},{"api":"S3-compatible Storage API + Postgres + REST","card_gate":"none","class":"db-adjacent","durability":"vendor custody; pause-on-idle makes it a poor cold plane","fit":{"backup_plane":"no (idle pause)","evidence_media":"no","ml_datasets_private":"marginal (1 GB files)","podium_datasets":"no","session_exports":"marginal"},"fleet_state":"NOT ESTABLISHED fleet-side (connector scaffold; Supabase→Jules still open; Muse vault capture pending per fleet record)","free_allowance":"500 MB database + 1 GB file storage per project; 50 MB max file upload; 5 GB egress + 5 GB cached","id":"supabase","limits":"free projects PAUSE after 1 week of inactivity; 2 active projects; no automatic backups on free","name":"Supabase","sources":["supabase.com/pricing (free plan limits, read via Nov 2026 pricing analyses)","fleet record: Supabase provisioning state"]}],"schema":"storage-registry/v1"}
+{
+  "card_gate_legend": "none = no payment method needed for the free allowance; required = CARD-GATED closed class (owner rule 2026-10-26: never routed around); not_established = not verified on this pass",
+  "fit_summary": {
+    "backup_plane": "GitLab mirror (in use) + Archive.org public snapshots + B2 10 GB; Drive is headroom-bound (≈1 GiB free) and cannot serve as a bulk leg",
+    "closed_class": "Cloudflare R2 (card-gated); Storj (trial-only + vendor Chapter 11 — no permanent free tier)",
+    "evidence_media": "GitHub Releases (fleet pattern today) + Internet Archive for permanent public copies",
+    "ml_datasets_compiling": "HF private 100 GB is the only large free PRIVATE plane in the set (needs write-scoped token); chunked GitHub releases for public artifacts; B2 10 GB as small overflow",
+    "podium_datasets": "Kaggle (200 GB/dataset, competition-native) + Zenodo (50 GB/record, DOI) primary; HF public for community-facing datasets",
+    "session_exports": "privacy-sensitive: HF private / B2 only; never the public-by-design hubs",
+    "openness_barter": "STRUCTURAL (public = free by design): Kaggle, HF public, Zenodo, GitHub, Internet Archive, Harvard Dataverse (default CC0), data.world (public unlimited), DoltHub public, DagsHub public, OpenML. EXPLICIT (application/curation): AWS Open Data Sponsorship (2-yr term, needs AWS account - fleet-deferred), Google Public Dataset Program (BigQuery tabular), Azure Open Datasets/Planetary Computer (curated, geo/ML). Fleet pairing: podium datasets = publication-eligible NOW; compiling ML datasets = candidates AT COMPILE (license + privacy review at compile time); session/telemetry corpora = PRIVACY-HELD, never barter candidates absent an explicit owner ruling.",
+    "p2p_decentralized": "Distribution of PUBLIC artifacts only (datasets, app packages, snapshots). Durability frame: bytes live where someone pins/seeds them - WebTorrent/BitTorrent/Iroh = swarm-or-provider uptime; IPFS = pin-or-gone; S5/Sia = contract-backed while funded. Encryption is per-candidate: S5 FS = E2EE; MEGA = zero-knowledge; everything else in this class is public-by-default (transport encryption is NOT content privacy).",
+    "quant_ml_data_sources": "Data SOURCES, not storage planes (trading-lane freeze untouched - catalog only). Cleanest licenses: EDGAR (public domain), UCI (~86% CC-BY), Binance Vision (no-key, as-is). Terms traps: FRED (AI-training + caching bars reported), Stooq (personal-use-only, fragile automation), Dolma (ImpACT license), Common Crawl (inherited page copyrights), Binance.US commercial-use bar."
+  },
+  "generated_at": "2026-11-03 (base) + amendment 2026-11-03",
+  "generator": "enumeration lane recon (owner spark 2026-11-03); terms verified firsthand from vendor pages/docs on the generated_at date; fleet_state from fleet records + live account reads",
+  "rows": [
+    {
+      "api": "S3-compatible + native B2 API; application keys; rclone/aws-cli drop-in",
+      "card_gate": "none",
+      "class": "object",
+      "durability": "vendor object storage, 11-nines design claims; single-provider copy rules apply (never sole copy of record)",
+      "fit": {
+        "backup_plane": "fit (append-only buckets + Object Lock)",
+        "evidence_media": "fit",
+        "ml_datasets_private": "ok-small (10 GB plane)",
+        "podium_datasets": "ok-small",
+        "session_exports": "fit (private, S3 tooling)"
+      },
+      "fleet_state": "no account (catalog pass only, no signup)",
+      "free_allowance": "10 GB storage, permanent; egress free up to 3x average stored; 2,500 Class D calls/day free",
+      "id": "backblaze-b2",
+      "limits": "single object up to 10 TB via multipart; beyond free: $6.95/TB-month, egress past 3x $0.01/GB; no minimum retention, no minimum charge",
+      "name": "Backblaze B2",
+      "sources": [
+        "backblaze.com pricing + B2 signup page (no credit card required)",
+        "backblaze.com blog: free image hosting with B2 (10 GB free never expires)"
+      ]
+    },
+    {
+      "api": "S3-compatible + Workers bindings",
+      "card_gate": "required",
+      "card_gate_stamp": "CARD-GATED — CLOSED CLASS: R2 activation requires a payment method on file (dashboard checkout; API returns error 10042 until enabled). Not routed around per owner card rule.",
+      "class": "object",
+      "durability": "vendor object storage",
+      "fit": {
+        "backup_plane": "closed",
+        "evidence_media": "closed",
+        "ml_datasets_private": "closed",
+        "podium_datasets": "closed",
+        "session_exports": "closed"
+      },
+      "fleet_state": "CLOUDFLARE_API_TOKEN provisioned (provider catalog), but R2 itself not enabled and cannot be without a payment method",
+      "free_allowance": "10 GB-month Standard storage; 1M Class A + 10M Class B ops/month; egress free",
+      "id": "cloudflare-r2",
+      "limits": "free tier Standard class only; beyond free $0.015/GB-month + per-op pricing",
+      "name": "Cloudflare R2",
+      "sources": [
+        "developers.cloudflare.com/r2/pricing",
+        "developers.cloudflare.com billing/get-started (payment method required to purchase products, incl. the $0 R2 subscription)",
+        "firsthand-verified fresh-account report: dashboard enable flow requires card/PayPal"
+      ]
+    },
+    {
+      "api": "S3-compatible gateway; Object Mount",
+      "card_gate": "none",
+      "class": "object",
+      "durability": "erasure-coded across distributed nodes (11-nines design claim) BUT vendor risk: Storj Labs filed Chapter 11 reorganisation 2026-07-26 — never a sole copy",
+      "fit": {
+        "backup_plane": "no (vendor risk, no permanent free tier)",
+        "evidence_media": "trial-only",
+        "ml_datasets_private": "trial-only",
+        "podium_datasets": "trial-only",
+        "session_exports": "no (vendor risk)"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "NONE permanent — 30-day trial (25 GB), no card for trial",
+      "id": "storj",
+      "limits": "after trial $7/TB storage + $7/TB egress, $5/month account minimum, 30-day minimum retention on Standard",
+      "name": "Storj",
+      "sources": [
+        "storj.io/pricing (free trial, no credit card required)",
+        "storj.io blog: voluntary financial restructuring 2026-07-26"
+      ]
+    },
+    {
+      "api": "huggingface_hub Python/JS, REST API, git + LFS/Xet; datasets/models/buckets repo types",
+      "card_gate": "none",
+      "class": "ml-hub",
+      "durability": "git-versioned repos; vendor custody",
+      "fit": {
+        "backup_plane": "no (public-value policy)",
+        "evidence_media": "ok (Spaces/datasets, not primary)",
+        "ml_datasets_private": "BEST free fit (100 GB private)",
+        "podium_datasets": "fit (public datasets)",
+        "session_exports": "fit (private repos, gated datasets)"
+      },
+      "fleet_state": "ACCOUNT EXISTS (timerloggedout-hf); HUGGINGFACE_TOKEN provisioned but read/inference-scoped (fleet-read) — uploads need a write-scoped token (provisioning act)",
+      "free_allowance": "public repos: best-effort (docs: usually up to ~5 TB for impactful work, abuse mitigations, community-value expectation); private repos: 100 GB included",
+      "id": "huggingface-hub",
+      "limits": "private beyond 100 GB is paid ($25/TB-month class on PRO); public bulk with low community value can be curtailed — not a backup plane",
+      "name": "Hugging Face Hub",
+      "sources": [
+        "huggingface.co/docs/hub/en/storage-limits (free user/org: public best-effort, private 100 GB)"
+      ]
+    },
+    {
+      "api": "kaggle CLI + API (datasets create/version/download); notebook outputs as dataset sources",
+      "card_gate": "none",
+      "class": "ml-hub",
+      "durability": "versioned datasets; Google custody",
+      "fit": {
+        "backup_plane": "no",
+        "evidence_media": "no",
+        "ml_datasets_private": "ok (200 GB private quota)",
+        "podium_datasets": "BEST fit (competition-native, citable)",
+        "session_exports": "no (wrong shape/privacy posture)"
+      },
+      "fleet_state": "no fleet account recorded (catalog pass only)",
+      "free_allowance": "200 GB per dataset; private quota 200 GB total (datasets) + 200 GB (models); public datasets up to 200 GB each, more via quota-request program",
+      "id": "kaggle",
+      "limits": "public-by-design platform (private exists but discovery/competition surface is the point); dataset-shaped content only",
+      "name": "Kaggle Datasets/Models",
+      "sources": [
+        "kaggle.com/docs/datasets (200 GB per dataset limit)",
+        "kaggle product announcement: private quota doubled to 200 GB, public upload max 200 GB",
+        "kaggle dataset quota request program post"
+      ]
+    },
+    {
+      "api": "REST deposition API; GitHub release auto-archiving; DOI per record + concept DOI",
+      "card_gate": "none",
+      "class": "archive",
+      "durability": "CERN custody; retention = lifetime of the repository (CERN programme horizon); DOI permanence",
+      "fit": {
+        "backup_plane": "ok for release snapshots (GitHub auto-archive)",
+        "evidence_media": "fit (published evidence drops)",
+        "ml_datasets_private": "ok for frozen published snapshots only",
+        "podium_datasets": "BEST fit (DOI-citable drops)",
+        "session_exports": "restricted records possible; not primary"
+      },
+      "fleet_state": "no account (catalog pass only)",
+      "free_allowance": "50 GB per record, up to 100 files per record; unlimited records in practice; larger quota on request",
+      "id": "zenodo",
+      "limits": "research-output framing + license required; restricted-access records possible but platform is preservation/publication, not working storage",
+      "name": "Zenodo (CERN)",
+      "sources": [
+        "help.zenodo.org deposit docs (50 GB per record, 100 files)",
+        "CERN/EPFL library guides (retention for lifetime of host organisation)"
+      ]
+    },
+    {
+      "api": "REST API + Python/R packages; API key from free account",
+      "card_gate": "none",
+      "class": "ml-hub",
+      "durability": "community platform custody",
+      "fit": {
+        "backup_plane": "no",
+        "evidence_media": "no",
+        "ml_datasets_private": "no",
+        "podium_datasets": "ok for tabular benchmark publishing",
+        "session_exports": "no"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "NOT_ESTABLISHED (no published storage quota found on this pass)",
+      "id": "openml",
+      "limits": "tabular benchmark datasets (ARFF/CSV) with automatic metadata extraction; public-by-design (in_preparation until verified); dataset-shaped only, small-to-mid scale",
+      "name": "OpenML",
+      "sources": [
+        "docs.openml.org concepts/data (upload via API, status lifecycle)",
+        "openml.github.io intro (free account + API key)"
+      ]
+    },
+    {
+      "api": "IAS3 (S3-like) API + internetarchive Python library + Metadata API",
+      "card_gate": "none",
+      "class": "archive",
+      "durability": "non-profit preservation mission, multi-copy storage; account incidents on record (2024 admin-error account deletions — items survived, accounts did not)",
+      "fit": {
+        "backup_plane": "fit for public artifacts (release/source snapshots)",
+        "evidence_media": "BEST fit (permanent public evidence/media archive)",
+        "ml_datasets_private": "no (public)",
+        "podium_datasets": "ok (public preservation copies)",
+        "session_exports": "no (public)"
+      },
+      "fleet_state": "no account (catalog pass only)",
+      "free_allowance": "no storage fee; items up to 500 files or 500 GB per item; up to 5,000 files/day uploads",
+      "id": "internet-archive",
+      "limits": "public-by-default preservation library; content policies (thematically cohesive items; no mirroring of not-at-risk online material); not private storage",
+      "name": "Internet Archive (archive.org)",
+      "sources": [
+        "help.archive.org uploading guidance (500 files / 500 GB per item, 5,000 files/day)",
+        "archive.org API docs (IAS3)"
+      ]
+    },
+    {
+      "api": "REST Releases API + git tags; fleet PAT/App routes already live",
+      "card_gate": "none",
+      "class": "archive",
+      "durability": "GitHub custody; fleet already publishes APK releases this way (release of record pattern)",
+      "fit": {
+        "backup_plane": "fit (checksummed split-part archives pattern)",
+        "evidence_media": "BEST fit (already the fleet pattern)",
+        "ml_datasets_private": "private repos only; public pattern is public",
+        "podium_datasets": "ok (chunked drops)",
+        "session_exports": "no (unless private repo)"
+      },
+      "fleet_state": "IN USE (studysprint APK releases; delphi-oracle etc.)",
+      "free_allowance": "no total size or bandwidth limit documented; each asset < 2 GiB; up to 1,000 assets per release",
+      "id": "github-releases",
+      "limits": "per-asset 2 GiB cap (split larger payloads into parts); release-shaped (versioned drops), public repos = public assets",
+      "name": "GitHub Releases",
+      "sources": [
+        "GitHub Docs: About releases (each file under 2 GB; no limit on total size or bandwidth)"
+      ]
+    },
+    {
+      "api": "git-lfs protocol; usage via billing API",
+      "card_gate": "none",
+      "class": "object",
+      "durability": "GitHub custody",
+      "fit": {
+        "backup_plane": "no (bandwidth metered on restore)",
+        "evidence_media": "marginal",
+        "ml_datasets_private": "marginal",
+        "podium_datasets": "marginal (1 GB)",
+        "session_exports": "marginal"
+      },
+      "fleet_state": "available on the owner account; not used as a storage plane",
+      "free_allowance": "1 GB storage + 1 GB bandwidth/month per account, free",
+      "id": "github-lfs",
+      "limits": "past free bandwidth without data packs, LFS is disabled until next month; per-file max 2 GB on Free plan",
+      "name": "GitHub Git LFS",
+      "sources": [
+        "GitHub Docs: About storage and bandwidth usage (1 GB free storage + 1 GB/month bandwidth)"
+      ]
+    },
+    {
+      "api": "git + REST API",
+      "card_gate": "not_established",
+      "class": "archive",
+      "durability": "GitLab custody",
+      "fit": {
+        "backup_plane": "fit (already a fleet mirror leg)",
+        "evidence_media": "no",
+        "ml_datasets_private": "no",
+        "podium_datasets": "no",
+        "session_exports": "ok (private project mirrors)"
+      },
+      "fleet_state": "IN USE as repo validator/mirror (gitlab.com/a-group2180532/termux-monorepo — Repo Replay V2 copy)",
+      "free_allowance": "10 GB storage per project (repo + LFS combined) on free tier (third-party comparison figure; not re-read on gitlab.com this pass)",
+      "id": "gitlab",
+      "limits": "per-project cap shapes it as a mirror plane, not bulk storage",
+      "name": "GitLab.com (free tier)",
+      "sources": [
+        "GitHub-vs-GitLab LFS limits comparison (GitLab free 10 GB per project)",
+        "fleet record: Repo Replay validators (2026-10-29)"
+      ]
+    },
+    {
+      "api": "Drive API via connected gws CLI; rclone-compatible",
+      "card_gate": "none",
+      "class": "connected",
+      "durability": "Google custody",
+      "fit": {
+        "backup_plane": "no (headroom)",
+        "evidence_media": "in use (recordings intake), headroom-bound",
+        "ml_datasets_private": "no (headroom)",
+        "podium_datasets": "no (headroom)",
+        "session_exports": "ok (small, already used)"
+      },
+      "fleet_state": "CONNECTED (timerloggedout@gmail.com) — owner's screen recordings already land here",
+      "free_allowance": "15 GiB account-wide (consumer free tier, shared with Gmail/Photos)",
+      "id": "google-drive",
+      "limits": "LIVE READ 2026-11-03: quota 16,106,127,360 B, used 15,013,242,745 B account-wide (Drive itself 2,295,747,883 B) — headroom ≈ 1 GiB: effectively full",
+      "name": "Google Drive (connected)",
+      "sources": [
+        "live Drive about.get via connected CLI, 2026-11-03T19:52Z"
+      ]
+    },
+    {
+      "api": "Dropbox MCP/content APIs via connector",
+      "card_gate": "none",
+      "class": "connected",
+      "durability": "Dropbox custody",
+      "fit": {
+        "backup_plane": "not_established",
+        "evidence_media": "ok",
+        "ml_datasets_private": "not_established",
+        "podium_datasets": "not_established",
+        "session_exports": "ok (file drop patterns)"
+      },
+      "fleet_state": "CONNECTED (connector live); quota unchecked",
+      "free_allowance": "NOT_ESTABLISHED (connected plan/quota not exposed by the connector's reviewed tools on this pass)",
+      "id": "dropbox",
+      "limits": "plan-dependent; check account before relying on any figure",
+      "name": "Dropbox (connected)",
+      "sources": [
+        "fleet connector registry (dropbox connected)"
+      ]
+    },
+    {
+      "api": "Neon REST API + Postgres wire; custom.neon connector live",
+      "card_gate": "none",
+      "class": "db-adjacent",
+      "durability": "Neon/Databricks custody; branching + instant restore (6h window on free)",
+      "fit": {
+        "backup_plane": "fit for structured stores (lane-events class)",
+        "evidence_media": "no",
+        "ml_datasets_private": "metadata/features only (rows, not blobs)",
+        "podium_datasets": "no",
+        "session_exports": "metadata only"
+      },
+      "fleet_state": "PROVISIONED + LIVE (lane-events store; org org-cold-cloud-22262540)",
+      "free_allowance": "DB storage 1 GB per project, 20 GB account total (100 projects); object storage 5 GB per project on current pricing reads",
+      "id": "neon",
+      "limits": "database-shaped storage (not a file plane); compute 100 CU-hours/project-month; scale-to-zero on free",
+      "name": "Neon (connected)",
+      "sources": [
+        "neon.com/pricing reads 2026-11-02/03 (free: 1 GB/project after 2026-10-05 raise, 20 GB total; 5 GB object storage per project)",
+        "fleet record: Neon provisioned 2026-10-28"
+      ]
+    },
+    {
+      "api": "S3-compatible Storage API + Postgres + REST",
+      "card_gate": "none",
+      "class": "db-adjacent",
+      "durability": "vendor custody; pause-on-idle makes it a poor cold plane",
+      "fit": {
+        "backup_plane": "no (idle pause)",
+        "evidence_media": "no",
+        "ml_datasets_private": "marginal (1 GB files)",
+        "podium_datasets": "no",
+        "session_exports": "marginal"
+      },
+      "fleet_state": "NOT ESTABLISHED fleet-side (connector scaffold; Supabase→Jules still open; Muse vault capture pending per fleet record)",
+      "free_allowance": "500 MB database + 1 GB file storage per project; 50 MB max file upload; 5 GB egress + 5 GB cached",
+      "id": "supabase",
+      "limits": "free projects PAUSE after 1 week of inactivity; 2 active projects; no automatic backups on free",
+      "name": "Supabase",
+      "sources": [
+        "supabase.com/pricing (free plan limits, read via Nov 2026 pricing analyses)",
+        "fleet record: Supabase provisioning state"
+      ]
+    },
+    {
+      "api": "MEGAcmd CLI (Win/Mac/Linux) + open-source SDKs/clients on GitHub",
+      "card_gate": "none",
+      "class": "connected",
+      "durability": "vendor custody; zero-knowledge E2E encryption (client-side, keys held by user)",
+      "durability_frame": {
+        "holds_bytes": "MEGA (ciphertext only)",
+        "keep_alive": "log in at least every ~10 months (ToS floor 3 months + notice); any app use resets the clock",
+        "persistence": "vendor account; data deleted after >=10 months inactivity (help page, updated 2026-06-19); over-storage lock 30 d -> deletion +45 d (secondary)"
+      },
+      "encryption": "zero-knowledge E2E by design (client-side encryption before upload)",
+      "fit": {
+        "backup_plane": "no (dormancy + transfer quota; never sole copy)",
+        "evidence_media": "ok-small (share links, password/expiry)",
+        "ml_datasets_private": "ok-small (20 GB encrypted plane)",
+        "podium_datasets": "no (transfer quota, private posture)",
+        "session_exports": "BEST encrypted private fit in the set (20 GB, E2EE)"
+      },
+      "fleet_state": "no account (catalog pass only, no signup)",
+      "free_allowance": "20 GB storage, permanent while active; achievement bonuses +5 GB each, expire after 365 days (do NOT count as base)",
+      "id": "mega",
+      "limits": "transfer quota: MEGA publishes NO fixed free figure (secondary reads vary ~1 GB/day to ~5 GB/month); over-quota downloads throttle/pause",
+      "name": "MEGA (mega.nz)",
+      "sources": [
+        "MEGA help centre account-expiry page, read firsthand 2026-11-03 (inactivity >=10 months, warnings, account kept)",
+        "MEGA store listing: 20 GB free, no credit card required"
+      ]
+    },
+    {
+      "api": "BitTorrent wire protocol over WebRTC data channels (browser) or TCP/uTP (Node.js); magnet URIs; WebSocket trackers for signaling",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "swarm-only: no persistence guarantee; content lives while at least one peer seeds",
+      "durability_frame": {
+        "holds_bytes": "whichever peers currently seed the torrent",
+        "keep_alive": "a seed must stay online (fleet seed = our own node or a community seeder)",
+        "persistence": "none built in; dead swarm = data gone even though the magnet link survives"
+      },
+      "encryption": "NONE at content layer: transport encrypted (WebRTC DTLS), torrent pieces are plaintext to any peer - public-by-default",
+      "fit": {
+        "backup_plane": "no (no persistence)",
+        "evidence_media": "ok (public distribution of evidence drops)",
+        "ml_datasets_private": "no",
+        "podium_datasets": "fit (public dataset distribution, browser-native)",
+        "session_exports": "no"
+      },
+      "fleet_state": "protocol only; no fleet seed running",
+      "free_allowance": "no allowance concept - bandwidth/storage are the peers' own resources; no account, no card",
+      "id": "webtorrent",
+      "limits": "browser peers need a WebSocket tracker for signaling; no DHT in browser; WebTorrent Desktop bridges WebRTC <-> TCP/UDP swarms",
+      "name": "WebTorrent (+ Desktop bridge)",
+      "sources": [
+        "webtorrent.io FAQ (WebRTC transport, tracker signaling, same wire protocol)",
+        "Wikipedia WebTorrent (Desktop bridges WebRTC and TCP/UDP; Brave bundles WebTorrent)"
+      ]
+    },
+    {
+      "api": "BitTorrent protocol + BTT wallet/payment channels in BitTorrent / uTorrent clients",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "swarm-only, like WebTorrent; BTT bidding is a longevity incentive, not a persistence guarantee",
+      "durability_frame": {
+        "holds_bytes": "swarm peers",
+        "keep_alive": "seeders stay for BTT rewards; downloaders bid BTT for speed",
+        "persistence": "incentive-improved, still not guaranteed"
+      },
+      "encryption": "NONE at content layer - public-by-default; BTT is a payment layer, not encryption",
+      "fit": {
+        "backup_plane": "no",
+        "evidence_media": "ok (public distribution)",
+        "ml_datasets_private": "no",
+        "podium_datasets": "ok (token-incentivized distribution)",
+        "session_exports": "no"
+      },
+      "fleet_state": "not used; no BTT position (trading-lane freeze untouched - catalog only)",
+      "free_allowance": "no allowance concept; BTT is an optional paid accelerator, base protocol free",
+      "id": "bittorrent-speed-btt",
+      "limits": "TRON-based variant per brief: BitTorrent Inc acquired by TRON Foundation 2018; BTT launched 2019 (TRC-10, re-denominated TRC-20/BTTC 2021); Speed integrated into uTorrent Classic / BitTorrent clients",
+      "name": "BitTorrent Speed / BTT (TRON variant)",
+      "sources": [
+        "Gemini/Bybit/OKX BTT explainers (2018 TRON acquisition; Speed bidding; seeder rewards)",
+        "TorrentFreak 2019 (uTorrent 3.5.5 Speed integration; 10 BTT bootstrap gift)"
+      ]
+    },
+    {
+      "api": "s5-rs crates (s5_core/s5_node/s5_cli/s5_fuse on crates.io) + S3-compatible and local blob-store backends; RHP4 direct-from-host streaming",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "Sia storage contracts (blockchain-enforced, hosts post collateral) OR self-hosted blob stores; erasure-coded, client-side encrypted by default on Sia",
+      "durability_frame": {
+        "holds_bytes": "Sia hosts under contract, or your own blob store",
+        "keep_alive": "contract renewal + Siacoin for host payments (paid at scale); self-hosted node = your disk + uptime",
+        "persistence": "contract-backed while funded; S5 FS adds E2EE snapshots/sharding"
+      },
+      "encryption": "S5 filesystem layer is end-to-end encrypted (sync over untrusted nodes proven in grant tests); base blobs unencrypted unless the FS layer is used - state per use, never assume",
+      "fit": {
+        "backup_plane": "ok for encrypted archives (contract-backed)",
+        "evidence_media": "ok (public FS shares)",
+        "ml_datasets_private": "ok (E2EE FS)",
+        "podium_datasets": "ok (content-addressed public shares)",
+        "session_exports": "ok via E2EE FS only"
+      },
+      "fleet_state": "not deployed; implementation maturity: s5-rs v1.0.0-beta.1 shipped Nov 2025 (Sia Foundation grant complete)",
+      "free_allowance": "no free tier - 'free' = self-hosted node (your hardware) or community nodes that pin; Sia network storage is paid in Siacoin (~$2/TB-month class per secondary reads)",
+      "id": "s5-sia",
+      "limits": "young stack: WASM bindings blocked by tokio deps (grant report); networking migrated from legacy WebSocket to Iroh",
+      "name": "S5 on Sia (s5-rs)",
+      "sources": [
+        "Sia Forum grant thread (s5-rs v1.0.0-beta.1, crates.io, E2EE FS sync test, Iroh networking, renterd backend)",
+        "Sia blog State of Sia Sep 2025 (S5 Rust rewrite progress; Luogo app on S5)"
+      ]
+    },
+    {
+      "api": "iroh Rust library: Endpoint (QUIC) + iroh-blobs (BLAKE3, bao-tree verified streaming) + iroh-docs/gossip; BlobTicket sharing tokens; sendme CLI",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "provider-must-stay-online: no built-in pinning network; relays aid NAT traversal only (data stays E2E encrypted through relays)",
+      "durability_frame": {
+        "holds_bytes": "whichever node holds the blob and answers tickets",
+        "keep_alive": "run a provider node (or pay a future pinning host)",
+        "persistence": "none beyond the provider's uptime"
+      },
+      "encryption": "TRANSPORT encrypted (QUIC/TLS 1.3, Ed25519 node identity); blobs NOT encrypted at rest by default - anyone with a ticket can fetch; app-layer encryption required for private content",
+      "fit": {
+        "backup_plane": "no (no persistence layer)",
+        "evidence_media": "ok (ticket-based public distribution)",
+        "ml_datasets_private": "only with app-layer encryption",
+        "podium_datasets": "ok (verifiable content-addressed distribution)",
+        "session_exports": "no (unless encrypted first)"
+      },
+      "fleet_state": "not deployed; iroh 1.0.0-rc class (n0-computer)",
+      "free_allowance": "no allowance concept - own node, own resources; relay use free",
+      "id": "iroh",
+      "limits": "tickets are bearer tokens (hash + node address + size); docs/gossip for sync; NAT traversal via STUN/relays",
+      "name": "Iroh (n0-computer)",
+      "sources": [
+        "n0-computer iroh-examples/iroh-blobs/sendme docs (BLAKE3 addressing, QUIC/TLS 1.3, relay fallback, ticket model)"
+      ]
+    },
+    {
+      "api": "IPFS HTTP API + gateway URLs (ipfs:// CID); pinning-service APIs (Pinata SDK/API, Filebase S3-compatible API)",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "pin-or-gone: adding a file does NOT replicate it; availability = at least one reachable pinner",
+      "durability_frame": {
+        "holds_bytes": "pinning services + own nodes",
+        "keep_alive": "keep paying the pinner or keep your own node online",
+        "persistence": "managed pinning ~$15/TB-month class; free tiers below are the only no-cost legs"
+      },
+      "encryption": "NONE by default on public IPFS: CIDs are public, gateways serve anyone - private content needs app-layer encryption or a private swarm",
+      "fit": {
+        "backup_plane": "no (pin-or-gone)",
+        "evidence_media": "fit (content-addressed public artifacts, multi-pinner redundancy)",
+        "ml_datasets_private": "no (public by default)",
+        "podium_datasets": "fit (CID-verifiable public distribution)",
+        "session_exports": "no"
+      },
+      "fleet_state": "no pins held; Storacha/web3.storage is WINDING DOWN (see row) - do not start new pins there",
+      "free_allowance": "protocol itself free; free pinning legs: Pinata 1 GB + Filebase 5 GB (rows below)",
+      "id": "ipfs-protocol",
+      "limits": "retrieval evidence (secondary practitioner reads): dedicated gateways sub-second to ~500 ms; public gateways 1-5 s typical; GB+ files slow/unreliable over public gateways; gateway dependency partially re-centralizes",
+      "name": "IPFS (protocol + pinning economics)",
+      "sources": [
+        "Pinata/Filebase pricing (see rows)",
+        "practitioner comparisons (gateway latency bands; pin-or-gone; large-file caveat)"
+      ]
+    },
+    {
+      "api": "Pinata API/SDK, dedicated gateway (1 included on free)",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "managed pinning; terms carry no uptime guarantee (secondary review of Pinata terms)",
+      "durability_frame": {
+        "holds_bytes": "Pinata",
+        "keep_alive": "account stays within free caps",
+        "persistence": "pin-or-gone if the account lapses"
+      },
+      "encryption": "NONE by default (public IPFS); private IPFS is a paid/dedicated-network feature",
+      "fit": {
+        "backup_plane": "no",
+        "evidence_media": "fit (small public artifacts)",
+        "ml_datasets_private": "no",
+        "podium_datasets": "ok-small (1 GB)",
+        "session_exports": "no"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "1 GB storage, 500 files, 10 GB bandwidth, 10K requests/month, 1 gateway",
+      "id": "pinata",
+      "limits": "paid Picnic $20/month = 1 TB; overage $0.07/GB storage",
+      "name": "Pinata (IPFS pinning)",
+      "sources": [
+        "pinata.cloud/pricing (firsthand read via search result: Free 1 GB/500 files/10 GB/10K)",
+        "Pinata review (terms: no availability guarantee, termination with or without notice)"
+      ]
+    },
+    {
+      "api": "S3-compatible API (endpoint s3.filebase.io) + IPFS pinning API; dedicated gateway",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "managed pinning over decentralized backends (IPFS/Sia/Storj networks)",
+      "durability_frame": {
+        "holds_bytes": "Filebase (geo-redundant pinning)",
+        "keep_alive": "account stays within free caps",
+        "persistence": "pin-or-gone if the account lapses"
+      },
+      "encryption": "NONE by default on the IPFS leg (public); S3 leg is vendor-managed",
+      "fit": {
+        "backup_plane": "ok-small (S3-shaped 5 GB)",
+        "evidence_media": "fit (small public artifacts)",
+        "ml_datasets_private": "ok-small",
+        "podium_datasets": "ok-small",
+        "session_exports": "ok-small (S3 leg, private buckets)"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "5 GB pooled across Object Storage + IPFS; 100K Class A + 1M Class B ops; egress free on S3 API",
+      "id": "filebase",
+      "limits": "pinned-file cap reads vary (500-1,000); Sia-network buckets have NO free tier (paid plan required)",
+      "name": "Filebase (S3 + IPFS)",
+      "sources": [
+        "AeroFTP Filebase docs (checked 2026-09-19: 5 GB pooled, op counts, egress free)",
+        "SourceForge Filebase comparisons (5 GB, no credit card required)"
+      ]
+    },
+    {
+      "api": "web3.storage API (legacy) / Storacha UCAN uploads",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "WINDING DOWN - do not build on it",
+      "durability_frame": {
+        "holds_bytes": "was: Storacha/Filecoin deals",
+        "keep_alive": "n/a",
+        "persistence": "none going forward"
+      },
+      "encryption": "NONE by default (public IPFS/Filecoin)",
+      "fit": {
+        "backup_plane": "no",
+        "evidence_media": "no",
+        "ml_datasets_private": "no",
+        "podium_datasets": "no (migrate off)",
+        "session_exports": "no"
+      },
+      "fleet_state": "never used; recorded so no lane starts here",
+      "free_allowance": "FORMER free tier (historical web3.storage free uploads); current status: Storacha team joined Filecoin Foundation Apr 2026, product winding down, w3s.link public gateway shut May 31 2026",
+      "id": "web3storage-storacha",
+      "limits": "migrate any existing pins to Pinata/Filebase/own node",
+      "name": "web3.storage / Storacha - WINDING DOWN",
+      "sources": [
+        "project ADR (2026-08-31): Storacha winding down, w3s.link shutdown May 31 2026"
+      ]
+    },
+    {
+      "api": "BitTorrent protocol; .torrent files + magnet links; tracker (academictorrents.com) + webseed backup URLs",
+      "card_gate": "none",
+      "class": "p2p",
+      "durability": "swarm + webseeds: availability = seeders + HTTP fallback URLs; popular sets stay alive for years, niche sets die with their last seeder",
+      "durability_frame": {
+        "holds_bytes": "community seeders + optional webseed hosts",
+        "keep_alive": "at least one seeder (fleet can seed its own sets)",
+        "persistence": "no guarantee; webseed URLs let a plain HTTP host backstop the swarm"
+      },
+      "encryption": "NONE - public research datasets by design",
+      "fit": {
+        "backup_plane": "no (distribution, not backup)",
+        "evidence_media": "no",
+        "ml_datasets_private": "no",
+        "podium_datasets": "BEST fit for very large public sets (no size cap beyond swarm interest)",
+        "session_exports": "no"
+      },
+      "fleet_state": "not used as publisher; catalog: 400+ TB of research data claimed, incl. ImageNet/UCI/Wikipedia mirrors",
+      "free_allowance": "no allowance concept; upload = create torrent + seed it yourself; no card",
+      "id": "academic-torrents",
+      "limits": "requires a torrent client (Transmission/aria2c); dataset licenses vary per dataset (check before reuse)",
+      "name": "Academic Torrents",
+      "sources": [
+        "academictorrents.com getting-started docs (account, torrent upload, seeding, webseeds)",
+        "KDnuggets Academic Torrents profile (15+ TB at write time; 900 GB/day transfers; 30k users/month class)"
+      ]
+    },
+    {
+      "api": "Syncthing protocol (Block Exchange, discovery + relay servers); no account",
+      "card_gate": "none",
+      "class": "self-host",
+      "durability": "device-to-device: bytes live on the fleet's own devices; no cloud leg at all",
+      "durability_frame": {
+        "holds_bytes": "fleet devices",
+        "keep_alive": "devices online + Syncthing running",
+        "persistence": "as good as the fleet's own disks"
+      },
+      "encryption": "transport encrypted (TLS); at-rest encryption is the device's own (not a Syncthing feature)",
+      "fit": {
+        "backup_plane": "ok (device-mesh redundancy)",
+        "evidence_media": "ok (device sync)",
+        "ml_datasets_private": "ok (private mesh)",
+        "podium_datasets": "no (not public distribution)",
+        "session_exports": "ok (private mesh)"
+      },
+      "fleet_state": "not deployed as a lane; listed as the self-host class anchor from the awesome lists",
+      "free_allowance": "no allowance concept - own devices, own disks",
+      "id": "syncthing",
+      "limits": "no public sharing story; relay servers only help connectivity, they do not store",
+      "name": "Syncthing (self-host mesh)",
+      "sources": [
+        "simon987 awesome-datahoarding (Syncthing entry)",
+        "Syncthing project docs (device sync model)"
+      ]
+    },
+    {
+      "api": "REST/JSON at data.sec.gov + efts.sec.gov full-text search; nightly bulk ZIPs (submissions.zip, companyfacts.zip)",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "US government publication; bulk ZIPs are the durable mirror pattern",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a (data source, not storage)",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (fundamentals corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested; bulk-first pattern recommended (one nightly ZIP beats per-company crawling)",
+      "free_allowance": "unlimited reads within fair access: no key, no signup; User-Agent with name + contact email REQUIRED (403 without); <=10 req/s",
+      "id": "sec-edgar",
+      "limits": "XBRL facts back to ~2009; real-time as filed; citation to SEC requested (not a license condition); EDGAR name/logos restricted",
+      "name": "SEC EDGAR (bulk + API)",
+      "sources": [
+        "SEC EDGAR APIs page (no authentication or API keys required)",
+        "EDGAR API guides (bulk ZIPs, 10 req/s, User-Agent rule)"
+      ]
+    },
+    {
+      "api": "REST at api.stlouisfed.org/fred (v1 + v2 bulk release endpoint); CSV fallback per series without a key",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "St. Louis Fed publication; series revisions happen (use ALFRED vintages for point-in-time work)",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "TERMS-BARRED (see limits)",
+        "podium_datasets": "ok (macro series corpus, with license care)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested",
+      "free_allowance": "free key (account); 120 req/min; no monthly quota; bulk CSV files for warehouse syncs",
+      "id": "fred",
+      "limits": "TERMS TRAP (secondary review of current FRED Services Terms): reportedly forbids (a) using the API to develop/train AI/ML systems and (b) storing/caching/archiving content; individual series may carry third-party copyright - RE-READ the live terms before any ML-dataset use; older API terms page lacks these clauses (ambiguity flagged)",
+      "name": "FRED (St. Louis Fed)",
+      "sources": [
+        "FRED API docs (free key, 120/min)",
+        "FRED Services Terms review (AI-training + caching clauses, series-level copyright)"
+      ]
+    },
+    {
+      "api": "none published - per-symbol CSV links + bulk ASCII/MetaStock files via website; pandas-datareader reader REMOVED 2026-06 (v0.11.0)",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "website publication; automation fragile in 2026 (JS proof-of-work; scripted CSV returned Access denied/Unauthorized in Oct 2026 checks)",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "no (personal-use-only license)",
+        "podium_datasets": "personal-research snapshots only",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested",
+      "free_allowance": "free; no key, no quota published; bulk daily (US: 4,660 Nasdaq + 4,532 NYSE + 327 NYSE American + 3,812 ETFs, 515 MB ASCII) + hourly/5-min files",
+      "id": "stooq",
+      "limits": "LICENSE: personal use only; commercial use prohibited; redistribution requires Stooq consent (ToS 5.3); S&P index data personal/non-commercial + no investment-product use; LME data no onward distribution; prices are price-only (no dividends)",
+      "name": "Stooq",
+      "sources": [
+        "Stooq download page + ToS (personal use, redistribution consent)",
+        "Oct 2026 automation checks (JS PoW, denied scripted CSV)",
+        "pandas-datareader 0.11.0 changelog (reader removed)"
+      ]
+    },
+    {
+      "api": "Historical Data Export web tool (tick->monthly CSV, per-day downloads); JForex demo/live export; dukascopy-node (community) for programmatic pulls",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "bank publication; per-day file granularity makes bulk pulls slow",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a (license: Dukascopy data usage agreement)",
+        "podium_datasets": "ok (FX tick corpus, with agreement care)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested",
+      "free_allowance": "free; tick + M1 bars for 60+ FX/commodity/index instruments; earliest dates 2003-2006 by pair; BID/ASK CSV",
+      "id": "dukascopy",
+      "limits": "use bound by Dukascopy data usage agreement (no warranty, terms on their site); one day per download in the web tool",
+      "name": "Dukascopy Historical Data",
+      "sources": [
+        "Dukascopy Historical Data Export page",
+        "Tickstory Dukascopy range tables (earliest dates by instrument)"
+      ]
+    },
+    {
+      "api": "website downloads (ZIP of ASCII CSV, MT4-native formats); paid API for bulk",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "website publication",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "ok (FX M1/tick corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested",
+      "free_allowance": "free downloads: M1 + tick data for FX pairs, indices, metals, from 2001",
+      "id": "histdata",
+      "limits": "redistribution terms NOT_ESTABLISHED on this pass; bulk API is paid",
+      "name": "HistData",
+      "sources": [
+        "HistData download pages (free M1/tick from 2001; paid bulk API)",
+        "MT4 data-source guides"
+      ]
+    },
+    {
+      "api": "static file host data.binance.vision (daily + monthly ZIPs, predictable URL pattern) + data-api.binance.vision market-data REST (no key) + official binance-public-data downloader scripts",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "exchange publication; daily files next day, monthly files first Monday of month; CHECKSUM sidecars per file",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (crypto OHLCV/trade corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested",
+      "free_allowance": "free, no key; spot + USD-M + COIN-M + options; klines (1s-1mo intervals), trades, aggTrades, book depth, mark price",
+      "id": "binance-vision",
+      "limits": "as-is informational disclaimer; Binance.US terms prohibit commercial uses (trading services, data-feeding/streaming services) without written consent; timestamps microsecond from 2025-01-01 (spot)",
+      "name": "Binance Vision (public market data)",
+      "sources": [
+        "Binance market-data-only docs (no authentication for market data endpoints)",
+        "binance-public-data repo (URL patterns, CHECKSUMs)"
+      ]
+    },
+    {
+      "api": "Dolt CLI (clone/push/pull like git) + DoltHub web SQL workbench + v2 HTTP API",
+      "card_gate": "none",
+      "class": "quant-data",
+      "durability": "hosted versioned databases; git semantics (branch/diff/merge/PR on data)",
+      "encryption": "n/a (public data by default on free)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (versioned tabular datasets, e.g. post-no-preference US market DBs)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not used; Dolt itself is free OSS (self-host alternative)",
+      "free_allowance": "public databases FREE at any size; private: first 100 MB free, then $5/month per 5 GB + $1/GB extra",
+      "id": "dolthub",
+      "limits": "private databases are the paid leg; hosted Dolt (managed) from $50/month is separate",
+      "name": "DoltHub (git-for-data)",
+      "sources": [
+        "dolthub.com/pricing (public free any size; private 100 MB free)",
+        "DoltHub docs (v2 API, workbench, PRs on data)"
+      ]
+    },
+    {
+      "api": "website downloads + ucimlrepo Python package (fetch_ucirepo by id)",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "university repository; per-dataset DOI (10.24432/...) for citation",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (benchmark corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested; benchmark-scale sets (KB to ~100 MB typical)",
+      "free_allowance": "free, no account for downloads; 570+ datasets (2023) growing past id 1276 by Feb 2026",
+      "id": "uci-ml-repo",
+      "limits": "license per dataset: ~86% CC-BY 4.0, remainder varied (UC license etc.) - check the dataset page; commercial use verification recommended per dataset",
+      "name": "UCI Machine Learning Repository",
+      "sources": [
+        "archive.ics.uci.edu dataset pages (CC-BY 4.0 license blocks, DOI, ucimlrepo usage)"
+      ]
+    },
+    {
+      "api": "S3 (s3://commoncrawl, us-east-1) + HTTPS (data.commoncrawl.org) + CloudFront; Athena index queries; experimental HF mirror (Apr 2026)",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "nonprofit archive; monthly crawls; WARC/WAT/WET + columnar index formats",
+      "encryption": "n/a (public web data; original page copyrights apply)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (web-scale corpus source; 300B+ pages, 10+ PB)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested; engineering cost is the real price (TB-scale processing), not the data",
+      "free_allowance": "data free, no account for HTTPS; S3 access is Requester Pays (you pay requests + transfer) + rate limiting since Nov 2023; AWS account needed for S3 path only",
+      "id": "common-crawl",
+      "limits": "license: corpus content inherits original page copyrights (Common Crawl software is Apache 2.0 - not the data); reputation caveat: Nov 2025 reporting found paywall/removal-request handling gaps",
+      "name": "Common Crawl",
+      "sources": [
+        "commoncrawl.org get-started (S3 + HTTPS, no account for HTTPS, Requester Pays note)",
+        "AWS Open Data Common Crawl post (hosted since Jan 2012; 2.3-2.7B pages/month; rate limiting Nov 2023)"
+      ]
+    },
+    {
+      "api": "HF datasets (laion/laion5B family) + img2dataset reconstruction tooling",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "nonprofit index; GDPR takedown process for personal data",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (multimodal index corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested; index model means the fleet fetches images itself (bandwidth + storage are ours)",
+      "free_allowance": "free; 5.85B CLIP-filtered image-text pairs (2.32B en / 2.26B multi / 1.27B nolang)",
+      "id": "laion-5b",
+      "limits": "INDEX, not hosted media: datasets are URLs + alt-text (from Common Crawl); image rights inherited from originals; reconstruction via img2dataset",
+      "name": "LAION-5B",
+      "sources": [
+        "LAION-5B paper (arXiv:2210.08402; 5.85B pairs)",
+        "LAION project pages (index model, img2dataset, GDPR takedown)"
+      ]
+    },
+    {
+      "api": "HF datasets (allenai/dolma) + S3 mirrors",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "AI2 publication; personal-data removal mechanism",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (3T-token pretraining corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested",
+      "free_allowance": "free download; 3 trillion tokens (Common Crawl + C4 + peS2o + The Stack + Gutenberg + Wikipedia)",
+      "id": "dolma",
+      "limits": "LICENSE: AI2 ImpACT license (medium-risk artifact) - requires contact info + intended-use agreement; critics note it is NOT clean open-source; do not treat as CC0/Apache",
+      "name": "Dolma (AI2)",
+      "sources": [
+        "AI2 Dolma release coverage (3T tokens, HF availability, ImpACT license terms)"
+      ]
+    },
+    {
+      "api": "HF datasets (togethercomputer/RedPajama-Data-1T) + direct wget from data.together.xyz (2,084 files)",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "collaboration publication (Together/Ontocord/ETH/Stanford/MILA)",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (1.2T-token LLaMA-recipe corpus)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not harvested; 2.67 TB total - needs real disk before any pull",
+      "free_allowance": "free download; 1.2 trillion tokens, 2.67 TB, 2,084 JSONL files",
+      "id": "redpajama",
+      "limits": "LICENSE: models released Apache 2.0; dataset content licenses inherited from sources (web-derived) - the 'friendly license' claim attaches to the models, not every byte of data",
+      "name": "RedPajama-Data-1T",
+      "sources": [
+        "Together RedPajama release (HF availability, 2.67 TB, Apache 2.0 models)"
+      ]
+    },
+    {
+      "api": "HF datasets + models + Spaces; datasets-server API; Parquet conversion endpoints",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "see huggingface-hub row (base registry); this row covers the DATA-SOURCE role",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (largest public ML dataset index + hosting)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "account exists (timerloggedout-hf); read-scoped token; write token pending",
+      "free_allowance": "see huggingface-hub row",
+      "id": "hf-datasets-source",
+      "limits": "dataset licenses vary per card (CC-BY/CC0/ODC-By/gated); public best-effort hosting",
+      "name": "Hugging Face Datasets (as data source)",
+      "sources": [
+        "huggingface.co/datasets (datasets-server API, Parquet endpoints)"
+      ]
+    },
+    {
+      "api": "index + links only (paperswithcode.com datasets pages link to HF/Kaggle/etc.); Papers With Code API for metadata",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "index only - no storage, no persistence of its own",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit as DISCOVERY layer (benchmark-linked datasets)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not used",
+      "free_allowance": "INDEX ONLY - do not count as storage; the bytes live wherever the linked host holds them",
+      "id": "papers-with-code",
+      "limits": "benchmark leaderboards + dataset cards link out; license = the linked dataset's license",
+      "name": "Papers With Code (index)",
+      "sources": [
+        "paperswithcode.com dataset pages (linked-host model)"
+      ]
+    },
+    {
+      "api": "S3 (applicant's own AWS account, linked to the program) + Registry of Open Data entry + STAC/Parquet cloud-native formats",
+      "barter_form": "EXPLICIT",
+      "card_gate": "application",
+      "class": "barter",
+      "durability": "program covers storage + egress for 2 years, renewable by agreement; dataset remains the provider's (AWS hosts, does not own)",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "BEST fit for large public sets (petabyte class)",
+        "session_exports": "no (public-only)"
+      },
+      "fleet_state": "NOT APPLICABLE without an AWS account - fleet AWS account creation is DEFERRED pending explicit owner approval (standing rule); row is application-class only",
+      "free_allowance": "AWS pays storage + data transfer for accepted datasets; no size cap stated (petabytes sponsored, e.g. PDB 100+ TB)",
+      "id": "aws-open-data-sponsorship",
+      "limits": "eligibility: publicly available + high-value + cloud-optimized; application via application.opendata.aws, decisions typically within 2 weeks; Registry entry + docs/tutorials required; computing over the data is the reader's cost, not AWS's",
+      "name": "AWS Open Data Sponsorship Program",
+      "sources": [
+        "AWS Onboarding Handbook for Data Providers (rev. 2025-10-15: 2-year term, renewable; application form; Registry entry)",
+        "AWS Open Data program pages (petabyte sponsorships: PDB, NOAA, NASA)"
+      ]
+    },
+    {
+      "api": "BigQuery (bigquery-public-data project) + Cloud Marketplace listings + Analytics Hub sharing",
+      "barter_form": "EXPLICIT",
+      "card_gate": "application",
+      "class": "barter",
+      "durability": "Google pays storage; no SLA for the Public Dataset Program",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit for TABULAR datasets only (BigQuery-shaped)",
+        "session_exports": "no"
+      },
+      "fleet_state": "not applied; self-serve alternative exists (share your own dataset publicly = you pay storage - NOT barter)",
+      "free_allowance": "Google pays storage for accepted datasets; readers pay queries (first 1 TB/month query data free)",
+      "id": "gcp-public-datasets",
+      "limits": "inclusion is curated: contact the public data team (bq-public-data@google.com per docs-adjacent sources); tabular/BigQuery shape required; no SLA",
+      "name": "Google Cloud Public Dataset Program",
+      "sources": [
+        "cloud.google.com BigQuery public datasets docs (Google pays storage; 1 TB free queries; no SLA)"
+      ]
+    },
+    {
+      "api": "Azure Blob Storage (anonymous read) + STAC API (Planetary Computer catalog)",
+      "barter_form": "EXPLICIT",
+      "card_gate": "application",
+      "class": "barter",
+      "durability": "Microsoft pays storage for curated datasets; no SLA/availability guarantee on original sources",
+      "encryption": "n/a (public data)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit for geospatial + ML-ready curated sets",
+        "session_exports": "no"
+      },
+      "fleet_state": "not applied",
+      "free_allowance": "Microsoft pays storage; most datasets free to access (egress may be charged to the reader's subscription for large reads)",
+      "id": "azure-open-datasets",
+      "limits": "inclusion is curated onboarding (no open application found on this pass); Planetary Computer Pro (bring-your-own-data) is a PAID Azure service, not the barter - do not confuse them; Hub (free JupyterHub) retired",
+      "name": "Azure Open Datasets / Planetary Computer",
+      "sources": [
+        "azure.microsoft.com Open Datasets pricing (Microsoft pays storage; egress caveat; no SLA)",
+        "Planetary Computer docs (STAC catalog, anonymous blob reads, Hub retired)"
+      ]
+    },
+    {
+      "api": "Dataverse API (SWORD + native API); web deposit UI",
+      "barter_form": "STRUCTURAL",
+      "card_gate": "none",
+      "class": "barter",
+      "durability": "Harvard custody; 'permanent' per institutional repository framing; DOI per dataset",
+      "encryption": "n/a (public data; restricted/embargo options exist)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit (DOI-citable generalist deposits)",
+        "session_exports": "no (restricted records possible but platform is publication, not working storage)"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "free for all researchers worldwide; 1 TB per researcher (2.5 TB Harvard affiliates); 2.5 GB per file (larger on request)",
+      "id": "harvard-dataverse",
+      "limits": "OPENNESS PRICE: default license CC0 (changeable by depositor); restricted-access + embargo options exist; all formats accepted; FAIR/Dublin Core metadata",
+      "name": "Harvard Dataverse",
+      "sources": [
+        "Harvard FAS RC data-sharing docs (1 TB/2.5 TB, 2.5 GB/file, CC0 encouragement, DOI)",
+        "Dataverse support getting-started (deposit flow, login via ORCID/GitHub/institution)"
+      ]
+    },
+    {
+      "api": "data.world REST/SQL API; dataset + project pages; sync API mirrors from GitHub/S3/Dropbox/Drive",
+      "barter_form": "STRUCTURAL",
+      "card_gate": "none",
+      "class": "barter",
+      "durability": "vendor custody; community content reach reduced by login wall (see limits)",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "ok (tabular/social datasets; queryable)",
+        "session_exports": "no"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "unlimited PUBLIC projects/datasets on all plans (incl. free); private projects/datasets limited by plan (3 free projects per older reads)",
+      "id": "data-world",
+      "limits": "REACH CAVEAT: Open Data Community profiles/datasets/projects moved behind a login wall (account-holders only) - 'public' now means logged-in users, not the open web; per-dataset size maximum NOT_ESTABLISHED on this pass",
+      "name": "data.world",
+      "sources": [
+        "Stitch data.world destination docs (unlimited public projects/datasets on all plans)",
+        "data.world product changelog (login wall for community content)"
+      ]
+    },
+    {
+      "api": "DagsHub S3-compatible bucket per repo + DVC remote (dvc remote add origin s3://dvc); MLflow experiment tracking; Content API",
+      "barter_form": "STRUCTURAL",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "vendor custody; repo-scoped storage (bucket + DVC remote are separate)",
+      "encryption": "n/a (repo visibility controls access; private repos = non-commercial use on free)",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "ok (private repos, non-commercial)",
+        "podium_datasets": "fit (public repos unlimited, DVC-versioned)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "no account",
+      "free_allowance": "Individual free: 20 GB DagsHub Storage (pricing page); per-repo docs figures VARY (10 GB vs 100 GB across doc snapshots - flagged, pricing page governs)",
+      "id": "dagshub",
+      "limits": "unlimited public repos + collaborators; private repos: unlimited for non-commercial use, 2 collaborators, 100 tracked experiments; Team ($119/user/month) for 1 TB",
+      "name": "DagsHub",
+      "sources": [
+        "dagshub.com/pricing (Individual $0: 20 GB storage, unlimited public repos)",
+        "DagsHub storage docs (per-repo bucket + DVC remote; figures vary 10/100 GB)"
+      ]
+    },
+    {
+      "api": "ModelScope OpenAPI + ms CLI / modelscope_hub SDK; git push URLs per repo type (models/datasets/studios)",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "Alibaba custody; repos versioned by branch/tag/commit; public/internal/private visibility",
+      "encryption": "n/a",
+      "fit": {
+        "backup_plane": "n/a",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "ok (private repos exist)",
+        "podium_datasets": "fit (HF-analog hub, 43k+ public datasets counted Sep 2026)",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "already a provider-catalog family (modelscope, unprovisioned); no fleet account recorded",
+      "free_allowance": "NOT_ESTABLISHED - no published storage quota found on this pass; public hosting free in practice",
+      "id": "modelscope",
+      "limits": "signup surface varies by endpoint (.cn domestic vs .ai international); free A10 notebook compute exists (separate from storage)",
+      "name": "ModelScope (Alibaba)",
+      "sources": [
+        "modelscope-skills ms-hub SKILL.md (OpenAPI/CLI/SDK, repo types, visibility)",
+        "ModelScope hub API counts (43,062 public datasets, 2026-09-27)"
+      ]
+    },
+    {
+      "api": "lakeFS API + CLI; S3-compatible gateway; Git-like CLI (branch/commit/merge on data)",
+      "card_gate": "none",
+      "class": "ml-data",
+      "durability": "versioning layer over YOUR object store - lakeFS holds metadata/refs, not the bytes (unless lakeFS Cloud hosts it)",
+      "encryption": "n/a (inherits the underlying store's)",
+      "fit": {
+        "backup_plane": "n/a (versioning tool, not storage)",
+        "evidence_media": "n/a",
+        "ml_datasets_private": "n/a",
+        "podium_datasets": "fit as versioning for any S3-backed dataset",
+        "session_exports": "n/a"
+      },
+      "fleet_state": "not deployed",
+      "free_allowance": "TOOLING ROW - no storage allowance: open-source self-host is free (your infra); lakeFS Cloud free tier NOT_ESTABLISHED on this pass (trial-class only in older reads)",
+      "id": "lakefs",
+      "limits": "do not count as storage capacity; pairs with B2/S3/Filebase rows for the actual bytes",
+      "name": "lakeFS (data versioning layer)",
+      "sources": [
+        "lakeFS project docs (Git-like versioning over object storage)"
+      ]
+    }
+  ],
+  "schema": "storage-registry/v1",
+  "amendment": "2026-11-03 extensions 1 MEGA + 2 P2P/decentralized + 3 quant/ML-specific + 4 openness-barter; leads pass: awesome-datahoarding lists (simon987, all-the-data) + Reddit r/LinuxTeck thread (read pending - failure modes from vendor terms + secondary practitioner reads in this amendment; Reddit haul folds in as a follow-up annotation)"
+}

@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 500,
-    "open_prs": 211,
+    "open_issues": 505,
+    "open_prs": 210,
     "pr_classes": {
-      "CANDIDATE": 106,
-      "EXTRACT": 9,
-      "NEED_EVIDENCE": 96,
+      "CANDIDATE": 105,
+      "EXTRACT": 8,
+      "NEED_EVIDENCE": 97,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 270,
+      "issues": 275,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 42,
-      "prs": 209,
+      "prs": 208,
       "unlabelled_numbers": [
         308,
         388,
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T16:45:40Z",
+  "generated_at": "2026-11-03T16:48:23Z",
   "issues_unlabelled": [
     308,
     388,
@@ -145,10 +145,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
+      "hygiene": "in_progress",
       "smoke": "queued"
     },
-    "sha": "be07fc9193"
+    "sha": "22254460d5"
   },
   "prs": [
     {
@@ -228,34 +228,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "00bb28159a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T16:41:52Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b219e4576b",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T16:43:36Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -270,12 +242,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "83ad38a6ce",
+      "head_sha": "8b446a9aef",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4355,
-      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
-      "updated_at": "2026-11-03T14:23:58Z"
+      "number": 4442,
+      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
+      "updated_at": "2026-11-03T16:05:10Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fd129f7359",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4463,
+      "title": "docs(ereader): scoping spec \u2014 EPUB-as-export, term refs as data not links (#4457)",
+      "updated_at": "2026-11-03T16:46:14Z"
     },
     {
       "class": "CANDIDATE",
@@ -330,7 +316,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-03T14:29:56Z"
@@ -809,7 +795,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-03T14:30:39Z"
@@ -1731,40 +1717,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "83ad38a6ce",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4355,
+      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
+      "updated_at": "2026-11-03T14:23:58Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b14e821cd5",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-03T15:21:46Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8b446a9aef",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4442,
-      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
-      "updated_at": "2026-11-03T16:05:10Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f94afafb04",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4445,
-      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
-      "updated_at": "2026-11-03T16:08:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2083,7 +2055,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-03T14:29:49Z"
@@ -2305,9 +2277,23 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "9872736d60",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T16:48:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "e4faad1217",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
       "updated_at": "2026-11-03T14:38:24Z"
@@ -2951,10 +2937,24 @@
       },
       "head_sha": "0b3e8d99ab",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T16:00:10Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "8c85e76dff",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T16:47:25Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3087,28 +3087,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "fd129f7359",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4463,
-      "title": "docs(ereader): scoping spec \u2014 EPUB-as-export, term refs as data not links (#4457)",
-      "updated_at": "2026-11-03T16:44:32Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "da810543a0",
+      "head_sha": "ad6d7be39f",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4464,
-      "title": "Feed: canonical builder format (one-time re-emit; kills regen churn)",
-      "updated_at": "2026-11-03T16:45:11Z"
+      "number": 4445,
+      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
+      "updated_at": "2026-11-03T16:46:18Z"
     }
   ],
   "schema": "operator-matrix/v1",

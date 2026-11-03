@@ -3,6 +3,30 @@
 All notable changes to StudySprint. Process: `VERSIONING.md`.
 Entries are the GitHub Release notes, verbatim.
 
+## [0.5.0] — 2026-11-03
+
+Fifth versioned state: MINOR feature batch (v0.5.0 batch, part 1 of
+3) — the calendar core of RFP-D1-6 (issue #4157).
+
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
+### Added
+- Calendar core (`study_calendar.py`), RFP-D1-6 items 1-3:
+  (1) calendar intake — class meetings {days, times,
+  building/room} + assessments {quiz/midterm/final, date, time,
+  location} normalized into records; (2) assessment-frequency
+  engine — deterministic frequency ramps as an assessment
+  approaches, with an explicit ramp + briefing for assessments at
+  a SHIFTED time or place vs the class pattern; (3) quiet hours —
+  notifications landing inside a scheduled class are suppressed
+  and batched to the block's end. Claims ceiling (in receipts +
+  FEATURES): logistics support — pacing, timing, no-surprises;
+  no learning-gain claim.
+- Tests: `tests/test_study_calendar.py` covers every public
+  function in `study_calendar.py`.
+
 ## [0.4.0] — 2026-11-03
 
 Fourth versioned state: MINOR feature batch (v0.4.0 batch) — the

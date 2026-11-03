@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 430,
+    "open_issues": 456,
     "open_prs": 204,
     "pr_classes": {
       "CANDIDATE": 104,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 94,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 93,
       "SUPERSEDE": 0
     }
   },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 18,
+      "issues": 44,
       "prs": 202,
       "unlabelled_numbers": [
         308,
@@ -69,11 +69,37 @@
         3751,
         3752,
         4008,
-        4052
+        4052,
+        4212,
+        4213,
+        4214,
+        4215,
+        4216,
+        4217,
+        4218,
+        4219,
+        4220,
+        4221,
+        4222,
+        4223,
+        4224,
+        4225,
+        4226,
+        4227,
+        4228,
+        4229,
+        4230,
+        4231,
+        4232,
+        4233,
+        4234,
+        4235,
+        4236,
+        4237
       ]
     }
   },
-  "generated_at": "2026-11-03T11:21:04Z",
+  "generated_at": "2026-11-03T11:50:06Z",
   "issues_unlabelled": [
     308,
     388,
@@ -92,7 +118,33 @@
     3751,
     3752,
     4008,
-    4052
+    4052,
+    4212,
+    4213,
+    4214,
+    4215,
+    4216,
+    4217,
+    4218,
+    4219,
+    4220,
+    4221,
+    4222,
+    4223,
+    4224,
+    4225,
+    4226,
+    4227,
+    4228,
+    4229,
+    4230,
+    4231,
+    4232,
+    4233,
+    4234,
+    4235,
+    4236,
+    4237
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -100,7 +152,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "43b5734afb"
+    "sha": "e38975e081"
   },
   "prs": [
     {
@@ -172,6 +224,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "09903011e4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T11:48:50Z"
     },
     {
       "class": "EXTRACT",
@@ -983,12 +1049,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7bd782e70f",
+      "head_sha": "7e4e71b621",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T07:51:48Z"
+      "updated_at": "2026-11-03T11:47:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -2179,20 +2245,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "8866bfc972",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T11:20:19Z"
     },
     {
       "class": "NEED_EVIDENCE",

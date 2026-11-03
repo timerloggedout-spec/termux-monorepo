@@ -17,9 +17,6 @@ permissions:
 
 # Share the publication lock with production. Every run publishes the current
 # production snapshot and, when dispatched, its preview in the same external commit.
-concurrency:
-  group: user-site-pages-publisher
-  cancel-in-progress: false
 
 jobs:
   publish-preview:

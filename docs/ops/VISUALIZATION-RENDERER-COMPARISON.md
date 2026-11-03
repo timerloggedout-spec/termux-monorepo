@@ -76,6 +76,7 @@ Do not average away a failed correctness or accessibility gate. Report workload-
 
 ```bash
 python3 scripts/visualization_lab/validate_cohort.py
+python3 scripts/visualization_lab/validate_dashboard_snapshot.py apps/tribute-dashboard/data/telemetry-feed.json --max-age-hours 24
 ```
 
 Open `experiments/visualization-renderers/index.html` using a static HTTP server. Renderer libraries are pinned by exact CDN version in the page. The experiment gracefully reports when a CDN is unavailable; the fixture remains local.

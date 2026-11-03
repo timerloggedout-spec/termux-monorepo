@@ -15,7 +15,7 @@ statements together (standing surface gates). Legend:
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |
 | §3 Daily check-in + no-guilt shift | bound | bound (persisted; surface-level shift, core reflow not bound) | bound (persisted; real week/day identity) | as webApp |
 | §3 SR review — FSRS + SM-2, receipts | bound | bound (browser engines over the core UX export) | bound (real `review_card`) | as webApp |
-| SR exports — Anki .apkg · Obsidian vault | bound | absent | bound (Export tab) | absent |
+| Exports — Anki .apkg · Obsidian vault · reader edition (EPUB, #4472) | bound | absent | bound (Export tab) | absent |
 | §1/§3 Reader (sections + RSVP) | bound | bound (all 6 sections, 0.1.1) | bound | as webApp |
 | §1 Intake — syllabus/textbook ingestion | bound | bound (in-browser grammar; photos = awaiting-core-ocr, disclosed) | bound (real `ingest_any`, confirm-gated) | bound (native file chooser + camera wiring) |
 | §1b Reading pipeline — finder · OCR · structure · term bank | bound | partial (structure/term bank ride ingestion; finder + OCR + hypothes.is not bound) | partial (same, via the core path; OCR seam unwired) | partial (as webApp) |

@@ -1,5 +1,12 @@
 ## [Unreleased]
 
+### eReader — EPUB reader edition (#4472)
+
+- **Third export generator**: `export_epub` in study_sr.py (stdlib-only) — reader sections grouped by chapter into one XHTML per chapter, EPUB 3 package + EPUB nav + NCX for older e-ink, mimetype stored-first, one small stylesheet, no scripts, no images. The edition rides the generating surface's version (dc:identifier stamps it); no new version line.
+- **Terms & index chapter**: banked terms render with definitions and source pages cited as TEXT ("source pp. 42, 57") — provenance survives as data; nothing is linked to an invented anchor. A course whose source has no glossary/index gets the chapter with that stated plainly. `terms_from_bank` flattens the pipeline bank.
+- **Wiring**: TUI Export tab gains "Export EPUB reader edition" (receipt: chapters · sections · terms indexed · sha256); release-cut attaches the stable-named `studysprint-reader.epub` to TUI releases. Web/APK cells stay absent in the matrix — the export family is core + TUI, as before.
+- **Evidence**: spec §6 pack via the studysprint-epub-evidence Actions workflow (generated edition · EpubCheck zero-error · calibre chapter render) + suite pins for container shape, spine order, grouping, both Terms branches, and no-`<script`.
+
 ### Integration 5 — schema_version discipline (#4470)
 
 - **One discipline, inventoried** (SCHEMA-VERSIONS.md): every synced/stored artifact class carries an explicit version; readers refuse-or-migrate loudly — never silent best-effort.

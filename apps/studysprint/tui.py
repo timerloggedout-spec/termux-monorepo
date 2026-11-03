@@ -32,7 +32,7 @@ SURFACE = "studysprint-tui"
 from study_geo import surface_calendar_geo  # noqa: E402
 from study_reader import RSVPReader, Section  # noqa: E402
 from study_sr import (build_cards_from_practice_set, export_apkg,  # noqa: E402
-                      export_obsidian_vault, review_card)
+                      export_epub, export_obsidian_vault, review_card)
 from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
                          format_trust_receipt, record_daily_checkin,
                          render_today_view, stamp_state)
@@ -322,6 +322,8 @@ try:
                     yield Button("Export Anki .apkg", id="export-apkg")
                     yield Button("Export Obsidian vault",
                                  id="export-vault")
+                    yield Button("Export EPUB reader edition",
+                                 id="export-epub")
                     yield Label("", id="export-status")
             yield Footer()
 
@@ -515,6 +517,20 @@ try:
                 self.query_one("#export-status", Label).update(
                     f"Vault surface written: {receipt['notes']} "
                     f"notes in {receipt['dir']}")
+            elif bid == "export-epub":
+                out = self.export_dir / "studysprint-reader.epub"
+                receipt = export_epub(
+                    self.state["sections"], out,
+                    title=self.state["plan"].get("course")
+                    or "StudySprint course",
+                    surface_version=TUI_VERSION,
+                    course_note="Sample course bundled with "
+                                "StudySprint (synthetic).")
+                self.query_one("#export-status", Label).update(
+                    f"Reader edition: {receipt['chapters']} "
+                    f"chapters, {receipt['sections']} sections, "
+                    f"{receipt['terms']} terms indexed → {out} "
+                    f"(sha256 {receipt['sha256'][:12]}...)")
 
         def _reader_step(self) -> None:
             if self.reader_state is None:

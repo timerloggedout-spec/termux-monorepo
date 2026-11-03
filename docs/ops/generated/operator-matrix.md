@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-03T12:51:06Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-03T12:52:32Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `077a00d826` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `3220fedcf1` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 462 issues, 205 PRs. PR classes: EXTRACT 6 / CANDIDATE 105 / NEED_EVIDENCE 94 / SUPERSEDE 0.
 
@@ -185,7 +185,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2570 | NEED_EVIDENCE | unlabelled | `08423d2c78` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2574 | NEED_EVIDENCE | unlabelled | `cd310a869a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2575 | NEED_EVIDENCE | unlabelled | `a879d9c760` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2578 | NEED_EVIDENCE | unlabelled | `56fce515d8` | not_reported | not_reported | clean | docs: integrate AMD and NVIDIA skill workflows |
+| #2578 | NEED_EVIDENCE | unlabelled | `56fce515d8` | not_reported | not_reported | unknown | docs: integrate AMD and NVIDIA skill workflows |
 | #2581 | NEED_EVIDENCE | unlabelled | `02496c37d4` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2584 | NEED_EVIDENCE | unlabelled | `84e916c933` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2598 | NEED_EVIDENCE | unlabelled | `69bd8cf1f9` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -217,7 +217,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4048 | NEED_EVIDENCE | unlabelled | `87c1d03307` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4069 | NEED_EVIDENCE | unlabelled | `3af768ef95` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #4086 | NEED_EVIDENCE | unlabelled | `cc9bf99810` | not_reported | not_reported | unstable | feat(integrations): add read-only provider evidence adapters |
-| #4289 | NEED_EVIDENCE | unlabelled | `43c9e64e5b` | not_reported | not_reported | unknown | chore(ops): regenerate operator matrix |
+| #4290 | NEED_EVIDENCE | unlabelled | `6194623586` | queued | success | unstable | fix(studysprint): RFP-D1-7 award batch — surfaces 0.1.1 [#4277] |
 
 ## Families (open)
 

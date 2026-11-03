@@ -187,6 +187,14 @@ checks both):
    pointer item left in the table. No bucket-level actions, no
    other bucket.
 
+**The fold, stated here where the policy lives:** an earlier
+draft of this section carried a sixth statement — a
+GetItem/PutItem grant on a separate receipts table. It is gone
+*deliberately, not by omission*: receipts persist through the
+§6 backend in this same table (statements 4–5 already cover
+their lifecycle), and §6's unification paragraph gives the
+reasons. There is no receipts table in this deployment.
+
 The account segment (`000000000000`) is the one deploy-time
 substitution, marked here rather than disguised.
 
@@ -206,8 +214,11 @@ error page.
 - `GET /health` — liveness plus what is actually true
   (`strands_agent_available`, `deployment`, the configured model).
 - `GET /receipt/{id}` — the stored receipt, byte-identical to the
-  one the invocation returned. An unknown id is the endpoint's
-  only 404.
+  one the invocation returned. "Stored" is mechanical, not
+  implied: the receipt persists as Storage bytes under the
+  `receipts/` prefix in the §6 table (§6 states the unification),
+  and this read is a `GetItem` on that item. An unknown id is the
+  endpoint's only 404.
 
 **The fail-closed floor:** `POST /plan` has *no 5xx shape at all*.
 On any agent or model error — throttling, a down provider, a
@@ -245,9 +256,10 @@ prefix** (`prefix="…"` — or `.namespace("…")` on the instance)
 pins every operation inside one tenant's key space on the
 shared table.
 
-**What lives there.** One `DynamoDBStorage` instance, set once
-on the Agent, backs every stateful subsystem, each under its
-own key prefix — the wiring, verbatim from the package docs:
+**What lives there.** One `DynamoDBStorage` instance backs
+every stateful subsystem, each under its own key prefix. The
+wiring follows the package README's own quick-start forms —
+storage passed explicitly to each component:
 
 ```python
 from strands import Agent
@@ -257,12 +269,20 @@ from strands_dynamodb_storage import DynamoDBStorage
 
 storage = DynamoDBStorage("studysprint-agent-storage",
                           region_name="us-east-1")
+
+# Sessions persist under session/ (README's Python quick start):
 agent = Agent(
-    storage=storage,
-    session_manager=SnapshotSessionManager(),  # session/
-    plugins=[ContextOffloader()],              # offloader/
-)
+    session_manager=SnapshotSessionManager(session_id,
+                                           storage=storage))
+
+# The offloader takes the same instance (README's offloader form):
+agent = Agent(plugins=[ContextOffloader(storage=storage)])
 ```
+
+(Strands 1.63.0 also accepts an Agent-level `storage=` that
+subsystems inherit; this spec writes the explicit per-component
+form the package documents, so what a screener reads is what
+the package shows.)
 
 - **Snapshots** — `SnapshotSessionManager` snapshots the
   conversation on every invocation and restores it when the

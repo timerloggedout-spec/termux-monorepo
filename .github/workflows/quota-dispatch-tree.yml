@@ -46,26 +46,48 @@ jobs:
       dispatch_q6: ${{ steps.tree.outputs.dispatch_q6 }}
       dispatch_vantage: ${{ steps.tree.outputs.dispatch_vantage }}
     steps:
+      - uses: actions/checkout@v4
       - name: Decision tree — one cheap call per concern
         id: tree
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         with:
           script: |
             const force = (context.payload.inputs && context.payload.inputs.force_lane) === 'all';
-            // Node A: queued / in-progress runs? (2 existence calls, per_page 1)
-            const queued = await github.rest.actions.listWorkflowRunsForRepo({
-              owner: context.repo.owner, repo: context.repo.repo,
-              status: 'queued', per_page: 1
-            });
-            const inProgress = await github.rest.actions.listWorkflowRunsForRepo({
-              owner: context.repo.owner, repo: context.repo.repo,
-              status: 'in_progress', per_page: 1
-            });
-            const busy = queued.data.total_count + inProgress.data.total_count;
-            // Global admission guard: when too many lane runs are already live,
-            // suppress non-critical dispatches this cycle (per review finding:
-            // matrix max-parallel limits dispatch steps, not downstream runs).
-            const paused = busy >= 6 && !force;
+            // Node A (reworked, issue #3812 step 4): lane-aware admission.
+            // Active runs are listed (per_page 100, up to 2 pages per
+            // status) and bucketed per workflow file by the admission
+            // module, so one lane's backlog no longer stalls every lane.
+            // `busy` keeps its repo-wide meaning for the stall-watch.
+            // A failed pressure read fails closed (pressure = null):
+            // gated lanes defer this cycle instead of dispatching blind.
+            const admissionMod = require(require('path').join(process.env.GITHUB_WORKSPACE, 'scripts/ci/dispatch_admission.js'));
+            let busy = 0;
+            let pressure = null;
+            try {
+              const wfList = await github.rest.actions.listWorkflows({
+                owner: context.repo.owner, repo: context.repo.repo, per_page: 100
+              });
+              const idToFile = new Map((wfList.data.workflows || []).map((w) => [w.id, w.path]));
+              const activeRuns = [];
+              for (const status of ['queued', 'in_progress']) {
+                let fetched = 0;
+                for (let page = 1; page <= 2; page++) {
+                  const resp = await github.rest.actions.listWorkflowRunsForRepo({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    status, per_page: 100, page
+                  });
+                  if (page === 1) busy += resp.data.total_count;
+                  const batch = resp.data.workflow_runs || [];
+                  activeRuns.push(...batch);
+                  fetched += batch.length;
+                  if (fetched >= resp.data.total_count || batch.length < 100) break;
+                }
+              }
+              pressure = admissionMod.bucketRuns(activeRuns, idToFile);
+            } catch (e) {
+              core.warning(`admission pressure read failed; gated lanes defer this cycle: ${e.message}`);
+              pressure = null;
+            }
             // Node B: bridge manifest freshness? (1 call)
             let bridgeStaleMin = 1e9;
             try {
@@ -147,24 +169,29 @@ jobs:
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
             const firstCycle = new Date().getUTCMinutes() < 10;
-            core.setOutput('dispatch_stall_watch', (busy > 0 || force) ? 'true' : 'false');
-            core.setOutput('dispatch_bridge', ((bridgeStaleMin > 30 && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_probe', (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_eval', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_recon', ((slow && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_refresh', (firstCycle || hwRefreshStaleMin > 75 || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_pair', ((((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_execute', ((((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300) && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_assist', ((((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450) && !paused) || force) ? 'true' : 'false');
+            // Raw verdicts. Node A admission is applied after Node G1,
+            // when every staleness signal exists. stall-watch and
+            // hw-refresh stay admission-exempt, exactly as they were
+            // exempt from the old repo-wide admission guard.
+            const verdicts = {};
+            verdicts.dispatch_stall_watch = (busy > 0 || force);
+            verdicts.dispatch_bridge = ((bridgeStaleMin > 30) || force);
+            verdicts.dispatch_probe = (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow) || force);
+            verdicts.dispatch_eval = ((repoChanged && slow) || force);
+            verdicts.dispatch_recon = (slow || force);
+            verdicts.dispatch_hw_refresh = (firstCycle || hwRefreshStaleMin > 75 || force);
+            verdicts.dispatch_hw_pair = (((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) || force);
+            verdicts.dispatch_hw_execute = (((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300) || force);
+            verdicts.dispatch_hw_assist = (((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450) || force);
             // Node G: Tier 3 tranche (issue #1573). Hourly lanes reuse Node F's
             // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
             // check. Zero additional API calls.
-            core.setOutput('dispatch_hourly', ((firstCycle && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_repochange', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
+            verdicts.dispatch_hourly = (firstCycle || force);
+            verdicts.dispatch_repochange = ((repoChanged && slow) || force);
             // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
             // Same firstCycle arithmetic as Node F, different modulus offsets.
-            core.setOutput('dispatch_q3', (((firstCycle && hour % 3 === 1) && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_q4', (((firstCycle && hour % 4 === 1) && !paused) || force) ? 'true' : 'false');
+            verdicts.dispatch_q3 = (((firstCycle && hour % 3 === 1)) || force);
+            verdicts.dispatch_q4 = (((firstCycle && hour % 4 === 1)) || force);
             // Node G1: provider-availability staleness (1 call). The q6
             // tranche rides the same firstCycle phase window that starved
             // hw-refresh (gap G-02): availability last ran 2026-10-23 while
@@ -197,16 +224,45 @@ jobs:
               }
               core.info(`provider-availability age=${Math.round(paStaleMin)}m threshold=${paThresholdMin}m (median of ${gaps.length} gaps)`);
             } catch (_) { /* unreadable run history = treat as stale */ }
-            core.setOutput('dispatch_q6', ((((firstCycle && hour % 6 === 1) || paStaleMin > paThresholdMin) && !paused) || force) ? 'true' : 'false');
+            verdicts.dispatch_q6 = ((((firstCycle && hour % 6 === 1) || paStaleMin > paThresholdMin)) || force);
             // Node H: Vantage cost telemetry (ledger #184; RFP #1576 telemetry plane).
             // Slow lane: twice daily at the firstCycle of hour % 12 == 1.
-            core.setOutput('dispatch_vantage', (((firstCycle && hour % 12 === 1) && !paused) || force) ? 'true' : 'false');
+            verdicts.dispatch_vantage = (((firstCycle && hour % 12 === 1)) || force);
+            // Admission (issue #3812 step 4): a gated verdict fires only
+            // when the admission module admits it. Every gated output
+            // produces a record {lane, reason, lane_inflight,
+            // global_inflight} for the summary and the
+            // dispatch-admission.json artifact.
+            const admissionResult = admissionMod.evaluateAdmission({
+              pressure, force,
+              staleness: {
+                dispatch_hw_pair: { stale_min: hwPairStaleMin, threshold_min: 150 },
+                dispatch_hw_execute: { stale_min: hwExecuteStaleMin, threshold_min: 300 },
+                dispatch_hw_assist: { stale_min: hwAssistStaleMin, threshold_min: 450 },
+                dispatch_q6: { stale_min: paStaleMin, threshold_min: paThresholdMin }
+              }
+            });
+            const ADMISSION_EXEMPT = new Set(['dispatch_stall_watch', 'dispatch_hw_refresh']);
+            const finals = {};
+            for (const [name, raw] of Object.entries(verdicts)) {
+              const ok = raw && (ADMISSION_EXEMPT.has(name) || admissionResult.admitted[name]);
+              finals[name] = !!ok;
+              core.setOutput(name, ok ? 'true' : 'false');
+            }
+            try {
+              require('fs').writeFileSync('dispatch-admission.json', JSON.stringify({
+                generated_at: new Date().toISOString(),
+                global_inflight: admissionResult.global_inflight,
+                global_cap: admissionResult.global_cap,
+                records: admissionResult.records
+              }, null, 2));
+            } catch (_) { /* the artifact is evidence, never a gate */ }
             core.summary
               .addHeading('Decision tree verdicts')
               .addTable([
                 ['Node', 'Condition', 'Fired'],
                 ['A stall-watch', 'queued + in-progress runs > 0', String(busy > 0)],
-                ['— admission', 'live runs < 6', String(!paused)],
+                ['— admission', `managed in-flight ${admissionResult.global_inflight} / cap ${admissionResult.global_cap}`, String(admissionResult.records.every((r) => r.admitted))],
                 ['B bridge', `manifest stale ${Math.round(bridgeStaleMin)}m`, String(bridgeStaleMin > 30)],
                 ['C probe', `probe manifest stale ${Math.round(probeStaleMin)}m && slow-cycle`, String(probeStaleMin > 45 && slow)],
                 ['E eval', 'commits since watermark && slow-cycle', String(repoChanged && slow)],
@@ -216,12 +272,19 @@ jobs:
                 ['F hw-pair', 'odd hours || stale > 150m', String((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150)],
                 ['F hw-execute', 'hour % 4 == 3 || stale > 300m', String((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300)],
                 ['F hw-assist', 'hour % 6 == 5 || stale > 450m', String((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450)],
-                ['G tier3-hourly', 'hourly cycle && admission open', String(firstCycle && !paused)],
-                ['G tier3-repochange', 'commits since watermark && slow-cycle', String(repoChanged && slow && !paused)],
-                ['G q3', 'firstCycle && hour % 3 == 1', String(firstCycle && hour % 3 === 1 && !paused)],
-                ['G q4', 'firstCycle && hour % 4 == 1', String(firstCycle && hour % 4 === 1 && !paused)],
-                ['G q6', 'firstCycle && hour % 6 == 1', String(firstCycle && hour % 6 === 1 && !paused)],
-                ['H vantage', 'firstCycle && hour % 12 == 1', String(firstCycle && hour % 12 === 1 && !paused)]
+                ['G tier3-hourly', 'hourly cycle && admission', String(finals.dispatch_hourly)],
+                ['G tier3-repochange', 'commits since watermark && slow-cycle', String(finals.dispatch_repochange)],
+                ['G q3', 'firstCycle && hour % 3 == 1', String(finals.dispatch_q3)],
+                ['G q4', 'firstCycle && hour % 4 == 1', String(finals.dispatch_q4)],
+                ['G q6', 'firstCycle && hour % 6 == 1', String(finals.dispatch_q6)],
+                ['H vantage', 'firstCycle && hour % 12 == 1', String(finals.dispatch_vantage)],
+              ])
+              .write();
+            core.summary
+              .addHeading('Lane admission (issue #3812)')
+              .addTable([
+                ['Lane', 'Admitted', 'Reason', 'Lane in-flight', 'Global in-flight'],
+                ...admissionResult.records.map((r) => [r.lane, String(r.admitted), r.reason, String(r.lane_inflight), String(r.global_inflight)])
               ])
               .write();
 
@@ -264,6 +327,14 @@ jobs:
             -H "Content-Type: application/json" \
             -H "Prefer: return=minimal" \
             -d "$(jq -n --argjson rows "$rows" '$rows')"
+
+      - name: Upload dispatch admission report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dispatch-admission
+          path: dispatch-admission.json
+          if-no-files-found: ignore
 
   dispatch:
     needs: decide

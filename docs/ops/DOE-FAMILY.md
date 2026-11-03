@@ -898,6 +898,35 @@ version and compared continuously until culling retires a version.
   Method holder: the Certifications lane. Instance #1:
   SFI ABM.
 
+- **system-review (concepts) 2026-11-03** - home
+  docs/ops/SYSTEM-REVIEW-2026-11-03.md. Owner order: main's
+  concepts reviewed through the fleet system (adversarial
+  pass + Delphi + data feasibility). CONCEPT 1 (Podium ML
+  test plan; filings RFP-SYSREV-C1 #4495): ADOPT-WITH-FIXES,
+  defects C1-D1..D7 - judge-panel test 3 DESCOPED (Agent
+  Rush judges public = none; RAISE pool only, no
+  judge-outcome linkage of record => panel effects
+  NOT_ESTABLISHED) - denominator missing (podiums only =>
+  composition shares, never rates) - taxonomy circularity
+  (features induced from the same podiums; holdout or
+  EXPLORATORY label) - multiplicity/power at n=11 (one
+  pre-registered primary hypothesis) - backtest = one
+  split (re-issued as recorded forecasts) - inferred
+  rubric = labeled sensitivity hypotheses - tagger
+  reliability unmeasured (dual-tag agreement gate).
+  CONCEPT 2 (crawl/ingest/store pipeline; RFP-SYSREV-C2
+  #4496): ADOPT-WITH-FIXES, defects C2-D1..D5 - store of
+  record named per dataset (repo snapshots of record,
+  Neon derived) - conflict consumption rule (DISPUTED =>
+  excluded from weight-bearing use, resolution by
+  receipted act only) - change-detection row identity +
+  field-set per source - per-source crawl charter
+  (cadence/stop-on-block) - collector = instance identity.
+  Delphi: BOTH 9.12, identical profiles - the shape-class
+  constant (10/10 doe-expert filings), recorded as
+  carrying no discriminating signal; verdicts rest on the
+  adversarial pass + data checks.
+
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home
   `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they

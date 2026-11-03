@@ -693,6 +693,25 @@ version and compared continuously until culling retires a version.
   corroborated confirmed outcomes; validation-yield's
   corroborated_share is this rule's per-plane truth fraction.
 
+- **doe-questions-matrix v1** (registered 2026-11-02, owner
+  directive: breadth + depth, nested::research) - the DoE
+  question dimensions as ONE matrix, home
+  docs/ops/DOE-QUESTIONS-MATRIX.md. Before: 14 flat factors
+  scattered (skill factor space 6+8, one level, no research
+  structure) + rule-only dimensions unmatricized. After: 40
+  dimensions in 6 clusters {A SUBJECT - B TASK - C TREATMENT
+  - D ENVIRONMENT - E MEASUREMENT - F ADAPTATION}, each
+  dimension nested {question - sub-dimensions -
+  levels/evidence - research note}. Added dimensions are
+  omission repairs (fleet mechanisms never matricized:
+  configured instance - team - selection path - complexity -
+  novelty - decoding - context composition - substrate -
+  dependency state - oracle class - provenance - backfill
+  origin - automation binding). DESIGN records cite
+  dimensions by number; unlisted factors enter via matrix
+  amendment, never per-design improvisation; numbers never
+  renumbered.
+
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home
   `docs/ops/ATES-IMPROVEMENT-FRAME.md`. Until this frame they

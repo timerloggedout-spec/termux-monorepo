@@ -3366,10 +3366,10 @@
       "entry": "C12",
       "project": "Receipts Vault \u2014 SKILL.md package (Uliya standard)",
       "artifact_repo": "none-for-R1 (anchor = desk package records + entries record)",
-      "status": "slate-assigned (COMPETE) \u00b7 build dispatched",
+      "status": "R1 package COMPLETE + desk-verified firsthand (2026-11-03) \u2014 filing mechanics at the window remain",
       "stages": {
         "verdict": "GRADUATED \u00b7 COMPETE (Opportunity Mgr, 2026-11-03)",
-        "r1-package": "dispatched \u2014 proposal PDF \u2264500w/10 items + SKILL.md package ZIP (need-not-run)",
+        "r1-package": "COMPLETE \u00b7 PR #4273 merged 04c958d39450 \u00b7 desk firsthand verify: PDF 357 words (own extraction) / 10 items / 3,490B \u00b7 ZIP 8 files docs-only, SKILL.md + PROVENANCE.md present \u00b7 in-window provenance stated",
         "build": "in-window build \u2014 \u2205 reuse of prior Skills/materials (hard constraint)",
         "identity": "DEFERRED \u2014 repo/AppID at first repo-building round (main ruling of record); R1 identity anchor = desk package records + entries record"
       },
@@ -3380,7 +3380,7 @@
         "restamp (manager STOP + main ruling, 2026-11-03): identity stage = DEFERRED \u00b7 artifact_repo = none-for-R1 \u00b7 entries record carries repo_url/appid = null (their PRs #4259/#4263/#4264/#4268) \u00b7 ugreen-nas-skills = dormant residue, \u00ac anchor, \u2205 build into it for R1 \u00b7 producer relay corrected: sources STAY in Desk package records, PDF/ZIP cut from those",
         "AppID lane closing state (2026-11-03): countermand received 04:33, both provisioning legs stood down same minute \u00b7 repo disposition KEEP-PARKED (created under crossed signal; temp branch stays as record) \u00b7 moniker `Mimir \u00b7 UgreenSkills` record-only \u00b7 App never created (slug 404; creation never reached) \u00b7 \u2205 C12 provisioning in flight"
       ],
-      "next": "producer claim + build \u21d2 package complete + verified by landing Nov 14 \u00b7 R2 risk: finalist path Nov 21\u219230 overlaps D5/D4 landings \u2014 schedule, \u00ac skip",
+      "next": "filing mechanics in the Nov 14\u201315 window (SUBMIT-ONCE discipline until verified) \u00b7 R2 finalist path Nov 21\u219230 noted against D5/D4 landings",
       "provider_usage": [
         {
           "provider": "command-dispatch",
@@ -3388,10 +3388,12 @@
           "moniker": "optimizations-assurance",
           "role": "package build (Swarm Optimizations & Implementation Assurance)",
           "dispatched_at": "2026-11-03T12:35:26Z",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": true,
+          "rework_cycles": 0,
           "session_id": "issue-4261",
-          "context": "C12 R1 package \u2014 Receipts Vault proposal PDF + SKILL.md ZIP (Uliya standard), genuinely in-window build, \u2205 reuse."
+          "context": "C12 R1 package \u2014 Receipts Vault proposal PDF + SKILL.md ZIP (Uliya standard), genuinely in-window build, \u2205 reuse.",
+          "merged_pr": 4273,
+          "merge_sha": "04c958d394505d08148931a9acb593cb5699ee3c"
         }
       ],
       "priority_timebox": {
@@ -3985,7 +3987,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T12:44:22Z",
+    "updated_at": "2026-11-03T12:47:44Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

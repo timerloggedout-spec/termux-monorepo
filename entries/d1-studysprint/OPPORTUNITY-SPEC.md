@@ -107,6 +107,14 @@ StudySprint **extends the D0 starting agent, the Delphi Oracle**: its determinis
 
 Published-body correction re-verify → v1.0.0 cut on the richest green tree (it-1 0.2.0 in-tree; 0.2.0 surface cuts pending the sync-parity repair) → v1.0.0 Update block into the Body → the live article's currency edit → frozen-state verification at the freeze → Gate 1 (week of Nov 9).
 
+## Validation stamp — 2026-11-03
+
+Stamped by the Contribution Desk on the D1 seat's validation return (full text to main, 2026-11-03), so the v1.0.0 sequence inherits it as settled text:
+
+1. **No AWS account/hosting required anywhere** — verbatim lines quoted from the live About (re-read 2026-11-03) and this spec's cited Rules read; the tier was points, never a requirement; the blocked signup costs zero eligibility.
+2. **Deployment matrix priced:** Hugging Face Spaces = the deploy buy (live shipped agent, $0, keep-warm caveat, landable pre-freeze) · Vercel = same buy, better stay-up, Hobby non-commercial flag · stay-intermediate = the landed floor; AWS-service credit unpurchasable at every row.
+3. **Provenance receipted:** PR #4599's diff set the flash-lite model (merged e815ec8cc89b); quota governed only the proof run's start time, never its model.
+
 ## Outcomes — PENDING-JUDGING (section held open)
 
 **Stamped 2026-11-03: PENDING-JUDGING.** The official scoring is imported now (see Scoring — both frames, verbatim). Entries · placements · winners are not yet knowable: the submission window runs to Nov 4, 23:59 PT; judging follows (Rules: November 5–18 · About: Gate 1 week of Nov 9, Gate 2 week of Nov 16; winners on or about Nov 19 per Rules / week of Nov 23 per About). This section fills from Swarm's exact competition import when the official results publish. It is **held open by design** — the spec does not close before the import lands.

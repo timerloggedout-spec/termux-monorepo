@@ -2608,10 +2608,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)",
           "dispatched_at": "2026-11-03T00:22:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": true,
+          "rework_cycles": 0,
           "session_id": "issue-4092",
-          "task": "StudySprint webApp surface (PWA, v0.3.0-matched): bundle asset on Release 432427628 + served URL + parity checklist; routing receipt 6598811298, dispatch-queued"
+          "task": "StudySprint webApp surface (PWA, v0.3.0-matched): bundle asset on Release 432427628 + served URL + parity checklist; routing receipt 6598811298, dispatch-queued",
+          "merged_pr": 4162,
+          "merge_sha": "46518482875c",
+          "outcome": "landed; webApp 0.1.0 release id 432558838; Pages live; parity 48/48 at land"
         },
         {
           "provider": "command-dispatch",
@@ -2620,10 +2623,13 @@
           "role": "challenge-entries-manager",
           "context": "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)",
           "dispatched_at": "2026-11-03T00:22:00-08:00",
-          "first_pass_success": null,
-          "rework_cycles": null,
+          "first_pass_success": true,
+          "rework_cycles": 0,
           "session_id": "issue-4093",
-          "task": "StudySprint APK surface (v0.3.0-matched): .apk asset on Release 432427628 + device-lane smoke + parity checklist; routing receipt 6598811371, dispatch-queued"
+          "task": "StudySprint APK surface (v0.3.0-matched): .apk asset on Release 432427628 + device-lane smoke + parity checklist; routing receipt 6598811371, dispatch-queued",
+          "merged_pr": 4163,
+          "merge_sha": "c84b8b213505",
+          "outcome": "landed; APK 0.1.0 release id 432563137; CI run 41621272959 success + artifact; parity 54/54; device smoke = D1 lane"
         },
         {
           "provider": "command-dispatch",
@@ -3892,7 +3898,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T10:36:00Z",
+    "updated_at": "2026-11-03T10:45:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

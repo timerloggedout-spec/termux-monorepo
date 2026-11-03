@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+### App-package D — docs + budgets (#4439)
+
+- **CHANGELOG discipline** codified (CHANGELOG-DISCIPLINE.md): one changelog of record, batch sections combine never-squash, the Surfaces/Foundation/App-package naming split; the in-tree file conforms (checked, deviations: none structural).
+- **Developer-verification decision note** (VERIFICATION-DECISION.md, doc only — no action): the Sep 2026 Android verification timeline against this project's student/hobbyist shape; recommendation = the limited-distribution path when its mechanics finalize, sideload-only until then, with revisit triggers named.
+- **Perf/size budgets published with a measured run** (PERF-BUDGETS.md): LCP 592 ms · CLS 0.040 · interaction max-event 168 ms · shell 54,810 B · APK 50,321 B — all inside budget; two watch items named (CLS at 40% of budget, the grade path at 84%).
+
 ### App-package C — APK release trust (#4438)
 
 - **Hardening**: the WebView's four file/content access flags are set explicitly false in MainActivity (the appassets-only shell needs none; allowContentAccess defaults TRUE when unset) — audit table in APK.md, pinned by tests.

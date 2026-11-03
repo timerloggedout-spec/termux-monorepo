@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-03T03:32:20Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-03T03:36:20Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-03T03:32:20Z` (merged 150 · open 194) · lane-events(Neon) status=`ok` count=`9921` read_at=`2026-11-03T03:32:20Z`
+Sources: PR feed read_at=`2026-11-03T03:36:20Z` (merged 150 · open 196) · lane-events(Neon) status=`ok` count=`9942` read_at=`2026-11-03T03:36:20Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -18,14 +18,14 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #4002 `f1a21c12069e` 2026-11-03T03:12:26Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | in-flight | NOT_ESTABLISHED | land/close PR #1614 — ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4051 `691fa9624b00` 2026-11-03T03:29:42Z | land/close PR #2966 — [apk-doe] A v0.2.1 |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #4056 `15eacd75431c` 2026-11-03T03:35:12Z | land/close PR #4055 — doe(apk-1): records 3 — arm-A release identity convergence (431287533) |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | NOT_ESTABLISHED | land/close PR #3032 — fix(crg): align promotion gate with canonical master |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | NOT_ESTABLISHED | land/close PR #4023 — docs: integrate competitive opportunities and quota reconciliation |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #2167 `6d24b733af85` 2026-11-02T13:52:46Z | land/close PR #3991 — chore(recon): refresh pinned free-provider research |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #4035 `62c8d0ef380f` 2026-11-03T03:17:23Z | land/close PR #4022 — docs(ops): record post-merge backfill remediation checkpoint |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #4035 `62c8d0ef380f` 2026-11-03T03:17:23Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #4040 `34cb9ac7598b` 2026-11-03T03:19:54Z | land/close PR #3242 — feat(quota): harden provider consumption audit |
 | replay | `repo-replay` | Repo Replay | active | #4001 `4d94a89dfa30` 2026-11-02T22:08:50Z | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | NOT_ESTABLISHED | land/close PR #3437 — feat(dispatch): wire gemini-invoke to the stamp fan-out |

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14532d">
+<title>StudySprint</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>StudySprint</h1>
+  <p id="course-name">Loading your course…</p>
+</header>
+
+<nav id="tabs" role="tablist">
+  <button data-view="today" class="tab active">Today</button>
+  <button data-view="plan" class="tab">Plan / Receipt</button>
+  <button data-view="reader" class="tab">Reader</button>
+  <button data-view="sr" class="tab">SR Review</button>
+</nav>
+
+<main>
+  <section id="view-today" class="view">
+    <h2>Today</h2>
+    <p id="today-summary"></p>
+    <div id="today-sessions"></div>
+    <p id="checkin-status" aria-live="polite"></p>
+  </section>
+
+  <section id="view-plan" class="view hidden">
+    <h2>Plan</h2>
+    <div id="plan-body"></div>
+    <h3>Trust receipt — what was fetched</h3>
+    <pre id="receipt-body"></pre>
+  </section>
+
+  <section id="view-reader" class="view hidden">
+    <h2>Reader</h2>
+    <p id="reader-section"></p>
+    <div id="reader-word" aria-live="polite">Press Start</div>
+    <div class="row">
+      <button id="reader-start">Start</button>
+      <button id="reader-step">Step</button>
+      <button id="reader-play">Play / Pause</button>
+      <button id="reader-rewind">Rewind 10</button>
+    </div>
+  </section>
+
+  <section id="view-sr" class="view hidden">
+    <h2>SR Review</h2>
+    <label>Scheduler
+      <select id="sr-scheduler">
+        <option value="fsrs" selected>FSRS (default)</option>
+        <option value="sm2">SM-2 (baseline)</option>
+      </select>
+    </label>
+    <div id="sr-front" class="card"></div>
+    <div id="sr-back" class="card hidden"></div>
+    <div class="row">
+      <button id="sr-flip">Flip card</button>
+    </div>
+    <div class="row grades">
+      <button data-grade="1">1 Again</button>
+      <button data-grade="2">2 Hard</button>
+      <button data-grade="3">3 Good</button>
+      <button data-grade="4">4 Easy</button>
+    </div>
+    <p id="sr-receipt" aria-live="polite"></p>
+  </section>
+</main>
+
+<footer>
+  <p>StudySprint webApp — surface version <span id="surface-version"></span>.
+  Works offline after the first load.</p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+</body>
+</html>

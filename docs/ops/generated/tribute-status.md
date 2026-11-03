@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-11-02T20:13:03Z UTC · receipts=3962 · foreign_open=8 · tributes=132_
+_Generated 2026-11-03T02:30:11Z UTC · receipts=3962 · foreign_open=8 · tributes=132_
 
 ## Tributes (contributor ledger)
 
@@ -24,7 +24,7 @@ _Generated 2026-11-02T20:13:03Z UTC · receipts=3962 · foreign_open=8 · tribut
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=closed · help-wanted: stake + contribute for #4757
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=closed · help-wanted: stake + contribute for #7
-- [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
+- [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · docs: complete the fork-PR CI approval guidance for #95
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=closed · help-wanted: stake + contribute for #325
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=closed · help-wanted: stake + contribute for #96
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=closed · help-wanted: stake + contribute for #152
@@ -54,7 +54,7 @@ _Generated 2026-11-02T20:13:03Z UTC · receipts=3962 · foreign_open=8 · tribut
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
-- [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
+- [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — docs: complete the fork-PR CI approval guidance for #95
 
 ## Operational outcomes · actioned=221 skipped=3741 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3675, 'followup_reengage': 51, 'followup_stale_nudge': 138, 'followup_changes': 2, 'followup_lesson': 18, 'followup_skip_system1': 30}`
 

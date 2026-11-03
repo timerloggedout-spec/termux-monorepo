@@ -108,6 +108,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet DoE | `Factorial · DoE` | `termux-fleet-doe[bot]` | aspect the Design; queued alt Mendel (below) |
 | Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | — (not yet provisioned; deferred 2026-11-03, below) | aspect the Well; queued alt Keeper (below) |
 | Termux Fleet DelphiOracle | `Pythia · DelphiOracle` | `termux-fleet-delphioracle[bot]` | aspect the Utterance; queued alt Seer (below) |
+| Termux Fleet MoneyBall | `Actuary · MoneyBall` | `termux-fleet-moneyball[bot]` | aspect the Table; queued alt Kelly (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -316,6 +317,40 @@ cross-identity ambiguity.
 Collision check at issuance: `Pythia`, `Seer` and the
 Utterance appear nowhere in this roster or in the
 registration registry.
+
+**MoneyBall issuance (2026-11-03, registry lane; per-entry
+specialist AppID under the build-start rule, RepoStory
+pattern — provisioning in parallel on the AppID lane).** The
+actor keeps the MoneyBall plane's pricing/standing record on
+the entry repo, so its name is the plain-register professional
+who prices outcomes from the statistical record —
+operator-side, not a participant; the queued alt carries the
+staking math, so the family itself holds the pool's balance
+(plain lead, named-method alt).
+
+- canonical: `Actuary` (paired display `Actuary · MoneyBall`)
+- aspect: the Table (actuarial tables; the betting table's
+  echo is resonance, not class)
+- queued alt: `Kelly` (mark `K3lly`) — the staking criterion;
+  draws only on a registry-lane bounce/rename decision
+- leet marks: `Actu4ry` (single substitution, ranks first) >
+  `4ctuary` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical `termux-fleet-moneyball`
+  probed free by the AppID lane); ranked bounce forms if ever
+  needed: `actu4ry` > `4ctuary`, returning to the registry lane
+- normalized form: MoneyBall — `Termux Fleet MoneyBall` /
+  `termux-fleet-moneyball[bot]`; install scope = the new
+  moneyball repo ONLY (repo name/id per the Web3·MoneyBall
+  seat's creation record; provisioning record: AppID lane)
+
+Not available in this territory: `Bookmaker` / `Bookie` —
+reserved in the naming-collapse registry (below) for the
+ABSENT odds-setting class; a moniker there would falsely
+imply an implemented odds-setting role.
+Collision check at issuance: `Actuary`, `Kelly` and the
+Table appear nowhere in this roster or in the registration
+registry (`Kelly` = 2 incidental text hits in code search,
+no identity binding).
 
 ## Identity taxonomy and moniker versioning (adopted, 2026-11-01)
 

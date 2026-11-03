@@ -68,6 +68,12 @@ Every iteration of this surface ships only when ALL hold:
   hints) before they land.
 - Parity statement present: what this surface rides vs the foundation
   version it ships against, and what is honestly absent/pending.
+- Parity table in the release body (owner rule 2026-11-03, #4667):
+  every release of record from v1.0.0 carries the parity table --
+  the release-cut workflow composes it from
+  `evidence/PARITY-MATRIX.md` in the TAG tree (ground-truth header
+  + capability table verbatim + the file's path at that tag), and
+  the cut FAILS if the matrix is absent from the tag tree.
 - Tests green for the surface + no foundation regressions.
 - **Parity table in every release body (owner rule, 2026-11-03):** from
   v1.0.0 onward, every release of record for this surface carries the

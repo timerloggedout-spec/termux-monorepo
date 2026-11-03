@@ -10,6 +10,13 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
 **partial** = a named subset, with the gap stated ·
 **absent** = not on the surface.
 
+**Standing rule (owner, 2026-11-03): this table rides every
+release body from v1.0.0** — the release-cut composes the Parity
+section (this header + the table verbatim + this file's path at
+the tag) from the tag tree, and a cut whose tag tree lacks this
+file FAILS (issue #4667). The freeze snapshot's MANIFEST stamps
+this file's blob sha + surface-line version.
+
 | Core capability (FEATURES.md) | CLI/core | webApp 0.3.0 | TUI 0.3.0 | APK 0.3.0 |
 |---|---|---|---|---|
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |

@@ -340,8 +340,7 @@ def main() -> int:
     args = ap.parse_args()
     feed = collect()
     out = Path(args.out_dir) / "telemetry-feed.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(feed, indent=1) + "\n")
+    atomic_write(out, json.dumps(feed, indent=1) + "\n")
     print(f"wrote {out} (gaps: {len(feed['gaps'])})")
     return 0
 

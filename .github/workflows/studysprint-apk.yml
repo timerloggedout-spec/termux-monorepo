@@ -1,0 +1,67 @@
+name: studysprint-apk
+
+# Builds the StudySprint APK surface (apps/studysprint/android) with
+# the SDK-direct pipeline (no Gradle) and uploads the .apk as an
+# artifact. The artifact attaches to the SURFACE's own release
+# (independent version line, web/VERSION sibling: android/VERSION).
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [master]
+    paths:
+      - "apps/studysprint/android/**"
+      - "apps/studysprint/web/**"
+      - ".github/workflows/studysprint-apk.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Android SDK (platform 34 + build-tools 34.0.0)
+        run: |
+          set -euo pipefail
+          mkdir -p /opt/android-sdk/cmdline-tools
+          curl -sSL -o /tmp/cmdtools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q /tmp/cmdtools.zip -d /opt/android-sdk/cmdline-tools
+          mv /opt/android-sdk/cmdline-tools/cmdline-tools /opt/android-sdk/cmdline-tools/latest
+          export ANDROID_SDK_ROOT=/opt/android-sdk
+          yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
+          /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Core deps for state generation
+        run: pip install fsrs genanki
+
+      - name: Build the APK
+        env:
+          ANDROID_SDK_ROOT: /opt/android-sdk
+        run: bash apps/studysprint/android/build.sh
+
+      - name: Smoke — artifact shape
+        run: |
+          set -euo pipefail
+          cd apps/studysprint/android
+          ls -la studysprint.apk
+          unzip -l studysprint.apk | grep -E "classes.dex|assets/web/index.html|assets/web/app.js|assets/web/data/state.json"
+          /opt/android-sdk/build-tools/34.0.0/apksigner verify studysprint.apk
+          echo "### StudySprint APK built" >> "$GITHUB_STEP_SUMMARY"
+          echo "- version: $(cat VERSION) (independent surface line)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- entries: classes.dex + bundled webApp + core state.json, signature verified" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: studysprint-apk
+          path: apps/studysprint/android/studysprint.apk
+          if-no-files-found: error

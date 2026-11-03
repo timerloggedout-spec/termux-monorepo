@@ -345,3 +345,16 @@ carries this register's rows (F-G6 → D1 ENUMERATED 55 with
 the slot caveat in-row · F-G2 re-stamped NOT_ESTABLISHED,
 superseding v2's UNPUBLISHED-on-venue wording · F-G1
 confirmed · F-O7 + F-N5 in program_notes). Cite v3.
+
+## D1 seat PASS (2026-11-03)
+
+The D1 seat verified this register against its firsthand
+records (line-for-line) and issued PASS via the Desk. Two
+actions rode the PASS: ① the second sample course is FILED
+as a v1.0.0 content item — F-O4's cap-1 counter, the only
+one not already in flight, is now in flight; ② F-N3 (the
+field-simulation ABM) is cleared to run as a parallel
+recorded forecast under archetype rails, gating nothing
+(DoE forecast leg). F-G7's closing condition restated by
+the seat: the run-3 receipt must show the tool chain
+(fetch → plan); the verdict issues the turn it lands.

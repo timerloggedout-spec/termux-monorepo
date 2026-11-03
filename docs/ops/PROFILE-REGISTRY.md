@@ -192,3 +192,32 @@ is its at-a-glance view and is refreshed from here.
 - No account, public profile, or handle was created — the registration
   form is the whole surface; nothing public exists to record. Moniker:
   `entrant{n0nAha}[platform:aha-io]` (registry process, PR #1970).
+
+### Affiliate referrals lane
+
+#### Impact (Lovable Labs programme) — account class OWNER-IDENTITY; owner-created account STANDS (ruling 2026-11-03)
+
+- **Ruling (registry lane, 2026-11-03; owner order routed the
+  account-creation flow to this lane): the owner-created account
+  STANDS. No registry-assigned (4n0n) creation replaces it, and no
+  entrant/account moniker is issued for this platform.**
+- Grounds: Impact is a payout surface — tax / payout / identity
+  verification sit behind account creation (affiliate lane gate
+  recon, 2026-11-03), and payout identity must be the owner's real
+  identity; persona substitution cannot complete it. Owner-identity
+  surfaces sit outside 4n0n by design (precedent: the Facebook user
+  layer). The owner created the login with his own details under the
+  2026-11-03 decision (affiliate lane record) — replacing it would
+  contradict an executed owner decision on no new facts.
+- Assignment of record: platform `impact` · programme "Lovable Labs"
+  (offer of record $50/subscription, 30d cookie/lock, net-30 —
+  affiliate lane's record) · account class **owner-identity** ·
+  identity material = owner's custody only, never recorded here.
+- State: **account existence + enrolment UNVERIFIED from this lane**
+  — the affiliate lane's read-only verification walk is the
+  establishing step; its confirmation flips this state (their
+  `config/referral_programs.json` flip rides Oversight acceptance).
+- Fallback: if verification shows creation did not complete, the
+  owner completes it himself under the same owner-identity class —
+  this lane does not create payment-identity accounts with persona
+  data.

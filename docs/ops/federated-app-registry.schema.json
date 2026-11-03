@@ -317,6 +317,31 @@
               "type": "string",
               "format": "uri"
             }
+          },
+          "installation_id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "repository_scope": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[^/]+/[^/]+$"
+            }
+          },
+          "permissions": {
+            "type": "object",
+            "additionalProperties": {
+              "enum": [
+                "read",
+                "write",
+                "none"
+              ]
+            }
           }
         }
       }

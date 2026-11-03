@@ -1,6 +1,6 @@
 {
  "schema": "backup-state/v1",
- "generated_at": "2026-11-03T07:30:30Z",
+ "generated_at": "2026-11-03T07:45:31Z",
  "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/BACKUP-STATE.md",
@@ -10,13 +10,13 @@
   {
    "id": "relays",
    "path": "ops/tracking/backup-relays.jsonl",
-   "records": 75
+   "records": 76
   },
   {
    "id": "snapshot",
    "path": "scripts/tracking/backup_snapshot.json",
    "status": "error:HTTPError: HTTP Error 404: Not Found",
-   "read_at": "2026-11-03T07:30:30Z"
+   "read_at": "2026-11-03T07:45:30Z"
   }
  ],
  "marker": {
@@ -788,6 +788,12 @@
    "at": "2026-11-02T15:01:33Z",
    "state_hash": "a11a5a5c60a0e0dc30f47bb5e8e610470d8110dd9cf64b429a9b68686fadd2b0",
    "reason": null
+  },
+  {
+   "export_id": "exp-20261103T074155Z-524552",
+   "at": "2026-11-03T07:45:01Z",
+   "state_hash": "4bb81bae860fe15ed50cc511dbbbdcea0c72df9342a31d4da63f0da46845513e",
+   "reason": null
   }
  ],
  "drills": [
@@ -812,12 +818,12 @@
  "summary": {
   "exports": 52,
   "drills": 1,
-  "failed_attempts": 23,
+  "failed_attempts": 24,
   "last_export_at": "2026-11-03T07:30:03Z",
   "last_export_id": "exp-20261103T072659Z-d22ade",
   "last_drill_verdict": "fail"
  },
  "gaps": [
-  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-03T07:30:30Z): data may be stale; relays remain live"
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-03T07:45:30Z): data may be stale; relays remain live"
  ]
 }

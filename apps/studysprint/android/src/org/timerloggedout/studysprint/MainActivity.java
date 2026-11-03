@@ -81,6 +81,16 @@ public class MainActivity extends Activity {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+        // Hardening (#4438 audit): everything the shell serves
+        // rides the appassets https interception below, so the
+        // WebView needs no file or content access at all. Set
+        // all four flags explicitly false -- do not ride
+        // platform defaults (allowContentAccess defaults TRUE;
+        // the audit table lives in APK.md).
+        settings.setAllowFileAccess(false);
+        settings.setAllowFileAccessFromFileURLs(false);
+        settings.setAllowUniversalAccessFromFileURLs(false);
+        settings.setAllowContentAccess(false);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public WebResourceResponse shouldInterceptRequest(

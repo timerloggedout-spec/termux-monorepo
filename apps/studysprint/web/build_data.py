@@ -33,15 +33,26 @@ from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
 
 def emit_state(root: Path | None = None) -> dict:
     root = root or APP_ROOT
+    # Reproducible builds (#4438): STUDYSPRINT_BUILD_NOW pins
+    # the state's clock (ISO 8601) and is threaded through every
+    # stamped generator, so two builds from the same tree are
+    # byte-identical; unset, the state honestly says "as of
+    # now" as it always has.
+    import os
+    from datetime import datetime, timezone
+    pinned = os.environ.get("STUDYSPRINT_BUILD_NOW", "").strip()
+    now = (datetime.fromisoformat(pinned) if pinned
+           else datetime.now(timezone.utc))
     syllabus = json.loads((root / "examples" / "syllabus.json")
                           .read_text())
     practice = json.loads((root / "examples" / "practice_set.json")
                           .read_text())
     evidence = fetch_study_evidence(
-        {"kind": "syllabus", "ref": "examples/syllabus.json"}, root=root)
+        {"kind": "syllabus", "ref": "examples/syllabus.json"},
+        now=now, root=root)
     plan = build_study_plan(syllabus)
     cards = build_cards_from_practice_set(practice)
-    ux = export_ux_state(cards, {})
+    ux = export_ux_state(cards, {}, now=now)
     # Per-topic reading passages (examples/readings.json): authored
     # example content, one passage per syllabus topic, so a section
     # titled for a topic actually teaches that topic (#4230). Real
@@ -79,7 +90,6 @@ def emit_state(root: Path | None = None) -> dict:
     # core assembler the TUI runs live; here it is computed at
     # build time like the rest of the bundle's state (the APK
     # disclosure covers it: state as of the build).
-    from datetime import datetime, timezone
     calendar_geo = None
     calendar_file = root / "examples" / "calendar.json"
     if calendar_file.exists():
@@ -87,9 +97,9 @@ def emit_state(root: Path | None = None) -> dict:
                   for t in w.get("topics") or []]
         calendar_geo = surface_calendar_geo(
             json.loads(calendar_file.read_text()),
-            datetime.now(timezone.utc), topics=topics)
+            now, topics=topics)
     return {
-        "plan_start": date.today().isoformat(),
+        "plan_start": now.date().isoformat(),
         "surface": "studysprint-webapp",
         "surface_version": version_file.read_text().strip()
         if version_file.exists() else "0.1.0",

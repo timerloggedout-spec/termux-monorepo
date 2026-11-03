@@ -46,6 +46,26 @@ import java.util.Map;
  * dependency-free equivalent of serving the bundle over a local
  * origin. Interception is scoped to the app's own asset path;
  * everything else falls through untouched.
+ *
+ * https-origin serving (issue #4412, follow-up via the #4283
+ * emulator gate): the interception above was NOT sufficient in
+ * the AOSP emulator's older WebView -- the gate's master run
+ * rendered the named load-failure state, because an intercepted
+ * fetch from a file:// page is still blocked at the fetch layer
+ * in that WebView generation despite the CORS header (the 0.1.0
+ * repro and every ruled-out alternative are stamped on #4283).
+ * The bundle is therefore now loaded from the reserved https
+ * origin https://appassets.androidplatform.net/assets/... --
+ * the WebViewAssetLoader pattern: page and fetch share one
+ * secure https origin, no CORS, no file-origin rules. The build
+ * is SDK-direct (javac against android.jar, no dependency
+ * resolver) and androidx.webkit is not in android.jar, so the
+ * pattern is implemented with framework APIs only -- a
+ * shouldInterceptRequest handler for the reserved domain, which
+ * is exactly what WebViewAssetLoader does internally. The legacy
+ * /android_asset/ interception stays as a fallback for any
+ * file:// navigation; interception remains scoped to the app's
+ * own web/ assets on both paths.
  */
 public class MainActivity extends Activity {
 
@@ -65,12 +85,29 @@ public class MainActivity extends Activity {
             @Override
             public WebResourceResponse shouldInterceptRequest(
                     WebView view, WebResourceRequest request) {
-                String path = request.getUrl().getPath();
-                String prefix = "/android_asset/";
-                if (path == null || !path.startsWith(prefix)) {
+                Uri url = request.getUrl();
+                String path = url.getPath();
+                if (path == null) {
                     return null;
                 }
-                String asset = path.substring(prefix.length());
+                // WebViewAssetLoader pattern (#4412): the reserved
+                // https domain's /assets/ tree maps onto the APK
+                // assets root, so /assets/web/... serves the same
+                // bytes the legacy branch below serves -- under a
+                // secure origin the fetch layer accepts everywhere.
+                if ("appassets.androidplatform.net".equals(
+                        url.getHost())
+                        && path.startsWith("/assets/")) {
+                    return serve(path.substring("/assets/".length()));
+                }
+                String prefix = "/android_asset/";
+                if (!path.startsWith(prefix)) {
+                    return null;
+                }
+                return serve(path.substring(prefix.length()));
+            }
+
+            private WebResourceResponse serve(String asset) {
                 if (!asset.startsWith("web/")) {
                     return null;
                 }
@@ -120,7 +157,8 @@ public class MainActivity extends Activity {
             }
         });
         setContentView(webView);
-        webView.loadUrl("file:///android_asset/web/index.html");
+        webView.loadUrl(
+            "https://appassets.androidplatform.net/assets/web/index.html");
     }
 
     @Override

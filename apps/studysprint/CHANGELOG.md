@@ -1,5 +1,23 @@
 ## [Unreleased]
 
+### Surfaces 0.1.3 (#4412 — APK https-origin asset serving)
+
+- **APK shell serves the bundle from a secure https origin** —
+  MainActivity loads
+  `https://appassets.androidplatform.net/assets/web/index.html`
+  and intercepts that reserved domain's `/assets/` tree onto the
+  APK assets (the WebViewAssetLoader pattern, implemented with
+  framework APIs only: the SDK-direct build has no dependency
+  resolver and androidx.webkit is not in android.jar). The #4283
+  emulator gate proved the 0.1.1-era file:// interception
+  insufficient in older WebViews (intercepted fetch from a file
+  origin still blocked at the fetch layer); page + state fetch
+  now share one https origin, so no CORS or file-origin rules
+  apply. The legacy `/android_asset/` interception remains as a
+  fallback. Browser path, state format, and web app logic are
+  untouched. Surfaces version 0.1.3 in-tree; foundation stays
+  0.5.0.
+
 ### Surfaces 0.1.2 (RFP-D1-8 set 2 — scheduler integrity + web contract)
 
 - **#4231 FSRS generation pinned + aligned** — the core pins the

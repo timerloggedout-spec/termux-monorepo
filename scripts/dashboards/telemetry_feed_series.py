@@ -75,9 +75,9 @@ def main():
     feed_path = sys.argv[1] if len(sys.argv) > 1 else FEED
     series_path = sys.argv[2] if len(sys.argv) > 2 else SERIES
     rows = build(feed_path, series_path)
-    Path(series_path).write_text(
-        "".join(json.dumps(r, separators=(",", ":")) + "\n"
-                for r in rows))
+    atomic_write(Path(series_path),
+                 "".join(json.dumps(r, separators=(",", ":")) + "\n"
+                         for r in rows))
     print(f"{series_path}: {len(rows)} snapshot(s)")
 
 

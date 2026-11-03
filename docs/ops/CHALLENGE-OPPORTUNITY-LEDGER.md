@@ -43,3 +43,7 @@ only in coordinator `metrics_internal` (hidden, adaptive, silent).
 
 — Ledger stood up 2026-10-28 by the challenge-entries-manager
 assistant seat under owner ruling (via Manager).
+
+---
+
+**NOTE 2026-11-03 (desk): D1 SUBMITTED.** The StudySprint project was published on AWS Builder Center on 2026-11-03 (confirmation_ref: https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint), a day ahead of the Nov 4 23:59 PT wall, under the owner's publish-today ruling (post-publish editability verified firsthand; the project stays editable until the freeze). OC-003 remains AT_RISK until the event closes (winners announced week of Nov 23); the submission leg of the risk is retired.

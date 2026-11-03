@@ -39,6 +39,26 @@
       "exceptions": []
     },
     {
+      "provider": "baseten",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "BASETEN_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "BASETEN_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "baseten.api"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
       "provider": "cerebras",
       "kind": "llm",
       "catalog_endpoint": "core",
@@ -137,6 +157,57 @@
       "exceptions": []
     },
     {
+      "provider": "deepinfra",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "DEEPINFRA_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "DEEPINFRA_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "deepinfra.api"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "deepseek",
+      "kind": "llm",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "deepseek.api"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        },
+        {
+          "surface": "availability_env",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        }
+      ]
+    },
+    {
       "provider": "devin",
       "kind": "review",
       "catalog_endpoint": null,
@@ -166,6 +237,26 @@
       "quota_family": "unsupported",
       "quota_registry": [
         "felo.api_credits"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "friendli",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "FRIENDLI_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "FRIENDLI_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "friendli.api"
       ],
       "public_catalog": false,
       "review_login": null,
@@ -329,6 +420,26 @@
       "exceptions": []
     },
     {
+      "provider": "novita",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "NOVITA_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "NOVITA_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "novita.api"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
       "provider": "nvidia",
       "kind": "llm",
       "catalog_endpoint": "core",
@@ -363,15 +474,18 @@
         "OLLAMA_API_KEY"
       ],
       "quota_family": "implemented_passive_adapter",
-      "quota_registry": [
-        "ollama.balance"
-      ],
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
       "review_trigger_actions": [],
       "review_required_default": false,
-      "exceptions": []
+      "exceptions": [
+        {
+          "surface": "quota_registry",
+          "reason": "registry record ollama.balance carries lane 'model-balance', outside the provider_quota_coverage mapping rule (lane == 'model'); balance-plane record, not a model-lane service record \u2014 registry-lane question routed to quota-specialist 2026-11-03 (cadence escalation axis 4)"
+        }
+      ]
     },
     {
       "provider": "omni",
@@ -404,8 +518,7 @@
       ],
       "quota_family": "implemented_passive_adapter",
       "quota_registry": [
-        "openrouter.free_models",
-        "openrouter.key"
+        "openrouter.free_models"
       ],
       "public_catalog": false,
       "review_login": null,
@@ -699,17 +812,25 @@
     }
   ],
   "quota_registry_unmapped": {
+    "claude": [
+      "claude.seat_runtime"
+    ],
     "github": [
       "github.copilot.free"
+    ],
+    "meta": [
+      "meta.llama_api",
+      "meta.model_api",
+      "meta.muse_code"
     ]
   },
   "quota_registry_namespaced_records": 61,
   "counts": {
-    "providers": 33,
-    "llm": 27,
+    "providers": 38,
+    "llm": 32,
     "review": 6,
     "with_quota_adapter": 6,
-    "with_quota_registry": 27,
-    "exceptions": 7
+    "with_quota_registry": 31,
+    "exceptions": 11
   }
 }

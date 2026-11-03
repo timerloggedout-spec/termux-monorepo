@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-02T19:36:49.813329+00:00",
+ "census_at_utc": "2026-11-03T03:13:03.954135+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,179 +13,215 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3102,
-  "stale": 942,
-  "orphan_no_assoc_PR": 351,
-  "stale_and_orphan": 107
+  "total": 3130,
+  "stale": 1016,
+  "orphan_no_assoc_PR": 352,
+  "stale_and_orphan": 134
  },
  "prs": {
-  "total": 3477,
-  "open": 182,
-  "open_draft": 24,
-  "open_draft_share": 0.1319,
+  "total": 3512,
+  "open": 194,
+  "open_draft": 30,
+  "open_draft_share": 0.1546,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 66.6
+    "age_days": 66.9
    },
    {
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 46.5
+    "age_days": 46.8
    },
    {
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 41.3
+    "age_days": 41.6
    },
    {
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 40.9
+    "age_days": 41.2
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 40.7
+    "age_days": 41.0
    },
    {
     "number": 762,
     "title": "ops: map live plugin connector surface and parity skills",
     "created_at": "2026-09-23T03:33:34Z",
-    "age_days": 40.7
+    "age_days": 41.0
    },
    {
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 40.7
+    "age_days": 41.0
    },
    {
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 38.8
+    "age_days": 39.1
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 32.8
+    "age_days": 33.1
    },
    {
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 32.3
+    "age_days": 32.6
    },
    {
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 13.6
+    "age_days": 13.9
    },
    {
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 11.4
+    "age_days": 11.8
    },
    {
     "number": 1612,
     "title": "docs(research): map new free LLM catalogs to telemetry gates",
     "created_at": "2026-10-24T01:09:43Z",
-    "age_days": 9.8
+    "age_days": 10.1
    },
    {
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 9.5
+    "age_days": 9.8
    },
    {
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 6.9
+    "age_days": 7.2
    },
    {
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 3.4
+    "age_days": 3.8
    },
    {
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 2.8
+    "age_days": 3.1
    },
    {
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 1.5
+    "age_days": 1.8
    },
    {
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 1.4
+    "age_days": 1.7
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 1.4
+    "age_days": 1.7
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 1.4
+    "age_days": 1.7
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 1.1
+    "age_days": 1.4
    },
    {
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 1.0
+    "age_days": 1.3
    },
    {
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
+    "age_days": 0.4
+   },
+   {
+    "number": 4007,
+    "title": "Wire invocation observations into Free-Tier Value evidence projection",
+    "created_at": "2026-11-02T23:43:35Z",
     "age_days": 0.1
+   },
+   {
+    "number": 4011,
+    "title": "docs(proposals): register external agent toolchain integration portfolio",
+    "created_at": "2026-11-03T00:16:14Z",
+    "age_days": 0.1
+   },
+   {
+    "number": 4016,
+    "title": "security(issues): gate advisory triage through deterministic intake firewall",
+    "created_at": "2026-11-03T00:54:04Z",
+    "age_days": 0.1
+   },
+   {
+    "number": 4017,
+    "title": "feat(ops): map federated AppIDs and independent release lanes",
+    "created_at": "2026-11-03T01:05:41Z",
+    "age_days": 0.1
+   },
+   {
+    "number": 4020,
+    "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
+    "created_at": "2026-11-03T02:17:58Z",
+    "age_days": 0.0
+   },
+   {
+    "number": 4023,
+    "title": "docs: integrate competitive opportunities and quota reconciliation",
+    "created_at": "2026-11-03T03:09:30Z",
+    "age_days": 0.0
    }
   ],
-  "merged": 2820,
-  "closed_unmerged": 475,
-  "open_no_closing_ref": 176,
-  "open_unlinked_issue_target": 148,
-  "open_unlinked_any_ref": 124,
-  "merged_no_closing_ref": 2791,
-  "merged_unlinked_issue_target": 1632,
-  "merged_unlinked_any_ref": 943,
+  "merged": 2841,
+  "closed_unmerged": 477,
+  "open_no_closing_ref": 188,
+  "open_unlinked_issue_target": 156,
+  "open_unlinked_any_ref": 131,
+  "merged_no_closing_ref": 2812,
+  "merged_unlinked_issue_target": 1645,
+  "merged_unlinked_any_ref": 956,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 2743,
+  "merged_head_branch_residual_name_match": 2764,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 506,
-  "open": 418,
-  "open_surface_unlinked": 177,
-  "open_unlinked_strict": 158
+  "total": 511,
+  "open": 423,
+  "open_surface_unlinked": 178,
+  "open_unlinked_strict": 159
  },
  "anomalies": {
   "merged_PR_closing_issue_still_open": [
@@ -1596,6 +1632,18 @@
    [
     3915,
     3735
+   ],
+   [
+    4008,
+    1654
+   ],
+   [
+    4010,
+    268
+   ],
+   [
+    4015,
+    4010
    ]
   ],
   "issue_issue_mutual_pairs": 3,
@@ -1605,6 +1653,8 @@
    "archive/pr232-pre-master-rebuild-20260817",
    "backup/tmx-node-primary-20261021/agent-core-commit",
    "backup/tmx-node-primary-20261021/devin-1785650368-termux-mcp-integration",
+   "backup/tmx-node-primary-20261021/docs-preflight-api-drift",
+   "backup/tmx-node-primary-20261021/feat-archive-retention-policy-73",
    "backup/tmx-node-primary-20261021/feat-base-prov-wire",
    "backup/tmx-node-primary-20261021/feat-hindsight-invoke-endpoint",
    "backup/tmx-node-primary-20261021/feat-hindsight-recap-package",
@@ -1612,12 +1662,19 @@
    "backup/tmx-node-primary-20261021/feat-mergeable-classifier-on-master",
    "backup/tmx-node-primary-20261021/feat-pr-rollup-classifier",
    "backup/tmx-node-primary-20261021/feat-preflight-check-action",
+   "backup/tmx-node-primary-20261021/feat-recapitulation-package-64",
+   "backup/tmx-node-primary-20261021/fix-env-risk-partial-dict",
+   "backup/tmx-node-primary-20261021/fix-events-extract-order",
    "backup/tmx-node-primary-20261021/fix-hindsight-async-handlers",
+   "backup/tmx-node-primary-20261021/fix-preflight-score-none-env",
    "backup/tmx-node-primary-20261021/fix-session-store-prune-expired",
    "backup/tmx-node-primary-20261021/fix-stream-completion-final-text",
    "backup/tmx-node-primary-20261021/fix-test-api-bare-except",
+   "backup/tmx-node-primary-20261021/fix-test-events-conflict-markers",
+   "backup/tmx-node-primary-20261021/fix-v1-files-ruff-check-dedup",
    "backup/tmx-node-primary-20261021/fix-worktree-base-provenance",
    "backup/tmx-node-primary-20261021/fix-worktree-base-provenance-master",
+   "backup/tmx-node-primary-20261021/fix-wt-bases-load-doublebrace",
    "backup/tmx-node-primary-20261021/fix-wt-bases-load-set-literal",
    "backup/tmx-node-primary-20261021/hindsight-init",
    "backup/tmx-node-primary-20261021/hindsight-wire",
@@ -1627,13 +1684,29 @@
    "backup/tmx-node-primary-20261021/net-resume",
    "backup/tmx-node-primary-20261021/recovery-pre-rebase-1790984983",
    "backup/tmx-node-primary-20261021/recovery-pre-rebase-1790985516",
+   "backup/tmx-node-primary-20261021/recovery-pre-unstick-1791064682",
    "backup/tmx-node-primary-20261021/termux-smoke",
    "backup/tmx-node-primary-20261021/test-atomic-dump-failure-cleanup",
+   "backup/tmx-node-primary-20261021/test-bootstrap-syspath-extract-calls-51",
    "backup/tmx-node-primary-20261021/test-cache-atomic-durability",
    "backup/tmx-node-primary-20261021/test-cache-is-fresh-coverage",
    "backup/tmx-node-primary-20261021/test-cache-ts-bool-nan-guard",
+   "backup/tmx-node-primary-20261021/test-cli-secure-permissions",
+   "backup/tmx-node-primary-20261021/test-delegate-coverage",
+   "backup/tmx-node-primary-20261021/test-events-scan-coverage-v2",
    "backup/tmx-node-primary-20261021/test-is-fresh-v1",
+   "backup/tmx-node-primary-20261021/test-merge-queue-classifier",
+   "backup/tmx-node-primary-20261021/test-mergeable-ignore-and-placeholder",
+   "backup/tmx-node-primary-20261021/test-observatory-package",
+   "backup/tmx-node-primary-20261021/test-provenance-coverage2",
+   "backup/tmx-node-primary-20261021/test-provenance-ledger",
+   "backup/tmx-node-primary-20261021/test-provenance-ledger-61",
    "backup/tmx-node-primary-20261021/test-router-demote-restore-status",
+   "backup/tmx-node-primary-20261021/test-shim-branch-selection-75",
+   "backup/tmx-node-primary-20261021/test-source-hygiene-guard-68",
+   "backup/tmx-node-primary-20261021/test-sweep-census-counts-74",
+   "backup/tmx-node-primary-20261021/test-v1-agent-bootstrap-64",
+   "backup/tmx-node-primary-20261021/test-workflow-surface-policy-cli-69",
    "backup/tmx-node-primary-20261021/test-wt-regression-guard",
    "backup/tmx-node-primary-20261021/timerloggedout-ter-12-prioritize-deepcli-as-primary-driver-for-custom-codex-rename",
    "bolt-temporal-lag-index-optimization-7092498872592714131",
@@ -1645,6 +1718,7 @@
    "docs/kimi-cloud-offload-evaluation",
    "docs/msm-registry-executing-20261003",
    "feat/ates-phase-b-runtime-emission",
+   "feat/dph-all-collaborator-plan-20261003",
    "feat/github-tagging-extract-20261003",
    "feat/hindsight-router-wire",
    "feat/jules-session-gating",
@@ -1672,6 +1746,7 @@
    "fix/peer-orch-comment-storm-cancel",
    "fix/peer-orch-event-name-concurrency-20de2a54",
    "fix/peer-orch-event-name-v2",
+   "fix/recon-skip-api-unavailable",
    "hindsight-wire",
    "hotfix/ci-comment-1786690260",
    "hotfix/ci-comment-1786690697",

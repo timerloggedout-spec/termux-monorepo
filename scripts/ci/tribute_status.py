@@ -224,13 +224,13 @@ def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: l
     return tributes
 
 
-def atomic_write(path: Path | str, content: str) -> None:
+def atomic_write(path, content: str) -> None:
     """Publish a complete file atomically so readers never observe truncation."""
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_name(f".{target.name}.{os.getpid()}.tmp")
     try:
-        with temporary.open("w", encoding="utf-8", newline="\\n") as handle:
+        with temporary.open("w", encoding="utf-8") as handle:
             handle.write(content)
             handle.flush()
             os.fsync(handle.fileno())

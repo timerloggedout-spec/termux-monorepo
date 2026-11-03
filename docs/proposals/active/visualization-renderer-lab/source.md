@@ -16,7 +16,7 @@ The operator requested a full web-surface audit and visual upgrade, with live/la
 - Existing visualization research: `docs/ops/TELEMETRY-VIZ-RECON.md`.
 - PR #3937 is recorded in the tracking snapshot as merged at 2026-11-02T14:20:07Z and adds telemetry feed refresh cadence to the surface collector.
 - PR #3969 is recorded in the tracking snapshot as the next open task to synchronize the Vercel root directory; do not assume it is merged or deployed.
-- Current status feed observation from the prior audit was an empty status JSON; it must be rechecked against current branch contents and workflow run before changing the writer.
+- Revalidated on 2026-11-02: both Tribute status JSON paths on master are zero bytes with identical blob SHA `bb2f8218accf56b4279665f40a9aeeb04e7dca49`. The telemetry feed is stamped `2026-10-30T07:47:32Z`, and its two-row history ends on 2026-10-30. The telemetry collector uses direct `json.loads` on existing source files, so the empty status file causes a hard decode failure rather than a named unavailable-source state. The latest workflow execution could not be retrieved through the connected GitHub tool surface; do not claim a collector run succeeded.
 
 ## Branch topology warning
 

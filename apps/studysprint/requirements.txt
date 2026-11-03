@@ -3,3 +3,10 @@
 # its tools on a strands.Agent (build_strands_agent). The deterministic
 # gate loop and all tests run without it.
 # strands-agents
+
+# Spaced repetition (study_sr.py): py-fsrs — published on PyPI as
+# `fsrs` (import name fsrs) — and genanki for .apkg export. Both are
+# imported lazily by study_sr.py, so the zero-dependency baseline
+# still loads without them.
+fsrs
+genanki

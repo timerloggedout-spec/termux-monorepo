@@ -3,6 +3,41 @@
 All notable changes to StudySprint. Process: `VERSIONING.md`.
 Entries are the GitHub Release notes, verbatim.
 
+## [0.3.0] — 2026-11-02
+
+Third versioned state: MINOR feature batch adding the
+spaced-repetition module (FEATURES Next #1, issue #3050 as amended:
+Obsidian vault surface included as a required component).
+
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
+### Added
+- Spaced-repetition module (`study_sr.py`): cards built from the
+  existing quiz/term data (practice-set q/a, question/answer, and
+  term/definition shapes); two schedulers behind one interface,
+  selectable by name — FSRS (default, via py-fsrs) and SM-2 (classic
+  baseline). Every review returns a stamped receipt naming the
+  scheduler that produced it; an unknown scheduler name raises a
+  clear error.
+- Anki export: `export_apkg` writes a genanki `.apkg` (deck
+  "StudySprint") and returns a receipt with the file hash.
+- Obsidian vault surface: `export_obsidian_vault` writes
+  obsidian-spaced-repetition-format notes (sync state in
+  frontmatter, `#flashcards` tag, front `?` back) plus an index
+  note; `read_obsidian_card_state` / `import_obsidian_states` read
+  the state back (the vault -> core sync point). Device sync
+  points (`ObsidianBridge`, `push_cards_to_vault`,
+  `pull_states_from_vault`) adapt the fleet's existing adapter
+  `bin/obsidian_server.py` (token-authenticated HTTP bridge, port
+  8085, symlink-rejecting token read) — seeded from it, not a
+  cold build.
+- ts-fsrs UX seed: `to_ts_fsrs_state` / `export_ux_state` map
+  py-fsrs card state onto the ts-fsrs Card shape for the UX layer.
+- Tests: `tests/test_study_sr.py` covers every public function in
+  `study_sr.py`.
+
 ## [0.2.0] — 2026-10-31
 
 Second versioned state: MINOR feature batch implementing all five

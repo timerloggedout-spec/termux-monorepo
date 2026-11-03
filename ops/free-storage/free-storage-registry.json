@@ -11,7 +11,7 @@
     "p2p_decentralized": "Distribution of PUBLIC artifacts only (datasets, app packages, snapshots). Durability frame: bytes live where someone pins/seeds them - WebTorrent/BitTorrent/Iroh = swarm-or-provider uptime; IPFS = pin-or-gone; S5/Sia = contract-backed while funded. Encryption is per-candidate: S5 FS = E2EE; MEGA = zero-knowledge; everything else in this class is public-by-default (transport encryption is NOT content privacy).",
     "quant_ml_data_sources": "Data SOURCES, not storage planes (trading-lane freeze untouched - catalog only). Cleanest licenses: EDGAR (public domain), UCI (~86% CC-BY), Binance Vision (no-key, as-is). Terms traps: FRED (AI-training + caching bars reported), Stooq (personal-use-only, fragile automation), Dolma (ImpACT license), Common Crawl (inherited page copyrights), Binance.US commercial-use bar."
   },
-  "generated_at": "2026-11-03 (base) + amendment 2026-11-03",
+  "generated_at": "2026-11-03 (base) + amendment 2026-11-03 + Reddit fold-in 2026-11-03",
   "generator": "enumeration lane recon (owner spark 2026-11-03); terms verified firsthand from vendor pages/docs on the generated_at date; fleet_state from fleet records + live account reads",
   "rows": [
     {
@@ -1155,8 +1155,39 @@
       "sources": [
         "lakeFS project docs (Git-like versioning over object storage)"
       ]
+    },
+    {
+      "api": "headless CLI + native API + TypeScript/Rust/Go SDKs; WebDAV, S3 and rclone support; network drive; open-source apps",
+      "card_gate": "none",
+      "class": "connected",
+      "durability": "vendor custody (own hardware, German data centers); free accounts DELETED after 3 months without a login (notice beforehand) - strictest dormancy clock in the connected set",
+      "durability_frame": {
+        "holds_bytes": "Filen (ciphertext only)",
+        "keep_alive": "log in at least every 3 months (free-account deletion clock)",
+        "persistence": "vendor account; 30-day trash window"
+      },
+      "encryption": "zero-knowledge E2EE (AES-256, client-side): content + file names + folder names + metadata; keys derived from password, never sent. CAVEAT: encryption claims are the company's own - no outside audit (review finding)",
+      "fit": {
+        "backup_plane": "no (3-month dormancy clock, small vendor)",
+        "evidence_media": "no (no public share links on the free plan)",
+        "ml_datasets_private": "ok-small (10 GB encrypted)",
+        "podium_datasets": "no (private posture, no public links on free)",
+        "session_exports": "ok (second encrypted private plane: half MEGA's size, wider encryption scope incl. metadata, stricter clock)"
+      },
+      "fleet_state": "no account (catalog pass only, no signup); surfaced by the Reddit haul, verified from reviews 2026-11-03",
+      "free_allowance": "10 GiB free, E2EE included on the free plan; unlimited bandwidth and unlimited upload size (reviews); referral bonuses may add space - plan around the 10 GiB baseline only",
+      "id": "filen",
+      "limits": "SIGNUP TRAP: an account created from a VPN, Tor or a proxy gets NO free storage (review finding - fleet routing caveat); no public share links on free plan; downloads slower than uploads (review); single small company, no outside investors, lifetime plans discontinued - free-tier mortality rule applies",
+      "name": "Filen",
+      "sources": [
+        "encryption-comparison review (10 GB free tier, CLI + TypeScript/Rust/Go SDKs, encryption on by default, servers in Germany)",
+        "Filen vs Proton Drive review (VPN/Tor/proxy signup gets no free storage; free accounts deleted after 3 months without a login; encryption claims unaudited)",
+        "Internxt comparison (3-month inactivity: notice, then account deletion; E2EE on all plans)",
+        "AeroFTP Filen docs (10 GB free, native API, AES-256 incl. metadata, plan around 10 GB baseline)",
+        "Reddit r/LinuxTeck thread (practitioner recommendation for zero-knowledge + GDPR)"
+      ]
     }
   ],
   "schema": "storage-registry/v1",
-  "amendment": "2026-11-03 extensions 1 MEGA + 2 P2P/decentralized + 3 quant/ML-specific + 4 openness-barter; leads pass: awesome-datahoarding lists (simon987, all-the-data) + Reddit r/LinuxTeck thread (read pending - failure modes from vendor terms + secondary practitioner reads in this amendment; Reddit haul folds in as a follow-up annotation)"
+  "amendment": "2026-11-03 extensions 1 MEGA + 2 P2P/decentralized + 3 quant/ML-specific + 4 openness-barter; leads pass: awesome-datahoarding lists (simon987, all-the-data) + Reddit r/LinuxTeck thread (read pending - failure modes from vendor terms + secondary practitioner reads in this amendment; Reddit haul folds in as a follow-up annotation); Reddit r/LinuxTeck haul folded in 2026-11-03 (Filen row added from the thread's one material new candidate; thread failure-mode yield otherwise thin - see note addendum)"
 }

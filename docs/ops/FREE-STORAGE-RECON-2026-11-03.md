@@ -357,3 +357,65 @@ Fresh re-verification 2026-11-03:
 Boundary: distribution of PUBLIC artifacts only, except the three
 encrypted/private legs above; catalog pass only, no accounts, no pins
 held.
+
+## Addendum 2026-11-03 — Reddit haul fold-in (r/LinuxTeck thread)
+
+The read-only browser read of the owner-supplied r/LinuxTeck thread
+("8 Free Cloud Storage Services: Which One Is the Best?", posted ~14
+days before the read; 13 comments in the header, 11 comment bodies
+visible) completed 2026-11-03 (ran 11:56–12:27 PT). No post, vote, or
+login was made. Findings folded in here; paraphrased, with usernames
+as attribution.
+
+Thread shape: the post's eight are MEGA, Google Drive, Dropbox,
+OneDrive, Internxt, iCloud, Filen, Proton Drive. No consensus verdict —
+the thread's own summary line is that there is no single best, only
+personal preference.
+
+Failure-mode yield: THIN. Against the brief's checklist, the visible
+comments contain:
+- Dormancy/inactivity purges: NONE mentioned for any service.
+- Throttling: NONE stated. Closest datum: MEGA is good for large
+  shared files but its performance is lacking in some regions,
+  especially during high concurrency (u/eachDay2006) — practitioner
+  color, not a quota figure; the registry's transfer-quota treatment
+  is unchanged.
+- File-size limits: NONE mentioned.
+- Deletion policies: NONE stated as a service policy. The general
+  cautions are control-oriented: do not rely on any one of these
+  services alone for important data (u/PriorityNo5059), and
+  self-hosting if you do not want anyone else able to delete your
+  data (u/Adrenolin01) — both consistent with the registry's
+  never-sole-copy lines.
+- Ads/upsell friction: NONE mentioned.
+- One hard terms datum: Drime's headline 50 GB is 20 GB base + 30 GB
+  referral, and the referral portion lasts only about a year
+  (u/Agitated-Panda9221) — the same expiring-bonus trap class as
+  MEGA's achievement bonuses; expiring bonuses are never base
+  allowance, in this registry's standing treatment.
+
+Disposition of the thread's names:
+- Filen → VERIFIED + ROW ADDED (this PR, registry 48 → 49): 10 GiB
+  free, zero-knowledge E2EE incl. metadata, CLI/SDKs/WebDAV/S3/rclone.
+  It is the second encrypted private plane — half MEGA's size, wider
+  encryption scope, but a far stricter dormancy clock (free accounts
+  deleted after 3 months without a login, notice beforehand) and a
+  signup trap (accounts created via VPN/Tor/proxy get NO free
+  storage). MEGA remains the primary encrypted plane (20 GB,
+  10-month clock); Filen is the metadata-encryption alternative.
+  Card gate stands as none on signup-flow evidence (no explicit
+  vendor no-card sentence located — same flagged softness as Pinata).
+- Koofr (10 GB + WebDAV, u/Background-Smiles), Drime (20 GB base,
+  referral temporary, no Linux app yet — planned 2027, rclone
+  workaround in use), pCloud (long-term Linux use with folder backup,
+  u/poudenes; no allowance stated in the thread), Internxt, Proton
+  Drive, OneDrive, iCloud (named in the post only) = NOTE-LEVEL
+  LEADS, not rows: comment-level claims only, unverified this pass.
+  Any of them becomes a row only after a verification pass like
+  Filen's.
+- Google Drive 15 GB free (u/eachDay2006) matches the base registry's
+  Drive row; the thread adds nothing to the live headroom finding
+  (~1 GiB free on the fleet account).
+
+This closes the leads pass: both awesome-datahoarding lists + the
+Reddit thread are now fully folded into the registry and this note.

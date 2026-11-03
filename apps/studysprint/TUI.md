@@ -1,0 +1,50 @@
+# StudySprint TUI surface
+
+A Textual terminal app over the StudySprint core — the same core
+functions the CLI calls, no forked logic (`tui.py`).
+
+**Version line: independent.** This surface versions on its own
+SemVer line (owner overrule 2026-11-03), separate from the
+foundation road {core v0.3.0 ⇒ v0.4.0 ⇒ v1.0.0}. Surface version =
+`TUI_VERSION` in `tui.py` — currently **0.1.0** — with its own
+releases.
+
+## Run
+
+```
+pip install textual          # plus the core requirements (fsrs, genanki)
+python3 tui.py
+```
+
+Screens (tabs): **Today** (today's sessions + one-tap check-in) ·
+**Plan / Receipt** (the plan and the trust receipt — evidence one
+tap away from everywhere) · **Reader** (RSVP, one word at a time,
+start/step/play/rewind) · **SR Review** (flip, grade 1–4, FSRS
+default or SM-2, scheduler-named receipt after every grade) ·
+**Export** (Anki .apkg, Obsidian vault surface).
+
+## Feature-parity checklist vs CLI core
+
+| Core capability | TUI | Notes |
+|---|---|---|
+| Study plan | present | Plan / Receipt tab, from `build_study_plan` |
+| Trust receipt | present | Plan / Receipt tab, from `format_trust_receipt` |
+| Today view | present | Today tab, from `render_today_view` |
+| Daily check-in | present | Today tab buttons → `record_daily_checkin` |
+| Reader (RSVP) | present | Reader tab over `RSVPReader` |
+| SR cards + review | present | SR Review tab → `review_card` (FSRS default, SM-2 selectable; receipts name the scheduler) |
+| .apkg export | present | Export tab → `export_apkg` |
+| Obsidian vault export | present | Export tab → `export_obsidian_vault` |
+| Reading pipeline (§1b) | absent | core module ships in the CLI; not yet surfaced in the TUI |
+| Multi-course / countdown / .ics | absent | core v0.4.0; TUI parity pass pending |
+| Memory methods (x6) | absent | core v0.4.0; TUI parity pass pending |
+
+## Verification
+
+- Pilot tests: `tests/test_tui.py` (headless Textual pilot:
+  check-in, SR flip+grade receipts for both schedulers, reader
+  stepping, both exports on disk).
+- Recorded run: `evidence/tui/01-today.svg`,
+  `evidence/tui/02-sr-review.svg` (Textual screenshot exports of a
+  live pilot session: Today screen; SR review after a grade, with
+  the scheduler-named receipt visible).

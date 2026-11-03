@@ -61,6 +61,14 @@ a planning competitor.
   multi-surface education entry is structurally scarce.
 - **The freeze-day Update block is a free second impression** no rival is
   positioned to match with a receipted live tool-chain (on proof) + v1.0.0.
+- **Field-wide, "live" is soft**: of the full 55-row record (PR #4581), only ~13
+  name a public endpoint, and several prominent ones are localhost, mocked, or
+  admitted plans (CareNest "Bedrock judge pending/blocked" · Sukoon's body states
+  the running code is Gemini and Bedrock is the plan · HeatShield Sentinel
+  is_demo=True, live inference unverified). Verified-and-receipted beats named
+  every time a judge clicks — our verify links are the field's exception.
+  (Template duplication also recurs: Mugil/MazhaiMitra share near-identical
+  bodies and claims.)
 - Production-span recon already ranked (HF Spaces first — free, persistent,
   keep-warm on our own automation): the deployment gap is closable inside the
   judging window (Nov 9–23), not only before the freeze.

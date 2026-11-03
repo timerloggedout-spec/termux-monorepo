@@ -1,19 +1,45 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-03T05:05:42Z",
+ "read_at": "2026-11-03T05:11:09Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 4073,
+   "title": "desk-feed: D1 next-version builds dispatched \u2014 SR #3050 + template #3577",
+   "merged_at": "2026-11-03T05:10:28Z",
+   "updated_at": "2026-11-03T05:11:05Z",
+   "created_at": "2026-11-03T05:10:21Z",
+   "merge_commit_sha": "76fa899e5039b7b0cce38be955f049addba897f7",
+   "head_ref": "desk/d1-builds-stamp",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4073",
+   "merged": true
+  },
   {
    "number": 4071,
    "title": "desk-feed: D0 Delphi upgrade program closed 4/4",
    "merged_at": "2026-11-03T05:04:50Z",
-   "updated_at": "2026-11-03T05:05:12Z",
+   "updated_at": "2026-11-03T05:07:32Z",
    "created_at": "2026-11-03T05:04:45Z",
    "merge_commit_sha": "df86607c4b1dfd1d5238dfce776824df36f18d6a",
    "head_ref": "desk/d0-program-close",
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4071",
+   "merged": true
+  },
+  {
+   "number": 4072,
+   "title": "chore(ops): regenerate operator matrix",
+   "merged_at": "2026-11-03T05:06:18Z",
+   "updated_at": "2026-11-03T05:06:52Z",
+   "created_at": "2026-11-03T05:06:13Z",
+   "merge_commit_sha": "f8c7de606d6e8e05a4d7fce0d2a2dfdeb69882dc",
+   "head_ref": "operator-matrix/auto",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4072",
    "merged": true
   },
   {
@@ -1926,32 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3894",
    "merged": true
-  },
-  {
-   "number": 3889,
-   "title": "fix(ci): archwiz-repo-index commit step \u2014 rebase+retry vs push race (#3888)",
-   "merged_at": "2026-11-02T13:37:05Z",
-   "updated_at": "2026-11-02T13:43:39Z",
-   "created_at": "2026-11-02T13:36:49Z",
-   "merge_commit_sha": "982a92944d216efdf263eb22ece54f9872d0d43e",
-   "head_ref": "archwiz/repo-index-push-race",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3889",
-   "merged": true
-  },
-  {
-   "number": 3795,
-   "title": "chore(dashboards): refresh surface feeds",
-   "merged_at": "2026-11-02T13:43:14Z",
-   "updated_at": "2026-11-02T13:43:15Z",
-   "created_at": "2026-11-02T11:00:13Z",
-   "merge_commit_sha": "b7c673d2182dcb720c6574face83242e2ce27640",
-   "head_ref": "surface-feeds/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3795",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,13 +1959,26 @@
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-03T04:20:28Z",
+   "updated_at": "2026-11-03T05:08:46Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "dd1a1eb8405d1092cbd97a5f15a5b94976a90398",
+   "merge_commit_sha": "aa756742fd3fa40287404e1d6b9bfbd16bc222ff",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-03T05:06:28Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "307b1237f8d99bcab8951535dca849165e0f7b2a",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
    "merged": false
   },
   {
@@ -2018,19 +2031,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4048",
-   "merged": false
-  },
-  {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-03T03:26:41Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "7212fbb4822ce2ca8394badbd5fca13d91d6018c",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
    "merged": false
   },
   {
@@ -2572,7 +2572,7 @@
    "merged_at": null,
    "updated_at": "2026-11-02T04:29:45Z",
    "created_at": "2026-11-02T04:29:26Z",
-   "merge_commit_sha": "d30c7b3d579b12fc7a2b130b7d5255a837983972",
+   "merge_commit_sha": "fa1ef3c854bcf6537c6afb2b3b8c625e1b8bb553",
    "head_ref": "chore/countdowns-refresh-202611020429",
    "author": "github-actions[bot]",
    "labels": [],

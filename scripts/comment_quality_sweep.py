@@ -35,6 +35,13 @@ Without --delete the sweep is report-only and prints counts per surface
 and per class. With --delete it deletes exactly the two noise classes
 and re-counts. Exit code is 0 on a completed sweep; noise found in
 report mode is data, not a failure.
+
+Repo-wide mode (--repo-wide-days N, N > 0) additionally scans EVERY
+issue/PR comment created in the last N days via the repo comments
+endpoint — the Blocks app drops its pitch on new PRs as well as record
+issues (recurrence verified 2026-11-02: drops on PRs #2053-#2056,
+#4022, #4023, all deleted by hand). The same two classes, the same
+delete gating; everything else is counted, never touched.
 """
 
 from __future__ import annotations
@@ -130,12 +137,37 @@ def sweep(repo: str, registry_path: str, delete: bool, call, get) -> dict:
     return {"issues": per_issue, "totals": totals, "deleted": deleted}
 
 
+def repo_wide(repo: str, days: int, delete: bool, call, get, now=None) -> dict:
+    """Scan all issue/PR comments created in the last `days` days."""
+    import datetime
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    since = (now - datetime.timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    totals: dict[str, int] = {}
+    noise = []
+    deleted = 0
+    scanned = 0
+    for comment in get(f"/repos/{repo}/issues/comments?since={since}&sort=created&direction=asc"):
+        scanned += 1
+        cls = classify(comment)
+        totals[cls] = totals.get(cls, 0) + 1
+        if cls in DELETABLE:
+            noise.append({"id": comment["id"], "class": cls,
+                          "url": comment.get("html_url", "")})
+            if delete:
+                call("DELETE", f"/repos/{repo}/issues/comments/{comment['id']}")
+                deleted += 1
+    return {"since": since, "scanned": scanned, "totals": totals,
+            "noise": noise, "deleted": deleted}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY", ""))
     ap.add_argument("--registry", default="ops/delphi/ledgers.json")
     ap.add_argument("--delete", action="store_true",
                     help="delete the two verified noise classes (default: report only)")
+    ap.add_argument("--repo-wide-days", type=int, default=0,
+                    help="also scan every issue/PR comment from the last N days (0 = off)")
     args = ap.parse_args()
     if not args.repo:
         print("error: --repo or GITHUB_REPOSITORY required", file=sys.stderr)
@@ -143,6 +175,9 @@ def main() -> int:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
     call, get = make_client(token)
     result = sweep(args.repo, args.registry, args.delete, call, get)
+    if args.repo_wide_days > 0:
+        result["repo_wide"] = repo_wide(args.repo, args.repo_wide_days,
+                                        args.delete, call, get)
     print(json.dumps(result, indent=1, sort_keys=True))
     return 0
 

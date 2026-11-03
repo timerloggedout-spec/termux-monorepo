@@ -29,13 +29,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      pr_number: ${{ steps.meta.outputs.pr_number }}
-      base_sha: ${{ steps.meta.outputs.base_sha }}
-      head_sha: ${{ steps.meta.outputs.head_sha }}
+      pr_number: ${{ steps.event-meta.outputs.pr_number || steps.manual-meta.outputs.pr_number }}
+      base_sha: ${{ steps.event-meta.outputs.base_sha || steps.manual-meta.outputs.base_sha }}
+      head_sha: ${{ steps.event-meta.outputs.head_sha || steps.manual-meta.outputs.head_sha }}
     steps:
       - name: Resolve pull_request event metadata
         if: github.event_name == 'pull_request'
-        id: meta
+        id: event-meta
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -68,7 +68,7 @@ jobs:
 
       - name: Publish manual metadata
         if: github.event_name == 'workflow_dispatch'
-        id: meta
+        id: manual-meta
         env:
           PR_NUMBER: ${{ steps.manual.outputs.pr_number }}
           BASE_SHA: ${{ steps.manual.outputs.base_sha }}

@@ -265,6 +265,14 @@ def _stable_id(text: str) -> int:
     return int(hashlib.sha256(text.encode()).hexdigest()[:8], 16) + 1
 
 
+def _sanitize_tag(tag: str) -> str:
+    """Make a card tag genanki-safe: Anki tags cannot contain spaces
+    (genanki raises ValueError) — e.g. the practice-set topic
+    "cell structure" becomes "cell_structure". Other whitespace is
+    folded the same way; empty results are dropped by the caller."""
+    return re.sub(r"\s+", "_", str(tag).strip())
+
+
 def export_apkg(cards, out_path, deck_name: str = DECK_NAME) -> dict:
     """Export cards to an Anki ``.apkg`` file via genanki.
 
@@ -287,7 +295,9 @@ def export_apkg(cards, out_path, deck_name: str = DECK_NAME) -> dict:
                         deck_name)
     for card in cards:
         note = genanki.Note(model=model, fields=[card.front, card.back],
-                            tags=list(card.tags))
+                            tags=[t for t in
+                                  (_sanitize_tag(t) for t in card.tags)
+                                  if t])
         deck.add_note(note)
     out = Path(out_path)
     if out.parent and not out.parent.exists():

@@ -290,3 +290,17 @@ def test_bridge_errors_are_loud():
         assert "no Obsidian bridge token" in str(e)
     else:
         raise AssertionError("missing token must raise before any call")
+
+
+def test_export_apkg_with_real_example_cards(tmp_path):
+    # Regression (D1 verify F2): the repo's own practice_set example
+    # yields the tag "cell structure" (a space) from its topic, which
+    # genanki rejects unsanitized — exporting practice-set-built
+    # cards must not crash.
+    doc = json.loads((ROOT / "examples" / "practice_set.json").read_text())
+    cards = build_cards_from_practice_set(doc)
+    assert any(" " in t for c in cards for t in c.tags)  # defect input
+    out = tmp_path / "example.apkg"
+    receipt = export_apkg(cards, out)
+    assert out.exists() and out.stat().st_size > 0
+    assert receipt["cards"] == 2

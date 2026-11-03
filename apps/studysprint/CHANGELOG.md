@@ -5,8 +5,10 @@ Entries are the GitHub Release notes, verbatim.
 
 ## [0.4.0] — 2026-11-03
 
-Fourth versioned state: MINOR feature batch (v0.4.0 batch, part 1 of
-3) — the reading pipeline §1b in full (RFP-D1-3, issue #4111).
+Fourth versioned state: MINOR feature batch (v0.4.0 batch) — the
+reading pipeline §1b in full (RFP-D1-3, issue #4111), multi-course
+intake, exam countdowns, and .ics export (RFP-D1-4, issue #4112),
+and the memory-methods expansion (RFP-D1-5, issue #4113).
 
 Provider credit: command-dispatch (Swarm Optimizations &
 Implementation Assurance seat), session
@@ -28,6 +30,19 @@ Implementation Assurance seat), session
   callables — the module is offline by default.
 - Tests: `tests/test_study_pipeline.py` covers every public
   function in `study_pipeline.py`.
+- Multi-course intake (`study_courses.py`): N syllabus documents ->
+  N plans (via the existing plan builder) in one stamped bundle
+  with merged totals and deadline conflict flags (same-week exams;
+  exams within 7 days).
+- Exam countdown per course: from the syllabus `exam_date` —
+  days/weeks remaining, urgency tier, the implied study pace
+  (sessions per day), and countdown milestones (T-14, T-7, T-3,
+  exam day).
+- .ics export: every plan session plus countdown milestones and
+  exam days as iCalendar VEVENTs (CRLF, stable UIDs, RFC 5545
+  escaping), with a parse-back validator (`validate_ics`).
+- Tests: `tests/test_study_courses.py` covers every public
+  function in `study_courses.py`.
 
 ## [0.3.0] — 2026-11-02
 

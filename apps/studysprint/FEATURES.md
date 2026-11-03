@@ -21,6 +21,8 @@ feature below serves that screen or the daily loop around it.
 - ○ Multi-course intake: 4–5 syllabi → one merged calendar with
   conflict flags (two midterms, same week) — **Next, high value**
 
+**Built (v0.4.0, 2026-11-03; RFP-D1-4 / issue #4112):** multi-course intake, per-course exam countdowns, and .ics export of sessions + countdown milestones live in `study_courses.py` with tests — the §1a multi-course item above (N syllabi -> one merged view with conflict flags) plus the countdown/calendar surface.
+
 ## 1b. Reading pipeline (owner design, 2026-10-30)
 The syllabus makes the *plan*; the assigned readings are the
 *material*. Optimized options only — two anti-patterns ruled out

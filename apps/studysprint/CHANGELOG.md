@@ -3,6 +3,32 @@
 All notable changes to StudySprint. Process: `VERSIONING.md`.
 Entries are the GitHub Release notes, verbatim.
 
+## [0.4.0] — 2026-11-03
+
+Fourth versioned state: MINOR feature batch (v0.4.0 batch, part 1 of
+3) — the reading pipeline §1b in full (RFP-D1-3, issue #4111).
+
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
+### Added
+- Reading pipeline (`study_pipeline.py`): the six §1b stages —
+  edition finder over legal open sources (OpenLibrary, archive.org)
+  with a student-confirm step before anything plans from an edition;
+  upload intake in any form (text native, photos/scans via OCR,
+  PDF/EPUB via an injected structured extractor); structure
+  extraction (chapters -> sections) mapped onto the reader core's
+  Section type; per-chapter Index+Glossary term bank implementing
+  the reader's term-lookup hook and feeding SR cards; term emphasis
+  segmentation + tap payloads; hypothes.is annotations as W3C Web
+  Annotation JSON-LD with an API client (the API-only option from
+  the #3697 evaluation; selections convert to SR cards and flagged
+  terms to annotations). All network/OCR touches are injected
+  callables — the module is offline by default.
+- Tests: `tests/test_study_pipeline.py` covers every public
+  function in `study_pipeline.py`.
+
 ## [0.3.0] — 2026-11-02
 
 Third versioned state: MINOR feature batch adding the

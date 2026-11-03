@@ -95,7 +95,7 @@ jobs:
           cp quota-converted/quota-status.json docs/ops/generated/quota-status.json
           cp quota-converted/quota-status.json apps/tribute-dashboard/data/quota.json
           cmp docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json
-          python3 scripts/quota_tui.py apps/tribute-dashboard/data/quota.json --registry ops/quota/registry.json > apps/tribute-dashboard/quota.txt
+          python3 scripts/quota_tui.py --once --snapshot apps/tribute-dashboard/data/quota.json --registry ops/quota/registry.json > apps/tribute-dashboard/quota.txt
       - name: Commit promoted readings to master (single-writer)
         run: |
           set -euo pipefail

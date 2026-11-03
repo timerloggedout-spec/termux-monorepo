@@ -1,0 +1,58 @@
+{
+  "schema": "renderer-cohort/v1",
+  "fixture_id": "synthetic-dashboard-cohort-2026-11-v1",
+  "data_class": "synthetic",
+  "generated_at": "2026-11-02T00:00:00Z",
+  "description": "Deterministic synthetic cohort for renderer comparison. Not live telemetry.",
+  "hierarchy": {
+    "id": "fleet",
+    "label": "Fleet",
+    "children": [
+      {"id": "github", "label": "GitHub", "children": [
+        {"id": "actions", "label": "Actions"},
+        {"id": "repositories", "label": "Repositories"}
+      ]},
+      {"id": "providers", "label": "Providers", "children": [
+        {"id": "model-a", "label": "Model A"},
+        {"id": "model-b", "label": "Model B"}
+      ]},
+      {"id": "surfaces", "label": "Web surfaces", "children": [
+        {"id": "tribute", "label": "Tribute"},
+        {"id": "telemetry", "label": "Telemetry"}
+      ]}
+    ]
+  },
+  "network": {
+    "nodes": [
+      {"id": "collector", "label": "Collector", "group": "ingest"},
+      {"id": "snapshot", "label": "Snapshot", "group": "evidence"},
+      {"id": "feed", "label": "Feed", "group": "projection"},
+      {"id": "chart", "label": "Chart", "group": "presentation"},
+      {"id": "review", "label": "Review", "group": "governance"},
+      {"id": "deploy", "label": "Deploy", "group": "delivery"}
+    ],
+    "edges": [
+      {"id": "e1", "source": "collector", "target": "snapshot", "directed": true},
+      {"id": "e2", "source": "snapshot", "target": "feed", "directed": true},
+      {"id": "e3", "source": "feed", "target": "chart", "directed": true},
+      {"id": "e4", "source": "chart", "target": "review", "directed": true},
+      {"id": "e5", "source": "review", "target": "deploy", "directed": true},
+      {"id": "e6", "source": "snapshot", "target": "review", "directed": true},
+      {"id": "e7", "source": "collector", "target": "feed", "directed": true}
+    ]
+  },
+  "series": {
+    "unit": "events / synthetic hour",
+    "generated_at": "2026-11-02T00:00:00Z",
+    "freshness_threshold_hours": 24,
+    "points": [
+      {"t": "2026-10-27T00:00:00Z", "value": 12},
+      {"t": "2026-10-28T00:00:00Z", "value": 16},
+      {"t": "2026-10-29T00:00:00Z", "value": null},
+      {"t": "2026-10-30T00:00:00Z", "value": 21},
+      {"t": "2026-10-31T00:00:00Z", "value": 18},
+      {"t": "2026-11-01T00:00:00Z", "value": 25},
+      {"t": "2026-11-02T00:00:00Z", "value": 23}
+    ]
+  }
+}

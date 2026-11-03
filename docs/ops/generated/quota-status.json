@@ -1,6 +1,6 @@
 {
   "schema": "quota.readings.v2",
-  "generated_at": "2026-11-03T21:34:39.397760+00:00",
+  "generated_at": "2026-11-03T23:53:07.554910+00:00",
   "source": "Converted from the quota probe's status-only public projection (quota-public-status) through the generated-file path; not a live quota feed. The projection withholds account values by design, so every converted row carries used null and reset null.",
   "readings": [
     {
@@ -25,7 +25,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-03T21:34:39.397760+00:00"
+      "observed_at": "2026-11-03T23:53:07.554910+00:00"
     },
     {
       "resource_id": "github.api.app_collector",
@@ -53,7 +53,7 @@
     },
     {
       "resource_id": "github.api.github_token",
-      "status": "ok",
+      "status": "exhausted",
       "used": null,
       "limit": 1000,
       "unit": "requests/hour/repo",
@@ -61,7 +61,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-03T21:34:39.397760+00:00"
+      "observed_at": "2026-11-03T23:53:07.554910+00:00"
     },
     {
       "resource_id": "github.api.user_token",
@@ -109,7 +109,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-03T21:34:39.397760+00:00"
+      "observed_at": "2026-11-03T23:53:07.554910+00:00"
     },
     {
       "resource_id": "vercel.build_time",
@@ -277,7 +277,7 @@
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-03T21:34:39.397760+00:00"
+      "observed_at": "2026-11-03T23:53:07.554910+00:00"
     },
     {
       "resource_id": "g4f.vendors",
@@ -1105,7 +1105,7 @@
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-03T21:34:39.397760+00:00"
+      "observed_at": "2026-11-03T23:53:07.554910+00:00"
     },
     {
       "resource_id": "pinecone.storage",
@@ -2037,6 +2037,18 @@
       "used": null,
       "limit": null,
       "unit": "requests/tokens (NOT ESTABLISHED)",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "vultr.account_credit",
+      "status": "unknown",
+      "used": null,
+      "limit": 200,
+      "unit": "USD",
       "reset": null,
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "early_signal",

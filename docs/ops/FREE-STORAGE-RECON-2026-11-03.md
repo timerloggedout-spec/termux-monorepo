@@ -263,3 +263,35 @@ ML → rows:
 - lakeFS-class versioning → lakefs (tooling row only, not capacity).
 
 Boundary reaffirmed: cataloging only; trading-lane freeze untouched.
+
+## Addendum 2026-11-03 — ① re-send coverage check
+
+Main re-sent brief ① (MEGA) after #4611 landed. Audit vs master
+registry (48 rows, blob b8a8f59a): row mega already answers all five
+brief fields; no row change needed. Fresh re-verification 2026-11-03:
+
+- Free allowance: 20 GB, permanent while active; achievement bonuses
+  +5 GB each, expire after 365 days (never base). Confirmed by 2026
+  guides + the original store-listing read.
+- Transfer quota: MEGA publishes NO fixed free figure; secondary reads
+  cluster ~5 GB/month (one read: monthly quota ~5 GB with throttling
+  past it; older reads ~1 GB/day). Row range stands.
+- Card gate: none — free plan $0, no card at signup (original
+  store-listing read).
+- API/automation: MEGAcmd CLI (mega-put / mega-get / mega-sync,
+  mega-cmd shell; Win/Mac/Linux packages) + open SDKs/clients; rclone
+  third-party. Confirmed fresh.
+- Dormancy/deletion: Help Centre "Does my MEGA account ever expire?"
+  (updated 19 June 2026, re-read fresh): free account has no expiry
+  date; inactivity brings regular warning emails; the whole deletion
+  process takes at least 10 months from last activity; only data is
+  deleted, the account is kept; any login/app use stops it; Pro exempt.
+  SHARPENING: the companion Help Centre page advises "log in at least
+  once every 3 months" — fleet practice is quarterly logins; the
+  10-month figure is the deletion-process bound, and the 3-month figure
+  is the ToS termination option + notice. The row already carries both
+  figures; the operational rule is quarterly, not 10-monthly.
+- Fit unchanged: BEST encrypted private plane for session exports and
+  small archives; never a sole copy (dormancy + transfer quota).
+
+Boundary: catalog pass only, no signup; fleet_state stays "no account".

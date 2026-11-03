@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 432,
-    "open_prs": 203,
+    "open_prs": 204,
     "pr_classes": {
       "CANDIDATE": 103,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 94,
+      "NEED_EVIDENCE": 95,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 18,
-      "prs": 201,
+      "prs": 202,
       "unlabelled_numbers": [
         308,
         388,
@@ -73,7 +73,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T09:32:23Z",
+  "generated_at": "2026-11-03T09:33:59Z",
   "issues_unlabelled": [
     308,
     388,
@@ -97,10 +97,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "26d334724a"
+    "sha": "d3fa1c992b"
   },
   "prs": [
     {
@@ -2170,15 +2170,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "bc44c84ff0",
+      "head_sha": "b6e6bac6d1",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T09:30:46Z"
+      "updated_at": "2026-11-03T09:32:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2763,7 +2763,7 @@
       },
       "head_sha": "0d8d82592f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 3342,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-01T23:44:38Z"
@@ -2949,6 +2949,20 @@
       "number": 4086,
       "title": "feat(integrations): add read-only provider evidence adapters",
       "updated_at": "2026-11-03T06:24:13Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "cf667f8a89",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4137,
+      "title": "studysprint: evidence refresh at v0.4.0",
+      "updated_at": "2026-11-03T09:33:56Z"
     }
   ],
   "schema": "operator-matrix/v1",

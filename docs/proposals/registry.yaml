@@ -4,6 +4,16 @@ updated_at: "2026-09-11T19:00:00Z"
 updated_by: timerloggedout-spec
 
 proposals:
+  - id: visualization-renderer-lab
+    title: "Dashboard visualization renderer comparison"
+    author: ChatGPT
+    posted_at: 2026-11-02
+    status: executing
+    priority: P1
+    path: active/visualization-renderer-lab/
+    related_issues: [1571]
+    related_branches: [research/visualization-renderer-lab]
+    gates_required: [repo-gate, termux-smoke]
   - id: context-relationship-graph
     title: "GitHub-native context relationship graph and scope index"
     author: Manus

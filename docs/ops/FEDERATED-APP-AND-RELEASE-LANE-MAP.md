@@ -52,6 +52,23 @@ The ArchWiz_fork repository is a named reference/fork and is not assumed to be t
 
 The initial registry also records the GitHub App fleet in a distinct automation_identities collection. Those identities are automation actors, not user-facing products.
 
+## GitHub App automation fleet — installation scope
+
+These are **automation identities**, not product AppIDs. Numeric App ID and installation ID are separate values. Permissions below are the recorded installation grants; they are not claims of workflow adoption or production distribution.
+
+| Automation identity | App ID | Installation ID | Recorded repository scope | Permissions |
+|---|---:|---:|---|---|
+| Collector | 5535733 | 176747357 | termux-monorepo, repo-replay | actions/checks/contents/issues/metadata/pull_requests: read |
+| Publisher | 5537873 | 176799777 | termux-monorepo, repo-replay | checks: read; contents/pull_requests: write; metadata: read |
+| Reviewer | 5539430 | 176838378 | termux-monorepo | checks/metadata: read; pull_requests: write |
+| Gate | 5539499 | 176839926 | termux-monorepo | checks: write; metadata: read |
+| Lifecycle | 5539639 | 176843209 | termux-monorepo | issues: write; metadata: read |
+| Swarm | 5560920 | 177357774 | termux-monorepo | actions/checks/contents/issues/pull_requests: write; metadata: read |
+| CrossReference | 5564430 | 177439462 | termux-monorepo | contents: read; issues: write; metadata: read |
+| RepoStory | 5565297 | 177463385 | repo-story | contents/issues/pull_requests: write; metadata: read |
+
+The Collector and Publisher scope includes `repo-replay` per the PROCESS.json installation census. RepoStory's single-repository installation is explicitly scoped to the `repo-story` competition-entry repository; this does not make that repository a product AppID. Credential material is intentionally excluded; only public identifiers, installation IDs, scopes, and permission names/levels are recorded.
+
 ## Repository discovery census
 
 - [FEDERATED-APP-REPOSITORY-CENSUS.md](FEDERATED-APP-REPOSITORY-CENSUS.md) documents the census method and review queue.

@@ -59,13 +59,41 @@ jobs:
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          git add ops/challenge/dispatch-state-feed.json apps/tribute-dashboard/data/dispatch-state-feed.json
-          if git diff --cached --quiet; then
-            echo "dispatch-state feed unchanged — no commit"
-          else
+          # Preserve the sweep's stamp bytes, then rebase the commit
+          # onto the CURRENT master per attempt: a bare push from a
+          # minutes-old checkout is rejected non-fast-forward on a
+          # master that merges mid-run (run 41657075002 lost its
+          # corrected stamp exactly that way — sweep green, push dead).
+          cp ops/challenge/dispatch-state-feed.json /tmp/feed-canon.json
+          cp apps/tribute-dashboard/data/dispatch-state-feed.json /tmp/feed-mirror.json
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git reset -q --hard origin/master
+            if python3 -c "
+          import json, sys
+          ours = json.load(open('/tmp/feed-canon.json'))['generated_at']
+          theirs = json.load(open('ops/challenge/dispatch-state-feed.json'))['generated_at']
+          sys.exit(0 if theirs >= ours else 1)
+          "; then
+              echo "a newer feed stamp already landed — superseded, no commit"
+              exit 0
+            fi
+            cp /tmp/feed-canon.json ops/challenge/dispatch-state-feed.json
+            cp /tmp/feed-mirror.json apps/tribute-dashboard/data/dispatch-state-feed.json
+            git add ops/challenge/dispatch-state-feed.json apps/tribute-dashboard/data/dispatch-state-feed.json
+            if git diff --cached --quiet; then
+              echo "dispatch-state feed unchanged — no commit"
+              exit 0
+            fi
             git commit -m "dispatch-state feed: watchdog stamp [skip ci]"
-            git push
-          fi
+            if git push origin HEAD:master; then
+              echo "feed stamp pushed (attempt $attempt)"
+              exit 0
+            fi
+            echo "push raced (attempt $attempt) — retrying on latest master"
+          done
+          echo "feed stamp push failed after 3 attempts" >&2
+          exit 1
       - name: Diagnose on failure
         if: failure()
         env:

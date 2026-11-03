@@ -372,6 +372,7 @@ this log is the human view of the same verified state.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
+<!-- submission-data:D1 state=SUBMITTED at=2026-11-03T18:01:00Z ref=https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint -->
 <!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`

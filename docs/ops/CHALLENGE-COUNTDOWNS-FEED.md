@@ -1,6 +1,6 @@
 # Challenge Countdowns Feed — contract
 
-Schema: `challenge-countdowns-feed/v1.1`
+Schema: `challenge-countdowns-feed/v1.2`
 File: `apps/tribute-dashboard/data/challenge-countdowns-feed.json`
 Collector: `scripts/dashboards/challenge_countdowns_feed.py`
 Refresh: `.github/workflows/challenge-countdowns-feed-collect.yml`
@@ -36,6 +36,10 @@ forward from a previous feed.
     tiers[{place, award, source_url}]}` wired verbatim from
     `ops/challenge/coordinator.json`. `status` is `ESTABLISHED`
     (tiers published on the official page) or `NOT_ESTABLISHED`.
+  - `submission` — the entry's recorded submission, parsed from the
+    log's `<!-- submission-data:<id> state=<STATE> at=<instant>
+    ref=<url> -->` line: `{state, at, confirmation_ref}`, or `null`
+    when the log records no submission for the entry.
 
 ## Honesty rules
 
@@ -51,6 +55,10 @@ forward from a previous feed.
    "not recorded" — never a guessed date.
 4. Read-only projection: no credentials, no browser-side mutation;
    interaction is navigation only (dashboard contract).
+6. **Submission state is recorded, never inferred.** An entry's
+   `submission` comes only from its `submission-data` line in the
+   log — never derived from `status`, prizes, or dates. No line ⇒
+   `null` ⇒ the page renders nothing for it.
 5. **Required fields never blank.** Prizes (with dates, status, and
    gates) are required information on the named context surfaces —
    the manager brief and the HITL web pages. An unpublished prize

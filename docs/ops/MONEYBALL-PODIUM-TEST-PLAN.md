@@ -103,3 +103,12 @@ The design closed ahead of the full harvest; feasibility stamps issued against t
 
 
 - **Review-leg correction (Tests lane, 2026-11-03):** the per-test run clearances in the closure stamp are **PROVISIONAL, not live** — incl. ② descriptive, which also holds. The Tests leg post-pass stamp verification is the **formal gate** (not a follow-up); clearances issue from it. ③ and ① stamps evaluated against the partial record do not bind.
+
+## Dataset v1 issued (scraping lane, 2026-11-03) — PRE-PASS pin + provisional stamps
+
+- **Pin:** version `2026-11-03.v1` · sha256 `537981b874cb2bd3b0d53e3e0a73760e1b7db8690cba6a93d7bb1016eb1b60f8` · record `ops/podium/snapshots/2026-11-03.v1.json` (envelope `podium-dataset/v1`, PR #4501). This pin is the current dataset of record; per the resequence it is PRE-PASS — stamps below are provisional and re-issue on the post-pass record.
+- **Shape:** 55 entities · edition = stratum throughout · 30 projects (canonical URL per project, G5 ✓) · 6 judges + 6 judge-person entities (identity-stable, exact-name v1).
+- **Feasibility stamps (v1, provisional):** podium_n per edition {ai-infra 13 · assemblyai 5 · nativebuilder 4 · alpaca 3 · ibm-bob 3 · vultr 0 (live)} — broader than the podium leg's n=11 read (crawl ⊃ leg sample); the re-issue reconciles. field_n = **null** (C1 gallery leg = v2; D2 gallery opens Nov 5) ⇒ ① stays blocked. Repeat judges observed = **0** (panels published for 1 of 4 crawled editions) + judge↔track linkage absent ⇒ ③ blocked-not-run stands. judge_comments 0 · community_comments 0, comments surface **NOT_ESTABLISHED** (∅ public comments in server-rendered pages; schema reserves the split) ⇒ ④ stays blocked/descriptive.
+- **EGM guard (verified in their report):** ingest = lablab pages only + explicit drop-guard on the canonical stamp / RFP-EGM2- prefix; ∅ stamped items in v1.
+- **Hold unchanged:** OSINT layer pass = this build + Swarm OSINT template first exercise; runs wait for the pass + stamp re-issue + Tests-leg verification (the formal gate).
+

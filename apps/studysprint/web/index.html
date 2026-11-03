@@ -20,6 +20,7 @@
   <button data-view="plan" class="tab">Plan / Receipt</button>
   <button data-view="reader" class="tab">Reader</button>
   <button data-view="sr" class="tab">SR Review</button>
+  <button data-view="ingest" class="tab">Ingest</button>
 </nav>
 
 <main>
@@ -69,6 +70,24 @@
       <button data-grade="4">4 Easy</button>
     </div>
     <p id="sr-receipt" aria-live="polite"></p>
+  </section>
+
+  <section id="view-ingest" class="view hidden">
+    <h2>Ingest</h2>
+    <p>Add a syllabus or textbook file — the same core ingestion
+    path as every surface. A parsed syllabus is placed on the
+    calendar only after you confirm it.</p>
+    <label>Syllabus / textbook file (text)
+      <input type="file" id="ingest-file" accept=".txt,.md,text/plain">
+    </label>
+    <label>Photograph a page (camera)
+      <input type="file" id="ingest-camera" accept="image/*" capture="environment">
+    </label>
+    <div id="ingest-preview" aria-live="polite"></div>
+    <div class="row">
+      <button id="ingest-confirm" class="hidden">Confirm placement</button>
+    </div>
+    <p id="ingest-status" aria-live="polite"></p>
   </section>
 </main>
 

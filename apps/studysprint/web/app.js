@@ -243,4 +243,100 @@ $("#reader-play").addEventListener("click", () => {
   state.playing = true;
   state.timer = setInterval(readerStep, 240);
 });
+// ------------------------------------------------------------ ingest
+// Build D leg 3: the web surface of the one core ingestion path.
+// Text files parse in-browser with the same conservative line
+// grammar as study_pipeline.parse_syllabus_text; placement is
+// CONFIRM-GATED (records sit in ss.ingest.pending until the
+// student confirms). Photographs are captured and recorded as
+// awaiting core OCR — OCR runs in the core pipeline, not in the
+// browser, and this surface says so rather than faking it.
+const WEEKDAYS = { mon: "Mon", monday: "Mon", tue: "Tue", tues: "Tue",
+  tuesday: "Tue", wed: "Wed", wednesday: "Wed", thu: "Thu",
+  thur: "Thu", thurs: "Thu", thursday: "Thu", fri: "Fri",
+  friday: "Fri", sat: "Sat", saturday: "Sat", sun: "Sun",
+  sunday: "Sun" };
+
+function parseSyllabus(text) {
+  const classes = [], assessments = [];
+  let course = null;
+  const to24 = (h, m, ap) => {
+    h = Number(h); m = Number(m);
+    if (ap) { if (ap.toLowerCase() === "pm" && h !== 12) h += 12;
+      if (ap.toLowerCase() === "am" && h === 12) h = 0; }
+    return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  };
+  for (const raw of String(text || "").split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line) continue;
+    const cm = line.match(/\b([A-Z]{2,4})\s*(\d{2,4}[A-Z]?)\b/);
+    if (cm) course = cm[1] + " " + cm[2];
+    const days = (line.match(/[A-Za-z]+/g) || [])
+      .map((t) => WEEKDAYS[t.toLowerCase()]).filter(Boolean);
+    const tr = line.match(/(\d{1,2}):(\d{2})\s*([AaPp][Mm])?\s*[-–]\s*(\d{1,2}):(\d{2})\s*([AaPp][Mm])?/);
+    if (days.length && tr) {
+      classes.push({ course, days,
+        start: to24(tr[1], tr[2], tr[3] || tr[6]),
+        end: to24(tr[4], tr[5], tr[6] || tr[3]) });
+      continue;
+    }
+    const km = line.match(/\b(quiz|midterm|final)\b/i);
+    const dm = line.match(/\b(20\d{2})-(\d{2})-(\d{2})\b/);
+    if (km && dm) {
+      assessments.push({ course, kind: km[1].toLowerCase(),
+        date: dm[0] });
+    }
+  }
+  return { classes, assessments };
+}
+
+function renderIngestPreview(parsed, sourceName) {
+  const el = $("#ingest-preview");
+  el.textContent = "Parsed " + sourceName + ": " +
+    parsed.classes.length + " class meeting(s), " +
+    parsed.assessments.length + " assessment(s). " +
+    "Not placed yet — review, then confirm placement.";
+  $("#ingest-confirm").classList.remove("hidden");
+}
+
+$("#ingest-file").addEventListener("change", (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const parsed = parseSyllabus(reader.result);
+    localStorage.setItem("ss.ingest.pending",
+      JSON.stringify({ source: file.name, parsed,
+        captured_at: new Date().toISOString() }));
+    renderIngestPreview(parsed, file.name);
+  };
+  reader.readAsText(file);
+});
+
+$("#ingest-camera").addEventListener("change", (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const captures = JSON.parse(
+    localStorage.getItem("ss.ingest.captures") || "[]");
+  captures.push({ name: file.name, size: file.size,
+    captured_at: new Date().toISOString(),
+    status: "awaiting-core-ocr" });
+  localStorage.setItem("ss.ingest.captures",
+    JSON.stringify(captures));
+  $("#ingest-status").textContent = "Photograph captured (" +
+    file.name + "). OCR runs in the core pipeline — this capture " +
+    "is recorded as awaiting-core-ocr, not parsed in the browser.";
+});
+
+$("#ingest-confirm").addEventListener("click", () => {
+  const pending = localStorage.getItem("ss.ingest.pending");
+  if (!pending) return;
+  localStorage.setItem("ss.ingest.placed", pending);
+  localStorage.removeItem("ss.ingest.pending");
+  $("#ingest-confirm").classList.add("hidden");
+  $("#ingest-status").textContent =
+    "Placed. The confirmed records are stored locally " +
+    "(ss.ingest.placed) for the calendar.";
+});
+
 load();

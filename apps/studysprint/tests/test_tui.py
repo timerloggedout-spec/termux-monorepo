@@ -108,3 +108,32 @@ def test_tui_reader_and_exports(tmp_path):
             assert "Vault surface written" in status
 
     _run(scenario)
+
+
+def test_tui_ingest_screen_confirm_gate(tmp_path):
+    from tui import StudySprintTUI
+    syllabus = tmp_path / "syllabus.txt"
+    syllabus.write_text(
+        "BIO 101\nMon Wed 10:00-11:15, Science Building, Room 204\n"
+        "Midterm: 2026-11-20 18:00, Science Building\n",
+        encoding="utf-8")
+
+    async def scenario():
+        app = StudySprintTUI(root=ROOT, export_dir=tmp_path)
+        async with app.run_test(size=(110, 42)) as pilot:
+            await pilot.pause()
+            await _activate(app, pilot, "tab-ingest")
+            app.query_one("#ingest-path").value = str(syllabus)
+            await pilot.click("#ingest-go")
+            await pilot.pause()
+            result = str(_text(app, "#ingest-result"))
+            assert "Syllabus parsed" in result
+            assert "1 class meeting" in result
+            placement = str(_text(app, "#ingest-placement"))
+            assert "Not placed" in placement  # confirm gate holds
+            await pilot.click("#ingest-confirm")
+            await pilot.pause()
+            placement = str(_text(app, "#ingest-placement"))
+            assert "Placed on the calendar" in placement
+
+    _run(scenario)

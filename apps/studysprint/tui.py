@@ -89,9 +89,9 @@ def _receipt_text(state: dict) -> str:
 
 try:
     from textual.app import App, ComposeResult
-    from textual.widgets import (Button, Footer, Header, Label,
-                                 Select, Static, TabbedContent,
-                                 TabPane)
+    from textual.widgets import (Button, Footer, Header, Input,
+                                 Label, Select, Static,
+                                 TabbedContent, TabPane)
 
     class StudySprintTUI(App):
         """StudySprint in the terminal — today first, plain words,
@@ -118,6 +118,7 @@ try:
             self.export_dir = Path(export_dir) if export_dir else \
                 (self.state["root"] / "exports")
             self._timer = None
+            self._ingest_path: str | None = None
 
         # ------------------------------------------------------ layout
         def compose(self) -> ComposeResult:
@@ -164,6 +165,19 @@ try:
                     yield Button("3 Good", id="grade-3")
                     yield Button("4 Easy", id="grade-4")
                     yield Label("", id="sr-receipt")
+                with TabPane("Ingest", id="tab-ingest"):
+                    yield Label("Add a syllabus or textbook file — "
+                                "one core path, every surface.",
+                                classes="big")
+                    yield Input(placeholder="Path to a file "
+                                            "(.txt, .md, image, .pdf)",
+                                id="ingest-path")
+                    yield Button("Ingest", id="ingest-go",
+                                 variant="primary")
+                    yield Label("", id="ingest-result")
+                    yield Button("Confirm placement",
+                                 id="ingest-confirm")
+                    yield Label("", id="ingest-placement")
                 with TabPane("Export", id="tab-export"):
                     yield Label("Take your cards with you.",
                                 classes="big")
@@ -231,8 +245,51 @@ try:
                 self.scheduler_name = str(event.value)
                 self.card_state = None
 
+        # ------------------------------------------------------ ingest
+        def _ingest(self, confirmed: bool) -> None:
+            """One core path (study_pipeline.ingest_any) — build D
+            leg 2. Placement is confirm-gated: Ingest parses and
+            reports; only Confirm placement places."""
+            from study_pipeline import ingest_any
+            path = self.query_one("#ingest-path", Input).value.strip()
+            if confirmed and self._ingest_path:
+                path = self._ingest_path
+            if not path:
+                self.query_one("#ingest-result", Label).update(
+                    "Enter a file path first.")
+                return
+            try:
+                result = ingest_any(path, confirmed=confirmed)
+            except Exception as exc:  # surfaced, never swallowed
+                self.query_one("#ingest-result", Label).update(
+                    f"Ingest failed: {exc}")
+                return
+            self._ingest_path = path
+            if result["flow"] == "syllabus":
+                counts = result["parse"]["counts"]
+                self.query_one("#ingest-result", Label).update(
+                    f"Syllabus parsed ({result['provenance']['source']}"
+                    f"): {counts['classes']} class meeting(s), "
+                    f"{counts['assessments']} assessment(s).")
+                placed = result["placement"].get("placed")
+                self.query_one("#ingest-placement", Label).update(
+                    "Placed on the calendar."
+                    if placed else
+                    "Not placed — review, then Confirm placement.")
+            else:
+                self.query_one("#ingest-result", Label).update(
+                    f"Textbook ingested: "
+                    f"{result['term_bank']['terms']} term(s), "
+                    f"{result['sr_cards']} SR card(s).")
+
         def on_button_pressed(self, event) -> None:
             bid = event.button.id or ""
+            if bid == "ingest-go":
+                self._ingest(confirmed=False)
+                return
+            if bid == "ingest-confirm":
+                self._ingest(confirmed=True)
+                return
             if bid.startswith("checkin-"):
                 status = bid.replace("checkin-", "")
                 status = {"done": "done", "partial": "partial",

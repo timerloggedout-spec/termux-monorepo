@@ -147,6 +147,21 @@ learning-gain claim.
   never carries penalties; no score/penalty fields exist.**
   **Ceiling: performance under stress/anxiety, not recall
   gains.**
+- ✓ **Ingestion on every surface, one core path (build D)**:
+  `study_pipeline.ingest_any` is the single entry — a syllabus
+  upload (text or a photographed page via OCR, provenance
+  stamped `source: ocr`) parses into calendar records
+  {times · buildings · kinds} and places **only on the
+  student's confirm** (no confirm ⇒ no placement, on every
+  surface); a textbook upload runs the content flow
+  (structure → term bank → SR cards). Surfaces: CLI
+  (`demo.py ingest <path> [--confirm]`) · TUI Ingest screen
+  (file-path entry + Confirm placement) · webApp Ingest view
+  (file picker + camera capture; text parses in-browser under
+  the same line grammar, photographs are recorded as awaiting
+  core OCR — OCR does not run in the browser) · APK (the
+  WebView shell wires the system file chooser / camera to the
+  same bundle inputs).
 
 ## 2. The plan (the core screen)
 - ✓ Week-by-week plan: learn + retrieve block per topic

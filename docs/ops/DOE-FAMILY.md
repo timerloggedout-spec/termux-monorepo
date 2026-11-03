@@ -965,7 +965,18 @@ version and compared continuously until culling retires a version.
   (3 archetype seats, mean 61.7/100, spread 10 -
   DISCRIMINATES; outcome probabilities podium .20 /
   finalist .35 / none .45; scored at judging close
-  2026-11-18).
+  2026-11-18). MEASURED QUANTITY added (owner probe
+  2026-11-03): JUDGE<->CRITERIA ALIGNMENT - at each
+  venue's placements publication, winners' coded features
+  (FROZEN codebook) vs the venue's VERBATIM rubric/import
+  of record => over-index on stated criteria + deviation
+  (taste terms); filed per venue as a podium dataset
+  layer + mirror input (venue-level CRITERIA FIDELITY
+  parameter for archetype seats); per-judge fidelity only
+  where picks are attributable - today 0, never
+  manufactured. Capture legs: D0 #4547 - D1 at judging
+  close. Joins Podium tests 1/5 as evidence; runs obey
+  the resequence gate (stamps re-issue first).
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

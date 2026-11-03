@@ -142,3 +142,45 @@ moved — Strands depth · sample content · surfaces (or
 itself the datum). Layers score against the same
 outcome when it publishes; the curve is the improvement
 evidence, the Brier score is the calibration evidence.
+
+## Measured quantity: judge↔criteria alignment (owner probe, 2026-11-03)
+
+When a venue's placements publish, compute the
+ALIGNMENT READ for that venue:
+
+- winners' coded features (coded under the FROZEN
+  codebook — the podium shape taxonomy as frozen for
+  the test plan; no re-coding to fit the outcome) vs
+- the venue's VERBATIM rubric/requirements (the
+  spec/import of record — the issuer's own text, never
+  a summary).
+
+The read answers two things: (1) does the picked set
+OVER-INDEX on the stated criteria (which criteria the
+winners actually saturate), and (2) where does it
+DEVIATE — the taste terms: winner features the rubric
+never mentions, and stated criteria the winners
+collectively ignore.
+
+Filing + consumption:
+- Filed PER VENUE as a dataset layer (podium dataset)
+  at the placements-publication moment. Capture legs:
+  D0 = capture #4547; D1 = its judging close
+  (2026-11-18). Each layer cites {placements ref ·
+  codebook version · rubric import ref}.
+- Mirror input: the read yields a venue-level
+  **criteria fidelity** parameter consumed by
+  archetype seats (how literally this venue's outcomes
+  track its stated criteria — archetype personas weight
+  their venue-criteria preferences by it).
+- **Per-judge fidelity: only where picks become
+  attributable. Today that count is 0 — do not
+  manufacture.** (Venue-disclosure-bound, per the
+  system review's hardened C1-D1.)
+- Test-plan join: the alignment read is EVIDENCE for
+  test ① (winner patterns) and test ⑤ (rubric
+  sensitivity) in the Podium test plan.
+- Resequence gate: alignment RUNS obey the resequence
+  gate — intake stamps re-issue first; this section
+  registers the quantity and its hooks, it does not
+  itself fire a run.

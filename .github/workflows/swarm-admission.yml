@@ -1,0 +1,83 @@
+name: swarm-admission
+
+# Issue-template dispatch (owner contract, 2026-11-03): a filing IS a
+# dispatch, declared at the template, and reaches the swarm only
+# THROUGH QUE ADMISSION. This workflow is the admission route for
+# every issue form carrying a SWARM-DISPATCH block
+# (schema issue-dispatch/v1, docs/ops/ISSUE-TEMPLATE-DISPATCH.md).
+# It evaluates tier -> after -> chain -> flow (dispatch-tiers v2),
+# stamps the filing with the decision as its first fleet comment, and
+# labels it swarm-admitted | deferred-by-tier. It spawns NOTHING
+# itself: the route named in the template's block executes under its
+# own intake, and deferred filings are never actionable until the
+# QUE admission drain re-evaluates them. Fail-soft throughout.
+
+on:
+  issues:
+    types: [opened, reopened]
+
+permissions:
+  issues: write
+  contents: read
+  actions: read
+
+concurrency:
+  group: swarm-admission-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  admit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect the live queue picture
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, subprocess
+          runs = []
+          for status in ("queued", "in_progress"):
+              page = 1
+              while True:
+                  out = subprocess.run(
+                      ["gh", "api", f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs?status={status}&per_page=100&page={page}"],
+                      capture_output=True, text=True).stdout
+                  batch = json.loads(out)["workflow_runs"]
+                  runs += [{"name": r["name"], "status": r["status"], "created_at": r["created_at"]} for r in batch]
+                  if len(batch) < 100:
+                      break
+                  page += 1
+          with open(os.environ["RUNNER_TEMP"] + "/runs.json", "w") as fh:
+              json.dump(runs, fh)
+          print(f"queue picture: {len(runs)} runs")
+          PYEOF
+
+      - name: Evaluate admission
+        id: eval
+        env:
+          LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          python3 scripts/ops/swarm_admission.py \
+            --templates-dir .github/ISSUE_TEMPLATE \
+            --tiers ops/quota/dispatch-tiers.json \
+            --runs-file "$RUNNER_TEMP/runs.json" \
+            --issue-labels "$LABELS" \
+            --issue-title "$TITLE" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --comment-out "$RUNNER_TEMP/stamp.md" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Stamp the filing (admitted or deferred)
+        if: steps.eval.outputs.matched == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create swarm-admitted --force --color 0E8A16 \
+            --description "Filing admitted through QUE admission (dispatch-tiers v2)" || true
+          gh label create deferred-by-tier --force --color D93F0B \
+            --description "Filing deferred by QUE admission; drain re-evaluates" || true
+          gh issue comment "${{ github.event.issue.number }}" --body-file "$RUNNER_TEMP/stamp.md"
+          gh issue edit "${{ github.event.issue.number }}" --add-label "${{ steps.eval.outputs.label }}"

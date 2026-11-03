@@ -1,3 +1,12 @@
+# SWARM-DISPATCH-BEGIN
+# schema: issue-dispatch/v1
+# lane: swarm-dispatch
+# que_tier: 3
+# payload_class: project-task
+# route: project-task-dispatch.yml
+# after:
+# chain:
+# SWARM-DISPATCH-END
 name: Project Task
 description: Submit a project task to the system; filing IS the trigger — the system selects the provider(s) across all wired endpoints.
 title: "[task] "

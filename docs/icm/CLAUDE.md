@@ -28,7 +28,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | change ArchWiz or a verification tool | [objects/operations/archwiz.md](objects/operations/archwiz.md) | the cited tool catalog or source path |
 | use the initiated visual-review cards or plan a human checkpoint | [objects/operations/optional-visual-review.md](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |
 | compare competitive opportunities, challenge awards, resource opportunity cost, or provider economics | [objects/operations/competitive-opportunities.md](objects/operations/competitive-opportunities.md) | the portfolio and the authoritative domain ledger for the selected metric |
-| reconcile provider snapshots with consumption events | [../../ops/PROVIDER-CONSUMPTION-RECONCILIATION.md](../../ops/PROVIDER-CONSUMPTION-RECONCILIATION.md) | scope key, reset epoch, residual classification, and source lineage |
+| reconcile provider snapshots with consumption events | [../ops/PROVIDER-CONSUMPTION-RECONCILIATION.md](../../ops/PROVIDER-CONSUMPTION-RECONCILIATION.md) | scope key, reset epoch, residual classification, and source lineage |
 | review provider-routing state or propose polling | [routing.md](routing.md) | the nested source, observation, and post-ICM workflow gate |
 | alter navigation or an index | [objects/knowledge/navigation-and-indexes.md](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
 | reconstruct related source/GitHub history before a nontrivial change | [processes/context-relationship-reconnaissance.md](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |

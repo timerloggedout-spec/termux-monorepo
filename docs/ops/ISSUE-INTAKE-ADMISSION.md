@@ -33,6 +33,10 @@ All other cases receive `deterministic_only`. A failed or unknown volume lookup 
 - The issue body is untrusted data. It cannot alter workflow permissions or dispatch policy.
 - Provider quota/balance is not inferred from public tier limits. The reusable Gemini triage's model-router remains responsible for current route eligibility.
 
+## Actions quota accounting
+
+Each opened/reopened issue starts exactly one bounded admission job before any provider fan-out. The job has a **3-minute timeout**, performs one GitHub REST list request for the author's recent issue volume (plus the GitHub-hosted action/checkout overhead), and invokes no model. The reusable provider triage job runs only after a positive admission decision. Public-repository standard GitHub-hosted runner minutes are recorded as free in `ops/quota/registry.json`; this workflow still consumes Actions execution capacity and creates a run per event, so operators should track run count and elapsed runner minutes during rollout. No per-workflow live minute attribution is available from the current quota reader; do not invent a numeric allowance or treat the free entitlement as unlimited concurrency.
+
 ## Validation
 
 Run:

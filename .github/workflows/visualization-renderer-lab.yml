@@ -38,6 +38,17 @@ jobs:
         run: python3 scripts/visualization_lab/validate_cohort.py
       - name: Run cohort and snapshot regression tests
         run: PYTHONPATH=. python3 -m unittest discover -s tests -p 'test_visualization_lab.py' -v
+      - name: Check browser lab JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("experiments/visualization-renderers/index.html").read_text()
+          blocks = re.findall(r"<script>(.*?)</script>", html, re.S)
+          assert blocks, "no inline renderer script found"
+          Path("/tmp/renderer-lab.js").write_text("\\n".join(blocks))
+          PY
+          node --check /tmp/renderer-lab.js
       - name: Compile validators
         run: python3 -m py_compile scripts/visualization_lab/validate_cohort.py scripts/visualization_lab/validate_dashboard_snapshot.py
       - name: Verify pinned renderer matrix and fixture boundary

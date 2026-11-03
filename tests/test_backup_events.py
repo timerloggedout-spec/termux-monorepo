@@ -61,8 +61,10 @@ class TestJoinSidecar(unittest.TestCase):
             out = td / "m.jsonl"
             rec = td / "r.json"
             join = td / "join.json"
+            empty_map = td / "empty-map.json"
+            empty_map.write_text("{}")
             argv = ["--relays", str(relays), "--out", str(out),
-                    "--receipt", str(rec),
+                    "--receipt", str(rec), "--relay-map", str(empty_map),
                     "--mode", "backfill", "--join-out", str(join)]
             with patch.object(sys, "argv", ["backup_events.py"] + argv):
                 with io.StringIO() as buf, redirect_stdout(buf):

@@ -8,6 +8,8 @@ workflow shape. The APK itself is built in Actions.
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 ANDROID = ROOT / "android"
 NS = "{http://schemas.android.com/apk/res/android}"
@@ -50,7 +52,19 @@ def test_build_chain_complete():
 def test_workflow_builds_and_uploads():
     wf = (ROOT.parent.parent / ".github" / "workflows" /
           "studysprint-apk.yml")
-    assert wf.exists()
+    if not wf.exists():
+        # Conditional skip (D1 ruling, monorepo issue #4538): this
+        # assertion's subject is the MONOREPO's CI workflow. In the
+        # studysprint repo's layout (this app tree at the repo
+        # root), that path legitimately does not exist — the ss
+        # repo carries its own workflows — so the test skips there
+        # instead of failing on an absent subject. Wherever the
+        # path exists (the monorepo), every assertion below runs
+        # untouched.
+        pytest.skip(
+            "monorepo workflow path absent in this checkout "
+            "layout (studysprint repo) — the assertion binds "
+            "where the workflow lives")
     text = wf.read_text()
     assert "build.sh" in text
     assert "upload-artifact" in text

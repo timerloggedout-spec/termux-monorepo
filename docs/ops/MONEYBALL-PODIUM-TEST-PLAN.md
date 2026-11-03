@@ -1,7 +1,7 @@
 # MoneyBall — Podium-Dataset ML Test Plan (SPEC, pre-registered)
 
 **Seat:** `[MUSEai]@{role:{moneyball-plane}}` · **Owner GO:** 2026-11-03 09:17 PT (via main). **Status: SPEC ONLY — no test has run.**
-**Review state:** Tests · LLM Validation FORMAL review of record = **APPROVED WITH CORRECTIONS** (C1–C9; the formal review supersedes the same lane's earlier brief-level review where they differ — notably C2's frozen BINARY codebook + re-code supersedes the brief's ternary-handling gate). **Amendment #2 (this text) incorporates C1–C9; on its landing the review leg stamps the review closed and runs may proceed in sequence** (③ expected blocked-not-run unless judge↔track linkage is sourced).
+**Review state: CLOSED (2026-11-03)** — Tests-LLM-Validation re-review: PASS WITH RESIDUAL CONDITIONS (per test); residuals mapped in the closure section at the end of this document. Earlier state: Tests · LLM Validation FORMAL review of record = **APPROVED WITH CORRECTIONS** (C1–C9; the formal review supersedes the same lane's earlier brief-level review where they differ — notably C2's frozen BINARY codebook + re-code supersedes the brief's ternary-handling gate). **Amendment #2 (this text) incorporates C1–C9; on its landing the review leg stamps the review closed and runs may proceed in sequence** (③ expected blocked-not-run unless judge↔track linkage is sourced).
 
 ## Dataset facts of record (D2 podium leg, PR #4491)
 
@@ -78,3 +78,16 @@ Exact methods only · small-n honesty (UNRESOLVED is a verdict, not a failure to
 2. C2 re-code under `podium-codebook/v1` (double-tag, κ published).
 3. Review leg stamps the review closed on this amendment.
 4. Runs in sequence ① → ② → ⑤ → ⑥; ③④ remain blocked/descriptive until their sourcing exists.
+
+## Review closure (2026-11-03) — residual dispositions
+
+The re-review was written against amendment #1 (blob 7fd138ac) and crossed amendment #2 (PR #4500) in flight. Mapping, residual by residual:
+
+- **① clarification (claim form + combination rule):** DISCHARGED in amendment #2 — primary claim = the ≥2-of-3 composite; cross-edition read = Fisher combined-p (named). ① remains BLOCKED on G1 double-tag + G4 controls, as held.
+- **② descriptive · ③ blocked-not-run + pool-overlap descriptive · ④ qualitative inventory:** CLEARED as filed; may proceed on their artifacts.
+- **⑤ conditional-cleared:** kills = {rank-range ≥4/6 · Kendall W < 0.5} (both in amendment #2). Remaining condition is a PRE-RUN FILING, not a spec item: the per-event published-rubric weights are filed as their own pre-registration artifact BEFORE any candidate is scored; inferred variant stays exploratory-labeled.
+- **⑥ not cleared on amendment #1 text; amendment #2 discharges the C4 substance:** nested selection is binding in the filed plan (survival re-decided per origin on train editions only; in-sample rows stamped, gate read only under nested selection); k = podium slots in the predicted edition across tracks; unit = project-level membership; target fixed = project-level membership. ONE item remains for the ⑥ PRE-RUN FILING: the score choice (Brier ∨ hit-rate) is named there, before the run — the plan deliberately leaves the choice to that filing, and no ⑥ run is valid without it. ⑥ also waits on ① unblocking (no schedule cost).
+- **Row-schema completion:** stratum + codebook_version are already in the filed C5 schema (amendment #2); they ride the first-row filing as required.
+
+**Net state:** review CLOSED. Runnable now (on their artifacts): ② descriptive · ③ pool-overlap fallback (descriptive) · ④ theme inventory. Conditional: ⑤ (rubric-weights filing first). Blocked: ① (G1+G4) · ③ main test (judge↔track) · ⑥ (① unblocking + pre-run filing with named score).
+

@@ -3,7 +3,15 @@
   "contract": "Single onboarding record for cadence providers. Every provider on any cadence surface (catalog endpoint/secret, provider-availability env, quota family, peer-review orchestrator maps) must have one entry here; every expected-but-absent surface must carry an exception with a reason. Checked by scripts/cadence_provider_onboarding.py; secret names only, never values.",
   "providers": [
     {
+      "provider": "aikido",
+      "kind": "review"
+    },
+    {
       "provider": "aion",
+      "kind": "llm"
+    },
+    {
+      "provider": "baseten",
       "kind": "llm"
     },
     {
@@ -18,11 +26,49 @@
       ]
     },
     {
+      "provider": "coderabbit",
+      "kind": "review"
+    },
+    {
       "provider": "cohere",
       "kind": "llm"
     },
     {
+      "provider": "copilot",
+      "kind": "review"
+    },
+    {
+      "provider": "deepinfra",
+      "kind": "llm"
+    },
+    {
+      "provider": "deepseek",
+      "kind": "llm",
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        },
+        {
+          "surface": "availability_env",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        }
+      ]
+    },
+    {
+      "provider": "devin",
+      "kind": "review"
+    },
+    {
       "provider": "felo",
+      "kind": "llm"
+    },
+    {
+      "provider": "friendli",
       "kind": "llm"
     },
     {
@@ -54,12 +100,22 @@
       "kind": "llm"
     },
     {
+      "provider": "novita",
+      "kind": "llm"
+    },
+    {
       "provider": "nvidia",
       "kind": "llm"
     },
     {
       "provider": "ollama",
-      "kind": "llm"
+      "kind": "llm",
+      "exceptions": [
+        {
+          "surface": "quota_registry",
+          "reason": "registry record ollama.balance carries lane 'model-balance', outside the provider_quota_coverage mapping rule (lane == 'model'); balance-plane record, not a model-lane service record \u2014 registry-lane question routed to quota-specialist 2026-11-03 (cadence escalation axis 4)"
+        }
+      ]
     },
     {
       "provider": "omni",
@@ -72,6 +128,10 @@
     {
       "provider": "ovhcloud",
       "kind": "llm"
+    },
+    {
+      "provider": "qodo",
+      "kind": "review"
     },
     {
       "provider": "requesty",
@@ -88,6 +148,10 @@
     {
       "provider": "sealion",
       "kind": "llm"
+    },
+    {
+      "provider": "sentry",
+      "kind": "review"
     },
     {
       "provider": "siliconflow",
@@ -152,30 +216,6 @@
           "reason": "secret-only wiring: ZAI_API_KEY is provisioned and probed for continuity, but no catalog endpoint is registered in any catalog module"
         }
       ]
-    },
-    {
-      "provider": "aikido",
-      "kind": "review"
-    },
-    {
-      "provider": "coderabbit",
-      "kind": "review"
-    },
-    {
-      "provider": "copilot",
-      "kind": "review"
-    },
-    {
-      "provider": "devin",
-      "kind": "review"
-    },
-    {
-      "provider": "qodo",
-      "kind": "review"
-    },
-    {
-      "provider": "sentry",
-      "kind": "review"
     }
   ],
   "acknowledged_unmapped_quota_providers": {

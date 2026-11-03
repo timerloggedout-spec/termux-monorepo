@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-"""Proposals index feed collector — schema proposals-feed/v1.
+"""Proposals index feed collector — schema proposals-feed/v2.
 
 Reads the proposal registry of record (docs/proposals/registry.yaml)
 and the Oracle Method pass records (docs/proposals/passes/*/pass.json)
 and emits the feed the dashboard's proposals page renders: every
 registered proposal pack with its status, priority, author and related
 issues/PRs, linked to its tree on GitHub, plus the pass records.
+
+Each related PR is stamped at collection time with the state the
+GitHub API reports for it — `open`, `merged` or `closed-unmerged`,
+plus `merged_at` when merged (schema v2; v1 carried the bare number).
+PR state comes from the API at collection, never from the registry
+and never hand-entered; a ref the API cannot resolve is stamped
+`unknown` and named in `gaps`, never guessed.
 
 Honesty rules (contract: docs/ops/PROPOSALS-FEED.md): registry values
 are carried verbatim — statuses, priorities and author strings are
@@ -26,14 +33,20 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA = "proposals-feed/v1"
+SCHEMA = "proposals-feed/v2"
 TREE = "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/"
+REPO = "timerloggedout-spec/termux-monorepo"
+API = "https://api.github.com"
 ITEM_KEYS = ("id", "title", "author", "status", "priority", "path")
 INT_LIST_KEYS = ("related_issues", "related_prs")
+PR_STATES = ("open", "merged", "closed-unmerged", "unknown")
 
 
 def _unquote(value: str) -> str:
@@ -156,7 +169,55 @@ def load_registry(path: Path) -> dict:
         return parse_registry_subset(text)
 
 
-def build_feed(registry: dict, proposals_root: Path, now: str) -> dict:
+def fetch_pr(number: int, token: str) -> dict:
+    """One PR's state record from the GitHub API.
+
+    `state` is `open`, `merged` (closed with a merge — merged_at is
+    carried verbatim from the API) or `closed-unmerged`. Any failure
+    (HTTP error, network, malformed body) yields `unknown`: the feed
+    never guesses a state it could not read.
+    """
+    req = urllib.request.Request(
+        f"{API}/repos/{REPO}/pulls/{number}",
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "User-Agent": "proposals-feed-collector",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except Exception:
+        return {"number": number, "state": "unknown", "merged_at": None}
+    if data.get("state") == "open":
+        return {"number": number, "state": "open", "merged_at": None}
+    if data.get("merged_at"):
+        return {"number": number, "state": "merged",
+                "merged_at": data["merged_at"]}
+    if data.get("state") == "closed":
+        return {"number": number, "state": "closed-unmerged",
+                "merged_at": None}
+    return {"number": number, "state": "unknown", "merged_at": None}
+
+
+def resolve_pr_states(numbers, token: str, fetch=fetch_pr) -> dict:
+    """Resolve each unique PR number once; returns {number: record}."""
+    return {n: fetch(n, token) for n in sorted(set(numbers))}
+
+
+def collection_token() -> str | None:
+    """The API token for collection, from the job environment."""
+    return os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+
+
+def build_feed(registry: dict, proposals_root: Path, now: str,
+               pr_states: dict | None = None) -> dict:
+    def pr_record(number: int) -> dict:
+        if pr_states is not None and number in pr_states:
+            return pr_states[number]
+        return {"number": number, "state": "unknown", "merged_at": None}
+
     proposals = []
     for entry in registry.get("proposals", []):
         path = str(entry.get("path", "")).strip()
@@ -169,7 +230,7 @@ def build_feed(registry: dict, proposals_root: Path, now: str) -> dict:
             "path": path,
             "url": TREE + path.lstrip("/"),
             "issues": [int(x) for x in entry.get("related_issues") or []],
-            "prs": [int(x) for x in entry.get("related_prs") or []],
+            "prs": [pr_record(int(x)) for x in entry.get("related_prs") or []],
         })
 
     gaps: list[str] = []
@@ -239,10 +300,32 @@ def main() -> None:
     ap.add_argument("--registry", default="docs/proposals/registry.yaml")
     ap.add_argument("--proposals-root", default="docs/proposals")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--skip-pr-states", action="store_true",
+                    help="do not call the API; stamp every PR unknown")
     args = ap.parse_args()
     registry = load_registry(Path(args.registry))
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    feed = build_feed(registry, Path(args.proposals_root), now)
+    pr_states = None
+    resolution_gaps: list[str] = []
+    if not args.skip_pr_states:
+        numbers = [int(x) for entry in registry.get("proposals", [])
+                   for x in entry.get("related_prs") or []]
+        token = collection_token()
+        if token and numbers:
+            pr_states = resolve_pr_states(numbers, token)
+            for n in sorted(pr_states):
+                if pr_states[n]["state"] == "unknown":
+                    resolution_gaps.append(
+                        f"pr #{n}: state unresolvable at collection "
+                        "(stamped unknown, never guessed)")
+        elif numbers:
+            resolution_gaps.append(
+                "PR states not resolved at collection (no API token in "
+                "the collection environment); all PR refs stamped "
+                "unknown, never guessed")
+    feed = build_feed(registry, Path(args.proposals_root), now,
+                      pr_states=pr_states)
+    feed["gaps"].extend(resolution_gaps)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(feed, indent=1) + "\n", encoding="utf-8")

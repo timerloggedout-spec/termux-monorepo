@@ -52,5 +52,5 @@ jobs:
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \
             --title "chore(proposals): refresh proposals-feed.json" \
-            --body "Automated proposals index feed refresh (collector: scripts/proposals/proposals_feed.py; contract: docs/ops/PROPOSALS-FEED.md). Data is derived from docs/proposals/registry.yaml and docs/proposals/passes/*/pass.json at collection time; nothing is copied forward." \
+            --body "Automated proposals index feed refresh (collector: scripts/proposals/proposals_feed.py; contract: docs/ops/PROPOSALS-FEED.md). Data is derived from docs/proposals/registry.yaml and docs/proposals/passes/*/pass.json at collection time; PR states are resolved from the GitHub API at collection time; nothing is copied forward." \
             || echo "refresh PR already open"

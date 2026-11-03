@@ -3,7 +3,8 @@
 The dashboard's proposals page (`apps/tribute-dashboard/proposals.html`)
 is the web display for the proposal registry of record. It renders
 exactly one feed: `apps/tribute-dashboard/data/proposals-feed.json`
-(schema `proposals-feed/v1`).
+(schema `proposals-feed/v2`; v1 carried related PRs as bare numbers —
+consumers must not mix shapes across the bump).
 
 ## Source of record
 
@@ -42,6 +43,25 @@ exactly one feed: `apps/tribute-dashboard/data/proposals-feed.json`
 - Each proposal links to its tree on GitHub:
   `https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/<path>`.
 
+## PR state (v2)
+
+- Each entry in a proposal's `prs` list is an object
+  `{number, state, merged_at}`. `state` is one of `open`, `merged`,
+  `closed-unmerged` or `unknown`; `merged_at` carries the API's
+  merge timestamp verbatim when the state is `merged`, and is null
+  otherwise.
+- States are resolved from the GitHub API **at collection time** —
+  one read per unique PR number per run, using the collection job's
+  token (`GITHUB_TOKEN` / `GH_TOKEN`). They are never read from the
+  registry, never hand-entered and never copied forward from a
+  previous feed: a refresh re-resolves every ref.
+- A ref the API cannot resolve (missing PR, HTTP or network
+  failure) is stamped `unknown` and named in `gaps`. The page
+  renders a state chip for known states and no chip for `unknown`.
+- A collection run without an API token stamps every ref `unknown`
+  and names that fact once in `gaps` (`--skip-pr-states` does the
+  same deliberately, for offline runs).
+
 ## Honesty rules
 
 1. A field the registry omits renders as an empty list / absent —
@@ -57,3 +77,7 @@ exactly one feed: `apps/tribute-dashboard/data/proposals-feed.json`
 5. A pass `outcome` is carried verbatim from the pass's own ballot
    record — scores are never recomputed, rescaled or tie-broken by
    the collector.
+6. A PR's `state` is whatever the API reported at collection time —
+   never inferred from the registry, the proposal's own status, or
+   the PR's age or number; an unresolvable ref is `unknown`, never
+   a guessed state.

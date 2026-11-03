@@ -1,4 +1,4 @@
-"""Collector pins for the proposals index feed (proposals-feed/v1).
+"""Collector pins for the proposals index feed (proposals-feed/v2).
 
 The collector reads the registry of record and the pass records and
 carries their values verbatim. The YAML subset fallback parser is
@@ -77,11 +77,14 @@ def test_build_feed_shape(tmp_path):
     (passes / "broken-pass").mkdir()
     (passes / "broken-pass" / "pass.json").write_text("{not json")
     feed = pf.build_feed(registry, tmp_path, "2026-10-28T00:00:00Z")
-    assert feed["schema"] == "proposals-feed/v1"
+    assert feed["schema"] == "proposals-feed/v2"
     assert feed["counts"]["total"] == 2
     assert feed["counts"]["by_status"] == {"posted": 1, "executing": 1}
     first = feed["proposals"][0]
     assert first["issues"] == [175, 772] and first["prs"] == []
+    # no states resolved -> the ref is stamped unknown, never guessed
+    assert feed["proposals"][1]["prs"] == [
+        {"number": 42, "state": "unknown", "merged_at": None}]
     assert first["url"].endswith("/docs/proposals/active/alpha-pack/")
     assert feed["proposals"][1]["issues"] == []  # absent in registry -> empty, never guessed
     by_id = {p["id"]: p for p in feed["passes"]}
@@ -119,3 +122,53 @@ def test_build_feed_pass_outcome(tmp_path):
     assert outcome["source"] == "cycle/BALLOT-round1.json"
     assert by_id["silent-pass"]["outcome"] is None  # no ballots -> no outcome, absence named
     assert any("silent-pass" in g for g in feed["gaps"])
+
+
+def test_pr_state_mapping(monkeypatch):
+    """API payload -> feed state: open / merged / closed-unmerged /
+    unknown-on-any-failure. State is read at collection, never guessed."""
+    import io
+    import urllib.request
+
+    payloads = {
+        11: {"state": "open", "merged_at": None},
+        12: {"state": "closed", "merged_at": "2026-08-18T00:00:00Z"},
+        13: {"state": "closed", "merged_at": None},
+    }
+
+    class Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def fake_urlopen(req, timeout=30):
+        n = int(req.full_url.rsplit("/", 1)[1])
+        if n == 14:
+            raise OSError("boom")
+        return Resp(json.dumps(payloads[n]).encode())
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    assert pf.fetch_pr(11, "t") == {"number": 11, "state": "open", "merged_at": None}
+    assert pf.fetch_pr(12, "t") == {
+        "number": 12, "state": "merged", "merged_at": "2026-08-18T00:00:00Z"}
+    assert pf.fetch_pr(13, "t") == {
+        "number": 13, "state": "closed-unmerged", "merged_at": None}
+    assert pf.fetch_pr(14, "t") == {"number": 14, "state": "unknown", "merged_at": None}
+
+
+def test_build_feed_stamps_resolved_states(tmp_path):
+    registry = pf.parse_registry_subset(FIXTURE)
+    states = {42: {"number": 42, "state": "merged",
+                   "merged_at": "2026-08-18T00:00:00Z"}}
+    feed = pf.build_feed(registry, tmp_path, "2026-11-03T00:00:00Z",
+                         pr_states=states)
+    assert feed["proposals"][1]["prs"] == [
+        {"number": 42, "state": "merged", "merged_at": "2026-08-18T00:00:00Z"}]
+    # resolution dedups: each unique number is fetched once per run
+    calls = []
+    pf.resolve_pr_states([42, 42, 7], "t",
+                         fetch=lambda n, tok: calls.append(n) or
+                         {"number": n, "state": "open", "merged_at": None})
+    assert sorted(calls) == [7, 42]

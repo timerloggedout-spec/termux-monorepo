@@ -4,7 +4,7 @@ title: "Dashboard surfaces and comparative visualization renderer lane"
 author: ChatGPT
 posted_at: 2026-11-02
 source: source.md
-status: executing
+status: in_review
 priority: P0
 path: active/visualization-renderer-lab/
 reviewers:
@@ -12,7 +12,7 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: [1571]
-related_prs: []
+related_prs: [4018]
 related_branches: [research/visualization-renderer-lab-master]
 gates_required: [repo-gate, termux-smoke]
 ---
@@ -37,7 +37,7 @@ Continue the existing parallel renderer preview on the canonical `master` base. 
 - [x] Work items defined
 - [ ] All browser renderers independently verified in browser
 - [ ] Performance/accessibility scorecard completed
-- [ ] repo-gate and Termux smoke green on candidate SHA
+- [x] repo-gate and Termux smoke green on candidate SHA
 - [ ] Non-author implementation review recorded
 - [ ] Selective promotion reviewed
 

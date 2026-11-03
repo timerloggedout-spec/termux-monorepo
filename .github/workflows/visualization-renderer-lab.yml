@@ -2,15 +2,18 @@ name: Visualization Renderer Lab
 
 on:
   pull_request:
-    branches: [master-staging]
+    branches: [master]
     paths:
       - 'experiments/visualization-renderers/**'
       - 'scripts/visualization_lab/**'
       - 'tests/test_visualization_lab.py'
+      - 'tests/test_telemetry_feed_resilience.py'
+      - 'tests/test_tribute_status_atomic_write.py'
+      - 'tests/test_chartkit.py'
       - 'docs/ops/VISUALIZATION-RENDERER-COMPARISON.md'
       - '.github/workflows/visualization-renderer-lab.yml'
   push:
-    branches: [research/visualization-renderer-lab]
+    branches: [research/visualization-renderer-lab-master]
     paths:
       - 'experiments/visualization-renderers/**'
       - 'scripts/visualization_lab/**'
@@ -44,11 +47,23 @@ jobs:
           import re
           from pathlib import Path
           html = Path("experiments/visualization-renderers/index.html").read_text()
-          blocks = re.findall(r"<script>(.*?)</script>", html, re.S)
+          blocks = re.findall(r"<script(?:\\s[^>]*)?>(.*?)</script>", html, re.S)
           assert blocks, "no inline renderer script found"
           Path("/tmp/renderer-lab.js").write_text("\\n".join(blocks))
           PY
-          node --check /tmp/renderer-lab.js
+          node --check --input-type=module < /tmp/renderer-lab.mjs
+      - name: Run telemetry ingestion and atomic publication tests
+        run: PYTHONPATH=. python3 -m unittest discover -s tests -p 'test_telemetry_feed_resilience.py' -v && PYTHONPATH=. python3 -m unittest discover -s tests -p 'test_tribute_status_atomic_write.py' -v
+      - name: Verify ChartKit null-gap contract
+        run: |
+          node - <<'JS'
+          const CK = require('./apps/tribute-dashboard/chartkit.js');
+          const svg = CK.line([{t:'2026-11-01T00:00:00Z',v:1},{t:'2026-11-02T00:00:00Z',v:2},{t:'2026-11-03T00:00:00Z',v:null},{t:'2026-11-04T00:00:00Z',v:4}]);
+          const paths = (svg.match(/<path /g) || []).length;
+          const dots = (svg.match(/<circle /g) || []).length;
+          if (paths !== 1 || dots !== 3) throw new Error('null gap was bridged or observations were lost');
+          console.log('PASS: null observations split the line into separate segments');
+          JS
       - name: Compile validators
         run: python3 -m py_compile scripts/visualization_lab/validate_cohort.py scripts/visualization_lab/validate_dashboard_snapshot.py
       - name: Verify pinned renderer matrix and fixture boundary
@@ -61,5 +76,6 @@ jobs:
           assert fixture["data_class"] == "synthetic"
           assert matrix["fixture"] == "fixtures/renderer-cohort-v1.json"
           assert all(item.get("version") for item in matrix["candidates"])
+          assert all(item["status"] == "implemented" for item in matrix["candidates"] if item["id"] in {"d3","observable-plot","vega-lite","echarts","cytoscape","sigma","graphology","chartkit"})
           print("PASS: renderer matrix is versioned and bound to the synthetic cohort")
           PY

@@ -50,9 +50,8 @@ Intake stamp (a new lens type entering):
 - `swot` — SWOT with the duality doctrine (LENS-FRAME.md):
   competitive frames ⇒ dual valence mandatory,
   single-valence filings malformed.
-- `tak` — referent VERIFIED (identification leg closed at
-  intake, see LENS-FRAME.md): the owner's initiative
-  T.A.K. = "Taktikal Awareness Kit". Doctrine status:
-  unregistered (no doctrine filed yet) — the lens exists
-  as a named owner initiative; its doctrine enters via
-  this same trigger when fleet work produces it.
+- `tak` — TAK = Tactical Awareness Kit (owner-identified
+  2026-11-03; lens registered in LENS-FRAME.md): the
+  shared tactical-awareness / common-operating-picture
+  lens. TAK filings carry the {lens_filing} stamp with
+  lens_id "tak" and cite the picture surface they read.

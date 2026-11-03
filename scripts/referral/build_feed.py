@@ -6,7 +6,7 @@ stay unpublished. Output: apps/tribute-dashboard/data/referral-feed.json
 Feed is consumed by the landing repo's partners grid (Web Design lane).
 Stdlib only. Unknown values stay null, never zero.
 """
-import json, pathlib, sys
+import datetime, json, pathlib, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SRC = ROOT / "config" / "referral_programs.json"
@@ -79,6 +79,7 @@ def build(reg):
         items.append(item)
     return {
         "schema": "referral-feed/1",
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "source": "config/referral_programs.json",
         "items": items,
         "channels": reg.get("channels", []),

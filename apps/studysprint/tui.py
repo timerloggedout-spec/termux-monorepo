@@ -26,7 +26,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.1.3"
+TUI_VERSION = "0.1.4"
 SURFACE = "studysprint-tui"
 
 from study_reader import RSVPReader, Section  # noqa: E402

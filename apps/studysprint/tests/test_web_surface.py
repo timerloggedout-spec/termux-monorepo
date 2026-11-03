@@ -93,7 +93,7 @@ def test_state_carries_plan_start_and_surface_version():
     from build_data import emit_state
     state = emit_state(ROOT)
     assert state["plan_start"]  # #4214: Today advances from here
-    assert state["surface_version"] == "0.1.3"
+    assert state["surface_version"] == "0.1.4"
 
 
 def test_service_worker_cache_is_versioned_and_state_network_first():
@@ -101,6 +101,44 @@ def test_service_worker_cache_is_versioned_and_state_network_first():
     version = (WEB / "VERSION").read_text().strip()
     assert f"studysprint-webapp-v{version}" in sw  # #4219
     assert "network-first" in sw and "data/state.json" in sw
+
+
+def test_fsrs_receipt_never_nan_via_the_caller_contract():
+    """#4461 regression: grade() passed a Date where fsrsReview's
+    contract is epoch ms — the due math string-concatenated and
+    the receipt read "in NaN day(s)" on the 0.1.3 device smoke.
+    The core<->web battery calls the port with numeric ms, so it
+    could not see the caller's type error. This test drives the
+    port exactly as the (fixed) caller does and pins the wiring.
+    """
+    app_js = (WEB / "app.js").read_text()
+    assert "fsrsReview(prev, gradeValue, now.getTime())" in app_js
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("node not available")
+    start = app_js.index("const FSRS_W")
+    end = app_js.index("function sm2Review")
+    script = app_js[start:end] + """
+const assert = require("assert");
+// The caller contract: a Date in hand, epoch ms across the seam.
+const now = new Date("2026-11-03T12:00:00Z");
+for (const g of [1, 2, 3, 4]) {
+  let s = fsrsReview(null, g, now.getTime());
+  assert.ok(Number.isFinite(s.scheduled_days), `new g${g}`);
+  assert.ok(!Number.isNaN(Date.parse(s.due)), `due g${g}`);
+  // chained reviews across states and elapsed time stay finite
+  s = fsrsReview(s, g, now.getTime() + 3600e3);
+  assert.ok(Number.isFinite(s.scheduled_days), `+1h g${g}`);
+  s = fsrsReview(s, g, now.getTime() + 86400e3 * 5);
+  assert.ok(Number.isFinite(s.scheduled_days), `+5d g${g}`);
+  s = fsrsReview(s, 1, now.getTime() + 86400e3 * 40);
+  assert.ok(Number.isFinite(s.scheduled_days), `lapse g${g}`);
+}
+console.log("fsrs caller-contract ok");
+"""
+    proc = subprocess.run([node, "-e", script], capture_output=True,
+                          text=True, timeout=60)
+    assert proc.returncode == 0, proc.stderr
 
 
 def test_js_pure_helpers_behavior():

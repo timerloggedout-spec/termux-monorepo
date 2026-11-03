@@ -295,3 +295,65 @@ brief fields; no row change needed. Fresh re-verification 2026-11-03:
   small archives; never a sole copy (dormancy + transfer quota).
 
 Boundary: catalog pass only, no signup; fleet_state stays "no account".
+
+## Addendum 2026-11-03 — ② re-send coverage check
+
+Main re-sent brief ② (P2P/decentralized) after #4611 landed. Audit vs
+master registry (48 rows, blob b8a8f59a): every brief member maps; all
+10 P2P/self-host rows carry durability_frame (holds_bytes ·
+keep_alive · persistence) + a per-candidate encryption field + a fit
+split (podium_datasets public vs private legs). No new rows; two small
+row refinements in this PR (Filebase cap, IPFS cold-vs-cached).
+
+Members → rows:
+- WebTorrent family + desktop-client relatives → webtorrent (browser
+  WebRTC + Desktop bridge to TCP/uTP swarms) + bittorrent-speed-btt
+  (uTorrent/BitTorrent clients). Standalone classic clients are
+  transports, not storage — no separate row; they hold bytes only as
+  swarm members.
+- TRON variant → bittorrent-speed-btt (2018 acquisition, BTT 2019,
+  bid-for-speed / seed-for-reward; incentive, not persistence).
+- S5 on Sia → s5-sia (protocol + s5-rs Rust impl v1.0.0-beta.1 + Sia
+  blog spotlight, as landed).
+- IPFS + pinning economics → ipfs-protocol + pinata + filebase +
+  web3storage-storacha (winding down, do not start pins).
+- Iroh → iroh (n0-computer stack; tickets are bearer tokens;
+  provider must stay online).
+- Leads-pass extras → academic-torrents (webseed-backed swarms) +
+  syncthing (private device mesh).
+
+Encryption, per candidate, never assumed: NONE at content layer for
+WebTorrent, BTT, IPFS, Pinata (private = Enterprise paid), Filebase
+IPFS leg, Storacha, Academic Torrents; transport-only for Iroh
+(QUIC/TLS 1.3) and Syncthing (TLS); E2EE only on the S5 filesystem
+layer (base blobs unencrypted unless FS used). Private fit therefore
+exists ONLY for S5-FS (encrypted), the Syncthing mesh, and the Filebase
+S3 leg (small) — everything else is public-distribution fit.
+
+Fresh re-verification 2026-11-03:
+- Pinata tier re-confirmed (own blog + Oct 2026 review): 1 GB / 500
+  files / 10 GB / 10K req / 1 gateway; Picnic $20 = 1 TB; no uptime
+  guarantee; private IPFS = Enterprise. Card gate: the free signup
+  flow shows email activation with no card step in signup guides —
+  gate stands as none; no explicit vendor "no card required" sentence
+  located, flagged as the softest field in the class, not hidden.
+- Filebase pinned-file cap resolved to 500 (Oct 2026 review: 5 GB
+  shared, 500 pinned files, 10 GB IPFS egress) — the row's 500–1,000
+  variance flag is retired by the edit in this PR.
+- Retrieval speed, r/ipfs lead: the r/ipfs thread itself was NOT
+  directly read this pass (Reddit text fetch blocked; search surfaced
+  forums/docs/comparisons instead). Evidence now rests on Pinata docs
+  (public gateways "naturally slower" under load; dedicated gateways
+  fast via CDN), ProbeLab continuous TTFB measurement (fastest public
+  gateways under 100 ms P50 on cache hits, Frankfurt; w3s.link
+  +300–350 ms P50 on subdomain redirect), and the arXiv IPFS
+  evaluation (3/4 EU retrievals under 2 s for 0.5 MB incl. lookup;
+  gateway caching 76% under 250 ms). Refinement to the row: the 1–5 s
+  public-gateway band is cold/uncached content and large files;
+  popular cached content is routinely sub-second. Managed-pinning
+  ~$15/TB-month class re-confirmed by an independent comparison.
+- Managed-pinning economics + pin-or-gone frame unchanged.
+
+Boundary: distribution of PUBLIC artifacts only, except the three
+encrypted/private legs above; catalog pass only, no accounts, no pins
+held.

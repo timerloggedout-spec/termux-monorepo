@@ -502,11 +502,13 @@
       "fleet_state": "no pins held; Storacha/web3.storage is WINDING DOWN (see row) - do not start new pins there",
       "free_allowance": "protocol itself free; free pinning legs: Pinata 1 GB + Filebase 5 GB (rows below)",
       "id": "ipfs-protocol",
-      "limits": "retrieval evidence (secondary practitioner reads): dedicated gateways sub-second to ~500 ms; public gateways 1-5 s typical; GB+ files slow/unreliable over public gateways; gateway dependency partially re-centralizes",
+      "limits": "retrieval evidence (secondary practitioner reads): dedicated gateways sub-second to ~500 ms; public gateways 1-5 s typical; GB+ files slow/unreliable over public gateways; gateway dependency partially re-centralizes; cold-vs-cached refinement (2026-11-03 re-check): the 1-5 s public-gateway band is cold/uncached content and large files — popular cached content is routinely sub-second (ProbeLab TTFB: fastest public gateways <100 ms P50 on cache hits, Frankfurt; w3s.link +300-350 ms P50 on subdomain redirect)",
       "name": "IPFS (protocol + pinning economics)",
       "sources": [
         "Pinata/Filebase pricing (see rows)",
-        "practitioner comparisons (gateway latency bands; pin-or-gone; large-file caveat)"
+        "practitioner comparisons (gateway latency bands; pin-or-gone; large-file caveat)",
+        "ProbeLab IPFS gateway TTFB measurements (IPFS forums: continuous probing of public gateways)",
+        "arXiv IPFS evaluation (3/4 EU retrievals <2 s for 0.5 MB incl. lookup; gateway caching 76% <250 ms)"
       ]
     },
     {
@@ -558,7 +560,7 @@
       "fleet_state": "no account",
       "free_allowance": "5 GB pooled across Object Storage + IPFS; 100K Class A + 1M Class B ops; egress free on S3 API",
       "id": "filebase",
-      "limits": "pinned-file cap reads vary (500-1,000); Sia-network buckets have NO free tier (paid plan required)",
+      "limits": "pinned-file cap 500 (Oct 2026 review: 5 GB shared, 500 pinned files, 10 GB IPFS egress; earlier 500-1,000 variance retired); Sia-network buckets have NO free tier (paid plan required)",
       "name": "Filebase (S3 + IPFS)",
       "sources": [
         "AeroFTP Filebase docs (checked 2026-09-19: 5 GB pooled, op counts, egress free)",

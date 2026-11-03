@@ -67,10 +67,16 @@ every installed copy. If `build.sh` cannot find the keystore it
 stops — never substitute another key to get a build out.
 
 **Rotation** (deliberate, breaking): a new key means existing
-installs cannot update in place — they must uninstall and
-reinstall. Rotate only in a single change that swaps the
-keystore file, updates this section and the fingerprint above,
-and is announced as a breaking change for installed copies.
+installs cannot update in place — they must **uninstall first**
+and reinstall. Rotate only in a single announced change that
+swaps the keystore file, **bumps `android:versionCode` in
+`android/AndroidManifest.xml`**, updates this section and the
+fingerprint above, and states the uninstall-first instruction
+for installed copies. The collaborators note beside the key
+(`android/keystore/README.md`) carries the full procedure,
+including how to build + sign. Scope warning: this is a DEV
+key for sideload distribution only — never a store or
+production key.
 
 ## What's on-device
 

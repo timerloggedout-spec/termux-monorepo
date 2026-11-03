@@ -2235,5 +2235,13 @@
   ],
   "note": "stamp count includes the 1 manifest-attributed PR (chatgpt #2980) - single-leg authorship class = 298. Jules PRs: merged by owner PAT or open; no second server record names the bot. Stamp stratum: token history carries no authorship signal for PAT riders (merged_by = the owner PAT itself); its second leg = historical Agent-Identity tranche (trailer + git-author coexistence), a separate backfill."
  },
- "unattributed": 52
+ "unattributed": 52,
+ "weight_bearing_scope": {
+  "ruling": "DoE call 2026-11-02 (doe-expert) on attribution/1.5",
+  "stratum": "transport",
+  "face_value_within_stratum": true,
+  "lane_authorship_weight": false,
+  "note": "The 245 corroborated records establish which transport/app identity performed the action; they bear NO lane-authorship weight. Pooling strata (transport-corroborated read as authorship-corroborated) is non-conformant; wrong-stratum evidence counts as zero for authorship claims. Single-leg 302 held+flagged; unattributed 52 no weight; disputed 0.",
+  "session_pointer_tranche": "corroborates pointer resolution (provenance confidence), not per-PR authorship"
+ }
 }

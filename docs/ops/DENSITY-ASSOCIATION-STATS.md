@@ -62,7 +62,7 @@ First table (2026-10-31, 600 most recent PRs + 28 scored RFPs):
 ```
 gh api "repos/{owner}/{repo}/pulls?state=all&per_page=100&page=N" (N=1..6) > prs.json
 python3 scripts/telemetry_ingest/density_stats.py \
-  --prs prs.json --rfp-feed apps/tribute-dashboard/data/delphi-rfp-feed.json \
+  --prs prs.json --rfp-feed apps/help-wanted-dashboard/data/delphi-rfp-feed.json \
   --now <ISO8601>
 python3 -m pytest tests/test_density_stats.py -q
 ```
@@ -91,3 +91,20 @@ and audited in `ops/telemetry/attribution-backfill-audit.json`:
 546/599 attributed (stamp 297, app_bot 249), 53 null. Grok units in
 window: 0 — no in-window artifact carries Grok's established identity
 marks; attribution is live for its post-registration work.
+
+## Corroboration strata (attribution/1.5 + DoE call, 2026-11-02)
+
+Re-score under attribution/1.5 (token_history leg; audit
+`ops/telemetry/attribution-rescore-1.5.json`, Validation PASS):
+{245 corroborated · 302 single-leg · 52 unattributed · 0 disputed}.
+**Stratum statement (required on every weight-bearing surface):** the
+245 corroborated records are corroborated in the **transport stratum
+only** — two independent server records agree on which transport/app
+identity performed the action. Per the DoE call they are weight-bearing
+at face value WITHIN that stratum (delivery/transport-class scoring)
+and bear **no lane-authorship weight**: pooling the strata
+(transport-corroborated read as authorship-corroborated) is
+non-conformant, and wrong-stratum evidence counts as zero for an
+authorship claim. Authorship weighting for the 298 PAT riders awaits
+the Agent-Identity tranche; single-leg records stay held + flagged,
+unattributed carry no weight, disputed are excluded (currently 0).

@@ -1213,3 +1213,19 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
+  - id: integration-intelligence-superpowers
+    title: "Integration Intelligence foundation and Superpowers engineering methodology"
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/integration-intelligence-superpowers/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/integration-intelligence-superpowers
+    gates_required:
+      - repo-gate
+      - termux-smoke

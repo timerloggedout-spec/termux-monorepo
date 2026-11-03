@@ -41,8 +41,9 @@ jobs:
         run: |
           set +e
           python3 scripts/dispatch/dispatch_watchdog.py ${{ inputs.dry_run == 'true' && '--dry-run' || '' }} 2>&1 | tee /tmp/sweep.log
-          echo "sweep exit: ${PIPESTATUS[0]}" | tee -a /tmp/sweep.log
-          test "${PIPESTATUS[0]}" = "0"
+          ec=${PIPESTATUS[0]}
+          echo "sweep exit: $ec" | tee -a /tmp/sweep.log
+          test "$ec" = "0"
       - name: Diagnose on failure
         if: failure()
         env:

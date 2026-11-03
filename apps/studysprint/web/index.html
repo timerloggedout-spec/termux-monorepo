@@ -109,6 +109,27 @@
     </div>
     <p id="ingest-status" aria-live="polite"></p>
   </section>
+  <div id="install-card" class="card hidden">
+    <p><strong>Install StudySprint</strong> — put it on your home
+    screen; it works offline like an app.</p>
+    <div class="row">
+      <button id="install-go" class="hidden">Install</button>
+    </div>
+    <p id="install-ios" class="hidden">On iPhone/iPad: tap
+    <strong>Share</strong>, then <strong>Add to Home Screen</strong>.
+    StudySprint keeps working offline from there.</p>
+    <div class="row">
+      <button id="install-dismiss">Not now</button>
+    </div>
+  </div>
+
+  <div id="update-toast" class="card hidden" role="status">
+    <p><strong>A new version of StudySprint is ready.</strong></p>
+    <div class="row">
+      <button id="update-go">Reload to update</button>
+      <button id="update-dismiss">Later</button>
+    </div>
+  </div>
 </main>
 
 <footer>
@@ -118,8 +139,46 @@
 
 <script src="app.js"></script>
 <script>
+// Update flow (#4437): a new service worker waits instead of
+// taking over silently; the toast offers the reload, and only
+// the tap posts SKIP_WAITING. First installs (no controller)
+// activate on their own and never show the toast.
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  let reloading = false;
+  // Reload only on an UPDATE takeover: the first install's
+  // clients.claim() also fires controllerchange, and reloading
+  // there loops the first load (caught by the #4437 evidence
+  // drill before this ever shipped).
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadController || reloading) return;
+    reloading = true;
+    window.location.reload();
+  });
+  navigator.serviceWorker.register("sw.js").then((reg) => {
+    const offerUpdate = (worker) => {
+      if (!worker) return;
+      const toast = document.querySelector("#update-toast");
+      toast.classList.remove("hidden");
+      document.querySelector("#update-go").addEventListener(
+        "click", () => worker.postMessage({ type: "SKIP_WAITING" }));
+      document.querySelector("#update-dismiss").addEventListener(
+        "click", () => toast.classList.add("hidden"));
+    };
+    if (reg.waiting && navigator.serviceWorker.controller) {
+      offerUpdate(reg.waiting);
+    }
+    reg.addEventListener("updatefound", () => {
+      const worker = reg.installing;
+      if (!worker) return;
+      worker.addEventListener("statechange", () => {
+        if (worker.state === "installed" &&
+            navigator.serviceWorker.controller) {
+          offerUpdate(worker);
+        }
+      });
+    });
+  });
 }
 </script>
 </body>

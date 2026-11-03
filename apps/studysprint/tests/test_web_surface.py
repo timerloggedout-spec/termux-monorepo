@@ -103,6 +103,46 @@ def test_service_worker_cache_is_versioned_and_state_network_first():
     assert "network-first" in sw and "data/state.json" in sw
 
 
+def _png_size(path):
+    import struct
+    data = path.read_bytes()
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    return struct.unpack(">II", data[16:24])
+
+
+def test_pwa_richer_install_package():
+    """App-package B (#4437): richer-install manifest (real
+    screenshots, honest sizes), a dedicated safe-zone maskable
+    icon, the update-toast wiring, the custom offline page, and
+    the platform-honest install prompt (Chromium event + iOS
+    fallback instructions, no fake button)."""
+    manifest = json.loads((WEB / "manifest.webmanifest").read_text())
+    assert len(manifest["description"]) > 40
+    shots = manifest["screenshots"]
+    assert 1 <= len(shots) <= 8
+    forms = {s["form_factor"] for s in shots}
+    assert forms == {"wide", "narrow"}
+    for s in shots:
+        w, h = _png_size(WEB / s["src"])
+        assert f"{w}x{h}" == s["sizes"], s["src"]
+    icons = {i["purpose"]: i for i in manifest["icons"]}
+    maskable = WEB / icons["maskable"]["src"]
+    assert maskable.name == "icon-maskable-512.png"
+    assert _png_size(maskable) == (512, 512)
+    assert icons["any"]["src"] != icons["maskable"]["src"]
+    sw = (WEB / "sw.js").read_text()
+    assert "SKIP_WAITING" in sw              # the toast's contract
+    assert "offline.html" in sw              # precached + fallback
+    assert 'caches.match("offline.html")' in sw
+    offline = (WEB / "offline.html").read_text()
+    assert "offline" in offline.lower()
+    html = (WEB / "index.html").read_text()
+    assert 'id="install-card"' in html and 'id="update-toast"' in html
+    assert "Add to Home Screen" in html      # iOS fallback text
+    app = (WEB / "app.js").read_text()
+    assert "beforeinstallprompt" in app and "appinstalled" in app
+
+
 def test_js_pure_helpers_behavior():
     """The due-queue + day-index helpers are pure functions —
     exercise them for real in node (extracted from app.js)."""

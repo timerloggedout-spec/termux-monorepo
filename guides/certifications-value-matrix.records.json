@@ -3861,6 +3861,137 @@
      "competition-link"
     ]
    }
+  },
+  "intake-sfi-abm": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": "NOT_ESTABLISHED",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "NOT_ESTABLISHED"
+   },
+   "payoff": {
+    "quantity": "payoff",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment state (none of record)",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "Funding screen 2026-11-03 (CE site + Class Central crawls): first unit free in-session; continuation+certificate = tuition (~$50 historical), card-payable; scholarship route exists (limited, hardship, per-course application); Summer 2026 session archived 2026-05-18 to 08-08; Mesa Tutorial 172 free, no certificate",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1,
+     "screen": {
+      "verdict": "GATED",
+      "basis": "CARD-BLOCK tuition route; scholarship = discretionary non-card path; session-gated (next run unannounced)",
+      "prep_layer": "Agent-Based Models with Python - Mesa (CE Tutorial 172): fully free, self-paced, no certificate - learning input, not a rung",
+      "certificate_form": "NOT_ESTABLISHED (SFI certificate of completion for passing marks; PDF/public-URL form unverified)"
+     }
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "issuer-page",
+     "cost-feasibility"
+    ]
+   }
   }
  },
  "tiers": {

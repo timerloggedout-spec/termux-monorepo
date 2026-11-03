@@ -46,7 +46,7 @@
 
 ### ③ Judge-panel effects — expected BLOCKED-NOT-RUN (C3)
 - Judge→track/pick attribution is NOT_ESTABLISHED; "their editions' podium picks" presumes the missing linkage — the statistic is undefined on current sources.
-- Permutation mechanics (if linkage ever lands): 10,000 draws, **shuffle WITHIN edition×track strata**; kill = similarity ≤ null median ∨ p > 0.10.
+- ~~Permutation mechanics (if linkage ever lands): 10,000 draws, shuffle WITHIN edition×track strata; kill = similarity ≤ null median ∨ p > 0.10.~~ **STRUCK per DoE amendment D1 (below): spec text assuming repeat-judge linkage is struck; test 3 is a descriptive census until linkage data exists.**
 - **Feasibility stamp decides:** {# repeat judges with attributable picks} = ∅ or < 3 ⇒ ③ recorded **blocked** (not killed, not run). Fallback until then: pool-overlap descriptive.
 
 ### ④ Comment-signal — BLOCKED as inference on current corpus (C8)
@@ -122,4 +122,19 @@ The design closed ahead of the full harvest; feasibility stamps issued against t
 - **Stamps at this layer:** category x edition denominators = NOT_ESTABLISHED (categories not labeled on public surfaces) => test 2 stays descriptive. Editions with usable rubrics = 0 (no weighted criteria on crawled pages) => test 5 stays conditional on its published-rubric filing (the plan's named Agent Rush criteria are the anchor source, not the crawl). Repeat judges with attributable picks = 0.
 - **Judge-track linkage: CLOSED as unsourceable from public pages** — the stamp (0 attributable picks) IS the deliverable per the plan fallback. Test 3 is blocked on LINKAGE, not on this dataset; only a non-public source changes that layer.
 - **Gate state unchanged:** runs still HOLD — OSINT layer pass + Tests-leg verification of the current layer remain the formal gate. Test 1's remaining blockers at this layer: G1 double-tag re-code + editions lacking field rows.
+
+
+## DoE SPEC AMENDMENT (2026-11-03) — ADOPT-WITH-FIXES, defects C1-D1..D7 BINDING
+
+Source: DoE expert seat, system review of record docs/ops/SYSTEM-REVIEW-2026-11-03.md (PR #4513 merged 520944d41474), Concept 1. **Where this amendment and the earlier spec text differ, the amendment governs.** (Delphi #4495 = 9.12 noted in the review as a shape-class constant carrying no signal; the verdict rests on the adversarial pass + data feasibility.)
+
+- **D1 (test 3 DESCOPED):** test 3 = a descriptive **RAISE-pool census** (who is in the pool, what public criteria/statements exist), carrying NO panel-effect claims. Agent Rush judges are not public; RAISE gives pool membership only, zero judge x outcome linkage of record => panel effects = NOT_ESTABLISHED. Test 3's gate = **data existence**; the permutation paragraph above is struck.
+- **D2 (tests 1+2 — shares, never rates):** until entrant denominators are INGESTED, test 1 reports podium **COMPOSITION shares** with exact intervals, labeled as composition — never rates, never over-representation claims; test 2 is queued behind denominator ingestion. (Dataset v2's gallery field anchors are lower bounds; ingestion is established at the gate, not by the crawl alone.)
+- **D3 (taxonomy circularity):** the 11 pattern-read projects are the taxonomy's **TRAINING stratum**. Test 1's CONFIRMATORY run waits for holdout editions (Agent Rush results + the next edition); any run before holdout carries **EXPLORATORY on every output**.
+- **D4 (ONE primary hypothesis — SUPERSEDES the C6 composite form):** the pre-registered primary = the **A-and-E composite** (approval-gates STRICT and enterprise-workflow, from the pattern read). All other features = secondary, reported with their multiplicity; no claim language below the significance standard (n, stratum, basis cited or HELD/INTAKE). The earlier >=2-of-3 composite is demoted to a secondary read.
+- **D5 (test 6 = RECORDED FORECASTS):** test 6 runs as recorded forecasts — issued BEFORE the next edition's results, scored when they land; evidence accrues per edition. A backtest on ~3 editions has exactly one possible split = an anecdote, not a validation: **no backtest-validity claim until >=2 scored forecasts exist**. The LOEO machinery remains as the scoring form for each recorded forecast (nested selection still binding); its gate language is superseded by this accrual rule.
+- **D6 (test 5 = sensitivity over LABELED hypotheses):** test 5 is a SENSITIVITY analysis over stated rubric hypotheses — each labeled as a hypothesis with its basis (the published Agent Rush criteria = one labeled hypothesis, basis: published criteria; inferred variants likewise labeled) — NOT a measurement over inferred rubrics. Kills unchanged (rank-range >=4/6 or W<0.5 fires RUBRIC-FRAGILE wherever a ranking is cited).
+- **D7 (tag agreement gate):** dual-tag agreement is checked BEFORE tags feed any weight-bearing run; tags below the agreement threshold (kappa named in the pre-run filing) enter as **CLAIM-grade** inputs — held out of weight-bearing runs (Rule 9 pattern). This strengthens C2: the kappa report is a gate artifact, not a statistic of record only.
+
+**Interaction with the resequence:** unchanged — all runs still hold for the OSINT layer pass; the gate now reads: current dataset layer + stamps + D1-D7 dispositions (3 = census, 1 = composition/exploratory until holdout + denominators, 6 = forecast-accrual).
 

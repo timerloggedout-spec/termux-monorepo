@@ -28,7 +28,7 @@ SHA_RE = re.compile(r"^[0-9a-f]{7,64}$")
 REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 SECRET_RE = re.compile(
     r"(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|"
-    r"sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|Bearer\\s+[A-Za-z0-9._~+/-]{20,})"
+    r"sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|Bearer\s+[A-Za-z0-9._~+/-]{20,})"
 )
 PROHIBITED_KEYS = (
     "prompt", "completion", "cookie", "token", "secret", "authorization",
@@ -37,7 +37,7 @@ PROHIBITED_KEYS = (
 
 
 def _safe_path(value: Any) -> str:
-    if not isinstance(value, str) or not value or "\\\\" in value or "\\x00" in value:
+    if not isinstance(value, str) or not value or "\\" in value or "\x00" in value:
         raise ValueError("unsafe changed path")
     if any(part in {"", ".", ".."} for part in value.split("/")):
         raise ValueError("unsafe changed path")

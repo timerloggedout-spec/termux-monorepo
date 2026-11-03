@@ -492,10 +492,10 @@
       "allocations": [
         {
           "focus": "winning",
-          "pct": 100,
-          "mode": "standing",
-          "date": "2026-10-27",
-          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-11-03",
+          "reason": "Correction (quota diagnostic 2026-11-03, owner escalation via D1 seat): registry record fly.free_tier documents limit 0 \u2014 free allowances removed for new orgs Oct 2024, fleet org billing state NOT ESTABLISHED. A 100% Winning allocation of a 0 entitlement is a phantom slice; set to 0/none until a fleet Fly billing state is established, then re-file on #1884."
         },
         {
           "focus": "repo-development",

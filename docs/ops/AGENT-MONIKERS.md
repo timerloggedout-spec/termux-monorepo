@@ -107,6 +107,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet RepoStory | `Chronicler · RepoStory` | `termux-fleet-repostory[bot]` | aspect the Annals; queued alt Clio (below) |
 | Termux Fleet DoE | `Factorial · DoE` | `termux-fleet-doe[bot]` | aspect the Design; queued alt Mendel (below) |
 | Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | — (not yet provisioned; deferred 2026-11-03, below) | aspect the Well; queued alt Keeper (below) |
+| Termux Fleet DelphiOracle | `Pythia · DelphiOracle` | `termux-fleet-delphioracle[bot]` | aspect the Utterance; queued alt Seer (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -277,6 +278,44 @@ later round, it lands with `Mimir · UgreenSkills`. The repo
 timerloggedout-spec/ugreen-nas-skills exists (created
 pre-countermand) and stays parked/unused — created under a
 crossed signal, not a precedent.**
+
+**DelphiOracle issuance (2026-11-03, registry lane; D0 pair
+closure under the build-start rule — repo
+timerloggedout-spec/delphi-oracle landed 2026-10-31, the AppID
+leg outstanding until this confer; provisioning in parallel on
+the AppID lane, per-entry pattern, RepoStory precedent).** The
+actor speaks for the D0 Delphi Oracle scoring surface on its
+own repo, so its name is the Delphic oracle's own speaker;
+the queued alt is the plain-register word for the same office,
+so the family itself holds the pool's balance (mythic lead,
+plain alt).
+
+- canonical: `Pythia` (paired display `Pythia · DelphiOracle`)
+- aspect: the Utterance
+- queued alt: `Seer` (mark `Se3r`) — the plain name for the
+  same office; draws only on a registry-lane bounce/rename
+  decision
+- leet marks: `Pyth1a` (single substitution, ranks first) >
+  `Pythi4` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical
+  `termux-fleet-delphioracle` set by the AppID lane); ranked
+  bounce forms if ever needed: `pyth1a` > `pythi4`, returning
+  to the registry lane
+- normalized form: DelphiOracle — `Termux Fleet DelphiOracle`
+  / `termux-fleet-delphioracle[bot]`; install scope =
+  timerloggedout-spec/delphi-oracle ONLY, per-entry pattern
+  (provisioning record: AppID lane)
+
+Considered and not chosen: `Oracle` (D0 seat suggestion,
+`Oracle · DelphiOracle`) — `Oracle` is the surface/function
+title, already load-bearing: bare `Oracle` denotes the Delphi
+Oracle scoring surface of record, and the token also sits
+inside `Archaeo · Oracle`; making it this app's canonical
+would collapse the name/function layers and create
+cross-identity ambiguity.
+Collision check at issuance: `Pythia`, `Seer` and the
+Utterance appear nowhere in this roster or in the
+registration registry.
 
 ## Identity taxonomy and moniker versioning (adopted, 2026-11-01)
 

@@ -24,6 +24,8 @@ on:
     branches: [master]
     paths:
       - 'ops/quota/quota-usage.json'
+      - 'ops/quota/vultr-usage.json'
+      - 'scripts/quota_vultr_usage.py'
       - 'ops/quota/rate-limit-events.json'
       - 'ops/quota/registry.json'
       - 'docs/ops/generated/quota-status.json'

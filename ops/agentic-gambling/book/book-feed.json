@@ -2,7 +2,7 @@
  "book": "challenges-book",
  "counts": {
   "expectation_records": 26,
-  "positions": 0,
+  "positions": 1,
   "settlements": 0,
   "subjects": 26
  },
@@ -10,28 +10,66 @@
   "book": "ops/agentic-gambling/book/challenges-book.json",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl"
  },
- "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger.",
+ "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl — append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger.",
  "pct_block": {
   "computed_at": "2026-11-03T14:17:33Z",
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note"
  },
- "positions": [],
+ "positions": [
+  {
+   "position_id": "POS-001",
+   "gambler": "owner (house stake, placed via the D2 entry operation)",
+   "subject_id": "D2-5-placement-top3",
+   "side": "Y — placement top-3",
+   "stake": {
+    "kind": "soft_quota_token (provider credit — house money)",
+    "instrument": "Vultr credit $200.00, applied 2026-11-03, expires ~2026-12-03 (use-it-or-lose-it; no cash at risk)",
+    "deployment_rule": "the position is taken by SPENDING the credit: every $ of burn (instances + inference, at plans-API rates) is stake deployed on the D2 entry's win expectation; unspent credit at expiry = stake never placed — a NEUTRAL state, not a loss (owner refinement 2026-11-03)",
+    "metering": "quota wiring provider row vultr {entitlement 200.00 · burn legs instances + inference}; D2 seat supplies daily credit ground-truth in build week",
+    "deployed_to_date": null
+   },
+   "basis": "owner framing direct to the D2 seat 2026-11-03 (the use of the Vultr credits is itself a wager on the win, placed with house credits) + D2 entry records D2-3/D2-4/D2-5 in this book",
+   "precondition": "D2-4-submission-landed; resolution source of record = D2 submission confirmation_ref on lablab + official results",
+   "opened": "2026-11-03",
+   "status": "open",
+   "payout": {
+    "structure": "FIXED — burn does not raise the win amount by a cent (owner refinement 2026-11-03)",
+    "pool_total": "$14,000",
+    "first_place": "$5,000 cash + $3,000 credits (tiers of record)",
+    "subject_tier": "top-3 placement per D2-5; amounts per the tiers of record"
+   },
+   "dilution_note": "stake rises against a FIXED payout => the position dilutes as burn grows: rational spend stops where marginal delta-p(win) per $ approaches 0; past that point extra burn wagers more for the identical return. Allocations argue their marginal delta-p, never their total spend.",
+   "amended": "2026-11-03 (owner addendum via D2 seat: expiring-stake x fixed-payout equilibrium + demo-uptime reserve)",
+   "equilibrium": {
+    "model": "expiring stake AND fixed payout — two edges, both real (owner addendum 2026-11-03)",
+    "expiry_edge": "expiry kills salvage value: unspent credit is worth $0 on Dec 4, so hoarding buys nothing",
+    "fixed_payout_edge": "fixed payout caps the return: spend past marginal delta-p ~ 0 still dilutes (per the dilution note)",
+    "equilibrium": "deploy credit wherever it buys delta-p(win) > 0 inside the window",
+    "reserved_slice": {
+     "purpose": "demo-uptime through judging — the ONLY reserved slice with standing value",
+     "window": "demo VM from Nov 8 to credit death ~Dec 3 (~25 days)",
+     "cost_estimate": "~$19.80 @ 2c-4gb plans-API rate / ~$39.60 @ 4c-8gb",
+     "priority": "outranks discretionary burn — a dead demo during judging is a delta-p cliff"
+    }
+   }
+  }
+ ],
  "publication": {
   "b4_note": "B4 AS RULED (owner 2026-11-02, DoE-discharged): private ledger first stands (ledger of record unchanged, entries internal, stakes observational, no external participation) AND public read-only render authorized. Render conformity R1 values verbatim / R2 true state as-is / R3 no entry path from the public surface.",
-  "external_entries": "CLOSED \u2014 publication opens no external entries; positions are fleet-internal only",
+  "external_entries": "CLOSED — publication opens no external entries; positions are fleet-internal only",
   "mode": "read-only render (owner ruling via main, 2026-11-02)",
   "render_conformity": {
    "R1": "published values = ledger values verbatim; render computes nothing, re-estimates nothing",
-   "R2": "expectation records display TRUE STATE \u2014 INTAKE/null priors + posteriors as-is, never dressed, interpolated or hidden",
-   "R3": "read-only means read-only \u2014 no entry/position path from the public surface"
+   "R2": "expectation records display TRUE STATE — INTAKE/null priors + posteriors as-is, never dressed, interpolated or hidden",
+   "R3": "read-only means read-only — no entry/position path from the public surface"
   },
   "surfaces": "fleet web Viz/dev surfaces"
  },
  "publishability_flags": [
-  "record_of_record text for AMD-20 cites an internal seat short-id (840bd147) \u2014 settlement-critical text, carried verbatim; flagged to main before render",
-  "expectation priors/posteriors are null/NOT_ESTABLISHED at open \u2014 render as no-estimate, never as 0",
+  "record_of_record text for AMD-20 cites an internal seat short-id (840bd147) — settlement-critical text, carried verbatim; flagged to main before render",
+  "expectation priors/posteriors are null/NOT_ESTABLISHED at open — render as no-estimate, never as 0",
   "no winprob values exist anywhere in the book or this feed (B5 boundary holds)",
-  "ledger bookkeeping-event notes (internal routing language) are NOT carried in this feed \u2014 only positions/settlements arrays render"
+  "ledger bookkeeping-event notes (internal routing language) are NOT carried in this feed — only positions/settlements arrays render"
  ],
  "schema": "agentic-gambling-book-feed/v1",
  "settlements": [],
@@ -55,7 +93,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -75,7 +113,7 @@
    "window": {
     "wall": "2026-11-04T23:59:00-08:00",
     "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)"
+    "window_start_basis": "register stage B — earliest register anchor for the item (no stage A)"
    }
   },
   {
@@ -98,7 +136,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -118,7 +156,7 @@
    "window": {
     "wall": "2026-11-04T23:59:00-08:00",
     "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register stage B \u2014 earliest register anchor for the item (no stage A)"
+    "window_start_basis": "register stage B — earliest register anchor for the item (no stage A)"
    }
   },
   {
@@ -141,7 +179,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -150,7 +188,7 @@
    "id": "D2-3-nocard-account-live",
    "knowable": "2026-11-03 15:00Z",
    "pct_consumed": null,
-   "pct_note": "degenerate window (instant/point subject) \u2014 no honest percentage",
+   "pct_note": "degenerate window (instant/point subject) — no honest percentage",
    "pct_remaining": null,
    "record_of_record": "D2 seat + gate D2-NOCARD",
    "settle": {
@@ -185,7 +223,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -222,14 +260,19 @@
    },
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
-    "evidence": [],
+    "evidence": [
+     {
+      "ref": "D2 seat relay 2026-11-03 (owner framing + field correction)",
+      "note": "house-stake position POS-001 opened on this subject (stake = $200 Vultr house credit, deployed by burn). Field denominator of record corrected: 2,308 participants (2026-11-03 dashboard) vs stale 1,617 in the coordinator prior — context only; no probability is derived or republished in the book (B5)."
+     }
+    ],
     "posterior": {
-     "n_evidence": 0,
+     "n_evidence": 1,
      "range": null,
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -272,7 +315,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -315,7 +358,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -358,7 +401,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -402,7 +445,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -445,7 +488,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -488,7 +531,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -531,7 +574,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -575,7 +618,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -618,7 +661,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -627,7 +670,7 @@
    "id": "D5-14-spot-confirmation",
    "knowable": "on receipt (pending now)",
    "pct_consumed": null,
-   "pct_note": "degenerate window (instant/point subject) \u2014 no honest percentage",
+   "pct_note": "degenerate window (instant/point subject) — no honest percentage",
    "pct_remaining": null,
    "record_of_record": "entries + gate D5-SPOT",
    "settle": {
@@ -639,7 +682,7 @@
    "window": {
     "wall": "2026-11-17T09:00:00-08:00",
     "window_start": "2026-11-17T09:00:00-08:00",
-    "window_start_basis": "register stage B (kickoff) \u2014 earliest anchor; spot gates the kickoff"
+    "window_start_basis": "register stage B (kickoff) — earliest anchor; spot gates the kickoff"
    }
   },
   {
@@ -662,7 +705,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -706,7 +749,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -731,7 +774,7 @@
   },
   {
    "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for the M1 GPU claim; nearest register coverage starts at the League submission item",
+   "anchors_note": "NOT_ESTABLISHED — no register item for the M1 GPU claim; nearest register coverage starts at the League submission item",
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
@@ -741,7 +784,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -761,12 +804,12 @@
    "window": {
     "wall": "2026-11-07T23:59:00-08:00",
     "window_start": "2026-11-02T00:00:00-08:00",
-    "window_start_basis": "book intake date (day granularity) \u2014 no register item; earliest honest date = subject opened at book open"
+    "window_start_basis": "book intake date (day granularity) — no register item; earliest honest date = subject opened at book open"
    }
   },
   {
    "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)",
+   "anchors_note": "NOT_ESTABLISHED — no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)",
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
@@ -776,7 +819,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -796,7 +839,7 @@
    "window": {
     "wall": "2026-11-09T23:59:00-08:00",
     "window_start": "2026-11-02T00:00:00-08:00",
-    "window_start_basis": "book intake date (day granularity) \u2014 no register item"
+    "window_start_basis": "book intake date (day granularity) — no register item"
    }
   },
   {
@@ -820,7 +863,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -840,7 +883,7 @@
    "window": {
     "wall": "2026-11-19T23:59:00-08:00",
     "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register AMD Academy C1 stage A \u2014 first anchor of the >=5 course set"
+    "window_start_basis": "register AMD Academy C1 stage A — first anchor of the >=5 course set"
    }
   },
   {
@@ -863,7 +906,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -906,7 +949,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -950,7 +993,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -996,7 +1039,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -1016,12 +1059,12 @@
    "window": {
     "wall": "2026-12-12T23:59:00-08:00",
     "window_start": "2026-12-02T09:00:00-08:00",
-    "window_start_basis": "register FCC checkpoint stage A \u2014 earliest anchor (soft item)"
+    "window_start_basis": "register FCC checkpoint stage A — earliest anchor (soft item)"
    }
   },
   {
    "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
+   "anchors_note": "NOT_ESTABLISHED — no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
@@ -1031,7 +1074,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -1051,12 +1094,12 @@
    "window": {
     "wall": "2026-11-15T23:45:00-08:00",
     "window_start": "2026-11-03T00:00:00-08:00",
-    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+    "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
    }
   },
   {
    "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12",
+   "anchors_note": "NOT_ESTABLISHED — no register item for C12",
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
@@ -1066,7 +1109,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -1086,12 +1129,12 @@
    "window": {
     "wall": "2026-11-21T23:59:00-08:00",
     "window_start": "2026-11-03T00:00:00-08:00",
-    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+    "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
    }
   },
   {
    "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED \u2014 no register item for C12",
+   "anchors_note": "NOT_ESTABLISHED — no register item for C12",
    "computed_at": "2026-11-03T14:17:33Z",
    "expectation_record": {
     "evidence": [],
@@ -1101,7 +1144,7 @@
      "value": null
     },
     "prior": {
-     "basis": "NOT_ESTABLISHED at book open \u2014 no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
+     "basis": "NOT_ESTABLISHED at book open — no base-rate record of record exists for this subject yet; prior is set only from a cited record, never asserted",
      "value": null
     },
     "quantity": "P(subject resolves Y)"
@@ -1121,7 +1164,7 @@
    "window": {
     "wall": "2026-11-30T23:59:00-08:00",
     "window_start": "2026-11-03T00:00:00-08:00",
-    "window_start_basis": "slate graduation/intake date (day granularity) \u2014 no register item"
+    "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
    }
   }
  ]

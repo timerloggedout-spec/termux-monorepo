@@ -1,0 +1,193 @@
+{
+  "$id": "studysprint/strands-aws/receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The run_agent receipt: the base shape is VERBATIM from the golden instances (evidence/demo-run.json + a fresh offline run, both in ../golden/) \u2014 same keys, same nullability (an ABSTAIN run carries null plan/quiz/replan/evidence_set/trust_receipt; a planning run carries them populated). The live-run extension members (execution_class \u00b7 model \u00b7 tool_trace \u00b7 fail_closed) are OPTIONAL here and REQUIRED by policy on any receipt whose execution is live: the offline goldens predate the extension and must keep validating, while a production receipt without execution_class fails its review, not this schema. Production receipts are DISTINCT (execution_class=live-production), never confusable with the deterministic offline-gate receipts.",
+  "properties": {
+    "action": {
+      "type": "string"
+    },
+    "agent_version": {
+      "type": "string"
+    },
+    "decision_accessible": {
+      "type": "string"
+    },
+    "decision_final": {
+      "enum": [
+        "ABSTAIN",
+        "ALLOW_RECOMMENDATION",
+        "ESCALATE"
+      ],
+      "description": "Golden-observed vocabulary (demo-run scenarios + fresh offline run)."
+    },
+    "decision_on_asserted_evidence": {
+      "enum": [
+        "ABSTAIN",
+        "ESCALATE"
+      ],
+      "description": "Golden-observed vocabulary (demo-run scenarios + fresh offline run)."
+    },
+    "deployment": {
+      "type": "boolean"
+    },
+    "evidence_set": {
+      "anyOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "execution_class": {
+      "description": "LIVE-RUN EXTENSION. offline-gate = the deterministic loop alone decided; live-local = a model ran outside production; live-production = the deployed endpoint.",
+      "enum": [
+        "offline-gate",
+        "live-local",
+        "live-production"
+      ]
+    },
+    "fail_closed": {
+      "description": "LIVE-RUN EXTENSION. True when a live execution failed and the deterministic gate loop produced this receipt instead \u2014 the fail-closed floor (SPEC section 5).",
+      "type": "boolean"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "model": {
+      "description": "LIVE-RUN EXTENSION. The model that actually ran, stamped per execution.",
+      "properties": {
+        "model_id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "sdk_version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model_id",
+        "sdk_version"
+      ],
+      "type": "object"
+    },
+    "plain_language_explanation": {
+      "type": "string"
+    },
+    "plan": {
+      "anyOf": [
+        {
+          "$ref": "payloads.schema.json#/$defs/PlanDocument"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "privacy": {
+      "type": "string"
+    },
+    "quiz": {
+      "anyOf": [
+        {
+          "$ref": "payloads.schema.json#/$defs/QuizDocument"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "receipt_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "replan": {
+      "anyOf": [
+        {
+          "$ref": "payloads.schema.json#/$defs/PlanDocument"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "studysprint-agent-receipt/v1"
+    },
+    "strands_agent_available": {
+      "type": "boolean"
+    },
+    "today_view": {
+      "anyOf": [
+        {
+          "$ref": "payloads.schema.json#/$defs/TodayView"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "tool_calls": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "type": "object"
+    },
+    "tool_trace": {
+      "description": "LIVE-RUN EXTENSION. One entry per tool invocation, in execution order.",
+      "items": {
+        "properties": {
+          "order": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "output_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "order",
+          "output_sha256"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "trust_receipt": {
+      "anyOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "agent_version",
+    "request_id",
+    "decision_final",
+    "tool_calls",
+    "strands_agent_available",
+    "deployment",
+    "generated_at",
+    "receipt_sha256"
+  ],
+  "title": "StudySprint run receipt (base + live-run extension)",
+  "type": "object"
+}

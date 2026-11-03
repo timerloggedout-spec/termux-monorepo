@@ -1,13 +1,14 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-03T15:09:33Z",
+ "generated_at": "2026-11-03T19:27:12Z",
  "inputs_generated_at": {
-  "ops/quota/quota-usage.json": "2026-11-02T08:20:44Z",
+  "ops/quota/quota-usage.json": "2026-11-03T19:01:36Z",
   "ops/tracking/nested-family.json": "2026-11-03T09:33:50Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
+  "ops/quota/vultr-usage.json",
   "ops/challenge/desk-feed.json",
   "ops/quota/allocation-plan.json",
   "ops/quota/rate-limit-events.json",
@@ -1429,6 +1430,26 @@
     ],
     "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
     "last_point_at": "2026-11-01"
+   },
+   {
+    "key": "vultr.instances",
+    "title": "Vultr instances - $ burn (gap)",
+    "unit": "USD",
+    "kind": "gap",
+    "metric": "usd_burn",
+    "points": [],
+    "provenance": "ops/quota/vultr-usage.json via quota-usage pack series5_vultr (explicit gap: account API key not provisioned - owner's Vultr API key is a vault provisioning item (Console); leg stays an explicit gap until it lands)",
+    "last_point_at": null
+   },
+   {
+    "key": "vultr.serverless",
+    "title": "Vultr serverless inference - $ burn (gap)",
+    "unit": "USD",
+    "kind": "gap",
+    "metric": "usd_burn",
+    "points": [],
+    "provenance": "ops/quota/vultr-usage.json via quota-usage pack series5_vultr (explicit gap: account API key not provisioned - owner's Vultr API key is a vault provisioning item (Console); leg stays an explicit gap until it lands)",
+    "last_point_at": null
    }
   ],
   "model": [

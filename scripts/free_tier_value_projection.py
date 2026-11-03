@@ -85,6 +85,8 @@ def safe_session(row: dict[str, Any], pricing: list[dict[str, Any]]) -> dict[str
     actual_cost = row.get("cost_usd")
     if actual_cost is not None and (isinstance(actual_cost, bool) or not isinstance(actual_cost, (int, float)) or not math.isfinite(actual_cost) or actual_cost < 0):
         return None
+    if actual_cost is not None and actual_cost != 0:
+        return None
     return {
         "session_label": row.get("session_label") or row["call_uid"],
         "run_uid": f"gha:{row.get('repository', '')}:{row['run_id']}:{row['run_attempt']}",

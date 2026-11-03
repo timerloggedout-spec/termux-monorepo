@@ -64,6 +64,10 @@ jobs:
       ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
       XFYUN_API_KEY: ${{ secrets.XFYUN_API_KEY }}
       IFLYTEK_SPARK_API_PASSWORD: ${{ secrets.IFLYTEK_SPARK_API_PASSWORD }}
+      BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+      DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
+      FRIENDLI_API_KEY: ${{ secrets.FRIENDLI_API_KEY }}
+      NOVITA_API_KEY: ${{ secrets.NOVITA_API_KEY }}
       GEMINI_HEALTH_MODEL: ${{ vars.GEMINI_HEALTH_MODEL || '' }}
       OPENROUTER_HEALTH_MODEL: ${{ vars.OPENROUTER_HEALTH_MODEL || '' }}
       STRICT: ${{ inputs.strict || 'false' }}

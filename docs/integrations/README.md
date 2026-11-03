@@ -7,7 +7,7 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 - [Integration registry](INTEGRATION-REGISTRY.md) — human-readable capabilities, priorities, and adoption states.
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.
-- [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.
+- [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.\n- [Provider observation schema](schemas/provider-observation.schema.json) — bounded, attributed HAPI/Context7/Context.dev observation records.\n- [Read-only provider normalizers](../../scripts/integrations/agent_toolchain.py) — offline HAPI MCP Registry, Context7, and Context.dev normalization CLI.
 - [API Impact Review](API-IMPACT-REVIEW.md) — P0 PR analysis lane, assistant workflow, report states, and promotion criteria.
 - [Mapper input schema](schemas/api-impact-mapper-input.schema.json) and [normalized report schema](schemas/api-impact-report.schema.json).
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).

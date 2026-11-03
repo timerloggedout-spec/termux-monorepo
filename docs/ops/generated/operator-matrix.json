@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 509,
-    "open_prs": 212,
+    "open_issues": 513,
+    "open_prs": 216,
     "pr_classes": {
-      "CANDIDATE": 109,
+      "CANDIDATE": 111,
       "EXTRACT": 7,
-      "NEED_EVIDENCE": 96,
+      "NEED_EVIDENCE": 98,
       "SUPERSEDE": 0
     }
   },
@@ -15,7 +15,7 @@
       "unlabelled_numbers": []
     },
     "delphi": {
-      "issues": 95,
+      "issues": 97,
       "unlabelled_numbers": []
     },
     "mesh": {
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 279,
+      "issues": 281,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 42,
-      "prs": 210,
+      "prs": 214,
       "unlabelled_numbers": [
         308,
         388,
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T17:09:03Z",
+  "generated_at": "2026-11-03T17:22:18Z",
   "issues_unlabelled": [
     308,
     388,
@@ -145,10 +145,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "d9a2c13c2a"
+    "sha": "8b14d423d8"
   },
   "prs": [
     {
@@ -242,12 +242,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "dfa872a1f5",
+      "head_sha": "16676c890d",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4473,
-      "title": "fix(web): FSRS receipt NaN \u2014 grade() passes epoch ms; surfaces 0.1.4 (#4461)",
-      "updated_at": "2026-11-03T17:08:12Z"
+      "number": 4483,
+      "title": "feat(web): app-package B \u2014 richer install, custom prompt + iOS fallback, update toast, offline page (#4437)",
+      "updated_at": "2026-11-03T17:16:02Z"
     },
     {
       "class": "CANDIDATE",
@@ -1017,6 +1017,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "cc4ee6d8e8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T17:07:09Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1759,6 +1773,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "dfa872a1f5",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4473,
+      "title": "fix(web): FSRS receipt NaN \u2014 grade() passes epoch ms; surfaces 0.1.4 (#4461)",
+      "updated_at": "2026-11-03T17:08:12Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "5600546a95",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2311,20 +2339,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "cc4ee6d8e8",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T17:07:09Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2988,15 +3002,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "success",
         "smoke": "queued"
       },
-      "head_sha": "a5de3e9c27",
+      "head_sha": "a30f88b9ce",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T17:07:44Z"
+      "updated_at": "2026-11-03T17:13:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3123,6 +3137,48 @@
       "number": 4390,
       "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
       "updated_at": "2026-11-03T15:10:52Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "427d9493ec",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4493,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-03T17:19:27Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "3ac3ce9523",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4494,
+      "title": "feat(apk): app-package C \u2014 release trust (hardening \u2200false \u00b7 reproducible build \u00b7 versionCode 2) (#4438)",
+      "updated_at": "2026-11-03T17:22:11Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "210a78aca4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4497,
+      "title": "recruitment: podium identity layer \u2014 judges + linkage gap map (2026-11-03)",
+      "updated_at": "2026-11-03T17:21:11Z"
     }
   ],
   "schema": "operator-matrix/v1",

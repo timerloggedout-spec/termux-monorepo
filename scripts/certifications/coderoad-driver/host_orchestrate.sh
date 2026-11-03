@@ -21,6 +21,7 @@ docker run -d --name pg \
   coderoad:local sleep infinity >> "$LOG" 2>&1
 docker exec pg bash -c '
   sed -i -E "s/^(host[[:space:]]+all[[:space:]]+all[[:space:]]+(127.0.0.1\/32|::1\/128)[[:space:]]+).*/\1trust/" /etc/postgresql/12/main/pg_hba.conf
+  sed -i -E "s/^(local[[:space:]]+all[[:space:]]+all[[:space:]]+).*/\1trust/" /etc/postgresql/12/main/pg_hba.conf
   printf "\nhost all all 0.0.0.0/0 trust\n" >> /etc/postgresql/12/main/pg_hba.conf
   sed -i -E "s/^#?listen_addresses.*/listen_addresses = '\''*'\''/" /etc/postgresql/12/main/postgresql.conf
   grep -E "^host|^listen" /etc/postgresql/12/main/pg_hba.conf /etc/postgresql/12/main/postgresql.conf | tail -6
@@ -53,6 +54,15 @@ case "$*" in
 esac
 SHIMEOF
 chmod 755 "$SHIM/sudo"
+
+# psql shim: course deliverable scripts (salon.sh, element.sh, ...) call the
+# psql CLI; the host has none — forward to the pg container (local trust).
+cat > "$SHIM/psql" <<'SHIMEOF'
+#!/usr/bin/env bash
+echo "psql-shim: $*" >> "$HOME/shim.log"
+exec docker exec -i pg psql "$@"
+SHIMEOF
+chmod 755 "$SHIM/psql"
 
 # --- VS Code launch (host) ----------------------------------------------
 UD="$HOME/vsud"

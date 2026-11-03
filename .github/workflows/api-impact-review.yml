@@ -31,6 +31,7 @@ jobs:
     outputs:
       pr_number: ${{ steps.event-meta.outputs.pr_number || steps.manual-meta.outputs.pr_number }}
       base_sha: ${{ steps.event-meta.outputs.base_sha || steps.manual-meta.outputs.base_sha }}
+      base_ref: ${{ steps.event-meta.outputs.base_ref || steps.manual-meta.outputs.base_ref }}
       head_sha: ${{ steps.event-meta.outputs.head_sha || steps.manual-meta.outputs.head_sha }}
     steps:
       - name: Resolve pull_request event metadata
@@ -39,12 +40,14 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
           echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_ref=$BASE_REF" >> "$GITHUB_OUTPUT"
 
       - name: Resolve manually requested PR metadata
         if: github.event_name == 'workflow_dispatch'
@@ -65,6 +68,7 @@ jobs:
             core.setOutput('pr_number', String(pr.number));
             core.setOutput('base_sha', pr.base.sha);
             core.setOutput('head_sha', pr.head.sha);
+            core.setOutput('base_ref', pr.base.ref);
 
       - name: Publish manual metadata
         if: github.event_name == 'workflow_dispatch'
@@ -73,6 +77,7 @@ jobs:
           PR_NUMBER: ${{ steps.manual.outputs.pr_number }}
           BASE_SHA: ${{ steps.manual.outputs.base_sha }}
           HEAD_SHA: ${{ steps.manual.outputs.head_sha }}
+          BASE_REF: ${{ steps.manual.outputs.base_ref }}
         run: |
           set -euo pipefail
           test -n "$PR_NUMBER" && test -n "$BASE_SHA" && test -n "$HEAD_SHA"

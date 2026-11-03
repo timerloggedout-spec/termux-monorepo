@@ -1,7 +1,7 @@
 # Integration Intelligence + Superpowers — Design
 
-**Status:** Approved for implementation by the operator directive "Do your plan"  
-**Date:** 2026-11-02  
+**Status:** Approved for implementation by the operator directive "Do your plan"
+**Date:** 2026-11-02
 **Proposal:** [integration-intelligence-superpowers](../../proposals/active/integration-intelligence-superpowers/MANIFEST.md)
 
 ## Intent

@@ -103,3 +103,7 @@ syllabus -> ALLOW_RECOMMENDATION + 12-session plan + quiz + re-plan;
 credential_mutation -> ESCALATE. No live deployment of StudySprint is
 claimed; receipts state `deployment: False` and whether the Strands
 SDK was importable in the run environment.
+
+Reading ships too: the multi-pass RSVP reader (`study_reader.py`,
+in v0.3.0) reads section by section — a fast skim pass, then a
+focused re-read — with one-tap term flagging into the SR deck.

@@ -244,11 +244,12 @@ def build(root: Path, observations_path: Path, source_sha: str | None) -> dict[s
     board["sessions"] = sessions
     board["coverage"] = coverage
     board["totals"] = {
+        "availability": "AVAILABLE" if sessions else "UNAVAILABLE_NO_VALIDATED_SESSIONS",
         "published_session_count": len(sessions),
-        "input_tokens": sum(s["input_tokens"] for s in sessions),
-        "output_tokens": sum(s["output_tokens"] for s in sessions),
-        "paid_equivalent_usd": float(rounded_total),
-        "paid_equivalent_usd_exact": exact_total_text,
+        "input_tokens": sum(s["input_tokens"] for s in sessions) if sessions else None,
+        "output_tokens": sum(s["output_tokens"] for s in sessions) if sessions else None,
+        "paid_equivalent_usd": float(rounded_total) if sessions else None,
+        "paid_equivalent_usd_exact": exact_total_text if sessions else None,
         "rounding": "ROUND_HALF_UP to 10 decimal USD places after exact aggregation",
     }
     board["generated_at"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")

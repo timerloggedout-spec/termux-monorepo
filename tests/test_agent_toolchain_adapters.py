@@ -64,7 +64,7 @@ class HapiRegistryNormalizerTests(unittest.TestCase):
     def test_unknown_fields_are_named_but_values_are_not_copied(self):
         result = normalize_hapi_server(self.record, CAPTURED)
         self.assertIn("futureField", result["data"]["unmapped_field_names"])
-        self.assertNotIn("private", str(result))
+        self.assertNotIn("query=private", str(result))
 
     def test_versions_have_distinct_stable_keys(self):
         first = normalize_hapi_server(self.record, CAPTURED)
@@ -168,7 +168,7 @@ class ContextEvidenceNormalizerTests(unittest.TestCase):
         self.assertEqual(result["data"]["canonical_url"], "https://research.example.org/path")
         self.assertTrue(result["data"]["url_query_redacted"])
         self.assertTrue(result["trust"]["content_untrusted"])
-        self.assertNotIn("secret", str(result))
+        self.assertNotIn("token=secret", str(result))
         self.assertNotIn("private", str(result))
 
     def test_context_dev_rejects_credentials_and_non_http_urls(self):

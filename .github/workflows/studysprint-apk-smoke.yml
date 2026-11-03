@@ -81,6 +81,7 @@ jobs:
 
       - name: Run the emulator smoke gate
         id: smoke
+        timeout-minutes: 25
         run: |
           export ANDROID_HOME
           bash gate/apps/studysprint/android/emulator-smoke.sh \

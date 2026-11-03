@@ -45,7 +45,7 @@ execution and evidence must be independently observable.
 
 - [x] TEL-01 LANDED VIA SUCCESSORS 2026-11-02: #2407 itself closed-unmerged, but its declaration layer is on master — `ops/github-apps/registry.json` (schema v1, manifest = declared-permissions SSOT per its source_of_truth_policy) + telemetry emitter workflow (landed; hardened #2441; adaptive publication #2448) [migration-plan review]
 - [ ] TEL-02 Collector registered in integration-mesh snapshot/diff (mesh 6h poll consumes registry.json; app visible with no check suites) [mesh lane]
-- [ ] TEL-03 Emitter scheduled + mint-wired: weekly census run on a freshly minted installation token (never a stored token) — feeds MAINT-02 readings [quota + migration-plan] — MINT-WIRING DONE 2026-10-30: mint pattern proven by green probe run 41016897632 (app-id var TERMUX_FLEET_COLLECTOR_APP_ID + secret TERMUX_FLEET_COLLECTOR_PRIVATE_KEY); remains open for census scheduling only.
+- [x] TEL-03 Emitter scheduled + mint-wired 2026-11-02: `github-app-telemetry.yml` @master cron `17 * * * *` (hourly adaptive) + dispatch, Collector-census job gated to schedule/dispatch-on-master, fresh minted token per run; 57 runs, schedule events succeeding (latest 2026-11-02T20:49Z) — weekly bar exceeded; checked on quota's call, migration-plan co-sign [quota + migration-plan]
 - [ ] TEL-04 Live permission readback on installation token vs manifest declarations (drift leg of MAINT-01); declared ≠ observed kept separate [appid]
 - [ ] TEL-05 Negative-path tests pass: missing credentials, revoked installation, inaccessible repository, permission drift [author + appid]
 - [x] TEL-06 FIRST RUNTIME RECEIPT 2026-11-02: G4 receipt step (token source, run id/attempt/SHA, app-bucket reading) executes on real Collector-token production runs — first on shadow run 41024874583 (2026-10-30), standing on production e.g. 41455502044 (2026-11-02) [migration-plan]
@@ -59,7 +59,7 @@ execution and evidence must be independently observable.
 ## MAINT — recurring (all as GitHub Workflows; VM hosts none)
 
 - [ ] MAINT-01 Weekly permission-drift audit workflow live (installed perms vs manifest of record; diff → one tracking issue) [appid]
-- [ ] MAINT-02 Weekly bucket census live (per-app `GET /rate_limit` readings → registry via #1884 route; missing = null) [quota]
+- [ ] MAINT-02 Weekly bucket census live (per-app `GET /rate_limit` readings → registry via #1884 route; missing = null) [quota] — evidence pointer 2026-11-02: app-side readings flow hourly via github-app-telemetry (see TEL-03 [x]); quota's provider censuses are a separate leg (their readings 170/170 via #3635) [migration-plan note]
 - [ ] MAINT-03 Monthly GitHub API changelog / version review; deprecations become items here with sunset dates [migration-plan] — 2026-11 PASS DONE 2026-11-02 (stateless-token rollout: fleet impact ∅; SBOM-sync removal: ∅ usage; webhook meta ranges noted; next pass 2026-12) [migration-plan]
 - [ ] MAINT-04 Quarterly minter upkeep (pinned action release, JWT claims, token-expiry handling) [appid]
 - [ ] MAINT-05 Collector PEM rotation due by 2027-04-29 (6-month anchor from 2026-10-29 creation); per-app anchors set at each creation [appid]

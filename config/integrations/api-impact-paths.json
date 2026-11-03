@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "api_surface_patterns": [
+    "llm_api_hub/server/**",
+    "llm_api_hub/clients/**",
+    "llm_api_hub/schemas/**",
+    "hub_mcp/**",
+    "commingle-swarm/web/src/api/**",
+    "apps/listinglens/src/schemas.mjs",
+    "apps/listinglens/tests/schemas.test.mjs",
+    "deepcli/investigator/api_map.py",
+    "deepseek-cli/test/api_probe.test.js",
+    "_1-Projects/a/yobitrageswap/api/**"
+  ],
+  "note": "Explicitly reviewed path policy. Expand only with repository contract or consumer evidence."
+}

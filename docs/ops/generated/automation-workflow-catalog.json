@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f6ea9326c90d72376aa42c4f3f9ede63be15fec22fd59efa19bc98eb9538f518",
-  "workflow_count": 286,
+  "source_fingerprint": "f51e891df3da01f85658285d7e45d16ff37e433cb6051c2b6904e9e395ee084e",
+  "workflow_count": 287,
   "workflows": [
     {
       "action_pins": [],
@@ -3815,6 +3815,24 @@
       ],
       "name": "quota-pages-visual",
       "path": ".github/workflows/quota-pages-visual.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: quota-readings-promote cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote"
+      ],
+      "name": "quota-readings-promote",
+      "path": ".github/workflows/quota-readings-promote.yml",
       "schedules": [],
       "triggers": [
         "push",

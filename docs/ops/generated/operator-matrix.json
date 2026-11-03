@@ -3,9 +3,9 @@
     "open_issues": 473,
     "open_prs": 207,
     "pr_classes": {
-      "CANDIDATE": 104,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 92,
+      "CANDIDATE": 107,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 94,
       "SUPERSEDE": 0
     }
   },
@@ -98,7 +98,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T14:29:25Z",
+  "generated_at": "2026-11-03T14:32:18Z",
   "issues_unlabelled": [
     308,
     388,
@@ -150,7 +150,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "27f14f7d40"
+    "sha": "06b7afbc8d"
   },
   "prs": [
     {
@@ -165,7 +165,7 @@
       "mergeable_state": "unstable",
       "number": 1498,
       "title": "Antigravity CLI: collaborative use cases, provisioning proposal, offline readiness (#1497)",
-      "updated_at": "2026-11-02T16:18:19Z"
+      "updated_at": "2026-11-03T14:29:43Z"
     },
     {
       "class": "EXTRACT",
@@ -179,7 +179,7 @@
       "mergeable_state": "unstable",
       "number": 1514,
       "title": "feat(antigravity): isolated secondary operational pilot (#1497)",
-      "updated_at": "2026-11-03T01:05:23Z"
+      "updated_at": "2026-11-03T14:29:33Z"
     },
     {
       "class": "EXTRACT",
@@ -230,82 +230,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "90d39b0321",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T14:27:34Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e531b24179",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T14:28:28Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "4b1c021849",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4352,
-      "title": "Delphi gate P3 (EGM-2): vote profiles + collision flags on the board + quarantine guard",
-      "updated_at": "2026-11-03T14:20:09Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b0c68fafe6",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4353,
-      "title": "Delphi gate P1+P2 (EGM-2): scoreable verification records via oracle resolution",
-      "updated_at": "2026-11-03T14:21:59Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "83ad38a6ce",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4355,
-      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
-      "updated_at": "2026-11-03T14:23:58Z"
     },
     {
       "class": "CANDIDATE",
@@ -363,7 +293,7 @@
       "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
-      "updated_at": "2026-11-02T16:18:04Z"
+      "updated_at": "2026-11-03T14:29:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -688,7 +618,7 @@
       "mergeable_state": "unknown",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
-      "updated_at": "2026-11-02T16:18:26Z"
+      "updated_at": "2026-11-03T14:29:40Z"
     },
     {
       "class": "CANDIDATE",
@@ -856,7 +786,7 @@
       "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
-      "updated_at": "2026-11-02T16:19:02Z"
+      "updated_at": "2026-11-03T14:30:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -1094,7 +1024,7 @@
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
-      "updated_at": "2026-11-02T16:18:00Z"
+      "updated_at": "2026-11-03T14:29:59Z"
     },
     {
       "class": "CANDIDATE",
@@ -1626,7 +1556,7 @@
       "mergeable_state": "unknown",
       "number": 4019,
       "title": "feat(api-impact): add SHA-bound API evolution review lane",
-      "updated_at": "2026-11-03T01:53:26Z"
+      "updated_at": "2026-11-03T14:29:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -1769,6 +1699,48 @@
       "updated_at": "2026-11-03T10:16:00Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4b1c021849",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4352,
+      "title": "Delphi gate P3 (EGM-2): vote profiles + collision flags on the board + quarantine guard",
+      "updated_at": "2026-11-03T14:20:09Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b0c68fafe6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4353,
+      "title": "Delphi gate P1+P2 (EGM-2): scoreable verification records via oracle resolution",
+      "updated_at": "2026-11-03T14:21:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "83ad38a6ce",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4355,
+      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
+      "updated_at": "2026-11-03T14:23:58Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1794,7 +1766,7 @@
       "mergeable_state": "dirty",
       "number": 48,
       "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
-      "updated_at": "2026-11-02T16:18:08Z"
+      "updated_at": "2026-11-03T14:29:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1836,7 +1808,7 @@
       "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
-      "updated_at": "2026-11-02T16:18:15Z"
+      "updated_at": "2026-11-03T14:29:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2088,7 +2060,7 @@
       "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
-      "updated_at": "2026-11-02T16:18:11Z"
+      "updated_at": "2026-11-03T14:29:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2299,6 +2271,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "b8167066f6",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T14:31:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2953,10 +2939,24 @@
       },
       "head_sha": "d485259c8e",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T14:24:50Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "50fc930df3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T14:31:41Z"
     },
     {
       "class": "NEED_EVIDENCE",

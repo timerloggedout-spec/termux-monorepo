@@ -53,7 +53,7 @@ sha256 537981b8…).
 | Atom | Verdict | Basis |
 |---|---|---|
 | Edition | **RESOLVED** | title/URL receipted in both versions |
-| Judge pool (D2) | **NOT_ESTABLISHED** — never-published | two independent crawls (v1 + run1) of the edition page carry zero judge cards while a sibling edition's page carries 6; the ceiling is the venue's disclosure (podium research record, atom (a)) |
+| Judge pool (D2) | **NOT_ESTABLISHED** — never-published (event-platform surfaces) | two independent crawls (v1 + run1) of the edition page carry zero judge cards while a sibling edition's page carries 6; the ceiling is the venue's disclosure (podium research record, atom (a)). The sponsor-recap class (template §2③ — where judge names lived for other events) is a separate leg, owned by the Recruitment lane's identity-gap record; this verdict binds the platform surfaces only |
 | Judge↔track linkage | **NOT_ESTABLISHED** — by construction | no pool exists to attribute; test ③ remains a descriptive census |
 | Podium (D2) | **NOT_ESTABLISHED — temporal** | podium_n 0 with the event in window; re-stamps on the next crawl after winners publish |
 | Field (D2) | **PARTIAL** | field_n 3 via `/live` vs 2,302 approved registrants — the gallery denominator leg (test-plan C1) remains the tests' precondition |

@@ -104,7 +104,7 @@ engines. An embedded-Python build is not claimed here.
 | SR cards + review | present | on-device engines over the core UX export |
 | Reader (RSVP) | present | bundle Reader view (beyond the filed minimum) |
 | .apkg / vault export | absent | export stays CLI/TUI in this version |
-| v0.4.0 core modules (§1b pipeline, courses) | absent | parity pass pending, as on the other surfaces |
+| v0.4.0 core modules (§1b pipeline, courses) | courses bound (0.4.0, as webApp — the APK ships the web bundle); §1b pipeline still partial | courses ride the bundle; the pipeline completion is iteration 4 |
 | Memory methods (§1c) | present | as webApp (Memory view + Leitner in SR + interleaved plan in the bundle, build-time state; iteration 2) |
 | §1d calendar + geography | present | as webApp (Calendar + Routes views in the bundle, build-time state) |
 

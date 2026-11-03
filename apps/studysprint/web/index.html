@@ -13,6 +13,13 @@
 <header>
   <h1>StudySprint</h1>
   <p id="course-name">Loading your course…</p>
+  <div class="row" id="course-bar">
+    <label>Course
+      <select id="course-switch"></select>
+    </label>
+    <span id="course-countdown"></span>
+    <a id="course-ics" download="studysprint-course.ics">Download .ics</a>
+  </div>
 </header>
 
 <nav id="tabs" role="tablist">
@@ -139,6 +146,21 @@
       <button id="ingest-confirm" class="hidden">Confirm placement</button>
     </div>
     <p id="ingest-status" aria-live="polite"></p>
+    <h3>New course</h3>
+    <p>Create a course from its syllabus document (JSON with a
+    course name, weeks and topics, and an exam_date if it has
+    one). The course joins the switcher above; its plan and
+    countdown follow the same core rules as the bundled courses,
+    and its progress is stored under its own keys — never mixed
+    with another course's.</p>
+    <label>Syllabus document (JSON)
+      <textarea id="new-course-json" rows="6" cols="60"
+        placeholder='{"course": "HIST 201", "exam_date": "2026-12-15", "weeks": [{"week": 1, "topics": ["causes", "timeline"]}]}'></textarea>
+    </label>
+    <div class="row">
+      <button id="new-course-add" class="primary">Create course</button>
+    </div>
+    <p id="new-course-status" aria-live="polite"></p>
   </section>
 </main>
 

@@ -74,23 +74,28 @@ def _memory_bundle(plan: dict, sections: list,
     }
 
 
-def emit_state(root: Path | None = None) -> dict:
-    root = root or APP_ROOT
-    syllabus = json.loads((root / "examples" / "syllabus.json")
+def _course_bundle(root: Path, stem: str) -> dict:
+    """One course's full surface bundle (parity iteration 3,
+    #4416: the emit that used to be the whole state, now per
+    course). `stem` names the examples file set: '' for the first
+    sample (syllabus.json), '_stats' for the second
+    (syllabus_stats.json, STAT 210)."""
+    syllabus = json.loads((root / "examples" / f"syllabus{stem}.json")
                           .read_text())
-    practice = json.loads((root / "examples" / "practice_set.json")
+    practice = json.loads((root / "examples" / f"practice_set{stem}.json")
                           .read_text())
     evidence = fetch_study_evidence(
-        {"kind": "syllabus", "ref": "examples/syllabus.json"}, root=root)
+        {"kind": "syllabus", "ref": f"examples/syllabus{stem}.json"},
+        root=root)
     plan = build_study_plan(syllabus)
     cards = build_cards_from_practice_set(practice)
     ux = export_ux_state(cards, {})
-    # Per-topic reading passages (examples/readings.json): authored
-    # example content, one passage per syllabus topic, so a section
-    # titled for a topic actually teaches that topic (#4230). Real
-    # courses get their sections from the ingested course text.
+    # Per-topic reading passages: authored example content, one
+    # passage per syllabus topic, so a section titled for a topic
+    # actually teaches that topic (#4230). Real courses get their
+    # sections from the ingested course text.
     readings = {}
-    readings_file = root / "examples" / "readings.json"
+    readings_file = root / "examples" / f"readings{stem}.json"
     if readings_file.exists():
         readings = json.loads(readings_file.read_text())
     sections = []
@@ -105,9 +110,9 @@ def emit_state(root: Path | None = None) -> dict:
                         "full reading for this topic arrives with "
                         "the course text at ingest; the plan, checks "
                         "and reviews for it are live now.")
-            stem = topic.lower().rstrip("s").split()[-1]
+            stem_word = topic.lower().rstrip("s").split()[-1]
             checks = [q for q in practice.get("questions") or []
-                      if stem in (q["q"] + " " + q["a"]).lower()]
+                      if stem_word in (q["q"] + " " + q["a"]).lower()]
             if checks:
                 text += "\n\nCheck yourself: " + " ".join(
                     q["q"] + " " + q["a"] for q in checks)
@@ -117,26 +122,31 @@ def emit_state(root: Path | None = None) -> dict:
                              "words": Section(
                                  section_id="tmp", title=topic,
                                  content=text).tokens})
-    version_file = WEB_DIR / "VERSION"
     # Calendar + geography (parity iteration 1, #4414): the same
     # core assembler the TUI runs live; here it is computed at
     # build time like the rest of the bundle's state (the APK
     # disclosure covers it: state as of the build).
     from datetime import datetime, timezone
     calendar_geo = None
-    calendar_file = root / "examples" / "calendar.json"
+    calendar_error = None
+    calendar_file = root / "examples" / f"calendar{stem}.json"
     if calendar_file.exists():
         topics = [t for w in syllabus.get("weeks") or []
                   for t in w.get("topics") or []]
-        calendar_geo = surface_calendar_geo(
-            json.loads(calendar_file.read_text()),
-            datetime.now(timezone.utc), topics=topics)
+        try:
+            calendar_geo = surface_calendar_geo(
+                json.loads(calendar_file.read_text()),
+                datetime.now(timezone.utc), topics=topics)
+        except ValueError as e:
+            # The core calendar intake refuses this course's
+            # calendar (e.g. an assessment kind outside its
+            # enum): the refusal is recorded on the bundle, the
+            # course still ships -- never a silent drop, never a
+            # whole-build crash for one course's calendar.
+            calendar_error = str(e)
     return {
-        "plan_start": date.today().isoformat(),
-        "surface": "studysprint-webapp",
-        "surface_version": version_file.read_text().strip()
-        if version_file.exists() else "0.1.0",
         "course": syllabus.get("course"),
+        "syllabus": syllabus,
         "plan": plan,
         "trust_receipt": format_trust_receipt(evidence),
         "today": render_today_view(plan),
@@ -144,7 +154,47 @@ def emit_state(root: Path | None = None) -> dict:
                "ux_state": ux},
         "reader": {"sections": sections},
         "calendar_geo": calendar_geo,
+        "calendar_error": calendar_error,
         "memory": _memory_bundle(plan, sections, calendar_geo),
+    }
+
+
+def emit_state(root: Path | None = None) -> dict:
+    root = root or APP_ROOT
+    version_file = WEB_DIR / "VERSION"
+    # Multi-course (parity iteration 3, #4416): the surface's
+    # course set = both bundled samples, intaken through the REAL
+    # core course-set machinery (intake_courses: per-course plans
+    # + countdowns + merged totals + conflict flags) with a
+    # per-course .ics export (export_ics over a single-course
+    # intake). Top-level fields stay the FIRST course's bundle --
+    # the back-compat shape every existing view reads; the
+    # switcher rebinds them to the active course in the browser.
+    from datetime import datetime, timezone
+
+    from study_courses import export_ics, intake_courses
+    stems = ["", "_stats"]
+    bundles = [_course_bundle(root, s) for s in stems]
+    docs = [b["syllabus"] for b in bundles]
+    intake = intake_courses(docs, now=datetime.now(timezone.utc))
+    plan_start = date.today().isoformat()
+    ics_by_course = {}
+    for b in bundles:
+        single = {"courses": [c for c in intake["courses"]
+                               if c["course"] == b["course"]]}
+        ics_by_course[b["course"]] = export_ics(single, plan_start)
+    first = bundles[0]
+    return {
+        "plan_start": plan_start,
+        "surface": "studysprint-webapp",
+        "surface_version": version_file.read_text().strip()
+        if version_file.exists() else "0.1.0",
+        **{k: first[k] for k in
+           ("course", "plan", "trust_receipt", "today", "sr",
+            "reader", "calendar_geo", "memory")},
+        "courses": bundles,
+        "courses_intake": intake,
+        "ics_by_course": ics_by_course,
     }
 
 

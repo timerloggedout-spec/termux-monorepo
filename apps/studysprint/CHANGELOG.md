@@ -1,5 +1,38 @@
 ## [Unreleased]
 
+### Surfaces 0.4.0 (parity iteration 3, #4416 — multi-course)
+
+- **Multi-course binds on all three surfaces.** The course set
+  (both bundled samples + the student's own courses) is intaken
+  through the core's course-set machinery (study_courses:
+  per-course plans + countdowns + merged totals + conflict
+  flags) and every surface switches between courses with
+  per-course state: on web, SR state and check-ins persist
+  under per-course storage keys (the pre-0.4.0 global keys are
+  adopted once, by the first course only); on the TUI,
+  check-ins persist per course in checkin-logs.json while the
+  flat checkin-log.json keeps carrying the active course's log.
+- **Countdowns + .ics per course.** Each course's header/pane
+  shows its exam countdown from the intake (honestly "unset"
+  when the syllabus carries no exam date); the .ics download
+  (web) / file export (TUI) is the core's export_ics over that
+  course alone — validated, and carrying no other course's
+  events.
+- **Create-a-course on both surfaces.** Web: paste a syllabus
+  document in Ingest — plan and countdown come from browser
+  ports of build_study_plan / exam_countdown, battery-pinned
+  to the core in tests. TUI: a Courses-tab form persists the
+  syllabus document under ~/.studysprint/courses and the set
+  re-intakes through the real core. A created course's progress
+  lives under its own keys from its first minute.
+- **Honest edges, kept:** the STAT 210 sample's calendar uses
+  an assessment kind the core calendar intake refuses
+  ("problem set"); the refusal is recorded on the course's
+  bundle and shown in its Calendar view — the course itself
+  ships whole. A created course's .ics export and memory
+  bundle arrive with its first bundle build; its views say so
+  rather than borrowing another course's.
+
 ### Surfaces 0.3.0 (parity iteration 2, #4415 — memory methods)
 
 - **§1c memory methods bind on all three surfaces.** The core's

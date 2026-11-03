@@ -59,6 +59,8 @@ def _safe_url(value: Any, field: str) -> tuple[str, bool]:
         port = parts.port
     except ValueError as exc:
         raise ValueError(f"{field} is not a valid URL") from exc
+    if any(pattern.search(raw) for pattern in _SECRET_PATTERNS):
+        raise ValueError(f"{field} contains credential-shaped material")
     if parts.scheme.lower() != "https" or not parts.hostname:
         raise ValueError(f"{field} must be an absolute HTTPS URL")
     if parts.username is not None or parts.password is not None:
@@ -69,6 +71,12 @@ def _safe_url(value: Any, field: str) -> tuple[str, bool]:
     netloc = host if port in (None, 443) else f"{host}:{port}"
     canonical = urlunsplit(("https", netloc, parts.path or "/", "", ""))
     return canonical, bool(parts.query or parts.fragment)
+
+
+def _redact_text(value: str) -> str:
+    for pattern in _SECRET_PATTERNS:
+        value = pattern.sub("[REDACTED]", value)
+    return value
 
 
 def _excerpt(payload: dict[str, Any], limit: int) -> tuple[str, bool]:
@@ -87,6 +95,7 @@ def _excerpt(payload: dict[str, Any], limit: int) -> tuple[str, bool]:
         value = ""
     if not isinstance(value, str):
         raise ValueError("provider excerpt must be text")
+    value = _redact_text(value)
     return value[:limit], len(value) > limit
 
 
@@ -160,12 +169,16 @@ def normalize_hapi_server(record: dict[str, Any], captured_at: str,
     if len(remotes_value) > MAX_HAPI_REMOTES:
         raise ValueError(f"server.remotes exceeds {MAX_HAPI_REMOTES} entries")
     remotes = []
+    seen_remotes = set()
     for remote in remotes_value:
         if not isinstance(remote, dict):
             raise ValueError("each server remote must be an object")
         transport = _required_text(remote.get("type"), "remote.type", 80)
         endpoint, _ = _safe_url(remote.get("url"), "remote.url")
-        remotes.append({"transport": transport, "endpoint": endpoint})
+        remote_key = (transport, endpoint)
+        if remote_key not in seen_remotes:
+            seen_remotes.add(remote_key)
+            remotes.append({"transport": transport, "endpoint": endpoint})
     capabilities_value = server.get("capabilities", [])
     if not isinstance(capabilities_value, list):
         raise ValueError("server.capabilities must be a list")
@@ -184,8 +197,8 @@ def normalize_hapi_server(record: dict[str, Any], captured_at: str,
     if not isinstance(title, str) or not isinstance(description, str):
         raise ValueError("server title and description must be text")
     data = {
-        "title": title[:300],
-        "description": description[:1000],
+        "title": _redact_text(title)[:300],
+        "description": _redact_text(description)[:1000],
         "remotes": remotes,
         "capabilities": capabilities,
         "registry_metadata": registry_metadata,
@@ -230,7 +243,7 @@ def normalize_context7_document(payload: dict[str, Any], library_id: str,
         "context7", "versioned_documentation_reference", f"{parts[1]}/{parts[2]}@{resolved}",
         captured_at, "Context7", "resolved_library_documentation", provider_request_id,
         {"library_id": library_id, "version": resolved},
-        {"title": title[:300], "excerpt": excerpt, "truncated": truncated, "source_refs": refs},
+        {"title": _redact_text(title)[:300], "excerpt": excerpt, "truncated": truncated, "source_refs": refs},
         {"content_untrusted": True, "implementation_authority": "advisory_only"},
     )
 
@@ -249,7 +262,7 @@ def normalize_context_dev_result(payload: dict[str, Any], captured_at: str,
     return _observation(
         "context-dev", "web_research_result", canonical, captured_at, "Context.dev",
         "web_search_or_scrape", provider_request_id, {"canonical_url": canonical},
-        {"canonical_url": canonical, "title": title[:300], "excerpt": excerpt,
+        {"canonical_url": canonical, "title": _redact_text(title)[:300], "excerpt": excerpt,
          "truncated": truncated, "url_query_redacted": redacted},
         {"content_untrusted": True, "implementation_authority": "advisory_only"},
     )

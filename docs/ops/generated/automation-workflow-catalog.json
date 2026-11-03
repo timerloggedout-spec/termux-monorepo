@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2ad886cf711129d071f07cc1108e94b168fdcc796544a77fd0c26fdd28b7ca54",
-  "workflow_count": 283,
+  "source_fingerprint": "6831aa37abaa3105614c3f90bcca7184db9bf3ef6ed5046bd9291dd45c23dc31",
+  "workflow_count": 284,
   "workflows": [
     {
       "action_pins": [],
@@ -3442,6 +3442,24 @@
       "path": ".github/workflows/platform201-support-response-check.yml",
       "schedules": [
         "17 13 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "crawl"
+      ],
+      "name": "podium-crawl",
+      "path": ".github/workflows/podium-crawl.yml",
+      "schedules": [
+        "23 7 * * *"
       ],
       "triggers": [
         "schedule",

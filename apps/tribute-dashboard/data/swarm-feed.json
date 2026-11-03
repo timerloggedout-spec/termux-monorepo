@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-03T20:01:46Z",
+ "generated_at": "2026-11-03T21:25:23Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -22,12 +22,12 @@
   {
    "id": "readings",
    "path": "docs/ops/generated/quota-status.json",
-   "generated_at": "2026-11-02T08:16:06.415255+00:00"
+   "generated_at": "2026-11-03T19:46:44.808639+00:00"
   },
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-03T20:01:46Z"
+   "generated_at": "2026-11-03T21:25:23Z"
   },
   {
    "id": "rate-limit-events",
@@ -45,12 +45,12 @@
   "rate_limit_events": 8,
   "families_populated": 29,
   "families_gap": 6,
-  "records_populated": 2,
+  "records_populated": 1,
   "records_total": 97,
   "population": {
    "providers_total": 95,
-   "providers_populated": 2,
-   "providers_gap": 93,
+   "providers_populated": 1,
+   "providers_gap": 94,
    "families_total": 35,
    "families_populated": 29,
    "families_gap": 6
@@ -2487,8 +2487,7 @@
    "population": {
     "state": "populated",
     "bases": [
-     "census",
-     "readings"
+     "census"
     ]
    },
    "census": {
@@ -2527,12 +2526,12 @@
       "status": "unknown",
       "used": null,
       "remaining": null,
-      "evidence_status": "confirmed",
-      "horizon": "H0",
-      "observed_at": "2026-11-02T08:16:06.415255+00:00"
+      "evidence_status": "attributed_claim",
+      "horizon": "H1",
+      "observed_at": null
      },
      "usage_series": null,
-     "populated": "2026-11-02T08:16:06.415255+00:00"
+     "populated": null
     }
    ]
   },

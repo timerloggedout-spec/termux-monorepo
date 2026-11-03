@@ -1,11 +1,11 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-03T20:01:46Z",
+ "generated_at": "2026-11-03T21:25:23Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
  "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap decision pending)",
  "registry_context": {
   "records": 170,
-  "pools": 53,
+  "pools": 59,
   "coverage": "170/170 readings rows (registry at 170 records; promotion cycle carries new records into readings)"
  },
  "series1_api_core": {
@@ -182,6 +182,12 @@
    },
    {
     "at": "2026-11-02T08:16:06.415255+00:00",
+    "rows": 170,
+    "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
+    "provenance": "vercel-quota-probe readings generation"
+   },
+   {
+    "at": "2026-11-03T19:46:44.808639+00:00",
     "rows": 170,
     "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
     "provenance": "vercel-quota-probe readings generation"
@@ -854,10 +860,10 @@
   "title": "Vultr usage - instance + serverless $ burn",
   "source": "ops/quota/vultr-usage.json (quota-vultr-usage/v1) - collected by scripts/quota_vultr_usage.py; plans rates pulled from api.vultr.com/v2/plans at read time",
   "note": "Account legs (instances, serverless, balance) are explicit gaps until the owner's Vultr API key is provisioned; rates are never hardcoded.",
-  "generated_at": "2026-11-03T19:46:00Z",
+  "generated_at": "2026-11-03T20:26:58Z",
   "plans": {
    "source": "https://api.vultr.com/v2/plans",
-   "pulled_at": "2026-11-03T19:46:00Z",
+   "pulled_at": "2026-11-03T20:26:58Z",
    "stale": false,
    "rates": {
     "vc2-1c-0.5gb-free": {

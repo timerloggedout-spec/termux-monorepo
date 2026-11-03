@@ -31,18 +31,18 @@ import java.util.Map;
  * accept="image/*" capture="environment"). A stock WebView
  * silently ignores file inputs, so the shell wires
  * WebChromeClient.onShowFileChooser to the system chooser and
- * returns the picked/captured URIs to the page — the capture /
+ * returns the picked/captured URIs to the page -- the capture /
  * picker wiring for this surface.
  *
  * Device-smoke fix (evidence/apk/SMOKE.md, 2026-11-03): the
  * bundle's fetch("data/state.json") never completed inside the
- * WebView — a page loaded from a file:/// origin may not fetch
+ * WebView -- a page loaded from a file:/// origin may not fetch
  * sibling files under the WebView's file-origin rules, so every
  * view sat at "Loading your course..." with an empty version
  * footer (the same bundle rendered fully in mobile Chrome). The
  * shell's WebViewClient now intercepts requests under its own
  * /android_asset/web/ path and serves them from the APK assets
- * with an Access-Control-Allow-Origin header — the
+ * with an Access-Control-Allow-Origin header -- the
  * dependency-free equivalent of serving the bundle over a local
  * origin. Interception is scoped to the app's own asset path;
  * everything else falls through untouched.

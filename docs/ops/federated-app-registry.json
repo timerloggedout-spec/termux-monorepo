@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0.0",
+  "registry_version": "1.0.0",
+  "authority_note": "System mapping only. Product application identity, owning repository, UI surface identity, release-lane identity, and GitHub automation identity are separate namespaces. An absent monorepo path does not imply an absent external application. Every status is evidence-bounded; unknown remains unknown.",
+  "applications": [
+    {
+      "app_key": "fleet.android",
+      "name": "Termux Fleet APK",
+      "identity_domain": "product-application",
+      "product_app_id": null,
+      "lifecycle": "released",
+      "organization": {
+        "mode": "monorepo",
+        "owner": "timerloggedout-spec",
+        "notes": "Maintained in the Termux monorepo; independent APK release lane."
+      },
+      "repository": {
+        "full_name": "timerloggedout-spec/termux-monorepo",
+        "default_ref": "master",
+        "relationship_status": "verified",
+        "source_role": "canonical application source and release workflow"
+      },
+      "surface_ids": [
+        "fleet.android"
+      ],
+      "release_lanes": [
+        {
+          "lane_id": "fleet.android.apk",
+          "channel": "github-release",
+          "status": "released",
+          "version_authority": "apps/fleet-apk/VERSION",
+          "artifact_types": [
+            "apk",
+            "sha256sums",
+            "github-actions-artifact"
+          ],
+          "current_version": "0.1.0",
+          "current_tag": "apk-v0.1.0",
+          "signing_status": "debug-ephemeral",
+          "evidence_refs": [
+            "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/APK-RELEASE-LANE.md",
+            "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/OWNER-REQUESTS.md"
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "type": "shares-contract-with",
+          "target": "termux.system-map",
+          "status": "verified",
+          "notes": "Included in the Termux system map; release lifecycle remains independently versioned."
+        }
+      ],
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/fleet-apk",
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/APK-RELEASE-LANE.md"
+      ],
+      "notes": "First proven release apk-v0.1.0 is installable proof signed with an ephemeral debug key; this is not production signing."
+    },
+    {
+      "app_key": "archwiz.android",
+      "name": "ArchWiz APK",
+      "identity_domain": "product-application",
+      "product_app_id": null,
+      "lifecycle": "unknown",
+      "organization": {
+        "mode": "separate-repository",
+        "owner": "timerloggedout-spec",
+        "notes": "Explicitly distinct from fleet-apk. Exact owning application repository and release implementation are not yet established by the current source records."
+      },
+      "repository": {
+        "full_name": null,
+        "default_ref": null,
+        "relationship_status": "not-established",
+        "source_role": "separate application source; canonical repository identity pending evidence"
+      },
+      "surface_ids": [
+        "archwiz.android"
+      ],
+      "release_lanes": [
+        {
+          "lane_id": "archwiz.android.apk",
+          "channel": "github-release",
+          "status": "unknown",
+          "version_authority": null,
+          "artifact_types": [
+            "apk"
+          ],
+          "current_version": null,
+          "current_tag": null,
+          "signing_status": "unknown",
+          "evidence_refs": [
+            "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/OWNER-REQUESTS.md"
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "type": "ingests-into",
+          "target": "fleet.android",
+          "status": "planned",
+          "notes": "Owner direction records a later ingestion into fleet-apk; the applications remain separate and distinct now. No timing or implementation is inferred."
+        }
+      ],
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/OWNER-REQUESTS.md"
+      ],
+      "notes": "Package name, AppID, owning repository, tag, signing mode, and build route are explicitly not established. Do not infer these from the ArchWiz_fork repository."
+    }
+  ],
+  "automation_identities": [
+    {
+      "identity_key": "termux-fleet-swarm",
+      "platform": "github-app",
+      "numeric_id": 5560920,
+      "role": "Fleet workflow dispatch and swarm-authored event identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-collector",
+      "platform": "github-app",
+      "numeric_id": 5535733,
+      "role": "Fleet evidence collector identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-publisher",
+      "platform": "github-app",
+      "numeric_id": 5537873,
+      "role": "Fleet publication identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-reviewer",
+      "platform": "github-app",
+      "numeric_id": 5539430,
+      "role": "Fleet review identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-gate",
+      "platform": "github-app",
+      "numeric_id": 5539499,
+      "role": "Fleet validation/gate identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-lifecycle",
+      "platform": "github-app",
+      "numeric_id": 5539639,
+      "role": "Fleet lifecycle identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-crossreference",
+      "platform": "github-app",
+      "numeric_id": 5564430,
+      "role": "Fleet cross-reference identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    },
+    {
+      "identity_key": "termux-fleet-repostory",
+      "platform": "github-app",
+      "numeric_id": 5565297,
+      "role": "RepoStory entry-repository scoped application identity; not a product AppID.",
+      "status": "active",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/icm/objects/platform/github-app-fleet.md"
+      ]
+    }
+  ]
+}

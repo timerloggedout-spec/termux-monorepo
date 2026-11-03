@@ -3,9 +3,9 @@
     "open_issues": 490,
     "open_prs": 209,
     "pr_classes": {
-      "CANDIDATE": 104,
-      "EXTRACT": 9,
-      "NEED_EVIDENCE": 96,
+      "CANDIDATE": 108,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 95,
       "SUPERSEDE": 0
     }
   },
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T16:07:34Z",
+  "generated_at": "2026-11-03T16:20:29Z",
   "issues_unlabelled": [
     308,
     388,
@@ -148,7 +148,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "02cae2c3e5"
+    "sha": "519363c47d"
   },
   "prs": [
     {
@@ -228,54 +228,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "da1704b434",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T15:41:11Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b14e821cd5",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4424,
-      "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-03T15:21:46Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8b446a9aef",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4442,
-      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
-      "updated_at": "2026-11-03T16:05:10Z"
     },
     {
       "class": "CANDIDATE",
@@ -1045,6 +1003,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "da1704b434",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T15:41:11Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1739,6 +1711,48 @@
       "updated_at": "2026-11-03T14:23:58Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b14e821cd5",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4424,
+      "title": "chore(proposals): refresh proposals-feed.json",
+      "updated_at": "2026-11-03T15:21:46Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8b446a9aef",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4442,
+      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
+      "updated_at": "2026-11-03T16:05:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f94afafb04",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4445,
+      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
+      "updated_at": "2026-11-03T16:08:41Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2111,7 +2125,7 @@
       },
       "head_sha": "dbdee74676",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-03T15:26:27Z"
@@ -2923,7 +2937,7 @@
       },
       "head_sha": "0b3e8d99ab",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T16:00:10Z"
@@ -2933,14 +2947,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "in_progress",
-        "smoke": "success"
+        "smoke": "in_progress"
       },
-      "head_sha": "fad65ae73f",
+      "head_sha": "7ab82d6784",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T16:06:17Z"
+      "updated_at": "2026-11-03T16:20:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3063,24 +3077,10 @@
       },
       "head_sha": "740942b930",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 4390,
       "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
       "updated_at": "2026-11-03T15:10:52Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "f94afafb04",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4445,
-      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
-      "updated_at": "2026-11-03T16:07:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

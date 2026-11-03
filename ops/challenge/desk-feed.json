@@ -2389,7 +2389,7 @@
         "surface_tasks": {
           "webapp": "#4092 (dispatch-queued, receipt 6598811298)",
           "apk": "#4093 (dispatch-queued, receipt 6598811371)",
-          "model": "pacing-matched surfaces ride CLI version numbers (owner, adopted 2026-11-03)",
+          "model": "SEPARATE Release Versioning (owner overrule 2026-11-03, supersedes pacing-match): own SemVer + own releases per surface",
           "tui": "#4095 (dispatch-queued, receipt 6598847704)",
           "program": "{CLI \u00b7 webApp #4092 \u00b7 APK #4093 \u00b7 TUI #4095} \u2200 pacing-matched"
         },
@@ -2399,7 +2399,7 @@
           "wall": "2026-11-04 23:59 PT submission wall"
         },
         "rfp_d1_5": "#4110 filed 2026-11-03 (memory-methods expansion, v0.4.0 scope); build filed as #4113 under the press-on overrule",
-        "versioning_model": "v0.3.0 released (432427628) \u21d2 v0.4.0 = surfaces + RFP builds batch, releases as its own step \u21d2 v1.0.0 at Nov 4 submission = full road \u00b7 post-1.0.0 PATCH only"
+        "versioning_model": "FOUNDATION road (apps/studysprint core only): v0.3.0 released (432427628) \u21d2 v0.4.0 batch \u21d2 v1.0.0 at Nov 4 submission = richest green tree \u00b7 post-1.0.0 PATCH only. SURFACES = SEPARATE Release Versioning (owner overrule 2026-11-03): {#4092 webApp \u00b7 #4093 APK \u00b7 #4095 TUI} own SemVer lines + own releases; TUI stack = producer choice {Textual \u00b7 ratatui \u00b7 goLipGloss}, bridge/API/reimplementation permitted"
       },
       "next": "Nov 4: submission (owner hand, before 23:59 PT) + ledger close entry ($5,000 AT_RISK resolves). Post-Nov 4: RFP-D1-3 #3697 + RFP-D1-4 #3698 + SR #3050 (template-form re-file on #3577 landing).",
       "provider_usage": [
@@ -3491,7 +3491,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T01:04:55-08:00",
+    "updated_at": "2026-11-03T01:10:30-08:00",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main."
   }
 }

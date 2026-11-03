@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T14:46:42.889724+00:00",
+ "census_at_utc": "2026-11-03T15:10:08.011670+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3316,
+  "total": 3334,
   "stale": 1028,
   "orphan_no_assoc_PR": 354,
   "stale_and_orphan": 135
  },
  "prs": {
-  "total": 3797,
-  "open": 208,
+  "total": 3824,
+  "open": 207,
   "open_draft": 33,
-  "open_draft_share": 0.1587,
+  "open_draft_share": 0.1594,
   "drafts": [
    {
     "number": 386,
@@ -94,7 +94,7 @@
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 12.2
+    "age_days": 12.3
    },
    {
     "number": 1612,
@@ -112,13 +112,13 @@
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 7.6
+    "age_days": 7.7
    },
    {
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 4.2
+    "age_days": 4.3
    },
    {
     "number": 2578,
@@ -223,21 +223,23 @@
     "age_days": 0.3
    }
   ],
-  "merged": 3110,
+  "merged": 3138,
   "closed_unmerged": 479,
-  "open_no_closing_ref": 202,
-  "open_unlinked_issue_target": 167,
-  "open_unlinked_any_ref": 141,
-  "merged_no_closing_ref": 3080,
-  "merged_unlinked_issue_target": 1754,
-  "merged_unlinked_any_ref": 1024,
+  "open_no_closing_ref": 201,
+  "open_unlinked_issue_target": 165,
+  "open_unlinked_any_ref": 139,
+  "merged_no_closing_ref": 3108,
+  "merged_unlinked_issue_target": 1773,
+  "merged_unlinked_any_ref": 1032,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3030,
-  "open_head_branch_missing": []
+  "merged_head_branch_residual_name_match": 3058,
+  "open_head_branch_missing": [
+   4413
+  ]
  },
  "issues": {
-  "total": 583,
-  "open": 478,
+  "total": 588,
+  "open": 483,
   "open_surface_unlinked": 204,
   "open_unlinked_strict": 185
  },
@@ -2123,6 +2125,50 @@
    [
     4379,
     2302
+   ],
+   [
+    4412,
+    4276
+   ],
+   [
+    4412,
+    4283
+   ],
+   [
+    4414,
+    4282
+   ],
+   [
+    4414,
+    4283
+   ],
+   [
+    4414,
+    4412
+   ],
+   [
+    4415,
+    4282
+   ],
+   [
+    4415,
+    4283
+   ],
+   [
+    4416,
+    4282
+   ],
+   [
+    4416,
+    4283
+   ],
+   [
+    4417,
+    4282
+   ],
+   [
+    4417,
+    4283
    ]
   ],
   "issue_issue_mutual_pairs": 3,

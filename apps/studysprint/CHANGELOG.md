@@ -10,6 +10,10 @@ reading pipeline §1b in full (RFP-D1-3, issue #4111), multi-course
 intake, exam countdowns, and .ics export (RFP-D1-4, issue #4112),
 and the memory-methods expansion (RFP-D1-5, issue #4113).
 
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
 ### Added
 - Reading pipeline (`study_pipeline.py`): the six §1b stages —
   edition finder over legal open sources (OpenLibrary, archive.org)

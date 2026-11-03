@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-03T18:06:00Z",
+  "generated_at": "2026-11-03T18:57:00Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -2783,7 +2783,7 @@
       "stages_detail": {
         "build@v0.5.0-batch": "built + RELEASED v0.5.0 (id 432649080 @ 71a876f5b518; A+B+C+D \u2200 first-pass; parity 66/66)",
         "release@v0.5.0": "cut (prerelease, id 432649080; notes = CHANGELOG [0.5.0] parts 1-4 verbatim)",
-        "submission@2026-11-03": "PUBLISHED a day ahead of the wall under the owner publish-today ruling (editability verified firsthand same day); confirmation_ref = builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
+        "submission@2026-11-03": "PUBLISHED a day ahead of the wall under the owner publish-today ruling (editability verified firsthand same day); confirmation_ref = builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint \u00b7 content correction VERIFIED PASS 10:56 PT (D1 independent re-read) \u00b7 Beat A fired"
       },
       "submission": {
         "state": "published",
@@ -2791,7 +2791,9 @@
         "confirmation_ref": "https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
         "hand": "desk + event manager (owner direct, 2026-11-03)",
         "open_line": "article currency edits \u00b7 v1.0.0 cut \u00b7 frozen-state verification at the Nov 4 23:59 PT freeze",
-        "deviations": "tags published as agents/strands/educational/machine-learning/trust-policy (editor vocabulary lacks education/study-planning/trust verbatim)"
+        "deviations": "tags published as agents/strands/educational/machine-learning/trust-policy (editor vocabulary lacks education/study-planning/trust verbatim)",
+        "correction": "first publish FAILED the D1 seat's verify on content (session-substituted body: fabricated run ids \u00b7 wrong endpoint \u00b7 invented defect history) \u21d2 verbatim-only correction session (10:08\u201310:54 PT) + re-publish \u21d2 D1 INDEPENDENT RE-READ PASS 2026-11-03 10:56 PT (live browser; every FAIL item resolved on the rendered page; session read-back reconciled)",
+        "beat_a": "fired from the D1 seat's hand on the correction PASS (2026-11-03)"
       }
     },
     {
@@ -4050,7 +4052,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-03T18:06:00Z",
+    "updated_at": "2026-11-03T18:57:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

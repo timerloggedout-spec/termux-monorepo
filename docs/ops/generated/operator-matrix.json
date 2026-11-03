@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 484,
-    "open_prs": 208,
+    "open_prs": 207,
     "pr_classes": {
-      "CANDIDATE": 104,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 94,
+      "CANDIDATE": 105,
+      "EXTRACT": 7,
+      "NEED_EVIDENCE": 95,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 42,
-      "prs": 206,
+      "prs": 205,
       "unlabelled_numbers": [
         308,
         388,
@@ -97,7 +97,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T15:48:55Z",
+  "generated_at": "2026-11-03T15:51:14Z",
   "issues_unlabelled": [
     308,
     388,
@@ -148,7 +148,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "fe13bb7220"
+    "sha": "e895888dd2"
   },
   "prs": [
     {
@@ -228,54 +228,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "da1704b434",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T15:41:11Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "6c4bd85464",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T15:47:14Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "eb4fc5bda3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4423,
-      "title": "feat(apk): https-origin asset serving (WebViewAssetLoader pattern) \u2014 surfaces 0.1.3 (#4412)",
-      "updated_at": "2026-11-03T15:27:21Z"
     },
     {
       "class": "EXTRACT",
@@ -1051,6 +1009,20 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "da1704b434",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T15:41:11Z"
     },
     {
       "class": "CANDIDATE",
@@ -2125,7 +2097,7 @@
       },
       "head_sha": "dbdee74676",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-03T15:26:27Z"
@@ -2937,10 +2909,24 @@
       },
       "head_sha": "b13690b2a9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-03T15:17:58Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "0c17996233",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-03T15:50:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3063,7 +3049,7 @@
       },
       "head_sha": "740942b930",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 4390,
       "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
       "updated_at": "2026-11-03T15:10:52Z"

@@ -38,32 +38,50 @@ can be the same target.
   them, disjoint quadrants remain lawful; the duality is
   available, not forced.
 
-## TAK — identification leg (opened + closed 2026-11-03)
+## TAK — Tactical Awareness Kit (lens registered 2026-11-03)
 
-Referent stamped CLAIM at intake; candidates enumerated,
-internal-first:
+**Referent: TAK = Tactical Awareness Kit** — owner-
+identified 2026-11-03 (owner statement; the enumeration is
+closed on the owner's word, no further verification leg
+for the referent). Record note: the identification leg
+(2026-11-03, earlier same day) had verified a prior owner
+naming, "Taktikal Awareness Kit" (owner initiative,
+2026-10-23, claim c4e320344c9a). The owner's 2026-11-03
+identification GOVERNS the lens referent; the relation
+between the two namings (rename vs sibling initiative) is
+NOT_ESTABLISHED and is not assumed. The DoD Team Awareness
+Kit (ATAK family) remains a near-namesake in external
+contexts.
 
-1. **The owner's initiative T.A.K. = "Taktikal Awareness
-   Kit"** — the owner's own naming (owner statement
-   2026-10-23, of record in the fleet memory: claim
-   c4e320344c9a51481f9466630512f990, quote "T.A.K.
-   (Taktikal Awareness Kit)"). VERIFIED: for a fleet-coined
-   term the owner's naming is the source of record
-   (internal-first establishment). The K-spelling is the
-   owner's and is load-bearing — it distinguishes the
-   initiative from candidate 2.
-2. The DoD **Team Awareness Kit** (ATAK family; originally
-   "Tactical Assault Kit") — a real external taxonomy with
-   the shared-picture semantics the OSINT context suggests,
-   and the plausible inspiration shape. Status: NEAR-
-   NAMESAKE, not the fleet referent. Collision watch: in
-   external/OSINT contexts "TAK" will be read as this kit;
-   fleet usage means candidate 1.
-3. No other candidate survived enumeration (no fleet
-   artifact, taxonomy, or source carries another TAK).
+**The lens.** TAK is a shared tactical-awareness /
+common-operating-picture lens: entities, tracks, and
+events are held on ONE live picture — position + time +
+state — and read for AWARENESS rather than scored
+per-item. A TAK reading answers "what does the picture
+show now, and what is moving?" — it does not award,
+rank, or settle anything by itself; scoring lenses
+consume what the picture holds.
 
-Identification result: **fleet referent = Taktikal
-Awareness Kit (owner initiative)**. Its SCOPE — what the
-kit contains — is NOT_ESTABLISHED in the available record
-(name + ownership + date only): scope enters as INTAKE,
-never assumed from the namesake's contents.
+**Candidate instances (fleet picture surfaces).** The
+fleet already runs picture surfaces that are candidate
+instantiations of this lens: the dispatch-tree pages
+(lane/dispatch state as a live tree) · the tracking
+pages (deadlines, commitments, entity states over time)
+· the telemetry pages (provenance/attribution state as
+observed). Instantiation status: CANDIDATE — named here
+so a TAK filing can cite them; formal binding of any
+surface to this lens is a separate recorded act, not
+assumed by this note.
+
+**Composition with SWOT duality.** The picture is where
+dual-valence targets get TRACKED. A competitive-frame
+entity on the picture carries both readings on the same
+track (threat reading ∧ opportunity reading, per the
+duality doctrine) — the picture's job is to keep both
+visible simultaneously; the conversion motion (rival →
+assimilation candidate) is a STATE CHANGE ON THE TRACK,
+dated and evidenced like any other track event, never a
+silent reclassification. A TAK view that shows only one
+valence for a competitive-frame entity is an incomplete
+picture, in the same way a single-valence SWOT filing is
+malformed.

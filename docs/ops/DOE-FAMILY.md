@@ -805,7 +805,20 @@ version and compared continuously until culling retires a version.
   NEAR-NAMESAKE, not the referent (collision watch in
   OSINT contexts); TAK scope = NOT_ESTABLISHED (INTAKE,
   never assumed from the namesake); TAK doctrine
-  unregistered.
+  unregistered. SUPERSESSION (owner-identified 2026-11-03,
+  later same day): the LENS referent is TAK = Tactical
+  Awareness Kit (owner statement closes the enumeration;
+  the 2026-10-23 "Taktikal" naming stands in the record as
+  a prior owner naming, relation NOT_ESTABLISHED). TAK
+  LENS REGISTERED in LENS-FRAME.md: shared tactical-
+  awareness / common-operating-picture lens (entities -
+  tracks - events on one live picture: position + time +
+  state; read for awareness, not scored per-item);
+  candidate instances = the fleet picture surfaces
+  (dispatch-tree - tracking - telemetry pages, CANDIDATE
+  binding); composition with SWOT duality = the picture is
+  where dual-valence targets get tracked, conversion =
+  a dated state change on the track.
 
 - **ates-improvement-frame v0.5** (registered 2026-11-02; S LAYERED per owner ruling 2026-11-02: S = measured CONTROL set (claims anchor on S) ∧ S^n = DoE-designated superset (designation recorded per designation; claims name their set, clause K10; K9 strata on S unless S^n designated; S^n undesignated at v0.5); layered surface of record (benchmark wf = ATES surface, NOT in receipt set S) + denominator 309 wfs / ATES-bearing 2 + dormancy = inherited upstream stop (Oracle recon @f29955138f3b); S = evidence-measured set (IMP-001 census from trigger record; Stewardship step-6 re-derivation = measurement in progress), S-governance flag CLOSED by owner word 2026-11-02, re-opens only on census contradiction; parity target RULED by owner 2026-11-02 = BOTH: full parity = target state, bounded sampled checks (n per stratum, clause K9) = verification method; IMP-002 target-hold lifted; step-6 seat of record = Continuous Stewardship seat, #3812 takeover, main-confirmed 2026-11-02) — ATES
   improvements under DoE governance; home

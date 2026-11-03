@@ -1,0 +1,58 @@
+# StudySprint — installable distribution for the TUI surface
+# (app-package item ①, issue #4436).
+#
+# The TUI installs as a command:
+#   pipx install git+https://github.com/timerloggedout-spec/studysprint
+#   studysprint-tui
+#
+# Scope of THIS distribution: the TUI surface and the core modules
+# it imports. The core CLI (agent.py / demo.py) is deliberately not
+# a py-module here — it resolves a vendored oracle from the repo
+# tree and stays a clone-route surface (see CONTRIBUTING.md).
+# Nothing in this file publishes anywhere by itself; the git URL
+# above is the distribution channel, not PyPI (out of scope by the
+# app-package NOT list).
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "studysprint"
+dynamic = ["version"]
+description = "StudySprint TUI — a Textual terminal app over the StudySprint core (plan, trust receipt, RSVP reader, FSRS/SM-2 review)."
+requires-python = ">=3.10"
+dependencies = [
+    "textual",
+    "fsrs",
+    "genanki",
+]
+
+[project.scripts]
+studysprint-tui = "tui:main"
+
+# The TUI surface versions independently; its version of record is
+# TUI_VERSION in tui.py — read it dynamically so the distribution
+# can never drift from the surface it installs.
+[tool.setuptools.dynamic]
+version = {attr = "tui.TUI_VERSION"}
+
+[tool.setuptools]
+py-modules = [
+    "tui",
+    "study_calendar",
+    "study_courses",
+    "study_geo",
+    "study_hardening",
+    "study_memory",
+    "study_pipeline",
+    "study_reader",
+    "study_sr",
+    "study_tools",
+]
+
+# The bundled example course the TUI boots over. In a wheel these
+# land at the environment prefix; tui.build_state resolves them
+# there (repo checkouts resolve beside the module instead).
+[tool.setuptools.data-files]
+"examples" = ["examples/syllabus.json", "examples/practice_set.json", "examples/readings.json"]

@@ -1,5 +1,25 @@
 # Contributing to StudySprint
 
+## Developing — run from source (the developer route)
+
+End users install the TUI with the pipx one-liner in
+[TUI.md](TUI.md). To hack on it, run from a clone:
+
+```
+git clone https://github.com/timerloggedout-spec/studysprint.git && cd studysprint && pip install textual fsrs genanki && python3 tui.py
+```
+
+(Verified verbatim from a clean environment 2026-11-03: fresh clone
+→ deps → the TUI boots to the Today screen. Already cloned? Just
+`pip install textual fsrs genanki && python3 tui.py` from the repo
+root.)
+
+The test suite: `python3 -m pytest tests/`. The installable
+distribution (`pyproject.toml`) covers the TUI surface and the
+core modules it imports; the core CLI (`agent.py` / `demo.py`)
+runs from the clone only — it resolves a vendored oracle from the
+repo tree by design.
+
 ## Building the APK — signing (read this first)
 
 Every APK build signs with the project's committed DEV keystore:

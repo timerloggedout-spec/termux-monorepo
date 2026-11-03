@@ -23,6 +23,7 @@ SR export paths.
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -39,10 +40,21 @@ from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
 APP_ROOT = Path(__file__).resolve().parent
 
 
+def _data_root() -> Path:
+    """Where the bundled example course lives: beside this module
+    in a repo checkout; at sys.prefix in a pipx/pip install, where
+    the pyproject data-files land the examples tree (#4436)."""
+    if (APP_ROOT / "examples").exists():
+        return APP_ROOT
+    if (Path(sys.prefix) / "examples").exists():
+        return Path(sys.prefix)
+    return APP_ROOT
+
+
 def build_state(root: Path | None = None) -> dict:
     """Assemble the surface state from the core, over the bundled
     example course (the same data demo.py runs)."""
-    root = root or APP_ROOT
+    root = root or _data_root()
     syllabus = json.loads(
         (root / "examples" / "syllabus.json").read_text())
     practice = json.loads(

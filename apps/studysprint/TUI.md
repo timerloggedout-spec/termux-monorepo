@@ -6,21 +6,33 @@ functions the CLI calls, no forked logic (`tui.py`).
 **Version line: independent.** This surface versions on its own
 SemVer line (owner overrule 2026-11-03), separate from the
 foundation road {core v0.3.0 ⇒ v0.4.0 ⇒ v1.0.0}. Surface version =
-`TUI_VERSION` in `tui.py` — currently **0.1.1** — with its own
-releases.
+`TUI_VERSION` in `tui.py` — currently **0.1.3** — with its own
+releases. (The installable distribution reads its version from
+`TUI_VERSION` dynamically — the two can never drift.)
 
 ## Install + run (one line)
 
-Copy-paste install — clone, dependencies, launch:
+The TUI installs as a command with
+[pipx](https://pipx.pypa.io) — isolated environment, no clone:
 
 ```
-git clone https://github.com/timerloggedout-spec/studysprint.git && cd studysprint && pip install textual fsrs genanki && python3 tui.py
+pipx install git+https://github.com/timerloggedout-spec/studysprint
 ```
 
-(Verified verbatim from a clean environment 2026-11-03: fresh clone
-→ deps → the TUI boots to the Today screen. Already cloned? Just
-`pip install textual fsrs genanki && python3 tui.py` from the repo
-root.)
+then launch it from anywhere:
+
+```
+studysprint-tui
+```
+
+(pipx itself: `pip install pipx` or your OS package manager. No
+pipx? A plain venv works too: `pip install
+git+https://github.com/timerloggedout-spec/studysprint`, then
+`studysprint-tui`.)
+
+The clone + `python3 tui.py` route still exists — it is the
+**developer** route now, documented in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 Screens (tabs): **Today** (today's sessions + one-tap check-in) ·
 **Plan / Receipt** (the plan and the trust receipt — evidence one

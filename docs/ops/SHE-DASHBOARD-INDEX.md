@@ -72,6 +72,12 @@ n8n is an adapter. It does not replace GitHub, Actions, SHE reducers, or the sna
 - [federated-app-registry.json](federated-app-registry.json) + [schema](federated-app-registry.schema.json) — machine-readable inventory and validation contract.
 - Product application identities and GitHub App automation identities are separate namespaces. Unknown external ownership or release state remains unknown.
 
+## Federated application census
+
+- [FEDERATED-APP-AND-RELEASE-LANE-MAP.md](FEDERATED-APP-AND-RELEASE-LANE-MAP.md) — confirmed product identity and independent release-lane map.
+- [FEDERATED-APP-REPOSITORY-CENSUS.md](FEDERATED-APP-REPOSITORY-CENSUS.md) — repository discovery snapshot (714 repositories; 165 review leads), not a product count.
+- Keep discovered repositories, candidate applications, confirmed AppIDs, UI surfaces, release lanes, and automation identities as separate dimensions.
+
 ## Non-negotiables
 
 - Read-only projection; no dashboard-as-database.

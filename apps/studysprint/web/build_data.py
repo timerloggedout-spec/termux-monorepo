@@ -41,12 +41,32 @@ def emit_state(root: Path | None = None) -> dict:
     plan = build_study_plan(syllabus)
     cards = build_cards_from_practice_set(practice)
     ux = export_ux_state(cards, {})
+    # Per-topic reading passages (examples/readings.json): authored
+    # example content, one passage per syllabus topic, so a section
+    # titled for a topic actually teaches that topic (#4230). Real
+    # courses get their sections from the ingested course text.
+    readings = {}
+    readings_file = root / "examples" / "readings.json"
+    if readings_file.exists():
+        readings = json.loads(readings_file.read_text())
     sections = []
     for w in syllabus.get("weeks") or []:
         for topic in w.get("topics") or []:
-            text = (f"{topic}. " + " ".join(
-                q["q"] + " " + q["a"]
-                for q in practice.get("questions") or []))
+            if readings.get(topic):
+                text = readings[topic]
+            else:
+                # No authored reading: an honest stub naming the
+                # topic -- never another topic's content (#4230).
+                text = (f"Week {w.get('week')} covers {topic}. The "
+                        "full reading for this topic arrives with "
+                        "the course text at ingest; the plan, checks "
+                        "and reviews for it are live now.")
+            stem = topic.lower().rstrip("s").split()[-1]
+            checks = [q for q in practice.get("questions") or []
+                      if stem in (q["q"] + " " + q["a"]).lower()]
+            if checks:
+                text += "\n\nCheck yourself: " + " ".join(
+                    q["q"] + " " + q["a"] for q in checks)
             sections.append({"title": topic,
                              "chapter": f"Week {w.get('week')}",
                              "text": text,

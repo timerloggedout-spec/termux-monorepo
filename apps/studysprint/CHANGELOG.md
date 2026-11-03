@@ -1,3 +1,41 @@
+## [Unreleased]
+
+### Surfaces 0.1.2 (RFP-D1-8 set 2 — scheduler integrity + web contract)
+
+- **#4231 FSRS generation pinned + aligned** — the core pins the
+  FSRS-6 parameter tuple in study_sr (constructed explicitly,
+  fuzzing off; a test alarms if a library upgrade moves the
+  defaults), receipts and the UX export name the generation, and
+  the web surface's scheduler is a faithful FSRS-6 port of the
+  same algorithm (learning/relearning steps included), proven by
+  a core↔web battery test over identical review sequences. The
+  app warns in the SR view if a bundle's stamped generation ever
+  differs from its own.
+- **#4232 SM-2 pass boundary restored** — the surface grade map
+  is {1: 1, 2: 2, 3: 3, 4: 5} on web and TUI: Hard (quality 2)
+  resets like the core's SM-2 says, instead of landing on the
+  quality-3 pass threshold.
+- **#4228 Today actions render** — the core's designed actions
+  (primary "Start Today's Sprint", subtle no-guilt "I missed
+  this") render from state.today.actions and act on the same
+  persisted check-ins.
+- **#4230 Reader bodies teach their topics** — examples gain
+  readings.json (one authored passage per syllabus topic); both
+  builders use it, append only the topic's own check questions,
+  and fall back to an honest stub — never another topic's text.
+- **#4234 No pre-flip grading** — grade buttons stay disabled
+  until the card is flipped (web + TUI); grade() also guards.
+- **#4237 Load failure state** — a failed/unparsable state.json
+  now renders a named error with an explanation and a retry
+  button instead of hanging on "Loading your course…".
+
+### Foundation
+
+- study_sr: FSRS generation pin (FSRS_PARAMETERS /
+  FSRS_GENERATION), generation stamped on receipts and the UX
+  export; the export's per-card state now carries the learning
+  step the surfaces schedule from.
+
 # Changelog
 
 All notable changes to StudySprint. Process: `VERSIONING.md`.

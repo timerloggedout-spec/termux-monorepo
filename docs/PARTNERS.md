@@ -20,8 +20,8 @@ Machine registry: `config/referral_programs.json` · Public feed: `apps/tribute-
 | Partner | Mechanic | Visitor gets (free) | Live code | Status |
 |---|---|---|---|---|
 | Muse (Meta) | Referral code, redeem in Settings ≤48h of joining | 1 billion Muse tokens (both sides; never expires) | `VDP1DW` (30 uses left, 2026-10-27) | Live |
-| Cue (by Manus) | Invite code, early access | Free early access | `W7AZA` (+1 reserve) | Live |
-| Migoo | Invite code at signup | Signup access + free daily points | `uA3QYP` (+2 reserve) | Live |
+| Cue (by Manus) | Invite code, early access | Free early access | `W7AZA` (cell B deployed; +0 reserve) | Live |
+| Migoo | Invite code at signup | Signup access + free daily points | `uA3QYP` (cell B deployed; +1 reserve) | Live |
 
 ## 2. Owned channels
 
@@ -36,6 +36,8 @@ Route per partner: referral/affiliate programme if one exists → otherwise gift
 | Category | Candidates | Route notes |
 |---|---|---|
 | Generative media | HiggsField, Kling AI, Suno (listed as "Sumo" in #574) | Gift-card redemption & referral programmes |
+| AI app builders | Lovable | Affiliate programme VERIFIED 2026-11-03 (lovable.dev/partners/affiliates): up to $100 per first-time subscriber, application via Impact, link on approval — registry entry `lovable` (programme_verified_not_enrolled); enrolment = main's go |
+| Developer platforms (referral) | Replit | Referral programme VERIFIED 2026-11-03 (replit.com/refer): $20 credits both sides per new paying customer, milestones $100 @5 / $1,000 @50 — registry entry `replit` (programme_verified_not_enrolled); link is account-bound, minting = main's go |
 | LLMs & agent platforms | Moonshot AI (Kimi), Grok, Google, DeepSeek, GenSpark, FELO.ai, OpenRouter, OMNI, Devin.ai, Codex, BlackBoxAI, Dify, Tanka, Stepie, LikeClaw | Kimi: gift-card redemption codes |
 | Cloud, hosting & infra | v0, Vercel, Render, Cloudflare, Firebase, Repl.it, Gitpod / Ona (app.ona.com), Tailscale, Tembo | v0: gifted-usage codes; Ona: coupons |
 | LLM routing | UnoRouter | ACTIVATED 2026-10-28 — moved to §1 (affiliate link live, terms firsthand) |

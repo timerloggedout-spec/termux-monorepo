@@ -131,7 +131,7 @@
    "id": "muse",
    "mechanic": "invite_code",
    "name": "Muse (Meta)",
-   "notes": "Top priority per owner. LIVE.",
+   "notes": "Top priority per owner. LIVE. Pool: 1 live code, 0 reserves - Muse issues no second code before the first dies (open question since 2026-10-28, unresolved); detection stays owner-panel sensor-fed. No public terms change found 2026-11-03.",
    "priority": 1,
    "rotation": {
     "detection_source": "owner-panel (Invite friends 'uses left') \u2014 Muse exposes no redemption API/webhook (audited 2026-10-27)",
@@ -145,7 +145,7 @@
   },
   {
    "codes": [],
-   "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment \u2014 NOT the fleet's current link, owner-gated.",
+   "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment, monthly settlement + 30-day hold, $100 PayPal minimum - enrolment remains owner-gated (no invitation held).",
    "free_no_cc": "Free plan, no card.",
    "id": "manus",
    "link_ref": "docs/PARTNERS.md section 1 (Manus AI row)",
@@ -154,7 +154,7 @@
    "notes": "Already active in PARTNERS / README banner / landing grid.",
    "priority": 2,
    "status": "active_link",
-   "terms_source": "Programme ToS at manus.tapfiliate.com (affiliate lane); invitation link live in docs/PARTNERS.md section 1.",
+   "terms_source": "Tapfiliate programme ToS (manus.tapfiliate.com/programs/butterfly-effect/tos/) re-verified firsthand 2026-11-03: invitation-only; 10% commission on referred subscription payments up to 365 days; 1,000 free credits bonus for followers via the referral link; eligible plans Basic/Plus/Pro (Enterprise + add-ons excluded); effective July 2026 monthly settlement with 30-day holding period; $100 minimum withdrawal via PayPal; programmatic advertising + unauthorized discounting/cashback prohibited. Separate refer-a-friend invitation link live in docs/PARTNERS.md section 1.",
    "visitor_reward": "Invitation access; refer-a-friend credit amount third-party reported as 500 credits both sides (not firsthand)"
   },
   {
@@ -175,7 +175,7 @@
    "id": "cue",
    "mechanic": "invite_code",
    "name": "Cue (by Manus)",
-   "notes": "First code published; second held as rotation reserve for high availability.",
+   "notes": "Both owner-supplied codes are DEPLOYED (live + live_cell_b in the MVT cells); reserve pool = 0 (pool-watch alerts on this state). No replenishment route exists except access holders receiving extra codes in-app - sensor = owner in-app invite screen. Public state re-verified 2026-11-03: Cue still free early access with an invite code, access holders receive extra codes to share (Manus launch terms, corroborated in current coverage).",
    "priority": 3,
    "rotation": {
     "detection_source": "in-app invite screen \u2014 no API/webhook (audited 2026-10-27)",
@@ -219,7 +219,7 @@
     "threshold_uses_left": 5
    },
    "status": "active_codes",
-   "terms_source": "Firsthand: owner's in-app 'Invite Code' screen, 2026-10-27 (3 codes issued). Public programme terms not found; ToS points are account-bound.",
+   "terms_source": "Firsthand: owner's in-app 'Invite Code' screen, 2026-10-27 (3 codes issued). Public programme terms not found; Migoo ToS (migoo.ai/terms, last modified 2026-10-24) re-checked 2026-11-03: services are freemium, Points are not transferable or refundable, Free Points may be issued/discontinued at Migoo's discretion - no referral reward is established in the ToS.",
    "visitor_reward": "Invite-code signup access"
   },
   {
@@ -230,23 +230,23 @@
    "link_ref": "docs/PARTNERS.md section 1 (CellCog row)",
    "mechanic": "invitation_link",
    "name": "CellCog",
-   "notes": "Anchor lane. Already active in all three surfaces.",
+   "notes": "Anchor lane. Already active in all three surfaces. The 500-credit bonus requires the invitee's first purchase - a paid step, listed separately, never counted in the free stack.",
    "priority": 5,
    "status": "active_link",
-   "terms_source": "docs/PARTNERS.md section 1; cellcog.ai public site (200 free credits, no card).",
+   "terms_source": "CellCog ToS section 4.8 (cellcog.ai/support/terms-of-service, last updated 2026-11-02) verified firsthand 2026-11-03: referral programme on the Referrals page; when an invitee creates a new account AND makes a first purchase (subscription or top-up), both sides become eligible to redeem the referral bonus shown on the Referrals page; referral credits expire 12 months from grant, no cash value, non-transferable; new users only; self-referrals/duplicate accounts prohibited. Public site: 200 free credits to start, no card. Re-verified firsthand 2026-11-03 (affiliate-referrals lane sweep).",
    "visitor_reward": "500 bonus credits on first purchase (paid step)"
   },
   {
    "codes": [],
-   "fleet_replenishment": null,
+   "fleet_replenishment": "None - no programme exists (verified 2026-11-03).",
    "free_no_cc": null,
    "id": "hark",
    "mechanic": null,
    "name": "Hark",
-   "notes": "Owner priority per 2026-10-27 message; identity confirm still open (fleet surface vs Hark Pro). Nothing listed until resolved.",
+   "notes": "RESOLUTION PROPOSED 2026-11-03 for main's stamp: pending_identity resolves as - public product = Hark Pro by Hark Labs, Inc. (launched 2026-10-06), a DIFFERENT surface from the fleet-internal Hark agent surface, which has no public programme by construction. Neither surface offers a referral/affiliate programme as of 2026-11-03, so there is nothing to enrol in and nothing to list. Maximizing Hark benefits = the free tier + the launch cohort offer (first 100,000 sign-ups got a paid plan free, per launch coverage) only. Re-check cadence: monthly or on Hark product announcements.",
    "priority": 6,
-   "status": "pending_identity",
-   "terms_source": "No programme found for Hark Pro (hark.com) in launch coverage; fleet internal Hark surface is not a public product.",
+   "status": "no_public_programme",
+   "terms_source": "Verified firsthand 2026-11-03: hark.com homepage + /pricing + /privacy-policy + /terms (Terms of Service, Hark Labs, Inc.) crawled; site: search for referral/affiliate/invite/partner returned no programme page; the word 'referral' occurs 0 times in the Terms and 'affiliate' only in the corporate-affiliates sense. The only referral mechanic on hark.com runs merchant->Hark (Privacy Policy: 'Some merchants pay us a referral fee when Hark buys something from them for you') - it is not a programme users can join to refer Hark. Pricing: free tier + $20/mo + $100/mo, all features all plans. No referral/affiliate/partner programme, no attribution window, no payout, no enrolment gate exists to evaluate.",
    "visitor_reward": null
   },
   {
@@ -264,7 +264,7 @@
    "notes": "ACTIVATED 2026-10-28. Badge (owner-approved, dark/MD/SVG) renders on landing partners grid linking https://unorouter.com/?aff=kHp6 (Web Design lane).",
    "priority": 7,
    "status": "active_link",
-   "terms_source": "Owner screenshots (firsthand) 2026-10-28 via Web Design lane: 10% of referred top-ups as account balance, unlimited recharges, no cash payout, balance->main transfer.",
+   "terms_source": "Owner screenshots (firsthand) 2026-10-28 via Web Design lane: 10% of referred top-ups as account balance, unlimited recharges, no cash payout, balance->main transfer. Public corroboration 2026-11-03: unorouter.com Discord rewards doc (updated 2026-07-30) confirms 'The website also has an affiliate program that credits commission on referred top-ups to your balance' (dashboard Affiliate page); the percentage itself is not published publicly.",
    "visitor_reward": "Account via affiliate link (terms firsthand from owner screenshots 2026-10-28)"
   },
   {
@@ -281,8 +281,38 @@
    "notes": "Serverless Postgres. Listed at owner direction with offer unverified (Polsia pattern).",
    "priority": 8,
    "status": "active_link",
-   "terms_source": "Offer NOT ESTABLISHED 2026-10-28 \u2014 owner supplied the tracked link only; verify on signup, never invent.",
+   "terms_source": "Offer NOT ESTABLISHED - owner supplied the tracked link only (2026-10-28); re-checked 2026-11-03: site:neon.com search returns no referral/affiliate/partner programme page (neon.com = Neon Postgres; same-name Neon One CRM / Brazilian Neon programmes are different companies and do not apply). Verify on signup, never invent.",
    "visitor_reward": null
+  },
+  {
+   "codes": [],
+   "fleet_replenishment": "Up to $100 cash commission per first-time subscriber referred (tiered bonuses above that).",
+   "free_no_cc": "Application is free via the affiliate platform (Impact); no card or fee stated on the programme page. Commission is paid on paid subscriptions - the visitor side is a paid product, so this lane is a revenue lane, not a free-stack redemption lane.",
+   "id": "lovable",
+   "link": null,
+   "link_ref": "https://lovable.dev/partners/affiliates",
+   "mechanic": "affiliate_link",
+   "name": "Lovable",
+   "notes": "DISCOVERY 2026-11-03 (fleet uses Lovable, connector connected). Application-based: link issued only after approval. Enrolment NOT done - application under a 4n0n identity is main's go decision. Status stays programme_verified_not_enrolled until a tracked link exists.",
+   "priority": 9,
+   "status": "programme_verified_not_enrolled",
+   "terms_source": "Lovable affiliate partners page (lovable.dev/partners/affiliates) verified firsthand 2026-11-03: up to $100 for each first-time subscriber referred; real-time dashboard; tiered bonuses; monthly payouts with low minimum threshold (amount not published) and multiple payment options; application through Impact (app.impact.com); unique link issued once approved.",
+   "visitor_reward": null
+  },
+  {
+   "codes": [],
+   "fleet_replenishment": "$20 in Replit credits per new paying customer referred (both sides); milestones $100 at 5 referrals, $1,000 at 50.",
+   "free_no_cc": "Referral link is generated in-product at replit.com/refer; no card to join. The reward triggers only when the referred user becomes a paying Core customer - a paid step on the visitor side, never counted in the free stack.",
+   "id": "replit",
+   "link": null,
+   "link_ref": "https://replit.com/refer",
+   "mechanic": "referral_link",
+   "name": "Replit",
+   "notes": "DISCOVERY 2026-11-03 (fleet uses Replit, connector connected; PARTNERS section 3 pipeline already names Repl.it). No tracked fleet link yet - the link is account-bound, so minting one is an enrolment action for main's go. Credits only, no cash payout.",
+   "priority": 10,
+   "status": "programme_verified_not_enrolled",
+   "terms_source": "Replit referral page (replit.com/refer) verified firsthand 2026-11-03: 'Earn $20 in credits for you & a friend - for every new paying customer you refer, you both get $20 in Replit credits, instantly'; 5 referrals = $100 credits, 50 = $1,000 credits; terms may change at Replit's discretion.",
+   "visitor_reward": "$20 in Replit credits (on becoming a paying Core customer)"
   }
  ],
  "rotation_log": [],
@@ -294,5 +324,5 @@
   "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
  ],
  "schema": "referral-programs/1",
- "updated_at": "2026-10-27"
+ "updated_at": "2026-11-03"
 }

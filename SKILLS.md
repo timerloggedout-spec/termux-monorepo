@@ -40,7 +40,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 
 | Role | Load first |
 |------|------------|
-| Collaborator | `adaptive-feedback-cycle` → dual-gate |
+| Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |

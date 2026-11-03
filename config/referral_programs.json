@@ -117,10 +117,12 @@
  "owner_lane": "marketing-channel",
  "programs": [
   {
+   "accrued_value": "1B Muse tokens (1 redemption)",
    "code_provenance": "Owner-supplied firsthand: Invite friends panel (Invite button, main chat screen), 2026-10-27. Panel states: both sides get 1 billion Muse tokens when the friend redeems within 48 hours of joining; 30 uses left.",
    "codes": [
     {
      "code": "VDP1DW",
+     "note": " | 2026-11-03 owner sensor: 1 redemption; panel still 30 uses left.",
      "source": "owner screenshot, Muse 'Invite friends' panel, 2026-10-27 19:47 PDT",
      "status": "live",
      "uses_left": 30
@@ -131,8 +133,9 @@
    "id": "muse",
    "mechanic": "invite_code",
    "name": "Muse (Meta)",
-   "notes": "Top priority per owner. LIVE. Pool: 1 live code, 0 reserves - Muse issues no second code before the first dies (open question since 2026-10-28, unresolved); detection stays owner-panel sensor-fed. No public terms change found 2026-11-03.",
+   "notes": "Top priority per owner. LIVE. Pool: 1 live code, 0 reserves - Muse issues no second code before the first dies (open question since 2026-10-28, unresolved); detection stays owner-panel sensor-fed. No public terms change found 2026-11-03. Sensor 2026-11-03 (owner, firsthand): 1 redemption reported; owner Invite-panel screenshots same day still read 30 uses left, so uses_left is unchanged at 30 (redemptions and uses-left are separate panel facts - the cap is not a simple countdown from 30). Owner posted the invite to YouTube himself 2026-11-03 (channel previously blocked on owner session; now owner-posted).",
    "priority": 1,
+   "redemptions": 1,
    "rotation": {
     "detection_source": "owner-panel (Invite friends 'uses left') \u2014 Muse exposes no redemption API/webhook (audited 2026-10-27)",
     "engine": "scripts/referral/rotate.py via referral-rotation workflow",

@@ -161,15 +161,19 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
         if not apply or not verdict["action"]:
             continue
         base = f"{API}/repos/{repo}/issues/{issue['number']}"
-        if verdict["action"] == "flag":
-            _request("POST", f"{base}/comments", token,
-                     {"body": flag_comment(verdict["age_min"])})
-        elif verdict["action"] == "escalate":
-            _request("POST", f"{base}/comments", token,
-                     {"body": escalation_comment(
-                         issue, verdict["age_min"])})
-            _request("POST", f"{base}/labels", token,
-                     {"labels": ["dispatch-escalated"]})
+        try:
+            if verdict["action"] == "flag":
+                _request("POST", f"{base}/comments", token,
+                         {"body": flag_comment(verdict["age_min"])})
+            elif verdict["action"] == "escalate":
+                _request("POST", f"{base}/comments", token,
+                         {"body": escalation_comment(
+                             issue, verdict["age_min"])})
+                _request("POST", f"{base}/labels", token,
+                         {"labels": ["dispatch-escalated"]})
+        except Exception as exc:  # one bad action must not kill
+            verdict["action"] = f"ERROR: {exc}"  # the whole sweep;
+            verdict["state"] = "error"          # surface it instead
     return results
 
 

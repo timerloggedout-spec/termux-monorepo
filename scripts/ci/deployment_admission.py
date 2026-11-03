@@ -7,7 +7,7 @@ no network calls, secret reads, retries, deployment, or traffic mutation.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from math import floor
+from math import floor, isfinite
 import re
 from typing import Any
 
@@ -36,7 +36,10 @@ def _verified_alternate(lane: Any, *, workload: str, source_sha: str) -> bool:
         return False
     if lane.get("workload") != workload:
         return False
-    if lane.get("provider") in {None, "vercel"} or lane.get("independent_failure_domain") is not True:
+    provider = lane.get("provider")
+    if not isinstance(provider, str) or not provider.strip() or provider.lower() == "vercel":
+        return False
+    if lane.get("independent_failure_domain") is not True:
         return False
     required = (
         "project_verified", "root_verified", "domain_verified",
@@ -48,13 +51,17 @@ def _verified_alternate(lane: Any, *, workload: str, source_sha: str) -> bool:
 
 def evaluate(document: dict[str, Any], *, now: datetime | None = None) -> dict[str, Any]:
     """Return a deterministic decision; unknown evidence never grants admission."""
-    now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    if now is None:
+        now = datetime.now(timezone.utc)
+    if not isinstance(now, datetime) or now.tzinfo is None or now.utcoffset() is None:
+        return _blocked("INVALID_EVALUATION_TIME")
+    now = now.astimezone(timezone.utc)
     if not isinstance(document, dict) or document.get("schema") != SCHEMA:
         return _blocked("INVALID_INPUT_SCHEMA")
 
     workload = document.get("workload")
     source_sha = document.get("source_sha")
-    if (workload not in {"static", "http_api", "mcp"}
+    if (not isinstance(workload, str) or workload not in ("static", "http_api", "mcp")
             or not isinstance(source_sha, str)
             or not re.fullmatch(r"[0-9a-fA-F]{40}|[0-9a-fA-F]{64}", source_sha)):
         return _blocked("MISSING_OR_INVALID_WORKLOAD_SOURCE_SHA")
@@ -72,7 +79,7 @@ def evaluate(document: dict[str, Any], *, now: datetime | None = None) -> dict[s
             and isinstance(limit, int) and not isinstance(limit, bool) and limit > 0
             and isinstance(max_age, int) and not isinstance(max_age, bool) and max_age > 0
             and isinstance(safety, (int, float)) and not isinstance(safety, bool)
-            and 0 < safety <= 1
+            and isfinite(safety) and 0 < safety <= 1
         )
         if not valid_numbers or observed_at is None:
             reason = "QUOTA_EVIDENCE_MALFORMED"
@@ -113,6 +120,8 @@ def evaluate(document: dict[str, Any], *, now: datetime | None = None) -> dict[s
                     "source_sha": source_sha,
                     "traffic_mutated": False,
                 }
+    elif "alternates" in document:
+        reason = "ALTERNATE_EVIDENCE_MALFORMED"
     return _blocked(reason, source_sha=source_sha)
 
 

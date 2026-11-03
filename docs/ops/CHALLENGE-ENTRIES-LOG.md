@@ -436,6 +436,8 @@ this log is the human view of the same verified state.
      kernel + fetch_evidence pattern), Builder Center article, <3-min demo
      video; submission under the owner account by Nov 4 23:59 PT.
 
+- **SUBMITTED — PUBLISHED 2026-11-03 ~10:01 PT** (owner publish-today ruling via main, superseding the Oct-30 Nov-4 timing; Desk + event Manager hands). confirmation_ref: https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint · Post-publish divergence found on D1 firsthand verify (10:02 PT) → verbatim-only correction session 10:08–10:54 PT → **D1 independent re-read PASS 10:56 PT** — content of record = the corrected version. **Verified submissions fleet-wide: 0 → 1.** Edit window runs to the Nov 4 23:59 PT freeze (v1.0.0 block + frozen-state verification = the open line).
+
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-03T15:00:00Z closes=2026-11-08T15:00:00-08:00 -->

@@ -416,3 +416,15 @@ def test_acquire_lizzyondroid_form_spelling_alias(tmp_path):
                      tmp_path / "out", fetch=f)
     assert got["status"] == "acquired" and got["source"] == "izzyondroid"
     assert "form spelling alias" in got["via"]
+
+
+def test_scan_repo_tree_tolerates_dangling_symlinks(tmp_path):
+    import os as _os
+    root = tmp_path / "tree"
+    (root / "app").mkdir(parents=True)
+    (root / "app" / "build.gradle").write_text(
+        'android { defaultConfig { applicationId "com.example.aitools" } }')
+    _os.symlink("/nonexistent/voice-models.json",
+                root / "app" / "voice-models.json")
+    claims = ax.scan_repo_tree(root)
+    assert claims["package_id"] == "com.example.aitools"

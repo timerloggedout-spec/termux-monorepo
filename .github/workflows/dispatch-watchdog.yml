@@ -1,0 +1,37 @@
+name: dispatch-watchdog
+
+# The unclaimed-aging sweep for the project-task dispatch queue.
+# Finds issues sitting `dispatch-queued` with no producer claim,
+# flags them at >30 min unclaimed and escalates at >60 min
+# (comment + `dispatch-escalated` label). Every run prints the full
+# queued set with states to the log + step summary.
+# Mechanism: scripts/dispatch/{claim_task,dispatch_watchdog}.py
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      flag_min:
+        description: "Flag threshold (minutes unclaimed)"
+        required: false
+        default: "30"
+      escalate_min:
+        description: "Escalate threshold (minutes unclaimed)"
+        required: false
+        default: "60"
+
+permissions:
+  issues: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sweep the dispatch queue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WATCHDOG_FLAG_MIN: ${{ inputs.flag_min || '30' }}
+          WATCHDOG_ESCALATE_MIN: ${{ inputs.escalate_min || '60' }}
+        run: python3 scripts/dispatch/dispatch_watchdog.py

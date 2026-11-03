@@ -82,7 +82,13 @@ def receipt_comment(issue_number: int, fields: dict) -> str:
         "(no provider is named at intake, by design)\n"
         "- instance stamps: pending — filled post-hoc after execution "
         "{resolved provider x model · session/run ids · outcomes}\n\n"
-        "Status: `dispatch-queued`."
+        "Status: `dispatch-queued` — NOT owned until claimed.\n\n"
+        "Claim/lease: the producing seat claims at pickup with "
+        "`scripts/dispatch/claim_task.py` (claim comment + "
+        "`dispatch-claimed` label). Unclaimed tasks are flagged at "
+        "30 min and escalated at 60 min by the dispatch watchdog; "
+        "filers route to a named seat in the same motion as the "
+        "filing (interim rule, owner 2026-11-03)."
     )
 
 

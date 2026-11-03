@@ -84,7 +84,7 @@ See [docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md](docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.m
 
 [runnable](https://runable.cloud/?refer_code=MVGL8T)
 
-> **Powered by autonomous AI employees.** This project uses [CellCog](https://cellcog.ai/invitation/l19hdRGY9dTh) AI employees for continuous integration, PR review, and engineering operations. Standing AI workers run across persistent sessions with their own cloud environments, tool execution, and team channels. Sign up through the [community partner invitation](https://cellcog.ai/invitation/l19hdRGY9dTh) to receive **500 bonus credits** on your first purchase. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
+> Built and operated with a fleet of AI collaborators across continuous integration, review, and engineering operations. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >
 > Ecosystem partners — referral, affiliate, and gifted-usage lanes — are registered in [`docs/PARTNERS.md`](docs/PARTNERS.md) (active lanes, pipeline, wallets). Partner links may be affiliate or referral links; new accounts may receive promotional credits, terms apply.
 > **Free invite codes (no card):** Muse `VDP1DW` — 1B tokens, redeem in Settings within 48h of joining · Cue `W7AZA` · Migoo `uA3QYP` — all lanes: https://timerloggedout-spec.github.io/#partners

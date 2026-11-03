@@ -6,7 +6,7 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 
 | Partner | Category | Offer | Link | Badge | Owner |
 |---|---|---|---|---|---|
-| CellCog | AI employees & agents (anchor) | 500 bonus credits on first purchase | https://cellcog.ai/invitation/l19hdRGY9dTh | `CellCog — 500 bonus credits` (teal `2e7e7e`) — row 1 | Marketing (Chloe) |
+| CellCog | AI employees & agents | 500 bonus credits on first purchase | https://cellcog.ai/invitation/l19hdRGY9dTh | `CellCog — 500 bonus credits` (teal `2e7e7e`) — row 1 | Marketing (Chloe) |
 | Polsia | AI directory & intelligence | 500 extra credits (per #574 — verify on signup) | https://polsia.com/?ref=B5K7S8NL | `Polsia — referral bonus` (`7c3aed`) — row 1 | Marketing (Chloe) |
 | Manus AI | AI employees & agents | Invitation link (UTM-tagged) | https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share | `Manus AI — invitation` (`111111`) — row 1 | Marketing (Chloe) |
 | UnoRouter | LLM routing | 10% of referred top-ups as account balance (no cash payout; balance transfers to main) | https://unorouter.com/register?aff=kHp6 | issued referral badge (dark, MD, SVG) — landing grid | Marketing (Chloe) |

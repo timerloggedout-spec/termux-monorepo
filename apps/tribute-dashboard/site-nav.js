@@ -35,6 +35,7 @@
     ["Classifiers", tribute + "classifiers.html", "classifiers"],
     ["PR lanes", tribute + "pr-lanes.html", "pr-lanes"],
     ["Proposals", tribute + "proposals.html", "proposals"],
+    ["Referrals", tribute + "referrals.html", "referrals"],
     ["Telemetry", tribute + "telemetry.html", "telemetry"],
     ["Desk", tribute + "desk.html", "desk"],
     ["Tracking", tribute + "tracking.html", "tracking"],

@@ -51,6 +51,7 @@ CANON = [
     ('https://timerloggedout-spec.github.io/tribute/classifiers.html', 'Classifiers'),
     ('https://timerloggedout-spec.github.io/tribute/pr-lanes.html', 'PR Lanes'),
     ('https://timerloggedout-spec.github.io/tribute/proposals.html', 'Proposals'),
+    ('https://timerloggedout-spec.github.io/tribute/referrals.html', 'Referrals'),
     ('https://timerloggedout-spec.github.io/tribute/telemetry.html', 'Telemetry'),
     ('https://timerloggedout-spec.github.io/tribute/desk.html', 'Desk'),
     ('https://timerloggedout-spec.github.io/tribute/tracking.html', 'Tracking'),
@@ -69,7 +70,7 @@ NAV_PAGES = {
     "mvt.html", "doe.html", "ates.html", "results-index.html", "free-tier-value.html",
     "dispatch-tree.html", "countdowns.html", "linguist.html",
     "delphi-rfp.html", "delphi-ledger.html", "classifiers.html", "pr-lanes.html",
-    "proposals.html", "telemetry.html", "desk.html", "tracking.html",
+    "proposals.html", "referrals.html", "telemetry.html", "desk.html", "tracking.html",
     "family.html", "quota-swarm.html",
 }
 

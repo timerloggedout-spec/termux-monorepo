@@ -20,6 +20,7 @@ on:
       - "scripts/quota_usage_series.py"
       - "scripts/quota_vultr_usage.py"
       - "scripts/quota_self_counts.py"
+      - "ops/3l0/intake.jsonl"
       - "tests/test_quota_*.py"
       - "tests/test_provider_quota_coverage.py"
       - "apps/tribute-dashboard/data/quota*.json"
@@ -41,6 +42,7 @@ on:
       - "scripts/quota_usage_series.py"
       - "scripts/quota_vultr_usage.py"
       - "scripts/quota_self_counts.py"
+      - "ops/3l0/intake.jsonl"
       - "tests/test_quota_*.py"
       - "tests/test_provider_quota_coverage.py"
       - "apps/tribute-dashboard/data/quota*.json"
@@ -80,6 +82,7 @@ jobs:
           tests/test_quota_allocation_planner.py
           tests/test_provider_quota_coverage.py
           tests/test_quota_self_counts.py
+          tests/test_quota_consumption.py
       - name: Snapshot pair identical + complete against the registry
         run: |
           cmp docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json

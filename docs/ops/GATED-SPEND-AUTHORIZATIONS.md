@@ -33,7 +33,9 @@ authorization {auth_id, proposal_id, resource, objective,
                cap {amount, unit},
                release_gate {required_role},
                released_total, spent_total,
-               state: active|exhausted|closed,
+               expires_at (resource-bound, e.g. a dated credit),
+               overrun_finding (receipt id or null),
+               state: active|held|exhausted|expired|revoked|closed,
                authorized_by, ts, receipts[]}
 receipt       {receipt_id, auth_id, resource, action:
                authorized|released|spent, amount, cap,
@@ -45,31 +47,59 @@ Authorization requires the authorizer's role ≥ the release gate's
 `required_role`; each release re-checks the releaser's role against the
 gate. Spend records carry a free-text note (what the draw bought).
 
-## Lifecycle
+## Lifecycle (full complement)
 
 ```
-propose → authorize (cap + gate stamped) → release (tranche, gated)
-        → spend (≤ released) → … → report (spend-vs-estimate)
+propose → issue (authorize: cap + gate + expiry stamped)
+        → gated release (receipted, tranche by tranche)
+        → spend (draw-down tracked against released)
+        → reconciliation (estimate-vs-actual, continuous via report)
+        → close-out report (terminal)
+side exits: overrun ⇒ finding + hold · expiry · revocation
 ```
 
-- `released_total + release > cap` ⇒ refused (hard cap).
-- `spent_total + spend > released_total` ⇒ refused (unreleased funds
-  do not exist).
-- `spent_total == cap` ⇒ authorization state `exhausted`.
-- Reconciliation: `report` renders per authorization
+- **Issue:** authorization minted only from a `proposed` proposal, by
+  a role ≥ the release gate's role; cap, gate, and resource-bound
+  `expires_at` are stamped at issue.
+- **Gated release:** each tranche re-checks the releaser's role;
+  `released_total + release > cap` ⇒ refused (hard cap).
+- **Draw-down tracking:** `spent_total + spend > released_total` ⇒
+  refused (unreleased funds do not exist); totals + per-receipt
+  running balances ride the receipts.
+- **Estimate-vs-actual reconciliation:** continuous — `report` renders
   `{estimated · cap · released · spent · remaining_cap ·
-  spend_vs_estimate_pct · state · receipt count}`.
+  spend_vs_estimate_pct · state · expires_at · overrun_finding}`.
+- **Overrun = finding + hold:** the spend that pushes `spent_total`
+  past the stamped estimate (the cap still binds absolutely) emits an
+  `overrun_finding` receipt and flips the authorization to `held` —
+  no further release or spend until a gate-role `unhold`,
+  revocation, or close-out.
+- **Expiry:** resource-bound (e.g. the first application's credit
+  expires ≈ Dec 3 — theDesk stamps the real date at issue); first
+  touch past `expires_at` flips state to `expired`, all draws refused.
+- **Revocation:** gate-role act; terminal; receipt carries
+  `released_unspent`.
+- **Close-out report:** gate-role act; terminal; final reconciliation
+  `{estimated · cap · released · spent · released_unspent ·
+  unreleased_cap · variance_vs_estimate · spend_vs_estimate_pct ·
+  overrun_finding · receipts}` sealed by a closeout receipt.
+- `spent_total == cap` ⇒ state `exhausted` (draws refused).
 
 ## Mechanics of record
 
 `spend_auth.py` (governor custody, beside `governor_actuate.py`):
-verbs `propose · authorize · release · spend · report`. Store =
+verbs `propose · authorize · release · spend · unhold · revoke ·
+closeout · report`. Store =
 `spend-auth.json`; receipts append to the shared governor event stream
 and fold into the governor plane with the emitter batches. Verified on
 a copied rig (owner rule: synthetic state never touches the live
 store): no-proposal authorize refused · under-role release refused ·
 over-cap release refused · over-released spend refused · happy path
-reconciles (released 120 / spent 95 / estimate 200 ⇒ 47.5%).
+reconciles (released 120 / spent 95 / estimate 200 ⇒ 47.5%) · expired
+authorization refuses draws · overrun spend (150 vs estimate 100)
+emits finding rcpt + holds, held spend refused, gate-role unhold
+restores · revocation terminal · close-out seals the reconciliation
+(variance +50 · 150.0% · released_unspent 350 · unreleased_cap 500).
 
 ## First application
 

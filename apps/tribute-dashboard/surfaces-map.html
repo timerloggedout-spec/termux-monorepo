@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Surfaces Map — Planes × Taxonomy × Shared Substrate</title>
+<title>Surfaces Map — Groups × Taxonomy × Shared Substrate</title>
 <!--
   DRAFT for review (commission: owner via main, 2026-11-04).
   Visual mapping: per surface -> its group + the taxonomy levels it
@@ -34,7 +34,7 @@
 <p>Each surface sits in its primary surface group (the topical axis - NOT the record word "plane", whose only referent is Pool). Under it: the taxonomy
 levels the surface actually renders (of role · office · plane ·
 domain · method · program · structure, per reconciliation #4884).
-The substrate band is shared: lines show which planes draw on each
+The substrate band is shared: lines show which groups draw on each
 substrate element; the table gives the per-surface edges.</p>
 <div id="diagram"></div>
 <section>
@@ -69,8 +69,7 @@ QUE governor · provenance).</li>
 <li>Pools appears on both homes (tribute census matrix + MoneyBall
 site pools) over one wallet ledger — one fold, two renders.</li>
 <li>Levels name what a surface RENDERS, not what it is: a surface
-in the quota plane can render structure (pools do) without being a
-structure.</li>
+levels are sparse by design (see Reserved names) — most surfaces render no record level at all.</li>
 </ul>
 <p class="note">Draft of record: the map data block in this page.
 Corrections land as data edits, never prose-only.</p>
@@ -101,7 +100,7 @@ const GROUPS = [
  {id:"coordination", label:"Coordination & QUE", color:"#a8b46b"},
  {id:"web", label:"Web & Presentation", color:"#9aa6bd"}
 ];
-// surface: [name, home, plane, levels rendered, draws-from substrate ids, repo, code layers, release layer]
+// surface: [name, home, group, levels rendered, draws-from substrate ids, repo, code layers, release layer]
 const SURFACES = [
  ["quota.html","tribute","quota","∅",["feeds","governor","monikers"],"termux-monorepo","page · quota feeds · governor emitter · tests","quota pack stamps · governor readings carry their own as-of · site deploy"],
  ["quota-usage.html","tribute","quota","∅",["feeds","governor"],"termux-monorepo","page · usage feed (lane-events) · tests","series snapshots append-only · site deploy"],
@@ -148,7 +147,7 @@ const SURFACES = [
  ["versioning.html","tribute","web","∅",["feeds"],"termux-monorepo","page · version-manifest source · versioning.js · tests","site deploy (Pages per merge) · the version-stamp surface itself"],
  ["index.html","tribute","web","∅",["feeds"],"termux-monorepo","shell page · status payload · tests","site deploy (Pages per merge) · the deployment front door"]
 ];
-// edges: substrate -> planes it feeds (derived from SURFACES draws)
+// edges: substrate -> groups it feeds (derived from SURFACES draws)
 
 // ==== pure logic (node-sim tested) ====
 function groupDraws(surfaces){

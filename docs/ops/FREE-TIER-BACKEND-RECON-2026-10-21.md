@@ -213,6 +213,15 @@ this file only updates the fleet's knowledge.*
 *Evidence class — Source: Recon 🏅 lane census checked 2026-11-04, forwarded by the owner 2026-11-04 05:43 PT; values attributed to that census, NOT independently re-verified by this lane; full census + URL list in the Recon lane's 2026-11-04 daily log.*
 *Companion: `docs/ops/FREE-STORAGE-RECON-2026-11-03.md` + `ops/free-storage/free-storage-registry.json` — the storage-plane sibling of this hosting census.*
 
+### A6. Strands priority account + provisioning list (owner-designated 2026-11-04)
+
+Filter = Strands SDK execution requirements {Python >=3.10 CPython - strands-agents + boto3 installable - >=512MB RAM - outbound HTTPS egress - per-call window >= tens of seconds - env/secret injection}. Provision in this order:
+
+- **PASS:** (1) AWS account (new flow) -> Lambda — gate = owner signup test in flight. (2) Vercel Hobby — execution OK (terms/deploy flags separate). (3) Leapcell — envelope OK, 3 GB-h/mo ops budget.
+- **CONDITIONAL:** SnapDeploy (512MB fit unproven; GitHub sign-in confirmed) - Render free (512MB) - Appwrite (memory/timeout spec unverified) - owned compute + CF tunnel (box undesignated).
+- **PROVEN-EXECUTION, non-host:** GitHub Actions (#4534 run 41708224556).
+- **OUT:** Cloudflare Workers - PythonAnywhere - alwaysdata - Back4app - Supabase Edge - Netlify - HF Docker (card).
+
 ### A1. Structural — ingress solved, compute is the gap
 
 - Cloudflare = already fleet-held ⇒ **Cloudflare Tunnel** turns owned compute into a public endpoint at $0: named tunnel = stable hostname on a fleet domain; quick tunnel = no account, rotating URL. **INGRESS: solved.**

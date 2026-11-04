@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 529,
-    "open_prs": 268,
+    "open_prs": 269,
     "pr_classes": {
-      "CANDIDATE": 127,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 130,
+      "CANDIDATE": 128,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 131,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 266,
+      "prs": 267,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T01:06:22Z",
+  "generated_at": "2026-11-04T01:13:59Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "777d19593d"
+    "sha": "bff2a9ceba"
   },
   "prs": [
     {
@@ -228,20 +228,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "ccdf55fe92",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T00:39:10Z"
     },
     {
       "class": "EXTRACT",
@@ -534,7 +520,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -1081,6 +1067,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "ccdf55fe92",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T00:39:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1507,20 +1507,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "918dbbc4f3",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T01:05:03Z"
     },
     {
       "class": "CANDIDATE",
@@ -2095,6 +2081,20 @@
       "number": 4742,
       "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
       "updated_at": "2026-11-04T00:52:14Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6f37fed13f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4760,
+      "title": "quota: coverage cited as the labeled pair (readings + consumption) in pack + quota.txt",
+      "updated_at": "2026-11-04T01:10:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3251,12 +3251,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "fd850902f3",
+      "head_sha": "d8fd3bfcf1",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T01:06:06Z"
+      "updated_at": "2026-11-04T01:13:44Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "f8e8c7b92f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T01:13:42Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3911,10 +3925,10 @@
       },
       "head_sha": "1e1b0c5398",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
-      "updated_at": "2026-11-04T01:06:10Z"
+      "updated_at": "2026-11-04T01:06:46Z"
     }
   ],
   "schema": "operator-matrix/v1",

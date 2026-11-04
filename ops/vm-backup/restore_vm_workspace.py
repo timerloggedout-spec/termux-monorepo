@@ -65,10 +65,17 @@ def main(argv=None):
     for e in entries:
         if not e.get("exported"):
             continue
-        src = backup / e["path"]
         dst = target / e["source"]
         dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(src, dst)
+        if e.get("split"):
+            # Reassemble byte-bounded parts in order; the sidecar is
+            # metadata only and is never restored as a file.
+            with open(dst, "wb") as fout:
+                for pr in e["split"]["parts"]:
+                    with open(backup / pr, "rb") as fin:
+                        shutil.copyfileobj(fin, fout)
+        else:
+            shutil.copyfile(backup / e["path"], dst)
         checked += 1
         if _sha256(dst) != e["sha256"]:
             mismatched += 1

@@ -1146,6 +1146,57 @@ version and compared continuously until culling retires a version.
   **An experiment without its proof — or an entry
   missing its data-layer refs — reads INCOMPLETE in
   this register.**
+- **DoE audit surface** (owner: "Feed it to the System",
+  2026-11-03) — what audits DoE itself, named as a
+  register entry: {the KERNEL (NSE-023 Lean oracle:
+  proof artifacts + verdict artifacts, never job color) -
+  SECOND LEGS (two-leg corroboration checks on DoE's own
+  claims, rule 9 applied inward) - REGISTRY CONCURRENCE
+  (SSOT seat checks DoE's role/term usage; epoch instance
+  2026-11-03, conformant, one watch-note carried) -
+  OWNER/MAIN SPOT CHECKS (firsthand re-reads of DoE's
+  relays; the D1 divergence catch is the type case) -
+  SCORED REALITY (DoE's forecasts/verdicts scored against
+  outcomes of record: Nov 8 (D5-era outcomes) - Nov 18
+  (D1 judging close: mirror layers L1-L5 + F-N3 Brier/
+  hit-rate)}.
+  **GAP (open item): no standing auditor holds the duty
+  of auditing DoE as a standing office — the surface
+  above is assembled from neighbors' acts, not an
+  office. Named candidate: Swarm-formalization (the
+  audit surface as a workflow-held duty). Owner's pick
+  PENDING; the gap stays open on this register until
+  the pick lands.**
+  **Improvement loop** (the cycle applied to DoE
+  itself): {executions landing (campaigns produce the
+  records) - proof gap-list (E002…E006 + M001, worked
+  down in order) - oracle verdicts (each landing moves
+  a coverage row) - scored outcomes (Nov 8 / Nov 18
+  legs) - classifier trueing (chat-intent + exchange
+  scoring corrected against reality)} — each loop pass
+  lands as register entries; nothing self-amends
+  silently.
+- **DoE version|settings register** (owner, 2026-11-03):
+  DoE's own version lines + settings tracked here as
+  records of record; a change lands as a register entry,
+  citable like any layer. CURRENT OF RECORD:
+  {proofs: manifest schema doe-proofs-manifest/v1 -
+  packet E001 (batteries leg) - oracle pins: Batteries
+  @36cc05ca2d0e (fleet fork batteries_fork, toolchain
+  v4.34.0-rc1) - Mathlib @cc8b65263ab8 (toolchain
+  v4.36.0-rc2)} - {cycle parameters: sets-of-3 - rule-7
+  floor n=3 / cap n=12 per trigger - ESTABLISHED gate
+  n>=30 + minority>=10 + p<.05 - accumulation bars
+  30 (mean) / 100 (variance) / ~384 (claim-grade
+  proportion) per arm} - {method versions of record:
+  pool-scope-methods/v1 - doe-questions-matrix v1 -
+  panel-judge-mirror v0 - egm-evaluation v0 - lens-
+  frame v0 - equivalence-proof/v0} - {epoch artifacts:
+  DOE-METHODS-EPOCH-2026-11-03 (methods/cycle/iteration/
+  generation/epoch, as appended) - DOE-ROLES-EPOCH-
+  2026-11-03 - proofs INDEX/MANIFEST @experiments/doe/
+  proofs/}. Settings not listed here are not DoE
+  settings of record.
 
 ## Campaign layout
 

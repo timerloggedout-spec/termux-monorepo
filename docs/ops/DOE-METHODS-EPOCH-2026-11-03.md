@@ -259,3 +259,74 @@ wall (D1 freeze 2026-11-04 23:59 PT); verdict flow is one-way —
 lane report → verification → verdict → registration — and a
 verdict, once of record, is corrected by a new entry, never
 edited in place.
+
+## Iteration — definition of record (owner addition, 2026-11-03)
+
+An **iteration** is one numbered pass at a stated done-condition,
+inside a series that shares a higher done-condition.
+
+- **Opens** when all three exist: a trigger of record (a landing,
+  a defect verdict, a material change, an owner's order) · an
+  owning seat · a done-condition stated before the work runs.
+  Activity without a done-condition is not an iteration; it is
+  motion, and the epoch's records refuse it that name.
+- **Closes** when its done-evidence verifies firsthand — a PASS,
+  a landed PR read back on master, a scored result — by a seat
+  other than the producer where the seats differ (self-verified
+  closures disclose it), OR when it is superseded BY NAME, with
+  the superseding iteration cited. A failed iteration closes as
+  a failure and stays in the record: the failures are why a
+  later PASS means anything.
+- **Numbering is append-only.** A reopened item gets a NEW
+  iteration number; an old one is never resurrected or edited.
+  Corrections land as later iterations, not revisions.
+
+**Composition.** Iterations compose into a **cycle**: the series
+taken together against its shared done-condition (submission
+readiness, a curve completed at the freeze, a full-scope
+reconciliation). Cycles compose into the **epoch**: the set of
+cycles running under one wall and theme — this epoch is bounded
+by the D1 freeze (2026-11-04 23:59 PT) with its scoring tail at
+judging close (2026-11-18). An epoch closes when its cycles
+close, or when their remainders bind forward BY NAME as named
+openings of the next epoch (the G0 payout leg → POS-001; the
+mirror layers → their 2026-11-18 scoring).
+
+**The epoch's concrete instances:**
+
+- **StudySprint parity slate** — owner order (MAKE IT HAPPEN,
+  no inter-iteration pauses): it-1 = 0.2.0 (#4414) · it-2 =
+  0.3.0 (#4415) · it-3 = 0.4.0 (#4416, term-expansion component
+  stamped in) · it-4 = 0.5.0 (#4417). Each opens on the prior
+  iteration's green and closes on gate + evidence; the slate is
+  one cycle aimed at the submission wall. The #4276 defect ran
+  its own iteration series inside it: 0.1.1 (device FAIL) →
+  0.1.3 (#4412), closed only when BOTH legs verified (emulator
+  gate + owner device smoke).
+- **Panel Judge Mirror layers 1–4** — each layer is one
+  iteration of a single forecast: baseline (61.7) → L2 (65.0,
+  sample content) → L3 (66.3, surfaces) → L4 (69.7, Strands
+  depth). A layer opens on a named trigger (a proof closing, a
+  release advancing, a content landing), closes when its
+  forecast files with the Δ and the moved basis term stated;
+  L5 opens on the v1.0.0 cut. The layers compose into the
+  improvement curve — the mirror's cycle — which closes at the
+  freeze and scores 2026-11-18.
+- **Census rounds** — provisioning rounds (base program, 161
+  entities → Amendment 1 DoE umbrella +49 → … → Amendment 5
+  arms + loops, 693 pools) and their render rounds (feed
+  regens 1→5 · target table r1→r2). A round opens on a scope
+  amendment landing and closes on reconciliation: counts exact
+  between legs, deltas named, NOT_ESTABLISHED cells carried
+  with reasons. The census cycle closes when the last class
+  and the last render leg verify.
+- **Strands proof runs 1–4** — four iterations of one
+  done-condition (a fetch→plan tool chain executing on the
+  live model, receipted). Runs 1–3 did not close it; run 4
+  (run 41708224556) PASS closed the series. The failed runs
+  remain in the record as the series' evidence — attempt 4's
+  gate record carries the repro RED beside the PASS.
+- Cadence instances, same shape at smaller grain: the Delphi
+  gate's silent hourly sweeps converging a filing over several
+  rounds (RFP-D1-7, ~31 min) are iterations of a scoring cycle
+  whose done-condition is a converged ledger posting.

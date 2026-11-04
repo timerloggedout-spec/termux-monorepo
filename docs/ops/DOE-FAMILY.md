@@ -1093,7 +1093,13 @@ version and compared continuously until culling retires a version.
   practiced: pre-register -> build by a non-evaluator seat ->
   firsthand verification -> corroboration -> verdict of
   record -> registration -> layering -> closure with its
-  next trigger named.
+  next trigger named. Iteration defined in the same
+  artifact (owner addition 2026-11-03): opens on {trigger
+  of record - owning seat - stated done-condition}, closes
+  on firsthand-verified done-evidence or supersession by
+  name; numbering append-only; iterations compose into
+  cycles, cycles into the epoch (this epoch: D1 freeze
+  2026-11-04 23:59 PT, scoring tail 2026-11-18).
 
 ## Campaign layout
 

@@ -353,7 +353,7 @@ fetch("./data/dispatch-state-feed.json").then(r=>{ if(!r.ok) throw new Error("fe
       $("quetiers").innerHTML=h;
       const w=d.wedged_ancient||[];
       $("quewedged").innerHTML= w.length
-        ? '<p><strong>Wedged ancients</strong> <span class="dim">(queued &gt;7d; excluded from the counts above'+(d.wedged_excluded_from_counts!=null? ": "+esc(d.wedged_excluded_from_counts)+" excluded":"")+')</span></p><ul>'+w.map(x=>'<li><a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.workflow)+"</a> \u00b7 queued since "+esc(x.created_at)+"</li>").join("")+"</ul>"
+        ? '<p><strong>Wedged ancients</strong> <span class="dim">(queued &gt;7d; excluded from the counts above'+(typeof d.wedged_excluded_from_counts==="number"? ": "+esc(d.wedged_excluded_from_counts)+" excluded":"")+')</span></p><ul>'+w.map(x=>'<li><a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.workflow)+"</a> \u00b7 queued since "+esc(x.created_at)+"</li>").join("")+"</ul>"
         : '<p class="dim">No wedged ancients in this stamp.</p>';
     }catch(e){
       $("quechart").innerHTML='<p class="muted">Measurement feed not yet published \u2014 nothing shown rather than anything guessed.</p>';

@@ -215,7 +215,7 @@ figures are marked "(survey)" in-line.
 
 | Candidate | Free terms (as checked) |
 |---|---|
-| SnapDeploy | 4x 512MB containers, 100 awake-h/mo |
+| SnapDeploy | 4x 512MB containers, 100 awake-h/mo; sign-in = GitHub (owner fact 2026-11-04) -> fleet GitHub identity is the provisioning route, no new credential class |
 | Leapcell | 100K invocations/mo, 3 GB-h |
 | Appwrite Functions | 750K Python exec/mo; 7-day console-activity pause hazard |
 | alwaysdata | persistent, 256MB cap |

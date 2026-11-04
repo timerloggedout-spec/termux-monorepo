@@ -75,7 +75,7 @@ side exits: overrun ⇒ finding + hold · expiry · revocation
   no further release or spend until a gate-role `unhold`,
   revocation, or close-out.
 - **Expiry:** resource-bound (e.g. the first application's credit
-  expires ≈ Dec 3 — theDesk stamps the real date at issue); first
+  expires ≈ Dec 3 — the Desk stamps the real date at issue); first
   touch past `expires_at` flips state to `expired`, all draws refused.
 - **Revocation:** gate-role act; terminal; receipt carries
   `released_unspent`.

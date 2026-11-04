@@ -1,0 +1,35 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: docs/ops/DOE-METHODS-EPOCH-2026-11-03.md
+%%   @master — Iteration / Generation / Epoch definitions of
+%%   record + "The two axes, stated plainly".
+%% Export: 2026-11-03. Fidelity: the nesting (generation inside
+%%   iteration; epoch > cycle > iteration > run) and the two
+%%   axes are LOSSLESS as stated in the source — conflating
+%%   the axes is the error the source section exists to stop.
+%% NAMED LOSSES: all definitional conditions dropped — open/
+%%   close criteria for iterations, the cull record fields,
+%%   the epoch's dataset composition (repo/session/telemetry/
+%%   books corpora), and the epoch's honest bounds (e.g. the
+%%   0/48 pass that lawfully blocked a turnover this epoch).
+%% ============================================================
+flowchart TB
+    subgraph PASS["PASS AXIS — how much of the dataset has been worked"]
+        EP["EPOCH — one full pass over the dataset of record, bounded by the wall"]
+        CY["CYCLE — one design → run → audit → verdict loop over its slice"]
+        IT["ITERATION — one numbered work batch at a stated done-condition"]
+        RUN["single run / dispatch (atomic step; standard batch = sets of 3)"]
+        EP --> CY --> IT --> RUN
+    end
+    subgraph EVOLVE["EVOLVE AXIS — how the population changes (unit: GENERATION)"]
+        POP["population — a cohort under one evaluation frame"]
+        EV["evaluate — every unit read against stated criteria"]
+        CULL["cull — bottom removed, recorded; culled wallets flow to the pool, never destroyed"]
+        NEXT["next generation — seed cohort carried, complement re-mixed"]
+        POP --> EV --> CULL --> NEXT --> POP
+    end
+    EVOLVE -.->|"a generation turnover happens INSIDE an iteration"| IT
+    EV -.->|"the axes intersect at evaluation: an evaluate phase IS a pass over accumulated records"| IT
+    NOTE["neither axis borrows the other's completion: a full pass can turn over zero populations; a turnover need not complete a pass"]
+    NOTE -.-> PASS
+    NOTE -.-> EVOLVE

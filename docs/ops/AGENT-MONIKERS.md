@@ -1221,7 +1221,7 @@ alias · reject}. Registry lane = gate.
 |---|---|---|
 | Orchestrators | role | alias → `manager` (collapse M; ker {peerGate GHA role label · generic orchestration prose}) |
 | Operators | role | **canonical** `operator` — distinct-class (accountable human principal; ¬ the agent-lane sense) |
-| ChronoMancers | role? | alias → `scout` at listing (ker {DoE fork-selector role binding named `ChronoMancer`}). T2 evidence: the binding is REAL + single-sense ∀ 4 surfaces {code `chronomancer.py` (specialised ArchWizard, session plane) · DOE-FAMILY doctrine mapping (2026-10-30: `role=fork-selector`) · collapse-registry ker (accurate) · DoE experiment plane (emission subject; emission itself unbuilt = gap of record)} — record layer keeps the binding name; ∅ separate class |
+| ChronoMancers | role? | alias → `scout` at listing (ker {DoE fork-selector role binding named `ChronoMancer`}). T2 evidence: the binding is REAL + single-sense ∀ 4 surfaces {code `chronomancer.py` (specialised ArchWizard, session plane) · DOE-FAMILY doctrine mapping (2026-10-30: `role=fork-selector`) · collapse-registry ker (accurate) · DoE experiment plane (emission subject; emission itself unbuilt = gap of record)} — record layer keeps the binding name; ∅ separate class. **Registry RULING (gate, PR #4884): binding CONFIRMED** — `ChronoMancer` names the DoE fork-selector role; listing alias → `scout`; ∅ class, ∅ SSOT row; the emission gap is a DoE build gap |
 | Scouts | role | **canonical** `scout` |
 | Managers | role | **canonical** `manager` |
 | Players | role | alias → `participant` (ker {MoneyBall sports-metaphor prose}) |
@@ -1259,7 +1259,7 @@ alias · reject}. Registry lane = gate.
 | house | register | ISSUED role word, vocab ① (parimutuel operator side; ∅ position, ∅ odds) |
 | requester | register | ISSUED, vocab ① (pays team fee / places requests) |
 | pool member | register | ISSUED, vocab ① (holds pool shares) |
-| bookmaker | reserve | RESERVED-ABSENT as an actor (∅ odds-setting role exists). **Owner consideration (2026-11-04): function-mapping candidate — bookmaker → the ledger system in Web3:** the book-making FUNCTION (recording positions + settlement) is performed by the Web3 ledger system (book-ledger + settlement machinery, steward-kept), ∅ actor, ∅ odds (parimutuel). For ruling at the Registry gate alongside this reserve |
+| bookmaker | reserve | RESERVED-ABSENT as an actor (∅ odds-setting role exists). **Registry RULING (gate, PR #4884): function-mapping ACCEPTED as a function note** — the book-making FUNCTION (recording positions + settlement) is performed by the Web3 ledger system (book-ledger + settlement machinery, steward-kept), ∅ actor, ∅ odds (parimutuel); the reserve STANDS and the word `bookmaker` never names that system |
 | forecaster | reject (as a class) | `forecast` = distinct OUTPUT class (Cluster S) — names outputs, never participants |
 | Coach | reserve | ASSERTED, ∅ record basis (T2: SSOT counts 0 · monorepo hits ∅ role-defining · moneyball 0) — sports-metaphor import; held reserved-ungrounded pending any record basis |
 | franchise owner | alias → `operator` | ASSERTED, ∅ record basis (T2: exact code-search 0; sole `franchise` hit = TMNT IP sense). ker {league-structure property sense; `owner` already alias → operator, Cluster M} |
@@ -1270,8 +1270,8 @@ alias · reject}. Registry lane = gate.
 `builder · operator · steward · observer · reviewer · scout ·
 gambler · participant · manager · coordinator · judge ·
 evaluator · validator · house · team · requester ·
-pool member` · reserved-absent: `bookmaker · 11th man ·
-Coach` · listing aliases (ker in the collapse registry):
+pool member` · reserved-absent: `bookmaker · 11th man` · `Coach` =
+reserved-ungrounded (gate stamp) · listing aliases (ker in the collapse registry):
 orchestrator · lead · owner · player · actor · speculator ·
 wagerer · bettor · bookie · recon · selector · watcher ·
 critic · scorer · oracle · implementer · ChronoMancer.

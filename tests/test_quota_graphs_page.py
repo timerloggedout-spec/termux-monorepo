@@ -145,6 +145,7 @@ def test_page_contract():
     assert "task_tree" in html
     assert "Task attribution tree" in html
     assert "renderTaskTree" in html
+    assert "task-expand-all" in html and "task-collapse-all" in html
     assert "Provider → model (verbatim) → role → participant → task" in html
     assert "activity-proxy" in html and "NOT_ESTABLISHED" in html
     assert "No recorded tasks" in html

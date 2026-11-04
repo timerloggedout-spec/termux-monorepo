@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-04T08:54:23Z",
+ "generated_at": "2026-11-04T09:28:44Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817; predecessor internal label 'AutoDesk', internal-only, \u2122-collision stamped: Autodesk brand; never a published surface name) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,23 +10,21 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 5,
-    "in_progress": 1,
+    "queued": 7,
+    "in_progress": 0,
     "oldest_queued_at": "2026-11-02T09:37:37Z",
     "by_workflow_queued": {
-     "repo gate": 1,
-     "Orchestration Regression Guard": 2,
-     "PR scope guard": 2
+     "repo gate": 3,
+     "Orchestration Regression Guard": 1,
+     "PR scope guard": 3
     }
    },
    "2": {
     "tier": 2,
-    "queued": 1,
+    "queued": 0,
     "in_progress": 1,
-    "oldest_queued_at": "2026-11-04T08:53:29Z",
-    "by_workflow_queued": {
-     "tribute-dashboard-deploy": 1
-    }
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    },
    "3": {
     "tier": 3,
@@ -37,36 +35,48 @@
    },
    "4": {
     "tier": 4,
-    "queued": 33,
-    "in_progress": 12,
-    "oldest_queued_at": "2026-11-04T08:51:56Z",
+    "queued": 65,
+    "in_progress": 14,
+    "oldest_queued_at": "2026-11-04T09:26:22Z",
     "by_workflow_queued": {
-     "Agent Throughput Evidence": 3,
-     "n8n SHE bridge": 3,
-     "delphi-ledger-feed-collect": 1,
-     "Issue Comment Router \u2014 modular fan-out reduction": 3,
-     "ECC Tools comment-command ops": 2,
-     "Context Relationship + Lead/Lag Audit": 4,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 3,
-     "PR production ledger": 2,
-     "telemetry-ingest": 1,
+     "Sweep Accountability": 4,
+     "Reconcile Devin Wiki access": 1,
+     "Agent Throughput Evidence": 8,
+     "lane events recorder": 1,
+     "n8n SHE bridge": 2,
+     "Issue Comment Router \u2014 modular fan-out reduction": 1,
+     "Agent review \u2192 auto Jules": 1,
+     "Foresight Evidence Spine": 1,
      "graph-matrix-probe": 1,
-     "quota-usage-series-refresh": 1,
+     "Repository development evaluation": 2,
+     "termux smoke": 3,
      "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-     "Repository development evaluation": 1,
-     "Workflow Surface Evidence": 1,
-     "Workflow Surface Policy": 1,
-     "Agent PR Jules Handoff": 1,
-     "Action Effectiveness Ledger": 1,
-     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
      "Operator Matrix Generate": 1,
-     "Automation Documentation Continuous Refresh": 1
+     "moneyball compare": 2,
+     "hitl-control-plane-verify": 1,
+     "ECC Tools comment-command ops": 3,
+     "Advisory CodeQL analysis": 1,
+     "Peer review orchestrator": 3,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 5,
+     "PR Change Effectiveness Ledger": 2,
+     "Action Effectiveness Ledger": 2,
+     "PR production ledger": 7,
+     "RECON INTEL discovery": 2,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
+     "DeepSeek CI \u2013 Agentic Automation": 1,
+     "archwiz dangle check": 1,
+     "delphi-ledger-feed-collect": 1,
+     "delphi-rfp-feed-collect": 1,
+     "Context Relationship + Lead/Lag Audit": 2,
+     "Agent PR Jules Handoff": 1,
+     "Workflow Surface Policy": 1,
+     "PR evidence evaluation": 1
     }
    }
   },
   "totals": {
-   "queued": 39,
-   "in_progress": 14
+   "queued": 72,
+   "in_progress": 15
   },
   "wedged_ancient": [
    {

@@ -40,7 +40,10 @@ def _fixture(tmp_path):
             "note": "Post-mandate dispatch stamp is missing."}},
          {"session_id": "sess-pending", "usage": {"value": None, "unit": None,
             "match": None, "status": "pending", "source": "desk-feed",
-            "note": "Awaiting usage carrier."}}]}
+            "note": "Awaiting usage carrier."}},
+         {"session_id": "sess-activity", "usage": {"value": 4, "unit": "sessions",
+            "match": "activity-proxy", "status": "activity-only",
+            "source": "desk-feed", "note": "Session count only."}}]}
     ]}))
     w("ops/quota/allocation-plan.json", "{}")
     w("ops/quota/rate-limit-events.json", "{}")
@@ -83,7 +86,11 @@ def _fixture(tmp_path):
             {"model": "mistral-large", "tasks": [
                 {"ts": "2026-11-02T02:00:00Z", "dispatch_id": "d3",
                  "role": "builder", "task_class": "no-usage-surface",
-                 "moniker": "participant-mistral"}]}]}
+                 "moniker": "participant-mistral"}]}]},
+        {"provider": "activity-provider", "models": [
+            {"model": "activity-model", "tasks": [
+                {"session_id": "sess-activity", "role": "planner",
+                 "task_class": "session-activity", "moniker": "participant-activity"}]}]}
     ]}))
     w("ops/quota/registry.json", '{"services": []}')
     # 3L0 intake: one stamped call, one null-usage call, one
@@ -195,8 +202,15 @@ def test_task_tree_joins_usage_by_dispatch_and_preserves_role_and_pool(tmp_path)
     mistral = next(p for p in tree["providers"] if p["provider"] == "mistral")
     mtask = mistral["models"][0]["roles"][0]["participants"][0]["tasks"][0]
     assert mtask["usage"]["status"] == "no-usage-surface"
-    assert tree["coverage"]["tasks"] == 8
+    activity_provider = next(p for p in tree["providers"] if p["provider"] == "activity-provider")
+    atask = activity_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert atask["usage"]["status"] == "activity-only"
+    assert atask["usage"]["match"] == "activity-proxy" and atask["usage"]["value"] == 4
+    assert tree["generated_at"] == pack["generated_at"]
+    assert tree["grouping"] == "provider -> model (verbatim) -> role (verbatim) -> participant (moniker) -> tasks"
+    assert tree["coverage"]["tasks"] == 9
     assert tree["coverage"]["established"] == 3
+    assert tree["coverage"]["activity_only"] == 1
     assert tree["coverage"]["waived"] == 1
     assert tree["coverage"]["fault"] == 1
     assert tree["coverage"]["pending"] == 1

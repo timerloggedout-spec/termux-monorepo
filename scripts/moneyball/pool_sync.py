@@ -20,10 +20,13 @@ and reported, never auto-provisioned (registration is data —
 a structured source upgrades a class by editing WALKERS).
 
 Depth rule (Amendment 3): one pool per entity at EACH depth of
-its source taxonomy; depth + parent carried on the event; pool
-ids are path-shaped (pool:<class>:<parent-slug>/<entity> is
-expressed in the flat ledger as pool:<class>:<entity> with
-parent_wallet naming the parent — the ledger's own convention).
+its source taxonomy. ID SCHEME (naming ruling of record, as
+landed by PR #4702): FLAT class-scoped ids —
+pool:<class>:<slug> — with {depth · parent_entity ·
+parent_wallet} carried on the event, never encoded in the id.
+POOL-SYNC reconciles against those ids (exists ⇒ no-op); it
+mints no second scheme. Tree structure is derived from the
+events' depth/parent fields, not from id parsing.
 
 Custody: Swarm (Optimizations & Implementation Assurance)
 builds/runs this mechanism; the ledger fold stays
@@ -267,10 +270,15 @@ def main():
         receipt["new"] = [c[0] for c in candidates]
         print("DRY-RUN: candidates not appended")
 
+    depth_counts = {}
+    for e in list(existing.values()):
+        key = f"{e.get('pool_class', '(card)')}@{e.get('depth') or 1}"
+        depth_counts[key] = depth_counts.get(key, 0) + 1
     census = {"schema": "moneyball-pool-census/v1",
               "ledger_events": len(events),
               "pools": len(existing) + len(receipt["new"]),
               "by_class": {k: len(v) for k, v in sorted(by_class.items())},
+              "by_class_depth": dict(sorted(depth_counts.items())),
               "walked": receipt["walked"],
               "census_only": receipt["census_only"],
               "new_this_run": receipt["new"]}

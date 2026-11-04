@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 269,
+    "open_prs": 271,
     "pr_classes": {
-      "CANDIDATE": 128,
+      "CANDIDATE": 126,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 131,
+      "NEED_EVIDENCE": 135,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 267,
+      "prs": 269,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T07:21:01Z",
+  "generated_at": "2026-11-04T07:24:37Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "7bcf8dd1c7"
+    "sha": "4a10303770"
   },
   "prs": [
     {
@@ -1013,7 +1013,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-03T23:30:44Z"
@@ -1059,20 +1059,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "2b5071c107",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T06:35:03Z"
     },
     {
       "class": "CANDIDATE",
@@ -1507,20 +1493,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f5b0677e3f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T07:19:13Z"
     },
     {
       "class": "CANDIDATE",
@@ -2593,12 +2565,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "6323d0c28f",
+      "head_sha": "2e730b0cf2",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-04T07:18:59Z"
+      "updated_at": "2026-11-04T07:22:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2613,6 +2585,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "604e8ed8f1",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T07:23:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3251,12 +3237,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "97aa322bd5",
+      "head_sha": "07a2440af2",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T07:18:44Z"
+      "updated_at": "2026-11-04T07:23:19Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "3f71061664",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T07:21:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3811,12 +3811,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f03a484381",
+      "head_sha": "32205eb9d3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-11-04T07:18:23Z"
+      "updated_at": "2026-11-04T07:22:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3929,6 +3929,34 @@
       "number": 4780,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:19:00Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "ffed948d07",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4790,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-04T07:21:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "dde8f59570",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4795,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-04T07:22:50Z"
     }
   ],
   "schema": "operator-matrix/v1",

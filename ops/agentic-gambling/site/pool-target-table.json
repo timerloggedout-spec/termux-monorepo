@@ -1,0 +1,385 @@
+{
+ "schema": "pool-target-table/v1",
+ "at": "2026-11-04T00:01:27Z",
+ "by": "[MUSEai]@{role:{speculators-build}} (custodian, wallet/settlement execution)",
+ "ledger_of_record": "ops/agentic-gambling/site/wallet-ledger.jsonl @master (717 events, 705 wallets; landed = fold of pool_provisioned events)",
+ "rules": "target = source-of-record total where the source enumerates; NOT_ESTABLISHED + reason + unblocking source where it does not. Landed rows are never edited; corrections append.",
+ "foreign_forks": {
+  "status": "EXCLUDED from devwork - judgment HELD as-is pending owner ruling (main direction 2026-11-03)",
+  "delta_if_reversed": "+677 entities at devwork d1 (715-repo census minus 38 provisioned repos); as their own class or folded into devwork - owner's choice at ruling",
+  "reversal_cost": "one append-only provisioning wave (677 wallet_provisioned events, same machinery, idempotent per-wallet) + pools-feed regen (MoneyBall custody) + census re-check (DoE leg); landed rows untouched; no schema or engine change required",
+  "executed": false
+ },
+ "rows": [
+  {
+   "class": "que-lane",
+   "depth": 1,
+   "slice": "",
+   "landed": 32,
+   "source_total": 32,
+   "target": 32,
+   "source": "apps/tribute-dashboard/data/dispatch-tree-feed.json data.lanes (generated 2026-11-02)",
+   "delta_note": "delta 0 vs feed-as-generated; QUE census drift post-2026-11-02 carried open (feed regeneration supersedes)"
+  },
+  {
+   "class": "que-lane",
+   "depth": 2,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "dispatch-tree feed carries no lane->seat/version decomposition",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "a lane seat/version registry (or a feed schema carrying seats/versions per lane)"
+  },
+  {
+   "class": "desk-lane",
+   "depth": 1,
+   "slice": "",
+   "landed": 10,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "no desk-lane registry exists; landed = receipted construction (coordinator.json entry desks D0-D5/C11/C12/STRANDS-DECIDER + desk-feed Contribution Desk)",
+   "delta_note": "landed 10 stands as construction, not source enumeration",
+   "unblocking_source": "a desk-lane registry of record"
+  },
+  {
+   "class": "desk-lane",
+   "depth": 2,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "no desk decomposition source",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "a desk-lane registry carrying per-desk decomposition"
+  },
+  {
+   "class": "profile",
+   "depth": 1,
+   "slice": "",
+   "landed": 10,
+   "source_total": 9,
+   "target": 10,
+   "source": "docs/ops/PROFILE-REGISTRY.md section 2 (9 platform profiles enumerated)",
+   "delta_note": "delta +1 named: GitHub root identity added by custodian judgment (receipted round-1); target = 10 as-landed"
+  },
+  {
+   "class": "profile",
+   "depth": 2,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "profile field states are prose in PROFILE-REGISTRY; no field registry",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "a profile field registry (structured per-profile fields)"
+  },
+  {
+   "class": "provider",
+   "depth": 1,
+   "slice": "",
+   "landed": 35,
+   "source_total": 35,
+   "target": 35,
+   "source": "ops/cadence/provider-onboarding.json (33 providers + 2 acknowledged_unmapped keys, enumerated in-file)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "provider",
+   "depth": 2,
+   "slice": "",
+   "landed": 95,
+   "source_total": 95,
+   "target": 95,
+   "source": "ops/challenge/desk-feed.json dispatch.provider_catalog inference_availability.records (95)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "provider",
+   "depth": 3,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "per-model settings registry does not exist",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "a per-model settings registry"
+  },
+  {
+   "class": "provider",
+   "depth": 4,
+   "slice": "",
+   "landed": 13,
+   "source_total": 13,
+   "target": 13,
+   "source": "provider-phrases/phrases.json (deepseek only: 5 prefixes + 7 suffixes + profile-1337 pair)",
+   "delta_note": "delta 0 for deepseek; prompts for all other providers NOT_ESTABLISHED (phrases SSOT covers 1 provider)",
+   "unblocking_source": "phrases SSOT entries for the remaining providers"
+  },
+  {
+   "class": "moniker",
+   "depth": 1,
+   "slice": "",
+   "landed": 35,
+   "source_total": 35,
+   "target": 35,
+   "source": "docs/ops/AGENT-MONIKERS.md SSOT tables (31 class-scoped + 4 grandfathered card pools)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "moniker",
+   "depth": 2,
+   "slice": "",
+   "landed": 38,
+   "source_total": 38,
+   "target": 38,
+   "source": "AGENT-MONIKERS.md versioning (v1 forms 35 + v2 graduated presentations 3, PR #3704)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "role",
+   "depth": 1,
+   "slice": "",
+   "landed": 34,
+   "source_total": 34,
+   "target": 34,
+   "source": "AGENT-MONIKERS.md role table + naming-collapse canonical/distinct terms",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "role",
+   "depth": 2,
+   "slice": "aliases",
+   "landed": 18,
+   "source_total": 18,
+   "target": 18,
+   "source": "AGENT-MONIKERS.md naming-collapse registry (alias terms)",
+   "delta_note": "delta 0; ker free-text sets are not entity lists (not decomposed, named)"
+  },
+  {
+   "class": "version",
+   "depth": 1,
+   "slice": "",
+   "landed": 3,
+   "source_total": 3,
+   "target": 3,
+   "source": "moneyball VERSIONS.md (v1 Actuary, v2 Actu4ry, v3 6REA7)",
+   "delta_note": "delta 0; JIT-version list distinct from VERSIONS lines does not exist (carried open)",
+   "unblocking_source": "a published JIT-work version list, if JIT versions are to be provisioned distinctly"
+  },
+  {
+   "class": "version",
+   "depth": 2,
+   "slice": "",
+   "landed": 2,
+   "source_total": 2,
+   "target": 2,
+   "source": "moneyball VERSIONS.md comparison-lane protocol (Actu4ry lane A/B builds)",
+   "delta_note": "v1/v3 builds NOT_ESTABLISHED (v1 pre-dates lane builds; v3 in research phase) - cell total counts recorded builds only",
+   "unblocking_source": "build records for v1/v3 when they exist"
+  },
+  {
+   "class": "explorer",
+   "depth": 1,
+   "slice": "",
+   "landed": 1,
+   "source_total": 1,
+   "target": 1,
+   "source": "Complexity Explorer (SFI) of record",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "explorer",
+   "depth": 2,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "no recorded SFI program decomposition on a fleet source",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "an SFI program taxonomy source"
+  },
+  {
+   "class": "other",
+   "depth": 1,
+   "slice": "",
+   "landed": 1,
+   "source_total": 1,
+   "target": 1,
+   "source": "ops/agentic-gambling/lane.json (pooled-buckets, cull destination)",
+   "delta_note": "delta 0 (custodian judgment named round-1)"
+  },
+  {
+   "class": "other",
+   "depth": 2,
+   "slice": "",
+   "landed": 3,
+   "source_total": 3,
+   "target": 3,
+   "source": "ops/agentic-gambling/lane.json pooled buckets (promotions/incentives/bonuses)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "doe",
+   "depth": 1,
+   "slice": "",
+   "landed": 49,
+   "source_total": 49,
+   "target": 49,
+   "source": "docs/ops/DOE-FAMILY.md register + component-registry + family seat census (receipted per group in PR #4692 return)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "doe",
+   "depth": 2,
+   "slice": "dreambeans candidate pool",
+   "landed": 126,
+   "source_total": 126,
+   "target": 126,
+   "source": "docs/ops/DOE-DREAMBEANS-POOL.md census 2026-11-01 (126 cards)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "doe",
+   "depth": 2,
+   "slice": "scout roster",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "individual scout roster is catalog-driven (SCOUT-ROSTER.md is a contract doc; identities are not enumerated)",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "a published scout roster enumeration"
+  },
+  {
+   "class": "speculator",
+   "depth": 1,
+   "slice": "",
+   "landed": 12,
+   "source_total": 12,
+   "target": 12,
+   "source": "experiments/speculators/token-strategies/WALLETS.json configured instances",
+   "delta_note": "delta 0; pools are group-ownership vehicles distinct from the 12 paper: speculating wallets"
+  },
+  {
+   "class": "speculator",
+   "depth": 2,
+   "slice": "",
+   "landed": 48,
+   "source_total": 48,
+   "target": 48,
+   "source": "experiments/speculators/token-strategies/PLAN.json rows (12 cells x 4 tasks)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "researcher",
+   "depth": 1,
+   "slice": "",
+   "landed": 9,
+   "source_total": 9,
+   "target": 9,
+   "source": "Registry SSOT + fleet lane census (per-seat receipts in amendment-2 return)",
+   "delta_note": "delta 0; no single registry enumerates research seats - census is a receipted construction across the two sources"
+  },
+  {
+   "class": "researcher",
+   "depth": 2,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "no recorded sub-taxonomy under research seats",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "seat work-product registries"
+  },
+  {
+   "class": "devwork",
+   "depth": 1,
+   "slice": "",
+   "landed": 57,
+   "source_total": 57,
+   "target": 57,
+   "source": "GitHub repo census (live API 2026-11-03: 715 repos; 37 non-fork originals + speculators_fork build exception) + goal workspaces census (19 of 22; 3 repo-covered excluded)",
+   "delta_note": "delta 0 within held scope; FOREIGN FORKS EXCLUDED (+677 entities at d1) - exclusion HELD as-is per main's direction pending the owner's ruling"
+  },
+  {
+   "class": "devwork",
+   "depth": 2,
+   "slice": "",
+   "landed": 22,
+   "source_total": 22,
+   "target": 22,
+   "source": "coordinator.json entries (9) + StudySprint surface family (4) + moneyball VERSIONS (3) + strategies registry (6)",
+   "delta_note": "delta 0 for the 4 decomposed repos; all other repos' d2 NOT_ESTABLISHED (no recorded surface/version decomposition)",
+   "unblocking_source": "per-repo surface/version registries"
+  },
+  {
+   "class": "recon",
+   "depth": 1,
+   "slice": "",
+   "landed": 4,
+   "source_total": 4,
+   "target": 4,
+   "source": "Registry SSOT + fleet lane census (Recon, Providers-Recon, ArchWiz Recon, Providers-Enumeration)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "recon",
+   "depth": 2,
+   "slice": "",
+   "landed": 27,
+   "source_total": 27,
+   "target": 27,
+   "source": "docs/ops/PROVIDER-AND-LANE-ENUMERATION-AUDIT-2026-10-27.md per-family dossier (27, under Providers-Recon)",
+   "delta_note": "delta 0 for Providers-Recon; other recon lanes' work products NOT_ESTABLISHED (not enumerated on a source of record)",
+   "unblocking_source": "per-lane work-product registries"
+  },
+  {
+   "class": "arm",
+   "depth": 1,
+   "slice": "",
+   "landed": 4,
+   "source_total": 4,
+   "target": 4,
+   "source": "DOE-FAMILY selection-arm taxonomy on token-strategies-1",
+   "delta_note": "delta 0; SPLIT: dynamic allocation rule (owner % RULE amd 6) - snapshot NOT_ESTABLISHED {at: 2026-11-03, method: DESIGN.json read, bounds: n/a - rule unrecorded for this campaign}; no % constants anywhere (pool-scope-methods/v1)"
+  },
+  {
+   "class": "arm",
+   "depth": 2,
+   "slice": "",
+   "landed": 0,
+   "source_total": "NOT_ESTABLISHED",
+   "target": "NOT_ESTABLISHED",
+   "source": "PLAN.json assigns runs by strategy x verifier x task; no cell->arm assignment in the pre-registration",
+   "delta_note": "no provisionable entities recorded",
+   "unblocking_source": "an arm-assigned pre-registration for the campaign"
+  },
+  {
+   "class": "loop",
+   "depth": 1,
+   "slice": "",
+   "landed": 3,
+   "source_total": 3,
+   "target": 3,
+   "source": "owner amendment-5 taxonomy (ML pipelines, improvements, culling)",
+   "delta_note": "delta 0"
+  },
+  {
+   "class": "loop",
+   "depth": 2,
+   "slice": "culling components",
+   "landed": 2,
+   "source_total": 2,
+   "target": 2,
+   "source": "cull-waterfall records (lane.json; PRs #3747/#3748): waterfall-to-pooled-buckets + residual-royalty-stream",
+   "delta_note": "delta 0; ml-pipelines/improvements d2 NOT_ESTABLISHED (no recorded process decomposition)",
+   "unblocking_source": "process decomposition records for ML pipelines / improvements"
+  }
+ ],
+ "totals": {
+  "landed_pools": 693,
+  "enumerated_targets": 683,
+  "landed_minus_enumerated_targets": "693 landed vs 683 enumerated targets: +10 desk-lane (receipted construction where the source does not enumerate; its target reads NOT_ESTABLISHED) - all other deltas are 0 or named per-row"
+ }
+}

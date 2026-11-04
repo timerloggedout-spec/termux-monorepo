@@ -86,45 +86,45 @@ const PLANES = [
  {id:"coordination", label:"Coordination & QUE", color:"#a8b46b"},
  {id:"web", label:"Web & Presentation", color:"#9aa6bd"}
 ];
-// surface: [name, home, plane, levels rendered, draws-from substrate ids]
+// surface: [name, home, plane, levels rendered, draws-from substrate ids, repo, code layers]
 const SURFACES = [
- ["quota.html","tribute","quota","domain · structure",["feeds","governor","monikers"]],
- ["quota-usage.html","tribute","quota","domain · structure",["feeds","governor"]],
- ["quota-graphs.html","tribute","quota","domain · method",["feeds","governor"]],
- ["quota-swarm.html","tribute","quota","plane · structure",["feeds","quefeeds"]],
- ["admin.html","tribute","web","structure · office",["feeds","monikers","naminggate"]],
- ["admin-graph.html","tribute","web","structure",["feeds"]],
- ["oracle.html","tribute","scoring","method · program",["feeds"]],
- ["3l0.html","tribute","scoring","method",["feeds"]],
- ["moneyball.html","tribute","moneyball","program · plane",["feeds","bookledger"]],
- ["wagering-book.html","tribute","moneyball","program · structure",["bookledger","feeds"]],
- ["pools.html","tribute","moneyball","structure · plane",["walletledger","naminggate"]],
- ["mvt.html","tribute","scoring","method",["feeds"]],
- ["doe.html","tribute","scoring","method · office",["feeds","monikers"]],
- ["ates.html","tribute","scoring","method",["feeds"]],
- ["results-index.html","tribute","scoring","method · program",["feeds"]],
- ["free-tier-value.html","tribute","quota","domain",["feeds"]],
- ["dispatch-tree.html","tribute","coordination","structure · office · role",["feeds","quefeeds","monikers"]],
- ["countdowns.html","tribute","entries","program · structure",["feeds"]],
- ["d2-proposals.html","tribute","entries","program",["naminggate"]],
- ["linguist.html","tribute","identity","structure · domain",["feeds","monikers"]],
- ["delphi-rfp.html","tribute","scoring","method · program",["feeds"]],
- ["delphi-ledger.html","tribute","scoring","program · structure",["feeds"]],
- ["classifiers.html","tribute","scoring","method · structure",["feeds","monikers"]],
- ["pr-lanes.html","tribute","coordination","structure · role",["feeds","quefeeds"]],
- ["proposals.html","tribute","scoring","method · program",["feeds"]],
- ["referrals.html","tribute","web","program · domain",["feeds"]],
- ["telemetry.html","tribute","observatory","plane · structure",["feeds"]],
- ["desk.html","tribute","entries","office · program · role",["feeds","quefeeds","monikers","governor"]],
- ["tracking.html","tribute","coordination","program · structure",["feeds"]],
- ["family.html","tribute","identity","role · structure",["monikers","feeds"]],
- ["MoneyBall site — Slate (index)","moneyball repo","moneyball","program",["walletledger","bookledger","naminggate"]],
- ["MoneyBall site — Cards","moneyball repo","moneyball","structure · role",["walletledger","monikers"]],
- ["MoneyBall site — Pools","moneyball repo","moneyball","structure · plane",["walletledger"]],
- ["MoneyBall site — Wallets","moneyball repo","moneyball","structure",["walletledger"]],
- ["MoneyBall site — Settlement","moneyball repo","moneyball","program · structure",["bookledger","walletledger"]],
- ["Tribute queues (classified Web3)","tribute","moneyball","structure",["feeds","naminggate"]],
- ["Validation surfaces (classified Web3)","tribute","scoring","method · structure",["feeds","naminggate"]]
+ ["quota.html","tribute","quota","domain · structure",["feeds","governor","monikers"], "termux-monorepo", "page · quota feeds · governor emitter · tests"],
+ ["quota-usage.html","tribute","quota","domain · structure",["feeds","governor"], "termux-monorepo", "page · usage feed (lane-events) · tests"],
+ ["quota-graphs.html","tribute","quota","domain · method",["feeds","governor"], "termux-monorepo", "page · series feeds (jsonl) · tests"],
+ ["quota-swarm.html","tribute","quota","plane · structure",["feeds","quefeeds"], "termux-monorepo", "page · QUE/swarm feeds · tests"],
+ ["admin.html","tribute","web","structure · office",["feeds","monikers","naminggate"], "termux-monorepo", "page · status/admin feeds · systems inventory · tests"],
+ ["admin-graph.html","tribute","web","structure",["feeds"], "termux-monorepo", "page · admin feeds · tests"],
+ ["oracle.html","tribute","scoring","method · program",["feeds"], "termux-monorepo + delphi-oracle", "page · oracle feed · upstream engine repo · tests"],
+ ["3l0.html","tribute","scoring","method",["feeds"], "termux-monorepo", "page · 3L0 session feeds · tests"],
+ ["moneyball.html","tribute","moneyball","program · plane",["feeds","bookledger"], "termux-monorepo", "page · moneyball feed · tests"],
+ ["wagering-book.html","tribute","moneyball","program · structure",["bookledger","feeds"], "termux-monorepo", "page · feed+mirror · generator wagering_book_feed.py · book-feed/book/ledger sources · tests"],
+ ["pools.html","tribute","moneyball","structure · plane",["walletledger","naminggate"], "termux-monorepo ← moneyball", "page · feed+mirror · upstream pools-feed (moneyball repo) · wallet-ledger source · tests"],
+ ["mvt.html","tribute","scoring","method",["feeds"], "termux-monorepo", "page · MVT feed · tests"],
+ ["doe.html","tribute","scoring","method · office",["feeds","monikers"], "termux-monorepo", "page · DoE feed · tests"],
+ ["ates.html","tribute","scoring","method",["feeds"], "termux-monorepo", "page · ATES feed · tests"],
+ ["results-index.html","tribute","scoring","method · program",["feeds"], "termux-monorepo", "page · results-index feed + canonical twin · builder · tests"],
+ ["free-tier-value.html","tribute","quota","domain",["feeds"], "termux-monorepo", "page · free-tier feed · tests"],
+ ["dispatch-tree.html","tribute","coordination","structure · office · role",["feeds","quefeeds","monikers"], "termux-monorepo", "page · dispatch-tree feed · tests"],
+ ["countdowns.html","tribute","entries","program · structure",["feeds"], "termux-monorepo", "page · countdown data (register) · tests"],
+ ["d2-proposals.html","tribute","entries","program",["naminggate"], "termux-monorepo", "page (static content of record) · tests"],
+ ["linguist.html","tribute","identity","structure · domain",["feeds","monikers"], "termux-monorepo", "page · linguist feed · tests"],
+ ["delphi-rfp.html","tribute","scoring","method · program",["feeds"], "termux-monorepo", "page · RFP feed · tests"],
+ ["delphi-ledger.html","tribute","scoring","program · structure",["feeds"], "termux-monorepo", "page · delphi ledger feed · tests"],
+ ["classifiers.html","tribute","scoring","method · structure",["feeds","monikers"], "termux-monorepo", "page · classifier feeds · tests"],
+ ["pr-lanes.html","tribute","coordination","structure · role",["feeds","quefeeds"], "termux-monorepo", "page · pr-lanes feed + series · tests"],
+ ["proposals.html","tribute","scoring","method · program",["feeds"], "termux-monorepo", "page · proposals feed · tests"],
+ ["referrals.html","tribute","web","program · domain",["feeds"], "termux-monorepo", "page · referrals feed · tests"],
+ ["telemetry.html","tribute","observatory","plane · structure",["feeds"], "termux-monorepo", "page · telemetry feed + history series · series generator · tests"],
+ ["desk.html","tribute","entries","office · program · role",["feeds","quefeeds","monikers","governor"], "termux-monorepo", "page · desk-feed · coordinator source · QUE feeds · tests"],
+ ["tracking.html","tribute","coordination","program · structure",["feeds"], "termux-monorepo", "page · tracking feed · deadline register source · tests"],
+ ["family.html","tribute","identity","role · structure",["monikers","feeds"], "termux-monorepo", "page · family feed · monikers source · tests"],
+ ["MoneyBall site — Slate (index)","moneyball repo","moneyball","program",["walletledger","bookledger","naminggate"], "moneyball", "site pages · site feeds · ledgers by reference"],
+ ["MoneyBall site — Cards","moneyball repo","moneyball","structure · role",["walletledger","monikers"], "moneyball", "site pages · cards-feed · WALLETS source (monorepo)"],
+ ["MoneyBall site — Pools","moneyball repo","moneyball","structure · plane",["walletledger"], "moneyball", "site pages · pools-feed · wallet-ledger source (monorepo)"],
+ ["MoneyBall site — Wallets","moneyball repo","moneyball","structure",["walletledger"], "moneyball", "site pages · wallet views · wallet-ledger source (monorepo)"],
+ ["MoneyBall site — Settlement","moneyball repo","moneyball","program · structure",["bookledger","walletledger"], "moneyball", "site pages · settlement views · replay.py · book+wallet ledgers"],
+ ["Tribute queues (classified Web3)","tribute","moneyball","structure",["feeds","naminggate"], "termux-monorepo", "queue surfaces · tribute gate config · status ledger · gate tests"],
+ ["Validation surfaces (classified Web3)","tribute","scoring","method · structure",["feeds","naminggate"], "termux-monorepo", "gate/status surfaces · validation tests"]
 ];
 // edges: substrate -> planes it feeds (derived from SURFACES draws)
 
@@ -189,9 +189,9 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;",
   document.getElementById("diagram").innerHTML=g;
   const subLabel={}; SUBSTRATE.forEach(function(s){ subLabel[s.id]=s.label; });
   const planeLabel={}; PLANES.forEach(function(p){ planeLabel[p.id]=p.label; });
-  let t='<table class="mx"><thead><tr><th>surface</th><th>home</th><th>plane</th><th>levels rendered</th><th>draws from substrate</th></tr></thead><tbody>';
+  let t='<table class="mx"><thead><tr><th>surface</th><th>home</th><th>plane</th><th>levels rendered</th><th>draws from substrate</th><th>repo</th><th>code layers</th></tr></thead><tbody>';
   SURFACES.forEach(function(s){
-    t+='<tr><td>'+esc(s[0])+'</td><td>'+esc(s[1])+'</td><td>'+esc(planeLabel[s[2]])+'</td><td>'+esc(s[3])+'</td><td>'+s[4].map(function(d){return esc(subLabel[d]);}).join(' · ')+'</td></tr>';
+    t+='<tr><td>'+esc(s[0])+'</td><td>'+esc(s[1])+'</td><td>'+esc(planeLabel[s[2]])+'</td><td>'+esc(s[3])+'</td><td>'+s[4].map(function(d){return esc(subLabel[d]);}).join(' · ')+'</td><td>'+esc(s[5])+'</td><td>'+esc(s[6])+'</td></tr>';
   });
   t+='</tbody></table>';
   document.getElementById("table").innerHTML=t;

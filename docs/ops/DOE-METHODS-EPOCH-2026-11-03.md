@@ -330,3 +330,67 @@ mirror layers → their 2026-11-18 scoring).
   gate's silent hourly sweeps converging a filing over several
   rounds (RFP-D1-7, ~31 min) are iterations of a scoring cycle
   whose done-condition is a converged ledger posting.
+
+## Generation — definition of record (owner addition 2, 2026-11-03)
+
+A **generation** is the evolve unit 🧬: one turnover of a
+population under selection.
+
+- **Population:** a cohort of comparable units — configured
+  instances, arms, strategies, or method versions — sharing an
+  evaluation frame. A population of one cannot turn over.
+- **Evaluate:** every unit is read against the generation's
+  stated criteria on accumulated evidence, under the family's
+  standards (accumulation bars before claims; corroborated
+  records only; wrong-stratum n counts as zero).
+- **Cull:** the bottom of the evaluated cohort is removed
+  under the cull rule of record. Culling is a recorded act,
+  never a silent disappearance: the cull record names
+  {culled_participant · wallet_balance_at_cull ·
+  pool_destination} in the same record that culls, and the
+  culled wallet flows to the pooled 🪣 system (promotions/
+  incentives/bonuses), never destroyed (rule of PR #3748).
+- **Next generation:** survivors persist; the top-performing
+  share is carried forward as the seed cohort (cherry-pick
+  v1 — strictly partial, the proportion is a per-design
+  parameter); the complement is NOT discarded — it persists
+  and is re-mixed by rnd v1 into the new generation's mixes.
+  Selection acts on the population; it never hard-routes
+  dispatch to a single best unit.
+
+**Composition:** generation ⊂ iteration ⊂ cycle ⊂ epoch. A
+generation turnover happens INSIDE an iteration of an evolving
+campaign (the iteration's done-condition may be the turnover);
+a cycle is several turnovers deep; the epoch bounds them. Not
+every iteration is a generation — a census round iterates
+without evolving anything. The evolve arm of the pool census
+(`pool:arm:doe-evolve`) is this unit's named seat in the
+population of record.
+
+**Instances this epoch — named, with their honest bounds:**
+
+- **chat-intent v1 → v2** (method-version population of two):
+  v2 built and evaluated (tests 12/12; backfill seed deltas
+  exactly 3, aside→do) and took the line's head (PR #3633);
+  v1 remains registered, its cull (retirement) not yet
+  executed — "v1 stays registered until culling retires it."
+  Generation boundary CROSSED; cull leg OPEN.
+- **Cull instrumentation landed, zero culls executed:** the
+  cull wallet-routing pools were provisioned this epoch
+  (`pool:loop:culling` · `waterfall-to-pooled-buckets` ·
+  `residual-royalty-stream`, census seq 715–717), and the
+  epoch's wallet ledger of record (717 events) contains
+  exactly two event types — wallet_provisioned ×705 and
+  faucet_issued ×12 — i.e., NO cull event exists this epoch.
+  The util-1 cull rule (arm < pooled − 0.25 @ n ≥ 8 ⇒
+  amendment proposal to Desk) stands armed, untriggered.
+- **NOT_ESTABLISHED — a complete generational loop on a live
+  campaign population:** none closed this epoch. The
+  Speculators population (12 strategy instances) stands at
+  0/48 runs — no evaluation, hence no lawful cull; no arm was
+  culled under any campaign's rule. What the epoch practiced
+  is the generation's components — variation and selection
+  operators of record (rnd v1 · cherry-pick v1), one version
+  succession, and the cull machinery provisioned and verified
+  empty — with the full loop's first closure awaiting a
+  population that has actually been evaluated.

@@ -1114,6 +1114,18 @@ version and compared continuously until culling retires a version.
   by the wall; two axes stated - pass axis epoch >
   cycle > iteration, evolve axis = generation; neither
   axis borrows the other's completion.
+  Role register of the epoch (owner commission,
+  companion layer): `docs/ops/DOE-ROLES-EPOCH-2026-11-03.md`
+  assigns Registry-SSOT roles (builder - operator -
+  steward - observer - reviewer - scout - gambler -
+  participant) + one-line duties as practiced to the
+  epoch's work-streams (pool program - census/validation -
+  methods + Lean - QUE/dispatch - tribute diagnostics -
+  D1 slate/freeze), incl. the DoE-pool x Desk-QUE wiring
+  {operator consumes - steward keeps the ledger -
+  reviewer holds integrity}; bookmaker + 11th man listed
+  RESERVED-ABSENT; practice word "custodian" mapped to
+  steward, stated for Registry concurrence.
 
 ## Campaign layout
 

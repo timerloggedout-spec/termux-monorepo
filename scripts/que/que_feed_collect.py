@@ -171,11 +171,7 @@ def queue_feed(queued, in_progress, tiers_doc, at):
                             "via que-feed-collect",
                 "design_input": "Stagefoil — the desk-flow "
                                 "template brand (Registry "
-                                "issuance PR #4817; predecessor "
-                                "internal label 'AutoDesk', "
-                                "internal-only, ™-collision "
-                                "stamped: Autodesk brand; never "
-                                "a published surface name) — "
+                                "issuance PR #4817) — "
                                 "agent-browser-clerk pattern "
                                 "(D2 candidate B learnings); the "
                                 "Desk as interactive-flow + "
@@ -330,20 +326,26 @@ def main() -> int:
     dash = ROOT / "apps" / "tribute-dashboard" / "data"
     dash.mkdir(parents=True, exist_ok=True)
 
-    def publish(name, obj):
+    def publish(name, obj, alias=None):
         """Canonical at ops/que/feeds/ + a byte-identical
         mirror in the dashboard data dir (the board seam,
-        confirmed by the Desk 2026-11-04)."""
+        confirmed by the Desk 2026-11-04). Two feeds also
+        mirror under a que- prefixed alias — the names the
+        QUE page fetches (Desk gap report, #4824 section)."""
         data = json.dumps(obj, indent=1) + "\n"
         (FEEDS / name).write_text(data)
         (dash / name).write_text(data)
+        if alias:
+            (dash / alias).write_text(data)
 
     publish("queue-by-tier.json",
             tier_feed(queued, in_progress, tiers_doc, at))
     publish("que-queue-feed.json",
             queue_feed(queued, in_progress, tiers_doc, at))
-    publish("priority-windows.json", priority_feed(tiers_doc, at))
-    publish("governor.json", governor_feed(token, at))
+    publish("priority-windows.json", priority_feed(tiers_doc, at),
+            alias="que-priority-windows.json")
+    publish("governor.json", governor_feed(token, at),
+            alias="que-governor.json")
     state_path = FEEDS / "state.json"
     state = json.loads(state_path.read_text()) \
         if state_path.exists() else {}

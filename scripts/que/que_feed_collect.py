@@ -146,7 +146,7 @@ def queue_feed(queued, in_progress, tiers_doc, at):
     + dispatch claims (the measurement plane's record), folded
     live at publish from the dispatch machinery's own feed.
     Published as a byte-identical pair: canonical
-    ops/que/feeds/queue-feed.json + the dashboard mirror."""
+    ops/que/feeds/que-queue-feed.json + the dashboard mirror."""
     body = tier_feed(queued, in_progress, tiers_doc, at)
     claims = {"source": "ops/challenge/dispatch-state-feed.json",
               "source_schema": None, "source_generated_at": None,
@@ -169,11 +169,14 @@ def queue_feed(queued, in_progress, tiers_doc, at):
             "provenance": {
                 "producer": "optimizations-assurance (QUE lead) "
                             "via que-feed-collect",
-                "design_input": "AutoDesk (INTERNAL concept "
-                                "label only — ™-collision "
+                "design_input": "Stagefoil — the desk-flow "
+                                "template brand (Registry "
+                                "issuance PR #4817; predecessor "
+                                "internal label 'AutoDesk', "
+                                "internal-only, ™-collision "
                                 "stamped: Autodesk brand; never "
-                                "a published surface name/brand) "
-                                "— agent-browser-clerk pattern "
+                                "a published surface name) — "
+                                "agent-browser-clerk pattern "
                                 "(D2 candidate B learnings); the "
                                 "Desk as interactive-flow + "
                                 "routing template, agent-operated",
@@ -329,7 +332,7 @@ def main() -> int:
 
     publish("queue-by-tier.json",
             tier_feed(queued, in_progress, tiers_doc, at))
-    publish("queue-feed.json",
+    publish("que-queue-feed.json",
             queue_feed(queued, in_progress, tiers_doc, at))
     publish("priority-windows.json", priority_feed(tiers_doc, at))
     publish("governor.json", governor_feed(token, at))

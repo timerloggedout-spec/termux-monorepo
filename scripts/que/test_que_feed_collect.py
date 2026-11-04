@@ -58,11 +58,13 @@ def test_queue_feed_shape_and_provenance():
     feed = q.queue_feed([run(1, "apk gate", "2026-11-04T07:00:00Z")],
                          [], TIERS, AT)
     assert feed["schema"] == "que-queue-feed/v1"
-    assert "AutoDesk" in feed["provenance"]["design_input"]
-    # owner name constraint: internal label only, ™-collision
+    # naming: the brand of record is Stagefoil (Registry
+    # issuance PR #4817); 'AutoDesk' survives only as the
+    # attributed predecessor, internal-only, ™-collision
     # stamped wherever the record carries it
-    assert "INTERNAL concept label only" in \
-        feed["provenance"]["design_input"]
+    assert "Stagefoil" in feed["provenance"]["design_input"]
+    assert "AutoDesk" in feed["provenance"]["design_input"]
+    assert "internal-only" in feed["provenance"]["design_input"]
     assert "Autodesk" in feed["provenance"]["design_input"]
     assert feed["queue"]["tiers"]["1"]["queued"] == 1
     # no dispatch-state feed in the test tree: claims stay an

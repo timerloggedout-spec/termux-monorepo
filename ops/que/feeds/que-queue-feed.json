@@ -1,28 +1,32 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-04T08:46:43Z",
+ "generated_at": "2026-11-04T08:54:23Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
-  "design_input": "AutoDesk (INTERNAL concept label only \u2014 \u2122-collision stamped: Autodesk brand; never a published surface name/brand) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
+  "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817; predecessor internal label 'AutoDesk', internal-only, \u2122-collision stamped: Autodesk brand; never a published surface name) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
   "cadence": "*/10 (que-feed-collect)"
  },
  "queue": {
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 1,
+    "queued": 5,
     "in_progress": 1,
     "oldest_queued_at": "2026-11-02T09:37:37Z",
     "by_workflow_queued": {
-     "PR scope guard": 1
+     "repo gate": 1,
+     "Orchestration Regression Guard": 2,
+     "PR scope guard": 2
     }
    },
    "2": {
     "tier": 2,
-    "queued": 0,
+    "queued": 1,
     "in_progress": 1,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "oldest_queued_at": "2026-11-04T08:53:29Z",
+    "by_workflow_queued": {
+     "tribute-dashboard-deploy": 1
+    }
    },
    "3": {
     "tier": 3,
@@ -33,15 +37,36 @@
    },
    "4": {
     "tier": 4,
-    "queued": 0,
-    "in_progress": 14,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "queued": 33,
+    "in_progress": 12,
+    "oldest_queued_at": "2026-11-04T08:51:56Z",
+    "by_workflow_queued": {
+     "Agent Throughput Evidence": 3,
+     "n8n SHE bridge": 3,
+     "delphi-ledger-feed-collect": 1,
+     "Issue Comment Router \u2014 modular fan-out reduction": 3,
+     "ECC Tools comment-command ops": 2,
+     "Context Relationship + Lead/Lag Audit": 4,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 3,
+     "PR production ledger": 2,
+     "telemetry-ingest": 1,
+     "graph-matrix-probe": 1,
+     "quota-usage-series-refresh": 1,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+     "Repository development evaluation": 1,
+     "Workflow Surface Evidence": 1,
+     "Workflow Surface Policy": 1,
+     "Agent PR Jules Handoff": 1,
+     "Action Effectiveness Ledger": 1,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
+     "Operator Matrix Generate": 1,
+     "Automation Documentation Continuous Refresh": 1
+    }
    }
   },
   "totals": {
-   "queued": 1,
-   "in_progress": 16
+   "queued": 39,
+   "in_progress": 14
   },
   "wedged_ancient": [
    {

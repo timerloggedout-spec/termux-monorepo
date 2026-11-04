@@ -175,3 +175,12 @@ def test_pack_freshness_stamps():
     # last-point, never the newest.
     assert "sStale" in html and 'chip">STALE' in html
     assert "oldest observation" in html and "oldest point" in html
+
+
+@pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser syntax")
+def test_all_quota_graphs_inline_javascript_parses(tmp_path):
+    html = PAGE.read_text()
+    for index, script in enumerate(re.findall(r"<script>(.*?)</script>", html, re.S)):
+        path = tmp_path / f"quota-graphs-{index}.js"
+        path.write_text(script)
+        subprocess.run(["node", "--check", str(path)], check=True)

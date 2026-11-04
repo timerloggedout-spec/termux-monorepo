@@ -223,8 +223,16 @@ def governor_feed(token, at):
                     kind = e.get("kind") or e.get("event") \
                         or "unspecified"
                     ts = e.get("ts")
-                    if ts and (latest is None or ts > latest):
-                        latest = ts
+                    if ts:
+                        # batches mix offset forms (-08:00 and
+                        # Z); compare instants, not strings
+                        try:
+                            inst = datetime.fromisoformat(
+                                ts.replace("Z", "+00:00"))
+                            if latest is None or inst > latest[0]:
+                                latest = (inst, ts)
+                        except ValueError:
+                            pass
                 except ValueError:
                     kind = "unparseable"
                 by_kind[kind] = by_kind.get(kind, 0) + 1
@@ -233,7 +241,7 @@ def governor_feed(token, at):
                                "verbatim; counts only)",
                 "batches": [b.name for b in batches],
                 "events_total": total, "by_kind": by_kind,
-                "latest_event_at": latest}
+                "latest_event_at": latest[1] if latest else None}
     return {
         "schema": "que.governor/v1", "generated_at": iso(at),
         "admission": {

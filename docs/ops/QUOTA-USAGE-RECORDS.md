@@ -87,3 +87,41 @@ is the headline until the supply leg lands.
   coverage (this metric).
 - **Quota-convergence (data plane):** the series builder, the gap
   metric, the page render, and this contract.
+
+## quota_delta (reconciliation leg — quota-specialist, 2026-11-03)
+
+For a usage-stamped record `r` (measured, exact match; activity-proxy
+NEVER enters delta sums, per the attribution contract) with
+`quota{pool, slice}` stamped:
+
+1. **Join:** pool → `ops/quota/allocations.json` pool → its services;
+   select the registry service(s) matching `r.provider`. No match, or
+   `quota{}` null ⇒ `delta.state = unjoined` — counted in the gap,
+   never dropped. (At definition time the intake corpus carries
+   `quota{pool, slice} = null` on 27/27 rows: the supply leg owns this
+   stamp too, and until it lands, records cannot join pools even with
+   tokens present.)
+2. **Entitlement** `E` = the service's `{limit, unit, window}`
+   verbatim. `limit = null` ⇒ `not-established` (73 of 171 registry
+   records at definition time).
+3. **Window normalization:** registry windows are free text (38
+   distinct strings at definition time). Classes: `periodic(period)`,
+   `one-time(expiry)`, `none`. Unparseable ⇒ `not-established` with
+   the verbatim string cited. Periodic: aggregate usage over the
+   entitlement period containing `r.ts` (calendar periods for
+   monthly/daily; rolling alignment stated per record where the
+   string says so). One-time: cumulative since grant, frozen at
+   expiry (`expired`).
+4. **Unit gate:** usage unit vs `E.unit` verbatim — mismatch ⇒
+   `unit-mismatch`, counts shown, NO subtraction. Token counts
+   against a requests/USD/GB entitlement are a category error; delta
+   arithmetic is lawful only where the unit is token-denominated (or
+   a priced USD record exists). Elsewhere consumption renders as raw
+   counts beside the entitlement.
+5. Where all gates pass: `quota_delta = {entitlement,
+   consumed_in_window (Σ), remaining = E − Σ, pct = Σ/E,
+   window_class, as_of}` — per (pool, slice, provider, period),
+   never aggregated across units or windows.
+
+Coverage citations carry both numbers, labeled: provider-readings
+coverage and consumption coverage (the gap metric above).

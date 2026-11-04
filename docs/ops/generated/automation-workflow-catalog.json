@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9188851d62a5eb4c6c6f4e26c44ec9611cb2c2420fe5cac280f9f76bcbfd9ddd",
-  "workflow_count": 290,
+  "source_fingerprint": "0bbb845525270f4ea3cdce81b4dc3fe3672e71ddaecfde15171bf120d4890f4f",
+  "workflow_count": 291,
   "workflows": [
     {
       "action_pins": [],
@@ -134,6 +134,21 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: admin-desk-vercel cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "admin-desk"
+      ],
+      "name": "admin-desk-vercel",
+      "path": ".github/workflows/admin-desk-vercel.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

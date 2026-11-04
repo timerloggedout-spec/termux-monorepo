@@ -156,3 +156,14 @@ on task dispatch. Three sides, three duties, no overlap:
 - No stream required a role the SSOT does not carry; where
   practice used a non-SSOT word (custodian), the mapping to
   **steward** is stated above rather than a new name coined.
+
+## Plane-layer note (2026-11-04)
+
+Registry ruling (owner-endorsed, this gate): **Custodian**
+is ISSUED as the custody-plane name. Layer separation, not
+amendment: the custodian -> steward mapping above stands
+untouched at the role layer (steward stays the role-class
+word); this register coined no plane name - the plane was
+the open gap, now filled by the issued plane name.
+References to a custody plane read **Custodian**;
+references to the role read **steward**.

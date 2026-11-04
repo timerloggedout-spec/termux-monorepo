@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:57:46Z",
+  "generated_at": "2026-11-04T09:59:29Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "cancelled"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "8ef03a3994"
+    "sha": "15a1288759"
   },
   "prs": [
     {
@@ -236,20 +236,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "173513e773",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-04T07:26:07Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -312,6 +298,20 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0f45ddefd7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4841,
+      "title": "feat(dashboard): Marketing Gantt page + canon 38",
+      "updated_at": "2026-11-04T09:21:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1087,6 +1087,20 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173513e773",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-04T07:26:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -2081,20 +2095,6 @@
       "number": 4832,
       "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
       "updated_at": "2026-11-04T09:05:21Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0f45ddefd7",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4841,
-      "title": "feat(dashboard): Marketing Gantt page + canon 38",
-      "updated_at": "2026-11-04T09:21:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3279,12 +3279,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "5853d1bb02",
+      "head_sha": "0b2917be61",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:56:20Z"
+      "updated_at": "2026-11-04T09:58:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3841,7 +3841,7 @@
       },
       "head_sha": "32205eb9d3",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T07:22:14Z"
@@ -3981,7 +3981,7 @@
       },
       "head_sha": "dde8f59570",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4795,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:25:49Z"
@@ -3995,7 +3995,7 @@
       },
       "head_sha": "44eaf9846b",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4801,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:29:59Z"
@@ -4037,7 +4037,7 @@
       },
       "head_sha": "5431d67fff",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4852,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:26:22Z"

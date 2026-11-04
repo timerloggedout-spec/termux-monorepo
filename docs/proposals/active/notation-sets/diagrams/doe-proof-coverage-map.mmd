@@ -1,0 +1,59 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: experiments/doe/proofs/INDEX.md @master
+%%   (coverage map of record; verdict record PR #4752 merged
+%%   1e1bfbb8) + DoE resolved status set relayed 2026-11-03.
+%% Export: 2026-11-03. 26 entries: proved-fragment x3 ·
+%%   statements-only x1 · open x22 · proved x0.
+%% E001 VERDICT = FAIL (oracle run 41746401168, artifact
+%%   13283792285): the FAIL is printed on the fragment rows'
+%%   faces, UN-UPGRADED, exactly as the register carries it.
+%%   The section 2 fragment is REFUTED AS WRITTEN (its fixture
+%%   discharge failed; repair = amendment packet + new run)
+%%   and is rendered in its own class, distinct from the two
+%%   fragments that merely stand unproven-in-remainder.
+%% NAMED LOSSES: per-row owed items + non-Lean evidence notes
+%%   dropped (the INDEX carries them; several open rows hold
+%%   strong non-Lean evidence — proof is not evidence, and
+%%   this picture shows the proof leg only). Gap order
+%%   E002..E006 + M001 lives in the source, not the picture.
+%% ============================================================
+flowchart TB
+    subgraph FRAG["proved-fragment x3 — E001.lean, oracle verdict FAIL (run 41746401168)"]
+        F1["Settlement machinery (§1) — FAIL on its face"]
+        F3["Cycle / iteration / generation / epoch shapes (§§3–4) — FAIL on its face"]
+        F2["Snapshot method (§2) — REFUTED AS WRITTEN"]
+    end
+    subgraph STMT["statements-only x1"]
+        S1["Panel Judge Mirror (E001 §5 statements; scoring discharges 2026-11-18)"]
+    end
+    subgraph OPEN["open x22 — no Lean artifact yet (register reads INCOMPLETE)"]
+        O1["Pool-scope census"]
+        O2["EGM instance #2"]
+        O3["EGM instance #1"]
+        O4["Speculators token-strategies-1"]
+        O5["Routed-dispatch protocol (rule 7)"]
+        O6["Certifications value matrix"]
+        O7["ATES improvement frame"]
+        O8["fb-pages-mvt-1"]
+        O9["live-1-wave-framing"]
+        O10["live-2-prlane-tuning"]
+        O11["live-3-phrases-deepseek"]
+        O12["cb-1-chronomancer-emission"]
+        O13["lab-1"]
+        O14["nc-1-notation-compliance"]
+        O15["util-1-provider-rotation"]
+        O16["bf-1-backfill-methods"]
+        O17["archW1z title evaluation"]
+        O18["CMP-1..CMP-6"]
+        O19["chat-intent v1 → v2"]
+        O20["exchange-scoring / validation-yield v0"]
+        O21["M5 cert set / nested-family join"]
+        O22["Dreambeans candidates x4"]
+    end
+    classDef frag fill:#fdf0d5,stroke:#b58900;
+    classDef refuted fill:#fde8e8,stroke:#c0392b,stroke-width:2px;
+    classDef stmt fill:#e8eef7,stroke:#4a6fa5;
+    class F1,F3 frag;
+    class F2 refuted;
+    class S1 stmt;

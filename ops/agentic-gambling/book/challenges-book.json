@@ -1598,7 +1598,19 @@
      "repo": "timerloggedout-spec/quarantine-browser-clerk",
      "id": 1445293810,
      "state": "DORMANT — created inside the rescinded sequence; explicitly NOT a build fact for this book"
+    },
+    "planning_clocks": {
+     "classification": "EXERCISE PLANNING clocks — NOT build commitments (no build exists; pick OWNER-HELD)",
+     "T1_core": "<= 2026-11-04 EOD",
+     "signature_moment": "<= 2026-11-05",
+     "landing": "2026-11-07",
+     "note": "carried from the exercise run record as planning tiers only; the D2 wall 2026-11-08 15:00 PT is POS-001's subject term, not a clock in this set"
     }
+   },
+   "entry_pick": {
+    "candidate": "B — Quarantine Browser Clerk (C1·B)",
+    "state": "OWNER-HELD ⛏️ — B NOT picked",
+    "history": "booked as EXECUTED 2026-11-03 23:16 PT under the 'D2 BUILD' reading (PR #4785) → RESCINDED 2026-11-03 23:18 PT by owner countermand via main; coordinator of record corrected to OWNER-HELD (PR #4786 merged 1d1dbb3012a9). This stamp preserves that history per append-only discipline; the live entry is POS-001.exercise_entry (PR #4793)."
    }
   }
  ],

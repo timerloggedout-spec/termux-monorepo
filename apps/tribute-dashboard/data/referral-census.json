@@ -1,0 +1,104 @@
+{
+ "buckets": {
+  "live": 7,
+  "no_public_programme": 1,
+  "not-established": 1,
+  "pending": 1
+ },
+ "generated_at": "2026-11-04T09:00:00Z",
+ "items": [
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "muse",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": "pool: 1 live code/0 reserve \u2014 replenishment owner-panel only; rotation @5 uses-left",
+   "state_detail": "active_codes"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "manus",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": "enrolment invitation-only (Tapfiliate) \u2014 no invitation held; link live, fleet enrolment NOT held",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "cue",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": null,
+   "state_detail": "active_codes"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "migoo",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": null,
+   "state_detail": "active_codes"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "cellcog",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": "visitor reward triggers on first PURCHASE (paid step) \u2014 revenue lane, not free-stack",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "no_public_programme",
+   "cadence": "monthly",
+   "id": "hark",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-12-07",
+   "open_gate": "no programme exists (main-stamped 2026-11-03); monthly re-check",
+   "state_detail": "no_public_programme"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "unorouter",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": null,
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "not-established",
+   "cadence": "gate-watch",
+   "id": "neon",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-04",
+   "open_gate": "offer NOT ESTABLISHED \u2014 no programme page exists; owner-supplied refcode link only",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "gate-watch",
+   "id": "lovable",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-04",
+   "open_gate": "Impact application In Review (submitted 2026-11-03); payout+tax gate payment post-acceptance",
+   "state_detail": "application_submitted"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly",
+   "id": "replit",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "open_gate": "referrer $20 paid-plan-gated (Core) \u2014 not claimable on free tier",
+   "state_detail": "active_link"
+  }
+ ],
+ "reconciliation_note": "Feed of record = live 7 \u00b7 pending 1 \u00b7 not-established 1 \u00b7 no_public_programme 1 (hark own-state). Oversight chart 6/3/1 reconciles iff hark folds to pending AND one live folds to pending \u2014 candidate = manus (link live, enrolment invitation-gated, not held). Lane ships feed-verbatim; bucket ruling = Oversight/main.",
+ "schema": "referral-census/1",
+ "source": "config/referral_programs.json via apps/tribute-dashboard/data/referral-feed.json (viz-states verbatim, derived never hand-set)"
+}

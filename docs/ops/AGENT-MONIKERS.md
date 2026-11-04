@@ -109,6 +109,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | — (not yet provisioned; deferred 2026-11-03, below) | aspect the Well; queued alt Keeper (below) |
 | Termux Fleet DelphiOracle | `Pythia · DelphiOracle` | `termux-fleet-delphioracle[bot]` | aspect the Utterance; queued alt Seer (below) |
 | Termux Fleet MoneyBall | `Actuary · MoneyBall` | `termux-fleet-moneyball[bot]` | aspect the Table; queued alt Kelly (below) |
+| Termux Fleet QuarantineBrowserClerk | `Proctor · QuarantineBrowserClerk` | `termux-fleet-quarantinebrowserclerk[bot]` | aspect the Session; queued alt Heimdall (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -351,6 +352,41 @@ Collision check at issuance: `Actuary`, `Kelly` and the
 Table appear nowhere in this roster or in the registration
 registry (`Kelly` = 2 incidental text hits in code search,
 no identity binding).
+
+**QuarantineBrowserClerk issuance (2026-11-03, registry lane;
+D2 entry AppID under the build-start rule — pick B,
+Quarantine Browser Clerk, C1·B, Vultr Agent Rush;
+provisioning in parallel on the AppID lane, per-entry
+pattern).** The actor clerks a browser kept in quarantine —
+sessions supervised, filings recorded, nothing passes
+unexamined — so its name is the plain-register officer who
+supervises a held, controlled session; the queued alt is
+the mythic watchman at the boundary, so the family itself
+holds the pool's balance (plain lead, mythic alt).
+
+- canonical: `Proctor` (paired display
+  `Proctor · QuarantineBrowserClerk`)
+- aspect: the Session
+- queued alt: `Heimdall` (mark `He1mdall`) — the watchman
+  at the boundary bridge; draws only on a registry-lane
+  bounce/rename decision
+- leet marks: `Pr0ctor` (single substitution, ranks first) >
+  `Proc7or` — mark layer only, never identifiers
+- slug bounces: ∅ consumed (canonical
+  `termux-fleet-quarantinebrowserclerk` probed free by the
+  AppID lane); ranked bounce forms if ever needed:
+  `pr0ctor` > `proc7or`, returning to the registry lane
+- normalized form: QuarantineBrowserClerk — `Termux Fleet
+  QuarantineBrowserClerk` /
+  `termux-fleet-quarantinebrowserclerk[bot]`; install scope =
+  timerloggedout-spec/quarantine-browser-clerk ONLY
+  (provisioning record: AppID lane)
+
+Collision check at issuance: `Proctor`, `Heimdall` and the
+Session appear nowhere in this roster or in the
+registration registry (`Proctor` = 1 generic exam-proctoring
+use in a certifications guide in code search, no identity
+binding).
 
 ## Identity taxonomy and moniker versioning (adopted, 2026-11-01)
 

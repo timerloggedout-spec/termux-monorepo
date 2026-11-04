@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-04T09:03:10Z",
+  "generated_at": "2026-11-04T09:04:37Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -4081,7 +4081,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-04T09:03:10Z",
+    "updated_at": "2026-11-04T09:04:37Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",
@@ -4100,6 +4100,6 @@
     },
     "egm_test_exclusion": "Owner ruling 2026-11-03 (via main; quarantine key per DoE): filings stamped `EGM instance #2 TEST filing` (secondary key: surface_id prefix `RFP-EGM2-`) are rubric-test instruments and are REDACTED/EXCLUDED from the desk-feed and all winnings/opportunities surfaces. Exclusion keys on the STAMP, not an issue list (current census: issues #4297-#4302). Promotion only via a qualifying change: DoE+main ruling of real and material substance (re-entering via the normal verification-to-RFP leg with test origin noted) or the owner\u2019s direct word. RFP-D1-7/D1-8 real batches unaffected.",
     "flow_start_pattern": "Placement ruling (QUE Desk, 2026-11-04, owner order via the D2 seat): an entry whose target is owner-picked opens its flow at stage 0 `pick` (state owner-held) with a first-class `decision` attachment on the row {surface \u00b7 kind \u00b7 state \u00b7 candidates \u00b7 advisory_order \u00b7 exercise \u00b7 decided \u00b7 canonical_path} \u2014 the decision object is the trigger surface for the downstream stages, not prose. Canonical placement is plane\u2192domain\u2192owner (internal/challenges/<entry>/proposals); the served URL is a door and does not move inside an open window. First instance: D2.",
-    "marketing_classification": "REFRAME (owner, 2026-11-04 01:02 PT via main): Marketing = foundation of operations (accounts/affiliate resource plane), NOT a challenge entry \u2014 whatever any label says. It holds no traversal row, no submission machinery, no slate end date; its maintenance program runs standing. Its work ON entries (release sweeps \u00b7 demo production \u00b7 channel uploads) is operations service to those entries, not entry participation."
+    "marketing_classification": "REFRAME (owner, 2026-11-04 01:02 PT via main): Marketing = foundation of operations (accounts/affiliate resource plane), NOT a challenge entry \u2014 whatever any label says. It holds no traversal row, no submission machinery, no slate end date; its maintenance program runs standing. Its work ON entries (release sweeps \u00b7 demo production \u00b7 channel uploads) is operations service to those entries, not entry participation. DUAL-LAYER RULE (owner, 2026-11-04 01:04 PT via main): comms/references classify FOUNDATION (mandatory) \u2227 web3 + .html surfaces ALSO show Challenge Opportunities (presentation layer). Layers coexist; no cross-import either direction \u2014 a presentation-layer showing never reclassifies the record, and the record classification never suppresses the showing."
   }
 }

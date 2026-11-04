@@ -1431,6 +1431,34 @@ record.
   NOT_ESTABLISHED (S3 was web adjacency) — establishment is a
   provisioning act if surfaces ever require it.
 
+### Sibling mark — `WagerDome` (arena layer, issued 2026-11-04)
+
+Registry ruling on the owner-approved sibling request
+(naming seat screen of record: S1 0/0 ∀ spellings ∀ repos ·
+SSOT `dome` count 0 · S3 ∅ exact, wager- crowd noted · S4
+pair analysis accepted):
+
+- **ISSUED: `WagerDome`** (machine `wagerdome`) — marketing
+  mark for the ARENA layer only {seasons · slates · live
+  contests}; gladiator-dome reference deliberate. Mark form:
+  **`WagerD0me`** (single-substitution, fleet-preferred
+  grade).
+- **Pair rule (binding):** `Wagertome` = the record ·
+  `WagerDome` = the venue. The pair never substitutes — dome
+  ¬ names the book/record; tome ¬ names the venue.
+- **Voice rule (S4 residual, binding):** the tome/dome pair
+  is a one-letter minimal pair (onset /t/–/d/) — ¬ confusable
+  in text/display (glyph distance + leet substitution
+  position diverges); `WagerDome` is never referenced
+  voice-only without the arena layer descriptor attached.
+- **Claims ceiling unchanged:** the dome asserts venue only;
+  ∅ bookie/odds frame imported; paper-settled discipline
+  carries to arena surfaces.
+- **Re-screen trigger:** the wager- neighborhood is occupied
+  (WagerDM · Wagerr · Wagered) and the dome form is the
+  distinguisher — a future dome-shaped wager product
+  triggers re-screen of this mark.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

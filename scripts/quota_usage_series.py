@@ -202,6 +202,142 @@ def build(root):
                           "ops/tracking/nested-family.json tasks "
                           "(activity-proxy class)"})
 
+    # ---- Consumption pass (owner fix order 2026-11-03) ----
+    # Per-call USAGE of record, distinct from the activity-proxy counts
+    # above. Sources: ops/3l0/intake.jsonl (stamp_fanout's usage
+    # {tokens_in, tokens_out} per routed call) + the routed-dispatch
+    # corpus records' own usage{} blocks, keyed onto the SAME deduped
+    # call set as the activity pass (the stamps dict above: routed-
+    # dispatch records/stamps + nested-family carriers). A call is
+    # usage-stamped when it carries a numeric token value on either
+    # side, or a measured usage{} value in a provider-native unit.
+    # Unstamped calls are COUNTED in consumption_gap below - named on
+    # the page, never silently excluded (coverage honesty inverted).
+    def _num(x):
+        return x if isinstance(x, (int, float)) and not isinstance(x, bool) else None
+
+    call_usage = {}
+
+    def add_usage(dispatch_key, usage):
+        if not dispatch_key or not isinstance(usage, dict):
+            return
+        tin, tout = _num(usage.get("tokens_in")), _num(usage.get("tokens_out"))
+        value = _num(usage.get("value"))
+        unit = usage.get("unit")
+        if value is None and (tin is not None or tout is not None):
+            value = (tin or 0) + (tout or 0)
+            unit = unit or "tokens"
+        if value is not None:
+            call_usage[dispatch_key] = {"value": value, "unit": unit or "tokens",
+                                        "status": "measured"}
+        elif usage.get("status") == "no-usage-surface":
+            call_usage.setdefault(dispatch_key, {"value": None, "unit": None,
+                                                 "status": "no-usage-surface"})
+
+    intake_path = Path(root) / "ops/3l0/intake.jsonl"
+    if intake_path.is_file():
+        for line in intake_path.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except ValueError:
+                continue
+            prov = row.get("provider")
+            if not prov or str(prov).lower() == "github-actions":
+                continue
+            key = row.get("dispatch_id") or (str(prov) + "|" +
+                    str(row.get("model")) + "|" + str(row.get("ts")))
+            if key not in stamps:
+                stamps[key] = (str(prov), str(row.get("model")),
+                               str(row.get("ts")))
+            add_usage(key, row.get("usage"))
+    for sub in ("records", "stamps"):
+        for f in sorted(Path(root).glob(
+                "experiments/doe/routed-dispatch/" + sub + "/*.json")):
+            try:
+                rec = json.loads(f.read_text())
+            except (OSError, ValueError):
+                continue
+            prov = rec.get("provider")
+            if not prov or str(prov).lower() == "github-actions":
+                continue
+            key = rec.get("dispatch_id") or (str(prov) + "|" +
+                    str(rec.get("model")) + "|" + str(rec.get("ts")))
+            add_usage(key, rec.get("usage"))
+
+    stamped_calls = []   # (provider, model, ts, value, unit)
+    gap_by_provider = {}
+    gap_causes = {"no-usage-record": 0, "no-usage-surface": 0}
+    for key, (pname, mname, tsv) in stamps.items():
+        slug = fam_slug(pname)
+        slot = gap_by_provider.setdefault(slug, {"provider": pname, "calls": 0,
+                                                 "stamped": 0, "unstamped": 0})
+        slot["calls"] += 1
+        u = call_usage.get(key)
+        if u and u["status"] == "measured":
+            slot["stamped"] += 1
+            stamped_calls.append((pname, mname, tsv, u["value"], u["unit"]))
+        else:
+            slot["unstamped"] += 1
+            cause = ("no-usage-surface" if u and u["status"] == "no-usage-surface"
+                     else "no-usage-record")
+            gap_causes[cause] += 1
+    total_calls = sum(s["calls"] for s in gap_by_provider.values())
+    total_stamped = sum(s["stamped"] for s in gap_by_provider.values())
+    consumption_gap = {
+        "method": "fleet-self-count: routed calls of record (3L0 intake + "
+                  "routed-dispatch records/stamps + nested-family carriers, "
+                  "dispatch_id-deduped, github-actions excluded) vs calls "
+                  "carrying a numeric usage value (provider-response tokens "
+                  "or a measured provider-native usage{} value)",
+        "routed_calls": total_calls,
+        "usage_stamped": total_stamped,
+        "unstamped": total_calls - total_stamped,
+        "unstamped_share": (round((total_calls - total_stamped) / total_calls, 4)
+                            if total_calls else None),
+        "causes": gap_causes,
+        "by_provider": gap_by_provider,
+        "sources": ["ops/3l0/intake.jsonl",
+                    "experiments/doe/routed-dispatch/records/*.json",
+                    "experiments/doe/routed-dispatch/stamps/*.json",
+                    "ops/tracking/nested-family.json"],
+    }
+
+    cons_prov, cons_model = {}, {}
+    for pname, mname, tsv, value, unit in stamped_calls:
+        cons_prov.setdefault((fam_slug(pname), unit), []).append((tsv, value, pname))
+        if mname and mname != "NOT ESTABLISHED":
+            cons_model.setdefault((mname, unit), []).append((tsv, value, pname))
+    for (slug, unit), pts in sorted(cons_prov.items()):
+        pts.sort()
+        run = 0; points = []
+        for tsv, value, pname in pts:
+            run += value
+            points.append({"t": tsv, "v": run})
+        provider.append({
+            "key": slug + "::consumption",
+            "title": pts[0][2] + " - consumption (cumulative, per-call usage of record)",
+            "unit": unit, "kind": "consumption", "metric": "usage_value",
+            "points": points,
+            "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + "
+                          "routed-dispatch record usage{} (method: fleet-self-count/"
+                          "response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)"})
+    for (mname, unit), pts in sorted(cons_model.items()):
+        pts.sort()
+        run = 0; points = []
+        for tsv, value, pname in pts:
+            run += value
+            points.append({"t": tsv, "v": run})
+        model.append({
+            "key": mname + "::consumption",
+            "title": pts[0][2] + " - " + mname + " - consumption (cumulative)",
+            "unit": unit, "kind": "consumption", "metric": "usage_value",
+            "points": points,
+            "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + "
+                          "routed-dispatch record usage{} (method: fleet-self-count/"
+                          "response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)"})
+
     pools = {p["id"]: p.get("target_flow_per_min")
              for p in plan.get("pools", [])}
     for s in provider:
@@ -238,7 +374,7 @@ def build(root):
         if r.get("lane") == "model" and r.get("provider"):
             reg_providers.setdefault(fam_slug(r["provider"]),
                                      r["provider"])
-    have = {s["key"] for s in provider}
+    have = {s["key"].split("::")[0] for s in provider}
     for slug in sorted(reg_providers):
         if slug not in have:
             provider.append({
@@ -279,11 +415,13 @@ def build(root):
                     "ops/quota/rate-limit-events.json",
                     "ops/tracking/nested-family.json",
                     "experiments/doe/routed-dispatch/records/*.json",
-                    "experiments/doe/routed-dispatch/stamps/*.json"],
+                    "experiments/doe/routed-dispatch/stamps/*.json",
+                    "ops/3l0/intake.jsonl"],
         "axes": {"provider": provider, "service": service, "model": model, "events": events_axis},
         "coverage": coverage,
+        "consumption_gap": consumption_gap,
         "notes": {
-            "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",
+            "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class series (kind consumption) are built from per-call usage records - ops/3l0/intake.jsonl usage{tokens_in,tokens_out} and routed-dispatch record usage{} blocks - cumulative per provider and per model@version, exact record match only. Unstamped routed calls are counted in consumption_gap (named on the page), never silently excluded.",
             "readings": "The public readings snapshots "
                         "(docs/ops/generated/quota-status.json) carry no "
                         "usage values by design (status-only projection); "

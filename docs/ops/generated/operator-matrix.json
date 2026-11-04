@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 532,
-    "open_prs": 279,
+    "open_prs": 280,
     "pr_classes": {
       "CANDIDATE": 130,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 138,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 140,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 47,
-      "prs": 277,
+      "prs": 278,
       "unlabelled_numbers": [
         308,
         388,
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T12:50:20Z",
+  "generated_at": "2026-11-04T12:52:11Z",
   "issues_unlabelled": [
     308,
     388,
@@ -155,10 +155,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "97784d6618"
+    "sha": "63453405b9"
   },
   "prs": [
     {
@@ -300,20 +300,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bc80a03b71",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4883,
-      "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
-      "updated_at": "2026-11-04T11:52:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -1531,20 +1517,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f98672d202",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T12:49:43Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2111,6 +2083,20 @@
       "number": 4742,
       "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
       "updated_at": "2026-11-04T00:52:14Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bc80a03b71",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4883,
+      "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
+      "updated_at": "2026-11-04T11:52:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -3297,10 +3283,24 @@
       },
       "head_sha": "449c633756",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T12:22:31Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "d395318709",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T12:51:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3857,7 +3857,7 @@
       },
       "head_sha": "b9ec529fbe",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T10:51:06Z"
@@ -4063,14 +4063,28 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "success"
+        "smoke": "queued"
       },
-      "head_sha": "a3d9614ad7",
+      "head_sha": "fcf509bdd0",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4904,
       "title": "viz(map): Bolt + Sentinel rows (owner query); linguist verified",
-      "updated_at": "2026-11-04T12:50:07Z"
+      "updated_at": "2026-11-04T12:51:58Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "d9733ac3a9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4908,
+      "title": "docs(monikers): Custodian provenance annotation \u2014 realization \u2260 ruling",
+      "updated_at": "2026-11-04T12:52:05Z"
     }
   ],
   "schema": "operator-matrix/v1",

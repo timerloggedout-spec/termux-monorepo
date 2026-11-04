@@ -1609,6 +1609,39 @@ Noise discipline: Critic/SWE/GM/anon counts are
 tokenization-inflated and are reported flagged, never as
 occupancy.
 
+
+### Custodian — custody-plane issuance (2026-11-04)
+
+**Issued: `Custodian`** — the name of the **custody
+plane** (Registry ruling 2026-11-04, owner endorsement
+04:47 PT, executed at the gate). The custody plane = the
+holding of keys (AppID private-key custody · vault) ·
+wallets · records/feeds under custody · derivation custody
+(§13 custodian-reviewed derivations). Plane-scoped function
+reference is allowed: "the Custodian" = a plane's custody
+function — mechanism family alongside `Governor` (§F).
+
+**Layer reconciliation (the ruling's core):** the role
+layer is unchanged — `steward` stays the role-class word of
+record (Cluster M canonical set · DoE register PR #4731).
+PR #4731's custodian→steward mapping stands AT ITS LAYER:
+it settled the actor-duty word and coined no plane name;
+the plane was the §G gap, now filled. Neither record amends
+the other.
+
+**Scope:** first registration = the MoneyBall plane
+(literal usage of record: DESIGN · WALLET-LEDGER ·
+propose.html). Fleet custody surfaces may reference the
+plane name. **NOT issued as:** role class (∅ canonical-set
+change) · moniker/handle (∅ SSOT row · ∅ registry entry) ·
+listing participant. Capitalized `Custodian` = the plane
+name; lowercase prose stays ordinary English (the
+actor-duty sense still reads steward).
+
+**Rationale of record:** the /tmp custody failure class —
+custody has its own failure modes (ephemeral scratch vs
+durable custody), hence its own plane name.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

@@ -1,0 +1,81 @@
+# Gated Spend Authorizations — protocol of record
+
+Owner spec 2026-11-04 03:32 PT. Custody: Cadence (governor/actuation
+layer) = enforcement + reporting mechanics. First application: the Desk.
+
+**Rule:** every limited-resource spend runs under an authorization
+object `{resource · objective · cap · release gate · receipts}`.
+No authorization, no spend.
+
+## Mandatory elements (owner-named)
+
+1. **PROPOSAL REQUIRED** — no proposal ⇒ no authorization. A proposal
+   carries `{objective · competing lanes · estimated spend}` and is
+   stamped of record before any authorization can reference it.
+2. **ESTIMATED SPEND stamped of record** — the proposal's estimate is
+   carried verbatim onto the authorization; actuals reconcile against
+   it in every report.
+3. **CAPS ENFORCEMENT at the governor/actuation layer** — the cap is
+   hard and fail-closed: a release that would push released-total over
+   the cap is refused; spend draws only against released funds.
+4. **REPORTING** — a hash-chained receipt per release and per spend
+   (governor event stream, `que-governor-event/v1`, kind `spend`);
+   spend-vs-estimate is reported up per authorization.
+
+## Objects
+
+```json
+proposal      {proposal_id, resource, objective, competing_lanes[],
+               estimated_spend {amount, unit}, proposed_by, ts,
+               state: proposed|authorized|rejected}
+authorization {auth_id, proposal_id, resource, objective,
+               competing_lanes[], estimated_spend {amount, unit},
+               cap {amount, unit},
+               release_gate {required_role},
+               released_total, spent_total,
+               state: active|exhausted|closed,
+               authorized_by, ts, receipts[]}
+receipt       {receipt_id, auth_id, resource, action:
+               authorized|released|spent, amount, cap,
+               released_total, spent_total, ts, prev_hash→hash}
+```
+
+Roles reuse the actuation layer's table: `owner 3 · desk 2 · lane 1`.
+Authorization requires the authorizer's role ≥ the release gate's
+`required_role`; each release re-checks the releaser's role against the
+gate. Spend records carry a free-text note (what the draw bought).
+
+## Lifecycle
+
+```
+propose → authorize (cap + gate stamped) → release (tranche, gated)
+        → spend (≤ released) → … → report (spend-vs-estimate)
+```
+
+- `released_total + release > cap` ⇒ refused (hard cap).
+- `spent_total + spend > released_total` ⇒ refused (unreleased funds
+  do not exist).
+- `spent_total == cap` ⇒ authorization state `exhausted`.
+- Reconciliation: `report` renders per authorization
+  `{estimated · cap · released · spent · remaining_cap ·
+  spend_vs_estimate_pct · state · receipt count}`.
+
+## Mechanics of record
+
+`spend_auth.py` (governor custody, beside `governor_actuate.py`):
+verbs `propose · authorize · release · spend · report`. Store =
+`spend-auth.json`; receipts append to the shared governor event stream
+and fold into the governor plane with the emitter batches. Verified on
+a copied rig (owner rule: synthetic state never touches the live
+store): no-proposal authorize refused · under-role release refused ·
+over-cap release refused · over-released spend refused · happy path
+reconciles (released 120 / spent 95 / estimate 200 ⇒ 47.5%).
+
+## First application
+
+The Desk applies this protocol to its limited-resource engagements
+(first: the Vultr hackathon credit, parallel lanes competing to
+represent the repo — the Desk stamps its own proposal with the real
+objective, competing lanes, and estimate; this document invents none).
+Each competing lane's draws run as releases + spends under the one
+authorization, so the cap binds the field, not per-lane honor.

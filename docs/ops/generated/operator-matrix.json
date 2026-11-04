@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 529,
-    "open_prs": 269,
+    "open_prs": 268,
     "pr_classes": {
-      "CANDIDATE": 119,
-      "EXTRACT": 20,
+      "CANDIDATE": 127,
+      "EXTRACT": 11,
       "NEED_EVIDENCE": 130,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 267,
+      "prs": 266,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T01:02:12Z",
+  "generated_at": "2026-11-04T01:06:22Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "7d529b9f8c"
+    "sha": "777d19593d"
   },
   "prs": [
     {
@@ -250,34 +250,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9b01d45a8f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T23:24:28Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3838bc1fad",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T00:59:55Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -340,104 +312,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3582253047",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-04T00:46:37Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a581e066ac",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4694,
-      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
-      "updated_at": "2026-11-04T00:44:00Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f66feb2976",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4730,
-      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
-      "updated_at": "2026-11-04T00:36:03Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "fc8f6d728f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4737,
-      "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
-      "updated_at": "2026-11-04T00:32:22Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d87c4433ee",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4740,
-      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
-      "updated_at": "2026-11-04T00:38:52Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "481fc6c7d7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4742,
-      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
-      "updated_at": "2026-11-04T00:52:14Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0332cdae68",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4748,
-      "title": "StudySprint foundation v1.0.0 \u2014 submission cut (D1 sequence: suite green or no cut)",
-      "updated_at": "2026-11-04T00:51:30Z"
     },
     {
       "class": "CANDIDATE",
@@ -1153,7 +1027,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-03T23:30:44Z"
@@ -1213,6 +1087,20 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9b01d45a8f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T23:24:28Z"
     },
     {
       "class": "CANDIDATE",
@@ -1619,6 +1507,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "918dbbc4f3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T01:05:03Z"
     },
     {
       "class": "CANDIDATE",
@@ -2109,6 +2011,90 @@
       "number": 4621,
       "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
       "updated_at": "2026-11-03T21:36:33Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9026886571",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-04T01:04:18Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a581e066ac",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4694,
+      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
+      "updated_at": "2026-11-04T00:44:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f66feb2976",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4730,
+      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+      "updated_at": "2026-11-04T00:36:03Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fc8f6d728f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4737,
+      "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
+      "updated_at": "2026-11-04T00:32:22Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d87c4433ee",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4740,
+      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
+      "updated_at": "2026-11-04T00:38:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "481fc6c7d7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4742,
+      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+      "updated_at": "2026-11-04T00:52:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3197,7 +3183,7 @@
       },
       "head_sha": "796871eb08",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-03T23:53:24Z"
@@ -3265,12 +3251,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "33acc01431",
+      "head_sha": "fd850902f3",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T00:12:21Z"
+      "updated_at": "2026-11-04T01:06:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3351,7 +3337,7 @@
       },
       "head_sha": "7476bcecee",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-03T23:55:24Z"
@@ -3827,7 +3813,7 @@
       },
       "head_sha": "2dbcb6c097",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-03T22:49:14Z"
@@ -3841,7 +3827,7 @@
       },
       "head_sha": "ed7de200b9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4663,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:50:52Z"
@@ -3855,7 +3841,7 @@
       },
       "head_sha": "d7c97fb814",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4664,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:51:04Z"
@@ -3869,7 +3855,7 @@
       },
       "head_sha": "fed92480f8",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4670,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:57:08Z"
@@ -3883,7 +3869,7 @@
       },
       "head_sha": "09dae5e5cc",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4686,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:24:54Z"
@@ -3897,7 +3883,7 @@
       },
       "head_sha": "a5d56fdac6",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4690,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-03T23:53:40Z"
@@ -3911,7 +3897,7 @@
       },
       "head_sha": "da4dea4119",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4699,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:48:13Z"
@@ -3920,15 +3906,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "9d903da3b7",
+      "head_sha": "1e1b0c5398",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4755,
-      "title": "feat(quota): per-call consumption kind + named gap metric (owner fix order 2026-11-03)",
-      "updated_at": "2026-11-04T01:02:04Z"
+      "mergeable_state": "unstable",
+      "number": 4758,
+      "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
+      "updated_at": "2026-11-04T01:06:10Z"
     }
   ],
   "schema": "operator-matrix/v1",

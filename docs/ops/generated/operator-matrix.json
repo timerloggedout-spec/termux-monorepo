@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 269,
+    "open_prs": 268,
     "pr_classes": {
       "CANDIDATE": 128,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 131,
+      "NEED_EVIDENCE": 130,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 267,
+      "prs": 266,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T01:53:44Z",
+  "generated_at": "2026-11-04T02:00:43Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "in_progress"
     },
-    "sha": "645b099e55"
+    "sha": "8a05952bfd"
   },
   "prs": [
     {
@@ -1515,12 +1515,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "86be5adc19",
+      "head_sha": "20cad2bafb",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T01:42:34Z"
+      "updated_at": "2026-11-04T01:59:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -3181,12 +3181,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "796871eb08",
+      "head_sha": "790f638f87",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
-      "updated_at": "2026-11-03T23:53:24Z"
+      "updated_at": "2026-11-04T02:00:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3251,12 +3251,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f0592feb03",
+      "head_sha": "cb3262e4fa",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T01:17:33Z"
+      "updated_at": "2026-11-04T02:00:28Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3335,12 +3335,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "379d0e4c9a",
+      "head_sha": "9a913308c3",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-04T01:16:29Z"
+      "updated_at": "2026-11-04T02:00:28Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3869,7 +3869,7 @@
       },
       "head_sha": "09dae5e5cc",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4686,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:24:54Z"
@@ -3883,7 +3883,7 @@
       },
       "head_sha": "a5d56fdac6",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4690,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-03T23:53:40Z"
@@ -3897,7 +3897,7 @@
       },
       "head_sha": "da4dea4119",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4699,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:48:13Z"
@@ -3915,20 +3915,6 @@
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
       "updated_at": "2026-11-04T01:06:46Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "6e3c3c7908",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4765,
-      "title": "quota: vultr record conformed to credit-record shape (fixes offline spine crash)",
-      "updated_at": "2026-11-04T01:16:30Z"
     }
   ],
   "schema": "operator-matrix/v1",

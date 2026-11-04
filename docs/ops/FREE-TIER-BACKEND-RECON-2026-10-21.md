@@ -222,7 +222,7 @@ this file only updates the fleet's knowledge.*
 
 | Provider | No-card free shape | Notes / hazards |
 |---|---|---|
-| **SnapDeploy** | Containers 4×512 MB, 100 awake-hours/mo | — |
+| **SnapDeploy** | Containers 4×512 MB / 0.25 vCPU, 100 awake-hours/mo | Status AVAILABLE (confirmed); sign-in = GitHub (fleet identity, no new credential class); sleeps after 15 min idle, ~60s wake; own HTTPS URLs; no card (confirmed available 2026-11-04, Recon owner-fwd) |
 | **Leapcell** | 100K invocations/mo, 3 GB-h cap | — |
 | **Appwrite Functions** | 750K Python executions/mo | ⚠ hazard: 7-day console-activity pause — functions pause after 7 days without console activity |
 | **alwaysdata** | Persistent, 256 MB cap | — |

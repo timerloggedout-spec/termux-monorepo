@@ -34,13 +34,26 @@ def _fixture(tmp_path):
     w("ops/tracking/nested-family.json", json.dumps({"providers": [
         {"provider": "nestedprov", "models": [
             {"model": "nested-model", "tasks": [
-                {"ts": "2026-11-01T00:00:00Z", "dispatch_id": "d-nested"}]}]}]}))
+                {"ts": "2026-11-01T00:00:00Z", "dispatch_id": "d-nested",
+                 "role": "reviewer", "task_class": "test", "moniker": "participant-nested"}]}]},
+        {"provider": "deepseek", "models": [
+            {"model": "deepseek-chat", "tasks": [
+                {"ts": "2026-11-02T00:00:00Z", "dispatch_id": "d1",
+                 "role": "builder", "task_class": "implementation",
+                 "moniker": "participant-deepseek", "run_id": "101"}]}]},
+        {"provider": "gemini", "models": [
+            {"model": "gemini-2.5-pro", "tasks": [
+                {"ts": "2026-11-02T04:00:00Z", "dispatch_id": "d5",
+                 "role": "reviewer", "task_class": "review",
+                 "moniker": "participant-gemini", "run_id": "105"}]}]}
+    ]}))
     w("ops/quota/registry.json", '{"services": []}')
     # 3L0 intake: one stamped call, one null-usage call, one
     # no-usage-surface call, one CI row (excluded from the denominator)
     rows = [
         {"dispatch_id": "d1", "ts": "2026-11-02T00:00:00Z",
          "provider": "deepseek", "model": "deepseek-chat",
+         "quota": {"pool": "deepseek", "slice": "winning"},
          "usage": {"tokens_in": 100, "tokens_out": 50}},
         {"dispatch_id": "d2", "ts": "2026-11-02T01:00:00Z",
          "provider": "cohere", "model": "command-r",
@@ -59,6 +72,7 @@ def _fixture(tmp_path):
     w("experiments/doe/routed-dispatch/stamps/s1.json", json.dumps({
         "dispatch_id": "d5", "ts": "2026-11-02T04:00:00Z",
         "provider": "gemini", "model": "gemini-2.5-pro",
+        "quota": {"pool": "gemini", "slice": "repo-development"},
         "usage": {"status": "measured", "unit": "tokens", "value": 30,
                   "tokens_in": 20, "tokens_out": 10}}))
     return tmp_path
@@ -99,3 +113,29 @@ def test_graphs_page_renders_named_gap():
     assert "consumption_gap" in html
     assert "UNMEASURED" in html
     assert "consumption — per-call usage of record" in html
+
+
+def test_task_tree_joins_usage_by_dispatch_and_preserves_role_and_pool(tmp_path):
+    pack = _builder().build(str(_fixture(tmp_path)))
+    tree = pack["task_tree"]
+    assert tree["schema"] == "quota.task-tree/v1"
+    deepseek = next(p for p in tree["providers"] if p["provider"] == "deepseek")
+    model = next(m for m in deepseek["models"] if m["model"] == "deepseek-chat")
+    role = next(r for r in model["roles"] if r["role"] == "builder")
+    participant = role["participants"][0]
+    task = participant["tasks"][0]
+    assert task["dispatch_id"] == "d1"
+    assert task["usage"]["status"] == "established"
+    assert task["usage"]["value"] == 150 and task["usage"]["unit"] == "tokens"
+    assert task["quota"] == {"pool": "deepseek", "slice": "winning"}
+    gemini = next(p for p in tree["providers"] if p["provider"] == "gemini")
+    gtask = gemini["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert gtask["usage"]["value"] == 30
+    assert gtask["quota"]["slice"] == "repo-development"
+    gap = next(p for p in tree["providers"] if p["provider"] == "nestedprov")
+    ntask = gap["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert ntask["usage"]["status"] == "NOT_ESTABLISHED"
+    assert ntask["usage"]["value"] is None
+    assert tree["coverage"]["tasks"] == 3
+    assert tree["coverage"]["established"] == 2
+    assert tree["coverage"]["not_established"] == 1

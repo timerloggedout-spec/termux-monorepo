@@ -160,6 +160,14 @@
 <h2>Backup state</h2>
 <div id="p2-backup"><p class="muted">Loading backup-state feed…</p></div>
 </section>
+<section>
+<h2>Admin Desk — controls</h2>
+<p class="dim">Actuation layer on the desk surfaces (S1 seam). Every control runs the governed pipeline: admission → gate, where its class requires one → execute → receipt. Receipts are hash-chained actuation events in the governor stream. A role must be selected before any control enables.</p>
+<div class="card"><p><label>Role <select id="adrole"><option value="">— select role —</option><option value="operator">operator</option><option value="desk">desk</option><option value="owner">owner</option></select></label> <span class="dim" id="adstatus">no role — controls disabled</span></p></div>
+<div id="adsets"></div>
+<h3>Receipts this session</h3>
+<div id="adreceipts"><p class="dim">No actuations yet this session.</p></div>
+</section>
 </main>
 <footer><p class="muted">Admin panel · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
 <script src="./chartkit.js"></script>
@@ -317,6 +325,86 @@ $('sys-filter').addEventListener('input',e=>{
 });
 load();
 setInterval(load,60000);
+</script>
+<script>
+"use strict";
+/* Admin Desk controls (Web Design lane) — S1 seam client.
+   Contract: actuate(control_id, params, role) -> {verdict, gate_id?, receipt_id?}.
+   Pipeline: admission -> gate (class-required) -> execute -> receipt.
+   Transport is seam-injected as window.ADMIN_ACTUATE; without it every
+   actuation returns seam-not-wired — never a fake success. */
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const SETS=[
+    {set:"QUE", controls:[
+      {id:"que.hold", label:"Hold queue", gate:true},
+      {id:"que.release", label:"Release hold", gate:true},
+      {id:"que.window.set", label:"Set priority window", gate:true},
+      {id:"que.sweep", label:"Sweep wedged", gate:true},
+      {id:"que.cancel", label:"Cancel run", gate:true}]},
+    {set:"Flows", controls:[
+      {id:"flow.stage.transition", label:"Stage transition", gate:true},
+      {id:"flow.decision.flip", label:"Decision flip", gate:true}]},
+    {set:"Feeds", controls:[
+      {id:"feed.regen", label:"Regenerate feed", gate:true},
+      {id:"feed.republish", label:"Republish feed", gate:true}]},
+    {set:"Buckets", controls:[
+      {id:"bucket.gantt.maintenance", label:"Gantt maintenance", gate:true}]}
+  ];
+  const log=[];
+  function role(){ return $("adrole").value || ""; }
+  function renderSets(){
+    let h="";
+    for(const s of SETS){
+      h+="<h3>"+esc(s.set)+"</h3>";
+      for(const c of s.controls){
+        h+='<div class="card"><p><strong>'+esc(c.label)+'</strong> <span class="dim">'+esc(c.id)+" · "+(c.gate? "gate-required" : "gate-free")+'</span></p>'
+          +'<p><input type="text" id="adp-'+esc(c.id)+'" placeholder="params (JSON or text)" size="42" disabled> '
+          +'<button id="adb-'+esc(c.id)+'" disabled>Actuate</button> '
+          +'<span class="dim" id="ads-'+esc(c.id)+'">idle</span></p></div>';
+      }
+    }
+    $("adsets").innerHTML=h;
+    for(const s of SETS) for(const c of s.controls){
+      $("adb-"+c.id).addEventListener("click", ()=>actuate(c));
+    }
+    applyRole();
+  }
+  function applyRole(){
+    const r=role();
+    for(const s of SETS) for(const c of s.controls){
+      $("adb-"+c.id).disabled = !r;
+      $("adp-"+c.id).disabled = !r;
+    }
+    $("adstatus").textContent = r? ("role: "+r+" — controls enabled") : "no role — controls disabled";
+  }
+  function renderLog(){
+    if(!log.length) return;
+    $("adreceipts").innerHTML="<ul>"+log.map(e=>"<li>"+esc(e.at)+" · "+esc(e.control)+" · verdict "+esc(e.verdict)
+      +(e.gate_id? " · gate "+esc(e.gate_id)+" ("+esc(e.gate_state||"")+")":"")
+      +(e.receipt_id? " · receipt "+esc(e.receipt_id):"")+"</li>").join("")+"</ul>";
+  }
+  async function actuate(c){
+    const state=$("ads-"+c.id);
+    const r=role();
+    if(!r){ state.textContent="role-required"; return; }
+    let params={};
+    const raw=$("adp-"+c.id).value.trim();
+    if(raw){ try{ params=JSON.parse(raw); }catch(e){ params={text:raw}; } }
+    state.textContent="admission…";
+    let res;
+    if(typeof window.ADMIN_ACTUATE!=="function"){ res={verdict:"seam-not-wired"}; }
+    else { try{ res=await window.ADMIN_ACTUATE(c.id, params, r); }catch(e){ res={verdict:"transport-error"}; } }
+    const entry={at:new Date().toISOString(), control:c.id, verdict:res.verdict||"unknown", gate_id:res.gate_id||null, gate_state:res.gate_state||(res.gate_id? "pending" : null), receipt_id:res.receipt_id||null};
+    log.unshift(entry); renderLog();
+    state.textContent = "verdict "+entry.verdict
+      +(entry.gate_id? " · gate "+entry.gate_id+" "+(entry.gate_state||"") : "")
+      +(entry.receipt_id? " · receipt "+entry.receipt_id : "");
+  }
+  $("adrole").addEventListener("change", applyRole);
+  renderSets();
+})();
 </script>
 </body>
 </html>

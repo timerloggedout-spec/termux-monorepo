@@ -190,7 +190,7 @@ jobs:
           commit_message: "deploy(tribute+matrix): ${{ github.sha }}"
       - name: Prune orphaned files from owned subtrees
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.PAT_TOKEN }}
         run: |
           set -euo pipefail
           # keep_files:true on the publish step overlays the artifact but
@@ -200,13 +200,18 @@ jobs:
           # file in them that the just-published artifact does not carry.
           # Everything else in the landing repo (marketing root,
           # previews/, project sites) is hand-owned and untouchable.
+          # Credential: the publish step's own proven chain (it writes
+          # this same repo every run) — secrets.PAT_TOKEN alone died on
+          # the first git-data call in-job (Repair 2026-11-04: its scope
+          # does not cover this repo; status now printed in-step).
           # Done through the git-data API, not git push: three runs of a
           # bash git-push variant were rejected inside this job while the
           # publish step's own push (same secret) succeeded — the API
           # channel is the fleet's proven write path.
           python3 - <<'PYEOF'
-          import json, os, urllib.request
+          import json, os, urllib.request, urllib.error
           TOK = os.environ["PAT_TOKEN"]
+          print("prune token present:", bool(TOK), "length:", len(TOK))
           API = "https://api.github.com/repos/timerloggedout-spec/timerloggedout-spec.github.io"
           OWNED = ("tribute/", "help-wanted/", "matrix/")
           def call(method, path, body=None):
@@ -215,8 +220,14 @@ jobs:
                   headers={"Authorization": "Bearer " + TOK,
                            "Accept": "application/vnd.github+json",
                            "X-GitHub-Api-Version": "2022-11-28"})
-              with urllib.request.urlopen(req) as r:
-                  return json.loads(r.read().decode() or "{}")
+              try:
+                  with urllib.request.urlopen(req) as r:
+                      print(f"HTTP {r.status} {method} {path}")
+                      return json.loads(r.read().decode() or "{}")
+              except urllib.error.HTTPError as e:
+                  detail = e.read().decode("utf-8", "replace")[:300]
+                  print(f"HTTP {e.code} {method} {path} :: {detail}")
+                  raise SystemExit(f"::error::prune API call failed: HTTP {e.code} {method} {path} :: {detail}")
           artifact = set()
           for root, _dirs, names in os.walk("_user_site"):
               for n in names:

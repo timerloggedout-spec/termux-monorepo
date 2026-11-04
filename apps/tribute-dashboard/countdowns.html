@@ -103,6 +103,15 @@ function stateOf(e,now){
   if(e.status==="COMPLETED") return {kind:"done",label:"Completed",badge:"ok",value:"—"};
   if(e.status==="CLOSED") return {kind:"done",label:"Closed",badge:"ok",value:"—"};
   const o=e.opens?Date.parse(e.opens):null, c=e.closes?Date.parse(e.closes):null;
+  // Feed status is authoritative for an ACTIVE entry whose recorded
+  // window has opened (opens elapsed or unrecorded): it can never
+  // render an "Opens in" future state. "Opens in" survives only for
+  // an entry whose recorded opens is genuinely in the future.
+  if(e.status==="ACTIVE" && (o===null || isNaN(o) || now>=o)){
+    if(c!==null && !isNaN(c) && now<=c) return {kind:"tick",label:"Closes in",badge:"open",value:fmtDur(c-now)};
+    if(c!==null && !isNaN(c) && now>c) return {kind:"over",label:"Overdue",badge:"due",value:"deadline passed"};
+    return {kind:"over",label:"Open",badge:"open",value:"window open"};
+  }
   if(o!==null && !isNaN(o) && now<o) return {kind:"tick",label:"Opens in",badge:"open",value:fmtDur(o-now)};
   if(c!==null && !isNaN(c) && now<=c) return {kind:"tick",label:"Closes in",badge:"open",value:fmtDur(c-now)};
   if(c!==null && !isNaN(c) && now>c) return {kind:"over",label:"Overdue",badge:"due",value:"deadline passed"};
@@ -232,7 +241,7 @@ function tick(){
 }
 async function load(){
   try{
-    const r=await fetch("./data/challenge-countdowns-feed.json");
+    const r=await fetch("./data/challenge-countdowns-feed.json",{cache:"no-store"});
     if(!r.ok) throw new Error("feed HTTP "+r.status);
     const d=await r.json();
     ENTRIES=Array.isArray(d.entries)? d.entries : [];

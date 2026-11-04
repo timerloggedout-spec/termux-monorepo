@@ -424,7 +424,7 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *a):
         raise RuntimeError("redirect refused")
 
-def gh(method, path, body=None):
+def gh(method, path, body=None, timeout=120):
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(API + path, data=data, method=method)
     req.add_header("Accept", "application/vnd.github+json")
@@ -435,7 +435,7 @@ def gh(method, path, body=None):
                              allowed_hosts=["api.github.com"])
     try:
         with urllib.request.build_opener(_NoRedirect()).open(req,
-                                                             timeout=120) as r:
+                                                             timeout=timeout) as r:
             raw = r.read()
             return r.status, (json.loads(raw) if raw else {})
     except urllib.error.HTTPError as e:
@@ -452,12 +452,24 @@ def gh_retry(method, path, body=None, attempts=4):
     delay = 3
     last = (0, {})
     for _ in range(attempts):
-        st, resp = gh(method, path, body)
+        try:
+            st, resp = gh(method, path, body,
+                          timeout=300 if method == "POST" else 120)
+        except urllib.error.URLError as e:
+            # Transport-level failure (e.g. write timeout on a large
+            # body through the surrogate path): transient, retry with
+            # backoff; after exhaustion the caller sees the URLError.
+            last = (0, {"transport_error": str(e)})
+            time.sleep(delay)
+            delay *= 3
+            continue
         if st not in (401, 403, 429, 500, 502, 503):
             return st, resp
         last = (st, resp)
         time.sleep(delay)
         delay *= 3
+    if last[0] == 0 and "transport_error" in last[1]:
+        raise urllib.error.URLError(last[1]["transport_error"])
     return last
 
 def _git_blob_sha(data: bytes) -> str:
@@ -504,9 +516,14 @@ def publish(staging: Path, repo: str, message: str):
         data = (staging / rel).read_bytes()
         sha = _git_blob_sha(data)
         if sha not in existing_blobs:
-            st, blob = gh_retry("POST", f"/repos/{repo}/git/blobs",
-                                {"content": base64.b64encode(data).decode(),
-                                 "encoding": "base64"})
+            try:
+                st, blob = gh_retry("POST", f"/repos/{repo}/git/blobs",
+                                    {"content": base64.b64encode(data).decode(),
+                                     "encoding": "base64"})
+            except urllib.error.URLError as e:
+                raise RuntimeError(f"blob create transport failed for "
+                                   f"{rel}: {e} "
+                                   f"(body bytes: {len(data)} raw)")
             if st not in (200, 201):
                 raise RuntimeError(f"blob create failed for {rel}: {st} "
                        f"(body bytes: {len(data)} raw)")

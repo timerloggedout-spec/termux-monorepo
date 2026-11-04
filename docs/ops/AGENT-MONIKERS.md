@@ -1188,6 +1188,159 @@ Rev-wRight LOW.
 Registry lane = reviewer of record for this protocol;
 amendments ride its gate.
 
+## Role-category reconciliation (2026-11-04)
+
+`[MUSEai]@{role:{naming-collision-map}}` — owner list reconciled
+against the schemas of record: DoE role register (PR #4731:
+builder · operator · steward · observer · reviewer · scout ·
+gambler · participant; bookmaker + 11th man RESERVED-ABSENT) ·
+naming-collapse registry (PR #3828, above) · MoneyBall
+vocabulary ① Actors (PR #4834). Method: levels separated
+first; aliases collapse at the LISTING layer only, ker named
+(collapse-registry discipline — records stay distinct
+underneath); ∀ gap dispositioned {register · reserve ·
+alias · reject}. Registry lane = gate.
+
+### Levels
+
+| level | holds |
+|---|---|
+| `role` | actor classes (canonical set, §C) |
+| `office` | a standing function/seat of the fleet (DoE) |
+| `plane` | a system surface/container (Pool) |
+| `domain` | a field of work (Research · Marketing · Reverse Engineering · OSINT-as-domain) |
+| `method` | a practice (OSINT) |
+| `program` | a bounded initiative (Judges modeling) |
+| `structure` | a competition container (Leagues) |
+| `seat-ref` | a possessive/named-seat reference — ¬ a class |
+| `artifact` | a document/registry object — ¬ a class (Quota Manager) |
+
+### A. Owner list — reconciled (verbatim classes)
+
+| owner class | level | disposition |
+|---|---|---|
+| Orchestrators | role | alias → `manager` (collapse M; ker {peerGate GHA role label · generic orchestration prose}) |
+| Operators | role | **canonical** `operator` — distinct-class (accountable human principal; ¬ the agent-lane sense) |
+| ChronoMancers | role? | alias → `scout` at listing (ker {DoE fork-selector role binding named `ChronoMancer`}). T2 evidence: the binding is REAL + single-sense ∀ 4 surfaces {code `chronomancer.py` (specialised ArchWizard, session plane) · DOE-FAMILY doctrine mapping (2026-10-30: `role=fork-selector`) · collapse-registry ker (accurate) · DoE experiment plane (emission subject; emission itself unbuilt = gap of record)} — record layer keeps the binding name; ∅ separate class |
+| Scouts | role | **canonical** `scout` |
+| Managers | role | **canonical** `manager` |
+| Players | role | alias → `participant` (ker {MoneyBall sports-metaphor prose}) |
+| Teams | role | **register** `team` — composite participant (MoneyBall vocab ① ISSUED; charter §Teams) |
+| Participants | role | **canonical** `participant` |
+| Speculators•Wagerers | role | alias → `gambler` at listing; `speculator` ISSUED at record layer (layered, never merged — vocab ① + Cluster S) |
+| DoE | office | ¬ a role class — the office whose seats hold `reviewer` duties in the pool wiring (operator consumes · steward keeps · reviewer holds integrity) |
+| Pool | plane | ¬ a role — container class (vocab ④); its actor = `pool member` (§C) |
+| Critic | role | alias → `reviewer` (ker {charter critic = advisory findings, ABSENT as a named lane role}) |
+| 11th Man | role | **reserve** — distinct-class, RESERVED-ABSENT (audience/reserve; holds ∅ position) |
+| Research | domain | ¬ a role — domain; its practitioners sit in `scout`/`observer` |
+| Judges modeling | program | ¬ a role — program (Panel Judge Mirror); its roles = `judge`/`evaluator` (§C) |
+| OSINT | method | ¬ a role — method/domain; practitioners = `scout`/`observer` |
+| Reverse Engineering (nested) | domain | ¬ a role — domain nested under Foundry; its roles = `builder`/`reviewer` |
+| Marketing | domain | ¬ a role — domain (operations foundation, classification of record) |
+| Software Engineer\|Dev&&Planning | role | alias → `builder` (ker {planning sense → `coordinator`}) — compound split at the seam, both halves mapped |
+| Cadence's | seat-ref | **reject** as a category — possessive of the Cadence seat. T2: function EVIDENCED (role tag `cadence-optimizer` of record · quota tick ledger · cadence scripts/doctrine) but SSOT seat row ∅ — grounded in ops docs+scripts, ¬ the moniker registry; function class = dispatch optimizer, recorded at the seat |
+| Quota Manager | artifact | **reject** as a category — T2: it is a DOCUMENT, ¬ a seat: `PROVIDER-QUOTA-MANAGERS.md` + `ops/quota/provider-managers.json` (20 families) = offline metadata registry + passive normalizer (self-declared: ∅ provider calls · ∅ runtime admission). Nearest seats of record = the Quota seats {Registry & Burn · Gaps Registry · Cadence optimizer}, distinct functions |
+| Leagues | structure | ¬ a role — competition structure; contains `team`/`participant`, governed by `operator` |
+
+### B. Gaps — register classes the owner list omits
+
+∀ dispositioned; omission ≠ removal (registers stand):
+
+| class | disposition | basis |
+|---|---|---|
+| builder | register | canonical, Cluster B + DoE register |
+| steward | register | distinct-class, Cluster M + DoE register |
+| observer | register | distinct-class, Cluster R + DoE register |
+| reviewer | register | canonical, Cluster J + DoE register (owner list carries only its alias Critic) |
+| judge | register | distinct-class, Cluster J (verdict authority) |
+| evaluator | register | distinct-class, Cluster J (explained composites) |
+| validator | register | distinct-class, Cluster J (conformance verdicts) |
+| coordinator | register | distinct-class, Cluster M (tier-2, slice scope) |
+| house | register | ISSUED role word, vocab ① (parimutuel operator side; ∅ position, ∅ odds) |
+| requester | register | ISSUED, vocab ① (pays team fee / places requests) |
+| pool member | register | ISSUED, vocab ① (holds pool shares) |
+| bookmaker | reserve | RESERVED-ABSENT as an actor (∅ odds-setting role exists). **Owner consideration (2026-11-04): function-mapping candidate — bookmaker → the ledger system in Web3:** the book-making FUNCTION (recording positions + settlement) is performed by the Web3 ledger system (book-ledger + settlement machinery, steward-kept), ∅ actor, ∅ odds (parimutuel). For ruling at the Registry gate alongside this reserve |
+| forecaster | reject (as a class) | `forecast` = distinct OUTPUT class (Cluster S) — names outputs, never participants |
+| Coach | reserve | ASSERTED, ∅ record basis (T2: SSOT counts 0 · monorepo hits ∅ role-defining · moneyball 0) — sports-metaphor import; held reserved-ungrounded pending any record basis |
+| franchise owner | alias → `operator` | ASSERTED, ∅ record basis (T2: exact code-search 0; sole `franchise` hit = TMNT IP sense). ker {league-structure property sense; `owner` already alias → operator, Cluster M} |
+| GM | alias → `manager` | ASSERTED, ∅ record basis (T2: "general manager" SSOT/repos = 0). ker {sports-metaphor title for the same coordination class} |
+
+### C. Resulting canonical category set (role level)
+
+`builder · operator · steward · observer · reviewer · scout ·
+gambler · participant · manager · coordinator · judge ·
+evaluator · validator · house · team · requester ·
+pool member` · reserved-absent: `bookmaker · 11th man ·
+Coach` · listing aliases (ker in the collapse registry):
+orchestrator · lead · owner · player · actor · speculator ·
+wagerer · bettor · bookie · recon · selector · watcher ·
+critic · scorer · oracle · implementer · ChronoMancer.
+
+Levels above role (¬ classes, listed for placement only):
+office {DoE} · plane {Pool} · domain {Research · Marketing ·
+Reverse Engineering} · method {OSINT} · program {Judges
+modeling} · structure {Leagues} · seat-ref {Cadence's} ·
+artifact {Quota Manager (document)}.
+
+Naming layer only (collapse-registry C3 discipline): ∅ change
+to any record, seat, or scoring underneath.
+
+### D. Marketing — deepened (owner addition, 2026-11-04)
+
+Marketing sits at level `domain` (§A) — deepened here on the
+owner's addition: the domain + its related **anon** ∧ a
+Grimoire/Linguist influence assessment.
+
+**Anon adjacency:** Marketing's public surfaces ride the
+4n0n discipline where identities are platform-facing —
+registration-registry entries of record for marketing
+surfaces (Pages/accounts class: entries of record KEEP their
+v2 names per the registry; renaming an issued identity =
+per-platform owner decision, #1861) ∧ the referral/affiliate
+surfaces (registry `config/referral_programs.json` = code
+values of record). The domain's internal seats (Oversight ·
+Affiliate · per-challenge marketing lanes) are coordination
+identities — NEVER platform identities (boundary flag,
+collapse registry Cluster M).
+
+**Grimoire/Linguist influence %:** population = Marketing
+naming/taxonomy items {surface names · Page/account names ·
+handles/monikers · vocabulary terms · notation in comms}.
+Grimoire-derived (measurement basis = Linguist ruling, QUE
+leg T3) = {leet forms per `phase_codec` · graduated monikers
+· Grimoire `CANONICAL_TOKEN` identities · notation-set
+tokens}. Census = Recon sweep (QUE leg T4). % = derived /
+total, per stratum + overall, item list = evidence.
+**RESULT** (basis = Linguist T3 ruling: 5 classes, exact-form,
+feed tables of record — linguist-panel-feed blob `f5c0d10f…`,
+counts verified ∀ {char-variants 26 · core-castings 14 ·
+canonical-tokens 31 · symbol 32 · compression 31 · stopwords
+29 · routing 23 · leet-chars 6 · protocol-terms 11}; census =
+Recon T4, strings re-verified firsthand vs
+`config/registration_monikers.json` + PROFILE-REGISTRY §2):
+
+| stratum | scored | Grimoire-derived | % |
+|---|---|---|---|
+| A · registration identities (4n0n) | 30 | 13 — ∀ C1: `n0n*` ×11 (0→o) · `wh1msical_sw4n_06136` · `Rap1dZ3nith` | 43.3% |
+| B · platform profiles (unique strings) | 3 | 1 — `1337dia590r1c8u1ldr` (C1) | 33.3% |
+| C · SSOT monikers (canonical forms) | 18 | 0 | 0% |
+| C′ · graduated moniker forms | 3 | 3 — `h3yVern` · `c0deHound` · `d3vinForge` (C1 + C2-graduated) | 100% |
+| E · marketing experiments | 4 | 0 (entry-index digits d3/d4/d5/mvt-1 = form-hits EXCLUDED per the ambiguity rule — indices, ¬ derivations; logged) | 0% |
+| F · named web surfaces | 5 | 0 | 0% |
+| G · MoneyBall vocab (named) | 6 | 0 (`Wager` ≠ exact `w4g3r` — ruled-out case-form) | 0% |
+
+**Headline: identity layer 17/54 = 31.5%** (A+B+C+C′;
+canonical-only 14/51 = 27.5%) · **surface/vocab planes
+0/15 = 0%** · overall scored 17/69 = 24.6%. Reading:
+Grimoire influence lives in the anon identity layer
+(handles + graduated marks) and ∅ in Marketing's surface/
+vocab naming — the planes use plain descriptive English.
+Coverage: scored = ∀ strings named in the census + registry
+firsthand pulls (69 items); C-canonicals 18 of the 35
+census-counted SSOT identities (rest = lane-coordination
+monikers, NOT_SCORED this pass) · B: 5 profiles carry ∅
+handle string · FB Pages live count NOT_ESTABLISHED (T4).
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

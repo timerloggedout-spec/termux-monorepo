@@ -1,0 +1,149 @@
+{
+ "accounts": [
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "muse",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_codes"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "manus",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "cue",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_codes"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "migoo",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_codes"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "cellcog",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "no_public_programme",
+   "id": "hark",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-12-07",
+   "owner": "affiliate-referrals",
+   "state_detail": "no_public_programme"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "unorouter",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "not-established",
+   "cadence": "gate-watch",
+   "feed_state": "not-established",
+   "id": "neon",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-04",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_link"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "gate-watch",
+   "feed_state": "pending",
+   "id": "lovable",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-04",
+   "owner": "affiliate-referrals",
+   "state_detail": "application_submitted"
+  },
+  {
+   "bucket": "live",
+   "cadence": "weekly-sweep",
+   "feed_state": "live",
+   "id": "replit",
+   "last_verified": "2026-11-03",
+   "next_due": "2026-11-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "active_link"
+  }
+ ],
+ "bucket_mapping_note": "Feed-verbatim per Oversight ruling 2026-11-04 (manus = live). 3-bucket Gantt schema: no_public_programme (hark) folds to pending (open monthly reverify watch). Result live 7 \u00b7 pending 2 \u00b7 not-established 1. The brief's 6/3/1 assumed manus->pending; superseded by the ruling.",
+ "constraint": {
+  "additional_tokens": {
+   "left": "134M",
+   "used_pct": 87
+  },
+  "muse_free_weekly": {
+   "resets": "2026-11-10",
+   "used_pct": 100
+  }
+ },
+ "generated_at": "2026-11-04T09:03:00Z",
+ "milestones": [
+  {
+   "date": "2026-11-07",
+   "label": "D2"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "D3"
+  },
+  {
+   "date": "2026-11-10",
+   "label": "MVT close + reset"
+  },
+  {
+   "date": "2026-11-13",
+   "label": "D3 winners"
+  },
+  {
+   "date": "2026-11-17",
+   "end": "2026-11-19",
+   "label": "D5"
+  },
+  {
+   "date": "2026-12-01",
+   "label": "AMD"
+  },
+  {
+   "date": "2026-12-02",
+   "label": "D4"
+  }
+ ],
+ "schema": "marketing-gantt/1",
+ "source": "config/referral_programs.json via referral-feed.json + referral-census.json (PR #4831); registry = SSOT"
+}

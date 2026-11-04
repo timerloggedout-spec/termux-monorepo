@@ -3,9 +3,9 @@
     "open_issues": 531,
     "open_prs": 278,
     "pr_classes": {
-      "CANDIDATE": 126,
+      "CANDIDATE": 127,
       "EXTRACT": 12,
-      "NEED_EVIDENCE": 140,
+      "NEED_EVIDENCE": 139,
       "SUPERSEDE": 0
     }
   },
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:35:21Z",
+  "generated_at": "2026-11-04T09:37:38Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "37eff22866"
+    "sha": "13b12f7b54"
   },
   "prs": [
     {
@@ -236,6 +236,34 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "504208178f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T09:35:18Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173513e773",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-04T07:26:07Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -298,34 +326,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b09b0683d8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4832,
-      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
-      "updated_at": "2026-11-04T09:05:21Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0f45ddefd7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4841,
-      "title": "feat(dashboard): Marketing Gantt page + canon 38",
-      "updated_at": "2026-11-04T09:21:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1101,20 +1101,6 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "173513e773",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-04T07:26:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -2097,6 +2083,34 @@
       "updated_at": "2026-11-04T00:52:14Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b09b0683d8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4832,
+      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
+      "updated_at": "2026-11-04T09:05:21Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0f45ddefd7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4841,
+      "title": "feat(dashboard): Marketing Gantt page + canon 38",
+      "updated_at": "2026-11-04T09:21:47Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2595,7 +2609,7 @@
       },
       "head_sha": "2e730b0cf2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T07:22:00Z"
@@ -2613,20 +2627,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "23bf4d5ab1",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T09:32:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3197,7 +3197,7 @@
       },
       "head_sha": "790f638f87",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T02:00:13Z"
@@ -3276,15 +3276,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "bd86c57ffb",
+      "head_sha": "e324f26a28",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:34:12Z"
+      "updated_at": "2026-11-04T09:37:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3365,7 +3365,7 @@
       },
       "head_sha": "03e37cad99",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-04T02:01:34Z"
@@ -3841,7 +3841,7 @@
       },
       "head_sha": "32205eb9d3",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T07:22:14Z"
@@ -3953,7 +3953,7 @@
       },
       "head_sha": "ac13ba9cb4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4780,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:19:00Z"
@@ -3967,7 +3967,7 @@
       },
       "head_sha": "ffed948d07",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4790,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:21:15Z"
@@ -3981,7 +3981,7 @@
       },
       "head_sha": "dde8f59570",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4795,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:25:49Z"
@@ -3995,7 +3995,7 @@
       },
       "head_sha": "44eaf9846b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4801,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:29:59Z"
@@ -4051,7 +4051,7 @@
       },
       "head_sha": "5431d67fff",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4852,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:26:22Z"

@@ -41,7 +41,7 @@ import json
 import re
 import sys
 
-VERSION = "tribute-signal v1"
+VERSION = "tribute-signal v1.1"
 
 # ---------------------------------------------------------------- lexicons
 REJECTION = {
@@ -60,6 +60,9 @@ REJECTION = {
         "read the contributing", "contributing guidelines", "code of conduct",
         "open an issue first", "discuss first", "duplicate pr",
         "already exists", "rude", "off-topic", "off topic",
+        # engagement failures (calibration seed Haven#657, v1.1)
+        "not a person", "from the automation", "no real contributor",
+        "no engagement", "nothing to track",
     ],
 }
 CLEANUP = [
@@ -77,7 +80,15 @@ POSITIVE = [
     "lgtm", "looks good", "thank", "great", "nice work", "nice catch",
     "welcome", "well done", "perfect", "awesome",
 ]
-DONE = ["done", "fixed", "updated", "addressed", "pushed", "applied"]
+DONE = ["done", "fixed", "updated", "addressed", "pushed", "applied",
+        # completion claims (calibration seed Sail-CLI#23, v1.1)
+        "actual fix", "now carries", "implemented"]
+# Maintainer continuation language: a flow that keeps the PR open and
+# invites the real work is an adjustment context, not a rejection —
+# generic process mentions of "placeholder" in such a flow do not make
+# a rejection verdict (calibration seed Sail-CLI#23, v1.1).
+KEEP_OPEN = ["keeping this open", "keep this open", "happy to review",
+             "land the implementation", "looking forward"]
 
 PRECEDENCE = ["explicit-rejection", "adjustment-made", "adjustment-needed",
               "cleanup", "positive", "neutral"]
@@ -176,7 +187,26 @@ def classify(pr):
         add("neutral", "high", [{"type": "state", "ref": pr.get("state"),
                                   "quote": "no maintainer signal detected"}])
 
-    primary = next(s for s in PRECEDENCE if s in found)
+    # v1.1 keep-open demotion: rejection words inside a flow the
+    # maintainer explicitly keeps open (PR not closed_unmerged) are a
+    # process note, not a verdict — the signal stays listed at medium,
+    # flagged, and yields the primary to any other detected signal.
+    demoted = False
+    if "explicit-rejection" in found and pr.get("state") != "closed_unmerged":
+        maint_text = " ".join((it.get("body") or "")
+                              for _, it in maint_items).lower()
+        if _hits(maint_text, KEEP_OPEN):
+            demoted = True
+            rv = found["explicit-rejection"]
+            rv["confidence"] = "medium"
+            rv["evidence"].append({
+                "type": "state", "ref": pr.get("state"),
+                "quote": "demoted: keep-open continuation present, "
+                         "PR not closed"})
+
+    primary = next(s for s in PRECEDENCE
+                   if s in found and not (demoted and s == "explicit-rejection"
+                                          and len(found) > 1))
     pv = found[primary]
     adjustment = {
         "required": "adjustment-needed" in found,
@@ -195,7 +225,7 @@ def classify(pr):
                         key=lambda kv: PRECEDENCE.index(kv[0]))],
         "adjustment": adjustment,
         "confidence_overall": pv["confidence"],
-        "adjudicate": pv["confidence"] == "low",
+        "adjudicate": pv["confidence"] == "low" or demoted,
         "classifier": VERSION,
         "rules_fired": sorted(found.keys()),
     }

@@ -95,3 +95,28 @@ same pass, so a future resume inherits gates, not intentions.
 (c) outcome reporting runs only on the merged-aware ledger;
 (d) the volume caps hold. The 8 live open PRs are untouched
 by this review and by the prerequisites build.
+
+## Addendum — decomposition of the 20 merged (2026-11-03)
+
+Owner-ordered "+20 MERGED" criteria check, firsthand-validated at
+main (2026-11-03 16:07 PT). The 20 merged decompose as:
+
+- **14 pure stake placeholders** — 1 file, +8/−0, 1 commit:
+  `.github/help-wanted-lane-stake.md` ONLY (the maintainer merged
+  the stake file itself).
+- **2 trivial text edits** — zero #81 comment refresh (+8/−5) ·
+  gpt4free #3541 README typo (+2/−2).
+- **4 own-org rows** — Research-Astute ×3 + search-astute-ly ×1
+  (real CI/policy code; our own orgs, Aug-21 self-merges —
+  arguably out-of-scope rows in a foreign-only ledger).
+
+**Substantive foreign code merged = 0.** The 14 stake merges are
+content-IDENTICAL to the rejected placeholder class; the only
+differentiator is maintainer disposition (merge-happy vs close)
+plus October timing. Consequence for the headline figure: the
+16.0% "merge rate" reads as success only at state level; at
+content level the success count collapses. This decomposition is
+TRUED ITEM #1 of the full-census classifier pass (screening over
+all 132 PRs, in flight 2026-11-03); the pass carries a
+per-merged-PR content class {stake-only · trivial · own-org ·
+substantive}, verified via PR files for the 20.

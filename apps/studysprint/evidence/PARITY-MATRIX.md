@@ -3,14 +3,14 @@
 Ground truth: the shipped bindings, read from the surfaces'
 own builders (`web/build_data.py`, `tui.py: build_state`, the
 APK bundle = the web bundle) at core **v1.0.0** + surface line
-**0.5.0**. This matrix is the catch-up program's baseline;
+**0.5.1**. This matrix is the catch-up program's baseline;
 every iteration updates it and the per-surface parity
 statements together (standing surface gates). **Owner rule (2026-11-03): this table rides every release body from v1.0.0** — release-cut embeds it verbatim from the cut tag; a pre-matrix tag’s body falls back to a named versions-of-record line. Legend:
 **bound** = the surface runs the real core path ·
 **partial** = a named subset, with the gap stated ·
 **absent** = not on the surface.
 
-| Core capability (FEATURES.md) | CLI/core | webApp 0.5.0 | TUI 0.5.0 | APK 0.5.0 |
+| Core capability (FEATURES.md) | CLI/core | webApp 0.5.1 | TUI 0.5.1 | APK 0.5.1 |
 |---|---|---|---|---|
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |
 | §3 Daily check-in + no-guilt shift | bound | bound (persisted; surface-level shift, core reflow not bound) | bound (persisted; real week/day identity) | as webApp |

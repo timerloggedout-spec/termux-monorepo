@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 274,
+    "open_prs": 273,
     "pr_classes": {
-      "CANDIDATE": 128,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 135,
+      "CANDIDATE": 127,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 136,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 272,
+      "prs": 271,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T08:55:51Z",
+  "generated_at": "2026-11-04T08:57:30Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "7ebfa4420a"
+    "sha": "432357a39a"
   },
   "prs": [
     {
@@ -298,20 +298,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "5f1f654a22",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4816,
-      "title": "ops(que): governor-events batch 001 \u2014 first que-governor-event/v1 batch (flips governor-state to populated)",
-      "updated_at": "2026-11-04T08:49:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1521,20 +1507,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "995d167050",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T08:40:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -3265,12 +3237,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "237c1a9ed0",
+      "head_sha": "ce1a025231",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T08:55:06Z"
+      "updated_at": "2026-11-04T08:56:44Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "e56fcc5352",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T08:57:07Z"
     },
     {
       "class": "NEED_EVIDENCE",

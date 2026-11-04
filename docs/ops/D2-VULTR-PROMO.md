@@ -14,7 +14,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 - constraints: containment-first required ∧ teams 1–6 ∧ submit ON lablab ∀ judging
 - gates: D2-NOCARD open (no-card path only; card step ⇒ halt)
 - open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ owner pick ⇒ repo (new repo per entry) ∧ team formation
-- submission: none; demo_url = NOT_ESTABLISHED; repo_url = NOT_ESTABLISHED
+- submission: none; demo_url = NOT_ESTABLISHED; repo_url = https://github.com/timerloggedout-spec/quarantine-browser-clerk (LIVE ✓ verified firsthand PAT-API 2026-11-03: id 1445293810, public, created 2026-11-04T07:17:44Z; build claimed at Swarm command-dispatch T1 staging)
 - surfaces watched by this lane: lablab event page ∧ lablab Discord ∧ project gallery @ publish (field 1617 participants @2026-10-28; projects count = OPEN TASK @ gallery publish)
 
 ## 2. Launch-week beats

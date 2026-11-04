@@ -1158,6 +1158,13 @@
     "history": "Exercise run-1 advisory delivered A>C>B>E>F>D (raw #1 = B). First execution 2026-11-03 23:16 PT (main-relayed \"D2 BUILD\", PR #4779) was main's misread - owner countermand 23:18 PT rescinded it (PR #4786); pick held OWNER-HELD until the owner's direct GO above. The rescinded execution stays in history as history.",
     "residue": "Repo timerloggedout-spec/quarantine-browser-clerk (id 1445293810), created in the rescinded 23:16 window, was DORMANT residue; the decided build resumes from the held tree (Swarm resume) with the AppID leg resumed via the AppID lane.",
     "build_sequence": "Firing 2026-11-04 (D2 seat): Desk flip; AppID resume; Swarm resume from held tree. Clocks: landing Sat Nov 7; wall Sun Nov 8 15:00 PT; submission editable until wall."
+   },
+   "build": {
+    "state": "T2 REAL-STACK PASS (2026-11-04, D2 seat log)",
+    "evidence": "run 41807278198 SUCCESS; entry repo PR #3 merged 2fd10df305; brand-pin OK.",
+    "kill_criterion": "MET Nov 4 (ahead of Nov 5 EOD deadline): signature moment demonstrable - lookalike contained, zero approval, receipt chain verified.",
+    "blockers": "lablab team create BLOCKED on Discord-server membership (owner step, surfaced in-seat); AppID gate = owner tap pending; VULTR_API_KEY pending.",
+    "clocks": "T3 hardening+slides by Nov 6; landing Nov 7; wall Nov 8 15:00 PT."
    }
   },
   {

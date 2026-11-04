@@ -1,0 +1,117 @@
+{
+ "schema": "moneyball-pool-census/v1",
+ "ledger_events": 717,
+ "pools": 693,
+ "by_class": {
+  "(card)": 4,
+  "arm": 4,
+  "desk-lane": 10,
+  "devwork": 79,
+  "doe": 175,
+  "explorer": 1,
+  "loop": 5,
+  "moniker": 69,
+  "other": 4,
+  "profile": 10,
+  "provider": 143,
+  "que-lane": 32,
+  "recon": 31,
+  "researcher": 9,
+  "role": 52,
+  "speculator": 60,
+  "version": 5
+ },
+ "walked": {
+  "que-lane": {
+   "source": "apps/tribute-dashboard/data/dispatch-tree-feed.json data.lanes",
+   "expected": 32,
+   "existing": 32,
+   "derivation_proven": true,
+   "unwalked_existing": [],
+   "new": []
+  },
+  "provider": {
+   "source": "ops/cadence/provider-onboarding.json + ops/challenge/desk-feed.json provider_catalog.inference_availability.records",
+   "expected": 130,
+   "existing": 130,
+   "derivation_proven": true,
+   "unwalked_existing": [],
+   "new": []
+  },
+  "speculator": {
+   "source": "experiments/speculators/token-strategies/WALLETS.json + PLAN.json rows",
+   "expected": 60,
+   "existing": 60,
+   "derivation_proven": true,
+   "unwalked_existing": [],
+   "new": []
+  },
+  "desk-lane": {
+   "source": "ops/challenge/coordinator.json events + desk-feed desk",
+   "expected": 10,
+   "existing": 10,
+   "derivation_proven": true,
+   "unwalked_existing": [],
+   "new": []
+  }
+ },
+ "census_only": {
+  "moniker": {
+   "source": "docs/ops/AGENT-MONIKERS.md (SSOT moniker tables)",
+   "existing": 69
+  },
+  "role": {
+   "source": "docs/ops/AGENT-MONIKERS.md (role table + naming-collapse registry)",
+   "existing": 52
+  },
+  "profile": {
+   "source": "docs/ops/PROFILE-REGISTRY.md \u00a72",
+   "existing": 10
+  },
+  "doe": {
+   "source": "docs/ops/DOE-FAMILY.md register + docs/ops/DOE-DREAMBEANS-POOL.md census",
+   "existing": 175
+  },
+  "recon": {
+   "source": "docs/ops/PROVIDER-AND-LANE-ENUMERATION-AUDIT (snapshot doc)",
+   "existing": 31
+  },
+  "researcher": {
+   "source": "Registry SSOT + people of record (narrative source)",
+   "existing": 9
+  },
+  "devwork": {
+   "source": "GitHub repo census (live API) + goal workspaces census",
+   "existing": 79
+  },
+  "version": {
+   "source": "moneyball VERSIONS.md (cross-repo source)",
+   "existing": 5
+  },
+  "arm": {
+   "source": "DOE-FAMILY selection-arm taxonomy \u2014 custodian batch path (POOL-SYNC option (b): batch-provisioned, sweep-caught)",
+   "existing": 4
+  },
+  "loop": {
+   "source": "owner amendment-5 taxonomy + cull-waterfall rule \u2014 custodian batch path (POOL-SYNC option (b))",
+   "existing": 5
+  },
+  "explorer": {
+   "source": "owner pool-scope directive (single entity)",
+   "existing": 1
+  },
+  "other": {
+   "source": "ops/agentic-gambling/lane.json pooled buckets",
+   "existing": 4
+  },
+  "(card)": {
+   "source": "moneyball DESIGN \u00a73 card pools (grandfathered unscoped)",
+   "existing": 4
+  },
+  "provider-depth3+": {
+   "source": "provider-phrases/phrases.json prefixes (depth>=3 legs registered, walker follow-on)",
+   "existing": 13
+  }
+ },
+ "new_this_run": []
+}

@@ -58,14 +58,12 @@ def test_queue_feed_shape_and_provenance():
     feed = q.queue_feed([run(1, "apk gate", "2026-11-04T07:00:00Z")],
                          [], TIERS, AT)
     assert feed["schema"] == "que-queue-feed/v1"
-    # naming: the brand of record is Stagefoil (Registry
-    # issuance PR #4817); 'AutoDesk' survives only as the
-    # attributed predecessor, internal-only, ™-collision
-    # stamped wherever the record carries it
+    # naming swap (Registry issuance PR #4817): the brand of
+    # record is Stagefoil; the priming label survives only
+    # in the issuance section itself — never in these records
     assert "Stagefoil" in feed["provenance"]["design_input"]
-    assert "AutoDesk" in feed["provenance"]["design_input"]
-    assert "internal-only" in feed["provenance"]["design_input"]
-    assert "Autodesk" in feed["provenance"]["design_input"]
+    assert "AutoDesk" not in feed["provenance"]["design_input"]
+    assert "Autodesk" not in feed["provenance"]["design_input"]
     assert feed["queue"]["tiers"]["1"]["queued"] == 1
     # no dispatch-state feed in the test tree: claims stay an
     # honest empty fold with the source named
@@ -105,3 +103,19 @@ def test_transitions_vanished_is_a_gap_event():
     _, st = q.transitions({}, [r], [], [], TIERS, AT)
     ev, _ = q.transitions(st, [], [], [], TIERS, AT)
     assert [e["event"] for e in ev] == ["vanished"]
+
+
+def test_page_fetch_aliases_pinned():
+    # the QUE page fetches the que- prefixed dashboard names
+    # (Desk gap report on the #4824 section): the collector
+    # must publish both aliases and the workflow must stage
+    # them — a contract pin over the source + workflow text
+    from pathlib import Path
+    src = Path(q.__file__).read_text()
+    assert 'alias="que-governor.json"' in src
+    assert 'alias="que-priority-windows.json"' in src
+    wf = Path(q.__file__).with_name("que-feed-collect.yml")
+    if wf.exists():
+        text = wf.read_text()
+        assert "data/que-governor.json" in text
+        assert "data/que-priority-windows.json" in text

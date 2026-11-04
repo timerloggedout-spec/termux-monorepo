@@ -1613,8 +1613,10 @@ occupancy.
 ### Custodian — custody-plane issuance (2026-11-04)
 
 **Issued: `Custodian`** — the name of the **custody
-plane** (Registry ruling 2026-11-04, owner endorsement
-04:47 PT, executed at the gate). The custody plane = the
+plane** (provenance: owner **realization + endorsement**
+2026-11-04 04:47 PT → relay → this issuance, PR #4903 =
+the ruling. Realization of a term mapping ≠ ruling —
+doctrine of record 2026-11-04). The custody plane = the
 holding of keys (AppID private-key custody · vault) ·
 wallets · records/feeds under custody · derivation custody
 (§13 custodian-reviewed derivations). Plane-scoped function
@@ -1629,10 +1631,12 @@ it settled the actor-duty word and coined no plane name;
 the plane was the §G gap, now filled. Neither record amends
 the other.
 
-**Scope:** first registration = the MoneyBall plane
-(literal usage of record: DESIGN · WALLET-LEDGER ·
-propose.html). Fleet custody surfaces may reference the
-plane name. **NOT issued as:** role class (∅ canonical-set
+**Scope (owner scope line, 2026-11-04): Custodian on the
+Web3 MoneyBall ∧ Steward in termux-monorepo.** First
+registration = the MoneyBall plane (literal usage of
+record: DESIGN · WALLET-LEDGER · propose.html); the role
+word's home = termux-monorepo. (This sentence supersedes
+the draft's broader fleet-reference phrasing.) **NOT issued as:** role class (∅ canonical-set
 change) · moniker/handle (∅ SSOT row · ∅ registry entry) ·
 listing participant. Capitalized `Custodian` = the plane
 name; lowercase prose stays ordinary English (the

@@ -42,5 +42,14 @@ jobs:
             echo "no feed change this cycle"
           else
             git commit -m "que: feed cycle $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
+            # master moves under this run on a busy fleet:
+            # rebase onto the new head and retry the push
+            # (first live cycle lost exactly this race)
+            for attempt in 1 2 3; do
+              if git push; then
+                break
+              fi
+              echo "push rejected (attempt $attempt) — rebasing"
+              git pull --rebase origin master
+            done
           fi

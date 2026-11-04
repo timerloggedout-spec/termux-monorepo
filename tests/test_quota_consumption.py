@@ -62,7 +62,7 @@ def _fixture(tmp_path):
     rows = [
         {"dispatch_id": "d1", "ts": "2026-11-02T00:00:00Z",
          "provider": "deepseek", "model": "deepseek-chat",
-         "quota": {"pool": "deepseek", "slice": "winning"},
+         "quota": {"pool": "deepseek", "slice": None},
          "usage": {"tokens_in": 100, "tokens_out": 50}},
         {"dispatch_id": "d2", "ts": "2026-11-02T01:00:00Z",
          "provider": "cohere", "model": "command-r",
@@ -78,6 +78,10 @@ def _fixture(tmp_path):
     # one experiment record carrying a measured native-unit usage{};
     # its dispatch_id also appears in the intake corpus shape (dedupe
     # is by dispatch_id across sources)
+    w("experiments/doe/routed-dispatch/records/d1.json", json.dumps({
+        "dispatch_id": "d1", "ts": "2026-11-02T00:00:00Z",
+        "provider": "deepseek", "model": "deepseek-chat",
+        "quota": {"pool": "deepseek", "slice": "winning"}}))
     w("experiments/doe/routed-dispatch/stamps/s1.json", json.dumps({
         "dispatch_id": "d5", "ts": "2026-11-02T04:00:00Z",
         "provider": "gemini", "model": "gemini-2.5-pro",

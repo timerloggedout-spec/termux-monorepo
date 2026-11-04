@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 523,
+    "open_issues": 529,
     "open_prs": 263,
     "pr_classes": {
-      "CANDIDATE": 124,
+      "CANDIDATE": 123,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 129,
+      "NEED_EVIDENCE": 130,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 288,
+      "issues": 292,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 44,
+      "issues": 46,
       "prs": 261,
       "unlabelled_numbers": [
         308,
@@ -95,11 +95,13 @@
         4236,
         4237,
         4524,
-        4547
+        4547,
+        4718,
+        4721
       ]
     }
   },
-  "generated_at": "2026-11-04T00:12:14Z",
+  "generated_at": "2026-11-04T00:18:44Z",
   "issues_unlabelled": [
     308,
     388,
@@ -144,15 +146,17 @@
     4236,
     4237,
     4524,
-    4547
+    4547,
+    4718,
+    4721
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "179eda93d2"
+    "sha": "04d30568e0"
   },
   "prs": [
     {
@@ -516,7 +520,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -1503,20 +1507,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "94b5e08740",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T00:10:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -2535,7 +2525,7 @@
       },
       "head_sha": "0f45b63561",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-03T22:55:11Z"
@@ -3191,12 +3181,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "aef3eeb725",
+      "head_sha": "33acc01431",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-03T23:55:30Z"
+      "updated_at": "2026-11-04T00:12:21Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "bdec87999f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T00:17:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3753,7 +3757,7 @@
       },
       "head_sha": "2dbcb6c097",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-03T22:49:14Z"
@@ -3767,7 +3771,7 @@
       },
       "head_sha": "ed7de200b9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4663,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:50:52Z"
@@ -3781,7 +3785,7 @@
       },
       "head_sha": "d7c97fb814",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4664,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:51:04Z"
@@ -3795,7 +3799,7 @@
       },
       "head_sha": "fed92480f8",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4670,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:57:08Z"

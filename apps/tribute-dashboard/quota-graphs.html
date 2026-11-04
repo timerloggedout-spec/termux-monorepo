@@ -94,7 +94,7 @@ function render(){
 }
 function taskUsageSummary(tasks){
   const exact={},activity={};const states={"no-usage-surface":0,waived:0,fault:0,pending:0,NOT_ESTABLISHED:0};
-  (tasks||[]).forEach(t=>{const u=t.usage||{};if(u.status==='established'&&typeof u.value==='number')exact[u.unit||'unit']=(exact[u.unit||'unit']||0)+u.value;else if(u.status==='activity-only'&&typeof u.value==='number')activity[u.unit||'activity']=(activity[u.unit||'activity']||0)+u.value;else states[u.status in states?u.status:'NOT_ESTABLISHED']++;});
+  (tasks||[]).forEach(t=>{const u=t.usage||{};if(u.status==='established'&&typeof u.value==='number')exact[u.unit||'unit']=(exact[u.unit||'unit']||0)+u.value;else if(u.status==='activity-only'&&typeof u.value==='number')activity[u.unit||'activity']=(activity[u.unit||'activity']||0)+u.value;else states[Object.prototype.hasOwnProperty.call(states,u.status)?u.status:'NOT_ESTABLISHED']++;});
   const bits=Object.entries(exact).map(([u,v])=>fmtV(v)+' '+u+' exact');
   Object.entries(activity).forEach(([u,v])=>bits.push(fmtV(v)+' '+u+' activity'));
   Object.entries(states).forEach(([s,n])=>{if(n)bits.push(n+' '+s)});

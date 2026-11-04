@@ -1132,11 +1132,20 @@ version and compared continuously until culling retires a version.
   pattern = packet E001.lean: statements first, proofs
   where decidable, no hidden sorry, resistance named as
   OPEN STATEMENTS, verdict from the oracle run's artifact).
-  Coverage map: `docs/ops/DOE-PROOF-COVERAGE.md` —
-  experiments x {proved - proved-fragment - statements-
-  only - open} with the gap order E002..E006 + Mathlib
-  M001. **An experiment without its proof reads
-  INCOMPLETE in this register.**
+  Directory of record (owner amendment 2026-11-03):
+  `experiments/doe/proofs/` — INDEX.md = the coverage
+  map (experiments x {proved - proved-fragment -
+  statements-only - open}, gap order E002..E006 +
+  Mathlib M001) - MANIFEST.json wires every entry to
+  {experiment - proof citation/provenance - oracle run -
+  verdict - DATA LAYERS (named refs: ledger/feed paths -
+  QUE measurement plane - lane-events/Neon - telemetry
+  corpora)}. Artifacts stay in the Lean home
+  (`research/nse-023/examples/`) and enter by citation;
+  docs/ops/DOE-PROOF-COVERAGE.md is a pointer stub.
+  **An experiment without its proof — or an entry
+  missing its data-layer refs — reads INCOMPLETE in
+  this register.**
 
 ## Campaign layout
 

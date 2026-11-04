@@ -1,0 +1,313 @@
+{
+ "schema": "doe-proofs-manifest/v1",
+ "directory": "experiments/doe/proofs/",
+ "rule": "owner standing requirement 2026-11-03 + directory amendment: every experiment of record carries an entry {experiment \u00b7 proof (artifact citation + provenance \u00b7 oracle run \u00b7 verdict) \u00b7 data_layers (named refs) \u00b7 status}; an entry missing its proof OR its data-layer refs reads INCOMPLETE",
+ "artifact_home": "research/nse-023/examples/ (oracle compiles there; artifacts enter this directory by citation, never by silent move)",
+ "counts": {
+  "entries": 26
+ },
+ "entries": [
+  {
+   "experiment": "Settlement machinery (wagering book B1\u2013B5/F1; G0 cycle)",
+   "status": "proved-fragment",
+   "proof": {
+    "artifact": "research/nse-023/examples/E001.lean",
+    "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
+    "oracle_run": 41746401168,
+    "verdict": "PENDING \u2014 run in flight at map time",
+    "section": "\u00a71"
+   },
+   "data_layers": [
+    "ops/agentic-gambling/book/challenges-book.json",
+    "ops/agentic-gambling/book/ledger.jsonl",
+    "ops/challenge/coordinator.json",
+    "moneyball:data/settlement-report.json",
+    "moneyball:scripts/settlement/replay.py"
+   ],
+   "owed": "oracle run verdict; B3 authenticity + leg independence OPEN (E001 \u00a75)"
+  },
+  {
+   "experiment": "Amendment-6 snapshot method (% discipline)",
+   "status": "proved-fragment",
+   "proof": {
+    "artifact": "research/nse-023/examples/E001.lean",
+    "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
+    "oracle_run": 41746401168,
+    "verdict": "PENDING \u2014 run in flight at map time",
+    "section": "\u00a72"
+   },
+   "data_layers": [
+    "docs/ops/POOL-SCOPE-METHODS.md",
+    "moneyball:data/pools-feed.json",
+    "ops/agentic-gambling/site/wallet-ledger.jsonl",
+    "experiments/speculators/token-strategies/DESIGN.json"
+   ],
+   "owed": "Wilson/Dirichlet bound correctness \u2014 Mathlib leg M001"
+  },
+  {
+   "experiment": "Cycle / iteration / generation / epoch shapes",
+   "status": "proved-fragment",
+   "proof": {
+    "artifact": "research/nse-023/examples/E001.lean",
+    "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
+    "oracle_run": 41746401168,
+    "verdict": "PENDING \u2014 run in flight at map time",
+    "section": "\u00a7\u00a73\u20134"
+   },
+   "data_layers": [
+    "docs/ops/DOE-METHODS-EPOCH-2026-11-03.md",
+    "experiments/doe/routed-dispatch/",
+    "Neon lane-events (custom.neon; project dawn-breeze-73523999)",
+    "HindSight telemetry corpus"
+   ],
+   "owed": "richer traces as cycles accumulate"
+  },
+  {
+   "experiment": "Pool-scope census (693 pools; counts + reconciliation)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "ops/agentic-gambling/site/wallet-ledger.jsonl",
+    "moneyball:data/pools-feed.json",
+    "apps/tribute-dashboard/data/pools-feed.json",
+    "ops/agentic-gambling/site/pool-target-table.json"
+   ],
+   "owed": "E006 \u2014 count arithmetic as decidable list computation"
+  },
+  {
+   "experiment": "EGM instance #2 (Delphi rubric reads shape alone)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/EGM-INSTANCE-2.md",
+    "github issues #4297\u2013#4302",
+    ".github/workflows/delphi-gate.yml (ledger postings)"
+   ],
+   "owed": "E002 \u2014 verdict arithmetic (first gap item)"
+  },
+  {
+   "experiment": "EGM instance #1 (claim \u2192 verification \u2192 conversion)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/EGM-EVALUATION.md",
+    "github issues #4212\u2013#4237",
+    "github issue #4240 (RFP-D1-7)",
+    "github issue #4281 (RFP-D1-8)"
+   ],
+   "owed": "E002 machinery \u2014 calibration arithmetic"
+  },
+  {
+   "experiment": "Speculators token-strategies-1",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "experiments/speculators/token-strategies-1/",
+    "experiments/speculators/token-strategies/DESIGN.json",
+    "experiments/speculators/token-strategies/WALLETS.json",
+    "scripts/speculators/"
+   ],
+   "owed": "E003 \u2014 acceptance predicate; discharge per run record (0/48)"
+  },
+  {
+   "experiment": "Routed-dispatch protocol (rule 7)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "experiments/doe/routed-dispatch/stamps/",
+    "experiments/doe/routed-dispatch/records/",
+    "experiments/doe/routed-dispatch/feed-health.jsonl",
+    "docs/ops/DOE-FAMILY.md (binding rule 7)"
+   ],
+   "owed": "E004 \u2014 set/cumulative-n accounting predicates"
+  },
+  {
+   "experiment": "Panel Judge Mirror (forecasts L1\u2013L4 + F-N3)",
+   "status": "statements-only",
+   "proof": {
+    "artifact": "research/nse-023/examples/E001.lean",
+    "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
+    "oracle_run": 41746401168,
+    "verdict": "PENDING \u2014 run in flight at map time",
+    "section": "\u00a75 (OPEN: EKMAN adequacy, dispersion)"
+   },
+   "data_layers": [
+    "experiments/doe/panel-judge-mirror/forecasts/",
+    "docs/ops/PANEL-JUDGE-MIRROR.md",
+    "ops/agentic-gambling/book/challenges-book.json"
+   ],
+   "owed": "E005 \u2014 Brier/hit-rate discharge at judging close 2026-11-18"
+  },
+  {
+   "experiment": "Certifications value matrix (Bayesian record conformity)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/DOE-FAMILY.md (bayesian-updating register)",
+    "PR #3789 (matrix + records.json, 33\u201334 rows)"
+   ],
+   "owed": "record-shape predicates (E001 \u00a72 pattern)"
+  },
+  {
+   "experiment": "ATES improvement frame (coverage over S / S\u207f)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/ATES-IMPROVEMENT-FRAME.md",
+    "scripts/ci/emit_ates_run_receipt.py"
+   ],
+   "owed": "K1\u2013K10 conformity clauses as predicates"
+  },
+  {
+   "experiment": "fb-pages-mvt-1",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/DOE-FAMILY.md (campaign register)",
+    "PR #2703 (DESIGN)"
+   ],
+   "owed": "decision-rule arithmetic at 10 redemptions \u2228 2026-11-10"
+  },
+  {
+   "experiment": "live-1-wave-framing (2\u00d72)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #2809 (DESIGN)",
+    "PR #2838 (automation)",
+    "experiments/doe/routed-dispatch/"
+   ],
+   "owed": "cell-count decision predicate (n\u226516 \u2227 \u22654/cell \u2228 2026-12-04)"
+  },
+  {
+   "experiment": "live-2-prlane-tuning",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #2789 (DESIGN)",
+    "docs/ops/DOE-FAMILY.md (campaign register)"
+   ],
+   "owed": "phase-3 variance precondition as a stated inequality, on its inputs"
+  },
+  {
+   "experiment": "live-3-phrases-deepseek",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #2799 (DESIGN)",
+    "PR #2856/#2857 (ruling i-a, owners' review)"
+   ],
+   "owed": "proof follows the rule-7 re-cut on landing"
+  },
+  {
+   "experiment": "cb-1-chronomancer-emission",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #2818 (DESIGN)"
+   ],
+   "owed": "gate predicate only; admitted_design_only"
+  },
+  {
+   "experiment": "lab-1",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/DOE-FAMILY.md (campaign register)"
+   ],
+   "owed": "re-trigger conditions as predicates"
+  },
+  {
+   "experiment": "nc-1-notation-compliance",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "scripts/classifiers/chat_intent.py",
+    "docs/ops/DOE-FAMILY.md (chat-intent register)"
+   ],
+   "owed": "run-003 gate predicates, on the three named rulings"
+  },
+  {
+   "experiment": "util-1-provider-rotation",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #3145 (DESIGN)",
+    "ops/quota/registry.json",
+    "ops/quota/swarm-feed.json"
+   ],
+   "owed": "cull-rule predicate (arm < pooled\u22120.25 @ n\u22658); window open"
+  },
+  {
+   "experiment": "bf-1-backfill-methods",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #3397/#3409 (method + audit)",
+    "experiments/ (historical corpus)"
+   ],
+   "owed": "method-shape statements; corpus significance NOT_ESTABLISHED is the content"
+  },
+  {
+   "experiment": "archW1z title evaluation",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "PR #3607 (evaluation shape)",
+    "experiments/doe/routed-dispatch/"
+   ],
+   "owed": "population-routing predicate; no qualifying evidence yet"
+  },
+  {
+   "experiment": "CMP-1\u2026CMP-6 (CMP register)",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "experiments/doe/cmp-register/README.md",
+    "experiments/doe/cmp-register/DESIGN.json"
+   ],
+   "owed": "review-point predicates per entry (CMP-2 fullest record)"
+  },
+  {
+   "experiment": "chat-intent v1 \u2192 v2",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "scripts/classifiers/chat_intent.py",
+    "PR #3633 (v2)",
+    "PR #3379 (v1)"
+   ],
+   "owed": "succession + backfill-delta (exactly 3) arithmetic; tests 12/12 are non-Lean evidence"
+  },
+  {
+   "experiment": "exchange-scoring v0 / validation-yield v0",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/DOE-FAMILY.md (method versions register)",
+    "ops/quota/registry.json"
+   ],
+   "owed": "\u22652-leg TRUE-validation rule \u2014 rides E001 \u00a75's corroboration line"
+  },
+  {
+   "experiment": "M5 cert set / nested-family join",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/DOE-FAMILY.md (mapping register)",
+    "experiments/doe/routed-dispatch/feed-health.jsonl"
+   ],
+   "owed": "workflow-class instance convention as a statement; script PASS is non-Lean evidence"
+  },
+  {
+   "experiment": "Dreambeans candidates \u00d74",
+   "status": "open",
+   "proof": null,
+   "data_layers": [
+    "docs/ops/DOE-DREAMBEANS-POOL.md",
+    "docs/ops/DOE-FAMILY.md (candidate method versions)"
+   ],
+   "owed": "candidates (specified_not_run); dual-accumulator non-compensability invariant first when briefed"
+  }
+ ]
+}

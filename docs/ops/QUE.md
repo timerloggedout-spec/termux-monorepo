@@ -160,3 +160,46 @@ doctrine. The window is encoded in
 `ops/quota/dispatch-tiers.json` (`priority_window`) and
 expires at the freeze — it is a window, not a standing
 reorder. Cadence holds the guard-threshold copy.
+
+## Governor deferrals — probe, never park (fleet rule, owner 2026-11-03 17:02 PT)
+
+**"A deferral is a state to probe, not a timer to serve."**
+
+The PAT flow governor's deferral is a PROJECTION (trailing-burn
+extrapolation), and projections decay as burn drops: the stated
+reset is a ceiling estimate, not a schedule. Proven 2026-11-03:
+three seats parked on a projected 17:20 PT reset; a probe at the
+owner's order at 17:01 PT found the deferral already cleared,
+and the submission-critical verify completed in minutes. The
+parking was the waste; the probe was the fix.
+
+The rule, binding on every seat holding work behind a governor
+deferral:
+
+1. **Probe on a bounded cadence.** A probe = ONE governor-
+   respecting call (the cheapest call that tests the state, e.g.
+   the rate-limit read or the held call itself at low priority).
+   Cadence: no tighter than the queue-census rhythm (minutes,
+   not seconds); a probe never becomes a poll loop.
+2. **Report clearance state, never a countdown.** The seat's
+   status vocabulary is {deferred · probing · cleared} with the
+   last probe's evidence — never "waiting until HH:MM" as a
+   plan. A stated reset time may be quoted as the projection's
+   ceiling, labelled as such.
+3. **Pre-stage behind the deferral.** Work that can advance
+   without the budget (local builds, verification prep,
+   staged one-shots keyed on STATE, not on the clock) proceeds
+   during the deferral; the held legs fire on clearance without
+   latency. A parked seat with unstaged follow-on work is the
+   defect this rule exists to prevent.
+4. **Courtesy holds carry probe-and-release.** A seat that
+   pauses its own consumers to clear budget for a priority
+   verify releases them on a clearance PROBE, not a fixed
+   sleep, wherever the paused work is state-keyed.
+
+Governor-side improvements (projection labelling · clearance
+estimates · priority honoring inside the governor) are Cadence's
+delegated line; this section governs SEAT behavior only.
+Escalation + findings of record: owner escalation via the D1
+seat, 2026-11-03 17:02 PT; first application = the D1 v1.0.0
+verify chain (PR #4748), same day.

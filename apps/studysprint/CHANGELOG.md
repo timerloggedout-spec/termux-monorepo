@@ -19,6 +19,17 @@ Entries are the GitHub Release notes, verbatim.
   overflow case), Obsidian note set byte-identical.
   The parity matrix's last absent row closes.
 
+- **OCR in the webApp intake (qualifications closure ②):**
+  photographs now run through tesseract.js 5.1.1 (WASM,
+  lazily loaded from the pinned CDN build) in the browser
+  — photo → OCR text → the existing ingestion grammar,
+  provenance stamped `ocr`; a capture whose engine cannot
+  load stays recorded as awaiting-ocr-engine. The named
+  platform limit ("the browser cannot run tesseract")
+  leaves the matrix. Battery: tests/test_ocr_web.py
+  (wiring pins + pure helpers + an env-gated two-engine
+  agreement run over a committed photo fixture).
+
 - **hypothes.is sync seam (qualifications closure ③):**
   the annotations pane gains a config-injected API token
   seam — token + optional group entered on-device (stored

@@ -1099,6 +1099,33 @@ function mergeAnnotations(local, remote) {
   return out;
 }
 
+/* ---------------- OCR (qualifications closure ②) ----
+ * tesseract.js (WASM) runs the core's OCR leg in the
+ * browser: photo -> OCR text -> the same ingestion grammar
+ * as a text file, provenance stamped `ocr` (the core's
+ * ocr-image kind). The engine loads lazily from the pinned
+ * CDN build; a load failure keeps the capture recorded as
+ * awaiting the engine — never a fake parse. */
+
+const TESSERACT_CDN = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
+const TESSERACT_CORE = "https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1/";
+const TESSERACT_LANG = "https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng@4.0.0/4.0.0_best_int/";
+
+function normalizeOcrText(text) {
+  return String(text || "").replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function ocrAgreement(a, b) {
+  const toks = (s) => new Set(normalizeOcrText(s).toLowerCase()
+    .split(/[^a-z0-9]+/).filter(Boolean));
+  const A = toks(a), B = toks(b);
+  if (!A.size || !B.size) return 0;
+  let hit = 0;
+  for (const t of A) if (B.has(t)) hit++;
+  return hit / Math.max(A.size, B.size);
+}
+
 /* ---------------- loading + rendering */
 async function load() {
   // Failure state (#4237): a failed or unparsable state.json used
@@ -2002,9 +2029,11 @@ $("#reader-next").addEventListener("click", () => {
 // Text files parse in-browser with the same conservative line
 // grammar as study_pipeline.parse_syllabus_text; placement is
 // CONFIRM-GATED (records sit in ss.ingest.pending until the
-// student confirms). Photographs are captured and recorded as
-// awaiting core OCR — OCR runs in the core pipeline, not in the
-// browser, and this surface says so rather than faking it.
+// student confirms). Photographs run through tesseract.js
+// (WASM) in the browser — the core's OCR leg on this surface
+// (qualifications closure ②) — and a capture whose engine
+// cannot load stays recorded as awaiting-ocr-engine rather
+// than being faked.
 const WEEKDAYS = { mon: "Mon", monday: "Mon", tue: "Tue", tues: "Tue",
   tuesday: "Tue", wed: "Wed", wednesday: "Wed", thu: "Thu",
   thur: "Thu", thurs: "Thu", thursday: "Thu", fri: "Fri",
@@ -2067,19 +2096,67 @@ $("#ingest-file").addEventListener("change", (e) => {
   reader.readAsText(file);
 });
 
-$("#ingest-camera").addEventListener("change", (e) => {
+let _tesseractPromise = null;
+function loadTesseract() {
+  if (window.Tesseract) return Promise.resolve(window.Tesseract);
+  if (!_tesseractPromise) {
+    _tesseractPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = TESSERACT_CDN;
+      s.onload = () => resolve(window.Tesseract);
+      s.onerror = () => reject(new Error("tesseract.js failed to load"));
+      document.head.appendChild(s);
+    });
+  }
+  return _tesseractPromise;
+}
+
+$("#ingest-camera").addEventListener("change", async (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
   const captures = JSON.parse(
     localStorage.getItem("ss.ingest.captures") || "[]");
-  captures.push({ name: file.name, size: file.size,
+  const record = { name: file.name, size: file.size,
     captured_at: new Date().toISOString(),
-    status: "awaiting-core-ocr" });
+    status: "awaiting-ocr-engine" };
+  captures.push(record);
   localStorage.setItem("ss.ingest.captures",
     JSON.stringify(captures));
-  $("#ingest-status").textContent = "Photograph captured (" +
-    file.name + "). OCR runs in the core pipeline — this capture " +
-    "is recorded as awaiting-core-ocr, not parsed in the browser.";
+  const status = $("#ingest-status");
+  status.textContent = "Photograph captured (" + file.name +
+    "). Running OCR in the browser (tesseract.js)…";
+  try {
+    const Tesseract = await loadTesseract();
+    const worker = await Tesseract.createWorker("eng", 1, {
+      workerPath: TESSERACT_CDN.replace("tesseract.min.js",
+        "worker.min.js"),
+      corePath: TESSERACT_CORE,
+      langPath: TESSERACT_LANG,
+    });
+    const { data } = await worker.recognize(file);
+    await worker.terminate();
+    const text = normalizeOcrText(data.text);
+    if (!text) throw new Error("OCR returned no text");
+    record.status = "ocr-complete";
+    record.provenance = "ocr";
+    record.chars = text.length;
+    localStorage.setItem("ss.ingest.captures",
+      JSON.stringify(captures));
+    const parsed = parseSyllabus(text);
+    localStorage.setItem("ss.ingest.pending",
+      JSON.stringify({ source: file.name, parsed,
+        provenance: "ocr", ocr_engine: "tesseract.js 5.1.1",
+        captured_at: new Date().toISOString() }));
+    renderIngestPreview(parsed, file.name);
+    status.textContent = "OCR complete (" + file.name + "): " +
+      text.length + " chars via tesseract.js, provenance `ocr` — " +
+      "review the parse below and confirm placement.";
+  } catch (err) {
+    status.textContent = "Photograph captured (" + file.name +
+      "). The OCR engine could not run here (" + err.message +
+      ") — the capture stays recorded as awaiting-ocr-engine, " +
+      "not parsed.";
+  }
 });
 
 $("#ingest-confirm").addEventListener("click", () => {

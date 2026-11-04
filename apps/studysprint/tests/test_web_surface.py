@@ -85,7 +85,7 @@ def test_web_ingest_legs():
     assert "function parseSyllabus" in js
     assert "ss.ingest.pending" in js  # confirm gate: pending first
     assert "ss.ingest.placed" in js   # placed only on confirm
-    assert "awaiting-core-ocr" in js  # captures are honest, not parsed
+    assert "awaiting-ocr-engine" in js  # captures whose OCR engine cannot load stay honestly unparsed
 
 
 # ------------------------------------------------------ RFP-D1-7 award batch

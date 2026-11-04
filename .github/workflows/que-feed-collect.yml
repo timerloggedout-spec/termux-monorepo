@@ -1,0 +1,46 @@
+name: que-feed-collect
+# QUE producer: queue-by-tier · priority windows · governor
+# feeds + the T1 measurement-plane transition events
+# (ops/que/). Single-flight on a 10-minute cadence; commits
+# land via the Termux Fleet Swarm App so downstream
+# consumers trigger on the push.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: que-feed-collect
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint Swarm App token
+        id: app
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collect one QUE cycle
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: python3 scripts/que/que_feed_collect.py
+      - name: Commit feeds + events (only on change)
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add ops/que apps/tribute-dashboard/data/que-queue-feed.json apps/tribute-dashboard/data/queue-by-tier.json apps/tribute-dashboard/data/governor.json apps/tribute-dashboard/data/priority-windows.json
+          if git diff --cached --quiet; then
+            echo "no feed change this cycle"
+          else
+            git commit -m "que: feed cycle $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi

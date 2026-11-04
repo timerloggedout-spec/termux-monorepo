@@ -3,9 +3,9 @@
     "open_issues": 529,
     "open_prs": 267,
     "pr_classes": {
-      "CANDIDATE": 123,
-      "EXTRACT": 12,
-      "NEED_EVIDENCE": 132,
+      "CANDIDATE": 121,
+      "EXTRACT": 15,
+      "NEED_EVIDENCE": 131,
       "SUPERSEDE": 0
     }
   },
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T00:34:14Z",
+  "generated_at": "2026-11-04T00:38:33Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "0155fb0350"
+    "sha": "91ff2a5104"
   },
   "prs": [
     {
@@ -236,12 +236,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6380a50f19",
+      "head_sha": "0bb1544434",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T00:32:36Z"
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T00:38:06Z"
     },
     {
       "class": "EXTRACT",
@@ -320,12 +320,54 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "3582253047",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-04T00:38:27Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f66feb2976",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4730,
+      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+      "updated_at": "2026-11-04T00:36:03Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "fc8f6d728f",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4737,
       "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
       "updated_at": "2026-11-04T00:32:22Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d87c4433ee",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4740,
+      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
+      "updated_at": "2026-11-04T00:37:43Z"
     },
     {
       "class": "CANDIDATE",
@@ -2019,40 +2061,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "3cac21809c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-03T22:29:49Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "6e74215244",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4694,
       "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
       "updated_at": "2026-11-03T23:45:13Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "cd6c402b68",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4732,
-      "title": "D1 parity iteration 4 \u2192 surfaces 0.5.0: hardening (opt-in) + \u00a71b completion \u2014 the parity program closes (#4417)",
-      "updated_at": "2026-11-04T00:29:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2571,6 +2585,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "67a2136902",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T00:36:51Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3211,24 +3239,10 @@
       },
       "head_sha": "33acc01431",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T00:12:21Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "d39d600257",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T00:33:52Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3309,7 +3323,7 @@
       },
       "head_sha": "7476bcecee",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-03T23:55:24Z"
@@ -3855,7 +3869,7 @@
       },
       "head_sha": "a5d56fdac6",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4690,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-03T23:53:40Z"
@@ -3869,24 +3883,10 @@
       },
       "head_sha": "da4dea4119",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4699,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:48:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "in_progress"
-      },
-      "head_sha": "f66feb2976",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4730,
-      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
-      "updated_at": "2026-11-04T00:33:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3900,7 +3900,7 @@
       "mergeable_state": "unstable",
       "number": 4738,
       "title": "Diagram export: E001 cycle state diagram + ELI5",
-      "updated_at": "2026-11-04T00:33:51Z"
+      "updated_at": "2026-11-04T00:35:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

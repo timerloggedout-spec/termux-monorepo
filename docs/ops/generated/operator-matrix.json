@@ -3,9 +3,9 @@
     "open_issues": 531,
     "open_prs": 272,
     "pr_classes": {
-      "CANDIDATE": 121,
-      "EXTRACT": 16,
-      "NEED_EVIDENCE": 135,
+      "CANDIDATE": 127,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 134,
       "SUPERSEDE": 0
     }
   },
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T08:23:31Z",
+  "generated_at": "2026-11-04T08:37:53Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "9a7f0c011f"
+    "sha": "898fb7e46b"
   },
   "prs": [
     {
@@ -236,6 +236,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "67cfe8a9bc",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T08:37:11Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -298,90 +312,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "9026886571",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-04T01:04:18Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a581e066ac",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4694,
-      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
-      "updated_at": "2026-11-04T00:44:00Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f66feb2976",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4730,
-      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
-      "updated_at": "2026-11-04T00:36:03Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "fc8f6d728f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4737,
-      "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
-      "updated_at": "2026-11-04T00:32:22Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d87c4433ee",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4740,
-      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
-      "updated_at": "2026-11-04T00:38:52Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "481fc6c7d7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4742,
-      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
-      "updated_at": "2026-11-04T00:52:14Z"
     },
     {
       "class": "CANDIDATE",
@@ -1151,12 +1081,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "3756975a26",
+      "head_sha": "be6134b486",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T07:36:42Z"
+      "updated_at": "2026-11-04T08:34:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -2081,6 +2011,90 @@
       "number": 4621,
       "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
       "updated_at": "2026-11-03T21:36:33Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9026886571",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-04T01:04:18Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a581e066ac",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4694,
+      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
+      "updated_at": "2026-11-04T00:44:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f66feb2976",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4730,
+      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+      "updated_at": "2026-11-04T00:36:03Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fc8f6d728f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4737,
+      "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
+      "updated_at": "2026-11-04T00:32:22Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d87c4433ee",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4740,
+      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
+      "updated_at": "2026-11-04T00:38:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "481fc6c7d7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4742,
+      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+      "updated_at": "2026-11-04T00:52:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3237,26 +3251,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d039f541b4",
+      "head_sha": "7ecc79194c",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T07:31:50Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "8118f2f409",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T08:21:37Z"
+      "updated_at": "2026-11-04T08:37:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3911,7 +3911,7 @@
       },
       "head_sha": "1e1b0c5398",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
       "updated_at": "2026-11-04T01:06:46Z"
@@ -3953,7 +3953,7 @@
       },
       "head_sha": "dde8f59570",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4795,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:25:49Z"
@@ -3967,7 +3967,7 @@
       },
       "head_sha": "44eaf9846b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4801,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:29:59Z"

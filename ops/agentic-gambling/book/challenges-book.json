@@ -234,10 +234,14 @@
      {
       "ref": "D2 seat relay 2026-11-03 (owner framing + field correction)",
       "note": "house-stake position POS-001 opened on this subject (stake = $200 Vultr house credit, deployed by burn). Field denominator of record corrected: 2,308 participants (2026-11-03 dashboard) vs stale 1,617 in the coordinator prior — context only; no probability is derived or republished in the book (B5)."
+     },
+     {
+      "ref": "D2 exercise run-1 (PRs #4486-#4491/#4531/#4536) + D2 seat close leg 2026-11-03 23:16 PT",
+      "note": "ENTRY PICK EXECUTED: B — Quarantine Browser Clerk (C1·B), owner order 'D2 BUILD' — POS-001's stake deployment (burn) rides this entry's build. Advisory slate scoring (Delphi-shaped axes, beside never merged): raw B 46 post-depth-recon, top of the C1 trio; field denominator 2,308 (2026-11-03 dashboard). Evidence leg only — posterior unchanged, no probability derived (B5)."
      }
     ],
     "posterior": {
-     "n_evidence": 1,
+     "n_evidence": 2,
      "range": null,
      "value": null
     },
@@ -1529,6 +1533,30 @@
      "window": "demo VM from Nov 8 to credit death ~Dec 3 (~25 days)",
      "cost_estimate": "~$19.80 @ 2c-4gb plans-API rate / ~$39.60 @ 4c-8gb",
      "priority": "outranks discretionary burn — a dead demo during judging is a delta-p cliff"
+    }
+   },
+   "entry_pick": {
+    "candidate": "B — Quarantine Browser Clerk",
+    "class": "C1·B",
+    "executed": "2026-11-03 23:16 PT — owner order 'D2 BUILD' (pick executed under the owner's override charter: slate + scoring advisory, never binding)",
+    "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536; depth-recon revised advisory)",
+    "slate_scoring": {
+     "relation": "beside_never_merged — advisory input to this book entry, not a MoneyBall participant-axis score",
+     "axes": "Delphi-shaped (Tech · Presentation · Business · Originality · Buildability · FieldRoom, 0-10 each)",
+     "raw_B": 46,
+     "revision": "raw B 48 at slate -> 46 post-Observatory/depth-recon (FieldRoom 8->6 on the 'Vex' direct-competitor read); top of the C1 trio post-depth-recon",
+     "differentiation": "lookalike-domain page attacking the AGENT = the unoccupied angle; differentiation survives the depth-recon best of the trio",
+     "risk_adjusted_delivered_ranking": "A > C > B > E > F > D (advisory; the owner executed B regardless — override on record)"
+    },
+    "field_denominator": {
+     "participants": 2308,
+     "source": "2026-11-03 official dashboard — supersedes the stale 1,617 (context only; no probability derived or republished, B5)"
+    },
+    "build_clocks": {
+     "T1_core": "<= 2026-11-04 EOD",
+     "signature_moment": "<= 2026-11-05",
+     "landing": "2026-11-07",
+     "wall": "2026-11-08 15:00 PT — POS-001 settles at the wall, on official lablab results"
     }
    }
   }

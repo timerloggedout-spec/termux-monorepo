@@ -88,7 +88,6 @@ flowchart TB
   monikers --> PL_quota
   monikers --> PL_scoring
   monikers --> PL_web
-  naminggate --> PL_entries
   naminggate --> PL_moneyball
   naminggate --> PL_scoring
   naminggate --> PL_web

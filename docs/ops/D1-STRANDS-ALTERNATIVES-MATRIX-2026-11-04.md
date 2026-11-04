@@ -77,6 +77,8 @@ A = AWS-proof · B = claim-shape/descope · C = owner-gated AWS.
 | A4 | AWS Activate credits | n/a (post-account) | application, owner hand (gate G3) | None at signup; usage offset only after an account exists | Class C listing — not a door; possible subsidy after A1; eligibility NOT_ESTABLISHED |
 | A5 | Promo / credit codes at signup | n/a | none | None: redemption requires an existing account (AWS Promotional Credit Terms, upd. 2026-09-24) | NO row — ruled out entirely (not a class); post-account usage only |
 | A6 | Prepaid network card as payment method | card-class | owner decision only (gate G4) | Satisfies a payment step where one exists (AWS re:Post accepted payment methods, upd. 2026-09-30) | Class C listing ONLY, never fleet-attempted (Desk stamp: CLOSED, never routed) — card-class under the fleet no-card rule; gift cards + virtual credit cards are NOT accepted by AWS at all |
+| A7 | PartyRock (Bedrock playground apps) | none | none | None for the claim: Bedrock-executed but no hosting of the shipped agent (Recon return 2026-11-04) | Class A — FAILS (cannot execute the shipped agent; auxiliary only) |
+| A8 | AWS Studio Lab | n/a | n/a | None — new signups closed 2026-07-30 (Recon return 2026-11-04) | DEAD — ruled out |
 
 ## Matrix B — free-provider Strands backends (non-AWS)
 
@@ -89,6 +91,27 @@ Recon (Recon lane) re-scoped to transport value 2026-11-04.
 | # | Route | Card gate | Owner gate | Evidence producible | Verdict / status |
 |---|-------|-----------|------------|---------------------|------------------|
 | B1 | Gemini model via the fleet Gemini route (Strands native provider) | none (fleet API key provisioned) | none | Honest receipt for a Gemini-served run; cannot satisfy the Bedrock standard | OUT for the claim. Built + ran as #4534 (DEFECT for the AWS claim). Transport/dev-test use only |
+
+### Transport inventory (Recon return, 2026-11-04 — dev-test loops and non-claim traffic only)
+
+Receipt honesty for all transport rows: receipts can name {provider
+verbatim · model verbatim · tools · run · commit · sdk}; region =
+none (non-AWS APIs expose no region — stamp the endpoint, not a
+region); execution class is never live-production for claim purposes.
+
+| # | Provider | Free terms / card gate | Strands path | Fleet state |
+|---|----------|------------------------|--------------|-------------|
+| T1 | Gemini (= B1 route) | free tier volatile (~20 RPD worst case on 2.5-flash lines; Flash-Lite classes larger); no card | native GeminiModel | PROVISIONED (vault key + fleet Actions secret; #4534 live proof) — transport rank 1, already wired |
+| T2 | Groq | free plan permanent, no card ("developer tier is free, requires no credit card... rate-limited, not time-limited"); gpt-oss-120b 30 RPM / 1,000 RPD / 200K TPD | OpenAI-compatible endpoint via OpenAIModel/LiteLLM | key provisioned = NOT_ESTABLISHED (registry = metadata only) |
+| T3 | OpenRouter | :free models, no card: 20 RPM · 50 RPD shared (1,000 RPD only after a $10 purchase = payment, so the base tier is the free fact) | OpenAI-compatible/LiteLLM | NOT_ESTABLISHED |
+| T4 | GitHub Models | no card, rides the existing GitHub identity: low tier 15 RPM/150 RPD · high tier 10/50; ToS = experimentation-only (fits dev-test exactly, bars production transport) | OpenAI-compatible | rides the fleet PAT; models:read scope on the helper token = NOT_ESTABLISHED |
+| T5 | Mistral | free (Experiment) tier; exact current limits NOT_ESTABLISHED this pass | native MistralAIModel | PROVISIONED (fleet key verified live, 55 models, 2026-11-02 record) |
+| T6 | SambaNova | free tier exists ONLY while no payment method is linked (20 RPM/20 RPD, test-scale); one source flags payment-details-upfront = CONTESTED, treat as fragile | OpenAI-compatible/LiteLLM | NOT_ESTABLISHED |
+
+Closed / ineligible (transport): Cerebras = CLOSED CLASS — free
+tier converted Oct 2026 to a card-required trial ($5 credits,
+30-day expiry), stamped card-gated, out. Anthropic-direct /
+OpenAI-direct = no free API tier exists, transport-ineligible.
 
 ## Owner-gated opportunities (Class C — fully defined per Main spec)
 
@@ -171,3 +194,12 @@ run + receipt margin.
   evidence basis; loss only on owner-picked descope); owner gates
   G1–G5 redefined to the full field set {gate type · exact action ·
   card/cost · unlock · class · latest time · fallback}.
+- 2026-11-04 05:30 PT — Recon free-provider return folded in
+  (transport only, per re-scope): transport inventory T1–T6
+  (Gemini + Mistral provisioned; Groq/OpenRouter/GitHub Models/
+  SambaNova with terms + NOT_ESTABLISHED fleet states), Cerebras
+  stamped CLOSED CLASS (card-required trial since Oct 2026),
+  Anthropic/OpenAI-direct ineligible (no free API tier), transport
+  receipt-honesty rules (region = none, stamp endpoint). AWS-side:
+  A7 PartyRock (Class A fails — no agent hosting), A8 Studio Lab
+  (dead — signups closed 2026-07-30).

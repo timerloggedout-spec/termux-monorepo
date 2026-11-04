@@ -32,7 +32,7 @@
 <section aria-labelledby="task-attribution" id="task-attribution">
 <div class="head"><h2 id="task-attribution">Task attribution tree</h2><span class="note" id="task-tree-summary">Waiting for task projection…</span></div>
 <p class="muted">Fold the hierarchy by provider → model (verbatim) → role → participant → task. Every task carries its own usage evidence and quota-pool join. Exact consumption is summed only within matching units; activity-proxy remains separate; missing joins stay NOT_ESTABLISHED.</p>
-<div class="toolbar"><input id="task-search" type="search" placeholder="Search provider, model, role, participant, task, dispatch, pool"><select id="task-status" aria-label="Filter task usage status"><option value="">All usage states</option><option value="established">Exact usage established</option><option value="activity-only">Activity only</option><option value="no-usage-surface">No usage surface</option><option value="waived">Waived</option><option value="fault">Fault</option><option value="pending">Pending</option><option value="NOT_ESTABLISHED">Not established</option></select></div>
+<div class="toolbar"><input id="task-search" type="search" placeholder="Search provider, model, role, participant, task, dispatch, pool"><select id="task-status" aria-label="Filter task usage status"><option value="">All usage states</option><option value="established">Exact usage established</option><option value="activity-only">Activity only</option><option value="no-usage-surface">No usage surface</option><option value="waived">Waived</option><option value="fault">Fault</option><option value="pending">Pending</option><option value="NOT_ESTABLISHED">Not established</option></select><button type="button" class="button" id="task-expand-all">Expand all</button><button type="button" class="button" id="task-collapse-all">Collapse all</button></div>
 <div id="task-tree" class="task-tree"><div class="card empty">Task projection is published by the quota usage-series refresh. Existing feeds remain readable while the new projection is pending.</div></div>
 </section>
 <footer>Usage Graphs · pack: ops/quota/usage-series.json (schema quota.usage-series/v1), built by scripts/quota_usage_series.py from the quota-usage pack, desk-feed usage stamps and the allocation plan · public readings snapshots carry no usage values by design (status-only) · plan target flow is context, never plotted as usage</footer>
@@ -153,6 +153,8 @@ function renderTaskTree(){
   host.innerHTML=(providerHtml+zeroHtml)||'<div class="card empty">No task branches match this filter. Clear the search or usage-state filter.</div>';
 }
 $('task-search').addEventListener('input',renderTaskTree);$('task-status').addEventListener('change',renderTaskTree);
+$('task-expand-all').addEventListener('click',()=>document.querySelectorAll('#task-tree details').forEach(d=>{d.open=true}));
+$('task-collapse-all').addEventListener('click',()=>document.querySelectorAll('#task-tree details').forEach(d=>{d.open=false}));
 async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
 async function load(){
   const bust=Date.now();

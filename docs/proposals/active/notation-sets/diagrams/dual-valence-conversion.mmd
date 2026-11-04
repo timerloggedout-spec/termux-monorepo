@@ -1,0 +1,22 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: docs/proposals/active/notation-sets/
+%%   DUAL-VALENCE.md (treatment) — invariants govern there.
+%% Export: 2026-11-03. Fidelity: the pair (both readings held
+%%   at once) is lossless; the conversion arrow is lossy —
+%%   id_E object part rides in the label; ker kappa named in
+%%   the note; frame index dropped (house frame throughout).
+%% ============================================================
+flowchart LR
+    subgraph PAIR["E^{T∧O} — one entity, two readings"]
+        ET["E^T — threat reading"]
+        EO["E^O — opportunity reading"]
+    end
+    ET -.->|"κ_{T→O} : object part = id_E"| EO
+    subgraph ASSIM["κ_assim — assimilation pipeline (κ stages compose by ∘)"]
+        S1["OSINT — learn"] --> S2["outreach — reach out"]
+    end
+    PAIR -->|"κ_assim applies"| OUT["E^{O|T} — O operative, T retained"]
+    ASSIM -.-> OUT
+    NOTE["record must name ker κ: what the threat reading held that the opportunity reading drops"]
+    OUT --- NOTE

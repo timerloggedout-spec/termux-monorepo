@@ -27,6 +27,7 @@ flowchart TB
     quota_2["quota-graphs.html"]
     quota_3["quota-swarm.html"]
     quota_4["free-tier-value.html"]
+    quota_4["quota-event-audits.html"]
   end
   subgraph PL_scoring["Scoring & Method"]
     scoring_0["oracle.html"]
@@ -101,13 +102,16 @@ flowchart TB
 
 ## Surfaces
 
+Basis: the 30 canon carriers + named non-carrier served pages + the §12 Web3 set = 36 surfaces + 2 classified classes (classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+
 | surface | home | plane | levels rendered | draws from substrate | repo | code layers | release layer |
 |---|---|---|---|---|---|---|---|
 | quota.html | tribute | Providers & Quota | domain · structure | Surface feeds · Governor stream · AGENT-MONIKERS SSOT | termux-monorepo | page · quota feeds · governor emitter · tests | quota pack stamps · governor readings carry their own as-of · site deploy |
 | quota-usage.html | tribute | Providers & Quota | domain · structure | Surface feeds · Governor stream | termux-monorepo | page · usage feed (lane-events) · tests | series snapshots append-only · site deploy |
 | quota-graphs.html | tribute | Providers & Quota | domain · method | Surface feeds · Governor stream | termux-monorepo | page · series feeds (jsonl) · tests | series snapshots append-only · site deploy |
 | quota-swarm.html | tribute | Providers & Quota | structure | Surface feeds · QUE feeds | termux-monorepo | page · QUE/swarm feeds · tests | site deploy (Pages per merge) · version-manifest stamp · ∅ per-surface release line |
-| admin.html | tribute | Web & Presentation | structure | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · status/admin feeds · systems inventory · tests | status.json gen stamps · P-phase decision log in-page · site deploy |
+| quota-event-audits.html | tribute | Providers & Quota | domain · structure | Surface feeds | termux-monorepo | page · audits feed · tests | site deploy (Pages per merge) · version-manifest stamp · ∅ per-surface release line |
+| admin.html | tribute Pages (inert scaffold) + admin-desk project (operative, gated) | Web & Presentation | structure | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · status/admin feeds · systems inventory · tests | status.json gen stamps · P-phase decision log in-page · site deploy |
 | admin-graph.html | tribute | Web & Presentation | structure | Surface feeds | termux-monorepo | page · admin feeds · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | oracle.html | tribute | Scoring & Method | method · program | Surface feeds | termux-monorepo + delphi-oracle | page · oracle feed · upstream engine repo · tests | oracle feed stamps · engine-repo release line NOT_ESTABLISHED |
 | 3l0.html | tribute | Scoring & Method | method | Surface feeds | termux-monorepo | page · 3L0 session feeds · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
@@ -140,7 +144,6 @@ flowchart TB
 | WagerDome — Settlement | moneyball repo | Wagertome · WagerDome — Web3 | program · structure | Book ledger · Wallet ledger | moneyball | site pages · settlement views · replay.py · book+wallet ledgers | moneyball Pages deploy · replay reports @main · settlement stamps in-book · ∅ tagged releases (NOT_ESTABLISHED) |
 | Tribute queues (classified Web3) | tribute | Wagertome · WagerDome — Web3 | structure | Surface feeds | termux-monorepo | queue surfaces · tribute gate config · status ledger · gate tests | gate config of record · status-ledger backfill stamps · lane PAUSED (∅ deploys by ruling) |
 | Validation surfaces (classified Web3) | tribute | Scoring & Method | method · structure | Surface feeds | termux-monorepo | gate/status surfaces · validation tests | gate test suite of record · ∅ release line |
-
 ## Shared substrate
 
 | element | what it is | consumers (count) |

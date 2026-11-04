@@ -51,6 +51,6 @@ def test_map_invariants(tmp_path):
     res = _sim(tmp_path)
     assert res["planes"] == 8
     assert res["substrateUsed"] == 6 and res["substrateTotal"] == 7  # 6 draws + naming gate (provenance, not a draw)
-    assert res["surfaces"] >= 37
+    assert res["surfaces"] >= 38  # 36 surfaces + 2 classified classes
     assert res["deskQue"] is True
     assert res["poolsBoth"] >= 2

@@ -200,7 +200,11 @@ jobs:
           # file in them that the just-published artifact does not carry.
           # Everything else in the landing repo (marketing root,
           # previews/, project sites) is hand-owned and untouchable.
-          git clone --depth 1 "https://x-access-token:${PAT_TOKEN}@github.com/timerloggedout-spec/timerloggedout-spec.github.io.git" _landing
+          # Full clone (a shallow clone cannot rebase/reset onto a moved
+          # tip); the commit is replayed onto the freshest landing main
+          # via fetch + reset --soft so concurrent deploy runs cannot
+          # reject it as non-fast-forward.
+          git clone "https://x-access-token:${PAT_TOKEN}@github.com/timerloggedout-spec/timerloggedout-spec.github.io.git" _landing
           removed=0
           for sub in tribute help-wanted matrix; do
             if [ -d "_landing/$sub" ]; then
@@ -219,15 +223,13 @@ jobs:
           done
           echo "orphans removed: $removed"
           if [ "$removed" -gt 0 ]; then
-            git -C _landing -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" commit -q -m "deploy-prune: remove orphaned files absent from the dashboard artifact (${{ github.sha }})"
-            # Concurrent deploy runs push to the same branch; rebase-retry
-            # instead of failing the deploy on a non-fast-forward.
             pushed=0
             for attempt in 1 2 3; do
-              if git -C _landing push origin main; then pushed=1; break; fi
-              echo "push attempt $attempt rejected; rebasing onto landing main"
               git -C _landing fetch origin main
-              git -C _landing -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" rebase origin/main || git -C _landing rebase --abort
+              git -C _landing reset -q --soft origin/main
+              git -C _landing -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" commit -q -m "deploy-prune: remove orphaned files absent from the dashboard artifact (${{ github.sha }})" || { echo "nothing staged after reset (already pruned upstream)"; pushed=1; break; }
+              if git -C _landing push origin main; then pushed=1; break; fi
+              echo "push attempt $attempt rejected; replaying onto the fresh tip"
             done
             if [ "$pushed" != "1" ]; then
               echo "::error::prune commit could not be pushed after 3 attempts"

@@ -14,7 +14,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 - constraints: containment-first required ∧ teams 1–6 ∧ submit ON lablab ∀ judging
 - gates: D2-NOCARD open (no-card path only; card step ⇒ halt)
 - open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ owner pick ⇒ repo (new repo per entry) ∧ team formation
-- submission: none; demo_url = NOT_ESTABLISHED; repo: https://github.com/timerloggedout-spec/quarantine-browser-clerk EXISTS (verified firsthand PAT-API: id 1445293810, public, created 2026-11-04T07:17:44Z) but DORMANT ∧ unbound — pick retracted (above), ∅ build against it, ∅ AppID created. ∅ promo action on repo/pick beats.
+- submission: none; demo/submission beats = VOID (rescinded sequence), none awaited; repo: https://github.com/timerloggedout-spec/quarantine-browser-clerk EXISTS (verified firsthand PAT-API: id 1445293810, public, created 2026-11-04T07:17:44Z) but = dormant seed from a countermanded order (seed README only, ∅ build) — ¬ a build repo. Build NOT started; ∅ AppID created. ∅ promo action on repo/pick beats; ∅ further beats recorded from that sequence.
 - surfaces watched by this lane: lablab event page ∧ lablab Discord ∧ project gallery @ publish (field 1617 participants @2026-10-28; projects count = OPEN TASK @ gallery publish)
 
 ## 2. Launch-week beats
@@ -26,10 +26,10 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 | ANNOUNCE | kickoff 2026-11-03 | X-style short post | drafted §3.1 — OUT (WAF target struck 2026-11-01) |
 | BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 — OUT (WAF target struck) |
 | BUILD-OPEN-2 | mid-build ≈2026-11-06 | long post / Discord | drafted §3.3 — OUT (WAF target struck) |
-| DEMO-TEASE | demo live only | short post | drafted §3.5 — OUT (WAF target struck); future demo beat awaits new pick |
-| SUBMISSION | Nov7-landing signal only | short post | drafted §3.4 — template only, blocked: submission = none ∧ pick = ∅; BUFFER RULE 2026-11-02 (D2 seat): landing target = Sat 2026-11-07 (packet ready); Nov 8 = mechanics/buffer only; beat keys off Nov7-landing signal, ¬wall |
+| DEMO-TEASE | — | short post | VOID (rescinded sequence 2026-11-03), none awaited; §3.5 draft retained as copy only |
+| SUBMISSION | — | short post | VOID as beat (rescinded sequence), none awaited; §3.4 template retained as draft only. (BUFFER RULE 2026-11-02 noted for any future owner-ordered build: landing = landing-day, wall = buffer only.) |
 
-⛔ Δ 2026-11-03 23:18 PT: pick/build beats RETRACTED (see §1) — promo = §3.0-facts-only; ∀ project beats HOLD until owner pick. (Superseded same-day Δ: "PICK LANDED ∧ build started" — VOID.) Earlier Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat (RE-KEY per Desk note via D2 seat: holds keyed "until owner pick" — freeze ¬enacted ∧ ¬pending; WAF superseded #3081, target ∅); only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until owner pick ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
+⛔ CONSOLIDATED CORRECTION 2026-11-03 (countermand via main 23:18 PT; stamps #4781 pick + #4784 repo_url both superseded): corrected state = {pick = owner-held ⛏️ · build NOT started · repo exists-dormant (seed only, ∅ build) · demo/submission beats = VOID, none awaited}. Promo = §3.0-facts-only; ∀ project beats HOLD until owner pick. (Superseded same-day Δ: "PICK LANDED ∧ build started" — VOID.) Earlier Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat (RE-KEY per Desk note via D2 seat: holds keyed "until owner pick" — freeze ¬enacted ∧ ¬pending; WAF superseded #3081, target ∅); only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until owner pick ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
 
 ## 3. Promo copy (verified vs §1; placeholders ¬ invented)
 

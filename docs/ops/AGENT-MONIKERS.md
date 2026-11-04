@@ -1642,6 +1642,27 @@ actor-duty sense still reads steward).
 custody has its own failure modes (ephemeral scratch vs
 durable custody), hence its own plane name.
 
+
+### G.2 Association addendum — match participants · DoE version pool (2026-11-04)
+
+Owner-stated associations (via main, 2026-11-04 04:49 PT),
+folded as candidates at this seat's verification:
+
+| subject | association candidate | evidence |
+|---|---|---|
+| Desk | **match participant** | owner statement; Desk's QUE operator seat is a system actor in the match economy (§10: ∀ system participants eligible) |
+| QUE | **match participant** | owner statement; QUE admits/stamps the work matches are made of (admission receipts = participation record) |
+| Swarm | **match participant** | owner statement; Swarm = the build surface whose runs are the played matches' substance |
+| DoE version pool | **admitted** (pool occupant) | owner statement; DoE pool oversight states of record (Plane-6: PROVISIONED → PARTICIPATION_ELIGIBLE → ACTIVE fold over the ledger) — the version pool reads as that pool's version-plane segment |
+
+Reading: `participant` (canonical, §C) extends by owner
+statement to named system actors — Desk · QUE · Swarm
+participate as systems, not as seats filling a role. The
+association is recorded at the participant class; ∅ new
+classes coined. DoE version pool admission = pool-plane
+fact, recorded here for the map; pool mechanics stay with
+their custodians (DoE · Speculators-build).
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

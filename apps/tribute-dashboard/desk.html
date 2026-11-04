@@ -92,6 +92,18 @@
 <div id="dqrows"></div>
 </section>
 <section>
+<h2>QUE \u2014 queue &amp; governor</h2>
+<p class="dim">Stage 0 of the desk flow: the run-queue and its governors, as the collectors stamp them. Two planes, each labeled by its source system; the watchdog Dispatch queue above is retained unchanged and is not this data.</p>
+<div class="card"><p><strong>Flow:</strong> Measurement plane (Swarm QUE collector) \u2192 QUE domain (this desk) \u2192 Governor plane (admission + flow state, sources named per block). Read-only projection \u2014 the section routes attention, it does not dispatch.</p></div>
+<h3>Measurement \u2014 run queue by tier <span class="dim">(source: Swarm QUE collector \u00b7 que.queue-by-tier/v1)</span></h3>
+<div class="card"><div id="quechart"></div><p class="dim" id="questamp"></p></div>
+<div id="quetiers"></div>
+<div id="quewedged"></div>
+<h3>Governor \u2014 admission &amp; flow state</h3>
+<div id="quegov"></div>
+<div id="quewin"></div>
+</section>
+<section>
 <h2>Provenance</h2>
 <p id="prov" class="dim"></p>
 </section>
@@ -306,6 +318,78 @@ fetch("./data/dispatch-state-feed.json").then(r=>{ if(!r.ok) throw new Error("fe
       "<td>"+dqClaim(d)+"</td><td class='"+dqAgeClass(d)+"'>"+age+"</td><td>"+tier+"</td><td>"+thr+"</td><td>"+dqStalls(d)+"</td></tr>";
     }).join("")+"</table>";
 }).catch(e=>{ document.getElementById("dqstamp").textContent="Dispatch queue unavailable: "+e.message; });
+</script>
+<script>
+"use strict";
+/* QUE section (Web Design lane, leg 3 of the desk upgrade).
+   Read-only projections of the QUE collector feeds; every block is
+   labeled by its source system and renders its feed's own state \u2014
+   a missing mirror reads as not-yet-published, never as zero. */
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const get=async u=>{ const r=await fetch(u,{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); };
+  const stamp=(el,d)=>{ if(!el) return; const st=(window.CK&&window.CK.stampState)? window.CK.stampState(d.generated_at, Date.now()) : "unknown";
+    el.textContent="Feed generated "+(d.generated_at||"unknown")+(st==="STALE"?" \u00b7 STALE":"")+" \u00b7 schema "+(d.schema||""); };
+  async function tiers(){
+    try{
+      const d=await get("./data/queue-by-tier.json");
+      const rows=[];
+      for(const k of Object.keys(d.tiers||{}).sort()){
+        const tr=d.tiers[k];
+        rows.push({label:"Tier "+tr.tier+" queued", value:tr.queued||0});
+        rows.push({label:"Tier "+tr.tier+" in progress", value:tr.in_progress||0});
+      }
+      $("quechart").innerHTML=(window.CK&&window.CK.bars)? window.CK.bars(rows) : "";
+      stamp($("questamp"), d);
+      let h='<table><thead><tr><th>Tier</th><th>Queued</th><th>In progress</th><th>Oldest queued</th><th>Queued workflows</th></tr></thead><tbody>';
+      for(const k of Object.keys(d.tiers||{}).sort()){
+        const tr=d.tiers[k];
+        const wf=Object.entries(tr.by_workflow_queued||{}).map(([n,c])=>esc(n)+" \u00d7"+c).join(", ")||"\u2014";
+        h+="<tr><td>"+esc(tr.tier)+"</td><td>"+esc(tr.queued)+"</td><td>"+esc(tr.in_progress)+"</td><td>"+esc(tr.oldest_queued_at||"\u2014")+"</td><td>"+wf+"</td></tr>";
+      }
+      h+="</tbody></table>";
+      if(d.totals) h+='<p class="dim">Totals: '+esc(d.totals.queued)+" queued \u00b7 "+esc(d.totals.in_progress)+" in progress.</p>";
+      $("quetiers").innerHTML=h;
+      const w=d.wedged_ancient||[];
+      $("quewedged").innerHTML= w.length
+        ? '<p><strong>Wedged ancients</strong> <span class="dim">(queued &gt;7d; excluded from the counts above'+(typeof d.wedged_excluded_from_counts==="number"? ": "+esc(d.wedged_excluded_from_counts)+" excluded":"")+')</span></p><ul>'+w.map(x=>'<li><a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.workflow)+"</a> \u00b7 queued since "+esc(x.created_at)+"</li>").join("")+"</ul>"
+        : '<p class="dim">No wedged ancients in this stamp.</p>';
+    }catch(e){
+      $("quechart").innerHTML='<p class="muted">Measurement feed not yet published \u2014 nothing shown rather than anything guessed.</p>';
+    }
+  }
+  async function governor(){
+    try{
+      const d=await get("./data/que-governor.json");
+      const a=d.admission||{}, th=a.thresholds||{};
+      let h='<div class="card"><p><strong>Admission census</strong> <span class="dim">(source: '+esc(a.source||"swarm-admission stamps")+'</span></p>';
+      h+="<p>Deferral thresholds: tier 4 defers at "+esc(th.tier4_defers_at_queued)+" queued \u00b7 tier 3 at "+esc(th.tier3_defers_at_queued)+" queued \u00b7 tiers "+esc((th.tiers_never_deferred||[]).join(", "))+" never deferred.</p>";
+      h+="<p>Deferral-stamped issues: "+esc(a.deferral_stamped_issues_24h)+" in 24h \u00b7 "+esc(a.deferral_stamped_open)+" open.</p>";
+      const f=d.flow_governor||{};
+      h+='<p><strong>Flow governor</strong> <span class="dim">(source: Cadence T1 emitter batches)</span>: '+esc(f.state||"")+"</p>";
+      if(f.state==="NOT_ESTABLISHED" && f.gap) h+='<p class="dim">'+esc(f.gap)+"</p>";
+      if(f.by_kind) h+="<p>Event kinds: "+Object.entries(f.by_kind).map(([k,v])=>esc(k)+" "+esc(v)).join(" \u00b7 ")+"</p>";
+      if(f.latest_ts) h+='<p class="dim">Latest governor event: '+esc(f.latest_ts)+"</p>";
+      h+='<p class="dim">Feed generated '+esc(d.generated_at||"unknown")+" \u00b7 schema "+esc(d.schema||"")+"</p></div>";
+      $("quegov").innerHTML=h;
+    }catch(e){
+      $("quegov").innerHTML='<p class="muted">Governor feed mirror not yet published \u2014 the canonical feed lives at ops/que/feeds/governor.json; nothing shown rather than anything guessed.</p>';
+    }
+  }
+  async function windows(){
+    try{
+      const d=await get("./data/que-priority-windows.json");
+      const w=d.windows||[];
+      $("quewin").innerHTML= w.length
+        ? '<div class="card"><p><strong>Priority windows</strong></p><ul>'+w.map(x=>"<li>"+esc(JSON.stringify(x))+"</li>").join("")+"</ul></div>"
+        : '<div class="card"><p><strong>Priority windows:</strong> none in force.</p><p class="dim">'+esc(d.source||"")+"</p></div>";
+    }catch(e){
+      $("quewin").innerHTML='<p class="muted">Priority-windows mirror not yet published.</p>';
+    }
+  }
+  tiers(); governor(); windows();
+})();
 </script>
 </body>
 </html>

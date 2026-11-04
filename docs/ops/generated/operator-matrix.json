@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 271,
+    "open_prs": 272,
     "pr_classes": {
-      "CANDIDATE": 125,
-      "EXTRACT": 11,
+      "CANDIDATE": 127,
+      "EXTRACT": 10,
       "NEED_EVIDENCE": 135,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 269,
+      "prs": 270,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T07:26:27Z",
+  "generated_at": "2026-11-04T08:22:16Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "5198398d9b"
+    "sha": "2d59995723"
   },
   "prs": [
     {
@@ -228,20 +228,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "173513e773",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-04T07:25:31Z"
     },
     {
       "class": "EXTRACT",
@@ -1081,12 +1067,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "3756975a26",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T07:36:42Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173513e773",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-04T07:26:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -2567,7 +2581,7 @@
       },
       "head_sha": "2e730b0cf2",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T07:22:00Z"
@@ -2585,20 +2599,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "10aae80fb3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T07:24:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3237,26 +3237,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "4639f75efe",
+      "head_sha": "d039f541b4",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T07:25:52Z"
+      "updated_at": "2026-11-04T07:31:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "7643f13ed8",
+      "head_sha": "8118f2f409",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T07:25:12Z"
+      "updated_at": "2026-11-04T08:21:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3337,7 +3337,7 @@
       },
       "head_sha": "03e37cad99",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-04T02:01:34Z"
@@ -3813,7 +3813,7 @@
       },
       "head_sha": "32205eb9d3",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T07:22:14Z"
@@ -3925,7 +3925,7 @@
       },
       "head_sha": "ac13ba9cb4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4780,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:19:00Z"
@@ -3939,7 +3939,7 @@
       },
       "head_sha": "ffed948d07",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 4790,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:21:15Z"
@@ -3957,6 +3957,20 @@
       "number": 4795,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:25:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "44eaf9846b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4801,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-04T07:29:59Z"
     }
   ],
   "schema": "operator-matrix/v1",

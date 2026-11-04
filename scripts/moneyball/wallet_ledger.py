@@ -60,7 +60,14 @@ def verify(events):
         if ev.get("balance_after") != balances[wid]:
             errs.append(f"seq {i}: balance_after {ev.get('balance_after')} != fold {balances[wid]} for {wid}")
         if balances[wid] < 0:
-            errs.append(f"seq {i}: negative balance for {wid}")
+            # Plane-6 clause (e): a negative balance driven by an
+            # ante_drawn event that CITES its permitting rule
+            # (ref.rule) is a valid obligation form, not an error.
+            # An ante_drawn without the citation stays an error here
+            # and reads INVALID in ante_review (it does not settle).
+            if not (ev.get("type") == "ante_drawn"
+                    and (ev.get("ref") or {}).get("rule")):
+                errs.append(f"seq {i}: negative balance for {wid}")
         if ev.get("type") == "faucet_issued" and (ev.get("ref") or {}).get("kind") == "genesis_ruling":
             genesis[wid] = ev["delta"]
     if genesis:
@@ -68,6 +75,41 @@ def verify(events):
         if len(amounts) != 1:
             errs.append(f"genesis NOT equal across wallets: {genesis}")
     return errs, balances, genesis
+
+def ante_review(events):
+    """Plane-6 fold validity for ante events (DoE amendment
+    2026-11-04): flags, never append-rejection — history cannot be
+    refused. Returns [{seq, clause, reason}] for draws that read
+    INVALID (missing state_vintage_seq; missing ref.rule on a
+    negative draw) and clause (f) duplicates (an unclosed ante_drawn
+    already open for the same ref.task x wallet_id)."""
+    flags, open_draws = [], {}
+    receipts = {}
+    for ev in events:
+        if ev.get("type") == "ante_drawn":
+            ref = ev.get("ref") or {}
+            if ev.get("state_vintage_seq") is None:
+                flags.append({"seq": ev["seq"], "clause": "(a)",
+                              "reason": "missing state_vintage_seq"})
+            if ev.get("delta", 0) < 0 and not ref.get("rule"):
+                flags.append({"seq": ev["seq"], "clause": "(e)",
+                              "reason": "negative draw without "
+                                        "ref.rule citation"})
+            key = (ref.get("task"), ev.get("wallet_id"))
+            if key in open_draws:
+                flags.append({"seq": ev["seq"], "clause": "(f)",
+                              "reason": f"second unclosed ante_drawn "
+                                        f"for task {key[0]} on "
+                                        f"{key[1]} (first at seq "
+                                        f"{open_draws[key]})"})
+            open_draws[key] = ev["seq"]
+            receipts[ev["receipt"]["receipt_id"]] = key
+        elif ev.get("type") == "ante_settled":
+            draw_ref = (ev.get("ref") or {}).get("draw")
+            if draw_ref in receipts:
+                open_draws.pop(receipts[draw_ref], None)
+    return flags
+
 
 FALLBACK_POOL = "pool:other:pooled-buckets"
 SWEEP_REF = {"kind": "sweep",
@@ -251,6 +293,13 @@ def main():
         print("WALLET LEDGER VERIFY FAILED:"); [print(" -", e) for e in errs]; sys.exit(1)
     print(f"wallet-ledger ok: {len(events)} events, {len(balances)} wallets, "
           f"genesis equal x{len(genesis)} @ {next(iter(set(genesis.values())), 0)} soft_quota_token, chain intact")
+    flags = ante_review(events)
+    if flags:
+        print(f"ante.review: {len(flags)} INVALID-draw flag(s) "
+              f"(fold validity; such draws do not settle):")
+        for f in flags:
+            print(f" - seq {f['seq']} clause {f['clause']}: "
+                  f"{f['reason']}")
 
 if __name__ == "__main__":
     main()

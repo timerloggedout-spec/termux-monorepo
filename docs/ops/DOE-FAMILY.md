@@ -1100,6 +1100,14 @@ version and compared continuously until culling retires a version.
   name; numbering append-only; iterations compose into
   cycles, cycles into the epoch (this epoch: D1 freeze
   2026-11-04 23:59 PT, scoring tail 2026-11-18).
+  Generation likewise defined (owner addition 2): the
+  evolve unit {population - evaluate - cull - next
+  generation} inside an iteration; cull = recorded act
+  with wallet routing to the pooled bucket (PR #3748);
+  epoch instance = chat-intent v1->v2 (cull leg open);
+  a complete generational loop on a live campaign
+  population is NOT_ESTABLISHED this epoch (0 culls in
+  the 717-event wallet ledger of record).
 
 ## Campaign layout
 

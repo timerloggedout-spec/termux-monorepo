@@ -804,6 +804,223 @@ the legacy unit until that transition lands (the fold
 depends on it). New public surfaces use booktally from
 issuance; no new surface extends the legacy string.
 
+## MoneyBall vocabulary issuance — full naming (2026-11-04)
+
+**Commission (owner via Web3 seat 779d33ad → naming seat
+acde0e2c, 2026-11-04):** FULL naming of the MoneyBall/Web3
+vocabulary — every category, not the priming labels the
+commission arrived under (Bookie · Ledger · Wager ·
+Wallet). Machinery: this Registry flow (coinage →
+collision check → issuance → record) + Linguist Grimoire
+round-trip ∀ candidates. Trigger: the `soft_quota_token`
+collision with the fleet quota plane; the replacement
+unit name = first deliverable. Rails: legacy strings are
+of record until an issued replacement lands by versioned
+transition through the custodians (MoneyBall feed ·
+Speculators WALLETS/ledger) via the Web3 gate; ∅
+unilateral renames, ∅ ledger/history rewrites; paper/test
+only — real-money is a separate owner gate, outside this
+naming scope.
+
+**First deliverable — ADOPTED, not re-coined:** the unit
+issuance above (`booktally`, PR #4825 merged
+`6a366cb61300`) is this commission's unit deliverable.
+Everything below completes the remaining categories
+against it. Dispositions: **ISSUED** (canonical in
+MoneyBall vocabulary) · **RESERVED** · **NOT ISSUED**
+(excluded or replaced, reason named). Confirming a term
+of record as ISSUED means it passed the same screens a
+coinage faces; ∅ term below was renamed for novelty —
+a gratuitous rename would mint a parallel vocabulary,
+the defect class this flow exists to prevent.
+
+### ① Actors
+
+| Term | Disposition | Definition / ker |
+|---|---|---|
+| house | **ISSUED** (role word) | The parimutuel operator side: the MoneyBall operating seat + its custodians. Takes ∅ position, sets ∅ odds, rake ∅; never a counterparty in any record. Generic role word, not a brand |
+| speculator | **ISSUED** (record layer) | Record class of record (wallet class `speculator`; the Speculators implementation, `scripts/speculators/`). The collapse registry's listing crosswalk speculator → gambler stands at the listing layer only, ker as recorded there; classes never merge at record level (moneyball DESIGN §4.1) |
+| gambler | **ISSUED** | Canonical participant class of record (charter; collapse registry Cluster S) |
+| participant | **ISSUED** | Canonical generic (collapse registry Cluster P; the wallet invariant quantifies over participants) |
+| card-holder | **NOT ISSUED → pool member** | `cardholder` is payment-card vocabulary (real-money plane, screen ⑧) and the object is wrong: a trading card is a projection, held by no one — what is held is shares in a card pool. **ISSUED replacement: `pool member`** — the DESIGN §3.1 word of record (members hold shares; 45 in-fleet hits). Ker: DESIGN §10's eligibility prose sense maps to pool member. Coinages considered: `cardhand` DEAD on sense (reads as a playing-card hand across the web/patent corpus) · `cardkeeper` cleared marks but has ∅ record basis — the record's own word wins |
+| team | **ISSUED** | DESIGN §11②: a team is requestable for a % fee per agent contract (`team contract` = that form) |
+| requester | **ISSUED** | DESIGN §11②④: the wallet that pays the team fee / places a discounted custom request. Distinct from team (the requested side) and pool member (the share-holding side) |
+| bookie / bookmaker | **RESERVED** | Reaffirmed from the collapse registry: canonical `bookmaker`, class ABSENT (∅ odds-setting role exists; v1 pricing is parimutuel). ∅ issuance; a listing surface must not imply an implemented bookie |
+
+### ② Records — the ledger split
+
+Three distinct records, three issued names. The Book is
+not a ledger; the two ledgers are not each other:
+
+| Term | Disposition | Of record |
+|---|---|---|
+| the Book | **ISSUED** | `ops/agentic-gambling/book/challenges-book.json` — subjects + expectation records; rendered by book-feed |
+| book-ledger | **ISSUED** (full form) | `ops/agentic-gambling/book/ledger.jsonl` — positions + settlements, low-frequency audited; its event field is `event` |
+| wallet-ledger | **ISSUED** (full form) | `ops/agentic-gambling/site/wallet-ledger.jsonl` — high-frequency balance movements; its event field is `type` |
+| ledger (bare) | **NOT ISSUED** | Excluded form: every MoneyBall use carries its prefix. The unqualified word is what let three field vocabularies (`event` / `event_type` / `type`) collide in the WALLET-LEDGER conformance arc — the split, with each ledger's field vocabulary named beside it, is the naming-layer fix |
+| expectation record | **ISSUED** | B1: exactly one per subject; carries the estimate layer |
+| record of record | **ISSUED** | B3 anchor (machine form `record_of_record`); settlement cites it, never substitutes it |
+| receipt | **ISSUED** | Hash-chained proof per event (wallet receipt `wr_<seq>`). Ker vs Stagefoil's `foil`: same function in a different system; the words stay system-bound |
+
+Ledger-pair coinages considered + killed: `tallybook`
+(live exact-string marks — TallyBook AI drilling
+assistant at tallybook.io · Tallybook expense app ·
+TallyBook digital-ledger app) · `scorebook` (ScoreBook /
+Scorebook+ scoring apps) · one-words `bookledger` /
+`walletledger` (in-fleet ∅, rejected on machinery: a
+machine string ≠ the landed filename would mint a third
+vocabulary — the defect being fixed).
+
+### ③ Actions
+
+| Term | Disposition | Definition / ker |
+|---|---|---|
+| wager | **ISSUED** (distinct object) | The stake-object/entry, never a participant (collapse registry; bet/bid → wager at listing). Grimoire-native: its leet form `w4g3r` is already a CedrLang CANONICAL_TOKEN in the same sense |
+| ante | **ISSUED** | DESIGN §11①: the required per-task wager form — minimum ante per task, scaled by the task's recorded complexity (QUE tier of record, never self-assessed) |
+| stake | **ISSUED** | The amount placed on a position (noun); to place it (verb) |
+| position | **ISSUED** | The lifecycle object: open (basis cited, B2) → escrow → lock → settlement → score → payout; ids `POS-*` |
+| escrow | **ISSUED** | The in-wallet `available → escrow` move at position open (`stake_escrowed`); void pre-resolution ⇒ full `stake_released` |
+| allocation | **ISSUED** (MoneyBall-bound) | DESIGN §11⑤: allocation algorithms are agent property (pickable, changeable, sellable, royalty-bearing). Ker: the fleet's `allocations.json` (opportunity/provider plane) is a different record — context-bound, ∅ cross-reading |
+
+### ④ Containers
+
+| Term | Disposition | Definition / ker |
+|---|---|---|
+| wallet | **ISSUED** | Paper/test only; `wallet_id` opaque + chain-agnostic (`paper:<hash>`); balance is a derived fold, never a stored field |
+| pool | **ISSUED** | A pool wallet bound to a class or card. Pool classes of record = the 16 census classes {arm · desk-lane · devwork · doe · explorer · loop · moniker · other · profile · provider · que-lane · recon · researcher · role · speculator · version} (pools-feed `class_x_depth`; 693 pools). Absent classes `jit-version` · `scout-roster` stay NOT_ESTABLISHED — ∅ rows dressed as existence |
+| pooled-buckets | **ISSUED** | `pool:other:pooled-buckets` — the cull-waterfall destination of record (promotions / incentives / bonuses) |
+
+### ⑤ Unit ∧ amounts
+
+- **Unit: `booktally`** (plural booktallies; display
+  `booktally (observational)`) — issued above, PR #4825.
+  Legacy `soft_quota_token` stands verbatim in the
+  hash-chained events, WALLETS.json and the v1 feed until
+  the custodian versioned transition lands.
+- **balance — ISSUED:** one wallet's fold of the
+  wallet-ledger, denominated in booktallies.
+- **pool total — ISSUED:** Σ stakes in one subject pool
+  (DESIGN `total_pool`). Displayed `pool share` =
+  pool_outcome / pool_total — a stake distribution,
+  never "odds" or "probability" (screen ⑧).
+- **total supply — ISSUED:** Σ issuance across the
+  wallet-ledger; ∅ burn (culling ≠ burn).
+- **⚖️ Totals rule:** a bare `total` is **NOT ISSUED** —
+  every total on any surface names its fold set
+  {per-wallet balance · per-pool pool total · total
+  supply}. An unlabelled total is the amounts-plane twin
+  of the bare-ledger defect.
+- **genesis grant — ISSUED** (`wallet_provisioned`
+  delta; of record: EQUAL ×12 @ 1,000). **faucet —
+  ISSUED** (`faucet_issued`); cadence/cap stay
+  NOT_ESTABLISHED — the name is issued, the values are
+  unruled and ∅ name here invents one.
+
+### ⑥ Resolution
+
+| Term | Disposition | Definition / ker |
+|---|---|---|
+| settlement | **ISSUED** | Only from the named record of record (B3): `settlement_proposed` → `settlement_final` |
+| payout | **ISSUED** | Parimutuel per DESIGN §4.3 (`payout_credited`); rake ∅; one-sided pool ⇒ stake refunded only |
+| score | **ISSUED** | Brier / hit-rate layer (DESIGN §6.3); honest states NOT_SCORED · UNRANKED are part of the name's use, never dressed as numbers. Listing ker scorer → evaluator stands |
+| cull waterfall | **ISSUED** | Cull ⇒ balance ⇒ pooled-buckets as one `cull_transferred` pair; value never destroyed; residual stream NOT folded |
+| sweep | **ISSUED** | 6REA7 paper analogue: `sweep_transferred` pair, fold-derived triggers; threshold values NOT_ESTABLISHED (engine fires ∅ unruled class) |
+| residuals / royalties | **ISSUED** (pair) | DESIGN §11⑤ + Addendum 2: the residual/royalty stream rides back to the author's wallet as its own events; never folded into cull or sweep |
+
+### ⑦ Surface labels (moneyball repo)
+
+Issued display set — files/pages change only by a
+custodian pass via the Web3 gate, ∅ unilateral rename:
+
+| Issued label | Surface | Current of record |
+|---|---|---|
+| Slate | `/` | index (subjects + countdowns); H1 stays the brand `MoneyBall` |
+| Book | `/book` | the Book's public render — the canonical page of record, linked/vendored per DESIGN §5.1 |
+| Cards | `/cards` | `Agent Trading Cards` |
+| Pools | `/pools` | `Card Pools` |
+| Wallets | `/wallets` | `Wallets` |
+| Settlement | `/settlement` | `Settlement` (Settlement Replay) |
+
+### ⑧ Exclusion screen — never issued in this vocabulary
+
+- **Quota-plane terms:** quota · soft cap · token ·
+  credit · call · rate · slice · cap · governor — the
+  PAT-governor / provider-quota / QUE-guard plane owns
+  these; the `booktally` stem check is the worked case.
+- **Odds/probability-shaped display names:** odds ·
+  probability · implied · chance — estimates live in
+  expectation records and forecast outputs (an output
+  class), never as display names; `pool share` is the
+  only issued share-display.
+- **Real-money terms:** cash · dollar/USD · deposit ·
+  purchase · cash-out · fiat · cardholder — G3 is a
+  separate owner gate; ∅ name in this issuance
+  pre-decides it.
+- **Live external marks as vocabulary:** Polymarket ·
+  Kalshi · Manifold · PredictIt · DraftKings · FanDuel
+  — comparative prose about them is not vocabulary;
+  none is issued as a MoneyBall term.
+- **Bare forms:** `ledger` unqualified · `total`
+  unqualified · `bookie` presented as a live role.
+
+### Collision evidence (this seat, firsthand, 2026-11-04)
+
+- **Quota plane ∅:** no issued term shares a stem with
+  the plane's live vocabulary {quota · token · credit ·
+  call · rate · slice · share · cap} — `share` survives
+  only inside the issued compound `pool share`, defined
+  as a stake distribution (DESIGN §1.3), never a quota
+  slice; the unit's offending stems were already dropped
+  by the `booktally` issuance.
+- **In-fleet:** SSOT + `config/registration_monikers.json`
+  + monorepo/moneyball code search — issued generics are
+  hits of record (confirmation, not collision: e.g.
+  `pool member` 45 hits, the record's own usage);
+  checked coinages returned `bookledger` 0 ·
+  `walletledger` 0 · `cardholder` 0 · `tallybook` 0 ·
+  `scorebook` 2 (the scoring-surface sense, distinguished
+  in the kill note above).
+- **Live-mark web check:** `booktally` ∅ exact-string
+  product/company (independent recheck concurs with
+  PR #4825; adjacencies = two-word "Tally Book"
+  notebooks + the Tally Book accounting app — the bare
+  and reversed forms stay theirs). `tallybook` +
+  `scorebook` crowded with exact live apps ⇒ both DEAD
+  as ledger coinages. `cardhand` DEAD on sense
+  (playing-card-hand corpus). `cardkeeper` cleared marks
+  but lost to the record's own `pool member`.
+
+### Grimoire round-trip evidence (∀ issued candidates)
+
+Method: Linguist `phase_codec` LEET_MAP {a→4 · e→3 ·
+i→1 · o→0 · s→5 · t→7} — full-substitution form, then
+inverse decode must return the canonical exactly, the
+leet form must collide with ∅ other issued form and ∅
+CedrLang CANONICAL_TOKEN of a different sense, and the
+candidate must be plain ASCII (the `1337_inQuiπy…`
+glyph-load defect class is the standing counterexample).
+**Result: ∀ issued tokens PASS.** Distinctive forms:
+booktally `b00k74lly` · book-ledger `b00k-l3dg3r` ·
+wallet-ledger `w4ll37-l3dg3r` · pool member `p00l
+m3mb3r` · pooled-buckets `p00l3d-buck375` · ante `4n73`
+· escrow `35cr0w` · cull waterfall `cull w473rf4ll`.
+Two notes: `wager` is Grimoire-native — `w4g3r` is
+already a CANONICAL_TOKEN in the same sense (the one
+overlap in the pass, and it is identity, not collision);
+`cull` is codec-invariant (∅ eligible letters — the
+canonical form stays plain, as the codec's MUTABLE set
+prescribes).
+
+### Disposition
+
+Naming layer only (collapse-registry C3 discipline): ∅
+change to any record, implementation, scoring, or ledger
+underneath. Legacy strings stand as written; the issued
+names land on surfaces by versioned custodian transition
+via the Web3 seat's pre-serve gate. Returned to the Web3
+seat (779d33ad) + main (9a88e77a) at issuance.
+
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

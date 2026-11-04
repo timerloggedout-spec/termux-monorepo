@@ -329,7 +329,7 @@ fetch("./data/dispatch-state-feed.json").then(r=>{ if(!r.ok) throw new Error("fe
   const $=id=>document.getElementById(id);
   const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const get=async u=>{ const r=await fetch(u,{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); };
-  const stamp=(el,d)=>{ if(!el) return; const st=(window.CK&&CK.stampState)? CK.stampState(d.generated_at, Date.now()) : "unknown";
+  const stamp=(el,d)=>{ if(!el) return; const st=(window.CK&&window.CK.stampState)? window.CK.stampState(d.generated_at, Date.now()) : "unknown";
     el.textContent="Feed generated "+(d.generated_at||"unknown")+(st==="STALE"?" \u00b7 STALE":"")+" \u00b7 schema "+(d.schema||""); };
   async function tiers(){
     try{
@@ -340,7 +340,7 @@ fetch("./data/dispatch-state-feed.json").then(r=>{ if(!r.ok) throw new Error("fe
         rows.push({label:"Tier "+tr.tier+" queued", value:tr.queued||0});
         rows.push({label:"Tier "+tr.tier+" in progress", value:tr.in_progress||0});
       }
-      $("quechart").innerHTML=(window.CK&&CK.bars)? CK.bars(rows) : "";
+      $("quechart").innerHTML=(window.CK&&window.CK.bars)? window.CK.bars(rows) : "";
       stamp($("questamp"), d);
       let h='<table><thead><tr><th>Tier</th><th>Queued</th><th>In progress</th><th>Oldest queued</th><th>Queued workflows</th></tr></thead><tbody>';
       for(const k of Object.keys(d.tiers||{}).sort()){

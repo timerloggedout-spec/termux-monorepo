@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-04T07:30:20.979184+00:00",
+ "census_at_utc": "2026-11-04T09:01:31.296965+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3597,
-  "stale": 1046,
+  "total": 3620,
+  "stale": 1049,
   "orphan_no_assoc_PR": 355,
-  "stale_and_orphan": 140
+  "stale_and_orphan": 141
  },
  "prs": {
-  "total": 4160,
-  "open": 272,
+  "total": 4193,
+  "open": 277,
   "open_draft": 34,
-  "open_draft_share": 0.125,
+  "open_draft_share": 0.1227,
   "drafts": [
    {
     "number": 386,
@@ -82,7 +82,7 @@
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 33.8
+    "age_days": 33.9
    },
    {
     "number": 1301,
@@ -94,7 +94,7 @@
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 12.9
+    "age_days": 13.0
    },
    {
     "number": 1612,
@@ -106,43 +106,43 @@
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 11.0
+    "age_days": 11.1
    },
    {
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 8.3
+    "age_days": 8.4
    },
    {
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 4.9
+    "age_days": 5.0
    },
    {
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 4.3
+    "age_days": 4.4
    },
    {
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 3.0
+    "age_days": 3.1
    },
    {
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 2.9
+    "age_days": 3.0
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 2.9
+    "age_days": 3.0
    },
    {
     "number": 3037,
@@ -172,13 +172,13 @@
     "number": 4007,
     "title": "Wire invocation observations into Free-Tier Value evidence projection",
     "created_at": "2026-11-02T23:43:35Z",
-    "age_days": 1.3
+    "age_days": 1.4
    },
    {
     "number": 4011,
     "title": "docs(proposals): register external agent toolchain integration portfolio",
     "created_at": "2026-11-03T00:16:14Z",
-    "age_days": 1.3
+    "age_days": 1.4
    },
    {
     "number": 4016,
@@ -196,7 +196,7 @@
     "number": 4020,
     "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
     "created_at": "2026-11-03T02:17:58Z",
-    "age_days": 1.2
+    "age_days": 1.3
    },
    {
     "number": 4023,
@@ -229,17 +229,20 @@
     "age_days": 0.5
    }
   ],
-  "merged": 3401,
-  "closed_unmerged": 487,
-  "open_no_closing_ref": 265,
-  "open_unlinked_issue_target": 217,
-  "open_unlinked_any_ref": 186,
-  "merged_no_closing_ref": 3371,
-  "merged_unlinked_issue_target": 1932,
-  "merged_unlinked_any_ref": 1104,
+  "merged": 3426,
+  "closed_unmerged": 490,
+  "open_no_closing_ref": 270,
+  "open_unlinked_issue_target": 221,
+  "open_unlinked_any_ref": 189,
+  "merged_no_closing_ref": 3396,
+  "merged_unlinked_issue_target": 1949,
+  "merged_unlinked_any_ref": 1113,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3319,
-  "open_head_branch_missing": []
+  "merged_head_branch_residual_name_match": 3344,
+  "open_head_branch_missing": [
+   4832,
+   4834
+  ]
  },
  "issues": {
   "total": 637,
@@ -2372,6 +2375,7 @@
    "backup/tmx-node-primary-20261021/test-source-hygiene-guard-68",
    "backup/tmx-node-primary-20261021/test-sweep-census-counts-74",
    "backup/tmx-node-primary-20261021/test-v1-agent-bootstrap-64",
+   "backup/tmx-node-primary-20261021/test-validate-operational-skills-77",
    "backup/tmx-node-primary-20261021/test-workflow-surface-policy-cli-69",
    "backup/tmx-node-primary-20261021/test-wt-regression-guard",
    "backup/tmx-node-primary-20261021/timerloggedout-ter-12-prioritize-deepcli-as-primary-driver-for-custom-codex-rename",

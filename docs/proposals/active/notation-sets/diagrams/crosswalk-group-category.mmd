@@ -1,0 +1,22 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: docs/proposals/active/notation-sets/
+%%   nomenclature-matrix/seed.json (mappings map-gt-* + kernel)
+%%   + NOMENCLATURE-EQUIVALENCY-MATRIX.md, group_theory section.
+%% Export: 2026-11-03. Fidelity: nodes lossless (concept ids);
+%%   edges lossy — relation shown as label; confidence,
+%%   evidence notes and status are NOT rendered (see source).
+%% ============================================================
+flowchart LR
+    GT_GROUP["group_theory.group"]
+    GT_OP["group_theory.binary_operation"]
+    GT_ID["group_theory.identity_element"]
+    GT_GRP["group_theory.category_of_groups (Grp)"]
+    GT_KERNEL["group_theory.kernel"]
+    GT_NORMAL["group_theory.normal_subgroup"]
+    CT_COMP["category_theory.composition"]
+    CT_MORPH["category_theory.morphism"]
+    GT_OP -->|"related: an operation is composition-shaped"| CT_COMP
+    GT_ID -->|"related: identity element acts as identity morphism"| CT_MORPH
+    GT_GRP -->|"related: Grp's arrows are homomorphisms = morphisms"| CT_MORPH
+    GT_KERNEL -->|"ker is always a normal subgroup"| GT_NORMAL

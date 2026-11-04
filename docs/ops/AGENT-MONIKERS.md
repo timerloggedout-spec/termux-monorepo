@@ -1082,6 +1082,7 @@ V1 → V2 (Grimoire slug-safe, ∅ third improvisation).
 | `dead-on-plane` | fleet vocab-plane collision kills, mark-free | Callchit → `call` ∈ quota plane |
 | `dead-on-semantics` | screens pass; meaning re-imports the confusion (S5) ∨ established wrong-sense corpus | Specscrip · Speclet · cardhand |
 | `cleared-held` | ∀ screens pass, ¬ issued; fallback of record | Acquittance · Bookchit · cardkeeper |
+| `assigned-variant` | mechanical-namespace outcome of record (taken ⇒ smallest free integer ≥2 ∨ slug bounce V1→V2; ¬ a screen verdict) | the handle/slug rows in §Worked rows (Monikers / handles) |
 
 Standing rules: identity ≠ collision (S4 same-sense canonical
 overlap, e.g. `w4g3r`) · a colliding legacy string is never

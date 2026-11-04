@@ -34,7 +34,13 @@ def _fixture(tmp_path):
             "status": "established", "source": "desk-feed exact usage"}},
          {"session_id": "sess-waived", "usage": {"value": None, "unit": None,
             "match": None, "status": "waived", "source": "desk-feed",
-            "note": "Pre-mandate shared bucket usage is unrecoverable."}}]}
+            "note": "Pre-mandate shared bucket usage is unrecoverable."}},
+         {"session_id": "sess-fault", "usage": {"value": None, "unit": None,
+            "match": None, "status": "fault", "source": "desk-feed",
+            "note": "Post-mandate dispatch stamp is missing."}},
+         {"session_id": "sess-pending", "usage": {"value": None, "unit": None,
+            "match": None, "status": "pending", "source": "desk-feed",
+            "note": "Awaiting usage carrier."}}]}
     ]}))
     w("ops/quota/allocation-plan.json", "{}")
     w("ops/quota/rate-limit-events.json", "{}")
@@ -62,7 +68,22 @@ def _fixture(tmp_path):
             {"model": "waived-model", "tasks": [
                 {"ts": "2026-10-20T05:00:00Z", "session_id": "sess-waived",
                  "role": "reviewer", "task_class": "pre-mandate-review",
-                 "moniker": "participant-waived"}]}]}
+                 "moniker": "participant-waived"}]}]},
+        {"provider": "fault-provider", "models": [
+            {"model": "fault-model", "tasks": [
+                {"ts": "2026-11-02T06:00:00Z", "session_id": "sess-fault",
+                 "role": "builder", "task_class": "missing-stamp",
+                 "moniker": "participant-fault"}]}]},
+        {"provider": "pending-provider", "models": [
+            {"model": "pending-model", "tasks": [
+                {"ts": "2026-11-02T07:00:00Z", "session_id": "sess-pending",
+                 "role": "planner", "task_class": "awaiting-usage",
+                 "moniker": "participant-pending"}]}]},
+        {"provider": "mistral", "models": [
+            {"model": "mistral-large", "tasks": [
+                {"ts": "2026-11-02T02:00:00Z", "dispatch_id": "d3",
+                 "role": "builder", "task_class": "no-usage-surface",
+                 "moniker": "participant-mistral"}]}]}
     ]}))
     w("ops/quota/registry.json", '{"services": []}')
     # 3L0 intake: one stamped call, one null-usage call, one
@@ -165,7 +186,19 @@ def test_task_tree_joins_usage_by_dispatch_and_preserves_role_and_pool(tmp_path)
     wtask = waived_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
     assert wtask["usage"]["status"] == "waived"
     assert "unrecoverable" in wtask["usage"]["note"]
-    assert tree["coverage"]["tasks"] == 5
+    fault_provider = next(p for p in tree["providers"] if p["provider"] == "fault-provider")
+    ftask = fault_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert ftask["usage"]["status"] == "fault"
+    pending_provider = next(p for p in tree["providers"] if p["provider"] == "pending-provider")
+    ptask = pending_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert ptask["usage"]["status"] == "pending"
+    mistral = next(p for p in tree["providers"] if p["provider"] == "mistral")
+    mtask = mistral["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert mtask["usage"]["status"] == "no-usage-surface"
+    assert tree["coverage"]["tasks"] == 8
     assert tree["coverage"]["established"] == 3
     assert tree["coverage"]["waived"] == 1
+    assert tree["coverage"]["fault"] == 1
+    assert tree["coverage"]["pending"] == 1
+    assert tree["coverage"]["no_usage_surface"] == 1
     assert tree["coverage"]["not_established"] == 1

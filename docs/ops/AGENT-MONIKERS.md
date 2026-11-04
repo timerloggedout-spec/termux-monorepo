@@ -1459,6 +1459,32 @@ pair analysis accepted):
   distinguisher — a future dome-shaped wager product
   triggers re-screen of this mark.
 
+
+### F. Supplement — Observatory · ForeSight · the named remainder (2026-11-04)
+
+Owner supplement via main: `Observatory` 🔭 + `ForeSight`
+added to the map's scope, with main's sweep of the named
+remainder dispositioned here through the same process.
+
+| item | level | disposition | evidence / ker |
+|---|---|---|---|
+| Observatory | program | **register** — second occupant of `program` (alongside Judges modeling) | the X observatory of record (owner's X-history harvest + observatory surfaces); in-fleet usage single-sense |
+| ForeSight | method | **register** — second occupant of `method` (alongside OSINT) | foresight practice of record (Delphi + Recon + research family; the foresight lineage in the owner's prior work). Display form `ForeSight`, machine `foresight` |
+| Oracle | role (existing) | confirm — alias → `evaluator` at listing (collapse registry Cluster J); `Oracle` in `Delphi Oracle` = program-surface usage, ker stands. ∅ new class | collapse registry + §B |
+| Registrar | system (existing) | confirm — issued name of the AppID Registrar control plane (PR #4648, 2026-11-03); a program/system surface, ¬ a role | issuance of record in this SSOT |
+| Governor | artifact (mechanism) | **register** as mechanism under `artifact` | QUE admission/budget function of record (flow governor · PAT governor), Cadence custody; a named executed function, ¬ a seat, ¬ a role |
+| Sensors | role (existing) | alias → `observer` at listing | ker {machine watchers — Hark-class surfaces · quota pool/sensor checks}; `watcher` → observer already in Cluster R; `sensor` = the component-family name at record level |
+| Wizard 🪄 / Linguist | substrate (existing) | confirm — the Grimoire layer is substrate, ¬ a category (measured §E); `Wizard` lives in the protocol-terms family (C5); Linguist = seat + substrate authority of record | §E + Linguist panel feed |
+| AppID specialist actors | identity (existing) | confirm — fleet-actor identities of record (Gate · Lifecycle · Collector · Publisher · Reviewer · CrossReference · Swarm · RepoStory + entry actors Proctor · Actuary · Pythia · Chronicler · Factorial …); ∅ new role classes — their functions bind to existing role words at the seat, the identities stand as issued | AppID family record + SSOT moniker rows |
+
+"What else exists" (same stratum, noted ¬ exhaustive, ∅ new
+dispositions sought): the Book (record) · Slate/Cards
+(surfaces) · QUE (system) · Stagefoil (desk-flow template;
+`Stagefoil Desk` reserved) · Desk (operations foundation
+surface family) · 4n0n (protocol) · Panel Judge Mirror
+(program instance) · Mimir (vault actor) · Hark (agent
+surface).
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

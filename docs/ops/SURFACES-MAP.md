@@ -108,7 +108,7 @@ flowchart TB
 
 ## Surfaces
 
-Basis: all 36 tribute .html at master + MoneyBall §12 set + propose.html = 44 surfaces + 2 classified classes (classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+Basis: all 36 tribute .html at master + MoneyBall §12 set + propose.html = 42 surfaces + 2 classified classes (44 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 | surface | home | plane | levels rendered | draws from substrate | repo | code layers | release layer |
 |---|---|---|---|---|---|---|---|

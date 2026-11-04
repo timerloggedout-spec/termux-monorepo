@@ -174,7 +174,7 @@
 <p class="dim" id="adpool6stamp">Oversight read model not yet published — roster/state render from the steward's ledger fold when the seam lands (175 pool:doe:* pools at census close).</p>
 <div id="adpool6roster"></div>
 <h4>Participation in fact</h4>
-<div id="adpool6fact"><p class="dim">NOT_ESTABLISHED — no receipted participation events (ante draws or dispatch consumptions) are of record; participation is never inferred from provisioning.</p></div>
+<div id="adpool6fact"><p class="dim">NOT_ESTABLISHED — no receipted participation events (ante draws or dispatch consumptions) are of record; participation is never inferred from provisioning. The countersign path (pool.doe.participation.set) is EXERCISABLE — vocabulary landed (moneyball PR #60 · monorepo PR #4853), DoE re-check PASS; no countersign has issued.</p></div>
 <h4>Unresolved findings</h4>
 <div id="adpool6findings"><p class="dim">No findings feed published yet — DoE findings render here on issue and close only on DoE re-check PASS.</p></div>
 </div>
@@ -435,14 +435,14 @@ setInterval(load,60000);
       if(!r.ok) throw new Error("HTTP "+r.status);
       d=await r.json();
     }catch(e){ return; }
-    $("adpool6stamp").textContent="Feed generated "+(d.generated_at||"unknown")+" · ledger head seq "+(d.ledger_head_seq!=null? d.ledger_head_seq : "NOT_ESTABLISHED")+" · feed as-of seq "+(d.as_of_seq!=null? d.as_of_seq : "NOT_ESTABLISHED")+" · schema "+(d.schema||"");
-    const rows=d.pools||[];
+    $("adpool6stamp").textContent="Feed generated "+(d.generated_at||"unknown")+" · ledger head seq "+(d.ledger_head_seq!=null? d.ledger_head_seq : "NOT_ESTABLISHED")+" · feed as-of seq "+(d.feed_as_of_seq!=null? d.feed_as_of_seq : (d.as_of_seq!=null? d.as_of_seq : "NOT_ESTABLISHED"))+" · schema "+(d.schema||"");
+    const rows=d.rows||d.pools||[];
     if(rows.length){
       $("adpool6roster").innerHTML='<table><thead><tr><th>Pool</th><th>Depth</th><th>Wallet</th><th>State (as recorded)</th><th>Provisioning seq</th><th>Members</th><th>Balance + basis</th></tr></thead><tbody>'
-        + rows.map(p=>"<tr><td>"+esc(p.pool)+"</td><td>"+esc(p.depth!=null? p.depth : 1)+"</td><td>"+esc(p.wallet_id)+"</td><td>"+esc(p.state)+"</td><td>"+esc(p.provisioning_seq)+"</td><td>"+esc(p.members!=null? p.members : "—")+"</td><td>"+esc(p.balance)+" ("+esc(p.balance_basis)+")</td></tr>").join("")
+        + rows.map(p=>"<tr><td>"+esc(p.display||p.entity_ref||p.pool)+"</td><td>"+esc(p.depth!=null? p.depth : 1)+"</td><td>"+esc(p.wallet_id)+"</td><td>"+esc(p.state)+((p.state==="HELD"&&(p.finding_ref||p.review_deadline))? " — HELD (oversight): finding "+esc(p.finding_ref||"—")+" · review by "+esc(p.review_deadline||"—") : "")+"</td><td>"+esc(p.provisioned_seq!=null? p.provisioned_seq : p.provisioning_seq)+"</td><td>"+esc(p.members!=null? p.members : "—")+"</td><td>"+esc(p.balance)+" ("+esc(p.balance_basis||((d.reading_rules||{}).balances||"fold-derived"))+")</td></tr>").join("")
         + "</tbody></table>";
     }
-    const draws=d.participation_events||[];
+    const draws=d.participation_events||rows.flatMap(p=>(p.open_antes||[]).map(a=>({kind:"ante_drawn", pool:p.entity_ref||p.pool, task_ref:a.task_ref||a.ref||"", amount:a.amount, state_vintage_seq:a.state_vintage_seq})));
     if(draws.length){
       $("adpool6fact").innerHTML="<ul>"+draws.map(e=>"<li>"+esc(e.kind||"event")+" · pool "+esc(e.pool)+" · task "+esc(e.task_ref||"")+" · amount "+esc(e.amount)+" · vintage seq "+esc(e.state_vintage_seq)+"</li>").join("")+"</ul>";
     }

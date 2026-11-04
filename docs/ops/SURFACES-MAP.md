@@ -120,7 +120,7 @@ flowchart TB
 | free-tier-value.html | tribute | Providers & Quota | domain | Surface feeds | termux-monorepo | page · free-tier feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | dispatch-tree.html | tribute | Coordination & QUE | structure · office · role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · dispatch-tree feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | countdowns.html | tribute | Challenges & Entries | program · structure | Surface feeds | termux-monorepo | page · countdown data (register) · tests | register of record (deadline-reminders) · wall stamps · site deploy |
-| d2-proposals.html | tribute | Challenges & Entries | program | Naming gate | termux-monorepo | page (static content of record) · tests | static of record · ∅ feed · site deploy |
+| d2-proposals.html | tribute | Challenges & Entries | program | Surface feeds | termux-monorepo | page (static content of record) · tests | static of record · ∅ feed · site deploy |
 | linguist.html | tribute | Identity & Registry | structure · domain | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · linguist feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | delphi-rfp.html | tribute | Scoring & Method | method · program | Surface feeds | termux-monorepo | page · RFP feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | delphi-ledger.html | tribute | Scoring & Method | program · structure | Surface feeds | termux-monorepo | page · delphi ledger feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |

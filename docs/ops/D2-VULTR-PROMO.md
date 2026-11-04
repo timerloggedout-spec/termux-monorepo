@@ -10,7 +10,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 - kickoff ≔ 2026-11-03T15:00:00Z ∧ build_end ≔ 2026-11-08T22:00:00Z ∧ deadline ≔ 2026-11-08T15:00:00-08:00
 - prizes ESTABLISHED: pool $14,000 cash+credits; 1st $5,000 cash + $3,000 Vultr credits; ∀ participant $200 Vultr credits @ kickoff
 - handle ≔ Rap1dZ3nith [platform:lablab-ai]; Discord ✓ connected `wh1msical_sw4n_06136` ⇒ team create/join unblocked
-- project ≔ ∅ — Δ 2026-11-01 (owner direct via D2 seat): Web Adapter Foundry OUT as D2 production target; pick = pending owner signal via D2 seat. (WAF system itself unchanged in-repo; only D2 targeting struck.)
+- project ≔ **Quarantine Browser Clerk** (C1·B, hostile-site browser agent) — PICKED 2026-11-03 23:16 PT (owner order "D2 BUILD" via D2 seat; name+description = this lane's Recon KEEP set, standing as-is). Build STARTED: repo+AppID provisioning · Swarm command-dispatch build · landing target Sat 2026-11-07. Supersedes: ∅-pick state (Δ 2026-11-01, WAF OUT as target).
 - constraints: containment-first required ∧ teams 1–6 ∧ submit ON lablab ∀ judging
 - gates: D2-NOCARD open (no-card path only; card step ⇒ halt)
 - open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ owner pick ⇒ repo (new repo per entry) ∧ team formation
@@ -29,7 +29,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 | DEMO-TEASE | demo live only | short post | drafted §3.5 — OUT (WAF target struck); future demo beat awaits new pick |
 | SUBMISSION | Nov7-landing signal only | short post | drafted §3.4 — template only, blocked: submission = none ∧ pick = ∅; BUFFER RULE 2026-11-02 (D2 seat): landing target = Sat 2026-11-07 (packet ready); Nov 8 = mechanics/buffer only; beat keys off Nov7-landing signal, ¬wall |
 
-Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat (RE-KEY per Desk note via D2 seat: holds keyed "until owner pick" — freeze ¬enacted ∧ ¬pending; WAF superseded #3081, target ∅); only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until owner pick ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
+Δ 2026-11-03: PICK LANDED (Quarantine Browser Clerk) ∧ build started — promo STAYS §3.0-facts-only until the submission beat (D2 seat ruling 2026-11-03); project copy held = §3.7 source set. Earlier Δ 2026-11-01: HOLD ∀ project beats until owner pick signal via D2 seat (RE-KEY per Desk note via D2 seat: holds keyed "until owner pick" — freeze ¬enacted ∧ ¬pending; WAF superseded #3081, target ∅); only §3.0 facts beat publishable. Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until owner pick ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
 
 ## 3. Promo copy (verified vs §1; placeholders ¬ invented)
 
@@ -63,6 +63,11 @@ Hi all — Rap1dZ3nith here for Vultr: Agent Rush Hackathon (kickoff 2026-11-03 
 Working candidate (not frozen): Web Adapter Foundry — a sandboxed browser-operating agent. Given a target brief, it plans a bounded adapter probe, executes it in a Vultr sandbox, and returns an evidence envelope.
 
 Building containment-first and in the open: bounded scope, explicit limits, evidence for every run. Keen to exchange notes on sandboxing, probe design, and evidence formats. Will share progress + failures as they land.
+
+### 3.7 PICKED-PROJECT SOURCE COPY (Quarantine Browser Clerk — HELD until submission beat; from Recon 2026-11-03, KEEP verdict, D2 seat confirmed standing as-is)
+Short (≤200c): "Browser agent confined to a quarantine sandbox visits hostile, untrusted sites and extracts clerical data. Nothing it touches leaves containment; every fetch is logged."
+Hook: Some data only lives on sites you should never open on a real machine — aggressive popups, spoofed forms, download traps. This agent browses them from inside a sealed quarantine environment, extracts the clerical fields requested, and returns data plus a fetch-by-fetch log; page content, scripts, and files stay in containment and are destroyed with the session.
+Alts (unused): Airlocked Web Clerk · Untrusted-Site Runner. Collision: NONE (mild theme overlap research-with-receipts, differentiated by hostile-site/quarantine angle).
 
 ## 4. Audience/comment watch (this lane)
 

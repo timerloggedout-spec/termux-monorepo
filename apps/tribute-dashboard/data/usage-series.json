@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-03T23:54:42Z",
+ "generated_at": "2026-11-04T00:56:01Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-03T23:53:28Z",
   "ops/tracking/nested-family.json": "2026-11-03T09:33:50Z"
@@ -14,7 +14,8 @@
   "ops/quota/rate-limit-events.json",
   "ops/tracking/nested-family.json",
   "experiments/doe/routed-dispatch/records/*.json",
-  "experiments/doe/routed-dispatch/stamps/*.json"
+  "experiments/doe/routed-dispatch/stamps/*.json",
+  "ops/3l0/intake.jsonl"
  ],
  "axes": {
   "provider": [
@@ -1724,8 +1725,75 @@
   "model_series": 11,
   "model_populated": 11
  },
+ "consumption_gap": {
+  "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
+  "routed_calls": 22,
+  "usage_stamped": 0,
+  "unstamped": 22,
+  "unstamped_share": 1.0,
+  "causes": {
+   "no-usage-record": 22,
+   "no-usage-surface": 0
+  },
+  "by_provider": {
+   "gemini-cli": {
+    "provider": "gemini-cli",
+    "calls": 1,
+    "stamped": 0,
+    "unstamped": 1
+   },
+   "muse": {
+    "provider": "Muse",
+    "calls": 3,
+    "stamped": 0,
+    "unstamped": 3
+   },
+   "cohere": {
+    "provider": "cohere",
+    "calls": 4,
+    "stamped": 0,
+    "unstamped": 4
+   },
+   "sealion": {
+    "provider": "sealion",
+    "calls": 4,
+    "stamped": 0,
+    "unstamped": 4
+   },
+   "mistral": {
+    "provider": "mistral",
+    "calls": 2,
+    "stamped": 0,
+    "unstamped": 2
+   },
+   "deepseek": {
+    "provider": "deepseek",
+    "calls": 6,
+    "stamped": 0,
+    "unstamped": 6
+   },
+   "baseten": {
+    "provider": "baseten",
+    "calls": 1,
+    "stamped": 0,
+    "unstamped": 1
+   },
+   "unorouter": {
+    "provider": "unorouter",
+    "calls": 1,
+    "stamped": 0,
+    "unstamped": 1
+   }
+  },
+  "sources": [
+   "ops/3l0/intake.jsonl",
+   "experiments/doe/routed-dispatch/records/*.json",
+   "experiments/doe/routed-dispatch/stamps/*.json",
+   "ops/tracking/nested-family.json"
+  ]
+ },
  "notes": {
-  "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class model series still require usage{} values with an exact match on the same record.",
+  "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class series (kind consumption) are built from per-call usage records - ops/3l0/intake.jsonl usage{tokens_in,tokens_out} and routed-dispatch record usage{} blocks - cumulative per provider and per model@version, exact record match only. Unstamped routed calls are counted in consumption_gap (named on the page), never silently excluded.",
   "readings": "The public readings snapshots (docs/ops/generated/quota-status.json) carry no usage values by design (status-only projection); they are not a usage series source.",
   "gaps": "Points exist only where a source observed a value. Segments spanning >3x the series minimum step and >its median step render dotted (gap signal); no zero-fill, no interpolation."
  }

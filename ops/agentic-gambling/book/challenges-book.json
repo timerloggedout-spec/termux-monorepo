@@ -236,8 +236,8 @@
       "note": "house-stake position POS-001 opened on this subject (stake = $200 Vultr house credit, deployed by burn). Field denominator of record corrected: 2,308 participants (2026-11-03 dashboard) vs stale 1,617 in the coordinator prior — context only; no probability is derived or republished in the book (B5)."
      },
      {
-      "ref": "D2 exercise run-1 (PRs #4486-#4491/#4531/#4536) + D2 seat close leg 2026-11-03 23:16 PT",
-      "note": "ENTRY PICK EXECUTED: B — Quarantine Browser Clerk (C1·B), owner order 'D2 BUILD' — POS-001's stake deployment (burn) rides this entry's build. Advisory slate scoring (Delphi-shaped axes, beside never merged): raw B 46 post-depth-recon, top of the C1 trio; field denominator 2,308 (2026-11-03 dashboard). Evidence leg only — posterior unchanged, no probability derived (B5)."
+      "ref": "D2 exercise run-1 (PRs #4486-#4491/#4531/#4536) + D2 seat correction 2026-11-03 23:18 PT (owner correction via main)",
+      "note": "EXERCISE SCORING ENTRY BOOKED (leg 6): slate of 6 scored (Delphi-shaped advisory, beside never merged). Pick state = OWNER-HELD — NO PICK EXECUTED; the 'D2 BUILD / pick executed' reading was rescinded by owner correction. B advisory-ranked first on revised raw (46), not picked. Repo 1445293810 (quarantine-browser-clerk), created in the rescinded sequence, stands dormant — not a build fact. Evidence leg only — posterior unchanged, no probability derived (B5)."
      }
     ],
     "posterior": {
@@ -1535,28 +1535,69 @@
      "priority": "outranks discretionary burn — a dead demo during judging is a delta-p cliff"
     }
    },
-   "entry_pick": {
-    "candidate": "B — Quarantine Browser Clerk",
-    "class": "C1·B",
-    "executed": "2026-11-03 23:16 PT — owner order 'D2 BUILD' (pick executed under the owner's override charter: slate + scoring advisory, never binding)",
-    "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536; depth-recon revised advisory)",
-    "slate_scoring": {
-     "relation": "beside_never_merged — advisory input to this book entry, not a MoneyBall participant-axis score",
-     "axes": "Delphi-shaped (Tech · Presentation · Business · Originality · Buildability · FieldRoom, 0-10 each)",
-     "raw_B": 46,
-     "revision": "raw B 48 at slate -> 46 post-Observatory/depth-recon (FieldRoom 8->6 on the 'Vex' direct-competitor read); top of the C1 trio post-depth-recon",
-     "differentiation": "lookalike-domain page attacking the AGENT = the unoccupied angle; differentiation survives the depth-recon best of the trio",
-     "risk_adjusted_delivered_ranking": "A > C > B > E > F > D (advisory; the owner executed B regardless — override on record)"
+   "exercise_entry": {
+    "kind": "D2 exercise run-1 SCORING entry (close leg 6) — the exercise's owed final leg, booked independent of any pick",
+    "pick_state": "OWNER-HELD ⛏️ — NO PICK EXECUTED. The 2026-11-03 23:16 PT 'D2 BUILD / pick executed' interpretation was RESCINDED by owner correction (via main, 2026-11-03 23:18 PT). This entry's earlier booking as an executed pick (PR #4785) is superseded by this correction.",
+    "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536)",
+    "scoring_axes": "Delphi-shaped, advisory (Tech · Presentation · Business · Originality · Buildability · FieldRoom, 0-10 each; raw = sum/60) — filed beside, never merged; NOT the MoneyBall participant axes",
+    "slate": [
+     {
+      "id": "A",
+      "candidate": "Canary Patch Gauntlet",
+      "class": "C1",
+      "raw_initial": 46,
+      "raw_revised": 45
+     },
+     {
+      "id": "B",
+      "candidate": "Quarantine Browser Clerk",
+      "class": "C1",
+      "raw_initial": 48,
+      "raw_revised": 46
+     },
+     {
+      "id": "C",
+      "candidate": "Dependency Detox Chamber",
+      "class": "C1",
+      "raw_initial": 45,
+      "raw_revised": 45
+     },
+     {
+      "id": "D",
+      "candidate": "Pipeline Rescue Desk",
+      "class": "C2",
+      "raw_initial": 40,
+      "raw_revised": 42
+     },
+     {
+      "id": "E",
+      "candidate": "Three-Way Match Room",
+      "class": "C2",
+      "raw_initial": 45,
+      "raw_revised": 46
+     },
+     {
+      "id": "F",
+      "candidate": "Renewal Risk Desk",
+      "class": "C2",
+      "raw_initial": 41,
+      "raw_revised": 42
+     }
+    ],
+    "advisory_rankings": {
+     "raw_revised": "B = E (46) > A = C (45) > F = D (42) — B raw-ranked first among C1, tied-first overall",
+     "risk_adjusted_delivered": "A > C > B > E > F > D"
     },
+    "B_note": "B = advisory-ranked first on revised raw — NOT picked. Differentiation (lookalike-domain page attacking the AGENT = the unoccupied angle) survives the depth-recon best of the C1 trio.",
     "field_denominator": {
      "participants": 2308,
      "source": "2026-11-03 official dashboard — supersedes the stale 1,617 (context only; no probability derived or republished, B5)"
     },
-    "build_clocks": {
-     "T1_core": "<= 2026-11-04 EOD",
-     "signature_moment": "<= 2026-11-05",
-     "landing": "2026-11-07",
-     "wall": "2026-11-08 15:00 PT — POS-001 settles at the wall, on official lablab results"
+    "wager_model": "unchanged — POS-001 as opened and amended (stake = use of the $200 expiring Vultr house credit; payout FIXED $14k pool, 1st $5k cash + $3k credits; burn past marginal delta-p ~0 dilutes; expiry salvage $0 => deploy where delta-p > 0, demo-uptime reserve first). POS-001 settles at the D2 wall 2026-11-08 15:00 PT on official lablab results — a subject term, not a build clock.",
+    "dormant_repo": {
+     "repo": "timerloggedout-spec/quarantine-browser-clerk",
+     "id": 1445293810,
+     "state": "DORMANT — created inside the rescinded sequence; explicitly NOT a build fact for this book"
     }
    }
   }

@@ -19,6 +19,16 @@ Entries are the GitHub Release notes, verbatim.
   overflow case), Obsidian note set byte-identical.
   The parity matrix's last absent row closes.
 
+- **hypothes.is sync seam (qualifications closure ③):**
+  the annotations pane gains a config-injected API token
+  seam — token + optional group entered on-device (stored
+  device-locally, never shipped), Sync pulls the account
+  group's annotations from the hypothes.is API, maps them
+  to the pane's W3C shape and merges them provenance-
+  stamped. Battery: tests/test_hypothesis_sync_web.py
+  (mapper/merge in node vs a recorded-shape API fixture +
+  a no-shipped-token guard).
+
 ## [1.0.0] — 2026-11-04
 
 **The submission cut.** Foundation **v1.0.0**: the version of

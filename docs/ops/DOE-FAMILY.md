@@ -1126,6 +1126,17 @@ version and compared continuously until culling retires a version.
   reviewer holds integrity}; bookmaker + 11th man listed
   RESERVED-ABSENT; practice word "custodian" mapped to
   steward, stated for Registry concurrence.
+- **proof-coverage + INCOMPLETE rule** (owner standing
+  requirement, 2026-11-03): for every experiment of record,
+  DoE creates its proof (reviewer-seat standing duty;
+  pattern = packet E001.lean: statements first, proofs
+  where decidable, no hidden sorry, resistance named as
+  OPEN STATEMENTS, verdict from the oracle run's artifact).
+  Coverage map: `docs/ops/DOE-PROOF-COVERAGE.md` —
+  experiments x {proved - proved-fragment - statements-
+  only - open} with the gap order E002..E006 + Mathlib
+  M001. **An experiment without its proof reads
+  INCOMPLETE in this register.**
 
 ## Campaign layout
 

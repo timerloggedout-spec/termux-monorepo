@@ -61,22 +61,22 @@ def _fixture(tmp_path):
                  "moniker": "participant-gemini", "run_id": "105"}]}]},
         {"provider": "session-provider", "models": [
             {"model": "session-model", "tasks": [
-                {"ts": "2026-11-02T05:00:00Z", "session_id": "sess-1",
+                {"session_id": "sess-1",
                  "role": "reviewer", "task_class": "session-review",
                  "moniker": "participant-session"}]}]},
         {"provider": "waived-provider", "models": [
             {"model": "waived-model", "tasks": [
-                {"ts": "2026-10-20T05:00:00Z", "session_id": "sess-waived",
+                {"session_id": "sess-waived",
                  "role": "reviewer", "task_class": "pre-mandate-review",
                  "moniker": "participant-waived"}]}]},
         {"provider": "fault-provider", "models": [
             {"model": "fault-model", "tasks": [
-                {"ts": "2026-11-02T06:00:00Z", "session_id": "sess-fault",
+                {"session_id": "sess-fault",
                  "role": "builder", "task_class": "missing-stamp",
                  "moniker": "participant-fault"}]}]},
         {"provider": "pending-provider", "models": [
             {"model": "pending-model", "tasks": [
-                {"ts": "2026-11-02T07:00:00Z", "session_id": "sess-pending",
+                {"session_id": "sess-pending",
                  "role": "planner", "task_class": "awaiting-usage",
                  "moniker": "participant-pending"}]}]},
         {"provider": "mistral", "models": [

@@ -15,6 +15,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 - gates: D2-NOCARD open (no-card path only; card step ⇒ halt)
 - open @ census: Vultr account (no-card) ∧ $200 gift code @ kickoff ∧ owner pick ⇒ repo (new repo per entry) ∧ team formation
 - submission: none; repo: https://github.com/timerloggedout-spec/quarantine-browser-clerk (id 1445293810, public, created 2026-11-04T07:17:44Z) — was dormant seed under the countermand; NOW the build repo (build resumed from held tree 2026-11-04, AppID provisioning resumed). Next beats (new sequence): demo URL ⇒ Nov 7 landing ⇒ submission confirmation. (VOID demo/submission beats belonged to the rescinded sequence only.)
+- MEDIA (Step 2, produced 2026-11-04, ahead of Nov 6 EOD target): demo video PUBLISHED https://www.youtube.com/watch?v=z-hkwnUFOqM (Public, LoggedOut Timer; 143s, narrated+captioned; Beat 3 = real local run, legs A/C = CI 41807278198 artifact per script fallback; provenance ~/workspace/qbc-media/evidence/) ∧ cover + slides landed QBC repo PR #5 merged 734eb77b2982 ⇒ docs/media/{cover.png, slide-1..7.png} (slides.pdf held at lane, PAT-arg size limit).
 - surfaces watched by this lane: lablab event page ∧ lablab Discord ∧ project gallery @ publish (field 1617 participants @2026-10-28; projects count = OPEN TASK @ gallery publish)
 
 ## 2. Launch-week beats

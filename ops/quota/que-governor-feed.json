@@ -1,0 +1,91 @@
+{
+ "schema": "que-governor-feed/v1",
+ "generated_at": "2026-11-04T08:41:50Z",
+ "built_by": "[MUSEai]@{role:{cadence-optimizer}} \u2014 QUE governor-plane producer of record (co-owned with the Challenges Desk; owner order via main 2026-11-04 00:39 PT)",
+ "provenance": {
+  "design_input": "AutoDesk (agent-browser-clerk pattern, D2 candidate B learnings; the Desk as interactive-flow + routing template, agent-operated)",
+  "pattern": "desk-feed pattern: canonical + dashboard mirror, byte-identical pair",
+  "sources": [
+   "PAT helper live /rate_limit read (uncounted)",
+   "shared spend ledger trailing-10-min aggregate (real entries only)",
+   "budget.json priority_windows verbatim",
+   "governor-events.jsonl (helper deferral log, from 2026-11-04)"
+  ]
+ },
+ "refresh": "Cadence lane refreshes by PR when governor posture, deferral record, or windows change; the helper's governor-events.jsonl is the deferral producer source from 2026-11-04 (pre-log deferrals below carry source=record).",
+ "governor": {
+  "bucket": "github core (PAT, shared fleet)",
+  "limit": 5000,
+  "used": 898,
+  "remaining": 4102,
+  "reset_epoch": 1793784210,
+  "mins_to_reset": 41.8,
+  "aggregate_burn_per_min_trailing_10m": 3.4,
+  "projected_used_at_reset": 1040,
+  "deferral_threshold": 4500,
+  "threshold_basis": "limit - derived reserve (reserve_fraction 0.1 of limit, budget.json)",
+  "posture": "CLEAR",
+  "posture_note": "A deferral is a PROJECTION, not a wall reading: it decays as aggregate burn drops; a single probe call is the test (owner escalation fix 2026-11-03 17:02 PT, probe-verified x3).",
+  "session_cap_per_hour": 400,
+  "flow_governor_enabled": true,
+  "reserve_fraction": 0.1
+ },
+ "admission_deferrals": [
+  {
+   "ts": "2026-11-03T16:49:00-08:00",
+   "kind": "projection",
+   "caller": "D1 submission verify seat (via PAT helper)",
+   "reason_class": "projection_over_threshold",
+   "detail": {
+    "projected_used": 4512,
+    "threshold": 4500,
+    "note": "the incident of record: projection misread as a wall; identical call cleared on probe 17:01 PT, ~19 min before projected reset \u2014 motivated the projection-label + probe-guidance fix"
+   },
+   "source": "record (main escalation 2026-11-03 17:02 PT)"
+  },
+  {
+   "ts": "2026-11-04T01:03:52Z",
+   "kind": "projection",
+   "caller": "cadence governor demo (synthetic burn, copied-rig rule now applies)",
+   "reason_class": "projection_over_threshold",
+   "detail": {
+    "projected_used": 7480,
+    "threshold": 4500
+   },
+   "source": "record (probe-verified demonstration 2026-11-03)"
+  },
+  {
+   "ts": "2026-11-04T01:04:00Z",
+   "kind": "projection_priority_hard",
+   "caller": "cadence governor demo (GHPAT_CHAIN=d1)",
+   "reason_class": "priority_deferred_hard_projection_named",
+   "detail": {
+    "projected_used": 7447,
+    "limit": 5000
+   },
+   "source": "record (probe-verified demonstration 2026-11-03)"
+  },
+  {
+   "ts": "2026-11-04T01:09:15Z",
+   "kind": "projection",
+   "caller": "cadence governor demo (plain call; paired priority call cleared same state)",
+   "reason_class": "projection_over_threshold",
+   "detail": {
+    "projected_used": 4678,
+    "threshold": 4500
+   },
+   "source": "record (probe-verified demonstration 2026-11-03)"
+  }
+ ],
+ "priority_windows": [
+  {
+   "chain": "d1",
+   "until": 1793779199,
+   "until_iso": "2026-11-04T07:59:59Z",
+   "source": "ops/quota/dispatch-tiers.json priority_window stanza, PR #4740 (owner ruling 2026-11-03 15:55 PT): D1 chain first claim until the freeze; callers declare GHPAT_CHAIN=d1",
+   "active": false,
+   "state": "expired"
+  }
+ ],
+ "priority_windows_note": "Verbatim from budget.json (the helper's config of record). Repo-side encoding: ops/quota/dispatch-tiers.json priority_window stanza, PR #4740 (OPEN at first publish; stanza not yet on master). Callers declare chain via GHPAT_CHAIN; priority rides sub-hard projections; hard deferrals name the chain."
+}

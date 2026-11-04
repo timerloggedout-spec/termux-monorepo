@@ -19,7 +19,11 @@ What it derives:
   2026-11-03: we count ourselves for nulls). Carried verbatim and
   cited; this builder never re-tallies.
 - registry_context: counts from ops/quota/registry.json + readings
-  coverage.
+  coverage. The coverage string cites the LABELED PAIR (owner fix
+  order 2026-11-03): readings coverage (snapshot rows / registry
+  records) and consumption coverage (usage-stamped / routed calls,
+  from the pack's consumption_gap block - written by
+  scripts/quota_usage_series.py, carried here, never recomputed).
 - series1_api_core: CARRIED VERBATIM. Its points are firsthand
   user-token readings; extending them would need private readings - the
   private-readings tap is ruled OUT (owner ruling 2026-11-03: we count
@@ -183,11 +187,20 @@ def build(root):
               or (pack.get("registry_context") or {}).get("pools")
               or 0)
     rc = dict(pack.get("registry_context") or {})
+    gap = pack.get("consumption_gap") or {}
+    if gap.get("routed_calls") is not None:
+        cons = (f"consumption coverage: {gap.get('usage_stamped')}/"
+                f"{gap.get('routed_calls')} routed calls "
+                f"usage-stamped")
+    else:
+        cons = ("consumption coverage: not yet published "
+                "(series builder writes consumption_gap)")
     rc.update({
         "records": n_rec, "pools": n_pool,
-        "coverage": f"{rows}/{n_rec} readings rows (registry at "
-                    f"{n_rec} records; promotion cycle carries new "
-                    f"records into readings)"})
+        "coverage": f"readings coverage: {rows}/{n_rec} readings "
+                    f"rows (registry at {n_rec} records; promotion "
+                    f"cycle carries new records into readings) "
+                    f"\u00b7 {cons}"})
     pack["registry_context"] = rc
 
     return pack

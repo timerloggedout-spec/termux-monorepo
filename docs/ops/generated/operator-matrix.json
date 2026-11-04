@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 523,
-    "open_prs": 264,
+    "open_prs": 263,
     "pr_classes": {
-      "CANDIDATE": 120,
-      "EXTRACT": 13,
-      "NEED_EVIDENCE": 131,
+      "CANDIDATE": 123,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 130,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 44,
-      "prs": 262,
+      "prs": 261,
       "unlabelled_numbers": [
         308,
         388,
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-03T23:58:33Z",
+  "generated_at": "2026-11-04T00:03:09Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "c28365b335"
+    "sha": "8879216de7"
   },
   "prs": [
     {
@@ -232,34 +232,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "2213a90aa3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-03T23:35:39Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "9b01d45a8f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T23:24:28Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -322,20 +294,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3cac21809c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-03T22:29:49Z"
     },
     {
       "class": "CANDIDATE",
@@ -558,7 +516,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -1051,7 +1009,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-03T23:30:44Z"
@@ -1105,12 +1063,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "2213a90aa3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-03T23:35:39Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9b01d45a8f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-03T23:24:28Z"
     },
     {
       "class": "CANDIDATE",
@@ -2015,6 +2001,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "3cac21809c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-03T22:29:49Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "6e74215244",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2521,7 +2521,7 @@
       },
       "head_sha": "0f45b63561",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-03T22:55:11Z"
@@ -3188,15 +3188,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "success",
+        "smoke": "queued"
       },
-      "head_sha": "db93d367b7",
+      "head_sha": "e7598f168e",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-03T23:56:46Z"
+      "updated_at": "2026-11-04T00:02:36Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3841,20 +3841,6 @@
       "number": 4699,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:48:13Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b684d4ebd9",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4708,
-      "title": "token-strategies-1 DESIGN: record the arm allocation rule (owner % RULE, amendment 6)",
-      "updated_at": "2026-11-03T23:58:29Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -16,6 +16,7 @@ const escapeHtml = (s) => String(s ?? "")
   .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const state = { data: null, cardIndex: 0, flipped: false,
                 scheduler: "fsrs", srState: {}, reader: null,
+                remoteAnnotations: [],
                 playing: false, timer: null,
                 activeCourse: null, bundles: [] };
 
@@ -1057,6 +1058,47 @@ function buildObsidianZip(cards, states, scheduler) {
   return zipStore(files.map((f) => ({ name: f.path, bytes: _utf8(f.text) })));
 }
 
+/* ---------------- hypothes.is sync seam (#4673 package ③) ----
+ * The annotations pane's local rows are core-built W3C
+ * annotations. The seam maps hypothes.is API rows into the
+ * same shape and merges them (provenance-stamped); the token
+ * itself is config-injected at runtime (device-local storage,
+ * entered in the pane) — no token ships in the bundle. */
+
+function hypothesisToW3C(row) {
+  const target = (row.target || [])[0] || {};
+  const quoteSel = (target.selector || []).find(
+    (s) => s.type === "TextQuoteSelector");
+  return {
+    id: row.id || "",
+    type: "Annotation",
+    creator: row.user || "",
+    group: row.group || "",
+    provenance: "hypothes.is",
+    body: [{ type: "TextualBody", purpose: "commenting",
+             value: row.text || "" }],
+    tags: row.tags || [],
+    target: {
+      source: target.source || "",
+      selector: { type: "TextQuoteSelector",
+                  exact: quoteSel ? (quoteSel.exact || "") : "" },
+    },
+  };
+}
+
+function mergeAnnotations(local, remote) {
+  const seen = new Set();
+  const out = [];
+  for (const a of [...(local || []), ...(remote || [])]) {
+    const key = a.id || ((a.target.selector || {}).exact + "|" +
+      (a.body[0] || {}).value);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(a);
+  }
+  return out;
+}
+
 /* ---------------- loading + rendering */
 async function load() {
   // Failure state (#4237): a failed or unparsable state.json used
@@ -1560,7 +1602,10 @@ function renderAnnotations() {
   const el = $("#annotations");
   if (!el) return;
   const book = state.data.book || {};
-  const anns = book.annotations || [];
+  const anns = mergeAnnotations(book.annotations || [],
+    state.remoteAnnotations || []);
+  const token = localStorage.getItem("ss.hypothesis.token") || "";
+  const group = localStorage.getItem("ss.hypothesis.group") || "";
   el.innerHTML = `<h3>Annotations (hypothes.is leg)</h3>` +
     (anns.length ? anns.map((a) => {
       const sel = a.target.selector || {};
@@ -1568,9 +1613,63 @@ function renderAnnotations() {
         `${escapeHtml(sel.exact || "")}</blockquote>` +
         `<p>${escapeHtml(a.body[0].value)}</p>` +
         `<p class="meta">Tags: ${(a.tags || []).map(escapeHtml).join(", ")} · ` +
-        `model: W3C Web Annotation</p></div>`;
+        `model: W3C Web Annotation` +
+        (a.provenance === "hypothes.is" ?
+          ` · via hypothes.is (${escapeHtml(a.creator || "")})` : "") +
+        `</p></div>`;
     }).join("") : "<p>No annotations of record.</p>") +
-    `<p class="meta">${escapeHtml(book.annotations_note || "")}</p>`;
+    `<p class="meta">${escapeHtml(book.annotations_note || "")}</p>` +
+    `<div class="row"><label>hypothes.is API token ` +
+    `<input id="hyp-token" type="password" autocomplete="off" ` +
+    `placeholder="not configured" value="${escapeHtml(token)}"></label>` +
+    `<label>Group id <input id="hyp-group" type="text" ` +
+    `placeholder="account default" value="${escapeHtml(group)}"></label>` +
+    `<button id="hyp-sync">Sync hypothes.is</button></div>` +
+    `<p id="hyp-status" class="meta" aria-live="polite">` +
+    (token ? "hypothes.is token configured on this device." :
+      "hypothes.is sync not configured — the local W3C view above is complete without it.") +
+    `</p>`;
+  const syncBtn = $("#hyp-sync");
+  if (syncBtn) syncBtn.addEventListener("click", syncHypothesis);
+}
+
+async function syncHypothesis() {
+  const status = $("#hyp-status");
+  const token = ($("#hyp-token").value || "").trim();
+  const groupInput = ($("#hyp-group").value || "").trim();
+  localStorage.setItem("ss.hypothesis.token", token);
+  localStorage.setItem("ss.hypothesis.group", groupInput);
+  if (!token) {
+    status.textContent = "No token entered — sync not configured.";
+    return;
+  }
+  const headers = { Authorization: "Bearer " + token,
+                    Accept: "application/json" };
+  try {
+    status.textContent = "Syncing…";
+    let group = groupInput;
+    if (!group) {
+      const prof = await fetch("https://hypothes.is/api/profile",
+        { headers });
+      if (!prof.ok) throw new Error("profile HTTP " + prof.status);
+      const pj = await prof.json();
+      const groups = pj.groups || [];
+      const first = groups.find((g) => g.type !== "open") || groups[0];
+      group = first ? first.id : "__world__";
+    }
+    const res = await fetch("https://hypothes.is/api/search?limit=200" +
+      "&group=" + encodeURIComponent(group), { headers });
+    if (!res.ok) throw new Error("search HTTP " + res.status);
+    const sj = await res.json();
+    state.remoteAnnotations = (sj.rows || []).map(hypothesisToW3C);
+    renderAnnotations();
+    $("#hyp-status").textContent = "Synced " +
+      state.remoteAnnotations.length + " annotation(s) from group " +
+      group + " · merged with the local W3C view.";
+  } catch (err) {
+    status.textContent = "hypothes.is sync failed: " + err.message +
+      " — the local W3C view is unaffected.";
+  }
 }
 function hardeningOptIn() {
   return localStorage.getItem("ss.hardening.optin") === "1";

@@ -3,9 +3,9 @@
     "open_issues": 531,
     "open_prs": 277,
     "pr_classes": {
-      "CANDIDATE": 127,
-      "EXTRACT": 13,
-      "NEED_EVIDENCE": 137,
+      "CANDIDATE": 128,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 138,
       "SUPERSEDE": 0
     }
   },
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:23:29Z",
+  "generated_at": "2026-11-04T09:25:13Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "02fa399018"
+    "sha": "6d047892c6"
   },
   "prs": [
     {
@@ -236,20 +236,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b8520d4515",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:22:34Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -312,20 +298,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b09b0683d8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4832,
-      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
-      "updated_at": "2026-11-04T09:05:21Z"
     },
     {
       "class": "EXTRACT",
@@ -2125,6 +2097,20 @@
       "updated_at": "2026-11-04T00:52:14Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b09b0683d8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4832,
+      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
+      "updated_at": "2026-11-04T09:05:21Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -3281,10 +3267,24 @@
       },
       "head_sha": "545b374d9b",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T09:04:34Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "ca2610daf6",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T09:24:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3995,7 +3995,7 @@
       },
       "head_sha": "44eaf9846b",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4801,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:29:59Z"
@@ -4009,7 +4009,7 @@
       },
       "head_sha": "187e7302a2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4821,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T08:55:23Z"
@@ -4023,7 +4023,7 @@
       },
       "head_sha": "e3a2b171a0",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4827,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:00:56Z"
@@ -4032,15 +4032,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "5be011f6d2",
+      "head_sha": "e531443c0e",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4847,
-      "title": "feat(admin): gauges read state (inert, tranche-0)",
-      "updated_at": "2026-11-04T09:23:25Z"
+      "number": 4849,
+      "title": "fix(quota): Plane 5 stop-preserves - lifecycle states active|paused|stopped",
+      "updated_at": "2026-11-04T09:24:29Z"
     }
   ],
   "schema": "operator-matrix/v1",

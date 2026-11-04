@@ -455,11 +455,14 @@ def gh_retry(method, path, body=None, attempts=4):
         try:
             st, resp = gh(method, path, body,
                           timeout=300 if method == "POST" else 120)
-        except urllib.error.URLError as e:
-            # Transport-level failure (e.g. write timeout on a large
-            # body through the surrogate path): transient, retry with
-            # backoff; after exhaustion the caller sees the URLError.
-            last = (0, {"transport_error": str(e)})
+        except (urllib.error.URLError, TimeoutError) as e:
+            # Transport-level failure (write timeout on a large body,
+            # read timeout on a stalled surrogate response): transient,
+            # retry with backoff; after exhaustion the caller sees it.
+            # (TimeoutError is NOT a URLError subclass — a bare
+            # URLError catch misses read-side timeouts, proven by the
+            # 4MB proof run's second crash.)
+            last = (0, {"transport_error": f"{type(e).__name__}: {e}"})
             time.sleep(delay)
             delay *= 3
             continue
@@ -469,7 +472,8 @@ def gh_retry(method, path, body=None, attempts=4):
         time.sleep(delay)
         delay *= 3
     if last[0] == 0 and "transport_error" in last[1]:
-        raise urllib.error.URLError(last[1]["transport_error"])
+        raise RuntimeError(f"publish transport failed after retries: "
+                           f"{last[1]['transport_error']}")
     return last
 
 def _git_blob_sha(data: bytes) -> str:
@@ -520,9 +524,9 @@ def publish(staging: Path, repo: str, message: str):
                 st, blob = gh_retry("POST", f"/repos/{repo}/git/blobs",
                                     {"content": base64.b64encode(data).decode(),
                                      "encoding": "base64"})
-            except urllib.error.URLError as e:
+            except (urllib.error.URLError, TimeoutError) as e:
                 raise RuntimeError(f"blob create transport failed for "
-                                   f"{rel}: {e} "
+                                   f"{rel}: {type(e).__name__}: {e} "
                                    f"(body bytes: {len(data)} raw)")
             if st not in (200, 201):
                 raise RuntimeError(f"blob create failed for {rel}: {st} "

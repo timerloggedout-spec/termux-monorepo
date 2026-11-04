@@ -79,7 +79,7 @@ always-free at roughly the same scale, and all of them fit the same mesh jobs
 |---|---|---|---|
 | **GitHub Codespaces** (personal) | **120 core-hours/mo + 15 GB-mo storage** (Free plan; Pro 180/20). 2-core = 60 h/mo. Orgs get **no** free quota. Beyond quota: $0.18/h (2-core), $0.07/GB-mo; no payment method on file = hard block at quota, not a bill | Hibernates ~30 min idle; per-repo devcontainer setup is ours to own | **Claim first.** Zero signup (account exists), 3 codespaces + secrets already in place, directly serves mesh C2 (offload the 93%-full B160V) and resiliency P1/P2 (a claimant that isn't the phone) |
 | **GCP Compute Engine** | 1× e2-micro/mo always-free (US regions) + 30 GB disk; $300/90-day trial for new billing accounts | Trial needs a card; e2-micro is small and throttled | A free always-on micro relay/queue-poller is possible here — but Cloud Run (scale-to-zero) fits the same jobs with less babysitting |
-| **Oracle Cloud Always Free** | Ampere A1 ARM: **halved June 2026** — now 1,500 OCPU-hours + 9,000 GB-hours/mo (≈ 2 OCPU / 12 GB running 24/7, or 4 OCPU / 24 GB for ~half the month) + 200 GB storage + ~10 TB egress; plus 2× E2.1.Micro AMD | Card for identity; home region chosen at signup is **permanent**; "out of host capacity" is routine; idle instances (<20% util over ~7 days) can be reclaimed on pure free accounts | Still the only free *real VM* big enough to be a second executor / self-hosted runner / queue claimant. High value, high friction — an owner signup decision, not a chat action |
+| **Oracle Cloud Always Free** | Ampere A1 ARM: **halved June 2026** — now 1,500 OCPU-hours + 9,000 GB-hours/mo (≈ 2 OCPU / 12 GB running 24/7, or 4 OCPU / 24 GB for ~half the month) + 200 GB storage + ~10 TB egress; plus 2× E2.1.Micro AMD | Card for identity; home region chosen at signup is **permanent**; "out of host capacity" is routine; idle instances (<20% util over ~7 days) can be reclaimed on pure free accounts | Still the only free *real VM* big enough to be a second executor / self-hosted runner / queue claimant. High value, high friction — an owner signup decision, not a chat action. ⚠ 2026-11-04: signup is card-gated ⇒ closed class; see Addendum. |
 | **Azure VMs** | B1S 750 h/mo — but only in the **12-month** free-services window, not always-free | Converts to billed after month 12 unless deprovisioned | Trial-shaped, not infrastructure-shaped. Skip for standing lanes |
 | **AWS EC2** | Post-2025-07-15 accounts: **no more 750h t2/t3.micro 12-month offer** — replaced by the credit plan (§2.3) | — | Do not plan around the old EC2 free year; it no longer exists for new accounts |
 | **Gitpod** | ~50 h/mo small workspaces (free tier) | — | Codespaces covers this job with the account we already have |
@@ -207,3 +207,40 @@ figures are marked "(survey)" in-line.
 
 *End of recon. Signups, registry edits, and builds are separate, scoped orders —
 this file only updates the fleet's knowledge.*
+
+## Addendum — 2026-11-04 (Recon census, owner-forwarded)
+
+*Evidence class — Source: Recon 🏅 lane census checked 2026-11-04, forwarded by the owner 2026-11-04 05:43 PT; values attributed to that census, NOT independently re-verified by this lane; full census + URL list in the Recon lane's 2026-11-04 daily log.*
+
+### A1. Structural — ingress solved, compute is the gap
+
+- Cloudflare = already fleet-held ⇒ **Cloudflare Tunnel** turns owned compute into a public endpoint at $0: named tunnel = stable hostname on a fleet domain; quick tunnel = no account, rotating URL. **INGRESS: solved.**
+- **COMPUTE: the gap.** Strands compute today = GitHub Actions runners (ephemeral) only; standing fleet host = none provisioned.
+
+### A2. New no-card capacity (census-checked 2026-11-04)
+
+| Provider | No-card free shape | Notes / hazards |
+|---|---|---|
+| **SnapDeploy** | Containers 4×512 MB, 100 awake-hours/mo | — |
+| **Leapcell** | 100K invocations/mo, 3 GB-h cap | — |
+| **Appwrite Functions** | 750K Python executions/mo | ⚠ hazard: 7-day console-activity pause — functions pause after 7 days without console activity |
+| **alwaysdata** | Persistent, 256 MB cap | — |
+| **Back4app Containers** | 256 MB | Lifetime of the free shape unclear |
+| **zrok** | Tunnel, 5 GB/day | Self-hostable |
+
+Already known / unchanged: Render free · Vercel Hobby · Cloudflare Workers (shim only).
+
+### A3. Always-free VM — none qualifying
+
+- **Oracle: card-gated at signup ⇒ CLOSED class** for fleet planning, despite the Always Free allowance recorded in §2.2 above (supersession pointer added to that row). Under the fleet's no-card constraint, no always-free VM qualifies.
+
+### A4. Closed + dead classes (census-stamped 2026-11-04)
+
+- **CLOSED (card required):** Oracle · GCP · Azure · Koyeb · Northflank · Modal · Sevalla · DigitalOcean · Qoddi · Fly.io · Railway · HuggingFace Docker Spaces (paid) · Cerebras.
+- **DEAD:** Glitch · Deta · Cyclic · Heroku free tier · Deno Deploy · Amazon SageMaker Studio Lab new signups.
+
+### A5. AWS learning — "card-blocked" is stale for the new signup flow
+
+- The body's card-required characterization of AWS (§2.1 / §2.3) is **STALE for the NEW signup flow**: Builder ID + social sign-in → Free plan (incl. Bedrock + Lambda, $200 credits, no payment for most).
+- The **ADVANCED flow remains a card wall** (owner-confirmed).
+- The owner is testing the new flow; its outcome carries his stamp, not this doc's.

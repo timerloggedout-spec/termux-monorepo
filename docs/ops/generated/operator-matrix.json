@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 268,
+    "open_prs": 269,
     "pr_classes": {
-      "CANDIDATE": 128,
+      "CANDIDATE": 127,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 130,
+      "NEED_EVIDENCE": 132,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 266,
+      "prs": 267,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T02:00:43Z",
+  "generated_at": "2026-11-04T07:19:20Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "8a05952bfd"
+    "sha": "f903442a67"
   },
   "prs": [
     {
@@ -520,7 +520,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -1013,7 +1013,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-03T23:30:44Z"
@@ -1067,12 +1067,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7e2682fb5e",
+      "head_sha": "2b5071c107",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T01:37:07Z"
+      "updated_at": "2026-11-04T06:35:03Z"
     },
     {
       "class": "CANDIDATE",
@@ -1095,12 +1095,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9b01d45a8f",
+      "head_sha": "38298f8799",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-03T23:24:28Z"
+      "updated_at": "2026-11-04T06:25:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -1507,20 +1507,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "20cad2bafb",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T01:59:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -2593,12 +2579,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0f45b63561",
+      "head_sha": "6323d0c28f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-03T22:55:11Z"
+      "updated_at": "2026-11-04T07:18:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3183,7 +3169,7 @@
       },
       "head_sha": "790f638f87",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T02:00:13Z"
@@ -3251,12 +3237,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "cb3262e4fa",
+      "head_sha": "97aa322bd5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T02:00:28Z"
+      "updated_at": "2026-11-04T07:18:44Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "f5b0677e3f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T07:19:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3335,12 +3335,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9a913308c3",
+      "head_sha": "03e37cad99",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-04T02:00:28Z"
+      "updated_at": "2026-11-04T02:01:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3811,12 +3811,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "2dbcb6c097",
+      "head_sha": "f03a484381",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-11-03T22:49:14Z"
+      "updated_at": "2026-11-04T07:18:23Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3883,7 +3883,7 @@
       },
       "head_sha": "a5d56fdac6",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4690,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-03T23:53:40Z"
@@ -3897,7 +3897,7 @@
       },
       "head_sha": "da4dea4119",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4699,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:48:13Z"
@@ -3915,6 +3915,20 @@
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
       "updated_at": "2026-11-04T01:06:46Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "ac13ba9cb4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4780,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-04T07:19:00Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -101,6 +101,23 @@ emits finding rcpt + holds, held spend refused, gate-role unhold
 restores · revocation terminal · close-out seals the reconciliation
 (variance +50 · 150.0% · released_unspent 350 · unreleased_cap 500).
 
+## Instance shapes (from the first application, folded back)
+
+- **Per-lane envelopes:** a proposal may stamp
+  `per_lane_estimates {lane: {min, max}}` — competing lanes carry
+  range envelopes (envelopes are ceilings, not estimates). Spend
+  records tag `--lane`; a draw that would push a lane past its
+  envelope max is refused with stop + escalate (no silent
+  reallocation). A reserve lane (e.g. demo-uptime) stamps as an
+  ordinary envelope inside the cap and outranks by policy, not by a
+  special mechanism. `report` renders per-lane {envelope · spent}.
+- **Compound release gates:** `release_gate` may carry
+  `conditions[]` (stamped at issue — e.g. a dated checkpoint ∧ a
+  credential provisioned). With conditions present the gate starts
+  CLOSED: releases are refused until a gate-role `gate-open`
+  actuation attests the conditions met (receipted, action
+  `gate_opened`). Role checks apply at gate-open as at release.
+
 ## First application
 
 The Desk applies this protocol to its limited-resource engagements

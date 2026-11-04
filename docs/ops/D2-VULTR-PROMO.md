@@ -22,6 +22,7 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 | beat | when | surface | status |
 |---|---|---|---|
 | ANNOUNCE-FACTS | kickoff 2026-11-03 | short post | drafted §3.0, PUBLISH ✓ per D2 seat 2026-10-31 |
+| RECEIPTS | 2026-11-04 (owner direct) | FB Page Dream In Production (fb-a, parent-published) | PUBLISHED ✓ post_id 122099242707538523 — https://facebook.com/61596155692530/posts/pfbid02JhTRXwoRGdQyUsRQhucG73HXVy6PApMq7VFBcZKHJ9kyCxoWMXrV7f9xdDomafBgl/ (verified firsthand facebook-cli post read: caption verbatim, comments 0 baseline; comment watch ACTIVE) — facts = run 41807278198 success ∧ PRs #2/#3/#4 merged |
 | DISCORD-INTRO | kickoff 2026-11-03 | lablab Discord | drafted §3.6 — OUT (WAF target struck 2026-11-01) |
 | ANNOUNCE | kickoff 2026-11-03 | X-style short post | drafted §3.1 — OUT (WAF target struck 2026-11-01) |
 | BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 — OUT (WAF target struck) |

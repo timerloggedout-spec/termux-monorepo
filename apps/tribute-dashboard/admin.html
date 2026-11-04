@@ -170,7 +170,14 @@
 <div id="adgauges"><p class="dim">Loading the allocations feed…</p></div>
 <h3>Plane 6 — DoE pool participation oversight</h3>
 <p class="dim">Claims ceiling, printed on the surface itself: <strong>existence ≠ participation ≠ standing</strong>; a pool row asserts provisioning only. Participation is never inferred from existence; where no participation events exist the panel reads NOT_ESTABLISHED in words. Unresolved DoE findings render here when the oversight feed lands.</p>
-<div id="adpool6"><p class="dim">Oversight read model not yet published — roster/state render from the steward's ledger fold when the seam lands (175 pool:doe:* pools at census close).</p></div>
+<div id="adpool6">
+<p class="dim" id="adpool6stamp">Oversight read model not yet published — roster/state render from the steward's ledger fold when the seam lands (175 pool:doe:* pools at census close).</p>
+<div id="adpool6roster"></div>
+<h4>Participation in fact</h4>
+<div id="adpool6fact"><p class="dim">NOT_ESTABLISHED — no receipted participation events (ante draws or dispatch consumptions) are of record; participation is never inferred from provisioning.</p></div>
+<h4>Unresolved findings</h4>
+<div id="adpool6findings"><p class="dim">No findings feed published yet — DoE findings render here on issue and close only on DoE re-check PASS.</p></div>
+</div>
 <h3>Receipts this session</h3>
 <div id="adreceipts"><p class="dim">No actuations — controls inert under tranche-0.</p></div>
 </section>
@@ -419,6 +426,34 @@ setInterval(load,60000);
     $("adgauges").innerHTML=h;
   }
   gauges();
+
+  // Plane 6 read model (inert): steward fold feed when published.
+  async function pool6(){
+    let d;
+    try{
+      const r=await fetch("./data/doe-oversight-feed.json",{cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      d=await r.json();
+    }catch(e){ return; }
+    $("adpool6stamp").textContent="Feed generated "+(d.generated_at||"unknown")+" · ledger head seq "+(d.ledger_head_seq!=null? d.ledger_head_seq : "NOT_ESTABLISHED")+" · feed as-of seq "+(d.as_of_seq!=null? d.as_of_seq : "NOT_ESTABLISHED")+" · schema "+(d.schema||"");
+    const rows=d.pools||[];
+    if(rows.length){
+      $("adpool6roster").innerHTML='<table><thead><tr><th>Pool</th><th>Depth</th><th>Wallet</th><th>State (as recorded)</th><th>Provisioning seq</th><th>Members</th><th>Balance + basis</th></tr></thead><tbody>'
+        + rows.map(p=>"<tr><td>"+esc(p.pool)+"</td><td>"+esc(p.depth!=null? p.depth : 1)+"</td><td>"+esc(p.wallet_id)+"</td><td>"+esc(p.state)+"</td><td>"+esc(p.provisioning_seq)+"</td><td>"+esc(p.members!=null? p.members : "—")+"</td><td>"+esc(p.balance)+" ("+esc(p.balance_basis)+")</td></tr>").join("")
+        + "</tbody></table>";
+    }
+    const draws=d.participation_events||[];
+    if(draws.length){
+      $("adpool6fact").innerHTML="<ul>"+draws.map(e=>"<li>"+esc(e.kind||"event")+" · pool "+esc(e.pool)+" · task "+esc(e.task_ref||"")+" · amount "+esc(e.amount)+" · vintage seq "+esc(e.state_vintage_seq)+"</li>").join("")+"</ul>";
+    }
+    const finds=d.findings||[];
+    if(finds.length){
+      $("adpool6findings").innerHTML="<ul>"+finds.map(f=>"<li><strong>"+esc(f.check)+"</strong> · "+esc(f.subject)+" · severity "+esc(f.severity)+" · evidence "+esc((f.evidence_refs||[]).join(", "))+"</li>").join("")+"</ul>";
+    } else if(d.findings) {
+      $("adpool6findings").innerHTML='<p class="dim">No unresolved findings in this stamp.</p>';
+    }
+  }
+  pool6();
   window.ADMIN_DESK_S1 = { armed: ARMED,
     actuate: async function(control_id, params, role){
       if(!ARMED) return { verdict: "inert-tranche-0" };

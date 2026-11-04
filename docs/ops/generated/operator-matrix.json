@@ -3,9 +3,9 @@
     "open_issues": 529,
     "open_prs": 263,
     "pr_classes": {
-      "CANDIDATE": 123,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 130,
+      "CANDIDATE": 122,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 129,
       "SUPERSEDE": 0
     }
   },
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T00:18:44Z",
+  "generated_at": "2026-11-04T00:20:13Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "04d30568e0"
+    "sha": "855a112f81"
   },
   "prs": [
     {
@@ -236,6 +236,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "bdec87999f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T00:17:43Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -298,6 +312,20 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3cac21809c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-03T22:29:49Z"
     },
     {
       "class": "CANDIDATE",
@@ -520,7 +548,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -2005,20 +2033,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "3cac21809c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-03T22:29:49Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "6e74215244",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3192,20 +3206,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "bdec87999f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T00:17:43Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3701,7 +3701,7 @@
       },
       "head_sha": "fab182c9f2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4634,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-03T22:18:19Z"
@@ -3729,7 +3729,7 @@
       },
       "head_sha": "945a6b13de",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4637,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:19:17Z"
@@ -3743,7 +3743,7 @@
       },
       "head_sha": "6f0388f6a2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4644,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:26:45Z"
@@ -3757,7 +3757,7 @@
       },
       "head_sha": "2dbcb6c097",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-03T22:49:14Z"

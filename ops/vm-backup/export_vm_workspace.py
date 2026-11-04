@@ -538,7 +538,8 @@ def publish(staging: Path, repo: str, message: str):
                                    f"(body bytes: {len(data)} raw)")
             if st not in (200, 201):
                 raise RuntimeError(f"blob create failed for {rel}: {st} "
-                       f"(body bytes: {len(data)} raw)")
+                       f"(body bytes: {len(data)} raw) "
+                       f"resp={str(blob)[:300]}")
             sha = blob["sha"]
         blob_sha[rel] = sha
     # Hierarchical tree build, deepest first.
@@ -562,7 +563,8 @@ def publish(staging: Path, repo: str, message: str):
                                 "sha": tree_sha_by_dir[sub]})
         st, t = gh_retry("POST", f"/repos/{repo}/git/trees", {"tree": entries})
         if st not in (200, 201):
-            raise RuntimeError(f"tree create failed for {d}: {st}")
+            raise RuntimeError(f"tree create failed for {d}: {st} "
+                                   f"resp={str(t)[:300]}")
         tree_sha_by_dir[d] = t["sha"]
     root_entries = []
     for rel in files:
@@ -576,13 +578,15 @@ def publish(staging: Path, repo: str, message: str):
     st, root_tree = gh_retry("POST", f"/repos/{repo}/git/trees",
                        {"tree": root_entries})
     if st not in (200, 201):
-        raise RuntimeError(f"root tree create failed: {st}")
+        raise RuntimeError(f"root tree create failed: {st} "
+                               f"resp={str(root_tree)[:300]}")
     body = {"message": message, "tree": root_tree["sha"]}
     if parent:
         body["parents"] = [parent]
     st, commit = gh_retry("POST", f"/repos/{repo}/git/commits", body)
     if st not in (200, 201):
-        raise RuntimeError(f"commit create failed: {st}")
+        raise RuntimeError(f"commit create failed: {st} "
+                               f"resp={str(commit)[:300]}")
     sha = commit["sha"]
     if parent:
         st, _ = gh_retry("PATCH", f"/repos/{repo}/git/refs/heads/main",
@@ -591,7 +595,8 @@ def publish(staging: Path, repo: str, message: str):
         st, _ = gh_retry("POST", f"/repos/{repo}/git/refs",
                    {"ref": "refs/heads/main", "sha": sha})
     if st not in (200, 201):
-        raise RuntimeError(f"ref update failed: {st}")
+        raise RuntimeError(f"ref update failed: {st} "
+                               f"resp={str(_)[:300]}")
     return sha
 
 def append_file_commit(repo: str, path: str, data: bytes, message: str):

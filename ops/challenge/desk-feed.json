@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-04T08:36:11Z",
+  "generated_at": "2026-11-04T08:51:54Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -3247,12 +3247,12 @@
         ],
         "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
       },
-      "project": "Vultr Agent Rush \u2014 pick OPEN (owner-held); target \u2205 pending owner pick",
+      "project": "Vultr Agent Rush \u2014 target DECIDED: B \u2014 Quarantine Browser Clerk (C1\u00b7B)",
       "artifact_repo": null,
       "status": "queued",
       "stages": {
-        "pick": "owner-held",
-        "spec": "pending",
+        "pick": "done",
+        "spec": "active",
         "desk": "pending",
         "builder": "pending",
         "pr": "pending",
@@ -3268,17 +3268,22 @@
           "wall": "2026-11-08 15:00 PT wall"
         }
       },
-      "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) \u00b7 D2 production target \u2205 until owner pick \u00b7 kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo \u2227 new AppID via 7075f9c0 \u2227 Vultr account + $200 gift code (gate D2-NOCARD) \u2227 team} \u00b7 \u2205 fire pre-pick \u00b7 ROUTE \u0394 (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended \u00ac deleted; \u2205 silent reroute beyond this named pair \u00b7 ARMS \u0394 (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip \u00d72, agent \u2205 invoked \u2014 runs 41301295882/41321691938) \u21d2 live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN \u00b7 Gemini OUT \u00b7 DeepSeek DOWN}; restoration \u21d2 desk flags D2 seat same-turn \u00b7 LANDING TARGET Nov 7 (wall: submission \u2264 Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
+      "next": "Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) \u00b7 D2 production target DECIDED 2026-11-04 00:51 PT: B \u2014 Quarantine Browser Clerk (C1\u00b7B) \u00b7 kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo \u2227 new AppID via 7075f9c0 \u2227 Vultr account + $200 gift code (gate D2-NOCARD) \u2227 team} \u00b7 kickoff mechanics FIRE on the decision (pick stage done \u2192 spec active) \u00b7 ROUTE \u0394 (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended \u00ac deleted; \u2205 silent reroute beyond this named pair \u00b7 ARMS \u0394 (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip \u00d72, agent \u2205 invoked \u2014 runs 41301295882/41321691938) \u21d2 live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN \u00b7 Gemini OUT \u00b7 DeepSeek DOWN}; restoration \u21d2 desk flags D2 seat same-turn \u00b7 LANDING TARGET Nov 7 (wall: submission \u2264 Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
       "provider_usage": [],
       "resubmit_policy": "edit-until-deadline",
       "decision": {
         "surface": "https://timerloggedout-spec.github.io/tribute/d2-proposals.html",
         "kind": "flow-start pick \u2014 what gets worked on for the challenge",
-        "state": "OWNER-HELD",
+        "state": "DECIDED",
         "candidates": 6,
         "advisory_order": "B>A>C>E>F>D (advisory-only)",
         "exercise": "closed 7/7",
-        "decided": null,
+        "decided": {
+          "target": "B \u2014 Quarantine Browser Clerk (C1\u00b7B)",
+          "at": "2026-11-04T00:51:00-08:00",
+          "decided_by": "owner GO + D2 manager judgment under delegation",
+          "basis": "revised advisory #1 \u00b7 unoccupied angle \u00b7 signature moment fixture-proven in held staging (8/8) \u00b7 only target meeting the compressed clock"
+        },
         "canonical_path": "internal/challenges/d2/proposals"
       }
     },
@@ -4076,7 +4081,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-04T08:36:11Z",
+    "updated_at": "2026-11-04T08:51:54Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

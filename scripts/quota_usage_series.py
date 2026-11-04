@@ -51,6 +51,7 @@ def build(root):
     events_doc = load(root, "ops/quota/rate-limit-events.json") or {}
     nested = load(root, "ops/tracking/nested-family.json") or {}
     registry = load(root, "ops/quota/registry.json") or {}
+    build_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     provider, service, model = [], [], []
 
@@ -383,17 +384,24 @@ def build(root):
                     "source_ref": task.get("source_ref"),
                 }
                 role_groups.setdefault(role, []).append(task_row)
-            models_out.append({
-                "model": mod.get("model"),
-                "roles": [{"role": role, "tasks": rows}
-                          for role, rows in sorted(role_groups.items())],
-            })
+            roles_out = []
+            for role, rows in sorted(role_groups.items()):
+                participants = {}
+                for row in rows:
+                    participant = row.get("moniker") or "NOT_ESTABLISHED"
+                    participants.setdefault(participant, []).append(row)
+                roles_out.append({
+                    "role": role,
+                    "participants": [{"moniker": participant, "tasks": tasks}
+                                     for participant, tasks in sorted(participants.items())],
+                })
+            models_out.append({"model": mod.get("model"), "roles": roles_out})
         task_providers.append({"provider": prov.get("provider"), "models": models_out})
     task_tree = {
         "schema": "quota.task-tree/v1",
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": build_at,
         "source": "ops/tracking/nested-family.json + dispatch usage records + ops/challenge/desk-feed.json",
-        "grouping": "provider -> model (verbatim) -> role (verbatim) -> tasks",
+        "grouping": "provider -> model (verbatim) -> role (verbatim) -> participant (moniker) -> tasks",
         "providers": task_providers,
         "coverage": task_coverage,
         "notes": "Exact usage is joined by dispatch_id; session_id carriers retain their exact/activity-proxy class. No match remains NOT_ESTABLISHED. Quota pool/slice appear only when stamped on the matching dispatch record.",
@@ -498,8 +506,7 @@ def build(root):
     pack = {
         "schema": "quota.usage-series/v1",
         "generated_by": "scripts/quota_usage_series.py",
-        "generated_at": datetime.now(timezone.utc).strftime(
-            "%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": build_at,
         "inputs_generated_at": {
             "ops/quota/quota-usage.json": usage_pack.get("generated_at"),
             "ops/tracking/nested-family.json": nested.get("generated_at")},

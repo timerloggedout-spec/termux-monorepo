@@ -1592,6 +1592,19 @@ Foil · Keeper (Keeper's coinage exists as queued mark
 `Keep3r`, UgreenSkills slot). ∅ occupant (nothing to name):
 House · Curator.
 
+**Adjacency flags (Recon, wide scope):** Custodian → class
+{DoE roles epoch} + program {MoneyBall custody} · Judge →
+class {challenge judges, PODIUM-DATASET} + surfaces
+{panel-judge mirror · ATES judge} · Evaluator → program
+{SWE evaluation-contract plane} · **House → the house role
+is UNBUILT in the Book (program opportunity, ∅ occupant)** ·
+Curator → surface-adjacent {stars/forks watch, Observatory
+plane} · ChronoMancer → program {cb-1 emission experiment —
+the §C emission gap} · OSINT → program {recruitment OSINT}
+· Wizard → repo subtree {archwiz/ program tree} · Keeper →
+programs {watchdog/tunnel-keeper infra}. Releases plane:
+∅ adjacencies ∀ (measured).
+
 Noise discipline: Critic/SWE/GM/anon counts are
 tokenization-inflated and are reported flagged, never as
 occupancy.

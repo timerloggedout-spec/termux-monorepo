@@ -3,8 +3,8 @@
     "open_issues": 532,
     "open_prs": 283,
     "pr_classes": {
-      "CANDIDATE": 134,
-      "EXTRACT": 10,
+      "CANDIDATE": 131,
+      "EXTRACT": 13,
       "NEED_EVIDENCE": 139,
       "SUPERSEDE": 0
     }
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T19:53:55Z",
+  "generated_at": "2026-11-04T20:00:35Z",
   "issues_unlabelled": [
     308,
     388,
@@ -155,10 +155,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "31d4df93df"
+    "sha": "bfb0208bea"
   },
   "prs": [
     {
@@ -230,6 +230,48 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "67f32c7d9d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T19:35:15Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "dc47627d9e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-04T17:49:29Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "21b9df394c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T19:59:36Z"
     },
     {
       "class": "EXTRACT",
@@ -354,7 +396,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-04T14:44:09Z"
@@ -522,7 +564,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-04T14:43:38Z"
@@ -665,7 +707,7 @@
       },
       "head_sha": "2177e62206",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
       "updated_at": "2026-11-04T14:44:27Z"
@@ -833,7 +875,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-04T14:44:06Z"
@@ -1015,7 +1057,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-04T14:43:35Z"
@@ -1069,40 +1111,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "67f32c7d9d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T19:35:15Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "dc47627d9e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-04T17:49:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -1509,20 +1523,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "508a4f1a42",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T19:41:10Z"
     },
     {
       "class": "CANDIDATE",
@@ -2247,7 +2247,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-04T14:44:20Z"
@@ -2499,7 +2499,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-04T14:44:17Z"
@@ -2555,7 +2555,7 @@
       },
       "head_sha": "bb8229b1ef",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-04T15:37:30Z"
@@ -2681,7 +2681,7 @@
       },
       "head_sha": "8223fe97b5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T16:22:44Z"
@@ -3269,7 +3269,7 @@
       },
       "head_sha": "11eceab3e9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T14:42:12Z"
@@ -3339,7 +3339,7 @@
       },
       "head_sha": "54a86ae66d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T16:59:49Z"
@@ -3423,7 +3423,7 @@
       },
       "head_sha": "8a66fdd38a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-04T14:53:19Z"

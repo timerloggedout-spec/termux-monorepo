@@ -145,7 +145,7 @@ provider
                       └── outcome (carried, never re-scored)
 ```
 
-Join priority for a task is exact `dispatch_id`; a desk carrier without a dispatch id may use its exact `session_id`. No join means `NOT_ESTABLISHED`. A numeric `usage.value` is emitted only for an exact measured record. `activity-proxy` is retained as activity and never summed into consumption. `no-usage-surface` is distinct from a missing record. Quota `pool` and `slice` are shown only when the same dispatch record carries them; planner allocation targets are not usage.
+Join priority for a task is exact `dispatch_id`; a desk carrier without a dispatch id may use its exact `session_id`. No join means `NOT_ESTABLISHED`. A numeric `usage.value` is emitted only for an exact measured record. `activity-proxy` is retained as activity and never summed into consumption. `no-usage-surface`, `waived`, `fault`, and `pending` remain distinct statuses; pre-mandate unrecoverable rows are not mislabeled as live faults. Quota `pool` and `slice` are shown only when the same dispatch record carries them (null fields may be filled from another carrier for the same dispatch id); planner allocation targets are not usage.
 
 Participant roll-ups sum only `established` values within the same native unit. Different units remain separate. Activity-only counts remain separate from consumption. No proportional attribution from shared buckets, no zero-fill, no interpolation, no inferred model/version, and no runtime admission effect.
 

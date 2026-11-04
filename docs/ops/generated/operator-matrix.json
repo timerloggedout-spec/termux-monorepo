@@ -3,9 +3,9 @@
     "open_issues": 532,
     "open_prs": 283,
     "pr_classes": {
-      "CANDIDATE": 133,
+      "CANDIDATE": 134,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 140,
+      "NEED_EVIDENCE": 139,
       "SUPERSEDE": 0
     }
   },
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T19:11:12Z",
+  "generated_at": "2026-11-04T19:47:53Z",
   "issues_unlabelled": [
     308,
     388,
@@ -158,7 +158,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "b801ce6fa5"
+    "sha": "6dfb4353d8"
   },
   "prs": [
     {
@@ -1069,12 +1069,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "73e655234c",
+      "head_sha": "67f32c7d9d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T18:36:21Z"
+      "updated_at": "2026-11-04T19:35:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1509,6 +1509,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "508a4f1a42",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T19:41:10Z"
     },
     {
       "class": "CANDIDATE",
@@ -2163,7 +2177,7 @@
       },
       "head_sha": "c9e24b3756",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4935,
       "title": "feat(quota): add nested task-level usage attribution tree",
       "updated_at": "2026-11-04T16:48:47Z"
@@ -3334,20 +3348,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "8d3dbe57c1",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T19:10:53Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -4123,7 +4123,7 @@
       },
       "head_sha": "154aa5a024",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4936,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T16:29:10Z"

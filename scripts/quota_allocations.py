@@ -111,7 +111,10 @@ def reserve_pct(pool):
 
 PRESET_SCHEMA = "quota-allocation-preset/v1"
 SNAPSHOT_SCHEMA = "quota-allocation-snapshot/v1"
-POOL_STATES = {"active", "paused", "retired"}
+# Lifecycle states only: stop PRESERVES state + shares (resume = start).
+# Retirement is NOT a lifecycle state - it is a stamped allocation
+# action (a preset-apply carrying zero shares), never a bare stop.
+POOL_STATES = {"active", "paused", "stopped"}
 METHOD_ROUTES = {"slider", "preset-apply", "preset-create", "lifecycle"}
 BOUNDS_LOCKS = ["codespaces-excluded", "dead-entitlement"]
 

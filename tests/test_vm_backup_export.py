@@ -3,7 +3,7 @@
 Synthetic HOME fixture; no network (publish is never invoked).
 Phase 1 (scoping PR #3522): T0 content is staged; T1 is manifest-only.
 """
-import json, subprocess, sys
+import json, os, subprocess, sys
 from pathlib import Path
 
 OPS = Path(__file__).resolve().parents[1] / "ops" / "vm-backup"
@@ -160,3 +160,39 @@ def test_state_hash_cycle(tmp_path):
     mem = home / "MEMORY.md"
     mem.write_bytes(b"changed content\n")
     assert run().returncode == 3          # T0 changed -> export due
+
+
+def test_split_band_stages_parts_and_restores(tmp_path):
+    # Large-blob repair (2026-11-04): a T0 file in (SPLIT_AT, SIZE_GATE]
+    # stages as byte-bounded parts + sidecar, never as one blob, and
+    # restore reassembles it byte-exact.
+    home = make_home(tmp_path)
+    spend = home / "workspace/custom-connectors/c1/spend.jsonl"
+    spend.parent.mkdir(parents=True, exist_ok=True)
+    data = os.urandom(9 * 1024 * 1024)
+    spend.write_bytes(data)
+    staging = tmp_path / "stage"
+    r = run_exporter(home, staging)
+    assert r.returncode == 0, r.stdout + r.stderr
+    files = by_source(manifest(staging))
+    e = files["workspace/custom-connectors/c1/spend.jsonl"]
+    assert e["exported"] is True
+    assert len(e["split"]["parts"]) == 2
+    assert e["split"]["part_size"] == 8 * 1024 * 1024
+    assert e["split"]["total_size"] == len(data)
+    assert (staging / "t0/workspace/custom-connectors/c1/spend.jsonl.split.json").is_file()
+    for pr in e["split"]["parts"]:
+        assert (staging / pr).stat().st_size <= 8 * 1024 * 1024
+    export_doc = json.loads((staging / "EXPORT.json").read_text())
+    assert export_doc["gates"]["pass"] is True
+    assert export_doc["counts"]["split"] == 1
+    restore = OPS / "restore_vm_workspace.py"
+    target = tmp_path / "target"
+    rr = subprocess.run(
+        [sys.executable, str(restore), "--backup", str(staging),
+         "--target", str(target), "--source-home", str(home)],
+        capture_output=True, text=True, timeout=300)
+    assert rr.returncode == 0, rr.stdout + rr.stderr
+    drill = json.loads((target / "DRILL.json").read_text())
+    assert drill["verdict"] == "pass"
+    assert (target / "workspace/custom-connectors/c1/spend.jsonl").read_bytes() == data

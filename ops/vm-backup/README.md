@@ -42,6 +42,18 @@ git-blob-SHA comparison against the previous export's tree.
   staged or published in this build.
 - **Manifest-only by size.** Any file over 25 MB (either tier) is a
   `t0-manifest`/`t1-manifest` entry with `reason=size`.
+- **Split band (large-blob repair, 2026-11-04).** A T0 file in
+  (8 MB, 25 MB] stages as byte-bounded 8 MB parts
+  (`<path>.part-0000`, …) plus a `<path>.split.json` sidecar
+  (parts, part size, total size, whole-file sha256); the manifest
+  entry keeps the logical path and whole-file sha256 with a `split`
+  record. Publish uploads parts as ordinary small blobs (a single
+  ~15.5 MB base64 blob body 400s on the surrogate publish path even
+  though the endpoint accepts ≥15 MB via the PAT helper — probe
+  2026-11-04); restore concatenates parts in order and verifies the
+  whole-file sha256. The scrub gate scans split files as their
+  reassembled whole, so a secret pattern straddling a part boundary
+  still aborts the export.
 
 **Excluded always:** `~/workspace/scratch/**`, `~/workspace/vm-backup/**`
 (lane state), `~/.config/**` (never a source), any `keys/` directory,

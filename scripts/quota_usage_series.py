@@ -217,8 +217,10 @@ def build(root):
         return x if isinstance(x, (int, float)) and not isinstance(x, bool) else None
 
     call_usage = {}
+    quota_by_dispatch = {}
+    session_usage = {}
 
-    def add_usage(dispatch_key, usage):
+    def add_usage(dispatch_key, usage, source):
         if not dispatch_key or not isinstance(usage, dict):
             return
         tin, tout = _num(usage.get("tokens_in")), _num(usage.get("tokens_out"))
@@ -229,10 +231,11 @@ def build(root):
             unit = unit or "tokens"
         if value is not None:
             call_usage[dispatch_key] = {"value": value, "unit": unit or "tokens",
-                                        "status": "measured"}
+                                        "status": "measured", "source": source}
         elif usage.get("status") == "no-usage-surface":
             call_usage.setdefault(dispatch_key, {"value": None, "unit": None,
-                                                 "status": "no-usage-surface"})
+                                                 "status": "no-usage-surface",
+                                                 "source": source})
 
     intake_path = Path(root) / "ops/3l0/intake.jsonl"
     if intake_path.is_file():
@@ -251,7 +254,9 @@ def build(root):
             if key not in stamps:
                 stamps[key] = (str(prov), str(row.get("model")),
                                str(row.get("ts")))
-            add_usage(key, row.get("usage"))
+            if row.get("dispatch_id") and isinstance(row.get("quota"), dict):
+                quota_by_dispatch.setdefault(row["dispatch_id"], row["quota"])
+            add_usage(key, row.get("usage"), "ops/3l0/intake.jsonl")
     for sub in ("records", "stamps"):
         for f in sorted(Path(root).glob(
                 "experiments/doe/routed-dispatch/" + sub + "/*.json")):
@@ -264,7 +269,25 @@ def build(root):
                 continue
             key = rec.get("dispatch_id") or (str(prov) + "|" +
                     str(rec.get("model")) + "|" + str(rec.get("ts")))
-            add_usage(key, rec.get("usage"))
+            if rec.get("dispatch_id") and isinstance(rec.get("quota"), dict):
+                quota_by_dispatch.setdefault(rec["dispatch_id"], rec["quota"])
+            add_usage(key, rec.get("usage"), "experiments/doe/routed-dispatch/" + sub)
+
+    # Session-level desk usage is a separate carrier. Preserve its match
+    # class: activity-proxy is activity, never consumption.
+    for trav in desk.get("traversals", []):
+        for row in trav.get("provider_usage", []):
+            sid = row.get("session_id")
+            usage = row.get("usage") or {}
+            if sid and isinstance(usage, dict):
+                session_usage.setdefault(str(sid), {
+                    "value": _num(usage.get("value")),
+                    "unit": usage.get("unit"),
+                    "match": usage.get("match"),
+                    "status": usage.get("status"),
+                    "source": usage.get("source") or "ops/challenge/desk-feed.json",
+                    "note": usage.get("note"),
+                })
 
     stamped_calls = []   # (provider, model, ts, value, unit)
     gap_by_provider = {}
@@ -302,6 +325,78 @@ def build(root):
                     "experiments/doe/routed-dispatch/records/*.json",
                     "experiments/doe/routed-dispatch/stamps/*.json",
                     "ops/tracking/nested-family.json"],
+    }
+
+    # Read-model projection: provider -> model (verbatim) -> role -> tasks.
+    # The nested-family record is the task denominator; only exact dispatch_id
+    # or session_id joins enrich a row. Missing usage remains explicit.
+    task_providers = []
+    task_coverage = {"tasks": 0, "established": 0, "activity_only": 0,
+                     "no_usage_surface": 0, "not_established": 0}
+    for prov in nested.get("providers", []):
+        models_out = []
+        for mod in prov.get("models", []):
+            role_groups = {}
+            for task in mod.get("tasks", []):
+                did = task.get("dispatch_id")
+                sid = task.get("session_id")
+                usage = call_usage.get(did) if did else None
+                attribution = "dispatch_id" if usage else "none"
+                if not usage and sid and str(sid) in session_usage:
+                    usage = session_usage[str(sid)]
+                    attribution = "session_id"
+                if usage and usage.get("status") == "measured":
+                    usage_view = {"value": usage.get("value"),
+                                  "unit": usage.get("unit"), "match": "exact",
+                                  "status": "established",
+                                  "source": usage.get("source"), "note": None}
+                elif usage and usage.get("match") == "activity-proxy" and usage.get("value") is not None:
+                    usage_view = {"value": usage.get("value"),
+                                  "unit": usage.get("unit"), "match": "activity-proxy",
+                                  "status": "activity-only",
+                                  "source": usage.get("source"),
+                                  "note": usage.get("note")}
+                elif usage and usage.get("status") == "no-usage-surface":
+                    usage_view = {"value": None, "unit": None, "match": None,
+                                  "status": "no-usage-surface",
+                                  "source": usage.get("source"),
+                                  "note": usage.get("note") or "Provider route exposes no per-call usage surface."}
+                else:
+                    usage_view = {"value": None, "unit": None, "match": None,
+                                  "status": "NOT_ESTABLISHED", "source": None,
+                                  "note": "No exact dispatch_id or session_id usage record is available."}
+                    attribution = "none"
+                task_coverage["tasks"] += 1
+                bucket = {"established": "established", "activity-only": "activity_only",
+                          "no-usage-surface": "no_usage_surface",
+                          "NOT_ESTABLISHED": "not_established"}[usage_view["status"]]
+                task_coverage[bucket] += 1
+                role = task.get("role") or "NOT_ESTABLISHED"
+                task_row = {
+                    "task_class": task.get("task_class"),
+                    "dispatch_id": did, "run_id": task.get("run_id"),
+                    "workflow": task.get("workflow"), "session_id": sid,
+                    "ts": task.get("ts"), "moniker": task.get("moniker"),
+                    "context": task.get("context"), "outcome": task.get("outcome"),
+                    "quota": quota_by_dispatch.get(did) if did else None,
+                    "usage": usage_view, "attribution": attribution,
+                    "source_ref": task.get("source_ref"),
+                }
+                role_groups.setdefault(role, []).append(task_row)
+            models_out.append({
+                "model": mod.get("model"),
+                "roles": [{"role": role, "tasks": rows}
+                          for role, rows in sorted(role_groups.items())],
+            })
+        task_providers.append({"provider": prov.get("provider"), "models": models_out})
+    task_tree = {
+        "schema": "quota.task-tree/v1",
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "source": "ops/tracking/nested-family.json + dispatch usage records + ops/challenge/desk-feed.json",
+        "grouping": "provider -> model (verbatim) -> role (verbatim) -> tasks",
+        "providers": task_providers,
+        "coverage": task_coverage,
+        "notes": "Exact usage is joined by dispatch_id; session_id carriers retain their exact/activity-proxy class. No match remains NOT_ESTABLISHED. Quota pool/slice appear only when stamped on the matching dispatch record.",
     }
 
     cons_prov, cons_model = {}, {}
@@ -420,6 +515,7 @@ def build(root):
         "axes": {"provider": provider, "service": service, "model": model, "events": events_axis},
         "coverage": coverage,
         "consumption_gap": consumption_gap,
+        "task_tree": task_tree,
         "notes": {
             "model": "Model series are populated from stamped dispatch records (routed-dispatch fan-out + nested-family carriers): one point per stamped dispatch, cumulative, kind activity-proxy - dispatch counts, not consumption. Instances stamped NOT ESTABLISHED carry no model@version and are excluded; nothing is inferred. Consumption-class series (kind consumption) are built from per-call usage records - ops/3l0/intake.jsonl usage{tokens_in,tokens_out} and routed-dispatch record usage{} blocks - cumulative per provider and per model@version, exact record match only. Unstamped routed calls are counted in consumption_gap (named on the page), never silently excluded.",
             "readings": "The public readings snapshots "

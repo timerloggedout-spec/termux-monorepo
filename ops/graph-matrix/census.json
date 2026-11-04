@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-04T12:15:53.868305+00:00",
+ "census_at_utc": "2026-11-04T12:19:45.160116+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,13 +13,13 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3657,
+  "total": 3658,
   "stale": 1051,
-  "orphan_no_assoc_PR": 356,
+  "orphan_no_assoc_PR": 355,
   "stale_and_orphan": 142
  },
  "prs": {
-  "total": 4244,
+  "total": 4245,
   "open": 277,
   "open_draft": 34,
   "open_draft_share": 0.1227,
@@ -88,7 +88,7 @@
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 15.2
+    "age_days": 15.3
    },
    {
     "number": 1538,
@@ -226,19 +226,19 @@
     "number": 4617,
     "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
     "created_at": "2026-11-03T20:42:00Z",
-    "age_days": 0.6
+    "age_days": 0.7
    }
   ],
-  "merged": 3475,
+  "merged": 3476,
   "closed_unmerged": 492,
   "open_no_closing_ref": 270,
   "open_unlinked_issue_target": 222,
-  "open_unlinked_any_ref": 191,
-  "merged_no_closing_ref": 3445,
-  "merged_unlinked_issue_target": 1979,
-  "merged_unlinked_any_ref": 1130,
+  "open_unlinked_any_ref": 190,
+  "merged_no_closing_ref": 3446,
+  "merged_unlinked_issue_target": 1980,
+  "merged_unlinked_any_ref": 1131,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3394,
+  "merged_head_branch_residual_name_match": 3395,
   "open_head_branch_missing": []
  },
  "issues": {

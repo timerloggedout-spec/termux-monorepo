@@ -33,13 +33,17 @@ import urllib.request, urllib.error
 from pathlib import Path
 
 SIZE_GATE = 25 * 1024 * 1024
-SPLIT_AT = 8 * 1024 * 1024  # single-blob body cap for the surrogate
-# publish path: an 11.6 MB file (~15.5 MB base64 body) 400s on blob
-# create through the surrogate proxy, while the same endpoint
-# accepts >=15 MB raw via the PAT helper (probe 2026-11-04).
-# Files in (SPLIT_AT, SIZE_GATE] stage as byte-bounded parts +
-# a .split.json sidecar; publish uploads parts as ordinary blobs
-# and restore reassembles them (byte-exact, whole-file sha256).
+SPLIT_AT = 4 * 1024 * 1024  # single-blob body cap for the surrogate
+# publish path, revised 2026-11-04 by failure evidence: an 11.6 MB
+# file (~15.5 MB base64 body) 400s, AND its 8 MB first part
+# (~10.7 MB body) 400s too (exp-20261104T194629Z-b55c7e) — the cap
+# is per-request on the surrogate path, below ~10.7 MB body, while
+# the same endpoint accepts >=15 MB raw via the PAT helper (probe
+# 2026-11-04). 4 MB parts (~5.6 MB bodies) sit well under the
+# observed failure point. Files in (SPLIT_AT, SIZE_GATE] stage as
+# byte-bounded parts + a .split.json sidecar; publish uploads parts
+# as ordinary blobs and restore reassembles them (byte-exact,
+# whole-file sha256).
 T0_ROOT_FILES = ["CLAUDE.md", "MEMORY.md", "USER.md", "IDENTITY.md",
                  "SOUL.md", "PROACTIVE_PREFERENCES.md", "AGENTS.md", "TOOLS.md"]
 T0_TREES = ["memory", "workspace/goals", "workspace/custom-connectors",
@@ -504,7 +508,8 @@ def publish(staging: Path, repo: str, message: str):
                                 {"content": base64.b64encode(data).decode(),
                                  "encoding": "base64"})
             if st not in (200, 201):
-                raise RuntimeError(f"blob create failed for {rel}: {st}")
+                raise RuntimeError(f"blob create failed for {rel}: {st} "
+                       f"(body bytes: {len(data)} raw)")
             sha = blob["sha"]
         blob_sha[rel] = sha
     # Hierarchical tree build, deepest first.

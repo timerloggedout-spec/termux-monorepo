@@ -109,7 +109,7 @@ form `Moniker · Function`, backticked, never `@`-mentioned.
 | Termux Fleet UgreenSkills | `Mimir · UgreenSkills` | — (not yet provisioned; deferred 2026-11-03, below) | aspect the Well; queued alt Keeper (below) |
 | Termux Fleet DelphiOracle | `Pythia · DelphiOracle` | `termux-fleet-delphioracle[bot]` | aspect the Utterance; queued alt Seer (below) |
 | Termux Fleet MoneyBall | `Actuary · MoneyBall` | `termux-fleet-moneyball[bot]` | aspect the Table; queued alt Kelly (below) |
-| Termux Fleet QuarantineBrowserClerk | `Proctor · QuarantineBrowserClerk` | `termux-fleet-quarantinebrowserclerk[bot]` | aspect the Session; queued alt Heimdall (below) |
+| Termux Fleet QuarantineBrowserClerk | `Proctor · QuarantineBrowserClerk` | — (not provisioned; create leg killed 2026-11-03, below) | aspect the Session; queued alt Heimdall (below) |
 
 **Swarm issuance (2026-10-31, registry lane; app provisioned the
 same day — App ID 5560920, record PR #2761).** The swarm actor's
@@ -387,6 +387,19 @@ Session appear nowhere in this roster or in the
 registration registry (`Proctor` = 1 generic exam-proctoring
 use in a certifications guide in code search, no identity
 binding).
+
+**Status (2026-11-03, AppID lane stand-down): provisioning
+COUNTERMANDED by owner correction minutes after the confer —
+D2's deliverable is a presentation, not a build; the
+build-start order was a misread. The create leg was killed
+mid-flight: no app exists (slug probe 404 verified) and no
+PROCESS.json record lands. This issuance STANDS record-only
+as the registry record for the not-yet-provisioned identity
+(the `Mimir · UgreenSkills` crossed-signal pattern): if a
+real build order ever provisions the pair, it lands with
+`Proctor · QuarantineBrowserClerk`. The repo
+timerloggedout-spec/quarantine-browser-clerk (id 1445293810)
+exists and stays dormant.**
 
 ## Identity taxonomy and moniker versioning (adopted, 2026-11-01)
 

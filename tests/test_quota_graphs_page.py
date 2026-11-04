@@ -142,6 +142,11 @@ def test_page_contract():
     assert "rate-limit event" in html
     assert "activity-proxy — NOT consumption" in html
     assert "quota-graphs.html" in QUOTA_PAGE.read_text()
+    assert "task_tree" in html
+    assert "Task attribution tree" in html
+    assert "renderTaskTree" in html
+    assert "Provider → model (verbatim) → role → participant → task" in html
+    assert "activity-proxy" in html and "NOT_ESTABLISHED" in html
 
 
 def test_pack_freshness_stamps():

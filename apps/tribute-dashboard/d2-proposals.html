@@ -58,6 +58,14 @@
   footer{margin-top:28px;border-top:1px solid var(--line);padding-top:14px;
     color:var(--mut);font-size:13.5px}
 </style>
+<style>
+  /* Shell isolation (catch credited to viz, PR #4805): dashboard.css
+     element rules for h1/a would otherwise leak into this record's
+     own standalone design; the page's class rules already win their
+     cascade (.card/.grid set every property the shell sets). */
+  h1{line-height:inherit}
+  a{color:revert;text-decoration:revert}
+</style>
 </head>
 <body>
 <header>

@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 275,
+    "open_prs": 276,
     "pr_classes": {
-      "CANDIDATE": 128,
-      "EXTRACT": 10,
+      "CANDIDATE": 127,
+      "EXTRACT": 12,
       "NEED_EVIDENCE": 137,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 273,
+      "prs": 274,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:08:58Z",
+  "generated_at": "2026-11-04T09:17:39Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "25b2eee6f3"
+    "sha": "23918cd9aa"
   },
   "prs": [
     {
@@ -298,6 +298,34 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9026886571",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-04T01:04:18Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0f45ddefd7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4841,
+      "title": "feat(dashboard): Marketing Gantt page + canon 38",
+      "updated_at": "2026-11-04T09:16:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -2005,20 +2033,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9026886571",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-04T01:04:18Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "a581e066ac",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3262,15 +3276,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
       },
-      "head_sha": "f4d4445514",
+      "head_sha": "3e4c11be2d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:07:36Z"
+      "updated_at": "2026-11-04T09:17:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3925,7 +3939,7 @@
       },
       "head_sha": "1e1b0c5398",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
       "updated_at": "2026-11-04T01:06:46Z"

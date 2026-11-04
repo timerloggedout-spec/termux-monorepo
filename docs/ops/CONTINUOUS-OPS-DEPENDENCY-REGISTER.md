@@ -27,10 +27,20 @@ the band (standing posture).
 
 | Inflow | State | Cover target |
 |---|---|---|
-| Challenge winnings | **Supplier: Desk** — rows pending (D1 judging Nov 5–18 · D2 wall Nov 8 15:00 PT · slate beyond) | Credits/cash replenish the expiring-credit rows + external spend caps |
+| Challenge winnings | **Realized to date: $0 ∀ entries** (nothing settled/won yet — Desk stamp 2026-11-04). Pipeline below = pools/AT_RISK, ¬ receivables; a win event is the only booking moment | Credits/cash replenish the expiring-credit rows + external spend caps |
 | Referral redemptions | 1 redemption = **1B Muse tokens** accrued (of record, PR #4431) · further availability: **Supplier: Marketing** | Muse token pool |
 | Affiliate payouts | Lovable/Impact: $50/subscription flat, owner-identity account (owner action of record 2026-11-03) · other programmes: **Supplier: Marketing** | External funds (owner account) |
 | Provisioned free tiers | Provider registry (ops/quota/registry.json, 171 records) — free tiers across LLM/review surfaces, onboarded via cadence-provider-onboarding | Model-access diversity: reduces draw on the Muse pool + paid buckets |
+
+### Winnings pipeline (Desk of record, 2026-11-04)
+
+| Entry | Pool | Status | Expected of record |
+|---|---|---|---|
+| D1 StudySprint | $16,800 {3 × ($5,000 AWS credits + ~$600 swag + cert)} | SUBMITTED · judging Nov 5–18 · winners ≈Nov 19–23 | **$5,000 AT_RISK** (one podium slot; mirror probs: podium .38 · finalist .42 · none .20) |
+| D2 Agent Rush | $14K (1st = $5K cash + $3K Vultr credits; banner reads $15,000 — discrepancy noted, $14K = fleet figure) | Pre-submission · landing Nov 7 · wall Nov 8 15:00 PT | ∅ booked |
+| C12 Receipts Vault (UGREEN T01) | $46,000 | Package complete · files Nov 14–15 | ∅ booked |
+| D0 Delphi | NOT_ESTABLISHED (desk records) | Upgrade maintenance · winnings-capture leg open (#4547) | ∅ booked |
+| D3 · D4 · D5 · AMD · DOMINO · Repo-Story | NOT_ESTABLISHED (desk records) | Windows Nov 6–8 → Dec | ∅ booked |
 
 ## Reading rule
 

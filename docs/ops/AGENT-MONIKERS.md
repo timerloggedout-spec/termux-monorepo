@@ -1341,6 +1341,48 @@ census-counted SSOT identities (rest = lane-coordination
 monikers, NOT_SCORED this pass) · B: 5 profiles carry ∅
 handle string · FB Pages live count NOT_ESTABLISHED (T4).
 
+
+### E. Wizard 🪄 spell/command layer — Grimoire influence (owner addition ②)
+
+Same basis as §D (Linguist T3; feed blob pinned there), census
+= Recon T5. **Boundary:** the Linguist home layer (harmony_hub/**
+· scripts/linguist/** · panel-feed surfaces) is EXCLUDED from
+measurement — measuring the Grimoire on its own home = circular
+(home scale for reference: incantation 10 hits · grimoire 77
+hits, repo-wide).
+
+Population (outside home, casting-sense) = 22 items:
+archwiz/ spell/forge-named artifacts 13 · entry commands 2
+(`archwiz.py` · `archwiz.sh`) · cedrlang spell-vocab export
+pairs 5 (workspace/compression_sandbox) · forge oversight docs
+2. Workflow invocations: ∅ items (0 spell-named in
+.github/workflows) · skill/connector command names: ∅ items
+(plain verbs of record).
+
+| stratum | scored | derived | classes |
+|---|---|---|---|
+| cedrlang export tokens (`1nc4nt` · `c4st` · `gr1m01r3` · `l00p` · `f0rk`) | 5 | **5** | C1+C3+C4 ∀ |
+| archwiz artifacts + entries (`vision_1337` C1) | 14 | 1 | C1 |
+| forge docs | 2 | 0 | — |
+| workflows · skills/connectors | 0 items | — | — |
+
+**Result: decidable Grimoire derivation = 6/21 scored =
+28.6%**, concentrated entirely in the cedrlang export (the
+spell vocabulary deliberately carried into the command layer
+as leet tokens). Excluded form-hit: `oracle_v2` (version
+digit, ambiguity rule). **Theme ≠ derivation:** the remaining
+archwiz items (`forge` ×4 · `rune` · `aether` · `codex` ·
+`sentinel` · `oracle` ×2 · `lexicon` ×2 · `archwiz` ×2
+near-C5 · `tasque_declare`) are wizard-THEMED plain English —
+ruled-out (c) under the basis, logged here ¬ counted.
+**Containment finding:** outside the wizard-named tree and
+its cedrlang export, the spell/command layer's general
+surfaces (workflows · skills · connectors) carry ∅
+Grimoire-derived items — the influence is real where the
+layer is deliberate, and does not leak into general command
+naming. Coverage: name-level census; full-text casting-sense
+audit of ∀ workflow step names NOT_ESTABLISHED (T5).
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

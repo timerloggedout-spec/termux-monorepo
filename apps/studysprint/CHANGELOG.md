@@ -1,3 +1,8 @@
+# Changelog
+
+All notable changes to StudySprint. Process: `VERSIONING.md`.
+Entries are the GitHub Release notes, verbatim.
+
 ## [Unreleased]
 
 ## [1.0.0] — 2026-11-04
@@ -239,11 +244,6 @@ Implementation Assurance seat), session
   FSRS_GENERATION), generation stamped on receipts and the UX
   export; the export's per-card state now carries the learning
   step the surfaces schedule from.
-
-# Changelog
-
-All notable changes to StudySprint. Process: `VERSIONING.md`.
-Entries are the GitHub Release notes, verbatim.
 
 ## [0.5.0] — 2026-11-03
 

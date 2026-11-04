@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-04T00:04:35Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-04T00:12:14Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `34a46c41d4` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `179eda93d2` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 523 issues, 263 PRs. PR classes: EXTRACT 10 / CANDIDATE 124 / NEED_EVIDENCE 129 / SUPERSEDE 0.
 
@@ -38,7 +38,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1441 | CANDIDATE | unlabelled | `e17f7db4a0` | success | success | unknown | feat(triage): reconcile official quota before dispatch |
 | #1469 | CANDIDATE | unlabelled | `c7f74de860` | success | success | unknown | test(observatory): restore upstream provenance PR validation |
 | #1470 | CANDIDATE | unlabelled | `d2778bcc25` | success | success | unknown | feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| #1494 | CANDIDATE | unlabelled | `8464945ec4` | success | success | unknown | 📖 Linguist: conversational steganography cipher & notation matrices |
+| #1494 | CANDIDATE | unlabelled | `8464945ec4` | success | success | dirty | 📖 Linguist: conversational steganography cipher & notation matrices |
 | #1499 | CANDIDATE | unlabelled | `0c3049a96f` | success | success | unknown | 🛡️ Sentinel: prevent parent symlink hijacking in obsidian server token read |
 | #1510 | CANDIDATE | unlabelled | `559607ff39` | success | success | unknown | ⚡ Bolt: optimize workflow catalog generation and fingerprint caching |
 | #1513 | CANDIDATE | unlabelled | `04c92a1763` | success | success | unknown | test(observatory): verify Gravitee fork upstream identity |
@@ -109,7 +109,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3757 | CANDIDATE | unlabelled | `32224dee89` | success | success | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
 | #3763 | CANDIDATE | unlabelled | `50bba792c7` | success | success | unknown | archwiz ⑥: archaeo cursor-mode spec + inert workflow pass-through (context_relat |
-| #3916 | CANDIDATE | unlabelled | `e7598f168e` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #3916 | CANDIDATE | unlabelled | `94b5e08740` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3969 | CANDIDATE | unlabelled | `d01e2c211e` | success | success | unknown | ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D pr |
 | #4006 | CANDIDATE | unlabelled | `658953af69` | success | success | unknown | Implement Merged Branch Review Audit and Production Quota Engine |
 | #4007 | CANDIDATE | unlabelled | `8a75972a42` | success | success | unknown | Wire invocation observations into Free-Tier Value evidence projection |
@@ -182,7 +182,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2186 | NEED_EVIDENCE | unlabelled | `52de1f57a1` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2187 | NEED_EVIDENCE | unlabelled | `e97d22fe58` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2235 | NEED_EVIDENCE | unlabelled | `0f45b63561` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
+| #2235 | NEED_EVIDENCE | unlabelled | `0f45b63561` | not_reported | not_reported | unstable | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -265,14 +265,14 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4627 | NEED_EVIDENCE | unlabelled | `e63a489dbf` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4630 | NEED_EVIDENCE | unlabelled | `eb5582a725` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4631 | NEED_EVIDENCE | unlabelled | `9a3060f2b6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4634 | NEED_EVIDENCE | unlabelled | `fab182c9f2` | not_reported | not_reported | unstable | chore(recon): refresh pinned free-provider research |
+| #4634 | NEED_EVIDENCE | unlabelled | `fab182c9f2` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4635 | NEED_EVIDENCE | unlabelled | `2f3e775337` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4637 | NEED_EVIDENCE | unlabelled | `945a6b13de` | not_reported | not_reported | unstable | chore(ops): refresh computed countdown lines |
-| #4644 | NEED_EVIDENCE | unlabelled | `6f0388f6a2` | not_reported | not_reported | unstable | chore(ops): refresh computed countdown lines |
-| #4646 | NEED_EVIDENCE | unlabelled | `2dbcb6c097` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
-| #4663 | NEED_EVIDENCE | unlabelled | `ed7de200b9` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4664 | NEED_EVIDENCE | unlabelled | `d7c97fb814` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4670 | NEED_EVIDENCE | unlabelled | `fed92480f8` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #4637 | NEED_EVIDENCE | unlabelled | `945a6b13de` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #4644 | NEED_EVIDENCE | unlabelled | `6f0388f6a2` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
+| #4646 | NEED_EVIDENCE | unlabelled | `2dbcb6c097` | not_reported | not_reported | unstable | chore(countdowns): refresh challenge-countdowns-feed.json |
+| #4663 | NEED_EVIDENCE | unlabelled | `ed7de200b9` | not_reported | not_reported | unstable | chore(ops): refresh computed countdown lines |
+| #4664 | NEED_EVIDENCE | unlabelled | `d7c97fb814` | not_reported | not_reported | unstable | chore(ops): refresh computed countdown lines |
+| #4670 | NEED_EVIDENCE | unlabelled | `fed92480f8` | not_reported | not_reported | unstable | chore(ops): refresh computed countdown lines |
 | #4686 | NEED_EVIDENCE | unlabelled | `09dae5e5cc` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4690 | NEED_EVIDENCE | unlabelled | `a5d56fdac6` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
 | #4699 | NEED_EVIDENCE | unlabelled | `da4dea4119` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

@@ -3,9 +3,9 @@
     "open_issues": 523,
     "open_prs": 263,
     "pr_classes": {
-      "CANDIDATE": 123,
+      "CANDIDATE": 124,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 130,
+      "NEED_EVIDENCE": 129,
       "SUPERSEDE": 0
     }
   },
@@ -99,7 +99,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T00:03:09Z",
+  "generated_at": "2026-11-04T00:04:35Z",
   "issues_unlabelled": [
     308,
     388,
@@ -149,10 +149,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "8879216de7"
+    "sha": "34a46c41d4"
   },
   "prs": [
     {
@@ -1503,6 +1503,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e7598f168e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T00:02:36Z"
     },
     {
       "class": "CANDIDATE",
@@ -3188,20 +3202,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "queued"
-      },
-      "head_sha": "e7598f168e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T00:02:36Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3697,7 +3697,7 @@
       },
       "head_sha": "fab182c9f2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4634,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-03T22:18:19Z"
@@ -3725,7 +3725,7 @@
       },
       "head_sha": "945a6b13de",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4637,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:19:17Z"
@@ -3739,7 +3739,7 @@
       },
       "head_sha": "6f0388f6a2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4644,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T22:26:45Z"

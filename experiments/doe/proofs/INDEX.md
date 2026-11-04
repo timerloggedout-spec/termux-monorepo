@@ -39,8 +39,8 @@ EPOCH-2026-11-03 + CMP register, at 2026-11-03.
 
 | Experiment of record | Proof status | Artifact / owed |
 |---|---|---|
-| Settlement machinery (wagering book B1–B5/F1; G0 cycle) | **proved-fragment** | E001.lean §1 (PR #4729): predicates + the audit's fixtures discharged by decide incl. Brier control 1/25. Owed: oracle run 41746401168 verdict (in flight); B3 authenticity + leg independence OPEN in E001 §5 |
-| Amendment-6 snapshot method (% discipline) | **proved-fragment** | E001.lean §2: Snapshot shape + validity, floor both directions proved. Owed: Wilson/Dirichlet bound correctness — Mathlib leg (E001 §5 referent) |
+| Settlement machinery (wagering book B1–B5/F1; G0 cycle) | **proved-fragment** | E001.lean §1 (PR #4729). **Oracle run 41746401168 verdict: FAIL** (artifact 13283792285, read firsthand 2026-11-03; compile failure localized to §2 — see the verdict record in MANIFEST.json). Owed: E001 amendment packet (§2 restructure + re-run as a new run; the FAIL stands); B3 authenticity + leg independence OPEN in E001 §5 |
+| Amendment-6 snapshot method (% discipline) | **proved-fragment — §2 REFUTED AS WRITTEN** | E001.lean §2's fixture theorems (lines 161–163) fail to compile: SnapshotValid runs over Rat bounds whose decidable order does not kernel-reduce under decide, and the failed below-floor proof carries a synthetic sorryAx. The shape is stated; the discharge is owed by the amendment packet (Nat-scaled bounds). Wilson/Dirichlet correctness additionally owed — Mathlib leg (E001 §5 referent) |
 | The cycle / iteration / generation / epoch shapes | **proved-fragment** | E001.lean §§3–4: stage transitions + trace validity (G0 + layered traces), iteration opening rule, cull-record shape, epoch freeze bound — all by decide. Owed: nothing structural; richer traces as cycles accumulate |
 | Pool-scope census (693 pools; counts + reconciliation) | **open** | Counts proved by two-leg reconciliation (non-Lean evidence of record). Owed: the count arithmetic as decidable list computation over the ledger (gap E006) |
 | EGM instance #2 (Delphi rubric reads shape alone) | **open** | Verdict of record rests on filed scores (6 filings, identical 9.12 profiles; spreads 0.00). Fully decidable arithmetic — first gap item (E002) |
@@ -89,6 +89,8 @@ Each packet follows the E001 pattern and lands in
 `research/nse-023/examples/`; each landing updates this map by
 new entry (the map is append-only in revision, like the
 registers it indexes). Until its row moves, every experiment
-above reads **INCOMPLETE** in the register — including, until
-run 41746401168 returns its verdict, the proved-fragment rows'
-run leg.
+above reads **INCOMPLETE** in the register. Run 41746401168 has
+returned: **FAIL** (see MANIFEST.json verdict record) — the
+proved-fragment rows keep that status with the FAIL on their
+face; nothing was upgraded, and the repair enters as an
+amendment packet + a new run, never a silent re-dispatch.

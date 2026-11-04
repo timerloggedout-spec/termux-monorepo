@@ -14,7 +14,9 @@
     "artifact": "research/nse-023/examples/E001.lean",
     "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
     "oracle_run": 41746401168,
-    "verdict": "PENDING \u2014 run in flight at map time",
+    "verdict": "FAIL",
+    "verdict_artifact": 13283792285,
+    "verdict_basis": "verdict.json read firsthand by DoE (doe-expert) 2026-11-03: build_outcome success, compile_outcome failure, verdict FAIL. Failures localized to section 2 (Snapshot): fixture decides at lines 161-163 do not kernel-reduce (SnapshotValid runs over Rat bounds; Rat's decidable order does not reduce under decide), a Snapshot.mk field error in the fixtures, and snapshot_point_below_floor carries sorryAx \u2014 the synthetic sorry Lean inserts for a failed proof (no sorry was authored; the packet as landed does not prove section 2). Axioms lines in tail: g0_trace_valid [propext], epoch_bound [none]. The artifact carries a tail by design; a fuller error census is not established from it. FAIL stands on record; repair = E001 amendment packet (section-2 restructure), never a silent re-dispatch.",
     "section": "\u00a71"
    },
    "data_layers": [
@@ -24,7 +26,7 @@
     "moneyball:data/settlement-report.json",
     "moneyball:scripts/settlement/replay.py"
    ],
-   "owed": "oracle run verdict; B3 authenticity + leg independence OPEN (E001 \u00a75)"
+   "owed": "E001 amendment packet: section-2 (Snapshot) restructure so validity reduces (Nat-scaled bounds in place of Rat) + fixture constructor fix; re-run as a NEW run on the amended packet. The FAIL of run 41746401168 stands on record permanently. Open statements (B3 authenticity, leg independence) unchanged."
   },
   {
    "experiment": "Amendment-6 snapshot method (% discipline)",
@@ -33,7 +35,9 @@
     "artifact": "research/nse-023/examples/E001.lean",
     "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
     "oracle_run": 41746401168,
-    "verdict": "PENDING \u2014 run in flight at map time",
+    "verdict": "FAIL",
+    "verdict_artifact": 13283792285,
+    "verdict_basis": "verdict.json read firsthand by DoE (doe-expert) 2026-11-03: build_outcome success, compile_outcome failure, verdict FAIL. Failures localized to section 2 (Snapshot): fixture decides at lines 161-163 do not kernel-reduce (SnapshotValid runs over Rat bounds; Rat's decidable order does not reduce under decide), a Snapshot.mk field error in the fixtures, and snapshot_point_below_floor carries sorryAx \u2014 the synthetic sorry Lean inserts for a failed proof (no sorry was authored; the packet as landed does not prove section 2). Axioms lines in tail: g0_trace_valid [propext], epoch_bound [none]. The artifact carries a tail by design; a fuller error census is not established from it. FAIL stands on record; repair = E001 amendment packet (section-2 restructure), never a silent re-dispatch.",
     "section": "\u00a72"
    },
    "data_layers": [
@@ -42,7 +46,7 @@
     "ops/agentic-gambling/site/wallet-ledger.jsonl",
     "experiments/speculators/token-strategies/DESIGN.json"
    ],
-   "owed": "Wilson/Dirichlet bound correctness \u2014 Mathlib leg M001"
+   "owed": "E001 amendment packet: section-2 (Snapshot) restructure so validity reduces (Nat-scaled bounds in place of Rat) + fixture constructor fix; re-run as a NEW run on the amended packet. The FAIL of run 41746401168 stands on record permanently. Open statements (B3 authenticity, leg independence) unchanged."
   },
   {
    "experiment": "Cycle / iteration / generation / epoch shapes",
@@ -51,7 +55,9 @@
     "artifact": "research/nse-023/examples/E001.lean",
     "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
     "oracle_run": 41746401168,
-    "verdict": "PENDING \u2014 run in flight at map time",
+    "verdict": "FAIL",
+    "verdict_artifact": 13283792285,
+    "verdict_basis": "verdict.json read firsthand by DoE (doe-expert) 2026-11-03: build_outcome success, compile_outcome failure, verdict FAIL. Failures localized to section 2 (Snapshot): fixture decides at lines 161-163 do not kernel-reduce (SnapshotValid runs over Rat bounds; Rat's decidable order does not reduce under decide), a Snapshot.mk field error in the fixtures, and snapshot_point_below_floor carries sorryAx \u2014 the synthetic sorry Lean inserts for a failed proof (no sorry was authored; the packet as landed does not prove section 2). Axioms lines in tail: g0_trace_valid [propext], epoch_bound [none]. The artifact carries a tail by design; a fuller error census is not established from it. FAIL stands on record; repair = E001 amendment packet (section-2 restructure), never a silent re-dispatch.",
     "section": "\u00a7\u00a73\u20134"
    },
    "data_layers": [
@@ -60,7 +66,7 @@
     "Neon lane-events (custom.neon; project dawn-breeze-73523999)",
     "HindSight telemetry corpus"
    ],
-   "owed": "richer traces as cycles accumulate"
+   "owed": "E001 amendment packet: section-2 (Snapshot) restructure so validity reduces (Nat-scaled bounds in place of Rat) + fixture constructor fix; re-run as a NEW run on the amended packet. The FAIL of run 41746401168 stands on record permanently. Open statements (B3 authenticity, leg independence) unchanged."
   },
   {
    "experiment": "Pool-scope census (693 pools; counts + reconciliation)",
@@ -128,7 +134,9 @@
     "artifact": "research/nse-023/examples/E001.lean",
     "provenance": "PR #4729 merged 9655b527a714 (landed home; cited, not moved)",
     "oracle_run": 41746401168,
-    "verdict": "PENDING \u2014 run in flight at map time",
+    "verdict": "FAIL",
+    "verdict_artifact": 13283792285,
+    "verdict_basis": "verdict.json read firsthand by DoE (doe-expert) 2026-11-03: build_outcome success, compile_outcome failure, verdict FAIL. Failures localized to section 2 (Snapshot): fixture decides at lines 161-163 do not kernel-reduce (SnapshotValid runs over Rat bounds; Rat's decidable order does not reduce under decide), a Snapshot.mk field error in the fixtures, and snapshot_point_below_floor carries sorryAx \u2014 the synthetic sorry Lean inserts for a failed proof (no sorry was authored; the packet as landed does not prove section 2). Axioms lines in tail: g0_trace_valid [propext], epoch_bound [none]. The artifact carries a tail by design; a fuller error census is not established from it. FAIL stands on record; repair = E001 amendment packet (section-2 restructure), never a silent re-dispatch.",
     "section": "\u00a75 (OPEN: EKMAN adequacy, dispersion)"
    },
    "data_layers": [
@@ -309,5 +317,6 @@
    ],
    "owed": "candidates (specified_not_run); dual-accumulator non-compensability invariant first when briefed"
   }
- ]
+ ],
+ "e001_verdict": "FAIL (run 41746401168, artifact 13283792285, read firsthand 2026-11-03)"
 }

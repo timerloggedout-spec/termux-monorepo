@@ -1,5 +1,56 @@
 ## [Unreleased]
 
+### Surfaces 0.5.0 (parity iteration 4, #4417 — hardening + §1b completion)
+
+- **State recall + stress hardening binds on all three
+  surfaces (opt-in only).** The core's study_hardening arrives
+  as a Hardening view (web/APK) and tab (TUI): varied-context
+  practice rotations, the mental-reinstatement script, and
+  graduated SIT drill plans whose pressure elements are seeded
+  by the drill id (receipt-reproducible). The mode is OFF by
+  default; without the student's opt-in the plan is the core's
+  refusal receipt and no drill exists. Ceilings ride verbatim
+  ("performance under stress/anxiety — not recall gains");
+  results record answered + 'not yet' counts with a supportive
+  close — no score, deduction, or penalty field exists, by
+  construction. Web runs browser ports battery-pinned to the
+  core; the TUI runs the real functions.
+- **§1b completes on a real book.** The demonstration book —
+  Darwin, On the Origin of Species, 6th edition (Project
+  Gutenberg #2009), Chapter XIV plus the book's complete
+  Glossary and Index (typographic normalization only) — is
+  ingested through the core pipeline on every surface. The
+  ingest receipt shows the counts on each surface: **62 terms
+  mined · 62 with definitions · 2 with index refs**
+  (Embryology p.386 · Morphology p.382). Chapter XIV is the
+  demonstration chapter because its own title names two
+  indexed headwords, so every leg of the machinery fires on
+  real data.
+- **Inline term expansion in all three readers.** The book's
+  sections render with the core's emphasized terms; selecting
+  one expands its tap payload inline — glossary definition,
+  index pages, and the sections it appears in (the web renders
+  the core-computed segments and payloads from the build-time
+  bundle; the TUI computes them live).
+- **Hypothes.is annotations view.** Annotations over the
+  book's sections render in the W3C Web Annotation model (the
+  core's make_annotation), anchored by TextQuoteSelector. The
+  API leg syncs with an account token — not configured on
+  these surfaces, so nothing leaves the device.
+- **OCR seam, wired where the platform allows.** The TUI/CLI
+  path runs the core's tesseract default through ingest_any
+  (provenance stamped `ocr`); on web/APK a photographed page
+  is recorded as awaiting core OCR — the browser cannot run
+  tesseract, and the surface says so.
+- **Core fix carried by this iteration:** ingest_any no
+  longer extracts a textbook's structure from its own back
+  matter — a single-file book's Glossary/Index are the term
+  bank's spine, not a chapter, so mined counts never count
+  the glossary against itself (185 → the honest 62 on the
+  demonstration book). ingest_any's textbook receipt now also
+  carries the with-definitions / with-index-refs counts every
+  surface shows.
+
 ### Surfaces 0.4.0 (parity iteration 3, #4416 — multi-course)
 
 - **Multi-course binds on all three surfaces.** The course set

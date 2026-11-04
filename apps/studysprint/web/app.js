@@ -11,6 +11,9 @@
  */
 
 const $ = (s) => document.querySelector(s);
+const escapeHtml = (s) => String(s ?? "")
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const state = { data: null, cardIndex: 0, flipped: false,
                 scheduler: "fsrs", srState: {}, reader: null,
                 playing: false, timer: null,
@@ -447,6 +450,175 @@ function bundleFromSyllabusPort(doc) {
            memory: null, custom: true };
 }
 
+/* ---------------- hardening ports (iteration 4, #4417)
+   Browser ports of study_hardening.py, battery-pinned to the
+   core in tests/test_iteration4_hardening_terms.py. The claims
+   ceilings are the core's, verbatim. Hardening is OPT-IN ONLY:
+   without the opt-in the plan port returns the core's refusal
+   shape and no drill exists. */
+const HARDENING_CEILING =
+  "performance under stress/anxiety — not recall gains";
+const RECALL_CEILING =
+  "context effects are modest (encoding specificity, meta " +
+  "d~0.28): varied-context practice + mental reinstatement, " +
+  "not single-room matching";
+const DEFAULT_CONTEXTS = [
+  { place: "library desk", time_of_day: "morning",
+    materials: "paper + pen" },
+  { place: "kitchen table", time_of_day: "evening",
+    materials: "laptop" },
+  { place: "campus bench", time_of_day: "afternoon",
+    materials: "phone cards" },
+  { place: "quiet room", time_of_day: "morning",
+    materials: "printed notes" },
+];
+const PRESSURE_MENU = [
+  "visible countdown",
+  "ambient exam-hall sounds",
+  "strict per-question pacing",
+  "one mid-drill interruption card",
+  "unfamiliar room (or a picture of one)",
+];
+const SIT_PHASES = [
+  { phase: 1, name: "conceptualization", timed: false,
+    pressure: [],
+    brief: "Learn the drill format. No clock, no pressure — " +
+           "just see how it works." },
+  { phase: 2, name: "rehearsal", timed: true, pressure: [],
+    brief: "Timed, calm. Practice the skills: pacing, " +
+           "breathing, moving on from a hard question." },
+  { phase: 3, name: "application", timed: true,
+    pressure: "graduated",
+    brief: "Timed with exam-like pressure elements, added " +
+           "one at a time. The drill is practice — nothing " +
+           "here can hurt your grade." },
+];
+function variedContextPlanPort(sessions, contexts) {
+  const ctxs = (contexts || DEFAULT_CONTEXTS).slice();
+  if (sessions <= 0 || !ctxs.length) return { assignments: [] };
+  const stride = ctxs.length > 2 ? 2 : 1;
+  const assignments = [];
+  let lastPlace = null, idx = 0;
+  for (let i = 0; i < sessions; i++) {
+    let ctx = ctxs[idx % ctxs.length];
+    if (ctx.place === lastPlace && ctxs.length > 1) {
+      idx += 1; ctx = ctxs[idx % ctxs.length];
+    }
+    assignments.push({ session: i + 1, ...ctx });
+    lastPlace = ctx.place; idx += stride;
+  }
+  return { assignments, claims_ceiling: RECALL_CEILING };
+}
+function reinstatementScriptPort(examRoom, course) {
+  return { course, exam_room: examRoom, steps: [
+    `Close your eyes. Picture ${examRoom} — the door, the ` +
+    "clock, where you will sit.",
+    "Hear the room: paper, chairs, the invigilator's voice.",
+    `Now picture the first ${course} question arriving, and ` +
+    "yourself starting calmly — you have practiced in many " +
+    "rooms, and this one is just another.",
+    "Open your eyes. Begin with the question you know best.",
+  ], claims_ceiling: RECALL_CEILING };
+}
+function sha256Hex(ascii) {
+  // Compact SHA-256 (FIPS 180-4) — needed so the pressure
+  // selection port is bit-identical to the core's seeded pick.
+  const K = [
+    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b,
+    0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
+    0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7,
+    0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+    0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152,
+    0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+    0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc,
+    0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819,
+    0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08,
+    0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f,
+    0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+    0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2];
+  const H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+             0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+  const bytes = [];
+  for (let i = 0; i < ascii.length; i++) {
+    const c = ascii.charCodeAt(i);
+    if (c < 0x80) bytes.push(c);
+    else if (c < 0x800) {
+      bytes.push(0xc0 | (c >> 6), 0x80 | (c & 0x3f));
+    } else {
+      bytes.push(0xe0 | (c >> 12), 0x80 | ((c >> 6) & 0x3f),
+                 0x80 | (c & 0x3f));
+    }
+  }
+  const bitLen = bytes.length * 8;
+  bytes.push(0x80);
+  while (bytes.length % 64 !== 56) bytes.push(0);
+  for (let i = 7; i >= 0; i--)
+    bytes.push(Math.floor(bitLen / Math.pow(2, i * 8)) % 256);
+  const rr = (v, n) => (v >>> n) | (v << (32 - n));
+  for (let off = 0; off < bytes.length; off += 64) {
+    const w = new Array(64);
+    for (let t = 0; t < 16; t++)
+      w[t] = (bytes[off + t * 4] << 24) | (bytes[off + t * 4 + 1] << 16) |
+             (bytes[off + t * 4 + 2] << 8) | bytes[off + t * 4 + 3];
+    for (let t = 16; t < 64; t++) {
+      const s0 = rr(w[t - 15], 7) ^ rr(w[t - 15], 18) ^ (w[t - 15] >>> 3);
+      const s1 = rr(w[t - 2], 17) ^ rr(w[t - 2], 19) ^ (w[t - 2] >>> 10);
+      w[t] = (w[t - 16] + s0 + w[t - 7] + s1) | 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let t = 0; t < 64; t++) {
+      const S1 = rr(e, 6) ^ rr(e, 11) ^ rr(e, 25);
+      const ch = (e & f) ^ (~e & g);
+      const t1 = (h + S1 + ch + K[t] + w[t]) | 0;
+      const S0 = rr(a, 2) ^ rr(a, 13) ^ rr(a, 22);
+      const mj = (a & b) ^ (a & c) ^ (b & c);
+      const t2 = (S0 + mj) | 0;
+      h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b;
+      b = a; a = (t1 + t2) | 0;
+    }
+    H[0] = (H[0] + a) | 0; H[1] = (H[1] + b) | 0;
+    H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0;
+    H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0;
+    H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+  }
+  return H.map((x) => (x >>> 0).toString(16).padStart(8, "0"))
+          .join("");
+}
+function pressureForPort(drillId, count) {
+  const seed = parseInt(sha256Hex(String(drillId)).slice(0, 8), 16);
+  const picks = [], seen = new Set();
+  let i = 0;
+  while (picks.length < Math.min(count, PRESSURE_MENU.length)) {
+    const pick = PRESSURE_MENU[(seed + i * 3) % PRESSURE_MENU.length];
+    if (!seen.has(pick)) { picks.push(pick); seen.add(pick); }
+    i += 1;
+  }
+  return picks;
+}
+function planHardeningDrillPort(drillId, phase, optIn) {
+  const base = { schema: "studysprint-hardening-receipt/v1",
+                 kind: "hardening-plan", drill_id: drillId,
+                 opt_in: !!optIn,
+                 claims_ceiling: HARDENING_CEILING };
+  if (!optIn)
+    return { ...base, status: "refused",
+             reason: "hardening is opt-in only; this drill " +
+                     "was not created" };
+  if (![1, 2, 3].includes(phase))
+    throw new Error(`SIT phase must be 1, 2, or 3, got ${phase}`);
+  const spec = JSON.parse(JSON.stringify(SIT_PHASES[phase - 1]));
+  if (spec.pressure === "graduated")
+    spec.pressure = pressureForPort(drillId, phase - 1);
+  return { ...base, status: "planned", ...spec,
+           no_guilt: "pressure carries no penalties; a miss " +
+                     "is 'not yet', never a failure" };
+}
+function drillResultClosePort() {
+  return "Drill done. The 'not yet' pile is a study list, " +
+         "not a verdict — it gets smaller every round.";
+}
+
 /* ---------------- loading + rendering */
 async function load() {
   // Failure state (#4237): a failed or unparsable state.json used
@@ -478,6 +650,7 @@ async function load() {
 function renderAll() {
   renderToday(); renderPlan(); renderReader(); showCard();
   renderCalendar(); renderRoutes(); renderMemory();
+  renderBookReceipt(); renderAnnotations(); renderHardening();
   const ux = state.data.sr && state.data.sr.ux_state;
   if (ux && ux.generation && ux.generation !== FSRS_GENERATION) {
     $("#sr-receipt").textContent =
@@ -880,8 +1053,17 @@ function gradeFromReminder(cardId, gradeValue) {
 }
 
 /* ---------------- reader (RSVP) */
+function allReaderSections() {
+  // Course sections + the §1b demonstration book's sections
+  // (iteration 4): one picker, the book flagged as book.
+  const course = (state.data.reader.sections || []).map(
+    (s) => ({ ...s, book: false }));
+  const book = ((state.data.book || {}).sections || []).map(
+    (s) => ({ ...s, book: true }));
+  return course.concat(book);
+}
 function renderReader(sectionIndex) {
-  const sections = state.data.reader.sections;
+  const sections = allReaderSections();
   if (!sections.length) return;
   // #4217: EVERY shipped section is reachable — a picker plus
   // prev/next, not just the first section forever.
@@ -892,12 +1074,148 @@ function renderReader(sectionIndex) {
   if (picker) {
     picker.innerHTML = sections.map((s, j) =>
       `<option value="${j}"${j === i ? " selected" : ""}>` +
-      `${s.chapter} — ${s.title}</option>`).join("");
+      `${s.book ? "Book — " : ""}${s.chapter} — ${s.title}</option>`).join("");
   }
   $("#reader-section").textContent =
     `${sections[i].chapter} — ${sections[i].title} ` +
     `(section ${i + 1} of ${sections.length})`;
   $("#reader-word").textContent = "Press Start";
+  renderReaderText(sections[i]);
+}
+function renderReaderText(section) {
+  // The book section renders its full text with the core's
+  // emphasized terms as tap targets (iteration 4, §1b): tap a
+  // term -> its glossary definition + index pages + sections
+  // expand inline, from the core's tap payload. Course sections
+  // stay RSVP-only, as before.
+  const el = $("#reader-text");
+  const panel = $("#term-panel");
+  if (!el) return;
+  if (!section.book) {
+    el.innerHTML = ""; el.classList.add("hidden");
+    if (panel) { panel.innerHTML = ""; panel.classList.add("hidden"); }
+    return;
+  }
+  el.classList.remove("hidden");
+  el.innerHTML = (section.segments || []).map((seg) => seg.term
+    ? `<button type="button" class="term" data-term="` +
+      `${escapeHtml(seg.term.toLowerCase())}">` +
+      `${escapeHtml(seg.text)}</button>`
+    : escapeHtml(seg.text)).join("");
+}
+function renderTermPanel(termKey) {
+  const panel = $("#term-panel");
+  const tap = ((state.data.book || {}).taps || {})[termKey];
+  if (!panel || !tap) return;
+  panel.classList.remove("hidden");
+  panel.innerHTML =
+    `<strong>${escapeHtml(tap.term)}</strong> — ` +
+    `${escapeHtml(tap.definition)}<br>` +
+    `Index pages: ${tap.index_pages.length ? tap.index_pages.join(", ") : "—"} · ` +
+    `Appears in: ${tap.sections.map(escapeHtml).join(", ")} ` +
+    `(${escapeHtml(tap.chapter)})<br>` +
+    `From the book's own Glossary + Index, mined at ingest ` +
+    `by the core term bank.`;
+  if (panel.scrollIntoView) panel.scrollIntoView();
+}
+function renderAnnotations() {
+  const el = $("#annotations");
+  if (!el) return;
+  const book = state.data.book || {};
+  const anns = book.annotations || [];
+  el.innerHTML = `<h3>Annotations (hypothes.is leg)</h3>` +
+    (anns.length ? anns.map((a) => {
+      const sel = a.target.selector || {};
+      return `<div class="annotation"><blockquote>` +
+        `${escapeHtml(sel.exact || "")}</blockquote>` +
+        `<p>${escapeHtml(a.body[0].value)}</p>` +
+        `<p class="meta">Tags: ${(a.tags || []).map(escapeHtml).join(", ")} · ` +
+        `model: W3C Web Annotation</p></div>`;
+    }).join("") : "<p>No annotations of record.</p>") +
+    `<p class="meta">${escapeHtml(book.annotations_note || "")}</p>`;
+}
+function hardeningOptIn() {
+  return localStorage.getItem("ss.hardening.optin") === "1";
+}
+function renderHardening() {
+  const el = $("#hardening-body");
+  if (!el) return;
+  const optIn = hardeningOptIn();
+  const course = state.data.course || "your course";
+  const contexts = variedContextPlanPort(6);
+  const script = reinstatementScriptPort("the exam room", course);
+  el.innerHTML =
+    `<p>Adaptive hardening is <strong>opt-in only</strong> — ` +
+    `it is ${optIn ? "ON" : "OFF"} on this device. ` +
+    `Claims ceiling: ${escapeHtml(HARDENING_CEILING)}. ` +
+    `No-guilt binds: pressure never carries penalties; there ` +
+    `are no score or penalty fields here.</p>` +
+    `<div class="row"><button id="hardening-toggle">` +
+    `${optIn ? "Turn hardening off" : "Opt in to hardening"}` +
+    `</button></div>` +
+    `<h3>Varied-context practice</h3>` +
+    `<p class="meta">Ceiling: ${escapeHtml(RECALL_CEILING)}.</p>` +
+    `<ul>${contexts.assignments.map((a) =>
+      `<li>Session ${a.session}: ${escapeHtml(a.place)} · ` +
+      `${escapeHtml(a.time_of_day)} · ${escapeHtml(a.materials)}</li>`).join("")}</ul>` +
+    `<h3>Mental reinstatement (exam day)</h3>` +
+    `<ol>${script.steps.map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ol>` +
+    `<h3>Plan a drill</h3>` +
+    (optIn
+      ? `<label>Drill id <input id="hardening-drill-id" value="drill-1"></label> ` +
+        `<label>Phase <select id="hardening-phase">` +
+        `<option value="1">1 — conceptualization</option>` +
+        `<option value="2">2 — rehearsal</option>` +
+        `<option value="3">3 — application</option></select></label> ` +
+        `<button id="hardening-plan">Plan drill</button>` +
+        `<div id="hardening-plan-out" aria-live="polite"></div>`
+      : `<p>Opt in above to plan a drill. Without the opt-in, ` +
+        `no drill exists — that refusal is the core's own ` +
+        `receipt shape.</p>`);
+  const toggle = $("#hardening-toggle");
+  if (toggle) toggle.addEventListener("click", () => {
+    localStorage.setItem("ss.hardening.optin", optIn ? "0" : "1");
+    renderHardening();
+  });
+  const planBtn = $("#hardening-plan");
+  if (planBtn) planBtn.addEventListener("click", () => {
+    const id = $("#hardening-drill-id").value || "drill-1";
+    const phase = Number($("#hardening-phase").value || 1);
+    const plan = planHardeningDrillPort(id, phase, true);
+    $("#hardening-plan-out").innerHTML =
+      `<p><strong>Phase ${plan.phase} — ${escapeHtml(plan.name)}</strong> ` +
+      `(${plan.timed ? "timed" : "untimed"})</p>` +
+      `<p>${escapeHtml(plan.brief)}</p>` +
+      (plan.pressure && plan.pressure.length
+        ? `<p>Pressure elements (seeded by the drill id, ` +
+          `receipt-reproducible): ${plan.pressure.map(escapeHtml).join(" · ")}</p>`
+        : "") +
+      `<p class="meta">${escapeHtml(plan.no_guilt)} · ceiling: ` +
+      `${escapeHtml(plan.claims_ceiling)}</p>` +
+      `<label>Answered <input id="hardening-answered" type="number" value="0" min="0"></label> ` +
+      `<label>Not yet <input id="hardening-notyet" type="number" value="0" min="0"></label> ` +
+      `<button id="hardening-record">Record result</button>` +
+      `<p id="hardening-result" aria-live="polite"></p>`;
+    $("#hardening-record").addEventListener("click", () => {
+      // The core's result receipt carries answered + not-yet
+      // counts and the supportive close — and no score,
+      // deduction, or penalty field, by construction.
+      $("#hardening-result").textContent = drillResultClosePort();
+    });
+  });
+}
+function renderBookReceipt() {
+  const el = $("#book-receipt");
+  if (!el) return;
+  const book = state.data.book || {};
+  const c = book.counts || {};
+  el.innerHTML = `<h3>Textbook ingest — the demonstration book</h3>` +
+    `<p>${escapeHtml(book.source || "")}</p>` +
+    `<p>Ingest receipt (core term bank): <strong>${c.terms}` +
+    `</strong> terms mined · <strong>${c.with_definitions}` +
+    `</strong> with definitions · <strong>${c.with_index_refs}` +
+    `</strong> with index refs. Read it in the Reader — tap a ` +
+    `highlighted term for its expansion.</p>`;
 }
 function readerStep() {
   const r = state.reader;
@@ -1018,6 +1336,10 @@ document.querySelectorAll(".tab").forEach((tab) =>
       v.classList.add("hidden"));
     $("#view-" + tab.dataset.view).classList.remove("hidden");
   }));
+$("#reader-text").addEventListener("click", (e) => {
+  const btn = e.target.closest(".term");
+  if (btn) renderTermPanel(btn.dataset.term);
+});
 $("#sr-flip").addEventListener("click", () => {
   $("#sr-back").textContent = currentCard().back;
   $("#sr-back").classList.remove("hidden");

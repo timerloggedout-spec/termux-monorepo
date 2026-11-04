@@ -754,12 +754,15 @@ def ingest_any(path, confirmed: bool = False, ocr_fn=None,
                 "receipt": _receipt("ingest-any", now, flow="syllabus",
                                     placed=placement.get("placed",
                                                            False))}
-    structure = extract_structure(text)
     # a single-file textbook carries its back matter inline: a
     # bare "Glossary" / "Index" heading switches the sink, and
     # that text becomes the term bank's spine (build_term_bank's
-    # contract: glossary terms join the chapters they appear in)
-    glossary_lines, index_lines, sink = [], [], None
+    # contract: glossary terms join the chapters they appear in).
+    # The back matter is NOT body structure: the chapters are
+    # extracted from the body lines only, or every glossary term
+    # would "appear" in a back-matter chapter and the mined
+    # counts would count the glossary against itself (#4417).
+    glossary_lines, index_lines, body_lines, sink = [], [], [], None
     for line in text.splitlines():
         head = line.strip().lower().rstrip(":")
         if head == "glossary":
@@ -770,15 +773,26 @@ def ingest_any(path, confirmed: bool = False, ocr_fn=None,
             continue
         if sink is not None:
             sink.append(line)
+        else:
+            body_lines.append(line)
+    structure = extract_structure("\n".join(body_lines))
     bank = build_term_bank(structure, "\n".join(glossary_lines),
                            "\n".join(index_lines), now=now)
     cards = term_bank_cards(bank)
+    flat_terms = [t for ch in bank.get("chapters") or []
+                  for t in ch.get("terms") or []]
     return {"flow": "textbook", "ingest": probe,
             "provenance": {"source": "ocr" if probe.get("kind")
                            == "ocr-image" else "upload"},
             "structure": {"chapters": len(structure.get("chapters")
                                            or [])},
-            "term_bank": {"terms": bank["receipt"]["terms"]},
+            "term_bank": {"terms": bank["receipt"]["terms"],
+                          "with_definitions": sum(
+                              1 for t in flat_terms
+                              if t.get("definition")),
+                          "with_index_refs": sum(
+                              1 for t in flat_terms
+                              if t.get("index_pages"))},
             "sr_cards": len(cards),
             "receipt": _receipt("ingest-any", now, flow="textbook",
                                 sr_cards=len(cards))}

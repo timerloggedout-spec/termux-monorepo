@@ -31,6 +31,7 @@
   <button data-view="calendar" class="tab">Calendar</button>
   <button data-view="routes" class="tab">Routes</button>
   <button data-view="ingest" class="tab">Ingest</button>
+  <button data-view="hardening" class="tab">Hardening</button>
 </nav>
 
 <main>
@@ -67,6 +68,9 @@
       <button id="reader-play">Play / Pause</button>
       <button id="reader-rewind">Rewind 10</button>
     </div>
+    <div id="reader-text" class="hidden" aria-live="polite"></div>
+    <div id="term-panel" class="hidden" aria-live="polite"></div>
+    <div id="annotations"></div>
   </section>
 
   <section id="view-sr" class="view hidden">
@@ -146,6 +150,7 @@
       <button id="ingest-confirm" class="hidden">Confirm placement</button>
     </div>
     <p id="ingest-status" aria-live="polite"></p>
+    <div id="book-receipt"></div>
     <h3>New course</h3>
     <p>Create a course from its syllabus document (JSON with a
     course name, weeks and topics, and an exam_date if it has
@@ -161,6 +166,11 @@
       <button id="new-course-add" class="primary">Create course</button>
     </div>
     <p id="new-course-status" aria-live="polite"></p>
+  </section>
+
+  <section id="view-hardening" class="view hidden">
+    <h2>Hardening — state recall + stress inoculation</h2>
+    <div id="hardening-body"></div>
   </section>
 </main>
 

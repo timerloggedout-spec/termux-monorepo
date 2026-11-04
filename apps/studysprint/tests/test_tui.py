@@ -25,7 +25,7 @@ def test_build_state_uses_core():
     assert state["cards"]  # SR cards from the practice set
     assert state["sections"]  # reader sections
     assert state["trust_receipt"] is not None
-    assert TUI_VERSION == "0.4.0"
+    assert TUI_VERSION == "0.5.0"
 
 
 def _run(coro_fn):

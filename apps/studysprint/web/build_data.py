@@ -159,6 +159,90 @@ def _course_bundle(root: Path, stem: str) -> dict:
     }
 
 
+def _book_bundle(root: Path) -> dict:
+    """The §1b demonstration book (parity iteration 4, #4417):
+    a REAL book — Darwin, On the Origin of Species, 6th edition
+    (Project Gutenberg #2009) — ingested through the real core
+    pipeline. The bundle carries Chapter XIV (the chapter whose
+    own title names Morphology and Embryology, both indexed
+    headwords in the book) + the book's complete Glossary and
+    Index, cut from the Gutenberg text with typographic
+    normalization only (line-wrap joins; the index's comma
+    before page numbers dropped) — content verbatim.
+
+    Emits everything the surface renders: the ingest receipt
+    counts (terms mined · with definitions · with index refs),
+    the reader sections with core-emphasized term segments, a
+    tap payload per term (definition · index pages · sections),
+    and W3C annotations over the indexed terms, built by the
+    core's make_annotation over the book's own sentences."""
+    from study_pipeline import (build_term_bank, emphasize_terms,
+                                extract_structure, make_annotation,
+                                term_tap_payload, to_reader_sections)
+    chapter_text = (root / "examples" / "textbook_chapter.txt") \
+        .read_text()
+    glossary_text = (root / "examples" / "textbook_glossary.txt") \
+        .read_text()
+    index_text = (root / "examples" / "textbook_index.txt") \
+        .read_text()
+    structure = extract_structure(chapter_text)
+    bank = build_term_bank(structure, glossary_text, index_text)
+    flat = [t for ch in bank.get("chapters") or []
+            for t in ch.get("terms") or []]
+    counts = {
+        "terms": len(flat),
+        "with_definitions": sum(1 for t in flat
+                                if t.get("definition")),
+        "with_index_refs": sum(1 for t in flat
+                               if t.get("index_pages")),
+    }
+    sections = []
+    for sec in to_reader_sections(structure):
+        emph = emphasize_terms(sec.content, bank)
+        sections.append({
+            "title": sec.title, "chapter": sec.chapter,
+            "text": sec.content, "words": sec.tokens,
+            "segments": emph["segments"],
+            "terms_found": emph["terms_found"],
+        })
+    taps = {}
+    for t in flat:
+        taps[t["term"].lower()] = term_tap_payload(t["term"], bank)
+    annotations = []
+    for t in flat:
+        if not t.get("index_pages"):
+            continue
+        quote = ""
+        for sentence in chapter_text[2500:].replace("\n", " ") \
+                .split(". "):
+            s = sentence.strip()
+            if len(s) > 80 and t["term"].lower() in s.lower():
+                quote = s.rstrip(".") + "."
+                break
+        annotations.append(make_annotation(
+            "examples/textbook_chapter.txt", quote,
+            body_text=(f"Glossary: {t['definition']} "
+                       f"(indexed, pages "
+                       f"{', '.join(str(p) for p in t['index_pages'])})"),
+            tags=["term-bank", "index"]))
+    return {
+        "source": ("On the Origin of Species, 6th edition "
+                   "(Project Gutenberg #2009) — Chapter XIV + "
+                   "the book's own Glossary and Index"),
+        "counts": counts,
+        "receipt": bank["receipt"],
+        "sections": sections,
+        "taps": taps,
+        "annotations": annotations,
+        "annotations_note": (
+            "Annotations of record over the bundled book, in "
+            "the W3C Web Annotation model (the core's "
+            "make_annotation). The hypothes.is API leg syncs "
+            "these with an account token — not configured on "
+            "this surface, so nothing leaves the device."),
+    }
+
+
 def emit_state(root: Path | None = None) -> dict:
     root = root or APP_ROOT
     version_file = WEB_DIR / "VERSION"
@@ -195,6 +279,7 @@ def emit_state(root: Path | None = None) -> dict:
         "courses": bundles,
         "courses_intake": intake,
         "ics_by_course": ics_by_course,
+        "book": _book_bundle(root),
     }
 
 

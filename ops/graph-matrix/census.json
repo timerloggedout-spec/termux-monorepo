@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-04T09:01:31.296965+00:00",
+ "census_at_utc": "2026-11-04T09:05:00.396516+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3620,
+  "total": 3625,
   "stale": 1049,
   "orphan_no_assoc_PR": 355,
   "stale_and_orphan": 141
  },
  "prs": {
-  "total": 4193,
-  "open": 277,
+  "total": 4196,
+  "open": 275,
   "open_draft": 34,
-  "open_draft_share": 0.1227,
+  "open_draft_share": 0.1236,
   "drafts": [
    {
     "number": 386,
@@ -148,7 +148,7 @@
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 2.9
+    "age_days": 3.0
    },
    {
     "number": 3241,
@@ -229,20 +229,17 @@
     "age_days": 0.5
    }
   ],
-  "merged": 3426,
+  "merged": 3431,
   "closed_unmerged": 490,
-  "open_no_closing_ref": 270,
-  "open_unlinked_issue_target": 221,
+  "open_no_closing_ref": 268,
+  "open_unlinked_issue_target": 220,
   "open_unlinked_any_ref": 189,
-  "merged_no_closing_ref": 3396,
-  "merged_unlinked_issue_target": 1949,
-  "merged_unlinked_any_ref": 1113,
+  "merged_no_closing_ref": 3401,
+  "merged_unlinked_issue_target": 1953,
+  "merged_unlinked_any_ref": 1115,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3344,
-  "open_head_branch_missing": [
-   4832,
-   4834
-  ]
+  "merged_head_branch_residual_name_match": 3348,
+  "open_head_branch_missing": []
  },
  "issues": {
   "total": 637,

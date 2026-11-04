@@ -165,5 +165,9 @@ amendment: the custodian -> steward mapping above stands
 untouched at the role layer (steward stays the role-class
 word); this register coined no plane name - the plane was
 the open gap, now filled by the issued plane name.
-References to a custody plane read **Custodian**;
-references to the role read **steward**.
+Scope narrowing (owner line, PR #4908): **Custodian**
+names the custody plane on the Web3 MoneyBall plane;
+in termux-monorepo, plane references read **steward**
+(except when naming the MoneyBall plane's Custodian
+explicitly). References to the role read **steward**
+everywhere.

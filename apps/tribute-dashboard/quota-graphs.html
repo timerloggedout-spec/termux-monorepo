@@ -32,7 +32,7 @@
 <section aria-labelledby="task-attribution" id="task-attribution">
 <div class="head"><h2 id="task-attribution">Task attribution tree</h2><span class="note" id="task-tree-summary">Waiting for task projection…</span></div>
 <p class="muted">Fold the hierarchy by provider → model (verbatim) → role → participant → task. Every task carries its own usage evidence and quota-pool join. Exact consumption is summed only within matching units; activity-proxy remains separate; missing joins stay NOT_ESTABLISHED.</p>
-<div class="toolbar"><input id="task-search" type="search" placeholder="Search provider, model, role, participant, task, dispatch, pool"><select id="task-status" aria-label="Filter task usage status"><option value="">All usage states</option><option value="established">Exact usage established</option><option value="activity-only">Activity only</option><option value="no-usage-surface">No usage surface</option><option value="NOT_ESTABLISHED">Not established</option></select></div>
+<div class="toolbar"><input id="task-search" type="search" placeholder="Search provider, model, role, participant, task, dispatch, pool"><select id="task-status" aria-label="Filter task usage status"><option value="">All usage states</option><option value="established">Exact usage established</option><option value="activity-only">Activity only</option><option value="no-usage-surface">No usage surface</option><option value="waived">Waived</option><option value="fault">Fault</option><option value="pending">Pending</option><option value="NOT_ESTABLISHED">Not established</option></select></div>
 <div id="task-tree" class="task-tree"><div class="card empty">Task projection is published by the quota usage-series refresh. Existing feeds remain readable while the new projection is pending.</div></div>
 </section>
 <footer>Usage Graphs · pack: ops/quota/usage-series.json (schema quota.usage-series/v1), built by scripts/quota_usage_series.py from the quota-usage pack, desk-feed usage stamps and the allocation plan · public readings snapshots carry no usage values by design (status-only) · plan target flow is context, never plotted as usage</footer>
@@ -93,11 +93,11 @@ function render(){
   }).join(''):'<div class="card empty">No series on this axis yet — see the note above. Absence is the honest state; nothing is inferred.</div>');
 }
 function taskUsageSummary(tasks){
-  const exact={},activity={};let unknown=0,noSurface=0;
-  (tasks||[]).forEach(t=>{const u=t.usage||{};if(u.status==='established'&&typeof u.value==='number')exact[u.unit||'unit']=(exact[u.unit||'unit']||0)+u.value;else if(u.status==='activity-only'&&typeof u.value==='number')activity[u.unit||'activity']=(activity[u.unit||'activity']||0)+u.value;else if(u.status==='no-usage-surface')noSurface++;else unknown++;});
+  const exact={},activity={};const states={"no-usage-surface":0,waived:0,fault:0,pending:0,NOT_ESTABLISHED:0};
+  (tasks||[]).forEach(t=>{const u=t.usage||{};if(u.status==='established'&&typeof u.value==='number')exact[u.unit||'unit']=(exact[u.unit||'unit']||0)+u.value;else if(u.status==='activity-only'&&typeof u.value==='number')activity[u.unit||'activity']=(activity[u.unit||'activity']||0)+u.value;else states[u.status in states?u.status:'NOT_ESTABLISHED']++;});
   const bits=Object.entries(exact).map(([u,v])=>fmtV(v)+' '+u+' exact');
   Object.entries(activity).forEach(([u,v])=>bits.push(fmtV(v)+' '+u+' activity'));
-  if(noSurface)bits.push(noSurface+' no usage surface');if(unknown)bits.push(unknown+' NOT_ESTABLISHED');
+  Object.entries(states).forEach(([s,n])=>{if(n)bits.push(n+' '+s)});
   return bits.join(' · ')||'No task usage evidence';
 }
 function taskUsageMarkup(u){
@@ -105,6 +105,9 @@ function taskUsageMarkup(u){
   if(status==='established'&&typeof u.value==='number')return '<span class="chip status-exact">EXACT</span> <strong>'+esc(fmtV(u.value)+' '+(u.unit||'unit'))+'</strong>';
   if(status==='activity-only'&&typeof u.value==='number')return '<span class="chip status-activity">ACTIVITY ONLY</span> '+esc(fmtV(u.value)+' '+(u.unit||'activity'))+' <span class="muted">· not consumption</span>';
   if(status==='no-usage-surface')return '<span class="chip status-gap">NO USAGE SURFACE</span> <span class="muted">'+esc(u.note||'Provider exposes no per-call usage surface.')+'</span>';
+  if(status==='waived')return '<span class="chip status-gap">WAIVED</span> <span class="muted">'+esc(u.note||'Pre-mandate usage is unrecoverable.')+'</span>';
+  if(status==='fault')return '<span class="chip status-fault">FAULT</span> <span class="muted">'+esc(u.note||'Required post-mandate stamp is missing.')+'</span>';
+  if(status==='pending')return '<span class="chip status-gap">PENDING</span> <span class="muted">'+esc(u.note||'Awaiting a dispatch or usage record.')+'</span>';
   return '<span class="chip status-gap">NOT ESTABLISHED</span> <span class="muted">'+esc(u.note||'No exact task usage join.')+'</span>';
 }
 function taskTreeRow(t){
@@ -146,7 +149,7 @@ function renderTaskTree(){
   const zeroProviders=(tree.providers||[]).filter(p=>(!p.models||!p.models.length)&&(!q||String(p.provider||'').toLowerCase().includes(q)));
   const zeroHtml=zeroProviders.length?'<section><div class="head"><h3>No recorded tasks</h3><span class="note">'+zeroProviders.length+' provider families</span></div><div class="card"><p class="muted">'+zeroProviders.map(p=>'<span class="chip">'+esc(p.provider)+'</span>').join(' ')+'</p><p class="muted">These provider families remain in the registry denominator but have no nested task records. No quota use is inferred.</p></div></section>':'';
   const cov=tree.coverage||{};
-  $('task-tree-summary').textContent=(cov.tasks??0)+' tasks · '+(cov.established??0)+' exact · '+(cov.activity_only??0)+' activity-only · '+(cov.no_usage_surface??0)+' no usage surface · '+(cov.not_established??0)+' not established · '+visible+' visible · '+zeroProviders.length+' zero-task providers';
+  $('task-tree-summary').textContent=(cov.tasks??0)+' tasks · '+(cov.established??0)+' exact · '+(cov.activity_only??0)+' activity-only · '+(cov.no_usage_surface??0)+' no usage surface · '+(cov.waived??0)+' waived · '+(cov.fault??0)+' fault · '+(cov.pending??0)+' pending · '+(cov.not_established??0)+' not established · '+visible+' visible · '+zeroProviders.length+' zero-task providers';
   host.innerHTML=(providerHtml+zeroHtml)||'<div class="card empty">No task branches match this filter. Clear the search or usage-state filter.</div>';
 }
 $('task-search').addEventListener('input',renderTaskTree);$('task-status').addEventListener('change',renderTaskTree);

@@ -188,6 +188,37 @@ jobs:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy(tribute+matrix): ${{ github.sha }}"
+      - name: Prune orphaned files from owned subtrees
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          set -euo pipefail
+          # keep_files:true on the publish step overlays the artifact but
+          # never deletes: files removed from apps/tribute-dashboard kept
+          # serving forever (the queue-feed.json orphan, 2026-11-04).
+          # The workflow owns exactly three landing subtrees; prune any
+          # file in them that the just-published artifact does not carry.
+          # Everything else in the landing repo (marketing root,
+          # previews/, project sites) is hand-owned and untouchable.
+          git clone --depth 1 "https://x-access-token:${PAT_TOKEN}@github.com/timerloggedout-spec/timerloggedout-spec.github.io.git" _landing
+          removed=0
+          for sub in tribute help-wanted matrix; do
+            if [ -d "_landing/$sub" ]; then
+              while IFS= read -r -d '' f; do
+                rel="${f#_landing/}"
+                if [ ! -e "_user_site/$rel" ]; then
+                  echo "prune: $rel"
+                  git -C _landing rm -q -- "$rel"
+                  removed=$((removed+1))
+                fi
+              done < <(find "_landing/$sub" -type f -print0)
+            fi
+          done
+          echo "orphans removed: $removed"
+          if [ "$removed" -gt 0 ]; then
+            git -C _landing -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" commit -q -m "deploy-prune: remove orphaned files absent from the dashboard artifact (${{ github.sha }})"
+            git -C _landing push origin main
+          fi
       - name: User-site URLs
         run: |
           echo "https://timerloggedout-spec.github.io/tribute/ (canonical)" >> "$GITHUB_STEP_SUMMARY"

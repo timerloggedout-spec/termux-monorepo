@@ -1,6 +1,6 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-04T01:15:46Z",
+ "generated_at": "2026-11-04T02:00:11Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
  "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap ruled OUT (owner 2026-11-03; self-counted nulls)",
  "registry_context": {
@@ -200,6 +200,12 @@
    },
    {
     "at": "2026-11-03T23:53:07.554910+00:00",
+    "rows": 171,
+    "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
+    "provenance": "vercel-quota-probe readings generation"
+   },
+   {
+    "at": "2026-11-04T01:59:43.471356+00:00",
     "rows": 171,
     "landed": "auto-refresh (quota_usage_pack.py) from docs/ops/generated/quota-status.json",
     "provenance": "vercel-quota-probe readings generation"

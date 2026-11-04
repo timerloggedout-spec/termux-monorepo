@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-04T07:23:25Z",
+ "generated_at": "2026-11-04T07:25:02Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 38
@@ -29,13 +29,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 19,
+  "entries": 20,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@c23abee17b36 (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@86d29f96394d (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -50,7 +50,7 @@
  ],
  "pct_block": {
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
-  "computed_at": "2026-11-04T07:23:25Z",
+  "computed_at": "2026-11-04T07:25:02Z",
   "upstream_computed_at": "2026-11-03T14:17:33Z",
   "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
  },
@@ -96,9 +96,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 36.9,
-    "remaining": 63.1,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "consumed": 37.0,
+    "remaining": 63.0,
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -143,9 +143,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 36.9,
-    "remaining": 63.1,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "consumed": 37.0,
+    "remaining": 63.0,
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -192,7 +192,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -241,7 +241,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -289,7 +289,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -338,7 +338,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -387,7 +387,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -436,7 +436,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -484,7 +484,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -533,7 +533,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -582,7 +582,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -631,7 +631,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -679,7 +679,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -726,7 +726,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -775,7 +775,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -823,7 +823,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -869,7 +869,7 @@
    "window_pct": {
     "consumed": 32.9,
     "remaining": 67.1,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -915,7 +915,7 @@
    "window_pct": {
     "consumed": 24.7,
     "remaining": 75.3,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -964,7 +964,7 @@
    "window_pct": {
     "consumed": 3.6,
     "remaining": 96.4,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1013,7 +1013,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1062,7 +1062,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1112,7 +1112,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1162,7 +1162,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1208,7 +1208,7 @@
    "window_pct": {
     "consumed": 7.5,
     "remaining": 92.5,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1254,7 +1254,7 @@
    "window_pct": {
     "consumed": 5.1,
     "remaining": 94.9,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1300,7 +1300,7 @@
    "window_pct": {
     "consumed": 3.5,
     "remaining": 96.5,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": null
    },
    "settlement": {
@@ -1345,7 +1345,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1390,7 +1390,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1435,7 +1435,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1480,7 +1480,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1525,7 +1525,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1570,7 +1570,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1615,7 +1615,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1660,7 +1660,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1705,7 +1705,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1750,7 +1750,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1795,7 +1795,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1840,7 +1840,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:23:25Z",
+    "computed_at": "2026-11-04T07:25:02Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1949,7 +1949,19 @@
      "repo": "timerloggedout-spec/quarantine-browser-clerk",
      "id": 1445293810,
      "state": "DORMANT \u2014 created inside the rescinded sequence; explicitly NOT a build fact for this book"
+    },
+    "planning_clocks": {
+     "classification": "EXERCISE PLANNING clocks \u2014 NOT build commitments (no build exists; pick OWNER-HELD)",
+     "T1_core": "<= 2026-11-04 EOD",
+     "signature_moment": "<= 2026-11-05",
+     "landing": "2026-11-07",
+     "note": "carried from the exercise run record as planning tiers only; the D2 wall 2026-11-08 15:00 PT is POS-001's subject term, not a clock in this set"
     }
+   },
+   "entry_pick": {
+    "candidate": "B \u2014 Quarantine Browser Clerk (C1\u00b7B)",
+    "state": "OWNER-HELD \u26cf\ufe0f \u2014 B NOT picked",
+    "history": "booked as EXECUTED 2026-11-03 23:16 PT under the 'D2 BUILD' reading (PR #4785) \u2192 RESCINDED 2026-11-03 23:18 PT by owner countermand via main; coordinator of record corrected to OWNER-HELD (PR #4786 merged 1d1dbb3012a9). This stamp preserves that history per append-only discipline; the live entry is POS-001.exercise_entry (PR #4793)."
    }
   }
  ],

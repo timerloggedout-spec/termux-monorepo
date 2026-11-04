@@ -107,6 +107,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ledger")
     ap.add_argument("--out")
+    ap.add_argument("--mirror-out",
+                    help="second output path written byte-identical "
+                         "(dashboard mirror, QUE-feed pattern)")
     a = ap.parse_args()
     feed = build_feed(load(a.ledger))
     text = json.dumps(feed, indent=1, sort_keys=True)
@@ -115,6 +118,9 @@ def main():
         print(f"doe-oversight feed: {feed['pool_count']} rows, "
               f"head {feed['ledger_head_seq']}, "
               f"as-of {feed['feed_as_of_seq']} -> {a.out}")
+    if a.mirror_out:
+        Path(a.mirror_out).write_text(text + "\n")
+        print(f"mirror (byte-identical) -> {a.mirror_out}")
     else:
         print(text)
 

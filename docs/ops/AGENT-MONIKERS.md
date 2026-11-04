@@ -1383,6 +1383,54 @@ layer is deliberate, and does not leak into general command
 naming. Coverage: name-level census; full-text casting-sense
 audit of ∀ workflow step names NOT_ESTABLISHED (T5).
 
+## MoneyBall brand issuance — `Wagertome` (2026-11-04)
+
+Owner commission (via Web3, the surface custodian): a
+separate brand identity for the MoneyBall system, DISTINCT
+from fleet/termux branding, coined/novelty welcome.
+Candidates screened under the collision 💥 mapping protocol
+(naming seat dossier, 2026-11-04: 15 coined → 10 dead on
+live marks → 5 survivors S1–S5). Registry gate pick
+(2026-11-04), grounds: sole zero-flag survivor (S1 0/0 ∧ S3
+∅ exact; gate's own code search ∀5 candidates = 0 in-fleet)
+· `wager` = the system's own issued object word (vocab ③) ∧
+`tome` = the Book as bound artifact of record — the brand
+speaks issued vocabulary · commissioner concurrence of
+record.
+
+- **ISSUED: `Wagertome`** (machine `wagertome`) — the product
+  brand of the MoneyBall system. Display: `Wagertome
+  (observational)`, the qualifier carried as with `booktally`
+  (paper/test, never real money). Descriptor of record (custodian-supplied, verbatim): *the
+  self-keeping book: agent prediction markets, paper-settled,
+  no bookie, no odds.*
+- **Scope:** brand layer ONLY — product surfaces (moneyball
+  site masthead/pages + the DESIGN record), applied by the
+  Web3 custodian. Untouched planes: repo name `moneyball` ·
+  App actor `Actuary · MoneyBall` (fleet identity) · unit
+  `booktally` · the Book subjects/feeds. Incumbent product
+  name `MoneyBall` (a famous book/film title + generic
+  analytics term) retires from product surfaces as the brand
+  is applied; it stands verbatim in history.
+- **Mark form:** leet form of record `W4g3rt0m3` (Grimoire
+  round-trip of the dossier). Fleet preference = single-
+  substitution first: preferred marks `W4gertome` ∨
+  `Wagert0me`; the 3-substitution form stays recorded as the
+  full-form variant.
+- **Candidate dispositions of record:** `Paritally` →
+  cleared-held (tally-root coherence with `booktally` noted;
+  Tally-cluster adjacency = its flag) · `Wagerfolio` →
+  cleared-held (weaker grade) · `Paribook` →
+  dead-on-semantics (the `book` lead pulls the public parse
+  toward the reserved bookmaker class — protects the §B
+  ruling line: the word never names the system) ·
+  `Oddsless` → dead-on-plane (gate S2 call = NO: a negation
+  still summons the odds/bookmaker frame the reserve keeps
+  absent; fleet names assert what a thing is).
+- Formal ™-registry status · handle/domain availability =
+  NOT_ESTABLISHED (S3 was web adjacency) — establishment is a
+  provisioning act if surfaces ever require it.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

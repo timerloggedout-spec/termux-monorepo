@@ -300,3 +300,11 @@ def test_pool_state_shape_validated():
     good["pools"][0]["state"] = {"value": "paused", "at": "2026-11-04T00:00:00Z",
                                  "method": {"route": "lifecycle", "receipt_id": "r-1"}}
     assert qa.validate(good, REG) == []
+    stopped = copy.deepcopy(CFG)
+    stopped["pools"][0]["state"] = {"value": "stopped", "at": "2026-11-04T00:00:00Z",
+                                    "method": {"route": "lifecycle", "receipt_id": "r-1"}}
+    assert qa.validate(stopped, REG) == []
+    retired = copy.deepcopy(CFG)
+    retired["pools"][0]["state"] = {"value": "retired", "at": "2026-11-04T00:00:00Z",
+                                    "method": {"route": "lifecycle", "receipt_id": "r-1"}}
+    assert any("state.value" in e for e in qa.validate(retired, REG))

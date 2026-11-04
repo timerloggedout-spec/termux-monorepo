@@ -221,6 +221,14 @@ def build(root):
     quota_by_dispatch = {}
     session_usage = {}
 
+    def add_quota(dispatch_key, quota):
+        if not dispatch_key or not isinstance(quota, dict):
+            return
+        slot = quota_by_dispatch.setdefault(dispatch_key, {})
+        for field in ("pool", "slice"):
+            if slot.get(field) is None and quota.get(field) is not None:
+                slot[field] = quota[field]
+
     def add_usage(dispatch_key, usage, source):
         if not dispatch_key or not isinstance(usage, dict):
             return
@@ -255,8 +263,7 @@ def build(root):
             if key not in stamps:
                 stamps[key] = (str(prov), str(row.get("model")),
                                str(row.get("ts")))
-            if row.get("dispatch_id") and isinstance(row.get("quota"), dict):
-                quota_by_dispatch.setdefault(row["dispatch_id"], row["quota"])
+            add_quota(row.get("dispatch_id"), row.get("quota"))
             add_usage(key, row.get("usage"), "ops/3l0/intake.jsonl")
     for sub in ("records", "stamps"):
         for f in sorted(Path(root).glob(
@@ -270,8 +277,7 @@ def build(root):
                 continue
             key = rec.get("dispatch_id") or (str(prov) + "|" +
                     str(rec.get("model")) + "|" + str(rec.get("ts")))
-            if rec.get("dispatch_id") and isinstance(rec.get("quota"), dict):
-                quota_by_dispatch.setdefault(rec["dispatch_id"], rec["quota"])
+            add_quota(rec.get("dispatch_id"), rec.get("quota"))
             add_usage(key, rec.get("usage"), "experiments/doe/routed-dispatch/" + sub)
 
     # Session-level desk usage is a separate carrier. Preserve its match

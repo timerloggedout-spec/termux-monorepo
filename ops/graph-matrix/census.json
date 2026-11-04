@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-04T00:24:02.421357+00:00",
+ "census_at_utc": "2026-11-04T01:03:38.138718+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,16 +13,16 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3548,
-  "stale": 1038,
+  "total": 3566,
+  "stale": 1040,
   "orphan_no_assoc_PR": 354,
   "stale_and_orphan": 138
  },
  "prs": {
-  "total": 4091,
-  "open": 264,
+  "total": 4117,
+  "open": 267,
   "open_draft": 34,
-  "open_draft_share": 0.1288,
+  "open_draft_share": 0.1273,
   "drafts": [
    {
     "number": 386,
@@ -94,7 +94,7 @@
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 12.6
+    "age_days": 12.7
    },
    {
     "number": 1612,
@@ -106,7 +106,7 @@
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 10.7
+    "age_days": 10.8
    },
    {
     "number": 1677,
@@ -118,7 +118,7 @@
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 4.6
+    "age_days": 4.7
    },
    {
     "number": 2578,
@@ -172,7 +172,7 @@
     "number": 4007,
     "title": "Wire invocation observations into Free-Tier Value evidence projection",
     "created_at": "2026-11-02T23:43:35Z",
-    "age_days": 1.0
+    "age_days": 1.1
    },
    {
     "number": 4011,
@@ -229,19 +229,17 @@
     "age_days": 0.2
    }
   ],
-  "merged": 3340,
+  "merged": 3363,
   "closed_unmerged": 487,
-  "open_no_closing_ref": 257,
-  "open_unlinked_issue_target": 209,
-  "open_unlinked_any_ref": 180,
-  "merged_no_closing_ref": 3310,
-  "merged_unlinked_issue_target": 1895,
-  "merged_unlinked_any_ref": 1087,
+  "open_no_closing_ref": 260,
+  "open_unlinked_issue_target": 212,
+  "open_unlinked_any_ref": 181,
+  "merged_no_closing_ref": 3333,
+  "merged_unlinked_issue_target": 1907,
+  "merged_unlinked_any_ref": 1094,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3258,
-  "open_head_branch_missing": [
-   4730
-  ]
+  "merged_head_branch_residual_name_match": 3282,
+  "open_head_branch_missing": []
  },
  "issues": {
   "total": 635,

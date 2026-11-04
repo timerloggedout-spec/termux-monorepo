@@ -1,6 +1,6 @@
 {
  "schema": "que.governor/v1",
- "generated_at": "2026-11-04T08:50:16Z",
+ "generated_at": "2026-11-04T08:51:17Z",
  "admission": {
   "thresholds": {
    "tier4_defers_at_queued": 400,
@@ -15,7 +15,16 @@
   "source": "swarm-admission stamps (deferred-by-tier label)"
  },
  "flow_governor": {
-  "state": "NOT_ESTABLISHED",
-  "gap": "no governor-event batch has landed yet; Cadence's T1 emitter drops que-governor-event/v1 batches at ops/que/events/governor-events-<date>.jsonl"
+  "board_governor_plane_of_record": {
+   "schema": "que-governor-feed/v1",
+   "canonical": "ops/quota/que-governor-feed.json",
+   "mirror": "apps/tribute-dashboard/data/que-governor-feed.json",
+   "custody": "Cadence"
+  },
+  "this_feed_role": "producer-plane artifact \u2014 admission census + que-governor-event/v1 fold",
+  "t1_governor_events_fold": {
+   "state": "NOT_ESTABLISHED",
+   "gap": "no governor-event batch has landed in ops/que/events/ yet"
+  }
  }
 }

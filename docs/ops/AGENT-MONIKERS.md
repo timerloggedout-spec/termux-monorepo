@@ -1485,6 +1485,37 @@ surface family) · 4n0n (protocol) · Panel Judge Mirror
 (program instance) · Mimir (vault actor) · Hark (agent
 surface).
 
+
+### F.1 Amendment — lane dispositions + Scout code layer (2026-11-04)
+
+Owner correction (via main): `Observatory` ∧ `ForeSight`
+are **an existing lane the owner lists** — the lane is the
+disposition, ¬ the program/method classes alone. §F rows
+amended accordingly (layering rule: this amendment governs;
+the §F placements stand as secondary cross-references):
+
+- **Observatory — LANE of record** (owner-listed, existing).
+  Secondary placement: `program` (§F). The lane's surfaces
+  and harvest work bind to the lane, not to the class.
+- **ForeSight — LANE of record** (owner-listed, existing).
+  Secondary placement: `method` (§F). Delphi + Recon +
+  research-family practice = the lane at work.
+
+**Scout — code-layer occupants** (owner note, verified
+firsthand at this seat, 2026-11-04): the canonical role
+`scout` has code-layer occupants in the pool — the
+scout-named module family {`scripts/scout_roster.py` ·
+`scripts/scout_missions.py` · `scripts/ci/tribute_scout.py`
+· `archwiz/correlation_scout.py` ·
+`archwiz/patch_success_scout.py` ·
+`deepcli/investigator/capability_scout.py`} + tests ×3
+{`tests/test_scout_roster.py` · `tests/test_scout_missions.py`
+· `tests/test_tribute_scout_evidence.py`}. No literal
+`scout.py` / `class Scout` exists (code search = 0) — the
+family is the occupant set of record. The surfaces map's
+code layers carry this family (Viz amendment to #4888's
+data block).
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

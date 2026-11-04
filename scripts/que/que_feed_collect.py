@@ -200,7 +200,7 @@ def governor_feed(token, at):
                    "ops/que/events/governor-events-<date>.jsonl"}
     batches = sorted(EVENTS.glob("governor-events-*.jsonl"))
     if batches:
-        total, by_kind = 0, {}
+        total, by_kind, latest = 0, {}, None
         for b in batches:
             for line in b.read_text().splitlines():
                 if not line.strip():
@@ -210,6 +210,9 @@ def governor_feed(token, at):
                     e = json.loads(line)
                     kind = e.get("kind") or e.get("event") \
                         or "unspecified"
+                    ts = e.get("ts")
+                    if ts and (latest is None or ts > latest):
+                        latest = ts
                 except ValueError:
                     kind = "unparseable"
                 by_kind[kind] = by_kind.get(kind, 0) + 1
@@ -217,7 +220,8 @@ def governor_feed(token, at):
                 "event_shape": "que-governor-event/v1 (folded "
                                "verbatim; counts only)",
                 "batches": [b.name for b in batches],
-                "events_total": total, "by_kind": by_kind}
+                "events_total": total, "by_kind": by_kind,
+                "latest_event_at": latest}
     return {
         "schema": "que.governor/v1", "generated_at": iso(at),
         "admission": {

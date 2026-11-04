@@ -72,6 +72,30 @@ def test_queue_feed_shape_and_provenance():
         "dispatch-state-feed.json")
 
 
+def test_governor_fold_tallies_frozen_event_shape(tmp_path,
+                                                  monkeypatch):
+    events = tmp_path / "events"
+    events.mkdir()
+    (events / "governor-events-2026-11-04.jsonl").write_text(
+        '{"schema":"que-governor-event/v1","ts":"2026-11-04T01:00:00Z",'
+        '"kind":"projection","actor":"pat-helper/flow-governor",'
+        '"session":"s1","path":"/x","chain":null,'
+        '"verdict":"deferred","detail":{"projected_used":4600}}\n'
+        '{"schema":"que-governor-event/v1","ts":"2026-11-04T02:00:00Z",'
+        '"kind":"session_cap","actor":"pat-helper/flow-governor",'
+        '"session":"s2","path":"/y","chain":"d1",'
+        '"verdict":"deferred","detail":{"spent":400,"cap":400}}\n')
+    monkeypatch.setattr(q, "EVENTS", events)
+    monkeypatch.setattr(q, "api",
+                        lambda path, token: {"total_count": 0})
+    feed = q.governor_feed("t", AT)
+    flow = feed["flow_governor"]
+    assert flow["state"] == "populated"
+    assert flow["events_total"] == 2
+    assert flow["by_kind"] == {"projection": 1, "session_cap": 1}
+    assert flow["latest_event_at"] == "2026-11-04T02:00:00Z"
+
+
 def test_transitions_vanished_is_a_gap_event():
     r = run(5, "countdowns", "2026-11-04T07:00:00Z")
     _, st = q.transitions({}, [r], [], [], TIERS, AT)

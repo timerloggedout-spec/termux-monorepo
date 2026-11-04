@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 276,
+    "open_prs": 277,
     "pr_classes": {
-      "CANDIDATE": 128,
-      "EXTRACT": 11,
+      "CANDIDATE": 127,
+      "EXTRACT": 13,
       "NEED_EVIDENCE": 137,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 274,
+      "prs": 275,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:22:02Z",
+  "generated_at": "2026-11-04T09:23:29Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "819d52660f"
+    "sha": "02fa399018"
   },
   "prs": [
     {
@@ -236,6 +236,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "b8520d4515",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T09:22:34Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -298,6 +312,20 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b09b0683d8",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4832,
+      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
+      "updated_at": "2026-11-04T09:05:21Z"
     },
     {
       "class": "EXTRACT",
@@ -2097,20 +2125,6 @@
       "updated_at": "2026-11-04T00:52:14Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b09b0683d8",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4832,
-      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
-      "updated_at": "2026-11-04T09:05:21Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -3267,24 +3281,10 @@
       },
       "head_sha": "545b374d9b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T09:04:34Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "d2d9f814bd",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:19:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3995,7 +3995,7 @@
       },
       "head_sha": "44eaf9846b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4801,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:29:59Z"
@@ -4009,7 +4009,7 @@
       },
       "head_sha": "187e7302a2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4821,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T08:55:23Z"
@@ -4023,10 +4023,24 @@
       },
       "head_sha": "e3a2b171a0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4827,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:00:56Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "5be011f6d2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4847,
+      "title": "feat(admin): gauges read state (inert, tranche-0)",
+      "updated_at": "2026-11-04T09:23:25Z"
     }
   ],
   "schema": "operator-matrix/v1",

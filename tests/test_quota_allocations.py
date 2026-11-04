@@ -16,6 +16,22 @@ READINGS = json.loads((ROOT / "apps/tribute-dashboard/data/quota.json").read_tex
 COUNTDOWNS = json.loads((ROOT / "apps/tribute-dashboard/data/challenge-countdowns-feed.json").read_text())
 NOW = datetime(2026, 10, 28, 2, 0, tzinfo=timezone.utc)
 
+REGMAP = {svc["id"]: svc for svc in REG["services"]}
+
+
+def dead_entitlement(pool):
+    """Standing exception (quota-specialist ruling 2026-11-03, encoding
+    PR #4574's intent): a pool whose backing registry records are ALL
+    limit-0 has nothing to allocate - entitlement death, not an owner
+    allocation choice. Such pools carry winning 0/none and full
+    reserve; the 100-standing invariant does not apply. The rule names
+    no provider and self-heals: if the entitlement is ever established
+    (any backing limit > 0), the pool returns under the invariant."""
+    services = pool.get("services") or []
+    return bool(services) and all(
+        REGMAP[sid]["limit"] == 0 for sid in services if sid in REGMAP)
+
+
 
 def test_config_is_valid_against_live_registry():
     assert qa.validate(CFG, REG) == []
@@ -106,6 +122,12 @@ def test_owner_setting_winning_stands_at_100_elsewhere_leftover_only():
         rows = {a["focus"]: a for a in pool["allocations"]}
         if pool["id"] == "github.codespaces":
             continue
+        if dead_entitlement(pool):
+            assert rows["winning"]["pct"] == 0 and rows["winning"]["mode"] == "none", pool["id"]
+            for focus in ("repo-development", "research"):
+                assert rows[focus]["pct"] == 0 and rows[focus]["mode"] == "leftover-only", pool["id"]
+            assert qa.reserve_pct(pool) == 100, pool["id"]
+            continue
         assert rows["winning"]["pct"] == 100 and rows["winning"]["mode"] == "standing", pool["id"]
         for focus in ("repo-development", "research"):
             assert rows[focus]["pct"] == 0 and rows[focus]["mode"] == "leftover-only", pool["id"]
@@ -192,8 +214,11 @@ def test_gantt_rows_cover_every_pool_focus_plus_reserve():
     f = feed()
     rows = f["gantt"]
     assert len(rows) == len(CFG["pools"]) * (len(CFG["focuses"]) + 1)
-    winning = [r for r in rows if r["focus"] == "winning" and r["pool"] != "github.codespaces"]
+    dead = {p["id"] for p in CFG["pools"] if dead_entitlement(p)}
+    winning = [r for r in rows if r["focus"] == "winning" and r["pool"] != "github.codespaces" and r["pool"] not in dead]
     assert all(r["plan_pct"] == 100 and r["actual_pct"] is None for r in winning)
+    dead_rows = [r for r in rows if r["focus"] == "winning" and r["pool"] in dead]
+    assert all(r["plan_pct"] == 0 for r in dead_rows)
     assert max(r["plan_end"] for r in rows) == "2026-12-04T14:00:00-08:00"  # D4 close, from #1880 feed
     mermaid = qa.render_gantt_mermaid(f)
     assert "D4 window" in mermaid and "winning 100%" in mermaid

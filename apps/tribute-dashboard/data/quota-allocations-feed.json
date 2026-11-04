@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-11-03T19:03:02.159000+00:00",
+  "generated_at": "2026-11-04T01:10:32.413238+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -51,7 +51,7 @@
       "id": "D2",
       "title": "for C2, Vultr Agent Rush (Foundry entry)",
       "status": "ACTIVE",
-      "opens": "2026-11-05T00:00:00-08:00",
+      "opens": "2026-11-03T15:00:00+00:00",
       "closes": "2026-11-08T15:00:00-08:00"
     },
     {
@@ -65,7 +65,7 @@
       "id": "D4",
       "title": "for C4, Kiroween 2026",
       "status": "ACTIVE",
-      "opens": "2026-10-30T13:00:00-07:00",
+      "opens": "2026-10-30T09:00:00-07:00",
       "closes": "2026-12-04T14:00:00-08:00"
     },
     {
@@ -882,10 +882,10 @@
       "allocations": [
         {
           "focus": "winning",
-          "pct": 100,
-          "mode": "standing",
-          "date": "2026-10-27",
-          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-11-03",
+          "reason": "Correction (quota diagnostic 2026-11-03, owner escalation via D1 seat): registry record fly.free_tier documents limit 0 \u2014 free allowances removed for new orgs Oct 2024, fleet org billing state NOT ESTABLISHED. A 100% Winning allocation of a 0 entitlement is a phantom slice; set to 0/none until a fleet Fly billing state is established, then re-file on #1884."
         },
         {
           "focus": "repo-development",
@@ -910,7 +910,7 @@
         }
       ],
       "slices": [],
-      "reserve_pct": 0,
+      "reserve_pct": 100,
       "constraints": [],
       "observed_consumption_by_focus": null
     },
@@ -1981,7 +1981,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-11-02T08:16:06.415255+00:00",
+            "observed_at": "2026-11-03T23:53:07.554910+00:00",
             "used": null
           }
         },
@@ -2041,7 +2041,7 @@
             "status": "exhausted",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-11-02T08:16:06.415255+00:00",
+            "observed_at": "2026-11-03T23:53:07.554910+00:00",
             "used": null
           }
         },
@@ -3012,7 +3012,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-11-02T08:16:06.415255+00:00",
+            "observed_at": "2026-11-03T23:53:07.554910+00:00",
             "used": null
           }
         },
@@ -3664,9 +3664,9 @@
           },
           "observed": {
             "status": "unknown",
-            "horizon": "H0",
-            "evidence_status": "confirmed",
-            "observed_at": "2026-11-02T08:16:06.415255+00:00",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
             "used": null
           }
         },
@@ -3681,7 +3681,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-11-02T08:16:06.415255+00:00",
+            "observed_at": "2026-11-03T23:53:07.554910+00:00",
             "used": null
           }
         }
@@ -4743,10 +4743,10 @@
             "window": "rolling 24h (observed: error says try again in 24 hours)"
           },
           "observed": {
-            "status": "ok",
+            "status": "watch",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-11-02T08:16:06.415255+00:00",
+            "observed_at": "2026-11-03T23:53:07.554910+00:00",
             "used": null
           }
         }
@@ -5535,6 +5535,60 @@
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "vultr.credit",
+      "services": [
+        {
+          "service": "vultr.account_credit",
+          "entitlement": {
+            "limit": 200,
+            "unit": "USD",
+            "window": "one-time grant; expires \u22482026-12-03"
+          },
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-11-03",
+          "reason": "Winning focus owner-set (issue #1884); D2 event capacity: $200 credit applied 2026-11-03, expires \u22482026-12-03"
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-11-03",
+          "reason": "Repo-development draws leftover only (issue #1884 owner setting)"
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-11-03",
+          "reason": "BOINC focus: no draw (issue #1884 owner setting)"
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-11-03",
+          "reason": "Research draws leftover only (issue #1884 owner setting)"
+        }
+      ],
+      "slices": [],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
     }
   ],
   "gantt": [
@@ -6081,24 +6135,6 @@
     {
       "pool": "fly",
       "focus": "winning",
-      "mode": "standing",
-      "plan_pct": 100,
-      "actual_pct": null,
-      "plan_start": "2026-10-27",
-      "plan_end": "2026-12-04T14:00:00-08:00"
-    },
-    {
-      "pool": "fly",
-      "focus": "repo-development",
-      "mode": "leftover-only",
-      "plan_pct": 0,
-      "actual_pct": null,
-      "plan_start": "2026-10-27",
-      "plan_end": "2026-12-04T14:00:00-08:00"
-    },
-    {
-      "pool": "fly",
-      "focus": "boinc-donations",
       "mode": "none",
       "plan_pct": 0,
       "actual_pct": null,
@@ -6107,6 +6143,24 @@
     },
     {
       "pool": "fly",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
       "focus": "research",
       "mode": "leftover-only",
       "plan_pct": 0,
@@ -6118,7 +6172,7 @@
       "pool": "fly",
       "focus": "reserve",
       "mode": "reserve",
-      "plan_pct": 0,
+      "plan_pct": 100,
       "actual_pct": null,
       "plan_start": "2026-10-27",
       "plan_end": "2026-12-04T14:00:00-08:00"
@@ -8186,6 +8240,51 @@
     },
     {
       "pool": "claude",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vultr.credit",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vultr.credit",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vultr.credit",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vultr.credit",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vultr.credit",
       "focus": "reserve",
       "mode": "reserve",
       "plan_pct": 0,

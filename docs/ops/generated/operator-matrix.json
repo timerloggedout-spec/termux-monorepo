@@ -3,9 +3,9 @@
     "open_issues": 531,
     "open_prs": 269,
     "pr_classes": {
-      "CANDIDATE": 127,
+      "CANDIDATE": 128,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 132,
+      "NEED_EVIDENCE": 131,
       "SUPERSEDE": 0
     }
   },
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T07:19:20Z",
+  "generated_at": "2026-11-04T07:21:01Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "f903442a67"
+    "sha": "7bcf8dd1c7"
   },
   "prs": [
     {
@@ -520,7 +520,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -1507,6 +1507,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f5b0677e3f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T07:19:13Z"
     },
     {
       "class": "CANDIDATE",
@@ -2581,10 +2595,10 @@
       },
       "head_sha": "6323d0c28f",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-04T07:18:48Z"
+      "updated_at": "2026-11-04T07:18:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3239,24 +3253,10 @@
       },
       "head_sha": "97aa322bd5",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T07:18:44Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "f5b0677e3f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T07:19:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3869,7 +3869,7 @@
       },
       "head_sha": "09dae5e5cc",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4686,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:24:54Z"
@@ -3925,7 +3925,7 @@
       },
       "head_sha": "ac13ba9cb4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4780,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:19:00Z"

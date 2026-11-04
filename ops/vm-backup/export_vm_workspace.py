@@ -33,6 +33,13 @@ import urllib.request, urllib.error
 from pathlib import Path
 
 SIZE_GATE = 25 * 1024 * 1024
+SPLIT_AT = 8 * 1024 * 1024  # single-blob body cap for the surrogate
+# publish path: an 11.6 MB file (~15.5 MB base64 body) 400s on blob
+# create through the surrogate proxy, while the same endpoint
+# accepts >=15 MB raw via the PAT helper (probe 2026-11-04).
+# Files in (SPLIT_AT, SIZE_GATE] stage as byte-bounded parts +
+# a .split.json sidecar; publish uploads parts as ordinary blobs
+# and restore reassembles them (byte-exact, whole-file sha256).
 T0_ROOT_FILES = ["CLAUDE.md", "MEMORY.md", "USER.md", "IDENTITY.md",
                  "SOUL.md", "PROACTIVE_PREFERENCES.md", "AGENTS.md", "TOOLS.md"]
 T0_TREES = ["memory", "workspace/goals", "workspace/custom-connectors",
@@ -78,9 +85,21 @@ def _walk_files(root: Path):
         for fn in sorted(filenames):
             yield Path(dirpath) / fn
 
+VANISHED_EXC = (FileNotFoundError, NotADirectoryError)
+
+def _vanished_entry(source: str, tier: str):
+    """Manifest record for a file that disappeared between walk and
+    read. Ephemeral agent files (tool-output, exec-logs) are deleted
+    mid-run by other activity; that must never crash the export."""
+    return dict(source=source, tier=tier, exported=False,
+                reason="vanished-during-walk", sha256=None, size=None)
+
 def _classify(abspath: Path, source: str, tier: str, entries: list):
     """Append a manifest entry for one candidate file (or an excluded /
     manifest-only record). Returns nothing; staging happens later."""
+    if not os.path.lexists(abspath):
+        entries.append(_vanished_entry(source, tier))
+        return
     name = abspath.name
     parts = Path(source).parts
     if any(p in DENY_DIR_NAMES for p in parts):
@@ -105,7 +124,11 @@ def _classify(abspath: Path, source: str, tier: str, entries: list):
                             reason="excluded:non-regular", sha256=None,
                             size=None))
         return
-    size = abspath.stat().st_size
+    try:
+        size = abspath.stat().st_size
+    except VANISHED_EXC:
+        entries.append(_vanished_entry(source, tier))
+        return
     if size > SIZE_GATE:
         entries.append(dict(source=source, tier=tier + "-manifest",
                             exported=False, reason="size", sha256=None,
@@ -168,6 +191,9 @@ def build_inventory(home: Path):
     if ws.is_dir():
         for child in sorted(ws.iterdir(), key=lambda p: p.name):
             name = child.name
+            if not os.path.lexists(child):
+                entries.append(_vanished_entry(f"workspace/{name}", "t1"))
+                continue
             if child.is_file() and not child.is_dir():
                 _classify(child, f"workspace/{name}", "t1", entries)
                 continue
@@ -224,13 +250,22 @@ def stage(entries, staging: Path):
         if e.get("_hash"):
             # Manifest-only entry: hash the source, stage nothing.
             src = Path(e.pop("_abs"))
-            h = hashlib.sha256()
-            with open(src, "rb") as fin:
-                while True:
-                    chunk = fin.read(1 << 20)
-                    if not chunk:
-                        break
-                    h.update(chunk)
+            try:
+                h = hashlib.sha256()
+                with open(src, "rb") as fin:
+                    while True:
+                        chunk = fin.read(1 << 20)
+                        if not chunk:
+                            break
+                        h.update(chunk)
+            except VANISHED_EXC:
+                # Vanished between inventory and staging: skip, record.
+                e["exported"] = False
+                e["reason"] = "vanished-during-walk"
+                e["sha256"] = None
+                e["size"] = None
+                e.pop("_hash", None)
+                continue
             e["sha256"] = h.hexdigest()
             e["path"] = "t1/" + e["source"]
             e.pop("_hash", None)
@@ -242,13 +277,67 @@ def stage(entries, staging: Path):
         dst = staging / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         h = hashlib.sha256()
-        with open(src, "rb") as fin, open(dst, "wb") as fout:
-            while True:
-                chunk = fin.read(1 << 20)
-                if not chunk:
-                    break
-                h.update(chunk)
-                fout.write(chunk)
+        if e["size"] > SPLIT_AT:
+            # Split: byte-bounded parts, each a small ordinary blob on
+            # the publish path, plus a sidecar describing reassembly.
+            # (Byte boundaries, not line boundaries: restore concatenates,
+            # so the reassembled bytes are exact regardless of content.)
+            parts = []
+            try:
+                with open(src, "rb") as fin:
+                    idx = 0
+                    while True:
+                        data = fin.read(SPLIT_AT)
+                        if not data:
+                            break
+                        h.update(data)
+                        part_rel = f"{rel}.part-{idx:04d}"
+                        with open(staging / part_rel, "wb") as fout:
+                            fout.write(data)
+                        parts.append(part_rel)
+                        idx += 1
+            except VANISHED_EXC:
+                for pr in parts:
+                    try:
+                        (staging / pr).unlink()
+                    except OSError:
+                        pass
+                e["exported"] = False
+                e["reason"] = "vanished-during-walk"
+                e["sha256"] = None
+                e["size"] = None
+                continue
+            e["path"] = rel
+            e["sha256"] = h.hexdigest()
+            e["split"] = {"parts": parts, "part_size": SPLIT_AT,
+                          "total_size": e["size"]}
+            sidecar = {"original": rel, "parts": parts,
+                       "part_size": SPLIT_AT, "total_size": e["size"],
+                       "sha256": e["sha256"]}
+            (staging / (rel + ".split.json")).write_text(
+                json.dumps(sidecar, separators=(",", ":")))
+            total_bytes += e["size"]
+            continue
+        try:
+            with open(src, "rb") as fin, open(dst, "wb") as fout:
+                while True:
+                    chunk = fin.read(1 << 20)
+                    if not chunk:
+                        break
+                    h.update(chunk)
+                    fout.write(chunk)
+        except VANISHED_EXC:
+            # Vanished between inventory and staging: drop any partial
+            # copy so the inventory gate still matches, skip, record.
+            try:
+                dst.unlink()
+            except OSError:
+                pass
+            e["exported"] = False
+            e["reason"] = "vanished-during-walk"
+            e["sha256"] = None
+            e["size"] = None
+            continue
         e["path"] = rel
         e["sha256"] = h.hexdigest()
         total_bytes += e["size"]
@@ -262,7 +351,16 @@ def stage(entries, staging: Path):
 
 def run_gates(entries, staging: Path):
     gates = {}
-    expected = sorted(e["path"] for e in entries if e["exported"])
+    expected = []
+    for e in entries:
+        if not e["exported"]:
+            continue
+        if e.get("split"):
+            expected += e["split"]["parts"]
+            expected.append(e["path"] + ".split.json")
+        else:
+            expected.append(e["path"])
+    expected = sorted(expected)
     actual = sorted(str(p.relative_to(staging))
                     for p in staging.rglob("*")
                     if p.is_file()
@@ -282,10 +380,27 @@ def run_gates(entries, staging: Path):
         gates["denylist_hits"] = deny_hits[:20]
     pats = [re.compile(p) for p in SECRET_PATTERNS]
     scrub_hits = []
+    # Split parts are byte slices of one file: scanning them singly
+    # would miss a secret pattern straddling a part boundary, so parts
+    # and sidecars are scrubbed as their reassembled whole instead.
+    part_rels = set()
+    for e in entries:
+        if e.get("split"):
+            part_rels.update(e["split"]["parts"])
+            part_rels.add(e["path"] + ".split.json")
     for rel in actual:
+        if rel in part_rels:
+            continue
         data = (staging / rel).read_bytes()
         if any(p.search(data) for p in pats):
             scrub_hits.append(rel)  # paths only; matched content never logged
+    for e in entries:
+        if not e.get("split"):
+            continue
+        data = b"".join((staging / pr).read_bytes()
+                         for pr in e["split"]["parts"])
+        if any(p.search(data) for p in pats):
+            scrub_hits.append(e["path"])
     gates["content_scrub"] = "fail" if scrub_hits else "pass"
     if scrub_hits:
         gates["content_scrub_hit_paths"] = scrub_hits[:20]
@@ -529,6 +644,9 @@ def main(argv=None):
                              if e["reason"] == "size"),
         "excluded": sum(1 for e in entries
                         if (e["reason"] or "").startswith("excluded")),
+        "vanished": sum(1 for e in entries
+                         if e["reason"] == "vanished-during-walk"),
+        "split": sum(1 for e in entries if e.get("split")),
         "bytes": total_bytes,
     }
     export_doc = {"export_id": export_id,

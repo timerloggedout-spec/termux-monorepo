@@ -904,7 +904,7 @@
     "vultr"
    ],
    "official_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
-   "status": "registered - pick OWNER-HELD (execution rescinded 2026-11-03 23:18 PT); landing Nov 7, wall Nov 8 15:00 PT",
+   "status": "registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
    "entrant_moniker": "entrant{entrantLablabAi}[platform:lablab-ai]",
    "dates": {
     "announced": "NOT_ESTABLISHED",
@@ -1152,10 +1152,12 @@
     "source": "D2 seat record deltas 2026-11-03 10:04 + 10:21 PT relaying main/owner; balance figures from the owner Console screenshot via main."
    },
    "pick": {
-    "state": "OWNER-HELD (pick RESCINDED; build NOT started)",
-    "history": "EXECUTED 2026-11-03 23:16 PT (B Quarantine Browser Clerk, owner order via main \"D2 BUILD\", recorded PR #4779) then RESCINDED by owner countermand via main 2026-11-03 23:18 PT. B is NOT executed; the build did NOT start. The exercise slate + advisory ranking stand as analysis; the pick itself is the owner's unconstrained call under the override charter.",
-    "residue": "Repo timerloggedout-spec/quarantine-browser-clerk (id 1445293810) was created in the 2-minute execution window - DORMANT residue (evidence only, not an identity anchor; same pattern as the C12 ugreen-nas-skills residue). AppID: NONE (probe 404 - no app was created). Book/build legs fired in that window stand down with the pick.",
-    "clocks": "landing Sat Nov 7; wall Sun Nov 8 15:00 PT; submission editable until wall (lablab)."
+    "state": "DECIDED - B Quarantine Browser Clerk (C1-B); build sequence firing",
+    "decided_at": "2026-11-04T00:51:00-08:00",
+    "basis": "Owner GO direct in the D2 seat 2026-11-04 00:51 PT: \"Continue your Browser Clerk Selection. You're the manager of your challenge.\" + change-if-better delegated to the seat. Manager judgment = stay B (basis as stated by the seat: advisory #1; unoccupied differentiation; signature moment fixture-proven; held staging = only clock-feasible target).",
+    "history": "Exercise run-1 advisory delivered A>C>B>E>F>D (raw #1 = B). First execution 2026-11-03 23:16 PT (main-relayed \"D2 BUILD\", PR #4779) was main's misread - owner countermand 23:18 PT rescinded it (PR #4786); pick held OWNER-HELD until the owner's direct GO above. The rescinded execution stays in history as history.",
+    "residue": "Repo timerloggedout-spec/quarantine-browser-clerk (id 1445293810), created in the rescinded 23:16 window, was DORMANT residue; the decided build resumes from the held tree (Swarm resume) with the AppID leg resumed via the AppID lane.",
+    "build_sequence": "Firing 2026-11-04 (D2 seat): Desk flip; AppID resume; Swarm resume from held tree. Clocks: landing Sat Nov 7; wall Sun Nov 8 15:00 PT; submission editable until wall."
    }
   },
   {

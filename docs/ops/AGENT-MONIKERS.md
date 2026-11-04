@@ -1613,8 +1613,10 @@ occupancy.
 ### Custodian — custody-plane issuance (2026-11-04)
 
 **Issued: `Custodian`** — the name of the **custody
-plane** (Registry ruling 2026-11-04, owner endorsement
-04:47 PT, executed at the gate). The custody plane = the
+plane** (provenance: owner **realization + endorsement**
+2026-11-04 04:47 PT → relay → this issuance, PR #4903 =
+the ruling. Realization of a term mapping ≠ ruling —
+doctrine of record 2026-11-04). The custody plane = the
 holding of keys (AppID private-key custody · vault) ·
 wallets · records/feeds under custody · derivation custody
 (§13 custodian-reviewed derivations). Plane-scoped function

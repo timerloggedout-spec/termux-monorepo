@@ -241,10 +241,11 @@ def build(root):
         if value is not None:
             call_usage[dispatch_key] = {"value": value, "unit": unit or "tokens",
                                         "status": "measured", "source": source}
-        elif usage.get("status") == "no-usage-surface":
+        elif usage.get("status") in ("no-usage-surface", "waived", "fault", "pending"):
             call_usage.setdefault(dispatch_key, {"value": None, "unit": None,
-                                                 "status": "no-usage-surface",
-                                                 "source": source})
+                                                 "status": usage["status"],
+                                                 "source": source,
+                                                 "note": usage.get("note")})
 
     intake_path = Path(root) / "ops/3l0/intake.jsonl"
     if intake_path.is_file():
@@ -339,7 +340,8 @@ def build(root):
     # or session_id joins enrich a row. Missing usage remains explicit.
     task_providers = []
     task_coverage = {"tasks": 0, "established": 0, "activity_only": 0,
-                     "no_usage_surface": 0, "not_established": 0}
+                     "no_usage_surface": 0, "waived": 0, "fault": 0,
+                     "pending": 0, "not_established": 0}
     for prov in nested.get("providers", []):
         models_out = []
         for mod in prov.get("models", []):
@@ -365,11 +367,11 @@ def build(root):
                                   "status": "activity-only",
                                   "source": usage.get("source"),
                                   "note": usage.get("note")}
-                elif usage and usage.get("status") == "no-usage-surface":
+                elif usage and usage.get("status") in ("no-usage-surface", "waived", "fault", "pending"):
                     usage_view = {"value": None, "unit": None, "match": None,
-                                  "status": "no-usage-surface",
+                                  "status": usage.get("status"),
                                   "source": usage.get("source"),
-                                  "note": usage.get("note") or "Provider route exposes no per-call usage surface."}
+                                  "note": usage.get("note") or ("Provider route exposes no per-call usage surface." if usage.get("status") == "no-usage-surface" else None)}
                 else:
                     usage_view = {"value": None, "unit": None, "match": None,
                                   "status": "NOT_ESTABLISHED", "source": None,
@@ -377,7 +379,8 @@ def build(root):
                     attribution = "none"
                 task_coverage["tasks"] += 1
                 bucket = {"established": "established", "activity-only": "activity_only",
-                          "no-usage-surface": "no_usage_surface",
+                          "no-usage-surface": "no_usage_surface", "waived": "waived",
+                          "fault": "fault", "pending": "pending",
                           "NOT_ESTABLISHED": "not_established"}[usage_view["status"]]
                 task_coverage[bucket] += 1
                 role = task.get("role") or "NOT_ESTABLISHED"

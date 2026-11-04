@@ -171,11 +171,7 @@ def queue_feed(queued, in_progress, tiers_doc, at):
                             "via que-feed-collect",
                 "design_input": "Stagefoil — the desk-flow "
                                 "template brand (Registry "
-                                "issuance PR #4817; predecessor "
-                                "internal label 'AutoDesk', "
-                                "internal-only, ™-collision "
-                                "stamped: Autodesk brand; never "
-                                "a published surface name) — "
+                                "issuance PR #4817) — "
                                 "agent-browser-clerk pattern "
                                 "(D2 candidate B learnings); the "
                                 "Desk as interactive-flow + "

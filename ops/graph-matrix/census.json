@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-04T09:36:30.868127+00:00",
+ "census_at_utc": "2026-11-04T12:15:53.868305+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,237 +13,237 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3641,
-  "stale": 1049,
-  "orphan_no_assoc_PR": 355,
-  "stale_and_orphan": 141
+  "total": 3657,
+  "stale": 1051,
+  "orphan_no_assoc_PR": 356,
+  "stale_and_orphan": 142
  },
  "prs": {
-  "total": 4221,
-  "open": 278,
+  "total": 4244,
+  "open": 277,
   "open_draft": 34,
-  "open_draft_share": 0.1223,
+  "open_draft_share": 0.1227,
   "drafts": [
    {
     "number": 386,
     "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
     "created_at": "2026-08-28T05:37:08Z",
-    "age_days": 68.2
+    "age_days": 68.3
    },
    {
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 48.0
+    "age_days": 48.2
    },
    {
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 42.9
+    "age_days": 43.0
    },
    {
     "number": 752,
     "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
     "created_at": "2026-09-22T22:21:54Z",
-    "age_days": 42.5
+    "age_days": 42.6
    },
    {
     "number": 761,
     "title": "lane: Desktop Commander fork + Android execution alternatives",
     "created_at": "2026-09-23T03:23:38Z",
-    "age_days": 42.3
+    "age_days": 42.4
    },
    {
     "number": 762,
     "title": "ops: map live plugin connector surface and parity skills",
     "created_at": "2026-09-23T03:33:34Z",
-    "age_days": 42.3
+    "age_days": 42.4
    },
    {
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 42.2
+    "age_days": 42.4
    },
    {
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 40.4
+    "age_days": 40.5
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 34.4
+    "age_days": 34.5
    },
    {
     "number": 970,
     "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
     "created_at": "2026-10-01T12:03:18Z",
-    "age_days": 33.9
+    "age_days": 34.0
    },
    {
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 15.1
+    "age_days": 15.2
    },
    {
     "number": 1538,
     "title": "feat(tribute): GitLab-native discovery and bounded integration options",
     "created_at": "2026-10-22T09:04:40Z",
-    "age_days": 13.0
+    "age_days": 13.1
    },
    {
     "number": 1612,
     "title": "docs(research): map new free LLM catalogs to telemetry gates",
     "created_at": "2026-10-24T01:09:43Z",
-    "age_days": 11.4
+    "age_days": 11.5
    },
    {
     "number": 1630,
     "title": "fix(delphi): gate and deduplicate conversational intake",
     "created_at": "2026-10-24T06:55:09Z",
-    "age_days": 11.1
+    "age_days": 11.2
    },
    {
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 8.4
+    "age_days": 8.5
    },
    {
     "number": 2461,
     "title": "feat(3l0): visualize observed Delphi weights with provenance",
     "created_at": "2026-10-30T09:07:33Z",
-    "age_days": 5.0
+    "age_days": 5.1
    },
    {
     "number": 2578,
     "title": "docs: integrate AMD and NVIDIA skill workflows",
     "created_at": "2026-10-31T00:18:35Z",
-    "age_days": 4.4
+    "age_days": 4.5
    },
    {
     "number": 2978,
     "title": "docs(ops): map UI surfaces and version lanes",
     "created_at": "2026-11-01T07:12:03Z",
-    "age_days": 3.1
+    "age_days": 3.2
    },
    {
     "number": 3034,
     "title": "[Draft] Independent Foresight Landscape Explorer track",
     "created_at": "2026-11-01T10:10:09Z",
-    "age_days": 3.0
+    "age_days": 3.1
    },
    {
     "number": 3035,
     "title": "[Draft] Independent RFP: foresight platform evaluation",
     "created_at": "2026-11-01T10:10:11Z",
-    "age_days": 3.0
+    "age_days": 3.1
    },
    {
     "number": 3037,
     "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
     "created_at": "2026-11-01T10:15:14Z",
-    "age_days": 3.0
+    "age_days": 3.1
    },
    {
     "number": 3241,
     "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
     "created_at": "2026-11-01T17:32:45Z",
-    "age_days": 2.7
+    "age_days": 2.8
    },
    {
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 2.5
+    "age_days": 2.7
    },
    {
     "number": 3969,
     "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
     "created_at": "2026-11-02T17:33:29Z",
-    "age_days": 1.7
+    "age_days": 1.8
    },
    {
     "number": 4007,
     "title": "Wire invocation observations into Free-Tier Value evidence projection",
     "created_at": "2026-11-02T23:43:35Z",
-    "age_days": 1.4
+    "age_days": 1.5
    },
    {
     "number": 4011,
     "title": "docs(proposals): register external agent toolchain integration portfolio",
     "created_at": "2026-11-03T00:16:14Z",
-    "age_days": 1.4
+    "age_days": 1.5
    },
    {
     "number": 4016,
     "title": "security(issues): gate advisory triage through deterministic intake firewall",
     "created_at": "2026-11-03T00:54:04Z",
-    "age_days": 1.4
+    "age_days": 1.5
    },
    {
     "number": 4017,
     "title": "feat(ops): map federated AppIDs and independent release lanes",
     "created_at": "2026-11-03T01:05:41Z",
-    "age_days": 1.4
+    "age_days": 1.5
    },
    {
     "number": 4020,
     "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
     "created_at": "2026-11-03T02:17:58Z",
-    "age_days": 1.3
+    "age_days": 1.4
    },
    {
     "number": 4023,
     "title": "docs: integrate competitive opportunities and quota reconciliation",
     "created_at": "2026-11-03T03:09:30Z",
-    "age_days": 1.3
+    "age_days": 1.4
    },
    {
     "number": 4083,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T05:53:37Z",
-    "age_days": 1.2
+    "age_days": 1.3
    },
    {
     "number": 4084,
     "title": "docs(deploy): map Vercel alternatives and staged failover",
     "created_at": "2026-11-03T05:57:12Z",
-    "age_days": 1.2
+    "age_days": 1.3
    },
    {
     "number": 4089,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T07:59:38Z",
-    "age_days": 1.1
+    "age_days": 1.2
    },
    {
     "number": 4617,
     "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
     "created_at": "2026-11-03T20:42:00Z",
-    "age_days": 0.5
+    "age_days": 0.6
    }
   ],
-  "merged": 3453,
-  "closed_unmerged": 490,
-  "open_no_closing_ref": 271,
+  "merged": 3475,
+  "closed_unmerged": 492,
+  "open_no_closing_ref": 270,
   "open_unlinked_issue_target": 222,
   "open_unlinked_any_ref": 191,
-  "merged_no_closing_ref": 3423,
-  "merged_unlinked_issue_target": 1964,
-  "merged_unlinked_any_ref": 1121,
+  "merged_no_closing_ref": 3445,
+  "merged_unlinked_issue_target": 1979,
+  "merged_unlinked_any_ref": 1130,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3372,
+  "merged_head_branch_residual_name_match": 3394,
   "open_head_branch_missing": []
  },
  "issues": {
-  "total": 637,
-  "open": 531,
+  "total": 638,
+  "open": 532,
   "open_surface_unlinked": 228,
   "open_unlinked_strict": 208
  },
@@ -2309,6 +2309,10 @@
    [
     4721,
     4685
+   ],
+   [
+    4873,
+    2028
    ]
   ],
   "issue_issue_mutual_pairs": 3,
@@ -2385,6 +2389,7 @@
    "docs/kimi-cloud-offload-evaluation",
    "docs/msm-registry-executing-20261003",
    "feat/ates-phase-b-runtime-emission",
+   "feat/dashboard-lanes-v2",
    "feat/dph-all-collaborator-plan-20261003",
    "feat/github-tagging-extract-20261003",
    "feat/hindsight-router-wire",

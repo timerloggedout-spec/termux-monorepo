@@ -167,7 +167,7 @@
 <div id="adsets"></div>
 <h3>Gauges — allocation snapshots</h3>
 <p class="dim">Am6 discipline: an allocation % exists only as stamped snapshots {at · method · bounds}; the slider renders the latest stamped snapshot, never an unstamped intermediate. The desk's only write path is preset-apply: slider edits a draft → preset-create (snapshot) → validate → preset-apply. Reserve is derived (100 − Σ focus %), never a slider.</p>
-<div id="adgauges"><p class="dim">No stamped allocation snapshot rendered yet — the gauges arm with the gated host and the Quota·Convergence validation shapes.</p></div>
+<div id="adgauges"><p class="dim">Loading the allocations feed…</p></div>
 <h3>Plane 6 — DoE pool participation oversight</h3>
 <p class="dim">Claims ceiling, printed on the surface itself: <strong>existence ≠ participation ≠ standing</strong>; a pool row asserts provisioning only. Participation is never inferred from existence; where no participation events exist the panel reads NOT_ESTABLISHED in words. Unresolved DoE findings render here when the oversight feed lands.</p>
 <div id="adpool6"><p class="dim">Oversight read model not yet published — roster/state render from the steward's ledger fold when the seam lands (175 pool:doe:* pools at census close).</p></div>
@@ -387,6 +387,38 @@ setInterval(load,60000);
     }
   }
   $("adsets").innerHTML=h;
+
+  // Gauges read state (inert): stamped allocations from the feed.
+  async function gauges(){
+    let d;
+    try{
+      const r=await fetch("./data/quota-allocations-feed.json",{cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      d=await r.json();
+    }catch(e){
+      $("adgauges").innerHTML='<p class="muted">Allocations feed not reachable from this surface — gauges render nothing rather than stale figures.</p>';
+      return;
+    }
+    const focuses=(d.focuses||[]).map(f=>f.id);
+    const st=(window.CK&&window.CK.stampState)? window.CK.stampState(d.generated_at, Date.now()) : "unknown";
+    let h='<p class="dim">Feed generated '+esc(d.generated_at||"unknown")+(st==="STALE"?" · STALE":"")+" · schema "+esc(d.schema||"")+" · set by "+esc(d.set_by||"")+" · pools "+(d.pools||[]).length+"</p>";
+    h+='<table><thead><tr><th>Pool</th>'+focuses.map(f=>"<th>"+esc(f)+"</th>").join("")+"<th>Reserve (derived)</th><th>Lock</th></tr></thead><tbody>";
+    for(const p of d.pools||[]){
+      const byFocus={}; for(const a of p.allocations||[]) byFocus[a.focus]=a;
+      const limits=(p.services||[]).map(s=>((s.entitlement||{}).limit));
+      const dead = limits.length>0 && limits.every(v=>!v);
+      const lock = (p.pool==="github.codespaces" || (p.services||[]).some(s=>s.service==="github.codespaces"))
+        ? "codespaces — excluded-interim (locked until the exclusion lifts)"
+        : (dead ? "dead-entitlement — backing limits all 0 (slider disabled)" : "—");
+      h+="<tr><td>"+esc(p.pool)+"</td>"
+        + focuses.map(f=>{ const a=byFocus[f]; return "<td>"+(a? esc(a.pct)+"% · "+esc(a.mode) : "—")+"</td>"; }).join("")
+        + "<td>"+esc(p.reserve_pct)+"%</td><td>"+esc(lock)+"</td></tr>";
+    }
+    h+="</tbody></table>";
+    h+='<p class="dim">Snapshot stamps: allocations dated '+esc(((d.pools||[])[0]||{}).allocations ? (((d.pools||[])[0].allocations[0]||{}).date||"") : "")+' (per-row dates ride the feed). Sliders arm on the gated host; commit path = preset-create → validate → preset-apply only.</p>';
+    $("adgauges").innerHTML=h;
+  }
+  gauges();
   window.ADMIN_DESK_S1 = { armed: ARMED,
     actuate: async function(control_id, params, role){
       if(!ARMED) return { verdict: "inert-tranche-0" };

@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-04T09:17:39Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-04T09:22:02Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `23918cd9aa` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `819d52660f` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 531 issues, 276 PRs. PR classes: EXTRACT 12 / CANDIDATE 127 / NEED_EVIDENCE 137 / SUPERSEDE 0.
+**Open inventory:** 531 issues, 276 PRs. PR classes: EXTRACT 11 / CANDIDATE 128 / NEED_EVIDENCE 137 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -23,7 +23,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4503 | EXTRACT | unlabelled | `8dcc310fc9` | success | success | unstable | docs: app-package D — CHANGELOG discipline · verification decision · perf budget |
 | #4516 | EXTRACT | unlabelled | `80756f2385` | success | success | unstable | feat(schema): integration 5 — schema_version discipline, state stamped end-to-en |
 | #4521 | EXTRACT | unlabelled | `b7306c42b9` | success | success | unstable | feat(ereader): EPUB reader-edition export — generator · TUI · evidence workflow  |
-| #4624 | EXTRACT | unlabelled | `9026886571` | success | success | unstable | docs(ops): QUE — the fleet queue system spec (owner mandate) + tranche plan |
 | #4841 | EXTRACT | unlabelled | `0f45ddefd7` | success | success | unstable | feat(dashboard): Marketing Gantt page + canon 38 |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
@@ -146,6 +145,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4615 | CANDIDATE | unlabelled | `173ad9eaba` | success | success | unknown | fix(ci): harden dangling-reference detection on current master |
 | #4617 | CANDIDATE | unlabelled | `062ba02ebd` | success | success | unknown | feat(mesh): harden quota-bound deployment admission and resiliency |
 | #4621 | CANDIDATE | unlabelled | `8bc1f98ff3` | success | success | unknown | feat(dashboards): queue-state board — live Actions queue timers (owner's queue-t |
+| #4624 | CANDIDATE | unlabelled | `9026886571` | success | success | unknown | docs(ops): QUE — the fleet queue system spec (owner mandate) + tranche plan |
 | #4694 | CANDIDATE | unlabelled | `a581e066ac` | success | success | unknown | feat(tribute): resume prerequisites — merged ledger, volume gate, diagnostics re |
 | #4730 | CANDIDATE | unlabelled | `f66feb2976` | success | success | unknown | 📖 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th l |
 | #4737 | CANDIDATE | unlabelled | `fc8f6d728f` | success | success | unknown | refTemplates: Agentic Wallet template spec — 01_Agent_Runtime (Web3 TEMPLATES di |
@@ -235,7 +235,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3890 | NEED_EVIDENCE | unlabelled | `545b374d9b` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3916 | NEED_EVIDENCE | unlabelled | `3e4c11be2d` | in_progress | in_progress | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #3916 | NEED_EVIDENCE | unlabelled | `d2d9f814bd` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
@@ -282,7 +282,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4686 | NEED_EVIDENCE | unlabelled | `09dae5e5cc` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4690 | NEED_EVIDENCE | unlabelled | `a5d56fdac6` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
 | #4699 | NEED_EVIDENCE | unlabelled | `da4dea4119` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4758 | NEED_EVIDENCE | unlabelled | `1e1b0c5398` | not_reported | not_reported | unstable | Swarm: per-call token usage into dispatch stamps (consumption fix leg) |
+| #4758 | NEED_EVIDENCE | unlabelled | `1e1b0c5398` | not_reported | not_reported | unknown | Swarm: per-call token usage into dispatch stamps (consumption fix leg) |
 | #4780 | NEED_EVIDENCE | unlabelled | `ac13ba9cb4` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4790 | NEED_EVIDENCE | unlabelled | `ffed948d07` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4795 | NEED_EVIDENCE | unlabelled | `dde8f59570` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

@@ -208,8 +208,11 @@ jobs:
                 rel="${f#_landing/}"
                 if [ ! -e "_user_site/$rel" ]; then
                   echo "prune: $rel"
-                  git -C _landing rm -q -- "$rel"
-                  removed=$((removed+1))
+                  if git -C _landing rm -q -- "$rel"; then
+                    removed=$((removed+1))
+                  else
+                    echo "::warning::could not stage removal of $rel"
+                  fi
                 fi
               done < <(find "_landing/$sub" -type f -print0)
             fi
@@ -217,7 +220,19 @@ jobs:
           echo "orphans removed: $removed"
           if [ "$removed" -gt 0 ]; then
             git -C _landing -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" commit -q -m "deploy-prune: remove orphaned files absent from the dashboard artifact (${{ github.sha }})"
-            git -C _landing push origin main
+            # Concurrent deploy runs push to the same branch; rebase-retry
+            # instead of failing the deploy on a non-fast-forward.
+            pushed=0
+            for attempt in 1 2 3; do
+              if git -C _landing push origin main; then pushed=1; break; fi
+              echo "push attempt $attempt rejected; rebasing onto landing main"
+              git -C _landing fetch origin main
+              git -C _landing -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" rebase origin/main || git -C _landing rebase --abort
+            done
+            if [ "$pushed" != "1" ]; then
+              echo "::error::prune commit could not be pushed after 3 attempts"
+              exit 1
+            fi
           fi
       - name: User-site URLs
         run: |

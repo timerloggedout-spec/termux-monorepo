@@ -347,6 +347,14 @@ def render(services: list[dict], readings: list[dict], meta: dict,
         f"{n_live} with a reported reading | "
         f"{len(services) - n_live} with No live reading",
         width, indent=" "))
+    gap = meta.get("consumption_gap") or {}
+    if gap.get("routed_calls") is not None:
+        lines.extend(wrap(
+            f"Coverage pair - readings: {len(readings)}/"
+            f"{len(services)} rows | consumption: "
+            f"{gap.get('usage_stamped')}/{gap.get('routed_calls')} "
+            f"routed calls usage-stamped",
+            width, indent=" "))
     lines.append(c(rule, CYAN))
     return "\n".join(lines) + "\n"
 
@@ -437,6 +445,16 @@ def main(argv: list[str] | None = None) -> int:
     coverage = load_json(coverage_path) if coverage_path.is_file() else {}
     if coverage.get("schema") != "provider-quota-coverage/v1":
         coverage = {}
+
+    # Consumption gap (pack block written by quota_usage_series.py) -
+    # optional: absent pack/gap -> the coverage-pair line is omitted.
+    consumption_gap = {}
+    for pack_cand in (Path.cwd() / "ops/quota/quota-usage.json",
+                      script_dir.parent / "ops/quota/quota-usage.json"):
+        if pack_cand.is_file():
+            consumption_gap = (load_json(pack_cand).get(
+                "consumption_gap") or {})
+            break
     source_label = " + ".join(sources)
 
     snap_now = None
@@ -452,7 +470,8 @@ def main(argv: list[str] | None = None) -> int:
             return 2
 
     def frame() -> str:
-        return render(services, readings, {**meta, "provider_quota_coverage": coverage}, width, source_label,
+        return render(services, readings, {**meta, "provider_quota_coverage": coverage,
+                                           "consumption_gap": consumption_gap}, width, source_label,
                       now=snap_now)
 
     if args.once or not sys.stdout.isatty():

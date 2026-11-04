@@ -148,3 +148,15 @@ beyond 0. QUE improves the road; it never parks the traffic.
 - Both fleet repos are public; billing ceilings are not the
   constraint. The constraint is the shared account scheduler
   working a backlog — which is why QUE governs what ENTERS.
+
+## Priority window — D1 (owner, 2026-11-03 15:55 PT)
+
+Until the D1 freeze (2026-11-04 23:59 PT), the D1 chain
+(slate iterations · releases · snapshot · deploys on its
+path) holds **first claim on runner supply**. Admission treats
+chain runs as the highest claim; sweeps take non-chain
+tier-3/4 work first; other lanes yield per the hold/sweep
+doctrine. The window is encoded in
+`ops/quota/dispatch-tiers.json` (`priority_window`) and
+expires at the freeze — it is a window, not a standing
+reorder. Cadence holds the guard-threshold copy.

@@ -1,7 +1,36 @@
 # tribute-signal v1 — maintainer-signal classifier for tribute PRs
 
 Craft: `scripts/classifiers/tribute_signal.py` (rules tier, stdlib,
-deterministic) + `scripts/classifiers/test_tribute_signal.py` (11/11).
+deterministic) + `scripts/classifiers/test_tribute_signal.py`
+(13/13 at v1.1).
+
+## v1.1 amendments (calibration round 1, 2026-11-03)
+
+Calibration set: 12 records (4 rejections of record + 8 live opens,
+hand-labeled by the swarm lane). v1 scored primary 10/12; both
+misses diagnosed firsthand from the flows and fixed:
+
+- Haven#657 (etiquette miss): etiquette lexicon += engagement
+  phrases verbatim from the flow — "not a person", "from the
+  automation", "no real contributor", "no engagement",
+  "nothing to track".
+- Sail-CLI#23 (placeholder false positive + adjustment-made miss):
+  (a) KEEP-OPEN DEMOTION — rejection words inside a flow the
+  maintainer explicitly keeps open ("keeping this open", "happy to
+  review", …) with the PR not closed_unmerged are a process note,
+  not a verdict: the signal stays listed at medium with
+  adjudicate=true and yields the primary. (b) DONE lexicon +=
+  completion claims "actual fix", "now carries", "implemented".
+- v1.1 calibration result: primary 12/12 · rejection subtypes 4/4 ·
+  adjustment flags all matching. Sail's verdict is adjustment-made
+  at medium + adjudicate (contested-flow honesty), vibewatt#100
+  adjustment-made at high.
+- Corpus defect noted for the census: timeline `committed` events
+  arrive with at=null, so the committed-after-ask leg of
+  adjustment-made is blind; v1.1 leans on the contributor-reply and
+  merge legs until the harvest carries commit timestamps.
+- Seed gaps: cleanup and positive have 0 calibration seeds; the
+  census run surfaces round-2 candidates for both classes.
 Built by the tier1-classifiers steward at the swarm-optimizer's
 request (2026-11-03) so the fleet taxonomy stays ONE taxonomy.
 Corpus + census run: swarm lane. Taxonomy: the owner's, fixed —

@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 276,
+    "open_prs": 275,
     "pr_classes": {
-      "CANDIDATE": 127,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 139,
+      "CANDIDATE": 125,
+      "EXTRACT": 13,
+      "NEED_EVIDENCE": 137,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 274,
+      "prs": 273,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:03:50Z",
+  "generated_at": "2026-11-04T09:07:16Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,10 +153,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "af86d5bed6"
+    "sha": "9c78051b20"
   },
   "prs": [
     {
@@ -298,6 +298,48 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9026886571",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-04T01:04:18Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "481fc6c7d7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4742,
+      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+      "updated_at": "2026-11-04T00:52:14Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b09b0683d8",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4832,
+      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
+      "updated_at": "2026-11-04T09:05:21Z"
     },
     {
       "class": "CANDIDATE",
@@ -2005,20 +2047,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9026886571",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-04T01:04:18Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "a581e066ac",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2067,20 +2095,6 @@
       "number": 4740,
       "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
       "updated_at": "2026-11-04T00:38:52Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "481fc6c7d7",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4742,
-      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
-      "updated_at": "2026-11-04T00:52:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2581,7 +2595,7 @@
       },
       "head_sha": "2e730b0cf2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T07:22:00Z"
@@ -3169,7 +3183,7 @@
       },
       "head_sha": "790f638f87",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T02:00:13Z"
@@ -3237,26 +3251,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7283e0bfc3",
+      "head_sha": "545b374d9b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T08:58:03Z"
+      "updated_at": "2026-11-04T09:04:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "2113067a02",
+      "head_sha": "27e2032f33",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:02:29Z"
+      "updated_at": "2026-11-04T09:05:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3337,7 +3351,7 @@
       },
       "head_sha": "03e37cad99",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "updated_at": "2026-11-04T02:01:34Z"
@@ -3813,7 +3827,7 @@
       },
       "head_sha": "32205eb9d3",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T07:22:14Z"
@@ -3911,7 +3925,7 @@
       },
       "head_sha": "1e1b0c5398",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
       "updated_at": "2026-11-04T01:06:46Z"
@@ -3925,7 +3939,7 @@
       },
       "head_sha": "ac13ba9cb4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4780,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:19:00Z"
@@ -3939,7 +3953,7 @@
       },
       "head_sha": "ffed948d07",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 4790,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:21:15Z"
@@ -3953,7 +3967,7 @@
       },
       "head_sha": "dde8f59570",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4795,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T07:25:49Z"
@@ -3999,34 +4013,6 @@
       "number": 4827,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:00:56Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b09b0683d8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4832,
-      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
-      "updated_at": "2026-11-04T09:03:27Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "35dc123bfc",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4834,
-      "title": "AGENT-MONIKERS: MoneyBall vocabulary issuance \u2014 full naming (8 categories)",
-      "updated_at": "2026-11-04T09:03:45Z"
     }
   ],
   "schema": "operator-matrix/v1",

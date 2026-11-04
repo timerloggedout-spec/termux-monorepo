@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pools — Class × Depth Census</title>
+<!--
+  Pool-population census render (viz, 2026-11-03). Consumes ONLY
+  data/pools-feed.json - a byte-identical mirror of the MoneyBall
+  pools feed (timerloggedout-spec/moneyball data/pools-feed.json,
+  schema moneyball-pools-feed/v1), refreshed on the feed owner's
+  flags. Viz renders; the feed is never re-authored here.
+  Binding (Web3 pre-serve brief, 2026-11-03): measured fold values
+  only - counts of pools of record; no probability-shaped displays
+  (pool existence/share is never an odds render); win-probability
+  hidden; paper/test labelling explicit. Matrix discipline: counts
+  render as counted; a class/depth cell the feed names
+  NOT_ESTABLISHED renders NE, never 0; classes absent from the
+  ledger render as NOT_ESTABLISHED rows, never dropped; every other
+  empty cell renders 0.
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  table.mx{border-collapse:collapse;width:100%}
+  table.mx th,table.mx td{border:1px solid #2a2f36;padding:.3rem .5rem;text-align:right;font-size:.92rem}
+  table.mx th[scope=row],table.mx td.lbl{text-align:left}
+  td.ne{color:#e0a63f;font-weight:600;text-align:center}
+  td.zero{color:#8a919c}
+  tr.absent td{color:#e0a63f}
+  .note{color:#8a919c;font-size:.88rem}
+  .stamp{color:#8a919c;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="topbar" id="topbar"></div>
+<main>
+<h1>Pools — class × depth census</h1>
+<p><strong>Paper / test wallet pools.</strong> Counts of pools of record,
+fold-proven from the wallet ledger — existence and provisioning state
+only. No odds, no ratios, no standing: a pool's existence or share is
+never a probability render.</p>
+<p class="stamp" id="stamp">loading…</p>
+<section>
+<h2>Census matrix</h2>
+<div id="summary"></div>
+<div id="matrix"></div>
+<p class="note">Depth axis 0–4 (the Amendment-3 axis). A cell reads
+<strong>NE</strong> where the feed names that class × depth
+NOT_ESTABLISHED; any other empty cell reads 0. Classes absent from the
+ledger close the table as NOT_ESTABLISHED rows.</p>
+<div id="absent"></div>
+</section>
+<section>
+<h2>Not-established cells (feed, verbatim)</h2>
+<ul id="necells"></ul>
+</section>
+<section>
+<h2>Arm split</h2>
+<p id="armsplit"></p>
+</section>
+<section>
+<h2>Compliance (feed, verbatim)</h2>
+<ul id="compliance"></ul>
+<p class="note">Source of record: the wallet ledger named in the
+feed's provenance below. This page renders the feed's census only;
+pool rows themselves serve on the MoneyBall site.</p>
+</section>
+</main>
+<script src="./chartkit.js"></script>
+<script src="./dashboard.js"></script>
+<script src="./shell.js"></script>
+<script>
+// ==== pure logic (node-sim tested) ====
+function neCellKeys(list){
+  const out={};
+  (list||[]).forEach(function(t){
+    const m=/^([a-z0-9-]+) depth (\d+)\b/.exec(t);
+    if(m) out[m[1]+"|"+m[2]]=true;
+  });
+  return out;
+}
+function buildMatrix(census){
+  const cxd=census.class_x_depth;
+  const cols=[0,1,2,3,4];
+  const ne=neCellKeys(cxd.not_established_cells);
+  const rows=Object.keys(cxd.rows).map(function(cls){
+    const r=cxd.rows[cls];
+    const cells=cols.map(function(d){
+      if(Object.prototype.hasOwnProperty.call(r.by_depth,String(d)))
+        return r.by_depth[String(d)];
+      if(ne[cls+"|"+d]) return "NE";
+      return 0;
+    });
+    return {cls:cls,cells:cells,total:r.total};
+  });
+  const colTotals=cols.map(function(d,i){
+    return rows.reduce(function(a,r){return a+(typeof r.cells[i]==="number"?r.cells[i]:0);},0);
+  });
+  const grand=rows.reduce(function(a,r){return a+r.total;},0);
+  return {cols:cols,rows:rows,colTotals:colTotals,grand:grand,
+    absent:cxd.classes_absent_from_ledger||[],
+    absentState:cxd.absent_class_state||"",
+    neCells:cxd.not_established_cells||[]};
+}
+if (typeof module!=="undefined") module.exports={neCellKeys,buildMatrix};
+// ==== end pure logic ====
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+async function load(){
+  const f=await (await fetch("./data/pools-feed.json")).json();
+  const cen=f.census, gf=f.generated_from||{};
+  document.getElementById("stamp").textContent=
+    "pools-feed "+(f.schema||"")+" · ledger "+(gf.ledger||"")+
+    " · head seq "+(gf.head_seq!=null?gf.head_seq:"?")+
+    " · ledger blob "+String(gf.ledger_blob||"").slice(0,10)+
+    " · feed pools "+cen.feed_pools+" == ledger pool wallets "+cen.ledger_pool_wallets+
+    (cen.deltas&&cen.deltas.length?(" · deltas "+cen.deltas.length):" · deltas 0");
+  const m=buildMatrix(cen);
+  document.getElementById("summary").innerHTML=
+    "<p><strong>"+m.grand+"</strong> pools · <strong>"+m.rows.length+
+    "</strong> classes present · <strong>"+m.absent.length+
+    "</strong> absent (NOT_ESTABLISHED) · ledger events "+
+    (gf.ledger_events!=null?gf.ledger_events:"?")+"</p>";
+  let h='<table class="mx"><thead><tr><th scope="col">class</th>'+
+    m.cols.map(d=>'<th scope="col">depth '+d+"</th>").join("")+
+    '<th scope="col">total</th></tr></thead><tbody>';
+  m.rows.forEach(function(r){
+    h+='<tr><th scope="row">'+esc(r.cls)+"</th>"+r.cells.map(function(c){
+      if(c==="NE") return '<td class="ne">NE</td>';
+      if(c===0) return '<td class="zero">0</td>';
+      return "<td>"+c+"</td>";
+    }).join("")+"<td><strong>"+r.total+"</strong></td></tr>";
+  });
+  m.absent.forEach(function(a){
+    h+='<tr class="absent"><td class="lbl">'+esc(a)+"</td>"+
+      '<td class="ne" colspan="'+m.cols.length+'">NOT_ESTABLISHED</td>'+
+      '<td class="ne">NE</td></tr>';
+  });
+  h+="<tr><th scope=\"row\">total</th>"+m.colTotals.map(function(t){
+    return "<td><strong>"+t+"</strong></td>";}).join("")+
+    "<td><strong>"+m.grand+"</strong></td></tr>";
+  h+="</tbody></table>";
+  document.getElementById("matrix").innerHTML=h;
+  document.getElementById("absent").innerHTML= m.absentState?
+    '<p class="note">'+esc(m.absentState)+"</p>":"";
+  document.getElementById("necells").innerHTML=
+    m.neCells.map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
+  document.getElementById("armsplit").textContent=cen.arm_split_stamp||"";
+  const comp=cen.criteria_compliance||{};
+  document.getElementById("compliance").innerHTML=
+    Object.keys(comp).map(function(k){
+      return "<li><strong>"+esc(k)+":</strong> "+esc(comp[k])+"</li>";
+    }).join("");
+}
+load().catch(e=>{document.getElementById("stamp").textContent="pools feed failed to load";});
+</script>
+</body>
+</html>

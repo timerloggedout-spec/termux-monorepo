@@ -209,6 +209,13 @@ function submissionHTML(e){
   if(s.ref) h+=' · <a href="'+esc(s.ref)+'" target="_blank" rel="noopener">view submission</a>';
   return h+'</p></div>';
 }
+function delineationHTML(e){
+  // D2's proposal delineation lives in the dashboard as its own page;
+  // the challenge card is its discovery hop (association: D2 exercise
+  // record). Other entries have no delineation page.
+  if(e.id!=="D2") return "";
+  return '<div class="submission"><span class="cd-label">Proposals</span><p class="sub-line"><a href="./d2-proposals.html">Proposal delineation \u2014 6 candidates, advisory ranking</a></p></div>';
+}
 let ENTRIES=[];
 function render(){
   $("cards").innerHTML=ENTRIES.map(e=>
@@ -220,6 +227,7 @@ function render(){
     '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
     prizesHTML(e)+
     submissionHTML(e)+
+    delineationHTML(e)+
     '</div>').join("");
   renderGantt();
   renderLanes();

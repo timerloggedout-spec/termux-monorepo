@@ -3,8 +3,8 @@
     "open_issues": 532,
     "open_prs": 277,
     "pr_classes": {
-      "CANDIDATE": 128,
-      "EXTRACT": 10,
+      "CANDIDATE": 127,
+      "EXTRACT": 11,
       "NEED_EVIDENCE": 139,
       "SUPERSEDE": 0
     }
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T10:51:35Z",
+  "generated_at": "2026-11-04T12:22:52Z",
   "issues_unlabelled": [
     308,
     388,
@@ -155,10 +155,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "in_progress"
     },
-    "sha": "e9cbceff25"
+    "sha": "1c0b62cc8a"
   },
   "prs": [
     {
@@ -230,6 +230,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "173513e773",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-04T07:26:07Z"
     },
     {
       "class": "EXTRACT",
@@ -1069,12 +1083,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0ff3effdd3",
+      "head_sha": "7497f3596d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T10:38:34Z"
+      "updated_at": "2026-11-04T11:35:45Z"
     },
     {
       "class": "CANDIDATE",
@@ -1089,20 +1103,6 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-03T14:29:59Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "173513e773",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-04T07:26:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -2091,12 +2091,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b09b0683d8",
+      "head_sha": "bc80a03b71",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4832,
-      "title": "Marketing Gantt feed (marketing-gantt/1) \u2014 accounts + constraint + milestones",
-      "updated_at": "2026-11-04T09:05:21Z"
+      "number": 4883,
+      "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
+      "updated_at": "2026-11-04T11:52:35Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2595,12 +2595,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "a42450afd3",
+      "head_sha": "4b523b7cb3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-04T10:34:22Z"
+      "updated_at": "2026-11-04T10:51:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3253,12 +3253,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0036661ff1",
+      "head_sha": "449c633756",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T10:51:17Z"
+      "updated_at": "2026-11-04T12:22:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3267,12 +3267,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "95a8407214",
+      "head_sha": "e916ee4247",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T10:46:54Z"
+      "updated_at": "2026-11-04T12:22:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3829,7 +3829,7 @@
       },
       "head_sha": "b9ec529fbe",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T10:51:06Z"
@@ -4034,15 +4034,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "9b20502624",
+      "head_sha": "a5959ef6de",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4880,
-      "title": "chore(ops): regenerate operator matrix",
-      "updated_at": "2026-11-04T10:34:17Z"
+      "mergeable_state": "unstable",
+      "number": 4888,
+      "title": "viz(map): DRAFT surfaces map \u2014 planes \u00d7 taxonomy \u00d7 substrate",
+      "updated_at": "2026-11-04T12:22:33Z"
     }
   ],
   "schema": "operator-matrix/v1",

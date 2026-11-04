@@ -1582,6 +1582,16 @@ the only releases are `apk-v*` tags (monorepo) and ∅
 | **Book-making function name** | occupant exists, name barred (Ruling 1) | coined-name commission candidate (Wagertome process) |
 | **Release-plane naming** | ∅ class associations in releases | note: named release lines exist informally (submission-freeze tag); plane unexploited |
 
+**Naming-gap subset (Recon re-read, naming lens):** unnamed
+occupants = **6** {Custodian · Steward · Judge · Evaluator ·
+Validator (family-level) · Requester (thin)} — live
+occupants under bare role words, ∅ coined/issued name.
+Already-named (∅ gap): Sentinel · Clerk · Dispenser
+(descriptive/issued). Alias-family members: Pool member ·
+Foil · Keeper (Keeper's coinage exists as queued mark
+`Keep3r`, UgreenSkills slot). ∅ occupant (nothing to name):
+House · Curator.
+
 Noise discipline: Critic/SWE/GM/anon counts are
 tokenization-inflated and are reported flagged, never as
 occupancy.

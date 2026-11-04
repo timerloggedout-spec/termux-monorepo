@@ -93,7 +93,7 @@ def test_state_carries_plan_start_and_surface_version():
     from build_data import emit_state
     state = emit_state(ROOT)
     assert state["plan_start"]  # #4214: Today advances from here
-    assert state["surface_version"] == "0.5.0"
+    assert state["surface_version"] == "0.5.1"
 
 
 def test_service_worker_cache_is_versioned_and_state_network_first():

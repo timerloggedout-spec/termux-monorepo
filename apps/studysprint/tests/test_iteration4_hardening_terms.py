@@ -65,7 +65,7 @@ def test_single_file_ingest_reports_the_three_counts():
 
 def test_state_carries_book_and_version():
     state = json.loads((WEB / "data" / "state.json").read_text())
-    assert state["surface_version"] == "0.5.0"
+    assert state["surface_version"] == "0.5.1"
     assert state["book"]["counts"] == EXPECTED_COUNTS
 
 

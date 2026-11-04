@@ -26,7 +26,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.5.0"
+TUI_VERSION = "0.5.1"
 SURFACE = "studysprint-tui"
 
 from study_geo import surface_calendar_geo  # noqa: E402

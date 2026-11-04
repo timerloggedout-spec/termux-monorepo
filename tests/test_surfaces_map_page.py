@@ -24,10 +24,10 @@ def _sim(tmp_path):
     harness.write_text(data + logic)
     out = tmp_path / "run.cjs"
     out.write_text("""
-const {planeDraws, substrateConsumers} = require("./harness.cjs");
+const {groupDraws, substrateConsumers} = require("./harness.cjs");
 console.log(JSON.stringify({
   surfaces: SURFACES.length,
-  planes: Object.keys(planeDraws(SURFACES)).length,
+  planes: Object.keys(groupDraws(SURFACES)).length,
   substrateUsed: Object.keys(substrateConsumers(SURFACES)).length,
   substrateTotal: SUBSTRATE.length,
   deskQue: substrateConsumers(SURFACES).quefeeds.includes("desk.html"),

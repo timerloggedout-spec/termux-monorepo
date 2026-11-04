@@ -60,7 +60,7 @@ flowchart TB
     moneyball_8["Tribute queues (classified Web3)"]
     moneyball_9["propose.html"]
   end
-  subgraph PL_observatory["Observatory & Telemetry"]
+  subgraph PL_observatory["Observatory (lane) & Telemetry"]
     observatory_0["telemetry.html"]
   end
   subgraph PL_coordination["Coordination & QUE"]
@@ -131,7 +131,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | ates.html | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | page · ATES feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | results-index.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo | page · results-index feed + canonical twin · builder · tests | feed generated_at + per-section STALE · site deploy |
 | free-tier-value.html | tribute | Providers & Quota | ∅ | Surface feeds | termux-monorepo | page · free-tier feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
-| dispatch-tree.html | tribute | Coordination & QUE | role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · dispatch-tree feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
+| dispatch-tree.html | tribute | Coordination & QUE | role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · dispatch-tree feed · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1) | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | countdowns.html | tribute | Challenges & Entries | ∅ | Surface feeds | termux-monorepo | page · countdown data (register) · tests | register of record (deadline-reminders) · wall stamps · site deploy |
 | d2-proposals.html | tribute | Challenges & Entries | ∅ | Surface feeds | termux-monorepo | page (static content of record) · tests | static of record · ∅ feed · site deploy |
 | linguist.html | tribute | Identity & Registry | ∅ | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · linguist feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
@@ -141,10 +141,10 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | pr-lanes.html | tribute | Coordination & QUE | role | Surface feeds · QUE feeds | termux-monorepo | page · pr-lanes feed + series · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | proposals.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo | page · proposals feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | referrals.html | tribute | Web & Presentation | domain | Surface feeds | termux-monorepo | page · referrals feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
-| telemetry.html | tribute | Observatory & Telemetry | ∅ | Surface feeds | termux-monorepo | page · telemetry feed + history series · series generator · tests | feed generated_at + history-series appends · site deploy |
-| desk.html | tribute | Challenges & Entries | role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT · Governor stream | termux-monorepo | page · desk-feed · coordinator source · QUE feeds · tests | feed generated_at (bump-on-content-refresh rule) · site deploy |
+| telemetry.html | tribute | Observatory (lane) & Telemetry | ∅ | Surface feeds | termux-monorepo | page · telemetry feed + history series · series generator · tests | feed generated_at + history-series appends · site deploy |
+| desk.html | tribute | Challenges & Entries | role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT · Governor stream | termux-monorepo | page · desk-feed · coordinator source · QUE feeds · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1) | feed generated_at (bump-on-content-refresh rule) · site deploy |
 | tracking.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · tracking feed · deadline register source · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
-| family.html | tribute | Identity & Registry | role | AGENT-MONIKERS SSOT · Surface feeds | termux-monorepo | page · family feed · monikers source · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
+| family.html | tribute | Identity & Registry | role | AGENT-MONIKERS SSOT · Surface feeds | termux-monorepo | page · family feed · monikers source · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1) | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | Wagertome — Slate (index) | moneyball repo | Wagertome — Web3 | ∅ | Wallet ledger · Book ledger | moneyball | site pages · site feeds · ledgers by reference | moneyball Pages deploy per merge · feed stamps · ∅ tagged releases (NOT_ESTABLISHED) |
 | Wagertome — Cards | moneyball repo | Wagertome — Web3 | role | Wallet ledger · AGENT-MONIKERS SSOT | moneyball | site pages · cards-feed · WALLETS source (monorepo) | moneyball Pages deploy · cards-feed stamps · ∅ tagged releases (NOT_ESTABLISHED) |
 | Wagertome — Pools | moneyball repo | Wagertome — Web3 | plane · role | Wallet ledger | moneyball | site pages · pools-feed · wallet-ledger source (monorepo) | moneyball Pages deploy · pools-feed census stamps (ledger head seq) · ∅ tagged releases (NOT_ESTABLISHED) |
@@ -183,6 +183,8 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 
 
 ## Reading notes
+
+- Observatory/ForeSight = LANE of record; program/method readings secondary, never class assignments.
 
 - Dual-home surfaces draw once, at their group: the Book renders on tribute from the book ledger; Cards/Pools/Wallets/Settlement serve from the MoneyBall site on the same ledgers.
 - Pools appears on both homes over one wallet ledger — one fold, two renders.

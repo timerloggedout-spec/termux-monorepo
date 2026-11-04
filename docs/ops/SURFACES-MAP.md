@@ -48,15 +48,15 @@ flowchart TB
     entries_1["d2-proposals.html"]
     entries_2["desk.html"]
   end
-  subgraph PL_moneyball["Wagertome · WagerDome — Web3"]
+  subgraph PL_moneyball["Wagertome — Web3"]
     moneyball_0["moneyball.html"]
     moneyball_1["wagering-book.html"]
     moneyball_2["pools.html"]
-    moneyball_3["WagerDome — Slate (index)"]
-    moneyball_4["WagerDome — Cards"]
-    moneyball_5["WagerDome — Pools"]
-    moneyball_6["WagerDome — Wallets"]
-    moneyball_7["WagerDome — Settlement"]
+    moneyball_3["Wagertome — Slate (index)"]
+    moneyball_4["Wagertome — Cards"]
+    moneyball_5["Wagertome — Pools"]
+    moneyball_6["Wagertome — Wallets"]
+    moneyball_7["Wagertome — Settlement"]
     moneyball_8["Tribute queues (classified Web3)"]
     moneyball_9["propose.html"]
   end
@@ -103,7 +103,7 @@ flowchart TB
 
 ## Brand family
 
-- **Wagertome** = the record · **WagerDome** = the venue · **booktally** = the unit (Registry PR #4825) · **Actuary** = the actor.
+- **Wagertome** = the record · **WagerDome** = the venue/arena mark — HELD (no arena surfaces of record yet) · **booktally** = the unit (Registry PR #4825) · **Actuary** = the actor.
 - Naming gate = PROVENANCE over the whole map (Registry reviewer of record), not a per-surface draw.
 
 ## Surfaces
@@ -123,9 +123,9 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | admin-graph.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | page · admin feeds · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | oracle.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo + delphi-oracle | page · oracle feed · upstream engine repo · tests | oracle feed stamps · engine-repo release line NOT_ESTABLISHED |
 | 3l0.html | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | page · 3L0 session feeds · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
-| moneyball.html | tribute | Wagertome · WagerDome — Web3 | ∅ | Surface feeds · Book ledger | termux-monorepo | page · moneyball feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
-| wagering-book.html | tribute | Wagertome · WagerDome — Web3 | role | Book ledger · Surface feeds | termux-monorepo | page · feed+mirror · generator wagering_book_feed.py · book-feed/book/ledger sources · tests | feed generated_at + 48h STALE · feed/mirror/fixture byte-parity per refresh PR · site deploy · ∅ release line |
-| pools.html | tribute | Wagertome · WagerDome — Web3 | plane · role | Wallet ledger | termux-monorepo ← moneyball | page · feed+mirror · upstream pools-feed (moneyball repo) · wallet-ledger source · tests | upstream feed stamps (ledger head seq) · mirror parity per refresh PR · site deploy · ∅ release line |
+| moneyball.html | tribute | Wagertome — Web3 | ∅ | Surface feeds · Book ledger | termux-monorepo | page · moneyball feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
+| wagering-book.html | tribute | Wagertome — Web3 | role | Book ledger · Surface feeds | termux-monorepo | page · feed+mirror · generator wagering_book_feed.py · book-feed/book/ledger sources · tests | feed generated_at + 48h STALE · feed/mirror/fixture byte-parity per refresh PR · site deploy · ∅ release line |
+| pools.html | tribute | Wagertome — Web3 | plane · role | Wallet ledger | termux-monorepo ← moneyball | page · feed+mirror · upstream pools-feed (moneyball repo) · wallet-ledger source · tests | upstream feed stamps (ledger head seq) · mirror parity per refresh PR · site deploy · ∅ release line |
 | mvt.html | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | page · MVT feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | doe.html | tribute | Scoring & Method | office | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · DoE feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | ates.html | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | page · ATES feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
@@ -145,14 +145,14 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | desk.html | tribute | Challenges & Entries | role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT · Governor stream | termux-monorepo | page · desk-feed · coordinator source · QUE feeds · tests | feed generated_at (bump-on-content-refresh rule) · site deploy |
 | tracking.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · tracking feed · deadline register source · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | family.html | tribute | Identity & Registry | role | AGENT-MONIKERS SSOT · Surface feeds | termux-monorepo | page · family feed · monikers source · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
-| WagerDome — Slate (index) | moneyball repo | Wagertome · WagerDome — Web3 | ∅ | Wallet ledger · Book ledger | moneyball | site pages · site feeds · ledgers by reference | moneyball Pages deploy per merge · feed stamps · ∅ tagged releases (NOT_ESTABLISHED) |
-| WagerDome — Cards | moneyball repo | Wagertome · WagerDome — Web3 | role | Wallet ledger · AGENT-MONIKERS SSOT | moneyball | site pages · cards-feed · WALLETS source (monorepo) | moneyball Pages deploy · cards-feed stamps · ∅ tagged releases (NOT_ESTABLISHED) |
-| WagerDome — Pools | moneyball repo | Wagertome · WagerDome — Web3 | plane · role | Wallet ledger | moneyball | site pages · pools-feed · wallet-ledger source (monorepo) | moneyball Pages deploy · pools-feed census stamps (ledger head seq) · ∅ tagged releases (NOT_ESTABLISHED) |
-| WagerDome — Wallets | moneyball repo | Wagertome · WagerDome — Web3 | role | Wallet ledger | moneyball | site pages · wallet views · wallet-ledger source (monorepo) | moneyball Pages deploy · ledger head seq stamps · ∅ tagged releases (NOT_ESTABLISHED) |
-| WagerDome — Settlement | moneyball repo | Wagertome · WagerDome — Web3 | ∅ | Book ledger · Wallet ledger | moneyball | site pages · settlement views · replay.py · book+wallet ledgers | moneyball Pages deploy · replay reports @main · settlement stamps in-book · ∅ tagged releases (NOT_ESTABLISHED) |
-| Tribute queues (classified Web3) | tribute | Wagertome · WagerDome — Web3 | ∅ | Surface feeds | termux-monorepo | queue surfaces · tribute gate config · status ledger · gate tests | gate config of record · status-ledger backfill stamps · lane PAUSED (∅ deploys by ruling) |
+| Wagertome — Slate (index) | moneyball repo | Wagertome — Web3 | ∅ | Wallet ledger · Book ledger | moneyball | site pages · site feeds · ledgers by reference | moneyball Pages deploy per merge · feed stamps · ∅ tagged releases (NOT_ESTABLISHED) |
+| Wagertome — Cards | moneyball repo | Wagertome — Web3 | role | Wallet ledger · AGENT-MONIKERS SSOT | moneyball | site pages · cards-feed · WALLETS source (monorepo) | moneyball Pages deploy · cards-feed stamps · ∅ tagged releases (NOT_ESTABLISHED) |
+| Wagertome — Pools | moneyball repo | Wagertome — Web3 | plane · role | Wallet ledger | moneyball | site pages · pools-feed · wallet-ledger source (monorepo) | moneyball Pages deploy · pools-feed census stamps (ledger head seq) · ∅ tagged releases (NOT_ESTABLISHED) |
+| Wagertome — Wallets | moneyball repo | Wagertome — Web3 | role | Wallet ledger | moneyball | site pages · wallet views · wallet-ledger source (monorepo) | moneyball Pages deploy · ledger head seq stamps · ∅ tagged releases (NOT_ESTABLISHED) |
+| Wagertome — Settlement | moneyball repo | Wagertome — Web3 | ∅ | Book ledger · Wallet ledger | moneyball | site pages · settlement views · replay.py · book+wallet ledgers | moneyball Pages deploy · replay reports @main · settlement stamps in-book · ∅ tagged releases (NOT_ESTABLISHED) |
+| Tribute queues (classified Web3) | tribute | Wagertome — Web3 | ∅ | Surface feeds | termux-monorepo | queue surfaces · tribute gate config · status ledger · gate tests | gate config of record · status-ledger backfill stamps · lane PAUSED (∅ deploys by ruling) |
 | Validation surfaces (classified Web3) | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | gate/status surfaces · validation tests | gate test suite of record · ∅ release line |
-| propose.html | moneyball repo | Wagertome · WagerDome — Web3 | role | Surface feeds · Book ledger | moneyball | site page · proposals feed + receipt chain · S13 machinery (S13.3A) | moneyball Pages deploy · proposal-chain stamps (LISTED transitions in-book) |
+| propose.html | moneyball repo | Wagertome — Web3 | role | Surface feeds · Book ledger | moneyball | site page · proposals feed + receipt chain · S13 machinery (S13.3A) | moneyball Pages deploy · proposal-chain stamps (LISTED transitions in-book) |
 | lanes-and-scopes.html | tribute | Coordination & QUE | role | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · lanes feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | matrix.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · matrix feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | owner-records.html | tribute | Identity & Registry | ∅ | Surface feeds | termux-monorepo | page · records feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
@@ -184,7 +184,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 
 ## Reading notes
 
-- Dual-home surfaces draw once, at their plane: the Book renders on tribute from the book ledger; Cards/Pools/Wallets/Settlement serve from the MoneyBall site on the same ledgers.
+- Dual-home surfaces draw once, at their group: the Book renders on tribute from the book ledger; Cards/Pools/Wallets/Settlement serve from the MoneyBall site on the same ledgers.
 - Pools appears on both homes over one wallet ledger — one fold, two renders.
 - Levels name what a surface RENDERS, not what it is.
 - desk.html is the widest consumer: desk-feed + QUE feeds + governor stream + monikers.

@@ -20,13 +20,23 @@ kinds, same stamped-evidence shape).
 |---|---|
 | `agent.py` | The agent: D0 gate loop + StudySprint tools + Strands registration |
 | `study_tools.py` | G2 study evidence kinds + plan/quiz/replan tools |
+| `study_reader.py` | Multi-pass RSVP reader: section-by-section skim, then a focused re-read, with one-tap term flagging |
+| `study_pipeline.py` | Reading pipeline: finder -> term bank |
+| `study_courses.py` | Multi-course planning, exam countdowns, .ics export |
+| `study_memory.py` | Memory methods: Temple Memory (loci), Pomodoro pacing, reminders that carry the memory cue |
+| `study_sr.py` | Spaced repetition: FSRS + SM-2 schedulers, Anki .apkg + Obsidian exports |
+| `study_calendar.py` / `study_geo.py` | Calendar intake with assessment-frequency ramps + quiet hours; maps + temple routes on real geography |
+| `study_hardening.py` | State recall + opt-in hardening |
 | `foundation/` | D0 foundation, verbatim: oracle kernel (blob 9a4a1c78), fetch_evidence (8442d813), census |
 | `demo.py` / `demo-script.md` | <3-min demo; writes `evidence/demo-run.json` |
 | `article.md` | Builder Center article draft (submission item 2) |
-| `examples/` | Sample syllabus + practice set (synthetic) |
-| `tests/test_studysprint.py` | Offline gate tests |
+| `examples/` | Sample syllabi, practice sets, readings + calendars (synthetic; BIO 101 + STAT 210) |
+| `tui.py` (+ `TUI.md`) | Terminal surface |
+| `web/` (+ `WEBAPP.md`) | Browser surface (PWA); `build_data.py` generates `data/state.json` from the tree |
+| `android/` (+ `APK.md`) | Android surface (WebView wrapper) |
+| `tests/` | Offline gate tests: core suite + per-iteration, parity, second-sample + surface tests |
 | `tools/resync_parity.py` | Nov 3 re-sync parity auditor (blob parity vs `timerloggedout-spec/studysprint`) |
-| `tests/test_resync_parity.py` | Parity audit + Now features tests |
+| `VERSION` / `CHANGELOG.md` / `VERSIONING.md` | Foundation version of record + SemVer process |
 
 ## Live assets
 
@@ -39,27 +49,34 @@ reflow (25 or 45 minutes — the plan reshapes around your day) ·
 daily check-in with recovered-weeks streaks · plain-language mode,
 receipts minus the jargon. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.2.0
-— new v0.2.0 demo:
 **Update — Nov 2, 2026: StudySprint v0.3.0 is out.** Spaced
 repetition, built on the plan: FSRS + SM-2 schedulers, Anki .apkg
 export, an Obsidian vault surface, and a ts-fsrs seed for the UX
 layer. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.3.0
-— new v0.3.0 demo:
+**Update — Nov 3, 2026: StudySprint v0.4.0 is out.** The reading
+pipeline (finder → term bank), multi-course planning with exam
+countdowns and .ics export, and memory methods — Temple Memory,
+Pomodoro pacing, and reminders that carry the memory cue. Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.4.0
 **Update — Nov 3, 2026: StudySprint v0.5.0 is out.** Calendar
 intake with assessment-frequency ramps and quiet hours, maps +
 temple routes on real geography, state recall + opt-in hardening,
 and ingestion on every surface — CLI, TUI, web picker/camera,
 APK — with confirm-gated syllabus placement. Release:
 https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.5.0
-**Update — Nov 3, 2026: StudySprint v0.4.0 is out.** The reading
-pipeline (finder → term bank), multi-course planning with exam
-countdowns and .ics export, and memory methods — Temple Memory,
-Pomodoro pacing, and reminders that carry the memory cue. Release:
-https://github.com/timerloggedout-spec/studysprint/releases/tag/v0.4.0
-— new v0.4.0 demo:
-- Demo video (YouTube, 2:54, public): https://www.youtube.com/watch?v=WK9LMwpvHUk
-- Try it in your browser: the StudySprint web app (v0.1.0) — the same plan, trust receipt, and spaced repetition, running live: https://timerloggedout-spec.github.io/studysprint/webapp/0.1.0/
+**Update — Nov 4, 2026: StudySprint v1.0.0 is out.** The
+submission cut: the foundation version of record moves 0.5.0 ->
+1.0.0 (every agent receipt now stamps `agent_version` 1.0.0),
+carrying the complete catch-up slate — calendar/geography,
+memory methods, multi-course, and term-expansion + opt-in
+hardening on all three surfaces — plus a second bundled sample
+course (STAT 210). The surfaces version independently and stay
+at 0.5.0; post-1.0.0 foundation motion is PATCH only
+(`VERSIONING.md`). Release:
+https://github.com/timerloggedout-spec/studysprint/releases/tag/v1.0.0
+- Demo video (YouTube, 2:54, public; the v0.4.0 final cut): https://www.youtube.com/watch?v=WK9LMwpvHUk
+- Try it in your browser: the StudySprint web app (v0.5.0) — the same plan, trust receipt, and spaced repetition, running live: https://timerloggedout-spec.github.io/studysprint/web/ (always-latest alias; version-pinned copies live under `/studysprint/webapp/<version>/`)
 - Starting-agent (D0) repo: https://github.com/timerloggedout-spec/delphi-oracle
 
 ## Impact

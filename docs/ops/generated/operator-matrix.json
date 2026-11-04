@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 532,
-    "open_prs": 279,
+    "open_prs": 280,
     "pr_classes": {
-      "CANDIDATE": 127,
-      "EXTRACT": 15,
-      "NEED_EVIDENCE": 137,
+      "CANDIDATE": 129,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 140,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 47,
-      "prs": 277,
+      "prs": 278,
       "unlabelled_numbers": [
         308,
         388,
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T12:53:57Z",
+  "generated_at": "2026-11-04T13:28:32Z",
   "issues_unlabelled": [
     308,
     388,
@@ -158,7 +158,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "8c5bc19528"
+    "sha": "33e37e34ed"
   },
   "prs": [
     {
@@ -238,34 +238,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6268300078",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T12:38:09Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d395318709",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T12:52:16Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -336,40 +308,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "bc80a03b71",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4883,
-      "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
-      "updated_at": "2026-11-04T11:52:35Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "43b6a94239",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4898,
-      "title": "feat(dashboard): surfaces-map serve step \u2014 canon 39 + census rows",
-      "updated_at": "2026-11-04T12:40:18Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "70aea43e8f",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4904,
       "title": "viz(map): Bolt + Sentinel rows (owner query); linguist verified",
-      "updated_at": "2026-11-04T12:52:39Z"
+      "updated_at": "2026-11-04T13:00:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -2147,6 +2091,34 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "bc80a03b71",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4883,
+      "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
+      "updated_at": "2026-11-04T11:52:35Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "43b6a94239",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4898,
+      "title": "feat(dashboard): surfaces-map serve step \u2014 canon 39 + census rows",
+      "updated_at": "2026-11-04T12:40:18Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "5b97af986d",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2653,7 +2625,7 @@
       },
       "head_sha": "4b523b7cb3",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T10:51:48Z"
@@ -2671,6 +2643,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "8168da6f21",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T13:27:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3311,10 +3297,24 @@
       },
       "head_sha": "449c633756",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T12:22:31Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "4188d668e3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T13:27:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3871,7 +3871,7 @@
       },
       "head_sha": "b9ec529fbe",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-04T10:51:06Z"
@@ -4067,10 +4067,24 @@
       },
       "head_sha": "5431d67fff",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4852,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:26:22Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "c91b38783b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4914,
+      "title": "docs(ops): D1 Strands matrix \u2014 Main spec folded in (classes A/B/C, gates fully defined)",
+      "updated_at": "2026-11-04T13:28:27Z"
     }
   ],
   "schema": "operator-matrix/v1",

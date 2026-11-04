@@ -174,7 +174,11 @@ def sweep_events(events, sweeps):
                   "wallet_id": wid, "class": "pool" if
                   wid.startswith("pool:") else "speculator",
                   "kind": "paper|test",
-                  "unit": "soft_quota_token (observational)",
+                  # unit vocabulary issued 2026-11-04 (Registry PR
+                  # #4825): new events carry `booktally`; pre-issuance
+                  # events read `soft_quota_token (observational)`
+                  # as written (legacy of record, never rewritten).
+                  "unit": "booktally",
                   "delta": delta, "balance_after": balances[wid],
                   "sweep_id": sweep_id, "leg": leg,
                   "trigger": sw["trigger"],

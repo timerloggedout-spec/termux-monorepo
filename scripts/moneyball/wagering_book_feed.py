@@ -69,6 +69,11 @@ def _window_pct(window, note, at):
                 "computed_at": at, "note": note}
     start = _parse(window["window_start"])
     wall = _parse(window["wall"])
+    pt = timezone(timedelta(hours=-8))
+    if start.tzinfo is None:
+        start = start.replace(tzinfo=pt)
+    if wall.tzinfo is None:
+        wall = wall.replace(tzinfo=pt)
     if wall <= start:
         return {"consumed": None, "remaining": None,
                 "computed_at": at, "note": note}

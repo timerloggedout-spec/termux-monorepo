@@ -1,6 +1,6 @@
 {
  "schema": "moneyball.wagering-book/v2",
- "generated_at": "2026-11-04T07:20:56Z",
+ "generated_at": "2026-11-04T07:23:25Z",
  "book": {
   "opened": "2026-11-02",
   "subjects": 38
@@ -29,13 +29,13 @@
  ],
  "ledger_ref": {
   "path": "ops/agentic-gambling/book/ledger.jsonl",
-  "entries": 18,
+  "entries": 19,
   "note": "ops/agentic-gambling/book/ledger.jsonl \u2014 append-only, PRIVATE record of record. This feed is a read-only render extract at ledger truth; it does not move the ledger."
  },
  "upstream_feed": "ops/agentic-gambling/book/book-feed.json (schema agentic-gambling-book-feed/v1)",
  "publication": "Public view of the internal book (owner ruling 2026-11-02). Entries stay internal: observational stakes only, no external participation surface, no wallet movement. Published values equal the ledger of record by construction.",
  "sources": {
-  "book": "ops/agentic-gambling/book/challenges-book.json@bff8714e824f (schema agentic-gambling-book/v1)",
+  "book": "ops/agentic-gambling/book/challenges-book.json@c23abee17b36 (schema agentic-gambling-book/v1)",
   "ledger": "ops/agentic-gambling/book/ledger.jsonl (append-only ledger of record, MoneyBall plane)",
   "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; primary calendar, America/Los_Angeles) - anchors as bound in the book; derivation confirmed by Tracking 2026-11-02"
  },
@@ -50,7 +50,7 @@
  ],
  "pct_block": {
   "rule": "pct_consumed/pct_remaining computed at feed build from window anchors; stamped per subject; never hand-entered; degenerate windows carry null + pct_note",
-  "computed_at": "2026-11-04T07:20:56Z",
+  "computed_at": "2026-11-04T07:23:25Z",
   "upstream_computed_at": "2026-11-03T14:17:33Z",
   "method": "recomputed by this generator from the window anchors at build time; the upstream feed's stamped pct is proof-of-shape only"
  },
@@ -96,9 +96,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 36.8,
-    "remaining": 63.2,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "consumed": 36.9,
+    "remaining": 63.1,
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -143,9 +143,9 @@
     "wall": "2026-11-04T23:59:00-08:00"
    },
    "window_pct": {
-    "consumed": 36.8,
-    "remaining": 63.2,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "consumed": 36.9,
+    "remaining": 63.1,
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -192,7 +192,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -241,7 +241,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -289,7 +289,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -338,7 +338,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -387,7 +387,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -436,7 +436,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -484,7 +484,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -533,7 +533,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -582,7 +582,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -631,7 +631,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -679,7 +679,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -726,7 +726,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "degenerate window (instant/point subject) \u2014 no honest percentage"
    },
    "settlement": {
@@ -775,7 +775,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -823,7 +823,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -869,7 +869,7 @@
    "window_pct": {
     "consumed": 32.9,
     "remaining": 67.1,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -915,7 +915,7 @@
    "window_pct": {
     "consumed": 24.7,
     "remaining": 75.3,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -964,7 +964,7 @@
    "window_pct": {
     "consumed": 3.6,
     "remaining": 96.4,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1013,7 +1013,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1062,7 +1062,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1112,7 +1112,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1162,7 +1162,7 @@
    "window_pct": {
     "consumed": 0.0,
     "remaining": 100.0,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1208,7 +1208,7 @@
    "window_pct": {
     "consumed": 7.5,
     "remaining": 92.5,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1254,7 +1254,7 @@
    "window_pct": {
     "consumed": 5.1,
     "remaining": 94.9,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1300,7 +1300,7 @@
    "window_pct": {
     "consumed": 3.5,
     "remaining": 96.5,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": null
    },
    "settlement": {
@@ -1345,7 +1345,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1390,7 +1390,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1435,7 +1435,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1480,7 +1480,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1525,7 +1525,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1570,7 +1570,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1615,7 +1615,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1660,7 +1660,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1705,7 +1705,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1750,7 +1750,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1795,7 +1795,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1840,7 +1840,7 @@
    "window_pct": {
     "consumed": null,
     "remaining": null,
-    "computed_at": "2026-11-04T07:20:56Z",
+    "computed_at": "2026-11-04T07:23:25Z",
     "note": "no wall \u2014 window open-ended until the instance's run record lands; no honest percentage"
    },
    "settlement": {
@@ -1886,28 +1886,69 @@
      "priority": "outranks discretionary burn \u2014 a dead demo during judging is a delta-p cliff"
     }
    },
-   "entry_pick": {
-    "candidate": "B \u2014 Quarantine Browser Clerk",
-    "class": "C1\u00b7B",
-    "executed": "2026-11-03 23:16 PT \u2014 owner order 'D2 BUILD' (pick executed under the owner's override charter: slate + scoring advisory, never binding)",
-    "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536; depth-recon revised advisory)",
-    "slate_scoring": {
-     "relation": "beside_never_merged \u2014 advisory input to this book entry, not a MoneyBall participant-axis score",
-     "axes": "Delphi-shaped (Tech \u00b7 Presentation \u00b7 Business \u00b7 Originality \u00b7 Buildability \u00b7 FieldRoom, 0-10 each)",
-     "raw_B": 46,
-     "revision": "raw B 48 at slate -> 46 post-Observatory/depth-recon (FieldRoom 8->6 on the 'Vex' direct-competitor read); top of the C1 trio post-depth-recon",
-     "differentiation": "lookalike-domain page attacking the AGENT = the unoccupied angle; differentiation survives the depth-recon best of the trio",
-     "risk_adjusted_delivered_ranking": "A > C > B > E > F > D (advisory; the owner executed B regardless \u2014 override on record)"
+   "exercise_entry": {
+    "kind": "D2 exercise run-1 SCORING entry (close leg 6) \u2014 the exercise's owed final leg, booked independent of any pick",
+    "pick_state": "OWNER-HELD \u26cf\ufe0f \u2014 NO PICK EXECUTED. The 2026-11-03 23:16 PT 'D2 BUILD / pick executed' interpretation was RESCINDED by owner correction (via main, 2026-11-03 23:18 PT). This entry's earlier booking as an executed pick (PR #4785) is superseded by this correction.",
+    "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536)",
+    "scoring_axes": "Delphi-shaped, advisory (Tech \u00b7 Presentation \u00b7 Business \u00b7 Originality \u00b7 Buildability \u00b7 FieldRoom, 0-10 each; raw = sum/60) \u2014 filed beside, never merged; NOT the MoneyBall participant axes",
+    "slate": [
+     {
+      "id": "A",
+      "candidate": "Canary Patch Gauntlet",
+      "class": "C1",
+      "raw_initial": 46,
+      "raw_revised": 45
+     },
+     {
+      "id": "B",
+      "candidate": "Quarantine Browser Clerk",
+      "class": "C1",
+      "raw_initial": 48,
+      "raw_revised": 46
+     },
+     {
+      "id": "C",
+      "candidate": "Dependency Detox Chamber",
+      "class": "C1",
+      "raw_initial": 45,
+      "raw_revised": 45
+     },
+     {
+      "id": "D",
+      "candidate": "Pipeline Rescue Desk",
+      "class": "C2",
+      "raw_initial": 40,
+      "raw_revised": 42
+     },
+     {
+      "id": "E",
+      "candidate": "Three-Way Match Room",
+      "class": "C2",
+      "raw_initial": 45,
+      "raw_revised": 46
+     },
+     {
+      "id": "F",
+      "candidate": "Renewal Risk Desk",
+      "class": "C2",
+      "raw_initial": 41,
+      "raw_revised": 42
+     }
+    ],
+    "advisory_rankings": {
+     "raw_revised": "B = E (46) > A = C (45) > F = D (42) \u2014 B raw-ranked first among C1, tied-first overall",
+     "risk_adjusted_delivered": "A > C > B > E > F > D"
     },
+    "B_note": "B = advisory-ranked first on revised raw \u2014 NOT picked. Differentiation (lookalike-domain page attacking the AGENT = the unoccupied angle) survives the depth-recon best of the C1 trio.",
     "field_denominator": {
      "participants": 2308,
      "source": "2026-11-03 official dashboard \u2014 supersedes the stale 1,617 (context only; no probability derived or republished, B5)"
     },
-    "build_clocks": {
-     "T1_core": "<= 2026-11-04 EOD",
-     "signature_moment": "<= 2026-11-05",
-     "landing": "2026-11-07",
-     "wall": "2026-11-08 15:00 PT \u2014 POS-001 settles at the wall, on official lablab results"
+    "wager_model": "unchanged \u2014 POS-001 as opened and amended (stake = use of the $200 expiring Vultr house credit; payout FIXED $14k pool, 1st $5k cash + $3k credits; burn past marginal delta-p ~0 dilutes; expiry salvage $0 => deploy where delta-p > 0, demo-uptime reserve first). POS-001 settles at the D2 wall 2026-11-08 15:00 PT on official lablab results \u2014 a subject term, not a build clock.",
+    "dormant_repo": {
+     "repo": "timerloggedout-spec/quarantine-browser-clerk",
+     "id": 1445293810,
+     "state": "DORMANT \u2014 created inside the rescinded sequence; explicitly NOT a build fact for this book"
     }
    }
   }

@@ -184,3 +184,13 @@ def test_all_quota_graphs_inline_javascript_parses(tmp_path):
         path = tmp_path / f"quota-graphs-{index}.js"
         path.write_text(script)
         subprocess.run(["node", "--check", str(path)], check=True)
+
+
+def test_quota_and_dispatch_surfaces_share_task_attribution_navigation():
+    pages = (
+        "quota.html", "quota-usage.html", "quota-swarm.html", "quota-event-audits.html",
+        "quota-graphs.html", "family.html", "pools.html", "dispatch-tree.html", "desk.html", "index.html",
+    )
+    for name in pages:
+        html = (ROOT / "apps/tribute-dashboard" / name).read_text()
+        assert "#task-attribution" in html, f"{name} must link to the shared task attribution tree"

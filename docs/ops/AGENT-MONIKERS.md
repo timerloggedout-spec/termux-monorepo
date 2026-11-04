@@ -731,6 +731,79 @@ this issuance record. ∅ change to any desk
 implementation, routing, or record underneath — naming
 layer only (collapse-registry C3 discipline).
 
+## Unit-name issuance — booktally, the MoneyBall unit (2026-11-04)
+
+**Commission (owner via main, 2026-11-04; collision
+flagged at the Web3 seat):** the MoneyBall wallet unit
+string `soft_quota_token (observational)` reads as
+fleet-quota-bearing — the legacy string carries three
+quota-plane signals at once (soft ≈ soft cap · quota =
+the PAT-governor/provider-quota/QUE-guard plane's own
+name · token = API-token vocabulary), and the owner
+misread the served wallets page on exactly that point.
+A public-facing replacement unit name, coined + checked
+against BOTH the quota plane and live marks.
+
+**ISSUED: `booktally`** (plural **booktallies**) —
+coined compound: Book (MoneyBall's Book, the ledger of
+record for positions + settlements) + tally (a count
+kept of record; the tally stick was the original
+receipt-counter). Machine unit string `booktally`;
+display form `booktally (observational)`, mirroring the
+legacy display shape so the transition is a unit-string
+swap only. Definition of record: the MoneyBall
+paper/test accounting unit — observational only; not
+money, not a chain asset, not fleet quota, not
+redeemable, not transferable off the Book. "Book" here
+names the record, never a bookmaker: the collapse
+registry's `bookmaker` stays a reserved absent class
+and this name claims no odds-setting role.
+
+Collision evidence (this lane, firsthand, 2026-11-04):
+
+- Quota plane ∅: no shared stem with the plane's live
+  vocabulary {quota · token · credit · call · rate ·
+  slice · share · cap}; both offending stems dropped.
+- In-fleet ∅: SSOT + Profile Registry + monorepo code
+  search + moneyball-repo code search +
+  `config/registration_monikers.json` all 0.
+- Live-mark web check ∅ for the exact string;
+  adjacencies noted + distinguished — Tally (Tally
+  Solutions accounting software; the bare word stays
+  theirs — the issued form is the one-word compound
+  used as a unit label inside MoneyBall, not a product
+  name) · Tally Book / TruckTally (accounting apps,
+  reversed/different compounds).
+- Dead + rejected candidates, same pass: Fortally
+  (near-homophone of Foretally, a live forecasting
+  product in the exact field) · PaperPoints (live
+  paper-wagering points, PaperWagers' Wager Wallet) ·
+  Jeton/Jetons (global payments + e-wallet brand) ·
+  Speclet (established software term: .NET speclets,
+  EQC speclets) · Tallion (accounting cluster:
+  Tabellion sw · Tallie · Tillion) · Callchit (no mark
+  found; REJECTED on the quota-plane check — "call" is
+  provider/API-call vocabulary) · Specscrip (no mark
+  found; REJECTED on semantics — scrip denotes
+  substitute currency/redeemable vouchers, the very
+  confusion being removed). Bookchit (book + chit, the
+  paper slip of record) cleared every check and stands
+  as the considered runner-up, not issued: "tally"
+  parses instantly where "chit" does not.
+
+Disposition (of record, undisturbed): the legacy string
+stands verbatim inside the hash-chained ledger events,
+WALLETS.json, and the v1 wallets-feed (705 rows) — ∅
+silent swap, ∅ history rewrite. On this issuance the
+custodians (MoneyBall plane + Speculators-build, via
+the Web3 seat's pre-serve gate) run a VERSIONED
+transition: successor feed/record versions carry
+`booktally (observational)` with a transition note
+naming the legacy unit; same-ledger continuation keeps
+the legacy unit until that transition lands (the fold
+depends on it). New public surfaces use booktally from
+issuance; no new surface extends the legacy string.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

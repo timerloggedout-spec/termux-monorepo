@@ -90,15 +90,12 @@ def test_governor_fold_tallies_frozen_event_shape(tmp_path,
                         lambda path, token: {"total_count": 0})
     feed = q.governor_feed("t", AT)
     flow = feed["flow_governor"]
-    # settled seam: the board's governor plane of record is
-    # Cadence's feed; this fold is producer-plane evidence
-    assert flow["board_governor_plane_of_record"]["schema"] \
-        == "que-governor-feed/v1"
-    fold = flow["t1_governor_events_fold"]
-    assert fold["state"] == "populated"
-    assert fold["events_total"] == 2
-    assert fold["by_kind"] == {"projection": 1, "session_cap": 1}
-    assert fold["latest_event_at"] == "2026-11-04T02:00:00Z"
+    # FREEZE design: this feed is the governor plane; the
+    # first emitter batch flips it to populated
+    assert flow["state"] == "populated"
+    assert flow["events_total"] == 2
+    assert flow["by_kind"] == {"projection": 1, "session_cap": 1}
+    assert flow["latest_event_at"] == "2026-11-04T02:00:00Z"
 
 
 def test_transitions_vanished_is_a_gap_event():

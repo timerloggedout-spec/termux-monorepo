@@ -60,8 +60,8 @@
  "priority_window": {
   "chain": "d1-studysprint",
   "custody": "QUE lead (Swarm Optimizations & Assurance); guard thresholds with Cadence",
-  "name": "D1 priority (owner, 2026-11-03 15:55 PT)",
-  "rule": "Until the D1 freeze (2026-11-04 23:59 PT), the d1-studysprint chain (slate iterations \u00b7 releases \u00b7 snapshot \u00b7 deploys on its path) holds FIRST CLAIM on runner supply. Admission and sweeps treat chain runs as the highest claim; non-chain tier-3 and tier-4 work YIELDS \u2014 deferred by admission where the evaluator reaches it, and first in line for supersede sweeps \u2014 per the hold/sweep doctrine. Tiers 1\u20132 keep their standing rules; the window adds the chain's claim above them for D1 chain nodes only.",
+  "name": "D1 priority \u2014 ABSOLUTE (owner, 2026-11-03 15:55 PT; escalated 'Race to finish' same day)",
+  "rule": "Until the D1 freeze VERIFIES (2026-11-04 23:59 PT), the d1-studysprint chain (slate iterations \u00b7 releases \u00b7 snapshot \u00b7 deploys on its path) holds ABSOLUTE priority on runner supply. Sweeps and holds keep its path clear at full pace; other lanes' work yields AUTOMATICALLY \u2014 without being asked twice (admission deferral where the evaluator reaches it; supersede/duplicate sweep classes cancelled first; no per-lane asks inside the window). Tiers 1\u20132 keep their standing rules; the window adds the chain's absolute claim for D1 chain nodes. The window closes when the freeze verifies, not at the freeze hour alone.",
   "until": "2026-11-04T07:59:59Z",
   "yield_classes": [
    "tier-3 (non-chain)",

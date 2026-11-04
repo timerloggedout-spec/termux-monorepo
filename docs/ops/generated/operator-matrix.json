@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 529,
-    "open_prs": 266,
+    "open_prs": 267,
     "pr_classes": {
-      "CANDIDATE": 124,
-      "EXTRACT": 12,
-      "NEED_EVIDENCE": 130,
+      "CANDIDATE": 127,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 129,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 264,
+      "prs": 265,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T00:39:59Z",
+  "generated_at": "2026-11-04T00:46:20Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "f02224cea2"
+    "sha": "6114b1d7dd"
   },
   "prs": [
     {
@@ -311,21 +311,7 @@
       "mergeable_state": "unstable",
       "number": 4624,
       "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-04T00:39:41Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d87c4433ee",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4740,
-      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
-      "updated_at": "2026-11-04T00:38:52Z"
+      "updated_at": "2026-11-04T00:45:24Z"
     },
     {
       "class": "CANDIDATE",
@@ -1095,6 +1081,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "ccdf55fe92",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T00:39:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1529,12 +1529,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0bb1544434",
+      "head_sha": "8e90e7fde7",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T00:38:06Z"
+      "updated_at": "2026-11-04T00:43:12Z"
     },
     {
       "class": "CANDIDATE",
@@ -2033,12 +2033,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6e74215244",
+      "head_sha": "a581e066ac",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4694,
       "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
-      "updated_at": "2026-11-03T23:45:13Z"
+      "updated_at": "2026-11-04T00:44:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -2067,6 +2067,34 @@
       "number": 4737,
       "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
       "updated_at": "2026-11-04T00:32:22Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d87c4433ee",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4740,
+      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
+      "updated_at": "2026-11-04T00:38:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9b4d9f183c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4742,
+      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+      "updated_at": "2026-11-04T00:41:55Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2585,20 +2613,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "queued"
-      },
-      "head_sha": "ccdf55fe92",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T00:39:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3855,7 +3869,7 @@
       },
       "head_sha": "09dae5e5cc",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4686,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:24:54Z"
@@ -3883,7 +3897,7 @@
       },
       "head_sha": "da4dea4119",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4699,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T23:48:13Z"

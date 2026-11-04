@@ -27,3 +27,18 @@ nav#tabs { display: flex; flex-wrap: wrap; gap: 0.5rem;
 pre { overflow-x: auto; background: #f2f2ea; padding: 0.8rem;
       border-radius: 0.6rem; }
 footer { margin-top: 2rem; color: #555; font-size: 0.9rem; }
+
+/* Iteration 4 (#4417): book terms + annotations + hardening */
+#reader-text { white-space: pre-wrap; line-height: 1.65;
+               margin-top: 1rem; }
+#reader-text .term { background: #fdf3c4; border: none;
+                     border-bottom: 2px solid #d9a400;
+                     font: inherit; padding: 0 0.1rem;
+                     cursor: pointer; }
+#term-panel { background: #f7f7ef; border: 1px solid #d9d4a5;
+              border-radius: 0.6rem; padding: 0.8rem;
+              margin-top: 0.8rem; }
+.annotation blockquote { margin: 0.4rem 0; padding-left: 0.8rem;
+                         border-left: 3px solid #b7ac5a;
+                         color: #444; }
+.meta { color: #555; font-size: 0.9rem; }

@@ -51,7 +51,7 @@ requires_node = pytest.mark.skipif(
 def test_web_state_carries_the_course_set():
     from web.build_data import emit_state
     state = emit_state(APP_ROOT)
-    assert state["surface_version"] == "0.4.0"
+    assert state["surface_version"] == "0.5.0"
     names = [b["course"] for b in state["courses"]]
     assert names == [BIO, STAT]
     intake = state["courses_intake"]

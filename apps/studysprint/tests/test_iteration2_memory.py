@@ -197,7 +197,7 @@ def test_web_surface_ships_memory_view_and_leitner():
         assert f"function {fn}" in js, fn
     state = json.loads(
         (APP_ROOT / "web" / "data" / "state.json").read_text())
-    assert state["surface_version"] == "0.4.0"
+    assert state["surface_version"] == "0.5.0"
     assert state["memory"]["palace"]["placements"]
 
 

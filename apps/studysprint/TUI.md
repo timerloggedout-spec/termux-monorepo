@@ -41,7 +41,8 @@ default or SM-2, scheduler-named receipt after every grade) ·
 | SR cards + review | present | SR Review tab → `review_card` (FSRS default, SM-2 selectable) + Leitner boxes via `leitner_review`; receipts name the scheduler |
 | .apkg export | present | Export tab → `export_apkg` |
 | Obsidian vault export | present | Export tab → `export_obsidian_vault` |
-| Reading pipeline (§1b) | absent | core module ships in the CLI; not yet surfaced in the TUI |
+| Reading pipeline (§1b) | bound (0.5.0) | Book tab runs the REAL core pipeline live over the bundled demonstration book (Darwin, Origin of Species 6th ed., Ch. XIV + its own Glossary + Index): ingest receipt counts (62 · 62 · 2), emphasized text, term expansion picker → term_tap_payload, hypothes.is annotations (W3C model; API sync needs an account token, not configured); Ingest tab reports the same three counts for any ingested textbook via ingest_any; OCR rides the core's tesseract default through ingest_any (provenance stamped ocr) |
+| State recall + stress hardening (§1d) | bound (0.5.0) | Hardening tab runs the real study_hardening: opt-in only (persisted flag, off by default; refusal receipt when off), varied-context plan, reinstatement script, SIT drill plans with seeded pressure picks, results in answered + 'not yet' with the supportive close — no score/penalty fields exist |
 | Multi-course / countdown / .ics | bound (0.4.0) | Courses tab over the real core intake; per-course check-in logs; .ics file export; create-a-course form |
 | Memory methods (§1c) | present | Memory tab runs the real core: `walk_review` scoring · `explain_back` vs the section text · `retrievability_notifications` over the surface's own FSRS states · Leitner rotation in SR via `leitner_review` · `interleave_sessions` in the Plan pane (iteration 2) |
 | Calendar awareness (§1d) | present | Calendar tab → `surface_calendar_geo` (intake · briefings · frequency · quiet hours), assembled live |

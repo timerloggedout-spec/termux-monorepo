@@ -26,7 +26,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-TUI_VERSION = "0.4.0"
+TUI_VERSION = "0.5.0"
 SURFACE = "studysprint-tui"
 
 from study_geo import surface_calendar_geo  # noqa: E402
@@ -168,6 +168,78 @@ def build_course_set(root: Path | None = None) -> dict:
         ics[b["course"]] = export_ics(single,
                                       date.today().isoformat())
     return {"bundles": bundles, "intake": intake, "ics": ics}
+
+
+def build_book_bundle(root: Path | None = None) -> dict:
+    """The §1b demonstration book (parity iteration 4, #4417),
+    run LIVE through the real core pipeline at app start: Darwin,
+    On the Origin of Species, 6th edition (Project Gutenberg
+    #2009) — Chapter XIV + the book's complete Glossary and
+    Index (typographic normalization only; content verbatim).
+    Same construction as web/build_data.py's bundle; the parity
+    tests pin both surfaces to the same counts and payloads."""
+    from study_pipeline import (build_term_bank, emphasize_terms,
+                                extract_structure, make_annotation,
+                                term_tap_payload, to_reader_sections)
+    root = root or APP_ROOT
+    chapter_text = (root / "examples" / "textbook_chapter.txt") \
+        .read_text()
+    glossary_text = (root / "examples" / "textbook_glossary.txt") \
+        .read_text()
+    index_text = (root / "examples" / "textbook_index.txt") \
+        .read_text()
+    structure = extract_structure(chapter_text)
+    bank = build_term_bank(structure, glossary_text, index_text)
+    flat = [t for ch in bank.get("chapters") or []
+            for t in ch.get("terms") or []]
+    counts = {
+        "terms": len(flat),
+        "with_definitions": sum(1 for t in flat
+                                if t.get("definition")),
+        "with_index_refs": sum(1 for t in flat
+                               if t.get("index_pages")),
+    }
+    sections = []
+    for sec in to_reader_sections(structure):
+        emph = emphasize_terms(sec.content, bank)
+        sections.append({"title": sec.title,
+                         "chapter": sec.chapter,
+                         "text": sec.content,
+                         "segments": emph["segments"],
+                         "terms_found": emph["terms_found"]})
+    taps = {t["term"].lower(): term_tap_payload(t["term"], bank)
+            for t in flat}
+    annotations = []
+    for t in flat:
+        if not t.get("index_pages"):
+            continue
+        quote = ""
+        for sentence in chapter_text[2500:].replace("\n", " ") \
+                .split(". "):
+            s = sentence.strip()
+            if len(s) > 80 and t["term"].lower() in s.lower():
+                quote = s.rstrip(".") + "."
+                break
+        annotations.append(make_annotation(
+            "examples/textbook_chapter.txt", quote,
+            body_text=(f"Glossary: {t['definition']} "
+                       f"(indexed, pages "
+                       f"{', '.join(str(p) for p in t['index_pages'])})"),
+            tags=["term-bank", "index"]))
+    return {
+        "source": ("On the Origin of Species, 6th edition "
+                   "(Project Gutenberg #2009) — Chapter XIV + "
+                   "the book's own Glossary and Index"),
+        "counts": counts, "receipt": bank["receipt"],
+        "sections": sections, "taps": taps,
+        "annotations": annotations,
+        "annotations_note": (
+            "Annotations of record over the bundled book, in "
+            "the W3C Web Annotation model (the core's "
+            "make_annotation). The hypothes.is API leg syncs "
+            "these with an account token — not configured on "
+            "this surface, so nothing leaves the device."),
+    }
 
 
 def _memory_state(plan: dict, calendar_geo: dict | None) -> dict:
@@ -407,6 +479,21 @@ try:
             self.checkin_log: dict = self.checkin_logs.get(
                 self.state["course"], {})
             self._ingest_path: str | None = None
+            # Iteration 4 (#4417): the §1b book bundle (live core
+            # pipeline over the bundled real book) + the opt-in
+            # hardening state (persisted; OFF by default — the
+            # core's rule).
+            self.book = build_book_bundle(root)
+            self._hardening_path = \
+                self.export_dir / "hardening.json"
+            self.hardening_opt_in = False
+            if self._hardening_path.exists():
+                try:
+                    self.hardening_opt_in = bool(json.loads(
+                        self._hardening_path.read_text(
+                            encoding="utf-8")).get("opt_in"))
+                except (ValueError, OSError):
+                    self.hardening_opt_in = False
 
         # ------------------------------------------------------ layout
         def compose(self) -> ComposeResult:
@@ -465,6 +552,22 @@ try:
                     yield Button("Play / Pause", id="reader-play")
                     yield Button("Rewind 10", id="reader-rewind")
                     yield Label("", id="reader-status")
+                with TabPane("Book", id="tab-book"):
+                    yield Static(self._book_receipt_text(),
+                                 id="book-receipt")
+                    yield Static(self._book_text(), id="book-text")
+                    yield Select(
+                        [(t["term"], t["term"].lower())
+                         for t in sorted(
+                             self.book["taps"].values(),
+                             key=lambda x: x["term"])],
+                        id="book-term", allow_blank=False,
+                        value=sorted(self.book["taps"])[0]
+                        if self.book["taps"] else None)
+                    yield Button("Show expansion", id="book-show")
+                    yield Static("", id="book-payload")
+                    yield Static(self._annotations_text(),
+                                 id="book-annotations")
                 with TabPane("SR Review", id="tab-sr"):
                     yield Label("Scheduler:", classes="big")
                     yield Select([("FSRS (default)", "fsrs"),
@@ -520,6 +623,31 @@ try:
                 with TabPane("Routes", id="tab-routes"):
                     yield Static(_routes_text(self.state),
                                  id="routes-text")
+                with TabPane("Hardening", id="tab-hardening"):
+                    yield Static(self._hardening_intro_text(),
+                                 id="hardening-intro")
+                    yield Button("Opt in to hardening",
+                                 id="hardening-toggle")
+                    yield Label("", id="hardening-status")
+                    yield Input(value="drill-1",
+                                id="hardening-drill-id")
+                    yield Select(
+                        [("1 — conceptualization", "1"),
+                         ("2 — rehearsal", "2"),
+                         ("3 — application", "3")],
+                        id="hardening-phase", allow_blank=False,
+                        value="1")
+                    yield Button("Plan drill", id="hardening-plan")
+                    yield Static("", id="hardening-plan-out")
+                    yield Input(value="0", id="hardening-answered")
+                    yield Input(value="0", id="hardening-notyet")
+                    yield Button("Record result",
+                                 id="hardening-record")
+                    yield Label("", id="hardening-result")
+                    yield Static(self._hardening_contexts_text(),
+                                 id="hardening-contexts")
+                    yield Static(self._hardening_script_text(),
+                                 id="hardening-script")
                 with TabPane("Ingest", id="tab-ingest"):
                     yield Label("Add a syllabus or textbook file — "
                                 "one core path, every surface.",
@@ -567,6 +695,98 @@ try:
                              f"{' + '.join(c['courses'])} "
                              f"(gap {c['gap_days']}d)")
             return "\n".join(lines)
+
+        # ------------------------------------------------- book (§1b)
+        def _book_receipt_text(self) -> str:
+            c = self.book["counts"]
+            return (f"Textbook ingest — the demonstration book\n"
+                    f"{self.book['source']}\n"
+                    f"Ingest receipt (core term bank): "
+                    f"{c['terms']} terms mined · "
+                    f"{c['with_definitions']} with definitions · "
+                    f"{c['with_index_refs']} with index refs.")
+
+        def _book_text(self) -> str:
+            if not self.book["sections"]:
+                return "No book sections."
+            sec = self.book["sections"][0]
+            out, used = [], 0
+            for seg in sec["segments"]:
+                piece = (f"*{seg['text']}*" if seg.get("term")
+                         else seg["text"])
+                out.append(piece)
+                used += len(piece)
+                if used > 4000:
+                    break
+            return (f"{sec['chapter']} — {sec['title']} "
+                    f"(opening; *terms* are tappable in the "
+                    f"expansion picker below)\n\n"
+                    + "".join(out) + " …")
+
+        def _annotations_text(self) -> str:
+            lines = ["Annotations (hypothes.is leg):"]
+            for a in self.book["annotations"]:
+                sel = a["target"]["selector"]
+                lines.append(f"“{sel.get('exact', '')[:90]}…”")
+                lines.append(f"  {a['body'][0]['value']}")
+                lines.append(f"  Tags: {', '.join(a['tags'])} · "
+                             "model: W3C Web Annotation")
+            if not self.book["annotations"]:
+                lines.append("  No annotations of record.")
+            lines.append(self.book["annotations_note"])
+            return "\n".join(lines)
+
+        def _book_payload_text(self, term_key: str) -> str:
+            tap = self.book["taps"].get(term_key)
+            if tap is None:
+                return "Pick a term first."
+            pages = (", ".join(str(p) for p in tap["index_pages"])
+                     if tap["index_pages"] else "—")
+            return (f"{tap['term']} — {tap['definition']}\n"
+                    f"Index pages: {pages} · Appears in: "
+                    f"{', '.join(tap['sections'])} "
+                    f"({tap['chapter']})\n"
+                    "From the book's own Glossary + Index, mined "
+                    "at ingest by the core term bank.")
+
+        # ------------------------------------------- hardening (§1d)
+        def _hardening_intro_text(self) -> str:
+            from study_hardening import HARDENING_CEILING
+            state = "ON" if self.hardening_opt_in else "OFF"
+            return (f"Adaptive hardening is OPT-IN ONLY — it is "
+                    f"{state} on this device. Claims ceiling: "
+                    f"{HARDENING_CEILING}. No-guilt binds: "
+                    "pressure never carries penalties; there are "
+                    "no score or penalty fields here.")
+
+        def _hardening_contexts_text(self) -> str:
+            from study_hardening import varied_context_plan
+            plan = varied_context_plan(6)
+            lines = ["Varied-context practice (ceiling: "
+                     f"{plan['claims_ceiling']}):"]
+            for a in plan["assignments"]:
+                lines.append(f"  Session {a['session']}: "
+                             f"{a['place']} · {a['time_of_day']} "
+                             f"· {a['materials']}")
+            return "\n".join(lines)
+
+        def _hardening_script_text(self) -> str:
+            from study_hardening import reinstatement_script
+            script = reinstatement_script(
+                "the exam room", self.state["course"])
+            lines = ["Mental reinstatement (exam day):"]
+            for i, step in enumerate(script["steps"], 1):
+                lines.append(f"  {i}. {step}")
+            return "\n".join(lines)
+
+        def _save_hardening(self) -> None:
+            try:
+                self._hardening_path.parent.mkdir(
+                    parents=True, exist_ok=True)
+                self._hardening_path.write_text(json.dumps(
+                    {"opt_in": self.hardening_opt_in}))
+            except OSError:
+                pass
 
         def _switch_course(self, name: str) -> None:
             bundle = next(
@@ -811,13 +1031,84 @@ try:
                     if placed else
                     "Not placed — review, then Confirm placement.")
             else:
+                tb = result["term_bank"]
                 self.query_one("#ingest-result", Label).update(
-                    f"Textbook ingested: "
-                    f"{result['term_bank']['terms']} term(s), "
-                    f"{result['sr_cards']} SR card(s).")
+                    f"Textbook ingested: {tb['terms']} term(s) "
+                    f"mined · {tb['with_definitions']} with "
+                    f"definitions · {tb['with_index_refs']} with "
+                    f"index refs · {result['sr_cards']} SR "
+                    f"card(s).")
 
         def on_button_pressed(self, event) -> None:
             bid = event.button.id or ""
+            if bid == "book-show":
+                sel = self.query_one("#book-term", Select)
+                if sel.value and sel.value != Select.BLANK:
+                    self.query_one("#book-payload", Static) \
+                        .update(self._book_payload_text(
+                            str(sel.value)))
+                return
+            if bid == "hardening-toggle":
+                self.hardening_opt_in = not self.hardening_opt_in
+                self._save_hardening()
+                event.button.label = (
+                    "Turn hardening off" if self.hardening_opt_in
+                    else "Opt in to hardening")
+                self.query_one("#hardening-intro", Static) \
+                    .update(self._hardening_intro_text())
+                self.query_one("#hardening-status", Label) \
+                    .update("Hardening is "
+                            + ("ON." if self.hardening_opt_in
+                               else "OFF."))
+                return
+            if bid == "hardening-plan":
+                from study_hardening import plan_hardening_drill
+                drill_id = self.query_one(
+                    "#hardening-drill-id", Input).value.strip() \
+                    or "drill-1"
+                phase_sel = self.query_one("#hardening-phase",
+                                           Select)
+                phase = int(phase_sel.value or 1)
+                plan = plan_hardening_drill(
+                    drill_id, phase, self.hardening_opt_in,
+                    datetime.now(timezone.utc))
+                if plan["status"] == "refused":
+                    text = (f"Refused: {plan['reason']} "
+                            f"(ceiling: {plan['claims_ceiling']})")
+                else:
+                    pressure = plan.get("pressure") or []
+                    text = (f"Phase {plan['phase']} — "
+                            f"{plan['name']} "
+                            f"({'timed' if plan['timed'] else 'untimed'})\n"
+                            f"{plan['brief']}\n"
+                            + (f"Pressure elements (seeded by "
+                               f"the drill id): "
+                               f"{' · '.join(pressure)}\n"
+                               if pressure else "")
+                            + f"{plan['no_guilt']} · ceiling: "
+                              f"{plan['claims_ceiling']}")
+                self.query_one("#hardening-plan-out", Static) \
+                    .update(text)
+                return
+            if bid == "hardening-record":
+                from study_hardening import record_drill_result
+                drill_id = self.query_one(
+                    "#hardening-drill-id", Input).value.strip() \
+                    or "drill-1"
+                try:
+                    answered = int(self.query_one(
+                        "#hardening-answered", Input).value or 0)
+                    not_yet = int(self.query_one(
+                        "#hardening-notyet", Input).value or 0)
+                except ValueError:
+                    answered, not_yet = 0, 0
+                result = record_drill_result(
+                    drill_id, answered, not_yet,
+                    self.hardening_opt_in,
+                    datetime.now(timezone.utc))
+                self.query_one("#hardening-result", Label) \
+                    .update(result["close"])
+                return
             if bid == "course-switch":
                 sel = self.query_one("#course-select", Select)
                 if sel.value and sel.value != Select.BLANK:

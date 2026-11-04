@@ -3,14 +3,14 @@
 Ground truth: the shipped bindings, read from the surfaces'
 own builders (`web/build_data.py`, `tui.py: build_state`, the
 APK bundle = the web bundle) at core **v0.5.0** + surface line
-**0.4.0**. This matrix is the catch-up program's baseline;
+**0.5.0**. This matrix is the catch-up program's baseline;
 every iteration updates it and the per-surface parity
 statements together (standing surface gates). **Owner rule (2026-11-03): this table rides every release body from v1.0.0** — release-cut embeds it verbatim from the cut tag; a pre-matrix tag’s body falls back to a named versions-of-record line. Legend:
 **bound** = the surface runs the real core path ·
 **partial** = a named subset, with the gap stated ·
 **absent** = not on the surface.
 
-| Core capability (FEATURES.md) | CLI/core | webApp 0.4.0 | TUI 0.4.0 | APK 0.4.0 |
+| Core capability (FEATURES.md) | CLI/core | webApp 0.5.0 | TUI 0.5.0 | APK 0.5.0 |
 |---|---|---|---|---|
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |
 | §3 Daily check-in + no-guilt shift | bound | bound (persisted; surface-level shift, core reflow not bound) | bound (persisted; real week/day identity) | as webApp |
@@ -18,12 +18,12 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
 | SR exports — Anki .apkg · Obsidian vault | bound | absent | bound (Export tab) | absent |
 | §1/§3 Reader (sections + RSVP) | bound | bound (all 6 sections, 0.1.1) | bound | as webApp |
 | §1 Intake — syllabus/textbook ingestion | bound | bound (in-browser grammar; photos = awaiting-core-ocr, disclosed) | bound (real `ingest_any`, confirm-gated) | bound (native file chooser + camera wiring) |
-| §1b Reading pipeline — finder · OCR · structure · term bank | bound | partial (structure/term bank ride ingestion; finder + OCR + hypothes.is not bound) | partial (same, via the core path; OCR seam unwired) | partial (as webApp) |
+| §1b Reading pipeline — finder · OCR · structure · term bank | bound | bound (ingestion grammar + the demonstration book's bundle at build time: ingest receipt counts shown (62 terms mined · 62 with definitions · 2 with index refs — Darwin, Origin of Species 6th ed., Ch. XIV + the book's own Glossary + Index); term expansion in the Reader (core-emphasized segments; tap → term_tap_payload: definition · index pages · sections); hypothes.is annotations view over the sections (W3C model; API sync needs an account token, not configured); OCR: photographs recorded as awaiting core OCR — the browser cannot run tesseract, the named platform limit; finder stays the core's separate leg) | bound (the REAL pipeline live: Book tab over the bundled demonstration book (same counts), Ingest reports the three counts for any textbook via ingest_any; OCR seam wired through the core's tesseract default, provenance stamped ocr; hypothes.is annotations pane (W3C model, as webApp)) | bound (as webApp) |
 | §1c Multi-course + exam countdowns + .ics export | bound | bound (course set = both bundled samples intaken through the core's intake_courses; header switcher rebinds every view; SR + check-ins persist under per-course keys, legacy keys adopted once by the first course; countdown from the intake (port-pinned for user courses); .ics download = the core's per-course export; create-a-course from a syllabus document in Ingest) | bound (Courses tab: the real intake_courses set incl. user courses from ~/.studysprint/courses; switching rebinds all panes; check-ins persist per course in checkin-logs.json (the flat file keeps the active course's log); .ics export writes the active course's calendar file; create-a-course form persists the syllabus doc) | as webApp |
 | §1c Memory methods — loci/palace · Feynman · retrievability notifications · interleaving · Leitner | bound | bound (Memory view: palace walk over iteration 1's temple route · Feynman pane · retrievability list with one-tap grades · Leitner in SR · interleaved plan — browser ports battery-pinned to the core) | bound (Memory tab runs the real core functions; Leitner via `leitner_review`; interleave in the Plan pane) | as webApp |
 | §1d Calendar awareness — intake · frequency ramps · shift briefings · quiet hours | bound | bound (build-time state, disclosed) | bound (Calendar pane, live-assembled) | as webApp |
 | §1d Geography — locations · routes · temple routes | bound | bound (build-time state, disclosed) | bound (Routes pane, live-assembled) | as webApp |
-| §1d State recall + stress hardening (OPT-IN, ceilings in FEATURES §1d) | bound | absent | absent | absent |
+| §1d State recall + stress hardening (OPT-IN, ceilings in FEATURES §1d) | bound | bound (Hardening view: opt-in only, per-device flag off by default; ceilings verbatim; varied-context plan + reinstatement script + SIT drill plans (seeded pressure picks, receipt-reproducible) as browser ports battery-pinned to study_hardening; results record answered + 'not yet' with the supportive close — no score/penalty fields exist) | bound (Hardening tab runs the real study_hardening: opt-in persisted, off by default, refusal receipt when off; contexts + script + drill plan/result live) | bound (as webApp) |
 
 ## Catch-up slate (per surface line; D1 verifies each iteration)
 
@@ -43,7 +43,16 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
 - **Iteration 4 → surfaces 0.5.0** — §1d hardening (opt-in
   surface only, FEATURES ceilings copied verbatim, no-guilt by
   construction) + §1b completion (hypothes.is annotations view;
-  the OCR seam wired where the platform allows).
+  the OCR seam wired where the platform allows): **LANDED**
+  (this update; #4417) — hardening bound on all surfaces
+  (opt-in, ceilings verbatim); the §1b row completes on the
+  real-book demonstration: Darwin's Origin of Species (6th
+  ed.) Chapter XIV ingested with the book's own Glossary +
+  Index on every surface (receipt counts 62 · 62 · 2), term
+  expansion live in all readers, annotations view over the
+  sections. The program closes with no absent rows except
+  the named disposition below (SR exports on webApp/APK,
+  homed to the post-freeze patch #4673).
 
 Each iteration: the matrix + all three parity statements
 updated in the same PR, demo evidence refreshed (web headless

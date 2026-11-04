@@ -1146,6 +1146,25 @@ smallest-free-int → `docs/ops/4N0N-REGISTRATION-PROTOCOL.md`
 | derived handle, taken | S1 | existing registry entry | mechanical | assigned-variant (smallest free ≥2; v3 = unlinkable SHA codename, stem ∅) |
 | slug, taken | S1 | platform namespace | mechanical | assigned-variant (bounce V1 → V2) |
 
+### Worked rows — active avoidance sweep (Recon 🏅, 2026-11-04)
+
+In-flight priming/provisional labels only (issued names excluded).
+Web sweep evidence, Recon seat, 2026-11-04; formal ™-registry
+status + handle availability = NOT_ESTABLISHED (∅ registry
+search run) — S3 here = web adjacency, marked as such.
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| `labbook` (provisional, ml/labbook) | S3 | LabBook LIMS (Fondation Mérieux, since 2010) · Thermo Qtegra "LabBook" · OSN LabBook · labbook.tech ELN · CTAN/PyPI/GitHub occupants | exact ×many + generic | dead-on-mark — provisional discipline holds: never publish/brand; owner naming pass coins distinct name before records go weight-bearing; internal path tolerable w/ provisional marking |
+| `Domino` (internal shorthand) | S3 | Domino Data Lab (domino.ai, ML platform, category leader) | exact, same category | dead-on-mark (external use) — stands ONLY as internal shorthand for the external reference; own artifacts never branded Domino; post-qualification moniker = coined distinct name (already planned) |
+| `Splinter` (program label) | S3 | Splinter OSS web-app testing framework (same craft namespace) · Splinter Software · Splinterlands cluster | exact + generic-severe | dead-on-mark (public branding) — internal program label only; Registrar issuance coins compound/distinct form |
+| `Commit Replay` (working name) | S3/S5 | gitlogue owns the phrase semantically (playback; ours = pointer-based file creation); phrase descriptive/generic | adjacent semantic | distinguished-internal — internal working name fine; if public, pair w/ coined mark, never bare descriptive phrase |
+| `Rev-wRight` family (mark layer, #2358) | S4 | Rev. Jeremiah Wright coverage (phonetic) | adjacent phonetic | distinguished — exact ∅; coinages clear via the #2358 pass; prefer max visual distance (R3vWright > Rev-wRight) |
+
+Severity of record (Recon): labbook HIGH · Domino HIGH-if-
+external · Splinter MED-HIGH · Commit Replay LOW-MED ·
+Rev-wRight LOW.
+
 ### proActive preparation — use
 
 - Precompute maps for QUEUED namings before they are urgent

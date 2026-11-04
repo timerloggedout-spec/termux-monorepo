@@ -20,14 +20,15 @@ flowchart TB
   subgraph PL_identity["Identity & Registry"]
     identity_0["linguist.html"]
     identity_1["family.html"]
+    identity_2["owner-records.html"]
   end
   subgraph PL_quota["Providers & Quota"]
     quota_0["quota.html"]
     quota_1["quota-usage.html"]
     quota_2["quota-graphs.html"]
     quota_3["quota-swarm.html"]
-    quota_4["free-tier-value.html"]
     quota_4["quota-event-audits.html"]
+    quota_5["free-tier-value.html"]
   end
   subgraph PL_scoring["Scoring & Method"]
     scoring_0["oracle.html"]
@@ -57,6 +58,7 @@ flowchart TB
     moneyball_6["WagerDome — Wallets"]
     moneyball_7["WagerDome — Settlement"]
     moneyball_8["Tribute queues (classified Web3)"]
+    moneyball_9["propose.html"]
   end
   subgraph PL_observatory["Observatory & Telemetry"]
     observatory_0["telemetry.html"]
@@ -65,11 +67,15 @@ flowchart TB
     coordination_0["dispatch-tree.html"]
     coordination_1["pr-lanes.html"]
     coordination_2["tracking.html"]
+    coordination_3["lanes-and-scopes.html"]
+    coordination_4["matrix.html"]
   end
   subgraph PL_web["Web & Presentation"]
     web_0["admin.html"]
     web_1["admin-graph.html"]
     web_2["referrals.html"]
+    web_3["versioning.html"]
+    web_4["index.html"]
   end
   bookledger --> PL_moneyball
   feeds --> PL_coordination
@@ -102,7 +108,7 @@ flowchart TB
 
 ## Surfaces
 
-Basis: the 30 canon carriers + named non-carrier served pages + the §12 Web3 set = 36 surfaces + 2 classified classes (classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+Basis: all 36 tribute .html at master + MoneyBall §12 set + propose.html = 44 surfaces + 2 classified classes (classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 | surface | home | plane | levels rendered | draws from substrate | repo | code layers | release layer |
 |---|---|---|---|---|---|---|---|
@@ -144,15 +150,21 @@ Basis: the 30 canon carriers + named non-carrier served pages + the §12 Web3 se
 | WagerDome — Settlement | moneyball repo | Wagertome · WagerDome — Web3 | program · structure | Book ledger · Wallet ledger | moneyball | site pages · settlement views · replay.py · book+wallet ledgers | moneyball Pages deploy · replay reports @main · settlement stamps in-book · ∅ tagged releases (NOT_ESTABLISHED) |
 | Tribute queues (classified Web3) | tribute | Wagertome · WagerDome — Web3 | structure | Surface feeds | termux-monorepo | queue surfaces · tribute gate config · status ledger · gate tests | gate config of record · status-ledger backfill stamps · lane PAUSED (∅ deploys by ruling) |
 | Validation surfaces (classified Web3) | tribute | Scoring & Method | method · structure | Surface feeds | termux-monorepo | gate/status surfaces · validation tests | gate test suite of record · ∅ release line |
+| propose.html | moneyball repo | Wagertome · WagerDome — Web3 | program | Surface feeds · Book ledger | moneyball | site page · proposals feed + receipt chain · S13 machinery (S13.3A) | moneyball Pages deploy · proposal-chain stamps (LISTED transitions in-book) |
+| lanes-and-scopes.html | tribute | Coordination & QUE | structure · role | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · lanes feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
+| matrix.html | tribute | Coordination & QUE | structure | Surface feeds | termux-monorepo | page · matrix feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
+| owner-records.html | tribute | Identity & Registry | structure | Surface feeds | termux-monorepo | page · records feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
+| versioning.html | tribute | Web & Presentation | structure | Surface feeds | termux-monorepo | page · version-manifest source · versioning.js · tests | site deploy (Pages per merge) · the version-stamp surface itself |
+| index.html | tribute | Web & Presentation | structure | Surface feeds | termux-monorepo | shell page · status payload · tests | site deploy (Pages per merge) · the deployment front door |
 ## Shared substrate
 
 | element | what it is | consumers (count) |
 |---|---|---|
-| AGENT-MONIKERS SSOT | canonical names · collapse registry · moniker graduations | 9 |
-| Surface feeds | per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts | 31 |
+| AGENT-MONIKERS SSOT | canonical names · collapse registry · moniker graduations | 10 |
+| Surface feeds | per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts | 38 |
 | QUE feeds | measurement · governor · queue-by-tier · priority windows | 4 |
 | Wallet ledger | ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds | 6 |
-| Book ledger | ops/agentic-gambling/book/ ledger.jsonl + challenges-book — subjects · positions · settlements | 4 |
+| Book ledger | ops/agentic-gambling/book/ ledger.jsonl + challenges-book — subjects · positions · settlements | 5 |
 | Governor stream | PAT flow governor {used · remaining · projected · trigger · hard limit} | 4 |
 | Naming gate (provenance) | PROVENANCE over the whole map — Registry reviewer of record · #4884 reconciliation · gate rulings; not a per-surface draw | 0 |
 

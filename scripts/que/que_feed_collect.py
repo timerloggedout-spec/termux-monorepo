@@ -303,20 +303,23 @@ def main() -> int:
     completed = census(token, "completed", 1)
     FEEDS.mkdir(parents=True, exist_ok=True)
     EVENTS.mkdir(parents=True, exist_ok=True)
-    (FEEDS / "queue-by-tier.json").write_text(json.dumps(
-        tier_feed(queued, in_progress, tiers_doc, at), indent=1) + "\n")
-    qf_bytes = json.dumps(
-        queue_feed(queued, in_progress, tiers_doc, at),
-        indent=1) + "\n"
-    (FEEDS / "queue-feed.json").write_text(qf_bytes)
-    mirror = ROOT / "apps" / "tribute-dashboard" / "data" \
-        / "que-queue-feed.json"
-    mirror.parent.mkdir(parents=True, exist_ok=True)
-    mirror.write_text(qf_bytes)  # byte-identical pair
-    (FEEDS / "priority-windows.json").write_text(json.dumps(
-        priority_feed(tiers_doc, at), indent=1) + "\n")
-    (FEEDS / "governor.json").write_text(json.dumps(
-        governor_feed(token, at), indent=1) + "\n")
+    dash = ROOT / "apps" / "tribute-dashboard" / "data"
+    dash.mkdir(parents=True, exist_ok=True)
+
+    def publish(name, obj):
+        """Canonical at ops/que/feeds/ + a byte-identical
+        mirror in the dashboard data dir (the board seam,
+        confirmed by the Desk 2026-11-04)."""
+        data = json.dumps(obj, indent=1) + "\n"
+        (FEEDS / name).write_text(data)
+        (dash / name).write_text(data)
+
+    publish("queue-by-tier.json",
+            tier_feed(queued, in_progress, tiers_doc, at))
+    publish("queue-feed.json",
+            queue_feed(queued, in_progress, tiers_doc, at))
+    publish("priority-windows.json", priority_feed(tiers_doc, at))
+    publish("governor.json", governor_feed(token, at))
     state_path = FEEDS / "state.json"
     state = json.loads(state_path.read_text()) \
         if state_path.exists() else {}

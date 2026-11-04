@@ -22,6 +22,7 @@
     ["3L0", tribute + "3l0.html", "3l0"],
     ["MoneyBall", tribute + "moneyball.html", "moneyball"],
     ["Wagering Book", tribute + "wagering-book.html", "wagering-book"],
+    ["Pools", tribute + "pools.html", "pools"],
     ["MVT", tribute + "mvt.html", "mvt"],
     ["DoE", tribute + "doe.html", "doe"],
     ["ATES", tribute + "ates.html", "ates"],

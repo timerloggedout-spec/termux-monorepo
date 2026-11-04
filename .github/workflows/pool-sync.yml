@@ -1,0 +1,62 @@
+name: pool-sync
+
+# POOL-SYNC (MoneyBall Dispatch #3): continuous pool provisioning.
+# Walks the pool classes' sources of record and appends
+# wallet_provisioned events for NEW pool nodes only, through the
+# custodied ledger fold (scripts/moneyball/wallet_ledger.py).
+# Fail-closed; self-validating walkers; single-flight.
+
+on:
+  push:
+    paths:
+      - "apps/tribute-dashboard/data/dispatch-tree-feed.json"
+      - "ops/challenge/coordinator.json"
+      - "ops/challenge/desk-feed.json"
+      - "ops/cadence/provider-onboarding.json"
+      - "experiments/speculators/token-strategies/WALLETS.json"
+      - "experiments/speculators/token-strategies/PLAN.json"
+      - "scripts/moneyball/pool_sync.py"
+  repository_dispatch:
+    types: [pool-ssot-changed]
+  schedule:
+    - cron: "23 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pool-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint Swarm App token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run POOL-SYNC
+        run: python3 scripts/moneyball/pool_sync.py --commit
+      - name: Commit census + ledger (only when changed)
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add ops/agentic-gambling/site/wallet-ledger.jsonl \
+                  ops/agentic-gambling/site/pool-census.json
+          if git diff --cached --quiet; then
+            echo "POOL-SYNC: no changes — no-op receipt stands"
+          else
+            git commit -m "chore(moneyball): POOL-SYNC census/provisioning (Dispatch #3)"
+            git push
+            echo "POOL-SYNC: committed. Follow-on: pools-feed-changed dispatch to moneyball rides a monorepo-held MoneyBall dispatch credential (provisioning ask of record); the census commit is the v1 signal."
+          fi

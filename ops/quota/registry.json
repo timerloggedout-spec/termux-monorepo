@@ -2883,12 +2883,17 @@
    "id": "vultr.account_credit",
    "provider": "vultr",
    "lane": "ops",
-   "kind": "account credit (one-time grant)",
+   "metric": "account credit (one-time grant)",
    "limit": 200,
    "unit": "USD",
-   "window": "one-time grant; expires \u22482026-12-03",
-   "source": "owner Console-verified applied credit 2026-11-03; balance source = account billing API (api.vultr.com/v2/account) once the account API key is provisioned (provisioning item); row renders as an explicit gap until then (ALL-Providers rule)",
-   "notes": "Focus: Winning (D2 event capacity). Event window 2026-11-03T15:00Z to 2026-11-08 15:00 PT (landing Nov 7). Ground truth = D2 seat daily credit checks."
+   "window": "one-time (30 days)",
+   "reset": "\u224830 days from application (applied 2026-11-03; expires \u22482026-12-03)",
+   "zone": "UTC",
+   "source": "https://www.vultr.com/pricing/",
+   "live": "none",
+   "planned_use": {
+    "note": "Focus: Winning (D2 event capacity). $200.00 credit applied 2026-11-03, owner Console-verified firsthand; expires \u22482026-12-03. Event window 2026-11-03T15:00Z to 2026-11-08 15:00 PT (landing Nov 7); ground truth = D2 seat daily credit checks. Balance source = account billing API (api.vultr.com/v2/account) once the account API key is provisioned (provisioning item); until keyed the row renders as an explicit gap (ALL-Providers rule)."
+   }
   }
  ]
 }

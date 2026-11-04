@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 529,
-    "open_prs": 269,
+    "open_prs": 270,
     "pr_classes": {
-      "CANDIDATE": 128,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 131,
+      "CANDIDATE": 123,
+      "EXTRACT": 14,
+      "NEED_EVIDENCE": 133,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 267,
+      "prs": 268,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T01:13:59Z",
+  "generated_at": "2026-11-04T01:17:14Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "bff2a9ceba"
+    "sha": "2b62683f95"
   },
   "prs": [
     {
@@ -298,6 +298,62 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9026886571",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "updated_at": "2026-11-04T01:04:18Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a581e066ac",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4694,
+      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
+      "updated_at": "2026-11-04T00:44:00Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d87c4433ee",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4740,
+      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
+      "updated_at": "2026-11-04T00:38:52Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "481fc6c7d7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4742,
+      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+      "updated_at": "2026-11-04T00:52:14Z"
     },
     {
       "class": "CANDIDATE",
@@ -520,7 +576,7 @@
       },
       "head_sha": "8464945ec4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1494,
       "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
       "updated_at": "2026-11-03T23:30:36Z"
@@ -2005,34 +2061,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9026886571",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4624,
-      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
-      "updated_at": "2026-11-04T01:04:18Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a581e066ac",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4694,
-      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
-      "updated_at": "2026-11-04T00:44:00Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "f66feb2976",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2053,48 +2081,6 @@
       "number": 4737,
       "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
       "updated_at": "2026-11-04T00:32:22Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d87c4433ee",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4740,
-      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
-      "updated_at": "2026-11-04T00:38:52Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "481fc6c7d7",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4742,
-      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
-      "updated_at": "2026-11-04T00:52:14Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "6f37fed13f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4760,
-      "title": "quota: coverage cited as the labeled pair (readings + consumption) in pack + quota.txt",
-      "updated_at": "2026-11-04T01:10:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3251,12 +3237,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d8fd3bfcf1",
+      "head_sha": "34bc6b97c5",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-04T01:13:44Z"
+      "updated_at": "2026-11-04T01:16:40Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3265,12 +3251,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f8e8c7b92f",
+      "head_sha": "0d7a92a3bb",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T01:13:42Z"
+      "updated_at": "2026-11-04T01:16:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3349,12 +3335,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7476bcecee",
+      "head_sha": "379d0e4c9a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-03T23:55:24Z"
+      "updated_at": "2026-11-04T01:16:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3925,10 +3911,38 @@
       },
       "head_sha": "1e1b0c5398",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4758,
       "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
       "updated_at": "2026-11-04T01:06:46Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "6e3c3c7908",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4765,
+      "title": "quota: vultr record conformed to credit-record shape (fixes offline spine crash)",
+      "updated_at": "2026-11-04T01:16:30Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "a01790650e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4766,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-11-04T01:16:19Z"
     }
   ],
   "schema": "operator-matrix/v1",

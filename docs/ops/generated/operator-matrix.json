@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 532,
-    "open_prs": 276,
+    "open_prs": 277,
     "pr_classes": {
       "CANDIDATE": 127,
-      "EXTRACT": 11,
+      "EXTRACT": 12,
       "NEED_EVIDENCE": 138,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 47,
-      "prs": 274,
+      "prs": 275,
       "unlabelled_numbers": [
         308,
         388,
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T12:37:04Z",
+  "generated_at": "2026-11-04T12:41:20Z",
   "issues_unlabelled": [
     308,
     388,
@@ -153,12 +153,12 @@
     4873
   ],
   "master": {
-    "functional_gate": "NOT ESTABLISHED",
+    "functional_gate": "GREEN",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "success",
+      "smoke": "success"
     },
-    "sha": "766c0deb2e"
+    "sha": "fa06b3068d"
   },
   "prs": [
     {
@@ -238,12 +238,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "66792817cb",
+      "head_sha": "6268300078",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T12:35:47Z"
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T12:38:09Z"
     },
     {
       "class": "EXTRACT",
@@ -314,6 +314,20 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "43b6a94239",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4898,
+      "title": "feat(dashboard): surfaces-map serve step \u2014 canon 39 + census rows",
+      "updated_at": "2026-11-04T12:40:18Z"
     },
     {
       "class": "CANDIDATE",
@@ -2620,20 +2634,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "05b9f4b2d7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T12:35:26Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -3273,6 +3273,20 @@
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T12:22:31Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "queued"
+      },
+      "head_sha": "3f84ae63d2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T12:40:58Z"
     },
     {
       "class": "NEED_EVIDENCE",

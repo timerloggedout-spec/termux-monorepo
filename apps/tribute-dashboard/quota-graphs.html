@@ -113,7 +113,9 @@ function taskTreeRow(t){
   return '<div class="task-row"><div class="task-meta"><span class="task-title">'+esc(t.task_class||'Task')+'</span><span class="chip">'+esc(o.status||'outcome unknown')+'</span>'+taskUsageMarkup(t.usage)+'</div>'
     +'<p class="muted">'+esc(t.ts||'timestamp NOT_ESTABLISHED')+' · dispatch '+esc(t.dispatch_id||'NOT_ESTABLISHED')+(t.session_id?' · session '+esc(t.session_id):'')+(t.workflow?' · '+esc(t.workflow):'')+'</p>'
     +'<p class="muted">Quota pool: <strong>'+esc(q.pool||'NOT_ESTABLISHED')+'</strong> · slice: <strong>'+esc(q.slice||'NOT_ESTABLISHED')+'</strong> · join: '+esc(t.attribution||'none')+'</p>'
-    +(t.context?'<p class="muted">'+esc(t.context)+'</p>':'')+'<p class="muted">'+[run,rec].filter(Boolean).join(' · ')+'</p></div>';
+    +(t.context?'<p class="muted">'+esc(t.context)+'</p>':'')
+    +((t.usage&&t.usage.source)|| (t.usage&&t.usage.note)?'<p class="muted">Usage source: '+esc((t.usage||{}).source||'—')+(t.usage&&t.usage.note?' · '+esc(t.usage.note):'')+'</p>':'')
+    +'<p class="muted">'+[run,rec].filter(Boolean).join(' · ')+'</p></div>';
 }
 function renderTaskTree(){
   const tree=pack&&pack.task_tree,host=$('task-tree');
@@ -141,9 +143,11 @@ function renderTaskTree(){
     if(!modelHtml)return '';
     return '<details open><summary><strong>'+esc(p.provider||'NOT_ESTABLISHED')+'</strong></summary><div class="branch">'+modelHtml+'</div></details>';
   }).join('');
+  const zeroProviders=(tree.providers||[]).filter(p=>(!p.models||!p.models.length)&&(!q||String(p.provider||'').toLowerCase().includes(q)));
+  const zeroHtml=zeroProviders.length?'<section><div class="head"><h3>No recorded tasks</h3><span class="note">'+zeroProviders.length+' provider families</span></div><div class="card"><p class="muted">'+zeroProviders.map(p=>'<span class="chip">'+esc(p.provider)+'</span>').join(' ')+'</p><p class="muted">These provider families remain in the registry denominator but have no nested task records. No quota use is inferred.</p></div></section>':'';
   const cov=tree.coverage||{};
-  $('task-tree-summary').textContent=(cov.tasks??0)+' tasks · '+(cov.established??0)+' exact · '+(cov.activity_only??0)+' activity-only · '+(cov.no_usage_surface??0)+' no usage surface · '+(cov.not_established??0)+' not established · '+visible+' visible';
-  host.innerHTML=providerHtml||'<div class="card empty">No task branches match this filter. Clear the search or usage-state filter.</div>';
+  $('task-tree-summary').textContent=(cov.tasks??0)+' tasks · '+(cov.established??0)+' exact · '+(cov.activity_only??0)+' activity-only · '+(cov.no_usage_surface??0)+' no usage surface · '+(cov.not_established??0)+' not established · '+visible+' visible · '+zeroProviders.length+' zero-task providers';
+  host.innerHTML=(providerHtml+zeroHtml)||'<div class="card empty">No task branches match this filter. Clear the search or usage-state filter.</div>';
 }
 $('task-search').addEventListener('input',renderTaskTree);$('task-status').addEventListener('change',renderTaskTree);
 async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}

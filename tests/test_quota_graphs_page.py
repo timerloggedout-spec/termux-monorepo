@@ -150,6 +150,8 @@ def test_page_contract():
     assert "No recorded tasks" in html
     assert "Usage source:" in html
     assert "zero-task providers" in html
+    for state in ("waived", "fault", "pending", "no-usage-surface", "NOT_ESTABLISHED"):
+        assert 'value="'+state+'"' in html
 
 
 def test_pack_freshness_stamps():

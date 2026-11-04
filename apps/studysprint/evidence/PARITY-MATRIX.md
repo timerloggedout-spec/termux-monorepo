@@ -15,7 +15,7 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
 | §1/§2 Plan + trust receipt + Today (§2/§3) | bound | bound | bound | bound (build-time state, disclosed) |
 | §3 Daily check-in + no-guilt shift | bound | bound (persisted; surface-level shift, core reflow not bound) | bound (persisted; real week/day identity) | as webApp |
 | §3 SR review — FSRS + SM-2, receipts | bound | bound (browser engines over the core UX export) | bound (real `review_card`) | as webApp |
-| SR exports — Anki .apkg · Obsidian vault | bound | absent | bound (Export tab) | absent |
+| SR exports — Anki .apkg · Obsidian vault | bound | bound (browser ports of both writers over the web SR state: .apkg semantic parity · Obsidian byte parity, battery-pinned — tests/test_sr_exports_web.py) | bound (Export tab) | bound (as webApp) |
 | §1/§3 Reader (sections + RSVP) | bound | bound (all 6 sections, 0.1.1) | bound | as webApp |
 | §1 Intake — syllabus/textbook ingestion | bound | bound (in-browser grammar; photos = awaiting-core-ocr, disclosed) | bound (real `ingest_any`, confirm-gated) | bound (native file chooser + camera wiring) |
 | §1b Reading pipeline — finder · OCR · structure · term bank | bound | bound (ingestion grammar + the demonstration book's bundle at build time: ingest receipt counts shown (62 terms mined · 62 with definitions · 2 with index refs — Darwin, Origin of Species 6th ed., Ch. XIV + the book's own Glossary + Index); term expansion in the Reader (core-emphasized segments; tap → term_tap_payload: definition · index pages · sections); hypothes.is annotations view over the sections (W3C model; API sync needs an account token, not configured); OCR: photographs recorded as awaiting core OCR — the browser cannot run tesseract, the named platform limit; finder stays the core's separate leg) | bound (the REAL pipeline live: Book tab over the bundled demonstration book (same counts), Ingest reports the three counts for any textbook via ingest_any; OCR seam wired through the core's tesseract default, provenance stamped ocr; hypothes.is annotations pane (W3C model, as webApp)) | bound (as webApp) |
@@ -51,8 +51,9 @@ statements together (standing surface gates). **Owner rule (2026-11-03): this ta
   Index on every surface (receipt counts 62 · 62 · 2), term
   expansion live in all readers, annotations view over the
   sections. The program closes with no absent rows except
-  the named disposition below (SR exports on webApp/APK,
-  homed to the post-freeze patch #4673).
+  the named disposition below (SR exports on webApp/APK —
+  CLOSED pre-freeze at surfaces 0.5.1 by the qualifications
+  closure package, #4673).
 
 Each iteration: the matrix + all three parity statements
 updated in the same PR, demo evidence refreshed (web headless
@@ -65,4 +66,4 @@ Implementation Assurance seat, session
 6604280926).
 ## Dispositions (owner review gate, 2026-11-03)
 
-- **SR exports — webApp/APK:** absent here; home = the named post-freeze patch **#4673** (it-4 does not absorb it; freeze path protected). Every other row’s home: it-2 memory · it-3 multi-course · it-4 hardening + §1b.
+- **SR exports — webApp/APK:** CLOSED pre-freeze by the qualifications closure package (surfaces 0.5.1, #4673 pulled forward from its post-freeze home): browser ports of both core writers, battery-pinned in tests/test_sr_exports_web.py. Every other row’s home: it-2 memory · it-3 multi-course · it-4 hardening + §1b.

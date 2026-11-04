@@ -5,6 +5,20 @@ Entries are the GitHub Release notes, verbatim.
 
 ## [Unreleased]
 
+### Surfaces 0.5.1
+
+- **SR exports land on webApp + APK (#4673, qualifications
+  closure ①):** the SR view gains Export Anki .apkg +
+  Export Obsidian vault — browser ports of the core's
+  writers over the web SR state (deck/model identity via
+  the core's `_stable_id`; per-scheduler states mapped
+  into the vault frontmatter). Battery-pinned in
+  tests/test_sr_exports_web.py: .apkg semantic parity
+  with the genanki writer (sqlite integrity, note/card
+  content, referential integrity; 40-card + payload-
+  overflow case), Obsidian note set byte-identical.
+  The parity matrix's last absent row closes.
+
 ## [1.0.0] — 2026-11-04
 
 **The submission cut.** Foundation **v1.0.0**: the version of

@@ -619,6 +619,444 @@ function drillResultClosePort() {
          "not a verdict — it gets smaller every round.";
 }
 
+/* ---------------- SR exports (#4673) ----------------
+ * Browser ports of the core's SR writers (study_sr.py):
+ * export_apkg (genanki-shaped .apkg) and export_obsidian_vault.
+ * Battery-pinned semantically to the core writers: same card
+ * set, fields, tags, note text, deck/model identity (the core's
+ * _stable_id over SHA-256). Byte parity with genanki's file is
+ * NOT claimed (ids/guids/timestamps are generation-time values
+ * in both writers); content parity is what the battery pins.
+ * The .apkg writer is a minimal SQLite table-btree writer
+ * (leaf + one interior level + payload overflow), sufficient
+ * for any plausible deck; it throws rather than emit a file
+ * outside the envelope it can prove. */
+
+function _crc32Table() {
+  if (_crc32Table._t) return _crc32Table._t;
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[n] = c >>> 0;
+  }
+  _crc32Table._t = t;
+  return t;
+}
+
+function crc32(bytes) {
+  const t = _crc32Table();
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) c = t[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+
+function _utf8(s) { return new TextEncoder().encode(s); }
+
+/* ZIP (store method): [{name, bytes}] -> Uint8Array */
+function zipStore(files) {
+  const chunks = [];
+  const central = [];
+  let offset = 0;
+  const u16 = (v) => new Uint8Array([v & 0xFF, (v >>> 8) & 0xFF]);
+  const u32 = (v) => new Uint8Array([v & 0xFF, (v >>> 8) & 0xFF, (v >>> 16) & 0xFF, (v >>> 24) & 0xFF]);
+  const cat = (...arrs) => {
+    let n = 0; for (const a of arrs) n += a.length;
+    const out = new Uint8Array(n); let o = 0;
+    for (const a of arrs) { out.set(a, o); o += a.length; }
+    return out;
+  };
+  for (const f of files) {
+    const name = _utf8(f.name);
+    const crc = crc32(f.bytes);
+    const local = cat(u32(0x04034b50), u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(crc), u32(f.bytes.length), u32(f.bytes.length), u16(name.length), u16(0), name);
+    chunks.push(local, f.bytes);
+    central.push({ name, crc, size: f.bytes.length, offset });
+    offset += local.length + f.bytes.length;
+  }
+  let cdSize = 0;
+  for (const c of central) {
+    const rec = cat(u32(0x02014b50), u16(20), u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(c.crc), u32(c.size), u32(c.size), u16(c.name.length), u16(0), u16(0),
+      u16(0), u16(0), u32(0), u32(c.offset), c.name);
+    chunks.push(rec); cdSize += rec.length;
+  }
+  chunks.push(cat(u32(0x06054b50), u16(0), u16(0), u16(central.length),
+    u16(central.length), u32(cdSize), u32(offset), u16(0)));
+  return cat(...chunks);
+}
+
+/* ---- SQLite writer ---- */
+const _PG = 4096;
+
+function _varint(n) {
+  if (n < 0) throw new Error("varint: negative");
+  if (n <= 0x7F) return new Uint8Array([n]);
+  const bytes = [];
+  let v = n;
+  const tail = [];
+  for (let i = 0; i < 8; i++) { tail.unshift(v & 0x7F); v = Math.floor(v / 128); if (!v) break; }
+  // rebuild SQLite-style: all but last carry 7 bits, last byte takes 8
+  const out = [];
+  let rem = n;
+  const groups = [];
+  while (rem >= 256) { groups.unshift(rem & 0xFF); rem = Math.floor(rem / 256); }
+  // simpler correct path: encode via BigInt-free 9-byte scheme
+  out.length = 0;
+  let x = n;
+  const tmp = [];
+  do { tmp.unshift(x % 128); x = Math.floor(x / 128); } while (x > 0);
+  if (tmp.length === 9) {
+    // not reachable for our magnitudes; guard anyway
+    throw new Error("varint: too large");
+  }
+  for (let i = 0; i < tmp.length - 1; i++) out.push(tmp[i] | 0x80);
+  out.push(tmp[tmp.length - 1]);
+  return new Uint8Array(out);
+}
+
+function _serialType(v) {
+  if (v === null || v === undefined) return 0;
+  if (typeof v === "number") {
+    if (Number.isInteger(v)) {
+      if (v === 0) return 8;
+      if (v === 1) return 9;
+      if (v >= -128 && v <= 127) return 1;
+      if (v >= -32768 && v <= 32767) return 2;
+      if (v >= -8388608 && v <= 8388607) return 3;
+      if (v >= -2147483648 && v <= 2147483647) return 4;
+      if (v >= -140737488355328 && v <= 140737488355327) return 5;
+      return 6;
+    }
+    return 7;
+  }
+  if (typeof v === "string") return 13 + 2 * _utf8(v).length;
+  if (v instanceof Uint8Array) return 12 + 2 * v.length;
+  throw new Error("serialType: unsupported " + typeof v);
+}
+
+function _encodeValue(v, type) {
+  if (type === 0 || type === 8) return new Uint8Array(0);
+  if (type === 9) return new Uint8Array(0);
+  if (type >= 1 && type <= 6) {
+    const sizes = { 1: 1, 2: 2, 3: 3, 4: 4, 5: 6, 6: 8 };
+    const n = sizes[type];
+    const out = new Uint8Array(n);
+    let x = v < 0 ? v + Math.pow(2, 8 * n) : v;
+    for (let i = n - 1; i >= 0; i--) { out[i] = x % 256; x = Math.floor(x / 256); }
+    return out;
+  }
+  if (type === 7) {
+    const buf = new ArrayBuffer(8);
+    new DataView(buf).setFloat64(0, v, false);
+    return new Uint8Array(buf);
+  }
+  if (typeof v === "string") return _utf8(v);
+  return v;
+}
+
+function encodeRecord(values) {
+  const types = values.map(_serialType);
+  const headerParts = types.map(_varint);
+  let headerLen = 0;
+  for (const p of headerParts) headerLen += p.length;
+  // header length field itself: iterate to fixpoint (it is < 128 here)
+  headerLen += 1;
+  const body = [];
+  let bodyLen = 0;
+  for (let i = 0; i < values.length; i++) {
+    const b = _encodeValue(values[i], types[i]);
+    body.push(b); bodyLen += b.length;
+  }
+  const out = new Uint8Array(headerLen + bodyLen);
+  let o = 0;
+  out.set(_varint(headerLen), o); o += 1;
+  for (const p of headerParts) { out.set(p, o); o += p.length; }
+  for (const b of body) { out.set(b, o); o += b.length; }
+  return out;
+}
+
+/* Build one table b-tree. rows: [[rowid, values], ...] sorted by
+ * rowid. allocPage() -> page number (1-based); pages are filled
+ * through writePage(pageNo, Uint8Array). Returns root page no. */
+function buildTable(rows, allocPage, writePage, headerOffset) {
+  const U = _PG;
+  const X = U - 35;
+  const M = Math.floor((U - 12) * 32 / 255) - 23;
+  // Pass 1: encode records, compute local sizes, group into leaves.
+  const encoded = rows.map(([rowid, values]) => {
+    const payload = encodeRecord(values);
+    const P = payload.length;
+    let local = P;
+    if (P > X) {
+      const K = M + ((P - M) % (U - 4));
+      local = (K <= X) ? K : M;
+    }
+    const cellHead = _varint(P).length + _varint(rowid).length;
+    const cellSize = cellHead + local + (local < P ? 4 : 0);
+    return { rowid, payload, P, local, cellSize };
+  });
+  const leaves = [];
+  let cur = [], curBytes = 8; // leaf header
+  const baseOffset = headerOffset || 0;
+  for (const e of encoded) {
+    const capBytes = U - baseOffset - 8;
+    if (cur.length && (curBytes - 8) + e.cellSize + 2 > capBytes) {
+      leaves.push(cur); cur = []; curBytes = 8;
+    }
+    cur.push(e); curBytes += e.cellSize + 2;
+  }
+  if (cur.length || !leaves.length) leaves.push(cur);
+  // Pass 2: materialize leaves (+ overflow), collecting child info.
+  const children = [];
+  for (const leafCells of leaves) {
+    const pageNo = allocPage();
+    const page = new Uint8Array(U);
+    let contentStart = U;
+    const ptrs = [];
+    for (const e of leafCells) {
+      let firstOverflow = 0;
+      if (e.local < e.P) {
+        let remaining = e.P - e.local;
+        let prev = null;
+        const chain = [];
+        while (remaining > 0) {
+          const op = allocPage();
+          chain.push(op);
+          remaining -= (U - 4);
+        }
+        firstOverflow = chain[0];
+        let off = e.local;
+        for (let ci = 0; ci < chain.length; ci++) {
+          const opage = new Uint8Array(U);
+          const dv = new DataView(opage.buffer);
+          const nxt = ci + 1 < chain.length ? chain[ci + 1] : 0;
+          dv.setUint32(0, nxt, false);
+          const take = Math.min(U - 4, e.P - off);
+          opage.set(e.payload.subarray(off, off + take), 4);
+          writePage(chain[ci], opage);
+          off += take;
+        }
+      }
+      const cellLen = e.cellSize;
+      contentStart -= cellLen;
+      const at = baseOffset + contentStart - (headerOffset ? 0 : 0);
+      const place = contentStart;
+      let o = place;
+      page.set(_varint(e.P), o); o += _varint(e.P).length;
+      page.set(_varint(e.rowid), o); o += _varint(e.rowid).length;
+      page.set(e.payload.subarray(0, e.local), o); o += e.local;
+      if (firstOverflow) {
+        new DataView(page.buffer).setUint32(o, firstOverflow, false);
+        o += 4;
+      }
+      ptrs.push(place);
+    }
+    const dv = new DataView(page.buffer);
+    const hdr = baseOffset;
+    page[hdr] = 0x0D;
+    dv.setUint16(hdr + 1, 0, false);
+    dv.setUint16(hdr + 3, leafCells.length, false);
+    dv.setUint16(hdr + 5, contentStart, false);
+    page[hdr + 7] = 0;
+    for (let i = 0; i < ptrs.length; i++) dv.setUint16(hdr + 8 + 2 * i, ptrs[i], false);
+    writePage(pageNo, page);
+    children.push({ pageNo, maxKey: leafCells.length ? leafCells[leafCells.length - 1].rowid : 0 });
+  }
+  if (children.length === 1) return children[0].pageNo;
+  // Interior root: cells = (child page u32, key varint)
+  const rootNo = allocPage();
+  const page = new Uint8Array(U);
+  const dv = new DataView(page.buffer);
+  let contentStart = U;
+  const ptrs = [];
+  for (let i = 0; i < children.length - 1; i++) {
+    const key = _varint(children[i].maxKey);
+    const cellLen = 4 + key.length;
+    contentStart -= cellLen;
+    dv.setUint32(contentStart, children[i].pageNo, false);
+    page.set(key, contentStart + 4);
+    ptrs.push(contentStart);
+  }
+  const hdr = headerOffset || 0;
+  page[hdr] = 0x05;
+  dv.setUint16(hdr + 1, 0, false);
+  dv.setUint16(hdr + 3, children.length - 1, false);
+  dv.setUint16(hdr + 5, contentStart, false);
+  page[hdr + 7] = 0;
+  dv.setUint32(hdr + 8, children[children.length - 1].pageNo, false);
+  for (let i = 0; i < ptrs.length; i++) dv.setUint16(hdr + 12 + 2 * i, ptrs[i], false);
+  writePage(rootNo, page);
+  return rootNo;
+}
+
+const APKG_DDL = [
+  "CREATE TABLE col (\n    id              integer primary key,\n    crt             integer not null,\n    mod             integer not null,\n    scm             integer not null,\n    ver             integer not null,\n    dty             integer not null,\n    usn             integer not null,\n    ls              integer not null,\n    conf            text not null,\n    models          text not null,\n    decks           text not null,\n    dconf           text not null,\n    tags            text not null\n)",
+  "CREATE TABLE notes (\n    id              integer primary key,\n    guid            text not null,\n    mid             integer not null,\n    mod             integer not null,\n    usn             integer not null,\n    tags            text not null,\n    flds            text not null,\n    sfld            text not null,\n    csum            integer not null,\n    flags           integer not null,\n    data            text not null\n)",
+  "CREATE TABLE cards (\n    id              integer primary key,\n    nid             integer not null,\n    did             integer not null,\n    ord             integer not null,\n    mod             integer not null,\n    usn             integer not null,\n    type            integer not null,\n    queue           integer not null,\n    due             integer not null,\n    ivl             integer not null,\n    factor          integer not null,\n    reps            integer not null,\n    lapses          integer not null,\n    left            integer not null,\n    odue            integer not null,\n    odid            integer not null,\n    flags           integer not null,\n    data            text not null\n)",
+  "CREATE TABLE revlog (\n    id              integer primary key,\n    cid             integer not null,\n    usn             integer not null,\n    ease            integer not null,\n    ivl             integer not null,\n    lastIvl         integer not null,\n    factor          integer not null,\n    time            integer not null,\n    type            integer not null\n)",
+  "CREATE TABLE graves (\n    usn             integer not null,\n    oid             integer not null,\n    type            integer not null\n)",
+];
+
+/* The col-row stock JSON, mirroring genanki's emitted shapes
+ * (battery-verified against the core writer's output). */
+const APKG_CONF = "{\n        \"activeDecks\": [\n            1\n        ],\n        \"addToCur\": true,\n        \"collapseTime\": 1200,\n        \"curDeck\": 1,\n        \"curModel\": null,\n        \"dueCounts\": true,\n        \"estTimes\": true,\n        \"newBury\": true,\n        \"newSpread\": 0,\n        \"nextPos\": 1,\n        \"sortBackwards\": false,\n        \"sortType\": \"noteFld\",\n        \"timeLim\": 0\n    }";
+const APKG_DCONF = "{\n        \"1\": {\n            \"autoplay\": true,\n            \"dyn\": false,\n            \"id\": 1,\n            \"lapse\": {\n                \"delays\": [\n                    10\n                ],\n                \"leechAction\": 0,\n                \"leechFails\": 8,\n                \"minInt\": 1,\n                \"mult\": 0\n            },\n            \"maxTaken\": 60,\n            \"mod\": 0,\n            \"name\": \"Default\",\n            \"new\": {\n                \"bury\": false,\n                \"delays\": [\n                    1,\n                    10\n                ],\n                \"initialFactor\": 2500,\n                \"ints\": [\n                    1,\n                    4,\n                    7\n                ],\n                \"order\": 1,\n                \"perDay\": 20,\n                \"separate\": true\n            },\n            \"replayq\": true,\n            \"rev\": {\n                \"bury\": false,\n                \"ease4\": 1.3,\n                \"fuzz\": 0.05,\n                \"ivlFct\": 1,\n                \"maxIvl\": 36500,\n                \"minSpace\": 1,\n                \"perDay\": 100\n            },\n            \"timer\": 0,\n            \"usn\": 0\n        }\n    }";
+
+function _stableId(text) {
+  // The core's _stable_id: int(sha256(text).hexdigest()[:8], 16) + 1
+  return parseInt(sha256Hex(text).slice(0, 8), 16) + 1;
+}
+
+const _B91 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&()*+,-./:;<=>?@[]^_`{|}~";
+function _guidFor(seedText) {
+  const hex = sha256Hex(seedText);
+  let out = "";
+  for (let i = 0; i < 10; i++) out += _B91[parseInt(hex.slice(i * 2, i * 2 + 2), 16) % 91];
+  return out;
+}
+
+function sanitizeTag(tag) {
+  return String(tag).trim().replace(/\s+/g, "_");
+}
+
+/* cards: [{card_id, front, back, tags}] -> .apkg bytes */
+function buildApkgBytes(cards, deckName) {
+  deckName = deckName || "StudySprint";
+  const modelId = _stableId("studysprint-model-" + deckName);
+  const deckId = _stableId("studysprint-deck-" + deckName);
+  const nowSec = Math.floor(Date.now() / 1000);
+  const nowMs = Date.now();
+  const model = {
+    css: "", did: deckId,
+    flds: [
+      { name: "Front", ord: 0, font: "Liberation Sans", media: [], rtl: false, size: 20, sticky: false },
+      { name: "Back", ord: 1, font: "Liberation Sans", media: [], rtl: false, size: 20, sticky: false },
+    ],
+    id: String(modelId),
+    latexPost: "\\end{document}",
+    latexPre: "\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",
+    latexsvg: false, mod: nowSec, name: "StudySprint SR",
+    req: [[0, "all", [0]]], sortf: 0, tags: [],
+    tmpls: [{ name: "Card 1", qfmt: "{{Front}}", afmt: "{{Back}}", ord: 0, bafmt: "", bqfmt: "", bfont: "", bsize: 0, did: null }],
+    type: 0, usn: -1, vers: [],
+  };
+  const decks = {
+    "1": { collapsed: false, conf: 1, desc: "", dyn: 0, extendNew: 10, extendRev: 50, id: 1, lrnToday: [0, 0], mod: 1425279151, name: "Default", newToday: [0, 0], revToday: [0, 0], timeToday: [0, 0], usn: 0 },
+  };
+  decks[String(deckId)] = {
+    collapsed: false, conf: 1, desc: "", dyn: 0, extendNew: 0, extendRev: 50,
+    id: deckId, lrnToday: [0, 0], mod: 1425278051, name: deckName,
+    newToday: [0, 0], revToday: [0, 0], timeToday: [0, 0], usn: -1,
+  };
+  const models = {};
+  models[String(modelId)] = model;
+  const colRow = [null, 1411124400, 1425279151694, 1425279151690, 11, 0, 0, 0,
+    APKG_CONF, JSON.stringify(models), JSON.stringify(decks), APKG_DCONF, "{}"];
+  const noteRows = [], cardRows = [];
+  cards.forEach((card, i) => {
+    const nid = nowMs + i * 2;
+    const tags = (card.tags || []).map(sanitizeTag).filter((t) => t);
+    noteRows.push([nid, [null, _guidFor(card.card_id + "|" + card.front), modelId, nowSec, -1,
+      tags.length ? " " + tags.join(" ") + " " : "",
+      card.front + "\x1f" + card.back, card.front, 0, 0, ""]]);
+    cardRows.push([nid + 1, [null, nid, deckId, 0, nowSec, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ""]]);
+  });
+  // Page allocation: page 1 reserved for the schema tree.
+  const pages = [null];
+  const allocPage = () => { pages.push(null); return pages.length; };
+  const writePage = (no, bytes) => { pages[no - 1] = bytes; };
+  // buildTable allocates its own pages; roots resolved in order.
+  const colRoot = buildTable([[1, colRow]], allocPage, writePage, 0);
+  const notesRoot = buildTable(noteRows, allocPage, writePage, 0);
+  const cardsRoot = buildTable(cardRows, allocPage, writePage, 0);
+  const revlogRoot = buildTable([], allocPage, writePage, 0);
+  const gravesRoot = buildTable([], allocPage, writePage, 0);
+  const roots = [colRoot, notesRoot, cardsRoot, revlogRoot, gravesRoot];
+  const names = ["col", "notes", "cards", "revlog", "graves"];
+  const schemaRows = names.map((name, i) => [i + 1, ["table", name, name, roots[i], APKG_DDL[i]]]);
+  // Build the schema tree on a scratch allocator first: it must
+  // fit page 1 alone, and a failed fit must not touch the file.
+  const scratch = [];
+  const sAlloc = () => { scratch.push(null); return scratch.length; };
+  const sWrite = (no, bytes) => { scratch[no - 1] = bytes; };
+  const schemaRoot = buildTable(schemaRows, sAlloc, sWrite, 100);
+  if (schemaRoot !== 1 || scratch.length !== 1) throw new Error("apkg: schema overflowed page 1");
+  pages[0] = scratch[0];
+  // Database header into page 1.
+  const p1 = pages[0];
+  const hdr = _utf8("SQLite format 3\0");
+  p1.set(hdr, 0);
+  const dv = new DataView(p1.buffer);
+  dv.setUint16(16, _PG, false);
+  p1[18] = 1; p1[19] = 1; p1[20] = 0;
+  p1[21] = 64; p1[22] = 32; p1[23] = 32;
+  dv.setUint32(24, 1, false);
+  dv.setUint32(28, pages.length, false);
+  dv.setUint32(36, 0, false); dv.setUint32(32, 0, false);
+  dv.setUint32(40, 4, false);
+  dv.setUint32(44, 4, false);
+  dv.setUint32(48, 0, false);
+  dv.setUint32(52, 0, false);
+  dv.setUint32(56, 1, false);
+  dv.setUint32(60, 0, false);
+  dv.setUint32(92, 1, false);
+  dv.setUint32(96, 3037000, false);
+  const db = new Uint8Array(pages.length * _PG);
+  pages.forEach((p, i) => { if (p) db.set(p, i * _PG); });
+  return zipStore([
+    { name: "collection.anki2", bytes: db },
+    { name: "media", bytes: new Uint8Array(0) },
+  ]);
+}
+
+/* cards + states {card_id: {due, interval_days}} + scheduler ->
+ * [{path, text}] mirroring export_obsidian_vault. */
+/* Python json.dumps(list-of-str) parity: ", " separators and
+ * ensure_ascii \uXXXX escapes — the core's frontmatter writer. */
+function _pyJsonList(items) {
+  const esc = (s) => JSON.stringify(String(s)).replace(/[\u007F-\uFFFF]/g,
+    (ch) => "\\u" + ch.charCodeAt(0).toString(16).padStart(4, "0"));
+  return "[" + items.map(esc).join(", ") + "]";
+}
+
+function obsidianNoteText(card, state, scheduler) {
+  const st = state || {};
+  const fm = [
+    ["studysprint", "sr-card/v1"],
+    ["card_id", card.card_id],
+    ["scheduler", scheduler],
+    ["due", st.due || ""],
+    ["interval_days", (st.interval_days === undefined || st.interval_days === null) ? "" : st.interval_days],
+    ["tags", card.tags || []],
+  ];
+  const lines = ["---"];
+  for (const [k, v] of fm) lines.push(k + ": " + (Array.isArray(v) ? _pyJsonList(v) : v));
+  lines.push("---", "", "#flashcards", "", card.front, "?", card.back, "");
+  return lines.join("\n");
+}
+
+function buildObsidianFiles(cards, states, scheduler) {
+  scheduler = scheduler || "fsrs";
+  states = states || {};
+  const files = [];
+  for (const card of cards) {
+    files.push({ path: "StudySprint SR/" + card.card_id + ".md",
+                 text: obsidianNoteText(card, states[card.card_id], scheduler) });
+  }
+  const index = ["# StudySprint SR", "",
+    "Scheduler of record: `" + scheduler + "` · cards: " + cards.length, ""];
+  for (const card of cards) index.push("- [[" + card.card_id + "]] — " + card.front.slice(0, 80));
+  files.push({ path: "StudySprint SR/StudySprint SR Index.md", text: index.join("\n") + "\n" });
+  return files;
+}
+
+function buildObsidianZip(cards, states, scheduler) {
+  const files = buildObsidianFiles(cards, states, scheduler);
+  return zipStore(files.map((f) => ({ name: f.path, bytes: _utf8(f.text) })));
+}
+
 /* ---------------- loading + rendering */
 async function load() {
   // Failure state (#4237): a failed or unparsable state.json used
@@ -1356,6 +1794,48 @@ document.querySelectorAll("[data-grade]").forEach((b) =>
 document.querySelectorAll("[data-leitner]").forEach((b) =>
   b.addEventListener("click", () =>
     gradeLeitner(Number(b.dataset.leitner) === 1)));
+// SR exports (#4673): the core's writers, ported — downloads
+// over the active deck + the live per-scheduler states.
+function downloadBytes(bytes, name, type) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([bytes], { type }));
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function srExportStates(scheduler) {
+  const suffix = stateSuffix(scheduler);
+  const out = {};
+  for (const card of state.data.sr.cards) {
+    const st = state.srState[card.card_id + suffix];
+    if (!st) continue;
+    out[card.card_id] = {
+      due: st.due || "",
+      interval_days: scheduler === "fsrs" ? (st.scheduled_days ?? "") :
+        scheduler === "sm2" ? (st.interval_days ?? "") : "",
+    };
+  }
+  return out;
+}
+$("#sr-export-apkg").addEventListener("click", () => {
+  const bytes = buildApkgBytes(state.data.sr.cards, "StudySprint");
+  downloadBytes(bytes, "studysprint-sr.apkg",
+    "application/octet-stream");
+  $("#sr-export-receipt").textContent =
+    "Exported " + state.data.sr.cards.length +
+    " cards to Anki (.apkg, deck StudySprint).";
+});
+$("#sr-export-obsidian").addEventListener("click", () => {
+  const scheduler = $("#sr-scheduler").value;
+  const bytes = buildObsidianZip(state.data.sr.cards,
+    srExportStates(scheduler), scheduler);
+  downloadBytes(bytes, "studysprint-obsidian-vault.zip",
+    "application/zip");
+  $("#sr-export-receipt").textContent =
+    "Exported " + state.data.sr.cards.length +
+    " cards as an Obsidian vault (.zip, scheduler " +
+    scheduler + ").";
+});
 // Today actions (#4228), delegated so re-renders keep them live.
 document.addEventListener("click", (e) => {
   if (!state.data) return;

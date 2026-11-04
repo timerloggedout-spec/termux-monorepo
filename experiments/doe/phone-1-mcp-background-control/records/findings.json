@@ -1,0 +1,64 @@
+{
+ "population": "phone-1-mcp-background-control",
+ "source": "research dossier phone-mcp-background-control-20261104-1337 (deep-research agent, 2026-11-04); full text at records/report.md in this campaign",
+ "name_collision": {
+  "verdict": "There is NO single product called 'Phone MCP'. Five exact/near-exact name matches; the advertised product the owner saw CANNOT be pinned down from the description alone (no ad creative/timeframe/channel supplied).",
+  "exact_matches": [
+   "premex-phone-mcp (app-store exact name; data tools only, no UI control)",
+   "phonemcp-sms (SMS only)",
+   "agi-agentic-phone-mcp (marketed as the ad genre suggests; not named Phone MCP)",
+   "hao-cyber-phone-mcp (MCP-directory/GitHub sense)",
+   "viandwi24-phone-mcp (architecturally the fleet's shape; no marketing found)"
+  ],
+  "further_collisions": [
+   "htekdev-phone-mcp-server",
+   "screenmcp (originally named PhoneMCP)"
+  ]
+ },
+ "background_taxonomy": {
+  "A": "Service stays connected while screen is off (foreground service + battery exemption; tools wake screen on demand). Credential lock still blocks control. Systems: viandwi24, Premex, PhonePi, htekdev, ScreenMCP.",
+  "B": "Agent works on a hidden second display (VirtualDisplay) while the user uses the main screen \u2014 the ONLY true concurrent background found. Systems: Mika only.",
+  "C": "Marketing 'background' = foreground mirroring/automation, unattended or physical screen dark; agent and user fight over one display if the phone is picked up. Systems: mobile-mcp, Android-MCP, DroidMind, scrcpy family, AGI, Melaya, Mobilerun Portal, Open-AutoGLM."
+ },
+ "hard_limits_no_bypass_found": [
+  "credential lock screen (PIN/pattern/biometric)",
+  "FLAG_SECURE screens (banking/DRM/password)",
+  "biometric/CAPTCHA hand-off \u2014 every credible project hands these back to the human"
+ ],
+ "pattern_split": "Field splits into (i) host-side ADB/Xcode servers (host must be present), (ii) phone-as-toolbox servers (on-device direct APIs; no UI control), (iii) on-device UI agents (Accessibility \u00b1 MediaProjection \u00b1 shell helper, outbound broker/cloud connection; only group that works away from a host).",
+ "architecture_verdict_for_this_builder": "On-device agent + remote orchestration matches the strongest pattern in the field (viandwi24 topology; Mika execution model; Melaya policy model). Differentiated stack: thin Kotlin agent (ForegroundService + Accessibility; shell helper via wireless-debugging pairing ONLY if virtual-display concurrency or shell-level ops are truly needed) -> outbound WSS to a broker with per-device identity -> snapshot-first MCP tools with on-device policy enforcement and phone-only approval for gated actions -> orchestrator-side planning with screenshot fallback. NOT worth building: another ADB host server (commoditised), a proprietary cloud relay before the local/self-host path is solid, any iOS UI-control promise.",
+ "token_offload_finding": "Observation cost is the builder's token lever: compact snapshot-with-refs (viandwi24: one line per meaningful node, [n12] refs, 300-line/~12KB cap, stale-ref errors) beats screenshot-per-step on cost, latency AND leakage; a UI tree is cheaper and less leaky than screenshots; screenshots reserved for canvas/video/custom-drawn surfaces. Screenshots and UI trees are sent to the model provider in every vision/tree system \u2014 'local-first' describes transport, not inference.",
+ "copy_patterns": [
+  "viandwi24 topology hardened (one persistent outbound WS; thin MCP shim next to orchestrator; reqId-correlated commands with timeouts)",
+  "compact snapshot-with-refs as primary observation",
+  "intent/deep-link first, node actions before coordinate taps, gestures last",
+  "Melaya-grade policy: allowlist double-enforced (broker + on-device vs actual foreground package), HITL gates the remote caller cannot satisfy, phone-only approval (Mika rule)",
+  "Mika virtual-display path only if true concurrency is a requirement; foreground mode default/fallback",
+  "DroidMind-style guardrails on any shell escape hatch (named parameterised ops first; allowlist + risk tiers + audit log)",
+  "honest lock/FLAG_SECURE semantics (wake-on-demand, swipe/none locks only, hard-fail to human on credential locks)",
+  "survival engineering for cheap OEM phones (typed FGS, battery exemption, reconnect/backoff/heartbeat, honest boot-recovery story, Accessibility takeScreenshot over MediaProjection for stills)"
+ ],
+ "traps": [
+  "believing 'background' marketing (Accessibility/ADB drive the foreground display)",
+  "Google Play distribution for an autonomous Accessibility agent (Play policy bars it; plan sideload/direct distribution)",
+  "single shared token / cleartext transport (one leak = full phone compromise, no selective revocation)",
+  "raw shell + an LLM that reads screens = prompt-injection RCE on a signed-in phone",
+  "MediaProjection as screenshot foundation (per-session consent, auto-stop on lock, OEM variance)",
+  "screenshot-first perception on low-end hardware (slow, expensive, leakiest)",
+  "assuming the helper survives (wireless debugging self-disables; OEM task killers; heartbeat + degraded-mode reporting beats silent failure)",
+  "one phone = one session (fleet scale = more physical phones)",
+  "benchmark/marketing reliability claims (AndroidWorld reference agent: 30.6% vs 80% human \u2014 design for supervised, resumable, step-verified tasks)",
+  "iOS as a roadmap checkbox (no on-device background-control path exists)"
+ ],
+ "calibration": "AndroidWorld (Google DeepMind, ICLR 2025): best agent 30.6% of 116 tasks vs 80% human. Any vendor claiming near-human phone autonomy is claiming to beat that benchmark.",
+ "could_not_verify": [
+  "which product the owner actually saw advertised",
+  "Premex remote subscription price (amount unstated)",
+  "PhoneMCP (phone-mcp.com) maker, pricing, internals",
+  "AGI pricing beyond free beta credits; its app's exact permission set; its claimed AndroidWorld results",
+  "Melaya pricing tiers",
+  "whether Premex's Accessibility UI-automation spec has shipped",
+  "BLU View 5 Android version on the owner's unit (listings disagree 13 vs 14)"
+ ],
+ "verification_note": "No product was installed or run; all capability statements are as documented by their makers, labelled verified-live vs index in records/population.jsonl per unit."
+}

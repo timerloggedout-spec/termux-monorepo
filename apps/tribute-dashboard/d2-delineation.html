@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 — Proposal Delineation · Vultr Agent Rush</title>
+<!--
+  D2 proposal delineation (content of record: D2 exercise run-1,
+  workspace/d2-exercise/proposal-delineation.html, D2 seat). Viz
+  chrome adaptation ONLY: dashboard shell + the delineation styles
+  scoped under .d2del (dashboard.css also defines .card/.grid - the
+  scoping keeps both rule sets out of each other's way); wording,
+  advisory ranks and figures are the source's, verbatim. The ranks
+  are advisory; the pick is the owner's (held).
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .d2del{--bg:#0b0e13; --panel:#12161f; --panel2:#171c28; --line:#232b3d;
+    --ink:#e8ecf3; --mut:#9aa6bd; --dim:#6b7690;
+    --acc:#5aa2ff; --good:#3ecf8e; --warn:#ffb454; --bad:#ff6b6b;
+    --chip:#1d2639;}
+  .d2del *{box-sizing:border-box}
+  .d2del{background:var(--bg);color:var(--ink);
+    font:15px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .d2del .wrap{max-width:1060px;margin:0 auto;padding:28px 20px 40px}
+  .d2del h1{font-size:24px;margin:0 0 4px;letter-spacing:.2px}
+  .d2del .sub{color:var(--mut);font-size:13.5px;margin-bottom:6px}
+  .d2del .axis{color:var(--dim);font-size:12.5px;margin-bottom:22px}
+  .d2del h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:1.4px;color:var(--dim);
+    margin:26px 0 12px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .d2del .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+  .d2del .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .d2del .card h3{margin:0 0 2px;font-size:16px}
+  .d2del .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.6px;
+    background:var(--chip);color:var(--acc);border-radius:4px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+  .d2del .rank{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;
+    padding:1px 7px;margin-left:6px;vertical-align:2px;background:#2a2413;color:var(--warn)}
+  .d2del .rank.top{background:#12312a;color:var(--good)}
+  .d2del .one{color:var(--mut);font-size:13.5px;margin:6px 0 0}
+  .d2del .picker{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .d2del .picker label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--dim);margin-bottom:8px}
+  .d2del select{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:11px 12px;font-size:15px}
+  .d2del .panel{display:none;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:20px 22px;margin-top:14px}
+  .d2del .panel.on{display:block}
+  .d2del .panel h3{margin:0;font-size:20px}
+  .d2del .panel .meta{color:var(--mut);font-size:13px;margin:4px 0 14px}
+  .d2del .field{margin:0 0 14px}
+  .d2del .field h4{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--acc)}
+  .d2del .field p{margin:0;color:#cfd7e6;font-size:14px}
+  .d2del .field p + p{margin-top:5px}
+  .d2del .moment{border-left:3px solid var(--warn);padding-left:10px}
+  .d2del .warn-t{color:var(--warn)}
+  .d2del .bad-t{color:var(--bad)}
+  .d2del .good-t{color:var(--good)}
+  .d2del .rankline{display:inline-block;background:#2a2413;color:var(--warn);border-radius:6px;
+    padding:4px 10px;font-size:13px;font-weight:700}
+  .d2del .rankline.top{background:#12312a;color:var(--good)}
+  .d2del footer{margin-top:28px;border-top:1px solid var(--line);padding-top:14px;
+    color:var(--mut);font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="topbar" id="topbar"></div>
+
+</head>
+<body>
+<main>
+<div class="wrap d2del">
+
+  <h1>D2 · Vultr Agent Rush — Proposal Delineation</h1>
+  <div class="sub">Six candidate proposals, delineated for an owner pick. Rankings are advisory only — the pick is the owner&rsquo;s.</div>
+  <div class="axis">Axis: kickoff Tue Nov 3, 2026 &rarr; landing Sat Nov 7 (build complete + packet ready) &rarr; wall Sun Nov 8, 15:00 PT. Budget: $200 Vultr credits. Judging: Application of Technology &middot; Presentation &middot; Business Value &middot; Originality.</div>
+
+  <h2 class="sec">Grouped preview — all six proposals</h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3>B &middot; Quarantine Browser Clerk <span class="tag">C1&middot;B</span><span class="rank top">ADVISORY #1</span></h3>
+      <p class="one">Browser agent confined to a quarantine sandbox visits hostile, untrusted sites and extracts clerical data. Nothing it touches leaves containment; every fetch is logged.</p>
+    </div>
+
+    <div class="card">
+      <h3>A &middot; Canary Patch Gauntlet <span class="tag">C1&middot;A</span><span class="rank">ADVISORY #2</span></h3>
+      <p class="one">Sandboxed agent repairs broken code while adversarial probes attack every patch. Only fixes that survive the full test barrage ship, with test logs as receipts.</p>
+    </div>
+
+    <div class="card">
+      <h3>C &middot; Dependency Detox Chamber <span class="tag">C1&middot;A</span><span class="rank">ADVISORY #3</span></h3>
+      <p class="one">Upgrades project dependencies inside an isolated chamber, scanning every new package version for compromise before it can enter the codebase. Blocked packages stay out.</p>
+    </div>
+
+    <div class="card">
+      <h3>E &middot; Three-Way Match Room <span class="tag">C2</span><span class="rank">ADVISORY #4</span></h3>
+      <p class="one">Matches every purchase order against its invoice and goods receipt, line by line. Only exact three-way matches pass; every mismatch is flagged with the conflicting lines.</p>
+    </div>
+
+    <div class="card">
+      <h3>F &middot; Renewal Risk Desk <span class="tag">C2</span><span class="rank">ADVISORY #5</span></h3>
+      <p class="one">Tracks every contract renewal date, scores each renewal for price, usage, and lock-in risk, and prepares a negotiation brief before the deadline forces a signature.</p>
+    </div>
+
+    <div class="card">
+      <h3>D &middot; Pipeline Rescue Desk <span class="tag">C2</span><span class="rank">ADVISORY #6</span></h3>
+      <p class="one">Watches the CRM pipeline for stalled and at-risk deals, diagnoses why each one stalled, and drafts a rescue action for a salesperson to approve. No outreach sends itself.</p>
+    </div>
+
+  </div>
+
+  <h2 class="sec">Delineation — pick a proposal</h2>
+  <div class="picker">
+    <label for="pick">Proposal</label>
+    <select id="pick">
+      <option value="b" selected>B &middot; Quarantine Browser Clerk — C1&middot;B</option>
+      <option value="a">A &middot; Canary Patch Gauntlet — C1&middot;A</option>
+      <option value="c">C &middot; Dependency Detox Chamber — C1&middot;A</option>
+      <option value="e">E &middot; Three-Way Match Room — C2</option>
+      <option value="f">F &middot; Renewal Risk Desk — C2</option>
+      <option value="d">D &middot; Pipeline Rescue Desk — C2</option>
+    </select>
+  </div>
+
+  <!-- ============ B ============ -->
+  <section class="panel on" id="panel-b">
+    <h3>B &middot; Quarantine Browser Clerk <span class="tag">C1&middot;B</span></h3>
+    <div class="meta">Alt names: Airlocked Web Clerk &middot; Untrusted-Site Runner</div>
+
+    <div class="field"><h4>What it is</h4>
+      <p>A browser agent that does real web tasks on semi-trusted sites from a disposable Playwright profile: domain allowlists, quarantined downloads, and an action receipt for everything it does. The website is treated as hostile input — the only candidate on the slate built on that premise.</p>
+      <p><strong>Core loop:</strong> task in &rarr; fresh disposable profile &rarr; allowlisted browsing with per-fetch logging &rarr; downloads held in quarantine &rarr; extracted data + receipt out &rarr; profile destroyed.</p>
+      <p class="moment"><strong>Signature moment:</strong> a fake re-login / verifier-download page (lookalike domain + executable) is blocked, and the task still completes in a fresh profile.</p>
+    </div>
+
+    <div class="field"><h4>How it competes</h4>
+      <p><strong>Screen:</strong> PASS as-if-competed — C1 requirements are designed-in: Vultr VM backend, Serverless Inference for agent LLM calls, isolated sandbox, and a containment moment for the video. The brief&rsquo;s own Pattern B prescribes vision-verify &rarr; human approval before final actions, and B is built around exactly that step.</p>
+      <p><strong>Historic-pattern fit:</strong> across 11 placed projects at comparable Vultr events, proof-grounded output and enterprise workflow each appear in 10/11; formal approval gates test weak but recur as human-in-the-loop — B&rsquo;s prescribed approval step matches where judging is heading.</p>
+      <p><strong>Differentiation (Recon &#127941; depth):</strong> <span class="good-t">strongest of the C1 trio</span> — a lookalike-domain page socially-engineering the <em>agent itself</em> is an unoccupied angle; market analogues (Anchor Browser, Skyvern, Browserbase) are infrastructure, not that angle. One direct in-field competitor exists (&ldquo;Vex&rdquo;, disposable browser sandboxes + evidence), which narrows the moat to the hostile-page/policy angle. Cleanest name on the slate.</p>
+    </div>
+
+    <div class="field"><h4>Build effort / risk</h4>
+      <p><strong>Tiers:</strong> T1 core loop &le; Nov 4 &middot; T2 signature moment &le; Nov 5 &middot; T3 polish &le; Nov 6 &middot; landing Nov 7 &middot; wall Nov 8 15:00 PT.</p>
+      <p><strong>Main risk:</strong> browser flakiness — a flaky live demo can zero the Presentation axis on the day; the hostile fixture site must also be self-built, adding build surface. Mitigation of record: staged sites + recorded fallback (the mitigation itself reads as reliability discipline).</p>
+      <p><strong>Kill-criterion:</strong> signature moment not demonstrable by Nov 5 EOD &rArr; descope to the T1 loop + a recorded containment artifact.</p>
+    </div>
+
+    <div class="field"><h4>Vultr-credit fit</h4>
+      <p>All figures are <strong>envelopes (ceilings), not estimates</strong> — usage is unknowable until the picked target is pre-specced. App VM at plans-API rates: vhp-2c-4gb-amd $0.033/h (&asymp;$4.22/window) or 4c-8gb $0.066/h (&asymp;$8.45/window); throwaway VM-per-task sandboxes &asymp;$0.01&ndash;0.05 per run, destroyed after. Vision/screenshot tokens are the heaviest inference draw of the slate (baseline envelope &asymp;$40&ndash;50 total; screenshot cadence capped, DOM-first state).</p>
+      <p><strong>Wager model:</strong> the $200 credit is an expiring stake (expires &asymp;Dec 3) against a <em>fixed</em> prize — spend only where it buys win probability, and reserve demo-uptime through judging first (&asymp;25 days &asymp; $19.80 at 2c-4gb / $39.60 at 4c-8gb): a dead demo during judging is a probability cliff.</p>
+    </div>
+
+    <div class="field"><h4>Prize fit</h4>
+      <p>Fixed pool $14,000; 1st = $5,000 cash + $3,000 credits. Against the criteria (advisory axis scores /10): Technology 9 — real browser execution under containment, the brief&rsquo;s &ldquo;executes safely = product&rdquo; test. Presentation 8 — visceral block moment, taxed only by flakiness risk. Business Value 8 — safe automation of untrusted-web work. Originality 10 — highest on the slate; the agent-as-target angle is unoccupied.</p>
+    </div>
+
+    <div class="field"><span class="rankline top">ADVISORY RANK #1 of 6</span>
+      <p style="margin-top:6px">Basis: differentiation survives the Recon &#127941; depth-check best of the slate; originality + field room carry the raw score lead (46).</p>
+    </div>
+  </section>
+
+  <!-- ============ A ============ -->
+  <section class="panel" id="panel-a">
+    <h3>A &middot; Canary Patch Gauntlet <span class="tag">C1&middot;A</span></h3>
+    <div class="meta">Alt names: Adversarial Patch Range &middot; Fix Under Fire</div>
+
+    <div class="field"><h4>What it is</h4>
+      <p>An agent that repairs broken code inside disposable sandboxes while planted adversarial probes attack every patch — edge cases, regressions, hostile inputs. A fix counts only when it survives the full test barrage; the surviving test log, not the agent&rsquo;s claim, is the proof, issued as a pass/fail evidence receipt.</p>
+      <p><strong>Core loop:</strong> broken code in &rarr; agent patches in-sandbox &rarr; test suite + attack probes run &rarr; surviving fix ships with a signed receipt &rarr; sandbox destroyed.</p>
+      <p class="moment"><strong>Signature moment:</strong> a probe tries to exfiltrate a canary secret &rarr; egress denied, process killed, sandbox destroyed, and a clean rerun completes with a signed receipt.</p>
+    </div>
+
+    <div class="field"><h4>How it competes</h4>
+      <p><strong>Screen:</strong> PASS as-if-competed — C1 requirements designed-in (VM backend, Serverless Inference, isolated sandbox, containment moment in video). Containment is the product itself, and the receipt pattern is fleet-native (evidence envelopes, repo-owned receipt ledgers), so the proof layer is inherited pre-built rather than invented in-window.</p>
+      <p><strong>Historic-pattern fit:</strong> strongest on the slate alongside E — adversarial proof artifacts map directly onto the proof-grounded leg (10/11 placed projects at comparable events).</p>
+      <p><strong>Differentiation (Recon &#127941; depth):</strong> <span class="warn-t">WEAK-PARTIAL, stated honestly</span> — near-clones shipped Oct 2026 (harness-gauntlet, canaryhook, Argus, GuardianX — sandbox patch + adversarial arena + canary tokens + hash-chained ledger — and GitHub Agentic Autofix GA), and A sits on the sponsor&rsquo;s own Pattern-A example frame; &ldquo;Gauntlet&rdquo; is crowded in-space. The execution/proof-depth case is unchanged; the originality case is weakened. Field evidence agrees: the first 3 event submissions were all generic C1 runtimes, and prove-it/witness-style entries are already in the field — A&rsquo;s separation is adversarial survival, not claim-proof.</p>
+    </div>
+
+    <div class="field"><h4>Build effort / risk</h4>
+      <p><strong>Tiers:</strong> T1 core loop &le; Nov 4 &middot; T2 signature moment &le; Nov 5 &middot; T3 polish &le; Nov 6 &middot; landing Nov 7 &middot; wall Nov 8 15:00 PT.</p>
+      <p><strong>Main risk:</strong> harness scope — pin one language/ecosystem or the gauntlet sprawls; the comparison bar is also highest here precisely because the frame is central to the sponsor&rsquo;s narrative.</p>
+      <p><strong>Kill-criterion:</strong> signature moment not demonstrable by Nov 5 EOD &rArr; descope to the T1 loop + a recorded containment artifact.</p>
+    </div>
+
+    <div class="field"><h4>Vultr-credit fit</h4>
+      <p>Envelopes, not estimates. App VM: $0.033/h (2c-4gb, &asymp;$4.22/window) or $0.066/h (4c-8gb, &asymp;$8.45/window) at plans-API rates; VM-per-task sandboxes &asymp;$0.01&ndash;0.05/run, destroyed after. Inference is the heavy leg (patch/retry loops; retry cap &le;3/task in the pre-spec) — baseline envelope &asymp;$35&ndash;45 total.</p>
+      <p><strong>Wager model:</strong> expiring stake (&asymp;Dec 3) vs fixed prize; reserve demo-uptime through judging first (&asymp;$19.80 @2c-4gb / $39.60 @4c-8gb for &asymp;25 days) — marginal spend must argue marginal win probability, not volume.</p>
+    </div>
+
+    <div class="field"><h4>Prize fit</h4>
+      <p>Fixed pool $14,000; 1st = $5,000 cash + $3,000 credits. Axis scores /10: Technology 9 — enforceable, re-runnable containment. Presentation 9 — the kill-and-rerun moment is the most legible demo on the slate. Business Value 8 — safe code-agent adoption is the sponsor&rsquo;s core narrative. Originality 8 as scored, taxed by the Oct-2026 near-clones above.</p>
+    </div>
+
+    <div class="field"><span class="rankline">ADVISORY RANK #2 of 6</span>
+      <p style="margin-top:6px">Basis: near-top scores with the most enforceable, re-runnable containment moment — demoted from #1 only on the depth-check&rsquo;s near-clone findings (revised raw 45).</p>
+    </div>
+  </section>
+
+  <!-- ============ C ============ -->
+  <section class="panel" id="panel-c">
+    <h3>C &middot; Dependency Detox Chamber <span class="tag">C1&middot;A</span></h3>
+    <div class="meta">Alt names: Clean-Room Upgrade Bay &middot; Supply-Chain Airlock</div>
+
+    <div class="field"><h4>What it is</h4>
+      <p>Dependency upgrades processed inside an isolated chamber: every new package version is resolved, installed, and scanned in-chamber first, because install scripts are untrusted code. Flagged packages stop at the door with a scan report attached; only verified-clean upgrades reach the codebase — as a proven migration patch, not a bare version bump — with a toxic-version ledger kept of everything blocked.</p>
+      <p><strong>Core loop:</strong> upgrade proposed &rarr; install in isolation under registry-only egress &rarr; scan + behavior check &rarr; clean version exits as a migration patch; toxic version is killed and ledgered.</p>
+      <p class="moment"><strong>Signature moment:</strong> a postinstall script writes outside the workspace and calls a non-registry host &rarr; killed, the version is marked toxic in the ledger, and the upgrade completes safely on a clean version.</p>
+    </div>
+
+    <div class="field"><h4>How it competes</h4>
+      <p><strong>Screen:</strong> PASS as-if-competed — C1 requirements designed-in (VM backend, Serverless Inference, isolated sandbox, containment moment in video). Its containment is an egress allowlist: enforceable and binary-provable, not theatre.</p>
+      <p><strong>Historic-pattern fit:</strong> proof-grounded leg strong (scan reports + toxic ledger are verifiable artifacts, and the receipt-ledger pattern is fleet-native); enterprise-workflow leg moderate (a utility, not a multi-party workflow).</p>
+      <p><strong>Differentiation (Recon &#127941; depth):</strong> PARTIAL — SafeDep (pre-install sandboxing of install scripts) and Socket (install-script exfil flags) are adjacent, so the delta narrows to two things: registry-only egress as <em>demonstrated</em> containment, and output = a proven migration patch rather than a bump PR or a block verdict. Field OSINT found no supply-chain signal in the sampled field, so in-event room is real (&ldquo;Detox&rdquo; itself is a generic phrase and an existing JS testing framework&rsquo;s name — noted, not blocking).</p>
+    </div>
+
+    <div class="field"><h4>Build effort / risk</h4>
+      <p><strong>Tiers:</strong> T1 core loop &le; Nov 4 &middot; T2 signature moment &le; Nov 5 &middot; T3 polish &le; Nov 6 &middot; landing Nov 7 &middot; wall Nov 8 15:00 PT.</p>
+      <p><strong>Main risk:</strong> ecosystem edge cases — pin npm XOR pip; the &ldquo;utility&rdquo; read also makes the Presentation axis weaker than A&rsquo;s arena (counter: the toxic-version ledger is a screenshot-able artifact judges grasp in seconds).</p>
+      <p><strong>Kill-criterion:</strong> signature moment not demonstrable by Nov 5 EOD &rArr; descope to the T1 loop + a recorded containment artifact.</p>
+    </div>
+
+    <div class="field"><h4>Vultr-credit fit</h4>
+      <p>Envelopes, not estimates. App VM: $0.033/h (2c-4gb, &asymp;$4.22/window) or $0.066/h (4c-8gb, &asymp;$8.45/window) at plans-API rates; chamber runs as throwaway VM-per-task sandboxes &asymp;$0.01&ndash;0.05/run, destroyed after; inference lighter than A (fewer retry loops) — baseline envelope &asymp;$30&ndash;40 total.</p>
+      <p><strong>Wager model:</strong> expiring stake (&asymp;Dec 3) vs fixed prize; reserve demo-uptime through judging first (&asymp;$19.80 @2c-4gb / $39.60 @4c-8gb for &asymp;25 days); registry-only egress also caps accidental burn paths.</p>
+    </div>
+
+    <div class="field"><h4>Prize fit</h4>
+      <p>Fixed pool $14,000; 1st = $5,000 cash + $3,000 credits. Axis scores /10: Technology 8 — egress enforcement is real, provable tech. Presentation 7 — the weakest axis; the ledger artifact carries it. Business Value 9 — supply-chain compromise via version bumps is a universal, current pain. Originality 7 — mechanism distinct, neighborhood occupied.</p>
+    </div>
+
+    <div class="field"><span class="rankline">ADVISORY RANK #3 of 6</span>
+      <p style="margin-top:6px">Basis: enforceable containment + self-evident business value + genuine in-event room; taxed on presentation legibility (revised raw 45 after the OSINT room bump).</p>
+    </div>
+  </section>
+
+  <!-- ============ E ============ -->
+  <section class="panel" id="panel-e">
+    <h3>E &middot; Three-Way Match Room <span class="tag">C2</span></h3>
+    <div class="meta">Alt name: Match Exception Desk &middot; Field flag: ledgerpilot works adjacent AP territory — &ldquo;ledger&rdquo; stays out of this candidate&rsquo;s naming</div>
+
+    <div class="field"><h4>What it is</h4>
+      <p>An accounts-payable agent that matches every purchase order against its invoice and goods receipt, line by line. Exact three-way matches pass untouched; only exceptions route to a human, each flagged with the exact conflicting fields, and the close produces an audit-ready packet. Staff work discrepancies instead of re-checking the clean majority.</p>
+      <p><strong>Core loop:</strong> PO + invoice + receipt in &rarr; deterministic line-by-line match &rarr; clean matches pass &rarr; exceptions routed with agent-proposed resolution &rarr; controller approval &rarr; audit-ready close packet.</p>
+      <p class="moment"><strong>Signature moment:</strong> a duplicate, price-variance invoice is traced to an amended PO &rarr; credit-memo task + approval packet produced in one pass.</p>
+    </div>
+
+    <div class="field"><h4>How it competes</h4>
+      <p><strong>Screen:</strong> PASS as-if-competed — C2 requirements met (Vultr VM backend + web app; inference optional, used for extraction). Deterministic matching core gives it the highest demo reliability on the slate: rules, not model luck.</p>
+      <p><strong>Historic-pattern fit:</strong> strongest on the slate alongside A — the audit pack plus controller approval is the slate&rsquo;s most explicit gate, mapping onto both the proof-grounded leg and the enterprise-workflow leg (each 10/11 at comparable events).</p>
+      <p><strong>Differentiation (Recon &#127941; depth):</strong> <span class="warn-t">WEAK, stated honestly</span> — the feature set <em>is</em> the category definition: Coupa, Medius, Tipalti, Stampli, Basware, SAP Concur, and Vic.ai all ship three-way match + exceptions + approval + audit. Differentiation must ride audit-pack quality and the agent-proposed resolution, never the match itself. In-event room is nonetheless real: the field skews C1, and exactly one adjacent C2 signal (ledgerpilot, procurement reconciliation) was found.</p>
+    </div>
+
+    <div class="field"><h4>Build effort / risk</h4>
+      <p><strong>Tiers:</strong> T1 core loop &le; Nov 4 &middot; T2 signature moment &le; Nov 5 &middot; T3 polish &le; Nov 6 &middot; landing Nov 7 &middot; wall Nov 8 15:00 PT.</p>
+      <p><strong>Main risk:</strong> data-model weight (synthetic documents must stay structured), and the least &ldquo;agentic&rdquo; feel on the slate — the agent-proposed-resolution leg must stay visible or the Application of Technology axis sags. Buildability is the slate&rsquo;s best (9/10).</p>
+      <p><strong>Kill-criterion:</strong> signature moment not demonstrable by Nov 5 EOD &rArr; descope to the T1 loop + a recorded approval artifact.</p>
+    </div>
+
+    <div class="field"><h4>Vultr-credit fit</h4>
+      <p>Envelopes, not estimates. App VM: $0.033/h (2c-4gb, &asymp;$4.22/window) or $0.066/h (4c-8gb, &asymp;$8.45/window) at plans-API rates; no sandbox fleet needed (deterministic core is free); inference is extraction-only — baseline envelope &asymp;$18&ndash;25 total, the lightest C2-adjacent burn profile after D.</p>
+      <p><strong>Wager model:</strong> expiring stake (&asymp;Dec 3) vs fixed prize; reserve demo-uptime through judging first (&asymp;$19.80 @2c-4gb / $39.60 @4c-8gb for &asymp;25 days) — E&rsquo;s low burn leaves the most stake unexposed of any candidate.</p>
+    </div>
+
+    <div class="field"><h4>Prize fit</h4>
+      <p>Fixed pool $14,000; 1st = $5,000 cash + $3,000 credits. Axis scores /10: Technology 7 — sound but category-standard machinery; the agent-resolution leg carries this axis. Presentation 8 — exception queue + conflicting lines demo cleanly and reliably. Business Value 9 — AP loses hours and money to almost-matches. Originality 6 — precision naming (&ldquo;three-way match&rdquo; is the AP term of art) over cleverness.</p>
+    </div>
+
+    <div class="field"><span class="rankline">ADVISORY RANK #4 of 6</span>
+      <p style="margin-top:6px">Basis: reliability + thinned C2 field lift its revised raw score to 46, tied near the top — held at #4 because differentiation is category-standard and must be earned in the audit pack.</p>
+    </div>
+  </section>
+
+  <!-- ============ F ============ -->
+  <section class="panel" id="panel-f">
+    <h3>F &middot; Renewal Risk Desk <span class="tag">C2</span></h3>
+    <div class="meta">Alt names: Contract Renewal Radar &middot; Renewal Exposure Room &middot; <span class="bad-t">Name-collision flag: rename mandatory if picked (see below)</span></div>
+
+    <div class="field"><h4>What it is</h4>
+      <p>A procurement agent that watches every contract renewal clock: vendor intake, contract/renewal metadata extraction, risk scoring on price, usage, and lock-in, and a negotiation brief prepared while switching or walking away is still possible — because the worst renewal is the unseen one that auto-renews a price increase on a tool the org has outgrown.</p>
+      <p><strong>Core loop:</strong> contracts in &rarr; renewal dates + clauses extracted &rarr; risk-tiered scoring &rarr; approvals routed by tier &rarr; negotiation brief delivered ahead of the deadline.</p>
+      <p class="moment"><strong>Signature moment:</strong> a renewal is blocked 45 days early — an uplift clause plus a missing SOC 2 surfaced as a single hard gate.</p>
+    </div>
+
+    <div class="field"><h4>How it competes</h4>
+      <p><strong>Screen:</strong> PASS as-if-competed — C2 requirements met (Vultr VM backend + web app; inference optional, used for extraction and briefs). Breadth is real: intake &rarr; renewal lifecycle is a multi-party workflow, and &ldquo;money saved 45 days early&rdquo; is the cleanest single-number business story on the slate.</p>
+      <p><strong>Historic-pattern fit:</strong> enterprise-workflow leg strong (10/11 at comparable events); proof-grounded leg moderate (extraction + briefs, thinner artifacts than A/E); approval routing is on-brief for the human-in-loop direction.</p>
+      <p><strong>Differentiation (Recon &#127941; depth):</strong> WEAK-PARTIAL — Clausefire already extracts renewal dates/price changes into a &ldquo;Renewal Action Packet&rdquo;, BRM&rsquo;s Renewal Wrangler + Compliance Crawler finds SOC 2, and Zip/Tropic/Spendflo/Vertice crowd procurement. The sole delta is the hard BLOCK at 45 days on uplift-clause or missing-SOC-2 as a single gate. <span class="bad-t">Naming is the worst on the slate:</span> Clausefire sells a tier literally named &ldquo;Renewal Desk&rdquo;, a shipped app is named &ldquo;RenewalDesk&rdquo;, and a competitor homepage demo uses &ldquo;Renewal risk desk&rdquo; verbatim &rArr; <strong>rename mandatory if picked</strong> (alts stand ready: Contract Renewal Radar / Renewal Exposure Room).</p>
+    </div>
+
+    <div class="field"><h4>Build effort / risk</h4>
+      <p><strong>Tiers:</strong> T1 core loop &le; Nov 4 &middot; T2 signature moment &le; Nov 5 &middot; T3 polish &le; Nov 6 &middot; landing Nov 7 &middot; wall Nov 8 15:00 PT.</p>
+      <p><strong>Main risk:</strong> scope balloon (legal/security surface), and the demo moment is a dashboard flag — the least visceral on the slate — so the blocked-renewal approval view must be staged as an event, not a status.</p>
+      <p><strong>Kill-criterion:</strong> signature moment not demonstrable by Nov 5 EOD &rArr; descope to the T1 loop + a recorded approval artifact.</p>
+    </div>
+
+    <div class="field"><h4>Vultr-credit fit</h4>
+      <p>Envelopes, not estimates. App VM: $0.033/h (2c-4gb, &asymp;$4.22/window) or $0.066/h (4c-8gb, &asymp;$8.45/window) at plans-API rates; inference = extraction + brief generation — baseline envelope &asymp;$18&ndash;25 total.</p>
+      <p><strong>Wager model:</strong> expiring stake (&asymp;Dec 3) vs fixed prize; reserve demo-uptime through judging first (&asymp;$19.80 @2c-4gb / $39.60 @4c-8gb for &asymp;25 days) outranks any discretionary burn.</p>
+    </div>
+
+    <div class="field"><h4>Prize fit</h4>
+      <p>Fixed pool $14,000; 1st = $5,000 cash + $3,000 credits. Axis scores /10: Technology 7 — extraction + tiered routing, standard shapes. Presentation 6 — the slate&rsquo;s weakest demo surface. Business Value 9 — the 45-days-early number lands instantly. Originality 6 — the single-gate block is the only claim, and the name must change.</p>
+    </div>
+
+    <div class="field"><span class="rankline">ADVISORY RANK #5 of 6</span>
+      <p style="margin-top:6px">Basis: clean business story and real C2 room (revised raw 42), held back by the weakest presentation surface and a mandatory rename.</p>
+    </div>
+  </section>
+
+  <!-- ============ D ============ -->
+  <section class="panel" id="panel-d">
+    <h3>D &middot; Pipeline Rescue Desk <span class="tag">C2</span></h3>
+    <div class="meta">Renamed from &ldquo;Pipeline Rescue Tower&rdquo; by marketing recon (&ldquo;Tower&rdquo; described nothing the agent does) &middot; Alt name: Deal Stall Triage</div>
+
+    <div class="field"><h4>What it is</h4>
+      <p>A sales-ops agent that watches the CRM pipeline for deals stalling quietly — no reply in 19 days, champion gone silent, next step never set. It diagnoses why each deal stalled, attaches the activity evidence, and drafts a specific rescue move (re-engagement, exec check-in, revised close plan) for a salesperson to approve or edit. No outreach sends itself.</p>
+      <p><strong>Core loop:</strong> stall detection &rarr; account brief &rarr; rescue draft &rarr; human approval &rarr; CRM update + follow-up &rarr; audit timeline.</p>
+      <p class="moment"><strong>Signature moment:</strong> a stalled deal is diagnosed from its activity evidence and a rescue draft is approved and written back to the CRM in one closed loop.</p>
+    </div>
+
+    <div class="field"><h4>How it competes</h4>
+      <p><strong>Screen:</strong> PASS as-if-competed — C2 requirements met (Vultr VM backend + web app; inference optional). Approval + state machine + audit timeline is production-style work, which is C2&rsquo;s stated ask, and its approval routing is on-brief.</p>
+      <p><strong>Historic-pattern fit:</strong> the comparable-events Vultr track was won by a production-shaped enterprise workflow with a human in the loop (Milan AI Agent Olympics: Deals Machine, sales tooling) — the shape fits; the enterprise-workflow leg is 10/11 across placed projects.</p>
+      <p><strong>Differentiation (Recon &#127941; depth):</strong> detection is WEAK — Gong flags stalled deals, Clari does pipeline health, Avoma does stalled deals + CRM auto-update, Outreach/Salesloft crowd the rest. The moat is the closed loop only: approve &rarr; CRM write. &ldquo;Pipeline Rescue&rdquo; as a phrase is generic-severe (a &ldquo;Pipeline Rescue Sprint&rdquo; and a &ldquo;Pipeline Rescue Engine&rdquo; already exist in the wild), and C2 sales-ops is the most obvious enterprise pick, hence the most crowded sub-track.</p>
+    </div>
+
+    <div class="field"><h4>Build effort / risk</h4>
+      <p><strong>Tiers:</strong> T1 core loop &le; Nov 4 &middot; T2 signature moment &le; Nov 5 &middot; T3 polish &le; Nov 6 &middot; landing Nov 7 &middot; wall Nov 8 15:00 PT.</p>
+      <p><strong>Main risk:</strong> CRM-clone gravity — the build drifts into re-skinning a CRM instead of the rescue loop; seeded-data work costs time, not credits. The rescue-queue framing is the only moat and must stay the whole product.</p>
+      <p><strong>Kill-criterion:</strong> signature moment not demonstrable by Nov 5 EOD &rArr; descope to the T1 loop + a recorded approval artifact.</p>
+    </div>
+
+    <div class="field"><h4>Vultr-credit fit</h4>
+      <p>Envelopes, not estimates. App VM: $0.033/h (2c-4gb, &asymp;$4.22/window) or $0.066/h (4c-8gb, &asymp;$8.45/window) at plans-API rates; inference is the lightest on the slate (briefs/drafts only) — baseline envelope &asymp;$15&ndash;20 total.</p>
+      <p><strong>Wager model:</strong> expiring stake (&asymp;Dec 3) vs fixed prize; reserve demo-uptime through judging first (&asymp;$19.80 @2c-4gb / $39.60 @4c-8gb for &asymp;25 days) — D&rsquo;s cheapness is not itself a virtue under the wager model; only marginal win probability counts.</p>
+    </div>
+
+    <div class="field"><h4>Prize fit</h4>
+      <p>Fixed pool $14,000; 1st = $5,000 cash + $3,000 credits. Axis scores /10: Technology 7 — competent state-machine work, no distinctive tech claim. Presentation 7 — rescue queue demos understandably. Business Value 9 — stalled-deal dollars land fast with judges. Originality 5 — the slate&rsquo;s lowest; the category got here first.</p>
+    </div>
+
+    <div class="field"><span class="rankline">ADVISORY RANK #6 of 6</span>
+      <p style="margin-top:6px">Basis: thinnest moat (the approve&rarr;write loop alone) in the most crowded sub-track; revised raw 42 with originality at the slate floor.</p>
+    </div>
+  </section>
+
+  <footer>Advisory rank (Recon &#127941; revised): B &gt; A &gt; C &gt; E &gt; F &gt; D — advisory only; the pick is the owner&rsquo;s &#9961;&#65039;.</footer>
+
+</div>
+</main>
+<script src="./chartkit.js"></script>
+<script src="./dashboard.js"></script>
+<script src="./shell.js"></script>
+<script>
+  var sel = document.getElementById('pick');
+  function show(v){
+    var panels = document.querySelectorAll('.d2del .panel');
+    for (var i = 0; i < panels.length; i++) panels[i].classList.remove('on');
+    var p = document.getElementById('panel-' + v);
+    if (p) p.classList.add('on');
+  }
+  sel.addEventListener('change', function(){ show(sel.value); });
+  show(sel.value);
+</script>
+</body>
+</html>

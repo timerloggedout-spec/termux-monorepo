@@ -8,6 +8,7 @@ name: pool-sync
 
 on:
   push:
+    branches: [master]
     paths:
       - "apps/tribute-dashboard/data/dispatch-tree-feed.json"
       - "ops/challenge/coordinator.json"

@@ -51,7 +51,7 @@ RULE = ("POOL-SYNC continuous provisioning (MoneyBall Dispatch #3, "
 # Census-only classes: source of record named; pools observed,
 # never auto-provisioned by this mechanism in v1.
 CENSUS_ONLY = {
-    "moniker": "docs/ops/AGENT-MONIKERS.md (SSOT moniker tables)",
+    "moniker": "docs/ops/AGENT-MONIKERS.md (SSOT moniker tables) + the 4 grandfathered card pools (feed of record: class moniker, depth 0 — the naming ruling's pre-program members)",
     "role": "docs/ops/AGENT-MONIKERS.md (role table + naming-collapse registry)",
     "profile": "docs/ops/PROFILE-REGISTRY.md §2",
     "doe": "docs/ops/DOE-FAMILY.md register + docs/ops/DOE-DREAMBEANS-POOL.md census",
@@ -65,7 +65,6 @@ CENSUS_ONLY = {
             "batch path (POOL-SYNC option (b))",
     "explorer": "owner pool-scope directive (single entity)",
     "other": "ops/agentic-gambling/lane.json pooled buckets",
-    "card_pools": "moneyball DESIGN §3 card pools (grandfathered, pool_class ABSENT on their events; their source-count rides the moniker class in the census of record — not a class string)",
     "provider-depth3+": "provider-phrases/phrases.json prefixes "
                         "(depth>=3 legs registered, walker follow-on)",
 }
@@ -194,7 +193,11 @@ def main():
             existing[e["wallet_id"]] = e
     by_class = {}
     for wid, e in existing.items():
-        by_class.setdefault(e.get("pool_class", "(card)"), set()).add(wid)
+        # The 4 grandfathered card pools carry no pool_class on their
+        # ledger events; the feed of record classes them "moniker"
+        # (depth 0 — pre-program members of the moniker class).
+        by_class.setdefault(e.get("pool_class") or "moniker",
+                            set()).add(wid)
 
     receipt = {"ledger_events": len(events), "pools_existing": len(existing),
                "walked": {}, "census_only": {}, "new": []}
@@ -225,15 +228,9 @@ def main():
             print(f"NOTE: {cls} walker unproven (misses "
                   f"{len(missing_from_walk)} existing) — report-only")
     for cls, source in CENSUS_ONLY.items():
-        if cls == "card_pools":
-            receipt["census_only"][cls] = {
-                "source": source,
-                "existing": sum(1 for e in existing.values()
-                                if "pool_class" not in e)}
-        else:
-            receipt["census_only"][cls] = {
-                "source": source,
-                "existing": len(by_class.get(cls, set()))}
+        receipt["census_only"][cls] = {
+            "source": source,
+            "existing": len(by_class.get(cls, set()))}
     receipt["census_only"]["provider-depth3+"]["existing"] = sum(
         1 for e in existing.values()
         if e.get("pool_class") == "provider" and (e.get("depth") or 0) >= 3)
@@ -277,7 +274,10 @@ def main():
 
     depth_counts = {}
     for e in list(existing.values()):
-        key = f"{e.get('pool_class', 'card_pools')}@{e.get('depth') or 1}"
+        depth = e.get("depth")
+        if depth is None:
+            depth = 0 if "pool_class" not in e else 1
+        key = f"{e.get('pool_class') or 'moniker'}@{depth}"
         depth_counts[key] = depth_counts.get(key, 0) + 1
     census = {"schema": "moneyball-pool-census/v1",
               "ledger_events": len(events),

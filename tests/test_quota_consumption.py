@@ -28,7 +28,11 @@ def _fixture(tmp_path):
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text)
     w("ops/quota/quota-usage.json", "{}")
-    w("ops/challenge/desk-feed.json", "{}")
+    w("ops/challenge/desk-feed.json", json.dumps({"traversals": [
+        {"provider_usage": [{"session_id": "sess-1", "usage": {
+            "value": 77, "unit": "tokens", "match": "exact",
+            "status": "established", "source": "desk-feed exact usage"}}]}
+    ]}))
     w("ops/quota/allocation-plan.json", "{}")
     w("ops/quota/rate-limit-events.json", "{}")
     w("ops/tracking/nested-family.json", json.dumps({"providers": [
@@ -45,7 +49,12 @@ def _fixture(tmp_path):
             {"model": "gemini-2.5-pro", "tasks": [
                 {"ts": "2026-11-02T04:00:00Z", "dispatch_id": "d5",
                  "role": "reviewer", "task_class": "review",
-                 "moniker": "participant-gemini", "run_id": "105"}]}]}
+                 "moniker": "participant-gemini", "run_id": "105"}]}]},
+        {"provider": "session-provider", "models": [
+            {"model": "session-model", "tasks": [
+                {"ts": "2026-11-02T05:00:00Z", "session_id": "sess-1",
+                 "role": "reviewer", "task_class": "session-review",
+                 "moniker": "participant-session"}]}]}
     ]}))
     w("ops/quota/registry.json", '{"services": []}')
     # 3L0 intake: one stamped call, one null-usage call, one
@@ -136,6 +145,10 @@ def test_task_tree_joins_usage_by_dispatch_and_preserves_role_and_pool(tmp_path)
     ntask = gap["models"][0]["roles"][0]["participants"][0]["tasks"][0]
     assert ntask["usage"]["status"] == "NOT_ESTABLISHED"
     assert ntask["usage"]["value"] is None
-    assert tree["coverage"]["tasks"] == 3
-    assert tree["coverage"]["established"] == 2
+    session_provider = next(p for p in tree["providers"] if p["provider"] == "session-provider")
+    stask = session_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert stask["attribution"] == "session_id"
+    assert stask["usage"]["value"] == 77 and stask["usage"]["status"] == "established"
+    assert tree["coverage"]["tasks"] == 4
+    assert tree["coverage"]["established"] == 3
     assert tree["coverage"]["not_established"] == 1

@@ -1,5 +1,39 @@
 ## [Unreleased]
 
+## [1.0.0] — 2026-11-04
+
+**The submission cut.** Foundation **v1.0.0**: the version of
+record (`VERSION`, read into every agent receipt as
+`agent_version`) moves 0.5.0 → 1.0.0 on the tree that carries
+the complete catch-up slate — parity iterations 1–4 binding
+§1d calendar/geography, §1c memory methods, multi-course, and
+§1b term-expansion + opt-in hardening on all three surfaces,
+plus the second bundled sample course (STAT 210). Surfaces
+version independently and stay at 0.5.0; post-1.0.0 foundation
+motion is PATCH only (VERSIONING.md). Cut for the D1
+submission freeze (Nov 4, 23:59 PT) on the D1 seat's sequence:
+suite receipt-version tests green on this tree, or no cut.
+
+Provider credit: command-dispatch (Swarm Optimizations &
+Implementation Assurance seat), session
+6628d41d-9519-4881-9063-3afe501df815.
+
+### Foundation v1.0.0
+
+- **Version of record 1.0.0** — `apps/studysprint/VERSION`
+  bumped; the receipt pin in `tests/test_studysprint.py`
+  follows it, and the parity matrix header names core v1.0.0.
+  Everything below in this release section shipped on the
+  0.5.0 foundation during the Nov 3 slate and is carried into
+  1.0.0 unchanged: the foundation's capabilities at the cut
+  are exactly the slate's sum (core pipeline · SR (FSRS-6 +
+  SM-2 + Leitner) · memory methods · courses · reader/term
+  bank · hardening (opt-in) · calendar/geography).
+- **Evidence artifacts keep their 0.5.0 stamps** —
+  `evidence/demo-run.json` and the strands-aws golden receipts
+  record runs that happened under 0.5.0 and are not rewritten.
+
+
 ### Surfaces 0.5.0 (parity iteration 4, #4417 — hardening + §1b completion)
 
 - **State recall + stress hardening binds on all three

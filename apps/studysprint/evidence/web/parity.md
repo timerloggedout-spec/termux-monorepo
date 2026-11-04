@@ -10,7 +10,7 @@ version-stamped service worker); the GitHub Pages deployment of the same tree
 (https://timerloggedout-spec.github.io/studysprint/web/, verified live)
 is byte-identical.
 
-Rides the foundation (v0.5.0 — the tree's own VERSION, the version that generated the shipped state.json; #4225):
+Rides the foundation (v1.0.0 — the tree's own VERSION, the version that generated the shipped state.json; #4225):
 - Core plan + trust receipt + today view, via web/build_data.py running
   the real core → data/state.json (keys: plan · trust_receipt ·
   today · sr · reader · course · surface).

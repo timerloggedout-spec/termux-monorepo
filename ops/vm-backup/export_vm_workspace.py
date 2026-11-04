@@ -493,7 +493,7 @@ def publish(staging: Path, repo: str, message: str):
     are not re-uploaded."""
     files = sorted(str(p.relative_to(staging))
                    for p in staging.rglob("*") if p.is_file())
-    st, ref = gh("GET", f"/repos/{repo}/git/ref/heads/main")
+    st, ref = gh_retry("GET", f"/repos/{repo}/git/ref/heads/main")
     parent = ref.get("object", {}).get("sha") if st == 200 else None
     if parent is None:
         # A completely empty repo rejects Git Data API writes (409
@@ -503,21 +503,21 @@ def publish(staging: Path, repo: str, message: str):
             b"# muse-vm-workspace-backup\n\nPrivate backup of the Muse "
             b"VM workspace.\nSee EXPORT.json / MANIFEST.json at the root "
             b"of each export commit.\n").decode()
-        st, _r = gh("PUT", f"/repos/{repo}/contents/README.md",
+        st, _r = gh_retry("PUT", f"/repos/{repo}/contents/README.md",
                     {"message": "init: seed repository for git-data "
                                 "publishing", "content": seed})
         if st not in (200, 201):
             raise RuntimeError(f"seed commit failed: {st}")
-        st, ref = gh("GET", f"/repos/{repo}/git/ref/heads/main")
+        st, ref = gh_retry("GET", f"/repos/{repo}/git/ref/heads/main")
         parent = ref.get("object", {}).get("sha") if st == 200 else None
         if parent is None:
             raise RuntimeError("seed commit did not create main")
     existing_blobs = set()
     if parent:
-        st, commit = gh("GET", f"/repos/{repo}/git/commits/{parent}")
+        st, commit = gh_retry("GET", f"/repos/{repo}/git/commits/{parent}")
         tree_sha = commit.get("tree", {}).get("sha")
         if tree_sha:
-            st, tree = gh("GET",
+            st, tree = gh_retry("GET",
                           f"/repos/{repo}/git/trees/{tree_sha}?recursive=1")
             for t in tree.get("tree", []):
                 if t.get("type") == "blob":
@@ -560,7 +560,7 @@ def publish(staging: Path, repo: str, message: str):
                 entries.append({"path": os.path.basename(sub),
                                 "mode": "040000", "type": "tree",
                                 "sha": tree_sha_by_dir[sub]})
-        st, t = gh("POST", f"/repos/{repo}/git/trees", {"tree": entries})
+        st, t = gh_retry("POST", f"/repos/{repo}/git/trees", {"tree": entries})
         if st not in (200, 201):
             raise RuntimeError(f"tree create failed for {d}: {st}")
         tree_sha_by_dir[d] = t["sha"]
@@ -573,22 +573,22 @@ def publish(staging: Path, repo: str, message: str):
         if "/" not in d:
             root_entries.append({"path": d, "mode": "040000",
                                  "type": "tree", "sha": tree_sha_by_dir[d]})
-    st, root_tree = gh("POST", f"/repos/{repo}/git/trees",
+    st, root_tree = gh_retry("POST", f"/repos/{repo}/git/trees",
                        {"tree": root_entries})
     if st not in (200, 201):
         raise RuntimeError(f"root tree create failed: {st}")
     body = {"message": message, "tree": root_tree["sha"]}
     if parent:
         body["parents"] = [parent]
-    st, commit = gh("POST", f"/repos/{repo}/git/commits", body)
+    st, commit = gh_retry("POST", f"/repos/{repo}/git/commits", body)
     if st not in (200, 201):
         raise RuntimeError(f"commit create failed: {st}")
     sha = commit["sha"]
     if parent:
-        st, _ = gh("PATCH", f"/repos/{repo}/git/refs/heads/main",
+        st, _ = gh_retry("PATCH", f"/repos/{repo}/git/refs/heads/main",
                    {"sha": sha})
     else:
-        st, _ = gh("POST", f"/repos/{repo}/git/refs",
+        st, _ = gh_retry("POST", f"/repos/{repo}/git/refs",
                    {"ref": "refs/heads/main", "sha": sha})
     if st not in (200, 201):
         raise RuntimeError(f"ref update failed: {st}")

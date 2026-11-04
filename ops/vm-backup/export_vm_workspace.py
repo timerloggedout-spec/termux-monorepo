@@ -29,7 +29,7 @@ Hard rules:
     API batch-commit path is the publish transport.)
 """
 import argparse, base64, fnmatch, hashlib, json, os, re, subprocess, sys, time
-import urllib.request, urllib.error
+import http.client, urllib.request, urllib.error
 from pathlib import Path
 
 SIZE_GATE = 25 * 1024 * 1024
@@ -439,7 +439,13 @@ def gh(method, path, body=None, timeout=120):
             raw = r.read()
             return r.status, (json.loads(raw) if raw else {})
     except urllib.error.HTTPError as e:
-        raw = e.read()
+        # Error bodies from the surrogate path can themselves arrive
+        # truncated (chunked body cut mid-stream): a crash here hides
+        # the real status, so read defensively and keep the partial.
+        try:
+            raw = e.read()
+        except (http.client.IncompleteRead, TimeoutError, OSError) as re_:
+            raw = getattr(re_, "partial", b"") or b""
         try:
             return e.code, json.loads(raw) if raw else {}
         except json.JSONDecodeError:
@@ -455,7 +461,8 @@ def gh_retry(method, path, body=None, attempts=4):
         try:
             st, resp = gh(method, path, body,
                           timeout=300 if method == "POST" else 120)
-        except (urllib.error.URLError, TimeoutError) as e:
+        except (urllib.error.URLError, TimeoutError,
+                http.client.IncompleteRead) as e:
             # Transport-level failure (write timeout on a large body,
             # read timeout on a stalled surrogate response): transient,
             # retry with backoff; after exhaustion the caller sees it.
@@ -520,6 +527,7 @@ def publish(staging: Path, repo: str, message: str):
         data = (staging / rel).read_bytes()
         sha = _git_blob_sha(data)
         if sha not in existing_blobs:
+            print(f"blob {rel} {len(data)}B")
             try:
                 st, blob = gh_retry("POST", f"/repos/{repo}/git/blobs",
                                     {"content": base64.b64encode(data).decode(),

@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-03T11:57:51.011347Z`
+Observed: `2026-11-04T12:11:12.428249Z`
 
 ## Navigation
 
@@ -16,8 +16,8 @@ Observed: `2026-11-03T11:57:51.011347Z`
 
 ## Changes since previous snapshot
 
-- **Added (16):** `P-r-e-m-i-u-m/open-source-starter-lab`, `q/K-DE-Cyberpunk-Neon`, `q/aws-tutorial`, `q/badatcomputers`, `q/circuitpython-datadog`, `q/dedrop`, `q/django-bcrypt`, `q/django-la-facebook`, `q/django-pagination`, `q/elasticpony`, `q/geo-tutorial`, `q/magtag-home`, `q/pokegb`, `q/q`, `q/q.github.io`, `q/vesta`
-- **Removed (0):** —
+- **Added (8):** `BARGHEST-ngo/MESHforensics`, `all-the-data/awesome-data-hoarding`, `awslabs/aws-api-gateway-developer-portal`, `simon987/awesome-datahoarding`, `timerloggedout-spec/awesome-muse`, `timerloggedout-spec/moneyball`, `timerloggedout-spec/quarantine-browser-clerk`, `timerloggedout-spec/ugreen-nas-skills`
+- **Removed (64):** `BARGHEST-ngo/MESH`, `alphaparkinc/clawd-skill-manus`, `alphaparkinc/coursiv-ai-skill`, `alphaparkinc/genpark-adaptive-token-rate-limiter-skill`, `alphaparkinc/genpark-agent-long-horizon-context-compactor-skill`, `alphaparkinc/genpark-agent-session-compaction-tokenizer-skill`, `alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill`, `alphaparkinc/genpark-agentic-cache-semantic-deduplicator-skill`, `alphaparkinc/genpark-agentic-dev-environment-live-telemetry-loop-skill`, `alphaparkinc/genpark-agentic-developer-environment-orchestrator-skill`, `alphaparkinc/genpark-agentic-lead-score-velocity-evaluator-skill`, `alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill`, `alphaparkinc/genpark-ai-fact-checker-skill`, `alphaparkinc/genpark-ai-search-citation-provenance-verifier-skill`, `alphaparkinc/genpark-automated-compliance-policy-evaluator-skill`, `alphaparkinc/genpark-automated-leads-enrichment-skill`, `alphaparkinc/genpark-autonomous-browser-action-planner-skill`, `alphaparkinc/genpark-autonomous-form-autofill-resolver-skill`, `alphaparkinc/genpark-autonomous-price-elasticity-optimizer-skill`, `alphaparkinc/genpark-autonomous-task-dag-decomposer-skill`, `alphaparkinc/genpark-codebase-refactoring-agent-skill`, `alphaparkinc/genpark-contextual-compression-filter-skill`, `alphaparkinc/genpark-contract-clause-risk-analysis-auditor-skill`, `alphaparkinc/genpark-cross-border-commerce-skill`, `alphaparkinc/genpark-deep-research-consensus-engine-skill`, `alphaparkinc/genpark-deep-research-cross-citation-graph-skill`, `alphaparkinc/genpark-dynamic-jsonld-rich-snippet-generator-skill`, `alphaparkinc/genpark-hallucination-fact-grounding-checker-skill`, `alphaparkinc/genpark-hybrid-rerank-fusion-retriever-skill`, `alphaparkinc/genpark-infinite-canvas-spatial-clustering-synthesizer-skill`, `alphaparkinc/genpark-influencer-match-skill`, `alphaparkinc/genpark-inventory-forecasting-skill`, `alphaparkinc/genpark-lead-scoring-intent-data-enricher-skill`, `alphaparkinc/genpark-live-artifact-version-diff-tracker-skill`, `alphaparkinc/genpark-multi-model-cost-latency-router-skill`, `alphaparkinc/genpark-multi-source-research-page-synthesizer-skill`, `alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill`, `alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill`, `alphaparkinc/genpark-multivariate-ad-creative-fatigue-auditor-skill`, `alphaparkinc/genpark-page-synthesis-engine-skill`, `alphaparkinc/genpark-personalized-video-sales-outreach-script-planner-skill`, `alphaparkinc/genpark-privacy-first-offline-llm-runtime-skill`, `alphaparkinc/genpark-proactive-e-commerce-team-agent-skill`, `alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill`, `alphaparkinc/genpark-product-review-sentiment-analyzer-skill`, `alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill`, `alphaparkinc/genpark-purchase-intent-scorer-skill`, `alphaparkinc/genpark-realtime-hallucination-fact-checker-verifier-skill`, `alphaparkinc/genpark-realtime-voice-noise-suppression-gate-skill`, `alphaparkinc/genpark-shipping-carrier-selector-skill`, `alphaparkinc/genpark-simple-shipping-calculator-skill`, `alphaparkinc/genpark-snap-sell`, `alphaparkinc/genpark-social-media-viral-post-generator-skill`, `alphaparkinc/genpark-structured-data-diff-patcher-skill`, `alphaparkinc/genpark-structured-extract-schema-validator-skill`, `alphaparkinc/genpark-synthetic-persona-interview-simulator-skill`, `alphaparkinc/genpark-v2fun-3d-character-animator-skill`, `alphaparkinc/genpark-visual-grounding-spec-comparison-skill`, `alphaparkinc/genpark-workspace-skill`, `alphaparkinc/genpark-zoodata-agent-data-layer-skill`, `alphaparkinc/openclaw-agentic-commerce-protocol`, `alphaparkinc/openclaw-genpark-marketing`, `alphaparkinc/openclaw-genpark-voice-shop`, `globlord/AIstudioProxyAPI`
 - **Provenance changed (0):** —
 
 ## Owned
@@ -60,6 +60,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/merl](https://github.com/timerloggedout-spec/merl) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/mesa-examples_fork](https://github.com/timerloggedout-spec/mesa-examples_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/mesa-geo_fork](https://github.com/timerloggedout-spec/mesa-geo_fork) | owned, starred | agent | medium | upstream-comparison |
+| [timerloggedout-spec/moneyball](https://github.com/timerloggedout-spec/moneyball) | owned | agent | medium | — |
 | [timerloggedout-spec/nanocoder](https://github.com/timerloggedout-spec/nanocoder) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/Observal_fork](https://github.com/timerloggedout-spec/Observal_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/opencode_fork](https://github.com/timerloggedout-spec/opencode_fork) | owned | agent | medium | upstream-comparison |
@@ -88,6 +89,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/ai-projects-to-google-calendar_fork](https://github.com/timerloggedout-spec/ai-projects-to-google-calendar_fork) | owned | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/antigravity-jules-orchestration_fork](https://github.com/timerloggedout-spec/antigravity-jules-orchestration_fork) | owned, starred | agent, ai | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-deepseek-agent_fork](https://github.com/timerloggedout-spec/awesome-deepseek-agent_fork) | owned, starred | agent, ai | medium | upstream-comparison |
+| [timerloggedout-spec/awesome-muse](https://github.com/timerloggedout-spec/awesome-muse) | owned | agent, ai | medium | workflow-candidate |
 | [timerloggedout-spec/Awesome-Self-Evolving-Agents_fork](https://github.com/timerloggedout-spec/Awesome-Self-Evolving-Agents_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/braxis-blueprint_fork](https://github.com/timerloggedout-spec/braxis-blueprint_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/camel_fork](https://github.com/timerloggedout-spec/camel_fork) | owned | agent, ai | medium | dependency-candidate, upstream-comparison |
@@ -183,6 +185,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/SWE-agent_fork](https://github.com/timerloggedout-spec/SWE-agent_fork) | owned, starred | agent, security | medium | upstream-comparison |
 | [timerloggedout-spec/android-mcp](https://github.com/timerloggedout-spec/android-mcp) | owned | agent, termux | medium | — |
 | [timerloggedout-spec/codex-termux_fork](https://github.com/timerloggedout-spec/codex-termux_fork) | owned | agent, termux | medium | upstream-comparison |
+| [timerloggedout-spec/quarantine-browser-clerk](https://github.com/timerloggedout-spec/quarantine-browser-clerk) | owned | agent, termux | medium | — |
 | [timerloggedout-spec/termux-mcp](https://github.com/timerloggedout-spec/termux-mcp) | owned, starred | agent, termux | medium | — |
 | [timerloggedout-spec/9_Applied-AI](https://github.com/timerloggedout-spec/9_Applied-AI) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/agy-sdk_fork](https://github.com/timerloggedout-spec/agy-sdk_fork) | owned | ai | medium | dependency-candidate, upstream-comparison |
@@ -355,6 +358,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/oxproxion_fork](https://github.com/timerloggedout-spec/oxproxion_fork) | owned, starred | ai, termux | medium | upstream-comparison |
 | [timerloggedout-spec/SAI_fork](https://github.com/timerloggedout-spec/SAI_fork) | owned | ai, termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizuTools_fork](https://github.com/timerloggedout-spec/ShizuTools_fork) | owned | ai, termux | medium | upstream-comparison |
+| [timerloggedout-spec/ugreen-nas-skills](https://github.com/timerloggedout-spec/ugreen-nas-skills) | owned | ai, termux | medium | — |
 | [timerloggedout-spec/gravitee-api-management_fork](https://github.com/timerloggedout-spec/gravitee-api-management_fork) | owned | api-management | high | upstream-comparison |
 | [timerloggedout-spec/Nest_fork](https://github.com/timerloggedout-spec/Nest_fork) | owned | api-management | high | upstream-comparison |
 | [timerloggedout-spec/awesomeqa-selenium-framework_fork](https://github.com/timerloggedout-spec/awesomeqa-selenium-framework_fork) | owned | browser | medium | dependency-candidate, upstream-comparison, workflow-candidate |
@@ -746,6 +750,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [AboveColin/remote-for-xirp](https://github.com/AboveColin/remote-for-xirp) | starred | agent | medium | — |
 | [adybag14-cyber/hermes-agent](https://github.com/adybag14-cyber/hermes-agent) | starred | agent | medium | upstream-comparison |
 | [AIMikav/skillopt](https://github.com/AIMikav/skillopt) | starred | agent | medium | — |
+| [alvinunreal/oh-my-opencode-slim](https://github.com/alvinunreal/oh-my-opencode-slim) | starred | agent | medium | — |
 | [anomalyco/opencode](https://github.com/anomalyco/opencode) | starred | agent | medium | — |
 | [anthropics/skills](https://github.com/anthropics/skills) | starred | agent | medium | — |
 | [augmentcode/augment-agent](https://github.com/augmentcode/augment-agent) | starred | agent | medium | — |
@@ -851,9 +856,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) | starred | agent, ai | medium | dependency-candidate |
 | [ai-job-search-dev/ai-job-search](https://github.com/ai-job-search-dev/ai-job-search) | starred | agent, ai | medium | dependency-candidate |
 | [alexgaoth/awesome-reverse-engineered](https://github.com/alexgaoth/awesome-reverse-engineered) | starred | agent, ai | medium | — |
-| [alphaparkinc/genpark-infinite-canvas-spatial-clustering-synthesizer-skill](https://github.com/alphaparkinc/genpark-infinite-canvas-spatial-clustering-synthesizer-skill) | starred | agent, ai | medium | — |
 | [alta-atc/xirp-grok](https://github.com/alta-atc/xirp-grok) | starred | agent, ai | medium | — |
-| [alvinunreal/oh-my-opencode-slim](https://github.com/alvinunreal/oh-my-opencode-slim) | starred | agent, ai | medium | — |
 | [amlplugins/mistral-agents](https://github.com/amlplugins/mistral-agents) | starred | agent, ai | medium | dependency-candidate |
 | [ANative-Lab/Awesome-Self-Evolving-Agents](https://github.com/ANative-Lab/Awesome-Self-Evolving-Agents) | starred | agent, ai | medium | — |
 | [AnotiaWang/awesome-decision-models](https://github.com/AnotiaWang/awesome-decision-models) | starred | agent, ai | medium | dependency-candidate |
@@ -972,6 +975,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [StackExchange/stack-internal-plugin](https://github.com/StackExchange/stack-internal-plugin) | starred | agent, ai | medium | — |
 | [stakpak/agent](https://github.com/stakpak/agent) | starred | agent, ai | medium | — |
 | [suitedaces/computer-agent](https://github.com/suitedaces/computer-agent) | starred | agent, ai | medium | — |
+| [TauricResearch/Trading-R1](https://github.com/TauricResearch/Trading-R1) | starred | agent, ai | medium | — |
 | [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) | starred | agent, ai | medium | dependency-candidate |
 | [temporal-community/bedrock-agents-mcp-workshop](https://github.com/temporal-community/bedrock-agents-mcp-workshop) | starred | agent, ai | medium | — |
 | [temporal-community/temporal-ai-agent](https://github.com/temporal-community/temporal-ai-agent) | starred | agent, ai | medium | workflow-candidate |
@@ -1039,53 +1043,6 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [28naem-del/mnemosyne](https://github.com/28naem-del/mnemosyne) | starred | agent, ai, context | high | — |
 | [abhinavxd/libredesk](https://github.com/abhinavxd/libredesk) | starred | agent, ai, context | high | — |
 | [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) | starred | agent, ai, context | high | — |
-| [alphaparkinc/clawd-skill-manus](https://github.com/alphaparkinc/clawd-skill-manus) | starred | agent, ai, context | high | — |
-| [alphaparkinc/coursiv-ai-skill](https://github.com/alphaparkinc/coursiv-ai-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-adaptive-token-rate-limiter-skill](https://github.com/alphaparkinc/genpark-adaptive-token-rate-limiter-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agent-long-horizon-context-compactor-skill](https://github.com/alphaparkinc/genpark-agent-long-horizon-context-compactor-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-agent-session-compaction-tokenizer-skill](https://github.com/alphaparkinc/genpark-agent-session-compaction-tokenizer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill](https://github.com/alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-agentic-cache-semantic-deduplicator-skill](https://github.com/alphaparkinc/genpark-agentic-cache-semantic-deduplicator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-dev-environment-live-telemetry-loop-skill](https://github.com/alphaparkinc/genpark-agentic-dev-environment-live-telemetry-loop-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-developer-environment-orchestrator-skill](https://github.com/alphaparkinc/genpark-agentic-developer-environment-orchestrator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-lead-score-velocity-evaluator-skill](https://github.com/alphaparkinc/genpark-agentic-lead-score-velocity-evaluator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill](https://github.com/alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-ai-fact-checker-skill](https://github.com/alphaparkinc/genpark-ai-fact-checker-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-ai-search-citation-provenance-verifier-skill](https://github.com/alphaparkinc/genpark-ai-search-citation-provenance-verifier-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-automated-compliance-policy-evaluator-skill](https://github.com/alphaparkinc/genpark-automated-compliance-policy-evaluator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-automated-leads-enrichment-skill](https://github.com/alphaparkinc/genpark-automated-leads-enrichment-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-autonomous-form-autofill-resolver-skill](https://github.com/alphaparkinc/genpark-autonomous-form-autofill-resolver-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-autonomous-price-elasticity-optimizer-skill](https://github.com/alphaparkinc/genpark-autonomous-price-elasticity-optimizer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-codebase-refactoring-agent-skill](https://github.com/alphaparkinc/genpark-codebase-refactoring-agent-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-contextual-compression-filter-skill](https://github.com/alphaparkinc/genpark-contextual-compression-filter-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-contract-clause-risk-analysis-auditor-skill](https://github.com/alphaparkinc/genpark-contract-clause-risk-analysis-auditor-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-cross-border-commerce-skill](https://github.com/alphaparkinc/genpark-cross-border-commerce-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-dynamic-jsonld-rich-snippet-generator-skill](https://github.com/alphaparkinc/genpark-dynamic-jsonld-rich-snippet-generator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-hallucination-fact-grounding-checker-skill](https://github.com/alphaparkinc/genpark-hallucination-fact-grounding-checker-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-hybrid-rerank-fusion-retriever-skill](https://github.com/alphaparkinc/genpark-hybrid-rerank-fusion-retriever-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-influencer-match-skill](https://github.com/alphaparkinc/genpark-influencer-match-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-inventory-forecasting-skill](https://github.com/alphaparkinc/genpark-inventory-forecasting-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-lead-scoring-intent-data-enricher-skill](https://github.com/alphaparkinc/genpark-lead-scoring-intent-data-enricher-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill](https://github.com/alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-multivariate-ad-creative-fatigue-auditor-skill](https://github.com/alphaparkinc/genpark-multivariate-ad-creative-fatigue-auditor-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-personalized-video-sales-outreach-script-planner-skill](https://github.com/alphaparkinc/genpark-personalized-video-sales-outreach-script-planner-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-privacy-first-offline-llm-runtime-skill](https://github.com/alphaparkinc/genpark-privacy-first-offline-llm-runtime-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-proactive-e-commerce-team-agent-skill](https://github.com/alphaparkinc/genpark-proactive-e-commerce-team-agent-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill](https://github.com/alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill](https://github.com/alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-purchase-intent-scorer-skill](https://github.com/alphaparkinc/genpark-purchase-intent-scorer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-realtime-hallucination-fact-checker-verifier-skill](https://github.com/alphaparkinc/genpark-realtime-hallucination-fact-checker-verifier-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-realtime-voice-noise-suppression-gate-skill](https://github.com/alphaparkinc/genpark-realtime-voice-noise-suppression-gate-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-shipping-carrier-selector-skill](https://github.com/alphaparkinc/genpark-shipping-carrier-selector-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-simple-shipping-calculator-skill](https://github.com/alphaparkinc/genpark-simple-shipping-calculator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-snap-sell](https://github.com/alphaparkinc/genpark-snap-sell) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-structured-data-diff-patcher-skill](https://github.com/alphaparkinc/genpark-structured-data-diff-patcher-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-v2fun-3d-character-animator-skill](https://github.com/alphaparkinc/genpark-v2fun-3d-character-animator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-visual-grounding-spec-comparison-skill](https://github.com/alphaparkinc/genpark-visual-grounding-spec-comparison-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-workspace-skill](https://github.com/alphaparkinc/genpark-workspace-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-zoodata-agent-data-layer-skill](https://github.com/alphaparkinc/genpark-zoodata-agent-data-layer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/openclaw-agentic-commerce-protocol](https://github.com/alphaparkinc/openclaw-agentic-commerce-protocol) | starred | agent, ai, context | high | — |
-| [alphaparkinc/openclaw-genpark-voice-shop](https://github.com/alphaparkinc/openclaw-genpark-voice-shop) | starred | agent, ai, context | high | — |
 | [ANative-Lab/EvoAgentX](https://github.com/ANative-Lab/EvoAgentX) | starred | agent, ai, context | high | — |
 | [beltromatti/get-it](https://github.com/beltromatti/get-it) | starred | agent, ai, context | high | — |
 | [chainbase-labs/manuscript-core](https://github.com/chainbase-labs/manuscript-core) | starred | agent, ai, context | high | dependency-candidate |
@@ -1143,25 +1100,11 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [metorial/metorial](https://github.com/metorial/metorial) | starred | agent, ai, context, developer-tools, security, kubernetes | high | workflow-candidate |
 | [anzax/dockashell](https://github.com/anzax/dockashell) | starred | agent, ai, context, kubernetes | high | — |
 | [lobehub/lobehub](https://github.com/lobehub/lobehub) | starred | agent, ai, context, kubernetes | high | — |
-| [alphaparkinc/genpark-social-media-viral-post-generator-skill](https://github.com/alphaparkinc/genpark-social-media-viral-post-generator-skill) | starred | agent, ai, context, platform | high | — |
 | [thom899g/curiosity--project-chimera--forge-a-revenue-limb.](https://github.com/thom899g/curiosity--project-chimera--forge-a-revenue-limb.) | starred | agent, ai, context, platform | high | — |
 | [vanillaflava/llm-wiki-skills](https://github.com/vanillaflava/llm-wiki-skills) | starred | agent, ai, context, platform | high | — |
-| [alphaparkinc/genpark-autonomous-browser-action-planner-skill](https://github.com/alphaparkinc/genpark-autonomous-browser-action-planner-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-autonomous-task-dag-decomposer-skill](https://github.com/alphaparkinc/genpark-autonomous-task-dag-decomposer-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-deep-research-consensus-engine-skill](https://github.com/alphaparkinc/genpark-deep-research-consensus-engine-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-deep-research-cross-citation-graph-skill](https://github.com/alphaparkinc/genpark-deep-research-cross-citation-graph-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-live-artifact-version-diff-tracker-skill](https://github.com/alphaparkinc/genpark-live-artifact-version-diff-tracker-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-multi-model-cost-latency-router-skill](https://github.com/alphaparkinc/genpark-multi-model-cost-latency-router-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-multi-source-research-page-synthesizer-skill](https://github.com/alphaparkinc/genpark-multi-source-research-page-synthesizer-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-page-synthesis-engine-skill](https://github.com/alphaparkinc/genpark-page-synthesis-engine-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-product-review-sentiment-analyzer-skill](https://github.com/alphaparkinc/genpark-product-review-sentiment-analyzer-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-structured-extract-schema-validator-skill](https://github.com/alphaparkinc/genpark-structured-extract-schema-validator-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-synthetic-persona-interview-simulator-skill](https://github.com/alphaparkinc/genpark-synthetic-persona-interview-simulator-skill) | starred | agent, ai, context, research | high | — |
 | [blazickjp/arxiv-mcp-server](https://github.com/blazickjp/arxiv-mcp-server) | starred | agent, ai, context, research | high | — |
 | [brycewang-stanford/StatsPAI](https://github.com/brycewang-stanford/StatsPAI) | starred | agent, ai, context, research | high | dependency-candidate |
 | [samugit83/AutoCodeAgent2.0](https://github.com/samugit83/AutoCodeAgent2.0) | starred, watching | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill](https://github.com/alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill) | starred | agent, ai, context, security | high | — |
-| [alphaparkinc/openclaw-genpark-marketing](https://github.com/alphaparkinc/openclaw-genpark-marketing) | starred | agent, ai, context, security | high | — |
 | [1jehuang/jcode](https://github.com/1jehuang/jcode) | starred | agent, ai, developer-tools | medium | workflow-candidate |
 | [agent-of-empires/agent-of-empires](https://github.com/agent-of-empires/agent-of-empires) | starred | agent, ai, developer-tools | medium | — |
 | [AgenticResourceRegistry/AgenticResourceRegistry](https://github.com/AgenticResourceRegistry/AgenticResourceRegistry) | starred | agent, ai, developer-tools | medium | — |
@@ -1847,7 +1790,6 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [OWASP/Nest](https://github.com/OWASP/Nest) | starred | ai, api-management | high | — |
 | [nutcas3/lets-bet](https://github.com/nutcas3/lets-bet) | starred | ai, api-management, platform | high | — |
 | [CJackHwang/AIstudioProxyAPI](https://github.com/CJackHwang/AIstudioProxyAPI) | starred | ai, browser | medium | — |
-| [globlord/AIstudioProxyAPI](https://github.com/globlord/AIstudioProxyAPI) | starred | ai, browser | medium | — |
 | [Kr1s77/awesome-python-login-model](https://github.com/Kr1s77/awesome-python-login-model) | starred | ai, browser | medium | — |
 | [lightpanda-io/browser](https://github.com/lightpanda-io/browser) | starred | ai, browser | medium | — |
 | [Mag1cFall/AIStudio2API](https://github.com/Mag1cFall/AIStudio2API) | starred | ai, browser | medium | — |
@@ -2099,6 +2041,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [gravitee-io/gravitee-management-rest-api](https://github.com/gravitee-io/gravitee-management-rest-api) | starred | api-management | high | — |
 | [openclarity/speculator](https://github.com/openclarity/speculator) | starred | api-management | high | dependency-candidate |
 | [1technophile/OpenMQTTGateway](https://github.com/1technophile/OpenMQTTGateway) | starred | api-management, platform | high | — |
+| [awslabs/aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) | starred | api-management, platform | high | — |
 | [gravitee-io/gravitee-management-webui](https://github.com/gravitee-io/gravitee-management-webui) | starred | api-management, platform | high | — |
 | [jpjacobpadilla/Google-Colab-Selenium](https://github.com/jpjacobpadilla/Google-Colab-Selenium) | starred | browser | medium | — |
 | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) | starred | browser | medium | — |
@@ -2460,7 +2403,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [2022it0489-hub/FUTURE_CS_01](https://github.com/2022it0489-hub/FUTURE_CS_01) | starred, watching | security | medium | — |
 | [alechilczenko/kimi](https://github.com/alechilczenko/kimi) | starred | security | medium | — |
-| [BARGHEST-ngo/MESH](https://github.com/BARGHEST-ngo/MESH) | starred | security | medium | — |
+| [BARGHEST-ngo/MESHforensics](https://github.com/BARGHEST-ngo/MESHforensics) | starred | security | medium | — |
 | [bee-san/RustScan](https://github.com/bee-san/RustScan) | starred | security | medium | — |
 | [DosX-dev/obfus.h](https://github.com/DosX-dev/obfus.h) | starred | security | medium | — |
 | [getsops/sops](https://github.com/getsops/sops) | starred | security | medium | — |
@@ -2631,6 +2574,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [alexjc/neural-enhance](https://github.com/alexjc/neural-enhance) | starred | unclassified | medium | — |
 | [ali-ahnaf/pocket_pixel](https://github.com/ali-ahnaf/pocket_pixel) | starred | unclassified | medium | — |
 | [Alienturnedhuman/PearPlanner](https://github.com/Alienturnedhuman/PearPlanner) | starred | unclassified | medium | — |
+| [all-the-data/awesome-data-hoarding](https://github.com/all-the-data/awesome-data-hoarding) | starred | unclassified | medium | — |
 | [allenai/OLMoE](https://github.com/allenai/OLMoE) | starred | unclassified | medium | — |
 | [AllenDowney/ThinkDSP](https://github.com/AllenDowney/ThinkDSP) | starred | unclassified | medium | — |
 | [Alliedium/awesome-github-actions](https://github.com/Alliedium/awesome-github-actions) | starred | unclassified | medium | workflow-candidate |
@@ -3514,6 +3458,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [simon-siggaard/montt](https://github.com/simon-siggaard/montt) | starred, watching | unclassified | medium | — |
 | [simon-siggaard/runtime-flags](https://github.com/simon-siggaard/runtime-flags) | starred, watching | unclassified | medium | — |
 | [simon-siggaard/typo](https://github.com/simon-siggaard/typo) | starred, watching | unclassified | medium | — |
+| [simon987/awesome-datahoarding](https://github.com/simon987/awesome-datahoarding) | starred | unclassified | medium | — |
 | [SimonWallner/uit-fitts-law](https://github.com/SimonWallner/uit-fitts-law) | starred | unclassified | medium | — |
 | [sindresorhus/awesome](https://github.com/sindresorhus/awesome) | starred | unclassified | medium | — |
 | [sindresorhus/awesome-nodejs](https://github.com/sindresorhus/awesome-nodejs) | starred | unclassified | medium | — |
@@ -3562,7 +3507,6 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [TabbycatDebate/tabbycat](https://github.com/TabbycatDebate/tabbycat) | starred | unclassified | medium | — |
 | [Tai7sy/vs-obfuscation](https://github.com/Tai7sy/vs-obfuscation) | starred | unclassified | medium | — |
 | [TarkWight/TSU.ReverseGantt](https://github.com/TarkWight/TSU.ReverseGantt) | starred | unclassified | medium | — |
-| [TauricResearch/Trading-R1](https://github.com/TauricResearch/Trading-R1) | starred | unclassified | medium | — |
 | [tcstewar/ccmsuite](https://github.com/tcstewar/ccmsuite) | starred | unclassified | medium | — |
 | [tcstewar/nengo_assignments](https://github.com/tcstewar/nengo_assignments) | starred | unclassified | medium | — |
 | [tcstewar/nengo_learning_examples](https://github.com/tcstewar/nengo_learning_examples) | starred | unclassified | medium | — |
@@ -4768,53 +4712,6 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [28naem-del/mnemosyne](https://github.com/28naem-del/mnemosyne) | starred | agent, ai, context | high | — |
 | [abhinavxd/libredesk](https://github.com/abhinavxd/libredesk) | starred | agent, ai, context | high | — |
 | [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) | starred | agent, ai, context | high | — |
-| [alphaparkinc/clawd-skill-manus](https://github.com/alphaparkinc/clawd-skill-manus) | starred | agent, ai, context | high | — |
-| [alphaparkinc/coursiv-ai-skill](https://github.com/alphaparkinc/coursiv-ai-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-adaptive-token-rate-limiter-skill](https://github.com/alphaparkinc/genpark-adaptive-token-rate-limiter-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agent-long-horizon-context-compactor-skill](https://github.com/alphaparkinc/genpark-agent-long-horizon-context-compactor-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-agent-session-compaction-tokenizer-skill](https://github.com/alphaparkinc/genpark-agent-session-compaction-tokenizer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill](https://github.com/alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-agentic-cache-semantic-deduplicator-skill](https://github.com/alphaparkinc/genpark-agentic-cache-semantic-deduplicator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-dev-environment-live-telemetry-loop-skill](https://github.com/alphaparkinc/genpark-agentic-dev-environment-live-telemetry-loop-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-developer-environment-orchestrator-skill](https://github.com/alphaparkinc/genpark-agentic-developer-environment-orchestrator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-lead-score-velocity-evaluator-skill](https://github.com/alphaparkinc/genpark-agentic-lead-score-velocity-evaluator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill](https://github.com/alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-ai-fact-checker-skill](https://github.com/alphaparkinc/genpark-ai-fact-checker-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-ai-search-citation-provenance-verifier-skill](https://github.com/alphaparkinc/genpark-ai-search-citation-provenance-verifier-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-automated-compliance-policy-evaluator-skill](https://github.com/alphaparkinc/genpark-automated-compliance-policy-evaluator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-automated-leads-enrichment-skill](https://github.com/alphaparkinc/genpark-automated-leads-enrichment-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-autonomous-form-autofill-resolver-skill](https://github.com/alphaparkinc/genpark-autonomous-form-autofill-resolver-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-autonomous-price-elasticity-optimizer-skill](https://github.com/alphaparkinc/genpark-autonomous-price-elasticity-optimizer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-codebase-refactoring-agent-skill](https://github.com/alphaparkinc/genpark-codebase-refactoring-agent-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-contextual-compression-filter-skill](https://github.com/alphaparkinc/genpark-contextual-compression-filter-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-contract-clause-risk-analysis-auditor-skill](https://github.com/alphaparkinc/genpark-contract-clause-risk-analysis-auditor-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-cross-border-commerce-skill](https://github.com/alphaparkinc/genpark-cross-border-commerce-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-dynamic-jsonld-rich-snippet-generator-skill](https://github.com/alphaparkinc/genpark-dynamic-jsonld-rich-snippet-generator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-hallucination-fact-grounding-checker-skill](https://github.com/alphaparkinc/genpark-hallucination-fact-grounding-checker-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-hybrid-rerank-fusion-retriever-skill](https://github.com/alphaparkinc/genpark-hybrid-rerank-fusion-retriever-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-influencer-match-skill](https://github.com/alphaparkinc/genpark-influencer-match-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-inventory-forecasting-skill](https://github.com/alphaparkinc/genpark-inventory-forecasting-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-lead-scoring-intent-data-enricher-skill](https://github.com/alphaparkinc/genpark-lead-scoring-intent-data-enricher-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill](https://github.com/alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-multivariate-ad-creative-fatigue-auditor-skill](https://github.com/alphaparkinc/genpark-multivariate-ad-creative-fatigue-auditor-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-personalized-video-sales-outreach-script-planner-skill](https://github.com/alphaparkinc/genpark-personalized-video-sales-outreach-script-planner-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-privacy-first-offline-llm-runtime-skill](https://github.com/alphaparkinc/genpark-privacy-first-offline-llm-runtime-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-proactive-e-commerce-team-agent-skill](https://github.com/alphaparkinc/genpark-proactive-e-commerce-team-agent-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill](https://github.com/alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill](https://github.com/alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-purchase-intent-scorer-skill](https://github.com/alphaparkinc/genpark-purchase-intent-scorer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-realtime-hallucination-fact-checker-verifier-skill](https://github.com/alphaparkinc/genpark-realtime-hallucination-fact-checker-verifier-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-realtime-voice-noise-suppression-gate-skill](https://github.com/alphaparkinc/genpark-realtime-voice-noise-suppression-gate-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-shipping-carrier-selector-skill](https://github.com/alphaparkinc/genpark-shipping-carrier-selector-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-simple-shipping-calculator-skill](https://github.com/alphaparkinc/genpark-simple-shipping-calculator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-snap-sell](https://github.com/alphaparkinc/genpark-snap-sell) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-structured-data-diff-patcher-skill](https://github.com/alphaparkinc/genpark-structured-data-diff-patcher-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-v2fun-3d-character-animator-skill](https://github.com/alphaparkinc/genpark-v2fun-3d-character-animator-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-visual-grounding-spec-comparison-skill](https://github.com/alphaparkinc/genpark-visual-grounding-spec-comparison-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-workspace-skill](https://github.com/alphaparkinc/genpark-workspace-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/genpark-zoodata-agent-data-layer-skill](https://github.com/alphaparkinc/genpark-zoodata-agent-data-layer-skill) | starred | agent, ai, context | high | — |
-| [alphaparkinc/openclaw-agentic-commerce-protocol](https://github.com/alphaparkinc/openclaw-agentic-commerce-protocol) | starred | agent, ai, context | high | — |
-| [alphaparkinc/openclaw-genpark-voice-shop](https://github.com/alphaparkinc/openclaw-genpark-voice-shop) | starred | agent, ai, context | high | — |
 | [ANative-Lab/EvoAgentX](https://github.com/ANative-Lab/EvoAgentX) | starred | agent, ai, context | high | — |
 | [beltromatti/get-it](https://github.com/beltromatti/get-it) | starred | agent, ai, context | high | — |
 | [chainbase-labs/manuscript-core](https://github.com/chainbase-labs/manuscript-core) | starred | agent, ai, context | high | dependency-candidate |
@@ -4878,25 +4775,11 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [metorial/metorial](https://github.com/metorial/metorial) | starred | agent, ai, context, developer-tools, security, kubernetes | high | workflow-candidate |
 | [anzax/dockashell](https://github.com/anzax/dockashell) | starred | agent, ai, context, kubernetes | high | — |
 | [lobehub/lobehub](https://github.com/lobehub/lobehub) | starred | agent, ai, context, kubernetes | high | — |
-| [alphaparkinc/genpark-social-media-viral-post-generator-skill](https://github.com/alphaparkinc/genpark-social-media-viral-post-generator-skill) | starred | agent, ai, context, platform | high | — |
 | [thom899g/curiosity--project-chimera--forge-a-revenue-limb.](https://github.com/thom899g/curiosity--project-chimera--forge-a-revenue-limb.) | starred | agent, ai, context, platform | high | — |
 | [vanillaflava/llm-wiki-skills](https://github.com/vanillaflava/llm-wiki-skills) | starred | agent, ai, context, platform | high | — |
-| [alphaparkinc/genpark-autonomous-browser-action-planner-skill](https://github.com/alphaparkinc/genpark-autonomous-browser-action-planner-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-autonomous-task-dag-decomposer-skill](https://github.com/alphaparkinc/genpark-autonomous-task-dag-decomposer-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-deep-research-consensus-engine-skill](https://github.com/alphaparkinc/genpark-deep-research-consensus-engine-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-deep-research-cross-citation-graph-skill](https://github.com/alphaparkinc/genpark-deep-research-cross-citation-graph-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-live-artifact-version-diff-tracker-skill](https://github.com/alphaparkinc/genpark-live-artifact-version-diff-tracker-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-multi-model-cost-latency-router-skill](https://github.com/alphaparkinc/genpark-multi-model-cost-latency-router-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-multi-source-research-page-synthesizer-skill](https://github.com/alphaparkinc/genpark-multi-source-research-page-synthesizer-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-page-synthesis-engine-skill](https://github.com/alphaparkinc/genpark-page-synthesis-engine-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-product-review-sentiment-analyzer-skill](https://github.com/alphaparkinc/genpark-product-review-sentiment-analyzer-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-structured-extract-schema-validator-skill](https://github.com/alphaparkinc/genpark-structured-extract-schema-validator-skill) | starred | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-synthetic-persona-interview-simulator-skill](https://github.com/alphaparkinc/genpark-synthetic-persona-interview-simulator-skill) | starred | agent, ai, context, research | high | — |
 | [blazickjp/arxiv-mcp-server](https://github.com/blazickjp/arxiv-mcp-server) | starred | agent, ai, context, research | high | — |
 | [brycewang-stanford/StatsPAI](https://github.com/brycewang-stanford/StatsPAI) | starred | agent, ai, context, research | high | dependency-candidate |
 | [samugit83/AutoCodeAgent2.0](https://github.com/samugit83/AutoCodeAgent2.0) | starred, watching | agent, ai, context, research | high | — |
-| [alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill](https://github.com/alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill) | starred | agent, ai, context, security | high | — |
-| [alphaparkinc/openclaw-genpark-marketing](https://github.com/alphaparkinc/openclaw-genpark-marketing) | starred | agent, ai, context, security | high | — |
 | [cheaper-inference/OmniRoute](https://github.com/cheaper-inference/OmniRoute) | starred | agent, ai, developer-tools, api-management | high | — |
 | [Dicklesworthstone/ntm](https://github.com/Dicklesworthstone/ntm) | starred | agent, ai, developer-tools, api-management | high | — |
 | [kalil0321/reverse-api-engineer](https://github.com/kalil0321/reverse-api-engineer) | starred | agent, ai, developer-tools, api-management, browser | high | — |
@@ -5183,6 +5066,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/gravitee-api-management_fork](https://github.com/timerloggedout-spec/gravitee-api-management_fork) | owned | api-management | high | upstream-comparison |
 | [timerloggedout-spec/Nest_fork](https://github.com/timerloggedout-spec/Nest_fork) | owned | api-management | high | upstream-comparison |
 | [1technophile/OpenMQTTGateway](https://github.com/1technophile/OpenMQTTGateway) | starred | api-management, platform | high | — |
+| [awslabs/aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) | starred | api-management, platform | high | — |
 | [gravitee-io/gravitee-management-webui](https://github.com/gravitee-io/gravitee-management-webui) | starred | api-management, platform | high | — |
 | [alyssaxuu/carden](https://github.com/alyssaxuu/carden) | starred | context | high | — |
 | [anovv/midas](https://github.com/anovv/midas) | starred | context | high | — |
@@ -5547,6 +5431,7 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [timerloggedout-spec/ai-projects-to-google-calendar_fork](https://github.com/timerloggedout-spec/ai-projects-to-google-calendar_fork) | owned | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/antigravity-jules-orchestration_fork](https://github.com/timerloggedout-spec/antigravity-jules-orchestration_fork) | owned, starred | agent, ai | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-deepseek-agent_fork](https://github.com/timerloggedout-spec/awesome-deepseek-agent_fork) | owned, starred | agent, ai | medium | upstream-comparison |
+| [timerloggedout-spec/awesome-muse](https://github.com/timerloggedout-spec/awesome-muse) | owned | agent, ai | medium | workflow-candidate |
 | [timerloggedout-spec/Awesome-Self-Evolving-Agents_fork](https://github.com/timerloggedout-spec/Awesome-Self-Evolving-Agents_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/braxis-blueprint_fork](https://github.com/timerloggedout-spec/braxis-blueprint_fork) | owned, starred | agent, ai | medium | upstream-comparison |
 | [timerloggedout-spec/camel_fork](https://github.com/timerloggedout-spec/camel_fork) | owned | agent, ai | medium | dependency-candidate, upstream-comparison |
@@ -5593,12 +5478,6 @@ Observed: `2026-11-03T11:57:51.011347Z`
 | [Wbaker7702/agentgateway](https://github.com/Wbaker7702/agentgateway) | starred | agent, ai, api-management | high | upstream-comparison |
 | [shiwenwen/hope-agent](https://github.com/shiwenwen/hope-agent) | starred | agent, ai, browser | medium | workflow-candidate |
 | [timerloggedout-spec/obscura_fork](https://github.com/timerloggedout-spec/obscura_fork) | owned, starred | agent, ai, browser | medium | upstream-comparison |
-| [alphaparkinc/genpark-agent-long-horizon-context-compactor-skill](https://github.com/alphaparkinc/genpark-agent-long-horizon-context-compactor-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill](https://github.com/alphaparkinc/genpark-agent-tool-call-self-healing-retry-guard-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill](https://github.com/alphaparkinc/genpark-agentic-workflow-state-checkpoint-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill](https://github.com/alphaparkinc/genpark-multimodal-vision-table-structural-extractor-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill](https://github.com/alphaparkinc/genpark-product-geoip-currency-tax-nexus-normalizer-skill) | starred | agent, ai, context | high | workflow-candidate |
-| [alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill](https://github.com/alphaparkinc/genpark-prompt-injection-jailbreak-neutralizer-skill) | starred | agent, ai, context | high | workflow-candidate |
 | [chainbase-labs/manuscript-core](https://github.com/chainbase-labs/manuscript-core) | starred | agent, ai, context | high | dependency-candidate |
 | [coleam00/claude-memory-compiler](https://github.com/coleam00/claude-memory-compiler) | starred | agent, ai, context | high | dependency-candidate |
 | [enescingoz/awesome-n8n-templates](https://github.com/enescingoz/awesome-n8n-templates) | starred | agent, ai, context | high | workflow-candidate |

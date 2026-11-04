@@ -125,3 +125,28 @@ NEVER enters delta sums, per the attribution contract) with
 
 Coverage citations carry both numbers, labeled: provider-readings
 coverage and consumption coverage (the gap metric above).
+
+
+## Task attribution read model — quota.task-tree/v1
+
+The quota usage-series builder also emits an additive `task_tree` projection. It is a read model over the existing `nested-family/v1` task denominator and the existing dispatch usage carriers; it is not a second source of truth or a new instrumentation store.
+
+Grouping is source-verbatim and ordered:
+
+```text
+provider
+  └── model@version (verbatim)
+       └── role (per-dispatch; never collapsed)
+            └── participant / moniker
+                 └── task
+                      ├── dispatch + run/session references
+                      ├── quota pool + slice (only when stamped)
+                      ├── usage evidence + match class
+                      └── outcome (carried, never re-scored)
+```
+
+Join priority for a task is exact `dispatch_id`; a desk carrier without a dispatch id may use its exact `session_id`. No join means `NOT_ESTABLISHED`. A numeric `usage.value` is emitted only for an exact measured record. `activity-proxy` is retained as activity and never summed into consumption. `no-usage-surface` is distinct from a missing record. Quota `pool` and `slice` are shown only when the same dispatch record carries them; planner allocation targets are not usage.
+
+Participant roll-ups sum only `established` values within the same native unit. Different units remain separate. Activity-only counts remain separate from consumption. No proportional attribution from shared buckets, no zero-fill, no interpolation, no inferred model/version, and no runtime admission effect.
+
+The dashboard consumer is `apps/tribute-dashboard/quota-graphs.html#task-attribution`; the existing `family.html` remains the tracking/source hierarchy. The task projection is published by the existing `quota-usage-series-refresh.yml` workflow after the generator change lands. Until that derived feed contains `task_tree`, the page displays a projection-pending state rather than fabricating rows.

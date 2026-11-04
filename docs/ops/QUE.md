@@ -153,7 +153,7 @@ beyond 0. QUE improves the road; it never parks the traffic.
 
 Until the D1 freeze (2026-11-04 23:59 PT), the D1 chain
 (slate iterations · releases · snapshot · deploys on its
-path) holds **first claim on runner supply**. Admission treats
+path) holds **absolute priority on runner supply** — yields are automatic, without being asked twice ('Race to finish', owner 2026-11-03). Admission treats
 chain runs as the highest claim; sweeps take non-chain
 tier-3/4 work first; other lanes yield per the hold/sweep
 doctrine. The window is encoded in

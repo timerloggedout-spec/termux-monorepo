@@ -1165,6 +1165,14 @@ Severity of record (Recon): labbook HIGH · Domino HIGH-if-
 external · Splinter MED-HIGH · Commit Replay LOW-MED ·
 Rev-wRight LOW.
 
+**Avoidance sweep — tranche 2 (Recon 🏅, 2026-11-04):**
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| `Hunt` (quip-placeholder, §13.4 example only) | S1/S3/S5 | in-fleet hunt functions (internal overload) · Product Hunt ("hunting" = its core verb, platform since 2013) · bare verb generic | exact-verb + generic | dead-on-mark — NEVER formalize; quip stays caged in the worked example; formal seeker/discovery class name via the naming flow (correction of record, PR #54) |
+| `tribute-*` desk surfaces (app dir · /tribute/ · TRIBUTE-DASHBOARD.md · verify script) | S1 | Z3π0 HELP-WANTED campaign ("Tribute = foreign repos only", owner rule) | in-fleet scope 💥, live now | dead-on-fleet — desk surface wearing the campaign's name; rename already ruled (PR #4652), execution POST-FREEZE, ∅ churn pre-freeze |
+| `desk-*` rename targets (/desk/ · DESK-DASHBOARD.md · desk-* workflows) | S5 | "desk" = help-desk category generic (Zendesk · Zoho Desk · Freshdesk) | generic-term | distinguished — CLEAR internal (non-public surface; generic tolerable); mitigation: ∅ external branding of bare desk-*, Vercel desk-* projects internal only |
+| `6REA7` (version label, moneyball v3) | S3/S4 | exact string ∅ brand (sole commerce hit = SKU fragment, Rockport Works boot) · leet segmentation → "GREAT" (intentional pun; external parse = SKU-like) | ∅ live mark | issued (version-plane label only) — re-map if ever promoted to product name (SKU confusion + "great" reads as a claim) |
 ### proActive preparation — use
 
 - Precompute maps for QUEUED namings before they are urgent

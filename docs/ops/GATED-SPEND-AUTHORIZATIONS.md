@@ -7,6 +7,28 @@ layer) = enforcement + reporting mechanics. First application: the Desk.
 object `{resource · objective · cap · release gate · receipts}`.
 No authorization, no spend.
 
+## Investment scope (owner definition, amended 2026-11-04 03:51 PT)
+
+"Investment" under this protocol covers BOTH:
+
+- **External spend** — money/credit out (e.g. the Vultr $200 credit).
+- **Internal capability investment** — Swarm Skills Tooling builds ∧
+  specific model role-card team picks with settings, drawn as
+  quota/allocation against gated access plans.
+
+A skills/tooling build ∨ a model role-card pick is therefore a
+proposal-bearing investment item like any other: it enters by
+proposal, carries an estimate, and draws under a cap.
+
+- For internal items: `resource` = the gated access plan / quota pool
+  drawn on · `estimate` = the quota/resource draw (in the resource's
+  own unit — calls, tokens, Actions-minutes, seats) · `cap` = the
+  allocation (the quota plane's allocation of record for that pool) ·
+  release gate = the allocation gate for that pool.
+- The mechanics are unit-neutral: amounts are numbers, `unit` is the
+  resource's unit; per-lane envelopes read as per-pick sub-allocations
+  for role-card slates (competing picks = competing lanes).
+
 ## Mandatory elements (owner-named)
 
 1. **PROPOSAL REQUIRED** — no proposal ⇒ no authorization. A proposal

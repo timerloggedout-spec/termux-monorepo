@@ -68,6 +68,7 @@ traversal board · provider usage · distribution · dispatch queue ·
 QUE governor · provenance).</li>
 <li>Pools appears on both homes (tribute census matrix + MoneyBall
 site pools) over one wallet ledger — one fold, two renders.</li>
+<li>Observatory/ForeSight read as a LANE of record — program/method readings are secondary, never class assignments.</li>
 <li>Levels name what a surface RENDERS, not what it is: a surface
 levels are sparse by design (see Reserved names) — most surfaces render no record level at all.</li>
 </ul>
@@ -96,7 +97,7 @@ const GROUPS = [
  {id:"scoring", label:"Scoring & Method", color:"#c792ea"},
  {id:"entries", label:"Challenges & Entries", color:"#ffb454"},
  {id:"moneyball", label:"Wagertome — Web3", color:"#ff6b6b"},
- {id:"observatory", label:"Observatory & Telemetry", color:"#4dd0e1"},
+ {id:"observatory", label:"Observatory (lane) & Telemetry", color:"#4dd0e1"},
  {id:"coordination", label:"Coordination & QUE", color:"#a8b46b"},
  {id:"web", label:"Web & Presentation", color:"#9aa6bd"}
 ];
@@ -119,7 +120,7 @@ const SURFACES = [
  ["ates.html","tribute","scoring","∅",["feeds"],"termux-monorepo","page · ATES feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["results-index.html","tribute","scoring","program",["feeds"],"termux-monorepo","page · results-index feed + canonical twin · builder · tests","feed generated_at + per-section STALE · site deploy"],
  ["free-tier-value.html","tribute","quota","∅",["feeds"],"termux-monorepo","page · free-tier feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
- ["dispatch-tree.html","tribute","coordination","role",["feeds","quefeeds","monikers"],"termux-monorepo","page · dispatch-tree feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
+ ["dispatch-tree.html","tribute","coordination","role",["feeds","quefeeds","monikers"],"termux-monorepo","page · dispatch-tree feed · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1)","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["countdowns.html","tribute","entries","∅",["feeds"],"termux-monorepo","page · countdown data (register) · tests","register of record (deadline-reminders) · wall stamps · site deploy"],
  ["d2-proposals.html","tribute","entries","∅",["feeds"],"termux-monorepo","page (static content of record) · tests","static of record · ∅ feed · site deploy"],
  ["linguist.html","tribute","identity","∅",["feeds","monikers"],"termux-monorepo","page · linguist feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
@@ -130,9 +131,9 @@ const SURFACES = [
  ["proposals.html","tribute","scoring","program",["feeds"],"termux-monorepo","page · proposals feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["referrals.html","tribute","web","domain",["feeds"],"termux-monorepo","page · referrals feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["telemetry.html","tribute","observatory","∅",["feeds"],"termux-monorepo","page · telemetry feed + history series · series generator · tests","feed generated_at + history-series appends · site deploy"],
- ["desk.html","tribute","entries","role",["feeds","quefeeds","monikers","governor"],"termux-monorepo","page · desk-feed · coordinator source · QUE feeds · tests","feed generated_at (bump-on-content-refresh rule) · site deploy"],
+ ["desk.html","tribute","entries","role",["feeds","quefeeds","monikers","governor"],"termux-monorepo","page · desk-feed · coordinator source · QUE feeds · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1)","feed generated_at (bump-on-content-refresh rule) · site deploy"],
  ["tracking.html","tribute","coordination","∅",["feeds"],"termux-monorepo","page · tracking feed · deadline register source · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
- ["family.html","tribute","identity","role",["monikers","feeds"],"termux-monorepo","page · family feed · monikers source · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
+ ["family.html","tribute","identity","role",["monikers","feeds"],"termux-monorepo","page · family feed · monikers source · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1)","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["Wagertome — Slate (index)","moneyball repo","moneyball","∅",["walletledger","bookledger"],"moneyball","site pages · site feeds · ledgers by reference","moneyball Pages deploy per merge · feed stamps · ∅ tagged releases (NOT_ESTABLISHED)"],
  ["Wagertome — Cards","moneyball repo","moneyball","role",["walletledger","monikers"],"moneyball","site pages · cards-feed · WALLETS source (monorepo)","moneyball Pages deploy · cards-feed stamps · ∅ tagged releases (NOT_ESTABLISHED)"],
  ["Wagertome — Pools","moneyball repo","moneyball","plane · role",["walletledger"],"moneyball","site pages · pools-feed · wallet-ledger source (monorepo)","moneyball Pages deploy · pools-feed census stamps (ledger head seq) · ∅ tagged releases (NOT_ESTABLISHED)"],

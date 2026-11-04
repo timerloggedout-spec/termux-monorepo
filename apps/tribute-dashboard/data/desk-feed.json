@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-04T09:04:37Z",
+  "generated_at": "2026-11-04T10:26:53Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -3285,6 +3285,39 @@
           "basis": "revised advisory #1 \u00b7 unoccupied angle \u00b7 signature moment fixture-proven in held staging (8/8) \u00b7 only target meeting the compressed clock"
         },
         "canonical_path": "internal/challenges/d2/proposals"
+      },
+      "que_dispatch": {
+        "filed_at": "2026-11-04T10:26:53Z",
+        "stage": "spec",
+        "source": "D2 manager QUE dispatch (owner direct 2026-11-04 02:25 PT)",
+        "items": [
+          {
+            "id": "media-prod",
+            "to": "Marketing D2",
+            "chat": "aa17b366-2ed8-4a9d-926f-6f6398e7ae1d",
+            "scope": "demo video (dual-gate) + slides + cover",
+            "state": "DISPATCHED",
+            "due": "2026-11-06 EOD PT",
+            "unblocks": "lablab Step 2\u21923"
+          },
+          {
+            "id": "vm-leg",
+            "to": "Swarm",
+            "scope": "VM provisioning leg",
+            "state": "ARMED \u2014 fires on VULTR_API_KEY (owner step open)",
+            "gate": "VULTR_API_KEY"
+          },
+          {
+            "id": "landing",
+            "scope": "attach media \u2192 Step 3 repo field \u2192 submit \u2192 confirmation_ref",
+            "state": "QUEUED",
+            "at": "2026-11-07",
+            "depends_on": [
+              "media-prod",
+              "vm-leg"
+            ]
+          }
+        ]
       }
     },
     {
@@ -4081,7 +4114,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-04T09:04:37Z",
+    "updated_at": "2026-11-04T10:26:53Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

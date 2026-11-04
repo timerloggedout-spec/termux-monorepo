@@ -659,6 +659,78 @@ reference sweep; the `/tribute/` → `/desk/` redirect-stub
 question is an execution detail settled at the pass, not
 here.
 
+## Brand issuance — Stagefoil, the desk-flow template (2026-11-04)
+
+**Commission (owner via main, 2026-11-04):** an ownable
+brand for the concept carried internally as "AutoDesk" —
+the Desk as an interactive-flow + routing template,
+clerk-operated (stage-0 decision object · typed stage
+states · routing guard · intake quarantine · receipt per
+transition · approval gates), born from D2 candidate B's
+learnings applied to the fleet's own desk inputs.
+"AutoDesk" collides with Autodesk: internal label only,
+never publishable.
+
+**ISSUED: `Stagefoil`** — coined compound: stage (the
+typed stage flow) + counterfoil (the retained stub that
+is the receipt of record for each entry). One word
+carries the concept's spine: every stage transition
+tears off its counterfoil. Pronounced STAYJ-foil; plain
+ASCII; slug form `stagefoil`.
+
+Family (minimal, brand layer only — NOT an App moniker,
+∅ SSOT App-table row, ∅ actor/slug provisioning):
+
+- Descriptor of record: "the clerk-operated desk-flow
+  template" (descriptive prose, never part of the mark).
+- Standing vocabulary under the brand: a **foil** = the
+  receipt issued per transition; a **stagefoil instance**
+  = one desk running the template.
+- Reserved normalized form: `Stagefoil Desk` for a
+  specific desk instance's display name, if one is ever
+  published. Leet/mark forms: none issued (a brand mark
+  layer is a future confer if a published surface needs
+  one).
+
+Collision evidence (this lane, firsthand, 2026-11-04):
+
+- In-fleet ∅: SSOT + Profile Registry + monorepo code
+  search + `config/registration_monikers.json` all 0.
+- Live-mark web check ∅: no product, company, or filing
+  under the exact string in/near software; adjacent marks
+  noted + distinguished — Stage-Gate® (Stage-Gate Inc.;
+  hyphenated two-word process mark ≠ this one-word coined
+  compound) · StageFlow (sales CRM) · Stagehand
+  (Browserbase browser-agent SDK — adjacent agent space,
+  distinct string + field).
+- Dead candidates, same pass (each killed by a live mark
+  in/near software): Counterfoil (RevOps platform) ·
+  Claviger (Claviger.AI agent governance) · Promptbook
+  (agent platform) · Gatebook (visitor mgmt) · Stubbook
+  (invoicing) · Passus (listed IT co) · Chirograph
+  (verification/workflow sw) · Sigillum (vaults + agent
+  e-signature) · Cartulary (apps + PyPI validator) ·
+  Muniment (compliance + AI archive products) ·
+  Tablinum (workflow + DB products) · Stagia (EduLab
+  listed-co platform + internship sw) · Promptuary
+  (Obsidian AI plugin + prompt products) · Transitus
+  (stewardship platform + IT cos) · Recepta (AI
+  receptionist + receipts platform) · Cuebook (multiple
+  live products) · Notula (editors + transcription +
+  health) · Schedula (Schedula™ healthcare) · Gradia
+  (four+ software cos) · Gatewarden/Wicketgate (gate
+  space crowded: Wicket ×3 + Warden agent gateway).
+  Acquittance cleared the collision pass but was NOT
+  issued: payment-discharge semantics only, weak fit.
+
+Use rule: records carrying the concept swap the label
+"AutoDesk" → **Stagefoil** (the Desk upgrade record + D2
+continuation plan first, per main); "AutoDesk" survives
+only as the attributed internal predecessor label in
+this issuance record. ∅ change to any desk
+implementation, routing, or record underneath — naming
+layer only (collapse-registry C3 discipline).
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

@@ -1108,6 +1108,12 @@ version and compared continuously until culling retires a version.
   a complete generational loop on a live campaign
   population is NOT_ESTABLISHED this epoch (0 culls in
   the 717-event wallet ledger of record).
+  Epoch likewise defined, ML sense (owner addition 3):
+  one full pass over the dataset of record (repo +
+  session + telemetry corpora + books/ledgers), bounded
+  by the wall; two axes stated - pass axis epoch >
+  cycle > iteration, evolve axis = generation; neither
+  axis borrows the other's completion.
 
 ## Campaign layout
 

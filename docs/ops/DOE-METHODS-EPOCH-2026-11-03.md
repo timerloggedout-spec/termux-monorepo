@@ -394,3 +394,68 @@ population of record.
   succession, and the cull machinery provisioned and verified
   empty — with the full loop's first closure awaiting a
   population that has actually been evaluated.
+
+## Epoch — definition of record, ML sense (owner addition 3, 2026-11-03)
+
+**Yes — epoch is ML.** An **epoch** is ONE FULL PASS over the
+dataset of record: the fleet's corpora that the epoch's
+methods ran over. For this epoch the dataset of record is:
+
+- the **repo corpus** — termux-monorepo @ master (the entire
+  repo is the experiment, owner definition 2026-10-30): the
+  DoE experiment records, the routed-dispatch stamp corpus,
+  the registries and feeds the census passed over;
+- the **session corpus** — the fleet's chat/session exports
+  (the attribution session-pointer tranche, 614 records,
+  corroborated under attribution/1.5; the same material Repo
+  Replay is built from);
+- the **telemetry corpus** — HindSight telemetry, ATES run
+  receipts, the quota registry + usage series;
+- the **books and ledgers** — the wagering book + ledger, the
+  wallet ledger (717 events at this epoch's census close).
+
+**The pass boundary is the wall.** An epoch's dataset is the
+corpus as it stands at the epoch's freeze (this epoch:
+2026-11-04 23:59 PT, with its scoring tail at judging close
+2026-11-18). Material landing during the pass — new commits,
+new telemetry, new records — belongs to the NEXT epoch's
+dataset, exactly as in ML training a sample arriving mid-epoch
+is next epoch's data. This is why the freeze discipline and
+the layering rule exist: layers and verdicts cite the dataset
+as passed, never a moving target. A partial pass is named as
+such: this epoch's census pass over the entity corpora
+completed (693 pools reconciled); its replay pass ran over
+the full book + ledger; the Speculators cycle's pass over its
+own dataset of record (the 12 × 4 run space) stands at 0/48 —
+the dataset exists, the pass has not run, which is precisely
+why no generation could lawfully turn over on it (§
+Generation, NOT_ESTABLISHED bound).
+
+**The two axes, stated plainly.** The four terms live on TWO
+axes, and conflating them is the error this section exists to
+prevent:
+
+- **The pass axis** — how much of the dataset has been
+  worked: **epoch ⊃ cycle ⊃ iteration**. A cycle is one
+  design → run → audit → verdict loop over its slice; an
+  iteration is one work batch inside a cycle (the atomic step
+  under it is a single run/dispatch — rule 7's sets-of-3 are
+  this family's standard batch). Progress on this axis is
+  measured in dataset fraction and verdicts closed.
+- **The evolve axis** — how the population changes:
+  **generation** is its unit, one population round
+  (population → evaluate → cull → next generation).
+  Progress on this axis is measured in turnovers, not dataset
+  fraction. A generation consumes however many iterations its
+  evaluation needs; an iteration may contain no evolution at
+  all.
+
+The axes intersect at evaluation: an evolve cycle's evaluate
+phase IS a pass over the population's accumulated records —
+dataset work in service of a population decision. But a
+completed pass does not imply a turnover (this epoch passed
+over its corpora fully while turning over zero live campaign
+populations), and a turnover does not require a full pass
+(chat-intent turned over on a population of two versions).
+Each axis reports its own state; neither borrows the other's
+completion.

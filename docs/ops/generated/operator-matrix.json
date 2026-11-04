@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 532,
-    "open_prs": 280,
+    "open_prs": 279,
     "pr_classes": {
-      "CANDIDATE": 132,
+      "CANDIDATE": 131,
       "EXTRACT": 10,
       "NEED_EVIDENCE": 138,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 47,
-      "prs": 278,
+      "prs": 277,
       "unlabelled_numbers": [
         308,
         388,
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T14:00:51Z",
+  "generated_at": "2026-11-04T14:06:18Z",
   "issues_unlabelled": [
     308,
     388,
@@ -158,7 +158,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "3ad912d3ef"
+    "sha": "4826208c2a"
   },
   "prs": [
     {
@@ -2141,20 +2141,6 @@
       "updated_at": "2026-11-04T13:00:50Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d08e28aa5b",
-      "labels": [],
-      "mergeable_state": "dirty",
-      "number": 4925,
-      "title": "Backend recon addendum: SnapDeploy sign-in = GitHub (owner fact 2026-11-04)",
-      "updated_at": "2026-11-04T14:00:37Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -3320,15 +3306,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "ba23837b06",
+      "head_sha": "9a4d4b4d73",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T14:00:23Z"
+      "updated_at": "2026-11-04T14:05:59Z"
     },
     {
       "class": "NEED_EVIDENCE",

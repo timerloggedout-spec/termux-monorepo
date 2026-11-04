@@ -177,12 +177,12 @@ def test_split_band_stages_parts_and_restores(tmp_path):
     files = by_source(manifest(staging))
     e = files["workspace/custom-connectors/c1/spend.jsonl"]
     assert e["exported"] is True
-    assert len(e["split"]["parts"]) == 2
-    assert e["split"]["part_size"] == 8 * 1024 * 1024
+    assert len(e["split"]["parts"]) == 3
+    assert e["split"]["part_size"] == 4 * 1024 * 1024
     assert e["split"]["total_size"] == len(data)
     assert (staging / "t0/workspace/custom-connectors/c1/spend.jsonl.split.json").is_file()
     for pr in e["split"]["parts"]:
-        assert (staging / pr).stat().st_size <= 8 * 1024 * 1024
+        assert (staging / pr).stat().st_size <= 4 * 1024 * 1024
     export_doc = json.loads((staging / "EXPORT.json").read_text())
     assert export_doc["gates"]["pass"] is True
     assert export_doc["counts"]["split"] == 1

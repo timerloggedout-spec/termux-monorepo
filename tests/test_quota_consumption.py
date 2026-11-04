@@ -31,7 +31,10 @@ def _fixture(tmp_path):
     w("ops/challenge/desk-feed.json", json.dumps({"traversals": [
         {"provider_usage": [{"session_id": "sess-1", "usage": {
             "value": 77, "unit": "tokens", "match": "exact",
-            "status": "established", "source": "desk-feed exact usage"}}]}
+            "status": "established", "source": "desk-feed exact usage"}},
+         {"session_id": "sess-waived", "usage": {"value": None, "unit": None,
+            "match": None, "status": "waived", "source": "desk-feed",
+            "note": "Pre-mandate shared bucket usage is unrecoverable."}}]}
     ]}))
     w("ops/quota/allocation-plan.json", "{}")
     w("ops/quota/rate-limit-events.json", "{}")
@@ -54,7 +57,12 @@ def _fixture(tmp_path):
             {"model": "session-model", "tasks": [
                 {"ts": "2026-11-02T05:00:00Z", "session_id": "sess-1",
                  "role": "reviewer", "task_class": "session-review",
-                 "moniker": "participant-session"}]}]}
+                 "moniker": "participant-session"}]}]},
+        {"provider": "waived-provider", "models": [
+            {"model": "waived-model", "tasks": [
+                {"ts": "2026-10-20T05:00:00Z", "session_id": "sess-waived",
+                 "role": "reviewer", "task_class": "pre-mandate-review",
+                 "moniker": "participant-waived"}]}]}
     ]}))
     w("ops/quota/registry.json", '{"services": []}')
     # 3L0 intake: one stamped call, one null-usage call, one
@@ -153,6 +161,11 @@ def test_task_tree_joins_usage_by_dispatch_and_preserves_role_and_pool(tmp_path)
     stask = session_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
     assert stask["attribution"] == "session_id"
     assert stask["usage"]["value"] == 77 and stask["usage"]["status"] == "established"
-    assert tree["coverage"]["tasks"] == 4
+    waived_provider = next(p for p in tree["providers"] if p["provider"] == "waived-provider")
+    wtask = waived_provider["models"][0]["roles"][0]["participants"][0]["tasks"][0]
+    assert wtask["usage"]["status"] == "waived"
+    assert "unrecoverable" in wtask["usage"]["note"]
+    assert tree["coverage"]["tasks"] == 5
     assert tree["coverage"]["established"] == 3
+    assert tree["coverage"]["waived"] == 1
     assert tree["coverage"]["not_established"] == 1

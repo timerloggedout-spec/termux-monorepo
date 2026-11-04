@@ -193,11 +193,27 @@ def governor_feed(token, at):
         f"repo:{REPO} label:deferred-by-tier updated:>={day}")
     deferred_open = search_count(
         f"repo:{REPO} label:deferred-by-tier state:open")
-    flow = {"state": "NOT_ESTABLISHED",
-            "gap": "no governor-event batch has landed yet; "
-                   "Cadence's T1 emitter drops "
-                   "que-governor-event/v1 batches at "
-                   "ops/que/events/governor-events-<date>.jsonl"}
+    # Seam reconciliation (Desk, 2026-11-04): the governor
+    # plane of record is Cadence's que-governor-feed/v1; this
+    # feed's governor section is the ADMISSION CENSUS
+    # (swarm-admission stamps — a different source system).
+    # The state section therefore POINTS at the record feed
+    # instead of naming an open gap; the T1 batch fold below
+    # rides alongside as evidence, not as the state source.
+    flow = {"state_source_of_record": {
+                "schema": "que-governor-feed/v1",
+                "canonical": "ops/quota/que-governor-feed.json",
+                "mirror": "apps/tribute-dashboard/data/"
+                          "que-governor-feed.json",
+                "custody": "Cadence — governor plane of record "
+                           "(state · deferrals · priority "
+                           "windows)"},
+            "this_feed_role": "admission census "
+                              "(swarm-admission stamps)",
+            "t1_governor_events_fold": {
+                "state": "NOT_ESTABLISHED",
+                "gap": "no governor-event batch has landed in "
+                       "ops/que/events/ yet"}}
     batches = sorted(EVENTS.glob("governor-events-*.jsonl"))
     if batches:
         total, by_kind, latest = 0, {}, None
@@ -216,12 +232,13 @@ def governor_feed(token, at):
                 except ValueError:
                     kind = "unparseable"
                 by_kind[kind] = by_kind.get(kind, 0) + 1
-        flow = {"state": "populated",
-                "event_shape": "que-governor-event/v1 (folded "
-                               "verbatim; counts only)",
-                "batches": [b.name for b in batches],
-                "events_total": total, "by_kind": by_kind,
-                "latest_event_at": latest}
+        flow["t1_governor_events_fold"] = {
+            "state": "populated",
+            "event_shape": "que-governor-event/v1 (folded "
+                           "verbatim; counts only)",
+            "batches": [b.name for b in batches],
+            "events_total": total, "by_kind": by_kind,
+            "latest_event_at": latest}
     return {
         "schema": "que.governor/v1", "generated_at": iso(at),
         "admission": {

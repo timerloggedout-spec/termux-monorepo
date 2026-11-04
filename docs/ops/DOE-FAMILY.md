@@ -1076,6 +1076,25 @@ version and compared continuously until culling retires a version.
   as validation-yield's flat plane; an arm down or ungated is
   reported as such, never silently flat.
 
+- **epoch-methods-2026-11-03** (registered 2026-11-03, owner
+  commission) — the experiment methods ACTUALLY IMPLEMENTED
+  this epoch, defined from receipts in
+  `docs/ops/DOE-METHODS-EPOCH-2026-11-03.md`: replay-audit
+  invariants (B1-B5 + F1, exercised fixtures) - two-leg
+  corroboration census - Panel Judge Mirror (BULL/EKMAN,
+  dispersion/NULL discipline, layered forecasts) - G0 exit
+  test (one live cycle, legs named incl. zero-due) -
+  pre-registered campaign design (Speculators thresholds +
+  lossless gate) - MVT (co-source 36e3433d; pool-scope-
+  methods/v1 bounds) - Amendment-6 snapshot method (% =
+  stamped snapshot, never a constant) - QUE-plane admission/
+  ordering as treatments (instrumentation of record;
+  controlled comparison NOT_ESTABLISHED). Plus the cycle as
+  practiced: pre-register -> build by a non-evaluator seat ->
+  firsthand verification -> corroboration -> verdict of
+  record -> registration -> layering -> closure with its
+  next trigger named.
+
 ## Campaign layout
 
 ### Candidate method versions — dreambeans concepts (owner ruling, 2026-11-01)

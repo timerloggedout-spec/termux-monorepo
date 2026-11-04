@@ -30,6 +30,7 @@
     ["Free-tier value", tribute + "free-tier-value.html", "free-tier-value"],
     ["Dispatch tree", tribute + "dispatch-tree.html", "dispatch-tree"],
     ["Countdowns", tribute + "countdowns.html", "countdowns"],
+    ["D2 proposals", tribute + "d2-proposals.html", "d2-proposals"],
     ["Linguist", tribute + "linguist.html", "linguist"],
     ["Delphi RFP", tribute + "delphi-rfp.html", "delphi-rfp"],
     ["Delphi ledger", tribute + "delphi-ledger.html", "delphi-ledger"],

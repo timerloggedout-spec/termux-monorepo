@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-04T01:51:10Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-04T01:52:23Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `b865a48b25` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `442c0963af` (hygiene: in_progress, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 531 issues, 270 PRs. PR classes: EXTRACT 11 / CANDIDATE 128 / NEED_EVIDENCE 131 / SUPERSEDE 0.
+**Open inventory:** 531 issues, 269 PRs. PR classes: EXTRACT 10 / CANDIDATE 128 / NEED_EVIDENCE 131 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -23,7 +23,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4503 | EXTRACT | unlabelled | `8dcc310fc9` | success | success | unstable | docs: app-package D — CHANGELOG discipline · verification decision · perf budget |
 | #4516 | EXTRACT | unlabelled | `80756f2385` | success | success | unstable | feat(schema): integration 5 — schema_version discipline, state stamped end-to-en |
 | #4521 | EXTRACT | unlabelled | `b7306c42b9` | success | success | unstable | feat(ereader): EPUB reader-edition export — generator · TUI · evidence workflow  |
-| #4769 | EXTRACT | unlabelled | `f74760641f` | success | success | unstable | StudySprint 0.5.1 — OCR via tesseract.js (qualifications closure ②) |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -282,7 +281,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4690 | NEED_EVIDENCE | unlabelled | `a5d56fdac6` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
 | #4699 | NEED_EVIDENCE | unlabelled | `da4dea4119` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4758 | NEED_EVIDENCE | unlabelled | `1e1b0c5398` | not_reported | not_reported | unknown | Swarm: per-call token usage into dispatch stamps (consumption fix leg) |
-| #4765 | NEED_EVIDENCE | unlabelled | `6e3c3c7908` | not_reported | not_reported | unstable | quota: vultr record conformed to credit-record shape (fixes offline spine crash) |
+| #4765 | NEED_EVIDENCE | unlabelled | `6e3c3c7908` | not_reported | not_reported | unknown | quota: vultr record conformed to credit-record shape (fixes offline spine crash) |
 
 ## Families (open)
 
@@ -297,6 +296,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 46 | 268 |
+| unlabelled | 46 | 267 |
 
 **Unlabelled open issues (46):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3752, #4008, #4052, #4212, #4214, #4215, #4216, #4217, #4218, #4219, #4220, #4221, #4222, #4223, #4224, #4225, #4226, #4227, #4228, #4229, #4230, #4231, #4232, #4233, #4234, #4235, #4236, #4237, #4524, #4547, #4718, #4721 — worked oldest-first by the issue-lifecycle lane pass.

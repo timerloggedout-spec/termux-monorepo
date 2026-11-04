@@ -1146,6 +1146,34 @@ smallest-free-int → `docs/ops/4N0N-REGISTRATION-PROTOCOL.md`
 | derived handle, taken | S1 | existing registry entry | mechanical | assigned-variant (smallest free ≥2; v3 = unlinkable SHA codename, stem ∅) |
 | slug, taken | S1 | platform namespace | mechanical | assigned-variant (bounce V1 → V2) |
 
+### Worked rows — active avoidance sweep (Recon 🏅, 2026-11-04)
+
+In-flight priming/provisional labels only (issued names excluded).
+Web sweep evidence, Recon seat, 2026-11-04; formal ™-registry
+status + handle availability = NOT_ESTABLISHED (∅ registry
+search run) — S3 here = web adjacency, marked as such.
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| `labbook` (provisional, ml/labbook) | S3 | LabBook LIMS (Fondation Mérieux, since 2010) · Thermo Qtegra "LabBook" · OSN LabBook · labbook.tech ELN · CTAN/PyPI/GitHub occupants | exact ×many + generic | dead-on-mark — provisional discipline holds: never publish/brand; owner naming pass coins distinct name before records go weight-bearing; internal path tolerable w/ provisional marking |
+| `Domino` (internal shorthand) | S3 | Domino Data Lab (domino.ai, ML platform, category leader) | exact, same category | dead-on-mark (external use) — stands ONLY as internal shorthand for the external reference; own artifacts never branded Domino; post-qualification moniker = coined distinct name (already planned) |
+| `Splinter` (program label) | S3 | Splinter OSS web-app testing framework (same craft namespace) · Splinter Software · Splinterlands cluster | exact + generic-severe | dead-on-mark — DEAD (ruled NOT ADOPTED at any layer, Registry ruling 2026-11-03, PR #4636; grounds: TMNT IP · title-layer · semantics inverted); S3 occupancy corroborates; the control-plane name of record = `Registrar` (issued, next row), ¬ a pending coinage |
+| `Registrar` (control-plane name) | S1–S5 | ∅ | — | **issued** + executed 2026-11-03 (record PR #4648; repo `timerloggedout-spec/appid-registrar` live) — the Splinter program's name of record |
+| `Commit Replay` (working name) | S3/S5 | gitlogue owns the phrase semantically (playback; ours = pointer-based file creation); phrase descriptive/generic | adjacent semantic | distinguished (scope: internal use stands; public use requires a paired coined mark, never the bare descriptive phrase) |
+| `Rev-wRight` family (mark layer, #2358) | S4 | Rev. Jeremiah Wright coverage (phonetic) | adjacent phonetic | distinguished — exact ∅; coinages clear via the #2358 pass; prefer max visual distance (R3vWright > Rev-wRight) |
+
+Severity of record (Recon): labbook HIGH · Domino HIGH-if-
+external · Splinter MED-HIGH · Commit Replay LOW-MED ·
+Rev-wRight LOW.
+
+**Avoidance sweep — tranche 2 (Recon 🏅, 2026-11-04):**
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| `Hunt` (quip-placeholder, §13.4 example only) | S1/S3/S5 | in-fleet hunt functions (internal overload) · Product Hunt ("hunting" = its core verb, platform since 2013) · bare verb generic | exact-verb + generic | dead-on-mark — NEVER formalize; quip stays caged in the worked example; formal seeker/discovery class name via the naming flow (correction of record, PR #54) |
+| `tribute-*` desk surfaces (app dir · /tribute/ · TRIBUTE-DASHBOARD.md · verify script) | S1 | Z3π0 HELP-WANTED campaign ("Tribute = foreign repos only", owner rule) | in-fleet scope 💥, live now | dead-on-fleet — desk surface wearing the campaign's name; rename already ruled (PR #4652), execution POST-FREEZE, ∅ churn pre-freeze |
+| `desk-*` rename targets (/desk/ · DESK-DASHBOARD.md · desk-* workflows) | S5 | "desk" = help-desk category generic (Zendesk · Zoho Desk · Freshdesk) | generic-term | distinguished — CLEAR internal (non-public surface; generic tolerable); mitigation: ∅ external branding of bare desk-*, Vercel desk-* projects internal only |
+| `6REA7` (version label, moneyball v3) | S3/S4 | exact string ∅ brand (sole commerce hit = SKU fragment, Rockport Works boot) · leet segmentation → "GREAT" (intentional pun; external parse = SKU-like) | ∅ live mark | issued (version-plane label only) — re-map if ever promoted to product name (SKU confusion + "great" reads as a claim) |
 ### proActive preparation — use
 
 - Precompute maps for QUEUED namings before they are urgent

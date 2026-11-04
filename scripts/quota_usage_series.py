@@ -346,7 +346,9 @@ def build(root):
                 if not usage and sid and str(sid) in session_usage:
                     usage = session_usage[str(sid)]
                     attribution = "session_id"
-                if usage and usage.get("status") == "measured":
+                if usage and (usage.get("status") == "measured"
+                              or (usage.get("match") == "exact"
+                                  and _num(usage.get("value")) is not None)):
                     usage_view = {"value": usage.get("value"),
                                   "unit": usage.get("unit"), "match": "exact",
                                   "status": "established",

@@ -1021,6 +1021,145 @@ via the Web3 seat's pre-serve gate. Returned to the Web3
 seat (779d33ad) + main (9a88e77a) at issuance.
 
 
+## Naming-collision 💥 mapping protocol (2026-11-04)
+
+`[MUSEai]@{role:{naming-collision-map}}` — proActive preparation
+(owner commission via main, 2026-11-04). Authority answers of
+record: Registry lane (registration-monikers seat), this date.
+
+**Scope:** the naming FLOW (coinage → collision check → issuance
+→ record) is the Registry lane's; this § standardizes the MAP
+every collision pass produces — rows comparable, reusable,
+pre-computable before a naming is urgent. It changes ∅ in the
+flow or in any issuance it maps.
+
+### The map — row schema
+
+One row per (candidate × collision object), filed in the
+issuance record:
+
+| field | content |
+|---|---|
+| `candidate` | exact string, case-preserved |
+| `class` | moniker · brand · unit · vocabulary · handle/slug |
+| `screen` | S1–S5 (§Screens) where the object was found |
+| `object` | colliding/adjacent string + owner (mark · plane · record) |
+| `relation` | exact · adjacent · stem · semantic · mechanical |
+| `disposition` | §Dispositions |
+| `evidence` | source + date + firsthand seat — counts, ¬ impressions |
+| `mitigation` | distinction / use rule, when disposition ≠ dead |
+
+∅ row on a screen ⇒ NOT_CHECKED on that screen, never "clear".
+
+### Screens — canonical order (Registry ruling ①)
+
+Cheap deterministic first; a candidate dies at its first
+failing screen ∧ the screen is named in its disposition.
+
+| # | screen | checks |
+|---|---|---|
+| S1 | in-fleet records | SSOT (this file) · Profile Registry · `config/registration_monikers.json` · code search ∀ relevant repos — hits classified: record's-own usage = confirmation, ¬ collision |
+| S2 | fleet vocab planes | quota plane · collapse registry · reserved classes · product surfaces (Secure Vault etc.) |
+| S3 | live marks / web | exact string → field adjacency → ™ presentation |
+| S4 | sound / segmentation | homophones · leet respell · re-segmentation — instrument of record: Linguist Grimoire `phase_codec` round-trip (leet form collides ∅ issued form ∧ ∅ `CANONICAL_TOKEN` of a different sense ∧ plain ASCII ∧ inverse-decodes exactly) |
+| S5 | semantics gate | candidate ¬ re-imports the confusion being removed |
+
+Mechanical namespaces (handles/slugs) run inside S1/S6-of-
+practice: taken ⇒ deterministic assignment, never improvised —
+smallest free integer ≥2 (`4N0N-REGISTRATION-PROTOCOL.md` §3/§5,
+`scripts/registration_monikers/registry.py`) ∨ slug bounce
+V1 → V2 (Grimoire slug-safe, ∅ third improvisation).
+
+### Dispositions (Registry ruling ② — core 4 + evidence-forced extensions)
+
+| disposition | meaning | evidence case |
+|---|---|---|
+| `issued` | ∀ screens pass; name of record | Stagefoil · booktally |
+| `distinguished` | adjacent mark stands; distinct string + field, distinction recorded | Stagefoil vs Stage-Gate®/StageFlow/Stagehand · booktally vs Tally/Tally Book/TruckTally |
+| `reserved-absent` | canonical held for a class that does ¬ exist; never rendered live | bookmaker · 11th man · `Stagefoil Desk` (reserved normalized form) |
+| `dead-on-mark` | live mark/product kills (S3; S4 when the kill is a live mark's sound) | Counterfoil · PaperPoints · Jeton · Sigillum · Stagia · Fortally (∼Foretally, S4 kill) · Tallion |
+| `dead-on-fleet` | S1/S2 in-fleet collision kills | `Vault` → Secure Vault (Mimir issuance pass) |
+| `dead-on-plane` | fleet vocab-plane collision kills, mark-free | Callchit → `call` ∈ quota plane |
+| `dead-on-semantics` | screens pass; meaning re-imports the confusion (S5) ∨ established wrong-sense corpus | Specscrip · Speclet · cardhand |
+| `cleared-held` | ∀ screens pass, ¬ issued; fallback of record | Acquittance · Bookchit · cardkeeper |
+| `assigned-variant` | mechanical-namespace outcome of record (taken ⇒ smallest free integer ≥2 ∨ slug bounce V1→V2; ¬ a screen verdict) | the handle/slug rows in §Worked rows (Monikers / handles) |
+
+Standing rules: identity ≠ collision (S4 same-sense canonical
+overlap, e.g. `w4g3r`) · a colliding legacy string is never
+silently swapped — custodians run a VERSIONED transition,
+legacy stands in hash-chained history (booktally disposition).
+
+### Worked rows
+
+Anchors (Registry ruling ③, verified on master): booktally →
+§"Unit-name issuance — booktally" above (PR #4825) · Stagefoil
+→ §"Brand issuance — Stagefoil" above (PR #4817) · MoneyBall
+vocab → §"Naming-collapse registry — listing convention
+(2026-11-02)" (PR #3828 + amend #3830) ∧ §"MoneyBall
+vocabulary issuance — full naming" above (PR #4834) ·
+smallest-free-int → `docs/ops/4N0N-REGISTRATION-PROTOCOL.md`
+§3 + §5 ∧ `scripts/registration_monikers/registry.py`.
+
+**booktally (unit):**
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| `soft_quota_token` (legacy) | S2 | quota plane {soft · quota · token} | stem ×3 | dead-on-plane (owner misread = the collision in fact) |
+| `booktally` | S1–S5 | ∅ exact ∀ | — | **issued** |
+| `booktally` | S3 | Tally · Tally Book · TruckTally | adjacent | distinguished (one-word compound, unit label only) |
+| Fortally | S4→S3 | Foretally (forecasting product) | homophone | dead-on-mark |
+| PaperPoints · Jeton | S3 | PaperWagers · payments brand | field-exact | dead-on-mark |
+| Tallion | S3 | accounting cluster (Tabellion · Tallie · Tillion) | adjacent | dead-on-mark |
+| Speclet | S5 | established term (.NET/EQC speclets) | semantic | dead-on-semantics |
+| Callchit | S2 | `call` = provider/API-call vocab | stem | dead-on-plane (∅ mark — plane kills alone) |
+| Specscrip | S5 | scrip = redeemable substitute currency | semantic | dead-on-semantics |
+| Bookchit | ∀ pass | ∅ | — | cleared-held (parse cost) |
+
+**Stagefoil (brand):**
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| AutoDesk (priming label) | S3 | Autodesk | exact-adjacent | dead-on-mark (internal-only predecessor; survives attributed in the issuance record only) |
+| `Stagefoil` | S1–S5 | ∅ exact ∀ | — | **issued** |
+| `Stagefoil` | S3 | Stage-Gate® · StageFlow · Stagehand | adjacent | distinguished (hyphenated process mark · CRM · agent SDK) |
+| Counterfoil · Claviger · Promptbook · Gatebook · Stubbook · Passus · Chirograph · Sigillum · Cartulary · Muniment · Tablinum · Stagia · Promptuary · Transitus · Recepta · Cuebook · Notula · Schedula · Gradia · Gatewarden/Wicketgate | S3 | live mark each, in/near software | exact/adjacent | dead-on-mark ×21 |
+| Acquittance | ∀ pass | ∅ | — | cleared-held (payment-discharge semantics, weak fit) |
+
+**MoneyBall vocabulary:**
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| ∀ issued terms | S2 | exclusion screen ⑧ {quota · odds-shaped · real-money · live marks · bare forms} | stem/semantic | issued only outside the screen |
+| `tallybook` · `scorebook` | S3/S1 | exact live apps · scoring-surface sense | exact | dead-on-mark / dead-on-semantics |
+| `cardhand` | S5 | playing-card-hand corpus | semantic | dead-on-semantics |
+| `cardkeeper` | ∀ pass | lost to record's own `pool member` | — | cleared-held |
+| `wager` (`w4g3r`) | S4 | CedrLang `CANONICAL_TOKEN`, same sense | exact | **issued** (identity, ¬ collision) |
+| `pool member` (45 hits) | S1 | record's own usage | exact | **issued** (confirmation, ¬ collision) |
+| `bookmaker` · `11th man` | S2 | reserved absent classes | — | reserved-absent |
+
+**Monikers / handles:**
+
+| candidate | screen | object | relation | disposition |
+|---|---|---|---|---|
+| `Vault` (for the Mimir pair) | S2 | Secure Vault (product surface) | conceptual | dead-on-fleet |
+| `Oracle` (in `Archaeo · Oracle`) | S1 | Delphi Oracle (D0 surface) | adjacent | distinguished (paired form always in full; bare `Oracle` = Delphi) |
+| derived handle, taken | S1 | existing registry entry | mechanical | assigned-variant (smallest free ≥2; v3 = unlinkable SHA codename, stem ∅) |
+| slug, taken | S1 | platform namespace | mechanical | assigned-variant (bounce V1 → V2) |
+
+### proActive preparation — use
+
+- Precompute maps for QUEUED namings before they are urgent
+  (pending registrations · reserved classes · priming labels
+  in circulation). A priming label in use w/o map rows = an
+  unmapped 💥 risk, flagged at the Desk.
+- Issuance records file their rows here (the 2026-11-04
+  issuances carry them in prose; this schema names their form).
+- A dead row is permanent for its (candidate × object) pair;
+  re-checks cite the row + re-verify the object still lives.
+
+Registry lane = reviewer of record for this protocol;
+amendments ride its gate.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

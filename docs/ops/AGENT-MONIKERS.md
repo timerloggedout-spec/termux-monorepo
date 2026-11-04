@@ -1516,6 +1516,99 @@ family is the occupant set of record. The surfaces map's
 code layers carry this family (Viz amendment to #4888's
 data block).
 
+
+### G. Fuzzy-match association sweep (QUE `que-20261104-fuzzy-assoc-sweep`, 2026-11-04)
+
+Method: fuzzy (stem/plural/camel variants) across SSOT/
+registry · repo tree + code · ledgers/feeds · surfaces ·
+releases; evidence = Recon 🏅 sweep (code-search @master,
+both repos; counts = files) + this seat's verified record.
+Association kinds: **LITERAL** (exact form occupies) ·
+**FAMILY** (compound/derived occupants) · **XREF**
+(alias/cross-ref only) · **NOT_ESTABLISHED**. ∅ literal-only
+verdicts. **Releases plane: ∅ associations ∀ items** —
+the only releases are `apk-v*` tags (monorepo) and ∅
+(moneyball); the plane is measured, not skipped.
+
+| item | association | evidence / note |
+|---|---|---|
+| Orchestrators | LITERAL ∧ XREF | ATES occupant {`ates_orchestrator.py` · ATES-ORCHESTRATOR-DOE-MVT.md; mono 355}; generic seat word stays alias → manager |
+| Operators | LITERAL + FAMILY | mono 689 {OPERATOR-SIGNING.md · ARCHW1Z-OPERATOR-CHECKLIST.md}; canonical role stands, generic sense heavy |
+| ChronoMancers | LITERAL | `chronomancer.py` + SPEC (mono 82); fork-selector binding (§C Ruling 2) |
+| Scouts | FAMILY | §F.1 module family ×6 + tests ×3 |
+| Managers | FAMILY | mono 593 compounds only {manager_agent.py · MANAGER-TOURNAMENT-CONTRACT.md}; ∅ bare-role occupant; canonical via alias family |
+| Players | LITERAL-thin ∧ XREF | GAME_PLAYER_FLEET.md (mono 53); alias → participant stands |
+| Teams | FAMILY | AGENT-TEAM-ROSTER/CONTROL-PLANE family (mono 287); `team` registered |
+| Participants | LITERAL | participant_cycle.py · CHALLENGE-PARTICIPANT-MIRROR.md (mono 120) + SSOT canonical |
+| Speculators | LITERAL | MoneyBall subject class live {mono 37 · mb 11: wallets/strategies · DESIGN}; record-layer sense (§B) |
+| Wagerers | XREF-thin | mono 5, dictionary/SSOT-level only; alias → gambler stands |
+| DoE | LITERAL | office of record {DOE-* docs · doe.html · role register} |
+| Pool | LITERAL | plane of record {pools feeds 693 · ledger} |
+| Critic | XREF (noise-flagged) | mono 202 inflated by `critical`-compounds; ∅ critic role of record; alias → reviewer only |
+| 11th Man | LITERAL-thin | roster term in DoE roles epoch (mono 6); mention ≠ occupant — reserved-absent stands |
+| Research | FAMILY | RESEARCH-SOURCES/TRIGGERS family ∀ planes (mono 684); domain stands |
+| Judges modeling | FAMILY | judge surfaces {PODIUM-DATASET.md · PANEL-JUDGE-MIRROR.md · ates-judge-build}; program stands |
+| OSINT | LITERAL | CHALLENGE-OSINT.md · osint_watch.py (mono 69); method stands |
+| Reverse Engineering | LITERAL | RE-TAXONOMY-TEMPLATES.md · LABEL-MATRIX.md (mono 40); domain stands |
+| Marketing | LITERAL | domain of record {referral registry · marketing surfaces · Gantt} |
+| anon | FAMILY (noise-flagged) | 4n0n-layer vocab {4N0N-BRANDING-PERCEPTION.md · DISPATCH-TREE-FEED.md}; count inflated by anonymous-compounds |
+| Grimoire | FAMILY | substrate of record {panel-feed tables, §D census} |
+| SWE \| Dev&&Planning | FAMILY | mono 3464, SWE-bench/eval sense dominant {swe_evaluation_contract.py}; builder ker {planning → coordinator} stands |
+| Cadence's | XREF | seat-ref (§C); function family LITERAL {cadence-optimizer · tick ledger; mono 354} |
+| Quota Manager | LITERAL | artifact {PROVIDER-QUOTA-MANAGERS.md · ops/quota/provider-managers.json ×20} |
+| Leagues | LITERAL-thin | event-name sense {AMD AI League · CERTIFICATIONS-PROGRAM.md; mono 37}; structure stands |
+| Observatory | LANE + LITERAL | lane of record (§F.1); surfaces {telemetry group} |
+| ForeSight | LANE | lane of record (§F.1); practice surfaces {Delphi · Recon · research family} |
+| Coach | NOT_ESTABLISHED | sweep confirms: mono 4, ∅ role-defining; reserved-ungrounded stands |
+| franchise owner | XREF | mono 1 = IP sense (living-franchise); alias → operator stands |
+| GM | NOT_ESTABLISHED (occupant) | mono 473 = token noise; "general manager" exact = 0; alias → manager is listing convention, occupant ∅ |
+| Bookmaker | LITERAL-thin | mono 7, ∀ doctrine/reserve contexts; reserved-absent stands. **Naming gap: the book-making FUNCTION (Web3 ledger system, §C Ruling 1) is an unnamed occupant** |
+| Wizard / commands | FAMILY | ArchWizard family {mono 113 · ARCHWIZARD_TASKS.md}; commands = generic vocab family {COMMAND-CENTER.md · mono 924}; §E containment stands |
+
+#### G.1 Opportunity candidates (wide scope; disposition candidates — gate/owner calls)
+
+| candidate | association | disposition candidate |
+|---|---|---|
+| **Custodian** | LITERAL — active role in the MoneyBall plane {mb 11: DESIGN · WALLET-LEDGER · propose.html; mono 8} | REGISTER as plane-scoped role (custodian-reviewed derivations, §13, give it work) |
+| **Sentinel** | LITERAL + FAMILY — tool class {archwiz/sentinel.py · termux-resource-sentinel.sh; mono 134} | REGISTER as mechanism (cf. Governor, §F) ∨ alias → observer w/ ker {machine watchers} |
+| **Clerk** | LITERAL — occupied by provisioning name {QuarantineBrowserClerk} + Stagefoil "clerk-operated" descriptor | register role word w/ ker {desk-flow operator} — flag: App-name adjacency |
+| **Steward** | LITERAL {steward.py · MERGE-PROMOTION-STEWARD.md; mono 92} | confirm canonical (owner list omitted it; association now evidenced) |
+| **Judge · Evaluator · Validator** | LITERAL/FAMILY {PANEL-JUDGE-MIRROR · ates-judge-build · nc1_evaluator.py · contract validators} | confirm canonical set members w/ code/surface families (owner list reached them only via Critic/Judges) |
+| **House · Requester · Pool member** | FAMILY/LITERAL-thin {mb DESIGN · intake templates · phrase ×7} | confirm issued MoneyBall vocab w/ association evidence |
+| **Foil** | XREF {SSOT · que_feed_collect.py} | REGISTER as unit word (Stagefoil receipt-of-record; cf. booktally pattern) |
+| **Keeper** | FAMILY + XREF {keeper-watchdog · tunnel-keeper (infra) + queued alt `Keeper` (UgreenSkills)} | watch item — cross-plane name pressure (infra tools ∧ queued username) |
+| **Curator** | FAMILY-thin {mono 8} | XREF → steward ker {watch/curation} ∨ leave unlisted |
+| **Dispenser** | LITERAL-thin {apk-xref toolkit sense} | hold — Runable dispenser ruling pending (owner item) |
+| **Book-making function name** | occupant exists, name barred (Ruling 1) | coined-name commission candidate (Wagertome process) |
+| **Release-plane naming** | ∅ class associations in releases | note: named release lines exist informally (submission-freeze tag); plane unexploited |
+
+**Naming-gap subset (Recon re-read, naming lens):** unnamed
+occupants = **6** {Custodian · Steward · Judge · Evaluator ·
+Validator (family-level) · Requester (thin)} — live
+occupants under bare role words, ∅ coined/issued name.
+Already-named (∅ gap): Sentinel · Clerk · Dispenser
+(descriptive/issued). Alias-family members: Pool member ·
+Foil · Keeper (Keeper's coinage exists as queued mark
+`Keep3r`, UgreenSkills slot). ∅ occupant (nothing to name):
+House · Curator.
+
+**Adjacency flags (Recon, wide scope):** Custodian → class
+{DoE roles epoch} + program {MoneyBall custody} · Judge →
+class {challenge judges, PODIUM-DATASET} + surfaces
+{panel-judge mirror · ATES judge} · Evaluator → program
+{SWE evaluation-contract plane} · **House → the house role
+is UNBUILT in the Book (program opportunity, ∅ occupant)** ·
+Curator → surface-adjacent {stars/forks watch, Observatory
+plane} · ChronoMancer → program {cb-1 emission experiment —
+the §C emission gap} · OSINT → program {recruitment OSINT}
+· Wizard → repo subtree {archwiz/ program tree} · Keeper →
+programs {watchdog/tunnel-keeper infra}. Releases plane:
+∅ adjacencies ∀ (measured).
+
+Noise discipline: Critic/SWE/GM/anon counts are
+tokenization-inflated and are reported flagged, never as
+occupancy.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

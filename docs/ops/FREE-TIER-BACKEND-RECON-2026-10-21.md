@@ -205,33 +205,13 @@ the June 2026 halving report (1,500 OCPU-h / 9,000 GB-h). Where a survey and a
 vendor page disagreed, the vendor figure is the one recorded above; survey-only
 figures are marked "(survey)" in-line.
 
-## Update 2026-11-04 — free hosting census + AWS free-plan flow (Recon lane, owner fwd)
-
-**AWS — "card-blocked" is STALE for the NEW signup flow.** Builder ID + social sign-in -> Free plan (up to 6 months, up to $200 credits = $100 at signup + up to $100 earnable; includes Amazon Bedrock + AWS Lambda; no payment method for most new customers; $1-hold exception on file) — aws.amazon.com/start-here, firsthand read 2026-11-04. The owner's 2026-11-03 wall was the ADVANCED flow (card wall, owner-confirmed). NOT_ESTABLISHED: owner's cohort admission (Free plan is new-customers-only; an existing/former account is ineligible and lands on Paid) and whether the aborted 2026-11-03 attempt left an account shell — both resolvable only in-flow; owner testing the new flow himself, outcome stamp = his. Adjacent: promo/credit codes redeem only against an existing account (no signup bypass); gift cards / VCC / PayPal are not accepted AWS payment methods; SageMaker Studio Lab is DEAD for new signups (eff. 2026-07-30).
-
-**Cloudflare is already fleet-held** -> CF Tunnel is provisioned ingress at $0 (quick tunnel = no account/domain; named = CF account + domain). Structural find: tunnel turns owned compute into a public endpoint, so the provisioned set grows by owned-compute + tunnel. Compute remains the gap (standing always-on host = none; GitHub Actions = ephemeral only).
-
-**No-card provisioning candidates (checked 2026-11-04, none provisioned):**
-
-| Candidate | Free terms (as checked) |
-|---|---|
-| SnapDeploy | 4x 512MB containers, 100 awake-h/mo |
-| Leapcell | 100K invocations/mo, 3 GB-h |
-| Appwrite Functions | 750K Python exec/mo; 7-day console-activity pause hazard |
-| alwaysdata | persistent, 256MB cap |
-| Back4app | candidate (terms per Recon log 2026-11-04) |
-| zrok | tunnel, 5GB/day |
-
-**CARD-CLOSED — no provisioning attempts:** Oracle - GCP - Azure - Koyeb - Northflank - Modal - Sevalla - DigitalOcean - Qoddi - Fly - Railway - Cerebras.
-**DEAD:** Glitch - Deta - Cyclic - Heroku free - Deno Deploy (shutdown) - HF Docker Spaces (paid) - SageMaker Studio Lab (new signups).
-Always-free VMs: none qualifying (Oracle card-gated). Storage-plane companion: `docs/ops/FREE-STORAGE-RECON-2026-11-03.md` + `ops/free-storage/free-storage-registry.json`.
-
 *End of recon. Signups, registry edits, and builds are separate, scoped orders —
 this file only updates the fleet's knowledge.*
 
 ## Addendum — 2026-11-04 (Recon census, owner-forwarded)
 
 *Evidence class — Source: Recon 🏅 lane census checked 2026-11-04, forwarded by the owner 2026-11-04 05:43 PT; values attributed to that census, NOT independently re-verified by this lane; full census + URL list in the Recon lane's 2026-11-04 daily log.*
+*Companion: `docs/ops/FREE-STORAGE-RECON-2026-11-03.md` + `ops/free-storage/free-storage-registry.json` — the storage-plane sibling of this hosting census.*
 
 ### A1. Structural — ingress solved, compute is the gap
 

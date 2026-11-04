@@ -140,6 +140,50 @@ def priority_feed(tiers_doc, at):
             "source": "ops/quota/dispatch-tiers.json priority_window"}
 
 
+def queue_feed(queued, in_progress, tiers_doc, at):
+    """que-queue-feed/v1 — the producer-of-record feed for the
+    Desk surface (Desk-upgrade LEG 1): run-queue state by tier
+    + dispatch claims (the measurement plane's record), folded
+    live at publish from the dispatch machinery's own feed.
+    Published as a byte-identical pair: canonical
+    ops/que/feeds/queue-feed.json + the dashboard mirror."""
+    body = tier_feed(queued, in_progress, tiers_doc, at)
+    claims = {"source": "ops/challenge/dispatch-state-feed.json",
+              "source_schema": None, "source_generated_at": None,
+              "counts": {}, "active_claims": []}
+    src = ROOT / "ops" / "challenge" / "dispatch-state-feed.json"
+    if src.exists():
+        d = json.loads(src.read_text())
+        claims["source_schema"] = d.get("schema")
+        claims["source_generated_at"] = d.get("generated_at")
+        claims["counts"] = d.get("counts", {})
+        for disp in d.get("dispatches", []):
+            if disp.get("claim"):
+                claims["active_claims"].append({
+                    "issue": disp.get("issue"),
+                    "entry": disp.get("entry"),
+                    "title": disp.get("title"),
+                    "state": disp.get("state"),
+                    "claim": disp["claim"]})
+    return {"schema": "que-queue-feed/v1", "generated_at": iso(at),
+            "provenance": {
+                "producer": "optimizations-assurance (QUE lead) "
+                            "via que-feed-collect",
+                "design_input": "AutoDesk (INTERNAL concept "
+                                "label only — ™-collision "
+                                "stamped: Autodesk brand; never "
+                                "a published surface name/brand) "
+                                "— agent-browser-clerk pattern "
+                                "(D2 candidate B learnings); the "
+                                "Desk as interactive-flow + "
+                                "routing template, agent-operated",
+                "cadence": "*/10 (que-feed-collect)"},
+            "queue": {"tiers": body["tiers"],
+                      "totals": body["totals"],
+                      "wedged_ancient": body["wedged_ancient"]},
+            "dispatch_claims": claims}
+
+
 def governor_feed(token, at):
     def search_count(q):
         data = api("/search/issues?q=" + urllib.parse.quote(q), token)
@@ -149,6 +193,31 @@ def governor_feed(token, at):
         f"repo:{REPO} label:deferred-by-tier updated:>={day}")
     deferred_open = search_count(
         f"repo:{REPO} label:deferred-by-tier state:open")
+    flow = {"state": "NOT_ESTABLISHED",
+            "gap": "no governor-event batch has landed yet; "
+                   "Cadence's T1 emitter drops "
+                   "que-governor-event/v1 batches at "
+                   "ops/que/events/governor-events-<date>.jsonl"}
+    batches = sorted(EVENTS.glob("governor-events-*.jsonl"))
+    if batches:
+        total, by_kind = 0, {}
+        for b in batches:
+            for line in b.read_text().splitlines():
+                if not line.strip():
+                    continue
+                total += 1
+                try:
+                    e = json.loads(line)
+                    kind = e.get("kind") or e.get("event") \
+                        or "unspecified"
+                except ValueError:
+                    kind = "unparseable"
+                by_kind[kind] = by_kind.get(kind, 0) + 1
+        flow = {"state": "populated",
+                "event_shape": "que-governor-event/v1 (folded "
+                               "verbatim; counts only)",
+                "batches": [b.name for b in batches],
+                "events_total": total, "by_kind": by_kind}
     return {
         "schema": "que.governor/v1", "generated_at": iso(at),
         "admission": {
@@ -158,13 +227,7 @@ def governor_feed(token, at):
             "deferral_stamped_issues_24h": deferred_24h,
             "deferral_stamped_open": deferred_open,
             "source": "swarm-admission stamps (deferred-by-tier label)"},
-        "flow_governor": {
-            "state": "NOT_ESTABLISHED",
-            "gap": "the PAT flow governor's state (projections, "
-                   "courtesy holds, deferral events) has no "
-                   "repo-visible emitter yet; governor events "
-                   "join the T1 transition stream when Cadence's "
-                   "emitter lands"}}
+        "flow_governor": flow}
 
 
 def transitions(state, queued, in_progress, completed, tiers_doc, at):
@@ -242,6 +305,14 @@ def main() -> int:
     EVENTS.mkdir(parents=True, exist_ok=True)
     (FEEDS / "queue-by-tier.json").write_text(json.dumps(
         tier_feed(queued, in_progress, tiers_doc, at), indent=1) + "\n")
+    qf_bytes = json.dumps(
+        queue_feed(queued, in_progress, tiers_doc, at),
+        indent=1) + "\n"
+    (FEEDS / "queue-feed.json").write_text(qf_bytes)
+    mirror = ROOT / "apps" / "tribute-dashboard" / "data" \
+        / "que-queue-feed.json"
+    mirror.parent.mkdir(parents=True, exist_ok=True)
+    mirror.write_text(qf_bytes)  # byte-identical pair
     (FEEDS / "priority-windows.json").write_text(json.dumps(
         priority_feed(tiers_doc, at), indent=1) + "\n")
     (FEEDS / "governor.json").write_text(json.dumps(

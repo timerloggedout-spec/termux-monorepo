@@ -54,6 +54,24 @@ def test_transitions_emit_full_lifecycle():
     assert st["active"] == {}
 
 
+def test_queue_feed_shape_and_provenance():
+    feed = q.queue_feed([run(1, "apk gate", "2026-11-04T07:00:00Z")],
+                         [], TIERS, AT)
+    assert feed["schema"] == "que-queue-feed/v1"
+    assert "AutoDesk" in feed["provenance"]["design_input"]
+    # owner name constraint: internal label only, ™-collision
+    # stamped wherever the record carries it
+    assert "INTERNAL concept label only" in \
+        feed["provenance"]["design_input"]
+    assert "Autodesk" in feed["provenance"]["design_input"]
+    assert feed["queue"]["tiers"]["1"]["queued"] == 1
+    # no dispatch-state feed in the test tree: claims stay an
+    # honest empty fold with the source named
+    assert feed["dispatch_claims"]["active_claims"] == []
+    assert feed["dispatch_claims"]["source"].endswith(
+        "dispatch-state-feed.json")
+
+
 def test_transitions_vanished_is_a_gap_event():
     r = run(5, "countdowns", "2026-11-04T07:00:00Z")
     _, st = q.transitions({}, [r], [], [], TIERS, AT)

@@ -1,0 +1,99 @@
+{
+ "schema": "que-queue-feed/v1",
+ "generated_at": "2026-11-04T08:44:49Z",
+ "provenance": {
+  "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
+  "design_input": "AutoDesk (INTERNAL concept label only \u2014 \u2122-collision stamped: Autodesk brand; never a published surface name/brand) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
+  "cadence": "*/10 (que-feed-collect)"
+ },
+ "queue": {
+  "tiers": {
+   "1": {
+    "tier": 1,
+    "queued": 1,
+    "in_progress": 0,
+    "oldest_queued_at": "2026-11-02T09:37:37Z",
+    "by_workflow_queued": {
+     "PR scope guard": 1
+    }
+   },
+   "2": {
+    "tier": 2,
+    "queued": 0,
+    "in_progress": 1,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
+   },
+   "3": {
+    "tier": 3,
+    "queued": 0,
+    "in_progress": 0,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
+   },
+   "4": {
+    "tier": 4,
+    "queued": 0,
+    "in_progress": 9,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
+   }
+  },
+  "totals": {
+   "queued": 1,
+   "in_progress": 10
+  },
+  "wedged_ancient": [
+   {
+    "id": 37655538554,
+    "workflow": "Merge Promotion Queue",
+    "created_at": "2026-10-07T16:57:32Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37655538554"
+   },
+   {
+    "id": 36803855107,
+    "workflow": "PR production ledger",
+    "created_at": "2026-10-01T02:01:22Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
+   },
+   {
+    "id": 36803852632,
+    "workflow": "Peer review orchestrator",
+    "created_at": "2026-10-01T02:01:19Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
+   }
+  ]
+ },
+ "dispatch_claims": {
+  "source": "ops/challenge/dispatch-state-feed.json",
+  "source_schema": "dispatch-state-feed/v1",
+  "source_generated_at": "2026-11-04T03:04:42Z",
+  "counts": {
+   "claimed": 2,
+   "escalated": 1,
+   "queued": 1
+  },
+  "active_claims": [
+   {
+    "issue": 4277,
+    "entry": "D1",
+    "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item",
+    "state": "claimed",
+    "claim": {
+     "at": "2026-11-03T12:41:03Z",
+     "by": "optimizations-assurance"
+    }
+   },
+   {
+    "issue": 4330,
+    "entry": "D1",
+    "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)",
+    "state": "claimed",
+    "claim": {
+     "at": "2026-11-03T13:47:14Z",
+     "by": "optimizations-assurance"
+    }
+   }
+  ]
+ }
+}

@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
-          git add ops/que
+          git add ops/que apps/tribute-dashboard/data/que-queue-feed.json
           if git diff --cached --quiet; then
             echo "no feed change this cycle"
           else

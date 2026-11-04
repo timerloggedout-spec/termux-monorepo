@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 532,
-    "open_prs": 279,
+    "open_prs": 280,
     "pr_classes": {
-      "CANDIDATE": 130,
-      "EXTRACT": 12,
+      "CANDIDATE": 133,
+      "EXTRACT": 10,
       "NEED_EVIDENCE": 137,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 47,
-      "prs": 277,
+      "prs": 278,
       "unlabelled_numbers": [
         308,
         388,
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T13:32:41Z",
+  "generated_at": "2026-11-04T13:46:58Z",
   "issues_unlabelled": [
     308,
     388,
@@ -158,7 +158,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "98a3a1c127"
+    "sha": "87ec0625ee"
   },
   "prs": [
     {
@@ -230,34 +230,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "35d3421bc1",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T13:30:35Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "ed42860013",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T13:32:21Z"
     },
     {
       "class": "EXTRACT",
@@ -1097,6 +1069,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "3a4c500f93",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-04T13:34:25Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1523,6 +1509,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a1836db2b9",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T13:44:02Z"
     },
     {
       "class": "CANDIDATE",
@@ -2155,6 +2155,20 @@
       "updated_at": "2026-11-04T13:00:50Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fb97dc2dac",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4919,
+      "title": "docs(ops): free-tier recon addendum 2026-11-04 \u2014 no-card capacity, closed/dead classes, AWS signup learning",
+      "updated_at": "2026-11-04T13:45:58Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2653,7 +2667,7 @@
       },
       "head_sha": "4b523b7cb3",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T10:51:48Z"
@@ -3311,7 +3325,7 @@
       },
       "head_sha": "449c633756",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T12:22:31Z"

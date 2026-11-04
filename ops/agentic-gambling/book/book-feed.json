@@ -1732,6 +1732,41 @@
    "pct_consumed": null,
    "pct_remaining": null,
    "pct_note": "no wall — window open-ended until the instance's run record lands; no honest percentage"
+  },
+  {
+   "id": "PROP-01-fireworks-ai",
+   "group": "Proposals — §13 pipeline (stage-0 contracts)",
+   "subject": "Hunt finds new Fireworks AI by 2026-12-31 {Y/N}",
+   "proposal_ref": "moneyball prop-0001 (data/proposals/prop-0001.json; proposal chain data/proposal-log.jsonl, 10 receipts, chain valid; doctrine-fit stamp = Web3 seat seq9; Book intake handoff seq10, 2026-11-04T09:45:50Z)",
+   "record_of_record": "provider/quota registry — termux-monorepo ops/quota/registry.json @master (blob f60b9e22d9c7 at listing; Fireworks AI verified ABSENT at listing, firsthand)",
+   "knowable": "2026-12-31T23:59:59-08:00",
+   "anchors": null,
+   "anchors_note": "no fleet deadline-reminders register entry for this subject; knowable_at carried from the derived contract verbatim (prop-0001 stamp)",
+   "settle": {
+    "field": "resolution per the derived contract's resolution rule (carried verbatim in resolution_rule)",
+    "source": "ops/quota/registry.json @master — only landed, PR-stamped additions settle (B3); settling receipt = a registry addition entry for Fireworks AI present in the registry blob whose history carries the merging PR's stamp (PR number + merge SHA), carrying hunt attribution",
+    "value": null
+   },
+   "resolution_rule": "Y iff a landed, PR-stamped registry addition for Fireworks AI first appears in the provider/quota registry at or before knowable_at carrying hunt attribution; otherwise N (§13.4 derived contract)",
+   "proof_obligation_ref": "prop-0001#proof-obligation (5 fields: record_of_record_ref · settling_receipt_shape · stamping_role = MoneyBall seat, B3 · corroboration_leg = DoE settlement replay/audit check, single-leg settlement HELD not final · dispute_rule = correction only by receipted appended act, unresolved dispute reads as a gap)",
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": "NOT_ESTABLISHED at listing — no cited record supports a value; cited-record-only discipline (B1)"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "window": {
+    "window_start": "2026-11-04",
+    "window_start_basis": "book listing (intake) date",
+    "wall": "2026-12-31T23:59:59-08:00"
+   }
   }
  ]
 }

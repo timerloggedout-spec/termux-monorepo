@@ -65,7 +65,7 @@ CENSUS_ONLY = {
             "batch path (POOL-SYNC option (b))",
     "explorer": "owner pool-scope directive (single entity)",
     "other": "ops/agentic-gambling/lane.json pooled buckets",
-    "(card)": "moneyball DESIGN §3 card pools (grandfathered unscoped)",
+    "card_pools": "moneyball DESIGN §3 card pools (grandfathered, pool_class ABSENT on their events; their source-count rides the moniker class in the census of record — not a class string)",
     "provider-depth3+": "provider-phrases/phrases.json prefixes "
                         "(depth>=3 legs registered, walker follow-on)",
 }
@@ -225,10 +225,15 @@ def main():
             print(f"NOTE: {cls} walker unproven (misses "
                   f"{len(missing_from_walk)} existing) — report-only")
     for cls, source in CENSUS_ONLY.items():
-        key = None if cls == "(card)" else cls
-        receipt["census_only"][cls] = {
-            "source": source,
-            "existing": len(by_class.get(key, set())) if key else 4}
+        if cls == "card_pools":
+            receipt["census_only"][cls] = {
+                "source": source,
+                "existing": sum(1 for e in existing.values()
+                                if "pool_class" not in e)}
+        else:
+            receipt["census_only"][cls] = {
+                "source": source,
+                "existing": len(by_class.get(cls, set()))}
     receipt["census_only"]["provider-depth3+"]["existing"] = sum(
         1 for e in existing.values()
         if e.get("pool_class") == "provider" and (e.get("depth") or 0) >= 3)
@@ -272,7 +277,7 @@ def main():
 
     depth_counts = {}
     for e in list(existing.values()):
-        key = f"{e.get('pool_class', '(card)')}@{e.get('depth') or 1}"
+        key = f"{e.get('pool_class', 'card_pools')}@{e.get('depth') or 1}"
         depth_counts[key] = depth_counts.get(key, 0) + 1
     census = {"schema": "moneyball-pool-census/v1",
               "ledger_events": len(events),

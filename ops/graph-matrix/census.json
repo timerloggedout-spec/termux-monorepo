@@ -1,7 +1,7 @@
 {
  "schema": "graph-matrix/v1",
  "schema_note": "v1+drafts (owner order 2026-11-01): prs gains open_draft, open_draft_share, drafts[] \u2014 additive extension, v1 consumers unaffected.",
- "census_at_utc": "2026-11-03T23:52:37.938133+00:00",
+ "census_at_utc": "2026-11-04T00:24:02.421357+00:00",
  "repo": "timerloggedout-spec/termux-monorepo",
  "defs": {
   "stale_branch": "tip committedDate < census-30d",
@@ -13,13 +13,13 @@
   "draft": "open PR with isDraft=true; drafts[] is dataset signal (kept, never pruned)"
  },
  "branches": {
-  "total": 3535,
-  "stale": 1037,
+  "total": 3548,
+  "stale": 1038,
   "orphan_no_assoc_PR": 354,
   "stale_and_orphan": 138
  },
  "prs": {
-  "total": 4070,
+  "total": 4091,
   "open": 264,
   "open_draft": 34,
   "open_draft_share": 0.1288,
@@ -34,13 +34,13 @@
     "number": 578,
     "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
     "created_at": "2026-09-17T08:34:24Z",
-    "age_days": 47.6
+    "age_days": 47.7
    },
    {
     "number": 740,
     "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
     "created_at": "2026-09-22T13:05:01Z",
-    "age_days": 42.4
+    "age_days": 42.5
    },
    {
     "number": 752,
@@ -58,25 +58,25 @@
     "number": 762,
     "title": "ops: map live plugin connector surface and parity skills",
     "created_at": "2026-09-23T03:33:34Z",
-    "age_days": 41.8
+    "age_days": 41.9
    },
    {
     "number": 764,
     "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
     "created_at": "2026-09-23T03:42:32Z",
-    "age_days": 41.8
+    "age_days": 41.9
    },
    {
     "number": 829,
     "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
     "created_at": "2026-09-25T01:06:46Z",
-    "age_days": 39.9
+    "age_days": 40.0
    },
    {
     "number": 958,
     "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
     "created_at": "2026-10-01T01:04:39Z",
-    "age_days": 33.9
+    "age_days": 34.0
    },
    {
     "number": 970,
@@ -88,7 +88,7 @@
     "number": 1301,
     "title": "docs(telemetry): add equation registry and Wolfram verification",
     "created_at": "2026-10-20T06:16:16Z",
-    "age_days": 14.7
+    "age_days": 14.8
    },
    {
     "number": 1538,
@@ -100,7 +100,7 @@
     "number": 1612,
     "title": "docs(research): map new free LLM catalogs to telemetry gates",
     "created_at": "2026-10-24T01:09:43Z",
-    "age_days": 10.9
+    "age_days": 11.0
    },
    {
     "number": 1630,
@@ -112,7 +112,7 @@
     "number": 1677,
     "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
     "created_at": "2026-10-26T23:11:31Z",
-    "age_days": 8.0
+    "age_days": 8.1
    },
    {
     "number": 2461,
@@ -160,7 +160,7 @@
     "number": 3242,
     "title": "feat(quota): harden provider consumption audit",
     "created_at": "2026-11-01T20:33:32Z",
-    "age_days": 2.1
+    "age_days": 2.2
    },
    {
     "number": 3969,
@@ -190,7 +190,7 @@
     "number": 4017,
     "title": "feat(ops): map federated AppIDs and independent release lanes",
     "created_at": "2026-11-03T01:05:41Z",
-    "age_days": 0.9
+    "age_days": 1.0
    },
    {
     "number": 4020,
@@ -208,13 +208,13 @@
     "number": 4083,
     "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
     "created_at": "2026-11-03T05:53:37Z",
-    "age_days": 0.7
+    "age_days": 0.8
    },
    {
     "number": 4084,
     "title": "docs(deploy): map Vercel alternatives and staged failover",
     "created_at": "2026-11-03T05:57:12Z",
-    "age_days": 0.7
+    "age_days": 0.8
    },
    {
     "number": 4089,
@@ -226,24 +226,26 @@
     "number": 4617,
     "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
     "created_at": "2026-11-03T20:42:00Z",
-    "age_days": 0.1
+    "age_days": 0.2
    }
   ],
-  "merged": 3319,
+  "merged": 3340,
   "closed_unmerged": 487,
   "open_no_closing_ref": 257,
-  "open_unlinked_issue_target": 208,
-  "open_unlinked_any_ref": 179,
-  "merged_no_closing_ref": 3289,
-  "merged_unlinked_issue_target": 1882,
-  "merged_unlinked_any_ref": 1078,
+  "open_unlinked_issue_target": 209,
+  "open_unlinked_any_ref": 180,
+  "merged_no_closing_ref": 3310,
+  "merged_unlinked_issue_target": 1895,
+  "merged_unlinked_any_ref": 1087,
   "open_zero_commits": [],
-  "merged_head_branch_residual_name_match": 3238,
-  "open_head_branch_missing": []
+  "merged_head_branch_residual_name_match": 3258,
+  "open_head_branch_missing": [
+   4730
+  ]
  },
  "issues": {
-  "total": 629,
-  "open": 523,
+  "total": 635,
+  "open": 529,
   "open_surface_unlinked": 226,
   "open_unlinked_strict": 206
  },
@@ -2273,6 +2275,38 @@
    [
     4668,
     4294
+   ],
+   [
+    4716,
+    4466
+   ],
+   [
+    4717,
+    4466
+   ],
+   [
+    4718,
+    4466
+   ],
+   [
+    4719,
+    4276
+   ],
+   [
+    4719,
+    4466
+   ],
+   [
+    4720,
+    4466
+   ],
+   [
+    4721,
+    4466
+   ],
+   [
+    4721,
+    4685
    ]
   ],
   "issue_issue_mutual_pairs": 3,

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Surfaces Map — Planes × Taxonomy × Shared Substrate</title>
+<!--
+  DRAFT for review (commission: owner via main, 2026-11-04).
+  Visual mapping: per surface -> its plane + the taxonomy levels it
+  renders (levels per reconciliation #4884: role · office · plane ·
+  domain · method · program · structure); the shared substrate as
+  its own layer, edges = what each surface draws from it.
+  Inputs: #4884 · Admin systems inventory · MoneyBall DESIGN §12
+  surface inventory · QUE feeds {measurement · governor} ·
+  desk.html sections. Mapping judgments are viz's draft - main +
+  Desk/Web Dev reads settle them before this serves.
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .draft{border:1px solid #ffb454;color:#ffb454;border-radius:8px;padding:.5rem .8rem;font-weight:600}
+  svg text{font:12px -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;fill:#e8ecf3}
+  svg .sub{font-size:10.5px;fill:#9aa6bd}
+  table.mx{border-collapse:collapse;width:100%}
+  table.mx th,table.mx td{border:1px solid #2a2f36;padding:.3rem .5rem;text-align:left;font-size:.9rem;vertical-align:top}
+  .note{color:#8a919c;font-size:.88rem}
+</style>
+</head>
+<body>
+<div class="topbar" id="topbar"></div>
+<main>
+<h1>Surfaces map — planes × taxonomy × shared substrate</h1>
+<p class="draft">DRAFT — for main + Desk/Web Dev reads; not yet the served home of record.</p>
+<p>Each surface sits in its primary plane. Under it: the taxonomy
+levels the surface actually renders (of role · office · plane ·
+domain · method · program · structure, per reconciliation #4884).
+The substrate band is shared: lines show which planes draw on each
+substrate element; the table gives the per-surface edges.</p>
+<div id="diagram"></div>
+<section>
+<h2>Mapping table</h2>
+<div id="table"></div>
+</section>
+<section>
+<h2>Reading notes</h2>
+<ul>
+<li>Dual-home surfaces are drawn once, at their plane: the Book
+renders on tribute (wagering-book.html) from the book ledger, while
+Cards/Pools/Wallets/Settlement serve from the MoneyBall site on the
+same ledgers — the substrate, not the home, is what they share.</li>
+<li>desk.html is the widest consumer: entries office + QUE feeds +
+governor stream + monikers (its sections: desk · dispatch ·
+traversal board · provider usage · distribution · dispatch queue ·
+QUE governor · provenance).</li>
+<li>Pools appears on both homes (tribute census matrix + MoneyBall
+site pools) over one wallet ledger — one fold, two renders.</li>
+<li>Levels name what a surface RENDERS, not what it is: a surface
+in the quota plane can render structure (pools do) without being a
+structure.</li>
+</ul>
+<p class="note">Draft of record: the map data block in this page.
+Corrections land as data edits, never prose-only.</p>
+</section>
+</main>
+<script src="./chartkit.js"></script>
+<script src="./dashboard.js"></script>
+<script src="./shell.js"></script>
+<script>
+
+// ==== map data (draft of record for review) ====
+const SUBSTRATE = [
+ {id:"monikers", label:"AGENT-MONIKERS SSOT", note:"canonical names · collapse registry · moniker graduations"},
+ {id:"feeds", label:"Surface feeds", note:"per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts"},
+ {id:"quefeeds", label:"QUE feeds", note:"measurement · governor · queue-by-tier · priority windows"},
+ {id:"walletledger", label:"Wallet ledger", note:"ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds"},
+ {id:"bookledger", label:"Book ledger", note:"ops/agentic-gambling/book/ ledger.jsonl + challenges-book — subjects · positions · settlements"},
+ {id:"governor", label:"Governor stream", note:"PAT flow governor {used · remaining · projected · trigger · hard limit}"},
+ {id:"naminggate", label:"Naming gate", note:"Registry reviewer of record · #4884 reconciliation · gate rulings"}
+];
+const PLANES = [
+ {id:"identity", label:"Identity & Registry", color:"#5aa2ff"},
+ {id:"quota", label:"Providers & Quota", color:"#3ecf8e"},
+ {id:"scoring", label:"Scoring & Method", color:"#c792ea"},
+ {id:"entries", label:"Challenges & Entries", color:"#ffb454"},
+ {id:"moneyball", label:"MoneyBall · Web3", color:"#ff6b6b"},
+ {id:"observatory", label:"Observatory & Telemetry", color:"#4dd0e1"},
+ {id:"coordination", label:"Coordination & QUE", color:"#a8b46b"},
+ {id:"web", label:"Web & Presentation", color:"#9aa6bd"}
+];
+// surface: [name, home, plane, levels rendered, draws-from substrate ids]
+const SURFACES = [
+ ["quota.html","tribute","quota","domain · structure",["feeds","governor","monikers"]],
+ ["quota-usage.html","tribute","quota","domain · structure",["feeds","governor"]],
+ ["quota-graphs.html","tribute","quota","domain · method",["feeds","governor"]],
+ ["quota-swarm.html","tribute","quota","plane · structure",["feeds","quefeeds"]],
+ ["admin.html","tribute","web","structure · office",["feeds","monikers","naminggate"]],
+ ["admin-graph.html","tribute","web","structure",["feeds"]],
+ ["oracle.html","tribute","scoring","method · program",["feeds"]],
+ ["3l0.html","tribute","scoring","method",["feeds"]],
+ ["moneyball.html","tribute","moneyball","program · plane",["feeds","bookledger"]],
+ ["wagering-book.html","tribute","moneyball","program · structure",["bookledger","feeds"]],
+ ["pools.html","tribute","moneyball","structure · plane",["walletledger","naminggate"]],
+ ["mvt.html","tribute","scoring","method",["feeds"]],
+ ["doe.html","tribute","scoring","method · office",["feeds","monikers"]],
+ ["ates.html","tribute","scoring","method",["feeds"]],
+ ["results-index.html","tribute","scoring","method · program",["feeds"]],
+ ["free-tier-value.html","tribute","quota","domain",["feeds"]],
+ ["dispatch-tree.html","tribute","coordination","structure · office · role",["feeds","quefeeds","monikers"]],
+ ["countdowns.html","tribute","entries","program · structure",["feeds"]],
+ ["d2-proposals.html","tribute","entries","program",["naminggate"]],
+ ["linguist.html","tribute","identity","structure · domain",["feeds","monikers"]],
+ ["delphi-rfp.html","tribute","scoring","method · program",["feeds"]],
+ ["delphi-ledger.html","tribute","scoring","program · structure",["feeds"]],
+ ["classifiers.html","tribute","scoring","method · structure",["feeds","monikers"]],
+ ["pr-lanes.html","tribute","coordination","structure · role",["feeds","quefeeds"]],
+ ["proposals.html","tribute","scoring","method · program",["feeds"]],
+ ["referrals.html","tribute","web","program · domain",["feeds"]],
+ ["telemetry.html","tribute","observatory","plane · structure",["feeds"]],
+ ["desk.html","tribute","entries","office · program · role",["feeds","quefeeds","monikers","governor"]],
+ ["tracking.html","tribute","coordination","program · structure",["feeds"]],
+ ["family.html","tribute","identity","role · structure",["monikers","feeds"]],
+ ["MoneyBall site — Slate (index)","moneyball repo","moneyball","program",["walletledger","bookledger","naminggate"]],
+ ["MoneyBall site — Cards","moneyball repo","moneyball","structure · role",["walletledger","monikers"]],
+ ["MoneyBall site — Pools","moneyball repo","moneyball","structure · plane",["walletledger"]],
+ ["MoneyBall site — Wallets","moneyball repo","moneyball","structure",["walletledger"]],
+ ["MoneyBall site — Settlement","moneyball repo","moneyball","program · structure",["bookledger","walletledger"]],
+ ["Tribute queues (classified Web3)","tribute","moneyball","structure",["feeds","naminggate"]],
+ ["Validation surfaces (classified Web3)","tribute","scoring","method · structure",["feeds","naminggate"]]
+];
+// edges: substrate -> planes it feeds (derived from SURFACES draws)
+
+// ==== pure logic (node-sim tested) ====
+function planeDraws(surfaces){
+  const out={};
+  surfaces.forEach(function(s){
+    (out[s[2]]=out[s[2]]||{});
+    s[4].forEach(function(d){ out[s[2]][d]=true; });
+  });
+  return out;
+}
+function substrateConsumers(surfaces){
+  const out={};
+  surfaces.forEach(function(s){ s[4].forEach(function(d){ (out[d]=out[d]||[]).push(s[0]); }); });
+  return out;
+}
+if (typeof module!=="undefined") module.exports={planeDraws,substrateConsumers};
+// ==== end pure logic ====
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+(function(){
+  const W=1180, colW=W/PLANES.length, topH=64, planeY=92, planeH=560, subY=planeY+planeH+88, subH=96;
+  const H=subY+subH+30;
+  const planeX={}; PLANES.forEach(function(p,i){ planeX[p.id]=i*colW+colW/2; });
+  const subX={}; SUBSTRATE.forEach(function(s,i){ subX[s.id]=(i+0.5)*(W/SUBSTRATE.length); });
+  const pd=planeDraws(SURFACES);
+  let g='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Surfaces map diagram">';
+  g+='<text x="10" y="26" font-size="15" font-weight="700">SURFACES by PLANE</text>';
+  g+='<text x="10" y="46" class="sub">chips = surfaces (count of taxonomy levels rendered in the table)</text>';
+  PLANES.forEach(function(p,i){
+    const x=i*colW+4, w=colW-8;
+    g+='<rect x="'+x+'" y="'+planeY+'" width="'+w+'" height="'+planeH+'" rx="8" fill="none" stroke="'+p.color+'"/>';
+    g+='<text x="'+(x+6)+'" y="'+(planeY+16)+'" font-weight="700" fill="'+p.color+'">'+esc(p.label)+'</text>';
+    const ss=SURFACES.filter(function(s){return s[2]===p.id;});
+    ss.forEach(function(s,j){
+      const y=planeY+30+j*30;
+      if(y>planeY+planeH-16) return;
+      g+='<rect x="'+(x+6)+'" y="'+y+'" width="'+(w-12)+'" height="24" rx="5" fill="#171c28" stroke="#232b3d"/>';
+      g+='<text x="'+(x+11)+'" y="'+(y+16)+'">'+esc(s[0].length>24?s[0].slice(0,23)+'…':s[0])+'</text>';
+    });
+    if(ss.length>17) g+='<text x="'+(x+6)+'" y="'+(planeY+planeH-6)+'" class="sub">+'+(ss.length-17)+' in table</text>';
+  });
+  Object.keys(pd).forEach(function(pid){
+    Object.keys(pd[pid]).forEach(function(d){
+      g+='<line x1="'+planeX[pid]+'" y1="'+(planeY+planeH)+'" x2="'+subX[d]+'" y2="'+subY+'" stroke="#3a4356" stroke-width="1" opacity="0.55"/>';
+    });
+  });
+  g+='<text x="10" y="'+(subY-14)+'" font-size="15" font-weight="700">SHARED SUBSTRATE</text>';
+  SUBSTRATE.forEach(function(s,i){
+    const w=W/SUBSTRATE.length-8, x=i*(W/SUBSTRATE.length)+4;
+    g+='<rect x="'+x+'" y="'+subY+'" width="'+w+'" height="'+subH+'" rx="8" fill="#12161f" stroke="#5aa2ff"/>';
+    g+='<text x="'+(x+7)+'" y="'+(subY+18)+'" font-weight="700">'+esc(s.label)+'</text>';
+    const words=s.note.split(' ');
+    let line='', ly=subY+36;
+    words.forEach(function(wd){
+      if((line+' '+wd).length>26){ g+='<text x="'+(x+7)+'" y="'+ly+'" class="sub">'+esc(line)+'</text>'; ly+=13; line=wd; }
+      else line=line?line+' '+wd:wd;
+    });
+    if(line) g+='<text x="'+(x+7)+'" y="'+ly+'" class="sub">'+esc(line)+'</text>';
+  });
+  g+='</svg>';
+  document.getElementById("diagram").innerHTML=g;
+  const subLabel={}; SUBSTRATE.forEach(function(s){ subLabel[s.id]=s.label; });
+  const planeLabel={}; PLANES.forEach(function(p){ planeLabel[p.id]=p.label; });
+  let t='<table class="mx"><thead><tr><th>surface</th><th>home</th><th>plane</th><th>levels rendered</th><th>draws from substrate</th></tr></thead><tbody>';
+  SURFACES.forEach(function(s){
+    t+='<tr><td>'+esc(s[0])+'</td><td>'+esc(s[1])+'</td><td>'+esc(planeLabel[s[2]])+'</td><td>'+esc(s[3])+'</td><td>'+s[4].map(function(d){return esc(subLabel[d]);}).join(' · ')+'</td></tr>';
+  });
+  t+='</tbody></table>';
+  document.getElementById("table").innerHTML=t;
+})();
+</script>
+</body>
+</html>

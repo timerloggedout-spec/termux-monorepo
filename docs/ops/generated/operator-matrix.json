@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 531,
-    "open_prs": 278,
+    "open_prs": 280,
     "pr_classes": {
       "CANDIDATE": 128,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 139,
+      "EXTRACT": 10,
+      "NEED_EVIDENCE": 142,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 46,
-      "prs": 276,
+      "prs": 278,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,7 +101,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-04T09:26:48Z",
+  "generated_at": "2026-11-04T09:29:50Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,7 +156,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "f6ce145c74"
+    "sha": "c601d58914"
   },
   "prs": [
     {
@@ -298,20 +298,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0f45ddefd7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4841,
-      "title": "feat(dashboard): Marketing Gantt page + canon 38",
-      "updated_at": "2026-11-04T09:21:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1515,20 +1501,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "ca2610daf6",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-04T09:25:14Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2111,6 +2083,20 @@
       "updated_at": "2026-11-04T09:05:21Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0f45ddefd7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4841,
+      "title": "feat(dashboard): Marketing Gantt page + canon 38",
+      "updated_at": "2026-11-04T09:21:47Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2633,14 +2619,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "success"
       },
-      "head_sha": "dc209e5eb0",
+      "head_sha": "3af9d7cfda",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-04T09:26:07Z"
+      "updated_at": "2026-11-04T09:27:32Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3285,6 +3271,20 @@
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T09:04:34Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "d6eef32c1e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-04T09:29:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4051,10 +4051,38 @@
       },
       "head_sha": "5431d67fff",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4852,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:26:22Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "be832fd075",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4856,
+      "title": "feat(vercel): admin-desk gated project workflow (SSO=all, role feed (a), verified bypass)",
+      "updated_at": "2026-11-04T09:28:59Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "16909954ff",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4857,
+      "title": "doe-oversight feed: dashboard mirror (byte-identical pair, QUE-feed pattern) + generator --mirror-out",
+      "updated_at": "2026-11-04T09:29:39Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,9 +1,9 @@
 name: Quota Dispatch Tree
 
-# Tier 0 dispatcher (issue #1573): single scheduled entry point for the fast lane.
-# Cheap read-only probes form a decision tree; lanes are woken via workflow_dispatch
-# only when their condition node fires. Replaces 12 independent crons
-# (~610 scheduled runs/day) with 1 decision run per 10 min + conditional fan-out.
+# Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
+# PR lifecycle, managed-lane completion, and source-record pushes wake it on demand.
+# The 10-minute schedule is retained as a fallback for time-only cadence slots;
+# it is not the primary demand signal and does not sweep the PR Lane Matrix.
 # Lanes keep their own authorities, guards, and concurrency groups.
 # material_change_rules: this file owns cadence for the migrated lanes.
 

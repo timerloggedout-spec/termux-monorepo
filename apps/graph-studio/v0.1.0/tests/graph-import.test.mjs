@@ -31,6 +31,12 @@ test('rejects edges without complete provenance', () => {
   assert.throws(() => parseGraphImport(JSON.stringify([broken]), 'edges.json'), /observed_at/);
 });
 
+test('preserves an explicitly unavailable timestamp as null', () => {
+  const edge = { ...validEdge, evidence: { ...validEdge.evidence, observed_at: null } };
+  const result = parseGraphImport(JSON.stringify([edge]), 'edges.json');
+  assert.equal(result.edges[0].evidence.observed_at, null);
+});
+
 test('rejects null JSON with a useful format error', () => {
   assert.throws(() => parseGraphImport('null', 'graph.json'), /JSON object or edge array/);
 });

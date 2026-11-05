@@ -9,6 +9,8 @@ name: ECC Tools demand-driven ops
 #
 # Surfaces: PR path audit | authorized issue commands | PR operator | ECC bot acknowledgement.
 # No fixed cron, time debounce, or manual workflow dispatch; demand is event/SHA-bound.
+# Outbound commands require repository variable ECC_TOOLS_APP_ENABLED=true.
+# Unset/false keeps the integration quiet while the hosted App is suspended.
 # Token policy: marker + command(s) + one meta line; batch multi-cmd into one comment.
 # Saturated conversations (≥2500 comments): overflow to ONE thin tracking issue (idempotent — never duplicate).
 

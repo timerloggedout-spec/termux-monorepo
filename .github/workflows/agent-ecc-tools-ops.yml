@@ -11,7 +11,6 @@ name: ECC Tools demand-driven ops
 # No fixed cron, time debounce, or manual workflow dispatch; demand is event/SHA-bound.
 # Token policy: marker + command(s) + one meta line; batch multi-cmd into one comment.
 # Saturated conversations (≥2500 comments): overflow to ONE thin tracking issue (idempotent — never duplicate).
-# Once overflowed, further sweeps skip the parent PR unless force=true.
 
 on:
   issues:
@@ -167,7 +166,7 @@ jobs:
             if (isLabelEvent) {
               commands = ['analyze', 'setup', 'audit'];
             } else {
-              const m = (comment.body || '').match(/\\/(?:ecc-tools-ops|ecc ops)\\s+([\\w-]+)/i);
+              const m = (comment.body || '').match(/\/(?:ecc-tools-ops|ecc ops)\s+([\w-]+)/i);
               const requested = m ? m[1].toLowerCase() : 'analyze';
               if (requested === 'full') commands = ['analyze', 'setup', 'audit', 'doctor'];
               else if (['analyze', 'setup', 'audit', 'doctor', 'repair'].includes(requested)) commands = [requested];
@@ -180,7 +179,7 @@ jobs:
               marker,
               ...commands.map(c => `/ecc-tools ${c}`),
               `<!-- meta:gha ecc-ops lane=issue n=${issueNumber} request=${requestId} -->`
-            ].join('\\n');
+            ].join('\n');
             await github.rest.issues.createComment({
               owner: context.repo.owner, repo: context.repo.repo,
               issue_number: issueNumber, body,

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { hierarchy, tree } from 'd3-hierarchy';
+import { parseGraphImport } from './graph-import.js';
 import {
   Activity,
   ArrowDownToLine,
@@ -359,45 +360,54 @@ function makeNodesFromEdges(edges: GraphEdge[]): GraphNode[] {
   });
 }
 
-function parseImport(files: File[]): GraphData {
-  let nodes: GraphNode[] = [];
-  let edges: GraphEdge[] = [];
-  for (const file of files) {
-    const text = '';
-    void text;
-  }
-  throw new Error('Use the asynchronous import handler.');
+type UrlState = {
+  view: ViewMode;
+  query: string;
+  plane: string;
+  edgeType: string;
+  selected: string;
+};
+
+const DEFAULT_SELECTED_NODE = 'github:repository:termux-monorepo';
+
+function readUrlState(): UrlState {
+  const params = new URLSearchParams(window.location.search);
+  const requestedView = params.get('view');
+  return {
+    view:
+      requestedView === 'hierarchy' ||
+      requestedView === 'network' ||
+      requestedView === 'evidence'
+        ? requestedView
+        : 'hierarchy',
+    query: params.get('q') || '',
+    plane: params.get('plane') || 'all',
+    edgeType: params.get('edge') || 'all',
+    selected: params.get('node') || DEFAULT_SELECTED_NODE,
+  };
 }
 
 function App() {
   const [data, setData] = useState<GraphData>(fixture);
-  const [view, setView] = useState<ViewMode>('hierarchy');
-  const [query, setQuery] = useState('');
-  const [plane, setPlane] = useState('all');
-  const [edgeType, setEdgeType] = useState('all');
-  const [selected, setSelected] = useState('github:repository:termux-monorepo');
+  const [initialUrlState] = useState(readUrlState);
+  const [view, setView] = useState<ViewMode>(initialUrlState.view);
+  const [query, setQuery] = useState(initialUrlState.query);
+  const [plane, setPlane] = useState(initialUrlState.plane);
+  const [edgeType, setEdgeType] = useState(initialUrlState.edgeType);
+  const [selected, setSelected] = useState(initialUrlState.selected);
   const [showLabels, setShowLabels] = useState(true);
   const [message, setMessage] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const v = params.get('view');
-    if (v === 'hierarchy' || v === 'network' || v === 'evidence') setView(v);
-    setQuery(params.get('q') || '');
-    setPlane(params.get('plane') || 'all');
-    setEdgeType(params.get('edge') || 'all');
-    if (params.get('node')) setSelected(params.get('node')!);
     const onPop = () => {
-      const p = new URLSearchParams(window.location.search);
-      const next = p.get('view');
-      if (next === 'hierarchy' || next === 'network' || next === 'evidence')
-        setView(next);
-      setQuery(p.get('q') || '');
-      setPlane(p.get('plane') || 'all');
-      setEdgeType(p.get('edge') || 'all');
-      if (p.get('node')) setSelected(p.get('node')!);
+      const next = readUrlState();
+      setView(next.view);
+      setQuery(next.query);
+      setPlane(next.plane);
+      setEdgeType(next.edgeType);
+      setSelected(next.selected);
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -459,44 +469,9 @@ function App() {
       const incomingEdges: GraphEdge[] = [];
       for (const file of Array.from(files)) {
         const raw = await file.text();
-        if (file.name.endsWith('.jsonl') || file.name.endsWith('.ndjson')) {
-          for (const [index, line] of raw.split(/\r?\n/).entries()) {
-            if (!line.trim()) continue;
-            let item: any;
-            try {
-              item = JSON.parse(line);
-            } catch {
-              throw new Error(
-                `Invalid JSON on line ${index + 1} of ${file.name}`
-              );
-            }
-            if (
-              !item.src ||
-              !item.dst ||
-              !item.type ||
-              !item.evidence?.plane ||
-              !item.evidence?.record ||
-              !item.evidence?.method ||
-              !('observed_at' in item.evidence)
-            ) {
-              throw new Error(
-                `Line ${index + 1} does not satisfy graph-edges/v1 required fields.`
-              );
-            }
-            incomingEdges.push(item as GraphEdge);
-          }
-        } else if (file.name.endsWith('.json')) {
-          const payload = JSON.parse(raw);
-          if (Array.isArray(payload)) incomingEdges.push(...payload);
-          else {
-            if (Array.isArray(payload.nodes))
-              incomingNodes.push(...payload.nodes);
-            if (Array.isArray(payload.edges))
-              incomingEdges.push(...payload.edges);
-          }
-        } else {
-          throw new Error(`Unsupported file: ${file.name}. Use JSON or JSONL.`);
-        }
+        const parsed = parseGraphImport(raw, file.name);
+        incomingNodes.push(...parsed.nodes);
+        incomingEdges.push(...parsed.edges);
       }
       if (!incomingEdges.length)
         throw new Error(
@@ -527,7 +502,10 @@ function App() {
   };
 
   const exportSvg = () => {
-    if (!svgRef.current) return;
+    if (!svgRef.current) {
+      setMessage('SVG export is available in the Hierarchy and Network views.');
+      return;
+    }
     const clone = svgRef.current.cloneNode(true) as SVGSVGElement;
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     clone.setAttribute('width', '1200');
@@ -579,7 +557,7 @@ function App() {
   }, [data.nodes]);
 
   const hierarchyLayout = useMemo(
-    () => tree<any>().size([650, 1050])(hierarchyRoot),
+    () => tree<any>().size([650, 720])(hierarchyRoot),
     [hierarchyRoot]
   );
   const hierarchyPoints = hierarchyLayout
@@ -801,9 +779,10 @@ function App() {
               </div>
               <button
                 className="icon-btn"
-                title="Export SVG"
+                title={view === 'evidence' ? 'SVG export is available in Hierarchy and Network views' : 'Export SVG'}
                 aria-label="Export SVG"
                 onClick={exportSvg}
+                disabled={view === 'evidence'}
               >
                 <Download size={16} />
               </button>
@@ -960,7 +939,7 @@ function App() {
                   ref={svgRef}
                   className="graph-svg"
                   viewBox="0 0 1100 690"
-                  role="img"
+                  role="group"
                   aria-labelledby="graph-title graph-desc"
                 >
                   <title id="graph-title">{svgTitle}</title>
@@ -1207,7 +1186,11 @@ function App() {
             <span>
               Read-only · actor-first edges · source provenance retained
             </span>
-            <button onClick={exportSvg}>
+            <button
+              onClick={exportSvg}
+              disabled={view === 'evidence'}
+              title={view === 'evidence' ? 'SVG export is available in Hierarchy and Network views' : 'Export SVG'}
+            >
               <ArrowDownToLine size={13} /> Export SVG
             </button>
           </div>

@@ -30,6 +30,12 @@ Packet of record: D1 diagnostics escalation @ manager seat. Closure receipts col
 - Closure class: an invoke receipt reads HAND-OFF ONLY unless it carries production evidence {branch · PR · run output}. An invoke with no production evidence never closes a filing.
 - Closure: OPEN (class rule stands in this audit; enforcement rides the admission/watchdog set #4977/#4979 — receipts without production evidence stay visible as hand-offs in V5/V6).
 
+## D-j — false-green / dead-arm ⇒ NOTIF required
+- State: TRACKED (owner 20:40 PT) + fix queued as #4977 Fix 6. Machinery = **dispatch-liveness notif**: an arm session whose heartbeat is absent beyond threshold ⇒ page the owning seat + manager + Coach.
+- Evidence: both Gemini sessions dead @ T+20s while their invokes read as production for 16m+ (the D-i chain) — the dead arm was invisible because nothing watches heartbeat-absence.
+- Threshold = fix-spec parameter (set at build; no value asserted here).
+- Closure: OPEN (build routed Desk QUE → Swarm under #4977).
+
 ## Desk legs (owned at the Desk seat, tracked here for the set)
 - D-a filing-form discipline — Desk.
 - D-e stale reads (both directions) — Desk.

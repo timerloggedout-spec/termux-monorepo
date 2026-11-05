@@ -13,6 +13,7 @@ Independent graph exploration surface for the termux-monorepo cross-plane graph 
 ```sh
 npm install
 npm run dev
+npm test
 npm run build
 ```
 
@@ -21,6 +22,8 @@ Accepts graph-edges/v1 JSONL (one edge per line) or JSON containing nodes[] and 
 
 ## Release
 - Version: 0.1.0
+- Canonical GitHub Pages: https://timerloggedout-spec.github.io/termux-monorepo/graph-studio/
 - Preview: https://termux-graph-studio-ueqxv4.v2.appdeploy.ai/
 - Isolated source directory: apps/graph-studio/v0.1.0/
+- Pages publication is performed by `tribute-dashboard-deploy.yml` after the change lands on `master`.
 - Preview does not imply production promotion or live data ingestion.

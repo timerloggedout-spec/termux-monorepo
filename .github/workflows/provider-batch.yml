@@ -54,10 +54,12 @@ on:
       - 'tests/test_delphi_gate.py'
       - '.github/workflows/delphi-gate.yml'
       - 'ops/quota/registry.json'
+      - 'ops/quota/allocations.json'
       - 'apps/tribute-dashboard/quota*'
       - 'apps/tribute-dashboard/data/provider-quota-coverage.json'
       - 'tests/test_provider_quota_coverage.py'
       - 'tests/test_quota_dashboard.py'
+      - 'tests/test_quota_allocations.py'
       - 'scripts/model_selection_market/**'
       - 'llm_api_hub/**'
       - 'tests/test_provider_model_catalog.py'
@@ -122,10 +124,12 @@ on:
       - 'tests/test_delphi_gate.py'
       - '.github/workflows/delphi-gate.yml'
       - 'ops/quota/registry.json'
+      - 'ops/quota/allocations.json'
       - 'apps/tribute-dashboard/quota*'
       - 'apps/tribute-dashboard/data/provider-quota-coverage.json'
       - 'tests/test_provider_quota_coverage.py'
       - 'tests/test_quota_dashboard.py'
+      - 'tests/test_quota_allocations.py'
       - 'scripts/model_selection_market/**'
       - 'llm_api_hub/**'
       - 'tests/test_typhoon_protocol.py'
@@ -177,6 +181,7 @@ jobs:
           python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py tests/test_resource_index.py tests/test_resource_registry.py
           python3 -m unittest scripts.model_selection_market.test_msm
           python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_service.py tests/test_provider_quota_openrouter.py tests/test_provider_quota_private_workflow.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
+          python3 -m pytest -q tests/test_quota_allocations.py
           python3 scripts/provider_quota_coverage.py --check apps/tribute-dashboard/data/provider-quota-coverage.json
       - name: Upload contracts log for diagnostics
         if: failure()

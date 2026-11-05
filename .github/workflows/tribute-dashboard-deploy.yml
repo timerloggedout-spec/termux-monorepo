@@ -149,7 +149,7 @@ jobs:
   user-site:
     name: mirror-user-github-io
     needs: [pages]
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all') }}
+    if: ${{ (github.event_name == 'push' && (!contains(toJSON(github.event.commits.*.modified), 'apps/graph-studio/v0.1.0/') || contains(toJSON(github.event.commits.*.modified), 'apps/tribute-dashboard/'))) || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

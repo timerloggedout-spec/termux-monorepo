@@ -1,1 +1,9 @@
-{"default":"NOT_ESTABLISHED","note":"Threshold VALUES are unruled (2026-11-03). The sweep engine (scripts/moneyball/wallet_ledger.py, mode 'sweep') invents NO defaults: a class whose threshold reads NOT_ESTABLISHED never fires. The ruling ask routes owner -> MoneyBall seat (cd195597) via the Web3 seat (779d33ad). Testnet execution is untouched and NOT_ESTABLISHED (6REA7 research annex section 4; moneyball PR #19 package).","pool_mapping":"paper:<instance> -> pool:speculator:<participant slug> (via experiments/speculators/token-strategies/WALLETS.json); fallback pool:other:pooled-buckets","schema":"wallet-sweep-thresholds/v1","thresholds":{"speculator":"NOT_ESTABLISHED"}}
+{
+ "default": null,
+ "note": "Threshold VALUES are unruled (2026-11-03). The sweep engine (scripts/moneyball/wallet_ledger.py, mode 'sweep') invents NO defaults: a class whose threshold reads null (unruled) never fires. The ruling ask routes owner -> MoneyBall seat (cd195597) via the Web3 seat (779d33ad). Testnet execution is untouched and unruled (6REA7 research annex section 4; moneyball PR #19 package).",
+ "pool_mapping": "paper:<instance> -> pool:speculator:<participant slug> (via experiments/speculators/token-strategies/WALLETS.json); fallback pool:other:pooled-buckets",
+ "schema": "wallet-sweep-thresholds/v1",
+ "thresholds": {
+  "speculator": null
+ }
+}

@@ -3,8 +3,8 @@
     "open_issues": 539,
     "open_prs": 286,
     "pr_classes": {
-      "CANDIDATE": 133,
-      "EXTRACT": 12,
+      "CANDIDATE": 135,
+      "EXTRACT": 10,
       "NEED_EVIDENCE": 141,
       "SUPERSEDE": 0
     }
@@ -106,7 +106,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T04:24:19Z",
+  "generated_at": "2026-11-05T04:51:06Z",
   "issues_unlabelled": [
     308,
     388,
@@ -163,10 +163,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "in_progress"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "8daf25be25"
+    "sha": "ce123ec7f3"
   },
   "prs": [
     {
@@ -238,34 +238,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a42e376da2",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-05T03:41:36Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7beb93a07c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-05T03:28:09Z"
     },
     {
       "class": "EXTRACT",
@@ -1105,12 +1077,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "36524b7a00",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-05T04:47:45Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-04T23:47:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7beb93a07c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-05T03:28:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1525,12 +1525,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "282bc16631",
+      "head_sha": "3057d5399f",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T04:22:53Z"
+      "updated_at": "2026-11-05T04:44:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -2127,12 +2127,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4c4671c3cc",
+      "head_sha": "13e3693780",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-05T03:37:33Z"
+      "updated_at": "2026-11-05T04:44:34Z"
     },
     {
       "class": "CANDIDATE",
@@ -2171,7 +2171,7 @@
       },
       "head_sha": "c9e24b3756",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4935,
       "title": "feat(quota): add nested task-level usage attribution tree",
       "updated_at": "2026-11-04T16:48:47Z"
@@ -2183,12 +2183,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "9668c623e7",
+      "head_sha": "b6960debea",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4969,
       "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-05T04:08:16Z"
+      "updated_at": "2026-11-05T04:42:23Z"
     },
     {
       "class": "CANDIDATE",
@@ -2703,7 +2703,7 @@
       },
       "head_sha": "8223fe97b5",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T22:59:47Z"
@@ -3359,12 +3359,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "a0781c8f32",
+      "head_sha": "d5876194d0",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-05T04:22:07Z"
+      "updated_at": "2026-11-05T04:24:42Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4131,7 +4131,7 @@
       },
       "head_sha": "154aa5a024",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4936,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T16:29:10Z"

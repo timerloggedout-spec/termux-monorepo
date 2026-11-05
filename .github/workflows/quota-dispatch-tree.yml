@@ -452,10 +452,6 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_q6 }}
             inputs_json: ''
             advance_watermark: 'false'
-          - lane: ops-lane-matrix-sweep
-            run: ${{ needs.decide.outputs.dispatch_q6 }}
-            inputs_json: '{"commit_artifacts":true}'
-            advance_watermark: 'false'
           - lane: provider-availability
             run: ${{ needs.decide.outputs.dispatch_q6 }}
             inputs_json: ''

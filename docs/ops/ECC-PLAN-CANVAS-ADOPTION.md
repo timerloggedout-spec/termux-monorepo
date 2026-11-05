@@ -47,7 +47,9 @@ writer by posting analyze and doctor on #175 on a fixed schedule.
 
 No time-based suppression applies to new work. New SHAs and new explicit
 operator requests are immediately eligible. Existing saturation handling and
-least-privilege job permissions remain.
+least-privilege job permissions remain. Outbound ECC commands additionally require
+repository variable ECC_TOOLS_APP_ENABLED=true; unset/false keeps the lane quiet
+while the hosted App is suspended. Reactivation is a separate, measured decision.
 
 ## Plan Canvas runtime
 

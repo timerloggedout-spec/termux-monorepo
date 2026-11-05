@@ -282,6 +282,26 @@ def _plan_text(state: dict) -> str:
 def _receipt_text(state: dict) -> str:
     return json.dumps(state["trust_receipt"], indent=2, sort_keys=True)
 
+def _live_receipt_text(receipt: dict) -> str:
+    """One honest stamp line for a live-mode receipt (live.py):
+    a surface-local fallback says so and is never dressed live."""
+    model = receipt.get("model") or {}
+    mline = (f"{model.get('provider')}/{model.get('model_id')}"
+             if model else "no model")
+    line = (f"Live receipt: execution_class="
+            f"{receipt.get('execution_class')} · deployment="
+            f"{receipt.get('deployment')} · {mline}")
+    if receipt.get("fail_closed"):
+        line += " · fail_closed=true"
+    if receipt.get("source"):
+        line += f" · source={receipt['source']}"
+    if receipt.get("source") == "surface-local":
+        line += ("\nEndpoint unreachable — the plan above is the "
+                 "deterministic core plan. Nothing was fabricated "
+                 "live.")
+    return line
+
+
 
 _DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -542,6 +562,8 @@ try:
                                 classes="big")
                     yield Static(_receipt_text(self.state),
                                  id="receipt-text")
+                    yield Button("Live plan (Bedrock)", id="live-plan")
+                    yield Static("", id="live-receipt")
                 with TabPane("Reader", id="tab-reader"):
                     yield Label("Reader — one word at a time.",
                                 classes="big")
@@ -672,6 +694,25 @@ try:
 
         def on_mount(self) -> None:
             self._show_card()
+            import live as _live
+            if _live.enabled():
+                self.run_worker(self._live_wake, thread=True)
+
+        def _live_wake(self) -> None:
+            import live as _live
+            w = _live.wake()
+            msg = ("Live endpoint awake." if w["awake"]
+                   else "Live endpoint unreachable — core "
+                        "fallback armed.")
+            self.call_from_thread(
+                self.query_one("#live-receipt", Static).update, msg)
+
+        def _live_plan_worker(self) -> None:
+            import live as _live
+            receipt = _live.plan()
+            self.call_from_thread(
+                self.query_one("#live-receipt", Static).update,
+                _live_receipt_text(receipt))
 
         # ---------------------------------------------------- courses
         def _courses_text(self) -> str:
@@ -1041,6 +1082,18 @@ try:
 
         def on_button_pressed(self, event) -> None:
             bid = event.button.id or ""
+            if bid == "live-plan":
+                import live as _live
+                target = self.query_one("#live-receipt", Static)
+                if not _live.enabled():
+                    target.update("Live mode is opt-in: set "
+                                  "STRANDS_LIVE=1 to enable. "
+                                  "Nothing was called.")
+                    return
+                target.update("Calling the endpoint (wake + "
+                              "invoke can take ~60s)…")
+                self.run_worker(self._live_plan_worker, thread=True)
+                return
             if bid == "book-show":
                 sel = self.query_one("#book-term", Select)
                 if sel.value and sel.value != Select.BLANK:

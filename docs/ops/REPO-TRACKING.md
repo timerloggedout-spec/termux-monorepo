@@ -4,6 +4,25 @@
 tracking was started and revised many times. This surface **builds on**
 those systems — it replaces none of them.
 
+## Authority map
+
+This is the repository's **cross-domain lane×project state projection**. Its
+canonical feed is `ops/tracking/tracking.json`; the Markdown board and dashboard
+feed are generated projections. It supersedes the legacy #175 issue as an
+operator-priority/status surface.
+
+Scope boundaries are deliberate:
+- `docs/ops/generated/lane-matrix-status.*` is the narrower open-PR disposition
+  board, not lane×project state.
+- `docs/agentic/dependency-phases.json` plus
+  `docs/agentic/phase-approvals.json` own dependency-phase lifecycle and approvals.
+- `ops/lane-events` is an append-only execution-evidence ledger, not project state.
+- Domain registries remain authoritative within their domains; this feed joins
+  them but does not overwrite them.
+- Desk.html and the owning GitHub Issue/PR capture human decisions and exceptions;
+  no generic issue is a global hub.
+
+
 ## Recon — existing systems + verdicts (firsthand, master @ 2026-10-31)
 
 | System | Where | Verdict |

@@ -12,6 +12,7 @@ const SHELL = [
   "index.html",
   "styles.css",
   "app.js",
+  "live.js",
   "manifest.webmanifest",
   "data/state.json",
   "icons/icon-192.png",

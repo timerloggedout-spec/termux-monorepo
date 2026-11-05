@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 538,
-    "open_prs": 287,
+    "open_prs": 288,
     "pr_classes": {
-      "CANDIDATE": 134,
-      "EXTRACT": 12,
-      "NEED_EVIDENCE": 141,
+      "CANDIDATE": 133,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 144,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 50,
-      "prs": 285,
+      "prs": 286,
       "unlabelled_numbers": [
         308,
         388,
@@ -105,7 +105,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T04:05:28Z",
+  "generated_at": "2026-11-05T04:07:41Z",
   "issues_unlabelled": [
     308,
     388,
@@ -164,7 +164,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "77107a28f5"
+    "sha": "0216c87279"
   },
   "prs": [
     {
@@ -244,20 +244,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "af69c0cd66",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4019,
-      "title": "feat(api-impact): add SHA-bound API evolution review lane",
-      "updated_at": "2026-11-04T23:47:15Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -328,12 +314,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "dee53f6f3e",
+      "head_sha": "3c9fe3294a",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4526,
-      "title": "docs(osint): OSINT dispatch template + D2 worked example",
-      "updated_at": "2026-11-04T22:55:53Z"
+      "number": 4972,
+      "title": "Records hygiene: sweep-thresholds values -> null (token never storable)",
+      "updated_at": "2026-11-05T03:46:33Z"
     },
     {
       "class": "CANDIDATE",
@@ -1551,20 +1537,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b4c769f49c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T04:04:03Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1641,6 +1613,20 @@
       "number": 4018,
       "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
       "updated_at": "2026-11-03T02:28:11Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "af69c0cd66",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4019,
+      "title": "feat(api-impact): add SHA-bound API evolution review lane",
+      "updated_at": "2026-11-04T23:47:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1929,6 +1915,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "dee53f6f3e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4526,
+      "title": "docs(osint): OSINT dispatch template + D2 worked example",
+      "updated_at": "2026-11-04T22:55:53Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "6b395fd6c0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2183,38 +2183,10 @@
       },
       "head_sha": "c9e24b3756",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4935,
       "title": "feat(quota): add nested task-level usage attribution tree",
       "updated_at": "2026-11-04T16:48:47Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7b0007404d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4969,
-      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-05T03:54:43Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3c9fe3294a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4972,
-      "title": "Records hygiene: sweep-thresholds values -> null (token never storable)",
-      "updated_at": "2026-11-05T03:46:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3373,10 +3345,24 @@
       },
       "head_sha": "602af1fb7a",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-05T04:05:06Z"
+      "updated_at": "2026-11-05T04:05:22Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "1e7bcd7854",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-05T04:06:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4157,7 +4143,7 @@
       },
       "head_sha": "5738fefc29",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4954,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-04T23:31:43Z"
@@ -4180,15 +4166,43 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "e38d0d6cba",
+      "head_sha": "9668c623e7",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4988,
-      "title": "Matrice: N\u2205 usage boundary (chat-only epistemic marker)",
-      "updated_at": "2026-11-05T04:05:09Z"
+      "number": 4969,
+      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+      "updated_at": "2026-11-05T04:07:40Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "5e65d98243",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4990,
+      "title": "chore(linguist): refresh linguist-panel-feed.json",
+      "updated_at": "2026-11-05T04:07:21Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "a511729ee1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4991,
+      "title": "LEAN domain: mined Batteries compression devices (tactic layer)",
+      "updated_at": "2026-11-05T04:07:39Z"
     }
   ],
   "schema": "operator-matrix/v1",

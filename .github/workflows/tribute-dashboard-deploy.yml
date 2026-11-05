@@ -112,6 +112,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/graph-studio
           cp -a apps/graph-studio/v0.1.0/dist/. _site/graph-studio/
+          test -f _site/graph-studio/index.html
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
           cp apps/tribute-dashboard/dashboard.css _site/dashboard.css
@@ -145,6 +146,21 @@ jobs:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy(project-hub+matrix+graph-studio): ${{ github.sha }}"
+      - name: Verify published Graph Studio route
+        run: |
+          set -euo pipefail
+          URL="https://timerloggedout-spec.github.io/termux-monorepo/graph-studio/"
+          for attempt in $(seq 1 20); do
+            CODE="$(curl -sSL -o /tmp/graph-studio.html -w "%{http_code}" "$URL" || true)"
+            if [ "$CODE" = "200" ] && grep -Fq "Graph Studio" /tmp/graph-studio.html && grep -Fq "./assets/" /tmp/graph-studio.html; then
+              echo "Graph Studio Pages route is live and serves the built application."
+              exit 0
+            fi
+            echo "Pages route not ready yet (attempt $attempt, HTTP $CODE)."
+            sleep 15
+          done
+          echo "::error::Graph Studio Pages route did not become healthy within 5 minutes."
+          exit 1
 
   user-site:
     name: mirror-user-github-io

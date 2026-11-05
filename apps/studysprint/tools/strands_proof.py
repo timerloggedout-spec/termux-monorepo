@@ -1,18 +1,25 @@
 """Model-access proof harness (monorepo issue #4534, live leg).
 
-Proves the fleet's Gemini access drives the StudySprint Strands
-agent end to end: construct the agent, swap its model to
-GeminiModel(gemini-3.5-flash-lite) BEFORE invocation, run the
-fetch-syllabus -> make_plan prompt, and assert both tools were
-actually called (tool_metrics), not merely registered.
+Branch (a) R1 (owner escalation 2026-11-04: branch (a) is
+MANDATORY -- no completion without live Strands on AWS): the
+StudySprint Strands agent is driven by strands' BedrockModel --
+Amazon Bedrock is the invocation provider, not a construction
+side-effect. This replaces the GeminiModel swap, which stands as
+a DEFECT of record (a Gemini invocation is not AWS proof, however
+model-agnostic the harness is).
 
-Construction note (D1's finding of record on #4534): in
-strands-agents 1.63.0, Agent() with no model eagerly constructs
-a BedrockModel, so build_strands_agent() raises without AWS
-credentials present. The workflow supplies LITERAL placeholder
-AWS env vars so construction succeeds; no AWS call is ever made
--- the model is Gemini before the first invocation. This is
-disclosed in the receipt, not hidden.
+Staged state: code complete, only credentials missing. The model
+id is a SLOT -- env STRANDS_MODEL_ID, filled verbatim at fire
+time (Nova-class; the rank-1 pin of record is
+us.amazon.nova-lite-v1:0, us-east-1). Nothing model-specific is
+baked into this file.
+
+Fail-closed pre-flight (spec addendum A1 discipline): before any
+construction or invocation, the harness requires (a) the model
+slot set and (b) real AWS credentials in env -- the literal
+"placeholder" values the workflow carries for construction are
+REJECTED. A failed pre-flight writes the receipt with
+fail_closed=true and exits non-zero; no AWS call is attempted.
 
 Output: strands-proof-receipt.json in the working directory
 (the workflow uploads it as the run's artifact). Exit code is
@@ -38,26 +45,60 @@ PROMPT = (
     "course JSON, then summarize the plan in one paragraph."
 )
 REQUIRED_TOOLS = ("fetch_syllabus_evidence", "make_plan")
+MODEL_ID = os.environ.get("STRANDS_MODEL_ID", "")
+REGION = os.environ.get("AWS_REGION", "us-east-1")
+PLACEHOLDER = "placeholder"
+
+
+class PreflightError(RuntimeError):
+    """Staging gate: required fire-time inputs are absent."""
+
+
+def preflight_missing() -> list[str]:
+    missing = []
+    if not MODEL_ID:
+        missing.append("STRANDS_MODEL_ID (model slot, verbatim at "
+                       "fire time)")
+    ak = os.environ.get("AWS_ACCESS_KEY_ID", "")
+    sk = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+    if not ak or ak == PLACEHOLDER or not sk or sk == PLACEHOLDER:
+        missing.append("real AWS credentials in env "
+                       "(AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY; "
+                       "literal placeholders are rejected)")
+    return missing
 
 
 def main() -> int:
     receipt: dict = {
         "proof": "studysprint-strands-model-access",
         "issue": 4534,
-        "provider": "google-gemini via fleet Actions secret",
-        "model": "gemini-3.5-flash-lite",
+        "branch": "a-r1",
+        "provider": "amazon-bedrock",
+        "model": MODEL_ID or None,
+        "region": REGION,
+        "run": os.environ.get("GITHUB_RUN_ID"),
+        "commit": os.environ.get("GITHUB_SHA"),
         "strands_agent_available": False,
         "deployment": False,
         "construction_note": (
-            "Agent() eagerly constructs BedrockModel in "
-            "strands-agents 1.63.0; construction ran with "
-            "literal placeholder AWS env vars (no AWS call is "
-            "made); the model was swapped to GeminiModel before "
-            "invocation."
+            "BedrockModel is the invocation model (branch (a) R1). "
+            "strands-agents 1.63.0's Agent() also eagerly constructs "
+            "a default BedrockModel at build time; the harness swaps "
+            "in the slotted BedrockModel before invocation. "
+            "Pre-flight rejects absent/placeholder credentials, so "
+            "no run of this harness can pass without live Bedrock."
         ),
+        "tools_required": list(REQUIRED_TOOLS),
         "tools_called": [],
     }
     try:
+        missing = preflight_missing()
+        if missing:
+            receipt["fail_closed"] = True
+            raise PreflightError(
+                "pre-flight (staged, awaiting fire inputs): "
+                + "; ".join(missing))
+
         import strands  # noqa: F401
         # strands exposes no __version__ (runs 1-3 stamped
         # "unknown"); the version of record is the installed
@@ -74,20 +115,29 @@ def main() -> int:
                                "(SDK import failed inside agent.py)")
         receipt["strands_agent_available"] = True
 
-        from strands.models.gemini import GeminiModel
-        agent.model = GeminiModel(
-            client_args={"api_key": os.environ["GEMINI_API_KEY"]},
-            model_id="gemini-3.5-flash-lite")
+        # A1 fail-fast transport: no IMDS (workflow env disables
+        # it), short connect timeout, bounded read, few attempts --
+        # a credential/transport failure surfaces as the receipt's
+        # error, never as a stall.
+        from botocore.config import Config as BotoConfig
+        from strands.models.bedrock import BedrockModel
+        agent.model = BedrockModel(
+            model_id=MODEL_ID,
+            region_name=REGION,
+            boto_client_config=BotoConfig(
+                connect_timeout=2,
+                read_timeout=120,
+                retries={"max_attempts": 2, "mode": "standard"}))
 
         result = agent(PROMPT)
         metrics = getattr(result, "metrics", None)
         tool_metrics = getattr(metrics, "tool_metrics", {}) or {}
         receipt["tools_called"] = sorted(tool_metrics.keys())
-        missing = [t for t in REQUIRED_TOOLS
-                   if t not in tool_metrics]
-        if missing:
+        missing_tools = [t for t in REQUIRED_TOOLS
+                         if t not in tool_metrics]
+        if missing_tools:
             raise AssertionError(
-                f"required tools not called: {missing}; "
+                f"required tools not called: {missing_tools}; "
                 f"tool_metrics keys: {receipt['tools_called']}")
         reply = str(getattr(result, "message", result))
         receipt["reply_excerpt"] = reply[:600]

@@ -1,16 +1,21 @@
 name: studysprint-strands-proof
 
-# Model-access proof, live leg (monorepo issue #4534): the
-# fleet GEMINI_API_KEY (Actions secret) drives the StudySprint
-# Strands agent -- model swapped to GeminiModel pre-invocation,
-# both syllabus tools asserted called. The receipt artifact is
-# the deliverable; on failure the receipt carries the exact
-# error and the run fails with it.
+# Model-access proof, live leg (monorepo issue #4534) --
+# branch (a) R1: strands BedrockModel drives the StudySprint
+# Strands agent on Amazon Bedrock; both syllabus tools asserted
+# called. The receipt artifact is the deliverable; on failure the
+# receipt carries the exact error and the run fails with it.
 #
-# AWS env vars below are LITERAL placeholders: strands-agents
-# 1.63.0's Agent() eagerly constructs a BedrockModel at build
-# time, so construction needs credentials PRESENT -- no AWS
-# call is ever made (see tools/strands_proof.py).
+# STAGED (code complete, only credentials missing). The harness
+# pre-flight REJECTS the literal placeholder AWS values below
+# and an empty model slot, fail-closed, so this workflow cannot
+# produce a PASS until fired. FIRE STEPS: (1) provision real AWS
+# credentials as Actions secrets (owner), (2) wire the two AWS
+# env values below from those secrets and set STRANDS_MODEL_ID
+# verbatim (Nova-class), (3) dispatch.
+#
+# The GeminiModel leg is RETIRED (defect of record: a Gemini
+# invocation is not AWS proof).
 
 on:
   workflow_dispatch:
@@ -22,10 +27,10 @@ jobs:
   proof:
     runs-on: ubuntu-latest
     env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       AWS_ACCESS_KEY_ID: "placeholder"
       AWS_SECRET_ACCESS_KEY: "placeholder"
       AWS_REGION: us-east-1
+      STRANDS_MODEL_ID: ""  # SLOT: filled verbatim at fire time
       AWS_EC2_METADATA_DISABLED: "true"
     steps:
       - uses: actions/checkout@v4

@@ -3,8 +3,8 @@
     "open_issues": 538,
     "open_prs": 287,
     "pr_classes": {
-      "CANDIDATE": 135,
-      "EXTRACT": 11,
+      "CANDIDATE": 134,
+      "EXTRACT": 12,
       "NEED_EVIDENCE": 141,
       "SUPERSEDE": 0
     }
@@ -105,7 +105,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T04:03:33Z",
+  "generated_at": "2026-11-05T04:05:28Z",
   "issues_unlabelled": [
     308,
     388,
@@ -164,7 +164,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "17ef409e36"
+    "sha": "77107a28f5"
   },
   "prs": [
     {
@@ -244,6 +244,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "af69c0cd66",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4019,
+      "title": "feat(api-impact): add SHA-bound API evolution review lane",
+      "updated_at": "2026-11-04T23:47:15Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -314,12 +328,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "5db2ef8f6c",
+      "head_sha": "dee53f6f3e",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4930,
-      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
-      "updated_at": "2026-11-04T14:44:10Z"
+      "number": 4526,
+      "title": "docs(osint): OSINT dispatch template + D2 worked example",
+      "updated_at": "2026-11-04T22:55:53Z"
     },
     {
       "class": "CANDIDATE",
@@ -374,7 +388,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-11-04T14:44:09Z"
@@ -853,7 +867,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-04T14:44:06Z"
@@ -1035,7 +1049,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-04T14:43:35Z"
@@ -1537,12 +1551,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8853dd3ea7",
+      "head_sha": "b4c769f49c",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T04:01:10Z"
+      "updated_at": "2026-11-05T04:04:03Z"
     },
     {
       "class": "CANDIDATE",
@@ -1627,20 +1641,6 @@
       "number": 4018,
       "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
       "updated_at": "2026-11-03T02:28:11Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "af69c0cd66",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4019,
-      "title": "feat(api-impact): add SHA-bound API evolution review lane",
-      "updated_at": "2026-11-04T23:47:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -1929,20 +1929,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "dee53f6f3e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4526,
-      "title": "docs(osint): OSINT dispatch template + D2 worked example",
-      "updated_at": "2026-11-04T22:55:53Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "6b395fd6c0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2181,9 +2167,23 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c9e24b3756",
+      "head_sha": "5db2ef8f6c",
       "labels": [],
       "mergeable_state": "unknown",
+      "number": 4930,
+      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+      "updated_at": "2026-11-04T14:44:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c9e24b3756",
+      "labels": [],
+      "mergeable_state": "unstable",
       "number": 4935,
       "title": "feat(quota): add nested task-level usage attribution tree",
       "updated_at": "2026-11-04T16:48:47Z"
@@ -2533,7 +2533,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-04T14:44:17Z"
@@ -3303,7 +3303,7 @@
       },
       "head_sha": "11eceab3e9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T14:42:12Z"
@@ -3371,12 +3371,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "051f746698",
+      "head_sha": "602af1fb7a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-05T03:58:19Z"
+      "updated_at": "2026-11-05T04:05:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4129,7 +4129,7 @@
       },
       "head_sha": "8d0236b472",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4931,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T14:44:06Z"
@@ -4157,7 +4157,7 @@
       },
       "head_sha": "5738fefc29",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4954,
       "title": "feat(ci): add merged branch review audit and quota engine",
       "updated_at": "2026-11-04T23:31:43Z"
@@ -4180,15 +4180,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "7fa2a567d9",
+      "head_sha": "e38d0d6cba",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4986,
-      "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-11-05T04:03:08Z"
+      "number": 4988,
+      "title": "Matrice: N\u2205 usage boundary (chat-only epistemic marker)",
+      "updated_at": "2026-11-05T04:05:09Z"
     }
   ],
   "schema": "operator-matrix/v1",

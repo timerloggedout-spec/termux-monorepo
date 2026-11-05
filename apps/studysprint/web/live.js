@@ -20,7 +20,7 @@
 "use strict";
 
 const SS_LIVE_ENDPOINT =
-  "https://hostb-fit-test-5b9d7.containers.snapdeploy.app";
+  "https://hostb-live-5b9d7.containers.snapdeploy.app";
 const SS_HEALTH_TIMEOUT_MS = 70000;
 const SS_PLAN_TIMEOUT_MS = 120000;
 

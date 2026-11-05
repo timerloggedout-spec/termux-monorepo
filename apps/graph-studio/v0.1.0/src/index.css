@@ -545,12 +545,20 @@ button {
   flex-direction: column;
   background: #0b141e;
 }
+.graph-stage {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
 .graph-svg {
   width: 100%;
   height: auto;
   min-height: 410px;
   max-height: 590px;
   display: block;
+}
+.graph-svg {
+  min-width: 760px;
+  max-width: none;
 }
 .svg-node {
   cursor: pointer;
@@ -984,12 +992,6 @@ footer {
   }
   .graph-stage {
     order: 0;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-  }
-  .graph-svg {
-    min-width: 760px;
-    max-width: none;
   }
   .outline-panel {
     order: 1;

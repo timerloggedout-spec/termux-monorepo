@@ -142,6 +142,17 @@ def test_page_contract():
     assert "rate-limit event" in html
     assert "activity-proxy — NOT consumption" in html
     assert "quota-graphs.html" in QUOTA_PAGE.read_text()
+    assert "task_tree" in html
+    assert "Task attribution tree" in html
+    assert "renderTaskTree" in html
+    assert "task-expand-all" in html and "task-collapse-all" in html
+    assert "Provider → model (verbatim) → role → participant → task" in html
+    assert "activity-proxy" in html and "NOT_ESTABLISHED" in html
+    assert "No recorded tasks" in html
+    assert "Usage source:" in html
+    assert "zero-task providers" in html
+    for state in ("waived", "fault", "pending", "no-usage-surface", "NOT_ESTABLISHED"):
+        assert 'value="'+state+'"' in html
 
 
 def test_pack_freshness_stamps():
@@ -164,3 +175,22 @@ def test_pack_freshness_stamps():
     # last-point, never the newest.
     assert "sStale" in html and 'chip">STALE' in html
     assert "oldest observation" in html and "oldest point" in html
+
+
+@pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser syntax")
+def test_all_quota_graphs_inline_javascript_parses(tmp_path):
+    html = PAGE.read_text()
+    for index, script in enumerate(re.findall(r"<script>(.*?)</script>", html, re.S)):
+        path = tmp_path / f"quota-graphs-{index}.js"
+        path.write_text(script)
+        subprocess.run(["node", "--check", str(path)], check=True)
+
+
+def test_quota_and_dispatch_surfaces_share_task_attribution_navigation():
+    pages = (
+        "quota.html", "quota-usage.html", "quota-swarm.html", "quota-event-audits.html",
+        "quota-graphs.html", "family.html", "pools.html", "dispatch-tree.html", "desk.html", "index.html",
+    )
+    for name in pages:
+        html = (ROOT / "apps/tribute-dashboard" / name).read_text()
+        assert "#task-attribution" in html, f"{name} must link to the shared task attribution tree"

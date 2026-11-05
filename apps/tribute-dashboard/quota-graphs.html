@@ -6,10 +6,10 @@
 <meta name="description" content="Usage graphs per provider, model and service - measured, activity-proxy, reconstructed and estimated series kept apart and labeled; gaps stay gaps.">
 <title>Usage Graphs · Quota · Ops · Tribute</title>
 <link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
-<style>.chart{width:100%;height:auto}.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.tab{cursor:pointer}.tab[aria-selected="true"]{font-weight:700;text-decoration:underline}</style>
+<style>.chart{width:100%;height:auto}.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.tab{cursor:pointer}.tab[aria-selected="true"]{font-weight:700;text-decoration:underline}.task-tree details{margin:.35rem 0}.task-tree summary{cursor:pointer;padding:.45rem .6rem;border:1px solid var(--line);border-radius:8px;background:#0c1219}.task-tree .branch{margin:.35rem 0 .35rem .8rem;padding-left:.75rem;border-left:1px solid var(--line)}.task-tree .task-row{margin:.45rem 0;padding:.7rem .8rem;border:1px solid var(--line);border-radius:9px;background:#0c1219}.task-tree .task-meta{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center}.task-tree .task-title{font-weight:700}.task-tree .participant-summary{color:var(--muted);font-size:.78rem}.task-tree .status-exact{color:var(--ok);border-color:var(--ok)}.task-tree .status-activity{color:var(--gold);border-color:var(--gold)}.task-tree .status-gap{color:var(--muted)}.task-tree .status-fault{color:var(--bad);border-color:var(--bad)}.task-tree .empty-branch{padding:.5rem;color:var(--muted);font-size:.8rem}</style>
 </head>
 <body>
-<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html" aria-current="page">Quota Graphs</a>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html" aria-current="page">Quota Graphs</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html#task-attribution">Task Attribution</a>
 <a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a>
 <a href="https://timerloggedout-spec.github.io/tribute/wagering-book.html">Wagering Book</a><a href="https://timerloggedout-spec.github.io/tribute/pools.html">Pools</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a>
 <a href="https://timerloggedout-spec.github.io/tribute/results-index.html">Results Index</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
@@ -28,6 +28,12 @@
 </div>
 <div id="axis-note"></div>
 <div id="series-grid" class="grid grid-2"></div>
+</section>
+<section aria-labelledby="task-attribution" id="task-attribution">
+<div class="head"><h2 id="task-attribution">Task attribution tree</h2><span class="note" id="task-tree-summary">Waiting for task projection…</span></div>
+<p class="muted">Fold the hierarchy by provider → model (verbatim) → role → participant → task. Every task carries its own usage evidence and quota-pool join. Exact consumption is summed only within matching units; activity-proxy remains separate; missing joins stay NOT_ESTABLISHED.</p>
+<div class="toolbar"><input id="task-search" type="search" placeholder="Search provider, model, role, participant, task, dispatch, pool"><select id="task-status" aria-label="Filter task usage status"><option value="">All usage states</option><option value="established">Exact usage established</option><option value="activity-only">Activity only</option><option value="no-usage-surface">No usage surface</option><option value="waived">Waived</option><option value="fault">Fault</option><option value="pending">Pending</option><option value="NOT_ESTABLISHED">Not established</option></select><button type="button" class="button" id="task-expand-all">Expand all</button><button type="button" class="button" id="task-collapse-all">Collapse all</button></div>
+<div id="task-tree" class="task-tree"><div class="card empty">Task projection is published by the quota usage-series refresh. Existing feeds remain readable while the new projection is pending.</div></div>
 </section>
 <footer>Usage Graphs · pack: ops/quota/usage-series.json (schema quota.usage-series/v1), built by scripts/quota_usage_series.py from the quota-usage pack, desk-feed usage stamps and the allocation plan · public readings snapshots carry no usage values by design (status-only) · plan target flow is context, never plotted as usage</footer>
 </main>
@@ -86,6 +92,69 @@ function render(){
       +ctx+(s.kind==='event'?evList(s.key):'')+'<p class="muted">Source: '+esc(s.provenance||'—')+'</p></div>';
   }).join(''):'<div class="card empty">No series on this axis yet — see the note above. Absence is the honest state; nothing is inferred.</div>');
 }
+function taskUsageSummary(tasks){
+  const exact={},activity={};const states={"no-usage-surface":0,waived:0,fault:0,pending:0,NOT_ESTABLISHED:0};
+  (tasks||[]).forEach(t=>{const u=t.usage||{};if(u.status==='established'&&typeof u.value==='number')exact[u.unit||'unit']=(exact[u.unit||'unit']||0)+u.value;else if(u.status==='activity-only'&&typeof u.value==='number')activity[u.unit||'activity']=(activity[u.unit||'activity']||0)+u.value;else states[Object.prototype.hasOwnProperty.call(states,u.status)?u.status:'NOT_ESTABLISHED']++;});
+  const bits=Object.entries(exact).map(([u,v])=>fmtV(v)+' '+u+' exact');
+  Object.entries(activity).forEach(([u,v])=>bits.push(fmtV(v)+' '+u+' activity'));
+  Object.entries(states).forEach(([s,n])=>{if(n)bits.push(n+' '+s)});
+  return bits.join(' · ')||'No task usage evidence';
+}
+function taskUsageMarkup(u){
+  u=u||{};const status=u.status||'NOT_ESTABLISHED';
+  if(status==='established'&&typeof u.value==='number')return '<span class="chip status-exact">EXACT</span> <strong>'+esc(fmtV(u.value)+' '+(u.unit||'unit'))+'</strong>';
+  if(status==='activity-only'&&typeof u.value==='number')return '<span class="chip status-activity">ACTIVITY ONLY</span> '+esc(fmtV(u.value)+' '+(u.unit||'activity'))+' <span class="muted">· not consumption</span>';
+  if(status==='no-usage-surface')return '<span class="chip status-gap">NO USAGE SURFACE</span> <span class="muted">'+esc(u.note||'Provider exposes no per-call usage surface.')+'</span>';
+  if(status==='waived')return '<span class="chip status-gap">WAIVED</span> <span class="muted">'+esc(u.note||'Pre-mandate usage is unrecoverable.')+'</span>';
+  if(status==='fault')return '<span class="chip status-fault">FAULT</span> <span class="muted">'+esc(u.note||'Required post-mandate stamp is missing.')+'</span>';
+  if(status==='pending')return '<span class="chip status-gap">PENDING</span> <span class="muted">'+esc(u.note||'Awaiting a dispatch or usage record.')+'</span>';
+  return '<span class="chip status-gap">NOT ESTABLISHED</span> <span class="muted">'+esc(u.note||'No exact task usage join.')+'</span>';
+}
+function taskTreeRow(t){
+  const q=t.quota||{},o=t.outcome||{},run=/^\\d+$/.test(String(t.run_id||''))?'<a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/'+esc(t.run_id)+'">run '+esc(t.run_id)+'</a>':'';
+  const rec=t.source_ref?'<a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/'+esc(t.source_ref)+'">source record</a>':'';
+  return '<div class="task-row"><div class="task-meta"><span class="task-title">'+esc(t.task_class||'Task')+'</span><span class="chip">'+esc(o.status||'outcome unknown')+'</span>'+taskUsageMarkup(t.usage)+'</div>'
+    +'<p class="muted">'+esc(t.ts||'timestamp NOT_ESTABLISHED')+' · dispatch '+esc(t.dispatch_id||'NOT_ESTABLISHED')+(t.session_id?' · session '+esc(t.session_id):'')+(t.workflow?' · '+esc(t.workflow):'')+'</p>'
+    +'<p class="muted">Quota pool: <strong>'+esc(q.pool||'NOT_ESTABLISHED')+'</strong> · slice: <strong>'+esc(q.slice||'NOT_ESTABLISHED')+'</strong> · join: '+esc(t.attribution||'none')+'</p>'
+    +(t.context?'<p class="muted">'+esc(t.context)+'</p>':'')
+    +((t.usage&&t.usage.source)|| (t.usage&&t.usage.note)?'<p class="muted">Usage source: '+esc((t.usage||{}).source||'—')+(t.usage&&t.usage.note?' · '+esc(t.usage.note):'')+'</p>':'')
+    +'<p class="muted">'+[run,rec].filter(Boolean).join(' · ')+'</p></div>';
+}
+function renderTaskTree(){
+  const tree=pack&&pack.task_tree,host=$('task-tree');
+  if(!tree||!Array.isArray(tree.providers)){host.innerHTML='<div class="card empty">Task projection not present in this feed yet. Merge the generator update, then allow quota-usage-series refresh to publish quota.task-tree/v1.</div>';$('task-tree-summary').textContent='Projection pending';return;}
+  const q=$('task-search').value.trim().toLowerCase(),status=$('task-status').value;
+  let visible=0;
+  const providerHtml=(tree.providers||[]).map(p=>{
+    const modelHtml=(p.models||[]).map(m=>{
+      const roleHtml=(m.roles||[]).map(r=>{
+        const participantHtml=(r.participants||[]).map(part=>{
+          const tasks=(part.tasks||[]).filter(t=>{
+            const hay=[p.provider,m.model,r.role,part.moniker,t.task_class,t.dispatch_id,t.run_id,t.workflow,t.session_id,t.context,(t.quota||{}).pool,(t.quota||{}).slice].join(' ').toLowerCase();
+            return (!q||hay.includes(q))&&(!status||(t.usage||{}).status===status);
+          });
+          if(!tasks.length)return '';
+          visible+=tasks.length;
+          return '<details class="branch"><summary>'+esc(part.moniker||'NOT_ESTABLISHED')+' <span class="participant-summary">· '+tasks.length+' tasks · '+esc(taskUsageSummary(tasks))+'</span></summary><div class="branch">'+tasks.map(taskTreeRow).join('')+'</div></details>';
+        }).join('');
+        if(!participantHtml)return '';
+        return '<details class="branch"><summary>'+esc(r.role||'NOT_ESTABLISHED')+'</summary><div class="branch">'+participantHtml+'</div></details>';
+      }).join('');
+      if(!roleHtml)return '';
+      return '<details class="branch"><summary>'+esc(m.model||'NOT_ESTABLISHED')+'</summary><div class="branch">'+roleHtml+'</div></details>';
+    }).join('');
+    if(!modelHtml)return '';
+    return '<details open><summary><strong>'+esc(p.provider||'NOT_ESTABLISHED')+'</strong></summary><div class="branch">'+modelHtml+'</div></details>';
+  }).join('');
+  const zeroProviders=(tree.providers||[]).filter(p=>(!p.models||!p.models.length)&&(!q||String(p.provider||'').toLowerCase().includes(q)));
+  const zeroHtml=zeroProviders.length?'<section><div class="head"><h3>No recorded tasks</h3><span class="note">'+zeroProviders.length+' provider families</span></div><div class="card"><p class="muted">'+zeroProviders.map(p=>'<span class="chip">'+esc(p.provider)+'</span>').join(' ')+'</p><p class="muted">These provider families remain in the registry denominator but have no nested task records. No quota use is inferred.</p></div></section>':'';
+  const cov=tree.coverage||{};
+  $('task-tree-summary').textContent=(cov.tasks??0)+' tasks · '+(cov.established??0)+' exact · '+(cov.activity_only??0)+' activity-only · '+(cov.no_usage_surface??0)+' no usage surface · '+(cov.waived??0)+' waived · '+(cov.fault??0)+' fault · '+(cov.pending??0)+' pending · '+(cov.not_established??0)+' not established · '+visible+' visible · '+zeroProviders.length+' zero-task providers';
+  host.innerHTML=(providerHtml+zeroHtml)||'<div class="card empty">No task branches match this filter. Clear the search or usage-state filter.</div>';
+}
+$('task-search').addEventListener('input',renderTaskTree);$('task-status').addEventListener('change',renderTaskTree);
+$('task-expand-all').addEventListener('click',()=>document.querySelectorAll('#task-tree details').forEach(d=>{d.open=true}));
+$('task-collapse-all').addEventListener('click',()=>document.querySelectorAll('#task-tree details').forEach(d=>{d.open=false}));
 async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
 async function load(){
   const bust=Date.now();
@@ -98,6 +167,7 @@ async function load(){
   $('freshness').textContent=stale?('STALE — oldest observation '+String(oldest).slice(0,10)):'Pack loaded';
   $('generated').textContent='Schema '+(pack.schema||'—')+' · built by '+(pack.generated_by||'—')+(pack.generated_at?(' · generated '+pack.generated_at):' · generated — (pack predates stamping)')+(oldest?(' · oldest point '+oldest):'')+(newest?(' · newest point '+newest):'')+(stale?'. Staleness is flagged per series on its card; series extend when the quota-usage pack refreshes.':'');
   render();
+  renderTaskTree();
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{axis=b.dataset.axis;render()}));
 load();setInterval(load,60000);

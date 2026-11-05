@@ -1255,6 +1255,78 @@
         "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
+    },
+    {
+      "concept_id": "shorthand_lean.notation_declaration",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "notation declaration",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain), mined from Batteries' own compression surface: a Lean notation declaration — Batteries uses these sparingly (census: 18 code-search hits incl. tests, upstream main 2026-11-04)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.macro",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "macro",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain), mined from Batteries' own compression surface: a Lean macro — a primary Batteries compression device (26 hits): syntax sugar defined once, used tersely",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.tactic_syntax",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "tactic syntax",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain), mined from Batteries' own compression surface: tactic syntax extension — Batteries' main brevity layer (syntax 31 hits): new tactic keywords, e.g. by_contra / split_ands in Batteries/Tactic/Init.lean",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.by_contra",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "by contra",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain), mined from Batteries' own compression surface: Batteries tactic: proof by contradiction (syntax decl, Tactic/Init.lean)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.absurd_tac",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "absurd tac",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain), mined from Batteries' own compression surface: Batteries tactic macro: absurd (Tactic/Init.lean)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.split_ands",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "split ands",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain), mined from Batteries' own compression surface: Batteries tactic: split_ands — splits conjunction goals (syntax decl, Tactic/Init.lean)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
     }
   ],
   "labels": [
@@ -3350,6 +3422,90 @@
       "label_id": "lbl-sh-shorthand_lean-toolchain",
       "concept_id": "shorthand_lean.toolchain",
       "text": "tch",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-notation_declaration",
+      "concept_id": "shorthand_lean.notation_declaration",
+      "text": "ntc",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-macro",
+      "concept_id": "shorthand_lean.macro",
+      "text": "mcr",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-tactic_syntax",
+      "concept_id": "shorthand_lean.tactic_syntax",
+      "text": "tsx",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-by_contra",
+      "concept_id": "shorthand_lean.by_contra",
+      "text": "bcn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-absurd_tac",
+      "concept_id": "shorthand_lean.absurd_tac",
+      "text": "abs",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-split_ands",
+      "concept_id": "shorthand_lean.split_ands",
+      "text": "spa",
       "label_type": "symbolic_notation",
       "language": "en",
       "audience": "expert",

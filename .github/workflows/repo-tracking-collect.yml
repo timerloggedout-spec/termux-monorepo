@@ -11,7 +11,17 @@ name: repo-tracking-collect
 # VM = sandbox law: this workflow is the standing mechanism; no VM cron.
 
 on:
-  workflow_dispatch:
+  # PR-feed state is refreshed by the event that changes it, not by waiting
+  # for the daily anti-entropy pass.
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
+  # Refresh the cross-domain projection after the append-only lane-events
+  # recorder has finished writing its Neon batch.
+  workflow_run:
+    workflows: ["lane events recorder"]
+    types: [completed]
+  # Low-frequency anti-entropy remains only for external backup-repository
+  # metadata, which has no verified cross-repository webhook into this repo.
   schedule:
     - cron: '23 7 * * *'
   push:

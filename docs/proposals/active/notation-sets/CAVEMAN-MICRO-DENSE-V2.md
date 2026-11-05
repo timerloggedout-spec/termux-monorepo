@@ -38,6 +38,16 @@ main's guide states it; this file records the v2 layer only.
    When a reading could mislead, the notation expands — length
    is never a defense of a wrong reading.
 
+## Usage boundaries
+
+- **`NOT_ESTABLISHED` / `N∅`** (owner caution, 2026-11-04
+  19:41 PT): a **chat epistemic marker, ¬ a value**. Never a
+  data-of-record token; the `N∅` compression is **chat-only**,
+  barred from data contexts — ledgers · feeds · DBs keep
+  **schema nulls** where a fact is not established. A feed or
+  ledger cell carrying `N∅` (or the long form as a stored
+  value) is a defect, not a usage.
+
 ## Map (v2)
 
 | Glyph / chord | Concept | Note |

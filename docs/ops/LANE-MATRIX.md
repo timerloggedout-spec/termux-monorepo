@@ -13,9 +13,9 @@ Project/task lifecycle remains in its domain records, including
 The append-only `ops/lane-events` ledger is execution evidence, not project state.
 
 Live PR disposition writer: `.github/workflows/ops-lane-matrix-sweep.yml` +
-`scripts/ops/lane_matrix_sweep.py`. It is triggered by pull-request lifecycle
-events; there is no cron, ten-minute poll, six-hour sweep, manual dispatch, or
-comment heartbeat. Bursts are coalesced by concurrency cancellation; each
+`scripts/ops/lane_matrix_sweep.py`. It is triggered by pull-request lifecycle events and master pushes to the
+policy/classifier; there is no cron, ten-minute poll, six-hour sweep, manual
+dispatch, or comment heartbeat. Bursts are coalesced by concurrency cancellation; each
 materialization reads the current open-PR set and writes only when its generated
 artifact changes.
 

@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-05T02:45:20Z",
+ "generated_at": "2026-11-05T03:49:46Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,11 +10,12 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 1,
-    "in_progress": 0,
+    "queued": 3,
+    "in_progress": 4,
     "oldest_queued_at": "2026-11-02T09:37:37Z",
     "by_workflow_queued": {
-     "PR scope guard": 1
+     "repo gate": 1,
+     "PR scope guard": 2
     }
    },
    "2": {
@@ -33,15 +34,36 @@
    },
    "4": {
     "tier": 4,
-    "queued": 0,
-    "in_progress": 2,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "queued": 28,
+    "in_progress": 28,
+    "oldest_queued_at": "2026-11-05T03:49:29Z",
+    "by_workflow_queued": {
+     "ECC Tools comment-command ops": 1,
+     "Agent review \u2192 auto Jules": 1,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
+     "Context Relationship + Lead/Lag Audit": 2,
+     "Issue Comment Router \u2014 modular fan-out reduction": 3,
+     "Issue Observatory \u2014 similarity, refinement, lifecycle evidence": 1,
+     "RECON INTEL discovery": 1,
+     "Peer review orchestrator": 2,
+     "PR Change Effectiveness Ledger": 1,
+     "PR production ledger": 2,
+     "lane events recorder": 1,
+     "Repository development evaluation": 1,
+     "proposal-lifecycle": 1,
+     "Sweep Accountability": 1,
+     "Action Effectiveness Ledger": 2,
+     "PR evidence evaluation": 1,
+     "termux smoke": 1,
+     "Nomenclature Equivalency Matrix": 2,
+     "n8n SHE bridge": 1,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 1
+    }
    }
   },
   "totals": {
-   "queued": 1,
-   "in_progress": 2
+   "queued": 31,
+   "in_progress": 32
   },
   "wedged_ancient": [
    {

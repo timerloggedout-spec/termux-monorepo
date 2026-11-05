@@ -57,3 +57,16 @@ def test_agentrouter_quota_stays_unknown_until_documented_account_signal_exists(
         assert str(exc) == "provider has no implemented passive adapter"
     else:
         raise AssertionError("AgentRouter quota adapter must fail closed")
+
+
+def test_agentrouter_doe_arm_is_preregistered_but_not_dispatchable():
+    import json
+    from pathlib import Path
+
+    design = json.loads(Path("experiments/doe/util-1-provider-rotation/DESIGN.json").read_text())
+    arms = {row["provider"]: row for row in design["conditional_provider_arms"]}
+    arm = arms["agentrouter"]
+    assert arm["status"] == "pre_registered_conditional_not_dispatchable"
+    assert "AGENTROUTER_API_KEY is present in approved secret storage and is never exposed in records" in arm["activation_gates"]
+    assert any("separately reviewed and allowlisted" in gate for gate in arm["activation_gates"])
+    assert "No dispatch before every activation gate passes" in arm["activation_rule"]

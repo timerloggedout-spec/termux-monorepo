@@ -185,6 +185,29 @@ Linguist). Chords for the NSE-023 oracle lane's recurring terms.
 | `sry` | sorry (forbidden marker — naming it names a defect) |
 | `tch` | toolchain |
 
+**Mined compression devices (owner addendum 19:52 PT).** The
+chord set above was extended by mining Batteries' OWN surface
+(code census, upstream leanprover-community/batteries main,
+2026-11-04; the fleet fork's code search is unindexed — census
+is upstream-lineage, pin 36cc05ca is a fork of it). Finding:
+Batteries compresses at the **tactic layer**, not the notation
+layer — `notation` is sparse (18 hits incl. tests) against
+`macro` 26 · `syntax` 31 · `infixl` 2. Its devices, chorded:
+
+| Chord | Device |
+|---|---|
+| `ntc` | notation declaration (sparse in Batteries) |
+| `mcr` | macro |
+| `tsx` | tactic syntax extension (the main brevity layer) |
+| `bcn` | by_contra (tactic, Batteries/Tactic/Init.lean) |
+| `abs` | absurd (tactic macro, Init.lean) |
+| `spa` | split_ands (tactic, Init.lean) |
+
+Verbatim device examples of record (Init.lean @upstream):
+`macro "_" : tactic` (empty-tactic) · `syntax "by_contra" … :
+tactic` · `macro "absurd " h:term : tactic` · `syntax
+"split_ands" : tactic`.
+
 Seed registry: one nomenclature domain per shorthand domain
-(53 chord terms, all candidate), each concept carrying its chord
+(59 chord terms, all candidate), each concept carrying its chord
 as its symbolic label.

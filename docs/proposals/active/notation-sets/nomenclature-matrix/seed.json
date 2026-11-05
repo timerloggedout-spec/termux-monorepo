@@ -429,18 +429,6 @@
       ]
     },
     {
-      "concept_id": "caveman_micro_dense.verify_imperative",
-      "domain_id": "caveman_micro_dense",
-      "preferred_label": "verify! (imperative)",
-      "definition": "An order to go verify firsthand, distinct from the verified state itself: the monocle glyph is the command, the eye glyph is the achieved state.",
-      "status": "candidate",
-      "version": 1,
-      "source_ids": [
-        "owner-order-caveman-v2-2026-11-04",
-        "issue-320"
-      ]
-    },
-    {
       "concept_id": "caveman_micro_dense.not_established",
       "domain_id": "caveman_micro_dense",
       "preferred_label": "NOT_ESTABLISHED",
@@ -504,7 +492,7 @@
       "concept_id": "caveman_micro_dense.discharged",
       "domain_id": "caveman_micro_dense",
       "preferred_label": "discharged",
-      "definition": "A verdict whose owed action/proof has been discharged (verdict glyph + check).",
+      "definition": "A verdict whose owed action/proof has been discharged. Under the glyph cap (owner correction 2026-11-04) it holds NO standalone glyph: written as the composition ⚖ + chord dch.",
       "status": "candidate",
       "version": 1,
       "source_ids": [
@@ -1105,6 +1093,18 @@
       "domain_id": "shorthand_marketing",
       "preferred_label": "post",
       "definition": "Shorthand-domain chord (marketing): a published marketing post",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.investigating",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "investigating",
+      "definition": "Closely watching with suspicion ∧ criticality — an active, critical scrutiny state (owner correction 2026-11-04 19:38 PT). NOT a neutral verify command: the stance carries suspicion; neutral checking has no glyph here. The eye glyph (neutral verified-firsthand state) is its counterpart, not its synonym.",
       "status": "candidate",
       "version": 1,
       "source_ids": [
@@ -2237,20 +2237,6 @@
       ]
     },
     {
-      "label_id": "lbl-cmd-verify_imperative-symbolic_notation",
-      "concept_id": "caveman_micro_dense.verify_imperative",
-      "text": "🧐 = verify!",
-      "label_type": "symbolic_notation",
-      "language": "en",
-      "audience": "expert",
-      "register": "formal",
-      "status": "candidate",
-      "source_ids": [
-        "owner-order-caveman-v2-2026-11-04",
-        "issue-320"
-      ]
-    },
-    {
       "label_id": "lbl-cmd-not_established-symbolic_notation",
       "concept_id": "caveman_micro_dense.not_established",
       "text": "N∅",
@@ -2281,7 +2267,7 @@
     {
       "label_id": "lbl-cmd-snapshot-symbolic_notation",
       "concept_id": "caveman_micro_dense.snapshot",
-      "text": "📸",
+      "text": "snp (chord — glyph 📸 demoted by the glyph cap, owner correction 2026-11-04)",
       "label_type": "symbolic_notation",
       "language": "en",
       "audience": "expert",
@@ -2323,7 +2309,7 @@
     {
       "label_id": "lbl-cmd-discharged-symbolic_notation",
       "concept_id": "caveman_micro_dense.discharged",
-      "text": "⚖✓",
+      "text": "⚖ + dch (composition — standalone glyph ⚖✓ demoted by the glyph cap, owner correction 2026-11-04)",
       "label_type": "symbolic_notation",
       "language": "en",
       "audience": "expert",
@@ -3028,6 +3014,34 @@
       "language": "en",
       "audience": "expert",
       "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-investigating-symbolic",
+      "concept_id": "caveman_micro_dense.investigating",
+      "text": "🧐",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-investigating-plain",
+      "concept_id": "caveman_micro_dense.investigating",
+      "text": "investigating — watching closely, with suspicion",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain",
       "status": "candidate",
       "source_ids": [
         "owner-order-caveman-v2-2026-11-04",

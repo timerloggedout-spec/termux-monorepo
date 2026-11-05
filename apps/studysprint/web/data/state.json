@@ -10,8 +10,8 @@
       "value": "Glossary: The study of the development of the embryo. (indexed, pages 386)"
      }
     ],
-    "created": "2026-11-04T01:28:41Z",
-    "id": "urn:uuid:f0adae99-f09d-49ec-a4ef-10486061c7e8",
+    "created": "2026-11-05T06:41:29Z",
+    "id": "urn:uuid:ff14e49d-7795-4bc5-a456-aceeb1eea2a2",
     "motivation": "commenting",
     "tags": [
      "term-bank",
@@ -35,8 +35,8 @@
       "value": "Glossary: The law of form or structure independent of function. (indexed, pages 382)"
      }
     ],
-    "created": "2026-11-04T01:28:41Z",
-    "id": "urn:uuid:be5cc46c-b9a4-4074-aed4-16da5ac0b972",
+    "created": "2026-11-05T06:41:29Z",
+    "id": "urn:uuid:86dd83a2-be49-400b-910d-15136bb57317",
     "motivation": "commenting",
     "tags": [
      "term-bank",
@@ -60,7 +60,7 @@
   },
   "receipt": {
    "chapters": 1,
-   "observed_at": "2026-11-04T01:28:41Z",
+   "observed_at": "2026-11-05T06:41:29Z",
    "schema": "studysprint-pipeline-receipt/v1",
    "stage": "term-bank",
    "terms": 62
@@ -21422,7 +21422,7 @@
     "changes": [],
     "course": "BIO 101",
     "date": "2026-11-04",
-    "days_away": 0.36,
+    "days_away": -0.86,
     "kind": "quiz",
     "location": "Science Hall 204",
     "ramp": {
@@ -21437,7 +21437,7 @@
     "changes": [],
     "course": "BIO 101",
     "date": "2026-11-12",
-    "days_away": 8.36,
+    "days_away": 7.14,
     "kind": "midterm",
     "location": "Science Hall 204",
     "ramp": {
@@ -21455,7 +21455,7 @@
     ],
     "course": "BIO 101",
     "date": "2026-12-10",
-    "days_away": 36.69,
+    "days_away": 35.47,
     "kind": "final",
     "location": "Gym Annex B",
     "ramp": {
@@ -21484,10 +21484,10 @@
   "frequency_plan": {
    "BIO 101": {
     "base_per_day": 6.0,
-    "driven_by": "quiz on 2026-11-04",
-    "multiplier": 3.0,
-    "per_day": 18.0,
-    "tier": "final-stretch"
+    "driven_by": "midterm on 2026-11-12",
+    "multiplier": 1.5,
+    "per_day": 9.0,
+    "tier": "ramp-up"
    }
   },
   "locations": [
@@ -21541,7 +21541,7 @@
     "depart_by": "2026-11-04T09:44:18Z",
     "destination": "Science Hall 204",
     "kind": "route-plan",
-    "observed_at": "2026-11-04T01:28:41Z",
+    "observed_at": "2026-11-05T06:41:29Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -21556,7 +21556,7 @@
     "depart_by": "2026-11-12T09:44:18Z",
     "destination": "Science Hall 204",
     "kind": "route-plan",
-    "observed_at": "2026-11-04T01:28:41Z",
+    "observed_at": "2026-11-05T06:41:29Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -21571,7 +21571,7 @@
     "depart_by": "2026-12-10T17:36:42Z",
     "destination": "Gym Annex B",
     "kind": "route-plan",
-    "observed_at": "2026-11-04T01:28:41Z",
+    "observed_at": "2026-11-05T06:41:29Z",
     "origin": "Dorm",
     "schema": "studysprint-geo-receipt/v1",
     "source": "coordinate-estimate",
@@ -21581,7 +21581,7 @@
   "temple_route": {
    "claims_ceiling": "ordered/concrete recall, not understanding",
    "kind": "temple-route",
-   "observed_at": "2026-11-04T01:28:41Z",
+   "observed_at": "2026-11-05T06:41:29Z",
    "placements": [
     {
      "chapter": "Campus route",
@@ -21720,7 +21720,7 @@
       "changes": [],
       "course": "BIO 101",
       "date": "2026-11-04",
-      "days_away": 0.36,
+      "days_away": -0.86,
       "kind": "quiz",
       "location": "Science Hall 204",
       "ramp": {
@@ -21735,7 +21735,7 @@
       "changes": [],
       "course": "BIO 101",
       "date": "2026-11-12",
-      "days_away": 8.36,
+      "days_away": 7.14,
       "kind": "midterm",
       "location": "Science Hall 204",
       "ramp": {
@@ -21753,7 +21753,7 @@
       ],
       "course": "BIO 101",
       "date": "2026-12-10",
-      "days_away": 36.69,
+      "days_away": 35.47,
       "kind": "final",
       "location": "Gym Annex B",
       "ramp": {
@@ -21782,10 +21782,10 @@
     "frequency_plan": {
      "BIO 101": {
       "base_per_day": 6.0,
-      "driven_by": "quiz on 2026-11-04",
-      "multiplier": 3.0,
-      "per_day": 18.0,
-      "tier": "final-stretch"
+      "driven_by": "midterm on 2026-11-12",
+      "multiplier": 1.5,
+      "per_day": 9.0,
+      "tier": "ramp-up"
      }
     },
     "locations": [
@@ -21839,7 +21839,7 @@
       "depart_by": "2026-11-04T09:44:18Z",
       "destination": "Science Hall 204",
       "kind": "route-plan",
-      "observed_at": "2026-11-04T01:28:41Z",
+      "observed_at": "2026-11-05T06:41:29Z",
       "origin": "Dorm",
       "schema": "studysprint-geo-receipt/v1",
       "source": "coordinate-estimate",
@@ -21854,7 +21854,7 @@
       "depart_by": "2026-11-12T09:44:18Z",
       "destination": "Science Hall 204",
       "kind": "route-plan",
-      "observed_at": "2026-11-04T01:28:41Z",
+      "observed_at": "2026-11-05T06:41:29Z",
       "origin": "Dorm",
       "schema": "studysprint-geo-receipt/v1",
       "source": "coordinate-estimate",
@@ -21869,7 +21869,7 @@
       "depart_by": "2026-12-10T17:36:42Z",
       "destination": "Gym Annex B",
       "kind": "route-plan",
-      "observed_at": "2026-11-04T01:28:41Z",
+      "observed_at": "2026-11-05T06:41:29Z",
       "origin": "Dorm",
       "schema": "studysprint-geo-receipt/v1",
       "source": "coordinate-estimate",
@@ -21879,7 +21879,7 @@
     "temple_route": {
      "claims_ceiling": "ordered/concrete recall, not understanding",
      "kind": "temple-route",
-     "observed_at": "2026-11-04T01:28:41Z",
+     "observed_at": "2026-11-05T06:41:29Z",
      "placements": [
       {
        "chapter": "Campus route",
@@ -22778,7 +22778,7 @@
      ],
      "desired_retention": 0.9,
      "format": "ts-fsrs/v1",
-     "generated_at": "2026-11-04T01:28:41Z",
+     "generated_at": "2026-11-05T06:41:29Z",
      "generation": "FSRS-6",
      "parameters": [
       0.212,
@@ -22878,7 +22878,7 @@
     "items_verified": 8,
     "source_path": "examples/syllabus.json",
     "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-    "verified_at": "2026-11-04T01:28:41Z",
+    "verified_at": "2026-11-05T06:41:29Z",
     "weeks_count": 3
    }
   },
@@ -23772,7 +23772,7 @@
      ],
      "desired_retention": 0.9,
      "format": "ts-fsrs/v1",
-     "generated_at": "2026-11-04T01:28:41Z",
+     "generated_at": "2026-11-05T06:41:29Z",
      "generation": "FSRS-6",
      "parameters": [
       0.212,
@@ -23872,7 +23872,7 @@
     "items_verified": 8,
     "source_path": "examples/syllabus_stats.json",
     "trust_statement": "Planned from your verified STAT 210 \u2014 Data & Chance (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash aadbc795463a.",
-    "verified_at": "2026-11-04T01:28:41Z",
+    "verified_at": "2026-11-05T06:41:29Z",
     "weeks_count": 3
    }
   }
@@ -24076,13 +24076,13 @@
     }
    }
   ],
-  "observed_at": "2026-11-04T01:28:41Z",
+  "observed_at": "2026-11-05T06:41:29Z",
   "schema": "studysprint-courses-receipt/v1",
   "total_sessions": 24
  },
  "ics_by_course": {
-  "BIO 101 \u2014 Intro Biology (sample, synthetic)": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudySprint//courses//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:af0646b0620dcc0d@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261104T170000Z\r\nDTEND:20261104T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: cell structure\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c2403163a306ab08@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: cell structure\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:ee301ad5896b1452@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261106T170000Z\r\nDTEND:20261106T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: membranes\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:4547e6b9f74f31e0@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261107T170000Z\r\nDTEND:20261107T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: membranes\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:17b7bc51d5556dae@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261111T170000Z\r\nDTEND:20261111T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: photosynthesis\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a7fa773bfccb277c@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261112T170000Z\r\nDTEND:20261112T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: photosynthesis\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:4f40c374116b3059@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261113T170000Z\r\nDTEND:20261113T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: respiration\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:71e0dc4c6267d220@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261114T170000Z\r\nDTEND:20261114T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: respiration\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:778f2bb413fb0cf1@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261118T170000Z\r\nDTEND:20261118T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: DNA replication\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c688a280a211bfd9@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261119T170000Z\r\nDTEND:20261119T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: DNA replication\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:76235e15581010ae@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261120T170000Z\r\nDTEND:20261120T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: mitosis\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:23f9fc86091e15fd@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261121T170000Z\r\nDTEND:20261121T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: mitosis\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
-  "STAT 210 \u2014 Data & Chance (sample, synthetic)": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudySprint//courses//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:66fb9260548ea550@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261104T170000Z\r\nDTEND:20261104T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: sampling and bias\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:13a05c571c3c96a1@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: sampling and bias\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:46fc7523a4bcf7b0@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261106T170000Z\r\nDTEND:20261106T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: variables and measurement\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a899049e03c21c7d@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261107T170000Z\r\nDTEND:20261107T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: variables and measurement\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:478cf67ed05712ce@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261111T170000Z\r\nDTEND:20261111T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: probability rules\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a5ebb9ffc6079624@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261112T170000Z\r\nDTEND:20261112T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: probability rules\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:371d4a60019143d7@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261113T170000Z\r\nDTEND:20261113T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: random variables\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:7f1f34aa7b0244b2@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261114T170000Z\r\nDTEND:20261114T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: random variables\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:5153cba6b1ecccb1@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261118T170000Z\r\nDTEND:20261118T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: the normal distribution\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:26537ef18a773f89@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261119T170000Z\r\nDTEND:20261119T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: the normal distribution\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:2fbcfd01fb0da242@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261120T170000Z\r\nDTEND:20261120T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: sampling distributions\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:587b6350fe4cc7de@studysprint\r\nDTSTAMP:20261104T012841Z\r\nDTSTART:20261121T170000Z\r\nDTEND:20261121T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: sampling distributions\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+  "BIO 101 \u2014 Intro Biology (sample, synthetic)": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudySprint//courses//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:af0646b0620dcc0d@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: cell structure\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c2403163a306ab08@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261106T170000Z\r\nDTEND:20261106T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: cell structure\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:ee301ad5896b1452@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261107T170000Z\r\nDTEND:20261107T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: membranes\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:4547e6b9f74f31e0@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261108T170000Z\r\nDTEND:20261108T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: membranes\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:17b7bc51d5556dae@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261112T170000Z\r\nDTEND:20261112T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: photosynthesis\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a7fa773bfccb277c@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261113T170000Z\r\nDTEND:20261113T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: photosynthesis\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:4f40c374116b3059@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261114T170000Z\r\nDTEND:20261114T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: respiration\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:71e0dc4c6267d220@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261115T170000Z\r\nDTEND:20261115T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: respiration\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:778f2bb413fb0cf1@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261119T170000Z\r\nDTEND:20261119T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: DNA replication\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c688a280a211bfd9@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261120T170000Z\r\nDTEND:20261120T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: DNA replication\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:76235e15581010ae@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261121T170000Z\r\nDTEND:20261121T174500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 learn: mitosis\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:23f9fc86091e15fd@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261122T170000Z\r\nDTEND:20261122T171500Z\r\nSUMMARY:BIO 101 \u2014 Intro Biology (sample\\, synthetic) \u2014 retrieve: mitosis\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+  "STAT 210 \u2014 Data & Chance (sample, synthetic)": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudySprint//courses//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:66fb9260548ea550@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: sampling and bias\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:13a05c571c3c96a1@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261106T170000Z\r\nDTEND:20261106T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: sampling and bias\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:46fc7523a4bcf7b0@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261107T170000Z\r\nDTEND:20261107T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: variables and measurement\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a899049e03c21c7d@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261108T170000Z\r\nDTEND:20261108T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: variables and measurement\r\nDESCRIPTION:StudySprint session\\, week 1\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:478cf67ed05712ce@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261112T170000Z\r\nDTEND:20261112T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: probability rules\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:a5ebb9ffc6079624@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261113T170000Z\r\nDTEND:20261113T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: probability rules\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:371d4a60019143d7@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261114T170000Z\r\nDTEND:20261114T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: random variables\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:7f1f34aa7b0244b2@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261115T170000Z\r\nDTEND:20261115T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: random variables\r\nDESCRIPTION:StudySprint session\\, week 2\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:5153cba6b1ecccb1@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261119T170000Z\r\nDTEND:20261119T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: the normal distribution\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:26537ef18a773f89@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261120T170000Z\r\nDTEND:20261120T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: the normal distribution\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:2fbcfd01fb0da242@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261121T170000Z\r\nDTEND:20261121T174500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 learn: sampling distributions\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:587b6350fe4cc7de@studysprint\r\nDTSTAMP:20261105T064129Z\r\nDTSTART:20261122T170000Z\r\nDTEND:20261122T171500Z\r\nSUMMARY:STAT 210 \u2014 Data & Chance (sample\\, synthetic) \u2014 retrieve: sampling distributions\r\nDESCRIPTION:StudySprint session\\, week 3\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
  },
  "memory": {
   "feynman_topics": [
@@ -24232,7 +24232,7 @@
    }
   ]
  },
- "plan_start": "2026-11-04",
+ "plan_start": "2026-11-05",
  "reader": {
   "sections": [
    {
@@ -24945,7 +24945,7 @@
    ],
    "desired_retention": 0.9,
    "format": "ts-fsrs/v1",
-   "generated_at": "2026-11-04T01:28:41Z",
+   "generated_at": "2026-11-05T06:41:29Z",
    "generation": "FSRS-6",
    "parameters": [
     0.212,
@@ -24974,7 +24974,7 @@
   }
  },
  "surface": "studysprint-webapp",
- "surface_version": "0.5.1",
+ "surface_version": "0.5.2",
  "today": {
   "actions": [
    {
@@ -25018,7 +25018,7 @@
   "items_verified": 8,
   "source_path": "examples/syllabus.json",
   "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-  "verified_at": "2026-11-04T01:28:41Z",
+  "verified_at": "2026-11-05T06:41:29Z",
   "weeks_count": 3
  }
 }

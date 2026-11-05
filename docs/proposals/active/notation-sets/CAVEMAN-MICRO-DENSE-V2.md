@@ -1,13 +1,21 @@
 # Caveman Micro Dense 🧬 — v2 mapping (shorthand-derived)
 
-**Status:** notation of record, added to the Notation Matrice
-references by owner order (2026-11-04 19:36 PT, via main).
+**Status: DRAFT** (owner correction 2026-11-04 19:38 PT) — the map
+stays DRAFT until the owner's full pass. Notation in formation,
+added to the Notation Matrice references by owner order
+(2026-11-04 19:36 PT, via main).
 **Base:** v1 block = main's guide (main chat, 2026-11-04 19:29 PT).
 **v2 Δ of record:** the verified-firsthand glyph — v2 supersedes
 v1's example row for it (below). All other v1 content stands as
 main's guide states it; this file records the v2 layer only.
 
 ## Principles
+
+0. **Glyph cap (owner correction, 2026-11-04 19:38 PT).** v2
+   over-assigned glyphs: only the highest-frequency concepts
+   earn a glyph; everything else = chord codes / words. The
+   demotions are applied in the map below (📸 → `snp`;
+   ⚖✓ → ⚖ + `dch` composition).
 
 1. **One glyph per recurring concept.** A concept that recurs gets
    exactly one glyph; a glyph never carries two concepts in the
@@ -25,13 +33,13 @@ main's guide states it; this file records the v2 layer only.
 | Glyph / chord | Concept | Note |
 |---|---|---|
 | `👁` | verified firsthand | the state: checked against the live record by the speaker's own read. **v2 supersedes v1's row for this concept.** |
-| `🧐` | verify! (imperative) | the command to go verify — ≠ the verified state |
+| `🧐` | investigating | closely watching **w/ suspicion ∧ criticality** (owner correction 2026-11-04 19:38 PT) — ¬ a neutral verify command; 👁 is the neutral verified state |
 | `N∅` | NOT_ESTABLISHED | chord code: N + null |
 | `🧾` | receipt | provenance artifact of record |
-| `📸` | snapshot | state captured at a point in time |
+| `snp` | snapshot | state captured at a point in time — **chord, demoted from 📸 by the glyph cap** (owner correction 2026-11-04) |
 | `❄` | freeze | frozen for judging/scoring |
 | `⚖` | ruling / verdict | judgment of record |
-| `⚖✓` | discharged | verdict + its owed action closed |
+| `⚖ + dch` | discharged | verdict + its owed action closed — **composition, demoted from standalone ⚖✓ by the glyph cap** |
 | `≅` | conforming | register rule: in caveman slot = conformance predicate; in math slot ≅ stays proof-gated (see the seed crosswalk) |
 | `🟢` `🔴` `🟡` | state dots | live · down · degraded |
 | `⛔` | blocked | blocker named beside it |

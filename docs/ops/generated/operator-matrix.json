@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 538,
-    "open_prs": 287,
+    "open_issues": 539,
+    "open_prs": 286,
     "pr_classes": {
-      "CANDIDATE": 136,
-      "EXTRACT": 10,
+      "CANDIDATE": 133,
+      "EXTRACT": 12,
       "NEED_EVIDENCE": 141,
       "SUPERSEDE": 0
     }
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 50,
-      "prs": 285,
+      "issues": 51,
+      "prs": 284,
       "unlabelled_numbers": [
         308,
         388,
@@ -101,11 +101,12 @@
         4873,
         4963,
         4977,
-        4979
+        4979,
+        4994
       ]
     }
   },
-  "generated_at": "2026-11-05T04:10:59Z",
+  "generated_at": "2026-11-05T04:24:19Z",
   "issues_unlabelled": [
     308,
     388,
@@ -156,15 +157,16 @@
     4873,
     4963,
     4977,
-    4979
+    4979,
+    4994
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "in_progress"
     },
-    "sha": "9465693aba"
+    "sha": "8daf25be25"
   },
   "prs": [
     {
@@ -236,6 +238,34 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a42e376da2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-05T03:41:36Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7beb93a07c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-05T03:28:09Z"
     },
     {
       "class": "EXTRACT",
@@ -1075,40 +1105,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a42e376da2",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-05T03:41:36Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-04T23:47:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7beb93a07c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-05T03:28:09Z"
     },
     {
       "class": "CANDIDATE",
@@ -1523,12 +1525,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "33ff9b8605",
+      "head_sha": "282bc16631",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T04:09:25Z"
+      "updated_at": "2026-11-05T04:22:53Z"
     },
     {
       "class": "CANDIDATE",
@@ -2075,20 +2077,6 @@
       "number": 4737,
       "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
       "updated_at": "2026-11-04T00:32:22Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d87c4433ee",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4740,
-      "title": "QUE: D1 priority window (dispatch-tiers) \u2014 first claim on runner supply until the freeze",
-      "updated_at": "2026-11-04T00:38:52Z"
     },
     {
       "class": "CANDIDATE",
@@ -2715,7 +2703,7 @@
       },
       "head_sha": "8223fe97b5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-04T22:59:47Z"
@@ -3371,12 +3359,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "602af1fb7a",
+      "head_sha": "a0781c8f32",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-05T04:05:22Z"
+      "updated_at": "2026-11-05T04:22:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4185,7 +4173,7 @@
       },
       "head_sha": "f304aeecd4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
       "updated_at": "2026-11-05T04:10:21Z"

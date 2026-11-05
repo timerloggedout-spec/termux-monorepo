@@ -1,9 +1,9 @@
 {
   "counts": {
-    "open_issues": 537,
-    "open_prs": 288,
+    "open_issues": 538,
+    "open_prs": 287,
     "pr_classes": {
-      "CANDIDATE": 136,
+      "CANDIDATE": 135,
       "EXTRACT": 11,
       "NEED_EVIDENCE": 141,
       "SUPERSEDE": 0
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 49,
-      "prs": 286,
+      "issues": 50,
+      "prs": 285,
       "unlabelled_numbers": [
         308,
         388,
@@ -100,11 +100,12 @@
         4721,
         4873,
         4963,
-        4977
+        4977,
+        4979
       ]
     }
   },
-  "generated_at": "2026-11-05T03:52:31Z",
+  "generated_at": "2026-11-05T03:55:35Z",
   "issues_unlabelled": [
     308,
     388,
@@ -154,7 +155,8 @@
     4721,
     4873,
     4963,
-    4977
+    4977,
+    4979
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -162,7 +164,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "ca9c398b13"
+    "sha": "cb17d3607a"
   },
   "prs": [
     {
@@ -312,12 +314,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "fcde465c7a",
+      "head_sha": "7b0007404d",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4976,
-      "title": "Caveman v2 corrections: \ud83e\uddd0 semantics + glyph cap + DRAFT status",
-      "updated_at": "2026-11-05T03:50:22Z"
+      "number": 4969,
+      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+      "updated_at": "2026-11-05T03:54:43Z"
     },
     {
       "class": "CANDIDATE",
@@ -2207,20 +2209,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b0baa6b236",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4969,
-      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-05T03:44:52Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "3c9fe3294a",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3385,7 +3373,7 @@
       },
       "head_sha": "15276603c7",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-05T03:51:46Z"
@@ -4195,12 +4183,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "c92f666637",
+      "head_sha": "a6f3cba048",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4974,
-      "title": "chore(ops): regenerate operator matrix",
-      "updated_at": "2026-11-05T03:50:03Z"
+      "mergeable_state": "unstable",
+      "number": 4980,
+      "title": "chore(linguist): refresh linguist-panel-feed.json",
+      "updated_at": "2026-11-05T03:55:33Z"
     }
   ],
   "schema": "operator-matrix/v1",

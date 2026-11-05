@@ -33,8 +33,6 @@ on:
       - '**/SKILL.md'
       - '**/AGENTS.md'
       - '**/CLAUDE.md'
-      - '.github/ecc-tools.yml'
-      - '.github/ecc-tools.yaml'
 
 concurrency:
   group: ecc-tools-ops-${{ github.event.comment.id || github.event.pull_request.number || github.event.issue.number || github.run_id }}

@@ -75,7 +75,7 @@ Provider discovery, model eligibility, quota, health, and inference are separate
 - Model source of truth: authenticated `GET /v1/models` for the configured key/resource pool.
 - One key may be shared across agents with unified quota; therefore all usage must be attributed by agent/workflow and key alias, not by exposing the key.
 - Public documentation does not establish a universal remaining-credit/reset API. Until an authenticated documented quota source is validated, remaining balance and reset are `unknown`.
-- Start disabled. Enable only after credential validation, account-scoped model discovery, approved data classification, and an explicit spend ceiling.
+- Catalog discovery is now wired but remains credential-gated; no inference route is admitted by this catalog change. Start disabled. Enable inference only after credential validation, account-scoped model discovery, approved data classification, an explicit spend ceiling, and the separate native-inference admission review.
 
 ## Shared telemetry envelope
 
@@ -140,7 +140,7 @@ One dispatched/executed run = one experiment observation. A provider catalog ent
 | Phase | Deliverable | Acceptance gate |
 |---|---|---|
 | P0 | Consolidated inventory, schema, ownership and status | No duplicate systems of record; FireSight explicitly unresolved |
-| P1 | AgentRouter provider/model discovery + dual protocol adapter | Authenticated model list validated with user key; key redaction tests; default disabled until spend/data policy |
+| P1 | AgentRouter authenticated model discovery | Adapter and unit coverage merged in this branch; account model list still awaits user key; inference remains disabled pending separate admission review |
 | P2 | Quota manager and dashboard projection | Provider-specific documented signals only; unknown/stale states preserved; tests cover null/zero, resets, 401/402/429/5xx |
 | P3 | Temporal/HindSight/Provenance/Witness correlation | Shared IDs and evidence digests; independent sink failures; no prompt/secret leakage |
 | P4 | n8n/Gravitee/Platform201/Bifrost integration edges | Each edge has live evidence; no mock/console/evaluation state promoted to production |
@@ -172,7 +172,7 @@ One dispatched/executed run = one experiment observation. A provider catalog ent
 - `docs/ops/PLATFORM201-LIVE-2026-10-27.md` — Platform201 deployment evidence and API credential gap.
 - `docs/proposals/active/bifrost-gateway-integration/ITEMS.md` — Bifrost status; benchmark results pending.
 - `config/agent_stack_integrations.json` + `docs/research/RUNTIME-PROVENANCE-AIBOM.md` — Witness integration/provenance references.
-- `scripts/provider_model_catalog.py`, `scripts/provider_quota_managers.py`, `ops/quota/provider-managers.json` — provider discovery and passive quota normalization.
+- `scripts/provider_model_catalog.py`, `scripts/provider_extension_catalogs.py`, `scripts/provider_quota_managers.py`, `ops/quota/provider-managers.json` — provider discovery and passive quota normalization. AgentRouter is authenticated catalog-only; its quota manager remains unsupported/unknown pending a documented account signal.
 - `experiments/doe/util-1-provider-rotation/DESIGN.json` + `docs/ops/DOE-FAMILY.md` — live provider-rotation experiment contract.
 
 This document records an integration baseline. It does not assert that all integrations are credentialed, deployed, healthy, or approved for production traffic.

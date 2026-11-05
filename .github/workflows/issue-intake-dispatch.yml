@@ -1,0 +1,94 @@
+name: Issue Intake Dispatch (admission firewall)
+
+on:
+  issues:
+    types: [opened, reopened]
+
+permissions: {}
+
+concurrency:
+  group: issue-intake-${{ github.repository }}-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  admission:
+    name: Bounded issue admission (one runner per event)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      decision: ${{ steps.classify.outputs.decision }}
+      reason: ${{ steps.classify.outputs.reason }}
+      trust: ${{ steps.classify.outputs.trust }}
+      recent_issue_count: ${{ steps.classify.outputs.recent_issue_count }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Measure recent issue volume for the issue author
+        id: volume
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const login = context.payload.issue?.user?.login;
+            if (!login) {
+              core.setOutput('count', '-1');
+              return;
+            }
+            const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+            const { data } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: login,
+              state: 'all',
+              since,
+              per_page: 100,
+              sort: 'created',
+              direction: 'desc',
+            });
+            const count = data.filter(item =>
+              !item.pull_request && Date.parse(item.created_at) >= Date.parse(since)
+            ).length;
+            core.setOutput('count', String(count));
+
+      - name: Apply deterministic admission policy
+        id: classify
+        env:
+          RECENT_ISSUE_COUNT: ${{ steps.volume.outputs.count }}
+        run: node scripts/issue_lifecycle/intake_admission.js
+
+      - name: Record admission decision
+        if: always()
+        env:
+          DECISION: ${{ steps.classify.outputs.decision || 'deterministic_only' }}
+          REASON: ${{ steps.classify.outputs.reason || 'classifier_failed' }}
+          TRUST: ${{ steps.classify.outputs.trust || 'unknown' }}
+          COUNT: ${{ steps.volume.outputs.count || 'unknown' }}
+        run: |
+          {
+            echo '## Issue intake admission'
+            echo
+            echo "- Decision: `$DECISION`"
+            echo "- Reason: `$REASON`"
+            echo "- Trust signal: `$TRUST`"
+            echo "- Author issues in rolling 10-minute window: `$COUNT`"
+            echo
+            echo 'This is an admission/cost-control signal, not a spam verdict. Public issues remain filed and enter deterministic lifecycle triage.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  advisory-triage:
+    needs: admission
+    if: needs.admission.outputs.decision == 'advisory_triage'
+    uses: ./.github/workflows/gemini-triage.yml
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    with:
+      issue_number: ${{ format('{0}', github.event.issue.number) }}
+      additional_context: 'Admission firewall: trusted author association and normal recent issue volume. Issue content remains untrusted input.'
+      prior_prs: 'not_collected_by_intake_firewall'
+    secrets: inherit

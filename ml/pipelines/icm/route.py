@@ -3,8 +3,8 @@ from __future__ import annotations
 
 # Longer / more specific tokens first.
 KEYWORDS = (
-    ("175", "hub"),
-    ("issue #", "hub"),
+    ("repo-tracking", "tracking"),
+    ("lane×project", "tracking"),
     ("keepalive", "center"),
     ("command", "center"),
     ("cctv", "cctv-skill"),

@@ -122,6 +122,14 @@ test('force override admits everything', () => {
   }
 });
 
+// Matrix inventory is event-driven and must not be part of a timed dispatch tranche.
+test('lane matrix inventory is not quota-dispatched', () => {
+  assert.equal(
+    Object.values(OUTPUT_LANES).flat().includes('ops-lane-matrix-sweep'),
+    false,
+  );
+});
+
 // 7. Rate-limit deferral: pressure read failed -> fail closed, every
 // gated output suppressed with reason rate_limited (never dispatch blind).
 test('rate-limit deferral fails closed', () => {

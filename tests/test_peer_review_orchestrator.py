@@ -36,7 +36,7 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
 
     def test_collect_reuses_one_comment_snapshot_and_does_not_poll(self) -> None:
         fetch_start = self.workflow.index("async function fetchEvidence(comments)")
-        fetch_end = self.workflow.index("\\n            function controlEntries", fetch_start)
+        fetch_end = self.workflow.index("function controlEntries", fetch_start)
         fetcher = self.workflow[fetch_start:fetch_end]
         self.assertNotIn("issues.listComments", fetcher)
         self.assertIn("const evidence = await fetchEvidence(initialComments);", self.workflow)

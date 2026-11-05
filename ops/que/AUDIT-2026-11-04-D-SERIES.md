@@ -24,6 +24,11 @@ Packet of record: D1 diagnostics escalation @ manager seat. Closure receipts col
 - Watchdog intake-incomplete scan + admission ¬ADMITTED on intake-fail (false-green) → Fixes 1/2 + Oversight spec fold (comment 6649251450, incl. NEW edited-trigger leg).
 - Label reconciliation (adds-only stamps; #4965/#4966 carried swarm-admitted ∧ deferred-by-tier) → Fix 4 (comment 6649240025).
 
+## D-i — INVOKE ≠ PRODUCTION (false-green invoke receipts)
+- State: TRACKED in this audit (Desk addendum, 2026-11-04 20:40 PT). Evidence: the gemini-dispatch chain {router → OpenRouter free gemma-4-31b → 429 → incomplete} stamps job SUCCESS = false-green; the route is text-only (∅ build capability) and its invoke receipts carry ∅ repo-visible production heartbeat.
+- Closure class: an invoke receipt reads HAND-OFF ONLY unless it carries production evidence {branch · PR · run output}. An invoke with no production evidence never closes a filing.
+- Closure: OPEN (class rule stands in this audit; enforcement rides the admission/watchdog set #4977/#4979 — receipts without production evidence stay visible as hand-offs in V5/V6).
+
 ## Desk legs (owned at the Desk seat, tracked here for the set)
 - D-a filing-form discipline — Desk.
 - D-e stale reads (both directions) — Desk.

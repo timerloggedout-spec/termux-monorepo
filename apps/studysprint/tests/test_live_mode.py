@@ -47,7 +47,7 @@ def _on(monkeypatch):
 
 
 def test_endpoint_is_the_host_b_contract_url():
-    assert live.ENDPOINT == ("https://hostb-fit-test-5b9d7"
+    assert live.ENDPOINT == ("https://hostb-live-5b9d7"
                              ".containers.snapdeploy.app")
 
 

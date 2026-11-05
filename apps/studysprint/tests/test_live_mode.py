@@ -128,6 +128,14 @@ def test_web_mirror_contract():
                        check=True)
 
 
+def test_web_surface_version_and_cache_identity():
+    version = (ROOT / "web" / "VERSION").read_text().strip()
+    sw = (ROOT / "web" / "sw.js").read_text()
+    assert version == "0.5.2"
+    assert f"studysprint-webapp-v{version}" in sw
+    assert "studysprint-webapp-v0.5.1" not in sw
+
+
 def test_tui_hooks_present():
     tui = (ROOT / "tui.py").read_text()
     for needle in ('id="live-plan"', 'id="live-receipt"',

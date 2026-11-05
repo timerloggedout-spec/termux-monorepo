@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-04T22:30:57Z",
+ "generated_at": "2026-11-05T02:45:20Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,11 +10,10 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 2,
+    "queued": 1,
     "in_progress": 0,
     "oldest_queued_at": "2026-11-02T09:37:37Z",
     "by_workflow_queued": {
-     "repo gate": 1,
      "PR scope guard": 1
     }
    },
@@ -34,25 +33,15 @@
    },
    "4": {
     "tier": 4,
-    "queued": 13,
-    "in_progress": 13,
-    "oldest_queued_at": "2026-11-04T22:29:45Z",
-    "by_workflow_queued": {
-     "lane events recorder": 1,
-     "Agent Throughput Evidence": 2,
-     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
-     "PR production ledger": 1,
-     "termux smoke": 1,
-     "Peer review orchestrator": 3,
-     "Sweep Accountability": 1,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-     "RECON INTEL discovery": 1
-    }
+    "queued": 0,
+    "in_progress": 2,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    }
   },
   "totals": {
-   "queued": 15,
-   "in_progress": 13
+   "queued": 1,
+   "in_progress": 2
   },
   "wedged_ancient": [
    {
@@ -78,7 +67,7 @@
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",
   "source_schema": "dispatch-state-feed/v1",
-  "source_generated_at": "2026-11-04T18:20:48Z",
+  "source_generated_at": "2026-11-04T23:49:35Z",
   "counts": {
    "claimed": 2,
    "escalated": 2,

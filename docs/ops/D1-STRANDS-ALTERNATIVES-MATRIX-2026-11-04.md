@@ -81,6 +81,21 @@ A = AWS-proof · B = claim-shape/descope · C = owner-gated AWS.
 | A8 | AWS Studio Lab | n/a | n/a | None — new signups closed 2026-07-30 (Recon return 2026-11-04) | DEAD — ruled out |
 | A9 | SageMaker Studio social sign-in on-ramp (What's New 2026-10-15) | none for most (Free-plan flow) | owner-hand social sign-in (P1-class, gate class = G1/G2) | Full receipt standard satisfiable IFF the auto-created Studio execution role holds bedrock:InvokeModel — NOT_ESTABLISHED in public docs (preconfigured perms documented SageMaker-scoped; $100 credits described SageMaker-scoped); settles by a 3-cell in-flow probe (sts identity · list-foundation-models · one tiny Nova invoke) | Class A CANDIDATE — account class ESTABLISHED real (flow creates a new AWS account on the Free plan; not event/temp); sign-in = signer's own social identity (owner's GitHub-bound Builder ID); post-sign-in Studio is a browser IDE, fleet-drivable via live session; end-to-end = pending the ② probe |
 
+Door inventory (2026-11-04 17:53 PT, aide return): Workshop Studio
+guided-event entry keys on Email OTP (registered email) + 12-digit
+event access code at catalog.workshops.aws/join — not Builder ID.
+D1's own prerequisite workshop ("Building AI Agents with Strands
+SDK", bit.ly/strands-agents-workshop): content live, event-account
+re-entry NOT_ESTABLISHED publicly (code issuance + event window
+unstated; owner-side dashboard check settles it) — and even if
+joinable, the account is event/temp = fails the standard (A3).
+General guided events: joinable only with a live code in hand, no
+public live codes. Event Engine legacy: hash-gated, expired outside
+event windows. Self-paced Strands/Bedrock workshops: joinable as
+content, OWN-ACCOUNT-ONLY. Agentic Football Cup: not today
+(org-booked; next season 2027 waitlist). Net: no door yields a
+claim-grade account; the real-account doors remain A9/A1.
+
 ## Matrix B — free-provider Strands backends (non-AWS)
 
 Ruled OUT for the claim by AWS-STRANDS-ONLY (Desk spec 2026-11-04):
@@ -211,3 +226,8 @@ run + receipt margin.
   specified · ③ account class ESTABLISHED real (new Free-plan
   account, not event/temp) · ④ sign-in owner-hand, Studio driving
   fleet-drivable, end-to-end pending ②. Filed as row A9.
+- 2026-11-04 17:53 PT — door inventory returned: no Workshop
+  Studio / Event Engine door yields a claim-grade account today
+  (code/hash-gated, event-window-bound, temp accounts); D1's own
+  workshop re-entry NOT_ESTABLISHED publicly; self-paced workshops
+  = own-account-only. Filed under Matrix A.

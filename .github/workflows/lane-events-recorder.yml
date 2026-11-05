@@ -17,13 +17,6 @@ on:
       - Agent Throughput Evidence
       - n8n SHE bridge
     types: [completed]
-  workflow_dispatch:
-    inputs:
-      command:
-        description: "record (self-test event) | count | schema"
-        default: count
-        type: choice
-        options: [count, record, schema]
 
 permissions:
   contents: read
@@ -35,7 +28,7 @@ concurrency:
 
 jobs:
   record:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     continue-on-error: true
@@ -98,16 +91,3 @@ jobs:
           database-url: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
           neon-api-key: ${{ secrets.NEON_API_KEY }}
 
-      - name: manual (${{ inputs.command }})
-        if: github.event_name == 'workflow_dispatch'
-        uses: ./.github/actions/lane-event
-        with:
-          command: ${{ inputs.command }}
-          lane: selftest
-          workflow: lane events recorder
-          event-type: selftest
-          run-id: ${{ github.run_id }}
-          run-attempt: ${{ github.run_attempt }}
-          head-sha: ${{ github.sha }}
-          database-url: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
-          neon-api-key: ${{ secrets.NEON_API_KEY }}

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Lane-matrix recursive sweep — age + disposition inventory for open PRs.
+"""Event-driven PR-disposition materializer for the lane-matrix view.
 
 Observer + artifact writer. Does NOT merge, close, rebase, or force-push.
-Produces docs/ops/generated/lane-matrix-status.json (+ optional markdown).
-#175 comments are opt-in only (--comment-175). The board is the artifact.
+Triggered by pull_request_target lifecycle events; there is no cron/polling loop.
+The board is a PR-disposition projection, not the lane×project source of truth.
 
 Lanes (parking HOLD/WAIT/OBSERVE retired):
   EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE
@@ -25,9 +25,6 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA = "lane-matrix-sweep/v2"
-ISSUE_175 = 175
-MARKER = "<!-- lane-matrix-sweep:v1 -->"
-DEBOUNCE_HOURS = 11
 
 VALID_LANES = frozenset({"EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE"})
 INVALID_PARKING = frozenset({"HOLD", "WAIT", "OBSERVE"})
@@ -135,9 +132,6 @@ def classify_pr(pr: dict[str, Any], master_sha: str, now: datetime) -> dict[str,
     elif bot:
         lane = "SUPERSEDE"
         reasons.append("bot-no-auto-promote")
-    elif days >= 40:
-        lane = "SUPERSEDE"
-        reasons.append("ancient-no-auto-promote")
     else:
         lane = "CANDIDATE"
         reasons.append(f"state:{mergeable_state}")
@@ -203,32 +197,6 @@ def gh_paginate_prs(owner: str, repo: str, token: str) -> list[dict[str, Any]]:
     return out
 
 
-def post_issue_comment(owner: str, repo: str, issue: int, body: str, token: str) -> None:
-    payload = json.dumps({"body": body}).encode("utf-8")
-    req = urllib.request.Request(
-        f"https://api.github.com/repos/{owner}/{repo}/issues/{issue}/comments",
-        data=payload,
-        method="POST",
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "termux-monorepo-lane-matrix-sweep",
-            "Content-Type": "application/json",
-        },
-    )
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        resp.read()
-
-
-def list_issue_comments(owner: str, repo: str, issue: int, token: str) -> list[dict[str, Any]]:
-    data = gh_api(
-        f"/repos/{owner}/{repo}/issues/{issue}/comments?per_page=50&sort=created&direction=desc",
-        token,
-    )
-    return data if isinstance(data, list) else []
-
-
 _LANE_RANK = {"EXTRACT": 0, "CANDIDATE": 1, "NEED_EVIDENCE": 2, "SUPERSEDE": 3}
 
 
@@ -279,30 +247,6 @@ def build_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def build_pulse(payload: dict[str, Any]) -> str:
-    by_lane = payload["counts"]["by_lane"]
-    oldest = payload["oldest"]
-    return "\n".join(
-        [
-            MARKER,
-            f"## Lane-matrix sweep pulse — {payload['observed_at']}",
-            "",
-            f"**Master:** `{payload['master_sha']}` · **Open PRs:** {payload['counts']['open_prs']}",
-            f"**Oldest open PR:** #{oldest['number']} — **{oldest['days_open']}d** — {oldest['title'][:70]}",
-            "",
-            "| Lane | n |",
-            "|------|--:|",
-            *[f"| {k} | {v} |" for k, v in sorted(by_lane.items())],
-            "",
-            "Artifact: `docs/ops/generated/lane-matrix-status.json`",
-            "Rules: dual-gate only; age ≠ promote; session pulses SUPERSEDE; no #175 heartbeat.",
-            "Lanes: EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE.",
-            "",
-            "Agent-Identity: lane-matrix-sweep (GHA)",
-        ]
-    )
-
-
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Lane-matrix recursive sweep")
     parser.add_argument("--owner", default=os.environ.get("GITHUB_REPOSITORY_OWNER", "timerloggedout-spec"))
@@ -314,8 +258,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--master-sha", default=os.environ.get("GITHUB_SHA", "unknown"))
     parser.add_argument("--json-out", default="docs/ops/generated/lane-matrix-status.json")
     parser.add_argument("--md-out", default="docs/ops/generated/lane-matrix-status.md")
-    parser.add_argument("--comment-175", action="store_true", help="Opt-in pulse on #175 (off by default)")
-    parser.add_argument("--force-comment", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
 
@@ -350,6 +292,11 @@ def main(argv: list[str] | None = None) -> int:
         "observed_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repository": f"{args.owner}/{args.repo}",
         "master_sha": args.master_sha,
+        "freshness": {
+            "trigger": "pull_request_target",
+            "semantics": "event-driven snapshot; age buckets are informational at observed_at",
+            "polling": False,
+        },
         "counts": {"open_prs": len(rows), "by_lane": by_lane, "by_age": by_age},
         "oldest": {
             "number": oldest["number"],
@@ -362,8 +309,9 @@ def main(argv: list[str] | None = None) -> int:
             "promote": "dual-gate only (hygiene+portability + termux_smoke)",
             "age_alone": False,
             "vercel_rate_limit": "non-gate",
-            "session_pulses": "SUPERSEDE",
-            "issue_175_comments": "opt-in only",
+            "session_records": "SUPERSEDE",
+            "age_semantics": "informational snapshot only; never changes lane",
+            "refresh_mode": "pull_request_target lifecycle events; no polling",
             "valid_lanes": sorted(VALID_LANES),
             "invalid_parking": sorted(INVALID_PARKING),
             "ml_wholesale": sorted(ML_WHOLESALE),
@@ -382,23 +330,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print(json.dumps({"dry_run": True, "counts": payload["counts"]}, indent=2))
 
-    if args.comment_175 and not args.dry_run:
-        try:
-            comments = list_issue_comments(args.owner, args.repo, ISSUE_175, args.token)
-            prior = next((c for c in comments if MARKER in (c.get("body") or "")), None)
-            if prior and not args.force_comment:
-                prior_ts = _parse_ts(prior.get("created_at"))
-                if prior_ts and (now - prior_ts).total_seconds() < DEBOUNCE_HOURS * 3600:
-                    print(f"#175 debounced ({DEBOUNCE_HOURS}h)")
-                else:
-                    post_issue_comment(args.owner, args.repo, ISSUE_175, build_pulse(payload), args.token)
-                    print("posted #175 pulse")
-            else:
-                post_issue_comment(args.owner, args.repo, ISSUE_175, build_pulse(payload), args.token)
-                print("posted #175 pulse")
-        except urllib.error.HTTPError as exc:
-            print(f"comment failed: {exc}", file=sys.stderr)
-            return 0
+    return 0
 
     return 0
 

@@ -2082,6 +2082,139 @@
     "state": "CORROBORATED"
    }
   },
+  "khan-academy": {
+   "time_cost": {
+    "quantity": "time cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "quota_cost": {
+    "quantity": "quota/Actions cost",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "wall_landing": {
+    "quantity": "wall",
+    "prior": {
+     "value": "NOT_ESTABLISHED (self-paced platform, no cohort wall of record)",
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [
+     {
+      "source": "owner '=+' naming 2026-11-04; platform self-paced (screen sources 2026-11-04)",
+      "direction": "support",
+      "strength": "full",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": "NOT_ESTABLISHED (self-paced platform, no cohort wall of record)",
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1
+    },
+    "state": "PROVISIONAL"
+   },
+   "payoff": {
+    "quantity": "credential / points value",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "issuer"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "risk_ale": {
+    "quantity": "quantified exposure",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "assumption"
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 0
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   },
+   "evidence_state": {
+    "quantity": "enrolment / attribution state",
+    "prior": {
+     "value": null,
+     "range": null,
+     "basis_kind": "measured"
+    },
+    "evidence": [
+     {
+      "source": "Owner '=+' naming 2026-11-04 (queue target). Screen 2026-11-04 (multi-source incl. Khan help-center-derived): platform 100% free (501(c)(3) nonprofit, no paywall/card) - funding CLEARS; NO formal certificates (not an accredited school; mastery badges + progress record; teacher course-challenge certificates only) - credential value = open-equivalency/prep class until census prices it",
+      "direction": "support",
+      "strength": "partial",
+      "rule9_state": "single-leg"
+     }
+    ],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "updated_at": "2026-11-02",
+     "n_evidence": 1,
+     "note": "UNTIERED: no tier derivation until a completed competition claim-check record exists (DoE F4); claim-check is part of the census requirement"
+    },
+    "state": "INTAKE",
+    "evidence_requirement": [
+     "census",
+     "issuer-page"
+    ]
+   }
+  },
   "intake-fcc-js-algorithms": {
    "time_cost": {
     "quantity": "time cost",

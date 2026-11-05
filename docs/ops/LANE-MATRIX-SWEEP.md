@@ -3,7 +3,7 @@
 **Workflow:** `.github/workflows/ops-lane-matrix-sweep.yml`  
 **Script:** `scripts/ops/lane_matrix_sweep.py`  
 **Board:** `docs/ops/generated/lane-matrix-status.json` + `.md`  
-**Trigger:** `pull_request_target` lifecycle events — no timer, polling, or manual dispatch.
+**Trigger:** `pull_request_target` lifecycle events plus master pushes to the workflow, classifier, or policy — no timer, polling, or manual dispatch.
 
 ## Authority and scope
 

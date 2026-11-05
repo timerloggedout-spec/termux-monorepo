@@ -1,0 +1,189 @@
+{
+  "schema": "integration-observability-index/v1",
+  "generated_at": "2026-11-05",
+  "kind": "static_inventory_contract",
+  "canonical_results_index": "ops/telemetry/results-index.json",
+  "systems": [
+    {
+      "id": "ates",
+      "domain": "evaluation",
+      "status": "existing_feed",
+      "record_of_record": "apps/tribute-dashboard/data/ates-feed.json",
+      "role": "quality and benchmark outcomes",
+      "observed_state": "workflow receipts; no committed results ledger",
+      "authority": "existing results-index"
+    },
+    {
+      "id": "3l0",
+      "domain": "evaluation",
+      "status": "existing_observational_feed",
+      "record_of_record": "ops/telemetry/session-history-3l0.jsonl",
+      "role": "session history and confirmed-signal fold",
+      "observed_state": "observational; confirmed values remain distinct",
+      "authority": "existing results-index"
+    },
+    {
+      "id": "temporal",
+      "domain": "orchestration",
+      "status": "ephemeral_actions_evidence",
+      "record_of_record": "Actions run receipts: temporal-engagement.yml + temporal-self-host-smoke.yml",
+      "role": "workflow execution and correlation",
+      "observed_state": "no persistent Temporal instance asserted by existing index",
+      "authority": "existing results-index"
+    },
+    {
+      "id": "hindsight",
+      "domain": "retention",
+      "status": "gated_stale_snapshot",
+      "record_of_record": "ops/telemetry/hindsight-retain-proof.json + ops/telemetry/hindsight-retain-state.json",
+      "role": "sanitized telemetry retention",
+      "observed_state": "last indexed snapshot 2026-11-02: proof attempted 3, retained 0, last error 402; refresh required",
+      "authority": "existing results-index and telemetry-ingest receipts"
+    },
+    {
+      "id": "firesight",
+      "domain": "unresolved",
+      "status": "not_found_in_repository",
+      "record_of_record": null,
+      "role": "unknown; do not infer",
+      "observed_state": "no matching repository code-search result or registry entry found during 2026-11-05 inspection",
+      "authority": "none; requires user identification and authoritative source"
+    },
+    {
+      "id": "gravitee",
+      "domain": "api_gateway",
+      "status": "ephemeral_ci_mock_verified_no_persistent_instance",
+      "record_of_record": "docs/ops/GRAVITEE-SELFHOST.md; .github/workflows/gravitee-selfhost.yml",
+      "role": "gateway policies, plans, consumers and request/error/latency analytics",
+      "observed_state": "ephemeral Actions stack with dual-gateway verification; connector mock-verified; no persistent live instance",
+      "authority": "CI evidence and connector docs"
+    },
+    {
+      "id": "witness",
+      "domain": "provenance_attestation",
+      "status": "registry_investigate",
+      "record_of_record": "config/agent_stack_integrations.json; docs/research/RUNTIME-PROVENANCE-AIBOM.md",
+      "role": "in-toto/DSSE build and artifact attestations",
+      "observed_state": "attestation digests reference canonical evidence; placement/signing decisions remain with provenance lane",
+      "authority": "repository integration registry and provenance docs"
+    },
+    {
+      "id": "n8n",
+      "domain": "workflow_adapter",
+      "status": "optional_self_hosted_wired_unobserved",
+      "record_of_record": "ops/n8n/; .github/workflows/n8n-she-bridge.yml",
+      "role": "visual composition and operator automation",
+      "observed_state": "importable workflow and localhost compose exist; webhook bridge inert until secret configured; actual receipt required for observed status",
+      "authority": "n8n wiring documentation and workflow receipts"
+    },
+    {
+      "id": "platform201",
+      "domain": "deployment_host",
+      "status": "live_console_verified_no_api_credential",
+      "record_of_record": "docs/ops/PLATFORM201-LIVE-2026-10-27.md; ops/delphi/surfaces.json; ops/quota/registry.json",
+      "role": "deployment hosting and project/environment/node health surface",
+      "observed_state": "dashboard deployment and /health verified 2026-10-27; console-only; no API token/Actions credential; refresh aged observations",
+      "authority": "dated console verification"
+    },
+    {
+      "id": "bifrost",
+      "domain": "llm_gateway",
+      "status": "evaluation_benchmark_pending",
+      "record_of_record": "docs/proposals/active/bifrost-gateway-integration/ITEMS.md; BENCHMARK-SMOKE.md",
+      "role": "candidate LLM and native MCP gateway",
+      "observed_state": "catalog/capability registration complete; benchmark results pending; not live_verified",
+      "authority": "proposal status and future results.json + dual-gate"
+    },
+    {
+      "id": "agentrouter",
+      "domain": "llm_provider_gateway",
+      "status": "catalog_adapter_wired_pending_credential",
+      "record_of_record": "docs/ops/UNIFIED-PROVIDER-OBSERVABILITY-INDEX.md#agentrouter-transport-details",
+      "role": "OpenAI-compatible and Anthropic-compatible LLM gateway",
+      "observed_state": "authenticated dynamic GET /v1/models adapter and unit tests added; requires AGENTROUTER_API_KEY for account-scoped validation; quota balance/reset remains unknown; inference not admitted",
+      "authority": "official provider guide and per-key model catalogue"
+    }
+  ],
+  "shared_observation_contract": {
+    "schema": "provider-observation/v1",
+    "required_identity": [
+      "provider_id",
+      "protocol",
+      "started_at",
+      "outcome"
+    ],
+    "optional_correlation": [
+      "model_id",
+      "workflow_id",
+      "run_id",
+      "run_attempt",
+      "temporal_workflow_id",
+      "request_id",
+      "doe_campaign_id",
+      "experiment_instance_key"
+    ],
+    "usage_fields": [
+      "input_tokens",
+      "output_tokens",
+      "usage_cost",
+      "latency_ms"
+    ],
+    "quota_reference": "source + scope + observed_at + authority + evidence_ref",
+    "privacy_exclusions": [
+      "api_keys",
+      "authorization_headers",
+      "prompts",
+      "completions",
+      "raw_request_bodies",
+      "raw_response_bodies",
+      "private_context",
+      "unredacted_errors"
+    ]
+  },
+  "quota_contract": {
+    "existing_implementations_to_extend": [
+      "ops/quota/registry.json",
+      "ops/quota/provider-managers.json",
+      "scripts/provider_quota_managers.py",
+      "scripts/quota_poll.py",
+      "apps/tribute-dashboard/data/quota.json",
+      "scripts/provider_extension_catalogs.py"
+    ],
+    "states": [
+      "observed",
+      "documented",
+      "unknown",
+      "stale",
+      "error"
+    ],
+    "null_semantics": "not_observed_not_zero",
+    "account_authoritative_required_for_balance": true,
+    "never_infer_remaining_balance_from_catalog_or_free_tier_claim": true
+  },
+  "doe": {
+    "campaign_id": "util-1-provider-rotation",
+    "design_record": "experiments/doe/util-1-provider-rotation/DESIGN.json",
+    "status": "admitted_implementing",
+    "assignment_owner": "desk rotation rule",
+    "provider_stamp_required": [
+      "provider",
+      "selection_reason",
+      "ts"
+    ],
+    "usage_cost_rule": "record quota/usage cost only when returned by provider",
+    "agentrouter_participation": "not_admitted_as_arm_until_design_amendment_and_real_dispatch_records",
+    "promotion_rule": "committed design amendment plus actual experiment records; no synthetic observations"
+  },
+  "invariants": [
+    "ops/telemetry/results-index.json remains the canonical ATES/3L0/Temporal/HindSight results projection",
+    "this index is an inventory/projection and not a second telemetry system of record",
+    "HindSight and Provenance remain independent sinks with independent failure modes",
+    "Temporal is not replaced by n8n",
+    "Gravitee ephemeral CI verification is not a persistent production gateway",
+    "Bifrost remains evaluation-only until benchmark results and dual-gate evidence",
+    "Platform201 is a host and registry entry, not a telemetry backend",
+    "Witness attestations reference canonical evidence digests",
+    "FireSight remains unresolved until authoritative identity and interface are provided",
+    "catalog discovery does not grant quota, credential, health, or runtime admission"
+  ]
+}

@@ -3,9 +3,9 @@
     "open_issues": 540,
     "open_prs": 286,
     "pr_classes": {
-      "CANDIDATE": 134,
+      "CANDIDATE": 135,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 142,
+      "NEED_EVIDENCE": 141,
       "SUPERSEDE": 0
     }
   },
@@ -106,7 +106,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T05:20:37Z",
+  "generated_at": "2026-11-05T05:54:03Z",
   "issues_unlabelled": [
     308,
     388,
@@ -166,7 +166,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "cd9dabe6ed"
+    "sha": "ae14bfe2cd"
   },
   "prs": [
     {
@@ -673,7 +673,7 @@
       },
       "head_sha": "2177e62206",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
       "updated_at": "2026-11-04T14:44:27Z"
@@ -1023,7 +1023,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-04T14:43:35Z"
@@ -1077,12 +1077,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e168b49e60",
+      "head_sha": "5ef77ed9aa",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-05T04:51:58Z"
+      "updated_at": "2026-11-05T05:41:59Z"
     },
     {
       "class": "CANDIDATE",
@@ -1105,12 +1105,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7beb93a07c",
+      "head_sha": "bed32e0a2a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-05T03:28:09Z"
+      "updated_at": "2026-11-05T05:35:47Z"
     },
     {
       "class": "CANDIDATE",
@@ -1525,12 +1525,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "bf6362edd3",
+      "head_sha": "bb86406279",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T05:18:24Z"
+      "updated_at": "2026-11-05T05:40:04Z"
     },
     {
       "class": "CANDIDATE",
@@ -2127,6 +2127,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "4670c4625d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "updated_at": "2026-11-05T05:51:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "70aea43e8f",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2255,7 +2269,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-04T14:44:20Z"
@@ -2507,7 +2521,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-04T14:44:17Z"
@@ -3277,7 +3291,7 @@
       },
       "head_sha": "11eceab3e9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T14:42:12Z"
@@ -4093,20 +4107,6 @@
       "number": 4852,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:26:22Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "68d00b37de",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4901,
-      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-05T05:20:04Z"
     },
     {
       "class": "NEED_EVIDENCE",

@@ -27,7 +27,7 @@
   },
   "metering": {
     "work_item": "issue #4963",
-    "requirement": "Per-production token metering into the usage series \u2014 closes the audit NOT_ESTABLISHED hole (no lane could meter per production)."
+    "requirement": "Per-production token metering into the usage series \u2014 closes the audit hole on per-production metering (previously unmeterable by any lane)."
   },
   "ui": "Admin desk.html Plane 7: dispatch controls render this rule's refusals verbatim (fail-closed rendering).",
   "status": "STAMPED at QUE (this file). Enforcement build (collector/admission wiring) routes Desk QUE -> Swarm under MUSE-no-code.",

@@ -1362,7 +1362,14 @@ function renderToday() {
 
 function renderPlan() {
   const plan = state.data.plan;
-  $("#plan-body").innerHTML = (plan.weeks || []).map((w) =>
+  // Cognitive-fitness slice (#4966): values are core-owned state
+  // (state.cogfit, built by study_cogfit) -- rendered, not computed.
+  const cf = state.data.cogfit;
+  const cogfitHtml = cf ?
+    `<div class="cogfit-card"><h4>Cognitive fitness -- ${cf.phase.label} (${cf.phase.range})</h4>` +
+    `<p>Phase by session count: ${cf.phase.sessions_into_phase} of ${cf.phase.sessions_per_phase} sessions in phase -- ${cf.session_count} total -- ${cf.phase.duration_minutes} min -- ${cf.phase.sessions_per_week}x/week</p>` +
+    `<p><strong>Next Session Order:</strong> ${cf.next_order}</p></div>` : "";
+  $("#plan-body").innerHTML = cogfitHtml + (plan.weeks || []).map((w) =>
     `<h4>Week ${w.week} (due: ${w.due})</h4><ul>` +
     w.sessions.map((s) =>
       `<li>${s.kind}: ${s.topic} (${s.minutes} min)</li>`).join("") +

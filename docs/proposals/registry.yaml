@@ -2,6 +2,24 @@ version: 1
 updated_at: '2026-11-02T00:00:00Z'
 updated_by: ChatGPT
 proposals:
+  - id: build-orchestration-evaluation
+    title: Polyglot build orchestration — evidence-led evaluation and governed pipeline integration
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/build-orchestration-evaluation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - proposal/build-orchestration-evaluation
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
 
   - id: master-splinter
     title: Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)

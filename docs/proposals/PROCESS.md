@@ -49,7 +49,7 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 
 ```text
 1. Read AGENTS.md then registry.yaml
-2. Pick highest-priority accepted/executing todo item
+2. Select the highest-priority `todo` item from an `accepted`/`executing` proposal only when its item-specific authorization is explicitly recorded in that proposal's `DEBATE.md` (item ID, bounded scope, approver, timestamp, and evidence reference); skip every unauthorized item. If no item qualifies, stop and request the required authorization.
 3. Branch off master-staging
 4. PR → master-staging with Implements: <ITEM-ID>
 5. Update ITEMS.md + registry when possible

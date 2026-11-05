@@ -37,7 +37,7 @@ on:
       - '.github/ecc-tools.yaml'
 
 concurrency:
-  group: ecc-tools-ops-${{ github.event.pull_request.number || github.event.issue.number || github.event.comment.id || github.run_id }}
+  group: ecc-tools-ops-${{ github.event.comment.id || github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
 permissions: {}
@@ -156,7 +156,13 @@ jobs:
             const isLabelEvent = context.eventName === 'issues';
             const comment = context.payload.comment;
             const requestId = isLabelEvent
-              ? `label-${context.payload.label.name.toLowerCase()}`
+              ? (() => {
+                  const updatedAt = Date.parse(context.payload.issue.updated_at || '');
+                  if (!Number.isFinite(updatedAt)) {
+                    throw new Error('Label event missing stable issue.updated_at timestamp');
+                  }
+                  return `label-${context.payload.label.name.toLowerCase()}-${updatedAt}`;
+                })()
               : `comment-${comment.id}`;
             const marker = `<!-- ecc-tools-ops:request:${issueNumber}:${requestId} -->`;
             const comments = await github.paginate(github.rest.issues.listComments, {

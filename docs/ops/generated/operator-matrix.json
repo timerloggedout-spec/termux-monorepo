@@ -3,9 +3,9 @@
     "open_issues": 532,
     "open_prs": 284,
     "pr_classes": {
-      "CANDIDATE": 133,
+      "CANDIDATE": 134,
       "EXTRACT": 10,
-      "NEED_EVIDENCE": 141,
+      "NEED_EVIDENCE": 140,
       "SUPERSEDE": 0
     }
   },
@@ -102,7 +102,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T01:07:10Z",
+  "generated_at": "2026-11-05T01:12:39Z",
   "issues_unlabelled": [
     308,
     388,
@@ -155,10 +155,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "queued"
     },
-    "sha": "6d41d7a277"
+    "sha": "015651826e"
   },
   "prs": [
     {
@@ -1509,6 +1509,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9566c919de",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-05T01:10:25Z"
     },
     {
       "class": "CANDIDATE",
@@ -3329,20 +3343,6 @@
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-04T22:33:50Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "161a5efb87",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T01:06:50Z"
     },
     {
       "class": "NEED_EVIDENCE",

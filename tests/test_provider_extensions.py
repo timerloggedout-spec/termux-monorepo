@@ -92,7 +92,7 @@ def test_exact_model_mismatch_denied_before_network(monkeypatch, tmp_path):
 
 
 def test_extension_registry_matches_fixed_urls_and_no_catalog_for_typhoon():
-    assert set(extensions.ENDPOINTS) == {"typhoon", "unorouter", "routeway", "requesty", "xkiro", "xfyun", "sealion", "deepinfra", "novita", "friendli", "baseten"}
+    assert set(extensions.ENDPOINTS) == {"typhoon", "unorouter", "routeway", "requesty", "xkiro", "xfyun", "sealion", "deepinfra", "novita", "friendli", "baseten", "deepseek"}
     assert "typhoon" not in extensions.CATALOG_ENDPOINTS
 
 

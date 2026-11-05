@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 539,
+    "open_issues": 540,
     "open_prs": 286,
     "pr_classes": {
-      "CANDIDATE": 132,
-      "EXTRACT": 12,
+      "CANDIDATE": 134,
+      "EXTRACT": 10,
       "NEED_EVIDENCE": 142,
       "SUPERSEDE": 0
     }
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 297,
+      "issues": 298,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -106,7 +106,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T04:58:15Z",
+  "generated_at": "2026-11-05T05:20:37Z",
   "issues_unlabelled": [
     308,
     388,
@@ -166,7 +166,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "b98993458a"
+    "sha": "cd9dabe6ed"
   },
   "prs": [
     {
@@ -308,34 +308,6 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "13e3693780",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4901,
-      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-05T04:44:34Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b6960debea",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4969,
-      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-05T04:42:23Z"
     },
     {
       "class": "CANDIDATE",
@@ -701,7 +673,7 @@
       },
       "head_sha": "2177e62206",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
       "updated_at": "2026-11-04T14:44:27Z"
@@ -1051,7 +1023,7 @@
       },
       "head_sha": "a4b28f7ef8",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1862,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-11-04T14:43:35Z"
@@ -1545,6 +1517,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bf6362edd3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-05T05:18:24Z"
     },
     {
       "class": "CANDIDATE",
@@ -2183,6 +2169,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "13fd71e99c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4969,
+      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+      "updated_at": "2026-11-05T05:15:53Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "3c9fe3294a",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2255,7 +2255,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-11-04T14:44:20Z"
@@ -2507,7 +2507,7 @@
       },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-11-04T14:44:17Z"
@@ -3277,7 +3277,7 @@
       },
       "head_sha": "11eceab3e9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
       "updated_at": "2026-11-04T14:42:12Z"
@@ -3351,20 +3351,6 @@
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-05T04:24:42Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
-      },
-      "head_sha": "897f8b9476",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T04:57:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4107,6 +4093,20 @@
       "number": 4852,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-04T09:26:22Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "68d00b37de",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "updated_at": "2026-11-05T05:20:04Z"
     },
     {
       "class": "NEED_EVIDENCE",

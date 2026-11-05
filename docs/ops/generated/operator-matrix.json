@@ -3,9 +3,9 @@
     "open_issues": 539,
     "open_prs": 286,
     "pr_classes": {
-      "CANDIDATE": 135,
-      "EXTRACT": 10,
-      "NEED_EVIDENCE": 141,
+      "CANDIDATE": 132,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 142,
       "SUPERSEDE": 0
     }
   },
@@ -106,7 +106,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-05T04:51:06Z",
+  "generated_at": "2026-11-05T04:58:15Z",
   "issues_unlabelled": [
     308,
     388,
@@ -166,7 +166,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "ce123ec7f3"
+    "sha": "b98993458a"
   },
   "prs": [
     {
@@ -308,6 +308,34 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "13e3693780",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "updated_at": "2026-11-05T04:44:34Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b6960debea",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4969,
+      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+      "updated_at": "2026-11-05T04:42:23Z"
     },
     {
       "class": "CANDIDATE",
@@ -1077,12 +1105,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "36524b7a00",
+      "head_sha": "e168b49e60",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-05T04:47:45Z"
+      "updated_at": "2026-11-05T04:51:58Z"
     },
     {
       "class": "CANDIDATE",
@@ -1517,20 +1545,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3057d5399f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-05T04:44:15Z"
     },
     {
       "class": "CANDIDATE",
@@ -2127,20 +2141,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "13e3693780",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4901,
-      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-05T04:44:34Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "70aea43e8f",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2175,20 +2175,6 @@
       "number": 4935,
       "title": "feat(quota): add nested task-level usage attribution tree",
       "updated_at": "2026-11-04T16:48:47Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b6960debea",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4969,
-      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-05T04:42:23Z"
     },
     {
       "class": "CANDIDATE",
@@ -3365,6 +3351,20 @@
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
       "updated_at": "2026-11-05T04:24:42Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "in_progress"
+      },
+      "head_sha": "897f8b9476",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-05T04:57:14Z"
     },
     {
       "class": "NEED_EVIDENCE",

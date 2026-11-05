@@ -1,6 +1,7 @@
 // Tests for scripts/ci/dispatch_admission.js — issue #3812 step 4 matrix.
 // Run: node --test tests/test_dispatch_admission.mjs
 import { test } from 'node:test';
+import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
@@ -128,6 +129,20 @@ test('lane matrix inventory is not quota-dispatched', () => {
     Object.values(OUTPUT_LANES).flat().includes('ops-lane-matrix-sweep'),
     false,
   );
+});
+
+// The Tier-0 tree must react to state-changing events immediately while
+// preserving scheduled phase slots only for the scheduled cadence wake.
+test('quota dispatcher has demand wakes and schedule-only phase windows', () => {
+  const workflow = readFileSync(
+    new URL('../.github/workflows/quota-dispatch-tree.yml', import.meta.url),
+    'utf8',
+  );
+  assert.match(workflow, /pull_request_target:/);
+  assert.match(workflow, /workflow_run:\s+workflows:\s+\["lane events recorder"\]/);
+  assert.match(workflow, /const firstCycle = context\.eventName === 'schedule'/);
+  assert.match(workflow, /const eventDemand = \['pull_request_target', 'workflow_run', 'push'\]/);
+  assert.match(workflow, /repoChanged && \(slow \|\| eventDemand\)/);
 });
 
 // 7. Rate-limit deferral: pressure read failed -> fail closed, every

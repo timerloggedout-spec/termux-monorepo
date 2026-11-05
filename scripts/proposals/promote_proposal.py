@@ -22,7 +22,7 @@ def set_registry_status(pid: str, new_status: str) -> None:
         raise SystemExit(f"FAIL: id {pid} not found in registry.yaml")
     text = pattern.sub(rf"\g<1>{new_status}", text, count=1)
     today = dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-    timestamp_pattern = re.compile(r"(?m)^(updated_at:\\s*)(['\"])(.*?)\\2\\s*$")
+    timestamp_pattern = re.compile(r"(?m)^(updated_at:\s*)(['\"])(.*?)\2\s*$")
     if not timestamp_pattern.search(text):
         raise SystemExit("FAIL: updated_at timestamp not found or not quoted in registry.yaml")
     text = timestamp_pattern.sub(

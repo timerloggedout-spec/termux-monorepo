@@ -79,6 +79,7 @@ A = AWS-proof · B = claim-shape/descope · C = owner-gated AWS.
 | A6 | Prepaid network card as payment method | card-class | owner decision only (gate G4) | Satisfies a payment step where one exists (AWS re:Post accepted payment methods, upd. 2026-09-30) | Class C listing ONLY, never fleet-attempted (Desk stamp: CLOSED, never routed) — card-class under the fleet no-card rule; gift cards + virtual credit cards are NOT accepted by AWS at all |
 | A7 | PartyRock (Bedrock playground apps) | none | none | None for the claim: Bedrock-executed but no hosting of the shipped agent (Recon return 2026-11-04) | Class A — FAILS (cannot execute the shipped agent; auxiliary only) |
 | A8 | AWS Studio Lab | n/a | n/a | None — new signups closed 2026-07-30 (Recon return 2026-11-04) | DEAD — ruled out |
+| A9 | SageMaker Studio social sign-in on-ramp (What's New 2026-10-15) | none for most (Free-plan flow) | owner-hand social sign-in (P1-class, gate class = G1/G2) | Full receipt standard satisfiable IFF the auto-created Studio execution role holds bedrock:InvokeModel — NOT_ESTABLISHED in public docs (preconfigured perms documented SageMaker-scoped; $100 credits described SageMaker-scoped); settles by a 3-cell in-flow probe (sts identity · list-foundation-models · one tiny Nova invoke) | Class A CANDIDATE — account class ESTABLISHED real (flow creates a new AWS account on the Free plan; not event/temp); sign-in = signer's own social identity (owner's GitHub-bound Builder ID); post-sign-in Studio is a browser IDE, fleet-drivable via live session; end-to-end = pending the ② probe |
 
 ## Matrix B — free-provider Strands backends (non-AWS)
 
@@ -203,3 +204,10 @@ run + receipt margin.
   receipt-honesty rules (region = none, stamp endpoint). AWS-side:
   A7 PartyRock (Class A fails — no agent hosting), A8 Studio Lab
   (dead — signups closed 2026-07-30).
+- 2026-11-04 17:04 PT — urgent aide task (owner escalation: (a)
+  mandatory, (b) held): Studio on-ramp verification returned to the
+  D1 seat — ① social sign-in ESTABLISHED (own identity) · ② role
+  Bedrock perms + credit scope NOT_ESTABLISHED, 3-cell in-flow probe
+  specified · ③ account class ESTABLISHED real (new Free-plan
+  account, not event/temp) · ④ sign-in owner-hand, Studio driving
+  fleet-drivable, end-to-end pending ②. Filed as row A9.

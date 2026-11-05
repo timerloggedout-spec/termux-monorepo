@@ -34,6 +34,11 @@ Evaluate and introduce a repository-native, adapter-based build/task orchestrati
 - Disposition: posted
 - Notes: Registered an evidence-first proposal with explicit work items, architecture, pilot matrix, safety boundaries, and exit criteria. This is not an acceptance or authorization to deploy a new orchestration engine.
 
+### 2026-11-05 — ChatGPT (review refinement)
+
+- Disposition: revision posted
+- Notes: Tightened initial authorization to BOE-00-01/BOE-00-02 only; completed receipt states and metric exclusions; clarified native-oracle correctness; aligned dispatch provenance; synchronized registry metadata and quoted a pre-existing YAML scalar that blocked parsing.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`

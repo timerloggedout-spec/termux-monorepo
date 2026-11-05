@@ -14,6 +14,7 @@ Independent graph exploration surface for the termux-monorepo cross-plane graph 
 npm install
 npm run dev
 npm test
+npm run typecheck
 npm run build
 ```
 

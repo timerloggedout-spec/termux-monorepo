@@ -5,18 +5,20 @@ Platform201 deployment is performed.
 
 ## Decisions
 
-1. Keep #175 as the durable operator-intent hub. Its October 19 priority snapshot
-   is historical; the generated lane board is the live inventory. Do not use
-   #175 as a recurring Matrix Doctor comment target.
+1. Retire #175 from operational authority. Preserve it as a historical October 19
+   snapshot only. No generic issue is the control-plane hub or state database.
+   The cross-domain lane×project record is REPO-TRACKING; the Lane Matrix is the
+   narrower PR-disposition projection.
 2. Remove the ECC workflow's fixed cron, 6/12-hour debounce windows, manual
    workflow_dispatch, broad PR sweep, and scheduled analyze + doctor cycle.
    Retain authorized issue-label/comment commands and targeted PR harness events.
 3. Bind PR audit idempotency to (PR, head SHA, audit kind). New SHAs are eligible
    immediately; duplicate deliveries for one SHA are no-ops. Bind issue/PR command
    idempotency to comment ID or label identity, not elapsed time.
-4. Keep the generated lane board as matrix inventory SSOT. Its dispatch owner is
-   quota-dispatch-tree (#1573), not the ECC workflow. Remove ECC's duplicate
-   scheduled Matrix Doctor comments to #175.
+4. Keep the generated Lane Matrix as the PR-disposition board, not a global
+   lane×project SSOT. REPO-TRACKING owns the cross-domain lane×project projection.
+   Remove ECC's duplicate scheduled Matrix Doctor comments and remove the Lane
+   Matrix from the quota-dispatch polling tranche.
 5. Adopt the pinned ECC Plan Canvas skill locally. CLI availability is a separate
    runtime preflight; skill presence is not installation evidence.
 6. Desk.html / designated GitHub Issues remain HITL authority. Canvas approval
@@ -26,14 +28,18 @@ Platform201 deployment is performed.
 
 ## Why remove the timer
 
-Issue #1573 establishes a quota-aware dispatch tree and says no new top-level cron
-entry points. The ECC workflow's cron was a separate fixed schedule. Its event
-surfaces already support demand-driven PR/issue actions, so remove the local timer
-instead of adding another scheduler.
+Issue #1573 establishes a quota-aware dispatch tree, but its ten-minute wake cycle
+is still polling. The Lane Matrix was incorrectly attached to the q6 tranche and
+therefore inherited a six-hour refresh dependency. Remove that coupling entirely.
 
-The lane-matrix sweep is the generated-board writer. Policy identifies the board
-as live inventory and #175 as a hub. ECC's matrix-cycle duplicated the board
-writer by posting analyze and doctor on #175 on a fixed schedule.
+The PR-disposition materializer now wakes on pull_request_target lifecycle events.
+It coalesces bursts by concurrency cancellation, reads the current open-PR set,
+and writes only when the derived artifact changes. There is no ten-minute matrix
+poll, six-hour matrix sweep, elapsed-time debounce, or manual dispatch.
+
+The Lane Matrix is not the cross-domain state store. REPO-TRACKING owns the
+lane×project projection; domain lifecycle records remain authoritative; lane-events
+is execution evidence. #175 is historical only.
 
 ## Demand / idempotency
 
@@ -43,11 +49,12 @@ writer by posting analyze and doctor on #175 on a fixed schedule.
 | Issue command | authorized member comment | issue + comment ID |
 | Issue label request | ECC label event | issue + label identity |
 | PR operator command | authorized member comment | PR + comment ID |
-| Matrix inventory | quota-dispatch-tree decision | lane watermark / sweep receipt |
+| PR disposition | pull_request_target lifecycle event | concurrency coalescing + current-state recomputation |
 
-No time-based suppression applies to new work. New SHAs and new explicit
-operator requests are immediately eligible. Existing saturation handling and
-least-privilege job permissions remain. Outbound ECC commands additionally require
+No time-based suppression applies to new work. New SHAs and new explicit operator
+requests are immediately eligible. Matrix inventory is no longer dispatched by
+the quota tree. Existing saturation handling and least-privilege permissions
+remain. Outbound ECC commands additionally require
 repository variable ECC_TOOLS_APP_ENABLED=true; unset/false keeps the lane quiet
 while the hosted App is suspended. Reactivation is a separate, measured decision.
 
@@ -78,7 +85,9 @@ Do not spend credits on a placeholder.
 - YAML parses; ECC workflow has no schedule or workflow_dispatch.
 - PR audit marker contains head SHA; fixed debounce constants are absent.
 - Issue/PR command markers bind to triggering comment/label identity.
-- matrix-cycle and broad scheduled sweep jobs are absent.
+- ECC matrix-cycle and broad scheduled sweep jobs are absent.
+- Lane Matrix has pull_request_target lifecycle events only; no schedule or dispatch.
+- Lane Matrix is removed from dispatch_q6 and age does not change disposition.
 - Plan Canvas skill has frontmatter, upstream pin, HITL rules, and runtime preflight.
 - Run repository dual gates on final PR head SHA. Keep ECC App suspended pending a
   separate measured reactivation decision.

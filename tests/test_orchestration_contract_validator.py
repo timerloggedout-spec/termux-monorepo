@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "ci"))
 
-from orchestration_contract_validator import validate_contracts
+from orchestration_contract_validator import validate_contracts, validate_issue_comment_router_contracts
 
 
 class OrchestrationContractValidatorTests(unittest.TestCase):
@@ -104,6 +104,80 @@ class OrchestrationContractValidatorTests(unittest.TestCase):
             (skill_dir / "SKILL.md").write_text(skill_source.read_text())
             errors = validate_contracts(fixture_root)
             self.assertTrue(any("outcome enum drifted" in error for error in errors))
+
+
+ROUTER_WORKFLOW_PATHS = (
+    ".github/workflows/issue-comment-router.yml",
+    ".github/workflows/agent-review-auto-jules.yml",
+    ".github/workflows/gemini-dispatch.yml",
+    ".github/workflows/agent-jules-on-issues.yml",
+)
+
+
+class IssueCommentRouterContractTests(unittest.TestCase):
+    def _fixture(self, root):
+        for relative in ROUTER_WORKFLOW_PATHS:
+            source = ROOT / relative
+            destination = root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+        return root
+
+    def test_repository_router_contracts_pass(self):
+        self.assertEqual(validate_issue_comment_router_contracts(ROOT), [])
+
+    def test_target_direct_issue_comment_subscription_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/gemini-dispatch.yml"
+            text = target.read_text(encoding="utf-8")
+            text = text.replace(
+                "  workflow_call:\\n",
+                "  issue_comment:\\n    types: [created]\\n  workflow_call:\\n",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must not directly subscribe to issue_comment" in error for error in errors), errors)
+
+    def test_missing_reusable_route_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace(
+                "uses: ./.github/workflows/gemini-dispatch.yml",
+                "uses: ./.github/workflows/missing-gemini-route.yml",
+                1,
+            )
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("missing reusable route: gemini-dispatch" in error for error in errors), errors)
+
+    def test_stale_comment_revision_guard_is_required(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/gemini-dispatch.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "comment.data.updated_at !== process.env.SOURCE_COMMENT_UPDATED_AT",
+                "false",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must reject stale comment revisions" in error for error in errors), errors)
+
+    def test_router_must_not_cancel_distinct_comment_revisions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace(
+                "cancel-in-progress: false",
+                "cancel-in-progress: true",
+                1,
+            )
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must not cancel a distinct comment event" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

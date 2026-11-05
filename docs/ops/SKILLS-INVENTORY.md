@@ -117,7 +117,7 @@ The treatment registry composes existing evidence, wait, relationship, and workf
 - Dual-gate PASS on `9b40e8de8a70a46d71e7af668ecd51530c049657`: repo-gate 38098247754 + termux-smoke 38098247777
 - v3 schedule 38101050389 SUCCESS
 - No new master filename-named workflow failures
-- #184 names-only. Do not pulse #175. #903 HOLD
+- #184 names-only. Issue #175 is closed/historical; do not use it for operational state or pulses. #903 HOLD
 - Ghost on disabled workflow id remains non-actionable
 - Open PRs monitored; promote only on current-SHA dual-gate + mergeable
 

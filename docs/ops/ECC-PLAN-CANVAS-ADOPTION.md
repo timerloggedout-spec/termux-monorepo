@@ -14,15 +14,17 @@ Platform201 deployment is performed.
    Retain authorized issue-label/comment commands and targeted PR harness events.
 3. Bind PR audit idempotency to (PR, head SHA, audit kind). New SHAs are eligible
    immediately; duplicate deliveries for one SHA are no-ops. Bind issue/PR command
-   idempotency to comment ID or label identity, not elapsed time.
+   idempotency to comment ID or label name plus the issue.updated_at event timestamp, not elapsed time.
 4. Keep the generated Lane Matrix as the PR-disposition board, not a global
    lane×project SSOT. REPO-TRACKING owns the cross-domain lane×project projection.
    Remove ECC's duplicate scheduled Matrix Doctor comments and remove the Lane
    Matrix from the quota-dispatch polling tranche.
 5. Adopt the pinned ECC Plan Canvas skill locally. CLI availability is a separate
    runtime preflight; skill presence is not installation evidence.
-6. Desk.html / designated GitHub Issues remain HITL authority. Canvas approval
-   must be mirrored with artifact SHA-256 before implementation.
+6. Desk.html / owning GitHub Issue/PR remain HITL authority. A canvas verdict is
+   advisory until the authenticated human reviewer separately confirms the exact
+   artifact SHA-256 there. Reviewer identity must come from the authenticated
+   Desk session or GitHub actor metadata, not from an agent-authored receipt.
 7. n8n is the parallel orchestration adapter. Platform201 remains optional hosting,
    not a scheduler or telemetry backend; current access evidence blocks automation.
 
@@ -47,7 +49,7 @@ is execution evidence. #175 is historical only.
 |---|---|---|
 | Harness PR audit | relevant PR open/sync/reopen/ready event | PR + head SHA + audit kind |
 | Issue command | authorized member comment | issue + comment ID |
-| Issue label request | ECC label event | issue + label identity |
+| Issue label request | human label event | issue + label + issue.updated_at event timestamp (stable on redelivery; changes on re-apply) |
 | PR operator command | authorized member comment | PR + comment ID |
 | PR disposition | pull_request_target lifecycle event | concurrency coalescing + current-state recomputation |
 
@@ -66,7 +68,8 @@ Upstream: affaan-m/ECC@8321021c54d670126ce3b2969d5deb880b4b0c2a
 ecc-plan-canvas from ecc-universal must be available in the local interactive
 environment. GitHub Actions is headless. If the CLI is absent, use Desk.html /
 Issue HITL and record the canvas path as blocked. Do not stack install methods in
-one harness.
+one harness. A canvas verdict alone never authorizes implementation; the human
+must confirm the digest through the authenticated Desk/GitHub actor surface.
 
 ## Parallel n8n / Platform201
 

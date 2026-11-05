@@ -171,7 +171,7 @@
       "ts"
     ],
     "usage_cost_rule": "record quota/usage cost only when returned by provider",
-    "agentrouter_participation": "not_admitted_as_arm_until_design_amendment_and_real_dispatch_records",
+    "agentrouter_participation": "pre_registered_conditional_not_dispatchable; activate only after credential validation, account model discovery, separate inference admission, approved spend ceiling, data-classification review, and first real desk-stamped dispatch",
     "promotion_rule": "committed design amendment plus actual experiment records; no synthetic observations"
   },
   "invariants": [

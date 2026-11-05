@@ -3,10 +3,30 @@
   "contract": "Offline registry of documented passive observations; not a poller, account validation, entitlement assertion, or admission input.",
   "provider_families": [
     {
+      "provider_family": "agentrouter",
+      "status": "unsupported",
+      "source": "https://co.agentrouter.org/portal/guide",
+      "official_evidence": [
+        "https://co.agentrouter.org/portal/guide",
+        "https://co.agentrouter.org/portal/models"
+      ],
+      "scope": "key/resource-pool scoped model visibility; no documented account remaining-credit or reset response contract verified",
+      "reset": "unknown; do not infer balance or reset from model catalogue or HTTP status",
+      "signals": []
+    },
+    {
       "provider_family": "aion",
       "status": "unsupported",
       "source": "https://aionlabs.ai/",
       "scope": "official product homepage found; quota counter/reset semantics unknown",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "baseten",
+      "status": "public_documentation_only",
+      "source": "https://docs.baseten.co",
+      "scope": "public API/model documentation; account quota counter and scope not verified",
       "reset": "unknown",
       "signals": []
     },
@@ -35,6 +55,22 @@
       "signals": []
     },
     {
+      "provider_family": "deepinfra",
+      "status": "public_documentation_only",
+      "source": "https://deepinfra.com/docs",
+      "scope": "public API/model documentation; account quota counter and scope not verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "deepseek",
+      "status": "public_documentation_only",
+      "source": "https://api-docs.deepseek.com",
+      "scope": "public API documentation; account quota counter and scope not verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
       "provider_family": "felo",
       "status": "unsupported",
       "source": "https://openapi.felo.ai/docs/api-reference/llm",
@@ -47,6 +83,14 @@
       "scope": "existing /api/v1 model API: account eligibility and request/token counters unknown; /v2/chat key/user search limits are a separate endpoint contract",
       "reset": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
       "free_entitlement": "public Standard plan: 200 free credits daily for selected API models/tools, shared with Playground and supported Felo tools; exact account/model entitlement unknown; OX Alpha ended-trial notice conflicts with free pricing row",
+      "signals": []
+    },
+    {
+      "provider_family": "friendli",
+      "status": "public_documentation_only",
+      "source": "https://friendli.ai/docs",
+      "scope": "public API/model documentation; account quota counter and scope not verified",
+      "reset": "unknown",
       "signals": []
     },
     {
@@ -136,6 +180,14 @@
       "signals": []
     },
     {
+      "provider_family": "novita",
+      "status": "public_documentation_only",
+      "source": "https://novita.ai/docs",
+      "scope": "public API/model documentation; account quota counter and scope not verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
       "provider_family": "nvidia",
       "status": "public_documentation_only",
       "source": "https://docs.api.nvidia.com/",
@@ -150,15 +202,42 @@
       "scope": "private balance response; included and unexpired purchased USD pools or legacy session/weekly percentages; Team balances are shared",
       "reset": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
       "signals": [
-        {"path": "included.balance_usd", "field": "ollama_included_balance_usd"},
-        {"path": "included.allowance_usd", "field": "ollama_included_allowance_usd"},
-        {"path": "included.period.from", "field": "ollama_included_period_from"},
-        {"path": "included.period.until", "field": "ollama_included_period_until"},
-        {"path": "purchased.balance_usd", "field": "ollama_purchased_balance_usd"},
-        {"path": "included.session.remaining_percent", "field": "ollama_session_remaining_percent"},
-        {"path": "included.session.resets_at", "field": "ollama_session_resets_at"},
-        {"path": "included.weekly.remaining_percent", "field": "ollama_weekly_remaining_percent"},
-        {"path": "included.weekly.resets_at", "field": "ollama_weekly_resets_at"}
+        {
+          "path": "included.balance_usd",
+          "field": "ollama_included_balance_usd"
+        },
+        {
+          "path": "included.allowance_usd",
+          "field": "ollama_included_allowance_usd"
+        },
+        {
+          "path": "included.period.from",
+          "field": "ollama_included_period_from"
+        },
+        {
+          "path": "included.period.until",
+          "field": "ollama_included_period_until"
+        },
+        {
+          "path": "purchased.balance_usd",
+          "field": "ollama_purchased_balance_usd"
+        },
+        {
+          "path": "included.session.remaining_percent",
+          "field": "ollama_session_remaining_percent"
+        },
+        {
+          "path": "included.session.resets_at",
+          "field": "ollama_session_resets_at"
+        },
+        {
+          "path": "included.weekly.remaining_percent",
+          "field": "ollama_weekly_remaining_percent"
+        },
+        {
+          "path": "included.weekly.resets_at",
+          "field": "ollama_weekly_resets_at"
+        }
       ]
     },
     {
@@ -219,6 +298,22 @@
       "signals": []
     },
     {
+      "provider_family": "requesty",
+      "status": "public_documentation_only",
+      "source": "https://docs.requesty.ai/quickstart",
+      "scope": "public API/model documentation; account quota counter and scope not verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "routeway",
+      "status": "public_documentation_only",
+      "source": "https://docs.routeway.ai/getting-started/introduction",
+      "scope": "public API/model documentation; account quota counter and scope not verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
       "provider_family": "sambanova",
       "status": "implemented_passive_adapter",
       "source": "https://docs.sambanova.ai/docs/en/models/rate-limits",
@@ -244,48 +339,33 @@
       ]
     },
     {
-      "provider_family": "siliconflow",
-      "status": "implemented_passive_adapter",
-      "source": "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info",
-      "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
-      "reset": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
-      "signals": [
-        {"path": "data.balance", "field": "monetary_balance"},
-        {"path": "data.chargeBalance", "field": "monetary_charge_balance"},
-        {"path": "data.totalBalance", "field": "monetary_total_balance"}
-      ]
-    },
-    {
-      "provider_family": "zai",
-      "status": "public_documentation_only",
-      "source": "https://docs.z.ai/devpack/usage-policy",
-      "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
-      "reset": "unknown; source does not specify an API-observed quota reset",
-      "signals": []
-    },
-    {
-      "provider_family": "requesty",
-      "status": "public_documentation_only",
-      "source": "https://docs.requesty.ai/quickstart",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
-      "reset": "unknown",
-      "signals": []
-    },
-    {
-      "provider_family": "routeway",
-      "status": "public_documentation_only",
-      "source": "https://docs.routeway.ai/getting-started/introduction",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
-      "reset": "unknown",
-      "signals": []
-    },
-    {
       "provider_family": "sealion",
       "status": "public_documentation_only",
       "source": "https://docs.sea-lion.ai/guides/inferencing/api",
       "scope": "public API/model documentation; account quota counter and scope not verified",
       "reset": "unknown",
       "signals": []
+    },
+    {
+      "provider_family": "siliconflow",
+      "status": "implemented_passive_adapter",
+      "source": "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info",
+      "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
+      "reset": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
+      "signals": [
+        {
+          "path": "data.balance",
+          "field": "monetary_balance"
+        },
+        {
+          "path": "data.chargeBalance",
+          "field": "monetary_charge_balance"
+        },
+        {
+          "path": "data.totalBalance",
+          "field": "monetary_total_balance"
+        }
+      ]
     },
     {
       "provider_family": "typhoon",
@@ -320,43 +400,11 @@
       "signals": []
     },
     {
-      "provider_family": "deepinfra",
+      "provider_family": "zai",
       "status": "public_documentation_only",
-      "source": "https://deepinfra.com/docs",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
-      "reset": "unknown",
-      "signals": []
-    },
-    {
-      "provider_family": "novita",
-      "status": "public_documentation_only",
-      "source": "https://novita.ai/docs",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
-      "reset": "unknown",
-      "signals": []
-    },
-    {
-      "provider_family": "friendli",
-      "status": "public_documentation_only",
-      "source": "https://friendli.ai/docs",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
-      "reset": "unknown",
-      "signals": []
-    },
-    {
-      "provider_family": "baseten",
-      "status": "public_documentation_only",
-      "source": "https://docs.baseten.co",
-      "scope": "public API/model documentation; account quota counter and scope not verified",
-      "reset": "unknown",
-      "signals": []
-    },
-    {
-      "provider_family": "deepseek",
-      "status": "public_documentation_only",
-      "source": "https://api-docs.deepseek.com",
-      "scope": "public API documentation; account quota counter and scope not verified",
-      "reset": "unknown",
+      "source": "https://docs.z.ai/devpack/usage-policy",
+      "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
       "signals": []
     }
   ]

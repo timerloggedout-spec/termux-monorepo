@@ -34,6 +34,16 @@ class PeerReviewOrchestratorTests(unittest.TestCase):
         self.assertIn("cancel-in-progress: true", self.workflow)
         self.assertNotIn("cancel-in-progress: false", self.workflow)
 
+    def test_collect_reuses_one_comment_snapshot_and_does_not_poll(self) -> None:
+        fetch_start = self.workflow.index("async function fetchEvidence(comments)")
+        fetch_end = self.workflow.index("\\n            function controlEntries", fetch_start)
+        fetcher = self.workflow[fetch_start:fetch_end]
+        self.assertNotIn("issues.listComments", fetcher)
+        self.assertIn("const evidence = await fetchEvidence(initialComments);", self.workflow)
+        self.assertNotIn("MAX_WAIT_SEC", self.workflow)
+        self.assertNotIn("POLL_SEC", self.workflow)
+        self.assertNotIn("await sleep(", self.workflow)
+
     def test_pending_state_is_advisory_until_explicitly_enforced(self) -> None:
         self.assertIn("ENFORCE_PROVIDER_COMPLETION", self.workflow)
         self.assertIn("vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false'", self.workflow)

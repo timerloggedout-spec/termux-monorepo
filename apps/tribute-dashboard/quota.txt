@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (171 registry records)
+ QUOTA  termux-monorepo  (172 registry records)
  Snapshot generated (not observation time): 2026-11-04T01:59:43.471356+00:00
  Source: apps/tribute-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -42,6 +42,16 @@
     route g4f.deepseek and the CI build arm deepseek.build_dispatch) | window:
     provider-side (not established) | reset: not established
     Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ agentrouter (1)
+  agentrouter.models
+    status: No live reading
+    limit (documented): n/a provider-defined
+    metric: Account-scoped model catalogue visibility; quota balance and reset
+    not established | window: unknown | reset: unknown
+    No live reading (live source: GET https://co.agentrouter.org/v1/models
+    (authenticated model catalogue only; no documented remaining-credit/reset
+    endpoint verified))
 --------------------------------------------------------------------------------
  aion (1)
   aion.free_tokens
@@ -1265,6 +1275,8 @@
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  PROVIDER QUOTA-MANAGER COVERAGE (metadata only)
+  agentrouter: Manager / ChronoMancer;
+  unsupported_or_no_verified_official_counter; registry: agentrouter.models
   aion: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
   registry: aion.free_tokens
   baseten: Manager / ChronoMancer; official_documentation_only; no passive
@@ -1330,6 +1342,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 171 registry records | 2 alert(s) | 171 with a reported reading | 0 with No
+ 172 registry records | 2 alert(s) | 171 with a reported reading | 1 with No
  live reading
 ================================================================================

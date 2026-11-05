@@ -125,8 +125,29 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
             if required_ref not in skill:
                 errors.append(f"orchestration-treatment-registry skill missing reference: {required_ref}")
 
+    errors.extend(validate_issue_comment_router_contracts(root))
     return errors
 
+
+
+ROUTER_WORKFLOW = ".github/workflows/issue-comment-router.yml"
+ROUTED_WORKFLOWS = {
+    "agent-review-auto-jules": {
+        "path": ".github/workflows/agent-review-auto-jules.yml",
+        "inputs": {"pr_number", "comment_id", "comment_updated_at", "source_event"},
+        "direct_events": {"pull_request_review", "pull_request_review_comment"},
+    },
+    "gemini-dispatch": {
+        "path": ".github/workflows/gemini-dispatch.yml",
+        "inputs": {"issue_number", "pr_number", "comment_id", "comment_updated_at", "source_event"},
+        "direct_events": {"pull_request", "issues", "pull_request_review", "pull_request_review_comment"},
+    },
+    "agent-jules-on-issues": {
+        "path": ".github/workflows/agent-jules-on-issues.yml",
+        "inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
+        "direct_events": {"issues"},
+    },
+}
 
 
 ROUTER_WORKFLOW = ".github/workflows/issue-comment-router.yml"
@@ -159,25 +180,25 @@ def _read_workflow(root: Path, relative: str, errors: list[str]) -> str:
 
 
 def _on_block(workflow: str) -> str:
-    match = re.search(r"(?ms)^on:\\s*\\n(.*?)(?=^[A-Za-z0-9_.-]+:\\s*(?:$|\\n)|\\Z)", workflow)
+    match = re.search(r"(?ms)^on:\s*\n(.*?)(?=^[A-Za-z0-9_.-]+:\s*(?:$|\n)|\Z)", workflow)
     return match.group(1) if match else ""
 
 
 def _has_event(on_block: str, event: str) -> bool:
-    return re.search(rf"(?m)^  {re.escape(event)}:\\s*$", on_block) is not None
+    return re.search(rf"(?m)^  {re.escape(event)}:\s*$", on_block) is not None
 
 
 def _has_workflow_call_input(on_block: str, name: str, required: bool = True) -> bool:
-    call = re.search(r"(?ms)^  workflow_call:\\s*\\n(.*?)(?=^  [A-Za-z0-9_-]+:\\s*$|\\Z)", on_block)
+    call = re.search(r"(?ms)^  workflow_call:\s*\n(.*?)(?=^  [A-Za-z0-9_-]+:\s*$|\Z)", on_block)
     if not call:
         return False
     input_block = re.search(
-        rf"(?ms)^      {re.escape(name)}:\\s*\\n(.*?)(?=^      [A-Za-z0-9_-]+:\\s*$|\\Z)",
+        rf"(?ms)^      {re.escape(name)}:\s*\n(.*?)(?=^      [A-Za-z0-9_-]+:\s*$|\Z)",
         call.group(1),
     )
-    if not input_block or not re.search(r"(?m)^        type: string\\s*$", input_block.group(1)):
+    if not input_block or not re.search(r"(?m)^        type: string\s*$", input_block.group(1)):
         return False
-    if required and not re.search(r"(?m)^        required: true\\s*$", input_block.group(1)):
+    if required and not re.search(r"(?m)^        required: true\s*$", input_block.group(1)):
         return False
     return True
 
@@ -190,9 +211,9 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
 
     if not _has_event(router_on, "issue_comment"):
         errors.append("issue-comment router must own the issue_comment trigger")
-    if not re.search(r"(?m)^    types: \\[created, edited\\]\\s*$", router_on):
+    if not re.search(r"(?m)^    types: \[created, edited\]\s*$", router_on):
         errors.append("issue-comment router must cover created and edited comment revisions")
-    if not re.search(r"(?m)^permissions: \\{\\}\\s*$", router):
+    if not re.search(r"(?m)^permissions: \{\}\s*$", router):
         errors.append("issue-comment router must have no top-level permissions")
     if "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b" not in router:
         errors.append("issue-comment router must pin github-script to the approved immutable revision")
@@ -202,17 +223,19 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
         errors.append("issue-comment router must use reusable calls, not workflow-dispatch write authority")
     if "github.event.comment.id" not in router or "github.event.comment.updated_at" not in router:
         errors.append("issue-comment router concurrency must be scoped to comment ID and revision")
-    if not re.search(r"(?m)^  cancel-in-progress: false\\s*$", router):
+    if not re.search(r"(?m)^  cancel-in-progress: false\s*$", router):
         errors.append("issue-comment router must not cancel a distinct comment event")
     for route in ("needs_agent_review", "needs_gemini", "needs_jules"):
         if route not in router:
             errors.append(f"issue-comment router is missing route output {route}")
-    for token in ("coderabbitai[bot]", "qodo-code-review[bot]", "devin-ai-integration[bot]",
-                  "@gemini-cli", "@sparkFlux", "@jules", "OWNER", "MEMBER", "COLLABORATOR"):
+    for token in (
+        "coderabbitai[bot]", "qodo-code-review[bot]", "devin-ai-integration[bot]",
+        "@gemini-cli", "@sparkFlux", "@jules", "OWNER", "MEMBER", "COLLABORATOR",
+    ):
         if token not in router:
             errors.append(f"issue-comment router is missing trust/command contract: {token}")
-    if "source_event" not in router or "secrets: inherit" not in router:
-        errors.append("issue-comment router must pass source provenance and inherit only target secrets")
+    if "source_event" not in router or router.count("secrets: inherit") < 3:
+        errors.append("issue-comment router must pass provenance and inherit secrets only in target jobs")
 
     for route_name, contract in ROUTED_WORKFLOWS.items():
         target = _read_workflow(root, contract["path"], errors)
@@ -237,6 +260,7 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
             errors.append(f"issue-comment router is missing reusable route: {route_name}")
 
     return errors
+
 
 
 def main() -> int:

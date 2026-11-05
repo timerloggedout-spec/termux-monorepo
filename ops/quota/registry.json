@@ -8,6 +8,22 @@
  ],
  "services": [
   {
+   "id": "agentrouter.models",
+   "provider": "agentrouter",
+   "lane": "model",
+   "metric": "Account-scoped model catalogue visibility; quota balance and reset not established",
+   "limit": null,
+   "unit": "provider-defined",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "unknown",
+   "source": "https://co.agentrouter.org/portal/guide",
+   "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/reset endpoint verified)",
+   "planned_use": {
+    "note": "Catalog-only registration. Do not infer account quota, spend allowance, or runtime admission."
+   }
+  },
+  {
    "id": "github.actions.minutes",
    "provider": "github",
    "lane": "ci",

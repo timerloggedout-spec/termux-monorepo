@@ -3,6 +3,15 @@
   "contract": "Offline evidence links only; not quota services, account managers, runtime admission, or provider observations.",
   "provider_families": [
     {
+      "provider_family": "agentrouter",
+      "mapping_id": "adapter:agentrouter",
+      "evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
       "provider_family": "aion",
       "mapping_id": "adapter:aion",
       "evidence": [

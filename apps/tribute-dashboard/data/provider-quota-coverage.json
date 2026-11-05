@@ -1,16 +1,16 @@
 {
   "coverage_counts": {
-    "actual_quota_service_mappings": 32,
+    "actual_quota_service_mappings": 33,
     "implemented_passive_adapters": 6,
     "missing_actual_quota_service_mappings": 0,
     "missing_static_adapter_mappings": 0,
     "opt_in_private_service_managers": 2,
-    "provider_families": 32,
-    "static_adapter_mappings": 32
+    "provider_families": 33,
+    "static_adapter_mappings": 33
   },
   "four_counts": {
     "callable": {
-      "count": 28,
+      "count": 30,
       "source": "scripts/provider_model_catalog.py ENDPOINTS"
     },
     "executed": {
@@ -53,6 +53,8 @@
       "inconsistencies": [],
       "source": "ops/quota/provisioned-families.json",
       "unprovisioned_catalog_families": [
+        "agentrouter",
+        "deepseek",
         "cerebras",
         "kilo",
         "modelscope",
@@ -63,7 +65,7 @@
     },
     "schema": "provider-four-counts/v1",
     "wired": {
-      "count": 32,
+      "count": 33,
       "source": "ops/quota/provider-managers.json"
     }
   },
@@ -72,6 +74,47 @@
   "network_used": false,
   "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
   "provider_families": [
+    {
+      "covered": true,
+      "documented_limit": null,
+      "documented_reset_semantics": "unknown",
+      "documented_signals": [],
+      "evidence_state": "unknown",
+      "free_entitlement": null,
+      "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
+      "manager_metadata_state": "documented_only",
+      "manager_status": "unsupported",
+      "mapping_state": "documented_registry_mapping",
+      "observation_method": "unsupported_or_no_verified_official_counter",
+      "observed_reset": "unknown",
+      "official_evidence": [
+        "https://co.agentrouter.org/portal/guide",
+        "https://co.agentrouter.org/portal/models"
+      ],
+      "opt_in_private_service_ids": [],
+      "private_balance": "not_published",
+      "provider_family": "agentrouter",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "registry_reader_service_ids": [],
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
+      "scope": "key/resource-pool scoped model visibility; no documented account remaining-credit or reset response contract verified",
+      "service_ids": [
+        "agentrouter.models"
+      ],
+      "source_capability": "registered_service",
+      "static_mapping_evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:agentrouter",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
+    },
     {
       "covered": true,
       "documented_limit": null,
@@ -1524,6 +1567,13 @@
   ],
   "schema": "provider-quota-coverage/v1",
   "service_resources": [
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "agentrouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "agentrouter.models"
+    },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",

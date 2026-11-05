@@ -6,10 +6,10 @@ from llm_api_hub.server import provider_extensions as runtime
 
 
 def test_endpoint_secret_and_public_catalog_definitions_match_actual_transports():
-    assert set(ext.ENDPOINTS) == {"unorouter", "routeway", "requesty", "xkiro", "sealion", "deepinfra", "novita", "friendli", "baseten"}
+    assert set(ext.ENDPOINTS) == {"unorouter", "routeway", "requesty", "xkiro", "sealion", "deepinfra", "novita", "friendli", "baseten", "deepseek", "agentrouter"}
     assert ext.ENDPOINTS == runtime.CATALOG_ENDPOINTS
     assert all(catalog.ENDPOINTS[p] == url for p, url in ext.ENDPOINTS.items())
-    assert all(catalog.SECRETS[p] == runtime.ENDPOINTS[p][1][0] for p in ext.ENDPOINTS)
+    assert all(catalog.SECRETS[p] == runtime.CATALOG_SECRET_ENV[p] for p in ext.ENDPOINTS)
     assert "typhoon" not in catalog.ENDPOINTS and "xfyun" not in catalog.ENDPOINTS
     assert set(ext.ENDPOINTS) & catalog.PUBLIC_CATALOGS == {"routeway", "requesty", "xkiro"}
 
@@ -104,3 +104,10 @@ def test_missing_keys_report_canonical_secret_name_only(monkeypatch):
         monkeypatch.delenv(key, raising=False)
         value, env_name = catalog.resolve_secret(provider)
         assert value is None and env_name == key
+
+
+def test_agentrouter_is_catalog_only_not_an_admitted_inference_transport():
+    assert runtime.CATALOG_ENDPOINTS["agentrouter"] == "https://co.agentrouter.org/v1/models"
+    assert runtime.CATALOG_SECRET_ENV["agentrouter"] == "AGENTROUTER_API_KEY"
+    assert "agentrouter" not in runtime.ENDPOINTS
+    assert "agentrouter" not in runtime.CATALOG_ENDPOINTS.keys() & runtime.ENDPOINTS.keys()

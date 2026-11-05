@@ -3,6 +3,18 @@
   "contract": "Offline registry of documented passive observations; not a poller, account validation, entitlement assertion, or admission input.",
   "provider_families": [
     {
+      "provider_family": "agentrouter",
+      "status": "unsupported",
+      "source": "https://co.agentrouter.org/portal/guide",
+      "official_evidence": [
+        "https://co.agentrouter.org/portal/guide",
+        "https://co.agentrouter.org/portal/models"
+      ],
+      "scope": "key/resource-pool scoped model visibility; no documented account remaining-credit or reset response contract verified",
+      "reset": "unknown; do not infer balance or reset from model catalogue or HTTP status",
+      "signals": []
+    },
+    {
       "provider_family": "aion",
       "status": "unsupported",
       "source": "https://aionlabs.ai/",

@@ -22,16 +22,6 @@
       "live_account_state": "unknown"
     },
     {
-      "provider_family": "baseten",
-      "mapping_id": "adapter:baseten",
-      "evidence": [
-        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
-        "scripts/provider_extension_catalogs.py:ENDPOINTS"
-      ],
-      "status": "static_roster_link_only",
-      "live_account_state": "unknown"
-    },
-    {
       "provider_family": "cerebras",
       "mapping_id": "adapter:cerebras",
       "evidence": [
@@ -62,39 +52,10 @@
       "live_account_state": "unknown"
     },
     {
-      "provider_family": "deepinfra",
-      "mapping_id": "adapter:deepinfra",
-      "evidence": [
-        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
-        "scripts/provider_extension_catalogs.py:ENDPOINTS"
-      ],
-      "status": "static_roster_link_only",
-      "live_account_state": "unknown"
-    },
-    {
-      "provider_family": "deepseek",
-      "mapping_id": "adapter:deepseek",
-      "evidence": [
-        "llm_api_hub/server/provider_extensions.py:ENDPOINTS"
-      ],
-      "status": "static_roster_link_only",
-      "live_account_state": "unknown"
-    },
-    {
       "provider_family": "felo",
       "mapping_id": "adapter:felo",
       "evidence": [
         "scripts/provider_model_catalog.py:ENDPOINTS"
-      ],
-      "status": "static_roster_link_only",
-      "live_account_state": "unknown"
-    },
-    {
-      "provider_family": "friendli",
-      "mapping_id": "adapter:friendli",
-      "evidence": [
-        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
-        "scripts/provider_extension_catalogs.py:ENDPOINTS"
       ],
       "status": "static_roster_link_only",
       "live_account_state": "unknown"
@@ -165,16 +126,6 @@
       "evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
-      ],
-      "status": "static_roster_link_only",
-      "live_account_state": "unknown"
-    },
-    {
-      "provider_family": "novita",
-      "mapping_id": "adapter:novita",
-      "evidence": [
-        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
-        "scripts/provider_extension_catalogs.py:ENDPOINTS"
       ],
       "status": "static_roster_link_only",
       "live_account_state": "unknown"
@@ -320,6 +271,55 @@
       "mapping_id": "adapter:zai",
       "evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "deepinfra",
+      "mapping_id": "adapter:deepinfra",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
+        "scripts/provider_extension_catalogs.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "novita",
+      "mapping_id": "adapter:novita",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
+        "scripts/provider_extension_catalogs.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "friendli",
+      "mapping_id": "adapter:friendli",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
+        "scripts/provider_extension_catalogs.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "baseten",
+      "mapping_id": "adapter:baseten",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS",
+        "scripts/provider_extension_catalogs.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "deepseek",
+      "mapping_id": "adapter:deepseek",
+      "evidence": [
+        "llm_api_hub/server/provider_extensions.py:ENDPOINTS"
       ],
       "status": "static_roster_link_only",
       "live_account_state": "unknown"

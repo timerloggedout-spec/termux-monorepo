@@ -44,6 +44,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | tribute-lane | `.agents/skills/tribute-lane/SKILL.md` |
 | **icm-cctv-ops** | `.agents/skills/icm-cctv-ops/SKILL.md` |
 | **ml-pipeline-ops** | `.agents/skills/ml-pipeline-ops/SKILL.md` |
+| plan-canvas | `.agents/skills/plan-canvas/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
 | **stepie-stepwise-ops** | `.agents/skills/stepie-stepwise-ops/SKILL.md` |

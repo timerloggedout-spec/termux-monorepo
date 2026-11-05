@@ -37,7 +37,7 @@ import urllib.request
 
 ENDPOINT = os.environ.get(
     "STRANDS_ENDPOINT",
-    "https://hostb-fit-test-5b9d7.containers.snapdeploy.app")
+    "https://hostb-live-5b9d7.containers.snapdeploy.app")
 HEALTH_TIMEOUT_S = 70    # A2 wake envelope (~60s) + margin
 PLAN_TIMEOUT_S = 120     # wake + a live invocation
 

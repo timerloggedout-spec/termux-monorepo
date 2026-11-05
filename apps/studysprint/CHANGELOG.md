@@ -5,6 +5,12 @@ Entries are the GitHub Release notes, verbatim.
 
 ## [Unreleased]
 
+### WebApp 0.5.2 — production endpoint patch (2026-11-05)
+
+- Switch the webApp live-mode default to the production Host-B endpoint `hostb-live-5b9d7`; live mode remains explicitly opt-in and transport failures remain fail-closed.
+- Bump `web/VERSION` to `0.5.2` and rotate the service-worker cache identity to `studysprint-webapp-v0.5.2`, ensuring installed clients can activate the updated shell rather than remain pinned to the 0.5.1 cache.
+- Release build must regenerate `web/data/state.json` from the tagged tree before packaging so its `surface_version` receipt matches the release.
+
 ### Surfaces 0.5.1
 
 - **SR exports land on webApp + APK (#4673, qualifications

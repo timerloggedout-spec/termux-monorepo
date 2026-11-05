@@ -47,7 +47,7 @@ def _on(monkeypatch):
 
 
 def test_endpoint_is_the_host_b_contract_url():
-    assert live.ENDPOINT == ("https://hostb-fit-test-5b9d7"
+    assert live.ENDPOINT == ("https://hostb-live-5b9d7"
                              ".containers.snapdeploy.app")
 
 
@@ -115,7 +115,7 @@ def test_health_and_wake(monkeypatch):
 
 def test_web_mirror_contract():
     js = (ROOT / "web" / "live.js").read_text()
-    for needle in ("hostb-fit-test-5b9d7.containers.snapdeploy.app",
+    for needle in ("hostb-live-5b9d7.containers.snapdeploy.app",
                    '"/plan"', '"/health"', "offline-gate",
                    "fail_closed", "ss.live_mode", "surface-local"):
         assert needle in js, needle
@@ -126,6 +126,14 @@ def test_web_mirror_contract():
     if shutil.which("node"):
         subprocess.run(["node", "--check", str(ROOT / "web" / "live.js")],
                        check=True)
+
+
+def test_web_surface_version_and_cache_identity():
+    version = (ROOT / "web" / "VERSION").read_text().strip()
+    sw = (ROOT / "web" / "sw.js").read_text()
+    assert version == "0.5.2"
+    assert f"studysprint-webapp-v{version}" in sw
+    assert "studysprint-webapp-v0.5.1" not in sw
 
 
 def test_tui_hooks_present():

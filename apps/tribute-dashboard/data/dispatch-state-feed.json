@@ -1,12 +1,12 @@
 {
  "counts": {
-  "claimed": 2,
+  "claimed": 4,
   "escalated": 2,
-  "queued": 0
+  "queued": 1
  },
  "dispatches": [
   {
-   "age_min": 2548.4,
+   "age_min": 2803.6,
    "claim": null,
    "entry": "Other",
    "issue": 4077,
@@ -23,7 +23,7 @@
    "title": "[task] LIVE TEST \u2014 project-task intake trigger (done-evidence for #3577)"
   },
   {
-   "age_min": 2106.0,
+   "age_min": 2361.2,
    "claim": {
     "at": "2026-11-03T12:41:03Z",
     "by": "optimizations-assurance"
@@ -33,17 +33,17 @@
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
-    "escalate": 20,
-    "flag": 10
+    "escalate": 10,
+    "flag": 5
    },
    "tier": {
-    "index": 2,
-    "name": "WALL-DAY"
+    "index": 3,
+    "name": "ESCALATION"
    },
    "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item"
   },
   {
-   "age_min": 2041.3,
+   "age_min": 2296.6,
    "claim": {
     "at": "2026-11-03T13:47:14Z",
     "by": "optimizations-assurance"
@@ -53,17 +53,17 @@
    "stall_events": [],
    "state": "claimed",
    "thresholds_min": {
-    "escalate": 20,
-    "flag": 10
+    "escalate": 10,
+    "flag": 5
    },
    "tier": {
-    "index": 2,
-    "name": "WALL-DAY"
+    "index": 3,
+    "name": "ESCALATION"
    },
    "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)"
   },
   {
-   "age_min": 1506.4,
+   "age_min": 1761.6,
    "claim": null,
    "entry": "Other",
    "issue": 4655,
@@ -87,9 +87,66 @@
     "name": "BASE"
    },
    "title": "[task] QUE queue board v1.1 \u2014 per-repo (ss) extension"
+  },
+  {
+   "age_min": 18.1,
+   "claim": {
+    "at": "2026-11-05T03:52:49Z",
+    "by": "speculators-build"
+   },
+   "entry": "D1",
+   "issue": 4965,
+   "stall_events": [],
+   "state": "claimed",
+   "thresholds_min": {
+    "escalate": 10,
+    "flag": 5
+   },
+   "tier": {
+    "index": 3,
+    "name": "ESCALATION"
+   },
+   "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt"
+  },
+  {
+   "age_min": 18.0,
+   "claim": {
+    "at": "2026-11-05T03:52:10Z",
+    "by": "speculators-build"
+   },
+   "entry": "D1",
+   "issue": 4966,
+   "stall_events": [],
+   "state": "claimed",
+   "thresholds_min": {
+    "escalate": 10,
+    "flag": 5
+   },
+   "tier": {
+    "index": 3,
+    "name": "ESCALATION"
+   },
+   "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA"
+  },
+  {
+   "age_min": 16.0,
+   "claim": null,
+   "entry": "Records hygiene (owner ruling 2026-11-04 19:41 PT) \u2014 speculators-build audit remainder.",
+   "issue": 4975,
+   "stall_events": [],
+   "state": "queued",
+   "thresholds_min": {
+    "escalate": 60,
+    "flag": 30
+   },
+   "tier": {
+    "index": 0,
+    "name": "BASE"
+   },
+   "title": "[task] Records hygiene \u2014 population.jsonl: pricing/maker literal token -> null"
   }
  ],
- "generated_at": "2026-11-04T23:49:35Z",
+ "generated_at": "2026-11-05T04:04:48Z",
  "schema": "dispatch-state-feed/v1",
  "source": "dispatch-watchdog"
 }

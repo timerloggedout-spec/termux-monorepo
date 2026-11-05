@@ -13,6 +13,7 @@ ENDPOINTS = {
     "novita": "https://api.novita.ai/v3/openai/models",
     "friendli": "https://api.friendli.ai/serverless/v1/models",
     "baseten": "https://inference.baseten.co/v1/models",
+    "deepseek": "https://api.deepseek.com/v1/models",
     "agentrouter": "https://co.agentrouter.org/v1/models",
 }
 SECRETS = {provider: f"{provider.upper()}_API_KEY" for provider in ENDPOINTS}
@@ -28,6 +29,7 @@ SOURCES = {
     "novita": "https://novita.ai/docs",
     "friendli": "https://friendli.ai/docs",
     "baseten": "https://docs.baseten.co",
+    "deepseek": "https://api-docs.deepseek.com/",
     "agentrouter": "https://co.agentrouter.org/portal/guide",
 }
 

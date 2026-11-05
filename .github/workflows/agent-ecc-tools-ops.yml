@@ -47,6 +47,7 @@ env:
 jobs:
   pr-harness-audit:
     if: |
+      vars.ECC_TOOLS_APP_ENABLED == 'true' &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
       github.event.pull_request.head.repo.full_name == github.repository
@@ -129,14 +130,15 @@ jobs:
 
   issue-commands:
     if: |
-      (github.event_name == 'issues' && github.event.action == 'labeled' &&
+      vars.ECC_TOOLS_APP_ENABLED == 'true' &&
+      ((github.event_name == 'issues' && github.event.action == 'labeled' &&
         github.event.sender.type == 'User' &&
         (github.event.label.name == 'ecc-tools' || github.event.label.name == 'ecc' || github.event.label.name == 'ECC')) ||
       (github.event_name == 'issue_comment' && !github.event.issue.pull_request &&
         github.event.sender.type == 'User' &&
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
         (startsWith(github.event.comment.body, '/ecc-tools-ops') || startsWith(github.event.comment.body, '/ecc ops') ||
-         contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->')))
+         contains(github.event.comment.body, '<!-- request-ecc-tools-ops -->'))))
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:
@@ -188,6 +190,7 @@ jobs:
 
   pr-operator-command:
     if: |
+      vars.ECC_TOOLS_APP_ENABLED == 'true' &&
       github.event_name == 'issue_comment' && github.event.issue.pull_request &&
       github.event.sender.type == 'User' &&
       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
@@ -276,6 +279,7 @@ jobs:
 
   acknowledge-ecc-pr:
     if: |
+      vars.ECC_TOOLS_APP_ENABLED == 'true' &&
       github.event_name == 'issue_comment' && github.event.issue.pull_request &&
       github.event.comment.user.type == 'Bot' &&
       (github.event.comment.user.login == 'ecc-tools[bot]' || contains(github.event.comment.user.login, 'ecc-tools'))

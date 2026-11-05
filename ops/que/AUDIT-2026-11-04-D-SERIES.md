@@ -5,6 +5,7 @@ Packet of record: D1 diagnostics escalation @ manager seat. Closure receipts col
 ## D-h — dispatch-hand gap (claimed, trigger never instantiated) — FIRST
 - State: TAKEN at QUE → #4977 Fix 5 (comment 6649638623): watchdog scans dispatch-claimed filings for route evidence (run/branch/PR) ≤15 min → aging; 30 min → escalate producer + Desk.
 - Evidence of the defect: #4965/#4966 claimed 2026-11-05T03:52Z, ∅ branch ∧ ∅ PR @04:20Z; live queue read (feeds @04:21:03Z) = 12 active, tier 3 0/0 — stall = producer-hand, ¬ queue starvation.
+- Vehicle (Oversight route map, 2026-11-04 20:40 PT): port repo-story's `build-dispatch.yml` (Gemini build arm — produced repo-story PR #6, 2026-11-02; lever = workflow_dispatch; GEMINI_API_KEY already fleet-sealed) into the monorepo as the standing build-dispatch trigger — claim → pullable trigger, the concrete build under Fix 5's watch. Tonight = fix queue, ¬ critical path (latency at/past drop-dead).
 - Closure: OPEN (build routed Desk QUE → Swarm under #4977).
 
 ## D-c — admission collection (live pagination under shared token)

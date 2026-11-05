@@ -31,11 +31,15 @@ the local environment that owns the artifact:
     command -v ecc-plan-canvas
     ecc-plan-canvas --help
 
-Claude plugin fallback:
+Claude plugin fallback (use this prefix for every subcommand below when the
+standalone CLI is not on PATH but the plugin script is present):
 
     node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" --help
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" open .claude/plans/feature.plan.md
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" await .claude/plans/feature.plan.md
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" end .claude/plans/feature.plan.md
 
-Skill presence does not prove the CLI is installed. If unavailable, record
+Skill presence does not prove the CLI or plugin script is installed. If unavailable, record
 BLOCKED: plan-canvas runtime unavailable and use Desk.html / Issue HITL instead.
 Do not install global packages or alter a user's runtime without authorization.
 GitHub Actions is headless and is not the interactive canvas host.
@@ -70,9 +74,16 @@ Edit the artifact; it live-reloads. Do not re-run open to refresh. Finish with:
 
     ecc-plan-canvas end .claude/plans/feature.plan.md
 
-request-changes means revise and continue awaiting. approve means the canvas
-review is approved, then mirror the verdict to Desk.html / Issue with artifact path,
-SHA-256, verdict, platform-supplied reviewer identity, timestamp, and conditions.
+request-changes means revise and continue awaiting. A canvas approve verdict is
+only a proposal; it never authorizes implementation. The reviewer must separately
+confirm the exact artifact SHA-256 in Desk.html or the owning GitHub Issue/PR.
+That confirmation must be an authenticated human action. Reviewer identity comes
+from the authenticated Desk session or GitHub actor metadata, never from agent-
+written text, a canvas payload, or an identity inferred by the agent. The agent may
+prepare a receipt, but must not submit or attribute the approval on the reviewer's
+behalf. If the authenticated confirmation is absent or its digest differs, stop
+before implementation. Record artifact path, SHA-256, verdict, authenticated
+reviewer identity, timestamp, and conditions from that human confirmation.
 If the user ends the session (endedBy: user or sessionEnded: true), stop and do
 not reopen unless asked. No active listener means feedback is not yet delivered.
 

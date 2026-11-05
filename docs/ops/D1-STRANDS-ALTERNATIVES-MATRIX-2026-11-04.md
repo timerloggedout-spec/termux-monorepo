@@ -15,7 +15,18 @@ model served by Bedrock — real invocation, real account
 {provider=amazon-bedrock · model id verbatim · region · tools ·
 run/commit/sdk}. The #4534 run (Gemini route, gemini-3.5-flash-lite)
 is stamped DEFECT under this standard: retained in the trail, never
-cited as proof. Judging weights (event Rules): Functionality 35 ·
+cited as proof.
+
+DoE ruling 2026-11-04 17:53 PT (supersedes the own-account reading):
+a temp-account receipt MEETS the standard — the test is what
+executes, not who owns — under conditions {provenance named on the
+receipt · shipped build_strands_agent at a named commit · claim
+wording exactly "executed on Amazon Bedrock" · any Bedrock model id
+verbatim}. Event-provisioned temp accounts are therefore
+CLAIM-GRADE; operational caveat unchanged: the receipt must be
+captured before the event account expires.
+
+Judging weights (event Rules): Functionality 35 ·
 Innovation 25 · Strands/AWS 15 · Originality 25.
 
 ## Spec — Desk (Challenge Manager) answers, 2026-11-04 05:25 PT
@@ -73,7 +84,7 @@ A = AWS-proof · B = claim-shape/descope · C = owner-gated AWS.
 |---|-------|-----------|------------|---------------------|------------------|
 | A1 | BedrockModel swap into the proven #4534 harness, new Free-plan account; model us.amazon.nova-lite-v1:0, region us-east-1 | none for most new customers (AWS start-here, verified 2026-11-04) | P1 signup, owner hand, PENDING (gate G1) | Full receipt standard satisfiable (Bedrock invocation, tools from event stream) | Class A — PRIMARY, blocked on gate G1 only |
 | A2 | Lambda x Bedrock Nova hosted shape (AWS schema set, issue #4537) | same account dependency as A1 | same as A1 (gate G1) | Receipt standard satisfiable; hosting is not a spec field | Class A — TARGET CLAIM SHAPE per owner ruling 05:17 PT: endpoint live Lambda x BedrockModel Nova, receipts deployment=true; A1 is its proof vehicle |
-| A3 | Workshop Studio / Event Engine account | none (event-issued) | event access | Weak: not the owner's account; credentials temporary | Class A — FAILS the standard (not an own real account; ephemeral): accounts expire at event end, resources auto-deprovisioned (aide probe 2026-11-04, AWS workshop pages) |
+| A3 | Workshop Studio / Event Engine account | none (event-issued) | event access (Email OTP + event code) | Full receipt standard satisfiable under the DoE 17:53 PT ruling (temp = claim-grade; conditions: provenance named · shipped agent at named commit · claim = "executed on Amazon Bedrock" · model id verbatim) | Class A — CLAIM-GRADE per the 17:53 PT ruling (supersedes the earlier FAILS verdict). Operational bound: accounts expire at event end, resources auto-deprovisioned (aide probe 2026-11-04, AWS workshop pages) ⇒ receipt capture must precede expiry |
 | A4 | AWS Activate credits | n/a (post-account) | application, owner hand (gate G3) | None at signup; usage offset only after an account exists | Class C listing — not a door; possible subsidy after A1; eligibility NOT_ESTABLISHED |
 | A5 | Promo / credit codes at signup | n/a | none | None: redemption requires an existing account (AWS Promotional Credit Terms, upd. 2026-09-24) | NO row — ruled out entirely (not a class); post-account usage only |
 | A6 | Prepaid network card as payment method | card-class | owner decision only (gate G4) | Satisfies a payment step where one exists (AWS re:Post accepted payment methods, upd. 2026-09-30) | Class C listing ONLY, never fleet-attempted (Desk stamp: CLOSED, never routed) — card-class under the fleet no-card rule; gift cards + virtual credit cards are NOT accepted by AWS at all |
@@ -87,14 +98,19 @@ event access code at catalog.workshops.aws/join — not Builder ID.
 D1's own prerequisite workshop ("Building AI Agents with Strands
 SDK", bit.ly/strands-agents-workshop): content live, event-account
 re-entry NOT_ESTABLISHED publicly (code issuance + event window
-unstated; owner-side dashboard check settles it) — and even if
-joinable, the account is event/temp = fails the standard (A3).
-General guided events: joinable only with a live code in hand, no
-public live codes. Event Engine legacy: hash-gated, expired outside
-event windows. Self-paced Strands/Bedrock workshops: joinable as
-content, OWN-ACCOUNT-ONLY. Agentic Football Cup: not today
-(org-booked; next season 2027 waitlist). Net: no door yields a
-claim-grade account; the real-account doors remain A9/A1.
+unstated; owner-side dashboard check settles it). Temp-account
+class corrected by the DoE 17:53 PT ruling: event/temp accounts
+are CLAIM-GRADE under the ruling's conditions (see the standard
+section) — the earlier "fails the standard / no claim value"
+reading is superseded. General guided events: joinable only with
+a live code in hand, no public live codes. Event Engine legacy:
+hash-gated, expired outside event windows. Self-paced Strands/
+Bedrock workshops: joinable as content, OWN-ACCOUNT-ONLY. Agentic
+Football Cup: not today (org-booked; next season 2027 waitlist).
+Net after the ruling: any LIVE event door (D1/D2/D3 class) is a
+claim-grade execution venue if joined inside its window and the
+receipt is captured before expiry; joinability today remains the
+open fact. A9/A1 remain the durable-account doors.
 
 ## Matrix B — free-provider Strands backends (non-AWS)
 
@@ -231,3 +247,11 @@ run + receipt margin.
   (code/hash-gated, event-window-bound, temp accounts); D1's own
   workshop re-entry NOT_ESTABLISHED publicly; self-paced workshops
   = own-account-only. Filed under Matrix A.
+- 2026-11-04 17:53 PT — DoE RULING (via D1 seat) refiled: temp-
+  account receipts MEET the standard (test = what executes, not
+  who owns) under conditions {provenance named · shipped agent at
+  named commit · claim = "executed on Amazon Bedrock" exactly ·
+  any Bedrock model id verbatim}. A3 verdict flipped FAILS →
+  CLAIM-GRADE; door-inventory net corrected (live event doors are
+  claim-grade venues; joinability today still open); the own-
+  account reading and "no claim value" stamps are superseded.

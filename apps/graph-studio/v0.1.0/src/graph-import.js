@@ -71,7 +71,7 @@ export function parseGraphImport(raw, fileName) {
   let edges = [];
 
   if (isLines) {
-    for (const [index, line] of String(raw).split(/\\r?\\n/).entries()) {
+    for (const [index, line] of String(raw).split(/\r?\n/).entries()) {
       if (!line.trim()) continue;
       let item;
       try {

@@ -30,14 +30,17 @@ Platform201 deployment is performed.
 
 ## Why remove the timer
 
-Issue #1573 establishes a quota-aware dispatch tree, but its ten-minute wake cycle
-is still polling. The Lane Matrix was incorrectly attached to the q6 tranche and
-therefore inherited a six-hour refresh dependency. Remove that coupling entirely.
+Issue #1573's dispatcher now has immediate wake paths for PR lifecycle changes,
+managed-lane completion (through the lane-events recorder), and source-record
+pushes. Its ten-minute schedule remains only as a fallback for time-only cadence
+slots; it is not the primary demand signal and it does not sweep the PR Matrix.
 
-The PR-disposition materializer now wakes on pull_request_target lifecycle events.
-It coalesces bursts by concurrency cancellation, reads the current open-PR set,
-and writes only when the derived artifact changes. There is no ten-minute matrix
-poll, six-hour matrix sweep, elapsed-time debounce, or manual dispatch.
+The Lane Matrix was incorrectly attached to the q6 tranche and inherited a
+six-hour refresh dependency. That coupling is removed. The PR-disposition
+materializer wakes directly on pull_request_target lifecycle events, coalesces
+bursts by concurrency cancellation, reads the current open-PR set, and writes
+only when the derived artifact changes. There is no ten-minute matrix poll,
+six-hour matrix sweep, elapsed-time debounce, or manual Matrix dispatch.
 
 The Lane Matrix is not the cross-domain state store. REPO-TRACKING owns the
 lane×project projection; domain lifecycle records remain authoritative; lane-events

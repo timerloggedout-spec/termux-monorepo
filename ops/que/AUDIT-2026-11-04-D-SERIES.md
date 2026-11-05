@@ -36,6 +36,11 @@ Packet of record: D1 diagnostics escalation @ manager seat. Closure receipts col
 - Threshold = fix-spec parameter (set at build; no value asserted here).
 - Closure: OPEN (build routed Desk QUE → Swarm under #4977).
 
+## D-k — false-HITL escalation (owner-gate claimed where capacity existed)
+- State: TRACKED (owner direct, 2026-11-04 21:14 PT), beside D-i/D-j. Instance of record: **SnapDeploy Delete** — an owner-gate (human-in-the-loop) escalation was claimed where the capacity to act already existed.
+- Class rule: **capacity claims are state stamps** — whether a seat/system can or cannot act is a verifiable state, and it is firsthand-verified BEFORE any escalation to the owner. An escalation asserting a missing capacity that a firsthand read disproves is a false-HITL defect.
+- Closure: OPEN (class rule stands in this audit; escalations fleet-wide carry the verify-first duty).
+
 ## Desk legs (owned at the Desk seat, tracked here for the set)
 - D-a filing-form discipline — Desk.
 - D-e stale reads (both directions) — Desk.

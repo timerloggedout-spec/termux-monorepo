@@ -29,6 +29,7 @@ from study_reader import Section  # noqa: E402
 from study_sr import build_cards_from_practice_set, export_ux_state  # noqa: E402
 from study_tools import (build_study_plan, fetch_study_evidence,  # noqa: E402
                          format_trust_receipt, render_today_view)
+from study_cogfit import cogfit_state  # noqa: E402
 
 
 def _memory_bundle(plan: dict, sections: list,
@@ -280,6 +281,9 @@ def emit_state(root: Path | None = None) -> dict:
         "courses_intake": intake,
         "ics_by_course": ics_by_course,
         "book": _book_bundle(root),
+        # Cognitive-fitness slice (#4966): core-owned block --
+        # typed check-in history, session-count phase, next_order.
+        "cogfit": cogfit_state(),
     }
 
 

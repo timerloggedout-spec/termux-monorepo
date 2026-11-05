@@ -54,8 +54,8 @@
       "source": "ops/quota/provisioned-families.json",
       "unprovisioned_catalog_families": [
         "agentrouter",
-        "cerebras",
         "deepseek",
+        "cerebras",
         "kilo",
         "modelscope",
         "omni",
@@ -1568,81 +1568,284 @@
   "schema": "provider-quota-coverage/v1",
   "service_resources": [
     {
-      "service_id": "agentrouter.models",
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
       "provider": "agentrouter",
       "quota_manager_owner": "Manager",
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown"
+      "service_id": "agentrouter.models"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "aion",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "aion.free_tokens"
+      "service_id": "github.actions.minutes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.cache"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "aws",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "aws.account_credits"
+      "service_id": "github.api.app_collector"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "aws",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "aws.dynamodb_storage"
+      "service_id": "github.api.app_publisher"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.github_token"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "aws",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "aws.lambda_compute"
+      "service_id": "github.api.user_token"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "aws",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "aws.lambda_requests"
+      "service_id": "github.artifacts.retention"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "azure",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "azure.account_credit"
+      "service_id": "github.copilot.free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "vercel",
+      "quota_manager_owner": "Manager",
+      "service_id": "vercel.deployments"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "azure",
+      "provider": "vercel",
       "quota_manager_owner": "Manager",
-      "service_id": "azure.functions_executions"
+      "service_id": "vercel.build_time"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.pipeline_minutes"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "baseten",
+      "provider": "render",
       "quota_manager_owner": "Manager",
-      "service_id": "baseten.api"
+      "service_id": "render.instance_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.bandwidth"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "cerebras",
+      "provider": "render",
       "quota_manager_owner": "Manager",
-      "service_id": "cerebras.free_tokens"
+      "service_id": "render.postgres_free"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "Claude",
+      "provider": "render",
       "quota_manager_owner": "Manager",
-      "service_id": "claude.seat_runtime"
+      "service_id": "render.keyvalue_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.compute"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.egress"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.realtime"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "openrouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "openrouter.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "google",
+      "quota_manager_owner": "Manager",
+      "service_id": "gemini.api_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_opt_in_private_service",
+      "provider": "ollama",
+      "quota_manager_owner": "Manager",
+      "service_id": "ollama.balance"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_opt_in_private_service",
+      "provider": "openrouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "openrouter.key"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "quota_manager_owner": "Manager",
+      "service_id": "g4f.vendors"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "grafana",
+      "quota_manager_owner": "Manager",
+      "service_id": "grafana.cloud_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "CellCog/Polsia/Manus",
+      "quota_manager_owner": "Manager",
+      "service_id": "partners.credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.db_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.projects"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.egress"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.file_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.edge_functions"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.rows_read"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.rows_written"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.databases"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.redis_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.redis_commands"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.redis_bandwidth"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.qstash_messages"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -1670,14 +1873,28 @@
       "observation_method": "manual_or_unknown",
       "provider": "cloudflare",
       "quota_manager_owner": "Manager",
-      "service_id": "cloudflare.kv_writes"
+      "service_id": "cloudflare.queues_ops"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.codespaces.core_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.codespaces.storage"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "cloudflare",
       "quota_manager_owner": "Manager",
-      "service_id": "cloudflare.queues_ops"
+      "service_id": "cloudflare.workers_requests"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -1691,77 +1908,7 @@
       "observation_method": "manual_or_unknown",
       "provider": "cloudflare",
       "quota_manager_owner": "Manager",
-      "service_id": "cloudflare.workers_ai"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "cloudflare",
-      "quota_manager_owner": "Manager",
-      "service_id": "cloudflare.workers_requests"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "cohere",
-      "quota_manager_owner": "Manager",
-      "service_id": "cohere.trial_calls"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "deepinfra",
-      "quota_manager_owner": "Manager",
-      "service_id": "deepinfra.api"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "DeepSeek",
-      "quota_manager_owner": "Manager",
-      "service_id": "deepseek.api"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "deepseek.build_dispatch"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "deno",
-      "quota_manager_owner": "Manager",
-      "service_id": "deno.deploy_requests"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "digitalocean",
-      "quota_manager_owner": "Manager",
-      "service_id": "digitalocean.app_platform_static"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "digitalocean",
-      "quota_manager_owner": "Manager",
-      "service_id": "digitalocean.trial_credit"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "felo",
-      "quota_manager_owner": "Manager",
-      "service_id": "felo.api_credits"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "fleet-vm",
-      "quota_manager_owner": "Manager",
-      "service_id": "fleet.vm_webhooks"
+      "service_id": "cloudflare.kv_writes"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -1773,9 +1920,338 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "friendli",
+      "provider": "koyeb",
       "quota_manager_owner": "Manager",
-      "service_id": "friendli.api"
+      "service_id": "koyeb.free_instance"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "platform201",
+      "quota_manager_owner": "Manager",
+      "service_id": "platform201.projects"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gcp",
+      "quota_manager_owner": "Manager",
+      "service_id": "gcp.cloud_run_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gcp",
+      "quota_manager_owner": "Manager",
+      "service_id": "gcp.cloud_functions_invocations"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gcp",
+      "quota_manager_owner": "Manager",
+      "service_id": "gcp.compute_e2micro"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.lambda_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.lambda_compute"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.dynamodb_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.account_credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "azure",
+      "quota_manager_owner": "Manager",
+      "service_id": "azure.functions_executions"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "azure",
+      "quota_manager_owner": "Manager",
+      "service_id": "azure.account_credit"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "oracle",
+      "quota_manager_owner": "Manager",
+      "service_id": "oracle.ampere_ocpu_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "oracle",
+      "quota_manager_owner": "Manager",
+      "service_id": "oracle.ampere_gb_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "oracle",
+      "quota_manager_owner": "Manager",
+      "service_id": "oracle.block_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "digitalocean",
+      "quota_manager_owner": "Manager",
+      "service_id": "digitalocean.trial_credit"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "digitalocean",
+      "quota_manager_owner": "Manager",
+      "service_id": "digitalocean.app_platform_static"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "deno",
+      "quota_manager_owner": "Manager",
+      "service_id": "deno.deploy_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "netlify",
+      "quota_manager_owner": "Manager",
+      "service_id": "netlify.credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aion",
+      "quota_manager_owner": "Manager",
+      "service_id": "aion.free_tokens"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cerebras",
+      "quota_manager_owner": "Manager",
+      "service_id": "cerebras.free_tokens"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.workers_ai"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cohere",
+      "quota_manager_owner": "Manager",
+      "service_id": "cohere.trial_calls"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "felo",
+      "quota_manager_owner": "Manager",
+      "service_id": "felo.api_credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "groq",
+      "quota_manager_owner": "Manager",
+      "service_id": "groq.free_tier"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "huggingface",
+      "quota_manager_owner": "Manager",
+      "service_id": "huggingface.inference_providers"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "kilo",
+      "quota_manager_owner": "Manager",
+      "service_id": "kilo.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "llm7",
+      "quota_manager_owner": "Manager",
+      "service_id": "llm7.free_token"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "mistral",
+      "quota_manager_owner": "Manager",
+      "service_id": "mistral.free_mode"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "modelscope",
+      "quota_manager_owner": "Manager",
+      "service_id": "modelscope.api_inference"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "nvidia",
+      "quota_manager_owner": "Manager",
+      "service_id": "nvidia.api_catalog"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "omni",
+      "quota_manager_owner": "Manager",
+      "service_id": "omni.gateway"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "ovhcloud",
+      "quota_manager_owner": "Manager",
+      "service_id": "ovhcloud.ai_endpoints"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "requesty",
+      "quota_manager_owner": "Manager",
+      "service_id": "requesty.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "routeway",
+      "quota_manager_owner": "Manager",
+      "service_id": "routeway.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "sambanova",
+      "quota_manager_owner": "Manager",
+      "service_id": "sambanova.free_tier"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "sealion",
+      "quota_manager_owner": "Manager",
+      "service_id": "sealion.api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "siliconflow",
+      "quota_manager_owner": "Manager",
+      "service_id": "siliconflow.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "typhoon",
+      "quota_manager_owner": "Manager",
+      "service_id": "typhoon.api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "unorouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "unorouter.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "xfyun",
+      "quota_manager_owner": "Manager",
+      "service_id": "xfyun.spark"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "xkiro",
+      "quota_manager_owner": "Manager",
+      "service_id": "xkiro.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "zai",
+      "quota_manager_owner": "Manager",
+      "service_id": "zai.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "huggingface",
+      "quota_manager_owner": "Manager",
+      "service_id": "huggingface.hub_api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.write_units"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.read_units"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.indexes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.egress"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -1815,13 +2291,6 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "g4f/BlackboxPro",
-      "quota_manager_owner": "Manager",
-      "service_id": "g4f.blackboxpro"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
       "provider": "g4f/BlackForestLabs_Flux1Dev",
       "quota_manager_owner": "Manager",
       "service_id": "g4f.blackforestlabs_flux1dev"
@@ -1832,6 +2301,13 @@
       "provider": "g4f/BlackForestLabs_Flux1KontextDev",
       "quota_manager_owner": "Manager",
       "service_id": "g4f.blackforestlabs_flux1kontextdev"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "g4f/BlackboxPro",
+      "quota_manager_owner": "Manager",
+      "service_id": "g4f.blackboxpro"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -1927,6 +2403,13 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
+      "provider": "g4f/GLM",
+      "quota_manager_owner": "Manager",
+      "service_id": "g4f.glm"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
       "provider": "g4f/Gemini",
       "quota_manager_owner": "Manager",
       "service_id": "g4f.gemini"
@@ -1951,13 +2434,6 @@
       "provider": "g4f/GithubCopilot",
       "quota_manager_owner": "Manager",
       "service_id": "g4f.githubcopilot"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "g4f/GLM",
-      "quota_manager_owner": "Manager",
-      "service_id": "g4f.glm"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -2179,13 +2655,6 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
-      "quota_manager_owner": "Manager",
-      "service_id": "g4f.vendors"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
       "provider": "g4f/WhiteRabbitNeo",
       "quota_manager_owner": "Manager",
       "service_id": "g4f.whiterabbitneo"
@@ -2207,174 +2676,6 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "gcp",
-      "quota_manager_owner": "Manager",
-      "service_id": "gcp.cloud_functions_invocations"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "gcp",
-      "quota_manager_owner": "Manager",
-      "service_id": "gcp.cloud_run_requests"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "gcp",
-      "quota_manager_owner": "Manager",
-      "service_id": "gcp.compute_e2micro"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "google",
-      "quota_manager_owner": "Manager",
-      "service_id": "gemini.api_free"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "google",
-      "quota_manager_owner": "Manager",
-      "service_id": "gemini.build_dispatch"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.actions.cache"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.actions.minutes"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.api.app_collector"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.api.app_publisher"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.api.github_token"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.api.user_token"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.artifacts.retention"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.codespaces.core_hours"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.codespaces.storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "github",
-      "quota_manager_owner": "Manager",
-      "service_id": "github.copilot.free"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "grafana",
-      "quota_manager_owner": "Manager",
-      "service_id": "grafana.cloud_free"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "groq",
-      "quota_manager_owner": "Manager",
-      "service_id": "groq.free_tier"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "huggingface",
-      "quota_manager_owner": "Manager",
-      "service_id": "huggingface.hub_api"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "huggingface",
-      "quota_manager_owner": "Manager",
-      "service_id": "huggingface.inference_providers"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "google",
-      "quota_manager_owner": "Manager",
-      "service_id": "jules.build_sessions"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "kilo",
-      "quota_manager_owner": "Manager",
-      "service_id": "kilo.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "koyeb",
-      "quota_manager_owner": "Manager",
-      "service_id": "koyeb.free_instance"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "llm7",
-      "quota_manager_owner": "Manager",
-      "service_id": "llm7.free_token"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "meta",
-      "quota_manager_owner": "Manager",
-      "service_id": "meta.llama_api"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
       "provider": "meta",
       "quota_manager_owner": "Manager",
       "service_id": "meta.model_api"
@@ -2389,51 +2690,44 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "mistral",
+      "provider": "meta",
       "quota_manager_owner": "Manager",
-      "service_id": "mistral.free_mode"
+      "service_id": "meta.llama_api"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "modelscope",
+      "provider": "fleet-vm",
       "quota_manager_owner": "Manager",
-      "service_id": "modelscope.api_inference"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "neon",
-      "quota_manager_owner": "Manager",
-      "service_id": "neon.compute"
+      "service_id": "fleet.vm_webhooks"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "neon",
+      "provider": "google",
       "quota_manager_owner": "Manager",
-      "service_id": "neon.egress"
+      "service_id": "jules.build_sessions"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "neon",
+      "provider": "google",
       "quota_manager_owner": "Manager",
-      "service_id": "neon.realtime"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "neon",
-      "quota_manager_owner": "Manager",
-      "service_id": "neon.storage"
+      "service_id": "gemini.build_dispatch"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "netlify",
+      "provider": "github",
       "quota_manager_owner": "Manager",
-      "service_id": "netlify.credits"
+      "service_id": "deepseek.build_dispatch"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "deepinfra",
+      "quota_manager_owner": "Manager",
+      "service_id": "deepinfra.api"
     },
     {
       "freshness_owner": "ChronoMancer",
@@ -2445,324 +2739,30 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "nvidia",
+      "provider": "friendli",
       "quota_manager_owner": "Manager",
-      "service_id": "nvidia.api_catalog"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_opt_in_private_service",
-      "provider": "ollama",
-      "quota_manager_owner": "Manager",
-      "service_id": "ollama.balance"
+      "service_id": "friendli.api"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "omni",
+      "provider": "baseten",
       "quota_manager_owner": "Manager",
-      "service_id": "omni.gateway"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "openrouter",
-      "quota_manager_owner": "Manager",
-      "service_id": "openrouter.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_opt_in_private_service",
-      "provider": "openrouter",
-      "quota_manager_owner": "Manager",
-      "service_id": "openrouter.key"
+      "service_id": "baseten.api"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "oracle",
+      "provider": "Claude",
       "quota_manager_owner": "Manager",
-      "service_id": "oracle.ampere_gb_hours"
+      "service_id": "claude.seat_runtime"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "oracle",
+      "provider": "DeepSeek",
       "quota_manager_owner": "Manager",
-      "service_id": "oracle.ampere_ocpu_hours"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "oracle",
-      "quota_manager_owner": "Manager",
-      "service_id": "oracle.block_storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "ovhcloud",
-      "quota_manager_owner": "Manager",
-      "service_id": "ovhcloud.ai_endpoints"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "CellCog/Polsia/Manus",
-      "quota_manager_owner": "Manager",
-      "service_id": "partners.credits"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "pinecone",
-      "quota_manager_owner": "Manager",
-      "service_id": "pinecone.egress"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "pinecone",
-      "quota_manager_owner": "Manager",
-      "service_id": "pinecone.indexes"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "pinecone",
-      "quota_manager_owner": "Manager",
-      "service_id": "pinecone.read_units"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "pinecone",
-      "quota_manager_owner": "Manager",
-      "service_id": "pinecone.storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "pinecone",
-      "quota_manager_owner": "Manager",
-      "service_id": "pinecone.write_units"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "platform201",
-      "quota_manager_owner": "Manager",
-      "service_id": "platform201.projects"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "render",
-      "quota_manager_owner": "Manager",
-      "service_id": "render.bandwidth"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "render",
-      "quota_manager_owner": "Manager",
-      "service_id": "render.instance_hours"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "render",
-      "quota_manager_owner": "Manager",
-      "service_id": "render.keyvalue_free"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "render",
-      "quota_manager_owner": "Manager",
-      "service_id": "render.pipeline_minutes"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "render",
-      "quota_manager_owner": "Manager",
-      "service_id": "render.postgres_free"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "requesty",
-      "quota_manager_owner": "Manager",
-      "service_id": "requesty.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "routeway",
-      "quota_manager_owner": "Manager",
-      "service_id": "routeway.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "sambanova",
-      "quota_manager_owner": "Manager",
-      "service_id": "sambanova.free_tier"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "sealion",
-      "quota_manager_owner": "Manager",
-      "service_id": "sealion.api"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "siliconflow",
-      "quota_manager_owner": "Manager",
-      "service_id": "siliconflow.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "supabase",
-      "quota_manager_owner": "Manager",
-      "service_id": "supabase.db_storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "supabase",
-      "quota_manager_owner": "Manager",
-      "service_id": "supabase.edge_functions"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "supabase",
-      "quota_manager_owner": "Manager",
-      "service_id": "supabase.egress"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "supabase",
-      "quota_manager_owner": "Manager",
-      "service_id": "supabase.file_storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "supabase",
-      "quota_manager_owner": "Manager",
-      "service_id": "supabase.projects"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "turso",
-      "quota_manager_owner": "Manager",
-      "service_id": "turso.databases"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "turso",
-      "quota_manager_owner": "Manager",
-      "service_id": "turso.rows_read"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "turso",
-      "quota_manager_owner": "Manager",
-      "service_id": "turso.rows_written"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "turso",
-      "quota_manager_owner": "Manager",
-      "service_id": "turso.storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "typhoon",
-      "quota_manager_owner": "Manager",
-      "service_id": "typhoon.api"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "unorouter",
-      "quota_manager_owner": "Manager",
-      "service_id": "unorouter.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "upstash",
-      "quota_manager_owner": "Manager",
-      "service_id": "upstash.qstash_messages"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "upstash",
-      "quota_manager_owner": "Manager",
-      "service_id": "upstash.redis_bandwidth"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "upstash",
-      "quota_manager_owner": "Manager",
-      "service_id": "upstash.redis_commands"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "upstash",
-      "quota_manager_owner": "Manager",
-      "service_id": "upstash.redis_storage"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "vercel",
-      "quota_manager_owner": "Manager",
-      "service_id": "vercel.build_time"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "implemented_read_only_reader",
-      "provider": "vercel",
-      "quota_manager_owner": "Manager",
-      "service_id": "vercel.deployments"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "xfyun",
-      "quota_manager_owner": "Manager",
-      "service_id": "xfyun.spark"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "xkiro",
-      "quota_manager_owner": "Manager",
-      "service_id": "xkiro.free_models"
-    },
-    {
-      "freshness_owner": "ChronoMancer",
-      "observation_method": "manual_or_unknown",
-      "provider": "zai",
-      "quota_manager_owner": "Manager",
-      "service_id": "zai.free_models"
+      "service_id": "deepseek.api"
     }
   ]
 }

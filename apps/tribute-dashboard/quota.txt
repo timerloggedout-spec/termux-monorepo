@@ -45,13 +45,11 @@
 --------------------------------------------------------------------------------
  agentrouter (1)
   agentrouter.models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a provider-defined
     metric: Account-scoped model catalogue visibility; quota balance and reset
     not established | window: unknown | reset: unknown
-    No live reading (live source: GET https://co.agentrouter.org/v1/models
-    (authenticated model catalogue only; no documented remaining-credit/reset
-    endpoint verified))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  aion (1)
   aion.free_tokens
@@ -1342,6 +1340,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 172 registry records | 2 alert(s) | 171 with a reported reading | 1 with No
+ 172 registry records | 2 alert(s) | 172 with a reported reading | 0 with No
  live reading
 ================================================================================

@@ -2,7 +2,9 @@
 
 **Session:** 2026-09-21 15:21 PDT  
 **Agent-Identity:** Grok (Administrator)  
-**Priority hub:** Issue #175 · Credentials: Issue **#184** (names/scopes only)
+**Legacy seed item:** Issue #175 (closed; historical only) · Credentials: Issue **#184** (names/scopes only)
+
+**Canonical state:** `ops/tracking/tracking.json` via [REPO-TRACKING](REPO-TRACKING.md). The ProjectV2 board below is an optional visual projection, not a state authority.
 
 ## Decision: Option A — GitHub Actions plane
 
@@ -18,17 +20,17 @@ Interactive Grok connector Projects API remains 403. **Wiring is Actions-only** 
 
 ## Operator one-time setup
 
-1. Create Projects v2 board titled **termux-monorepo — Operator Matrix (#175)** (user or org).
+1. The existing Projects v2 board titled **termux-monorepo — Operator Matrix (#175)** may remain as a visual projection; the `#175` suffix is historical and does not make the issue a hub.
 2. Set repo **variable** (preferred) or secret:
    - `OPERATOR_MATRIX_PROJECT_URL` = `https://github.com/users/timerloggedout-spec/projects/<N>`
 3. Confirm Actions secret exists with **project** scope (names from #184 / ARCHWIZ doc):
    - `OPERATOR_GITHUB_TOKEN` or `OPERATOR_TOKEN` or `ARCHWIZ_GITHUB_TOKEN`
-4. On master (after land): Actions → **Operator Matrix Project Sync** → Run workflow → seed hub.
+4. Event-driven sync is the normal path. Do not manually dispatch or seed a generic hub; correct missing membership through the owning event/record and verify the ProjectV2 projection.
 
 ## Workflow behavior
 
 **Event path:** issue/PR opened|reopened|labeled|ready_for_review → `actions/add-to-project@v1.0.2`  
-**Dispatch path:** resolve project node id via GraphQL → `addProjectV2ItemById` for hub set `#175` `#184` `#713` `#714` `#682` (idempotent).
+**Projection path:** resolve project node id via GraphQL → `addProjectV2ItemById` for the legacy seed set `#175` `#184` `#713` `#714` `#682` (idempotent). This ProjectV2 membership is not canonical lifecycle state.
 
 No YOLO merge. No raw PAT in logs (secrets masking). Skip with notice if URL unset.
 

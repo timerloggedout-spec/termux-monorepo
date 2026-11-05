@@ -1,9 +1,15 @@
 # Caveman Micro Dense 🧬 — v2 mapping (shorthand-derived)
 
-**Status: DRAFT** (owner correction 2026-11-04 19:38 PT) — the map
-stays DRAFT until the owner's full pass. Notation in formation,
-added to the Notation Matrice references by owner order
-(2026-11-04 19:36 PT, via main).
+**Status: LIVE — owned work of the Linguist lane** (owner
+handoff 2026-11-04 19:40 PT: "get it in the Linguist Lane now;
+it'll work it out" — ¬ draft-parked at main). The map iterates
+in this lane with the owner's personal swaps; the owner's full
+pass is still owed for final ratification, and until it lands
+every entry stays revisable here. Lineage: v1 block (main's
+guide, main chat 2026-11-04 19:29 PT, incl. its Now|v2|Rule
+table) → v2 (this file) with the owner's corrections applied
+(🧐 semantics · glyph cap · principle ⑤ · LEAN Batteries
+domain · N∅ data boundary).
 **Base:** v1 block = main's guide (main chat, 2026-11-04 19:29 PT).
 **v2 Δ of record:** the verified-firsthand glyph — v2 supersedes
 v1's example row for it (below). All other v1 content stands as
@@ -38,7 +44,7 @@ main's guide states it; this file records the v2 layer only.
 |---|---|---|
 | `👁` | verified firsthand | the state: checked against the live record by the speaker's own read. **v2 supersedes v1's row for this concept.** |
 | `🧐` | investigating | closely watching **w/ suspicion ∧ criticality** (owner correction 2026-11-04 19:38 PT) — ¬ a neutral verify command; 👁 is the neutral verified state |
-| `N∅` | NOT_ESTABLISHED | chord code: N + null |
+| `N∅` | NOT_ESTABLISHED | chord code: N + null — **chat/reports ONLY** (owner boundary 2026-11-04): an epistemic marker, never a data value; data of record (ledgers/feeds/DBs) keeps schema nulls, N∅ is barred from data contexts entirely |
 | `🧾` | receipt | provenance artifact of record |
 | `snp` | snapshot | state captured at a point in time — **chord, demoted from 📸 by the glyph cap** (owner correction 2026-11-04) |
 | `❄` | freeze | frozen for judging/scoring |
@@ -148,6 +154,27 @@ is Book-domain only.
 | `aud` | audience |
 | `pst` | post |
 
+### LEAN Batteries — formal domain (`shorthand_lean`)
+
+Added on the owner's word (main chat 2026-11-04: "LEAN
+Batteries→Caveman Notation Micro Dense 🧬"; formal domain →
+Linguist). Chords for the NSE-023 oracle lane's recurring terms.
+
+| Chord | Term |
+|---|---|
+| `bat` | Batteries (the library) |
+| `thm` | theorem |
+| `lem` | lemma |
+| `axm` | axiom |
+| `krn` | kernel |
+| `orc` | oracle |
+| `adp` | adapter (lemma) |
+| `prop` | proposition |
+| `cmpl` | compile |
+| `dcd` | decide |
+| `sry` | sorry (forbidden marker — naming it names a defect) |
+| `tch` | toolchain |
+
 Seed registry: one nomenclature domain per shorthand domain
-(41 chord terms, all candidate), each concept carrying its chord
+(53 chord terms, all candidate), each concept carrying its chord
 as its symbolic label.

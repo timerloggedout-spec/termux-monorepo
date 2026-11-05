@@ -1111,6 +1111,150 @@
         "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
+    },
+    {
+      "concept_id": "shorthand_lean.batteries",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "batteries",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): the Batteries library (pinned dependency of NSE-023)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.theorem",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "theorem",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): a theorem statement/proof in Lean",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.lemma",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "lemma",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): a lemma (adapter lemmas included)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.axiom",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "axiom",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): an axiom a proof depends on (#print axioms of record)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.kernel",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "kernel",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): the Lean kernel — the accepting authority of the oracle",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.oracle",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "oracle",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): the NSE-023 oracle lane/workflow",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.adapter",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "adapter",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): an adapter lemma authored in a packet (fleet-side authorship)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.proposition",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "proposition",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): a normalized proposition under pre-proofing",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.compile",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "compile",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): a compile run against a pin (chord ≠ CMP register)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.decide",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "decide",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): proof by decide (decidable fixtures)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.sorry",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "sorry",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): a sorry placeholder — forbidden in packets of record; naming it is naming a defect",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_lean.toolchain",
+      "domain_id": "shorthand_lean",
+      "preferred_label": "toolchain",
+      "definition": "Shorthand-domain chord (LEAN Batteries — formal domain): a pin's Lean toolchain",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
     }
   ],
   "labels": [
@@ -3042,6 +3186,174 @@
       "language": "en",
       "audience": "general",
       "register": "plain",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-batteries",
+      "concept_id": "shorthand_lean.batteries",
+      "text": "bat",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-theorem",
+      "concept_id": "shorthand_lean.theorem",
+      "text": "thm",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-lemma",
+      "concept_id": "shorthand_lean.lemma",
+      "text": "lem",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-axiom",
+      "concept_id": "shorthand_lean.axiom",
+      "text": "axm",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-kernel",
+      "concept_id": "shorthand_lean.kernel",
+      "text": "krn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-oracle",
+      "concept_id": "shorthand_lean.oracle",
+      "text": "orc",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-adapter",
+      "concept_id": "shorthand_lean.adapter",
+      "text": "adp",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-proposition",
+      "concept_id": "shorthand_lean.proposition",
+      "text": "prop",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-compile",
+      "concept_id": "shorthand_lean.compile",
+      "text": "cmpl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-decide",
+      "concept_id": "shorthand_lean.decide",
+      "text": "dcd",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-sorry",
+      "concept_id": "shorthand_lean.sorry",
+      "text": "sry",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_lean-toolchain",
+      "concept_id": "shorthand_lean.toolchain",
+      "text": "tch",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
       "status": "candidate",
       "source_ids": [
         "owner-order-caveman-v2-2026-11-04",

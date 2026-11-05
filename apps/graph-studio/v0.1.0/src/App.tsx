@@ -997,6 +997,7 @@ function App() {
                                 }
                               }}
                             >
+                              <circle r={18} fill="transparent" pointerEvents="all" />
                               <circle
                                 r={active ? 9 : 7}
                                 fill={kindColor[n.kind] || '#91a2b7'}
@@ -1066,6 +1067,7 @@ function App() {
                               }
                             }}
                           >
+                            <circle r={18} fill="transparent" pointerEvents="all" />
                             <circle
                               r={active ? 13 : 10}
                               fill={kindColor[n.kind] || '#91a2b7'}

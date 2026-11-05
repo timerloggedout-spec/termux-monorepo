@@ -437,6 +437,16 @@ button {
   padding-right: 13px;
   min-width: 90px;
 }
+.searchbox:focus-within,
+.filter-select:focus-within {
+  outline: 2px solid #83d5c1;
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+.searchbox input:focus-visible,
+.filter-select select:focus-visible {
+  outline: none;
+}
 .filter-select option {
   background: #101c29;
 }
@@ -546,9 +556,10 @@ button {
   cursor: pointer;
   outline: none;
 }
-.svg-node:focus circle {
-  stroke: #fff;
-  stroke-width: 3;
+.svg-node:focus-visible circle {
+  stroke: #f0bd68;
+  stroke-width: 4;
+  stroke-dasharray: 3 2;
 }
 .node-label {
   font:
@@ -968,6 +979,12 @@ footer {
   }
   .graph-stage {
     order: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  .graph-svg {
+    min-width: 760px;
+    max-width: none;
   }
   .outline-panel {
     order: 1;

@@ -22,7 +22,7 @@ The initial shortlist is:
 4. **Turborepo** — targeted JS/TS candidate, not presumed to orchestrate the whole repository.
 5. **Bazel** — bounded reference candidate for hermetic/reproducible builds; not a default due to adoption and maintenance cost.
 
-The proposal does **not** authorize installing or enabling a root-wide tool, introducing remote caching, dispatching workflows, changing task execution semantics, or modifying production pipelines. It authorizes review of this proposal and, after acceptance, the bounded inventory and benchmark work items.
+The proposal does **not** authorize installing or enabling a root-wide tool, introducing remote caching, dispatching workflows, changing task execution semantics, or modifying production pipelines. It authorizes review of this proposal only. After acceptance, initial execution may be authorized only for `BOE-00-01` and `BOE-00-02`, subject to item-level scope confirmation. No benchmark, candidate-pilot, workflow, or runtime item is authorized by this proposal posting.
 
 **Recommendation:** preserve the current control plane; add a narrow orchestration adapter boundary. Build tools execute declared tasks. They do not own governance, approval, workflow authority, secrets, proposal state, or promotion.
 
@@ -220,11 +220,12 @@ This is an example only. Actual roots, scripts, versions, dependencies, and plat
   "task_contract_sha256": "<digest>",
   "environment_fingerprint": "<digest>",
   "input_fingerprint": "<digest>",
-  "trigger_source": "manual|workflow_dispatch|scheduled",
+  "trigger_source": "manual|workflow_dispatch|repository_dispatch|scheduled",
   "started_at": "<UTC timestamp>",
   "finished_at": "<UTC timestamp>",
   "exit_code": 0,
-  "outcome": "passed|failed|canceled|timed_out|skipped",
+  "outcome": "passed|failed|canceled|timed_out|skipped|not-run|unavailable|unknown|superseded|fallback",
+  "exclusion_reason": null,
   "cache": {"state": "disabled|miss|hit|rejected", "verified": false},
   "artifacts": [],
   "gate_evidence": [],
@@ -232,7 +233,7 @@ This is an example only. Actual roots, scripts, versions, dependencies, and plat
 }
 ```
 
-The schema must distinguish not-run, skipped, unavailable, failed, and unknown. Do not coerce missing evidence into success.
+The receipt contract distinguishes `passed`, `failed`, `canceled`, `timed_out`, `skipped`, `not-run`, `unavailable`, `unknown`, `superseded`, and `fallback`. `exit_code`, `started_at`, and `finished_at` are nullable when execution did not occur; `exclusion_reason` is required whenever an observation is excluded from a metric and otherwise null. Never coerce missing evidence into success. A `fallback` receipt records that the candidate adapter did not execute and native tooling was used instead; retain it for operational evidence but exclude it from candidate correctness, performance, and Termux pass metrics.
 
 ## 7. Fair benchmark and DOE/MVT design
 
@@ -252,7 +253,7 @@ The schema must distinguish not-run, skipped, unavailable, failed, and unknown. 
 
 Primary outcomes:
 
-1. Correctness parity: candidate output and exit status agree with native reference on the same fixture.
+1. Correctness parity: the native reference must first exit successfully and pass the fixture's expected-output assertions; the candidate must also exit successfully and pass the same expected-output assertions. Matching nonzero exit codes or matching failures never count as parity.
 2. End-to-end wall-clock time (cold and warm).
 3. Incremental execution precision/recall: tasks selected vs the true dependency-affected set.
 4. Cache correctness: invalidation false-positive/false-negative rate and artifact integrity.
@@ -271,12 +272,12 @@ Secondary outcomes:
 
 Thresholds are predeclared for each pilot before data collection:
 
-- Correctness: 100% parity for required outputs and no skipped required test.
+- Correctness: 100% parity for required outputs and no skipped required test; parity is awarded only against a successful native oracle and successful expected-output assertions for both native and candidate runs.
 - Safety: zero secret leakage, unauthorized dispatch, or promotion bypass.
 - Dependency selection: no false negatives; false positives reported and quantified.
 - Cache: zero incorrect cache reuse in the acceptance corpus; otherwise caching stays disabled.
 - Performance: require a material improvement over native baseline (initial target ≥15% median wall-clock reduction on the eligible repeated workload) without >10% regression in p95 or unacceptable resource overhead. These are proposed pilot thresholds and may be changed only before the confirmatory run, with rationale recorded.
-- Termux: no regression in native workflows; unsupported candidate execution must fall back to native execution with an explicit receipt, not silent skip.
+- Termux: no regression in native workflows; unsupported candidate execution must fall back to native execution with an explicit `fallback` receipt, not silent skip. Fallback runs are retained as evidence but excluded from candidate correctness, performance, and Termux pass metrics.
 - Maintenance: adapter/configuration overhead must be justified by measured saved work and operational simplicity.
 
 A performance win cannot compensate for correctness or safety failure.

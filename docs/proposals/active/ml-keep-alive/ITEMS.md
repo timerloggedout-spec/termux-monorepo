@@ -1,4 +1,4 @@
-# ITEMS — ML keep-alive extract (Issue #175)
+# ITEMS — ML keep-alive extract (historical association: Issue #175, now superseded)
 
 | ID | Work | Priority | Owner | Status | Evidence / Boundary |
 |---|---|---|---|---|---|
@@ -7,4 +7,4 @@
 | MLP-KEEP-003 | Minesweeper + supersede classifiers so Jules/Sentinel/Bolt peers are not overwritten. | P1 | Grok | landed | `lanes/minesweeper_rules.py`, `peers/`, skill `minesweeper-ops`. |
 | MLP-KEEP-004 | Latest-session fixture resolver so keep-alive rebases do not restamp LANE-MATRIX policy. | P1 | Grok | landed | `lib/latest.py` + `fixtures/session_20260926.json`. |
 | MLP-KEEP-005 | Align lane vocab with #836 (EXTRACT/CANDIDATE/NEED_EVIDENCE/SUPERSEDE). | P0 | Grok | landed | Invalid parking HOLD/WAIT/OBSERVE rejected in tests. Command-center v0.6.0 on master. |
-| MLP-KEEP-006 | Command-center hub (`cli center|bind|drift|extract-plan`) + named-job dual-gate binder. | P0 | Grok | landed | #850 101-file extract. Skills: `ml-command-center`, `operator-hub-175`. |
+| MLP-KEEP-006 | Repository command-center read model (`cli center|bind|drift|extract-plan`) + named-job dual-gate binder. | P0 | Grok | landed | #850 101-file extract. Skills: `ml-command-center`; the former `operator-hub-175` skill is now a deprecated archive. |

@@ -135,36 +135,19 @@ ROUTED_WORKFLOWS = {
     "agent-review-auto-jules": {
         "path": ".github/workflows/agent-review-auto-jules.yml",
         "inputs": {"pr_number", "comment_id", "comment_updated_at", "source_event"},
+        "required_inputs": {"pr_number", "comment_id", "comment_updated_at", "source_event"},
         "direct_events": {"pull_request_review", "pull_request_review_comment"},
     },
     "gemini-dispatch": {
         "path": ".github/workflows/gemini-dispatch.yml",
         "inputs": {"issue_number", "pr_number", "comment_id", "comment_updated_at", "source_event"},
+        "required_inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
         "direct_events": {"pull_request", "issues", "pull_request_review", "pull_request_review_comment"},
     },
     "agent-jules-on-issues": {
         "path": ".github/workflows/agent-jules-on-issues.yml",
         "inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
-        "direct_events": {"issues"},
-    },
-}
-
-
-ROUTER_WORKFLOW = ".github/workflows/issue-comment-router.yml"
-ROUTED_WORKFLOWS = {
-    "agent-review-auto-jules": {
-        "path": ".github/workflows/agent-review-auto-jules.yml",
-        "inputs": {"pr_number", "comment_id", "comment_updated_at", "source_event"},
-        "direct_events": {"pull_request_review", "pull_request_review_comment"},
-    },
-    "gemini-dispatch": {
-        "path": ".github/workflows/gemini-dispatch.yml",
-        "inputs": {"issue_number", "pr_number", "comment_id", "comment_updated_at", "source_event"},
-        "direct_events": {"pull_request", "issues", "pull_request_review", "pull_request_review_comment"},
-    },
-    "agent-jules-on-issues": {
-        "path": ".github/workflows/agent-jules-on-issues.yml",
-        "inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
+        "required_inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
         "direct_events": {"issues"},
     },
 }
@@ -245,7 +228,7 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
         if not _has_event(target_on, "workflow_call"):
             errors.append(f"{contract['path']} must expose workflow_call")
         for input_name in contract["inputs"]:
-            if not _has_workflow_call_input(target_on, input_name, required=input_name != "pr_number"):
+            if not _has_workflow_call_input(target_on, input_name, required=input_name in contract["required_inputs"]):
                 errors.append(f"{contract['path']} workflow_call input is missing or mistyped: {input_name}")
         for event in contract["direct_events"]:
             if not _has_event(target_on, event):

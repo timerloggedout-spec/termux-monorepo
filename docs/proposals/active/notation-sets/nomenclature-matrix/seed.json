@@ -571,6 +571,546 @@
         "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
+    },
+    {
+      "concept_id": "shorthand_entries.entry",
+      "domain_id": "shorthand_entries",
+      "preferred_label": "entry",
+      "definition": "Shorthand-domain chord (entries / challenges): a challenge entry (D1, D2, … keep their literal ids)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_entries.slate",
+      "domain_id": "shorthand_entries",
+      "preferred_label": "slate",
+      "definition": "Shorthand-domain chord (entries / challenges): a coordinated set of entries/iterations pursued together",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_entries.submission",
+      "domain_id": "shorthand_entries",
+      "preferred_label": "submission",
+      "definition": "Shorthand-domain chord (entries / challenges): the act/artifact of submitting an entry",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_entries.judging",
+      "domain_id": "shorthand_entries",
+      "preferred_label": "judging",
+      "definition": "Shorthand-domain chord (entries / challenges): the judging window/process of a venue",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_entries.venue",
+      "domain_id": "shorthand_entries",
+      "preferred_label": "venue",
+      "definition": "Shorthand-domain chord (entries / challenges): the platform/host of a challenge",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_entries.freeze_wall",
+      "domain_id": "shorthand_entries",
+      "preferred_label": "freeze wall",
+      "definition": "Shorthand-domain chord (entries / challenges): the freeze deadline instant (the state itself is core ❄)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_quota.quota",
+      "domain_id": "shorthand_quota",
+      "preferred_label": "quota",
+      "definition": "Shorthand-domain chord (quota / tokens): a provider/model usage allowance",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_quota.token_unit",
+      "domain_id": "shorthand_quota",
+      "preferred_label": "token unit",
+      "definition": "Shorthand-domain chord (quota / tokens): one token of usage/accounting (booktally-class units keep their registry names)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_quota.window",
+      "domain_id": "shorthand_quota",
+      "preferred_label": "window",
+      "definition": "Shorthand-domain chord (quota / tokens): a rate/usage window with a reset",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_quota.burn",
+      "domain_id": "shorthand_quota",
+      "preferred_label": "burn",
+      "definition": "Shorthand-domain chord (quota / tokens): usage consumed against a window",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_quota.bucket",
+      "domain_id": "shorthand_quota",
+      "preferred_label": "bucket",
+      "definition": "Shorthand-domain chord (quota / tokens): a per-identity rate-limit bucket",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_quota.attribution",
+      "domain_id": "shorthand_quota",
+      "preferred_label": "attribution",
+      "definition": "Shorthand-domain chord (quota / tokens): the corroborated assignment of a unit of work to an actor/model",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.merge",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "merge",
+      "definition": "Shorthand-domain chord (repo / PR machinery): a PR merge to the branch of record",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.branch",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "branch",
+      "definition": "Shorthand-domain chord (repo / PR machinery): a git branch (chord kept distinct from quota brn = burn)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.commit",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "commit",
+      "definition": "Shorthand-domain chord (repo / PR machinery): a single commit",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.gate",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "gate",
+      "definition": "Shorthand-domain chord (repo / PR machinery): a check/gate that must pass (the verdict on it is core ⚖)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.check_run",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "check run",
+      "definition": "Shorthand-domain chord (repo / PR machinery): one CI check run",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.workflow",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "workflow",
+      "definition": "Shorthand-domain chord (repo / PR machinery): a GitHub Actions workflow",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_repo.review",
+      "domain_id": "shorthand_repo",
+      "preferred_label": "review",
+      "definition": "Shorthand-domain chord (repo / PR machinery): a review pass over an artifact",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.pool",
+      "domain_id": "shorthand_book",
+      "preferred_label": "pool",
+      "definition": "Shorthand-domain chord (Book / pools): a wagering pool of record",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.wager",
+      "domain_id": "shorthand_book",
+      "preferred_label": "wager",
+      "definition": "Shorthand-domain chord (Book / pools): a wager/position stake act",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.ledger",
+      "domain_id": "shorthand_book",
+      "preferred_label": "ledger",
+      "definition": "Shorthand-domain chord (Book / pools): the append-only ledger of record",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.settlement",
+      "domain_id": "shorthand_book",
+      "preferred_label": "settlement",
+      "definition": "Shorthand-domain chord (Book / pools): settlement of a subject from its record of record",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.position",
+      "domain_id": "shorthand_book",
+      "preferred_label": "position",
+      "definition": "Shorthand-domain chord (Book / pools): a held position on a subject",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.subject",
+      "domain_id": "shorthand_book",
+      "preferred_label": "subject",
+      "definition": "Shorthand-domain chord (Book / pools): a resolvable subject of the Book",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_book.book",
+      "domain_id": "shorthand_book",
+      "preferred_label": "book",
+      "definition": "Shorthand-domain chord (Book / pools): the wagering Book itself",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.proof",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "proof",
+      "definition": "Shorthand-domain chord (DoE / proofs): a machine-checked proof artifact",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.statement",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "statement",
+      "definition": "Shorthand-domain chord (DoE / proofs): a formalized claim, not yet discharged",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.fragment",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "fragment",
+      "definition": "Shorthand-domain chord (DoE / proofs): a proved-fragment: partially discharged artifact",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.open_item",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "open item",
+      "definition": "Shorthand-domain chord (DoE / proofs): an open statement/item, proof owed",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.cycle",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "cycle",
+      "definition": "Shorthand-domain chord (DoE / proofs): one design→run→audit→verdict loop",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.iteration",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "iteration",
+      "definition": "Shorthand-domain chord (DoE / proofs): one numbered work batch at a stated done-condition",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.generation",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "generation",
+      "definition": "Shorthand-domain chord (DoE / proofs): one population turnover under selection",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_doe.epoch",
+      "domain_id": "shorthand_doe",
+      "preferred_label": "epoch",
+      "definition": "Shorthand-domain chord (DoE / proofs): one full pass over the dataset of record",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_providers.provider",
+      "domain_id": "shorthand_providers",
+      "preferred_label": "provider",
+      "definition": "Shorthand-domain chord (providers / hosting): an AI/service provider",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_providers.model",
+      "domain_id": "shorthand_providers",
+      "preferred_label": "model",
+      "definition": "Shorthand-domain chord (providers / hosting): a named model of a provider",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_providers.endpoint",
+      "domain_id": "shorthand_providers",
+      "preferred_label": "endpoint",
+      "definition": "Shorthand-domain chord (providers / hosting): a service endpoint URL/surface",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_providers.deploy",
+      "domain_id": "shorthand_providers",
+      "preferred_label": "deploy",
+      "definition": "Shorthand-domain chord (providers / hosting): a deployment act",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_providers.hosting",
+      "domain_id": "shorthand_providers",
+      "preferred_label": "hosting",
+      "definition": "Shorthand-domain chord (providers / hosting): the hosting surface a thing runs on",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_providers.latency",
+      "domain_id": "shorthand_providers",
+      "preferred_label": "latency",
+      "definition": "Shorthand-domain chord (providers / hosting): observed response latency",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_marketing.channel",
+      "domain_id": "shorthand_marketing",
+      "preferred_label": "channel",
+      "definition": "Shorthand-domain chord (marketing): a marketing channel (Page, group, surface)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_marketing.campaign",
+      "domain_id": "shorthand_marketing",
+      "preferred_label": "campaign",
+      "definition": "Shorthand-domain chord (marketing): a marketing campaign (chord ≠ CMP: CMP-1..6 are DoE campaign-register entries — collision ruled, see doc)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_marketing.referral",
+      "domain_id": "shorthand_marketing",
+      "preferred_label": "referral",
+      "definition": "Shorthand-domain chord (marketing): a referral link/flow",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_marketing.audience",
+      "domain_id": "shorthand_marketing",
+      "preferred_label": "audience",
+      "definition": "Shorthand-domain chord (marketing): the addressed audience segment",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_marketing.post",
+      "domain_id": "shorthand_marketing",
+      "preferred_label": "post",
+      "definition": "Shorthand-domain chord (marketing): a published marketing post",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
     }
   ],
   "labels": [
@@ -1854,6 +2394,636 @@
       "label_id": "lbl-cmd-dispatch-symbolic_notation",
       "concept_id": "caveman_micro_dense.dispatch",
       "text": "⤴",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_entries-entry",
+      "concept_id": "shorthand_entries.entry",
+      "text": "ent",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_entries-slate",
+      "concept_id": "shorthand_entries.slate",
+      "text": "slt",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_entries-submission",
+      "concept_id": "shorthand_entries.submission",
+      "text": "sub",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_entries-judging",
+      "concept_id": "shorthand_entries.judging",
+      "text": "jdg",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_entries-venue",
+      "concept_id": "shorthand_entries.venue",
+      "text": "ven",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_entries-freeze_wall",
+      "concept_id": "shorthand_entries.freeze_wall",
+      "text": "fwl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_quota-quota",
+      "concept_id": "shorthand_quota.quota",
+      "text": "qta",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_quota-token_unit",
+      "concept_id": "shorthand_quota.token_unit",
+      "text": "tkn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_quota-window",
+      "concept_id": "shorthand_quota.window",
+      "text": "wnd",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_quota-burn",
+      "concept_id": "shorthand_quota.burn",
+      "text": "brn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_quota-bucket",
+      "concept_id": "shorthand_quota.bucket",
+      "text": "bkt",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_quota-attribution",
+      "concept_id": "shorthand_quota.attribution",
+      "text": "attr",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-merge",
+      "concept_id": "shorthand_repo.merge",
+      "text": "mrg",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-branch",
+      "concept_id": "shorthand_repo.branch",
+      "text": "brnch",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-commit",
+      "concept_id": "shorthand_repo.commit",
+      "text": "cmt",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-gate",
+      "concept_id": "shorthand_repo.gate",
+      "text": "gte",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-check_run",
+      "concept_id": "shorthand_repo.check_run",
+      "text": "chk",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-workflow",
+      "concept_id": "shorthand_repo.workflow",
+      "text": "wfl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_repo-review",
+      "concept_id": "shorthand_repo.review",
+      "text": "rev",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-pool",
+      "concept_id": "shorthand_book.pool",
+      "text": "pl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-wager",
+      "concept_id": "shorthand_book.wager",
+      "text": "wgr",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-ledger",
+      "concept_id": "shorthand_book.ledger",
+      "text": "ldg",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-settlement",
+      "concept_id": "shorthand_book.settlement",
+      "text": "stl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-position",
+      "concept_id": "shorthand_book.position",
+      "text": "pos",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-subject",
+      "concept_id": "shorthand_book.subject",
+      "text": "sbj",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_book-book",
+      "concept_id": "shorthand_book.book",
+      "text": "bk",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-proof",
+      "concept_id": "shorthand_doe.proof",
+      "text": "prf",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-statement",
+      "concept_id": "shorthand_doe.statement",
+      "text": "stmt",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-fragment",
+      "concept_id": "shorthand_doe.fragment",
+      "text": "frg",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-open_item",
+      "concept_id": "shorthand_doe.open_item",
+      "text": "opn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-cycle",
+      "concept_id": "shorthand_doe.cycle",
+      "text": "cyc",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-iteration",
+      "concept_id": "shorthand_doe.iteration",
+      "text": "itr",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-generation",
+      "concept_id": "shorthand_doe.generation",
+      "text": "gen",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_doe-epoch",
+      "concept_id": "shorthand_doe.epoch",
+      "text": "epc",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_providers-provider",
+      "concept_id": "shorthand_providers.provider",
+      "text": "pvd",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_providers-model",
+      "concept_id": "shorthand_providers.model",
+      "text": "mdl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_providers-endpoint",
+      "concept_id": "shorthand_providers.endpoint",
+      "text": "endp",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_providers-deploy",
+      "concept_id": "shorthand_providers.deploy",
+      "text": "dpl",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_providers-hosting",
+      "concept_id": "shorthand_providers.hosting",
+      "text": "hst",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_providers-latency",
+      "concept_id": "shorthand_providers.latency",
+      "text": "lat",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_marketing-channel",
+      "concept_id": "shorthand_marketing.channel",
+      "text": "chn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_marketing-campaign",
+      "concept_id": "shorthand_marketing.campaign",
+      "text": "cpn",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_marketing-referral",
+      "concept_id": "shorthand_marketing.referral",
+      "text": "rfr",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_marketing-audience",
+      "concept_id": "shorthand_marketing.audience",
+      "text": "aud",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_marketing-post",
+      "concept_id": "shorthand_marketing.post",
+      "text": "pst",
       "label_type": "symbolic_notation",
       "language": "en",
       "audience": "expert",

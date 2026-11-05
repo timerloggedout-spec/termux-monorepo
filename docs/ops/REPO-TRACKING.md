@@ -4,6 +4,15 @@
 tracking was started and revised many times. This surface **builds on**
 those systems — it replaces none of them.
 
+## Demand and cadence interaction
+
+The Quota Dispatch Tree is a hybrid adaptive admission controller: PR lifecycle
+events, completed lane-events recorder runs, and pushes to canonical source
+records wake it immediately. The ten-minute schedule remains a fallback for
+time-only cadence slots that have no external event; it is not a full inventory
+sweep and is not the Lane Matrix refresh mechanism. Phase-window dispatches run
+only on scheduled wakes, while event wakes evaluate current demand/staleness.
+
 ## Authority map
 
 This is the repository's **cross-domain lane×project state projection**. Its

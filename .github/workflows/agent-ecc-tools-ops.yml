@@ -130,6 +130,7 @@ jobs:
   issue-commands:
     if: |
       (github.event_name == 'issues' && github.event.action == 'labeled' &&
+        github.event.sender.type == 'User' &&
         (github.event.label.name == 'ecc-tools' || github.event.label.name == 'ecc' || github.event.label.name == 'ECC')) ||
       (github.event_name == 'issue_comment' && !github.event.issue.pull_request &&
         github.event.sender.type == 'User' &&

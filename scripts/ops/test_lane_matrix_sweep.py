@@ -77,6 +77,42 @@ class LaneMatrixSweepTests(unittest.TestCase):
         self.assertEqual(row["lane"], "EXTRACT")
         self.assertNotEqual(row["lane"], "WAIT")
 
+    def test_age_is_informational_and_never_changes_disposition(self):
+        now = datetime(2026, 11, 5, tzinfo=timezone.utc)
+        pr = {
+            "number": 900,
+            "title": "feat(ops): long-lived but clean PR",
+            "user": {"login": "timerloggedout-spec"},
+            "draft": False,
+            "base": {"ref": "master", "sha": "a"},
+            "head": {"ref": "b", "sha": "c"},
+            "mergeable_state": "clean",
+            "changed_files": 4,
+            "created_at": "2026-08-01T00:00:00Z",
+        }
+        old = classify_pr(pr, "deadbeef", now)
+        self.assertEqual(old["age_bucket"], "ancient")
+        self.assertEqual(old["lane"], "CANDIDATE")
+        self.assertNotIn("ancient-no-auto-promote", old["reasons"])
+
+    def test_age_bucket_changes_do_not_change_lane(self):
+        pr = {
+            "number": 901,
+            "title": "feat(ops): age must not be a state transition",
+            "user": {"login": "timerloggedout-spec"},
+            "draft": False,
+            "base": {"ref": "master", "sha": "a"},
+            "head": {"ref": "b", "sha": "c"},
+            "mergeable_state": "clean",
+            "changed_files": 4,
+            "created_at": "2026-11-04T00:00:00Z",
+        }
+        fresh = classify_pr(pr, "deadbeef", datetime(2026, 11, 5, tzinfo=timezone.utc))
+        ancient = classify_pr(pr, "deadbeef", datetime(2027, 1, 1, tzinfo=timezone.utc))
+        self.assertEqual(fresh["lane"], ancient["lane"])
+        self.assertEqual(fresh["lane"], "CANDIDATE")
+        self.assertNotEqual(fresh["age_bucket"], ancient["age_bucket"])
+
     def test_clean_fresh_is_candidate(self):
         now = datetime(2026, 9, 25, tzinfo=timezone.utc)
         row = classify_pr(

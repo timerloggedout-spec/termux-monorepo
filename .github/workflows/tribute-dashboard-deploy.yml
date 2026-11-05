@@ -14,6 +14,7 @@ on:
       # status.json-only push is carved out of the app glob.
       - "!apps/tribute-dashboard/data/status.json"
       - "apps/project-pages-hub/**"
+      - "apps/graph-studio/v0.1.0/**"
       - ".github/workflows/tribute-dashboard-deploy.yml"
       - ".github/workflows/tribute-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"
@@ -95,9 +96,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Node.js for Graph Studio
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test and build Graph Studio
+        working-directory: apps/graph-studio/v0.1.0
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npm test
+          npm run build
       - name: Prepare project hub + matrix page
         run: |
-          mkdir -p _site/data
+          mkdir -p _site/data _site/graph-studio
+          cp -a apps/graph-studio/v0.1.0/dist/. _site/graph-studio/
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
           cp apps/tribute-dashboard/dashboard.css _site/dashboard.css
@@ -130,7 +143,7 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy(project-hub+matrix): ${{ github.sha }}"
+          commit_message: "deploy(project-hub+matrix+graph-studio): ${{ github.sha }}"
 
   user-site:
     name: mirror-user-github-io

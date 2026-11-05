@@ -1,0 +1,14 @@
+{
+  "schema": "que-governor-rule/v1",
+  "rule_id": "QUE-GOV-MEDIA-001",
+  "name": "media-generation-admission",
+  "statement": "Media-generation tasks admit ONLY on routes {outsource, tooling, monorepo-inference-provider}; Muse media generation is REFUSED at QUE admission.",
+  "applies_to": {"task_class": "media-generation", "media": ["image", "video", "audio"]},
+  "admit_routes": ["outsource", "tooling", "monorepo-inference-provider"],
+  "refuse_routes": ["claude-media-generation"],
+  "enforcement_point": "QUE admission (governor): refusal is a governor verdict at dispatch, receipted as a que-governor-event/v1 event (kind=admission_refusal). Chat relays are not an enforcement form for this rule.",
+  "source": {"owner_correction": "2026-11-04 18:12 PT (via main -> Desk): chat-relay enforcement = wrong form; enforcement must be repo machinery", "rule_origin": "PR #1967 (no Muse-pool media generation)", "stamped_by": "[MUSEai]@{role:{cadence-optimizer}}"},
+  "metering": {"work_item": "issue #4963", "requirement": "Per-production token metering into the usage series — closes the audit NOT_ESTABLISHED hole (no lane could meter per production)."},
+  "ui": "Admin desk.html Plane 7: dispatch controls render this rule's refusals verbatim (fail-closed rendering).",
+  "status": "STAMPED at QUE (this file). Enforcement build (collector/admission wiring) routes Desk QUE -> Swarm under MUSE-no-code."
+}

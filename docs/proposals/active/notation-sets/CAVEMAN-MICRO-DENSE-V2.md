@@ -27,6 +27,10 @@ main's guide states it; this file records the v2 layer only.
    closed set {`bc` · `w/` · `w/o` · `wrt`}; no free abbreviation.
 4. **Owner's personal emoji swaps override defaults.** Where the
    owner swaps a glyph, the owner's glyph is the notation.
+5. **Accuracy outranks compression** (owner, 2026-11-04 19:39 PT).
+   An ambiguous ∨ misleading chord = rejected, however short.
+   When a reading could mislead, the notation expands — length
+   is never a defense of a wrong reading.
 
 ## Map (v2)
 

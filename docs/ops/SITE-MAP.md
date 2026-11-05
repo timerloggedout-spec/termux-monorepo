@@ -10,6 +10,7 @@ https://timerloggedout-spec.github.io/tribute/     OPS DASHBOARD (canonical UI)
   sitemap → /help-wanted/sitemap.xml
   robots → /help-wanted/robots.txt
 https://timerloggedout-spec.github.io/termux-monorepo/  PROJECT HUB (thin)
+https://timerloggedout-spec.github.io/termux-monorepo/graph-studio/  GRAPH STUDIO (read-only explorer)
 https://tribute-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/
   VERIFIED VERCEL DEPLOYMENT (current observed production deployment)
   not canonical: Vercel deployment hostnames are ephemeral
@@ -32,6 +33,7 @@ https://github.com/timerloggedout-spec/termux-monorepo SOURCE
 | Marketing | `/tribute/` | Public ops transparency / operator entry |
 | Marketing | Vercel portal | Product demo |
 | `/termux-monorepo/` | `/tribute/` | Project Pages is hub, not product twin |
+| `/termux-monorepo/` | `/termux-monorepo/graph-studio/` | Open the independently versioned graph explorer |
 | Dashboard | `/tribute/sitemap.xml` | Machine-readable public discovery |
 | Dashboard | `/help-wanted/robots.txt` | Crawler policy |
 

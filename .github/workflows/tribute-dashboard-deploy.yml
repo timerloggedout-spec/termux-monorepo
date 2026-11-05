@@ -14,6 +14,7 @@ on:
       # status.json-only push is carved out of the app glob.
       - "!apps/tribute-dashboard/data/status.json"
       - "apps/project-pages-hub/**"
+      - "apps/graph-studio/v0.1.0/**"
       - ".github/workflows/tribute-dashboard-deploy.yml"
       - ".github/workflows/tribute-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"
@@ -95,9 +96,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Node.js for Graph Studio
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test and build Graph Studio
+        working-directory: apps/graph-studio/v0.1.0
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npm test
+          npm run typecheck
+          npm run build
       - name: Prepare project hub + matrix page
         run: |
-          mkdir -p _site/data
+          mkdir -p _site/data _site/graph-studio
+          cp -a apps/graph-studio/v0.1.0/dist/. _site/graph-studio/
+          test -f _site/graph-studio/index.html
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
           cp apps/tribute-dashboard/dashboard.css _site/dashboard.css
@@ -130,12 +145,27 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy(project-hub+matrix): ${{ github.sha }}"
+          commit_message: "deploy(project-hub+matrix+graph-studio): ${{ github.sha }}"
+      - name: Verify published Graph Studio route
+        run: |
+          set -euo pipefail
+          URL="https://timerloggedout-spec.github.io/termux-monorepo/graph-studio/"
+          for attempt in $(seq 1 20); do
+            CODE="$(curl -sSL --connect-timeout 3 --max-time 5 -o /tmp/graph-studio.html -w "%{http_code}" "$URL" || true)"
+            if [ "$CODE" = "200" ] && grep -Fq "Graph Studio" /tmp/graph-studio.html && grep -Fq "./assets/" /tmp/graph-studio.html; then
+              echo "Graph Studio Pages route is live and serves the built application."
+              exit 0
+            fi
+            echo "Pages route not ready yet (attempt $attempt, HTTP $CODE)."
+            sleep 10
+          done
+          echo "::error::Graph Studio Pages route did not become healthy within 5 minutes."
+          exit 1
 
   user-site:
     name: mirror-user-github-io
     needs: [pages]
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all') }}
+    if: ${{ (github.event_name == 'push' && (!contains(toJSON(github.event.commits.*.modified), 'apps/graph-studio/v0.1.0/') || contains(toJSON(github.event.commits.*.modified), 'apps/tribute-dashboard/'))) || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

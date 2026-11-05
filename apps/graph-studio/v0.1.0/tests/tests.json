@@ -48,9 +48,11 @@
       "Choose Network in the view switcher",
       "Select the studysprint entity",
       "Verify the URL contains view=network and the selected node identifier",
+      "Open the saved URL in a fresh page or reload the current page",
+      "Verify Network view and the studysprint selection are restored",
       "Choose Evidence"
     ],
-    "expected": "The network view and selected entity are represented in the URL, and the evidence ledger displays relationship records."
+    "expected": "Reopening the saved URL restores Network view and the studysprint selection; the evidence ledger then displays relationship records."
   },
   {
     "name": "Keep keyboard navigation and filter recovery usable on mobile",

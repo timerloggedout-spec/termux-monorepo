@@ -1,0 +1,38 @@
+name: graph-studio-ci
+
+on:
+  pull_request:
+    paths:
+      - "apps/graph-studio/v0.1.0/**"
+      - ".github/workflows/graph-studio-ci.yml"
+  push:
+    branches: [master]
+    paths:
+      - "apps/graph-studio/v0.1.0/**"
+      - ".github/workflows/graph-studio-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test-build:
+    name: graph-studio-test-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: apps/graph-studio/v0.1.0
+        run: npm install --no-audit --no-fund
+      - name: Test import contract
+        working-directory: apps/graph-studio/v0.1.0
+        run: npm test
+      - name: Type-check
+        working-directory: apps/graph-studio/v0.1.0
+        run: npm run typecheck
+      - name: Build static application
+        working-directory: apps/graph-studio/v0.1.0
+        run: npm run build

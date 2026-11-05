@@ -12,7 +12,7 @@ def layer_of(card_id: str) -> str:
         "gate": "evidence",
         "lane": "evidence",
         "board": "evidence",
-        "hub": "evidence",
+        "tracking": "evidence",
         "ml": "product",
         "center": "product",
         "ml-skill": "routing",

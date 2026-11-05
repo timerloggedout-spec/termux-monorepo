@@ -2,7 +2,7 @@
 
 **Proposal:** [PROPOSAL.md](PROPOSAL.md)  
 **Status:** posted — implementation items are not yet authorized.  
-**Rule:** execution begins only after proposal acceptance and item-level scope confirmation.
+**Rule:** after proposal acceptance, initial execution is limited to `BOE-00-01` and `BOE-00-02`. Each later item requires separate recorded authorization and item-level scope confirmation.
 
 | Item | Priority | Scope / deliverable | Acceptance evidence | Status |
 |---|---|---|---|---|

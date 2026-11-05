@@ -63,7 +63,7 @@ jobs:
           CREATED_SINCE=$(date -u -d "-${CREATED_LOOKBACK} minutes" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-${CREATED_LOOKBACK}M +%Y-%m-%dT%H:%M:%SZ)
           echo "::notice::Updated-at cutoff: ${SINCE}; created-at search cutoff: ${CREATED_SINCE}"
           gh api --paginate "/repos/${{ github.repository }}/actions/workflows/lane-events-recorder.yml/runs?status=completed&created=%3E%3D${CREATED_SINCE}&per_page=100" \
-            --jq '.workflow_runs[] | select(.conclusion == "success" and .updated_at > "'"${SINCE}"'") | {id, name, conclusion, updated_at, head_sha, html_url}' " \
+            --jq '.workflow_runs[] | select(.conclusion == "success" and .updated_at > "'"${SINCE}"'") | {id, name, conclusion, updated_at, head_sha, html_url}' \
             > /tmp/recent-success.jsonl || echo '[]' > /tmp/recent-success.jsonl
           COUNT=$(wc -l < /tmp/recent-success.jsonl || echo 0)
           echo "::notice::Found ${COUNT} recent successful lane-events runs"

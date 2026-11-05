@@ -16,6 +16,12 @@ on:
       - converted_to_draft
       - edited
       - closed
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/ops-lane-matrix-sweep.yml'
+      - 'scripts/ops/lane_matrix_sweep.py'
+      - 'docs/ops/LANE-MATRIX.md'
 
 permissions:
   contents: read

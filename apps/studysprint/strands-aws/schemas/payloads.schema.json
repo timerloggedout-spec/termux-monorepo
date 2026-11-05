@@ -58,6 +58,153 @@
       ],
       "type": "object"
     },
+    "CogfitCheckinEntry": {
+      "type": "object",
+      "description": "One typed cognitive-fitness check-in (issue #4966): answers to the CHECKIN_Qs schema, validated by the core (study_cogfit.validate_checkin) -- every question required, no empty-loggable entries.",
+      "properties": {
+        "session": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "date": {
+          "type": "string"
+        },
+        "executive_output": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "motor_precision": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "dual_task_load": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "resets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "breakthrough": {
+          "enum": [
+            "Prime / Fibonacci",
+            "Stroop / Color Reversal",
+            "N-Back Protocol",
+            "Spatial Matrix",
+            "Memory Wall",
+            "Tactical Scenario",
+            "Emotion-Under-Load",
+            "None today"
+          ]
+        },
+        "state": {
+          "enum": [
+            "Energized + sharp",
+            "Tired but clear",
+            "Neutral",
+            "Fatigued",
+            "Overtrained signal"
+          ]
+        },
+        "next_order": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "session",
+        "executive_output",
+        "motor_precision",
+        "dual_task_load",
+        "resets",
+        "breakthrough",
+        "state",
+        "next_order"
+      ]
+    },
+    "CogfitPhase": {
+      "type": "object",
+      "properties": {
+        "phase_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "phase_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "range": {
+          "type": "string"
+        },
+        "macro": {
+          "type": "string"
+        },
+        "duration_minutes": {
+          "type": "integer"
+        },
+        "sessions_per_week": {
+          "type": "integer"
+        },
+        "intensity": {
+          "type": "string"
+        },
+        "session_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sessions_into_phase": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sessions_per_phase": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "phase_index",
+        "phase_id",
+        "session_count",
+        "sessions_into_phase"
+      ]
+    },
+    "CogfitState": {
+      "type": "object",
+      "description": "The core-owned cognitive-fitness state block (study_cogfit.cogfit_state): typed check-in history in core state (no browser-local store), session-count phase projection, and the next_order directive.",
+      "properties": {
+        "checkins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CogfitCheckinEntry"
+          }
+        },
+        "session_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "phase": {
+          "$ref": "#/$defs/CogfitPhase"
+        },
+        "next_order": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stats": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "checkins",
+        "session_count",
+        "phase",
+        "next_order"
+      ]
+    },
     "CourseDocument": {
       "description": "A parsed syllabus: the make_plan / make_quiz input (post-decode).",
       "properties": {

@@ -7,6 +7,16 @@ name: Lane matrix event-driven inventory
 # code only and never checks out, installs, or executes PR-head content.
 
 on:
+  # Read-only validation on the PR merge ref; no write token or secrets.
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - converted_to_draft
+      - edited
+      - closed
   pull_request_target:
     types:
       - opened
@@ -27,12 +37,35 @@ permissions:
   contents: read
   pull-requests: read
 
-concurrency:
-  group: lane-matrix-inventory
-  cancel-in-progress: true
-
 jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    name: validate event-driven classifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      pull-requests: read
+    concurrency:
+      group: lane-matrix-validate-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+      - name: Validate classifier and cadence admission contract
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/ops/lane_matrix_sweep.py
+          python3 -m unittest discover -s scripts/ops -p 'test_lane_matrix_sweep.py' -v
+          node --test tests/test_dispatch_admission.mjs
+
   sweep:
+    if: github.event_name != 'pull_request'
+    concurrency:
+      group: lane-matrix-inventory
+      cancel-in-progress: true
     name: event-driven PR disposition materialization
     runs-on: ubuntu-latest
     timeout-minutes: 12

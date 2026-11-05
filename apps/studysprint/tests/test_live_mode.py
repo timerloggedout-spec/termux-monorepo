@@ -115,7 +115,7 @@ def test_health_and_wake(monkeypatch):
 
 def test_web_mirror_contract():
     js = (ROOT / "web" / "live.js").read_text()
-    for needle in ("hostb-fit-test-5b9d7.containers.snapdeploy.app",
+    for needle in ("hostb-live-5b9d7.containers.snapdeploy.app",
                    '"/plan"', '"/health"', "offline-gate",
                    "fail_closed", "ss.live_mode", "surface-local"):
         assert needle in js, needle

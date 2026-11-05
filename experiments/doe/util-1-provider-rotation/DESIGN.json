@@ -12,18 +12,58 @@
   "units": "Live desk dispatches (challenge-entry builds + fleet build tasks) in the window — the continuous production flow itself; no synthetic units.",
   "factor": "provider arm as assigned by the desk rotation rule over the bench read from ops/quota/registry.json at run time (rule 6: bench never hard-pinned in this design; expected {jules, gemini, deepseek, command-dispatch} + any bench additions the registry gains).",
   "assignment": "Desk's rotation rule assigns; this campaign observes and audits. Dispenses lacking a {provider, selection_reason, ts} stamp are OBSERVATIONAL only (rule 5).",
-  "responses": ["first_pass_success (PR merged with no rework dispatch)", "rework_cycles per unit", "dispatch_to_pr_wall_time", "action_required stalls (wiring health, per rule 6 re-verification)"],
+  "responses": [
+   "first_pass_success (PR merged with no rework dispatch)",
+   "rework_cycles per unit",
+   "dispatch_to_pr_wall_time",
+   "action_required stalls (wiring health, per rule 6 re-verification)"
+  ],
   "window_rule": "first 24 stamped dispatches OR 2026-12-01, whichever first; per-arm reporting only at n>=4/arm",
   "cull_rule": "arm with first-pass success < pooled - 0.25 at n>=8 is flagged; doe-expert proposes a desk-rule amendment (the desk owns its rule; this campaign issues the verdict, not the change)",
-  "guardrails": ["no interference with desk assignment", "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)"]
+  "guardrails": [
+   "no interference with desk assignment",
+   "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)"
+  ]
  },
  "automation": {
   "runner": "experiments/doe/util-1-provider-rotation/scripts/util1_auditor.py",
   "workflow": ".github/workflows/doe-util1-audit.yml",
   "cadence": "weekly + workflow_dispatch",
-  "reads": ["apps/help-wanted-dashboard/data/desk-feed.json dispatch stamps", "ops/quota/registry.json (bench, at run time)"],
+  "reads": [
+   "apps/help-wanted-dashboard/data/desk-feed.json dispatch stamps",
+   "ops/quota/registry.json (bench, at run time)"
+  ],
   "emits": "records/*.json EXPERIMENT records + records/SUMMARY.json",
   "identity": "records carry instance_key where the dispatch stamp provides the configured-instance tuple; provider-only stamps group by provider and are marked as such"
  },
- "registration": {"preregistered_in_repo": true, "recorded": "2026-11-01"}
+ "registration": {
+  "preregistered_in_repo": true,
+  "recorded": "2026-11-01"
+ },
+ "conditional_provider_arms": [
+  {
+   "provider": "agentrouter",
+   "status": "pre_registered_conditional_not_dispatchable",
+   "protocols": [
+    "openai-compatible",
+    "anthropic-compatible"
+   ],
+   "model_identity": "dynamic per-key GET /v1/models; no static model IDs",
+   "activation_gates": [
+    "AGENTROUTER_API_KEY is present in approved secret storage and is never exposed in records",
+    "authenticated account/resource-pool model discovery succeeds",
+    "native inference transport is separately reviewed and allowlisted; catalog registration is not inference admission",
+    "explicit spend ceiling and stop switch are approved",
+    "data classification and provider data-handling terms are reviewed"
+   ],
+   "observation_requirements": [
+    "desk stamp includes provider, selection_reason and ts",
+    "record exact model_id and protocol plus workflow/run/attempt correlation when available",
+    "record first_pass_success, rework_cycles, dispatch_to_pr_wall_time and stalled_action_required",
+    "record tokens and usage_cost only when actually returned by the provider",
+    "keep quota balance and reset unknown until an authoritative documented signal exists"
+   ],
+   "activation_rule": "No dispatch before every activation gate passes; a registry/catalog row alone is not an eligible inference arm."
+  }
+ ]
 }

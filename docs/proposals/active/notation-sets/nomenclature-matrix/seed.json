@@ -98,6 +98,13 @@
       "url": "docs/proposals/active/notation-sets/DUAL-VALENCE.md",
       "source_type": "owner_doctrine",
       "authority": "Owner (fleet doctrine); notation treatment = Linguist lane; evaluative frame = DoE"
+    },
+    {
+      "source_id": "owner-order-caveman-v2-2026-11-04",
+      "title": "Owner order 2026-11-04 19:36 PT: Caveman Micro Dense v2 mapping added to Notation Matrice references (via main)",
+      "url": "docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md",
+      "source_type": "owner_doctrine",
+      "authority": "Owner; base block v1 = main's guide (main chat, 2026-11-04 19:29 PT); v2 supersedes v1's example row for the verified glyph"
     }
   ],
   "concepts": [
@@ -406,6 +413,162 @@
       "version": 1,
       "source_ids": [
         "owner-doctrine-dual-valence-2026-11-03",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.verified_firsthand",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "verified firsthand",
+      "definition": "The claim was checked against the live record by the speaker's own read. Glyph of record in v2: the eye (v1's example row for this concept is superseded).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.verify_imperative",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "verify! (imperative)",
+      "definition": "An order to go verify firsthand, distinct from the verified state itself: the monocle glyph is the command, the eye glyph is the achieved state.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.not_established",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "NOT_ESTABLISHED",
+      "definition": "The fact is not established: no glyph of presence may be written. Chord code N + null glyph.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.receipt",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "receipt",
+      "definition": "A provenance artifact of record (run id, artifact id, SHA, comment id) backing a claim.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.snapshot",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "snapshot",
+      "definition": "A frozen capture of state at a point in time (census/feed snapshot).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.freeze",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "freeze",
+      "definition": "A state after which the artifact of record no longer changes for judging/scoring.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.verdict",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "ruling / verdict",
+      "definition": "A judgment of record issued by the seat holding the frame (PASS / FAIL / findings).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.discharged",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "discharged",
+      "definition": "A verdict whose owed action/proof has been discharged (verdict glyph + check).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.conforming",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "conforming",
+      "definition": "The artifact conforms to the cited spec/record. Glyph shared with math isomorphism — distinction is by domain slot: in caveman register this is a conformance predicate, not an isomorphism claim (which stays proof-gated per the notation spec).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.state_dot",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "state dot",
+      "definition": "One-glyph liveness state: green live, red down, yellow degraded.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.blocked",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "blocked",
+      "definition": "Work cannot proceed on the named dependency; the blocker is named beside the glyph.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.owner_action_owed",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "owner action owed",
+      "definition": "The next move belongs to the owner; lanes do not proceed past this glyph on their own authority.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.dispatch",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "dispatch",
+      "definition": "A task/order sent to a lane or seat (up-arrow out).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
     }
@@ -1504,6 +1667,202 @@
         "owner-doctrine-dual-valence-2026-11-03",
         "issue-320"
       ]
+    },
+    {
+      "label_id": "lbl-cmd-verified_firsthand-symbolic_notation",
+      "concept_id": "caveman_micro_dense.verified_firsthand",
+      "text": "👁",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-verified_firsthand-preferred_plain_language",
+      "concept_id": "caveman_micro_dense.verified_firsthand",
+      "text": "verified firsthand",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-verify_imperative-symbolic_notation",
+      "concept_id": "caveman_micro_dense.verify_imperative",
+      "text": "🧐 = verify!",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-not_established-symbolic_notation",
+      "concept_id": "caveman_micro_dense.not_established",
+      "text": "N∅",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-receipt-symbolic_notation",
+      "concept_id": "caveman_micro_dense.receipt",
+      "text": "🧾",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-snapshot-symbolic_notation",
+      "concept_id": "caveman_micro_dense.snapshot",
+      "text": "📸",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-freeze-symbolic_notation",
+      "concept_id": "caveman_micro_dense.freeze",
+      "text": "❄",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-verdict-symbolic_notation",
+      "concept_id": "caveman_micro_dense.verdict",
+      "text": "⚖",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-discharged-symbolic_notation",
+      "concept_id": "caveman_micro_dense.discharged",
+      "text": "⚖✓",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-conforming-symbolic_notation",
+      "concept_id": "caveman_micro_dense.conforming",
+      "text": "≅",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-state_dot-symbolic_notation",
+      "concept_id": "caveman_micro_dense.state_dot",
+      "text": "🟢 live · 🔴 down · 🟡 degraded",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-blocked-symbolic_notation",
+      "concept_id": "caveman_micro_dense.blocked",
+      "text": "⛔",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-owner_action_owed-symbolic_notation",
+      "concept_id": "caveman_micro_dense.owner_action_owed",
+      "text": "👆",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-dispatch-symbolic_notation",
+      "concept_id": "caveman_micro_dense.dispatch",
+      "text": "⤴",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
     }
   ],
   "mappings": [
@@ -1637,6 +1996,31 @@
       "evidence_note": "A frame acting on an entity's readings resembles a group action G ↷ X: the actor (frame/house) moves the state, the underlying entity is the fixed carrier. Valence readings = points of the acted-on set.",
       "source_ids": [
         "owner-doctrine-dual-valence-2026-11-03"
+      ]
+    },
+    {
+      "mapping_id": "map-cmd-conforming-isomorphism",
+      "source_concept_id": "caveman_micro_dense.conforming",
+      "target_concept_id": "group_theory.isomorphism",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.5,
+      "evidence_note": "Same glyph, different slot: caveman-register ≅ = conformance predicate (no proof owed); math-register ≅ = isomorphism claim, proof-gated (house notation spec: ≅ only where a proof discharges it, else ≈). Register determines which rule binds.",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-cmd-discharged-verdict",
+      "source_concept_id": "caveman_micro_dense.discharged",
+      "target_concept_id": "caveman_micro_dense.verdict",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.9,
+      "evidence_note": "⚖✓ is ⚖ plus discharge: same judgment, its owed action closed. Composition of glyphs mirrors composition of states.",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04"
       ]
     }
   ]

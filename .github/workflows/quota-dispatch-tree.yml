@@ -8,8 +8,21 @@ name: Quota Dispatch Tree
 # material_change_rules: this file owns cadence for the migrated lanes.
 
 on:
+  # Time cadence is a backstop for lanes whose due time has no external event.
+  # State-changing events wake the same admission tree immediately.
   schedule:
     - cron: '*/10 * * * *'
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
+  workflow_run:
+    workflows: ["lane events recorder"]
+    types: [completed]
+  push:
+    branches: [master]
+    paths:
+      - 'ops/tracking/**'
+      - 'docs/agentic/dependency-phases.json'
+      - 'docs/agentic/phase-approvals.json'
   workflow_dispatch:
     inputs:
       force_lane:
@@ -168,7 +181,10 @@ jobs:
             const hwAssistStaleMin = await laneAgeMin('tribute-llm-assist.yml');
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
-            const firstCycle = new Date().getUTCMinutes() < 10;
+            // The phase window belongs to the scheduled cadence only. Event
+            // wakes evaluate demand/staleness but never replay hourly/3h/4h slots.
+            const firstCycle = context.eventName === 'schedule' && new Date().getUTCMinutes() < 10;
+            const eventDemand = ['pull_request_target', 'workflow_run', 'push'].includes(context.eventName);
             // Raw verdicts. Node A admission is applied after Node G1,
             // when every staleness signal exists. stall-watch and
             // hw-refresh stay admission-exempt, exactly as they were
@@ -176,8 +192,8 @@ jobs:
             const verdicts = {};
             verdicts.dispatch_stall_watch = (busy > 0 || force);
             verdicts.dispatch_bridge = ((bridgeStaleMin > 30) || force);
-            verdicts.dispatch_probe = (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow) || force);
-            verdicts.dispatch_eval = ((repoChanged && slow) || force);
+            verdicts.dispatch_probe = (((probeStaleMin > 45 || bridgeStaleMin > 45) && (slow || eventDemand)) || force);
+            verdicts.dispatch_eval = ((repoChanged && (slow || eventDemand)) || force);
             verdicts.dispatch_recon = (slow || force);
             verdicts.dispatch_hw_refresh = (firstCycle || hwRefreshStaleMin > 75 || force);
             verdicts.dispatch_hw_pair = (((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) || force);
@@ -187,7 +203,7 @@ jobs:
             // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
             // check. Zero additional API calls.
             verdicts.dispatch_hourly = (firstCycle || force);
-            verdicts.dispatch_repochange = ((repoChanged && slow) || force);
+            verdicts.dispatch_repochange = ((repoChanged && (slow || eventDemand)) || force);
             // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
             // Same firstCycle arithmetic as Node F, different modulus offsets.
             verdicts.dispatch_q3 = (((firstCycle && hour % 3 === 1)) || force);

@@ -41,3 +41,101 @@ main's guide states it; this file records the v2 layer only.
 Seed registry: nomenclature-matrix domain `caveman_micro_dense`
 (13 concepts · 14 labels · 2 mappings, all candidate), incl. the
 ≅ register crosswalk to group_theory.isomorphism.
+
+## Shorthand Domains (owner addendum, 2026-11-04 19:36 PT)
+
+The matrice is structured by **Shorthand Domains** — the
+steno-domain pattern (medical / legal / journalism each keep
+their own chord set). A chord resolves **inside its domain**;
+text that crosses domains prefixes the domain when a chord would
+be ambiguous out of context. **Core glyphs (the v2 map above)
+stay domain-invariant** — they mean the same in every domain.
+
+Collision rulings of record: marketing campaign = `cpn`, never
+`cmp` (CMP-1…CMP-6 are DoE campaign-register entries); repo
+branch = `brnch`, never `brn` (quota burn); Book position `pos`
+is Book-domain only.
+
+### entries / challenges (`shorthand_entries`)
+
+| Chord | Term |
+|---|---|
+| `ent` | entry |
+| `slt` | slate |
+| `sub` | submission |
+| `jdg` | judging |
+| `ven` | venue |
+| `fwl` | freeze wall |
+
+### quota / tokens (`shorthand_quota`)
+
+| Chord | Term |
+|---|---|
+| `qta` | quota |
+| `tkn` | token unit |
+| `wnd` | window |
+| `brn` | burn |
+| `bkt` | bucket |
+| `attr` | attribution |
+
+### repo / PR machinery (`shorthand_repo`)
+
+| Chord | Term |
+|---|---|
+| `mrg` | merge |
+| `brnch` | branch |
+| `cmt` | commit |
+| `gte` | gate |
+| `chk` | check run |
+| `wfl` | workflow |
+| `rev` | review |
+
+### Book / pools (`shorthand_book`)
+
+| Chord | Term |
+|---|---|
+| `pl` | pool |
+| `wgr` | wager |
+| `ldg` | ledger |
+| `stl` | settlement |
+| `pos` | position |
+| `sbj` | subject |
+| `bk` | book |
+
+### DoE / proofs (`shorthand_doe`)
+
+| Chord | Term |
+|---|---|
+| `prf` | proof |
+| `stmt` | statement |
+| `frg` | fragment |
+| `opn` | open item |
+| `cyc` | cycle |
+| `itr` | iteration |
+| `gen` | generation |
+| `epc` | epoch |
+
+### providers / hosting (`shorthand_providers`)
+
+| Chord | Term |
+|---|---|
+| `pvd` | provider |
+| `mdl` | model |
+| `endp` | endpoint |
+| `dpl` | deploy |
+| `hst` | hosting |
+| `lat` | latency |
+
+### marketing (`shorthand_marketing`)
+
+| Chord | Term |
+|---|---|
+| `chn` | channel |
+| `cpn` | campaign |
+| `rfr` | referral |
+| `aud` | audience |
+| `pst` | post |
+
+Seed registry: one nomenclature domain per shorthand domain
+(41 chord terms, all candidate), each concept carrying its chord
+as its symbolic label.

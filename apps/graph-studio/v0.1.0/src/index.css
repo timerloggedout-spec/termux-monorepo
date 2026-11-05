@@ -809,6 +809,11 @@ button {
   color: #8ea0b4;
   font-size: 9px;
 }
+.icon-btn:disabled,
+.canvas-foot button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .lower-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -248,7 +248,7 @@ def build_markdown(payload: dict[str, Any]) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Lane-matrix recursive sweep")
+    parser = argparse.ArgumentParser(description="Event-driven lane-matrix PR disposition")
     parser.add_argument("--owner", default=os.environ.get("GITHUB_REPOSITORY_OWNER", "timerloggedout-spec"))
     parser.add_argument(
         "--repo",
@@ -329,8 +329,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {md_path}")
     else:
         print(json.dumps({"dry_run": True, "counts": payload["counts"]}, indent=2))
-
-    return 0
 
     return 0
 

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { hierarchy, tree } from 'd3-hierarchy';
 import { parseGraphImport } from './graph-import.js';
+import { parseGraphUrlState } from './url-state.js';
 import {
   Activity,
   ArrowDownToLine,
@@ -368,23 +369,8 @@ type UrlState = {
   selected: string;
 };
 
-const DEFAULT_SELECTED_NODE = 'github:repository:termux-monorepo';
-
 function readUrlState(): UrlState {
-  const params = new URLSearchParams(window.location.search);
-  const requestedView = params.get('view');
-  return {
-    view:
-      requestedView === 'hierarchy' ||
-      requestedView === 'network' ||
-      requestedView === 'evidence'
-        ? requestedView
-        : 'hierarchy',
-    query: params.get('q') || '',
-    plane: params.get('plane') || 'all',
-    edgeType: params.get('edge') || 'all',
-    selected: params.get('node') || DEFAULT_SELECTED_NODE,
-  };
+  return parseGraphUrlState(window.location.search);
 }
 
 function App() {

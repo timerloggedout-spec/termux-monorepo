@@ -233,7 +233,7 @@ This is an example only. Actual roots, scripts, versions, dependencies, and plat
 }
 ```
 
-The receipt contract distinguishes `passed`, `failed`, `canceled`, `timed_out`, `skipped`, `not-run`, `unavailable`, `unknown`, `superseded`, and `fallback`. `exit_code`, `started_at`, and `finished_at` are nullable when execution did not occur; `exclusion_reason` is required whenever an observation is excluded from a metric and otherwise null. Never coerce missing evidence into success. A `fallback` receipt records that the candidate adapter did not execute and native tooling was used instead; retain it for operational evidence but exclude it from candidate correctness, performance, and Termux pass metrics.
+The receipt contract distinguishes `passed`, `failed`, `canceled`, `timed_out`, `skipped`, `not-run`, `unavailable`, `unknown`, `superseded`, and `fallback`. `exit_code`, `started_at`, and `finished_at` are nullable when execution did not occur; `exclusion_reason` is required whenever an observation is excluded from a metric and otherwise null. Never coerce missing evidence into success. A `fallback` receipt records that the candidate adapter did not execute and native tooling was used instead. Set `adapter` to `native` and set `candidate` to the candidate that was requested (not the native executor); retain the receipt for operational evidence but exclude it from candidate correctness, performance, and Termux pass metrics.
 
 ## 7. Fair benchmark and DOE/MVT design
 
@@ -277,7 +277,7 @@ Thresholds are predeclared for each pilot before data collection:
 - Dependency selection: no false negatives; false positives reported and quantified.
 - Cache: zero incorrect cache reuse in the acceptance corpus; otherwise caching stays disabled.
 - Performance: require a material improvement over native baseline (initial target ≥15% median wall-clock reduction on the eligible repeated workload) without >10% regression in p95 or unacceptable resource overhead. These are proposed pilot thresholds and may be changed only before the confirmatory run, with rationale recorded.
-- Termux: no regression in native workflows; unsupported candidate execution must fall back to native execution with an explicit `fallback` receipt, not silent skip. Fallback runs are retained as evidence but excluded from candidate correctness, performance, and Termux pass metrics.
+- Termux: no regression in native workflows; unsupported candidate execution must fall back to native execution with an explicit `fallback` receipt, not silent skip. Fallback runs are retained as evidence but excluded from candidate correctness, performance, and Termux pass metrics. Measure fallback coverage by task, project, and runner. Before each pilot, predeclare a minimum 80% candidate-executed share and at least five eligible candidate executions for every reported task/project/runner stratum; if either minimum is not met, mark that stratum and the affected pilot result inconclusive rather than selecting a candidate from it.
 - Maintenance: adapter/configuration overhead must be justified by measured saved work and operational simplicity.
 
 A performance win cannot compensate for correctness or safety failure.

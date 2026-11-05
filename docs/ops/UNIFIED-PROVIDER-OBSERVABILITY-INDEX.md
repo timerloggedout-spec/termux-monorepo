@@ -123,7 +123,7 @@ Rules:
 
 The existing `util-1-provider-rotation` campaign is the correct live campaign to extend; do not create a duplicate campaign. Its design already observes live dispatches, uses desk-assigned rotation, requires provider/selection-reason/timestamp stamps, and records returned quota cost in usage slots when available.
 
-AgentRouter and any future gateway arm join only through a **design amendment** that names:
+AgentRouter is now a **pre-registered conditional arm** in `experiments/doe/util-1-provider-rotation/DESIGN.json`; it remains non-dispatchable until its credential, account model discovery, separate inference admission, spend ceiling, data classification and stop-switch gates pass. Any future gateway arm still requires a design amendment that names:
 - provider arm and exact model/protocol identity;
 - eligibility and credential gate;
 - quota/spend ceiling and kill switch;
@@ -133,7 +133,7 @@ AgentRouter and any future gateway arm join only through a **design amendment** 
 - sample-size/window and cull/promote thresholds;
 - evidence location and owner approval.
 
-One dispatched/executed run = one experiment observation. A provider catalog entry is not a DoE participant. No campaign result or provider promotion may be claimed until a committed design amendment and actual run records exist. The campaign observes desk assignment; it does not mutate the desk's routing rule.
+One dispatched/executed run = one experiment observation. A catalog/registry entry is not an executed DoE observation. AgentRouter's conditional pre-registration does not make it dispatchable. No campaign result or provider promotion may be claimed until actual run records exist. The campaign observes desk assignment; it does not mutate the desk's routing rule.
 
 ## Integration sequence and acceptance gates
 

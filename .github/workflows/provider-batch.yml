@@ -286,14 +286,13 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
           SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           AGENTROUTER_API_KEY: ${{ secrets.AGENTROUTER_API_KEY }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/provider-batch
           # Exit 1 means no successful model rows, not a successful admission.
           status=0
-          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni,huggingface,groq,mistral,gemini,cerebras,nvidia,aion,llm7,kilo,cohere,ollama,cloudflare,siliconflow,ovhcloud,modelscope,sambanova,deepseek,agentrouter --output /tmp/provider-batch/catalog.json || status=$?
+          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni,huggingface,groq,mistral,gemini,cerebras,nvidia,aion,llm7,kilo,cohere,ollama,cloudflare,siliconflow,ovhcloud,modelscope,sambanova,agentrouter --output /tmp/provider-batch/catalog.json || status=$?
           if [ "$status" -gt 1 ]; then exit "$status"; fi
           python3 -m scripts.model_selection_market.provider_batch --catalog /tmp/provider-batch/catalog.json --output /tmp/provider-batch/coverage.json
       - name: Execute one explicitly requested verified no-cost smoke

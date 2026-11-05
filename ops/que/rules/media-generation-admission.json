@@ -3,12 +3,56 @@
   "rule_id": "QUE-GOV-MEDIA-001",
   "name": "media-generation-admission",
   "statement": "Media-generation tasks admit ONLY on routes {outsource, tooling, monorepo-inference-provider}; Muse media generation is REFUSED at QUE admission.",
-  "applies_to": {"task_class": "media-generation", "media": ["image", "video", "audio"]},
-  "admit_routes": ["outsource", "tooling", "monorepo-inference-provider"],
-  "refuse_routes": ["claude-media-generation"],
+  "applies_to": {
+    "task_class": "media-generation",
+    "media": [
+      "image",
+      "video",
+      "audio"
+    ]
+  },
+  "admit_routes": [
+    "outsource",
+    "tooling",
+    "monorepo-inference-provider"
+  ],
+  "refuse_routes": [
+    "claude-media-generation"
+  ],
   "enforcement_point": "QUE admission (governor): refusal is a governor verdict at dispatch, receipted as a que-governor-event/v1 event (kind=admission_refusal). Chat relays are not an enforcement form for this rule.",
-  "source": {"owner_correction": "2026-11-04 18:12 PT (via main -> Desk): chat-relay enforcement = wrong form; enforcement must be repo machinery", "rule_origin": "PR #1967 (no Muse-pool media generation)", "stamped_by": "[MUSEai]@{role:{cadence-optimizer}}"},
-  "metering": {"work_item": "issue #4963", "requirement": "Per-production token metering into the usage series — closes the audit NOT_ESTABLISHED hole (no lane could meter per production)."},
+  "source": {
+    "owner_correction": "2026-11-04 18:12 PT (via main -> Desk): chat-relay enforcement = wrong form; enforcement must be repo machinery",
+    "rule_origin": "PR #1967 (no Muse-pool media generation)",
+    "stamped_by": "[MUSEai]@{role:{cadence-optimizer}}"
+  },
+  "metering": {
+    "work_item": "issue #4963",
+    "requirement": "Per-production token metering into the usage series \u2014 closes the audit NOT_ESTABLISHED hole (no lane could meter per production)."
+  },
   "ui": "Admin desk.html Plane 7: dispatch controls render this rule's refusals verbatim (fail-closed rendering).",
-  "status": "STAMPED at QUE (this file). Enforcement build (collector/admission wiring) routes Desk QUE -> Swarm under MUSE-no-code."
+  "status": "STAMPED at QUE (this file). Enforcement build (collector/admission wiring) routes Desk QUE -> Swarm under MUSE-no-code.",
+  "emission": {
+    "series_of_record": "ops/metering/media-usage.jsonl (hash-chained; Swarm collector leg normalizes production receipts in \u2014 first source: video-render receipt.json)",
+    "cadence_leg": "DECISION events at decision time, emitted by metering_emit.py (governor custody tooling) to the cadence outbox for batch publication into the series",
+    "event_shape": {
+      "ts": "UTC",
+      "production_id": "id",
+      "kind": "decision",
+      "route_requested": "route",
+      "route_used": "route | null (refused)",
+      "disposition": "admitted | refused",
+      "media": "image|video|audio",
+      "tool": "name | null",
+      "tokens": {
+        "claude_pool": 0,
+        "provider": "int (decision-time estimate)",
+        "other": "int"
+      },
+      "receipt_ref": "ref | null",
+      "rule": "QUE-GOV-MEDIA-001",
+      "prev_hash": "chain",
+      "hash": "sha256(prev_hash + canonical event)"
+    },
+    "invariant": "tokens.claude_pool == 0 for every event; a completed claude-media production or any nonzero claude_pool = flagged VIOLATION; refusals are first-class records"
+  }
 }

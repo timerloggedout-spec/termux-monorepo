@@ -99,6 +99,19 @@ jobs:
               }
             }
             core.setOutput('force_request_id', forceRequestId);
+            if (context.eventName === 'issue_comment' && !force) {
+              // A duplicate receipt is a strict no-op, not a chance to replay
+              // unrelated stale work from an Issue-comment wake.
+              for (const name of [
+                'dispatch_stall_watch', 'dispatch_bridge', 'dispatch_probe',
+                'dispatch_eval', 'dispatch_recon', 'dispatch_hw_refresh',
+                'dispatch_hw_pair', 'dispatch_hw_execute', 'dispatch_hw_assist',
+                'dispatch_hourly', 'dispatch_repochange', 'dispatch_q3',
+                'dispatch_q4', 'dispatch_q6', 'dispatch_vantage'
+              ]) core.setOutput(name, 'false');
+              core.info('Duplicate force request: no dispatch fan-out');
+              return;
+            }
             // Node A (reworked, issue #3812 step 4): lane-aware admission.
             // Active runs are listed (per_page 100, up to 2 pages per
             // status) and bucketed per workflow file by the admission

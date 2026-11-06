@@ -10,6 +10,7 @@ REG = ROOT / "ops/quota/registry.json"
 OUT = ROOT / "experiments/doe/util-1-provider-rotation/records"
 
 def bench():
+    """Return the provider bench from the live registry without pinning it."""
     try:
         reg = json.loads(REG.read_text())
         if isinstance(reg, list):
@@ -22,6 +23,7 @@ def bench():
         return []
 
 def main():
+    """Audit desk dispatches and persist evidence-backed experiment records."""
     OUT.mkdir(parents=True, exist_ok=True)
     feed = json.loads(FEED.read_text()) if FEED.exists() else {}
     dispatches = []
@@ -52,8 +54,17 @@ def main():
             "in_registry": stamp["provider"] in known if known else None,
             "selection_reason": stamp["selection_reason"],
             "ts": stamp["ts"],
+            **{key: d[key] for key in (
+                "model_id", "protocol", "workflow_id", "run_id", "run_attempt",
+                "temporal_workflow_id", "request_id", "doe_campaign_id",
+                "experiment_instance_key",
+            ) if d.get(key) is not None},
             "responses": {k: d.get(k) for k in
                           ("first_pass_success", "rework_cycles", "dispatch_to_pr_wall_time", "stalled_action_required")},
+            "usage": {k: d.get(k) for k in (
+                "input_tokens", "output_tokens", "total_tokens", "quota_tokens",
+                "usage_cost", "latency_ms", "time_to_first_token_ms", "tokens_per_second",
+            ) if d.get(k) is not None},
             "status": "scored" if d.get("first_pass_success") is not None else "awaiting_outcome"})
     summary = {"campaign_id": "util-1-provider-rotation",
                "audited_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),

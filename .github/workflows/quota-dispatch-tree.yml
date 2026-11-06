@@ -376,7 +376,7 @@ jobs:
         # writes are gated by RLS: anon INSERT on dispatch_verdicts only,
         # with lane allowlist and rate-limit guards (registry section 4).
         # Project: termux-monorepo-lane-state, table dispatch_verdicts.
-        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != ''
+        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != '' && (github.event_name != 'issue_comment' || steps.tree.outputs.force_request_id != '')
         env:
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}

@@ -327,7 +327,9 @@ The QAC-009 contract in docs/ops/CADENCE-TICK-LEDGER.md records:
 
 **Critical invariant:** cadence ticks are evidence, never quota control. The budget/admission path must continue to use authoritative live rate-limit evidence and existing reserve/defer behavior; no gate may spend quota based on tick aggregates.
 
-The rate-limit record further documents that the PAT circuit breaker, ETag cache and per-session budget cover the shared helper copy on its VM only. Other workflows and non-helper consumers are not automatically protected. The repository's quota self-counts explicitly state that PAT helper spend logs are VM-local and PAT call volume is not tallied there. RIDP's first practical observability gap is therefore cross-surface coverage and durable attribution—not the absence of a PAT-side request tick.\n\nThe landed scripts/cadence_tick_ledger.py consumer validates required tick fields and produces a cadence-tick-ledger/v1 summary by principal/resource, endpoint, minute and latest remaining. Its current tests cover required-field presence, counted/un-counted handling and separate resource summaries. The current implementation should be inspected before extending it; RIDP should not fork a second tick parser or ledger.
+The rate-limit record further documents that the PAT circuit breaker, ETag cache and per-session budget cover the shared helper copy on its VM only. Other workflows and non-helper consumers are not automatically protected. The repository's quota self-counts explicitly state that PAT helper spend logs are VM-local and PAT call volume is not tallied there. RIDP's first practical observability gap is therefore cross-surface coverage and durable attribution—not the absence of a PAT-side request tick.
+
+The landed scripts/cadence_tick_ledger.py consumer validates required tick fields and produces a cadence-tick-ledger/v1 summary by principal/resource, endpoint, minute and latest remaining. Its current tests cover required-field presence, counted/un-counted handling and separate resource summaries. The current implementation should be inspected before extending it; RIDP should not fork a second tick parser or ledger.
 
 ### Collector bootstrap is a reusable safety contract
 
@@ -351,7 +353,15 @@ RIDP should:
 - not create a second external receiver, queue, D1/Neon event ledger or processor;
 - preserve the prototype's provisioning and owner-decision boundaries. Prototype status is not production availability.
 
-### Existing App and context-cache assets\n\nA read-only Termux Fleet Collector GitHub App is already created and installed on this repository. Its installation quota bucket was proven independent from the user PAT bucket. The migration plan records zero production workflows migrated at its 2026-10-30 evidence snapshot; current adoption must be rechecked with the AppID lane. RIDP must not create a second App. The minter is a token-creation utility, not the shared API telemetry chokepoint.\n\nThe Actions refinements record also describes an existing non-secret context cache composite action with explicit field stripping, size cap and ephemeral auth-state handling. Reuse it only after exact source and owner inspection; do not create a competing cache.\n\nDetailed source-to-owner facts and unknowns are maintained in `docs/ops/RIDP-SOURCE-CENSUS.md`.\n\n### Revised P0 implementation order
+### Existing App and context-cache assets
+
+A read-only Termux Fleet Collector GitHub App is already created and installed on this repository. Its installation quota bucket was proven independent from the user PAT bucket. The migration plan records zero production workflows migrated at its 2026-10-30 evidence snapshot; current adoption must be rechecked with the AppID lane. RIDP must not create a second App. The minter is a token-creation utility, not the shared API telemetry chokepoint.
+
+The Actions refinements record also describes an existing non-secret context cache composite action with explicit field stripping, size cap and ephemeral auth-state handling. Reuse it only after exact source and owner inspection; do not create a competing cache.
+
+Detailed source-to-owner facts and unknowns are maintained in `docs/ops/RIDP-SOURCE-CENSUS.md`.
+
+### Revised P0 implementation order
 
 Given the above evidence, the first implementation increment should not be a new generic cache or new budget service. It should:
 

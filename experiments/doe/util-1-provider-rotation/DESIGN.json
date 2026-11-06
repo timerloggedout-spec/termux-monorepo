@@ -75,6 +75,7 @@
     "request_id",
     "doe_campaign_id",
     "experiment_instance_key",
+    "instance_key",
     "input_tokens",
     "output_tokens",
     "total_tokens",
@@ -82,7 +83,8 @@
     "usage_cost",
     "latency_ms",
     "time_to_first_token_ms",
-    "tokens_per_second"
+    "tokens_per_second",
+    "provider_metrics (sanitized scalar values with per-metric source timestamps and provenance)"
    ]
   }
  ]

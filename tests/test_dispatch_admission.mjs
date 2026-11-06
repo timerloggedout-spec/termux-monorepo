@@ -150,6 +150,7 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.match(workflow, /complete-force-request:/);
   assert.doesNotMatch(workflow, /workflow_dispatch:/);
   assert.doesNotMatch(workflow, /force_lane/);
+  assert.match(workflow, /cancel-in-progress: false/);
   assert.match(workflow, /issue_comment' && !force/);
 });
 

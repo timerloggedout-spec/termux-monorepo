@@ -140,12 +140,13 @@ jobs:
         with:
           script: |
             const event = context.eventName;
+            const sourceEvent = '${{ inputs.source_event }}';
             let prNumber = null;
             if (event === 'pull_request_review') {
               prNumber = context.payload.pull_request.number;
             } else if (event === 'pull_request_review_comment') {
               prNumber = context.payload.pull_request.number;
-            } else if (inputs.source_event === 'issue_comment') {
+            } else if (sourceEvent === 'issue_comment') {
               prNumber = Number('${{ inputs.pr_number }}');
             }
             if (!prNumber) {

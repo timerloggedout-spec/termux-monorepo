@@ -18,7 +18,7 @@ OUT = ROOT / "experiments/doe/util-1-provider-rotation/records"
 _METRIC_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9_.:-]{0,127}$")
 _METRIC_DENY = re.compile(r"(?:secret|credential|authorization|api[_-]?key|prompt|completion|request[_-]?body|response[_-]?body|header|cookie)", re.I)
 _METRIC_UNIT = re.compile(r"^[A-Za-z0-9 _./%-]{1,48}$")
-_ISO_TIMESTAMP = re.compile(r"^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$")
+_ISO_TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
 
 
 def bench():

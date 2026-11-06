@@ -13,6 +13,7 @@
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | ML command-center / repo SSOT | `.agents/skills/ml-command-center/SKILL.md` |
+| Plan Canvas / annotated plan review | `.agents/skills/plan-canvas/SKILL.md` |
 | Minesweeper peers | `.agents/skills/minesweeper-ops/SKILL.md` |
 | Legacy #175 snapshot archive (do not load for operations) | `.agents/skills/operator-hub-175/SKILL.md` |
 | ICM-CCTV projection | `.agents/skills/icm-cctv-ops/SKILL.md` |

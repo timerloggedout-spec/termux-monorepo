@@ -2,63 +2,140 @@ name: Issue Comment Router — modular fan-out reduction
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
+permissions: {}
 
 concurrency:
-  group: issue-comment-router-${{ github.event.issue.number }}
-  cancel-in-progress: true
+  # Preserve every comment revision. Target workflows coalesce only where their
+  # existing per-issue/per-source concurrency contracts require it.
+  group: issue-comment-router-${{ github.event.issue.number }}-${{ github.event.comment.id }}-${{ github.event.comment.updated_at || github.event.comment.created_at || github.run_id }}
+  cancel-in-progress: false
 
 jobs:
   route:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
     outputs:
       needs_jules: ${{ steps.classify.outputs.needs_jules }}
-      needs_ledger: ${{ steps.classify.outputs.needs_ledger }}
       needs_gemini: ${{ steps.classify.outputs.needs_gemini }}
+      needs_agent_review: ${{ steps.classify.outputs.needs_agent_review }}
+      needs_ledger: ${{ steps.classify.outputs.needs_ledger }}
+      issue_number: ${{ steps.classify.outputs.issue_number }}
+      pr_number: ${{ steps.classify.outputs.pr_number }}
+      comment_id: ${{ steps.classify.outputs.comment_id }}
+      comment_updated_at: ${{ steps.classify.outputs.comment_updated_at }}
+      source_event: ${{ steps.classify.outputs.source_event }}
     steps:
-      - name: Classify comment for routing
+      - name: Classify issue comment without executing comment content
         id: classify
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
-            const body = context.payload.comment.body || '';
-            const isBot = context.payload.sender.type === 'Bot';
-            const isPR = !!context.payload.issue.pull_request;
-            const labels = (context.payload.issue.labels || []).map(l => l.name);
+            const issue = context.payload.issue || {};
+            const comment = context.payload.comment || {};
+            const actor = comment.user || context.payload.sender || {};
+            const action = context.payload.action || '';
+            const body = String(comment.body || '');
+            const association = String(comment.author_association || '');
+            const login = String(actor.login || '').toLowerCase();
 
-            // Early filters to avoid unnecessary downstream starts
-            const needs_jules = !isBot && (body.includes('@jules') || labels.includes('jules'));
-            const needs_ledger = isPR && body.includes('Implements:');
-            const needs_gemini = !isBot && (body.includes('@gemini') || labels.includes('gemini'));
+            const trustedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+            const trustedHuman = actor.type === 'User' && trustedAssociations.has(association);
+            const isPullRequest = Boolean(issue.pull_request);
+            const trustedProviderBots = new Set([
+              'coderabbitai[bot]',
+              'qodo-code-review[bot]',
+              'devin-ai-integration[bot]',
+            ]);
 
-            core.setOutput('needs_jules', needs_jules);
-            core.setOutput('needs_ledger', needs_ledger);
-            core.setOutput('needs_gemini', needs_gemini);
+            // Preserve the exact command and actor boundaries of the target workflows.
+            const needsJules =
+              action === 'created' &&
+              !isPullRequest &&
+              trustedHuman &&
+              /^@jules\b/i.test(body);
 
-            console.log(`Classification: jules=${needs_jules}, ledger=${needs_ledger}, gemini=${needs_gemini}, bot=${isBot}`);
+            const needsGemini =
+              action === 'created' &&
+              trustedHuman &&
+              (/^@gemini-cli\b/i.test(body) || /^@sparkflux\b/i.test(body));
 
-      - name: Route to Jules (if matched)
-        if: steps.classify.outputs.needs_jules == 'true'
-        run: |
-          echo "Dispatching Jules handoff (placeholder for workflow_call or existing job extract)"
-          # In full implementation: uses: ./.github/workflows/agent-jules-on-issues.yml or extract job
+            const needsAgentReview =
+              ['created', 'edited'].includes(action) &&
+              isPullRequest &&
+              actor.type === 'Bot' &&
+              trustedProviderBots.has(login);
 
-      - name: Route to Ledger (if matched)
-        if: steps.classify.outputs.needs_ledger == 'true'
-        run: |
-          echo "Dispatching production ledger update"
+            // Classification only. No ledger writes or branch-changing actions occur here.
+            const needsLedger =
+              action === 'created' &&
+              isPullRequest &&
+              trustedHuman &&
+              /\bImplements:\s*[A-Z0-9][A-Z0-9._-]*/i.test(body);
 
-      - name: Route to Gemini (if matched)
-        if: steps.classify.outputs.needs_gemini == 'true'
-        run: |
-          echo "Dispatching Gemini peer"
+            core.setOutput('needs_jules', String(needsJules));
+            core.setOutput('needs_gemini', String(needsGemini));
+            core.setOutput('needs_agent_review', String(needsAgentReview));
+            core.setOutput('needs_ledger', String(needsLedger));
+            core.setOutput('issue_number', issue.number ? String(issue.number) : '');
+            core.setOutput('pr_number', isPullRequest && issue.number ? String(issue.number) : '');
+            core.setOutput('comment_id', comment.id ? String(comment.id) : '');
+            core.setOutput('comment_updated_at', comment.updated_at || comment.created_at || '');
+            core.setOutput('source_event', 'issue_comment');
 
-      - name: Emit routing receipt
-        run: |
-          echo "Router completed; no spam from unmatched issue_comment."
+            const routes = [];
+            if (needsAgentReview) routes.push('trusted provider review → Agent review');
+            if (needsGemini) routes.push('authorized Gemini command');
+            if (needsJules) routes.push('authorized Jules issue mention');
+            if (needsLedger) routes.push('ledger candidate (classification only)');
+            core.summary
+              .addHeading('Issue comment routing')
+              .addList(routes.length ? routes : ['No downstream route; event recorded once'])
+              .write();
+
+  agent-review:
+    needs: route
+    if: needs.route.outputs.needs_agent_review == 'true'
+    uses: ./.github/workflows/agent-review-auto-jules.yml
+    with:
+      pr_number: ${{ needs.route.outputs.pr_number }}
+      comment_id: ${{ needs.route.outputs.comment_id }}
+      comment_updated_at: ${{ needs.route.outputs.comment_updated_at }}
+      source_event: ${{ needs.route.outputs.source_event }}
+    secrets: inherit
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+  gemini:
+    needs: route
+    if: needs.route.outputs.needs_gemini == 'true'
+    uses: ./.github/workflows/gemini-dispatch.yml
+    with:
+      issue_number: ${{ needs.route.outputs.issue_number }}
+      pr_number: ${{ needs.route.outputs.pr_number }}
+      comment_id: ${{ needs.route.outputs.comment_id }}
+      comment_updated_at: ${{ needs.route.outputs.comment_updated_at }}
+      source_event: ${{ needs.route.outputs.source_event }}
+    secrets: inherit
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+  jules:
+    needs: route
+    if: needs.route.outputs.needs_jules == 'true'
+    uses: ./.github/workflows/agent-jules-on-issues.yml
+    with:
+      issue_number: ${{ needs.route.outputs.issue_number }}
+      comment_id: ${{ needs.route.outputs.comment_id }}
+      comment_updated_at: ${{ needs.route.outputs.comment_updated_at }}
+      source_event: ${{ needs.route.outputs.source_event }}
+    secrets: inherit
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read

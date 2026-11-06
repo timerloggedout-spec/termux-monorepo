@@ -2,7 +2,7 @@ name: Quota Dispatch Tree
 
 # Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
 # PR lifecycle, managed-lane completion, and source-record pushes wake it on demand.
-# The 10-minute schedule is a cadence clock only; repository/lane events wake
+# The hourly schedule is a cadence clock only; repository/lane events wake
 # demand work immediately. Human force-all is an authenticated Issue comment,
 # never a generic Actions manual-dispatch input. The Lane Matrix has its own PR events.
 # Lanes keep their own authorities, guards, and concurrency groups.
@@ -12,7 +12,7 @@ on:
   # Time cadence is a backstop for lanes whose due time has no external event.
   # State-changing events wake the same admission tree immediately.
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '0 * * * *'
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
   workflow_run:

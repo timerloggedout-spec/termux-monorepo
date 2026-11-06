@@ -36,8 +36,11 @@ standalone CLI is not on PATH but the plugin script is present):
 
     node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" --help
     node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" open .claude/plans/feature.plan.md
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" pending .claude/plans/feature.plan.md
     node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" await .claude/plans/feature.plan.md
-    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" end .claude/plans/feature.plan.md
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" typing .claude/plans/feature.plan.md --state thinking
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" typing .claude/plans/feature.plan.md --state typing
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" await .claude/plans/feature.plan.md --reply "I revised the dependency order."
 
 Skill presence does not prove the CLI or plugin script is installed. If unavailable, record
 BLOCKED: plan-canvas runtime unavailable and use Desk.html / Issue HITL instead.
@@ -53,8 +56,9 @@ or unredacted customer data.
     ecc-plan-canvas open .claude/plans/feature.plan.md
     ecc-plan-canvas await .claude/plans/feature.plan.md
 
-Keep await parked as a background task when supported. Feedback arrives only
-while a listener is active; ecc-plan-canvas pending lists queued feedback.
+Keep `await` parked as a background task when supported. Feedback arrives only
+while a listener is active; `pending` lists queued feedback. When the plugin
+fallback is used, invoke every subcommand through `node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js"`.
 
 Feedback types:
 - chat: freeform message; answer in the canvas.
@@ -70,20 +74,36 @@ During long revisions, update activity:
     ecc-plan-canvas typing .claude/plans/feature.plan.md --state thinking
     ecc-plan-canvas typing .claude/plans/feature.plan.md --state typing
 
-Edit the artifact; it live-reloads. Do not re-run open to refresh. Finish with:
+Edit the artifact; it live-reloads. Do not re-run open to refresh. Each `await`
+returns the next feedback item; answer it, revise as needed, and call `await`
+again. A `request-changes` verdict means continue the review loop, not end the
+session. Do not call `end` after the first feedback item. Call `end` only after
+the review is explicitly concluded and no further feedback listener is needed.
+For the standalone CLI, the final close command is:
 
     ecc-plan-canvas end .claude/plans/feature.plan.md
 
-request-changes means revise and continue awaiting. A canvas approve verdict is
-only a proposal; it never authorizes implementation. The reviewer must separately
-confirm the exact artifact SHA-256 in Desk.html or the owning GitHub Issue/PR.
+For the plugin fallback, use:
+
+    node "$CLAUDE_PLUGIN_ROOT/scripts/plan-canvas.js" end .claude/plans/feature.plan.md
+
+A canvas approve verdict is only a proposal; it never authorizes implementation. The reviewer must separately
+confirm the exact review-bundle SHA-256 in Desk.html or the owning GitHub Issue/PR.
+If the artifact is self-contained, the bundle is the artifact. If it uses sibling
+assets, create a deterministic manifest covering the artifact and every
+review-relevant asset (sorted relative paths plus SHA-256 for each file), then
+hash that manifest. The human confirmation must name the bundle digest; checking
+only the HTML file is insufficient when sibling assets can change.
 That confirmation must be an authenticated human action. Reviewer identity comes
 from the authenticated Desk session or GitHub actor metadata, never from agent-
 written text, a canvas payload, or an identity inferred by the agent. The agent may
 prepare a receipt, but must not submit or attribute the approval on the reviewer's
 behalf. If the authenticated confirmation is absent or its digest differs, stop
-before implementation. Record artifact path, SHA-256, verdict, authenticated
-reviewer identity, timestamp, and conditions from that human confirmation.
+before implementation. Recompute the manifest and bundle digest immediately
+before implementation; any changed asset invalidates the approval and requires
+fresh human confirmation. Record artifact path, manifest path (when used),
+bundle SHA-256, verdict, authenticated reviewer identity, timestamp, and
+conditions from that human confirmation.
 If the user ends the session (endedBy: user or sessionEnded: true), stop and do
 not reopen unless asked. No active listener means feedback is not yet delivered.
 

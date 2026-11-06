@@ -92,8 +92,12 @@ confirm the exact review-bundle SHA-256 in Desk.html or the owning GitHub Issue/
 If the artifact is self-contained, the bundle is the artifact. If it uses sibling
 assets, create a deterministic manifest covering the artifact and every
 review-relevant asset (sorted relative paths plus SHA-256 for each file), then
-hash that manifest. The human confirmation must name the bundle digest; checking
-only the HTML file is insufficient when sibling assets can change.
+hash that manifest. Store the manifest outside the bundle root or exclude it from
+its own entries to avoid a recursive digest. External scripts, styles, images, and
+fonts must be vendored into the bundle or otherwise pinned and content-hashed;
+unpinned network-loaded assets are not approval-bound. The human confirmation
+must name the bundle digest; checking only the HTML file is insufficient when
+sibling assets can change.
 That confirmation must be an authenticated human action. Reviewer identity comes
 from the authenticated Desk session or GitHub actor metadata, never from agent-
 written text, a canvas payload, or an identity inferred by the agent. The agent may

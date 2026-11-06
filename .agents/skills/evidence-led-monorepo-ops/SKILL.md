@@ -13,6 +13,34 @@ RECON -> CLASSIFY -> PLAN -> ACT -> WAIT -> VALIDATE -> RE-FETCH -> RECORD -> RE
 
 The goal is a verified repository outcome, not a green-looking activity stream.
 
+## Current control-plane authority (2026-11-05)
+
+Issue #175 is closed and superseded. Treat all older #175 references in this
+append-only session history as historical evidence only; never use #175 for
+current priority, state, cadence, dispatch, or promotion.
+
+Use the repository-native authority map:
+
+- Cross-domain lane × project read model: `docs/ops/REPO-TRACKING.md` and
+  `ops/tracking/tracking.json`.
+- PR disposition projection: `docs/ops/LANE-MATRIX.md` and
+  `docs/ops/generated/lane-matrix-status.*`.
+- Dependency lifecycle / approvals:
+  `docs/agentic/dependency-phases.json` and
+  `docs/agentic/phase-approvals.json`.
+- Append-only execution evidence: `ops/lane-events`.
+- Domain registries remain authoritative within their domains.
+- Human decisions and exceptions: Desk.html or the specific owning Issue/PR;
+  no generic issue is a global hub.
+
+The Lane Matrix is PR-event-driven, not a timer sweep. The central dispatcher
+uses immediate repository/lane demand wakes plus an hourly clock for genuine
+time cadence. There is no generic manual Actions dispatch; force-all is an
+authenticated `/quota force all` comment on an open owning Issue, recorded by
+an idempotent receipt. Force execution never bypasses lane gates or dual-gate
+promotion authority. See `docs/ops/ADAPTIVE-DISPATCH.md`.
+
+
 ## 1. Reconstruct current state
 
 Before a consequential action, resolve:

@@ -54,7 +54,8 @@ def test_agentrouter_dispatch_projection_preserves_identity_and_provider_metrics
                 "queue_wait_ms": 17,
                 "authorization_header": {"value": 1},
                 "raw_response_body": {"value": 1},
-                "unsafe_text_metric": "must-not-be-copied"
+                "unsafe_text_metric": "must-not-be-copied",
+                "non_finite_metric": {"value": float("nan")}
             }
         }]
     }))
@@ -84,3 +85,4 @@ def test_agentrouter_dispatch_projection_preserves_identity_and_provider_metrics
     assert "authorization_header" not in record["provider_metrics"]
     assert "raw_response_body" not in record["provider_metrics"]
     assert "unsafe_text_metric" not in record["provider_metrics"]
+    assert "non_finite_metric" not in record["provider_metrics"]

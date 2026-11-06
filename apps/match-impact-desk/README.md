@@ -52,7 +52,7 @@ Challenge 2 requires a Vultr VM backend and public web app; Serverless Inference
 
 ## API
 
-GET /health, /api/overview, /api/cases, /api/audit, /api/audit/verify, /api/cases/{id}/evidence.
+GET /health, /api/overview, /api/cases, /api/audit, /api/audit/verify, /api/cases/{id}/evidence. POST /api/cases ingests a validated structured invoice/PO/receipt case.
 
 POST /api/cases/{id}/decision and /api/cases/{id}/brief.
 

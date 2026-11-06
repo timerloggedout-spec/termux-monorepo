@@ -166,6 +166,33 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             errors = validate_issue_comment_router_contracts(root)
             self.assertTrue(any("must reject stale comment revisions" in error for error in errors), errors)
 
+    def test_jules_route_must_remain_non_pr_and_exact_prefix(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace("!isPullRequest", "isPullRequest", 1)
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("Jules route must remain" in error for error in errors), errors)
+
+    def test_gemini_route_must_preserve_all_exact_prefixes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace("body.startsWith('@sparkFlux') || ", "", 1)
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("Gemini route must remain" in error for error in errors), errors)
+
+    def test_agent_review_route_must_remain_provider_bot_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace("actor.type === 'Bot'", "actor.type === 'User'", 1)
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("Agent review route must remain" in error for error in errors), errors)
+
     def test_router_must_not_inherit_all_repository_secrets(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._fixture(Path(tmp))

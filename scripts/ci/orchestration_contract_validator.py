@@ -222,6 +222,18 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
     ):
         if token not in router:
             errors.append(f"issue-comment router is missing trust/command contract: {token}")
+
+    if "new Set(['OWNER', 'MEMBER', 'COLLABORATOR'])" not in router:
+        errors.append("issue-comment router must use the exact repository collaborator association allowlist")
+    jules_route = router.split("const needsJules =", 1)[-1].split("const needsGemini =", 1)[0]
+    if not all(part in jules_route for part in ("action === 'created'", "!isPullRequest", "trustedHuman", "body.startsWith('@jules')", "body.startsWith('@Jules')")):
+        errors.append("Jules route must remain created-only, trusted-human, exact-prefix, and non-PR")
+    gemini_route = router.split("const needsGemini =", 1)[-1].split("const needsAgentReview =", 1)[0]
+    if not all(part in gemini_route for part in ("action === 'created'", "trustedHuman", "body.startsWith('@gemini-cli')", "body.startsWith('@sparkFlux')", "body.startsWith('@sparkflux')")):
+        errors.append("Gemini route must remain created-only, trusted-human, and exact-prefix")
+    review_route = router.split("const needsAgentReview =", 1)[-1].split("const needsLedger =", 1)[0]
+    if not all(part in review_route for part in ("['created', 'edited'].includes(action)", "isPullRequest", "actor.type === 'Bot'", "trustedProviderBots.has(login)")):
+        errors.append("Agent review route must remain PR-only and provider-bot-only")
     if "source_event" not in router:
         errors.append("issue-comment router must pass source-event provenance")
     if "secrets: inherit" in router:

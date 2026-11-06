@@ -2,8 +2,9 @@ name: Quota Dispatch Tree
 
 # Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
 # PR lifecycle, managed-lane completion, and source-record pushes wake it on demand.
-# The 10-minute schedule is retained as a fallback for time-only cadence slots;
-# it is not the primary demand signal and does not sweep the PR Lane Matrix.
+# The 10-minute schedule is a cadence clock only; repository/lane events wake
+# demand work immediately. Human force-all is an authenticated Issue comment,
+# never a generic Actions manual-dispatch input. The Lane Matrix has its own PR events.
 # Lanes keep their own authorities, guards, and concurrency groups.
 # material_change_rules: this file owns cadence for the migrated lanes.
 
@@ -17,31 +18,35 @@ on:
   workflow_run:
     workflows: ["lane events recorder"]
     types: [completed]
+  issue_comment:
+    types: [created]
   push:
     branches: [master]
     paths:
       - 'ops/tracking/**'
       - 'docs/agentic/dependency-phases.json'
       - 'docs/agentic/phase-approvals.json'
-  workflow_dispatch:
-    inputs:
-      force_lane:
-        description: 'Set to "all" to wake every lane regardless of decision-tree verdicts (emergency)'
-        required: false
-        default: ''
-        type: string
-
-permissions:
-  actions: write
-  contents: read
+permissions: {}
 
 concurrency:
-  group: quota-dispatch-tree
-  cancel-in-progress: false
+  group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request_target' || github.event_name == 'push' }}
 
 jobs:
   decide:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (
+        github.event.issue.pull_request == null &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+        github.event.comment.body == '/quota force all'
+      )
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+      issues: read
     outputs:
       dispatch_stall_watch: ${{ steps.tree.outputs.dispatch_stall_watch }}
       dispatch_bridge: ${{ steps.tree.outputs.dispatch_bridge }}
@@ -58,6 +63,7 @@ jobs:
       dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
       dispatch_q6: ${{ steps.tree.outputs.dispatch_q6 }}
       dispatch_vantage: ${{ steps.tree.outputs.dispatch_vantage }}
+      force_request_id: ${{ steps.tree.outputs.force_request_id }}
     steps:
       - uses: actions/checkout@v4
       - name: Decision tree — one cheap call per concern
@@ -65,7 +71,34 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         with:
           script: |
-            const force = (context.payload.inputs && context.payload.inputs.force_lane) === 'all';
+            // A force-all request is an explicit, authenticated Issue comment.
+            // It is content-addressed by the immutable comment ID; completion
+            // writes a receipt marker so duplicate webhook deliveries are no-ops.
+            let force = false;
+            let forceRequestId = '';
+            if (context.eventName === 'issue_comment') {
+              const issue = context.payload.issue || {};
+              const comment = context.payload.comment || {};
+              const association = comment.author_association;
+              const authorized = !issue.pull_request &&
+                context.payload.sender?.type === 'User' &&
+                ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(association) &&
+                (comment.body || '').trim() === '/quota force all';
+              if (authorized && comment.id) {
+                forceRequestId = String(comment.id);
+                const marker = `<!-- quota-dispatch-force:${issue.number}:${forceRequestId} -->`;
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number, per_page: 100,
+                });
+                force = !comments.some(c => (c.body || '').includes(marker));
+                if (!force) {
+                  forceRequestId = '';
+                  core.info(`Issue #${issue.number} force request ${comment.id} already completed`);
+                }
+              }
+            }
+            core.setOutput('force_request_id', forceRequestId);
             // Node A (reworked, issue #3812 step 4): lane-aware admission.
             // Active runs are listed (per_page 100, up to 2 pages per
             // status) and bucketed per workflow file by the admission
@@ -355,6 +388,9 @@ jobs:
   dispatch:
     needs: decide
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     strategy:
       fail-fast: false
       max-parallel: 3
@@ -516,3 +552,42 @@ jobs:
                 });
               }
             }
+
+  complete-force-request:
+    needs: [decide, dispatch]
+    if: >-
+      needs.dispatch.result == 'success' &&
+      needs.decide.outputs.force_request_id != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Record authenticated force-execution receipt
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const requestId = '${{ needs.decide.outputs.force_request_id }}';
+            const marker = `<!-- quota-dispatch-force:${issueNumber}:${requestId} -->`;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber, per_page: 100,
+            });
+            if (comments.some(c => (c.body || '').includes(marker))) {
+              core.info('Force-execution receipt already recorded');
+              return;
+            }
+            const actor = context.payload.comment.user?.login || 'authenticated collaborator';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                marker,
+                'Automated force-execution fan-out completed successfully.',
+                `Authenticated request: @${actor} · comment ${requestId}`,
+                `Dispatcher evidence: ${runUrl}`,
+                'This receipt records dispatch completion; it does not authorize merge or bypass lane-specific gates.'
+              ].join('\n')
+            });

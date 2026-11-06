@@ -12,18 +12,80 @@
   "units": "Live desk dispatches (challenge-entry builds + fleet build tasks) in the window — the continuous production flow itself; no synthetic units.",
   "factor": "provider arm as assigned by the desk rotation rule over the bench read from ops/quota/registry.json at run time (rule 6: bench never hard-pinned in this design; expected {jules, gemini, deepseek, command-dispatch} + any bench additions the registry gains).",
   "assignment": "Desk's rotation rule assigns; this campaign observes and audits. Dispenses lacking a {provider, selection_reason, ts} stamp are OBSERVATIONAL only (rule 5).",
-  "responses": ["first_pass_success (PR merged with no rework dispatch)", "rework_cycles per unit", "dispatch_to_pr_wall_time", "action_required stalls (wiring health, per rule 6 re-verification)"],
+  "responses": [
+   "first_pass_success (PR merged with no rework dispatch)",
+   "rework_cycles per unit",
+   "dispatch_to_pr_wall_time",
+   "action_required stalls (wiring health, per rule 6 re-verification)"
+  ],
   "window_rule": "first 24 stamped dispatches OR 2026-12-01, whichever first; per-arm reporting only at n>=4/arm",
   "cull_rule": "arm with first-pass success < pooled - 0.25 at n>=8 is flagged; doe-expert proposes a desk-rule amendment (the desk owns its rule; this campaign issues the verdict, not the change)",
-  "guardrails": ["no interference with desk assignment", "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)"]
+  "guardrails": [
+   "no interference with desk assignment",
+   "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)"
+  ]
  },
  "automation": {
   "runner": "experiments/doe/util-1-provider-rotation/scripts/util1_auditor.py",
   "workflow": ".github/workflows/doe-util1-audit.yml",
   "cadence": "weekly + workflow_dispatch",
-  "reads": ["apps/help-wanted-dashboard/data/desk-feed.json dispatch stamps", "ops/quota/registry.json (bench, at run time)"],
+  "reads": [
+   "apps/help-wanted-dashboard/data/desk-feed.json dispatch stamps",
+   "ops/quota/registry.json (bench, at run time)"
+  ],
   "emits": "records/*.json EXPERIMENT records + records/SUMMARY.json",
   "identity": "records carry instance_key where the dispatch stamp provides the configured-instance tuple; provider-only stamps group by provider and are marked as such"
  },
- "registration": {"preregistered_in_repo": true, "recorded": "2026-11-01"}
+ "registration": {
+  "preregistered_in_repo": true,
+  "recorded": "2026-11-01"
+ },
+ "conditional_provider_arms": [
+  {
+   "provider": "agentrouter",
+   "status": "pre_registered_conditional_not_dispatchable",
+   "protocols": [
+    "openai-compatible",
+    "anthropic-compatible"
+   ],
+   "model_identity": "dynamic per-key GET /v1/models; no static model IDs",
+   "activation_gates": [
+    "AGENTROUTER_API_KEY is present in approved secret storage and is never exposed in records",
+    "authenticated account/resource-pool model discovery succeeds",
+    "native inference transport is separately reviewed and allowlisted; catalog registration is not inference admission",
+    "explicit spend ceiling and stop switch are approved",
+    "data classification and provider data-handling terms are reviewed"
+   ],
+   "observation_requirements": [
+    "desk stamp includes provider, selection_reason and ts",
+    "first real desk-stamped dispatch after activation is required before the arm is counted or scored; it is an observation requirement, not an activation gate",
+    "record exact model_id and protocol plus workflow/run/attempt correlation when available",
+    "record provider-reported input/output/total/quota tokens, usage_cost and latency/performance metrics when returned; preserve additional sanitized provider metric names and values with provenance",
+    "keep account-wide quota balance and reset unknown until a separate authoritative documented account signal exists",
+    "record first_pass_success, rework_cycles, dispatch_to_pr_wall_time and stalled_action_required"
+   ],
+   "activation_rule": "Activate only after every listed activation gate passes. The first real desk-stamped dispatch is required as post-activation evidence before the arm is counted or scored; a registry/catalog row alone is not an eligible inference arm.",
+   "auditor_projection_fields": [
+    "model_id",
+    "protocol",
+    "workflow_id",
+    "run_id",
+    "run_attempt",
+    "temporal_workflow_id",
+    "request_id",
+    "doe_campaign_id",
+    "experiment_instance_key",
+    "instance_key",
+    "input_tokens",
+    "output_tokens",
+    "total_tokens",
+    "quota_tokens",
+    "usage_cost",
+    "latency_ms",
+    "time_to_first_token_ms",
+    "tokens_per_second",
+    "provider_metrics (sanitized scalar values with per-metric source timestamps and provenance)"
+   ]
+  }
+ ]
 }

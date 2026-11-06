@@ -83,6 +83,8 @@ jobs:
           tests/test_provider_quota_coverage.py
           tests/test_quota_self_counts.py
           tests/test_quota_consumption.py
+      - name: Deterministic text dashboard snapshot
+        run: python3 scripts/quota_tui.py --once --snapshot apps/tribute-dashboard/data/quota.json --registry ops/quota/registry.json > /tmp/quota.txt && cmp /tmp/quota.txt apps/tribute-dashboard/quota.txt
       - name: Snapshot pair identical + complete against the registry
         run: |
           cmp docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json

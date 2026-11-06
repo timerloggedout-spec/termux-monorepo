@@ -39,4 +39,14 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(result["provider"],"deterministic-fallback")
             self.assertIn("50.00",result["brief"])
 
+class DecisionPolicyTests(unittest.TestCase):
+    def test_duplicate_invoice_cannot_be_approved(self):
+        with self.assertRaisesRegex(ValueError,"duplicate invoice cannot be approved"):
+            app.validate_decision(app.analyze(app.SEED[2]),"approve","Reviewed the duplicate invoice and compared the source records.")
+    def test_exception_approval_requires_substantive_note(self):
+        with self.assertRaisesRegex(ValueError,"substantive resolution note"):
+            app.validate_decision(app.analyze(app.SEED[1]),"approve","ok")
+    def test_clean_match_can_be_approved_without_exception_note(self):
+        app.validate_decision(app.analyze(app.SEED[0]),"approve","")
+
 if __name__=="__main__": unittest.main()

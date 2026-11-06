@@ -327,7 +327,7 @@ The QAC-009 contract in docs/ops/CADENCE-TICK-LEDGER.md records:
 
 **Critical invariant:** cadence ticks are evidence, never quota control. The budget/admission path must continue to use authoritative live rate-limit evidence and existing reserve/defer behavior; no gate may spend quota based on tick aggregates.
 
-The rate-limit record further documents that the PAT circuit breaker, ETag cache and per-session budget cover the shared helper copy on its VM only. Other workflows and non-helper consumers are not automatically protected. The repository's quota self-counts explicitly state that PAT helper spend logs are VM-local and PAT call volume is not tallied there. RIDP's first practical observability gap is therefore cross-surface coverage and durable attribution—not the absence of a PAT-side request tick.
+The rate-limit record further documents that the PAT circuit breaker, ETag cache and per-session budget cover the shared helper copy on its VM only. Other workflows and non-helper consumers are not automatically protected. The repository's quota self-counts explicitly state that PAT helper spend logs are VM-local and PAT call volume is not tallied there. RIDP's first practical observability gap is therefore cross-surface coverage and durable attribution—not the absence of a PAT-side request tick.\n\nThe landed scripts/cadence_tick_ledger.py consumer validates required tick fields and produces a cadence-tick-ledger/v1 summary by principal/resource, endpoint, minute and latest remaining. Its current tests cover required-field presence, counted/un-counted handling and separate resource summaries. The current implementation should be inspected before extending it; RIDP should not fork a second tick parser or ledger.
 
 ### Collector bootstrap is a reusable safety contract
 
@@ -339,7 +339,7 @@ It also draws a strict caching/batching boundary:
 - They do not apply to writes, verify-after-write reads, or pre-write state reads.
 - Publishing remains all-direct so a stale base identifier cannot be hidden by batching.
 
-RIDP cache adapters must preserve this exclusion. A general-purpose cache wrapper around every GitHub call would violate the established contract.
+RIDP cache adapters must preserve this exclusion. A general-purpose cache wrapper around every GitHub call would violate the established contract. This restriction is mandatory for every RIDP cache adapter, including future request coalescing.
 
 ### Receiver Mesh is an existing prototype, not a blank-slate webhook requirement
 

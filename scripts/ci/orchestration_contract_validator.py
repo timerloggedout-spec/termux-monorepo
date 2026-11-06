@@ -196,8 +196,10 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
         errors.append("issue-comment router must own the issue_comment trigger")
     if not re.search(r"(?m)^    types: \[created, edited\]\s*$", router_on):
         errors.append("issue-comment router must cover created and edited comment revisions")
-    if not re.search(r"(?m)^permissions: \{\}\s*$", router):
-        errors.append("issue-comment router must have no top-level permissions")
+    if not re.search(r"(?m)^permissions:\\s*\\n  contents: read\\n  issues: write\\n  pull-requests: write\\s*$", router):
+        errors.append("issue-comment router must grant only the bounded caller-job permission ceiling")
+    if not re.search(r"(?m)^  route:\\n    permissions: \\{\\}\\s*$", router):
+        errors.append("issue-comment router classifier job must have no token permissions")
     if "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b" not in router:
         errors.append("issue-comment router must pin github-script to the approved immutable revision")
     if "actions/checkout" in router:
@@ -235,9 +237,9 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
                 errors.append(f"{contract['path']} must preserve direct event trigger: {event}")
         if "github.rest.issues.getComment" not in target:
             errors.append(f"{contract['path']} must re-fetch the source comment by ID")
-        if "comment.data.updated_at !== process.env.SOURCE_COMMENT_UPDATED_AT" not in target:
+        if "comment.updated_at === expectedUpdatedAt" not in target:
             errors.append(f"{contract['path']} must reject stale comment revisions")
-        if "comment.data.issue_url" not in target:
+        if "comment.issue_url" not in target:
             errors.append(f"{contract['path']} must verify the comment's issue identity")
         if f"uses: ./.github/workflows/{contract['path'].split('/')[-1]}" not in router:
             errors.append(f"issue-comment router is missing reusable route: {route_name}")

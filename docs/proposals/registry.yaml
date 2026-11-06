@@ -1250,3 +1250,24 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+
+  - id: tak-common-operating-picture
+    title: 'T.A.K. — Taktikal Awareness Kit common operating picture and actor-network emergence'
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/tak-common-operating-picture/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 4496
+    related_prs:
+      - 5025
+    related_branches:
+      - tak-common-operating-picture-contract-v1
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

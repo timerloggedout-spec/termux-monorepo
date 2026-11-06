@@ -205,7 +205,7 @@ class Handler(BaseHTTPRequestHandler):
         target=(STATIC/name).resolve()
         if STATIC.resolve() not in target.parents or not target.is_file(): return self.send_json(404,{"error":"not_found"})
         data=target.read_bytes(); import mimetypes
-        self.send_response(200); self.send_header("Content-Type",mimetypes.guess_type(target.name)[0] or "application/octet-stream"); self.send_header("Content-Length",str(len(data))); self.send_header("X-Content-Type-Options","nosniff"); self.send_header("Cache-Control","no-cache"); self.end_headers(); self.wfile.write(data)
+        self.send_response(200); self.send_header("Content-Type",mimetypes.guess_type(target.name)[0] or "application/octet-stream"); self.send_header("Content-Length",str(len(data))); self.send_header("X-Content-Type-Options","nosniff"); self.send_header("X-Frame-Options","DENY"); self.send_header("Referrer-Policy","no-referrer"); self.send_header("Content-Security-Policy","default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"); self.send_header("Cache-Control","no-cache"); self.end_headers(); self.wfile.write(data)
     def do_POST(self):
         if not self.authorized(): return self.send_json(403,{"error":"operator_authorization_required"})
         try:

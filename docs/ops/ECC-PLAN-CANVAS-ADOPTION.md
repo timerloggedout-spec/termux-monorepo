@@ -31,8 +31,8 @@ Platform201 deployment is performed.
 ## Why remove the timer
 
 Issue #1573's dispatcher now has immediate wake paths for PR lifecycle changes,
-managed-lane completion (through the lane-events recorder), and source-record
-pushes. Its 30-minute schedule is only the clock for time-only cadence slots; it is not a
+selected tribute/SHE lane completion (through the lane-events recorder), and
+source-record pushes. Its 30-minute schedule is only the clock for time-only cadence slots; it is not a
 10-minute polling sweep and it is not the primary demand signal. State-changing
 events wake demand work immediately, while the 30-minute clock evaluates true
 30-minute/hourly/3h/4h/6h/12h cadence and stale-recovery windows.

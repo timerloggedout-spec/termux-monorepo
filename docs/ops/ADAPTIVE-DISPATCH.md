@@ -24,7 +24,7 @@ state store, command bus, dispatch gate, or current authority.
 
 | Signal | Behavior | Purpose |
 |---|---|---|
-| PR lifecycle (`pull_request_target`) | Immediate event wake; coalesced per PR | Recompute current open-PR disposition |
+| PR lifecycle (`pull_request_target`) | Immediate event wake; coalesced per PR | Recompute current open-PR disposition; central fan-out only for same-repository branches (fork PRs remain Matrix-visible but cannot wake the quota fan-out) |
 | Managed lane completion (`workflow_run` via lane-events recorder) | Immediate event wake | Re-evaluate dependent work and freshness |
 | Canonical source-record push | Immediate event wake | Reconcile changed tracking/dependency state |
 | Hourly schedule | Cadence clock only | Run hourly and modulo-based 3h/4h/6h/12h slots; recover time-only stale lanes |

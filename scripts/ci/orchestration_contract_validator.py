@@ -254,6 +254,15 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
                 errors.append(f"{contract['path']} must preserve direct event trigger: {event}")
         if "github.rest.issues.getComment" not in target:
             errors.append(f"{contract['path']} must re-fetch the source comment by ID")
+        target_job = {
+            "agent-review-auto-jules": "detect-bot-feedback",
+            "gemini-dispatch": "dispatch",
+            "agent-jules-on-issues": "jules-on-mention",
+        }[route_name]
+        if f"  {target_job}:\\n    needs: validate-source-comment" not in target:
+            errors.append(f"{contract['path']} execution job must depend on source-comment validation")
+        if "needs.validate-source-comment.outputs.valid == 'true'" not in target:
+            errors.append(f"{contract['path']} execution job must reject an invalid source-comment revision")
         if "comment.updated_at === expectedUpdatedAt" not in target:
             errors.append(f"{contract['path']} must reject stale comment revisions")
         if "comment.issue_url" not in target:

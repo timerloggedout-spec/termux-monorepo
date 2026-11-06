@@ -5,6 +5,7 @@ re-verified, never pinned). Unstamped dispatches are flagged, not scored.
 """
 import datetime
 import json
+import math
 import pathlib
 import re
 import sys
@@ -16,6 +17,8 @@ OUT = ROOT / "experiments/doe/util-1-provider-rotation/records"
 
 _METRIC_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9_.:-]{0,127}$")
 _METRIC_DENY = re.compile(r"(?:secret|credential|authorization|api[_-]?key|prompt|completion|request[_-]?body|response[_-]?body|header|cookie)", re.I)
+_METRIC_UNIT = re.compile(r"^[A-Za-z0-9 _./%-]{1,48}$")
+_ISO_TIMESTAMP = re.compile(r"^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$")
 
 
 def bench():
@@ -58,9 +61,11 @@ def _safe_provider_metrics(dispatch):
             value = metric.get("value")
             if isinstance(value, bool) or not isinstance(value, (int, float)):
                 continue
+            if isinstance(value, float) and not math.isfinite(value):
+                continue
             entry = {"value": value, "provenance": "provider_reported"}
             unit = metric.get("unit")
-            if isinstance(unit, str) and len(unit) <= 48 and not _METRIC_DENY.search(unit):
+            if isinstance(unit, str) and _METRIC_UNIT.fullmatch(unit) and not _METRIC_DENY.search(unit):
                 entry["unit"] = unit
             source_timestamp = (
                 metric.get("source_timestamp")
@@ -69,7 +74,7 @@ def _safe_provider_metrics(dispatch):
                 or timestamp_map.get(raw_name)
                 or fallback_timestamp
             )
-            if isinstance(source_timestamp, str) and len(source_timestamp) <= 64:
+            if isinstance(source_timestamp, str) and _ISO_TIMESTAMP.fullmatch(source_timestamp):
                 entry["source_timestamp"] = source_timestamp
             projected[raw_name] = entry
     return projected

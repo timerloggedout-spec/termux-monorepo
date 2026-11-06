@@ -3,6 +3,7 @@ set -euo pipefail
 
 : "${MATCHDESK_DOMAIN:?Set MATCHDESK_DOMAIN to the DNS name pointing at this VM}"
 : "${MATCHDESK_ADMIN_TOKEN:?Set MATCHDESK_ADMIN_TOKEN to a long random secret}"
+if [[ "${#MATCHDESK_ADMIN_TOKEN}" -lt 32 ]]; then echo "MATCHDESK_ADMIN_TOKEN must be at least 32 characters" >&2; exit 1; fi
 MATCHDESK_BRANCH="${MATCHDESK_BRANCH:-master}"
 REPO_URL="https://github.com/timerloggedout-spec/termux-monorepo.git"
 APP_DIR="/opt/match-impact-desk"
@@ -14,7 +15,7 @@ fi
 
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y python3 git caddy
-id matchdesk >/dev/null 2>&1 || useradd --system --home "$APP_DIR" --shell /usr/sbin/nologin matchdesk
+id matchdesk >/dev/null 2>&1 || useradd --system --user-group --home "$APP_DIR" --shell /usr/sbin/nologin matchdesk
 install -d -o matchdesk -g matchdesk "$APP_DIR/data"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT

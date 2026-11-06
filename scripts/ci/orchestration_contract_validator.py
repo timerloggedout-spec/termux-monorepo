@@ -136,18 +136,21 @@ ROUTED_WORKFLOWS = {
         "path": ".github/workflows/agent-review-auto-jules.yml",
         "inputs": {"pr_number", "comment_id", "comment_updated_at", "source_event"},
         "required_inputs": {"pr_number", "comment_id", "comment_updated_at", "source_event"},
+        "secret": "JULES_API_KEY",
         "direct_events": {"pull_request_review", "pull_request_review_comment"},
     },
     "gemini-dispatch": {
         "path": ".github/workflows/gemini-dispatch.yml",
         "inputs": {"issue_number", "pr_number", "comment_id", "comment_updated_at", "source_event"},
         "required_inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
+        "secret": "GEMINI_API_KEY",
         "direct_events": {"pull_request", "issues", "pull_request_review", "pull_request_review_comment"},
     },
     "agent-jules-on-issues": {
         "path": ".github/workflows/agent-jules-on-issues.yml",
         "inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
         "required_inputs": {"issue_number", "comment_id", "comment_updated_at", "source_event"},
+        "secret": "JULES_API_KEY",
         "direct_events": {"issues"},
     },
 }
@@ -219,8 +222,10 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
     ):
         if token not in router:
             errors.append(f"issue-comment router is missing trust/command contract: {token}")
-    if "source_event" not in router or router.count("secrets: inherit") < 3:
-        errors.append("issue-comment router must pass provenance and inherit secrets only in target jobs")
+    if "source_event" not in router:
+        errors.append("issue-comment router must pass source-event provenance")
+    if "secrets: inherit" in router:
+        errors.append("issue-comment router must not inherit the entire repository secret set")
 
     for route_name, contract in ROUTED_WORKFLOWS.items():
         target = _read_workflow(root, contract["path"], errors)
@@ -241,6 +246,10 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
             errors.append(f"{contract['path']} must reject stale comment revisions")
         if "comment.issue_url" not in target:
             errors.append(f"{contract['path']} must verify the comment's issue identity")
+        if f"      {contract['secret']}:" not in _on_block(target) or "required: false" not in _on_block(target):
+            errors.append(f"{contract['path']} must declare its provider secret as optional workflow_call input")
+        if f"{contract['secret']}: ${{{{ secrets.{contract['secret']} }}}}" not in router:
+            errors.append(f"issue-comment router must pass only the target secret: {contract['secret']}")
         if f"uses: ./.github/workflows/{contract['path'].split('/')[-1]}" not in router:
             errors.append(f"issue-comment router is missing reusable route: {route_name}")
 

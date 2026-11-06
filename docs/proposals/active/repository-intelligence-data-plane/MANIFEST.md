@@ -41,7 +41,11 @@ No independent review recorded yet. Proposal remains posted; implementation phas
 - [ ] Gates green on merge
 - [ ] Closed + moved to closed/ when terminal
 
-## Related implementation\n\n- QAC-009 tick ledger implementation: PR #2473 (merged; source of per-request quota evidence).\n\n## Links
+## Related implementation
+
+- QAC-009 tick ledger implementation: PR #2473 (merged; source of per-request quota evidence).
+
+## Links
 
 - Architecture: ../../../architecture/REPOSITORY-INTELLIGENCE-DATA-PLANE.md
 - ITEMS: ./ITEMS.md

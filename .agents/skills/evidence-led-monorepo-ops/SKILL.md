@@ -34,7 +34,7 @@ Use the repository-native authority map:
   no generic issue is a global hub.
 
 The Lane Matrix is PR-event-driven, not a timer sweep. The central dispatcher
-uses immediate repository/lane demand wakes plus an hourly clock for genuine
+uses immediate repository/lane demand wakes plus a 30-minute clock for genuine
 time cadence. There is no generic manual Actions dispatch; force-all is an
 authenticated `/quota force all` comment on an open owning Issue, recorded by
 an idempotent receipt. Force execution never bypasses lane gates or dual-gate

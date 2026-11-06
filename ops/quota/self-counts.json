@@ -1,7 +1,7 @@
 {
  "schema": "quota-self-counts/v1",
  "generated_by": "scripts/quota_self_counts.py",
- "generated_at": "2026-11-03T19:30:52Z",
+ "generated_at": "2026-11-06T01:55:17Z",
  "method": "self-count: tallies of the fleet's own recorded events from committed sources (owner ruling 2026-11-03). Not provider readings; not estimates. Provider readings govern where present; these counts govern where readings are null.",
  "providers": {
   "gemini-cli": {
@@ -13,15 +13,15 @@
   },
   "muse": {
    "provider": "Muse",
-   "dispatches": 3,
+   "dispatches": 4,
    "first_at": "2026-11-02T00:39:10Z",
    "last_at": "2026-11-02T01:24:02Z",
    "usage_stamps": 7
   },
   "cohere": {
    "provider": "cohere",
-   "dispatches": 3,
-   "first_at": "2026-11-02T00:28:57Z",
+   "dispatches": 4,
+   "first_at": "2026-11-01T23:52:00Z",
    "last_at": "2026-11-02T02:10:16Z",
    "usage_stamps": 4
   },
@@ -55,10 +55,37 @@
   },
   "deepseek": {
    "provider": "deepseek",
-   "dispatches": 6,
+   "dispatches": 8,
    "first_at": "2026-11-02T08:16:23Z",
    "last_at": "2026-11-02T09:14:42Z",
    "usage_stamps": 7
+  },
+  "jules": {
+   "provider": "Jules",
+   "dispatches": 2,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 3
+  },
+  "claude-muse": {
+   "provider": "claude-muse",
+   "dispatches": 1,
+   "first_at": null,
+   "last_at": null
+  },
+  "command-dispatch": {
+   "provider": "command-dispatch",
+   "dispatches": 1,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 14
+  },
+  "gemini": {
+   "provider": "gemini",
+   "dispatches": 1,
+   "first_at": null,
+   "last_at": null,
+   "usage_stamps": 2
   },
   "scout": {
    "provider": "Scout / Delphi (owner-named)",
@@ -66,27 +93,6 @@
    "first_at": null,
    "last_at": null,
    "usage_stamps": 1
-  },
-  "jules": {
-   "provider": "Jules",
-   "dispatches": 0,
-   "first_at": null,
-   "last_at": null,
-   "usage_stamps": 3
-  },
-  "gemini": {
-   "provider": "Gemini",
-   "dispatches": 0,
-   "first_at": null,
-   "last_at": null,
-   "usage_stamps": 2
-  },
-  "command-dispatch": {
-   "provider": "Command-dispatch (Devin)",
-   "dispatches": 0,
-   "first_at": null,
-   "last_at": null,
-   "usage_stamps": 14
   },
   "github-actions": {
    "provider": "github-actions",

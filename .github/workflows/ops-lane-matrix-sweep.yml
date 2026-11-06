@@ -93,6 +93,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action || 'push' }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
         run: |
           set -euo pipefail
           MASTER_SHA="$(git rev-parse HEAD)"
@@ -103,8 +106,12 @@ jobs:
           {
             echo '## Event-driven lane matrix'
             echo
-            echo "- Trigger: ${{ github.event.action }} PR #${{ github.event.pull_request.number }}"
-            echo "- Materialized master: `$MASTER_SHA`"
+            if [[ "$EVENT_NAME" == "pull_request_target" ]]; then
+              echo "- Trigger: pull_request_target $EVENT_ACTION PR #$PR_NUMBER"
+            else
+              echo "- Trigger: $EVENT_NAME on master"
+            fi
+            echo "- Materialized master: `$MASTER_SHA`
             echo
             head -n 40 docs/ops/generated/lane-matrix-status.md
           } >> "$GITHUB_STEP_SUMMARY"
@@ -119,9 +126,15 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'ops(lane-matrix): materialize PR lifecycle change' \
-            -m 'Event: ${{ github.event.action }} PR #${{ github.event.pull_request.number }}' \
-            -m 'Observer only — dual-gate remains promote authority.'
+          if [[ "$EVENT_NAME" == "pull_request_target" ]]; then
+            git commit -m 'ops(lane-matrix): materialize PR lifecycle change' \
+              -m "Event: $EVENT_ACTION PR #$PR_NUMBER" \
+              -m 'Observer only — dual-gate remains promote authority.'
+          else
+            git commit -m 'ops(lane-matrix): refresh policy-driven inventory' \
+              -m "Trigger: $EVENT_NAME" \
+              -m 'Observer only — dual-gate remains promote authority.'
+          fi
           git pull --rebase origin master
           git push origin HEAD:master
 

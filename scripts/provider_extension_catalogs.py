@@ -80,6 +80,7 @@ def _pricing(item, provider):
         return {}, "unknown"
     if provider == "routeway":
         def per_token(side):
+            """Convert a documented per-million-token rate to a per-token rate."""
             section = pricing.get(side)
             if not isinstance(section, dict) or section.get("unit") != "1M tokens":
                 return None
@@ -89,6 +90,7 @@ def _pricing(item, provider):
         # An underflowing nonzero price must never be relabeled free.
         zero = all(isinstance(pricing.get(side), dict) and pricing[side].get("price_per_million_t") == 0 for side in ("input", "output"))
         def extra_rates(node):
+            """Collect nested advertised price fields for fail-closed validation."""
             if not isinstance(node, dict):
                 return []
             result = []

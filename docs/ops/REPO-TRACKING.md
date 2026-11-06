@@ -8,7 +8,7 @@ those systems — it replaces none of them.
 
 The Quota Dispatch Tree is a hybrid adaptive admission controller: PR lifecycle
 events, completed lane-events recorder runs, and pushes to canonical source
-records wake it immediately. The hourly schedule is only a cadence clock
+records wake it immediately. The 30-minute schedule is only a cadence clock
 for time-only slots; it is not a ten-minute polling sweep and is not the Lane
 Matrix refresh mechanism. State changes wake demand work immediately.
 Phase-window dispatches run only on scheduled wakes, while event wakes evaluate

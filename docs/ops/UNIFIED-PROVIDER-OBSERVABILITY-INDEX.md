@@ -38,7 +38,7 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
                    Gravitee gateway analytics (when persistent)
 ```
 
-**ForeSight:** this is the existing FOSS / emerging-technology horizon-scanning system, the intended ForeSight integration. Its canonical surfaces are `docs/research/FORESIGHT-RADAR.md`, `docs/ops/FORESIGHT-EVIDENCE-SPINE.md`, the `foresight` Python package, and `data/foresight/resource-registry.jsonl`. Integrate through its existing H0–H3 horizon and evidence-status contract; do not create a duplicate radar, registry, or evidence ledger.
+**ForeSight:** this is the existing FOSS / emerging-technology horizon-scanning system. Its canonical surfaces are `docs/research/FORESIGHT-RADAR.md`, `docs/ops/FORESIGHT-EVIDENCE-SPINE.md`, the `foresight` Python package, and `data/foresight/resource-registry.jsonl`. Integrate through its existing H0–H3 horizon and evidence-status contract; do not create a duplicate radar, registry, or evidence ledger.
 
 ## Consolidated system register
 
@@ -173,7 +173,7 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 - `docs/ops/PLATFORM201-LIVE-2026-10-27.md` — Platform201 deployment evidence and API credential gap.
 - `docs/proposals/active/bifrost-gateway-integration/ITEMS.md` — Bifrost status; benchmark results pending.
 - `config/agent_stack_integrations.json` + `docs/research/RUNTIME-PROVENANCE-AIBOM.md` — Witness integration/provenance references.
-- `scripts/provider_model_catalog.py`, `scripts/provider_extension_catalogs.py`, `scripts/provider_quota_managers.py`, `ops/quota/provider-managers.json` — provider discovery and passive quota normalization. AgentRouter is authenticated catalog-only; per-inference usage/quota metrics are captured as request-level evidence when returned, while aggregate balance/reset remains unknown pending an account-authoritative signal.
+- `scripts/provider_model_catalog.py`, `scripts/provider_extension_catalogs.py`, `scripts/provider_quota_managers.py`, `ops/quota/provider-managers.json` — provider discovery and passive quota normalization. AgentRouter is authenticated catalog-only; per-inference usage/quota metrics are modeled as request-level evidence when ingested, while aggregate balance/reset remains unknown pending an account-authoritative signal.
 - `experiments/doe/util-1-provider-rotation/DESIGN.json` + `docs/ops/DOE-FAMILY.md` — live provider-rotation experiment contract.
 
 This document records an integration baseline. It does not assert that all integrations are credentialed, deployed, healthy, or approved for production traffic.

@@ -38,7 +38,7 @@ Open http://127.0.0.1:8080.
 - Development writes without a token are accepted only from loopback.
 - Audit table rejects UPDATE and DELETE.
 - Stale decisions return HTTP 409.
-- Exception approval requires a substantive resolution note.
+- Exception approval/rejection requires a substantive resolution note; duplicate invoices cannot be approved.
 - Inference is optional and advisory only; deterministic matching remains authoritative.
 - No raw secrets or request bodies are logged.
 

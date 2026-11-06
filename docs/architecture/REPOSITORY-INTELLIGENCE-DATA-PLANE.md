@@ -320,8 +320,8 @@ The QAC-009 contract in docs/ops/CADENCE-TICK-LEDGER.md records:
 
 - PAT helper phase 1 is landed: the shared helper emits a tick for every helper-routed API request, including normalized endpoint class, principal, session, resource bucket, limit/used/remaining/reset, status and counted flag.
 - Tick writes are fail-silent; telemetry must never break the request.
-- Local ticks.jsonl and spend.jsonl beside the helper are VM-local interim stores.
-- App-token consumer adoption is still an adoption phase.
+- Local ticks.jsonl and spend.jsonl beside the helper are VM-local interim stores. The helper source is outside this repository tree and was not inspected directly in this pass.
+- App-token consumer tick adoption is still an adoption phase. A read-only Collector GitHub App already exists and its installation bucket split was proven; production workflow migration was still recorded as pending in the 2026-10-30 migration-plan snapshot.
 - Shared workflow-step ticks for the Actions installation bucket are still an adoption phase.
 - Durable Neon lane-events ingestion is still an adoption phase.
 
@@ -351,7 +351,7 @@ RIDP should:
 - not create a second external receiver, queue, D1/Neon event ledger or processor;
 - preserve the prototype's provisioning and owner-decision boundaries. Prototype status is not production availability.
 
-### Revised P0 implementation order
+### Existing App and context-cache assets\n\nA read-only Termux Fleet Collector GitHub App is already created and installed on this repository. Its installation quota bucket was proven independent from the user PAT bucket. The migration plan records zero production workflows migrated at its 2026-10-30 evidence snapshot; current adoption must be rechecked with the AppID lane. RIDP must not create a second App. The minter is a token-creation utility, not the shared API telemetry chokepoint.\n\nThe Actions refinements record also describes an existing non-secret context cache composite action with explicit field stripping, size cap and ephemeral auth-state handling. Reuse it only after exact source and owner inspection; do not create a competing cache.\n\nDetailed source-to-owner facts and unknowns are maintained in `docs/ops/RIDP-SOURCE-CENSUS.md`.\n\n### Revised P0 implementation order
 
 Given the above evidence, the first implementation increment should not be a new generic cache or new budget service. It should:
 

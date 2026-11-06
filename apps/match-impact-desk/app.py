@@ -105,6 +105,13 @@ def validate_case(case):
         if not all(k in line for k in ("sku","qty")) or Decimal(str(line["qty"]))<0: raise ValueError("invalid receipt line")
     return case
 
+def validate_decision(analysis,decision,note):
+    codes={x["code"] for x in analysis["exceptions"]}
+    if decision=="approve" and "DUPLICATE_INVOICE" in codes:
+        raise ValueError("duplicate invoice cannot be approved; reject or hold")
+    if decision in ("approve","reject") and analysis["exception_count"] and len(note.strip())<12:
+        raise ValueError("exception approval or rejection requires a substantive resolution note")
+
 def audit_append(db,cid,kind,actor,payload):
     prev=db.execute("SELECT event_hash FROM audit ORDER BY id DESC LIMIT 1").fetchone()
     previous=prev["event_hash"] if prev else "0"*64
@@ -238,7 +245,7 @@ class Handler(BaseHTTPRequestHandler):
                     if row["version"]!=expected: return self.send_json(409,{"error":"stale_version"})
                     if row["status"] in ("approved","rejected"): return self.send_json(409,{"error":"case_already_final"})
                     c=json.loads(row["payload"]); a=analyze(c)
-                    if decision in ("approve","reject") and a["exception_count"] and len(note.strip())<12: raise ValueError("exception approval requires a substantive resolution note")
+                    validate_decision(a,decision,note)
                     state={"approve":"approved","hold":"on_hold","reject":"rejected"}[decision]
                     record={"decision":decision,"actor":actor,"note":note.strip(),"payment_released":False,"ledger_posted":False,"at":utcnow()}
                     db.execute("UPDATE cases SET status=?,version=version+1,decision=?,updated_at=? WHERE case_id=?",(state,json.dumps(record),utcnow(),cid))

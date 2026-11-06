@@ -27,15 +27,16 @@ state store, command bus, dispatch gate, or current authority.
 | PR lifecycle (`pull_request_target`) | Immediate event wake; coalesced per PR | Recompute current open-PR disposition; central fan-out only for same-repository branches (fork PRs remain Matrix-visible but cannot wake the quota fan-out) |
 | Managed lane completion (`workflow_run` via lane-events recorder) | Immediate event wake | Re-evaluate dependent work and freshness |
 | Canonical source-record push | Immediate event wake | Reconcile changed tracking/dependency state |
-| Hourly schedule | Cadence clock only | Run hourly and modulo-based 3h/4h/6h/12h slots; recover time-only stale lanes |
+| 30-minute schedule | Cadence clock only | Run 30-minute and hourly/modulo-based 3h/4h/6h/12h slots; recover time-only stale lanes |
 | Authorized Issue command | Explicit human force request | Force the managed dispatch fan-out with an auditable receipt |
 
 The Lane Matrix is not part of the Quota Dispatch Tree. It has its own PR
 lifecycle trigger and no timer, polling loop, manual dispatch, or six-hour
 dependency.
 
-The central dispatcher no longer runs a ten-minute sweep. Its hourly schedule
-is the clock for true time cadence. Demand work does not wait for that clock:
+The central dispatcher no longer runs a ten-minute sweep. Its 30-minute schedule
+is the clock for true time cadence, including the 30-minute slow lane and hourly
+phase windows. Demand work does not wait for that clock:
 PR, lane-completion, and canonical-record events wake the admission tree
 immediately. Event wakes do not replay scheduled modulo phase slots.
 

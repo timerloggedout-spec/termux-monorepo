@@ -9,7 +9,7 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Audit performed:** 2026-11-05. **Registry update date:** 2026-11-05. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-06. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
 
 ## Executive status
 
@@ -104,3 +104,18 @@ The following actions were deliberately not taken:
 Every adapter must pass the existing [adapter contract](ADAPTER-CONTRACT.md): least privilege, read-only default, redaction, idempotency, cost bounds, source provenance, schema validation, bounded retries, and evidence-backed promotion.
 
 The normalized [integration event schema](schemas/integration-event.schema.json) remains unchanged. No provider-specific payload becomes canonical repository state.
+
+
+## Follow-up verification — 2026-11-06
+
+A fresh Agent Ready scan of the published documentation site completed (scan `3f-mIivo8j`): Vercel agent-readability **73/100**, `llms.txt` **87/100**, and accessibility **88/100**. This scan describes the published site, not the current pull-request branch.
+
+- `sitemap.md` was absent from the published site. This PR now adds a root-level, frontmatter-equipped `sitemap.md` and includes it in Mintlify navigation. The fix is **not yet verified live**.
+- The generated `llms.txt` lacked a blockquote summary and grouped H2 link sections. This PR adds the Mintlify site description and stable `markdown.instructions` metadata with a sitemap link. Re-scan after publication; do not hand-edit generated output.
+- The published MCP Server Card at `/.well-known/mcp.json` lacked `name` and `description`; the A2A Agent Card lacked `description`. No corresponding `.well-known` source files were found in the repository tree, so no generated/provider-owned card was fabricated. Identify the authoritative serving configuration before changing these fields.
+- Accessibility findings remain: 13 controls have accessible names that omit visible labels, and one focusable element is inside `aria-hidden="true"`. Locate repository-owned source or supported platform configuration before attempting a fix.
+- The scanner reported no root OpenAPI specification. Treat this as conditional until the site is confirmed to be an API-first surface; do not publish an invented or empty specification.
+
+SiteTriage reported HTTP 200 and a hostname-matching TLS certificate for the published Mintlify URL, expiring 2026-12-30. It also observed resolver disagreement for the Mintlify subdomain (Cloudflare and Google returned different A records while Quad9 returned none); recheck after DNS TTL propagation before treating this as persistent. The shared `mintlify.app` email-auth result is provider-domain context, not repository-owned DNS remediation.
+
+The latest Mintlify deployment observed during this pass was live at commit `0cdc0a906380722a2dcebbb9a016ecdfa22d4dd3`. The current PR's Mintlify deployment check was skipped, so this branch has **not** been published or verified live.

@@ -41,13 +41,13 @@
       "authority": "existing results-index and telemetry-ingest receipts"
     },
     {
-      "id": "firesight",
-      "domain": "unresolved",
-      "status": "not_found_in_repository",
-      "record_of_record": null,
-      "role": "unknown; do not infer",
-      "observed_state": "no matching repository code-search result or registry entry found during 2026-11-05 inspection",
-      "authority": "none; requires user identification and authoritative source"
+      "id": "foresight",
+      "domain": "research_horizon_scanning",
+      "status": "existing_radar_and_evidence_spine",
+      "record_of_record": "docs/research/FORESIGHT-RADAR.md; docs/ops/FORESIGHT-EVIDENCE-SPINE.md; foresight/registry.py; data/foresight/resource-registry.jsonl",
+      "role": "H0-H3 horizon scanning, FOSS/emerging-technology research, procurement and prototype evidence",
+      "observed_state": "existing portable radar and append-oriented evidence registry; preserves horizon, evidence status, canonical source and evidence hash",
+      "authority": "ForeSight Radar and Evidence Spine contracts"
     },
     {
       "id": "gravitee",
@@ -97,10 +97,10 @@
     {
       "id": "agentrouter",
       "domain": "llm_provider_gateway",
-      "status": "catalog_adapter_wired_pending_credential",
+      "status": "catalog_adapter_wired_owner_key_provisioned_validation_pending",
       "record_of_record": "docs/ops/UNIFIED-PROVIDER-OBSERVABILITY-INDEX.md#agentrouter-transport-details",
       "role": "OpenAI-compatible and Anthropic-compatible LLM gateway",
-      "observed_state": "authenticated dynamic GET /v1/models adapter and unit tests added; requires AGENTROUTER_API_KEY for account-scoped validation; quota balance/reset remains unknown; inference not admitted",
+      "observed_state": "authenticated dynamic GET /v1/models adapter and unit tests added in PR; owner reports API key provisioned; authenticated account model discovery pending workflow evidence; per-inference quota/token/usage and performance metrics are provider-logged per owner; inference not admitted",
       "authority": "official provider guide and per-key model catalogue"
     }
   ],
@@ -125,10 +125,14 @@
     "usage_fields": [
       "input_tokens",
       "output_tokens",
+      "total_tokens",
+      "quota_tokens",
       "usage_cost",
-      "latency_ms"
+      "latency_ms",
+      "time_to_first_token_ms",
+      "tokens_per_second"
     ],
-    "quota_reference": "source + scope + observed_at + authority + evidence_ref",
+    "quota_reference": "per-inference provider usage/quota evidence + source + scope + observed_at + authority + evidence_ref; aggregate remaining balance/reset requires separate account-authoritative evidence",
     "privacy_exclusions": [
       "api_keys",
       "authorization_headers",
@@ -138,7 +142,8 @@
       "raw_response_bodies",
       "private_context",
       "unredacted_errors"
-    ]
+    ],
+    "provider_metric_passthrough": "Preserve additional provider-reported usage/quota/performance metric names and values in a sanitized allowlisted metrics object with source and observed_at; do not synthesize absent metrics."
   },
   "quota_contract": {
     "existing_implementations_to_extend": [
@@ -171,7 +176,7 @@
       "ts"
     ],
     "usage_cost_rule": "record quota/usage cost only when returned by provider",
-    "agentrouter_participation": "pre_registered_conditional_not_dispatchable; activate only after credential validation, account model discovery, separate inference admission, approved spend ceiling, data-classification review, and first real desk-stamped dispatch",
+    "agentrouter_participation": "pre_registered_conditional_not_dispatchable; activate only after credential validation, account model discovery, separate inference admission, approved spend ceiling, data-classification review, and stop-switch approval; first real desk-stamped dispatch is a post-activation observation requirement before scoring",
     "promotion_rule": "committed design amendment plus actual experiment records; no synthetic observations"
   },
   "invariants": [
@@ -183,7 +188,7 @@
     "Bifrost remains evaluation-only until benchmark results and dual-gate evidence",
     "Platform201 is a host and registry entry, not a telemetry backend",
     "Witness attestations reference canonical evidence digests",
-    "FireSight remains unresolved until authoritative identity and interface are provided",
+    "ForeSight is the existing radar/evidence-spine system; do not create a duplicate FireSight integration",
     "catalog discovery does not grant quota, credential, health, or runtime admission"
   ]
 }

@@ -4,7 +4,10 @@ on:
   issue_comment:
     types: [created, edited]
 
-permissions: {}
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 
 concurrency:
   # Preserve every comment revision. Target workflows coalesce only where their
@@ -14,6 +17,7 @@ concurrency:
 
 jobs:
   route:
+    permissions: {}
     runs-on: ubuntu-latest
     timeout-minutes: 3
     outputs:
@@ -54,12 +58,12 @@ jobs:
               action === 'created' &&
               !isPullRequest &&
               trustedHuman &&
-              /^@jules\b/i.test(body);
+              (body.startsWith('@jules') || body.startsWith('@Jules'));
 
             const needsGemini =
               action === 'created' &&
               trustedHuman &&
-              (/^@gemini-cli\b/i.test(body) || /^@sparkflux\b/i.test(body));
+              (body.startsWith('@gemini-cli') || body.startsWith('@sparkFlux') || body.startsWith('@sparkflux'));
 
             const needsAgentReview =
               ['created', 'edited'].includes(action) &&

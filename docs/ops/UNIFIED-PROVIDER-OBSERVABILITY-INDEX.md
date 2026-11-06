@@ -90,7 +90,8 @@ Emit one sanitized event per provider/gateway invocation or deployment/workflow 
 | `protocol` | Transport family | e.g. `openai-compatible`, `anthropic-compatible`, `native-mcp` |
 | `workflow_id`, `run_id`, `run_attempt`, `temporal_workflow_id` | Execution correlation | Use available authoritative IDs; never fabricate missing IDs |
 | `request_id` | Provider request identifier | Only if returned by provider |
-| `doe_campaign_id`, `experiment_instance_key` | Experimental attribution | Only when the dispatch is stamped and eligible |
+| `doe_campaign_id`, `experiment_instance_key`, `instance_key` | Experimental attribution | Preserve both desk-feed instance identity and experiment attribution when supplied; only score eligible stamped dispatches |
+| `provider_metrics` | Additional provider-reported metrics | Sanitized numeric values only; retain metric name, optional unit, source timestamp and provenance; exclude arbitrary text/payloads and sensitive fields |
 | `started_at`, `ended_at`, `latency_ms`, `time_to_first_token_ms`, `tokens_per_second` | Timing/performance | UTC; use provider-reported metrics when available; derive only elapsed wall latency from timestamps |
 | `input_tokens`, `output_tokens`, `total_tokens`, `quota_tokens`, `usage_cost` | Usage/quota | Normalize only metrics actually returned by the provider; preserve exact raw metric provenance and null/unknown semantics |
 | `quota_observation_ref` | Quota evidence reference | Link to source/time/scope, not a guessed balance |

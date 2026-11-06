@@ -319,6 +319,51 @@
       "status": "active_link",
       "terms_source": "Public page replit.com/refer verified firsthand 2026-11-03 ($20 credits both sides per new paying customer; milestones $100 at 5 / $1,000 at 50 referrals on the public page). ENROLLED 2026-11-03 (main GO, 4n0n own-surface): referral link minted from the signed-in fleet account (Timerloggedout), Promotions & Referrals settings page: 'They get $20 when they upgrade, and so do you once you're on a paid plan' + 'Upgrade to Replit Core to claim your bonus credits' - the signed-in page states NO milestone schedule, so the public-page milestones are NOT established in-account and are not listed as terms. Credits only, no cash value.",
       "visitor_reward": "$20 in credits when they upgrade to a paid plan"
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "5 GB free storage per friend who joins MEGA and installs a MEGA app; bonus valid 365 days, then lapses",
+      "free_no_cc": "Achievements referral is free; no card. Bonus storage expires after 365 days - treat as headroom, not durable capacity.",
+      "id": "mega",
+      "link": null,
+      "link_ref": "https://help.mega.io/plans-storage/achievements/free-space",
+      "mechanic": "referral_link",
+      "name": "MEGA",
+      "notes": "DISCOVERY 2026-11-06 (daily sweep, ex free-storage catalog lead): programme verified, NOT enrolled - no fleet MEGA account/link exists; enrolment = main's go. Expiry-trap class: referral bonus lapses after 365 days; over-quota on expiry restricts access until resolved. MEGA free-account inactivity deletion clock (10+ months) applies per free-storage catalog - no durable fleet data in bonus space.",
+      "priority": 11,
+      "status": "programme_verified_not_enrolled",
+      "terms_source": "Verified firsthand 2026-11-06: MEGA Help Centre 'How much additional free space can I earn with MEGA achievements?' (updated 2025-09-14): Invite friends - 5 GB of free storage for each friend who joins MEGA and installs a MEGA app, valid for 365 days. Base free allowance 20 GB permanent; all achievement bonuses temporary.",
+      "visitor_reward": "5 GB free storage per friend who joins + installs a MEGA app (bonus valid 365 days)"
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "10% commission on qualifying purchases by referred users (monthly/annual plans; lifetime excluded); EUR 100 minimum withdrawal; payouts Bitcoin-only",
+      "free_no_cc": "Affiliate enrolment free; requires an active account + team approval. No card stated for joining.",
+      "id": "filen",
+      "link": null,
+      "link_ref": "https://filen.io/terms",
+      "mechanic": "affiliate_link",
+      "name": "Filen",
+      "notes": "DISCOVERY 2026-11-06 (daily sweep, ex free-storage catalog lead): programme verified, NOT enrolled - no fleet Filen account/link exists; enrolment = main's go. Free-plan dormancy: data deleted after 3 months of inactivity (ToS, free accounts) - same clock as the free-storage catalog.",
+      "priority": 12,
+      "status": "programme_verified_not_enrolled",
+      "terms_source": "Verified firsthand 2026-11-06: Filen Terms of Service (filen.io/terms), AFFILIATE PROGRAM section: active account required, participation subject to team approval; referrals via the unique referral link; 10% commission on qualifying purchases (monthly/annual, lifetime excluded), calculated on recurring payments; EUR 100 minimum withdrawal, payouts exclusively in Bitcoin. Referral-storage bonus (10 GB for life per signup, third-party reported) is NOT in the ToS text - not established firsthand.",
+      "visitor_reward": null
+    },
+    {
+      "codes": [],
+      "fleet_replenishment": "1 GB extra storage per successful referral (friend signs up with unique link + verifies account), up to 3 GB; entry into the monthly Premium Lifetime Plan (500 GB) draw per referral",
+      "free_no_cc": "Referral programme free; no card. Signup via unique referral link + account verification.",
+      "id": "pcloud",
+      "link": null,
+      "link_ref": "https://help.pcloud.com/article/referral-program",
+      "mechanic": "referral_link",
+      "name": "pCloud",
+      "notes": "DISCOVERY 2026-11-06 (daily sweep, ex free-storage catalog note-level lead): programme verified, NOT enrolled - no fleet pCloud account/link exists; enrolment = main's go. Referral programme is separate from pCloud's affiliate programme (monetary commissions), which was not verified here.",
+      "priority": 13,
+      "status": "programme_verified_not_enrolled",
+      "terms_source": "Verified firsthand 2026-11-06: pCloud Help Center 'Referral Program' (help.pcloud.com/article/referral-program): 1 GB extra storage per successful referral (friend signs up with the unique link and verifies their account), up to 3 GB; no limit on referrals for draw entries, same-IP cap 10 successfully registered users.",
+      "visitor_reward": null
     }
   ],
   "rotation_log": [],
@@ -330,5 +375,5 @@
     "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
   ],
   "schema": "referral-programs/1",
-  "updated_at": "2026-11-03"
+  "updated_at": "2026-11-06"
 }

@@ -100,7 +100,7 @@ The target re-fetches the comment from GitHub, verifies that it belongs to the e
 
 ### Permissions
 
-- Router top-level permissions are empty; the classifier reads the webhook payload only.
+- Router declares a bounded caller-job permission ceiling; the classifier job explicitly has no token permissions. Each reusable caller job grants only the target's existing permissions.
 - The reusable workflow caller jobs grant only the permissions already needed by their target jobs.
 - No `actions: write` permission is added. No checkout is added to the router.
 - Existing provider secrets are passed only to the matching reusable workflow with `secrets: inherit`.

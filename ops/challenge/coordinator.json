@@ -992,15 +992,7 @@
         "landing_target": "2026-11-07",
         "landing_target_basis": "OWNER RULE (2026-11-02, slate-wide via Manager): a hard deadline is a WALL, never the landing target; every entry carries an explicit internal LANDING target ahead of the wall — the final stretch is buffer + submission mechanics only. This entry: landing 2026-11-07; wall 2026-11-08T15:00:00-08:00.",
         "resubmit_policy": "EDITABLE until deadline (all form fields). Source: lablab.ai Submission Guidelines checklist \"Your team can keep editing until then\"; event page has no contrary clause. Verified 2026-11-03.",
-        "draft": "Step 1 complete (title; short 182/255; long 841/2000; Online; Security/Browser Extension/Web Scraping; Vultr). Step 2 uploads DONE (demo.mp4, slides.pdf, cover.png). Step 3 repo DONE. Remaining required fields: Demo platform + App URL (VM-leg fields, key-gated). Submit NOT clicked; landing Nov 7 stands.",
-        "second_track": {
-          "state": "NOT_SUBMITTED",
-          "demo_url": null,
-          "video": null,
-          "slides": null,
-          "cover": null,
-          "lablab_confirmation": null
-        }
+        "draft": "Step 1 complete (title; short 182/255; long 841/2000; Online; Security/Browser Extension/Web Scraping; Vultr). Step 2 uploads DONE (demo.mp4, slides.pdf, cover.png). Step 3 repo DONE. Remaining required fields: Demo platform + App URL (VM-leg fields, key-gated). Submit NOT clicked; landing Nov 7 stands."
       },
       "brief": {
         "evidence_pack_ref": null,
@@ -1029,27 +1021,24 @@
           "id": "match-impact-desk",
           "name": "Match Impact Desk (Three-Way Match Room, C2)",
           "one_liner": "Deterministic PO/invoice/receipt matching, exception triage, impact-radius analysis, human controller decisions, and tamper-evident evidence packets.",
-          "origin": "D2 proposal E; owner-directed second-track build 2026-11-06",
-          "brief_anchor": "apps/tribute-dashboard/d2-proposals.html#c2-owner-pick",
+          "origin": "hand-packet",
+          "brief_anchor": "apps/tribute-dashboard/d2-proposals.html#panel-e",
           "status": "in_build",
-          "reason": "Separate C2 Powering the Future of Work entry; does not replace or supersede C1 B / Quarantine Browser Clerk.",
+          "reason": null,
           "superseded_by": null,
           "assets": {
             "repo_dir": "apps/match-impact-desk",
             "proposal_dir": "apps/match-impact-desk/docs",
             "demo_url": null,
-            "clips_url": null,
-            "github_branch": "feat/vultr-agent-rush-match-impact-desk",
-            "pull_request": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5035",
-            "standalone_repo": "NOT_PROVISIONED",
-            "github_app_id": "NOT_PROVISIONED"
+            "clips_url": null
           },
           "decisions": [
             {
               "at": "2026-11-06T07:11:00-08:00",
               "by": "owner",
               "action": "Build the second C2 track from proposal E as Match Impact Desk; retain the existing C1 B entry separately.",
-              "pr": 5035
+              "pr": 5035,
+              "sha": null
             }
           ]
         }
@@ -1194,42 +1183,14 @@
         "basis": "Owner GO direct in the D2 seat 2026-11-04 00:51 PT: \"Continue your Browser Clerk Selection. You're the manager of your challenge.\" + change-if-better delegated to the seat. Manager judgment = stay B (basis as stated by the seat: advisory #1; unoccupied differentiation; signature moment fixture-proven; held staging = only clock-feasible target).",
         "history": "Exercise run-1 advisory delivered A>C>B>E>F>D (raw #1 = B). First execution 2026-11-03 23:16 PT (main-relayed \"D2 BUILD\", PR #4779) was main's misread - owner countermand 23:18 PT rescinded it (PR #4786); pick held OWNER-HELD until the owner's direct GO above. The rescinded execution stays in history as history.",
         "residue": "Repo timerloggedout-spec/quarantine-browser-clerk (id 1445293810), created in the rescinded 23:16 window, was DORMANT residue; the decided build resumes from the held tree (Swarm resume) with the AppID leg resumed via the AppID lane.",
-        "build_sequence": "Firing 2026-11-04 (D2 seat): Desk flip; AppID resume; Swarm resume from held tree. Clocks: landing Sat Nov 7; wall Sun Nov 8 15:00 PT; submission editable until wall.",
-        "second_track": {
-          "state": "OWNER-DIRECTED BUILD — E Three-Way Match Room (C2) implemented as Match Impact Desk",
-          "decided_at": "2026-11-06T07:11:00-08:00",
-          "basis": "Owner instruction to build the second Vultr Agent Rush track. Preserve the existing C1 B / Quarantine Browser Clerk entry; C2 is a separate Powering the Future of Work entry.",
-          "source": "apps/tribute-dashboard/d2-proposals.html#c2-owner-pick",
-          "repo_dir": "apps/match-impact-desk",
-          "pr": 5035
-        }
+        "build_sequence": "Firing 2026-11-04 (D2 seat): Desk flip; AppID resume; Swarm resume from held tree. Clocks: landing Sat Nov 7; wall Sun Nov 8 15:00 PT; submission editable until wall."
       },
       "build": {
         "state": "T2 REAL-STACK PASS (2026-11-04, D2 seat log)",
         "evidence": "run 41807278198 SUCCESS; entry repo PR #3 merged 2fd10df305; brand-pin OK.",
         "kill_criterion": "MET Nov 4 (ahead of Nov 5 EOD deadline): signature moment demonstrable - lookalike contained, zero approval, receipt chain verified.",
         "blockers": "Team CREATED (owner click 2026-11-04T10:03:51Z post-Discord-screening; members 1 admin; submission form unlocked) - that blocker CLEARED. Remaining: AppID gate = owner tap pending; VULTR_API_KEY pending.",
-        "clocks": "T3 hardening+slides by Nov 6; landing Nov 7; wall Nov 8 15:00 PT.",
-        "second_track": {
-          "state": "IMPLEMENTED_IN_DRAFT_PR; LATEST_VALIDATION_PENDING",
-          "implementation": "apps/match-impact-desk",
-          "pull_request": 5035,
-          "last_passing_validation": {
-            "run_id": 42242225533,
-            "sha": "0b7b29bb7c233692a90c9c5dfa21e9322b8d4872",
-            "note": "10 tests + Python compile + browser JS syntax passed before the latest duplicate-approval policy hardening."
-          },
-          "deployment": "NOT_DEPLOYED",
-          "public_url": null,
-          "blockers": [
-            "Re-fetch latest code-bearing CI after duplicate-invoice hard-block change",
-            "Provision standalone public entry repository and per-entry GitHub App",
-            "Deploy to Vultr VM; verify DNS/TLS and public URL",
-            "Run remote signature scenario and capture evidence",
-            "Record demo video and prepare cover/slides",
-            "Complete LabLab submission"
-          ]
-        }
+        "clocks": "T3 hardening+slides by Nov 6; landing Nov 7; wall Nov 8 15:00 PT."
       },
       "team_url": "https://lablab.ai/ai-hackathons/vultr-hackathon/quarantine-browser-clerk",
       "receipts_post": "https://facebook.com/61596155692530/posts/pfbid02JhTRXwoRGdQyUsRQhucG73HXVy6PApMq7VFBcZKHJ9kyCxoWMXrV7f9xdDomafBgl/ (D2 receipts post, LIVE 2026-11-04; run 41807278198 + PRs #2-#4 + open items verbatim; owner order 02:28 PT; comment watch by Marketing Oversight)"

@@ -94,7 +94,7 @@ Do not spend credits on a placeholder.
 - PR audit marker contains head SHA; fixed debounce constants are absent.
 - Issue/PR command markers bind to triggering comment/label identity.
 - ECC matrix-cycle and broad scheduled sweep jobs are absent.
-- Lane Matrix has pull_request_target lifecycle events only; no schedule or dispatch.
+- Lane Matrix materializes on pull_request_target lifecycle events and runs read-only validation on pull_request; no schedule or manual dispatch.
 - Lane Matrix is removed from dispatch_q6 and age does not change disposition.
 - Plan Canvas skill has frontmatter, upstream pin, HITL rules, and runtime preflight.
 - Run repository dual gates on final PR head SHA. Keep ECC App suspended pending a

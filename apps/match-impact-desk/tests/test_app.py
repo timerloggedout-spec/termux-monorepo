@@ -19,8 +19,24 @@ class AuditTests(unittest.TestCase):
     def tearDown(self): self.p.stop(); self.tmp.cleanup()
     def test_seed_chain_is_valid(self): self.assertTrue(app.verify_chain()["valid"])
     def test_payment_actions_are_never_authorized_by_analysis(self):
-        for c in app.SEED:
-            self.assertIn("payment_release",app.analyze(c)["impact"]["blocked"])
-            self.assertIn("ledger_posting",app.analyze(c)["impact"]["blocked"])
+        for case in app.SEED:
+            self.assertIn("payment_release",app.analyze(case)["impact"]["blocked"])
+            self.assertIn("ledger_posting",app.analyze(case)["impact"]["blocked"])
+    def test_validated_case_intake_contract(self):
+        case=dict(app.SEED[0]); case["case_id"]="MID-NEW-01"
+        self.assertEqual(app.validate_case(case)["case_id"],"MID-NEW-01")
+    def test_invalid_case_id_rejected(self):
+        case=dict(app.SEED[0]); case["case_id"]="../escape"
+        with self.assertRaises(ValueError): app.validate_case(case)
+    def test_audit_chain_extends_after_new_event(self):
+        with app.db_session() as db: app.audit_append(db,"MID-2402","controller_brief_drafted","test",{"brief_sha256":"abc"})
+        self.assertTrue(app.verify_chain()["valid"])
+    def test_model_brief_has_deterministic_fallback(self):
+        with patch.dict(os.environ,{"MATCHDESK_INFERENCE_BASE_URL":""}):
+            case=app.SEED[1]
+            case={**case,"analysis":app.analyze(case)}
+            result=app.review_brief(case)
+            self.assertEqual(result["provider"],"deterministic-fallback")
+            self.assertIn("50.00",result["brief"])
 
 if __name__=="__main__": unittest.main()

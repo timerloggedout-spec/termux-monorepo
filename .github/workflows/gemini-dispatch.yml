@@ -35,6 +35,9 @@ on:
       source_event:
         type: string
         required: true
+    secrets:
+      GEMINI_API_KEY:
+        required: false
 
 defaults:
   run:

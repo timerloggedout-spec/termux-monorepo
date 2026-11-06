@@ -158,7 +158,7 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             root = self._fixture(Path(tmp))
             target = root / ".github/workflows/gemini-dispatch.yml"
             text = target.read_text(encoding="utf-8").replace(
-                "comment.data.updated_at !== process.env.SOURCE_COMMENT_UPDATED_AT",
+                "comment.updated_at === expectedUpdatedAt",
                 "false",
                 1,
             )

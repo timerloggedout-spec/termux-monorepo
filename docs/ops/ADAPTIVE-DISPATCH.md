@@ -48,8 +48,10 @@ immediately. Event wakes do not replay scheduled modulo phase slots.
 - Staleness-critical lanes retain only their documented preemption behavior.
 - Each target workflow keeps its own concurrency, validation, and promotion
   authority.
-- Force execution does not merge, approve a PR, write credentials, or bypass
-  target-lane gates. Dual-gate remains required for promotion.
+- An authenticated force request overrides this dispatcher's admission pressure
+  and caps for that one fan-out. It does not merge, approve a PR, write
+  credentials, or bypass downstream lane concurrency, validation, or dual-gate.
+  Promotion remains separately gated.
 
 ## Human force request (Issue HITL)
 

@@ -61,7 +61,7 @@ owning GitHub Issue:
 
 The request is accepted only when all conditions hold:
 
-1. The comment is on an Issue, not a pull request.
+1. The comment is on an open Issue, not a pull request or closed historical issue.
 2. The GitHub sender is a human `OWNER`, `MEMBER`, or `COLLABORATOR`.
 3. The comment body matches the command exactly.
 4. The immutable comment ID has not already been completed.

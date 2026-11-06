@@ -23,7 +23,7 @@ On the VM:
 
     sudo apt-get update
     sudo apt-get install -y python3 git caddy
-    sudo useradd --system --home /opt/match-impact-desk --shell /usr/sbin/nologin matchdesk || true
+    sudo useradd --system --user-group --home /opt/match-impact-desk --shell /usr/sbin/nologin matchdesk || true
     sudo mkdir -p /opt/match-impact-desk/data
     sudo git clone --depth 1 --filter=blob:none --sparse https://github.com/timerloggedout-spec/termux-monorepo.git /tmp/termux-monorepo
     cd /tmp/termux-monorepo

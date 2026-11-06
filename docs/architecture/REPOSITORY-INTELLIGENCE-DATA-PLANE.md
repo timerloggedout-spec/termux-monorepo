@@ -308,3 +308,57 @@ Each phase is a separately reviewable implementation slice. No phase may claim c
 | T.A.K. common operating picture | Downstream domain lens over pinned RIDP evidence; separate schema and acceptance |
 
 **Implementation rule:** before each phase changes code, inspect the current implementation and owner lane, identify exact source paths and tests, and reuse existing contracts. This document is the architecture proposal, not proof that every named helper or integration is already connected.
+
+
+## Current-state reconciliation — existing work to reuse
+
+A deeper pass over the repository's current operational records adds important constraints to the initial map. These are source-backed implementation facts, not future RIDP claims.
+
+### Per-request quota telemetry already has a landed first phase
+
+The QAC-009 contract in docs/ops/CADENCE-TICK-LEDGER.md records:
+
+- PAT helper phase 1 is landed: the shared helper emits a tick for every helper-routed API request, including normalized endpoint class, principal, session, resource bucket, limit/used/remaining/reset, status and counted flag.
+- Tick writes are fail-silent; telemetry must never break the request.
+- Local ticks.jsonl and spend.jsonl beside the helper are VM-local interim stores.
+- App-token consumer adoption is still an adoption phase.
+- Shared workflow-step ticks for the Actions installation bucket are still an adoption phase.
+- Durable Neon lane-events ingestion is still an adoption phase.
+
+**Critical invariant:** cadence ticks are evidence, never quota control. The budget/admission path must continue to use authoritative live rate-limit evidence and existing reserve/defer behavior; no gate may spend quota based on tick aggregates.
+
+The rate-limit record further documents that the PAT circuit breaker, ETag cache and per-session budget cover the shared helper copy on its VM only. Other workflows and non-helper consumers are not automatically protected. The repository's quota self-counts explicitly state that PAT helper spend logs are VM-local and PAT call volume is not tallied there. RIDP's first practical observability gap is therefore cross-surface coverage and durable attribution—not the absence of a PAT-side request tick.
+
+### Collector bootstrap is a reusable safety contract
+
+docs/ops/COLLECTOR-BOOTSTRAP.md defines chunked, checkpointed bootstrap; delta-only steady state; per-source observed_at + snapshot_hash watermarks; live-derived reserve formulas; fail-soft deferral; and no tight polling.
+
+It also draws a strict caching/batching boundary:
+
+- Dedupe, memoization and ETag batching apply to read-only shared-state reconnaissance reads.
+- They do not apply to writes, verify-after-write reads, or pre-write state reads.
+- Publishing remains all-direct so a stale base identifier cannot be hidden by batching.
+
+RIDP cache adapters must preserve this exclusion. A general-purpose cache wrapper around every GitHub call would violate the established contract.
+
+### Receiver Mesh is an existing prototype, not a blank-slate webhook requirement
+
+docs/ops/RECEIVER-MESH.md records a prototype architecture for external event intake: Cloudflare Worker/Queue edge intake, Vercel handshake fallback, Neon durable receiver ledger, GitHub Actions processor, and a sandbox-only VM. It explicitly notes that GitHub Actions natively receives repository events and cannot itself expose a public listener.
+
+RIDP should:
+- use native Actions events for GitHub-originated repository changes first;
+- integrate with the Receiver Mesh only for external sources, handshake requirements or justified pre-filter/coalescing;
+- not create a second external receiver, queue, D1/Neon event ledger or processor;
+- preserve the prototype's provisioning and owner-decision boundaries. Prototype status is not production availability.
+
+### Revised P0 implementation order
+
+Given the above evidence, the first implementation increment should not be a new generic cache or new budget service. It should:
+
+1. Map all API acquisition surfaces to their existing principal/bucket and current telemetry chokepoint.
+2. Close the gap between PAT helper ticks, App-token consumers, workflow installation-bucket ticks and durable lane-events ingestion, with each phase owned by its existing lane.
+3. Expose coverage and attribution gaps honestly in a read-only RIDP/SHE projection.
+4. Only then introduce a shared cache/coalescer for eligible read-only shared-state requests, reusing the collector bootstrap rules.
+5. Add event-driven invalidation and task-specific context envelopes against already-owned event/journal/index contracts.
+
+This ordering avoids duplicating QAC-009, Receiver Mesh, Collector Bootstrap, quota allocation, or the existing conductor.

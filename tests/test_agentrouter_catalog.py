@@ -69,4 +69,7 @@ def test_agentrouter_doe_arm_is_preregistered_but_not_dispatchable():
     assert arm["status"] == "pre_registered_conditional_not_dispatchable"
     assert "AGENTROUTER_API_KEY is present in approved secret storage and is never exposed in records" in arm["activation_gates"]
     assert any("separately reviewed and allowlisted" in gate for gate in arm["activation_gates"])
-    assert "No dispatch before every activation gate passes" in arm["activation_rule"]
+    assert "Activate only after every listed activation gate passes" in arm["activation_rule"]
+    assert "first real desk-stamped dispatch" in arm["observation_requirements"][1]
+    assert "model_id" in arm["auditor_projection_fields"]
+    assert "run_attempt" in arm["auditor_projection_fields"]

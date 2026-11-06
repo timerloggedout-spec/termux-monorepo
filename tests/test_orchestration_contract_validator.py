@@ -193,6 +193,19 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             errors = validate_issue_comment_router_contracts(root)
             self.assertTrue(any("Agent review route must remain" in error for error in errors), errors)
 
+    def test_target_execution_must_depend_on_comment_revision_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/gemini-dispatch.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "    needs: validate-source-comment\n",
+                "",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("execution job must depend on source-comment validation" in error for error in errors), errors)
+
     def test_router_must_not_inherit_all_repository_secrets(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._fixture(Path(tmp))

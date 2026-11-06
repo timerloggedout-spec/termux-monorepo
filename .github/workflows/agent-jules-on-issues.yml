@@ -30,6 +30,9 @@ on:
       source_event:
         type: string
         required: true
+    secrets:
+      JULES_API_KEY:
+        required: false
 
 permissions: {}
 

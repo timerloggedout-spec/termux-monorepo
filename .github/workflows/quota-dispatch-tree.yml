@@ -92,7 +92,7 @@ jobs:
               const authorized = !issue.pull_request && issue.state === 'open' &&
                 context.payload.sender?.type === 'User' &&
                 ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(association) &&
-                (comment.body || '').trim() === '/quota force all';
+                comment.body === '/quota force all';
               if (authorized && comment.id) {
                 forceRequestId = String(comment.id);
                 const marker = `<!-- quota-dispatch-force:${issue.number}:${forceRequestId} -->`;
@@ -598,10 +598,12 @@ jobs:
     steps:
       - name: Record authenticated force-execution receipt
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          FORCE_REQUEST_ID: ${{ needs.decide.outputs.force_request_id }}
         with:
           script: |
             const issueNumber = context.payload.issue.number;
-            const requestId = '${{ needs.decide.outputs.force_request_id }}';
+            const requestId = process.env.FORCE_REQUEST_ID;
             const marker = `<!-- quota-dispatch-force:${issueNumber}:${requestId} -->`;
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo,

@@ -143,7 +143,7 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.match(workflow, /const firstCycle = context\.eventName === 'schedule'/);
   assert.match(workflow, /const eventDemand = \['pull_request_target', 'workflow_run', 'push'\]/);
   assert.match(workflow, /repoChanged && \(slow \|\| eventDemand\)/);
-  assert.match(workflow, /cron: ['\"]\\*\\/10 \\* \\* \\* \\*['\"]/);
+  assert.match(workflow, /cron: ['\"]0 \\* \\* \\* \\*['\"]/);
   assert.doesNotMatch(workflow, /ops-lane-matrix-sweep/);
 });
 

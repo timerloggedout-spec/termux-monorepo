@@ -132,8 +132,8 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             target = root / ".github/workflows/gemini-dispatch.yml"
             text = target.read_text(encoding="utf-8")
             text = text.replace(
-                "  workflow_call:\\n",
-                "  issue_comment:\\n    types: [created]\\n  workflow_call:\\n",
+                "  workflow_call:\n",
+                "  issue_comment:\n    types: [created]\n  workflow_call:\n",
                 1,
             )
             target.write_text(text, encoding="utf-8")

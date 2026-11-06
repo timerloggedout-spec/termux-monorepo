@@ -204,6 +204,14 @@
             "type": "string"
           }
         }
+      },
+      "dependentRequired": {
+        "latitude": [
+          "longitude"
+        ],
+        "longitude": [
+          "latitude"
+        ]
       }
     },
     "assessment": {
@@ -251,6 +259,25 @@
         }
       },
       "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "unassessed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "readings": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
         {
           "if": {
             "properties": {
@@ -497,7 +524,15 @@
           "type": "string",
           "minLength": 1
         },
-        "value": {},
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ],
+          "maxLength": 8192
+        },
         "evidence": {
           "$ref": "#/$defs/evidence"
         },
@@ -629,7 +664,8 @@
                 "type": "string"
               }
             }
-          }
+          },
+          "minItems": 1
         }
       }
     }

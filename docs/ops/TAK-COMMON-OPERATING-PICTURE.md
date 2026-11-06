@@ -27,13 +27,12 @@ Candidate surfaces are not automatically bound to T.A.K. Formal binding requires
 
 ## 3. Picture model
 
-A published picture is an immutable, versioned projection with five linked collections:
+A published picture is an immutable, versioned projection with four canonical collections; tracks are derived views over the time-ordered observations and events:
 
 1. **Entities** — public organizational actors, agencies, registrations, awards, contracts, and actor networks. Natural-person profiling is out of scope for v1.
 2. **Relationships** — evidence-backed edges between entities (for example, registered-with, awarded-to, parent-of, or shared-public-identifier). An edge is not asserted from name similarity alone.
 3. **Observations** — source-stamped facts as received or normalized from a pinned source dataset.
-4. **Tracks** — the time-ordered view of an entity's observed position and state. A track is a projection of observations/events, not an independently edited truth.
-5. **Events** — append-only changes to the picture: first-seen, relationship-observed, source-value-changed, conflict-detected, state-changed, assessment-added, and superseded.
+4. **Events** — append-only changes to the picture: first-seen, relationship-observed, source-value-changed, conflict-detected, state-changed, assessment-added, and superseded.
 
 The machine contract in `TAK-PICTURE.schema.json` defines the v1 envelope. Each record must retain evidence references back to the source dataset version and source row/locator.
 

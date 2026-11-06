@@ -25,7 +25,7 @@
 | Temporal | P1 | Developer skill installed; server access not established | Existing adapter proposal requires reconciliation | Durable workflow orchestration |
 | SiteTriage | P1 | Diagnostic tools exposed | Planned | Read-only DNS/TLS/HTTP diagnostics |
 | Product Design | P1 | Skill installed; Work Mode required for full workflow | Planned | UX research, audit, prototyping |
-| Flow AI Collaboration | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |
+| Flow AI Collaboration tool | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |
 | TinyFish | P1 | Search/fetch/browser tools exposed; no browser mutation run | Planned | Bounded browser workflows |
 | Manus | P1 | Research/task tools exposed; no task dispatched | Planned | Delegated research and execution |
 | Ahrefs | P2 | Tool exposed; account call returned Insufficient plan | Blocked by plan | SEO and site research |

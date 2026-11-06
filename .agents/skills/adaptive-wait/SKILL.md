@@ -690,3 +690,11 @@ Session 2026-10-19 14:15 PDT / 2026-10-19 21:15 UTC:
 - Recent gates success/skipped. help-wanted execute in_progress on tip. No tip failures. Decision: QUIET / KEEP. No promote.
 - #1286 dual-gate PASS but not on tip base. Master functional. Disjoint: skills updated with recon.
 - Agent-Identity: Grok (Administrator)
+
+Session 2026-11-05 17:55 PST / 2026-11-06 01:55 UTC:
+- Watched repository `timerloggedout-spec/termux-monorepo`, PR #5024, branch `perf/issue-comment-router-fanout-2026-11-05`, head `74bbc3e87b73d0477becbe64fadab00ba7cf25ea`, base `master`.
+- AR-32 issue-comment router implementation: repo gate run 42146875990 PASS; orchestration-contract suite 16 tests PASS (10 router-specific); Termux smoke 42146875883 PASS; GitHub Actions lint advisory 42146875946 PASS. No merge; PR remains draft.
+- Proposal-lifecycle on #5024 remains blocked by the unmerged proposal-registry repair. Separate draft PR #5026 adds the missing source-grounded `MANIFEST.md` / `ITEMS.md`, aligns the ruled Registrar name, and passed proposal-lifecycle on head `a4b803c0a057bee5c5a5594506668a1619d63c57`; it is not merged.
+- Remaining #5024 evidence: dangling-reference check reports 81 findings (65 classified new), attribution unresolved; CodeQL was queued at the last observation. Do not promote from repo-gate + smoke alone.
+- A 300-run issue_comment sample (2026-11-06T01:32:43Z–01:49:04Z) shows continuing event fan-out across passive observers and command lanes. Candidate next work is a subscriber/route parity matrix; do not disable or consolidate audit/observer subscribers until their evidence coverage and event semantics are proven.
+- State: BLOCKED for promotion, not stalled. Decision: WAIT / do disjoint bounded analysis. Next authoritative checks: CodeQL terminal state; classify dangling findings; after #5026 is accepted into master, re-fetch the #5024 head/base relationship and rerun both required gates on the same SHA.

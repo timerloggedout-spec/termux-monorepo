@@ -2,7 +2,7 @@
 
 | ID | Work | Priority | Owner | Status | Evidence / acceptance criteria |
 |---|---|---:|---|---|---|
-| TAK-01 | Define the versioned T.A.K. common-operating-picture envelope and evidence contract for public organizational procurement/registration signals; preserve source dataset versions, conflicts, timestamps, coverage, append-only events, unvalenced emergence, and SWOT duality composition. | P1 | ChatGPT | in_review | PR #5025 adds `docs/ops/TAK-COMMON-OPERATING-PICTURE.md` and `docs/ops/TAK-PICTURE.schema.json`. Acceptance: schema semantics validate; doctrine and privacy boundaries align with LENS-FRAME; upstream #4496 interface is reconciled; no duplicate crawler/store; proposal review recorded; proposal-lifecycle + repo-gate + termux-smoke pass on the current SHA. |
+| TAK-01 | Define the versioned T.A.K. common-operating-picture envelope and evidence contract for public organizational procurement/registration signals; preserve source dataset versions, conflicts, timestamps, coverage, append-only events, unvalenced emergence, and SWOT duality composition. | P1 | ChatGPT | executing | PR #5025 adds `docs/ops/TAK-COMMON-OPERATING-PICTURE.md` and `docs/ops/TAK-PICTURE.schema.json`. Acceptance: schema semantics validate; doctrine and privacy boundaries align with LENS-FRAME; upstream #4496 interface is reconciled; no duplicate crawler/store; proposal review recorded; proposal-lifecycle + repo-gate + termux-smoke pass on the current SHA. |
 
 ## Deferred work — not admitted by TAK-01
 

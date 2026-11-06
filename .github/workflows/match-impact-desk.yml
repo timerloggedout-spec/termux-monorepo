@@ -34,3 +34,5 @@ jobs:
           node-version: "22"
       - name: Check browser JavaScript
         run: node --check static/app.js
+      - name: Check Vultr bootstrap shell syntax
+        run: bash -n deploy/bootstrap-vultr.sh

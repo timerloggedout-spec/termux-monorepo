@@ -147,6 +147,7 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.doesNotMatch(workflow, /ops-lane-matrix-sweep/);
   assert.match(workflow, /issue_comment:/);
   assert.match(workflow, /github\.event\.comment\.body == '\/quota force all'/);
+  assert.match(workflow, /github\.event\.issue\.state == 'open'/);
   assert.match(workflow, /complete-force-request:/);
   assert.doesNotMatch(workflow, /workflow_dispatch:/);
   assert.doesNotMatch(workflow, /force_lane/);

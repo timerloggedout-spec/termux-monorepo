@@ -33,6 +33,7 @@ SOURCES = {
 
 
 def _rate(value):
+    """Return a finite, non-negative numeric rate or None for invalid input."""
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     try:
@@ -43,6 +44,7 @@ def _rate(value):
 
 
 def _pricing(item, provider):
+    """Normalize provider-specific price shapes without guessing free access."""
     pricing = item.get("pricing")
     if provider == "requesty":
         # The official wire schema is an ARRAY, not {tiers:[...]}. Thresholds
@@ -112,6 +114,7 @@ def _pricing(item, provider):
 
 
 def poll(provider, token, get_json):
+    """Fetch and normalize one provider catalog using its documented wire shape."""
     payload, headers = get_json(ENDPOINTS[provider], token)
     items = payload.get("data") if isinstance(payload, dict) else None
     if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):

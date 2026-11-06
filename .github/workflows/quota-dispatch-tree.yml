@@ -1,7 +1,7 @@
 name: Quota Dispatch Tree
 
 # Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
-# PR lifecycle, managed-lane completion, and source-record pushes wake it on demand.
+# PR lifecycle, selected lane-events recorder completions, and source-record pushes wake it on demand.
 # The 30-minute schedule is a cadence clock only; repository/lane events wake
 # demand work immediately. Human force-all is an authenticated Issue comment,
 # never a generic Actions manual-dispatch input. The Lane Matrix has its own PR events.

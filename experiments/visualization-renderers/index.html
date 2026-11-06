@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Visualization Renderer Lab</title>
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color-scheme:light dark;--panel:color-mix(in srgb,Canvas 92%,CanvasText 8%);--line:color-mix(in srgb,CanvasText 22%,transparent);--accent:#4b8bf4}
+*{box-sizing:border-box}body{margin:0;background:Canvas;color:CanvasText}main{max-width:1280px;margin:auto;padding:clamp(1rem,3vw,2.5rem)}header{padding:1.25rem 0 1.75rem;border-bottom:1px solid var(--line)}h1{font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;margin:.2rem 0 .8rem}h2{font-size:1.15rem;margin:0 0 .7rem}.eyebrow,.meta{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:GrayText}.notice{padding:.75rem 1rem;border-left:4px solid #c58a27;background:var(--panel);margin:1rem 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:1rem;margin:1rem 0}.panel{border:1px solid var(--line);border-radius:14px;padding:1rem;background:var(--panel);min-width:0}.viz{min-height:260px;overflow:hidden}.viz svg{max-width:100%;height:auto}.status{font-size:.85rem;color:GrayText}.status[role=status]{min-height:1.5em}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.12rem .5rem;font-size:.75rem;margin-right:.25rem}.score{width:100%;border-collapse:collapse;font-size:.9rem}.score th,.score td{text-align:left;border-bottom:1px solid var(--line);padding:.55rem;vertical-align:top}.score th{font-weight:650}a{color:var(--accent)}button{font:inherit;padding:.4rem .7rem;border:1px solid var(--line);border-radius:8px;background:Canvas;color:CanvasText}button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:600px){main{padding:1rem}.panel{padding:.8rem}.score{font-size:.8rem}.score th,.score td{padding:.35rem}}
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/dist/plot.umd.min.js"></script>
+<script defer src="../../apps/tribute-dashboard/chartkit.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.4/dist/cytoscape.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vega@5.30.0/build/vega.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0/build/vega-lite.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0/build/vega-embed.min.js"></script>
+</head>
+<body>
+<main>
+<header>
+<p class="eyebrow">Research lane · fixture cohort v1</p>
+<h1>Visualization renderer lab</h1>
+<p>Same deterministic inputs. Different renderers. No production feed access.</p>
+<div><span class="tag">D3.js 7.9.0</span><span class="tag">ECharts 5.6.0</span><span class="tag">Cytoscape.js 3.30.4</span><span class="tag">Vega-Lite 5.21.0</span><span class="tag">Plot 0.6.17</span><span class="tag">Sigma 3.0.0</span><span class="tag">ChartKit · master</span></div>
+</header>
+<div class="notice"><strong>Synthetic data only.</strong> This cohort is intentionally fabricated for renderer comparison. Never interpret these values as live fleet telemetry or production status.</div>
+<p id="load-state" class="status" role="status" aria-live="polite">Loading local fixture…</p>
+<section class="grid" aria-label="Hierarchy comparison">
+<article class="panel"><h2>D3 hierarchy · tree layout</h2><div id="d3-tree" class="viz" role="img" aria-label="Synthetic fleet hierarchy tree"></div><p class="status">Stable node IDs · depth and parent-child structure</p></article>
+<article class="panel"><h2>D3 network · force layout</h2><div id="d3-force" class="viz" role="img" aria-label="Synthetic directed network graph"></div><p class="status">Force simulation · node drag · directed edges</p></article>
+</section>
+<section class="grid" aria-label="Network graph comparison">
+<article class="panel"><h2>Cytoscape.js · network</h2><div id="cy-network" class="viz" role="img" aria-label="Same synthetic network rendered by Cytoscape"></div><p class="status">Cose layout · selectable nodes · graph model</p></article>
+<article class="panel"><h2>Sigma.js · WebGL network</h2><div id="sigma-network" class="viz" role="img" aria-label="Same synthetic directed network rendered by Sigma.js"></div><p id="sigma-status" class="status">ES module adapter · Graphology model · CDN-dependent</p></article>
+<article class="panel"><h2>ECharts · time series</h2><div id="echarts-line" class="viz" role="img" aria-label="Synthetic event time series"></div><p class="status">Null observations remain gaps · data zoom enabled</p></article>
+</section>
+<section class="grid" aria-label="Declarative chart comparison">
+<article class="panel"><h2>Vega-Lite · declarative time series</h2><div id="vega-line" class="viz" role="img" aria-label="Same synthetic time series rendered by Vega-Lite"></div><p class="status">Declarative specification · tooltip and temporal axis</p></article>
+<article class="panel"><h2>Observable Plot · statistical time series</h2><div id="plot-line" class="viz" role="img" aria-label="Same synthetic time series rendered by Observable Plot"></div><p class="status">Defined segments preserve null gaps · native axes</p></article>
+<article class="panel"><h2>ChartKit · production baseline</h2><div id="chartkit-line" class="viz" role="img" aria-label="Same synthetic time series rendered by the repository ChartKit baseline"></div><p class="status">Loaded from the master dashboard source · no duplicated implementation</p></article>
+<article class="panel"><h2>Native SVG baseline</h2><div id="svg-baseline" class="viz" role="img" aria-label="Native SVG rendering of synthetic time series"></div><p class="status">Zero dependency · semantic fallback reference</p></article>
+</section>
+<section class="panel">
+<h2>Candidate matrix</h2>
+<table class="score">
+<thead><tr><th>Renderer</th><th>Workload fit</th><th>Lab status</th><th>Decision</th></tr></thead>
+<tbody>
+<tr><td>Existing ChartKit</td><td>Lightweight bars/lines</td><td>Rendered from master source</td><td>Production baseline</td></tr>
+<tr><td>D3.js</td><td>Hierarchy, force graphs, bespoke interaction</td><td>Rendered above</td><td>Candidate by graph workload</td></tr>
+<tr><td>Observable Plot</td><td>Statistical charts and time series</td><td>Rendered above · 0.6.17</td><td>Candidate by statistical chart workload</td></tr>
+<tr><td>Vega-Lite</td><td>Declarative statistical visualization</td><td>Rendered above</td><td>Candidate by repeatable chart workload</td></tr>
+<tr><td>Apache ECharts</td><td>Interactive operational charts</td><td>Rendered above</td><td>Candidate by dashboard workload</td></tr>
+<tr><td>Cytoscape.js</td><td>Network analysis and graph interaction</td><td>Rendered above</td><td>Candidate by graph workload</td></tr>
+<tr><td>Sigma.js</td><td>Large WebGL network visualization</td><td>Rendered above · 3.0.0 + Graphology 0.25.4</td><td>Candidate for dense graph cohort</td></tr>
+</tbody></table>
+<p class="status">No overall winner is selected. Record correctness, accessibility, p50/p95 render time, memory, payload and mobile interaction per workload before adoption.</p>
+</section>
+<details class="panel"><summary>Accessible fixture data table</summary><div id="fixture-table"></div></details>
+<footer class="status"><p>Fixture: <code>fixtures/renderer-cohort-v1.json</code> · Contract: <code>docs/ops/VISUALIZATION-RENDERER-COMPARISON.md</code></p><p>Libraries are loaded from pinned CDN versions. Offline/CDN failures must be reported as unavailable, not as invalid fixture data.</p></footer>
+</main>
+<script>
+window.addEventListener('DOMContentLoaded', async function(){
+const state=document.getElementById('load-state');
+const $=id=>document.getElementById(id);
+const setStatus=(id,msg)=>{const el=$(id);if(el)el.setAttribute('aria-label',msg)};
+function fail(msg){state.textContent=msg;for(const id of ['d3-tree','d3-force','cy-network','sigma-network','echarts-line','vega-line','plot-line','chartkit-line','svg-baseline'])$(id).textContent='Renderer unavailable or fixture failed to load.'}
+let data;
+try{const response=await fetch('./fixtures/renderer-cohort-v1.json',{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);data=await response.json()}catch(e){fail('Fixture unavailable: '+e.message);return}
+if(data.schema!=='renderer-cohort/v1'||data.data_class!=='synthetic'){fail('Fixture contract mismatch.');return}
+const hierarchy=data.hierarchy,network=data.network,points=data.series.points;
+const table=document.createElement('table');table.className='score';
+const head=document.createElement('tr');['Timestamp','Value','Observation'].forEach(label=>{const th=document.createElement('th');th.textContent=label;head.appendChild(th)});table.appendChild(head);
+points.forEach(p=>{const tr=document.createElement('tr');[p.t,p.value===null?'Unknown / null':String(p.value),p.value===null?'Gap preserved':'Observed synthetic value'].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});table.appendChild(tr)});$('fixture-table').replaceChildren(table);
+if(window.CK){$('chartkit-line').innerHTML=CK.line(points.map(p=>({t:p.t,v:p.value})),540,220)}else $('chartkit-line').textContent='Master ChartKit source unavailable.';
+if(window.Plot){const plot=Plot.plot({width:540,height:220,marginLeft:54,x:{label:'Observation time'},y:{label:data.series.unit,grid:true},marks:[Plot.lineY(points,{x:d=>new Date(d.t),y:'value',defined:d=>d.value!==null,stroke:'#4b8bf4',strokeWidth:2}),Plot.dot(points.filter(d=>d.value!==null),{x:d=>new Date(d.t),y:'value',fill:'#4b8bf4',r:3})]});$('plot-line').replaceChildren(plot)}else $('plot-line').textContent='Observable Plot CDN unavailable.';
+state.textContent='Fixture loaded · '+network.nodes.length+' nodes · '+network.edges.length+' edges · '+points.length+' time points · SYNTHETIC';
+if(window.d3){
+const root=d3.hierarchy(hierarchy),layout=d3.tree().size([210,330]);layout(root);
+const svg=d3.select('#d3-tree').append('svg').attr('viewBox','0 0 370 250').attr('role','presentation');
+svg.selectAll('path').data(root.links()).join('path').attr('d',d3.linkHorizontal().x(d=>d.y+18).y(d=>d.x+15)).attr('fill','none').attr('stroke','currentColor').attr('opacity',.35);
+const node=svg.selectAll('g').data(root.descendants()).join('g').attr('transform',d=>'translate('+(d.y+18)+','+(d.x+15)+')');
+node.append('circle').attr('r',5).attr('fill','#4b8bf4');node.append('text').attr('x',8).attr('dy','.32em').attr('font-size',10).text(d=>d.data.label);
+const width=560,height=260,fs=d3.select('#d3-force').append('svg').attr('viewBox','0 0 '+width+' '+height);
+const links=network.edges.map(e=>({...e})),nodes=network.nodes.map(n=>({...n}));
+fs.append('defs').append('marker').attr('id','arrow').attr('viewBox','0 -5 10 10').attr('refX',17).attr('refY',0).attr('markerWidth',5).attr('markerHeight',5).attr('orient','auto').append('path').attr('d','M0,-5L10,0L0,5').attr('fill','currentColor');
+const sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(d=>d.id).distance(85)).force('charge',d3.forceManyBody().strength(-260)).force('center',d3.forceCenter(width/2,height/2));
+const link=fs.append('g').selectAll('line').data(links).join('line').attr('stroke','currentColor').attr('opacity',.35).attr('marker-end','url(#arrow)');
+const g=fs.append('g').selectAll('g').data(nodes).join('g').call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null}));
+g.append('circle').attr('r',12).attr('fill','#4b8bf4');g.append('text').attr('x',15).attr('dy','.32em').attr('font-size',11).text(d=>d.label);
+sim.on('tick',()=>{link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);g.attr('transform',d=>'translate('+d.x+','+d.y+')')});
+}else $('d3-tree').textContent='D3.js CDN unavailable.';
+if(window.cytoscape){
+const elements=[...network.nodes.map(n=>({data:{id:n.id,label:n.label,group:n.group}})),...network.edges.map(e=>({data:{id:e.id,source:e.source,target:e.target}}))];
+cytoscape({container:$('cy-network'),elements,style:[{selector:'node',style:{'label':'data(label)','background-color':'#4b8bf4','color':'#777','font-size':11,'text-valign':'bottom','text-margin-y':5}},{selector:'edge',style:{'width':2,'line-color':'#999','target-arrow-color':'#999','target-arrow-shape':'triangle','curve-style':'bezier'}}],layout:{name:'cose',animate:false},userZoomingEnabled:true,userPanningEnabled:true});
+}else $('cy-network').textContent='Cytoscape.js CDN unavailable.';
+const dates=points.map(p=>p.t),values=points.map(p=>p.value);
+if(window.echarts){const chart=echarts.init($('echarts-line'));chart.setOption({tooltip:{trigger:'axis'},grid:{left:48,right:18,top:20,bottom:55},xAxis:{type:'category',data:dates,axisLabel:{rotate:25}},yAxis:{type:'value',name:data.series.unit},dataZoom:[{type:'inside'},{type:'slider'}],series:[{type:'line',connectNulls:false,data:values,showSymbol:true}]});window.addEventListener('resize',()=>chart.resize())}else $('echarts-line').textContent='ECharts CDN unavailable.';
+if(window.vegaEmbed){const spec={$schema:'https://vega.github.io/schema/vega-lite/v5.json',width:'container',height:220,data:{values:points},mark:{type:'line',point:true},encoding:{x:{field:'t',type:'temporal',title:'Observation time'},y:{field:'value',type:'quantitative',title:data.series.unit},tooltip:[{field:'t',type:'temporal'},{field:'value',type:'quantitative'}]}};vegaEmbed('#vega-line',spec,{actions:false}).catch(()=>{$('vega-line').textContent='Vega-Lite render unavailable.'})}else $('vega-line').textContent='Vega-Lite CDN unavailable.';
+const w=540,h=220,pad=35,valid=points.filter(p=>p.value!==null),max=Math.max(...valid.map(p=>p.value)),min=Math.min(...valid.map(p=>p.value));
+const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 '+w+' '+h);const x=i=>pad+i*(w-2*pad)/(points.length-1),y=v=>h-pad-(v-min)/(Math.max(1,max-min))*(h-2*pad);const axis=document.createElementNS(ns,'line');axis.setAttribute('x1',pad);axis.setAttribute('x2',w-pad);axis.setAttribute('y1',h-pad);axis.setAttribute('y2',h-pad);axis.setAttribute('stroke','currentColor');svg.appendChild(axis);let segment=[];const flush=()=>{if(segment.length>1){const path=document.createElementNS(ns,'path');path.setAttribute('d',segment.map((p,j)=>(j?'L':'M')+x(p.i)+','+y(p.value)).join(' '));path.setAttribute('fill','none');path.setAttribute('stroke','#4b8bf4');path.setAttribute('stroke-width','2');svg.appendChild(path)}segment=[]};points.forEach((p,i)=>{if(p.value===null){flush();return}segment.push({...p,i});const circle=document.createElementNS(ns,'circle');circle.setAttribute('cx',x(i));circle.setAttribute('cy',y(p.value));circle.setAttribute('r','4');circle.setAttribute('fill','#4b8bf4');const title=document.createElementNS(ns,'title');title.textContent=p.t+' · '+p.value;circle.appendChild(title);svg.appendChild(circle)});flush();$('svg-baseline').replaceChildren(svg);
+}); // renderer bootstrap complete
+</script>
+
+<script type="module">
+import Sigma from "https://cdn.jsdelivr.net/npm/sigma@3.0.0/+esm";
+import Graph from "https://cdn.jsdelivr.net/npm/graphology@0.25.4/+esm";
+const host=document.getElementById("sigma-network"),status=document.getElementById("sigma-status");
+try{
+ const response=await fetch("./fixtures/renderer-cohort-v1.json",{cache:"no-store"});
+ if(!response.ok)throw new Error("fixture HTTP "+response.status);
+ const fixture=await response.json();
+ if(fixture.schema!=="renderer-cohort/v1"||fixture.data_class!=="synthetic")throw new Error("fixture contract mismatch");
+ const graph=new Graph({type:"directed",multi:false,allowSelfLoops:false});
+ const nodes=fixture.network.nodes,edges=fixture.network.edges;
+ nodes.forEach((node,i)=>{const angle=(2*Math.PI*i)/nodes.length;graph.addNode(node.id,{label:node.label,x:Math.cos(angle),y:Math.sin(angle),size:8,color:"#4b8bf4"})});
+ edges.forEach(edge=>graph.addDirectedEdgeWithKey(edge.id,edge.source,edge.target,{size:1,color:"#999"}));
+ new Sigma(graph,host,{renderLabels:true,labelRenderedSizeThreshold:0});
+ status.textContent="Rendered "+graph.order+" nodes / "+graph.size+" directed edges · synthetic fixture";
+}catch(error){host.textContent="Sigma renderer unavailable: "+error.message;status.textContent="Optional renderer failed; other comparisons remain usable."}
+</script>
+</body></html>

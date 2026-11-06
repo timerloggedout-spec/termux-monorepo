@@ -21,6 +21,7 @@ cadence is set.
 Usage: telemetry_feed_series.py [feed.json] [series.jsonl]
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -32,9 +33,25 @@ FIELDS = ("receipts_total", "actioned", "skipped",
           "actions_failure_rate")
 
 
+def atomic_write(path: Path, content: str):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with temporary.open("w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+
+
 def row_of(feed):
     golden = (feed.get("data") or {}).get("golden") or {}
-    row = {"generated_at": feed.get("generated_at")}
+    row = {"generated_at": feed.get("generated_at"), "state": feed.get("state", "unknown"), "freshness": feed.get("freshness", "unknown"), "sources": feed.get("sources", [])}
     for f in FIELDS:
         row[f] = golden.get(f)
     return row
@@ -58,9 +75,9 @@ def main():
     feed_path = sys.argv[1] if len(sys.argv) > 1 else FEED
     series_path = sys.argv[2] if len(sys.argv) > 2 else SERIES
     rows = build(feed_path, series_path)
-    Path(series_path).write_text(
-        "".join(json.dumps(r, separators=(",", ":")) + "\n"
-                for r in rows))
+    atomic_write(Path(series_path),
+                 "".join(json.dumps(r, separators=(",", ":")) + "\n"
+                         for r in rows))
     print(f"{series_path}: {len(rows)} snapshot(s)")
 
 

@@ -21,7 +21,9 @@ Design + stream inventory: docs/ops/TELEMETRY-VIZ-RECON.md
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -45,36 +47,112 @@ HONESTY = [
 ]
 
 
+def atomic_write(path: Path, content: str) -> None:
+    """Atomically replace a generated feed; readers see old or complete new bytes."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with temporary.open("w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _read_json(rel: str):
-    p = ROOT / rel
-    if not p.exists():
+def _read_json(rel: str, gaps=None, sources=None, stamp_key="generated_at", now=None):
+    """Read one committed source without turning absence or corruption into zero."""
+    gaps = gaps if gaps is not None else []
+    sources = sources if sources is not None else []
+    now = now or datetime.now(timezone.utc)
+    path = ROOT / rel
+    meta = {"path": rel, "state": "missing", "stamped_at": None,
+            "age_hours": None, "source_sha256": None, "size_bytes": 0}
+    try:
+        raw = path.read_bytes()
+    except FileNotFoundError:
+        meta["reason"] = "source missing"
+        gaps.append(f"source missing at collection time: {rel}")
+        sources.append(meta)
         return None
-    return json.loads(p.read_text())
+    except OSError as exc:
+        meta.update(state="unavailable", reason=f"read failed: {exc}")
+        gaps.append(f"source unavailable: {rel}")
+        sources.append(meta)
+        return None
+    meta["size_bytes"] = len(raw)
+    meta["source_sha256"] = hashlib.sha256(raw).hexdigest()
+    if not raw.strip():
+        meta.update(state="invalid", reason="empty source; missing evidence is not zero")
+        gaps.append(f"source empty/invalid: {rel}")
+        sources.append(meta)
+        return None
+    try:
+        payload = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        meta.update(state="invalid", reason="source is not valid UTF-8 JSON")
+        gaps.append(f"source malformed: {rel}")
+        sources.append(meta)
+        return None
+    if not isinstance(payload, dict):
+        meta.update(state="invalid", reason="JSON root must be an object")
+        gaps.append(f"source root invalid: {rel}")
+        sources.append(meta)
+        return None
+    stamp = payload.get(stamp_key)
+    meta["stamped_at"] = stamp
+    if not isinstance(stamp, str) or not stamp.strip():
+        meta.update(state="unknown", reason=f"{stamp_key} timestamp missing")
+        gaps.append(f"source timestamp unknown: {rel}")
+        sources.append(meta)
+        return payload
+    try:
+        parsed = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        meta.update(state="invalid", reason=f"{stamp_key} is not ISO-8601")
+        gaps.append(f"source timestamp invalid: {rel}")
+        sources.append(meta)
+        return payload
+    if parsed.tzinfo is None:
+        meta.update(state="invalid", reason=f"{stamp_key} lacks timezone")
+        gaps.append(f"source timestamp has no timezone: {rel}")
+        sources.append(meta)
+        return payload
+    age = (now - parsed.astimezone(timezone.utc)).total_seconds() / 3600
+    meta["age_hours"] = round(age, 3)
+    if age < -1:
+        meta.update(state="clock_skew", reason="source timestamp is in the future")
+        gaps.append(f"source timestamp is in the future: {rel}")
+    elif age > 24:
+        meta.update(state="stale", reason=f"source is {age:.1f}h old")
+        gaps.append(f"source stale (>24h): {rel}")
+    else:
+        meta["state"] = "fresh"
+    sources.append(meta)
+    return payload
 
 
 def collect() -> dict:
     gaps: list[str] = []
     sources: list[dict] = []
 
-    status = _read_json(STATUS)
-    quota = _read_json(QUOTA)
-    usage = _read_json(QUOTA_USAGE)
-    obs = _read_json(OBSERVATIONS)
-    act = _read_json(ACTIONS_OBS)
-
-    for rel, doc, key in ((STATUS, status, "generated_at"),
-                          (QUOTA, quota, "generated_at"),
-                          (QUOTA_USAGE, usage, "generated_at"),
-                          (OBSERVATIONS, obs, "read_at"),
-                          (ACTIONS_OBS, act, "read_at")):
-        if doc is None:
-            gaps.append(f"source missing at collection time: {rel}")
-        else:
-            sources.append({"path": rel, "stamped_at": doc.get(key)})
+    now = datetime.now(timezone.utc)
+    status = _read_json(STATUS, gaps, sources, "generated_at", now)
+    quota = _read_json(QUOTA, gaps, sources, "generated_at", now)
+    usage = _read_json(QUOTA_USAGE, gaps, sources, "generated_at", now)
+    obs = _read_json(OBSERVATIONS, gaps, sources, "read_at", now)
+    act = _read_json(ACTIONS_OBS, gaps, sources, "read_at", now)
+    source_states = [item["state"] for item in sources]
+    collection_state = "complete" if source_states and all(s == "fresh" for s in source_states) else "partial"
+    freshness = "stale" if "stale" in source_states else ("fresh" if collection_state == "complete" else "unknown")
 
     # ---- S2: outcome ledger (status.json) --------------------------------
     outcomes = None
@@ -238,7 +316,11 @@ def collect() -> dict:
     return {
         "schema": SCHEMA,
         "surface": "telemetry",
-        "generated_at": _now(),
+        "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "state": collection_state,
+        "freshness": freshness,
+        "source_count": len(sources),
+        "expected_source_count": 5,
         "sources": sources,
         "honesty_rules": HONESTY,
         "data": {
@@ -258,8 +340,7 @@ def main() -> int:
     args = ap.parse_args()
     feed = collect()
     out = Path(args.out_dir) / "telemetry-feed.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(feed, indent=1) + "\n")
+    atomic_write(out, json.dumps(feed, indent=1) + "\n")
     print(f"wrote {out} (gaps: {len(feed['gaps'])})")
     return 0
 

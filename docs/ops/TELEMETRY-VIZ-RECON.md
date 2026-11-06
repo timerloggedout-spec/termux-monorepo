@@ -139,3 +139,15 @@ data + owns this design), fed by a new collector in the existing pattern:
   Slice 2 design question for the DB lane (e3055a9c), not assumed here.
 - G4: Gravitee + Witness are pattern sources only (no live instance /
   placement owned elsewhere) — no integration is claimed.
+
+## 7. Implementation hardening — 2026-11-02 (renderer-lab PR #4018)
+
+The existing feed/page design is retained; this is hardening of the committed projection, not a second telemetry system.
+
+- The collector reads each of its five committed inputs independently and fails closed on missing, empty, malformed, non-object or timezone-invalid sources. Missing/invalid inputs produce explicit gaps and null values; they are never converted to zero.
+- Each source manifest carries repository-relative path, byte count, SHA-256, source timestamp, computed age and source state. The envelope has `state=complete|partial` and `freshness=fresh|stale|unknown`; the collector's own `generated_at` is not treated as proof that every input is fresh.
+- The page now shows the envelope state and source provenance beside the existing gaps/honesty section. History rows carry the source state and provenance forward.
+- ChartKit splits a time-series path at null observations. A missing point remains a visible gap rather than a false interpolation.
+- The feed, history and Tribute status writers publish with atomic file replacement. The collector workflow push filter includes `scripts/dashboards/actions_observations.json`.
+- The original zero-byte status snapshots were observed on master. Atomic writer changes reduce partial-write exposure but do not establish the original cause and do not repopulate those files. A fresh trusted status-generation run remains unverified.
+- No Neon reads/writes, new polling, credentials, provider APIs or public raw telemetry are introduced. Existing G1/G2/G3/G4 evidence limitations remain in force.

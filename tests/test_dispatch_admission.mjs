@@ -157,3 +157,35 @@ test('rate-limit deferral fails closed', () => {
   const r2 = evaluateAdmission({ pressure: null, force: true });
   for (const rec of r2.records) assert.equal(rec.admitted, true, rec.lane);
 });
+
+
+// Demand wakes must not wait for the time-cadence fallback.
+test('quota dispatcher has immediate repository-demand wake paths', () => {
+  const workflow = readFileSync(
+    new URL('../.github/workflows/quota-dispatch-tree.yml', import.meta.url),
+    'utf8',
+  );
+  assert.match(workflow, /pull_request_target:/);
+  assert.match(workflow, /workflow_run:/);
+  assert.match(workflow, /push:/);
+  assert.match(
+    workflow,
+    /eventDemand = \['pull_request_target', 'workflow_run', 'push'\]\.includes\(context\.eventName\)/,
+  );
+  assert.match(
+    workflow,
+    /firstCycle = context\.eventName === 'schedule'/,
+    'time-slot cadence must not replay on demand events',
+  );
+});
+
+// The central dispatcher retains only a cadence fallback; Matrix is never a
+// timed dispatch output and is refreshed by its own PR lifecycle workflow.
+test('quota cadence fallback does not dispatch the Lane Matrix', () => {
+  const workflow = readFileSync(
+    new URL('../.github/workflows/quota-dispatch-tree.yml', import.meta.url),
+    'utf8',
+  );
+  assert.match(workflow, /cron: ['"]\*\/10 \* \* \* \*['"]/);
+  assert.doesNotMatch(workflow, /ops-lane-matrix-sweep/);
+});

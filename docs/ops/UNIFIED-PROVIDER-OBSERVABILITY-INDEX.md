@@ -38,7 +38,7 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
                    Gravitee gateway analytics (when persistent)
 ```
 
-**FireSight:** no matching repository files, registry entries, or code-search hits were found in the current repository inspection. It is deliberately recorded as unresolved rather than assigned an invented role. Identify the intended FireSight project/product and authoritative endpoint before wiring it.
+**ForeSight:** this is the existing FOSS / emerging-technology horizon-scanning system, not a new FireSight product. Its canonical surfaces are `docs/research/FORESIGHT-RADAR.md`, `docs/ops/FORESIGHT-EVIDENCE-SPINE.md`, the `foresight` Python package, and `data/foresight/resource-registry.jsonl`. Integrate through its existing H0–H3 horizon and evidence-status contract; do not create a duplicate radar, registry, or evidence ledger.
 
 ## Consolidated system register
 
@@ -46,7 +46,7 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
 |---|---|---|---|
 | Temporal | Existing engagement and self-host smoke Actions receipts; current results index says execution is ephemeral in-job, no persistent Temporal instance | Durable execution contract / workflow correlation | Reuse workflow/run receipts and identifiers. Do not create a second scheduler or infer persistent Temporal service health. |
 | HindSight | Existing telemetry ingest and retain proof/state. Results index snapshot (2026-11-02) reports 3 attempts, 0 successful retained units, last error 402; snapshot is now stale until refreshed | Retention sink for sanitized telemetry payloads | Keep retention separate from Provenance. A failed retain must not block provenance emission. Credit/billing gate stays visible; no full population until proof gate passes. |
-| FireSight | Not found in repository search or current integration inventory | Unknown | Block integration until identity, source, API, auth, data contract, and owner are confirmed. |
+| ForeSight | Existing FOSS / emerging-technology radar, evidence spine, portable registry and CLI | Horizon scanning, research evidence and procurement/prototype signals | Consume the existing radar and evidence records; preserve H0–H3, evidence status, canonical source, hashes and append-oriented corrections. Do not duplicate its registry or turn weak signals into facts. |
 | ATES | Existing `apps/tribute-dashboard/data/ates-feed.json`; workflow receipts are its evidence | Evaluation/quality outcomes | Keep ATES verdicts and receipt semantics; do not convert telemetry absence into zero. |
 | 3L0 | Existing `ops/telemetry/session-history-3l0.jsonl` | Observational session history and confirmed-signal fold | Keep observational vs confirmed fields distinct. |
 | Gravitee APIM | Self-host GitHub Actions workflow boots an ephemeral stack with dual gateways; connector/helper mock-verified; no persistent live instance | API gateway, plans, consumers, request/error/latency analytics | Use as an analytics and gateway policy surface only when deployed. CI boot proof is not production telemetry. |
@@ -54,7 +54,7 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
 | n8n | Optional self-hosted Community Edition adapter, compose + importable workflow + sanitized SHE bridge exist | Visual composition and operator automation | GitHub Actions and repository evidence remain authoritative. n8n is not a second scheduler or system of record. Mark observed only after a real execution receipt exists. |
 | Platform201 | Live help-wanted dashboard deployment and health endpoint verified 2026-10-27; console-only, no API token/Actions credential | Deployment host and deployment-surface metadata | Display project/environment/deployment/health/credits as sourced observations. Not a telemetry backend; do not invent API polling. Revalidate aged console facts. |
 | Bifrost | Catalog/host/capabilities registered as evaluation; benchmark smoke runbook exists, results pending | Candidate LLM gateway / native MCP gateway | Keep evaluation-only. Promote only after benchmark `results.json` plus repository dual-gate evidence. Never wholesale-merge upstream workspace. |
-| AgentRouter (`agentrouter.org`) | Provider onboarding documented separately; API key not yet supplied; model IDs are account/pool dependent | Multi-provider LLM gateway with OpenAI-compatible and Anthropic-compatible transports | Register as disabled/pending credential. Discover models dynamically from authenticated `GET /v1/models`; never hardcode catalogue models or infer account quota. |
+| AgentRouter (`agentrouter.org`) | Authenticated dynamic catalog adapter and unit coverage added in this PR; owner reports the API key is provisioned; account-scoped model discovery still requires a successful authenticated observation | Multi-provider LLM gateway with OpenAI-compatible and Anthropic-compatible transports | Keep catalog discovery separate from inference admission. Use per-inference usage/quota/token and performance metrics as request-level evidence; never infer account-wide remaining balance from individual calls. |
 
 ## Provider and model registration contract
 
@@ -73,9 +73,10 @@ Provider discovery, model eligibility, quota, health, and inference are separate
 - Anthropic-compatible base URL: `https://co.agentrouter.org` (do not append an OpenAI `/v1` suffix to this base).
 - Secret name: `AGENTROUTER_API_KEY` (secret value must never enter chat, source, artifacts, or logs).
 - Model source of truth: authenticated `GET /v1/models` for the configured key/resource pool.
-- One key may be shared across agents with unified quota; therefore all usage must be attributed by agent/workflow and key alias, not by exposing the key.
-- Public documentation does not establish a universal remaining-credit/reset API. Until an authenticated documented quota source is validated, remaining balance and reset are `unknown`.
-- Catalog discovery is now wired but remains credential-gated; no inference route is admitted by this catalog change. Start disabled. Enable inference only after credential validation, account-scoped model discovery, approved data classification, an explicit spend ceiling, and the separate native-inference admission review.
+- One key may be shared across agents with unified quota; attribute every usage observation by agent/workflow, model, request ID and a non-secret key alias, never by exposing the key.
+- **Owner-confirmed operational behavior:** each AgentRouter inference call logs quota/token and related usage/performance metrics. Treat the provider's per-inference record as the primary request-level observation, preserving its exact returned metric names/values and source timestamp; normalize known fields (`input_tokens`, `output_tokens`, `total_tokens`, `quota_tokens`, `usage_cost`, `latency_ms`, `time_to_first_token_ms`, `tokens_per_second`) when present. Missing fields remain null/absent, never synthesized.
+- Per-inference usage records do not automatically establish current account-wide remaining balance or reset time. Keep those aggregate fields `unknown` unless a separate account-authoritative source documents them.
+- Catalog discovery is wired and credential-gated; owner reports the key is provisioned, but successful account-scoped discovery must be evidenced by the authenticated observation workflow. No inference route is admitted by this catalog change. Enable inference only after credential validation, account-scoped model discovery, approved data classification, an explicit spend ceiling, and the separate native-inference admission review.
 
 ## Shared telemetry envelope
 
@@ -90,8 +91,8 @@ Emit one sanitized event per provider/gateway invocation or deployment/workflow 
 | `workflow_id`, `run_id`, `run_attempt`, `temporal_workflow_id` | Execution correlation | Use available authoritative IDs; never fabricate missing IDs |
 | `request_id` | Provider request identifier | Only if returned by provider |
 | `doe_campaign_id`, `experiment_instance_key` | Experimental attribution | Only when the dispatch is stamped and eligible |
-| `started_at`, `ended_at`, `latency_ms` | Timing | UTC; derive latency from timestamps |
-| `input_tokens`, `output_tokens`, `usage_cost` | Usage | Only values actually returned by provider; preserve null/unknown |
+| `started_at`, `ended_at`, `latency_ms`, `time_to_first_token_ms`, `tokens_per_second` | Timing/performance | UTC; use provider-reported metrics when available; derive only elapsed wall latency from timestamps |
+| `input_tokens`, `output_tokens`, `total_tokens`, `quota_tokens`, `usage_cost` | Usage/quota | Normalize only metrics actually returned by the provider; preserve exact raw metric provenance and null/unknown semantics |
 | `quota_observation_ref` | Quota evidence reference | Link to source/time/scope, not a guessed balance |
 | `http_status`, `outcome`, `error_class`, `retry_after` | Result | Preserve raw status and documented retry metadata |
 | `data_class`, `attribution_confidence` | Safety/evidence | Explicit classification and confidence |
@@ -123,7 +124,7 @@ Rules:
 
 The existing `util-1-provider-rotation` campaign is the correct live campaign to extend; do not create a duplicate campaign. Its design already observes live dispatches, uses desk-assigned rotation, requires provider/selection-reason/timestamp stamps, and records returned quota cost in usage slots when available.
 
-AgentRouter is now a **pre-registered conditional arm** in `experiments/doe/util-1-provider-rotation/DESIGN.json`; it remains non-dispatchable until its credential, account model discovery, separate inference admission, spend ceiling, data classification and stop-switch gates pass. Any future gateway arm still requires a design amendment that names:
+AgentRouter is now a **pre-registered conditional arm** in `experiments/doe/util-1-provider-rotation/DESIGN.json`; it remains non-dispatchable until its credential, account model discovery, separate inference admission, spend ceiling, data classification and stop-switch gates pass. Once activated, the first real desk-stamped dispatch is an observation requirement, not an activation gate; the auditor retains exact model/protocol identity, workflow/run/attempt correlation and returned usage metrics before scoring. Any future gateway arm still requires a design amendment that names:
 - provider arm and exact model/protocol identity;
 - eligibility and credential gate;
 - quota/spend ceiling and kill switch;
@@ -139,7 +140,7 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 
 | Phase | Deliverable | Acceptance gate |
 |---|---|---|
-| P0 | Consolidated inventory, schema, ownership and status | No duplicate systems of record; FireSight explicitly unresolved |
+| P0 | Consolidated inventory, schema, ownership and status | No duplicate systems of record; ForeSight existing radar/evidence spine linked |
 | P1 | AgentRouter authenticated model discovery | Adapter and unit coverage merged in this branch; account model list still awaits user key; inference remains disabled pending separate admission review |
 | P2 | Quota manager and dashboard projection | Provider-specific documented signals only; unknown/stale states preserved; tests cover null/zero, resets, 401/402/429/5xx |
 | P3 | Temporal/HindSight/Provenance/Witness correlation | Shared IDs and evidence digests; independent sink failures; no prompt/secret leakage |
@@ -159,7 +160,7 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 - idempotent event ingestion;
 - DoE stamp missing → observational-only;
 - Bifrost evaluation and Gravitee ephemeral status cannot be promoted by catalog presence alone;
-- FireSight remains unresolved until authoritative evidence is supplied.
+- ForeSight uses its existing radar/evidence-spine records; no separate FireSight integration is implied.
 
 ## Source of truth and supporting records
 

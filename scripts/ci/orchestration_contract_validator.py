@@ -259,7 +259,7 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
             "gemini-dispatch": "dispatch",
             "agent-jules-on-issues": "jules-on-mention",
         }[route_name]
-        if f"  {target_job}:\\n    needs: validate-source-comment" not in target:
+        if f"  {target_job}:\n    needs: validate-source-comment" not in target:
             errors.append(f"{contract['path']} execution job must depend on source-comment validation")
         if "needs.validate-source-comment.outputs.valid == 'true'" not in target:
             errors.append(f"{contract['path']} execution job must reject an invalid source-comment revision")

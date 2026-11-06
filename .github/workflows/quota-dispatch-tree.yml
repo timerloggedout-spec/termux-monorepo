@@ -30,7 +30,8 @@ permissions: {}
 
 concurrency:
   group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request_target' || github.event_name == 'push' }}
+  # Keep active fan-out intact; newer pending PR/push wakes coalesce by group.
+  cancel-in-progress: false
 
 jobs:
   decide:

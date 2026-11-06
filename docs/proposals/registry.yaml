@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-02T00:00:00Z'
+updated_at: '2026-11-05T00:00:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1248,5 +1248,28 @@ proposals:
     related_branches:
       - feat/integration-intelligence-superpowers
     gates_required:
+      - repo-gate
+      - termux-smoke
+
+  - id: taktikal-awareness-kit
+    title: "T.A.K. — Taktikal Awareness Kit: COP, OODA, and actor-network emergence"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/taktikal-awareness-kit/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 4496
+    related_prs: []
+    related_branches:
+      - docs/taktikal-awareness-ooda-architecture
+    gates_required:
+      - proposal-lifecycle
       - repo-gate
       - termux-smoke

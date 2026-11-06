@@ -73,6 +73,31 @@ def analyze(case):
     impact={"severity":"critical" if duplicate else "high" if shortage_value else "medium" if exceptions else "low","exposure":str(exposure),"basis":"full invoice value at duplicate risk" if duplicate else "price variance plus unreceived quantity" if exceptions else "no exception exposure","affected":[{"type":"invoice","id":inv["number"]},{"type":"purchase_order","id":po["number"]},{"type":"goods_receipt","id":gr["number"]},{"type":"vendor","id":inv["vendor_id"]},{"type":"payment_batch","id":case["payment_batch"]}],"blocked":["payment_release","ledger_posting","vendor_remittance"]}
     return {"invoice_total":str(total),"line_results":lines,"exceptions":exceptions,"exception_count":len(exceptions),"match_status":"exception" if exceptions else "matched","recommendation":recommendation,"disposition":disposition,"impact":impact}
 
+def validate_case(case):
+    import re
+    if not isinstance(case,dict): raise ValueError("case must be an object")
+    for key in ("case_id","payment_batch","invoice","po","receipt"):
+        if key not in case: raise ValueError("missing case field: "+key)
+    if not re.fullmatch(r"[A-Z0-9-]{3,48}",str(case["case_id"])): raise ValueError("invalid case_id")
+    inv,po,gr=case["invoice"],case["po"],case["receipt"]
+    if not all(isinstance(x,dict) for x in (inv,po,gr)): raise ValueError("invoice, po and receipt must be objects")
+    for key in ("number","vendor","vendor_id","lines"):
+        if key not in inv: raise ValueError("invoice missing "+key)
+    for key in ("number","revision","lines"):
+        if key not in po: raise ValueError("purchase order missing "+key)
+    for key in ("number","lines"):
+        if key not in gr: raise ValueError("goods receipt missing "+key)
+    if not isinstance(inv["lines"],list) or not inv["lines"] or not isinstance(po["lines"],list) or not isinstance(gr["lines"],list): raise ValueError("document lines must be non-empty arrays")
+    for line in inv["lines"]:
+        if not all(k in line for k in ("sku","qty","price")): raise ValueError("invoice line needs sku, qty and price")
+        if Decimal(str(line["qty"]))<=0 or money(line["price"])<0: raise ValueError("invalid invoice quantity or price")
+    for line in po["lines"]:
+        if not all(k in line for k in ("sku","qty","price")): raise ValueError("PO line needs sku, qty and price")
+        if Decimal(str(line["qty"]))<=0 or money(line["price"])<0: raise ValueError("invalid PO quantity or price")
+    for line in gr["lines"]:
+        if not all(k in line for k in ("sku","qty")) or Decimal(str(line["qty"]))<0: raise ValueError("invalid receipt line")
+    return case
+
 def audit_append(db,cid,kind,actor,payload):
     prev=db.execute("SELECT event_hash FROM audit ORDER BY id DESC LIMIT 1").fetchone()
     previous=prev["event_hash"] if prev else "0"*64
@@ -171,10 +196,29 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized(): return self.send_json(403,{"error":"operator_authorization_required"})
         try:
             body=self.read_body(); path=urlparse(self.path).path
+            if path=="/api/cases":
+                case=validate_case(body.get("case",body))
+                with db_session() as db:
+                    db.execute("BEGIN IMMEDIATE")
+                    prior=db.execute("SELECT payload FROM cases").fetchall()
+                    for item in prior:
+                        old=json.loads(item["payload"])
+                        if old["invoice"]["vendor_id"]==case["invoice"]["vendor_id"] and old["invoice"]["number"]==case["invoice"]["number"]:
+                            case["invoice"]["duplicate_of"]=old["invoice"]["number"]
+                    if db.execute("SELECT 1 FROM cases WHERE case_id=?",(case["case_id"],)).fetchone(): return self.send_json(409,{"error":"case_id_already_exists"})
+                    analysis=analyze(case)
+                    state="matched" if analysis["match_status"]=="matched" else "needs_review"
+                    db.execute("INSERT INTO cases VALUES(?,?,?,?,?,?)",(case["case_id"],json.dumps(case),state,1,None,utcnow()))
+                    audit_append(db,case["case_id"],"case_ingested",str(body.get("actor","operator"))[:80],{"invoice":case["invoice"]["number"],"analysis":analysis})
+                result=next(x for x in cases_all() if x["case_id"]==case["case_id"])
+                return self.send_json(201,{"case":result})
             if path.startswith("/api/cases/") and path.endswith("/brief"):
                 cid=path.split("/")[3]; c=next((x for x in cases_all() if x["case_id"]==cid),None)
                 if not c: return self.send_json(404,{"error":"case_not_found"})
-                return self.send_json(200,review_brief(c))
+                brief=review_brief(c)
+                digest=hashlib.sha256(brief["brief"].encode()).hexdigest()
+                with db_session() as db: audit_append(db,cid,"controller_brief_drafted",str(body.get("actor","Controller"))[:80],{"provider":brief.get("provider"),"model":brief.get("model"),"brief_sha256":digest})
+                return self.send_json(200,brief)
             if path.startswith("/api/cases/") and path.endswith("/decision"):
                 cid=path.split("/")[3]; decision=body.get("decision"); actor=str(body.get("actor","Controller"))[:80]; note=str(body.get("note",""))[:1000]; expected=int(body.get("expected_version",0))
                 if decision not in ("approve","hold","reject"): raise ValueError("decision must be approve, hold, or reject")

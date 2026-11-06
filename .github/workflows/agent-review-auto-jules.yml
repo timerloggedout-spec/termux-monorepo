@@ -17,8 +17,21 @@ on:
     types: [submitted, edited]
   pull_request_review_comment:
     types: [created, edited]
-  issue_comment:
-    types: [created, edited]
+
+  workflow_call:
+    inputs:
+      pr_number:
+        type: string
+        required: true
+      comment_id:
+        type: string
+        required: true
+      comment_updated_at:
+        type: string
+        required: true
+      source_event:
+        type: string
+        required: true
 
 concurrency:
   # Serialize only the same provider source. Distinct provider comments/reviews
@@ -27,10 +40,52 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate-source-comment:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+      pull-requests: read
+    outputs:
+      valid: ${{ steps.validate.outputs.valid }}
+    steps:
+      - name: Validate caller comment identity and revision
+        id: validate
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          SOURCE_EVENT: ${{ inputs.source_event }}
+          SOURCE_COMMENT_ID: ${{ inputs.comment_id }}
+          SOURCE_COMMENT_UPDATED_AT: ${{ inputs.comment_updated_at }}
+        with:
+          script: |
+            if (process.env.SOURCE_EVENT !== 'issue_comment') {
+              core.setOutput('valid', 'true');
+              return;
+            }
+            const id = Number(process.env.SOURCE_COMMENT_ID);
+            const expectedUpdatedAt = process.env.SOURCE_COMMENT_UPDATED_AT || '';
+            const issueNumber = context.payload.issue?.number;
+            const eventComment = context.payload.comment || {};
+            if (!Number.isSafeInteger(id) || id <= 0 || !expectedUpdatedAt || !issueNumber || String(eventComment.id) !== String(id)) {
+              core.setOutput('valid', 'false');
+              core.warning('Missing or mismatched source comment metadata.');
+              return;
+            }
+            const { data: comment } = await github.rest.issues.getComment({
+              owner: context.repo.owner, repo: context.repo.repo, comment_id: id,
+            });
+            const expectedIssueSuffix = `/issues/${issueNumber}`;
+            const valid = comment.updated_at === expectedUpdatedAt &&
+              comment.issue_url.endsWith(expectedIssueSuffix) &&
+              String(comment.user?.login || '').toLowerCase() === String(eventComment.user?.login || '').toLowerCase();
+            core.setOutput('valid', String(valid));
+            if (!valid) core.warning('Source comment changed or no longer matches the caller event; refusing to process it.');
   detect-bot-feedback:
+    needs: validate-source-comment
     timeout-minutes: 15
     if: |
-      (
+      always() &&
+      needs.validate-source-comment.outputs.valid == 'true' &&
+      ((
         github.event_name == 'pull_request_review' &&
         github.event.review.state != 'approved' &&
         github.event.review.user.type == 'Bot' &&
@@ -53,7 +108,7 @@ jobs:
         !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
       ) ||
       (
-        github.event_name == 'issue_comment' &&
+        inputs.source_event == 'issue_comment' &&
         github.event.issue.pull_request &&
         github.event.comment.user.type == 'Bot' &&
         (
@@ -62,7 +117,7 @@ jobs:
           github.event.comment.user.login == 'devin-ai-integration[bot]'
         ) &&
         !contains(github.event.comment.body, '<!-- agent-auto-jules -->')
-      )
+      ))
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -90,8 +145,8 @@ jobs:
               prNumber = context.payload.pull_request.number;
             } else if (event === 'pull_request_review_comment') {
               prNumber = context.payload.pull_request.number;
-            } else if (event === 'issue_comment') {
-              prNumber = context.payload.issue.number;
+            } else if (inputs.source_event === 'issue_comment') {
+              prNumber = Number('${{ inputs.pr_number }}');
             }
             if (!prNumber) {
               core.setOutput('should_invoke', 'false');

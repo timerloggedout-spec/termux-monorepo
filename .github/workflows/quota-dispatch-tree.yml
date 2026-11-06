@@ -39,6 +39,7 @@ jobs:
       github.event_name != 'issue_comment' ||
       (
         github.event.issue.pull_request == null &&
+        github.event.issue.state == 'open' &&
         github.event.sender.type == 'User' &&
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
         github.event.comment.body == '/quota force all'
@@ -81,7 +82,7 @@ jobs:
               const issue = context.payload.issue || {};
               const comment = context.payload.comment || {};
               const association = comment.author_association;
-              const authorized = !issue.pull_request &&
+              const authorized = !issue.pull_request && issue.state === 'open' &&
                 context.payload.sender?.type === 'User' &&
                 ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(association) &&
                 (comment.body || '').trim() === '/quota force all';

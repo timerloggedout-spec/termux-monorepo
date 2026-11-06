@@ -32,10 +32,10 @@ Platform201 deployment is performed.
 
 Issue #1573's dispatcher now has immediate wake paths for PR lifecycle changes,
 managed-lane completion (through the lane-events recorder), and source-record
-pushes. Its hourly schedule is only the clock for time-only cadence slots; it is not a
+pushes. Its 30-minute schedule is only the clock for time-only cadence slots; it is not a
 10-minute polling sweep and it is not the primary demand signal. State-changing
 events wake demand work immediately, while the hourly clock evaluates true
-hourly/3h/4h/6h/12h cadence and stale-recovery windows.
+30-minute/hourly/3h/4h/6h/12h cadence and stale-recovery windows.
 
 The Lane Matrix was incorrectly attached to the q6 tranche and inherited a
 six-hour refresh dependency. That coupling is removed. The PR-disposition

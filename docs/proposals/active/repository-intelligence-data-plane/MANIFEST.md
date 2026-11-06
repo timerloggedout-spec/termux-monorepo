@@ -8,7 +8,8 @@ status: posted
 priority: P0
 reviewers:
   - timerloggedout-spec
-related_prs: []
+related_prs:
+  - 2473
 related_branches:
   - feat/ridp-repository-intelligence-data-plane
 gates_required: [repo-gate, termux-smoke]
@@ -40,7 +41,7 @@ No independent review recorded yet. Proposal remains posted; implementation phas
 - [ ] Gates green on merge
 - [ ] Closed + moved to closed/ when terminal
 
-## Links
+## Related implementation\n\n- QAC-009 tick ledger implementation: PR #2473 (merged; source of per-request quota evidence).\n\n## Links
 
 - Architecture: ../../../architecture/REPOSITORY-INTELLIGENCE-DATA-PLANE.md
 - ITEMS: ./ITEMS.md

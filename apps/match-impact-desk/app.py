@@ -81,6 +81,10 @@ def validate_case(case):
     if not re.fullmatch(r"[A-Z0-9-]{3,48}",str(case["case_id"])): raise ValueError("invalid case_id")
     inv,po,gr=case["invoice"],case["po"],case["receipt"]
     if not all(isinstance(x,dict) for x in (inv,po,gr)): raise ValueError("invoice, po and receipt must be objects")
+    for field in ("number","vendor","vendor_id"):
+        if not isinstance(inv.get(field),str) or not inv[field].strip() or len(inv[field])>120: raise ValueError("invalid invoice "+field)
+    if not isinstance(po.get("number"),str) or not po["number"].strip() or len(po["number"])>120: raise ValueError("invalid PO number")
+    if not isinstance(gr.get("number"),str) or not gr["number"].strip() or len(gr["number"])>120: raise ValueError("invalid receipt number")
     for key in ("number","vendor","vendor_id","lines"):
         if key not in inv: raise ValueError("invoice missing "+key)
     for key in ("number","revision","lines"):
@@ -89,12 +93,15 @@ def validate_case(case):
         if key not in gr: raise ValueError("goods receipt missing "+key)
     if not isinstance(inv["lines"],list) or not inv["lines"] or not isinstance(po["lines"],list) or not isinstance(gr["lines"],list): raise ValueError("document lines must be non-empty arrays")
     for line in inv["lines"]:
+        if not isinstance(line,dict): raise ValueError("invoice lines must be objects")
         if not all(k in line for k in ("sku","qty","price")): raise ValueError("invoice line needs sku, qty and price")
         if Decimal(str(line["qty"]))<=0 or money(line["price"])<0: raise ValueError("invalid invoice quantity or price")
     for line in po["lines"]:
+        if not isinstance(line,dict): raise ValueError("PO lines must be objects")
         if not all(k in line for k in ("sku","qty","price")): raise ValueError("PO line needs sku, qty and price")
         if Decimal(str(line["qty"]))<=0 or money(line["price"])<0: raise ValueError("invalid PO quantity or price")
     for line in gr["lines"]:
+        if not isinstance(line,dict): raise ValueError("receipt lines must be objects")
         if not all(k in line for k in ("sku","qty")) or Decimal(str(line["qty"]))<0: raise ValueError("invalid receipt line")
     return case
 
@@ -217,7 +224,9 @@ class Handler(BaseHTTPRequestHandler):
                 if not c: return self.send_json(404,{"error":"case_not_found"})
                 brief=review_brief(c)
                 digest=hashlib.sha256(brief["brief"].encode()).hexdigest()
-                with db_session() as db: audit_append(db,cid,"controller_brief_drafted",str(body.get("actor","Controller"))[:80],{"provider":brief.get("provider"),"model":brief.get("model"),"brief_sha256":digest})
+                with db_session() as db:
+                    db.execute("BEGIN IMMEDIATE")
+                    audit_append(db,cid,"controller_brief_drafted",str(body.get("actor","Controller"))[:80],{"provider":brief.get("provider"),"model":brief.get("model"),"brief_sha256":digest})
                 return self.send_json(200,brief)
             if path.startswith("/api/cases/") and path.endswith("/decision"):
                 cid=path.split("/")[3]; decision=body.get("decision"); actor=str(body.get("actor","Controller"))[:80]; note=str(body.get("note",""))[:1000]; expected=int(body.get("expected_version",0))
@@ -229,7 +238,7 @@ class Handler(BaseHTTPRequestHandler):
                     if row["version"]!=expected: return self.send_json(409,{"error":"stale_version"})
                     if row["status"] in ("approved","rejected"): return self.send_json(409,{"error":"case_already_final"})
                     c=json.loads(row["payload"]); a=analyze(c)
-                    if decision=="approve" and a["exception_count"] and len(note.strip())<12: raise ValueError("exception approval requires a substantive resolution note")
+                    if decision in ("approve","reject") and a["exception_count"] and len(note.strip())<12: raise ValueError("exception approval requires a substantive resolution note")
                     state={"approve":"approved","hold":"on_hold","reject":"rejected"}[decision]
                     record={"decision":decision,"actor":actor,"note":note.strip(),"payment_released":False,"ledger_posted":False,"at":utcnow()}
                     db.execute("UPDATE cases SET status=?,version=version+1,decision=?,updated_at=? WHERE case_id=?",(state,json.dumps(record),utcnow(),cid))

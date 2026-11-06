@@ -1,6 +1,7 @@
 """Match Impact Desk: deterministic three-way AP matching + human approval."""
 from __future__ import annotations
 import hashlib, json, os, secrets, sqlite3
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from decimal import Decimal
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -28,6 +29,18 @@ def db_connect():
     db=sqlite3.connect(DB,timeout=10); db.row_factory=sqlite3.Row
     db.execute("PRAGMA journal_mode=WAL"); db.execute("PRAGMA foreign_keys=ON")
     return db
+@contextmanager
+def db_session():
+    db=db_connect()
+    try:
+        yield db
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
 def money(v): return Decimal(str(v)).quantize(Decimal("0.01"))
 
 def analyze(case):
@@ -68,7 +81,7 @@ def audit_append(db,cid,kind,actor,payload):
     db.execute("INSERT INTO audit(case_id,kind,actor,payload,at,previous_hash,event_hash) VALUES(?,?,?,?,?,?,?)",(cid,kind,actor,json.dumps(payload,sort_keys=True),event["at"],previous,digest))
 
 def initialize():
-    with db_connect() as db:
+    with db_session() as db:
         db.executescript("""
         CREATE TABLE IF NOT EXISTS cases(case_id TEXT PRIMARY KEY,payload TEXT NOT NULL,status TEXT NOT NULL,version INTEGER NOT NULL,decision TEXT,updated_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY AUTOINCREMENT,case_id TEXT,kind TEXT NOT NULL,actor TEXT NOT NULL,payload TEXT NOT NULL,at TEXT NOT NULL,previous_hash TEXT NOT NULL,event_hash TEXT NOT NULL);
@@ -82,14 +95,14 @@ def initialize():
                 audit_append(db,c["case_id"],"case_ingested","system",{"invoice":c["invoice"]["number"],"analysis":a})
 
 def cases_all():
-    with db_connect() as db: rows=db.execute("SELECT * FROM cases ORDER BY case_id").fetchall()
+    with db_session() as db: rows=db.execute("SELECT * FROM cases ORDER BY case_id").fetchall()
     out=[]
     for row in rows:
         c=json.loads(row["payload"]); out.append({**c,"status":row["status"],"version":row["version"],"decision":json.loads(row["decision"]) if row["decision"] else None,"analysis":analyze(c),"updated_at":row["updated_at"]})
     return out
 
 def verify_chain():
-    with db_connect() as db: rows=db.execute("SELECT * FROM audit ORDER BY id").fetchall()
+    with db_session() as db: rows=db.execute("SELECT * FROM audit ORDER BY id").fetchall()
     previous="0"*64
     for row in rows:
         event={"case_id":row["case_id"],"kind":row["kind"],"actor":row["actor"],"payload":json.loads(row["payload"]),"at":row["at"],"previous_hash":previous}
@@ -137,12 +150,12 @@ class Handler(BaseHTTPRequestHandler):
         if path=="/api/cases": return self.send_json(200,{"cases":cases_all()})
         if path=="/api/audit/verify": return self.send_json(200,verify_chain())
         if path=="/api/audit":
-            with db_connect() as db: rows=db.execute("SELECT * FROM audit ORDER BY id DESC LIMIT 200").fetchall()
+            with db_session() as db: rows=db.execute("SELECT * FROM audit ORDER BY id DESC LIMIT 200").fetchall()
             return self.send_json(200,{"events":[{"id":r["id"],"case_id":r["case_id"],"kind":r["kind"],"actor":r["actor"],"payload":json.loads(r["payload"]),"at":r["at"],"hash":r["event_hash"]} for r in rows]})
         if path.startswith("/api/cases/") and path.endswith("/evidence"):
             cid=path.split("/")[3]; c=next((x for x in cases_all() if x["case_id"]==cid),None)
             if not c: return self.send_json(404,{"error":"case_not_found"})
-            with db_connect() as db: rows=db.execute("SELECT * FROM audit WHERE case_id=? ORDER BY id",(cid,)).fetchall()
+            with db_session() as db: rows=db.execute("SELECT * FROM audit WHERE case_id=? ORDER BY id",(cid,)).fetchall()
             packet={"schema":"match-impact-desk/evidence.v1","case":c,"audit":[dict(r) for r in rows],"notice":"Synthetic data; no payment or ledger action."}
             packet["sha256"]=hashlib.sha256(json.dumps(packet,sort_keys=True,default=str).encode()).hexdigest()
             return self.send_json(200,packet)
@@ -165,7 +178,8 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/api/cases/") and path.endswith("/decision"):
                 cid=path.split("/")[3]; decision=body.get("decision"); actor=str(body.get("actor","Controller"))[:80]; note=str(body.get("note",""))[:1000]; expected=int(body.get("expected_version",0))
                 if decision not in ("approve","hold","reject"): raise ValueError("decision must be approve, hold, or reject")
-                with db_connect() as db:
+                with db_session() as db:
+                    db.execute("BEGIN IMMEDIATE")
                     row=db.execute("SELECT * FROM cases WHERE case_id=?",(cid,)).fetchone()
                     if not row: return self.send_json(404,{"error":"case_not_found"})
                     if row["version"]!=expected: return self.send_json(409,{"error":"stale_version"})

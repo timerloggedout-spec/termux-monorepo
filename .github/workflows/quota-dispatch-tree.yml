@@ -110,6 +110,17 @@ jobs:
                 'dispatch_q4', 'dispatch_q6', 'dispatch_vantage'
               ]) core.setOutput(name, 'false');
               core.info('Duplicate force request: no dispatch fan-out');
+              require('fs').writeFileSync('dispatch-admission.json', JSON.stringify({
+                generated_at: new Date().toISOString(),
+                duplicate_force_request: true,
+                issue: context.payload.issue.number,
+                comment_id: context.payload.comment.id,
+                dispatched: false
+              }, null, 2));
+              core.summary
+                .addHeading('Duplicate force request')
+                .addText('The authenticated request already has a completion receipt; no lane was dispatched.')
+                .write();
               return;
             }
             // Node A (reworked, issue #3812 step 4): lane-aware admission.

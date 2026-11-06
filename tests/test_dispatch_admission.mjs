@@ -145,6 +145,11 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.match(workflow, /repoChanged && \(slow \|\| eventDemand\)/);
   assert.match(workflow, /cron: ['\"]0 \\* \\* \\* \\*['\"]/);
   assert.doesNotMatch(workflow, /ops-lane-matrix-sweep/);
+  assert.match(workflow, /issue_comment:/);
+  assert.match(workflow, /github\.event\.comment\.body == '\/quota force all'/);
+  assert.match(workflow, /complete-force-request:/);
+  assert.doesNotMatch(workflow, /workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /force_lane/);
 });
 
 // 7. Rate-limit deferral: pressure read failed -> fail closed, every

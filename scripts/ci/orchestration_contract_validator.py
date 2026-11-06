@@ -196,9 +196,9 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
         errors.append("issue-comment router must own the issue_comment trigger")
     if not re.search(r"(?m)^    types: \[created, edited\]\s*$", router_on):
         errors.append("issue-comment router must cover created and edited comment revisions")
-    if not re.search(r"(?m)^permissions:\\s*\\n  contents: read\\n  issues: write\\n  pull-requests: write\\s*$", router):
+    if not re.search(r"(?m)^permissions:\s*\n  contents: read\n  issues: write\n  pull-requests: write\s*$", router):
         errors.append("issue-comment router must grant only the bounded caller-job permission ceiling")
-    if not re.search(r"(?m)^  route:\\n    permissions: \\{\\}\\s*$", router):
+    if not re.search(r"(?m)^  route:\n    permissions: \{\}\s*$", router):
         errors.append("issue-comment router classifier job must have no token permissions")
     if "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b" not in router:
         errors.append("issue-comment router must pin github-script to the approved immutable revision")

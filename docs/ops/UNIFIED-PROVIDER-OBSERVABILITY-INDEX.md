@@ -18,7 +18,7 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
           │                            │                           │
           │                            └── quota observations      │ invocation
           │                                                        ▼
-          ├── AgentRouter (pending key)                      Temporal / Actions
+          ├── AgentRouter (key provisioned; account validation pending)                      Temporal / Actions
           ├── Bifrost (evaluation)                                  │
           └── native providers                                      ▼
                                                          sanitized event envelope
@@ -38,7 +38,7 @@ Provider/model catalog ──► eligibility + quota policy ──► model-rout
                    Gravitee gateway analytics (when persistent)
 ```
 
-**ForeSight:** this is the existing FOSS / emerging-technology horizon-scanning system, not a new FireSight product. Its canonical surfaces are `docs/research/FORESIGHT-RADAR.md`, `docs/ops/FORESIGHT-EVIDENCE-SPINE.md`, the `foresight` Python package, and `data/foresight/resource-registry.jsonl`. Integrate through its existing H0–H3 horizon and evidence-status contract; do not create a duplicate radar, registry, or evidence ledger.
+**ForeSight:** this is the existing FOSS / emerging-technology horizon-scanning system, the intended ForeSight integration. Its canonical surfaces are `docs/research/FORESIGHT-RADAR.md`, `docs/ops/FORESIGHT-EVIDENCE-SPINE.md`, the `foresight` Python package, and `data/foresight/resource-registry.jsonl`. Integrate through its existing H0–H3 horizon and evidence-status contract; do not create a duplicate radar, registry, or evidence ledger.
 
 ## Consolidated system register
 
@@ -141,7 +141,7 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 | Phase | Deliverable | Acceptance gate |
 |---|---|---|
 | P0 | Consolidated inventory, schema, ownership and status | No duplicate systems of record; ForeSight existing radar/evidence spine linked |
-| P1 | AgentRouter authenticated model discovery | Adapter and unit coverage merged in this branch; account model list still awaits user key; inference remains disabled pending separate admission review |
+| P1 | AgentRouter authenticated model discovery | Adapter and unit coverage added in this PR (pending merge); owner reports key provisioned; authenticated account model observation pending; inference remains disabled pending separate admission review |
 | P2 | Quota manager and dashboard projection | Provider-specific documented signals only; unknown/stale states preserved; tests cover null/zero, resets, 401/402/429/5xx |
 | P3 | Temporal/HindSight/Provenance/Witness correlation | Shared IDs and evidence digests; independent sink failures; no prompt/secret leakage |
 | P4 | n8n/Gravitee/Platform201/Bifrost integration edges | Each edge has live evidence; no mock/console/evaluation state promoted to production |
@@ -160,7 +160,7 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 - idempotent event ingestion;
 - DoE stamp missing → observational-only;
 - Bifrost evaluation and Gravitee ephemeral status cannot be promoted by catalog presence alone;
-- ForeSight uses its existing radar/evidence-spine records; no separate FireSight integration is implied.
+- ForeSight uses its existing radar and evidence-spine records; no duplicate research registry is introduced.
 
 ## Source of truth and supporting records
 
@@ -173,7 +173,7 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 - `docs/ops/PLATFORM201-LIVE-2026-10-27.md` — Platform201 deployment evidence and API credential gap.
 - `docs/proposals/active/bifrost-gateway-integration/ITEMS.md` — Bifrost status; benchmark results pending.
 - `config/agent_stack_integrations.json` + `docs/research/RUNTIME-PROVENANCE-AIBOM.md` — Witness integration/provenance references.
-- `scripts/provider_model_catalog.py`, `scripts/provider_extension_catalogs.py`, `scripts/provider_quota_managers.py`, `ops/quota/provider-managers.json` — provider discovery and passive quota normalization. AgentRouter is authenticated catalog-only; its quota manager remains unsupported/unknown pending a documented account signal.
+- `scripts/provider_model_catalog.py`, `scripts/provider_extension_catalogs.py`, `scripts/provider_quota_managers.py`, `ops/quota/provider-managers.json` — provider discovery and passive quota normalization. AgentRouter is authenticated catalog-only; per-inference usage/quota metrics are captured as request-level evidence when returned, while aggregate balance/reset remains unknown pending an account-authoritative signal.
 - `experiments/doe/util-1-provider-rotation/DESIGN.json` + `docs/ops/DOE-FAMILY.md` — live provider-rotation experiment contract.
 
 This document records an integration baseline. It does not assert that all integrations are credentialed, deployed, healthy, or approved for production traffic.

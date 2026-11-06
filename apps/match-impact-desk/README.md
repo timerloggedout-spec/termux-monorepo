@@ -34,7 +34,7 @@ Open http://127.0.0.1:8080.
 
 ## Controls
 
-- Production mutations require MATCHDESK_ADMIN_TOKEN and X-Operator-Token.
+- Production mutations require MATCHDESK_ADMIN_TOKEN and X-Operator-Token; the UI accepts it in a password field and keeps it in memory for the current page session only.
 - Development writes without a token are accepted only from loopback.
 - Audit table rejects UPDATE and DELETE.
 - Stale decisions return HTTP 409.

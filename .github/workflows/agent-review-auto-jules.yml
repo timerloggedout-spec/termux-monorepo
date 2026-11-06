@@ -32,6 +32,9 @@ on:
       source_event:
         type: string
         required: true
+    secrets:
+      JULES_API_KEY:
+        required: false
 
 concurrency:
   # Serialize only the same provider source. Distinct provider comments/reviews

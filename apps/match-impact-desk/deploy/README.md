@@ -1,5 +1,16 @@
 # Deploy on Vultr Cloud Compute
 
+## One-command bootstrap
+
+After provisioning Ubuntu 24.04, opening TCP 22/80/443, and pointing DNS to the VM, copy the app's deploy folder to the VM or run the script from a sparse checkout. Set a long random token and your domain in the shell; do not place either in source control:
+
+    export MATCHDESK_DOMAIN=app.example.com
+    export MATCHDESK_ADMIN_TOKEN='use-a-long-random-secret'
+    export MATCHDESK_BRANCH=master
+    sudo -E bash deploy/bootstrap-vultr.sh
+
+The script installs Python, Git, and Caddy; checks out the selected monorepo branch; installs the systemd service; writes the token into a root-owned mode-0600 environment file; configures Caddy; and starts the app. Optional inference environment variables may be set in the shell before invoking it. The script does not provision the Vultr VM or DNS record.
+
 This is a manual, evidence-gated deployment recipe. It does not claim that a VM, DNS name, TLS certificate, or public URL has already been created.
 
 ## Provision

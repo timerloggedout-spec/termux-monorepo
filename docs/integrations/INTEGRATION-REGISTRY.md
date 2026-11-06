@@ -10,7 +10,7 @@
 | Integration | Priority | Session evidence | Repository adapter / integration state | Intended role |
 |---|---:|---|---|---|
 | Superpowers | P0 | Skill installed in this session and repository-local skill exists | Native skill implemented | Engineering methodology |
-| API Impact Mapper | P0 | Connector tools exposed; a SHA-bound advisory PR lane exists | Implemented in PR #4019, validation pending | API evolution and PR impact analysis |
+| API Impact Mapper | P0 | Connector tools exposed; a SHA-bound advisory PR lane exists | Planned; PR #4019 advisory lane remains proposed pending validation | API evolution and PR impact analysis |
 | Context7 | P0 | Documentation tools exposed | Planned | Version-aware upstream documentation |
 | Mintlify | P0 | Authenticated deployment and repository source verified | Native repository integration | Published developer documentation |
 | Agent Ready | P0 | Live site scan completed | Planned remediation work | Agent readability and protocol audit |
@@ -35,6 +35,12 @@
 | Precise Special Functions | P2 | High-precision computation tools exposed | Planned | Scientific computation |
 | Sixtyfour Intelligence | P2 | Entity/company research tools exposed; not exercised | Planned | Scoped company/vendor intelligence |
 | WorkOS | P2 | Authenticated login, but no dashboard account exists | Provisioning blocked | Identity and access management |
+| Domino Data Lab | P1 | No live connector exposed; installed skill documentation exists | Planned | Reproducible ML/research operations |
+| EmpirioLabs AI | P1 | Connector tools exposed in this session | Planned | Model and agent research/benchmarking |
+| tldraw | P1 | Connector namespace and repository skill guidance available | Planned | Visual architecture and research collaboration |
+| Cache Stats | P1 | Skill installed; no live telemetry tool exposed | Planned | Local prompt-cache/context efficiency evidence |
+| Alloy | P2 | Mission/device and Mesh Storage tools exposed | Planned | Robotics/edge mission and device evidence |
+| Klaviyo | P3 | Connector tools exposed in this session | Planned; deferred pending explicit consent-based use case | Consent-based research/release communications |
 
 ## Priority rationale
 

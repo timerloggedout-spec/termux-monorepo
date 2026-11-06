@@ -9,6 +9,8 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
+**Audit performed:** 2026-11-05. **Registry update date:** 2026-11-05. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+
 ## Executive status
 
 The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained eight integrations. This expansion adds the requested portfolio as 24 separately tracked entries, including two distinct DeepWiki surfaces.

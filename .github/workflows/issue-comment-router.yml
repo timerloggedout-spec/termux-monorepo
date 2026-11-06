@@ -107,7 +107,8 @@ jobs:
       comment_id: ${{ needs.route.outputs.comment_id }}
       comment_updated_at: ${{ needs.route.outputs.comment_updated_at }}
       source_event: ${{ needs.route.outputs.source_event }}
-    secrets: inherit
+    secrets:
+      JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
     permissions:
       contents: read
       issues: write
@@ -123,7 +124,8 @@ jobs:
       comment_id: ${{ needs.route.outputs.comment_id }}
       comment_updated_at: ${{ needs.route.outputs.comment_updated_at }}
       source_event: ${{ needs.route.outputs.source_event }}
-    secrets: inherit
+    secrets:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     permissions:
       contents: read
       issues: write
@@ -138,7 +140,8 @@ jobs:
       comment_id: ${{ needs.route.outputs.comment_id }}
       comment_updated_at: ${{ needs.route.outputs.comment_updated_at }}
       source_event: ${{ needs.route.outputs.source_event }}
-    secrets: inherit
+    secrets:
+      JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
     permissions:
       contents: read
       issues: write

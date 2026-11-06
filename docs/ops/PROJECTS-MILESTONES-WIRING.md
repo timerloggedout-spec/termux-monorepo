@@ -14,7 +14,7 @@ Interactive Grok connector Projects API remains 403. **Wiring is Actions-only** 
 |---------|------|--------|
 | **Stepie goal 2087** | Planning utility | LIVE |
 | **Linear P-TER-1** | Execution track M1–M6 | LIVE |
-| **GHA `ops-operator-matrix-project-sync.yml`** | Add issue/PR → Operator Matrix board | **ADDED** (this PR) |
+| **GHA `ops-operator-matrix-project-sync.yml`** | Historical issue/PR → ProjectV2 sync | **ARCHIVED** (2026-11-02) |
 | **GHA `dependency-phase-project-sync.yml`** | Dependency-phase Project reconcile | Existing (master-only) |
 | **Grok connector Projects** | Chat-time board ops | BLOCKED 403 — non-path |
 
@@ -25,12 +25,11 @@ Interactive Grok connector Projects API remains 403. **Wiring is Actions-only** 
    - `OPERATOR_MATRIX_PROJECT_URL` = `https://github.com/users/timerloggedout-spec/projects/<N>`
 3. Confirm Actions secret exists with **project** scope (names from #184 / ARCHWIZ doc):
    - `OPERATOR_GITHUB_TOKEN` or `OPERATOR_TOKEN` or `ARCHWIZ_GITHUB_TOKEN`
-4. Event-driven sync is the normal path. Do not manually dispatch or seed a generic hub; correct missing membership through the owning event/record and verify the ProjectV2 projection.
+4. The former event-driven ProjectV2 membership workflow is archived. Do not expect an owning event to repair board membership; use the current generated read-only projection at `docs/ops/generated/lane-matrix-status.*` for PR disposition and `ops/tracking/tracking.json` for cross-domain lane×project state.
 
 ## Workflow behavior
 
-**Event path:** issue/PR opened|reopened|labeled|ready_for_review → `actions/add-to-project@v1.0.2`  
-**Projection path:** resolve project node id via GraphQL → `addProjectV2ItemById` for the legacy seed set `#175` `#184` `#713` `#714` `#682` (idempotent). This ProjectV2 membership is not canonical lifecycle state.
+**Historical event path (archived 2026-11-02):** issue/PR opened|reopened|labeled|ready_for_review → `actions/add-to-project@v1.0.2`. The former ProjectV2 membership sync is not an active repair mechanism. The board is a static visual projection, not a source of truth; use the generated repository tracking surfaces above.
 
 No YOLO merge. No raw PAT in logs (secrets masking). Skip with notice if URL unset.
 

@@ -21,7 +21,7 @@
 <main>
 <section aria-labelledby="alerts"><div class="head"><h2 id="alerts">Needs attention</h2><span class="note" id="alert-note">Services with a live or reported state</span></div><div class="grid grid-3" id="alert-cards"></div></section>
 <section aria-labelledby="charts"><div class="head"><h2 id="charts">Usage charts</h2><span class="note" id="charts-stamp">—</span></div>
-<div class="grid grid-2"><div class="card"><div class="label">Remaining headroom — top services</div><div id="chart-headroom"></div></div>
+<div class="grid grid-2"><div class="card"><div class="label">Public headroom — private balances excluded</div><div id="chart-headroom"></div></div>
 <div class="card"><div class="label">Readings by state</div><div id="chart-states"></div></div></div>
 <p class="muted">Charts render only from the quota readings feed (quota.readings.v2) — chart standard: docs/ops/DASHBOARD-CHART-STANDARD.md. Services without numeric used/limit are excluded, never estimated.</p></section>
 <section aria-labelledby="coverage"><div class="head"><h2 id="coverage">Provider quota-manager coverage</h2><span class="note" id="coverage-summary">Loading coverage metadata…</span></div><p class="note">Coverage is a control inventory, not proof of live quota, model participation, free entitlement or runtime eligibility.</p><div id="provider-coverage"></div></section>
@@ -95,7 +95,7 @@ async function loadCharts(){
   CQ('charts-stamp').textContent='Feed generated '+(q.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
   // Public quota page never computes or displays account balances/headroom.
   const rows=[];
-  CQ('chart-headroom').innerHTML=rows.length?CK.bars(rows):'<p class="muted">No numeric readings.</p>';
+  CQ('chart-headroom').innerHTML=rows.length?CK.bars(rows):'<p class="muted">Private account headroom is intentionally not published. No public numeric headroom reading is available.</p>';
   const counts={};(q.readings||[]).forEach(r=>{const s=String(r.status||'unknown');counts[s]=(counts[s]||0)+1});
   CQ('chart-states').innerHTML=CK.bars(Object.entries(counts).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
 }

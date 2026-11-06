@@ -58,12 +58,32 @@
    ],
    "observation_requirements": [
     "desk stamp includes provider, selection_reason and ts",
+    "first real desk-stamped dispatch after activation is required before the arm is counted or scored; it is an observation requirement, not an activation gate",
     "record exact model_id and protocol plus workflow/run/attempt correlation when available",
-    "record first_pass_success, rework_cycles, dispatch_to_pr_wall_time and stalled_action_required",
-    "record tokens and usage_cost only when actually returned by the provider",
-    "keep quota balance and reset unknown until an authoritative documented signal exists"
+    "record provider-reported input/output/total/quota tokens, usage_cost and latency/performance metrics when returned; preserve additional sanitized provider metric names and values with provenance",
+    "keep account-wide quota balance and reset unknown until a separate authoritative documented account signal exists",
+    "record first_pass_success, rework_cycles, dispatch_to_pr_wall_time and stalled_action_required"
    ],
-   "activation_rule": "No dispatch before every activation gate passes; a registry/catalog row alone is not an eligible inference arm."
+   "activation_rule": "Activate only after every listed activation gate passes. The first real desk-stamped dispatch is required as post-activation evidence before the arm is counted or scored; a registry/catalog row alone is not an eligible inference arm.",
+   "auditor_projection_fields": [
+    "model_id",
+    "protocol",
+    "workflow_id",
+    "run_id",
+    "run_attempt",
+    "temporal_workflow_id",
+    "request_id",
+    "doe_campaign_id",
+    "experiment_instance_key",
+    "input_tokens",
+    "output_tokens",
+    "total_tokens",
+    "quota_tokens",
+    "usage_cost",
+    "latency_ms",
+    "time_to_first_token_ms",
+    "tokens_per_second"
+   ]
   }
  ]
 }

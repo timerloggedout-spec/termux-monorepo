@@ -4,6 +4,8 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 
 ## Canonical files
 
+- [Integration portfolio](INTEGRATION-PORTFOLIO.md) — dated readiness audit, evidence, blockers, and adoption roadmap.
+
 - [Integration registry](INTEGRATION-REGISTRY.md) — human-readable capabilities, priorities, and adoption states.
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.

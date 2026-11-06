@@ -166,6 +166,19 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             errors = validate_issue_comment_router_contracts(root)
             self.assertTrue(any("must reject stale comment revisions" in error for error in errors), errors)
 
+    def test_router_must_not_inherit_all_repository_secrets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace(
+                "GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}",
+                "secrets: inherit",
+                1,
+            )
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must not inherit the entire repository secret set" in error for error in errors), errors)
+
     def test_router_must_not_cancel_distinct_comment_revisions(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._fixture(Path(tmp))

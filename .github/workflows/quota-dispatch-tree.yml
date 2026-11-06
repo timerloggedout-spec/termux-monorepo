@@ -2,7 +2,7 @@ name: Quota Dispatch Tree
 
 # Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
 # PR lifecycle, managed-lane completion, and source-record pushes wake it on demand.
-# The hourly schedule is a cadence clock only; repository/lane events wake
+# The 30-minute schedule is a cadence clock only; repository/lane events wake
 # demand work immediately. Human force-all is an authenticated Issue comment,
 # never a generic Actions manual-dispatch input. The Lane Matrix has its own PR events.
 # Lanes keep their own authorities, guards, and concurrency groups.
@@ -12,7 +12,7 @@ on:
   # Time cadence is a backstop for lanes whose due time has no external event.
   # State-changing events wake the same admission tree immediately.
   schedule:
-    - cron: '0 * * * *'
+    - cron: '*/30 * * * *'
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
   workflow_run:
@@ -192,7 +192,7 @@ jobs:
               if (stamp) probeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
             } catch (_) { /* missing manifest = stale */ }
             // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
-            const slow = (new Date().getUTCMinutes() % 30) < 10;
+            const slow = context.eventName === 'schedule' && (new Date().getUTCMinutes() % 30) < 10;
             // Node E: repo activity since the persisted evaluation watermark, so
             // each change wakes continuous-evaluation / team-mvt exactly once.
             // (1 variable read + 1 commit list call)
@@ -213,7 +213,7 @@ jobs:
               repoChanged = pushes.data.length > 0;
             } catch (_) {}
             // Node F0: hw-refresh staleness (1 call). GitHub delivers this
-            // tree's */10 schedule at jittered minutes (~6 runs/day here),
+            // tree's */30 cadence wake at jittered minutes (two slots/hour),
             // so the firstCycle phase window below is a cadence preference,
             // never a guarantee: on 2026-10-25..27 every delivered run
             // landed at minute >= 11 and the refresh lane starved for 2+

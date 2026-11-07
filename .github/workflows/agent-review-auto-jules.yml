@@ -140,17 +140,21 @@ jobs:
       - name: Resolve PR metadata + context_key
         id: meta
         uses: actions/github-script@v7
+        env:
+          SOURCE_EVENT: ${{ inputs.source_event }}
+          SOURCE_PR_NUMBER: ${{ inputs.pr_number }}
         with:
           script: |
             const event = context.eventName;
-            const sourceEvent = '${{ inputs.source_event }}';
+            const sourceEvent = process.env.SOURCE_EVENT || '';
             let prNumber = null;
             if (event === 'pull_request_review') {
               prNumber = context.payload.pull_request.number;
             } else if (event === 'pull_request_review_comment') {
               prNumber = context.payload.pull_request.number;
             } else if (sourceEvent === 'issue_comment') {
-              prNumber = Number('${{ inputs.pr_number }}');
+              const candidate = Number(process.env.SOURCE_PR_NUMBER);
+              prNumber = Number.isSafeInteger(candidate) && candidate > 0 ? candidate : null;
             }
             if (!prNumber) {
               core.setOutput('should_invoke', 'false');

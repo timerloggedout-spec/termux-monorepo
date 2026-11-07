@@ -1,6 +1,7 @@
 # Skill Discovery Matrix — adaptive wait + evidence-led repo ops
 
-**Discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus the session-scoped `.skill` attachments and supplied skill/loop references.
+**Historical discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus session-scoped `.skill` attachments and supplied skill/loop references.
+**Branch update:** this PR adds `langgraph-orchestration`; the historical path count below is not a current branch count or a claim that the skill has landed on master.
 
 ## Repository-native related skills
 
@@ -25,7 +26,7 @@
 
 ## Other repository-native skill files
 
-The recursive tree contains 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. The repository tree currently contains **no tracked `.skill` archive**.
+The historical recursive tree contained 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. This PR adds one more `SKILL.md` path on its branch. Recount the current tree before publishing a new total. The historical repository tree contained **no tracked `.skill` archive**.
 
 Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, tribute-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
 

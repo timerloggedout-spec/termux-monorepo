@@ -310,11 +310,18 @@ def feed_refs(obj, out):
 
 
 def split_feed_refs(value):
-    """Split compound feed references and remove human section annotations."""
-    for part in re.split(r"\s+\+\s+", value):
-        candidate = re.sub(r"\s+\([^)]*\)$", "", part.strip())
-        if candidate:
-            yield candidate
+    """Split feed lists and remove non-path provenance/annotation suffixes."""
+    parts = re.split(r"\s+\+\s+|\s*\n\s*-\s*", value)
+    for part in parts:
+        candidate = part.strip()
+        candidate = re.split(r"\s+via\s+", candidate, maxsplit=1)[0]
+        candidate = re.split(r"\s+[—–]\s+", candidate, maxsplit=1)[0]
+        candidate = re.sub(r"\s+\([^)]*\)$", "", candidate).strip()
+        # Glob references describe a family of generated artifacts, not one
+        # literal file. Keep them out of the missing-file census.
+        if not candidate or any(ch in candidate for ch in "*?["):
+            continue
+        yield candidate
 
 
 def check_feeds(root):

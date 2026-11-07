@@ -45,6 +45,9 @@ CANONICAL_TOKENS: Tuple[str, ...] = (
     "h4rv35t3r", "em_t3chs", "em_t3ch", "pr0cur3s", "pr0cur3", "cur473s",
     "cur473", "s0urc3s", "s0urc3", "4cqs", "4cq", "c0mp1s", "c0mp1",
     "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7",
+    "tdqss", "tdqs", "ates", "aefs", "aef", "3l0s", "3l0", "adlms", "adlm",
+    "m0rphs", "m0rph", "n47_7r4n5s", "n47_7r4n5", "0pp_c47s", "0pp_c47",
+    "3xp_0bjs", "3xp_0bj", "m0n_b1nds", "m0n_b1nd", "c47_7h30ry"
 )
 
 
@@ -240,3 +243,93 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+class ConversationalSteganographyCipher:
+    """4th development lane: Pre-LLM pre-parser steganographic obfuscation.
+
+    Encodes arbitrary textual payloads into zero-width Base-4 quadruplet representations
+    (\\u200b, \\u200c, \\u200d, \\ufeff) with private key XOR stream obfuscation.
+    Zero-width payloads remain invisible in cover text and are automatically extracted
+    prior to LLM pre-parsing / expansion.
+    """
+
+    ZW_0 = "\u200b"  # Zero Width Space (00)
+    ZW_1 = "\u200c"  # Zero Width Non-Joiner (01)
+    ZW_2 = "\u200d"  # Zero Width Joiner (10)
+    ZW_3 = "\ufeff"  # Zero Width No-Break Space / BOM (11)
+
+    STEGO_CHARS = ("\u200b", "\u200c", "\u200d", "\ufeff")
+    STEGO_SET = {"\u200b", "\u200c", "\u200d", "\ufeff"}
+    QUAD_MAP = {"\u200b": 0, "\u200c": 1, "\u200d": 2, "\ufeff": 3}
+    INT_MAP = (ZW_0, ZW_1, ZW_2, ZW_3)
+
+    @classmethod
+    def has_payload(cls, text: str) -> bool:
+        """Fast O(1) membership check for zero-width quadruplet presence."""
+        if not text:
+            return False
+        return any(c in text for c in cls.STEGO_SET)
+
+    @classmethod
+    def encode(cls, payload: str, cover_text: str = "", key: str = "cedr") -> str:
+        """Encode payload into zero-width Base-4 quadruplets with optional private key stream obfuscation."""
+        if not payload:
+            return cover_text
+        payload_bytes = payload.encode("utf-8")
+        key_bytes = key.encode("utf-8") if key else b""
+
+        stego_chars = []
+        for i, b in enumerate(payload_bytes):
+            if key_bytes:
+                b ^= key_bytes[i % len(key_bytes)]
+            q0 = (b >> 6) & 3
+            q1 = (b >> 4) & 3
+            q2 = (b >> 2) & 3
+            q3 = b & 3
+            stego_chars.extend((cls.INT_MAP[q0], cls.INT_MAP[q1], cls.INT_MAP[q2], cls.INT_MAP[q3]))
+
+        stego_str = "".join(stego_chars)
+        if cover_text:
+            return f"{cover_text}{stego_str}"
+        return stego_str
+
+    @classmethod
+    def decode(cls, stego_text: str, key: str = "cedr") -> Tuple[str, str]:
+        """Extract and decrypt zero-width steganographic payload, returning (payload, clean_cover_text)."""
+        if not stego_text or not cls.has_payload(stego_text):
+            return ("", stego_text or "")
+
+        clean_chars = []
+        stego_quads = []
+        for c in stego_text:
+            val = cls.QUAD_MAP.get(c)
+            if val is not None:
+                stego_quads.append(val)
+            else:
+                clean_chars.append(c)
+
+        clean_text = "".join(clean_chars)
+        if not stego_quads:
+            return ("", clean_text)
+
+        num_bytes = len(stego_quads) // 4
+        decoded_bytes = bytearray(num_bytes)
+        key_bytes = key.encode("utf-8") if key else b""
+
+        for i in range(num_bytes):
+            q0 = stego_quads[i * 4]
+            q1 = stego_quads[i * 4 + 1]
+            q2 = stego_quads[i * 4 + 2]
+            q3 = stego_quads[i * 4 + 3]
+            b = (q0 << 6) | (q1 << 4) | (q2 << 2) | q3
+            if key_bytes:
+                b ^= key_bytes[i % len(key_bytes)]
+            decoded_bytes[i] = b
+
+        try:
+            payload = decoded_bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            payload = decoded_bytes.decode("utf-8", errors="replace")
+
+        return (payload, clean_text)

@@ -62,7 +62,7 @@ def test_feed_never_bakes_state_or_remaining_seconds():
         assert "state" not in e
         assert "seconds_to_open" not in e
         assert "seconds_to_close" not in e
-        assert set(e) == {"id", "title", "status", "opens", "closes", "prizes", "submission"}
+        assert set(e) == {"id", "title", "status", "event_url", "opens", "closes", "prizes", "submission"}
 
 
 def test_completed_entries_stay_listed():
@@ -75,7 +75,7 @@ def test_prizes_wired_from_coordinator_ssot():
     carries them, verbatim from ops/challenge/coordinator.json; an
     unpublished tier set renders NOT_ESTABLISHED, never blank."""
     coord = json.loads(COORD.read_text(encoding="utf-8"))
-    want = {ev["id"]: ev["prizes"] for ev in coord["events"]}
+    want = {ev["id"]: ev["prizes"] for ev in (coord["events"] + coord.get("candidate_events", []))}
     entries = {e["id"]: e for e in _feed()["entries"]}
     for eid, e in entries.items():
         p = e["prizes"]
@@ -86,4 +86,4 @@ def test_prizes_wired_from_coordinator_ssot():
         assert got == exp, eid
         if p["status"] == "NOT_ESTABLISHED":
             assert p["tiers"] == [], eid
-\n\ndef test_c17_game_off_is_a_first_class_event_clock():\n    entries = {e["id"]: e for e in _feed()["entries"]}\n    event = entries["C17"]\n    assert event["opens"] == "2026-11-01T13:37:27-08:00"\n    assert event["closes"] == "2026-12-01T13:37:00-08:00"\n    assert event["status"] == "ACTIVE"\n    assert event["prizes"]["status"] == "ESTABLISHED"\n    assert "cash" in event["prizes"]["pool"].lower()\n
+\n\ndef test_c17_game_off_is_a_first_class_event_clock():\n    entries = {e["id"]: e for e in _feed()["entries"]}\n    event = entries["C17"]\n    assert event["opens"] == "2026-11-01T13:37:27-08:00"\n    assert event["closes"] == "2026-12-01T13:37:00-08:00"\n    assert event["status"] == "ACTIVE"\n    assert event["prizes"]["status"] == "ESTABLISHED"\n    assert "no cash" in event["prizes"]["pool"].lower()\n    assert event["event_url"] == "https://itch.io/jam/game-off-2026"\n

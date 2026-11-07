@@ -1,0 +1,5 @@
+services:
+  ios2termux:
+    build: .
+    image: credkellar/ios2termux:latest
+    command: ["python", "main.py"]

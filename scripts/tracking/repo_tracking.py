@@ -93,6 +93,22 @@ def pr_text(pr: dict) -> str:
     return f"{pr.get('title','')} {head} {labels}"
 
 
+
+
+def _desk_evidence_pr_number(evidence):
+    """Return a valid PR number from desk evidence without assuming its shape."""
+    if not isinstance(evidence, dict):
+        return None
+    value = evidence.get("pr")
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value if value > 0 else None
+    if isinstance(value, str) and value.isdecimal():
+        number = int(value)
+        return number if number > 0 else None
+    return None
+
 def derive_state(record_state, open_prs, last_merge_at, lane_failures, now):
     """Deterministic state. Record terminal states win; then open work;
     then recency of last merge; lane-event failures alone never block —
@@ -322,9 +338,9 @@ def build(now=None) -> dict:
             r.setdefault("state", tr.get("status"))
             if tr.get("next"):
                 r["next"] = tr["next"]
-            evd = tr.get("evidence") or {}
-            if evd.get("pr"):
-                r["evidence"].append(f"desk-feed traversal {tr.get('entry')} pr=#{evd['pr']}")
+            pr_number = _desk_evidence_pr_number(tr.get("evidence"))
+            if pr_number is not None:
+                r["evidence"].append(f"desk-feed traversal {tr.get('entry')} pr=#{pr_number}")
 
     registry = _read_json("ops/quota/registry.json")
     if registry is not None:

@@ -109,7 +109,7 @@ def decide_escalation(
     attempted_executor_refs: Iterable[str] = (),
     attempted_families: Iterable[str] = (),
     retry_condition_changed: bool = False,
-    same_strategy_replay_count: int = 0,
+    same_strategy_replay_count: int | None = None,
 ) -> EscalationDecision:
     """Return a deterministic, bounded next step without executing it.
 
@@ -119,6 +119,10 @@ def decide_escalation(
     normalized = str(classification).upper()
     if normalized not in CLASSIFICATIONS:
         normalized = "UNKNOWN"
+    if same_strategy_replay_count is None:
+        same_strategy_replay_count = budget.same_strategy_replay_count
+    if isinstance(same_strategy_replay_count, bool) or not isinstance(same_strategy_replay_count, int) or same_strategy_replay_count < 0:
+        raise ValueError("same_strategy_replay_count must be a non-negative integer")
     attempted = frozenset(attempted_executor_refs)
     if current_executor_ref:
         attempted = attempted | {current_executor_ref}

@@ -1,0 +1,42 @@
+name: termux-hub-static
+
+on:
+  push:
+    branches:
+      - feat/termux-hub-direct-tailscale-connection
+  pull_request:
+    paths:
+      - "termux_hub/**"
+      - "scripts/termux-hub/**"
+      - "tests/termux_hub/**"
+      - "docs/ops/TERMUX_HUB_TAILSCALE_BOOTSTRAP.md"
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install pinned MCP SDK
+        run: python -m pip install -r termux_hub/requirements.txt
+      - name: Compile hub runtime
+        run: python -m compileall -q termux_hub
+      - name: Run policy tests
+        run: python -m unittest tests.termux_hub.test_mcp_server -v
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax-check Termux hub scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in scripts/termux-hub/*.sh; do
+            bash -n "$f"
+          done

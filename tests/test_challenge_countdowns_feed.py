@@ -7,6 +7,7 @@ never a computed state, never a remaining-seconds value.
 import importlib.util
 import json
 import re
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,17 +40,17 @@ def test_feed_matches_collector_rerun():
 
 def test_feed_schema_and_source():
     feed = _feed()
-    assert feed["schema"] == "challenge-countdowns-feed/v1.2"
+    assert feed["schema"] == "challenge-countdowns-feed/v1.3"
     assert feed["source"] == "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 
 
 def test_entries_carry_log_instants_verbatim():
     text = LOG.read_text(encoding="utf-8")
     recorded = {}
-    for m in re.finditer(r"<!-- countdown-data:(D\d+) opens=(\S+) closes=(\S+) -->", text):
+    for m in re.finditer(r"<!-- countdown-data:([A-Z]\d+) opens=(\S+) closes=(\S+) -->", text):
         recorded[m.group(1)] = (
-            None if m.group(2) == "-" else m.group(2),
-            None if m.group(3) == "-" else m.group(3))
+            None if m.group(2) == "-" else datetime.fromisoformat(m.group(2)).isoformat(),
+            None if m.group(3) == "-" else datetime.fromisoformat(m.group(3)).isoformat())
     entries = {e["id"]: e for e in _feed()["entries"]}
     assert set(entries) == set(recorded)
     for eid, (opens, closes) in recorded.items():
@@ -62,7 +63,7 @@ def test_feed_never_bakes_state_or_remaining_seconds():
         assert "state" not in e
         assert "seconds_to_open" not in e
         assert "seconds_to_close" not in e
-        assert set(e) == {"id", "title", "status", "opens", "closes", "prizes"}
+        assert set(e) == {"id", "title", "status", "event_url", "opens", "closes", "prizes", "submission"}
 
 
 def test_completed_entries_stay_listed():
@@ -75,7 +76,7 @@ def test_prizes_wired_from_coordinator_ssot():
     carries them, verbatim from ops/challenge/coordinator.json; an
     unpublished tier set renders NOT_ESTABLISHED, never blank."""
     coord = json.loads(COORD.read_text(encoding="utf-8"))
-    want = {ev["id"]: ev["prizes"] for ev in coord["events"]}
+    want = {ev["id"]: ev["prizes"] for ev in (coord["events"] + coord.get("candidate_events", []))}
     entries = {e["id"]: e for e in _feed()["entries"]}
     for eid, e in entries.items():
         p = e["prizes"]
@@ -86,3 +87,14 @@ def test_prizes_wired_from_coordinator_ssot():
         assert got == exp, eid
         if p["status"] == "NOT_ESTABLISHED":
             assert p["tiers"] == [], eid
+
+
+def test_c17_game_off_is_a_first_class_event_clock():
+    entries = {e["id"]: e for e in _feed()["entries"]}
+    event = entries["C17"]
+    assert event["opens"] == "2026-11-01T13:37:27-08:00"
+    assert event["closes"] == "2026-12-01T13:37:00-08:00"
+    assert event["status"] == "ACTIVE"
+    assert event["prizes"]["status"] == "ESTABLISHED"
+    assert "no cash" in event["prizes"]["pool"].lower()
+    assert event["event_url"] == "https://itch.io/jam/game-off-2026"

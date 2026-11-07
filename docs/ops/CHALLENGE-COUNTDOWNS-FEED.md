@@ -1,6 +1,6 @@
 # Challenge Countdowns Feed — contract
 
-Schema: `challenge-countdowns-feed/v1.2`
+Schema: `challenge-countdowns-feed/v1.3`
 File: `apps/tribute-dashboard/data/challenge-countdowns-feed.json`
 Collector: `scripts/dashboards/challenge_countdowns_feed.py`
 Refresh: `.github/workflows/challenge-countdowns-feed-collect.yml`
@@ -11,31 +11,34 @@ Requirement: issue #1880 (dashboard surface, requirement 3).
 ## Source of truth
 
 Deadline instants live ONLY in `docs/ops/CHALLENGE-ENTRIES-LOG.md`
-(§4 `countdown-data` lines, owned by the challenge-entries lane and
+(`countdown-data` lines in event packets, owned by the challenge-entries lane and
 parsed by `scripts/challenge_entries/countdowns.py`). The collector
 re-derives this feed from that log on every run; nothing is copied
 forward from a previous feed.
 
 ## Shape
 
-- `schema` — `challenge-countdowns-feed/v1.1`.
+- `schema` — `challenge-countdowns-feed/v1.3`.
 - `generated_at` — UTC collection instant.
 - `source` — the log path the instants were derived from.
 - `prizes_source` — `ops/challenge/coordinator.json`, the SSOT the
   per-entry prizes were wired from.
-- `entries[]` — one per log entry, ordered by id:
-  - `id` — the log's entry id (`D0`…).
-  - `title` — display title derived from the entry's §4 header
+- `entries[]` — one per recorded event in the log, ordered by numeric suffix.
+  - Event identity is independent of presentation: `D*`, `C*`, and future event families share the same clock contract. A countdown is a time projection of an event, not a separate event registry.
+  - The Wagering Book remains the canonical place for expectation records, positions, and settlements; this feed does not invent any of those.
+  - `id` — the log's event id (any uppercase letter + digits, e.g. `D0`, `C17`).
+  - `title` — display title derived from the event packet header
     (status segments stripped by the collector).
   - `status` — `COMPLETED` / `CLOSED` when the header records it,
     else `ACTIVE`.
+  - `event_url` — official event URL from the coordinator (or `null` when no official URL is recorded).
   - `opens` / `closes` — ISO-8601 instants with offset, verbatim
-    from the log's `countdown-data` line; `null` when the entry
+    from the log's `countdown-data` line (ISO-8601 parsed and re-emitted with its UTC offset); `null` when the entry
     records no such instant (`-` in the log).
   - `prizes` — REQUIRED (owner rule 2026-10-28): `{status, pool,
     tiers[{place, award, source_url}]}` wired verbatim from
-    `ops/challenge/coordinator.json`. `status` is `ESTABLISHED`
-    (tiers published on the official page) or `NOT_ESTABLISHED`.
+    `ops/challenge/coordinator.json`. `status` is `ESTABLISHED` (official terms established, including non-cash recognition)
+    or `NOT_ESTABLISHED`.
   - `submission` — the entry's recorded submission, parsed from the
     log's `<!-- submission-data:<id> state=<STATE> at=<instant>
     ref=<url> -->` line: `{state, at, ref}`, or `null`
@@ -43,8 +46,8 @@ forward from a previous feed.
 
 ## Honesty rules
 
-1. **Instants only.** The feed NEVER carries a computed state or a
-   remaining-seconds value. The challenge lane's emitter computes
+1. **Instants only.** Time fields NEVER carry a computed state or a
+   remaining-seconds value. Other fields are source-derived event metadata. The challenge lane's emitter computes
    those for the log surface; for the dashboard they would go stale
    the second they are written. The page derives state and
    time-remaining from the instants, client-side, on every tick.

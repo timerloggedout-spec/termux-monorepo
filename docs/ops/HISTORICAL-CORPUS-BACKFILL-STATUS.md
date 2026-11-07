@@ -1,4 +1,47 @@
-> **Current-state reconciliation (2026-11-02):** This document contains dated historical observations and must not be read as a continuously refreshed live dashboard. The canonical manifest currently available on `master` was last observed at **2026-10-26T13:04:26.270236Z** and reports **35,221 nodes, 57,358 edges, 52,416 verified edges, 4,942 candidate edges, 120 unresolved internal references, 12 source parser failures, and 1,392 excluded files**. Its history coverage is `PARTIAL_CONTINUATION_REQUIRED`, `history_window.next_start_page=2`, both issues/PR completeness flags are false, and `github_report.checkpoint_eligible=false`. Do not infer that the corpus is complete or checkpoint-eligible. Runtime review found run [40058473861](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40058473861) failed validation after a deferred HTTP 403 build, while [39962654795](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39962654795) concluded successfully with the build and coverage-summary steps skipped. See [the 2026-11-02 continuous audit](CONTINUOUS-REPOSITORY-AUDIT-2026-11-02.md) for evidence and remediation criteria.
+# Historical Corpus — current authority and reconciliation (2026-11-07)
+
+> **Authority:** `workspace/llm_map/context_relationships/manifest.json` on canonical `master` is authoritative for corpus measurements. This document is a dated operational record, not a live dashboard. Historical tables and addenda below remain useful as snapshots but never override a later manifest.
+
+## Latest directly verified manifest
+
+Fetched from canonical `master` on 2026-11-07; latest observation: **2026-10-26T13:04:26.270236Z**.
+
+| Signal | Value |
+|---|---:|
+| Nodes / edges | 35,221 / 57,358 |
+| Verified / candidate edges | 52,416 / 4,942 |
+| Unresolved internal references | 120 |
+| Source parser failures | 12 |
+| Excluded files | 1,392 |
+| History coverage | `PARTIAL_CONTINUATION_REQUIRED` |
+| Next history page | 2 |
+| Issues / PRs complete | false / false |
+| Checkpoint eligible | false |
+
+The corpus is **not complete** and is **not checkpoint eligible**. In particular, the 2026-10-20 addendum's 2026-10-15 snapshot (which reported pagination exhausted) is superseded by the later 2026-10-26 manifest, which again records page 2 and incomplete issue/PR coverage.
+
+## Runtime evidence and automation
+
+The 2026-11-02 audit cited run [40058473861](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40058473861), which failed validation after a deferred HTTP 403 build, and [39962654795](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39962654795), which completed with build and coverage-summary steps skipped. Neither proves a successful corpus continuation.
+
+Current workflow paths on master:
+- Collector: `.github/workflows/context-relationship-backfill.yml`
+- Runtime observer: `.github/workflows/context-relationship-backfill-watcher.yml`
+- Legacy `.github/workflows/historical-backfill-promotion-gate.yml`: absent.
+
+Workflow definitions and successful documentation/evaluation workflows are not evidence that a corpus continuation ran. No new backfill execution or promotion is claimed here.
+
+## Acceptance evidence required
+
+1. Run a bounded continuation from current master using the canonical manifest checkpoint.
+2. Record immutable source SHA/ref, run ID/attempt, requested and resulting page bounds.
+3. Confirm the build actually executed (not deferred/skipped) and no stale artifacts were consumed.
+4. Validate manifest/input/schema hashes, corpus reconciliation, expected artifact set, and page advancement.
+5. Record watcher receipt and resulting manifest; repeat until `next_start_page=null`.
+6. Resolve or explicitly disposition parser failures and unresolved references before checkpoint eligibility.
+7. Preserve every observation as dated history; never overwrite or silently relabel older measurements.
+
+---
 
 ---
 

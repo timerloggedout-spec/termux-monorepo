@@ -24,7 +24,7 @@ Probe and tool schemas change on vendor side. Prefer live tool discovery over ha
 | termux-monorepo | Code, workflows, docs, evidence, dual-gate | Invent Stepie completion |
 | LANE-MATRIX / Sweep | Board classification | Session-pulse PRs from Stepie |
 
-Policy one-liner (skill): Stepie must not emit session-pulse PRs or #175 comment floods.
+Policy one-liner (skill): Stepie must not emit session-pulse PRs or comment floods on the retired #175 snapshot; current state belongs in repository SSOT and owning HITL surfaces.
 
 ## Known failure modes (vendor + MCP)
 

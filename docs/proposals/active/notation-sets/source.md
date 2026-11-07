@@ -133,11 +133,11 @@ Detect collisions, broken references, duplicate keys, missing provenance, and in
 
 Use implementation feedback, review outcomes, and newly discovered evidence to update the vocabulary while retaining an evolution ledger.
 
-## 5. Relationship to #175
+## 5. Relationship to the superseded #175 snapshot
 
-Issue #175 is the current operator-priority and master functional-gate reference. Its rules require small green rebased PRs, no force-push to master, and repo-gate + termux-smoke for merges. It also places documentation/comms work in P3 while preserving the operator rules as hard constraints.
+Issue #175 was the historical operator-priority and master functional-gate reference. It is now closed and superseded; it is not current governance or dispatch authority. Preserve its historical constraints as context only. Current cross-domain state is read from `docs/ops/REPO-TRACKING.md` / `ops/tracking/tracking.json`; PR disposition is projected by the Lane Matrix. Promotion remains subject to the named dual-gate checks on the exact candidate SHA and repository branch protection.
 
-Accordingly, this proposal is intentionally **documentation/specification-first**. It does not bypass #175 by treating the vocabulary as an implementation permission. Any executable index generator, compression integration, or workflow change should be a later proposal item/PR that cites its item ID and passes the applicable gates.
+This proposal remains **documentation/specification-first**. It does not treat the vocabulary as implementation permission. Any executable index generator, compression integration, or workflow change must be a later proposal item/PR that cites its item ID and passes the applicable current gates.
 
 ## 6. Relationship to existing repository indexes
 
@@ -189,7 +189,7 @@ The following are candidate future research directions that are not yet itemized
 - GitHub Issue #320 — Notation Sets (created 2026-08-22).
 - GitHub Issue #309 — referenced by #320 as the Grimoire compression work.
 - GitHub Issue #182 — referenced by #320 as related Grimoire work.
-- GitHub Issue #175 — OPERATOR priority matrix and master functional gate; current governance constraint.
+- GitHub Issue #175 — closed historical OPERATOR priority snapshot; not current governance authority.
 - Repository proposal process: `docs/proposals/PROCESS.md`.
 - Repository proposal registry: `docs/proposals/registry.yaml`.
 - Existing index artifacts listed above are repository evidence for integration points; this proposal does not claim they share one schema today.

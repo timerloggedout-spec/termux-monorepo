@@ -1,34 +1,61 @@
 name: Quota Dispatch Tree
 
-# Tier 0 dispatcher (issue #1573): single scheduled entry point for the fast lane.
-# Cheap read-only probes form a decision tree; lanes are woken via workflow_dispatch
-# only when their condition node fires. Replaces 12 independent crons
-# (~610 scheduled runs/day) with 1 decision run per 10 min + conditional fan-out.
+# Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
+# PR lifecycle, selected lane-events recorder completions, and source-record pushes wake it on demand.
+# The 30-minute schedule is a cadence clock only; repository/lane events wake
+# demand work immediately. Human force-all is an authenticated Issue comment,
+# never a generic Actions manual-dispatch input. The Lane Matrix has its own PR events.
 # Lanes keep their own authorities, guards, and concurrency groups.
 # material_change_rules: this file owns cadence for the migrated lanes.
 
 on:
+  # Time cadence is a backstop for lanes whose due time has no external event.
+  # State-changing events wake the same admission tree immediately.
   schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:
-    inputs:
-      force_lane:
-        description: 'Set to "all" to wake every lane regardless of decision-tree verdicts (emergency)'
-        required: false
-        default: ''
-        type: string
-
-permissions:
-  actions: write
-  contents: read
+    - cron: '*/30 * * * *'
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
+  workflow_run:
+    workflows: ["lane events recorder"]
+    types: [completed]
+  issue_comment:
+    types: [created]
+  push:
+    branches: [master]
+    paths:
+      - 'ops/tracking/**'
+      - 'docs/agentic/dependency-phases.json'
+      - 'docs/agentic/phase-approvals.json'
+permissions: {}
 
 concurrency:
-  group: quota-dispatch-tree
+  group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }}
+  # Keep active fan-out intact; newer pending PR/push wakes coalesce by group.
   cancel-in-progress: false
 
 jobs:
   decide:
+    if: >-
+      (
+        github.event_name != 'issue_comment' &&
+        (
+          github.event_name != 'pull_request_target' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        )
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request == null &&
+        github.event.issue.state == 'open' &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+        github.event.comment.body == '/quota force all'
+      )
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+      issues: read
     outputs:
       dispatch_stall_watch: ${{ steps.tree.outputs.dispatch_stall_watch }}
       dispatch_bridge: ${{ steps.tree.outputs.dispatch_bridge }}
@@ -45,6 +72,7 @@ jobs:
       dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
       dispatch_q6: ${{ steps.tree.outputs.dispatch_q6 }}
       dispatch_vantage: ${{ steps.tree.outputs.dispatch_vantage }}
+      force_request_id: ${{ steps.tree.outputs.force_request_id }}
     steps:
       - uses: actions/checkout@v4
       - name: Decision tree — one cheap call per concern
@@ -52,7 +80,58 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         with:
           script: |
-            const force = (context.payload.inputs && context.payload.inputs.force_lane) === 'all';
+            // A force-all request is an explicit, authenticated Issue comment.
+            // It is content-addressed by the immutable comment ID; completion
+            // writes a receipt marker so duplicate webhook deliveries are no-ops.
+            let force = false;
+            let forceRequestId = '';
+            if (context.eventName === 'issue_comment') {
+              const issue = context.payload.issue || {};
+              const comment = context.payload.comment || {};
+              const association = comment.author_association;
+              const authorized = !issue.pull_request && issue.state === 'open' &&
+                context.payload.sender?.type === 'User' &&
+                ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(association) &&
+                comment.body === '/quota force all';
+              if (authorized && comment.id) {
+                forceRequestId = String(comment.id);
+                const marker = `<!-- quota-dispatch-force:${issue.number}:${forceRequestId} -->`;
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number, per_page: 100,
+                });
+                force = !comments.some(c => (c.body || '').includes(marker));
+                if (!force) {
+                  forceRequestId = '';
+                  core.info(`Issue #${issue.number} force request ${comment.id} already completed`);
+                }
+              }
+            }
+            core.setOutput('force_request_id', forceRequestId);
+            if (context.eventName === 'issue_comment' && !force) {
+              // A duplicate receipt is a strict no-op, not a chance to replay
+              // unrelated stale work from an Issue-comment wake.
+              for (const name of [
+                'dispatch_stall_watch', 'dispatch_bridge', 'dispatch_probe',
+                'dispatch_eval', 'dispatch_recon', 'dispatch_hw_refresh',
+                'dispatch_hw_pair', 'dispatch_hw_execute', 'dispatch_hw_assist',
+                'dispatch_hourly', 'dispatch_repochange', 'dispatch_q3',
+                'dispatch_q4', 'dispatch_q6', 'dispatch_vantage'
+              ]) core.setOutput(name, 'false');
+              core.info('Duplicate force request: no dispatch fan-out');
+              require('fs').writeFileSync('dispatch-admission.json', JSON.stringify({
+                generated_at: new Date().toISOString(),
+                duplicate_force_request: true,
+                issue: context.payload.issue.number,
+                comment_id: context.payload.comment.id,
+                dispatched: false
+              }, null, 2));
+              core.summary
+                .addHeading('Duplicate force request')
+                .addText('The authenticated request already has a completion receipt; no lane was dispatched.')
+                .write();
+              return;
+            }
             // Node A (reworked, issue #3812 step 4): lane-aware admission.
             // Active runs are listed (per_page 100, up to 2 pages per
             // status) and bucketed per workflow file by the admission
@@ -113,7 +192,7 @@ jobs:
               if (stamp) probeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
             } catch (_) { /* missing manifest = stale */ }
             // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
-            const slow = (new Date().getUTCMinutes() % 30) < 10;
+            const slow = context.eventName === 'schedule' && (new Date().getUTCMinutes() % 30) < 10;
             // Node E: repo activity since the persisted evaluation watermark, so
             // each change wakes continuous-evaluation / team-mvt exactly once.
             // (1 variable read + 1 commit list call)
@@ -134,7 +213,7 @@ jobs:
               repoChanged = pushes.data.length > 0;
             } catch (_) {}
             // Node F0: hw-refresh staleness (1 call). GitHub delivers this
-            // tree's */10 schedule at jittered minutes (~6 runs/day here),
+            // tree's */30 cadence wake at jittered minutes (two slots/hour),
             // so the firstCycle phase window below is a cadence preference,
             // never a guarantee: on 2026-10-25..27 every delivered run
             // landed at minute >= 11 and the refresh lane starved for 2+
@@ -168,7 +247,10 @@ jobs:
             const hwAssistStaleMin = await laneAgeMin('tribute-llm-assist.yml');
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
-            const firstCycle = new Date().getUTCMinutes() < 10;
+            // The phase window belongs to the scheduled cadence only. Event
+            // wakes evaluate demand/staleness but never replay hourly/3h/4h slots.
+            const firstCycle = context.eventName === 'schedule' && new Date().getUTCMinutes() < 10;
+            const eventDemand = ['pull_request_target', 'workflow_run', 'push'].includes(context.eventName);
             // Raw verdicts. Node A admission is applied after Node G1,
             // when every staleness signal exists. stall-watch and
             // hw-refresh stay admission-exempt, exactly as they were
@@ -176,8 +258,8 @@ jobs:
             const verdicts = {};
             verdicts.dispatch_stall_watch = (busy > 0 || force);
             verdicts.dispatch_bridge = ((bridgeStaleMin > 30) || force);
-            verdicts.dispatch_probe = (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow) || force);
-            verdicts.dispatch_eval = ((repoChanged && slow) || force);
+            verdicts.dispatch_probe = (((probeStaleMin > 45 || bridgeStaleMin > 45) && (slow || eventDemand)) || force);
+            verdicts.dispatch_eval = ((repoChanged && (slow || eventDemand)) || force);
             verdicts.dispatch_recon = (slow || force);
             verdicts.dispatch_hw_refresh = (firstCycle || hwRefreshStaleMin > 75 || force);
             verdicts.dispatch_hw_pair = (((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) || force);
@@ -187,7 +269,7 @@ jobs:
             // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
             // check. Zero additional API calls.
             verdicts.dispatch_hourly = (firstCycle || force);
-            verdicts.dispatch_repochange = ((repoChanged && slow) || force);
+            verdicts.dispatch_repochange = ((repoChanged && (slow || eventDemand)) || force);
             // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
             // Same firstCycle arithmetic as Node F, different modulus offsets.
             verdicts.dispatch_q3 = (((firstCycle && hour % 3 === 1)) || force);
@@ -294,7 +376,7 @@ jobs:
         # writes are gated by RLS: anon INSERT on dispatch_verdicts only,
         # with lane allowlist and rate-limit guards (registry section 4).
         # Project: termux-monorepo-lane-state, table dispatch_verdicts.
-        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != ''
+        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != '' && (github.event_name != 'issue_comment' || steps.tree.outputs.force_request_id != '')
         env:
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
@@ -339,6 +421,9 @@ jobs:
   dispatch:
     needs: decide
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     strategy:
       fail-fast: false
       max-parallel: 3
@@ -452,10 +537,6 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_q6 }}
             inputs_json: ''
             advance_watermark: 'false'
-          - lane: ops-lane-matrix-sweep
-            run: ${{ needs.decide.outputs.dispatch_q6 }}
-            inputs_json: '{"commit_artifacts":true}'
-            advance_watermark: 'false'
           - lane: provider-availability
             run: ${{ needs.decide.outputs.dispatch_q6 }}
             inputs_json: ''
@@ -504,3 +585,44 @@ jobs:
                 });
               }
             }
+
+  complete-force-request:
+    needs: [decide, dispatch]
+    if: >-
+      needs.dispatch.result == 'success' &&
+      needs.decide.outputs.force_request_id != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Record authenticated force-execution receipt
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          FORCE_REQUEST_ID: ${{ needs.decide.outputs.force_request_id }}
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const requestId = process.env.FORCE_REQUEST_ID;
+            const marker = `<!-- quota-dispatch-force:${issueNumber}:${requestId} -->`;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber, per_page: 100,
+            });
+            if (comments.some(c => (c.body || '').includes(marker))) {
+              core.info('Force-execution receipt already recorded');
+              return;
+            }
+            const actor = context.payload.comment.user?.login || 'authenticated collaborator';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                marker,
+                'Automated force-execution fan-out completed successfully.',
+                `Authenticated request: @${actor} · comment ${requestId}`,
+                `Dispatcher evidence: ${runUrl}`,
+                'This receipt records dispatch completion; it does not authorize merge or bypass lane-specific gates.'
+              ].join('\n')
+            });

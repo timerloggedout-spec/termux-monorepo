@@ -1,132 +1,166 @@
-name: Lane matrix recursive sweep
+name: Lane matrix event-driven inventory
 
-# Inventnry writer fnr docs/ops/generated/lane-matrix-status.{json,md}.
-# Observer only. Does NOT merge, close, rebase, force-push, or pulse #175
-# unless an operator explicitly dispatches comment_175=true.
-#
-# Agent-Identity: Grok (Administrator)
+# Event-driven PR disposition materialization.
+# The lane-matrix is a PR-disposition view, not the lane×project SSOT.
+# It is refreshed by actual PR lifecycle changes; no cron or 10-minute polling.
+# pull_request_target materializes only trusted master code; fork-originated events
+# are excluded from the privileged write job. PR-head content is never executed.
 
 on:
-# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
-  workflow_dispatch:
-    inputs:
-      comment_175:
-        description: 'Post a pulse on #175 (off by default — board is the artifact)'
-        required: false
-        default: false
-        type: boolean
-      force_comment:
-        description: 'Ignore #175 debounce (only with comment_175)'
-        required: false
-        default: false
-        type: boolean
-      commit_artifacts:
-        description: 'Commit generated status to master if changed'
-        required: false
-        default: true
-        type: boolean
+  # Read-only validation on the PR merge ref; no write token or secrets.
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - converted_to_draft
+      - edited
+      - closed
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - converted_to_draft
+      - edited
+      - closed
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/ops-lane-matrix-sweep.yml'
+      - 'scripts/ops/lane_matrix_sweep.py'
+      - 'docs/ops/LANE-MATRIX.md'
 
-permissions: {}
-
-concurrency:
-  group: lane-matrix-sweep
-  cancel-in-progress: false
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    name: validate event-driven classifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      pull-requests: read
+    concurrency:
+      group: lane-matrix-validate-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+      - name: Validate classifier and cadence admission contract
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/ops/lane_matrix_sweep.py
+          python3 -m unittest discover -s scripts/ops -p 'test_lane_matrix_sweep.py' -v
+          node --test tests/test_dispatch_admission.mjs
+
   sweep:
-    name: age-audit + lane inventory
+    if: >-
+      github.event_name != 'pull_request' &&
+      (
+        github.event_name != 'pull_request_target' ||
+        (
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          github.event.sender.type == 'User' &&
+          contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
+        )
+      )
+    concurrency:
+      group: lane-matrix-inventory
+      cancel-in-progress: false
+    name: event-driven PR disposition materialization
     runs-on: ubuntu-latest
     timeout-minutes: 12
     permissions:
       contents: write
-      issues: write
       pull-requests: read
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: master
           fetch-depth: 1
-          persist-credentials: true
+          persist-credentials: false
 
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.12'
 
-      - name: Unit self-check
+      - name: Validate classifier and event contract
         run: |
           set -euo pipefail
           python3 -m py_compile scripts/ops/lane_matrix_sweep.py
-          python3 - <<'PY'
-          from scripts.ops.lane_matrix_sweep import classify_pr, _age_bucket
-          from datetime import datetime, timezone
-          now = datetime(2026, 9, 21, tzinfo=timezone.utc)
-          assert _age_bucket(46) == "ancient"
-          assert _age_bucket(1) == "fresh"
-          sample = {
-              "number": 432,
-              "title": "feat(ml): wholesale",
-              "user": {"login": "timerloggedout-spec"},
-              "draft": False,
-              "base": {"ref": "master", "sha": "abc"},
-              "head": {"ref": "x", "sha": "def"},
-              "mergeable_state": "dirty",
-              "changed_files": 120,
-              "created_at": "2026-09-05T00:00:00Z",
-              "html_url": "https://example.test/432",
-          }
-          row = classify_pr(sample, "deadbeef", now)
-          assert row["lane"] == "EXTRACT", row
-          session = dict(sample)
-          session["number"] = 813
-          session["title"] = "ops(session): 2026-09-24 12:06 PDT LANE-MATRIX — tip"
-          session["mergeable_state"] = "unstable"
-          session["changed_files"] = 4
-          session["base"] = {"ref": "master", "sha": "abc"}
-          srow = classify_pr(session, "deadbeef", now)
-          assert srow["lane"] == "SUPERSEDE", srow
-          print("self-check ok")
-          PY
+          python3 -m unittest discover -s scripts/ops -p 'test_lane_matrix_sweep.py' -v
 
-      - name: Run lane-matrix sweep
-        id: sweep
+      - name: Materialize current PR inventory
         env:
-          GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action || 'push' }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
         run: |
           set -euo pipefail
-          ARGS=(--json-out docs/ops/generated/lane-matrix-status.json --md-out docs/ops/generated/lane-matrix-status.md)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.comment_175 }}" = "true" ]; then
-            ARGS+=(--comment-175)
-            if [ "${{ github.event.inputs.force_comment }}" = "true" ]; then
-              ARGS+=(--force-comment)
-            fi
-          fi
-          python3 scripts/ops/lane_matrix_sweep.py "${ARGS[@]}"
+          MASTER_SHA="$(git rev-parse HEAD)"
+          python3 scripts/ops/lane_matrix_sweep.py \
+            --master-sha "$MASTER_SHA" \
+            --json-out docs/ops/generated/lane-matrix-status.json \
+            --md-out docs/ops/generated/lane-matrix-status.md
           {
-            echo '## Lane matrix sweep'
+            echo '## Event-driven lane matrix'
+            echo
+            if [[ "$EVENT_NAME" == "pull_request_target" ]]; then
+              echo "- Trigger: pull_request_target $EVENT_ACTION PR #$PR_NUMBER"
+            else
+              echo "- Trigger: $EVENT_NAME on master"
+            fi
+            printf -- '- Materialized master: `%s`\n' "$MASTER_SHA"
             echo
             head -n 40 docs/ops/generated/lane-matrix-status.md
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Commit generated artifacts to master
-        if: |
-          always() &&
-          (github.event_name == 'schedule' || github.event.inputs.commit_artifacts == 'true')
+      - name: Commit generated inventory when changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           git add docs/ops/generated/lane-matrix-status.json docs/ops/generated/lane-matrix-status.md
           if git diff --cached --quiet; then
-            echo 'No lane-matrix artifact delta.'
+            echo 'No lane-matrix delta; no commit.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'ops(lane-matrix): refresh generated status from recursive sweep' \
-            -m 'Agent-Identity: GitHub Actions lane-matrix-sweep' \
-            -m 'Observer only — dual-gate remains promote authority.'
-          git pull --rebase origin master && git push origin HEAD:master
+          if [[ "$EVENT_NAME" == "pull_request_target" ]]; then
+            git commit -m 'ops(lane-matrix): materialize PR lifecycle change' \
+              -m "Event: $EVENT_ACTION PR #$PR_NUMBER" \
+              -m 'Observer only — dual-gate remains promote authority.'
+          else
+            git commit -m 'ops(lane-matrix): refresh policy-driven inventory' \
+              -m "Trigger: $EVENT_NAME" \
+              -m 'Observer only — dual-gate remains promote authority.'
+          fi
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master || { git rebase --abort || true; exit 1; }
+            if git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)" push origin HEAD:master; then
+              exit 0
+            fi
+            if [[ "$attempt" -lt 3 ]]; then
+              echo "Push rejected during concurrent master update; retrying ($attempt/3)."
+              sleep "$attempt"
+            fi
+          done
+          echo 'Unable to publish lane-matrix inventory after 3 attempts.' >&2
+          exit 1
 
-      - name: Upload artifacts
+      - name: Upload inventory evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

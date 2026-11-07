@@ -38,7 +38,9 @@ class StampTest(unittest.TestCase):
             code = main(["status"])
         self.assertEqual(code, 0)
         status = json.loads(buf.getvalue())
-        self.assertEqual(status["issue"], 175)
+        self.assertEqual(status["control_plane"], "REPO-TRACKING")
+        self.assertEqual(status["ssot"]["pr_disposition"], "docs/ops/generated/lane-matrix-status.json")
+        self.assertNotIn("issue", status)
         self.assertEqual(status["version"], "0.8.0")
         self.assertFalse(status["observer_tip_promotable"])
 

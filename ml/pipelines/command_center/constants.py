@@ -1,7 +1,14 @@
 """Immutable operator constants. Never restamp LANE-MATRIX.md from here."""
 from __future__ import annotations
 
-HUB_ISSUE = 175
+SSOT_PATHS = {
+    "lane_project": "ops/tracking/tracking.json",
+    "pr_disposition": "docs/ops/generated/lane-matrix-status.json",
+    "policy": "docs/ops/LANE-MATRIX.md",
+    "dependency_phases": "docs/agentic/dependency-phases.json",
+    "phase_approvals": "docs/agentic/phase-approvals.json",
+    "execution_evidence": "ops/lane-events",
+}
 VOCAB = ("EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE")
 INVALID_PARKING = ("HOLD", "WAIT", "OBSERVE")
 NON_GATE = ("vercel", "copilot", "coderabbit", "qodo", "devin", "gitlab")

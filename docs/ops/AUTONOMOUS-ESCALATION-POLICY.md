@@ -28,6 +28,7 @@
 | SECURITY_ANOMALY | Injection, exfiltration attempt, policy mismatch | Contain affected branch and invoke independent security lane |
 | RESOURCE_PRESSURE | Deadline or cost budget threatens useful completion | Re-plan, narrow scope, or return verified partial result |
 | ESCALATION_CYCLE | Route repeats without new evidence or executor/strategy change | Exclude cycle and arbitrate or terminate |
+| HIGH_IMPACT_RESULT | Consequential output requires independent challenge | Route to a distinct eligible verifier with independent-verification capability; otherwise do not certify success |
 
 ## Deterministic decision order
 1. Validate task identity, immutable source revision, acceptance criteria, packet schema, and expiry.

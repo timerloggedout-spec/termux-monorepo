@@ -99,8 +99,7 @@ jobs:
           ENFORCE_PROVIDER_COMPLETION: ${{ vars.PEER_ENFORCE_PROVIDER_COMPLETION || 'false' }}
           # State is event-driven. A run snapshots the active cycle once;
           # provider events re-enter this workflow and advance the state.
-          MAX_WAIT_SEC: '1'
-          POLL_SEC: '5'
+          # One event = one evidence snapshot; provider updates re-enter the workflow.
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
@@ -110,9 +109,6 @@ jobs:
               .split(',').map(v => v.trim().toLowerCase()).filter(Boolean);
             const enforceProviderCompletion =
               (process.env.ENFORCE_PROVIDER_COMPLETION || 'false').toLowerCase() === 'true';
-            const maxWait = Math.max(0, Number(process.env.MAX_WAIT_SEC) || 1);
-            const pollSec = Math.max(5, Number(process.env.POLL_SEC) || 20);
-            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             const operatorAckMarker = '<!-- operator-action-ack:v1 -->';
             const operatorReviewMarker = '<!-- operator-coderabbit-review:v1 -->';
             const operatorProviderReviewMarker = '<!-- operator-provider-review:v1 -->';
@@ -390,25 +386,21 @@ jobs:
               : (Number.isFinite(initialEventTime) ? initialEventTime : Date.now());
             const cycleStartedAtIso = new Date(cycleStartedAt).toISOString();
 
-            async function fetchEvidence() {
-              const comments = await github.paginate(github.rest.issues.listComments, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                per_page: 100,
-              });
-              const reviews = await github.paginate(github.rest.pulls.listReviews, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-                per_page: 100,
-              });
-              const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-                per_page: 100,
-              });
+            async function fetchEvidence(comments) {
+              const [reviews, reviewComments] = await Promise.all([
+                github.paginate(github.rest.pulls.listReviews, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  per_page: 100,
+                }),
+                github.paginate(github.rest.pulls.listReviewComments, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  per_page: 100,
+                }),
+              ]);
               let checks = [];
               try {
                 const response = await github.rest.checks.listForRef({
@@ -540,47 +532,39 @@ jobs:
               return { delivered: false, url: '', via: '' };
             }
 
-            const began = Date.now();
-            let finalState = null;
-            while (Date.now() - began <= maxWait * 1000) {
-              const evidence = await fetchEvidence();
-              const controls = controlEntries(evidence.comments);
-              const acknowledgements = acknowledgedControls(evidence.comments, controls);
-              const codeRabbitCommandRequested = operatorReviewRequested(evidence.comments);
-              const providerStates = effectiveProviders.map(provider => {
-                const providerControls = controls.filter(control => control.provider === provider);
-                const delivered = deliveredProvider(provider, evidence);
-                const cooldown = cooldownNotice(provider, evidence);
-                // An [x] checkbox edit made during this active cycle is evidence that
-                // the provider UI action occurred. A stale [x] never carries forward.
-                const selectedForCycle = providerControls.some(control =>
-                  control.selected && Date.parse(control.updatedAt || '') >= cycleStartedAt
-                );
-                const providerCommandRequested = supportedProviderRequest(evidence.comments, provider);
-                const acknowledged = selectedForCycle || providerControls.some(control =>
-                  acknowledgements.has(`${control.provider}:${control.checkboxId}`)
-                ) || providerCommandRequested || (provider === 'coderabbit' && codeRabbitCommandRequested);
-                let state = 'awaiting_provider_response';
-                if (providerControls.length && !acknowledged) state = 'pending_operator_action';
-                if (acknowledged) state = 'action_acknowledged';
-                if (cooldown.active) state = 'provider_cooldown';
-                // A control-bearing provider may expose a completed informational
-                // check before its interactive action is selected. Do not accept
-                // that check/comment as completion until the control is acknowledged.
-                if (delivered.delivered && (!providerControls.length || acknowledged)) {
-                  state = 'provider_completed';
-                }
-                return { provider, state, delivered, cooldown, controls: providerControls, providerCommandRequested };
-              });
-              const complete = providerStates.every(item => item.state === 'provider_completed');
-              finalState = { providerStates, complete };
-              if (complete || Date.now() - began + pollSec * 1000 > maxWait * 1000) break;
-              const pending = providerStates.map(item => `${item.provider}:${item.state}`).join(', ');
-              core.info(`Waiting for SHA-bound peer evidence (${pending})`);
-              await sleep(pollSec * 1000);
-            }
-
-            const { providerStates, complete } = finalState;
+            // The cycle is event-driven: this run consumes the comment snapshot
+            // already fetched for cycle identity, plus one review/check snapshot.
+            // Provider updates re-enter the workflow; do not poll or re-fetch comments.
+            const evidence = await fetchEvidence(initialComments);
+            const controls = controlEntries(evidence.comments);
+            const acknowledgements = acknowledgedControls(evidence.comments, controls);
+            const codeRabbitCommandRequested = operatorReviewRequested(evidence.comments);
+            const providerStates = effectiveProviders.map(provider => {
+              const providerControls = controls.filter(control => control.provider === provider);
+              const delivered = deliveredProvider(provider, evidence);
+              const cooldown = cooldownNotice(provider, evidence);
+              // An [x] checkbox edit made during this active cycle is evidence that
+              // the provider UI action occurred. A stale [x] never carries forward.
+              const selectedForCycle = providerControls.some(control =>
+                control.selected && Date.parse(control.updatedAt || '') >= cycleStartedAt
+              );
+              const providerCommandRequested = supportedProviderRequest(evidence.comments, provider);
+              const acknowledged = selectedForCycle || providerControls.some(control =>
+                acknowledgements.has(`${control.provider}:${control.checkboxId}`)
+              ) || providerCommandRequested || (provider === 'coderabbit' && codeRabbitCommandRequested);
+              let state = 'awaiting_provider_response';
+              if (providerControls.length && !acknowledged) state = 'pending_operator_action';
+              if (acknowledged) state = 'action_acknowledged';
+              if (cooldown.active) state = 'provider_cooldown';
+              // A control-bearing provider may expose a completed informational
+              // check before its interactive action is selected. Do not accept
+              // that check/comment as completion until the control is acknowledged.
+              if (delivered.delivered && (!providerControls.length || acknowledged)) {
+                state = 'provider_completed';
+              }
+              return { provider, state, delivered, cooldown, controls: providerControls, providerCommandRequested };
+            });
+            const complete = providerStates.every(item => item.state === 'provider_completed');
             const state = complete ? 'responses_collected' :
               providerStates.some(item => item.state === 'pending_operator_action') ? 'pending_operator_action' :
               providerStates.some(item => item.state === 'provider_cooldown') ? 'provider_cooldown' :

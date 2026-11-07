@@ -199,7 +199,7 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             target = root / ".github/workflows/agent-jules-on-issues.yml"
             text = target.read_text(encoding="utf-8").replace(
                 "          mkdir -p .agent-context",
-                "          echo \" ${{ github.event.comment.body }}\"\\n          mkdir -p .agent-context",
+                "          echo \" ${{ github.event.comment.body }}\"\n          mkdir -p .agent-context",
                 1,
             )
             target.write_text(text, encoding="utf-8")

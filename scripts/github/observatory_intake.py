@@ -24,9 +24,15 @@ LABELS = ("research:provider", "research:service")
 
 
 def entry_from_issue(issue: dict[str, Any]) -> dict[str, Any] | None:
-    labels = {l.get("name") for l in issue.get("labels") or [] if isinstance(l, dict)}
-    kind = ("provider" if "research:provider" in labels else
-            "service" if "research:service" in labels else None)
+    kind = None
+    for l in (issue.get("labels") or []):
+        if isinstance(l, dict):
+            lname = l.get("name")
+            if lname == "research:provider":
+                kind = "provider"
+                break
+            elif lname == "research:service":
+                kind = "service"
     if kind is None:
         return None
     body = issue.get("body") or ""
@@ -48,9 +54,10 @@ def entry_from_issue(issue: dict[str, Any]) -> dict[str, Any] | None:
 def collect(issues: list[dict[str, Any]]) -> dict[str, Any]:
     entries, skipped, seen = [], 0, set()
     for issue in issues:
-        if issue.get("pull_request") or issue.get("number") in seen:
+        number = issue.get("number")
+        if issue.get("pull_request") or number in seen:
             continue
-        seen.add(issue.get("number"))
+        seen.add(number)
         try:
             e = entry_from_issue(issue)
         except ValueError:

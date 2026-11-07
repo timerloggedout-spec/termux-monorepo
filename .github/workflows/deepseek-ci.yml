@@ -40,26 +40,28 @@ jobs:
     if: >-
       (github.event_name != 'issue_comment' && github.event_name != 'pull_request_review_comment') ||
       (
-        github.event.comment.user.type != 'Bot' &&
+        github.event.sender.type == 'User' &&
+        github.event.comment.user.type == 'User' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
         (
-          contains(github.event.comment.body, '@deepcore') ||
-          contains(github.event.comment.body, '@deepCore') ||
-          contains(github.event.comment.body, '@deepseek') ||
-          contains(github.event.comment.body, '@deepseek-ci') ||
-          contains(github.event.comment.body, 'deepseek') ||
-          contains(github.event.comment.body, 'DeepSeek')
+          github.event.comment.body == '@deepseek' ||
+          startsWith(github.event.comment.body, '@deepseek ') ||
+          startsWith(github.event.comment.body, '@deepseek\n') ||
+          github.event.comment.body == '@deepseek-ci' ||
+          startsWith(github.event.comment.body, '@deepseek-ci ') ||
+          startsWith(github.event.comment.body, '@deepseek-ci\n') ||
+          github.event.comment.body == '@deepCore' ||
+          startsWith(github.event.comment.body, '@deepCore ') ||
+          startsWith(github.event.comment.body, '@deepCore\n')
         )
       )
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
       issues: write
-      actions: read
 
     env:
       # ARCHWIZ_GITHUB_TOKEN (4RCHW12) supersedes all other GH tokens
-      OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
-      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       # Prefer dispatch payload when provided; otherwise use the real event
       GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
       # Account-1 / primary is PRIORITY default
@@ -67,19 +69,9 @@ jobs:
       # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
       # First non-empty wins inside session_manager._token_from_env.
       # Cookies are primary auth path for the webWrapper (WASM + 🍪).
-      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_API_KEY }}
-      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_API_KEY }}
-      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-      DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
-      NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
-      DEEPSEEK_COOKIES: ${{ secrets.DEEPSEEK_COOKIES || secrets.DEEPSEEK_COOKIES_1 || secrets.COOKIES }}
-      DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
-      DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
-      DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
       # Captured browser sessions include aws-waf-token alongside ds_session_id.
       # The value is consumed only by session_manager and persists in the existing
       # permission-restricted session cache; it is never logged or uploaded.
-      DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN }}
       DEEPSEEK_THINKING: "true"
       DEEPSEEK_EXPERT: "true"
       DEEPSEEK_CONNECT_TIMEOUT: "30"
@@ -92,8 +84,8 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
         with:
           fetch-depth: 0
-          token: ${{ env.OPERATOR_TOKEN }}
-          persist-credentials: true
+          token: ${{ github.token }}
+          persist-credentials: false
 
       - name: Emit ATES task-boundary identity
         env:
@@ -175,6 +167,18 @@ jobs:
       - name: Run DeepSeek CI Agent (Account-1 priority)
         timeout-minutes: 40
         env:
+          OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+          DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
+          NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
+          DEEPSEEK_COOKIES: ${{ secrets.DEEPSEEK_COOKIES || secrets.DEEPSEEK_COOKIES_1 || secrets.COOKIES }}
+          DEEPSEEK_COOKIES_1: ${{ secrets.DEEPSEEK_COOKIES_1 }}
+          DEEPSEEK_TOKEN_SECONDARY: ${{ secrets.DEEPSEEK_TOKEN_SECONDARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_2 || secrets.DEEPSEEK_COOKIES_2 }}
+          DEEPSEEK_COOKIES_2: ${{ secrets.DEEPSEEK_COOKIES_2 }}
+          DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN }}
           PYTHONPATH: ${{ github.workspace }}
           # runner.temp ONLY valid at step level — was the post-#174 master gate breaker
           DEEPSEEK_CACHE_DIR: ${{ runner.temp }}/.deepseek-cache
@@ -188,13 +192,18 @@ jobs:
       - name: Failure diagnostics
         if: failure()
         timeout-minutes: 5
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ACTOR: ${{ github.actor }}
+          REF: ${{ github.ref }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -uo pipefail
           echo "::group::Workflow failure context"
-          echo "event: ${{ github.event_name }}"
-          echo "actor: ${{ github.actor }}"
-          echo "ref: ${{ github.ref }}"
-          echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "event: $EVENT_NAME"
+          echo "actor: $ACTOR"
+          echo "ref: $REF"
+          echo "run_url: $RUN_URL"
           echo "::endgroup::"
           for f in deepseek_output.json; do
             if [ -f "$f" ]; then

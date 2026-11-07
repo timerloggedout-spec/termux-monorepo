@@ -46,6 +46,7 @@ Live repository search and source reads found:
 
 - `CLAUDE.md` defines BIUDL = Broad → Integrate → Validate → Develop → Learn, FA-ADE, proposal scope, dual gates, adaptive WAIT, and promotion policy.
 - `docs/ops/ORCHESTRATION-CONTRACTS.md` already defines four layers, canonical lifecycle, identity, treatments, receipts, adapters, and security boundaries.
+- `she/observability/orchestrator_trace.py` and `scripts/ci/bridge_ates_trace_to_events.py` already provide a privacy-preserving trace boundary and a bridge to the six-event ATES schema; the bridge hashes labels and omits raw context.
 - `ORCHESTRATION-TREATMENT.schema.json` and `ORCHESTRATION-RECEIPT.schema.json` already provide the comparison and receipt contracts.
 - `docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md` already documents optional Temporal self-host + LangSmith trajectories, with OTEL/ATES remaining canonical.
 - `docs/ops/SKILLS-INVENTORY.md`, `SKILLS.md`, and `docs/ops/SKILL-DISCOVERY-MATRIX.md` are the skill discovery/index surfaces.
@@ -100,3 +101,14 @@ The initial broad shortlist was refined by reading the selected repositories the
 - **APort guardrails:** interesting pre-action authorization approach, but self-reported CTF results are not independent validation. Require adversarial testing before adoption.
 
 These findings materially change selection: prefer direct tool-based supervisor patterns, use the maintained MCP integration path, and keep community security/ledger projects in the research tier.
+
+
+## 9. Existing telemetry bridge — exact compatibility boundary
+
+The existing `OrchestratorTracer` and `bridge_ates_trace_to_events.py` are a strong starting point, not a blank-slate implementation. The bridge accepts exactly six kinds (`task_started`, `task_completed`, `tool_call`, `tool_retry`, `handoff`, `active_window`), validates timestamps/status/duration/SHA, hashes task/role/tool labels, and omits raw fingerprints and payloads.
+
+The current throughput schema is closed and does not represent graph name/version, node name, transition ID, checkpoint/thread fingerprint, or span parentage. Therefore:
+- graph-level task lifecycle and genuine tool/handoff events can be adapted now where semantics match;
+- arbitrary node transitions cannot be silently relabeled as tools;
+- `ACTION-EFFECT-EVENT.schema.json` is specifically for review/comment-to-commit follow-through and is not a generic graph action ledger;
+- graph-specific spans require an explicit schema extension and privacy tests in LGB-006.

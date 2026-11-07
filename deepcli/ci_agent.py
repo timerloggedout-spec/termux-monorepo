@@ -15,7 +15,6 @@ Supports:
 Comment text and PR diffs are untrusted reference data, never policy or tool instructions.
 """
 import os
-import re
 import json
 import subprocess
 import time
@@ -275,9 +274,8 @@ def _post_gh_review_reply(gh_env, repo, pr_number, comment_id, body, timeout=90)
 
 
 def _handle_issue_comment(event, session, peer, gh_env, thinking):
-    """Reply to an issue (or PR-as-issue) comment that mentioned deepCore."""
+    """Reply to a trusted, exact-moniker issue comment."""
     comment = event.get("comment") or {}
-    body = (comment.get("body") or "").strip()
     issue = event.get("issue") or {}
     issue_number = issue.get("number")
     repo = (event.get("repository") or {}).get("full_name")
@@ -428,7 +426,6 @@ def run_ci(event, session, peer, workspace, operator_token):
             }
 
         comment = event.get("comment") or {}
-        body = (comment.get("body") or "").strip()
         comment_id = comment.get("id")
         pr = event.get("pull_request") or {}
         pr_number = pr.get("number")

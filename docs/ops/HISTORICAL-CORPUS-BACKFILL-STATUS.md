@@ -1,14 +1,18 @@
+> **Current-state reconciliation (2026-11-07):** The canonical `master` manifest is authoritative and was last observed at **2026-10-26T13:04:26.270236Z**: **35,221 nodes, 57,358 edges, 52,416 verified edges, 4,942 candidate edges, 120 unresolved internal references, 12 source parser failures, and 1,392 excluded files**. History coverage is `PARTIAL_CONTINUATION_REQUIRED`, `history_window.next_start_page=2`, both completeness flags are false, and `github_report.checkpoint_eligible=false`. Its first ledger window contains 50 issue-endpoint results (10 actual issues and 40 PR-shaped results) plus 50 PR-endpoint results. The continuation defaults must remain 50 for both endpoint page limits and 50 for the repository-wide commit sample; per-PR details use independent caps of 3,000 files and 250 commits. Do not infer completion or checkpoint eligibility. Runtime evidence from runs [40058473861](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40058473861) and [39962654795](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39962654795) does not establish a successful continuation.
+
+---
+
 > **Current-state reconciliation (2026-11-02):** This document contains dated historical observations and must not be read as a continuously refreshed live dashboard. The canonical manifest currently available on `master` was last observed at **2026-10-26T13:04:26.270236Z** and reports **35,221 nodes, 57,358 edges, 52,416 verified edges, 4,942 candidate edges, 120 unresolved internal references, 12 source parser failures, and 1,392 excluded files**. Its history coverage is `PARTIAL_CONTINUATION_REQUIRED`, `history_window.next_start_page=2`, both issues/PR completeness flags are false, and `github_report.checkpoint_eligible=false`. Do not infer that the corpus is complete or checkpoint-eligible. Runtime review found run [40058473861](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40058473861) failed validation after a deferred HTTP 403 build, while [39962654795](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39962654795) concluded successfully with the build and coverage-summary steps skipped. See [the 2026-11-02 continuous audit](CONTINUOUS-REPOSITORY-AUDIT-2026-11-02.md) for evidence and remediation criteria.
 
 ---
 
-# Historical Corpus Actions Backfill — Live Status
+# Historical Corpus Actions Backfill — Historical Baseline (August–October 2026)
 
 **Tracking:** #522
 **Authority:** `workspace/llm_map/context_relationships/manifest.json`
 **Rule:** `next_start_page` must reach `null` before the corpus can be called complete.
 
-## Master — canonical production corpus
+## Master — canonical production corpus (2026-08-19 snapshot)
 
 Observed manifest: **2026-08-19T07:53:15Z**
 
@@ -30,7 +34,7 @@ Observed manifest: **2026-08-19T07:53:15Z**
 
 **Coverage:** `PARTIAL_CONTINUATION_REQUIRED`
 
-## master-staging — newer but not promotable as a branch
+## master-staging — 2026-09-07 snapshot; newer then, not promotable as a branch
 
 Observed manifest: **2026-09-07T12:33:24Z**
 
@@ -52,11 +56,9 @@ Observed manifest: **2026-09-07T12:33:24Z**
 
 GitHub compare currently classifies `master...master-staging` as **diverged**, with the staging branch 50 commits ahead and 455 behind current master. Therefore the larger corpus is useful evidence but **must not be promoted wholesale**.
 
-## Control-plane finding
+## Control-plane finding at that time
 
-`.github/workflows/context-relationship-backfill.yml` is deliberately manual and page-bounded, which is correct for a historical collector. The current implementation, however, checks out `master-staging` and pushes its generated corpus back to that branch.
-
-That is now the primary operational defect: the continuation target is stale/diverged from the canonical branch.
+At the time of the September 2026 observation, `.github/workflows/context-relationship-backfill.yml` checked out `master-staging` and pushed its generated corpus back to that branch. That historical defect was subsequently corrected; the current workflow is anchored to canonical `master` as documented in the current-state reconciliation above.
 
 ## Correct continuation model
 

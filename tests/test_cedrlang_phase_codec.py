@@ -46,3 +46,19 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_revwright_candidate_roundtrips():
+    candidates = [
+        "RevWright",
+        "Revwright",
+        "RevwRight",
+        "Rev-wRight",
+        "Rev·wRight",
+        "R3vWright",
+        "R3Vw₹16h7",
+    ]
+    # Verify decoding maps all candidate variants to canonical compressed token r3vwr1gh7
+    for candidate in candidates:
+        decoded = from_1337speak(candidate)
+        assert decoded.lower() == "r3vwr1gh7", f"Expected {candidate!r} to decode to 'r3vwr1gh7', got {decoded!r}"

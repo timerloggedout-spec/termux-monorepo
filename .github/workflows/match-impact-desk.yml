@@ -1,0 +1,36 @@
+name: Match Impact Desk
+
+on:
+  pull_request:
+    paths:
+      - "apps/match-impact-desk/**"
+      - ".github/workflows/match-impact-desk.yml"
+  push:
+    branches: [master]
+    paths:
+      - "apps/match-impact-desk/**"
+      - ".github/workflows/match-impact-desk.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/match-impact-desk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Compile Python
+        run: python -m compileall -q app.py tests
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check browser JavaScript
+        run: node --check static/app.js

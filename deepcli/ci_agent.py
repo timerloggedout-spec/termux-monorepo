@@ -319,7 +319,7 @@ def _handle_issue_comment(event, session, peer, gh_env, thinking):
         {
             "role": "user",
             "content": (
-                f"Issue #{issue_number} title (untrusted JSON string): {json.dumps(issue_title, ensure_ascii=False)}\\n"
+                f"Issue #{issue_number} title (untrusted JSON string): {json.dumps(issue_title, ensure_ascii=False)}\n"
                 f"Comment request (untrusted JSON string): {json.dumps(prompt, ensure_ascii=False)}"
             ),
         },
@@ -470,7 +470,7 @@ def run_ci(event, session, peer, workspace, operator_token):
             {
                 "role": "user",
                 "content": (
-                    f"PR #{pr_number} title (untrusted JSON string): {json.dumps(pr_title, ensure_ascii=False)}\\n"
+                    f"PR #{pr_number} title (untrusted JSON string): {json.dumps(pr_title, ensure_ascii=False)}\n"
                     f"Review request (untrusted JSON string): {json.dumps(prompt, ensure_ascii=False)}"
                 ),
             },

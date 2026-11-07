@@ -6,7 +6,7 @@
 <title>Challenge Countdowns — Hackathon Deadlines</title>
 <!--
   Renders ONLY data/challenge-countdowns-feed.json (schema
-  challenge-countdowns-feed/v1.1, contract
+  challenge-countdowns-feed/v1.3, contract
   docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). The feed carries deadline
   INSTANTS only; state and time-remaining are computed here, in the
   browser, from those instants on every tick — never from a
@@ -61,7 +61,7 @@
 <div class="hero">
 <p class="eyebrow">Challenge Countdowns · Hackathon Deadlines</p>
 <h1>Hackathon countdowns — computed live from the recorded deadlines</h1>
-<p class="lede">The Gantt timeline and the swimlanes below draw only the recorded instants. Every countdown on this page is computed in your browser, every second, from the deadline instants recorded in the challenge entries log. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
+<p class="lede">The Gantt timeline and the swimlanes below draw only the recorded instants. Every countdown on this page is computed in your browser, every second, from the deadline instants recorded in the event log. Events are the shared unit; this page is their time-window projection. The <a href="./wagering-book.html">Wagering Book</a> carries expectation records, positions, and settlements. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1.3</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
 </div>
 </header>
 <main>
@@ -202,6 +202,10 @@ function prizesHTML(e){
   if(p&&p.tiers&&p.tiers.length) h+='<ul class="pz-tiers">'+p.tiers.map(t=>'<li><strong>'+esc(t.place)+'</strong> \u2014 '+esc(t.award)+(t.source_url?' <a href="'+esc(t.source_url)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join("")+'</ul>';
   return h+'</div>';
 }
+function eventHTML(e){
+  if(!e.event_url) return "";
+  return '<div class="submission"><span class="cd-label">Official event</span><p class="sub-line"><a href="'+esc(e.event_url)+'" target="_blank" rel="noopener noreferrer">Event rules / entry page</a></p></div>';
+}
 function submissionHTML(e){
   const s=e.submission;
   if(!s||!s.state) return "";
@@ -227,6 +231,7 @@ function render(){
     '<div class="cd-value" data-role="value"></div>'+
     '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
     prizesHTML(e)+
+    eventHTML(e)+
     submissionHTML(e)+
     delineationHTML(e)+
     '</div>').join("");

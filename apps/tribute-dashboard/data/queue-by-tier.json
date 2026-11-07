@@ -1,16 +1,17 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-07T16:10:22Z",
+ "generated_at": "2026-11-07T20:21:37Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
+   "queued": 8,
    "in_progress": 0,
-   "oldest_queued_at": "2026-11-07T16:08:25Z",
+   "oldest_queued_at": "2026-11-07T20:15:57Z",
    "by_workflow_queued": {
-    "repo gate": 1,
-    "PR scope guard": 1
+    "Orchestration Regression Guard": 1,
+    "repo gate": 3,
+    "PR scope guard": 4
    }
   },
   "2": {
@@ -29,36 +30,44 @@
   },
   "4": {
    "tier": 4,
-   "queued": 97,
-   "in_progress": 5,
-   "oldest_queued_at": "2026-11-07T15:56:47Z",
+   "queued": 190,
+   "in_progress": 8,
+   "oldest_queued_at": "2026-11-07T20:01:14Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 74,
+    "Agent Throughput Evidence": 10,
+    "Quota Dispatch Tree": 112,
+    "n8n SHE bridge": 2,
+    "lane events recorder": 16,
+    "termux smoke": 3,
+    "hitl-control-plane-verify": 1,
+    "graph-matrix-probe": 1,
+    "Sweep Accountability": 5,
+    "Foresight Evidence Spine": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Context Relationship + Lead/Lag Audit": 4,
+    "DeepSeek CI \u2013 Agentic Automation": 2,
+    "Peer review orchestrator": 4,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
+    "archwiz dangle check": 1,
+    "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
+    "Lane matrix event-driven inventory": 2,
+    "CellCog review": 2,
+    "Repository development evaluation": 2,
+    "Agent PR Jules Handoff": 2,
+    "PR production ledger": 4,
+    "Action Effectiveness Ledger": 3,
+    "GitHub App fleet telemetry": 1,
     "repo-tracking-collect": 1,
-    "lane events recorder": 2,
-    "PR Change Effectiveness Ledger": 1,
+    "Reviewer metrics collect": 1,
+    "PR evidence evaluation": 2,
     "RECON INTEL discovery": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "Agent PR Jules Handoff": 1,
-    "Peer review orchestrator": 1,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "Repository development evaluation": 1,
-    "termux smoke": 1,
-    "Lane matrix event-driven inventory": 1,
-    "Action Effectiveness Ledger": 2,
-    "Sweep Accountability": 2,
-    "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "PR production ledger": 1,
-    "CellCog review": 1,
-    "Workflow Surface Policy": 1,
-    "PR evidence evaluation": 1
+    "Workflow Surface Policy": 1
    }
   }
  },
  "totals": {
-  "queued": 99,
-  "in_progress": 6
+  "queued": 198,
+  "in_progress": 9
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true

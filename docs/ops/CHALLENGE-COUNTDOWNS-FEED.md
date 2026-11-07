@@ -33,7 +33,7 @@ forward from a previous feed.
     else `ACTIVE`.
   - `event_url` — official event URL from the coordinator (or `null` when no official URL is recorded).
   - `opens` / `closes` — ISO-8601 instants with offset, verbatim
-    from the log's `countdown-data` line; `null` when the entry
+    from the log's `countdown-data` line (ISO-8601 parsed and re-emitted with its UTC offset); `null` when the entry
     records no such instant (`-` in the log).
   - `prizes` — REQUIRED (owner rule 2026-10-28): `{status, pool,
     tiers[{place, award, source_url}]}` wired verbatim from

@@ -10,6 +10,7 @@
 | Feedback | adaptive-feedback-cycle | `.agents/skills/adaptive-feedback-cycle/SKILL.md` | continuous observation, historical evaluation, feed-forward learning |
 | Evidence/admin | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` | current-state reconstruction, provenance, admin closeout |
 | Review | review-loop | `.agents/skills/review-loop/SKILL.md` | review ingestion, repeated validation, attribution |
+| Review UX | plan-canvas | `.agents/skills/plan-canvas/SKILL.md` | local annotated plan review; approval mirrored to Desk/Issue HITL |
 | Relationships | context-relationship-graph | `.agents/skills/context-relationship-graph/SKILL.md` | verified/candidate relationship evidence |
 | Reconciliation | production-reconciliation | `.github/skills/production-reconciliation/SKILL.md` | ref alignment and WAIT/VALIDATE/RE-FETCH |
 | Measurement | action-effectiveness-ledger | `.github/skills/action-effectiveness-ledger/SKILL.md` | action-to-outcome measurement |

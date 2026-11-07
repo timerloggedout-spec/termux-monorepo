@@ -11,7 +11,9 @@ class CliTest(unittest.TestCase):
             code = main(["status"])
         self.assertEqual(code, 0)
         payload = json.loads(buf.getvalue())
-        self.assertEqual(payload["issue"], 175)
+        self.assertEqual(payload["control_plane"], "REPO-TRACKING")
+        self.assertEqual(payload["ssot"]["lane_project"], "ops/tracking/tracking.json")
+        self.assertNotIn("issue", payload)
     def test_run(self) -> None:
         buf = StringIO()
         with patch("sys.stdout", buf):

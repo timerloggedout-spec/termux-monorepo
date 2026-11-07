@@ -359,6 +359,13 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   (issues #175, #184; PRs #713, #714, #682), read back via GraphQL.
   Board placement is ESTABLISHED; the sync workflow's per-event adds
   now run against a real project. G4 is closed.
+> **Historical record only (superseded 2026-11-05):** this section records
+> the October 28 ProjectV2/operator-matrix implementation. Issue #175 is now
+> closed and is not a hub or state authority. Current cross-domain read model:
+> `docs/ops/REPO-TRACKING.md` / `ops/tracking/tracking.json`; current PR
+> disposition: `docs/ops/LANE-MATRIX.md` and its generated board. The ProjectV2
+> board remains a visual projection only.
+
 - **Operator Matrix method (2026-10-28, owner: "needs a better
   method").** The board-sync method is superseded as the method of
   record. Its failure modes were structural: per-event runs (495,
@@ -378,7 +385,7 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   SUPERSEDE is never auto-emitted (an operator judgment, not an API
   signal) — and master gate state is reported per-SHA, never
   inherited (first cut: tip `441a554dff` had no gate runs, so NOT
-  ESTABLISHED, exactly as #175's rules require). First cut from live
+  ESTABLISHED, as the historical #175 rules required). First cut from live
   data (2026-10-28T16:20Z): 284 issues, 95 PRs — EXTRACT 30 /
   CANDIDATE 30 / NEED_EVIDENCE 35. Retirement of
   `ops-operator-matrix-project-sync.yml` was the follow-up, after the
@@ -387,10 +394,7 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   cadence + `41312953496`), so the workflow is archived to
   `docs/ops/archive/workflows/` (content preserved + archive header;
   owner deletion freeze 2026-11-01 — archive class, not deletion).
-  Project #4 remains as a static view; #175's own rule 7 (no
-  pulse-comments; the body is edited by its operator) is respected —
-  this method is recorded here and in the landing PR, not commented
-  onto #175.
+  Project #4 remains a static visual view. Issue #175 is closed and historical; no current state is written to it.
 - **First automated cut defect + fix (2026-10-28).** The method's own
   first dispatch (run `40727258970`) regenerated the matrix in
   Actions and opened PR #2055, which this lane merged

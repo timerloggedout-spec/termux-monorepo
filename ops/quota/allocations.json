@@ -15,7 +15,7 @@
   "focuses": [
     {
       "id": "winning",
-      "label": "Winning \u2014 challenge entries (active slate D1/D3/D2/D4)"
+      "label": "Winning — challenge entries (active slate D1/D3/D2/D4)"
     },
     {
       "id": "repo-development",
@@ -34,12 +34,17 @@
     {
       "id": "meta.llama_api",
       "date": "2026-10-31",
-      "reason": "RETIRED 2026-07-06 (registry record: limit 0, DO NOT ROUTE \u2014 kept only so dispatch never revives the retired endpoint; superseded by meta.model_api, pooled in the meta pool). Not consumable, never allocated."
+      "reason": "RETIRED 2026-07-06 (registry record: limit 0, DO NOT ROUTE — kept only so dispatch never revives the retired endpoint; superseded by meta.model_api, pooled in the meta pool). Not consumable, never allocated."
     },
     {
       "id": "fleet.vm_webhooks",
       "date": "2026-10-31",
       "reason": "The fleet's own bounded webhook intake surface (Receiver Mesh VM leg, docs/ops/VM-WEBHOOKS.md): events are intake, not consumable provider quota (registry limit null). Governed by the mesh docs, not focus allocation."
+    },
+    {
+      "id": "agentrouter.models",
+      "date": "2026-11-05",
+      "reason": "Catalog-only provider metadata. The registry row represents authenticated model-catalog visibility, not a quota entitlement or consumable balance; no account quota/reset source is documented. Excluded from quota allocation until a separate authoritative quota service is established."
     }
   ],
   "pools": [
@@ -495,7 +500,7 @@
           "pct": 0,
           "mode": "none",
           "date": "2026-11-03",
-          "reason": "Correction (quota diagnostic 2026-11-03, owner escalation via D1 seat): registry record fly.free_tier documents limit 0 \u2014 free allowances removed for new orgs Oct 2024, fleet org billing state NOT ESTABLISHED. A 100% Winning allocation of a 0 entitlement is a phantom slice; set to 0/none until a fleet Fly billing state is established, then re-file on #1884."
+          "reason": "Correction (quota diagnostic 2026-11-03, owner escalation via D1 seat): registry record fly.free_tier documents limit 0 — free allowances removed for new orgs Oct 2024, fleet org billing state NOT ESTABLISHED. A 100% Winning allocation of a 0 entitlement is a phantom slice; set to 0/none until a fleet Fly billing state is established, then re-file on #1884."
         },
         {
           "focus": "repo-development",
@@ -1129,7 +1134,7 @@
           "fallback_mode": "none",
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
-          "reason": "ENROLL claim 6520573728: GitHub Actions minutes only \u2014 PAT draw 0 by design (collector runs on GITHUB_TOKEN, 0 API reads); timers cron Tue 06:53Z + dispatch + push on source paths; cost ~1 collector pass + <=1 refresh PR per run."
+          "reason": "ENROLL claim 6520573728: GitHub Actions minutes only — PAT draw 0 by design (collector runs on GITHUB_TOKEN, 0 API reads); timers cron Tue 06:53Z + dispatch + push on source paths; cost ~1 collector pass + <=1 refresh PR per run."
         },
         {
           "lane": "delphi-lane",
@@ -1205,7 +1210,7 @@
           "fallback_mode": "none",
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
-          "reason": "ENROLL claim 6520939645: PAT episodic bursts (~20-40 calls/PR) for the Temporal durable-execution RFP (#1885) recon; focus research + repo-development; priority low/routine; timers none (no cron/dispatch/workflows/polling \u2014 QAC-008 current by construction)."
+          "reason": "ENROLL claim 6520939645: PAT episodic bursts (~20-40 calls/PR) for the Temporal durable-execution RFP (#1885) recon; focus research + repo-development; priority low/routine; timers none (no cron/dispatch/workflows/polling — QAC-008 current by construction)."
         },
         {
           "lane": "4n0n-protocol",
@@ -1217,7 +1222,7 @@
           "fallback_mode": "none",
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
-          "reason": "ENROLL claim 6520947846: PAT episodic publish/verify for the 4n0n protocol + branding-perception evaluation (PR #2159); focus repo-development; priority low/routine; timers none (no cron/dispatch/workflow/polling \u2014 QAC-008 current by construction)."
+          "reason": "ENROLL claim 6520947846: PAT episodic publish/verify for the 4n0n protocol + branding-perception evaluation (PR #2159); focus repo-development; priority low/routine; timers none (no cron/dispatch/workflow/polling — QAC-008 current by construction)."
         },
         {
           "lane": "vercel-specialist",
@@ -1254,7 +1259,7 @@
           "fallback_mode": "none",
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
-          "reason": "ENROLL claim 6520955774: PAT episodic + Actions minutes (proof dispatches) for feed-collect failure-burst fixes (PR #2341); focus repo-development; priority incident-spike/routine \u2014 mission complete, steady draw 0, incident sessions ~150-250 calls; timers none owned."
+          "reason": "ENROLL claim 6520955774: PAT episodic + Actions minutes (proof dispatches) for feed-collect failure-burst fixes (PR #2341); focus repo-development; priority incident-spike/routine — mission complete, steady draw 0, incident sessions ~150-250 calls; timers none owned."
         },
         {
           "lane": "scraping-tools",
@@ -1278,7 +1283,7 @@
           "fallback_mode": "none",
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
-          "reason": "ENROLL claim 6520955026: PAT episodic ~6-13 calls/PR for the 3L0 scoring plane (sibling of 3l0-weighting-backfill, claim 6520582020 \u2014 separate lane, own slice); Actions minutes ride gap-finder-fix-g10's surface-feeds slice, not double-claimed; discrimination watch <=3 GH API calls/run; focus repo-development, priority low/routine leftover-only."
+          "reason": "ENROLL claim 6520955026: PAT episodic ~6-13 calls/PR for the 3L0 scoring plane (sibling of 3l0-weighting-backfill, claim 6520582020 — separate lane, own slice); Actions minutes ride gap-finder-fix-g10's surface-feeds slice, not double-claimed; discrimination watch <=3 GH API calls/run; focus repo-development, priority low/routine leftover-only."
         },
         {
           "lane": "challenge-entries-manager",
@@ -1383,7 +1388,7 @@
           "fallback_mode": "none",
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
-          "reason": "ENROLL claim 6520849921: AI Studio / gemini.api_free draw under its own RPD budgets via ops/ai-studio-mesh quota_gate (PR #2489) \u2014 not the github bucket; mesh trigger = both legs (Cloudflare receiver + bounded trigger), quota-gated DEFER on low budget."
+          "reason": "ENROLL claim 6520849921: AI Studio / gemini.api_free draw under its own RPD budgets via ops/ai-studio-mesh quota_gate (PR #2489) — not the github bucket; mesh trigger = both legs (Cloudflare receiver + bounded trigger), quota-gated DEFER on low budget."
         }
       ]
     },
@@ -2587,7 +2592,7 @@
           "pct": 100,
           "mode": "standing",
           "date": "2026-10-28",
-          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-28 to complete registry coverage \u2014 platform201.projects landed in the registry (PR #1983) without an allocations entry."
+          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-28 to complete registry coverage — platform201.projects landed in the registry (PR #1983) without an allocations entry."
         },
         {
           "focus": "repo-development",
@@ -2641,7 +2646,7 @@
           "pct": 100,
           "mode": "standing",
           "date": "2026-10-28",
-          "reason": "Owner setting (issue #1884): every non-excluded pool stands at Winning 100. Pool created 2026-10-28 in the registry-restoration repair \u2014 the pinecone.* records landed via PR #2018 without an allocations entry."
+          "reason": "Owner setting (issue #1884): every non-excluded pool stands at Winning 100. Pool created 2026-10-28 in the registry-restoration repair — the pinecone.* records landed via PR #2018 without an allocations entry."
         },
         {
           "focus": "repo-development",
@@ -2678,7 +2683,7 @@
           "pct": 100,
           "mode": "standing",
           "date": "2026-10-31",
-          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-31 to complete registry coverage \u2014 meta.model_api + meta.muse_code landed in the registry (PR #2641) without an allocations entry (flagged by quota-specialist via PR #2939, 2026-10-31). Credentials MODEL_API_KEY / META_API_KEY are owner provisioning items (names-only); the pool stands ready and draw begins on provisioning."
+          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-31 to complete registry coverage — meta.model_api + meta.muse_code landed in the registry (PR #2641) without an allocations entry (flagged by quota-specialist via PR #2939, 2026-10-31). Credentials MODEL_API_KEY / META_API_KEY are owner provisioning items (names-only); the pool stands ready and draw begins on provisioning."
         },
         {
           "focus": "repo-development",
@@ -2930,7 +2935,7 @@
           "pct": 100,
           "mode": "standing",
           "date": "2026-11-03",
-          "reason": "Winning focus owner-set (issue #1884); D2 event capacity: $200 credit applied 2026-11-03, expires \u22482026-12-03"
+          "reason": "Winning focus owner-set (issue #1884); D2 event capacity: $200 credit applied 2026-11-03, expires ≈2026-12-03"
         },
         {
           "focus": "repo-development",

@@ -13,6 +13,7 @@ ENDPOINTS = {
     "novita": "https://api.novita.ai/v3/openai/models",
     "friendli": "https://api.friendli.ai/serverless/v1/models",
     "baseten": "https://inference.baseten.co/v1/models",
+    "agentrouter": "https://co.agentrouter.org/v1/models",
 }
 SECRETS = {provider: f"{provider.upper()}_API_KEY" for provider in ENDPOINTS}
 # Official docs explicitly allow anonymous model discovery for these gateways.
@@ -27,10 +28,12 @@ SOURCES = {
     "novita": "https://novita.ai/docs",
     "friendli": "https://friendli.ai/docs",
     "baseten": "https://docs.baseten.co",
+    "agentrouter": "https://co.agentrouter.org/portal/guide",
 }
 
 
 def _rate(value):
+    """Return a finite, non-negative numeric rate or None for invalid input."""
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     try:
@@ -41,6 +44,7 @@ def _rate(value):
 
 
 def _pricing(item, provider):
+    """Normalize provider-specific price shapes without guessing free access."""
     pricing = item.get("pricing")
     if provider == "requesty":
         # The official wire schema is an ARRAY, not {tiers:[...]}. Thresholds
@@ -76,6 +80,7 @@ def _pricing(item, provider):
         return {}, "unknown"
     if provider == "routeway":
         def per_token(side):
+            """Convert a documented per-million-token rate to a per-token rate."""
             section = pricing.get(side)
             if not isinstance(section, dict) or section.get("unit") != "1M tokens":
                 return None
@@ -85,6 +90,7 @@ def _pricing(item, provider):
         # An underflowing nonzero price must never be relabeled free.
         zero = all(isinstance(pricing.get(side), dict) and pricing[side].get("price_per_million_t") == 0 for side in ("input", "output"))
         def extra_rates(node):
+            """Collect nested advertised price fields for fail-closed validation."""
             if not isinstance(node, dict):
                 return []
             result = []
@@ -110,6 +116,7 @@ def _pricing(item, provider):
 
 
 def poll(provider, token, get_json):
+    """Fetch and normalize one provider catalog using its documented wire shape."""
     payload, headers = get_json(ENDPOINTS[provider], token)
     items = payload.get("data") if isinstance(payload, dict) else None
     if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):

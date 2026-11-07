@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-05T14:38:56Z` UTC  
+**Generated:** `2026-11-07T03:55:24Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 261 docs-lane branch(es)
+**Count:** 264 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -17,6 +17,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs-lane-consolidation-ssot-sync-16812143607083774304`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs-lane-consolidation-ssot-sync-16812143607083774304) | `e360ac0cc471` | — | — | orphan lane |
 | [`docs/4n0n-branding-perception-2026-10-28`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/4n0n-branding-perception-2026-10-28) | `f0a35f40d104` | — | — | orphan lane |
 | [`docs/ace-gcp-item-correction`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ace-gcp-item-correction) | `b3f81aab6832` | — | — | orphan lane |
+| [`docs/adaptive-wait-session-2026-11-06`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/adaptive-wait-session-2026-11-06) | `6ece95a1c3bd` | — | — | orphan lane |
 | [`docs/admin-internal-metrics-amendment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/admin-internal-metrics-amendment) | `abf025d26fb5` | — | — | orphan lane |
 | [`docs/admin-internal-metrics-amendment-2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/admin-internal-metrics-amendment-2) | `6f79f417de98` | — | — | orphan lane |
 | [`docs/admin-internal-metrics-amendment-3`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/admin-internal-metrics-amendment-3) | `aaeadb6b4e98` | — | — | orphan lane |
@@ -139,6 +140,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/integration-graph-matrix-tensor`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-graph-matrix-tensor) | `f243ed561efd` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-poll-refresh-2026-10-22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-poll-refresh-2026-10-22) | `851d029b1571` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-refresh-2026-10-23`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-refresh-2026-10-23) | `bffa965f9f14` | — | — | orphan lane |
+| [`docs/integration-portfolio-expansion-20261105`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-portfolio-expansion-20261105) | `1ed5836fbfed` | [#5027](https://github.com/timerloggedout-spec/termux-monorepo/pull/5027)→`master` | — | PR without registry link |
 | [`docs/issue-192-action-integration-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/issue-192-action-integration-intake) | `b749928140f7` | — | — | orphan lane |
 | [`docs/kai9000-orchestrator-correlated`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-orchestrator-correlated) | `a92e6f15da7f` | — | — | orphan lane |
 | [`docs/kai9000-provenance-correct`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-provenance-correct) | `73dad86dd7b2` | — | — | orphan lane |
@@ -242,6 +244,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/swarm-research-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-research-template) | `740942b930cc` | [#4390](https://github.com/timerloggedout-spec/termux-monorepo/pull/4390)→`master` | — | PR without registry link |
 | [`docs/swarm-s23-deepagent-routing`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-s23-deepagent-routing) | `cc24f9493715` | — | — | orphan lane |
 | [`docs/sync-agents-hum-md`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sync-agents-hum-md) | `056fc8ac7d0f` | — | — | orphan lane |
+| [`docs/taktikal-awareness-ooda-architecture`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/taktikal-awareness-ooda-architecture) | `24012fb99b3f` | [#5030](https://github.com/timerloggedout-spec/termux-monorepo/pull/5030)→`master` (draft) | — | PR without registry link |
 | [`docs/team-formation-roster-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/team-formation-roster-rebased) | `06d7b7f46a76` | — | — | orphan lane |
 | [`docs/temporal-oracle-pass-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/temporal-oracle-pass-record) | `ea5956964b9f` | — | — | orphan lane |
 | [`docs/termux-mcp-lean-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-mcp-lean-template) | `b6487c77d8e0` | — | — | orphan lane |

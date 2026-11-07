@@ -1,15 +1,25 @@
 ---
-name: operator-hub-175
-description: Issue #175 is a hub, not a comment stream. Edit the body when intent changes.
+name: legacy-operator-snapshot-175
+description: Historical archive for the superseded October 19 operator priority snapshot. Do not use as a control plane.
 ---
 
-# Skill: operator-hub-175
+# Legacy operator snapshot — Issue #175
 
-Do not pulse-comment. Update the issue body with the live matrix.
+<badge>DEPRECATED — HISTORICAL ONLY</badge>
 
-Next actions template:
+Issue #175 is closed and superseded. This skill is retained only so old references
+resolve; do not load it for current operations, dispatch, prioritization, or state.
 
-1. Dual-gate the candidate SHA
-2. EXTRACT mega / minesweeper families
-3. Rebase small NEED_EVIDENCE slices (#806 #809)
-4. Leave #48 / #788 on master-staging
+Use the repository-native authority map instead:
+
+- Cross-domain lane×project read model: `docs/ops/REPO-TRACKING.md`
+- Canonical generated feed: `ops/tracking/tracking.json`
+- PR disposition policy: `docs/ops/LANE-MATRIX.md`
+- Generated PR board: `docs/ops/generated/lane-matrix-status.md`
+- Dependency lifecycle: `docs/agentic/dependency-phases.json` and
+  `docs/agentic/phase-approvals.json`
+- Execution evidence: `ops/lane-events`
+- Human decisions: Desk.html or the owning GitHub Issue/PR
+
+Never post a heartbeat or Matrix Doctor comment to #175. Preserve its body as
+historical evidence; do not update it with new operating state.

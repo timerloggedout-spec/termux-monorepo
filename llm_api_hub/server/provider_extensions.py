@@ -27,8 +27,10 @@ CATALOG_ENDPOINTS = {
     "novita": "https://api.novita.ai/v3/openai/models",
     "friendli": "https://api.friendli.ai/serverless/v1/models",
     "baseten": "https://inference.baseten.co/v1/models",
-    "deepseek": "https://api.deepseek.com/v1/models",
+    "agentrouter": "https://co.agentrouter.org/v1/models",
 }
+CATALOG_SECRET_ENV = {provider: ENDPOINTS[provider][1][0] for provider in CATALOG_ENDPOINTS if provider in ENDPOINTS}
+CATALOG_SECRET_ENV["agentrouter"] = "AGENTROUTER_API_KEY"
 SOURCES = {
     "typhoon": ("https://docs.opentyphoon.ai/en/api-reference/", "https://opentyphoon.ai/tac"),
     "unorouter": ("https://unorouter.com/en", "https://unorouter.com/en/docs/integrations/open-webui"),

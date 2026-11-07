@@ -1,13 +1,16 @@
 ---
 name: ml-command-center
-description: Operator command-center projection for Issue #175. Load when ranking PRs, binding dual-gate, or detecting minesweeper drift.
+description: Repository-native operator command-center projection. Load when ranking PRs, binding dual-gate, or detecting minesweeper drift.
 ---
 
 # Skill: ml-command-center
 
-Projects the live operator board from `ml/pipelines/command_center/`.
+Projects a read-only operator view from `ml/pipelines/command_center/`, anchored to repository SSOTs.
 
-- Hub issue: #175 (edit body, never pulse-comment)
+- Cross-domain lane×project read model: `ops/tracking/tracking.json`
+- PR-disposition projection: `docs/ops/generated/lane-matrix-status.json`
+- Dependency lifecycle: `docs/agentic/dependency-phases.json`
+- Human approvals: Desk.html / owning Issue or PR; no generic issue hub
 - Vocab: EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE
 - Dual-gate: named jobs on **this** SHA
 - Minesweeper peers: EXTRACT, do not overwrite

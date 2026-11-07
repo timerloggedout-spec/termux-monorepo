@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "fa0d025b323ada07010e57761d977d725d64cd7d1f1fc38d0c0810080c7d1f2a",
+  "source_fingerprint": "3c0f2165a5076e313995086140943f6270db4aeeacb299c663c38178a80eaf17",
   "workflow_count": 291,
   "workflows": [
     {
@@ -173,27 +173,21 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "writer",
-      "concurrency": "group: ecc-tools-ops-${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.mode || github.run_id }} cancel-in-progress: false",
+      "concurrency": "group: ecc-tools-ops-${{ github.event.comment.id || github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "acknowledge-ecc-pr",
         "issue-commands",
-        "matrix-cycle",
         "pr-harness-audit",
-        "pr-operator-command",
-        "sweep-prs"
+        "pr-operator-command"
       ],
-      "name": "ECC Tools comment-command ops",
+      "name": "ECC Tools demand-driven ops",
       "path": ".github/workflows/agent-ecc-tools-ops.yml",
-      "schedules": [
-        "23 6,18 * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "issue_comment",
         "issues",
-        "pull_request",
-        "schedule",
-        "workflow_dispatch"
+        "pull_request"
       ]
     },
     {
@@ -2875,7 +2869,6 @@
       "path": ".github/workflows/lane-events-recorder.yml",
       "schedules": [],
       "triggers": [
-        "workflow_dispatch",
         "workflow_run"
       ]
     },
@@ -3302,16 +3295,19 @@
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "writer",
-      "concurrency": "group: lane-matrix-sweep cancel-in-progress: false",
+      "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
-        "sweep"
+        "sweep",
+        "validate"
       ],
-      "name": "Lane matrix recursive sweep",
+      "name": "Lane matrix event-driven inventory",
       "path": ".github/workflows/ops-lane-matrix-sweep.yml",
       "schedules": [],
       "triggers": [
-        "workflow_dispatch"
+        "pull_request",
+        "pull_request_target",
+        "push"
       ]
     },
     {
@@ -3819,21 +3815,25 @@
       "action_pins": [
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
-      "authority": "read-only-or-advisory",
-      "concurrency": "group: quota-dispatch-tree cancel-in-progress: false",
+      "authority": "bounded-state-write",
+      "concurrency": "group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }} # Keep active fan-out intact; newer pending PR/push wakes coalesce by group. cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
+        "complete-force-request",
         "decide",
         "dispatch"
       ],
       "name": "Quota Dispatch Tree",
       "path": ".github/workflows/quota-dispatch-tree.yml",
       "schedules": [
-        "*/10 * * * *"
+        "*/30 * * * *"
       ],
       "triggers": [
+        "issue_comment",
+        "pull_request_target",
+        "push",
         "schedule",
-        "workflow_dispatch"
+        "workflow_run"
       ]
     },
     {
@@ -4250,9 +4250,10 @@
         "23 7 * * *"
       ],
       "triggers": [
+        "pull_request_target",
         "push",
         "schedule",
-        "workflow_dispatch"
+        "workflow_run"
       ]
     },
     {

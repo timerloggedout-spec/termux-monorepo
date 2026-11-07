@@ -1,27 +1,31 @@
-# LANE-MATRIX (policy SSOT)
+# LANE-MATRIX (PR-disposition policy SSOT)
 
-This file is **durable policy**, not a live dashboard.
+This file is durable policy for the **open pull-request disposition view**. It is
+not the global lane×project state store and it is not an operator-intent issue.
 
-**Open the live board:** [lane-matrix-status.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.md) · [JSON](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.json) · [sweep workflow](https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml)
+**Live PR board:** [lane-matrix-status.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.md) · [JSON](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.json) · [event workflow](https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml)
 
-Live inventory on disk: [`docs/ops/generated/lane-matrix-status.md`](generated/lane-matrix-status.md)  
-Writer: `.github/workflows/ops-lane-matrix-sweep.yml` + `scripts/ops/lane_matrix_sweep.py`  
-Priority issue: #175 is a **hub**, not a comment stream.  
-Credentials: #184 names-only.
+**Cross-domain lane×project SSOT:** [REPO-TRACKING](REPO-TRACKING.md), canonical feed
+`ops/tracking/tracking.json`, generated human board `ops/tracking/tracking.md`,
+and dashboard projection `apps/tribute-dashboard/data/tracking-feed.json`.
+Project/task lifecycle remains in its domain records, including
+`docs/agentic/dependency-phases.json` and `docs/agentic/phase-approvals.json`.
+The append-only `ops/lane-events` ledger is execution evidence, not project state.
 
-Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.  
-Do **not** post a recon comment on #175 every session.  
-Git history is a ledger. The generated artifact is the board. **Open that artifact.** Do not keep a pulse PR open to “hold the matrix open.”
+Live PR disposition writer: `.github/workflows/ops-lane-matrix-sweep.yml` +
+`scripts/ops/lane_matrix_sweep.py`. It is triggered by pull-request lifecycle events and master pushes to the
+policy/classifier; there is no cron, ten-minute poll, six-hour sweep, manual
+dispatch, or comment heartbeat. Bursts are coalesced by concurrency cancellation; each
+materialization reads the current open-PR set and writes only when its generated
+artifact changes.
 
-## What belongs where
+**Issue #175 is retired from operational authority.** It is a preserved historical
+priority snapshot, not a live hub, database, dispatch target, or source of truth.
+Human decisions belong in Desk.html or the specific GitHub Issue/PR that owns the
+decision. No issue is used as a generic state container.
 
-| Artifact | Role | How it changes |
-|----------|------|----------------|
-| This file | Dual-gate, mega-merge, Vercel, dirty-block rules | Rare policy PR |
-| `docs/ops/generated/lane-matrix-status.*` | Open-PR inventory + lane counts | Sweep commits to master (observer) |
-| Issue #175 | Durable operator intent | Edit the issue body when intent changes; no pulse comments |
-| Product PRs | Code / extracts / rebases | Dual-gate then promote |
-| Session chat | Human recon | Stays in chat; not a merge candidate |
+Do **not** open `ops/session-lane-matrix-*` PRs to restamp this file.
+Git history is the audit ledger. The generated PR board is a derived view.
 
 ## Dual-gate contract (promote authority)
 
@@ -29,7 +33,7 @@ Git history is a ledger. The generated artifact is the board. **Open that artifa
 2. `agentic termux smoke` / `termux smoke` SUCCESS on **this** SHA
 3. Vercel rate-limits are **non-gate** (#772)
 4. Copilot / CodeRabbit / Qodo / Devin = advisory only
-5. Age, file count, and comment volume are context only
+5. Age, file count, and comment volume are context only; age never changes lane state
 6. Mega-merge is allowed when dual-gate SUCCESS **and** mergeable on the candidate SHA
 7. CodeRabbit ~100-file limit is advisory review capacity, not a promote ban
 8. `mergeable_state=dirty` or a merge conflict **blocks** promote until rebase/re-extract
@@ -43,7 +47,7 @@ Git history is a ledger. The generated artifact is the board. **Open that artifa
 | EXTRACT | Re-cut onto live master; do not wholesale-merge |
 | CANDIDATE | On master; dual-gate may promote if green |
 | NEED_EVIDENCE | Wrong-base / draft / dirty — missing rebase or checks |
-| SUPERSEDE | Session pulse, bot-only, or ancient no-auto |
+| SUPERSEDE | Session-record artifact, bot-only artifact, or explicitly superseded item |
 
 HOLD / WAIT / OBSERVE are **invalid parking**. Gate outputs remain ALLOW | BLOCK | NEED_EVIDENCE.
 
@@ -58,7 +62,7 @@ Agents must:
 - **Close** leftover `ops(session): … LANE-MATRIX` PRs as not-planned / superseded
 - **Never** treat HOLD / OBSERVE / WAIT as idle parking when product work exists
 
-Sweep classifies session-record titles as **SUPERSEDE**, not dual-gate WAIT.
+Event-driven classifier marks session-record titles **SUPERSEDE**. Age buckets are snapshot metadata only; crossing an age threshold never changes disposition.
 
 ## Known durable lanes (update only when the fact is durable)
 

@@ -35,5 +35,8 @@ Use from any workflow (after `actions/checkout`):
     neon-api-key: ${{ secrets.NEON_API_KEY }}
 ```
 
-Readback: run `lane events recorder` with `workflow_dispatch` command `count`; the
-row count appears as a `lane-events count` notice annotation.
+Readback: run `python3 scripts/ops/lane_event.py count` in an authorized local
+environment with `LANE_EVENTS_DATABASE_URL` or `NEON_API_KEY`; the row count
+appears as a `lane-events count` notice annotation. The recorder has no manual
+Actions dispatch surface; production writes are driven by watched workflow-run
+completion events.

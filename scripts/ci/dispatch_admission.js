@@ -73,7 +73,7 @@ const OUTPUT_LANES = {
   dispatch_q3: ['tribute-system1'],
   dispatch_q4: ['cadence-lead-lag', 'self-integrate'],
   dispatch_q6: [
-    'ci-sweep', 'hygiene-sweep', 'ops-lane-matrix-sweep',
+    'ci-sweep', 'hygiene-sweep',
     'provider-availability', 'actions-queue-reaper',
     'gitlab-governed-reconciliation',
   ],

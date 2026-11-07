@@ -12,9 +12,10 @@
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
-| ML command-center (#175) | `.agents/skills/ml-command-center/SKILL.md` |
+| ML command-center / repo SSOT | `.agents/skills/ml-command-center/SKILL.md` |
+| Plan Canvas / annotated plan review | `.agents/skills/plan-canvas/SKILL.md` |
 | Minesweeper peers | `.agents/skills/minesweeper-ops/SKILL.md` |
-| Operator hub #175 | `.agents/skills/operator-hub-175/SKILL.md` |
+| Legacy #175 snapshot archive (do not load for operations) | `.agents/skills/operator-hub-175/SKILL.md` |
 | ICM-CCTV projection | `.agents/skills/icm-cctv-ops/SKILL.md` |
 | Admin / Termux stewardship | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
 | Wingman reference/adaptation | `.agents/skills/wingman-project-integration/SKILL.md` |

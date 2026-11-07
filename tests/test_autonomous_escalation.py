@@ -112,6 +112,19 @@ class AutonomousEscalationTests(unittest.TestCase):
         )
         self.assertEqual(decision.decision, "MANAGER_ARBITRATION")
 
+    def test_high_impact_requires_distinct_independent_verifier(self):
+        decision = decide_escalation(
+            "HIGH_IMPACT_RESULT",
+            budget=EscalationBudget(verification_remaining=1),
+            candidates=[
+                candidate(ref="same-worker", capabilities=frozenset({"python", "independent-verification"})),
+                candidate(ref="verifier", capabilities=frozenset({"independent-verification"})),
+            ],
+            current_executor_ref="same-worker",
+        )
+        self.assertEqual(decision.decision, "INDEPENDENT_VERIFY")
+        self.assertEqual(decision.target_executor_ref, "verifier")
+
     def test_resource_pressure_preserves_safe_work(self):
         decision = decide_escalation("RESOURCE_EXHAUSTED", budget=EscalationBudget())
         self.assertEqual(decision.decision, "CONTINUE_SAFE_WORK")

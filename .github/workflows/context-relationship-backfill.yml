@@ -15,6 +15,7 @@ on:
       - 'scripts/ci/validate_context_relationship_backfill.py'
       - 'tests/test_context_relationship_backfill_validation.py'
       - 'tests/test_context_history_coverage.py'
+      - 'tests/test_context_relationship_github_collector.py'
       - '.github/workflows/context-relationship-backfill.yml'
   # # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
@@ -26,7 +27,7 @@ on:
       max_items:
         description: 'Maximum issues and pull requests per family in this explicit page window.'
         type: string
-        default: '100'
+        default: '50'
       max_commits:
         description: 'Maximum commits in this explicit history window.'
         type: string
@@ -102,8 +103,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || steps.continuation.outputs.start_page }}
-          MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
-          MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
+          MAX_ITEMS: ${{ github.event.inputs.max_items || '50' }}
+          MAX_COMMITS: ${{ github.event.inputs.max_commits || '50' }}
           EXPECTED_REPOSITORY: ${{ github.repository }}
           EXPECTED_REF: master
           EXPECTED_SOURCE_SHA: ${{ steps.source.outputs.sha }}
@@ -121,6 +122,8 @@ jobs:
             --history-start-page "$HISTORY_START_PAGE" \
             --max-items "$MAX_ITEMS" \
             --max-commits "$MAX_COMMITS" \
+            --max-files-per-pr 3000 \
+            --max-commits-per-pr 250 \
             --max-comments-per-item 10 \
             --max-cochange-pairs-per-commit 100 \
             --full-refresh > /tmp/context-backfill-build-result.json

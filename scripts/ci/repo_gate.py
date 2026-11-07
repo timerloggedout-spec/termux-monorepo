@@ -808,7 +808,7 @@ def check_ratchet(report: Report, index: list[IndexEntry]) -> dict[str, int]:
                             line_numbers = sorted({
                                 match.group(1)
                                 for fault in faults
-                                if (match := re.match(r"line (\\d+):", fault))
+                                if (match := re.match(r"line (\d+):", fault))
                             })
                             locations = ", ".join(line_numbers) if line_numbers else "unknown"
                             report.note(

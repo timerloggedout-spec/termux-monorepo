@@ -92,6 +92,8 @@ Do not transfer raw secrets, credentials, session stores, unrestricted prompts, 
 
 ## 7. Routing and team coordination
 
+The normative P1 handoff and decision contracts are [ESCALATION-PACKET.schema.json](./ESCALATION-PACKET.schema.json), [ESCALATION-DECISION.schema.json](./ESCALATION-DECISION.schema.json), and [AUTONOMOUS-ESCALATION-POLICY.md](./AUTONOMOUS-ESCALATION-POLICY.md). The schemas define bounded packet fields, reason/decision vocabularies, budget snapshots, terminal states, and the invariant that authorization is inherited and cannot expand. Schema validation and runtime counter alignment remain explicit P1/P2 exit checks.
+
 Use existing `docs/ops/AGENT-TEAM-ORCHESTRATION.md`, `docs/schemas/agent-roster.yaml`, provider catalogs, and execution adapters as the source of eligibility.
 
 Routing order:

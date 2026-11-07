@@ -14,7 +14,7 @@
 | LGB-010 | Synthesize and test hybrid patterns from independently validated strengths | backlog | Preserve attribution, authority boundaries, rollback, and no self-promotion |
 | LGB-011 | Define autonomous escalation tiers, triggers, and authority invariants | **specified** | See AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md; no HITL approval/resume flow |
 | LGB-012 | Define typed escalation packet, reason taxonomy, counters, and terminal states | **implemented — validation pending** | Added ESCALATION-PACKET.schema.json, ESCALATION-DECISION.schema.json, and AUTONOMOUS-ESCALATION-POLICY.md; validate schemas and align runtime counters in P2 |
-| LGB-013 | Implement deterministic escalation policy and budget controller | **implemented — validation pending** | Pure Python controller in she/recovery/escalation.py; 13 deterministic unit cases; no provider calls or side effects |
+| LGB-013 | Implement deterministic escalation policy and budget controller | **implemented — validation pending** | Pure Python controller in she/recovery/escalation.py; 14 deterministic unit cases; no provider calls or side effects |
 | LGB-014 | Implement optional LangGraph escalation treatment | backlog | Bounded graph; no approval interrupts; manager policy remains authoritative |
 | LGB-015 | Implement automatic crash recovery, persistence, idempotency, and duplicate suppression | backlog | Temporal/checkpointer ownership decision required |
 | LGB-016 | Connect live capability roster, health/quota, and specialist adapters | backlog | No route may dispatch without a real eligible adapter |

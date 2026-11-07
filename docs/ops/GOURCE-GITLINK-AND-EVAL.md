@@ -46,4 +46,4 @@ Bridge points already in-repo:
 |-----------|--------|-----|
 | gource-core-agentic (this) | EXTRACT candidate | Seekable ops event IR + Python SeekLog for replay evaluations; Core_fork OBSERVE; no viz |
 
-Refs: #175 hub, #523 Evaluations surface, Stepie 2087, adaptive-wait, evidence-led-monorepo-ops.
+Refs: REPO-TRACKING SSOT, Lane Matrix PR disposition, #523 Evaluations surface, Stepie 2087, adaptive-wait, evidence-led-monorepo-ops. Issue #175 is a closed historical snapshot.

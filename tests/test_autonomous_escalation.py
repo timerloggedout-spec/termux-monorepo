@@ -157,5 +157,12 @@ class AutonomousEscalationTests(unittest.TestCase):
         self.assertEqual(first.target_executor_ref, second.target_executor_ref)
 
 
+    def test_candidate_admission_signals_are_strictly_typed(self):
+        with self.assertRaises(ValueError):
+            candidate(score=float("nan"))
+        with self.assertRaises(ValueError):
+            candidate(healthy=1)
+
+
 if __name__ == "__main__":
     unittest.main()

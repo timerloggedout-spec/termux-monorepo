@@ -47,13 +47,23 @@ jobs:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         run: |
           set -uo pipefail
-          echo "::notice::Observer poller: querying successful runs in last ${LOOKBACK}m"
-          # Real query: recent successful runs of lane-events-recorder (high-volume residual target)
-          # Expand to more workflows once proven.
+          # Keep manual input bounded and numeric before using it in date/arithmetic.
+          if ! [[ "${LOOKBACK}" =~ ^[0-9]+$ ]] || (( LOOKBACK < 1 || LOOKBACK > 1440 )); then
+            echo "::warning::Invalid lookback_minutes; using the 30-minute default"
+            LOOKBACK=30
+          fi
+          echo "::notice::Observer poller: querying successful runs updated in last ${LOOKBACK}m"
+          # Real query: recent successful runs of lane-events-recorder (high-volume residual target).
+          # Bound the server-side search to a 24h creation overlap, then retain the
+          # original updated_at cutoff. This avoids paging the entire workflow history.
+          # Runs queued for more than 24h remain outside this bounded poller's coverage.
+          # Expand to more workflows only after per-lane freshness and parity are proven.
           SINCE=$(date -u -d "-${LOOKBACK} minutes" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-${LOOKBACK}M +%Y-%m-%dT%H:%M:%SZ)
-          echo "::notice::Query since: ${SINCE}"
-          gh api --paginate "/repos/${{ github.repository }}/actions/workflows/lane-events-recorder.yml/runs?status=completed&per_page=10" \
-            --jq '.workflow_runs[] | select(.conclusion == "success" and .updated_at > "'"${SINCE}"'") | {id, name, conclusion, updated_at, head_sha, html_url}' " \
+          CREATED_LOOKBACK=$((LOOKBACK + 1440))
+          CREATED_SINCE=$(date -u -d "-${CREATED_LOOKBACK} minutes" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-${CREATED_LOOKBACK}M +%Y-%m-%dT%H:%M:%SZ)
+          echo "::notice::Updated-at cutoff: ${SINCE}; created-at search cutoff: ${CREATED_SINCE}"
+          gh api --paginate "/repos/${{ github.repository }}/actions/workflows/lane-events-recorder.yml/runs?status=completed&created=%3E%3D${CREATED_SINCE}&per_page=100" \
+            --jq '.workflow_runs[] | select(.conclusion == "success" and .updated_at > "'"${SINCE}"'") | {id, name, conclusion, updated_at, head_sha, html_url}' \
             > /tmp/recent-success.jsonl || echo '[]' > /tmp/recent-success.jsonl
           COUNT=$(wc -l < /tmp/recent-success.jsonl || echo 0)
           echo "::notice::Found ${COUNT} recent successful lane-events runs"

@@ -62,6 +62,11 @@ The work extends the existing local context graph rather than treating it as aut
 - [ ] Required gates pass or inherited baseline failures are recorded
 - [ ] Items are terminal and proposal is closed when implementation is accepted
 
+### 2026-11-07 — ChatGPT
+
+- Disposition: executing under CRG-16.
+- Notes: Added an item-scoped pagination-integrity repair after review exposed that the history page limit was also truncating per-PR changed files and commit details. The work preserves separate bounds and requires same-head dual-gate validation; no corpus data is edited.
+
 ## Links
 
 - ITEMS: [./ITEMS.md](./ITEMS.md)

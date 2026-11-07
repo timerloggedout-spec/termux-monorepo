@@ -347,6 +347,7 @@ def test_per_pr_file_and_commit_limits_are_independent_of_history_window(tmp_pat
         include_comments=False,
         max_files_per_pr=3000,
         max_commits_per_pr=250,
+        max_timeline_events_per_item=1000,
     )
 
     limits = dict(client.pagination_limits)
@@ -354,6 +355,8 @@ def test_per_pr_file_and_commit_limits_are_independent_of_history_window(tmp_pat
     assert limits["/repos/example/repo/pulls"] == 1
     assert limits["/repos/example/repo/pulls/232/files"] == 3000
     assert limits["/repos/example/repo/pulls/232/commits"] == 250
+    assert limits["/repos/example/repo/issues/236/timeline"] == 1000
     assert report["history_window"]["limit_per_family"] == 1
     assert report["max_files_per_pr"] == 3000
     assert report["max_commits_per_pr"] == 250
+    assert report["max_timeline_events_per_item"] == 1000

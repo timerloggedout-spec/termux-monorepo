@@ -93,8 +93,6 @@ def pr_text(pr: dict) -> str:
     return f"{pr.get('title','')} {head} {labels}"
 
 
-
-
 def _desk_evidence_pr_number(evidence):
     """Return a valid PR number from desk evidence without assuming its shape."""
     if not isinstance(evidence, dict):
@@ -108,6 +106,7 @@ def _desk_evidence_pr_number(evidence):
         number = int(value)
         return number if number > 0 else None
     return None
+
 
 def derive_state(record_state, open_prs, last_merge_at, lane_failures, now):
     """Deterministic state. Record terminal states win; then open work;

@@ -10,5 +10,6 @@ class StageCenterTest(unittest.TestCase):
         ]}
         stage_bind(ctx)
         stage_command_center(ctx)
-        self.assertIn("hub", ctx)
+        self.assertIn("command_center", ctx)
+        self.assertEqual(ctx["command_center"]["kind"], "command-center")
         self.assertEqual(ctx["bind"]["dual_gate"], "GREEN")

@@ -50,7 +50,9 @@ Each adapter emits the same normalized receipt vocabulary. Provider-specific ada
 LangGraph is an optional graph-orchestration adapter/treatment for explicit state, conditional routing, fan-out, subgraphs, checkpointed pause/resume, and streaming.
 
 - Graph-local state/checkpoints are not canonical repository evidence and may contain restricted payloads.
-- Emit sanitized lifecycle metadata into the existing evidence-envelope, action/effect, OpenTelemetry, ATES, and receipt contracts; do not create a parallel trace schema.
+- Reuse `OrchestratorTracer` and the existing ATES bridge for currently supported task/tool/handoff events; emit sanitized run-level evidence through the evidence-envelope and orchestration receipt.
+- `AGENT-THROUGHPUT-EVENT.schema.json` is closed and does not yet support graph-node events. Extend it versionedly before emitting node/transition metadata.
+- `ACTION-EFFECT-EVENT.schema.json` models review/comment-to-commit follow-through; do not treat it as a generic graph action ledger.
 - Preserve stable orchestration/cycle/attempt/action/event identity and bind project evidence to repository/ref/SHA.
 - Keep provider/model routing in existing adapters and manager policy; keep MCP authorization in existing tool boundaries.
 - Use `interrupt()` only with a checkpointer and stable thread identity; resumed nodes re-execute, so side effects must be idempotent.

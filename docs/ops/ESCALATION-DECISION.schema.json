@@ -97,40 +97,40 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "local_repair_remaining",
+        "retry_remaining",
         "same_strategy_replay_count",
-        "local_repair_count",
-        "specialist_handoff_count",
-        "alternate_family_count",
-        "manager_replan_count",
-        "verification_count",
-        "retry_remaining"
+        "specialist_handoff_remaining",
+        "alternate_family_remaining",
+        "manager_replan_remaining",
+        "verification_remaining"
       ],
       "properties": {
-        "same_strategy_replay_count": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "local_repair_count": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "specialist_handoff_count": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "alternate_family_count": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "manager_replan_count": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "verification_count": {
+        "local_repair_remaining": {
           "type": "integer",
           "minimum": 0
         },
         "retry_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "same_strategy_replay_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "specialist_handoff_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "alternate_family_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "manager_replan_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "verification_remaining": {
           "type": "integer",
           "minimum": 0
         }

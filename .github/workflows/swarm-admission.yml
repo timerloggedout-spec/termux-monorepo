@@ -101,6 +101,11 @@ jobs:
             --description "Filing admitted through QUE admission (dispatch-tiers v2)" || true
           gh label create deferred-by-tier --force --color D93F0B \
             --description "Filing deferred by QUE admission; drain re-evaluates" || true
+          if [ "${{ steps.eval.outputs.template }}" = "game-development-task.yml" ]; then
+            gh label create game-development --force --color 1D76DB \
+              --description "Game Development & Production task intake" || true
+            gh issue edit "${{ github.event.issue.number }}" --add-label game-development
+          fi
           # Admission labels are mutually exclusive. On reopen, remove the prior
           # opposite decision before applying the new receipt label.
           if [ "${{ steps.eval.outputs.label }}" = "swarm-admitted" ]; then

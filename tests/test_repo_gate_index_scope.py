@@ -50,6 +50,14 @@ class IndexScopeTests(unittest.TestCase):
                 rc = gate.main()
         return rc, output.getvalue()
 
+    def test_invalid_control_plane_yaml_paths_identifies_exact_files(self):
+        entry = gate.IndexEntry("100644", "a" * 40, ".github/workflows/broken.yml")
+        with patch.object(gate, "blob", return_value=b"not: a mapping\\nroot-level stray\\n"):
+            self.assertEqual(
+                gate.invalid_control_plane_yaml_paths([entry]),
+                [".github/workflows/broken.yml"],
+            )
+
     def test_staged_syntax_error_cannot_be_hidden_by_unstaged_restore(self):
         self.source.write_text("def broken(:\n")
         self.git("add", "probe.py")

@@ -11,6 +11,7 @@ SCHEMA = ROOT / "config/context_relationships/schema.json"
 class FakeGitHubClient:
     def __init__(self):
         self.request_count = 0
+        self.pagination_limits = []
         self.responses = {
             "/repos/example/repo/issues": [
                 {
@@ -134,6 +135,7 @@ class FakeGitHubClient:
 
     def paginate(self, path, params=None, limit=100, start_page=1):
         self.request_count += 1
+        self.pagination_limits.append((path, limit))
         return iter(self.responses.get(path, []))
 
     def get_json(self, path, params=None):
@@ -326,3 +328,32 @@ def test_load_checkpoint_ignores_a_different_repository_or_ref(tmp_path):
     )
 
     assert load_checkpoint(checkpoint, "example", "repo", "master-staging") is None
+
+
+def test_per_pr_file_and_commit_limits_are_independent_of_history_window(tmp_path):
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+    client = FakeGitHubClient()
+
+    _, report = collect_github_seed(
+        client,
+        "example",
+        "repo",
+        "master",
+        registry,
+        max_items=1,
+        max_commits=1,
+        max_comments_per_item=1,
+        include_comments=False,
+        max_files_per_pr=3000,
+        max_commits_per_pr=250,
+    )
+
+    limits = dict(client.pagination_limits)
+    assert limits["/repos/example/repo/issues"] == 1
+    assert limits["/repos/example/repo/pulls"] == 1
+    assert limits["/repos/example/repo/pulls/232/files"] == 3000
+    assert limits["/repos/example/repo/pulls/232/commits"] == 250
+    assert report["history_window"]["limit_per_family"] == 1
+    assert report["max_files_per_pr"] == 3000
+    assert report["max_commits_per_pr"] == 250

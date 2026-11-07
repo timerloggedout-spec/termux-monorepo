@@ -1,4 +1,45 @@
-> **Current-state reconciliation (2026-11-02):** This document contains dated historical observations and must not be read as a continuously refreshed live dashboard. The canonical manifest currently available on `master` was last observed at **2026-10-26T13:04:26.270236Z** and reports **35,221 nodes, 57,358 edges, 52,416 verified edges, 4,942 candidate edges, 120 unresolved internal references, 12 source parser failures, and 1,392 excluded files**. Its history coverage is `PARTIAL_CONTINUATION_REQUIRED`, `history_window.next_start_page=2`, both issues/PR completeness flags are false, and `github_report.checkpoint_eligible=false`. Do not infer that the corpus is complete or checkpoint-eligible. Runtime review found run [40058473861](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40058473861) failed validation after a deferred HTTP 403 build, while [39962654795](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39962654795) concluded successfully with the build and coverage-summary steps skipped. See [the 2026-11-02 continuous audit](CONTINUOUS-REPOSITORY-AUDIT-2026-11-02.md) for evidence and remediation criteria.
+# Historical Corpus — current authority and reconciliation (2026-11-07)
+
+> **Authority:** `workspace/llm_map/context_relationships/manifest.json` on canonical `master` is authoritative for corpus measurements. This document is a dated operational record, not a live dashboard. Historical tables and addenda below remain useful as snapshots but never override a later manifest.
+
+## Latest directly verified manifest
+
+Fetched from canonical `master` on 2026-11-07; latest observation: **2026-10-26T13:04:26.270236Z**.
+
+| Signal | Value |
+|---|---:|
+| Nodes / edges | 35,221 / 57,358 |
+| Verified / candidate edges | 52,416 / 4,942 |
+| Unresolved internal references | 120 |
+| Source parser failures | 12 |
+| Excluded files | 1,392 |
+| History coverage | `PARTIAL_CONTINUATION_REQUIRED` |
+| Existing coverage window | page 1, 50 issues + 50 PRs |
+| Next history page | 2 |
+| Issues / PRs complete | false / false |
+| Checkpoint eligible | false |
+
+The canonical manifest already contains a page-one coverage ledger. A separate page-one bootstrap request based on the older October 15 late-page snapshot is therefore obsolete. The current next action is a page-two continuation that preserves the established `max_items=50` page size. The corpus is **not complete** and is **not checkpoint eligible**.
+
+## Runtime evidence and automation
+
+The 2026-11-02 audit cited run [40058473861](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40058473861), which failed validation after a deferred HTTP 403 build, and [39962654795](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39962654795), which completed with the build and coverage-summary steps skipped. Neither proves a successful corpus continuation.
+
+Current workflow paths on master:
+- Collector: `.github/workflows/context-relationship-backfill.yml`
+- Runtime observer: `.github/workflows/context-relationship-backfill-watcher.yml`
+
+The workflow is anchored to canonical `master`, resumes from the manifest, validates before committing, and serializes its writer. Its continuation page size must remain consistent with the established page-one window.
+
+## Acceptance evidence required
+
+1. Run the next bounded continuation from current master using page 2 and `max_items=50` for both issue and pull-request families. Keep this page size for subsequent automatic windows.
+2. Record immutable source SHA/ref, run ID/attempt, requested and resulting page bounds, and the effective page size.
+3. Confirm the build actually executed (not deferred/skipped) and no stale artifacts were consumed.
+4. Validate manifest/input/schema hashes, corpus reconciliation, expected artifact set, and page advancement.
+5. Record watcher receipt and resulting manifest; repeat until `next_start_page=null`. Before accepting completion, independently reconcile the collected issue and pull-request number sets against the corresponding GitHub REST pages and record the compared IDs/counts; a contiguous page ledger alone does not prove that mutable `updated` ordering omitted no items.
+6. Resolve or explicitly disposition parser failures and unresolved references. Record the collector report's `checkpoint_eligible` value; page exhaustion from a continuation beginning at page 2 or later does not by itself establish checkpoint eligibility.
+7. Preserve every observation as dated history; never overwrite or silently relabel older measurements.
 
 ---
 

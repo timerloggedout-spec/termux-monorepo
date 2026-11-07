@@ -86,4 +86,12 @@ def test_prizes_wired_from_coordinator_ssot():
         assert got == exp, eid
         if p["status"] == "NOT_ESTABLISHED":
             assert p["tiers"] == [], eid
-\n\ndef test_c17_game_off_is_a_first_class_event_clock():\n    entries = {e["id"]: e for e in _feed()["entries"]}\n    event = entries["C17"]\n    assert event["opens"] == "2026-11-01T13:37:27-08:00"\n    assert event["closes"] == "2026-12-01T13:37:00-08:00"\n    assert event["status"] == "ACTIVE"\n    assert event["prizes"]["status"] == "ESTABLISHED"\n    assert "no cash" in event["prizes"]["pool"].lower()\n    assert event["event_url"] == "https://itch.io/jam/game-off-2026"\n
+\n\ndef test_c17_game_off_is_a_first_class_event_clock():
+    entries = {e["id"]: e for e in _feed()["entries"]}
+    event = entries["C17"]
+    assert event["opens"] == "2026-11-01T13:37:27-08:00"
+    assert event["closes"] == "2026-12-01T13:37:00-08:00"
+    assert event["status"] == "ACTIVE"
+    assert event["prizes"]["status"] == "ESTABLISHED"
+    assert "no cash" in event["prizes"]["pool"].lower()
+    assert event["event_url"] == "https://itch.io/jam/game-off-2026"

@@ -92,7 +92,8 @@ The official [LangChain Skills repository](https://github.com/langchain-ai/langc
 4. `langgraph-persistence` — mandatory for checkpointer, thread, Store, history, or subgraph persistence work.
 5. `langgraph-cli` — optional scaffold/dev/build/deploy lifecycle.
 6. Python/TypeScript quickstarts — only for explicit minimal new-project requests.
-7. `deep-agents-core` + `deep-agents-orchestration` — adjacent alternative when the higher-level harness is a better fit.
+7. `eval-engineering` — companion for benchmark/task/verifier design and calibration; keep existing MVT/DoE/ATES governance authoritative.
+8. `deep-agents-core` + `deep-agents-orchestration` — adjacent alternative when the higher-level harness is a better fit.
 
 The upstream skills README labels the collection early-development; re-check current content and installed APIs before implementation. These skills are upstream references; this repository contains a project-specific adaptation, not copied upstream skill bodies.
 

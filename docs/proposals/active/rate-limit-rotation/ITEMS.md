@@ -32,4 +32,4 @@
 - PR-scoped peer feedback is coalesced at the Actions concurrency boundary; source revisions remain idempotency evidence.
 - Qodo billing/trial exhaustion and other provider-capacity notices are not implementation-review input for Jules.
 - Obsidian remains a required correctness/security capability.
-
+| RL-21 | Mesh resilience: quota-bound deployment admission and verified workload-compatible failover (issues #1314/#1622/#1884) | P0 | ChatGPT | executing | `scripts/ci/deployment_admission.py`; `tests/test_deployment_admission.py`; `docs/rfps/mesh-resiliency-free-compute/README.md` |

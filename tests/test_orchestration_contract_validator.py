@@ -204,7 +204,7 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             )
             target.write_text(text, encoding="utf-8")
             errors = validate_issue_comment_router_contracts(root)
-            self.assertTrue(any("never inline script source" in error for error in errors), errors)
+            self.assertTrue(any("never inline script/run source" in error for error in errors), errors)
 
     def test_target_execution_must_depend_on_comment_revision_validation(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -272,7 +272,7 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
         if "github.rest.issues.getComment" not in target:
             errors.append(f"{contract['path']} must re-fetch the source comment by ID")
         if any("${{" in block for block in _script_blocks(target)):
-            errors.append(f"{contract['path']} must pass workflow expressions through env/with data, never inline script source")
+            errors.append(f"{contract['path']} must pass workflow expressions through env/with data, never inline script/run source")
         target_job = {
             "agent-review-auto-jules": "detect-bot-feedback",
             "gemini-dispatch": "dispatch",

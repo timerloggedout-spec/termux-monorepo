@@ -52,6 +52,7 @@ class ExecutorCandidate:
 class EscalationBudget:
     local_repair_remaining: int = 0
     retry_remaining: int = 0
+    same_strategy_replay_count: int = 0
     specialist_handoff_remaining: int = 0
     alternate_family_remaining: int = 0
     manager_replan_remaining: int = 0

@@ -6,6 +6,7 @@ network I/O, invokes no agent, mutates no source, and cannot expand authority.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+import math
 from typing import Iterable
 
 
@@ -38,6 +39,13 @@ class ExecutorCandidate:
     healthy: bool
     quota_available: bool
     score: float = 0.0
+
+    def __post_init__(self) -> None:
+        if isinstance(self.score, bool) or not isinstance(self.score, (int, float)) or not math.isfinite(self.score):
+            raise ValueError("score must be a finite number")
+        for name in ("adapter_available", "credential_available", "permission_eligible", "healthy", "quota_available"):
+            if not isinstance(getattr(self, name), bool):
+                raise ValueError(f"{name} must be boolean")
 
     @property
     def eligible(self) -> bool:

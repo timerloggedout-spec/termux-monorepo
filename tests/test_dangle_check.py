@@ -91,6 +91,22 @@ class DynamicReferenceFixture(unittest.TestCase):
               json.dumps({"sources": "docs/source.md + scripts/source.py"}))
         self.assertEqual(dc.check_feeds(self.root), [])
 
+    def test_feed_bullet_lists_and_provenance_suffixes_are_split(self):
+        write(self.root, "docs/source.md", "# Source\n")
+        write(self.root, "tests/test_source.py", "pass\n")
+        write(self.root, "scripts/tracking/repo_tracking.py", "pass\n")
+        write(self.root, "apps/site/data/feed.json", json.dumps({
+            "bullet_refs": "docs/source.md\n- tests/test_source.py",
+            "provenance_ref": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml",
+        }))
+        self.assertEqual(dc.check_feeds(self.root), [])
+
+    def test_generated_artifact_glob_is_not_a_literal_missing_file(self):
+        write(self.root, "apps/site/data/feed.json", json.dumps({
+            "artifact_pattern": "docs/ops/generated/actions-performance-reconstructed-*.json",
+        }))
+        self.assertEqual(dc.check_feeds(self.root), [])
+
     def test_feed_reference_section_annotations_are_removed(self):
         write(self.root, "docs/source.md", "# Source\n")
         write(self.root, "apps/site/data/feed.json",

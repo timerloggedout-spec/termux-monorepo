@@ -9,7 +9,7 @@ from typing import Any
 from ml.pipelines.command_center.bind import bind
 from ml.pipelines.command_center.drift import drift_report
 from ml.pipelines.command_center.extract import plan_many
-from ml.pipelines.command_center.hub import emit_hub
+from ml.pipelines.command_center.hub import emit_command_center
 from ml.pipelines.contracts.gate import assert_promotable, block_reasons
 from ml.pipelines.lanes.classify import classify_pr
 from ml.pipelines.lib.engine import run_dag, summarize
@@ -37,9 +37,14 @@ def cmd_status(_: argparse.Namespace) -> int:
     payload = _fixture()
     print(json.dumps({
         "master_sha": payload["master_sha"],
-        "issue": 175,
+        "control_plane": "REPO-TRACKING",
+        "ssot": {
+            "lane_project": "ops/tracking/tracking.json",
+            "pr_disposition": "docs/ops/generated/lane-matrix-status.json",
+            "dependency_phases": "docs/agentic/dependency-phases.json",
+        },
         "open_prs": len(payload["prs"]),
-        "operator": "ACTIVE",
+        "operator": "READ_MODEL",
         "session": payload.get("session"),
         "fixture": latest_session_path().name,
         "vocab": ["EXTRACT", "CANDIDATE", "NEED_EVIDENCE", "SUPERSEDE"],
@@ -53,7 +58,7 @@ def cmd_status(_: argparse.Namespace) -> int:
 def cmd_run(_: argparse.Namespace) -> int:
     context: dict[str, Any] = {"snapshot": _fixture()}
     results = run_dag(STAGES, context)
-    print(json.dumps({"summary": summarize(results), "lanes": context.get("lanes", []), "counts": context.get("lane_counts"), "hub": context.get("hub", {}).get("kind")}, indent=2))
+    print(json.dumps({"summary": summarize(results), "lanes": context.get("lanes", []), "counts": context.get("lane_counts"), "command_center": context.get("command_center", {}).get("kind")}, indent=2))
     return 0
 
 
@@ -77,7 +82,7 @@ def cmd_matrix(_: argparse.Namespace) -> int:
 
 
 def cmd_center(_: argparse.Namespace) -> int:
-    print(json.dumps(emit_hub(_fixture()), indent=2))
+    print(json.dumps(emit_command_center(_fixture()), indent=2))
     return 0
 
 

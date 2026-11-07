@@ -125,6 +125,36 @@ class AutonomousEscalationTests(unittest.TestCase):
         self.assertEqual(decision.decision, "INDEPENDENT_VERIFY")
         self.assertEqual(decision.target_executor_ref, "verifier")
 
+    def test_packet_reason_aliases_normalize_deterministically(self):
+        cases = {
+            "CAPABILITY_MISMATCH": "CAPABILITY_GAP",
+            "TOOL_FAILURE": "TRANSIENT_FAILURE",
+            "PROVIDER_DEGRADATION": "PROVIDER_UNAVAILABLE",
+            "RESOURCE_PRESSURE": "RESOURCE_EXHAUSTED",
+            "MANAGER_REPLAN": "CONTRADICTION",
+        }
+        for source, expected in cases.items():
+            with self.subTest(source=source):
+                decision = decide_escalation(source, budget=EscalationBudget())
+                self.assertEqual(decision.classification, expected)
+
+    def test_escalation_cycle_never_replays(self):
+        decision = decide_escalation(
+            "ESCALATION_CYCLE",
+            budget=EscalationBudget(retry_remaining=9, manager_replan_remaining=1),
+            retry_condition_changed=True,
+        )
+        self.assertEqual(decision.decision, "MANAGER_ARBITRATION")
+
+    def test_context_saturation_uses_specialist_handoff(self):
+        decision = decide_escalation(
+            "CONTEXT_SATURATION",
+            budget=EscalationBudget(specialist_handoff_remaining=1),
+            candidates=[candidate()],
+            required_capabilities={"python"},
+        )
+        self.assertEqual(decision.decision, "HANDOFF_SPECIALIST")
+
     def test_resource_pressure_preserves_safe_work(self):
         decision = decide_escalation("RESOURCE_EXHAUSTED", budget=EscalationBudget())
         self.assertEqual(decision.decision, "CONTINUE_SAFE_WORK")

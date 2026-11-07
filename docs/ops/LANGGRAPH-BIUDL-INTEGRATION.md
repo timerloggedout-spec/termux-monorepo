@@ -105,6 +105,20 @@ The upstream skills README labels the collection early-development; re-check cur
 
 Items LGB-001–003 are the initial documentation/skill slice. LGB-004 onward remain backlog until their implementation plan, dependency impact, and test environment are established.
 
+## Candidate dispositions from source inspection
+
+| Project | Decision | Evidence-based reason |
+|---|---|---|
+| `langgraph-swarm-py` | Evaluate as a treatment | Official handoff topology; compare to native manager |
+| `langgraph-supervisor-py` | Legacy reference only | Upstream recommends tool-based supervisor patterns for most new work |
+| `langchain-mcp-adapters` | Do not adopt | Upstream says package is unmaintained; MCP support moved to `langchain.mcp` |
+| `deepagents` | Alternative harness | Select when planning/filesystem/subagents/skills/memory are the actual need |
+| `open-swe` | Research only | Upstream warns active development and no correctness/stability guarantees |
+| `open_deep_research` | Reference only | Verify maintenance; visible README updates are from 2025 |
+| `swarm-at-ledger` | Integrity pattern only | README explicitly labels its records synthetic, not real agent interaction evidence |
+| `aport-agent-guardrails` | Security research only | Require independent bypass and threat-model validation |
+| `langgraph-starter-kit` | Community reference only | Inspect license, dependencies, test coverage, and security before extraction |
+
 ## Non-goals
 
 - No LangSmith-only observability requirement.

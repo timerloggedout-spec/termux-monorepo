@@ -61,7 +61,7 @@
 <div class="hero">
 <p class="eyebrow">Challenge Countdowns · Hackathon Deadlines</p>
 <h1>Hackathon countdowns — computed live from the recorded deadlines</h1>
-<p class="lede">The Gantt timeline and the swimlanes below draw only the recorded instants. Every countdown on this page is computed in your browser, every second, from the deadline instants recorded in the event log. Events are the shared unit; this page is their time-window projection. The <a href="./wagering-book.html">Wagering Book</a> carries expectation records, positions, and settlements. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1.3</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
+<p class="lede">Every tracked event is a potential wagering event; that does not imply a stake or position exists. This page is the temporal projection: the Gantt timeline and swimlanes draw only recorded instants, and countdowns are computed in your browser every second. The <a href="./wagering-book.html">Wagering Book</a> records expectations, positions, and settlements where formally established. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1.3</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
 </div>
 </header>
 <main>

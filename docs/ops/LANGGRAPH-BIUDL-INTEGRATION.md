@@ -118,7 +118,7 @@ Items LGB-001–003 are the initial documentation/skill slice. LGB-004 onward re
 |---|---|---|
 | `langgraph-swarm-py` | Evaluate as a treatment | Official handoff topology; compare to native manager |
 | `langgraph-supervisor-py` | Legacy reference only | Upstream recommends tool-based supervisor patterns for most new work |
-| `langchain-mcp-adapters` | Do not adopt | Upstream says package is unmaintained; MCP support moved to `langchain.mcp` |
+| `langchain-mcp-adapters` | Do not adopt | Upstream archived the repository on 2026-09-17; MCP support moved to `langchain[mcp]` / `langchain.mcp` |
 | `deepagents` | Alternative harness | Select when planning/filesystem/subagents/skills/memory are the actual need |
 | `open-swe` | Research only | Upstream warns active development and no correctness/stability guarantees |
 | `open_deep_research` | Reference only | Verify maintenance; visible README updates are from 2025 |

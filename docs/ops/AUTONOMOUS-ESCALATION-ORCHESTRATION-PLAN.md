@@ -132,33 +132,43 @@ Observe result + progress + evidence
         |
         v
 Deterministic verifier
-   | pass             | fail / stagnate / mismatch
+   | pass / valid     | fail / stagnate / mismatch
    v                  v
-Record outcome      Classify failure
-   |                  |
-   v                  v
-Complete         E1 self-repair
-                      |
-                 progress?
-                  /      \
-                yes       no
-                |          |
-             Verify    E2 specialist
-                           |
-                       verify result
-                           |
-                    conflict / failure?
-                       /       \
-                     no         yes
-                     |           |
-                  Complete    E3 alternate
-                                  |
-                              E4 manager
-                                  |
-                           E5 independent
-                              assurance
-                                  |
-                        pass / repair / contain
+Risk / assurance   Classify failure
+gate                    |
+   |                    v
+   | routine pass    E1 self-repair
+   |                    |
+   |               progress?
+   |                /      \
+   |              yes       no
+   |              |          |
+   |           Verify    E2 specialist
+   |                         |
+   |                     verify result
+   |                         |
+   |                     Risk / assurance gate
+   |                         |
+   |              routine pass | high-impact /
+   |                           | security / promotion
+   |                           v
+   |                       E5 independent
+   |                          assurance
+   |                           |
+   |                  pass / repair / contain
+   |                           |
+   +---------------------------+
+               |
+               v
+         Record outcome
+               |
+               v
+            Complete
+
+E5 is mandatory on every successful path whose risk classification is high-impact,
+security-sensitive, or promotion-candidate — including successful specialist and
+alternate-executor handoffs. Routine, independently verified low-risk results may
+complete without E5. E5 is assurance, not authorization.
 ```
 
 Required node families:

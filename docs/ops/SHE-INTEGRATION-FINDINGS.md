@@ -1,3 +1,7 @@
+> **Current-state addendum (2026-11-07):** The canonical `master` manifest observed at **2026-10-26T13:04:26.270236Z** reports **35,221 nodes / 57,358 edges** (52,416 verified; 4,942 candidate), 120 unresolved internal references, 12 parser failures, and 1,392 excluded files. History coverage is `PARTIAL_CONTINUATION_REQUIRED`; the ledger has page 1 with 50 issue-endpoint results (10 actual issues and 40 PR-shaped results) plus 50 PR-endpoint results; next page is 2; both completeness flags and checkpoint eligibility remain false. PR #5056 is the active remediation surface: it aligns both history defaults to 50, preserves the repository-wide commit sample at 50, and separates per-PR detail caps (3,000 files / 250 commits) from history pagination. Its new current-master branch is awaiting CI and review. No successful page-2 runtime, full identifier reconciliation, native Hex export, or production SHE dashboard deployment is established by this addendum.
+
+---
+
 # SHE / Hex / Historical Corpus / Agent Throughput — Integration Findings
 
 **Status:** collaboration ledger for the current integration phase
@@ -102,24 +106,22 @@ Rendered PNGs are derived assets where present. The `.mmd` source remains author
 
 ## 5. Historical Corpus — observed state
 
-The canonical master manifest observed in the existing status record contains:
+The canonical master manifest observed on 2026-11-07 reports:
 
-- 8,339 nodes;
-- 15,120 edges;
-- 13,041 verified edges;
-- 2,079 candidate edges;
-- 20 issues + 20 PRs in the current history window;
-- 282 PR commits;
-- 392 PR comments;
-- 172 reviews;
-- 246 review comments;
-- 157 explicit references;
-- 9 timeline cross-references;
-- `history_window.next_start_page = 2`.
+- 35,221 nodes;
+- 57,358 edges (52,416 verified / 4,942 candidate);
+- 120 unresolved internal references;
+- 12 source parser failures;
+- 1,392 excluded files;
+- 50 issue-endpoint results (10 actual issues, 40 PR-shaped results) and 50 PR-endpoint results;
+- 427 PR commits, 490 PR comments, 59 reviews, 83 review comments;
+- 94 explicit references and 39 timeline cross-references;
+- `history_coverage.next_start_page = 2`;
+- `github_report.checkpoint_eligible = false`.
 
-Therefore the canonical corpus is **PARTIAL_CONTINUATION_REQUIRED**, not complete.
+Therefore the canonical corpus is **PARTIAL_CONTINUATION_REQUIRED**, not complete. The older August/September corpus figures below are historical snapshots, not current metrics.
 
-A larger `master-staging` corpus also exists, but it was observed as diverged from current master. It is evidence, not a promotion source.
+A larger `master-staging` corpus also existed in the September 2026 snapshot, but it was diverged from canonical master and must not be promoted wholesale.
 
 ## 6. Historical Corpus — automation correction
 
@@ -138,7 +140,7 @@ The successor workflow now:
 9. uses a master-specific concurrency lock;
 10. never reads from or promotes stale `master-staging`.
 
-**Important:** this phase changes the automation. It does not claim that a new Actions backfill run has already executed. Runtime execution remains a separate `EXECUTED` observation.
+**Important:** the current workflow is master-anchored, but the history page-size and per-PR detail-limit corrections are being delivered through PR #5056. This phase does not claim that page 2 has executed successfully. Runtime execution remains a separate `EXECUTED` observation.
 
 ## 7. ATES / Gemini throughput proposal — adopted selectively
 
@@ -216,11 +218,11 @@ The objective is not maximum activity. It is maximum validated integrated outcom
 | Hex live workspace access | BLOCKED | connector plan restriction |
 | Native Hex ZIP | UNVERIFIED | no exact bytes/provenance |
 | Hex-compatible Actions ZIP | IMPLEMENTED | `hex-moneyball-evidence.yml` + sanitizer |
-| Historical corpus master | PARTIAL | `next_start_page = 2` in status record |
-| Historical backfill automation | IMPLEMENTED on branch | current-master bounded continuation workflow |
-| Historical backfill runtime | UNEXECUTED in this phase | requires an observed Actions run |
-| Agent throughput reducer | IMPLEMENTED on branch | `she/metrics/agent_throughput.py` |
-| Agent throughput event schema | IMPLEMENTED on branch | schema JSON |
+| Historical corpus master | PARTIAL | manifest observed 2026-10-26; page 2 pending; checkpoint ineligible |
+| Historical backfill automation | MASTER-ANCHORED; LIMIT FIX IN PR | workflow on master; PR #5056 fixes page-size/detail-cap integrity |
+| Historical backfill runtime | UNVERIFIED | previous runs do not prove successful page-2 continuation |
+| Agent throughput reducer | IMPLEMENTED ON MASTER | `she/metrics/agent_throughput.py` + tests |
+| Agent throughput event schema | IMPLEMENTED ON MASTER | `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json` |
 | ATES merge threshold | REJECTED | quality-first policy |
 | Langfuse adapter | CONSIDERED | no dependency added |
 | Phoenix adapter | CONSIDERED | no dependency added |

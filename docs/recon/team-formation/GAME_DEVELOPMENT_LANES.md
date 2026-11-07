@@ -2,7 +2,7 @@
 
 **Status:** additive design and intake implementation; specialist cohort evolution remains DoE-governed.  
 **Seed:** [Issue #243 — Game Teams](https://github.com/timerloggedout-spec/termux-monorepo/issues/243).  
-**Related contracts:** [Game Player Fleet](./GAME_PLAYER_FLEET.md), [Roster Context Schema](./ROSTER_CONTEXT_SCHEMA.md), [Issue Template Dispatch](../../ops/ISSUE-TEMPLATE-DISPATCH.md), [DoE Family](../../ops/DOE-FAMILY.md).
+**Related contracts:** [Game Player Fleet](./GAME_PLAYER_FLEET.md), [Tool Profile Catalog](./GAME_DEVELOPMENT_TOOL_PROFILES.json), [Roster Context Schema](./ROSTER_CONTEXT_SCHEMA.md), [Issue Template Dispatch](../../ops/ISSUE-TEMPLATE-DISPATCH.md), [DoE Family](../../ops/DOE-FAMILY.md).
 
 ## 1. Boundary and operating model
 

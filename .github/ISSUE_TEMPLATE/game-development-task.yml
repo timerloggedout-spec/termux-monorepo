@@ -63,15 +63,15 @@ body:
     attributes:
       label: Project kind
       options:
-        - new-game
+        - new_game
         - prototype
         - feature
-        - bug-fix
+        - bug_fix
         - port
         - migration
-        - mod-extension
-        - engine-tooling
-        - research-prototype
+        - mod_extension
+        - engine_tooling
+        - research_prototype
     validations:
       required: true
   - type: dropdown
@@ -80,9 +80,9 @@ body:
       label: Target authority
       description: Select the basis that permits work on this target.
       options:
-        - owned-or-internal
-        - open-source-license-recorded
-        - explicit-written-authorization
+        - owned\n        - internal
+        - open_source
+        - explicit_authorization
     validations:
       required: true
   - type: input
@@ -98,10 +98,10 @@ body:
       label: Game dimensions
       options:
         - 2d
-        - 2.5d
+        - 2_5d
         - 3d
         - mixed
-        - not-decided
+        - not_decided
     validations:
       required: true
   - type: textarea
@@ -120,10 +120,10 @@ body:
         - linux
         - windows
         - macos
-        - vr-ar
-        - console-authorized
-        - cross-platform
-        - not-decided
+        - vr_ar
+        - console_authorized
+        - cross_platform
+        - not_decided
     validations:
       required: true
   - type: dropdown
@@ -131,13 +131,13 @@ body:
     attributes:
       label: Engine / framework
       options:
-        - existing-engine
+        - existing_engine
         - godot
         - unity
         - unreal
         - phaser
         - custom
-        - not-decided
+        - not_decided
     validations:
       required: true
   - type: input
@@ -149,7 +149,7 @@ body:
     id: specialist-contexts
     attributes:
       label: Specialist contexts
-      description: Comma-separated contexts from GAME_DEVELOPMENT_LANES.md. Leave blank for classification by the planner.
+      description: Use context IDs: game_design_systems, gameplay_engineering, engine_runtime_architecture, graphics_rendering, 2d_art, 3d_art_environment, animation_rigging, audio_engineering, physics_simulation, ai_npc_systems, networking_multiplayer, ui_ux_accessibility, tools_content_pipeline, platform_performance, build_release_cicd, ml_vision_telemetry, interoperability_reverse_engineering. Leave blank for classification by the planner.
   - type: textarea
     id: work-packages
     attributes:
@@ -165,10 +165,10 @@ body:
     attributes:
       label: Required verification
       options:
-        - contract-and-unit
-        - engine-build-and-tests
-        - runtime-and-visual
-        - full-playtest-and-platform
+        - V0\n        - V1
+        - V2
+        - V3\n        - V4
+        - V5\n        - V6
     validations:
       required: true
   - type: textarea
@@ -192,6 +192,6 @@ body:
       options:
         - standard
         - elevated
-        - human-only
+        - human_only
     validations:
       required: true

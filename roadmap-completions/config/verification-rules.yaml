@@ -1,0 +1,1092 @@
+# Roadmap Completion Verification Rules
+# Defines verification criteria for each roadmap exercise
+
+version: "1.0.0"
+generated: "2026-11-07T00:00:00Z"
+
+# Global default rules
+defaults:
+  code:
+    required: true
+    min_size: 100  # bytes
+    max_size: null
+    patterns: []
+    extensions: [".py", ".js", ".ts", ".java", ".go", ".rs", ".cpp", ".c"]
+    
+  test:
+    required: true
+    min_coverage: 70  # percentage
+    passing: true
+    test_framework: null  # auto-detect
+    
+  documentation:
+    required: true
+    min_words: 100
+    sections: ["Description", "Usage", "Examples"]
+    
+  portfolio:
+    required: false
+    min_files: 5
+    required_files: ["README.md", "LICENSE"]
+
+# Roadmap-specific rules
+roadmaps:
+  # TIER 1 - High Priority
+  mlops:
+    name: "MLOps"
+    description: "ML pipeline operations"
+    exercises:
+      implement-ml-pipeline:
+        name: "Implement ML Pipeline"
+        description: "Create a complete ML pipeline with training, evaluation, and deployment"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "def train"
+              - "def evaluate"
+              - "def predict"
+            extensions: [".py"]
+          test:
+            required: true
+            min_coverage: 80
+          documentation:
+            required: true
+            min_words: 500
+            sections: ["Overview", "Pipeline Stages", "Usage", "Deployment"]
+          portfolio:
+            required: true
+            min_files: 10
+            required_files: ["README.md", "LICENSE", "requirements.txt", "Dockerfile"]
+        
+      model-versioning:
+        name: "Model Versioning"
+        description: "Implement model versioning and tracking"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "version"
+              - "save_model"
+              - "load_model"
+          test:
+            required: true
+            min_coverage: 75
+          documentation:
+            required: true
+            min_words: 300
+        
+      pipeline-orchestration:
+        name: "Pipeline Orchestration"
+        description: "Orchestrate ML pipeline execution"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "def run_pipeline"
+              - "schedule"
+          test:
+            required: true
+            min_coverage: 75
+          documentation:
+            required: true
+            min_words: 400
+        
+      monitoring-and-logging:
+        name: "Monitoring and Logging"
+        description: "Add monitoring and logging to pipeline"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "logger"
+              - "monitor"
+              - "metrics"
+          test:
+            required: true
+            min_coverage: 70
+          documentation:
+            required: true
+            min_words: 300
+        
+      deployment:
+        name: "Deployment"
+        description: "Deploy ML pipeline to production"
+        rules:
+          code:
+            required: true
+            min_size: 200
+          test:
+            required: true
+          documentation:
+            required: true
+            min_words: 500
+            sections: ["Deployment Guide", "Configuration", "Scaling"]
+          portfolio:
+            required: true
+            required_files: ["docker-compose.yml", "kubernetes/"]
+
+  ai-engineer:
+    name: "AI Engineer"
+    description: "AI model development and deployment"
+    exercises:
+      model-development:
+        name: "Model Development"
+        description: "Develop AI models"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "import torch"
+              - "import tensorflow"
+              - "class.*Model"
+          test:
+            required: true
+            min_coverage: 80
+          documentation:
+            required: true
+            min_words: 500
+        
+      model-optimization:
+        name: "Model Optimization"
+        description: "Optimize AI models for performance"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "quantize"
+              - "prune"
+              - "optimize"
+          test:
+            required: true
+            min_coverage: 75
+        
+      api-design:
+        name: "API Design"
+        description: "Design APIs for AI models"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "@app.route"
+              - "FastAPI"
+              - "Flask"
+          test:
+            required: true
+            min_coverage: 80
+          documentation:
+            required: true
+            min_words: 500
+            sections: ["API Reference", "Endpoints", "Examples"]
+        
+      model-deployment:
+        name: "Model Deployment"
+        description: "Deploy AI models to production"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          test:
+            required: true
+          documentation:
+            required: true
+            min_words: 400
+          portfolio:
+            required: true
+            required_files: ["Dockerfile", "requirements.txt"]
+        
+      scaling:
+        name: "Scaling"
+        description: "Scale AI model deployment"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "load_balance"
+              - "scale"
+              - "replica"
+          test:
+            required: true
+            min_coverage: 70
+          documentation:
+            required: true
+            min_words: 400
+
+  inference-engineering:
+    name: "Inference Engineering"
+    description: "Model inference optimization"
+    exercises:
+      model-optimization:
+        name: "Model Optimization"
+        description: "Optimize models for inference"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          test:
+            required: true
+            min_coverage: 75
+        
+      inference-pipeline:
+        name: "Inference Pipeline"
+        description: "Build inference pipeline"
+        rules:
+          code:
+            required: true
+            min_size: 500
+          test:
+            required: true
+            min_coverage: 80
+        
+      performance-benchmarking:
+        name: "Performance Benchmarking"
+        description: "Benchmark inference performance"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "benchmark"
+              - "latency"
+              - "throughput"
+          documentation:
+            required: true
+            min_words: 300
+        
+      deployment-optimization:
+        name: "Deployment Optimization"
+        description: "Optimize deployment for inference"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 400
+
+  machine-learning:
+    name: "Machine Learning"
+    description: "Machine learning fundamentals"
+    exercises:
+      supervised-learning:
+        name: "Supervised Learning"
+        description: "Implement supervised learning algorithms"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "LinearRegression"
+              - "RandomForest"
+              - "fit"
+              - "predict"
+          test:
+            required: true
+            min_coverage: 80
+        
+      unsupervised-learning:
+        name: "Unsupervised Learning"
+        description: "Implement unsupervised learning algorithms"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "KMeans"
+              - "PCA"
+              - "cluster"
+          test:
+            required: true
+            min_coverage: 80
+        
+      neural-networks:
+        name: "Neural Networks"
+        description: "Implement neural networks"
+        rules:
+          code:
+            required: true
+            min_size: 600
+            patterns:
+              - "Sequential"
+              - "Dense"
+              - "compile"
+          test:
+            required: true
+            min_coverage: 75
+        
+      model-evaluation:
+        name: "Model Evaluation"
+        description: "Evaluate model performance"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "accuracy_score"
+              - "precision_score"
+              - "recall_score"
+              - "f1_score"
+          test:
+            required: true
+            min_coverage: 80
+        
+      feature-engineering:
+        name: "Feature Engineering"
+        description: "Engineer features for ML models"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "FeatureEngineer"
+              - "transform"
+              - "fit_transform"
+          test:
+            required: true
+            min_coverage: 75
+
+  nvidia:
+    name: "NVIDIA"
+    description: "NVIDIA GPU ecosystem"
+    exercises:
+      cuda-basics:
+        name: "CUDA Basics"
+        description: "Learn CUDA programming fundamentals"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "__global__"
+              - "__device__"
+              - "cudaMalloc"
+              - "cudaMemcpy"
+            extensions: [".cu", ".cpp"]
+          test:
+            required: true
+            min_coverage: 70
+          documentation:
+            required: true
+            min_words: 400
+        
+      cudatoolkit:
+        name: "CUDA Toolkit"
+        description: "Use CUDA Toolkit for GPU acceleration"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "cublas"
+              - "cufft"
+              - "curand"
+          test:
+            required: true
+        
+      tensorrt:
+        name: "TensorRT"
+        description: "Optimize models with TensorRT"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "TensorRT"
+              - "build_engine"
+              - "execute"
+          test:
+            required: true
+            min_coverage: 75
+        
+      gpu-accelerated-ml:
+        name: "GPU-Accelerated ML"
+        description: "Run ML on GPU"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "device='cuda'"
+              - "to('cuda')"
+          test:
+            required: true
+            min_coverage: 80
+          portfolio:
+            required: true
+            required_files: ["Dockerfile", "requirements.txt"]
+        
+      multi-gpu:
+        name: "Multi-GPU"
+        description: "Use multiple GPUs"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "DataParallel"
+              - "DistributedDataParallel"
+              - "device_ids"
+          test:
+            required: true
+            min_coverage: 70
+
+  amd:
+    name: "AMD"
+    description: "AMD GPU ecosystem"
+    exercises:
+      rocm-basics:
+        name: "ROCm Basics"
+        description: "Learn ROCm programming fundamentals"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "hipMalloc"
+              - "hipMemcpy"
+              - "__global__"
+            extensions: [".hip", ".cpp"]
+          test:
+            required: true
+            min_coverage: 70
+        
+      hip-programming:
+        name: "HIP Programming"
+        description: "Write HIP kernels"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "__global__"
+              - "hipLaunchKernel"
+          test:
+            required: true
+        
+      miopen:
+        name: "MIOpen"
+        description: "Use MIOpen for deep learning"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "miopen"
+              - "FindConvolution"
+          test:
+            required: true
+            min_coverage: 70
+        
+      gpu-accelerated-ml-amd:
+        name: "GPU-Accelerated ML (AMD)"
+        description: "Run ML on AMD GPU"
+        rules:
+          code:
+            required: true
+            min_size: 500
+          test:
+            required: true
+            min_coverage: 80
+          portfolio:
+            required: true
+            required_files: ["Dockerfile", "requirements.txt"]
+        
+      multi-gpu-amd:
+        name: "Multi-GPU (AMD)"
+        description: "Use multiple AMD GPUs"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          test:
+            required: true
+            min_coverage: 70
+
+  gpu-acceleration:
+    name: "GPU Acceleration"
+    description: "GPU-accelerated computing"
+    exercises:
+      parallel-computing:
+        name: "Parallel Computing"
+        description: "Implement parallel algorithms"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          test:
+            required: true
+        
+      gpu-programming:
+        name: "GPU Programming"
+        description: "Write GPU-accelerated code"
+        rules:
+          code:
+            required: true
+            min_size: 500
+          test:
+            required: true
+        
+      performance-optimization:
+        name: "Performance Optimization"
+        description: "Optimize GPU performance"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 300
+
+  # TIER 2 - Core Priority
+  python:
+    name: "Python"
+    description: "Python development"
+    exercises:
+      basics:
+        name: "Python Basics"
+        description: "Learn Python fundamentals"
+        rules:
+          code:
+            required: true
+            min_size: 200
+          test:
+            required: true
+            min_coverage: 80
+        
+      advanced:
+        name: "Advanced Python"
+        description: "Advanced Python features"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          test:
+            required: true
+            min_coverage: 80
+        
+      libraries:
+        name: "Python Libraries"
+        description: "Use Python libraries"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          test:
+            required: true
+        
+      best-practices:
+        name: "Best Practices"
+        description: "Python best practices"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          test:
+            required: true
+            min_coverage: 85
+
+  backend:
+    name: "Backend"
+    description: "Backend development"
+    exercises:
+      api-design:
+        name: "API Design"
+        description: "Design RESTful APIs"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "@app.route"
+              - "GET"
+              - "POST"
+          test:
+            required: true
+            min_coverage: 80
+        
+      database:
+        name: "Database"
+        description: "Database design and integration"
+        rules:
+          code:
+            required: true
+            min_size: 500
+            patterns:
+              - "SQL"
+              - "Model"
+              - "migrate"
+          test:
+            required: true
+            min_coverage: 80
+        
+      authentication:
+        name: "Authentication"
+        description: "Implement authentication"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "auth"
+              - "jwt"
+              - "oauth"
+          test:
+            required: true
+            min_coverage: 85
+        
+      server:
+        name: "Server"
+        description: "Server development"
+        rules:
+          code:
+            required: true
+            min_size: 500
+          test:
+            required: true
+            min_coverage: 80
+
+  devops:
+    name: "DevOps"
+    description: "DevOps practices"
+    exercises:
+      ci-cd:
+        name: "CI/CD"
+        description: "Set up CI/CD pipeline"
+        rules:
+          code:
+            required: true
+            min_size: 200
+            patterns:
+              - "name: CI"
+              - "on: push"
+              - "jobs:"
+            extensions: [".yml", ".yaml"]
+          documentation:
+            required: true
+            min_words: 300
+        
+      infrastructure:
+        name: "Infrastructure"
+        description: "Infrastructure as code"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "resource"
+              - "provider"
+          test:
+            required: true
+        
+      monitoring:
+        name: "Monitoring"
+        description: "Set up monitoring"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          documentation:
+            required: true
+            min_words: 300
+        
+      deployment:
+        name: "Deployment"
+        description: "Deployment automation"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 400
+
+  docker:
+    name: "Docker"
+    description: "Containerization"
+    exercises:
+      dockerfile:
+        name: "Dockerfile"
+        description: "Write Dockerfile"
+        rules:
+          code:
+            required: true
+            min_size: 100
+            patterns:
+              - "FROM"
+              - "RUN"
+              - "COPY"
+            extensions: ["Dockerfile"]
+          test:
+            required: true
+        
+      docker-compose:
+        name: "Docker Compose"
+        description: "Use Docker Compose"
+        rules:
+          code:
+            required: true
+            min_size: 200
+            patterns:
+              - "version:"
+              - "services:"
+            extensions: [".yml", ".yaml"]
+          test:
+            required: true
+        
+      container-optimization:
+        name: "Container Optimization"
+        description: "Optimize containers"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          documentation:
+            required: true
+            min_words: 300
+
+  kubernetes:
+    name: "Kubernetes"
+    description: "Container orchestration"
+    exercises:
+      deployment:
+        name: "Deployment"
+        description: "Create Kubernetes deployment"
+        rules:
+          code:
+            required: true
+            min_size: 200
+            patterns:
+              - "apiVersion: apps/v1"
+              - "kind: Deployment"
+            extensions: [".yml", ".yaml"]
+          test:
+            required: true
+        
+      service:
+        name: "Service"
+        description: "Create Kubernetes service"
+        rules:
+          code:
+            required: true
+            min_size: 150
+            patterns:
+              - "apiVersion: v1"
+              - "kind: Service"
+        
+      ingress:
+        name: "Ingress"
+        description: "Set up Kubernetes ingress"
+        rules:
+          code:
+            required: true
+            min_size: 200
+            patterns:
+              - "apiVersion: networking.k8s.io/v1"
+              - "kind: Ingress"
+
+  linux:
+    name: "Linux"
+    description: "Linux systems"
+    exercises:
+      scripting:
+        name: "Scripting"
+        description: "Write shell scripts"
+        rules:
+          code:
+            required: true
+            min_size: 100
+            patterns:
+              - "#!/bin/bash"
+              - "echo"
+              - "if"
+            extensions: [".sh"]
+          test:
+            required: true
+        
+      system-admin:
+        name: "System Administration"
+        description: "Linux system administration"
+        rules:
+          code:
+            required: true
+            min_size: 200
+          documentation:
+            required: true
+            min_words: 300
+        
+      automation:
+        name: "Automation"
+        description: "Automate Linux tasks"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          test:
+            required: true
+
+  # TIER 3 - Supporting Priority
+  frontend:
+    name: "Frontend"
+    description: "Frontend development"
+    exercises:
+      html-css:
+        name: "HTML/CSS"
+        description: "Learn HTML and CSS"
+        rules:
+          code:
+            required: true
+            min_size: 200
+            patterns:
+              - "<html"
+              - "<style"
+              - "<div"
+            extensions: [".html", ".css"]
+        
+      javascript:
+        name: "JavaScript"
+        description: "Learn JavaScript"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "function"
+              - "const"
+              - "let"
+            extensions: [".js"]
+        
+      framework:
+        name: "Framework"
+        description: "Use frontend framework"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "import React"
+              - "import Vue"
+              - "import Angular"
+          test:
+            required: true
+
+  api-design:
+    name: "API Design"
+    description: "API design and documentation"
+    exercises:
+      rest-api:
+        name: "REST API"
+        description: "Design REST API"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 500
+            sections: ["Endpoints", "Request/Response", "Examples"]
+        
+      graphql:
+        name: "GraphQL"
+        description: "Design GraphQL API"
+        rules:
+          code:
+            required: true
+            min_size: 400
+            patterns:
+              - "type Query"
+              - "type Mutation"
+          documentation:
+            required: true
+            min_words: 400
+        
+      documentation:
+        name: "Documentation"
+        description: "Document API"
+        rules:
+          documentation:
+            required: true
+            min_words: 800
+            sections: ["Overview", "Authentication", "Endpoints", "Examples"]
+
+  computer-science:
+    name: "Computer Science"
+    description: "CS fundamentals"
+    exercises:
+      algorithms:
+        name: "Algorithms"
+        description: "Implement algorithms"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          test:
+            required: true
+            min_coverage: 90
+        
+      data-structures:
+        name: "Data Structures"
+        description: "Implement data structures"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          test:
+            required: true
+            min_coverage: 90
+        
+      complexity:
+        name: "Complexity"
+        description: "Analyze complexity"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          documentation:
+            required: true
+            min_words: 300
+
+  data-engineer:
+    name: "Data Engineer"
+    description: "Data engineering"
+    exercises:
+      etl:
+        name: "ETL"
+        description: "Implement ETL pipeline"
+        rules:
+          code:
+            required: true
+            min_size: 500
+          test:
+            required: true
+            min_coverage: 80
+        
+      warehouse:
+        name: "Data Warehouse"
+        description: "Set up data warehouse"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 400
+        
+      pipeline:
+        name: "Data Pipeline"
+        description: "Build data pipeline"
+        rules:
+          code:
+            required: true
+            min_size: 600
+          test:
+            required: true
+            min_coverage: 80
+
+  cloud-computing:
+    name: "Cloud Computing"
+    description: "Cloud computing"
+    exercises:
+      architecture:
+        name: "Architecture"
+        description: "Design cloud architecture"
+        rules:
+          code:
+            required: true
+            min_size: 300
+          documentation:
+            required: true
+            min_words: 500
+        
+      services:
+        name: "Services"
+        description: "Use cloud services"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 400
+        
+      deployment:
+        name: "Deployment"
+        description: "Deploy to cloud"
+        rules:
+          code:
+            required: true
+            min_size: 400
+          documentation:
+            required: true
+            min_words: 400
+
+  aws:
+    name: "AWS"
+    description: "AWS services"
+    exercises:
+      ec2:
+        name: "EC2"
+        description: "Use EC2"
+        rules:
+          code:
+            required: true
+            min_size: 200
+          documentation:
+            required: true
+            min_words: 300
+        
+      s3:
+        name: "S3"
+        description: "Use S3"
+        rules:
+          code:
+            required: true
+            min_size: 200
+          documentation:
+            required: true
+            min_words: 300
+        
+      lambda:
+        name: "Lambda"
+        description: "Use Lambda"
+        rules:
+          code:
+            required: true
+            min_size: 300
+            patterns:
+              - "def lambda_handler"
+          test:
+            required: true
+
+# Badge levels
+badge_levels:
+  bronze:
+    min_score: 60
+    max_score: 69
+    color: "#CD7F32"
+    label: "BRONZE"
+    
+  silver:
+    min_score: 70
+    max_score: 84
+    color: "#C0C0C0"
+    label: "SILVER"
+    
+  gold:
+    min_score: 85
+    max_score: 94
+    color: "#FFD700"
+    label: "GOLD"
+    
+  platinum:
+    min_score: 95
+    max_score: 100
+    color: "#000000"
+    label: "PLATINUM"

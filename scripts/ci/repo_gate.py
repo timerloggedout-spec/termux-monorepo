@@ -780,6 +780,18 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
     }
 
 
+def invalid_control_plane_yaml_paths(index: list[IndexEntry]) -> list[str]:
+    """Return every tracked control-plane YAML path rejected by the structural scan."""
+    return sorted(
+        entry.path
+        for entry in index
+        if CONTROL_PLANE_YAML_RE.match(entry.path)
+        and not entry.is_symlink
+        and not entry.is_gitlink
+        and yaml_structure_faults(blob(entry.sha).decode("utf-8", "replace"))
+    )
+
+
 def check_ratchet(report: Report, index: list[IndexEntry]) -> dict[str, int]:
     current = measure(index)
     if not BASELINE_PATH.exists():
@@ -791,9 +803,14 @@ def check_ratchet(report: Report, index: list[IndexEntry]) -> dict[str, int]:
         if limit is None:
             report.note(f"ratchet: new counter {key}={value} (add it to the baseline)")
         elif value > limit:
+            detail = ""
+            if key == "invalid_control_plane_yaml":
+                offenders = invalid_control_plane_yaml_paths(index)
+                if offenders:
+                    detail = "; offending paths: " + ", ".join(offenders)
             report.fail(
                 "ratchet",
-                f"{key} rose {limit} -> {value}; this PR adds debt the repo is trying to shed",
+                f"{key} rose {limit} -> {value}; this PR adds debt the repo is trying to shed{detail}",
             )
         elif value < limit:
             report.note(

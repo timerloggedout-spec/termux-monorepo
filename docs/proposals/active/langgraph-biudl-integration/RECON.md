@@ -113,3 +113,17 @@ The current throughput schema is closed and does not represent graph name/versio
 - arbitrary node transitions cannot be silently relabeled as tools;
 - `ACTION-EFFECT-EVENT.schema.json` is specifically for review/comment-to-commit follow-through and is not a generic graph action ledger;
 - graph-specific spans require an explicit schema extension and privacy tests in LGB-006.
+
+## 10. Expanded agent-framework competition (2026-11-07)
+
+A wider scan beyond the LangGraph catalogue adds these maintained or strategically relevant candidates to the comparison matrix:
+
+- **Microsoft Agent Framework:** successor direction for AutoGen/Semantic Kernel; agents, harness agents, functional/graph workflows, built-in sequential/concurrent/handoff/group-chat/Magentic orchestration, HITL, checkpoint/resume. Go SDK is preview; Python functional workflow API is experimental in current docs. Official overview: https://learn.microsoft.com/agent-framework/overview
+- **OpenAI Agents SDK:** agent loop, handoffs, guardrails, sessions, tool integration, and built-in tracing. Tracing is unavailable for organizations using API access under Zero Data Retention. Official guide: https://developers.openai.com/api/docs/guides/agents/sdk
+- **Google ADK:** sequential, parallel, and loop workflow agents plus graph-based multi-agent workflows; validate language/runtime parity. Official docs: https://google.github.io/adk-docs/
+- **LlamaIndex Workflows:** event-driven typed steps, async execution, branching, loops, concurrency, validation, streaming, human-input examples, and durable-workflow examples. Official docs: https://developers.llamaindex.ai/python/llamaagents/workflows/
+- **CrewAI:** role-based Crews plus stateful event-driven Flows, persistence/resume, guardrails, and human-in-the-loop triggers. Official docs: https://docs.crewai.com/
+- **PydanticAI:** typed agents with OpenTelemetry instrumentation and durable execution integrations for Temporal, DBOS, Prefect, Restate, and others. Its docs distinguish durable execution from run persistence and specify one durable engine per agent. Official docs: https://ai.pydantic.dev/capabilities/durable_execution/overview/
+- **Microsoft AutoGen:** archived and no longer maintained; keep as historical pattern evidence only. Microsoft directs new users to Agent Framework: https://github.com/microsoft/autogen
+
+These sources support candidate inclusion, not a ranking or production endorsement. Exact feature and SDK maturity must be re-checked at experiment time. Detailed hypotheses, limitations, benchmark questions, and source links are recorded in the competition matrix.

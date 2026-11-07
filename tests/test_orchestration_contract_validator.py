@@ -193,6 +193,19 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             errors = validate_issue_comment_router_contracts(root)
             self.assertTrue(any("Agent review route must remain" in error for error in errors), errors)
 
+    def test_reusable_target_rejects_expression_interpolation_in_shell_run_block(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/agent-jules-on-issues.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "          mkdir -p .agent-context",
+                "          echo \" ${{ github.event.comment.body }}\"\\n          mkdir -p .agent-context",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("never inline script/run source" in error for error in errors), errors)
+
     def test_reusable_target_rejects_expression_interpolation_in_script_source(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._fixture(Path(tmp))

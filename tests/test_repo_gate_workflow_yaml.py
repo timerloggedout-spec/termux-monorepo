@@ -549,5 +549,19 @@ class RepoGateIntegrationTests(unittest.TestCase):
         self.assertIn("invalid_control_plane_yaml=1", proc.stdout)
 
 
+    def test_ratchet_reports_offending_control_plane_yaml_path(self) -> None:
+        baseline_path = self.repo / "scripts" / "ci" / "baseline.json"
+        baseline = json.loads(baseline_path.read_text())
+        baseline["counters"]["invalid_control_plane_yaml"] = 0
+        baseline_path.write_text(json.dumps(baseline))
+        workflow = self.repo / ".github" / "workflows" / "ci.yml"
+        workflow.write_text(self.BROKEN)
+        self._git("add", "-A")
+        proc = self._run_gate("--ratchet-only")
+        self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+        self.assertIn("ratchet detail: .github/workflows/ci.yml", proc.stdout)
+        self.assertIn("structural YAML fault(s) at line(s)", proc.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

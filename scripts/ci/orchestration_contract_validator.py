@@ -189,6 +189,24 @@ def _has_workflow_call_input(on_block: str, name: str, required: bool = True) ->
     return True
 
 
+def _script_blocks(workflow: str) -> list[str]:
+    """Return literal YAML script-block bodies so expressions can be rejected there."""
+    lines = workflow.splitlines()
+    blocks: list[str] = []
+    for index, line in enumerate(lines):
+        match = re.match(r"^(\\s*)script:\\s*\\|\\s*$", line)
+        if not match:
+            continue
+        parent_indent = len(match.group(1))
+        body: list[str] = []
+        for candidate in lines[index + 1:]:
+            if candidate.strip() and len(candidate) - len(candidate.lstrip()) <= parent_indent:
+                break
+            body.append(candidate)
+        blocks.append("\\n".join(body))
+    return blocks
+
+
 def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
     """Keep issue-comment fan-out centralized and every reusable target revision-bound."""
     errors: list[str] = []
@@ -254,6 +272,8 @@ def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
                 errors.append(f"{contract['path']} must preserve direct event trigger: {event}")
         if "github.rest.issues.getComment" not in target:
             errors.append(f"{contract['path']} must re-fetch the source comment by ID")
+        if any("${{" in block for block in _script_blocks(target)):
+            errors.append(f"{contract['path']} must pass workflow expressions through env/with data, never inline script source")
         target_job = {
             "agent-review-auto-jules": "detect-bot-feedback",
             "gemini-dispatch": "dispatch",

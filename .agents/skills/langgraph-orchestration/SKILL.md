@@ -178,8 +178,8 @@ Report commands actually run; never claim a gate passed from its existence or qu
 The source index [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph) is a discovery catalogue, not an endorsement or dependency manifest. Highest-value candidates to evaluate selectively:
 
 - `langgraph-swarm-py`: official handoff/swarm implementation; evaluate only as a bounded treatment against the native manager, with explicit attribution and useful-yield measurements.
-- `langgraph-supervisor-py`: **legacy/migration reference only** for new work; its own README now recommends the supervisor pattern directly via tools for most use cases.
-- `langchain-mcp-adapters`: **do not adopt this package**; its README says it is no longer actively maintained and directs users to `langchain[mcp]` / `langchain.mcp`. Reconcile with the existing MCP adapter/foundry boundary before using the replacement.
+- `langgraph-supervisor-py`: **archived/read-only since 2026-09-20; do not adopt**. Its README recommends the supervisor pattern directly via tools for most new use cases.
+- `langchain-mcp-adapters`: **archived/read-only since 2026-09-17; do not adopt**. MCP support moved into `langchain[mcp]` / `langchain.mcp`. Reconcile with the existing MCP adapter/foundry boundary before using the replacement.
 - `deepagents`: higher-level harness for planning, context/filesystem, subagents, skills, and memory; use only where built-ins solve a demonstrated gap.
 - `open-swe`: Deep Agents-based software factory reference, but its README explicitly warns it is under active development and correctness/stability/compatibility are not guaranteed.
 - `open_deep_research`: research workflow reference; its README's visible update notes are from 2025, so verify maintenance and provider compatibility before reuse.

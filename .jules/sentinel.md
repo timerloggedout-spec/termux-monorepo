@@ -57,3 +57,8 @@
 **Vulnerability:** In `hub_mcp/cli.py` and `hub_mcp/runner.py`, command-line job envelope input files (`args.job`) and state directory arguments (`args.state_directory`) were parsed and read/written without path traversal (`..`) or symlink (`is_symlink()`) checks, allowing arbitrary file reading or local permission/file mutation outside intended worker boundaries.
 **Learning:** CLI entrypoints and payload executors accepting filesystem arguments must explicitly validate path components for traversal and verify symlinks on both target files and state parent directories before attempting file reads, directory creation, or permission adjustments.
 **Prevention:** Check `".." in path.parts` and `path.is_symlink()` / `path.parent.is_symlink()` prior to reading input JSON payloads or constructing replay stores.
+
+## 2026-10-16 - Parent Directory Symlink Hijacking Prevention in Local Bridge Token Verification
+**Vulnerability:** In `bin/obsidian_server.py`, `get_token()` checked `not token_path.is_symlink()`, but did not check `not token_path.parent.is_symlink()`, leaving token reads vulnerable to parent directory symlink redirection.
+**Learning:** Checking `is_symlink()` solely on the target file path is insufficient if its parent directory is a symlink pointing to an unexpected location.
+**Prevention:** Always validate `not path.is_symlink() and not path.parent.is_symlink()` when reading or opening sensitive configuration or token files.

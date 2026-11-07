@@ -1,6 +1,6 @@
 ---
 name: langgraph-orchestration
-description: "Design, implement, test, and evaluate LangGraph workflows in termux-monorepo. Use when building stateful graph orchestration, multi-agent fan-out, routing, resumable approvals, graph persistence, streaming, or LangGraph-to-Temporal/ATES adapters."
+description: "Design, implement, test, and evaluate LangGraph workflows in termux-monorepo. Use when building stateful graph orchestration, multi-agent fan-out, autonomous escalation, graph persistence/recovery, streaming, or LangGraph-to-Temporal/ATES adapters."
 ---
 
 # LangGraph Orchestration — BIUDL integration skill
@@ -22,8 +22,8 @@ Load, in order and only as needed:
 
 | BIUDL phase | LangGraph work | Required evidence |
 |---|---|---|
-| **Broad** | Recon the existing manager, task, workflow, provider, memory, and telemetry surfaces. Select graph use only where explicit branching, fan-out, state, or pause/resume is valuable. | Current source paths, proposal item, alternatives considered |
-| **Integrate** | Design state schema, nodes, edges, reducers, persistence, interrupt points, and adapter seams. Keep provider calls behind existing interfaces. | Graph diagram, state contract, treatment descriptor |
+| **Broad** | Recon the existing manager, task, workflow, provider, memory, and telemetry surfaces. Select graph use only where explicit branching, fan-out, typed state, autonomous escalation, or crash recovery is valuable. | Current source paths, proposal item, alternatives considered |
+| **Integrate** | Design state schema, nodes, edges, reducers, autonomous escalation routes, recovery checkpoints, and adapter seams. Keep provider calls behind existing interfaces. | Graph diagram, state contract, treatment descriptor |
 | **Validate** | Test node behavior, routing, reducers, fan-out aggregation, checkpoint/resume, idempotency, and failure classes. Run the graph under a deterministic fixture. | Focused tests, graph run receipt, expected/observed transition set |
 | **Develop** | Integrate only the validated slice. Preserve repository dual gates and current-SHA evidence. | PR, checks, tests, action/effect evidence |
 | **Learn** | Record outcomes, latency, retries, tool delay, context cost, useful parallel yield, and attribution in existing ATES / evidence contracts. Compare orchestration treatments on equivalent cohorts. | Receipt, outcome classification, longitudinal evidence |
@@ -35,7 +35,7 @@ Prefer LangGraph when the workflow needs one or more of:
 - explicit conditional or cyclic control flow;
 - parallel fan-out and deterministic aggregation;
 - a state machine spanning multiple agent/tool steps;
-- checkpointed pause/resume or state inspection;
+- checkpointed recovery or state inspection;
 - streaming intermediate state or progress;
 - composable subgraphs with separately testable contracts.
 
@@ -51,7 +51,7 @@ The canonical upstream source is [langchain-ai/langchain-skills](https://github.
 |---|---|---|
 | `ecosystem-primer` | **First** for any LangChain/LangGraph/Deep Agents project; choose the correct layer and next skill | `88bc543c9a73c850ee507ec4b7fd09653f066d32` |
 | `langgraph-fundamentals` | Any LangGraph code: StateGraph, state, nodes, edges, Command, Send, invoke, streaming, errors | `adf7bff81897aa99d9505195a1196fced6047b97` |
-| `langgraph-human-in-the-loop` | Interrupts, approval, validation, pause/resume, recoverable errors | `d762f2a170c30310b5641642af3e19ce7866a28a` |
+| `langgraph-human-in-the-loop` | Interrupts, approval, validation, recovery, recoverable errors | `d762f2a170c30310b5641642af3e19ce7866a28a` |
 | `langgraph-persistence` | Checkpointers, thread identity, cross-thread Store, history/time travel, subgraph checkpoint scope | `bbcf0ea77bf2b374a99e5d08cae147c12da03e82` |
 
 ### Optional project lifecycle skills
@@ -75,7 +75,7 @@ This is not a LangGraph runtime skill. Use it as a companion to the repository's
 | Skill | Load when | Pinned source blob |
 |---|---|---|
 | `deep-agents-core` | Planning, filesystem context, skills, memory, and subagent harness are more valuable than hand-authored graph control flow | `841dbd59b4f0012ccf7d99fec3590ae5c3b119fb` |
-| `deep-agents-orchestration` | Deep Agents subagent delegation, task planning, or HITL is selected | `fbd57c8a1f163e8fac73765837d5bc427a4d63e6` |
+| `deep-agents-orchestration` | Deep Agents subagent delegation or task planning is selected; do not adopt its HITL workflow for this architecture | `fbd57c8a1f163e8fac73765837d5bc427a4d63e6` |
 
 Read the source SKILL.md and its language reference from the pinned upstream repository before code changes. Do not copy an entire upstream skill into this repository; retain provenance and adapt only the invariants needed by this project.
 
@@ -110,13 +110,24 @@ Read the source SKILL.md and its language reference from the pinned upstream rep
 - Use LangGraph checkpoint history for graph-local debugging/replay. Use GitHub SHA, workflow run/job/step/artifact IDs, and the repository evidence envelope for project provenance.
 - If Temporal is present, use Temporal workflow history as the durable cross-worker execution record and map only sanitized identifiers/events into the repository evidence plane.
 
-## Human approval and side effects
+## Autonomous escalation and side effects
 
-- Use `interrupt()` only with a checkpointer and the same stable `thread_id` on resume.
-- Resume with `Command(resume=...)`; do not substitute a normal input dict for a resume command.
-- The node restarts from its beginning on resume. Place side effects after the interrupt where possible; otherwise make them idempotent (upsert / check-before-create) and test duplicate prevention.
-- Human approval is not a generic escape hatch. Follow `docs/proposals/AGENTIC-PERMISSIONS.md` for credential, production, financial, privacy, and destructive edges.
-- Never infer approval from a graph reaching an approval node, a model response, a timeout, or a missing interrupt result.
+Human-in-the-loop approval, approval interrupts, and human-resume queues are explicitly out of scope for this treatment. The intended response to uncertainty or failure is autonomous escalation to a capability-matched specialist, alternate executor, manager arbitration, or independent verifier.
+
+- Follow `docs/ops/AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md` as the design source of truth.
+- Escalation changes executor, expertise, strategy, or scrutiny; it never changes the permission envelope.
+- A policy-denied or unauthorized action remains denied. Do not create an interrupt to obtain approval or ask a person to resume the graph.
+- Keep all side effects behind existing tool authorization and allowlists. Use idempotency keys and a side-effect ledger for replay safety.
+- Use checkpoint/recovery for process failure, not as a human approval mechanism.
+- If required credentials, scopes, device access, or external permissions are unavailable, classify the branch as blocked, preserve evidence, and continue unrelated safe work.
+
+## Autonomous escalation policy
+
+Use the E0–E5 ladder defined in the master plan: local execution, local self-repair, specialist handoff, alternate/senior specialist, manager arbitration, and independent assurance. Escalate only on typed evidence such as capability mismatch, repeated normalized tool failure, verifier rejection, stagnation, conflicting results, provider degradation, context saturation, or security anomaly.
+
+Each handoff must carry a bounded typed escalation packet: task/acceptance, required capability, risk, immutable source SHA, progress, attempted strategies, verified evidence references, unresolved assumptions, permission envelope, side-effect budget, requested role, and resource budget. Never pass credentials or unrestricted checkpoint state.
+
+Every loop is bounded. A same-executor/same-strategy/no-new-evidence cycle is prohibited. A security anomaly contains the affected branch and routes sanitized evidence to an independent security lane; it does not create an approval wait.
 
 ## Error, retry, and loop policy
 
@@ -158,8 +169,8 @@ At minimum, cover:
 - reducer behavior under multiple parallel updates;
 - duplicate / missing / out-of-order event handling;
 - bounded loop termination and retry ceilings;
-- interrupt pause + same-thread resume;
-- side-effect idempotency across resume/replay;
+- automatic checkpoint recovery after simulated worker/process failure;
+- side-effect idempotency across automatic recovery/replay;\n- capability-based escalation, manager arbitration, and independent verification;\n- bounded escalation budgets, cycle detection, and blocked terminal states;\n- proof that escalation never broadens authorization;
 - persistence behavior under the selected checkpointer;
 - sanitized telemetry schema and absence of raw state;
 - failure classification and non-success terminal states.
@@ -206,5 +217,5 @@ For comparative or best-approach work, load `docs/proposals/active/langgraph-biu
 - Any hard safety, privacy, authorization, or evidence-integrity failure disqualifies a treatment regardless of speed.
 - Extract patterns as keep / adapt / combine / defer / reject. Combine only independently validated patterns with compatible state and authority boundaries.
 - Preserve source attribution, adaptation rationale, benchmark evidence, rollback path, and upgrade watch for every adopted pattern.
-- The manager retains treatment-selection authority. A candidate cannot approve, score, or promote itself.
+- The manager retains treatment-selection authority. A candidate cannot authorize, score, or promote itself.
 - An inconclusive experiment retains the native control; a single successful demo is not promotion evidence.

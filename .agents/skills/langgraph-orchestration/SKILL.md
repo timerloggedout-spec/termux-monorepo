@@ -74,7 +74,7 @@ This is not a LangGraph runtime skill. Use it as a companion to the repository's
 | Skill | Load when | Pinned source blob |
 |---|---|---|
 | `deep-agents-core` | Planning, filesystem context, skills, memory, and subagent harness are more valuable than hand-authored graph control flow | `841dbd59b4f0012ccf7d99fec3590ae5c3b119fb` |
-| `deep-agents-orchestration` | Deep Agents subagent delegation or task planning is selected; do not adopt its HITL workflow for this architecture | `fbd57c8a1f163e8fac73765837d5bc427a4d63e6` |
+| `deep-agents-orchestration` | Deep Agents subagent delegation or task planning is selected; do not adopt its approval workflow for this architecture | `fbd57c8a1f163e8fac73765837d5bc427a4d63e6` |
 
 Read the source SKILL.md and its language reference from the pinned upstream repository before code changes. Do not copy an entire upstream skill into this repository; retain provenance and adapt only the invariants needed by this project.
 
@@ -168,7 +168,10 @@ At minimum, cover:
 - duplicate / missing / out-of-order event handling;
 - bounded loop termination and retry ceilings;
 - automatic checkpoint recovery after simulated worker/process failure;
-- side-effect idempotency across automatic recovery/replay;\n- capability-based escalation, manager arbitration, and independent verification;\n- bounded escalation budgets, cycle detection, and blocked terminal states;\n- proof that escalation never broadens authorization;
+- side-effect idempotency across automatic recovery/replay;
+- capability-based escalation, manager arbitration, and independent verification;
+- bounded escalation budgets, cycle detection, and blocked terminal states;
+- proof that escalation never broadens authorization;
 - persistence behavior under the selected checkpointer;
 - sanitized telemetry schema and absence of raw state;
 - failure classification and non-success terminal states.

@@ -56,11 +56,13 @@ def panel(title: str, rows: list[str], width: int | None = None) -> None:
         cols = shutil.get_terminal_size((80, 24)).columns
         width = max(30, min(88, cols - 2))
     inner = max(1, width - 2)
+    title_str = title if len(title) <= inner else (title[: max(0, inner - 1)] + "…" if inner > 1 else title[:inner])
     print(c(CYAN, "+" + "-" * width + "+"))
-    print(c(BOLD + CYAN, f"| {title[:inner]:<{inner}}|"))
+    print(c(BOLD + CYAN, f"| {title_str:<{inner}}|"))
     print(c(CYAN, "+" + "-" * width + "+"))
     for row in rows:
-        print(c(CYAN, f"| {row[:inner]:<{inner}}|"))
+        r_str = row if len(row) <= inner else (row[: max(0, inner - 1)] + "…" if inner > 1 else row[:inner])
+        print(c(CYAN, f"| {r_str:<{inner}}|"))
     print(c(CYAN, "+" + "-" * width + "+"))
 
 def banner() -> None:
@@ -71,8 +73,8 @@ def banner() -> None:
     panel("TERMUX EXECUTION SURFACE", [
         "TARGET     : Android / Termux",
         f"THEME      : {'TRON' if TRON else 'PLAIN'}",
-        "FORESIGHT  : workspace/llm_map/foresight_collect.py",
-        "CHRONO     : harmony_hub/workspace/agent/chronomancer.py",
+        "FORESIGHT  : llm_map/foresight_collect.py",
+        "CHRONO     : harmony_hub/chronomancer.py",
         "GOVERNANCE : CLAUDE.md → proposals → dual gates",
         'INPUT      : Ask && U $h411 π3c31ve',
     ])

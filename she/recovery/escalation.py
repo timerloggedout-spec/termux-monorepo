@@ -196,7 +196,7 @@ def decide_escalation(
         return result("TERMINATE", "UNKNOWN", "NO_INDEPENDENT_VERIFIER_AVAILABLE")
 
     if normalized in {"CAPABILITY_GAP", "STAGNATION", "NO_PROGRESS",
-                      "VERIFIER_REJECTION", "TRANSIENT_FAILURE"}:
+                      "VERIFIER_REJECTION", "TRANSIENT_FAILURE", "CONTEXT_SATURATION"}:
         if budget.specialist_handoff_remaining > 0:
             candidate = _pick_candidate(
                 pool, required_capabilities=required,

@@ -1,0 +1,60 @@
+name: historical backfill promotion gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'archwiz/context_relationships/**'
+      - 'scripts/ci/validate_context_relationship_backfill.py'
+      - 'tests/test_context_relationship_backfill_validation.py'
+      - 'tests/test_context_history_coverage.py'
+      - 'workspace/llm_map/context_relationships/**'
+      - '.github/workflows/context-relationship-backfill.yml'
+      - '.github/workflows/context-relationship-reconcile.yml'
+      - '.github/workflows/context-relationship-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: historical-backfill-promotion-gate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  require-current-backfill-complete:
+    name: require canonical master backfill completion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect authoritative master corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/contents/workspace/llm_map/context_relationships/manifest.json?ref=master" \
+            --jq '.content' | base64 -d > /tmp/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('/tmp/manifest.json').read_text(encoding='utf-8'))
+          if data.get('repository') != 'timerloggedout-spec/termux-monorepo':
+              raise SystemExit('PROMOTION BLOCKED: manifest repository identity mismatch.')
+          coverage = data.get('history_coverage')
+          if not isinstance(coverage, dict):
+              raise SystemExit('PROMOTION BLOCKED: history_coverage is missing or malformed.')
+          status = coverage.get('status')
+          next_page = coverage.get('next_start_page')
+          observed = data.get('latest_observed_at')
+          print(f'canonical master latest_observed_at={observed}')
+          print(f'canonical master history_status={status}')
+          print(f'canonical master next_start_page={next_page}')
+
+          if status != 'COMPLETE' or next_page is not None:
+              raise SystemExit(
+                  'PROMOTION BLOCKED: canonical master historical backfill is incomplete; '
+                  f'status={status!r}, next_start_page={next_page!r}. '
+                  'Continue the bounded master backfill before promoting dependent work.'
+              )
+          print('PROMOTION ALLOWED: canonical master reports COMPLETE with next_start_page=null.')
+          PY

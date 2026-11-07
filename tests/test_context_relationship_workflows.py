@@ -43,14 +43,15 @@ def test_reconciliation_is_bounded_and_explicitly_refreshes_history():
     assert "pull_request_target" not in content
 
 
-def test_historical_backfill_self_wakes_from_corpus_commits():
+def test_historical_backfill_is_master_anchored_and_self_wakes_from_corpus_commits():
     content = workflow("context-relationship-backfill.yml")
 
     assert "push:" in content
     assert "branches: [master]" in content
     assert "paths:" in content
     assert "workspace/llm_map/context_relationships/**" in content
-    assert "schedule:" in content
+    assert "workflow_dispatch:" in content
+    assert "schedule:" not in content
 
 
 def test_historical_backfill_is_manual_resumable_and_page_bounded():
@@ -82,15 +83,21 @@ def test_linear_freshness_workflow_is_manual_read_only_and_metadata_only():
     assert "issueUpdate" not in content
 
 
-def test_all_context_index_writers_are_pinned_to_staging_and_share_one_lock():
+def test_context_index_writer_lanes_have_explicit_refs_and_independent_locks():
     publisher = workflow("context-relationship-publish.yml")
     reconciliation = workflow("context-relationship-reconcile.yml")
     backfill = workflow("context-relationship-backfill.yml")
 
+    # Publisher remains the isolated master-staging projection lane.
     assert "ref: master-staging" in publisher
     assert "group: context-relationship-writer-master-staging" in publisher
-    assert "group: context-relationship-writer-master-staging" in reconciliation
-    assert "group: context-relationship-writer-master-staging" in backfill
+
+    # Historical reconciliation and continuation write only canonical master.
+    assert "ref: master" in reconciliation
+    assert "group: context-relationship-writer-master" in reconciliation
+    assert "ref: master" in backfill
+    assert "group: context-relationship-writer-master" in backfill
+    assert "master-staging" not in backfill
 
 
 def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():
@@ -106,3 +113,30 @@ def test_audit_workflow_embeds_a_read_only_exact_root_evidence_matrix():
     assert "contents: write" not in content
     assert "pull_request_target" not in content
     assert "git push" not in content
+
+
+def test_historical_backfill_promotion_gate_uses_canonical_master_and_fails_closed():
+    content = workflow("historical-backfill-promotion-gate.yml")
+
+    assert "canonical master" in content
+    assert "ref=master" in content
+    assert "history_coverage" in content
+    assert "next_start_page" in content
+    assert "status != 'COMPLETE'" in content
+    assert "permissions:" in content
+    assert "contents: read" in content
+    assert "pull-requests:" not in content
+    assert "master-staging" not in content
+    assert "git push" not in content
+    assert "rerun" not in content.lower()
+
+
+def test_historical_backfill_promotion_gate_uses_native_path_filters():
+    content = workflow("historical-backfill-promotion-gate.yml")
+
+    assert "pull_request:" in content
+    assert "paths:" in content
+    assert "archwiz/context_relationships/**" in content
+    assert "workspace/llm_map/context_relationships/**" in content
+    assert "pulls/" not in content
+    assert "workflow_dispatch:" in content

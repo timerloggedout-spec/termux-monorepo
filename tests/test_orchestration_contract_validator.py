@@ -199,7 +199,7 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             target = root / ".github/workflows/agent-review-auto-jules.yml"
             text = target.read_text(encoding="utf-8").replace(
                 "            const event = context.eventName;",
-                "            const unsafe = '${{ inputs.source_event }}';\\n            const event = context.eventName;",
+                "            const unsafe = '${{ inputs.source_event }}';\n            const event = context.eventName;",
                 1,
             )
             target.write_text(text, encoding="utf-8")

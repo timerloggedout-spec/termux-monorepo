@@ -79,11 +79,27 @@
             "pages": [
               "reference/commands",
               "reference/environment",
-              "reference/gates"
+              "reference/gates",
+              "sitemap"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "docs/integrations/INTEGRATION-PORTFOLIO",
+              "docs/integrations/INTEGRATION-REGISTRY"
             ]
           }
         ]
       }
+    ]
+  },
+  "description": "Source-controlled documentation for the Termux Monorepo: architecture, governed agent workflows, operational guides, proposals, and integration readiness.",
+  "markdown": {
+    "instructions": [
+      "This documentation describes the Termux Monorepo and its governed development workflows. Prefer linked repository source, immutable commit references, and current PR/issue evidence over generated summaries.",
+      "Distinguish discovered tools, session-connected tools, repository adapters, validated integrations, and promoted production capabilities. Do not infer account authorization or credential values from documentation.",
+      "Start with the [documentation sitemap](/sitemap) for a human-readable map of the published documentation."
     ]
   }
 }

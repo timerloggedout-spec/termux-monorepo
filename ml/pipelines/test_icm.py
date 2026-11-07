@@ -9,7 +9,11 @@ class IcmTest(unittest.TestCase):
         self.assertIn("ml", trail("center"))
     def test_route(self) -> None:
         self.assertEqual(route("keep ML pipelines dual-gate"), "ml")
-        self.assertEqual(route("Issue 175 matrix"), "hub")
+        self.assertEqual(route("Issue 175 matrix"), "lane")
+        self.assertEqual(route("repo-tracking lane project state"), "tracking")
+        self.assertEqual(route("repo tracking"), "tracking")
+        self.assertEqual(route("lane project status"), "tracking")
     def test_layer(self) -> None:
         self.assertEqual(layer_of("gate"), "evidence")
         self.assertTrue(children("ml"))
+        self.assertEqual(layer_of("tracking"), "evidence")

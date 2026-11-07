@@ -104,8 +104,8 @@ class DeepSeekCommentGateTests(unittest.TestCase):
         self.assertIn("has_task=false", workflow)
         self.assertIn("if: steps.payload.outputs.has_task == 'true'", workflow)
         self.assertNotIn("awk -F'@deepseek'", workflow)
-        self.assertIn("issues:\\n    types: [assigned]", workflow)
-        self.assertIn("pull_request:\\n    types: [assigned]", workflow)
+        self.assertIn("issues:\n    types: [assigned]", workflow)
+        self.assertIn("pull_request:\n    types: [assigned]", workflow)
 
     def test_deepseek_prompt_treats_github_content_as_untrusted_data(self):
         source = (ROOT / "deepcli/ci_agent.py").read_text(encoding="utf-8")
@@ -115,7 +115,7 @@ class DeepSeekCommentGateTests(unittest.TestCase):
 
     def test_operator_and_provider_secrets_are_step_scoped(self):
         workflow = (ROOT / ".github/workflows/deepseek-ci.yml").read_text(encoding="utf-8")
-        job_env = workflow.split("    env:\\n", 1)[1].split("\\n\\n    steps:", 1)[0]
+        job_env = workflow.split("    env:\n", 1)[1].split("\n\n    steps:", 1)[0]
         self.assertNotIn("OPERATOR_TOKEN:", job_env)
         self.assertNotIn("DEEPSEEK_API_KEY:", job_env)
         self.assertIn("OPERATOR_TOKEN:", workflow[workflow.index("Run DeepSeek CI Agent"):])

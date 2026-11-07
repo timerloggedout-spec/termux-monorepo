@@ -26,7 +26,7 @@ on:
       max_items:
         description: 'Maximum issues and pull requests per family in this explicit page window.'
         type: string
-        default: '100'
+        default: '50'
       max_commits:
         description: 'Maximum commits in this explicit history window.'
         type: string
@@ -102,7 +102,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           HISTORY_START_PAGE: ${{ github.event.inputs.history_start_page || steps.continuation.outputs.start_page }}
-          MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
+          MAX_ITEMS: ${{ github.event.inputs.max_items || '50' }}
           MAX_COMMITS: ${{ github.event.inputs.max_commits || '100' }}
           EXPECTED_REPOSITORY: ${{ github.repository }}
           EXPECTED_REF: master

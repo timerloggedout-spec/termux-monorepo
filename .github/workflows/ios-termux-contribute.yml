@@ -7,9 +7,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '.github/patches/ios-termux-contribution.patch'
-      - '.github/workflows/ios-termux-contribute.yml'
   workflow_dispatch:
     inputs:
       target_repo:

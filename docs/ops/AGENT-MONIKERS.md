@@ -10,7 +10,7 @@ Use backticks or plain text for display. Live triggers remain the original handl
 |------|-----------------|-------------------------|-------|
 | Jules (implementation) | `h3yVern` | `@jules` | App only reacts to `@jules` · v2 graduated 2026-11-01 (v1 `heyVern`; see Graduations of record) |
 | Gemini CLI (on-demand) | `sparkFlux` | `@gemini-cli` | Dispatch also accepts case-insensitive `@sparkFlux` as alias |
-| DeepSeek CI (review/invoke) | `deepCore` | `@deepseek` / `@deepseek-ci` | Workflow also accepts case-insensitive `@deepCore`; labels `deepseek-ci`, `deepseek`, `deepCore` |
+| DeepSeek CI (review/invoke) | `deepCore` | `@deepseek` / `@deepseek-ci` | Also accepts case-insensitive `@deepCore`. Comment invocation requires a created comment by a human OWNER/MEMBER/COLLABORATOR beginning with an exact registered moniker; embedded mentions do not invoke. Current DeepSeek workflows have no label-event trigger; labels are metadata only. |
 | CodeRabbit (review) | `c0deHound` | `@coderabbitai` | Reviewer identity unchanged · v2 graduated 2026-11-01 (v1 `codeHound`; see Graduations of record) |
 | Devin (review/fix) | `d3vinForge` | Devin app | v2 graduated 2026-11-01 (v1 `devinForge`; see Graduations of record) |
 | Continuous-ops sweep | `opsSweep` | (GHA) | Marker: `<!-- continuous-agent-ops -->` |

@@ -78,11 +78,14 @@ jobs:
           
           if [ "$USE_FORK" = "true" ]; then
             TARGET="timerloggedout-spec/${REPO}_fork"
+            FORK_OWNER="timerloggedout-spec"
           else
             TARGET="${OWNER}/${REPO}"
+            FORK_OWNER="$OWNER"
           fi
           
           echo "target=$TARGET" >> $GITHUB_OUTPUT
+          echo "fork_owner=$FORK_OWNER" >> $GITHUB_OUTPUT
 
       - name: Clone and apply patch
         id: apply
@@ -132,6 +135,7 @@ jobs:
           set -euo pipefail
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
+          FORK_OWNER="${{ steps.target.outputs.fork_owner }}"
           TARGET="${{ steps.target.outputs.target }}"
           BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
           PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
@@ -139,18 +143,33 @@ jobs:
           
           PR_BODY="This PR adds significant enhancements to the iOS-Termux project:\n\n\n## Changes\n- Add 22 new command translations (43 total, was 21)\n- Add 4 new path translations (9 total, was 5)\n- Add 30 new comprehensive tests (73 total, was 43)\n- All existing tests still pass\n- All 48 checks still pass\n- 100% backward compatible\n\n## New Command Translations\n- pkg upgrade, apt upgrade, pkg remove, pkg search\n- dpkg -l, apt search, xdg-open\n- termux-clipboard-set {text}, termux-tts-stop\n- termux-download, termux-download --timeout\n- termux-vibrate, termux-notification, termux-camera-photo, termux-sensor\n\n## New Path Translations\n- ~/storage/external-1, /sdcard\n- /storage/emulated/0, /storage/emulated/0/Download\n\nContribution from termux-monorepo collaboration.\n\nCo-authored-by: Vibe Code <vibe@mistral.ai>"
           
-          PR_URL=$(gh pr create \
-            --repo ${OWNER}/${REPO} \
-            --base $BASE_BRANCH \
-            --head "${TARGET}:${BRANCH}" \
-            --title "$PR_TITLE" \
-            --body "$PR_BODY" 2>&1 || echo "")
+          # Use GitHub API directly for PR creation
+          PR_JSON=$(curl -s -X POST \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"title\":\"${PR_TITLE}\",\"body\":\"${PR_BODY}\",\"head\":\"${FORK_OWNER}:${BRANCH}\",\"base\":\"${BASE_BRANCH}\"}" \
+            "https://api.github.com/repos/${OWNER}/${REPO}/pulls" 2>&1 || echo "")
           
-          if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ] && [ "$PR_URL" != "existing-422" ]; then
+          PR_URL=$(echo "$PR_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin).get('html_url', ''))")
+          
+          if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ]; then
             echo "::notice::PR created: $PR_URL"
             echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
             echo "PR created successfully: $PR_URL"
           else
             echo "PR creation may have failed"
+            echo "PR_JSON: $PR_JSON"
             echo "Try creating PR manually from ${TARGET}:${BRANCH}"
+            # Try with gh CLI as fallback
+            PR_URL=$(gh pr create \
+              --repo ${OWNER}/${REPO} \
+              --base ${BASE_BRANCH} \
+              --head "${FORK_OWNER}:${BRANCH}" \
+              --title "${PR_TITLE}" \
+              --body "$PR_BODY" 2>&1 || echo "")
+            
+            if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ]; then
+              echo "::notice::PR created (fallback): $PR_URL"
+              echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+            fi
           fi

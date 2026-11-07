@@ -1,60 +1,73 @@
 name: game-development-dispatch
 
-# Game Development issues enter only after swarm-admission stamps them.
-# This route is an intake/queue receipt; provider selection and execution
-# remain in the existing claim/dispatch machinery.
+# This route is invoked only after swarm-admission completes and publishes
+# its handoff artifact. It queues validated game-development tasks; provider
+# selection and execution remain in the existing claim/dispatch machinery.
 on:
-  issues:
-    types: [opened, reopened]
+  workflow_run:
+    workflows: ["swarm-admission"]
+    types: [completed]
 
 permissions:
+  actions: read
   contents: read
   issues: write
 
 concurrency:
-  group: game-development-dispatch-${{ github.event.issue.number }}
+  group: game-development-dispatch-${{ github.event.workflow_run.id }}
   cancel-in-progress: false
 
 jobs:
   intake:
-    if: contains(github.event.issue.labels.*.name, 'game-development')
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
-      - name: Wait for QUE admission decision (fail closed)
-        id: admission
+      - name: Download the admission handoff
+        uses: actions/download-artifact@v4
+        with:
+          name: issue-admission
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: ${{ runner.temp }}/admission
+
+      - name: Select admitted Game Development filings only
+        id: handoff
+        run: |
+          python3 - <<'PYEOF'
+          import json, os
+          path = os.path.join(os.environ["RUNNER_TEMP"], "admission", "admission.json")
+          with open(path) as fh:
+              record = json.load(fh)
+          dispatch = (
+              record.get("matched") is True
+              and record.get("template") == "game-development-task.yml"
+              and record.get("decision") == "admitted"
+              and record.get("issue_number")
+          )
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"dispatch={'true' if dispatch else 'false'}\n")
+              fh.write(f"issue_number={record.get('issue_number', '')}\n")
+          print("Game Development dispatch admitted." if dispatch else "No admitted Game Development filing in this admission run.")
+          PYEOF
+
+      - name: Fetch the admitted issue body
+        if: steps.handoff.outputs.dispatch == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
         run: |
-          for attempt in $(seq 1 72); do
-            labels="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq '[.labels[].name] | join(",")')"
-            case ",${labels}," in
-              *,swarm-admitted,*)
-                echo "admitted=true" >> "$GITHUB_OUTPUT"
-                exit 0
-                ;;
-              *,deferred-by-tier,*)
-                echo "admitted=false" >> "$GITHUB_OUTPUT"
-                echo "QUE deferred this filing; no task is queued."
-                exit 0
-                ;;
-            esac
-            sleep 5
-          done
-          echo "No QUE admission receipt appeared within 360 seconds; failing closed."
-          exit 1
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq .body > "$RUNNER_TEMP/issue-body.md"
 
       - name: Parse and validate the project-task contract
-        if: steps.admission.outputs.admitted == 'true'
+        if: steps.handoff.outputs.dispatch == 'true'
         id: parse
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
         run: |
-          printf '%s' "$ISSUE_BODY" > "$RUNNER_TEMP/issue-body.md"
           python3 scripts/dispatch/project_task.py \
             --body-file "$RUNNER_TEMP/issue-body.md" \
             --issue "$ISSUE_NUMBER" \
@@ -62,10 +75,10 @@ jobs:
             --github-output "$GITHUB_OUTPUT"
 
       - name: Queue the admitted task
-        if: steps.admission.outputs.admitted == 'true' && steps.parse.outputs.ok == 'true'
+        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
         run: |
           gh label create dispatch-queued --force --color 0E8A16 \
             --description "Project task accepted into the system; selection pending/executing" || true
@@ -73,10 +86,10 @@ jobs:
           gh issue edit "$ISSUE_NUMBER" --add-label dispatch-queued
 
       - name: Diagnose incomplete task intake
-        if: steps.admission.outputs.admitted == 'true' && steps.parse.outputs.ok == 'false'
+        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
         run: |
           gh label create intake-incomplete --force --color D93F0B \
             --description "Game-development task intake is incomplete; see the diagnosis comment" || true

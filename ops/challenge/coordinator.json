@@ -2516,59 +2516,46 @@
     }
    ],
    "gantt_ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5050",
-   "priority_timebox": {
+      "priority_timebox": {
     "wall": "2026-12-01T13:37:00-08:00",
     "landing": "2026-11-29T13:37:00-08:00",
     "tiers": [
      {
       "tier": 0,
       "name": "BASE",
-      "at": "now through 2026-11-27",
-      "effect": "Normal in-window development; keep scope to one core mechanic and a playable slice."
+      "from": "now through 2026-11-27",
+      "effect": "Normal in-window development; build starts only after owner review."
      },
      {
       "tier": 1,
       "name": "CUSHION",
       "at": "2026-11-28T13:37:00-08:00",
       "reminder_url": "https://www.google.com/calendar/event?eid=NWtncDY5dWpyZ2wxYmQ0cTZlZmE0OXU2aGcgdGltZXJsb2dnZWRvdXRAbQ",
-      "effect": "HIGH — admit ahead of routine slate work; resolve missing scope/assets."
+      "effect": "HIGH — admit ahead of routine slate work; resolve scope and missing assets."
      },
      {
       "tier": 2,
-      "name": "LANDING",
-      "at": "2026-11-29T13:37:00-08:00",
-      "reminder_url": "https://www.google.com/calendar/event?eid=NGdzYWs3MnAybzRlaTZidTcwNDY4OGswNGsgdGltZXJsb2dnZWRvdXRAbQ",
-      "effect": "Internal completion target; playable build, repo, copy and assets ready."
-     },
-     {
-      "tier": 3,
       "name": "WALL-DAY",
       "at": "2026-12-01T00:00:00-08:00",
       "reminder_url": "https://www.google.com/calendar/event?eid=bmE5a3Brb2JraWt1bmtmMzhuNXIyY2dsbTggdGltZXJsb2dnZWRvdXRAbQ",
       "effect": "CRITICAL — preempt non-critical work; validation and submission readiness only."
      },
      {
-      "tier": 4,
+      "tier": 3,
       "name": "ESCALATION",
       "at": "2026-12-01T09:37:00-08:00",
       "reminder_url": "https://www.google.com/calendar/event?eid=cnJyYms5NHByNWlxbjlmanFoajhjY3FrYmsgdGltZXJsb2dnZWRvdXRAbQ",
       "effect": "MAX — freeze build work; verify repo push, playable artifact and AI-use disclosure."
      },
      {
-      "tier": 5,
+      "tier": 4,
       "name": "FINAL",
       "at": "2026-12-01T13:07:00-08:00",
       "reminder_url": "https://www.google.com/calendar/event?eid=c2gxaGJsb2YwdGZ2dWxqbW0xZGkzcnE3cm8gdGltZXJsb2dnZWRvdXRAbQ",
       "effect": "Last-call submission mechanics only."
-     },
-     {
-      "tier": 6,
-      "name": "WALL",
-      "at": "2026-12-01T13:37:00-08:00",
-      "reminder_url": "https://www.google.com/calendar/event?eid=aHV1YWRnM2g3aDkyYW1saDcxa25scDd0cGcgdGltZXJsb2dnZWRvdXRAbQ",
-      "effect": "Official hard submission deadline."
      }
     ],
+    "wall_reminder_url": "https://www.google.com/calendar/event?eid=aHV1YWRnM2g3aDkyYW1saDcxa25scDd0cGcgdGltZXJsb2dnZWRvdXRAbQ",
     "step_down_cushion": [
      {
       "at": "wall+24h",
@@ -2579,7 +2566,7 @@
       "tier": 0
      }
     ],
-    "reminder_status": "Six private Google Calendar checkpoint events created; separate deadline-reminders/v1 Tracking register and desk-feed projection remain to be reconciled by their owning lanes."
+    "reminder_status": "Six private Google Calendar checkpoint events created; desk-feed projection recorded in the same PR; separate deadline-reminders/v1 Tracking register reconciliation remains pending."
    }
   }
  ],

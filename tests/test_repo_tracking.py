@@ -56,7 +56,6 @@ def test_next_priority():
     assert derive_next(None, None, [], [])[0] == NOT_ESTABLISHED
 
 
-
 def test_desk_evidence_pr_number_is_shape_and_value_safe():
     assert _desk_evidence_pr_number({"pr": 2606}) == 2606
     assert _desk_evidence_pr_number({"pr": "2606"}) == 2606
@@ -67,6 +66,7 @@ def test_desk_evidence_pr_number_is_shape_and_value_safe():
     assert _desk_evidence_pr_number("legacy evidence string") is None
     assert _desk_evidence_pr_number(["legacy", "evidence"]) is None
     assert _desk_evidence_pr_number(None) is None
+
 
 def test_find_instances_nested_and_plan_shapes():
     doc = {"treatment": {"instance": {"provider": "openrouter", "model": "m1",

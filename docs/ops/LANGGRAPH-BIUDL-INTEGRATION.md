@@ -78,13 +78,17 @@ LangGraph owns graph-local control flow and checkpoint state. Temporal owns dura
 
 ## Upstream skill shortlist
 
-The official [LangChain Skills repository](https://github.com/langchain-ai/langchain-skills) provides three directly relevant skills. Their source blob SHAs are recorded in `.agents/skills/langgraph-orchestration/SKILL.md`.
+The official [LangChain Skills repository](https://github.com/langchain-ai/langchain-skills) provides the layer-selection primer, three core LangGraph skills, optional quickstarts/CLI guidance, and adjacent Deep Agents skills. Their source blob SHAs and load conditions are recorded in `.agents/skills/langgraph-orchestration/SKILL.md`.
 
-1. `langgraph-fundamentals` — mandatory for any graph code.
-2. `langgraph-human-in-the-loop` — mandatory for interrupt/approval/resume work.
-3. `langgraph-persistence` — mandatory for checkpointer, thread, Store, history, or subgraph persistence work.
+1. `ecosystem-primer` — first, to choose LangChain vs LangGraph vs Deep Agents.
+2. `langgraph-fundamentals` — mandatory for any graph code.
+3. `langgraph-human-in-the-loop` — mandatory for interrupt/approval/resume work.
+4. `langgraph-persistence` — mandatory for checkpointer, thread, Store, history, or subgraph persistence work.
+5. `langgraph-cli` — optional scaffold/dev/build/deploy lifecycle.
+6. Python/TypeScript quickstarts — only for explicit minimal new-project requests.
+7. `deep-agents-core` + `deep-agents-orchestration` — adjacent alternative when the higher-level harness is a better fit.
 
-These skills are upstream references; this repository contains a project-specific adaptation, not copied upstream skill bodies.
+The upstream skills README labels the collection early-development; re-check current content and installed APIs before implementation. These skills are upstream references; this repository contains a project-specific adaptation, not copied upstream skill bodies.
 
 ## BIUDL implementation sequence
 

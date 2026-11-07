@@ -142,8 +142,9 @@ jobs:
             const admissionMod = require(require('path').join(process.env.GITHUB_WORKSPACE, 'scripts/ci/dispatch_admission.js'));
             let busy = 0;
             let pressure = null;
+            let pressureFailureReason = 'rate_limited';
             try {
-              const wfList = await github.rest.actions.listWorkflows({
+              const wfList = await github.rest.actions.listRepoWorkflows({
                 owner: context.repo.owner, repo: context.repo.repo, per_page: 100
               });
               const idToFile = new Map((wfList.data.workflows || []).map((w) => [w.id, w.path]));
@@ -164,7 +165,8 @@ jobs:
               }
               pressure = admissionMod.bucketRuns(activeRuns, idToFile);
             } catch (e) {
-              core.warning(`admission pressure read failed; gated lanes defer this cycle: ${e.message}`);
+              pressureFailureReason = admissionMod.classifyPressureError(e);
+              core.warning(`admission pressure read failed (${pressureFailureReason}); gated lanes defer this cycle: ${e.message}`);
               pressure = null;
             }
             // Node B: bridge manifest freshness? (1 call)
@@ -316,7 +318,7 @@ jobs:
             // global_inflight} for the summary and the
             // dispatch-admission.json artifact.
             const admissionResult = admissionMod.evaluateAdmission({
-              pressure, force,
+              pressure, force, pressureFailureReason,
               staleness: {
                 dispatch_hw_pair: { stale_min: hwPairStaleMin, threshold_min: 150 },
                 dispatch_hw_execute: { stale_min: hwExecuteStaleMin, threshold_min: 300 },

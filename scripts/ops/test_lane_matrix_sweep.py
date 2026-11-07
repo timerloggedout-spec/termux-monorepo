@@ -1,10 +1,25 @@
 import unittest
+from pathlib import Path
 from datetime import datetime, timezone
 
 from lane_matrix_sweep import classify_pr, _age_bucket, VALID_LANES
 
 
 class LaneMatrixSweepTests(unittest.TestCase):
+    def test_inventory_commit_step_declares_event_context_environment(self):
+        workflow = (
+            Path(__file__).resolve().parents[2]
+            / ".github"
+            / "workflows"
+            / "ops-lane-matrix-sweep.yml"
+        ).read_text(encoding="utf-8")
+        commit_step = workflow.split(
+            "- name: Commit generated inventory when changed", 1
+        )[1].split("\n      - name:", 1)[0]
+        for variable in ("GITHUB_TOKEN", "EVENT_NAME", "EVENT_ACTION", "PR_NUMBER"):
+            self.assertIn(f"{variable}:", commit_step)
+
+
     def test_age_buckets(self):
         self.assertEqual(_age_bucket(46), "ancient")
         self.assertEqual(_age_bucket(25), "stale")

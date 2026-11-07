@@ -1,0 +1,73 @@
+[
+  {
+    "name": "Inspect a selected graph entity",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "graph rendering",
+      "entity outline selection",
+      "inspector details",
+      "relationship provenance"
+    ],
+    "description": "Verifies a user can select an entity and inspect its identifier, plane and attached evidence.",
+    "steps": [
+      "Open the Hierarchy view",
+      "Select the termux-monorepo entity in the outline",
+      "Inspect the details panel and connected evidence"
+    ],
+    "expected": "The inspector shows termux-monorepo, its GitHub plane and the connected evidence records."
+  },
+  {
+    "name": "Search and filter the graph",
+    "viewport": "desktop",
+    "covers": [
+      "entity search",
+      "observation-plane filter",
+      "relationship filter",
+      "empty-state handling"
+    ],
+    "description": "Verifies search and filters narrow the graph without corrupting the source fixture.",
+    "steps": [
+      "Enter data-visualization in the graph search field",
+      "Choose GitHub in the plane filter",
+      "Clear the search and choose an unmatched query"
+    ],
+    "expected": "Matching entities remain visible for the search and an explanatory empty state appears for an unmatched query."
+  },
+  {
+    "name": "Switch views and restore a shareable state",
+    "viewport": "desktop",
+    "covers": [
+      "hierarchy view",
+      "network view",
+      "evidence ledger",
+      "URL state serialization"
+    ],
+    "description": "Verifies view switching and selected-entity state are reflected in the browser URL.",
+    "steps": [
+      "Choose Network in the view switcher",
+      "Select the studysprint entity",
+      "Verify the URL contains view=network and the selected node identifier",
+      "Choose Evidence"
+    ],
+    "expected": "The network view and selected entity are represented in the URL, and the evidence ledger displays relationship records."
+  },
+  {
+    "name": "Keep keyboard navigation and filter recovery usable on mobile",
+    "viewport": "mobile",
+    "covers": [
+      "keyboard-accessible entity selection",
+      "responsive graph layout",
+      "reset filters",
+      "read-only safety"
+    ],
+    "description": "Verifies mobile users can reach entity controls and recover from an empty filter state.",
+    "steps": [
+      "Search for an entity name that does not exist",
+      "Verify the no-results message appears",
+      "Activate Reset view",
+      "Use Tab to reach an entity and press Enter"
+    ],
+    "expected": "The graph returns to its default view and a keyboard-selected entity can be inspected."
+  }
+]

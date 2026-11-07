@@ -137,7 +137,7 @@ Classify errors before retrying:
 |---|---|
 | Transient network / rate limit | Bounded retry with backoff and attempt evidence |
 | Tool failure recoverable by agent | Return a typed tool error and allow one policy-bounded recovery route |
-| Missing human input / approval | Interrupt and wait; preserve checkpoint identity |
+| Capability mismatch / specialist failure | Escalate to an eligible specialist or manager within the configured budget |
 | Validation / contract failure | Fail closed; route to repair or terminal failure |
 | Unexpected exception | Surface failure with traceback reference in restricted logs; do not silently convert to success |
 

@@ -33,12 +33,12 @@ Workflow definitions and successful documentation/evaluation workflows are not e
 
 ## Acceptance evidence required
 
-1. Run a bounded continuation from current master using the canonical manifest checkpoint.
+1. Run a bounded continuation from current master using the canonical manifest checkpoint. Keep `max_items=50` for page 2 and every subsequent window, including automatic runs, to preserve the page-size contract established by page 1. A deliberate full restart may choose a new page size only if it restarts at page 1 and uses that same size for every page.
 2. Record immutable source SHA/ref, run ID/attempt, requested and resulting page bounds.
 3. Confirm the build actually executed (not deferred/skipped) and no stale artifacts were consumed.
 4. Validate manifest/input/schema hashes, corpus reconciliation, expected artifact set, and page advancement.
-5. Record watcher receipt and resulting manifest; repeat until `next_start_page=null`.
-6. Resolve or explicitly disposition parser failures and unresolved references before checkpoint eligibility.
+5. Record watcher receipt and resulting manifest; repeat until `next_start_page=null`. Before accepting completion, independently reconcile the collected issue and pull-request number sets against the corresponding GitHub REST pages and record the compared IDs/counts; a contiguous page ledger alone does not prove that mutable `updated` ordering omitted no items.
+6. Resolve or explicitly disposition parser failures and unresolved references before checkpoint eligibility. Record the collector report's `checkpoint_eligible` value; a run beginning at page 2 or later remains `false` even if `next_start_page=null`, unless a verified page-one contiguous ledger independently establishes the full prefix.
 7. Preserve every observation as dated history; never overwrite or silently relabel older measurements.
 
 ---

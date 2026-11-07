@@ -69,6 +69,64 @@ class CensusFixture(unittest.TestCase):
         self.assertEqual(got, want)
 
 
+class DynamicReferenceFixture(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_dynamic_html_links_and_anchors_are_not_literal_paths(self):
+        write(self.root, "apps/site/index.html",
+              '<a href="${GH}@@esc(doc)@@">doc</a>'
+              '<a href="\'+esc(item.url)+\'">url</a>'
+              '<a href="#rfp-\'+esc(item.id)+\'">anchor</a>')
+        self.assertEqual(dc.check_links(self.root), [])
+
+    def test_compound_feed_references_are_checked_individually(self):
+        write(self.root, "docs/source.md", "# Source\n")
+        write(self.root, "scripts/source.py", "pass\n")
+        write(self.root, "apps/site/data/feed.json",
+              json.dumps({"sources": "docs/source.md + scripts/source.py"}))
+        self.assertEqual(dc.check_feeds(self.root), [])
+
+    def test_feed_reference_section_annotations_are_removed(self):
+        write(self.root, "docs/source.md", "# Source\n")
+        write(self.root, "apps/site/data/feed.json",
+              json.dumps({"source": "docs/source.md (§DoE)"}))
+        self.assertEqual(dc.check_feeds(self.root), [])
+
+    def test_negative_path_filter_resolves_underlying_path(self):
+        write(self.root, "apps/site/data/status.json", "{}")
+        write(self.root, ".github/workflows/site.yml",
+              "name: site\non:\n  push:\n    paths:\n"
+              "      - '!apps/site/data/status.json'\n")
+        self.assertEqual(dc.check_workflows(self.root), [])
+
+    def test_declared_future_path_filter_is_not_reported(self):
+        write(self.root, ".github/workflows/cb1.yml",
+              "name: cb1\non:\n  pull_request:\n    paths:\n"
+              "      - 'scripts/doe/chronomancer_emitter.py'\n")
+        write(self.root, "scripts/ci/dangle_expected_future_paths.json",
+              json.dumps({"entries": [{
+                  "workflow": ".github/workflows/cb1.yml",
+                  "path": "scripts/doe/chronomancer_emitter.py",
+                  "reason": "planned emitter required by the cb-1 acceptance contract",
+              }]}))
+        self.assertEqual(dc.check_workflows(self.root), [])
+
+    def test_missing_negative_path_filter_is_still_reported(self):
+        write(self.root, ".github/workflows/site.yml",
+              "name: site\non:\n  push:\n    paths:\n"
+              "      - '!apps/site/data/missing.json'\n")
+        findings = dc.check_workflows(self.root)
+        self.assertEqual(
+            [(f["kind"], f["ref"]) for f in findings],
+            [("dangling-path-filter", "!apps/site/data/missing.json")],
+        )
+
+
 class RenameFixture(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()

@@ -14,7 +14,7 @@ LangGraph capabilities surfaced by the source include state persistence/checkpoi
 
 ## 2. Best directly relevant SKILL.md files
 
-The official `langchain-ai/langchain-skills` repository contains a directly applicable trio:
+The official `langchain-ai/langchain-skills` repository contains a directly applicable core trio, plus evaluation and lifecycle companions:
 
 | Rank | Skill | Why it is useful | Integration rule |
 |---|---|---|---|

@@ -17,6 +17,7 @@ TERMINAL_STATES = frozenset({
 CLASSIFICATIONS = frozenset({
     "TRANSIENT_FAILURE", "CAPABILITY_GAP", "STAGNATION", "CONTRADICTION",
     "VERIFIER_REJECTION", "PROVIDER_UNAVAILABLE", "SECURITY_ANOMALY", "HIGH_IMPACT_RESULT",
+    "CONTEXT_SATURATION", "ESCALATION_CYCLE",
     "RESOURCE_EXHAUSTED", "POLICY_DENIAL", "NO_PROGRESS", "UNKNOWN",
 })
 
@@ -88,6 +89,15 @@ class EscalationDecision:
         return result
 
 
+_REASON_ALIASES = {
+    "CAPABILITY_MISMATCH": "CAPABILITY_GAP",
+    "TOOL_FAILURE": "TRANSIENT_FAILURE",
+    "PROVIDER_DEGRADATION": "PROVIDER_UNAVAILABLE",
+    "RESOURCE_PRESSURE": "RESOURCE_EXHAUSTED",
+    "MANAGER_REPLAN": "CONTRADICTION",
+}
+
+
 def _pick_candidate(
     candidates: Iterable[ExecutorCandidate],
     *,
@@ -125,6 +135,7 @@ def decide_escalation(
     health, and quota signal. A policy denial is never routed around.
     """
     normalized = str(classification).upper()
+    normalized = _REASON_ALIASES.get(normalized, normalized)
     if normalized not in CLASSIFICATIONS:
         normalized = "UNKNOWN"
     if same_strategy_replay_count is None:
@@ -154,6 +165,10 @@ def decide_escalation(
         return result("TERMINATE", "BLOCKED_PERMISSION", "POLICY_DENIAL")
     if normalized == "SECURITY_ANOMALY":
         return result("CONTAIN_BRANCH", "QUARANTINED", "SECURITY_ANOMALY")
+    if normalized == "ESCALATION_CYCLE":
+        if budget.manager_replan_remaining > 0:
+            return result("MANAGER_ARBITRATION", reason="ESCALATION_CYCLE_REPLAN")
+        return result("TERMINATE", "STAGNATED", "ESCALATION_CYCLE_DETECTED")
     if normalized == "RESOURCE_EXHAUSTED":
         return result("CONTINUE_SAFE_WORK", "BUDGET_EXHAUSTED", "RESOURCE_EXHAUSTED")
     if normalized == "UNKNOWN":
@@ -164,7 +179,7 @@ def decide_escalation(
             return result("RETRY_WITH_BACKOFF", reason="TRANSIENT_CONDITION_CHANGED")
         # An unchanged replay is not a retry. Continue to a different executor.
 
-    if normalized in {"STAGNATION", "NO_PROGRESS"} and budget.local_repair_remaining > 0:
+    if normalized in {"STAGNATION", "NO_PROGRESS", "CONTEXT_SATURATION"} and budget.local_repair_remaining > 0:
         return result("REPAIR_LOCAL", reason="LOCAL_REPAIR_BUDGET_AVAILABLE")
 
     if normalized in {"CONTRADICTION"} and budget.manager_replan_remaining > 0:
@@ -207,7 +222,7 @@ def decide_escalation(
                               reason="HEALTHY_ALTERNATE_FAMILY_FOUND",
                               target=candidate.executor_ref)
 
-    if normalized in {"STAGNATION", "NO_PROGRESS", "CONTRADICTION"} and budget.manager_replan_remaining > 0:
+    if normalized in {"STAGNATION", "NO_PROGRESS", "CONTEXT_SATURATION", "CONTRADICTION"} and budget.manager_replan_remaining > 0:
         return result("MANAGER_ARBITRATION", reason="MANAGER_REPLAN_BUDGET_AVAILABLE")
 
     if normalized == "PROVIDER_UNAVAILABLE":
@@ -216,7 +231,7 @@ def decide_escalation(
         return result("TERMINATE", "BLOCKED_CAPABILITY", "NO_ELIGIBLE_SPECIALIST")
     if normalized == "TRANSIENT_FAILURE":
         return result("TERMINATE", "STAGNATED", "NO_SAFE_RECOVERY_ROUTE")
-    if normalized in {"STAGNATION", "NO_PROGRESS"}:
+    if normalized in {"STAGNATION", "NO_PROGRESS", "CONTEXT_SATURATION"}:
         terminal = "BUDGET_EXHAUSTED" if not any((
             budget.local_repair_remaining, budget.specialist_handoff_remaining,
             budget.manager_replan_remaining,

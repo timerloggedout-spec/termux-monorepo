@@ -51,3 +51,19 @@ rate-limit incident attribution.
 - Buckets stay separate ∀ aggregates (PAT core ∘ search ∘ graphql ∘
   per-app installations ∘ Actions installation) — never one merged line.
 - Headers only: no tokens, no bodies, no raw ids in the tick stream.
+
+## Audit hardening (Provider Consumption & Entitlement Attribution Ledger)
+
+The existing tick validator now treats each JSONL row as an evidence record with field-level checks before it enters a projection:
+
+- required fields are present and the record is a JSON object;
+- timestamp is parseable ISO-8601 and includes a timezone;
+- principal, method, endpoint and non-null resource are non-empty strings;
+- limit, used, remaining, reset and HTTP status are non-negative integers (booleans are rejected as integers);
+- counted is a boolean, remaining does not exceed limit, and optional session is a string or null;
+- duplicate/replayed tick identities are surfaced as validation errors and excluded from the accepted tick set.
+
+The check command fails visibly on malformed or replayed records; summarize preserves valid records while returning a failing exit status when any input record has an audit error. Original JSONL files remain the source evidence and are never rewritten by the validator.
+
+This is the first concrete validation layer for the broader Provider Consumption & Entitlement Attribution Ledger. Further reconciliation checks must retain resource/account scope, unit, window and reset-epoch boundaries before comparing event totals with snapshot deltas.
+

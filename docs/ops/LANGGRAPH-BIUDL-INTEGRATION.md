@@ -136,3 +136,7 @@ Items LGB-001–003 are the initial documentation/skill slice. LGB-004 onward re
 - No blind adoption of every project in the Awesome list.
 - No external repo cloning, submodule, vendoring, or secret provisioning.
 - No autonomous merge/promotion based on a graph's own output.
+
+## Broader competitive field
+
+The LangGraph catalogue is only one discovery source. The competitive matrix also evaluates Microsoft Agent Framework, OpenAI Agents SDK, Google ADK, LlamaIndex Workflows, CrewAI, and PydanticAI, while retaining archived AutoGen as historical reference only. Candidate capabilities, maturity caveats, and official source links are recorded in `docs/proposals/active/langgraph-biudl-integration/COMPETITION-MATRIX.md`. No candidate is selected by popularity or integrated without equivalent-task measurement.

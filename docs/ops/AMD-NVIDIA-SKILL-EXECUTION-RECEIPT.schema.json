@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AMD and NVIDIA Skill Execution Receipt",
+  "description": "Evidence record for a vendor skill run. Unknown measurements must remain null; secrets and raw prompts or completions are prohibited.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["receipt_version", "skill_id", "status", "execution_status", "timestamp", "environment", "workload", "evaluation", "metrics", "result", "limitations"],
+  "properties": {
+    "receipt_version": {"const": "1.0"},
+    "skill_id": {"type": "string", "minLength": 3, "pattern": "^(amd|nvidia)\\.[a-z0-9][a-z0-9._-]*$"},
+    "status": {"enum": ["discovered", "installed", "selected"]},
+    "execution_status": {"enum": ["not_run", "blocked", "executed", "validated"]},
+    "timestamp": {"type": ["string", "null"], "format": "date-time"},
+    "environment": {"type": "object", "additionalProperties": false, "required": ["hardware", "runtime", "model"], "properties": {
+      "hardware": {"type": ["string", "null"]}, "runtime": {"type": ["string", "null"]}, "model": {"type": ["string", "null"]}, "driver_version": {"type": ["string", "null"]}, "os": {"type": ["string", "null"]}
+    }},
+    "workload": {"type": "object", "additionalProperties": false, "required": ["name", "dataset_ref", "dataset_hash"], "properties": {
+      "name": {"type": "string", "minLength": 1}, "dataset_ref": {"type": ["string", "null"]}, "dataset_hash": {"type": ["string", "null"], "pattern": "^(null|[a-fA-F0-9]{32,128})$"}
+    }},
+    "evaluation": {"type": "object", "additionalProperties": false, "required": ["method", "baseline", "repetitions"], "properties": {
+      "method": {"type": ["string", "null"]}, "baseline": {"type": ["string", "null"]}, "repetitions": {"type": ["integer", "null"], "minimum": 1}
+    }},
+    "metrics": {"type": "object", "description": "Only measured values; use null for unknown or unmeasured metrics.", "additionalProperties": {"type": ["number", "string", "boolean", "null"]}},
+    "result": {"enum": ["pass", "fail", "blocked", "not_run", "inconclusive"]},
+    "exit_code": {"type": ["integer", "null"]},
+    "test_summary": {"type": ["string", "null"]},
+    "artifact_hashes": {"type": "array", "items": {"type": "string", "pattern": "^[a-fA-F0-9]{32,128}$"}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "sanitized": {"type": "boolean", "default": false}
+  }
+}

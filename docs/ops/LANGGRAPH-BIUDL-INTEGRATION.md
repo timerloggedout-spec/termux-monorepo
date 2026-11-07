@@ -7,7 +7,7 @@
 
 ## Executive decision
 
-Adopt LangGraph as an **optional graph-orchestration treatment** for workflows that need explicit state, conditional routing, fan-out, checkpointed pause/resume, or composable subgraphs.
+Adopt LangGraph as an **optional graph-orchestration treatment** for workflows that need explicit state, conditional routing, fan-out, checkpointed recovery, autonomous escalation, or composable subgraphs.
 
 Do not replace the repository's native manager, orchestration treatment registry, evidence envelope, ATES, OpenTelemetry, Temporal, GitHub execution fabric, proposal governance, or promotion gates.
 
@@ -105,7 +105,7 @@ The upstream skills README labels the collection early-development; re-check cur
 | LGB-002 | Repository-native LangGraph skill | Trigger, upstream pins, BIUDL flow, safety, test contract indexed |
 | LGB-003 | Orchestration adapter contract | LangGraph mapping to existing receipt/evidence/Temporal boundaries |
 | LGB-004 | Minimal Python graph proof | Optional extra, deterministic no-provider graph, compile/invoke tests |
-| LGB-005 | Persistence + HITL proof | Checkpointer, stable thread ID, pause/resume, idempotency tests |
+| LGB-005 | Persistence + automatic recovery proof | Checkpointer, stable execution identity, crash recovery, idempotency tests |
 | LGB-006 | ATES/OTEL adapter | Sanitized events only; schema and privacy tests |
 | LGB-007 | Controlled treatment comparison | Same cohort/tasks/acceptance, manager and LangGraph treatments compared |
 | LGB-008 | Dual-gate + promotion | Current-SHA repo gate + Termux smoke, review, verified outcome |
@@ -128,7 +128,7 @@ Items LGB-001–003 are the initial documentation/skill slice. LGB-004 onward re
 | `aport-agent-guardrails` | Security research only | Require independent bypass and threat-model validation |
 | `langgraph-starter-kit` | Community reference only | Inspect license, dependencies, test coverage, and security before extraction |
 
-## Non-goals
+## Autonomous escalation\n\nThe target is autonomous escalation across capability-matched specialists and manager tiers—not human-in-the-loop approval. See [AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md](AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md) for the E0–E5 ladder, typed triggers, handoff packet, permission invariant, recovery policy, benchmark redesign, rollout phases, and LGB-011–020. Human approval interrupts, approval queues, and human-resume workflows are explicitly excluded. Escalation changes executor, strategy, or scrutiny; it never broadens permissions.\n\n## Non-goals
 
 - No LangSmith-only observability requirement.
 - No replacement of Temporal for durable execution.

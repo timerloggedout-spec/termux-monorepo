@@ -2,7 +2,7 @@
 
 **Proposal:** `langgraph-biudl-integration`
 **Plan ID:** `autonomous-escalation-orchestration`
-**Status:** planned; implementation is staged behind tests and repository gates
+**Status:** P1 contracts and a pure-Python P2 controller are implemented on the feature branch; schema/runtime validation and repository gates are pending
 **Decision:** escalation is autonomous specialist escalation, not human-in-the-loop approval.
 
 ## 1. Executive decision

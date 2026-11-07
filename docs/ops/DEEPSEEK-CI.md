@@ -9,20 +9,27 @@
 
 | Artifact | Role |
 |----------|------|
-| `.github/workflows/deepseek-ci.yml` | Opt-in agentic workflow |
-| `multi-ai-cli/ci_mode.py` | Non-interactive review loop |
+| `.github/workflows/deepseek-ci.yml` | Automatic PR review plus trusted, on-demand comment replies and manual dispatch |
+| `deepcli/ci_mode.py` | Preflight comment trust/command before provider credentials or session initialization |
+| `deepcli/ci_agent.py` | PR review, issue reply, and threaded review reply; GitHub content is treated as untrusted data |
+| `deepcli/comment_gate.py` | Shared fail-closed moniker parser and trusted-human association gate |
+| `.github/workflows/deepseek-termux-agent.yml` | Separate Termux device-agent route; comment gate hardened, assignment triggers retained |
 | `deepcli/pow_solver.js` + `deepseek.wasm` + `package.json` (`type: module`) | PoW for web-wrapper |
-| `tests/test_multi_ai_ci.py` | Offline unit tests |
+| `tests/test_deepseek_comment_gate.py` | Offline tests for aliases, trust, preflight, prompt boundary, and permissions |
 | `docs/ops/ARCHWIZ-ADMIN-TOKEN.md` | Second admin PAT runbook |
-| `docs/ops/AGENT-MONIKERS.md` | Display moniker `deepCore` |
+| `docs/ops/AGENT-MONIKERS.md` | Display moniker `deepCore` and exact callable aliases |
 
 ## Agentic triggers (no CLI)
 
 | Trigger | How |
 |---------|-----|
-| Mention | Comment `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive) on a **pull request** or **issue** — OWNER/MEMBER/COLLABORATOR only |
-| Label | Add `deepseek-ci`, `deepseek`, or `deepCore` |
-| Dispatch | Actions → DeepSeek CI – Agentic → Run workflow |
+| PR review | `pull_request` opened/synchronize/reopened; this existing automatic review route is unchanged |
+| Mention | A **created** `issue_comment` or `pull_request_review_comment` beginning with `@deepseek`, `@deepseek-ci`, or `@deepCore` (case-insensitive), authored by a human OWNER/MEMBER/COLLABORATOR |
+| Dispatch | Actions → DeepSeek CI – Agentic → Run workflow; manual payload may request a PR review, but cannot spoof an issue/review comment event |
+
+Comment mentions embedded in ordinary prose are not commands. The exact-prefix parser and trusted-comment check run again in Python before provider credentials or session/PoW initialization. No label-event trigger is implemented by the current DeepSeek workflows; labels are metadata only.
+
+The separate `.github/workflows/deepseek-termux-agent.yml` accepts the same trusted exact-prefix comment aliases. Its existing `issues: assigned` and `pull_request: assigned` triggers are retained unchanged by this hardening; they are a separate legacy invocation path, not a label route.
 
 Mirrors Gemini (`@gemini-cli` / `sparkFlux`) and Jules (`@jules` / `heyVern`) patterns.
 
@@ -54,7 +61,14 @@ Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `g
 
 ## Security policy
 
-1. Auth: model secret only for model — never reuse `GITHUB_TOKEN` / OPERATOR as model auth.
+1. Comment trust: only a created comment from a human OWNER/MEMBER/COLLABORATOR may invoke a comment route; the body must begin with one exact registered moniker. Both workflow expressions and Python enforce the gate.
+2. Manual dispatch: a supplied event payload cannot impersonate `issue_comment` or `pull_request_review_comment`; comment events are accepted only when `GITHUB_EVENT_NAME` identifies the real webhook event.
+3. Prompt boundary: issue titles, comment text, PR titles, and PR diffs are untrusted reference data. They are JSON-quoted in user messages and must never override system/developer policy or request credentials, environment variables, hidden prompts, or private data.
+4. Least privilege: checkout uses the read-only `github.token` with `persist-credentials: false`; workflow permissions are `contents: read`, `issues: write`, and `pull-requests: write`. Operator and DeepSeek provider secrets are scoped to the DeepSeek invocation step, not the whole job.
+5. Device route: the Termux agent uses `contents: read` plus issue/PR comment permissions; its agent token is scoped to the POST/poll steps and the GitHub token is scoped to reply steps. Existing assignment triggers remain unchanged.
+6. No schedule, provider route, automatic PR-review trigger, credential, or runtime activation was added by this hardening.
+
+7. Auth: model secret only for model — never reuse `GITHUB_TOKEN` / OPERATOR as model auth.
 2. Session: persistent browser-compatible session cache is intentional for the web-wrapper; it may retain `ds_session_id`, `aws-waf-token`, chat-session state, and PoW-compatible metadata under the existing permission-restricted cache path. The Actions cache key is scoped to the repository and exact Git ref; it has no cross-ref restore prefix.
 3. No cookies/tokens in Git or result artifacts; cache/session values are never logged. Cached WAF state wins on resume unless `DEEPSEEK_WAF_TOKEN_REFRESH=1` explicitly requests an environment-supplied replacement.
 4. Output JSON is **metadata only** (no model text).

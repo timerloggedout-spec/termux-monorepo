@@ -1,8 +1,8 @@
 # LangGraph × BIUDL Integration
 
-**Proposal:** `langgraph-biudl-integration`  
-**Status:** executing — skill and architecture slice provisioned; runtime adapter remains separately gated  
-**Source index:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph)  
+**Proposal:** `langgraph-biudl-integration`
+**Status:** executing — skill and architecture slice provisioned; runtime adapter remains separately gated
+**Source index:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph)
 **Framework:** [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph)
 
 ## Executive decision
@@ -109,6 +109,8 @@ The upstream skills README labels the collection early-development; re-check cur
 | LGB-006 | ATES/OTEL adapter | Sanitized events only; schema and privacy tests |
 | LGB-007 | Controlled treatment comparison | Same cohort/tasks/acceptance, manager and LangGraph treatments compared |
 | LGB-008 | Dual-gate + promotion | Current-SHA repo gate + Termux smoke, review, verified outcome |
+| LGB-009 | Competitive treatment matrix | Add native, LangGraph, Deep Agents, swarm/handoff, and hybrid candidates with evidence-backed dispositions |
+| LGB-010 | Pattern synthesis / hybrid design | Combine only independently validated strengths; retain attribution and rollback path |
 
 Items LGB-001–003 are the initial documentation/skill slice. LGB-004 onward remain backlog until their implementation plan, dependency impact, and test environment are established.
 

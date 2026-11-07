@@ -81,16 +81,21 @@ jobs:
                 core.setFailed('pr_number must be a positive decimal integer.');
                 return;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(requested),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
-                core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
-                return;
+              try {
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(requested),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
+                  core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
+                  return;
+                }
+                targets = [targetFromPr(pr)];
+              } catch (error) {
+                core.warning(`Failed to fetch requested PR #${requested}: ${error.message}`);
+                targets = [];
               }
-              targets = [targetFromPr(pr)];
             } else if (context.eventName === 'workflow_dispatch' && process.env.REQUESTED_SWEEP !== 'true') {
               // A manual blank dispatch (sweep not requested) is deliberately
               // single-target. It is the operator’s bounded health probe, not a
@@ -105,23 +110,28 @@ jobs:
               const windowHours = Number(process.env.RECON_SWEEP_WINDOW_HOURS || '2');
               const maxTargets = Number(process.env.RECON_SWEEP_MAX_TARGETS || '8');
               const cutoff = Date.now() - windowHours * 3600 * 1000;
-              const { data: openPrs } = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                sort: 'updated',
-                direction: 'desc',
-                per_page: 50,
-              });
-              targets = openPrs
-                .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
-                .filter(pr => Date.parse(pr.updated_at) >= cutoff)
-                .slice(0, maxTargets)
-                .map(targetFromPr);
-              const now = new Date();
-              const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
-              if (!targets.length && idleProbe) {
-                targets = [{ pr_number: '0', github_sha: context.sha }];
+              try {
+                const { data: openPrs } = await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  sort: 'updated',
+                  direction: 'desc',
+                  per_page: 50,
+                });
+                targets = openPrs
+                  .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
+                  .filter(pr => Date.parse(pr.updated_at) >= cutoff)
+                  .slice(0, maxTargets)
+                  .map(targetFromPr);
+                const now = new Date();
+                const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
+                if (!targets.length && idleProbe) {
+                  targets = [{ pr_number: '0', github_sha: context.sha }];
+                }
+              } catch (error) {
+                core.warning(`Failed to list open PRs for sweep: ${error.message}`);
+                targets = [];
               }
             }
             core.setOutput('targets', JSON.stringify(targets));
@@ -168,28 +178,40 @@ jobs:
             }
             let resolvedSha;
             if (targetPrNumber === '0') {
-              const { data: branch } = await github.rest.repos.getBranch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                branch: defaultBranch,
-              });
-              resolvedSha = branch.commit.sha;
+              try {
+                const { data: branch } = await github.rest.repos.getBranch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  branch: defaultBranch,
+                });
+                resolvedSha = branch.commit.sha;
+              } catch (error) {
+                core.warning(`Failed to resolve default branch ${defaultBranch}: ${error.message}`);
+                core.setOutput('skip', 'true');
+                return;
+              }
             } else {
               if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
                 core.setFailed('Invalid target PR number.');
                 return;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(targetPrNumber),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
-                core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+              try {
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(targetPrNumber),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
+                  core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+                  core.setOutput('skip', 'true');
+                  return;
+                }
+                resolvedSha = pr.head.sha;
+              } catch (error) {
+                core.warning(`Failed to resolve target PR #${targetPrNumber}: ${error.message}`);
                 core.setOutput('skip', 'true');
                 return;
               }
-              resolvedSha = pr.head.sha;
             }
             if (resolvedSha !== expectedSha) {
               core.notice('Target changed during discovery; refusing stale comparison.');
@@ -250,31 +272,35 @@ jobs:
               ].join('\\n'),
               text: detail,
             };
-            const { data } = await github.rest.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: githubSha,
-              per_page: 100,
-            });
-            const existing = data.check_runs
-              .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
-              .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
-            const payload = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'RECON INTEL lease',
-              head_sha: githubSha,
-              status: 'completed',
-              conclusion,
-              external_id: externalId,
-              output,
-            };
-            if (existing) {
-              await github.rest.checks.update({ ...payload, check_run_id: existing.id });
-              core.info(`Updated RECON INTEL lease check ${existing.id}.`);
-            } else {
-              const created = await github.rest.checks.create(payload);
-              core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+            try {
+              const { data } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: githubSha,
+                per_page: 100,
+              });
+              const existing = data.check_runs
+                .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
+                .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
+              const payload = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'RECON INTEL lease',
+                head_sha: githubSha,
+                status: 'completed',
+                conclusion,
+                external_id: externalId,
+                output,
+              };
+              if (existing) {
+                await github.rest.checks.update({ ...payload, check_run_id: existing.id });
+                core.info(`Updated RECON INTEL lease check ${existing.id}.`);
+              } else {
+                const created = await github.rest.checks.create(payload);
+                core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+              }
+            } catch (error) {
+              core.warning(`Failed to record RECON INTEL lease check: ${error.message}`);
             }
 
       - name: Publish bounded metadata-only summary

@@ -54,10 +54,10 @@ Use the same immutable task fixtures and acceptance tests across treatments. Sta
 1. **Deterministic tool workflow:** typed inputs, bounded tool call, structured result.
 2. **Branching triage:** classify evidence, select a lane, route to a deterministic verifier.
 3. **Parallel research:** independent source collection, deduplication, synthesis, citation checks.
-4. **Human approval:** pause before a consequential side effect, resume on the same run identity, prove idempotency.
-5. **Long-running recovery:** simulate worker interruption, resume from a checkpoint or durable workflow, verify no duplicate effect.
-6. **Repository change:** inspect, plan, patch, run tests, produce evidence, stop before merge.
-7. **Adversarial input:** prompt injection, malformed tool output, permission escalation attempt, data-exfiltration bait.
+4. **Autonomous escalation:** a base-tier executor fails or lacks capability, a specialist takes over with the same authorization envelope, and an independent verifier validates the result.
+5. **Long-running recovery:** simulate worker/process interruption, restore from a checkpoint or Temporal workflow, verify idempotent continuation without a person resuming it.
+6. **Escalation arbitration:** two specialists disagree; manager selects a bounded follow-up and an independent verifier resolves the evidence conflict.
+7. **Adversarial containment:** prompt injection, malformed tool output, permission escalation attempt, and data-exfiltration bait are contained while unrelated safe work continues.\n8. **Repository change:** inspect, plan, patch, run tests, produce evidence, stop before merge.\n9. **Escalation loop trap:** same executor/strategy repeats without progress; detect cycle, exclude route, and classify terminal outcome.
 
 Every task has a fixed fixture, expected artifacts, deterministic verifier, side-effect budget, timeout, and explicit stop condition. Never use production secrets or uncontrolled external side effects in the benchmark corpus.
 
@@ -70,7 +70,7 @@ Minimum measures:
 - **Quality:** verifier pass rate, requirement coverage, factual/citation accuracy where applicable.
 - **Reliability:** completion rate, retry rate, recovery success, duplicate-side-effect count.
 - **Efficiency:** wall-clock time, model/tool calls, token usage, compute/runtime cost.
-- **Governance:** policy violations, approval bypasses, unauthorized effects, evidence completeness.
+- **Governance:** policy violations, unauthorized effects, evidence completeness, and escalation-envelope integrity.
 - **Operability:** setup burden, dependency footprint, observability coverage, reproducibility.
 - **Maintainability:** code surface, failure localization, upgrade burden, operator comprehension.
 
@@ -110,7 +110,7 @@ For every adopted pattern, preserve source attribution, local adaptation rationa
 - Provider and MCP adapters retain credentials, allowlists, and tool authorization.
 - GitHub remains the source of truth for code, PRs, checks, and workflow runs.
 - OTEL/ATES/evidence receipts remain the canonical sanitized measurement plane.
-- Human approval remains external to agent self-assertion and graph state.
+- No human approval interrupts, approval queues, or human-resume steps are part of the target workflow. Authorization is enforced automatically at the tool/policy boundary; denied actions stay denied.\n- Autonomous escalation changes executor/strategy/scrutiny, never permissions.\n- Independent verification challenges results but cannot authorize actions.
 - A treatment cannot approve, score, or promote itself.
 
 ## Promotion rule
@@ -125,7 +125,7 @@ Promote a treatment or hybrid only when it:
 
 If results are inconclusive, retain the native control and continue measurement. A failed or inconclusive candidate is useful evidence, not wasted work.
 
-## Work items
+## Autonomous escalation requirement\n\nThe benchmark must reward evidence-backed autonomous recovery, not pausing for a person. Test the E0–E5 escalation ladder, specialist packet quality, same-envelope permission inheritance, manager arbitration, independent assurance, bounded budgets, route-cycle detection, checkpoint recovery, and safe blocked states. Full design and rollout plan: [AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md](../../../../ops/AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md).\n\n## Work items
 
 - **LGB-009:** implement and maintain this treatment portfolio, task corpus, metrics, and decision ledger.
 - **LGB-010:** design and test hybrid compositions from validated patterns; add no production routing change until promotion criteria pass.

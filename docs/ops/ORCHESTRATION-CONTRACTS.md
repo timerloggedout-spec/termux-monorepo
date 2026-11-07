@@ -45,6 +45,18 @@ External source patterns may include native managers, Wingman, Devin plugin/hook
 
 Each adapter emits the same normalized receipt vocabulary. Provider-specific adapters may add provider fields, but preserve canonical IDs, repository/ref/SHA, lifecycle state, outcome, promotion, evidence IDs, and timestamp.
 
+### LangGraph
+
+LangGraph is an optional graph-orchestration adapter/treatment for explicit state, conditional routing, fan-out, subgraphs, checkpointed pause/resume, and streaming.
+
+- Graph-local state/checkpoints are not canonical repository evidence and may contain restricted payloads.
+- Emit sanitized lifecycle metadata into the existing evidence-envelope, action/effect, OpenTelemetry, ATES, and receipt contracts; do not create a parallel trace schema.
+- Preserve stable orchestration/cycle/attempt/action/event identity and bind project evidence to repository/ref/SHA.
+- Keep provider/model routing in existing adapters and manager policy; keep MCP authorization in existing tool boundaries.
+- Use `interrupt()` only with a checkpointer and stable thread identity; resumed nodes re-execute, so side effects must be idempotent.
+- Use Temporal when execution must survive worker/process loss across distributed workers. LangGraph may run inside a Temporal Activity; it does not replace Temporal history/replay.
+- Compare LangGraph against native manager treatments using the same cohort and task acceptance criteria. Graph complexity or parallel worker count is not quality.
+
 ### Devin
 
 hook -> sanitized event -> native evidence envelope -> action/effect event -> relationship graph

@@ -51,7 +51,6 @@ The canonical upstream source is [langchain-ai/langchain-skills](https://github.
 |---|---|---|
 | `ecosystem-primer` | **First** for any LangChain/LangGraph/Deep Agents project; choose the correct layer and next skill | `88bc543c9a73c850ee507ec4b7fd09653f066d32` |
 | `langgraph-fundamentals` | Any LangGraph code: StateGraph, state, nodes, edges, Command, Send, invoke, streaming, errors | `adf7bff81897aa99d9505195a1196fced6047b97` |
-| `langgraph-human-in-the-loop` | Interrupts, approval, validation, recovery, recoverable errors | `d762f2a170c30310b5641642af3e19ce7866a28a` |
 | `langgraph-persistence` | Checkpointers, thread identity, cross-thread Store, history/time travel, subgraph checkpoint scope | `bbcf0ea77bf2b374a99e5d08cae147c12da03e82` |
 
 ### Optional project lifecycle skills
@@ -81,7 +80,6 @@ Read the source SKILL.md and its language reference from the pinned upstream rep
 
 - Ecosystem primer: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/ecosystem-primer
 - Fundamentals: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-fundamentals
-- Human-in-the-loop: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-human-in-the-loop
 - Persistence: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-persistence
 - CLI: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-cli
 - Python quickstart: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-python-quickstart

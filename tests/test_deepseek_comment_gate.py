@@ -90,7 +90,14 @@ class DeepSeekCommentGateTests(unittest.TestCase):
 
     def test_ci_mode_preflight_happens_before_provider_session_setup(self):
         source = (ROOT / "deepcli/ci_mode.py").read_text(encoding="utf-8")
-        self.assertLess(source.index("should_process_event"), source.index("ensure_session"))
+        self.assertLess(
+            source.index("if not should_process_event(event, event_name)"),
+            source.index("session = ensure_session"),
+        )
+        self.assertLess(
+            source.index("if not should_process_event(event, event_name)"),
+            source.index("token = _token_from_env"),
+        )
 
     def test_termux_route_does_not_invoke_agent_without_task_text(self):
         workflow = (ROOT / ".github/workflows/deepseek-termux-agent.yml").read_text(encoding="utf-8")

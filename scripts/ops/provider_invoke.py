@@ -86,6 +86,29 @@ def pick_model(catalog: dict) -> str | None:
     return (chat or ids or [None])[0]
 
 
+def _usage_tokens(body):
+    """Null-honest usage extraction, mirroring the http-llm-invoke
+    action's jq contract: integer-valued prompt/input +
+    completion/output counts, else None. Never zero-filled."""
+    if not isinstance(body, dict):
+        return None, None
+    u = body.get("usage")
+    if not isinstance(u, dict):
+        return None, None
+    def pick(*keys):
+        for k in keys:
+            v = u.get(k)
+            if isinstance(v, bool):
+                continue
+            if isinstance(v, int) and v >= 0:
+                return v
+            if isinstance(v, float) and v >= 0 and v == int(v):
+                return int(v)
+        return None
+    return (pick("prompt_tokens", "input_tokens"),
+            pick("completion_tokens", "output_tokens"))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--provider", required=True)
@@ -98,6 +121,7 @@ def main() -> int:
 
     provider = args.provider
     verdict = {"provider": provider, "ok": False, "diagnosis": "", "model": None,
+               "tokens_in": None, "tokens_out": None,
                "http": None, "latency_ms": None, "catalog_http": None}
     url, secret_names, catalog_url, note = resolve_provider(provider)
     if url is None:
@@ -196,6 +220,9 @@ def main() -> int:
             t0 = time.time()
             status, body = http_json("POST", url, token, payload)
             verdict["latency_ms"] = int((time.time() - t0) * 1000)
+            _tin, _tout = _usage_tokens(body)
+            if _tin is not None or _tout is not None:
+                verdict["tokens_in"], verdict["tokens_out"] = _tin, _tout
             verdict["http"] = status
             if status != 200:
                 break

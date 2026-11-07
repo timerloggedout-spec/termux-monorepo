@@ -131,3 +131,71 @@ def test_score_fill_adds_ates_keys(tmp_path):
     assert m["ates_outcome"] == "PASS"
     assert abs(m["net_score"] - (0.7 * 1.0 + 0.3 * 0.8)) < 1e-6
     assert m["judge_provider"] == "cohere"
+
+
+def _run_stamp(tmp_path, stamp):
+    (tmp_path / "ops/challenge").mkdir(parents=True, exist_ok=True)
+    feed = tmp_path / "ops/challenge/desk-feed.json"
+    if not feed.exists():
+        feed.write_text(json.dumps({"traversals": []}))
+    sf = tmp_path / "stamp.json"
+    sf.write_text(json.dumps(stamp))
+    r = subprocess.run([sys.executable, str(EMITTER), "--stamp", str(sf),
+                        "--root", str(tmp_path)], capture_output=True, text=True, cwd=ROOT)
+    assert r.returncode == 0, r.stderr
+    intake = [json.loads(x) for x in (tmp_path / "ops/3l0/intake.jsonl").read_text().splitlines() if x.strip()]
+    recs = list((tmp_path / "experiments/doe/routed-dispatch/records").glob("*.json"))
+    return intake, recs
+
+
+def test_token_carrying_stamp_lands_measured_consumption(tmp_path):
+    stamp = {**STAMP, "dispatch_id": "test-usage-0001",
+             "usage": {"tokens_in": 120, "tokens_out": 30}}
+    intake, recs = _run_stamp(tmp_path, stamp)
+    assert intake[0]["usage"]["tokens_in"] == 120
+    assert intake[0]["usage"]["tokens_out"] == 30
+    assert len(recs) == 1
+    exp = json.loads(recs[0].read_text())
+    assert exp["usage"]["status"] == "measured"
+    assert exp["usage"]["value"] == 150
+    assert exp["usage"]["unit"] == "tokens"
+    assert exp["usage"]["source"] == "provider-response"
+    assert exp["usage"]["tokens_in"] == 120 and exp["usage"]["tokens_out"] == 30
+    assert exp["usage"]["method"] == "fleet-self-count/response-usage"
+
+
+def test_null_tokens_stay_not_established(tmp_path):
+    stamp = {**STAMP, "dispatch_id": "test-usage-0002",
+             "usage": {"tokens_in": None, "tokens_out": None}}
+    intake, recs = _run_stamp(tmp_path, stamp)
+    exp = json.loads(recs[0].read_text())
+    assert exp["usage"]["status"] == "not_established"
+    assert exp["usage"]["value"] is None
+    assert intake[0]["usage"]["tokens_in"] is None
+
+
+def test_no_usage_surface_gap_is_named(tmp_path):
+    stamp = {**STAMP, "dispatch_id": "test-usage-0003",
+             "usage": {"status": "no-usage-surface",
+                       "method": "provider-command CLI/session route (no response usage surface)"}}
+    intake, recs = _run_stamp(tmp_path, stamp)
+    exp = json.loads(recs[0].read_text())
+    assert exp["usage"]["status"] == "no-usage-surface"
+    assert exp["usage"]["value"] is None
+
+
+def test_quota_join_keys_derived_from_dispatch_context(tmp_path):
+    stamp = {**STAMP, "dispatch_id": "test-usage-0004",
+             "quota": {"pool": None, "cost_class": "free-tier", "slice": None},
+             "focus": "winning"}
+    intake, recs = _run_stamp(tmp_path, stamp)
+    assert intake[0]["quota"]["pool"] == "cohere"
+    assert intake[0]["quota"]["slice"] == "winning"
+
+
+def test_quota_slice_stays_null_without_focus(tmp_path):
+    stamp = {**STAMP, "dispatch_id": "test-usage-0005",
+             "quota": {"pool": None, "cost_class": "free-tier", "slice": None}}
+    intake, recs = _run_stamp(tmp_path, stamp)
+    assert intake[0]["quota"]["pool"] == "cohere"
+    assert intake[0]["quota"]["slice"] is None  # unjoined gap, counted not dropped

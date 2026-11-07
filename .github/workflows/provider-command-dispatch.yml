@@ -23,6 +23,10 @@ on:
         description: Required current pull-request head SHA
         required: true
         type: string
+      focus:
+        description: Allocation focus slice this dispatch draws on (quota.slice join key); blank = unjoined, counted in the consumption gap
+        required: false
+        type: string
       confirm_branch_write:
         description: Required for actions that can commit or create a stacked PR
         required: false
@@ -296,6 +300,9 @@ jobs:
                         "summary": "provider-command-dispatch.yml run ${{ github.run_id }} result=" + str(os.environ.get("UPSTREAM_RESULT")),
                         "artifact": "actions run ${{ github.run_id }}", "gate_call": None, "confirmed": None},
             "quota": {"pool": "${{ inputs.provider }}", "cost_class": "free-tier", "slice": None},
+            "focus": "${{ inputs.focus }}" or None,
+            "usage": {"status": "no-usage-surface",
+                      "method": "provider-command CLI/session route (no response usage surface)"},
           }
           print(json.dumps(stamp))
           PYEOF

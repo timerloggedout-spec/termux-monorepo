@@ -1,8 +1,9 @@
 # RECON — awesome-LangGraph × termux-monorepo
 
-**Date:** 2026-11-06 (America/Los_Angeles)
+**Date:** 2026-11-07 (UTC)
 **Initial recon snapshot:** `master` at `94e674c9a334fc1bdda8fe3ec96d7db5bc4b3cb9`
-**PR merge base / current base SHA:** `9376c8bee386022f90dd7a6407ad1664d2c6ecf1` (verified by GitHub compare; branch is 10 commits ahead, 0 behind)
+**Historical comparison snapshot:** reviewed head `12a8124026d0b5ab36ff389c2a8dc58072702d9c` was 33 commits ahead / 0 behind merge base `9376c8bee386022f90dd7a6407ad1664d2c6ecf1`.
+**Latest observed branch comparison:** head `2838dc254aae54e4e76840e4e13da016231581ce` was 39 commits ahead / 2 behind `master` at `3e9e21515b3f32c35fc745a9b9ddbe52f2a943e5` (GitHub compare, 2026-11-07). Re-fetch before promotion.
 **External source:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph)
 **Official skills:** [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)
 
@@ -46,7 +47,7 @@ Live repository search and source reads found:
 
 - `CLAUDE.md` defines BIUDL = Broad → Integrate → Validate → Develop → Learn, FA-ADE, proposal scope, dual gates, adaptive WAIT, and promotion policy.
 - `docs/ops/ORCHESTRATION-CONTRACTS.md` already defines four layers, canonical lifecycle, identity, treatments, receipts, adapters, and security boundaries.
-- `she/observability/orchestrator_trace.py` and `scripts/ci/bridge_ates_trace_to_events.py` already provide a privacy-preserving trace boundary and a bridge to the six-event ATES schema; the bridge hashes labels and omits raw context.
+- `she/observability/orchestrator_trace.py` fingerprints context, input, and output, but writes labels and attributes to the raw trace. Protect or sanitize the raw trace before publication. `scripts/ci/bridge_ates_trace_to_events.py` bridges to the six-event ATES schema, hashes labels, and omits raw context.
 - `ORCHESTRATION-TREATMENT.schema.json` and `ORCHESTRATION-RECEIPT.schema.json` already provide the comparison and receipt contracts.
 - `docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md` already documents optional Temporal self-host + LangSmith trajectories, with OTEL/ATES remaining canonical.
 - `docs/ops/SKILLS-INVENTORY.md`, `SKILLS.md`, and `docs/ops/SKILL-DISCOVERY-MATRIX.md` are the skill discovery/index surfaces.

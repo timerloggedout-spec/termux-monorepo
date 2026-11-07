@@ -24,7 +24,7 @@ on:
       use_fork:
         description: Use timerloggedout-spec fork as intermediate
         required: false
-        default: "true"
+        default: "false"
 
 permissions:
   contents: write
@@ -48,7 +48,6 @@ jobs:
       - name: Prepare patch
         id: patch
         run: |
-          # Copy patch to temp location
           cp .github/patches/ios-termux-contribution.patch /tmp/ios-termux-contribution.patch
           wc -l /tmp/ios-termux-contribution.patch
           echo "patch_path=/tmp/ios-termux-contribution.patch" >> $GITHUB_OUTPUT
@@ -61,19 +60,19 @@ jobs:
           echo "owner=$OWNER" >> $GITHUB_OUTPUT
           echo "repo=$REPO" >> $GITHUB_OUTPUT
 
-      - name: Determine fork
-        id: fork
+      - name: Determine push target
+        id: target
         run: |
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
           
           if [ "${{ inputs.use_fork }}" = "true" ]; then
-            FORK="timerloggedout-spec/${REPO}_fork"
+            TARGET="timerloggedout-spec/${REPO}_fork"
           else
-            FORK="${OWNER}/${REPO}"
+            TARGET="${OWNER}/${REPO}"
           fi
           
-          echo "fork=$FORK" >> $GITHUB_OUTPUT
+          echo "target=$TARGET" >> $GITHUB_OUTPUT
 
       - name: Clone and apply patch
         id: apply
@@ -83,18 +82,15 @@ jobs:
           set -euo pipefail
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
-          FORK="${{ steps.fork.outputs.fork }}"
+          TARGET="${{ steps.target.outputs.target }}"
           PATCH_PATH="${{ steps.patch.outputs.patch_path }}"
           BRANCH="contribution-enhancements-$(date +%Y%m%d%H%M%S)"
           
-          # Clone target repo
-          git clone --depth 1 https://github.com/${OWNER}/${REPO}.git /tmp/target-repo
+          git clone --depth 1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${OWNER}/${REPO}.git /tmp/target-repo
           cd /tmp/target-repo
           
-          # Create branch
           git checkout -b $BRANCH
           
-          # Apply patch
           if git apply --check $PATCH_PATH 2>/dev/null; then
             git apply $PATCH_PATH
           else
@@ -105,18 +101,16 @@ jobs:
             }
           fi
           
-          # Commit
           git config user.name "timerloggedout-spec"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "${{ inputs.pr_title }}"
           
-          # Push to fork
-          git remote add fork "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${FORK}.git"
-          git push fork $BRANCH --force
+          git remote add target "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${TARGET}.git"
+          git push target $BRANCH --force
           
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "Committed to ${FORK}:${BRANCH}"
+          echo "Committed to ${TARGET}:${BRANCH}"
 
       - name: Create Pull Request
         id: pr
@@ -126,25 +120,23 @@ jobs:
           set -euo pipefail
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
-          FORK="${{ steps.fork.outputs.fork }}"
+          TARGET="${{ steps.target.outputs.target }}"
           BRANCH="${{ steps.apply.outputs.branch }}"
           
-          # Get PR body
           PR_BODY="This PR adds significant enhancements to the iOS-Termux project:\n\n\n## Changes\n- Add 22 new command translations (43 total, was 21)\n- Add 4 new path translations (9 total, was 5)\n- Add 30 new comprehensive tests (73 total, was 43)\n- All existing tests still pass\n- All 48 checks still pass\n- 100% backward compatible\n\n## New Command Translations\n- pkg upgrade, apt upgrade, pkg remove, pkg search\n- dpkg -l, apt search, xdg-open\n- termux-clipboard-set {text}, termux-tts-stop\n- termux-download, termux-download --timeout\n- termux-vibrate, termux-notification, termux-camera-photo, termux-sensor\n\n## New Path Translations\n- ~/storage/external-1, /sdcard\n- /storage/emulated/0, /storage/emulated/0/Download\n\nContribution from termux-monorepo collaboration.\n\nCo-authored-by: Vibe Code <vibe@mistral.ai>"
           
-          # Create PR
           PR_URL=$(gh pr create \
             --repo ${OWNER}/${REPO} \
             --base ${{ inputs.base_branch }} \
-            --head "${FORK}:${BRANCH}" \
+            --head "${TARGET}:${BRANCH}" \
             --title "${{ inputs.pr_title }}" \
             --body "$PR_BODY" 2>&1 || echo "")
           
           if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ] && [ "$PR_URL" != "existing-422" ]; then
             echo "::notice::PR created: $PR_URL"
             echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-            echo "✅ PR created successfully: $PR_URL"
+            echo "PR created successfully: $PR_URL"
           else
-            echo "⚠️ PR creation may have failed"
-            echo "Try creating PR manually from ${FORK}:${BRANCH}"
+            echo "PR creation may have failed"
+            echo "Try creating PR manually from ${TARGET}:${BRANCH}"
           fi

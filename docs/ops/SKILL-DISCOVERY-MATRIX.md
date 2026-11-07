@@ -85,7 +85,9 @@ External loop/framework material remains candidate pattern evidence until explic
 
 **Best ecosystem candidates to evaluate:** official supervisor/swarm packages, `langchain-mcp-adapters`, `deepagents`, `open_deep_research`, and `open-swe`. Guardrail/provenance projects such as `aport-agent-guardrails` and `sidclawhq/platform` remain research-only until their enforcement model, maintenance, license, and threat model are independently reviewed.
 
-**Adoption decision:** reuse native orchestration treatments, receipts, OTEL/ATES, Temporal, and provider/MCP adapters. The LangGraph integration is an optional orchestration treatment, not a replacement control plane. No dependency, fork, submodule, or deployment is implied by discovery.
+**Source-level corrections:** the official `langgraph-supervisor-py` README now recommends tool-based supervisor patterns for most new work; `langchain-mcp-adapters` is no longer maintained and points to `langchain[mcp]` / `langchain.mcp`; `open-swe` warns that stability/correctness are not guaranteed; `swarm-at-ledger` says its sample data is synthetic rather than real agent telemetry. These are recorded as legacy, migration, research, or pattern-only dispositions rather than default adoption candidates.
+
+**Adoption decision:** reuse native orchestration treatments, receipts, OTEL/ATES, Temporal, and the maintained MCP boundary. The LangGraph integration is an optional orchestration treatment, not a replacement control plane. No dependency, fork, submodule, or deployment is implied by discovery.
 
 
 **Runtime package observation:** PyPI latest stable at recon was `langgraph==1.2.20` (2026-11-05), MIT, Python `>=3.10`; published wheel SHA-256 `2b9fd01c3d5e0652e6c9b436dc0341413788010eb279ac8c46a733cf485d848b`. PyPI did not report release provenance. No dependency was installed or added; re-verify before any runtime adoption.

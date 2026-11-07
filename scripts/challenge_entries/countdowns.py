@@ -31,7 +31,7 @@ PT = ZoneInfo("America/Los_Angeles")
 DATA_RE = re.compile(
     r"<!-- countdown-data:([A-Z]\d+) opens=(\S+) closes=(\S+) -->")
 LINE_RE = re.compile(
-    r"(<!-- countdown:(D\d+|BLOCK) -->).*?(<!-- /countdown:\2 -->)")
+    r"(<!-- countdown:([A-Z]\d+|BLOCK) -->).*?(<!-- /countdown:\2 -->)")
 HEADER_RE = re.compile(r"^### ([A-Z]\d+) (.*)$", re.M)
 
 

@@ -223,35 +223,69 @@ jobs:
       - name: Load prior context (viewable text OK)
         if: steps.meta.outputs.should_invoke == 'true'
         id: load-ctx
+        env:
+          CONTEXT_KEY: ${{ steps.meta.outputs.context_key }}
         run: |
           mkdir -p .agent-context
-          CTX_FILE=".agent-context/${{ steps.meta.outputs.context_key }}.json"
+          if [[ ! "$CONTEXT_KEY" =~ ^pr-[0-9]+-[A-Za-z0-9_-]{1,40}$ ]]; then
+            echo "Invalid context key; refusing cache path construction" >&2
+            exit 1
+          fi
+          CTX_FILE=".agent-context/${CONTEXT_KEY}.json"
           if [ -f "$CTX_FILE" ]; then
             echo "Loaded prior context_key file"
             cat "$CTX_FILE"
             printf '%s\n' 'has_prior=true' >> "$GITHUB_OUTPUT"
-            SID=$(python3 -c "import json; d=json.load(open('$CTX_FILE')); print(d.get('session_id',''))" 2>/dev/null || true)
+            SID=$(python3 - "$CTX_FILE" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as handle:
+    print(json.load(handle).get("session_id", ""))
+PY
+)
             printf 'session_id=%s\n' "$SID" >> "$GITHUB_OUTPUT"
           else
-            echo "No prior context for ${{ steps.meta.outputs.context_key }}"
+            echo "No prior context for $CONTEXT_KEY"
             printf '%s\n' 'has_prior=false' >> "$GITHUB_OUTPUT"
             printf '%s\n' 'session_id=' >> "$GITHUB_OUTPUT"
-            printf '%s\n' "{\"context_key\":\"${{ steps.meta.outputs.context_key }}\",\"created\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"continue_preferred\":true,\"session_id\":\"\"}" > "$CTX_FILE"
+            python3 - "$CTX_FILE" "$CONTEXT_KEY" <<'PY'
+import datetime, json, sys
+with open(sys.argv[1], "w", encoding="utf-8") as handle:
+    json.dump({
+        "context_key": sys.argv[2],
+        "created": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "continue_preferred": True,
+        "session_id": "",
+    }, handle)
+    handle.write("\\n")
+PY
           fi
 
       - name: Post @jules resolve (idempotent + continue-only + disposition-first)
         if: steps.meta.outputs.should_invoke == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          SOURCE_PR_NUMBER: ${{ steps.meta.outputs.pr_number }}
+          SOURCE_HEAD_REF: ${{ steps.meta.outputs.head_ref }}
+          CONTEXT_KEY: ${{ steps.meta.outputs.context_key }}
+          HAS_PRIOR_CONTEXT: ${{ steps.load-ctx.outputs.has_prior }}
+          SESSION_ID: ${{ steps.load-ctx.outputs.session_id }}
+          SOURCE_ID: ${{ steps.meta.outputs.source_id }}
+          SOURCE_REVISION: ${{ steps.meta.outputs.source_revision }}
+          SPECIALIST_DISPOSITION: ${{ steps.meta.outputs.specialist_disposition }}
         with:
           script: |
-            const prNumber = Number('${{ steps.meta.outputs.pr_number }}');
-            const head = '${{ steps.meta.outputs.head_ref }}';
-            const contextKey = '${{ steps.meta.outputs.context_key }}';
-            const hasPrior = '${{ steps.load-ctx.outputs.has_prior }}' === 'true';
-            const sessionId = '${{ steps.load-ctx.outputs.session_id }}' || '';
-            const sourceId = '${{ steps.meta.outputs.source_id }}';
-            const sourceRevision = '${{ steps.meta.outputs.source_revision }}';
-            const specialistDisposition = '${{ steps.meta.outputs.specialist_disposition }}' || 'independent_implementation_specialist';
+            const prNumber = Number(process.env.SOURCE_PR_NUMBER);
+            if (!Number.isSafeInteger(prNumber) || prNumber <= 0) {
+              core.setFailed('Invalid PR number from validated workflow metadata.');
+              return;
+            }
+            const head = process.env.SOURCE_HEAD_REF || '';
+            const contextKey = process.env.CONTEXT_KEY || '';
+            const hasPrior = process.env.HAS_PRIOR_CONTEXT === 'true';
+            const sessionId = process.env.SESSION_ID || '';
+            const sourceId = process.env.SOURCE_ID || '';
+            const sourceRevision = process.env.SOURCE_REVISION || '';
+            const specialistDisposition = process.env.SPECIALIST_DISPOSITION || 'independent_implementation_specialist';
             const marker = '<!-- agent-auto-jules -->';
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,

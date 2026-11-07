@@ -90,7 +90,10 @@ def load_optional_json(path: Path | None) -> dict[str, Any] | None:
 def parse_time(value: str | None) -> datetime | None:
     if not value:
         return None
-    dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    try:
+        dt = datetime.fromisoformat(value)
+    except ValueError:
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
     return dt

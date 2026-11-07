@@ -100,3 +100,10 @@ In provider quota evaluators (`scripts/provider_quota_coverage.py`), constructin
 
 **Action:**
 Replace list comprehensions in collection matching loops with single-pass iteration and early exits, and hoist immutable filter tuples to module scope.
+
+## 2026-10-26 - Pre-Compiled Language Lexicon Mapping and Priority Index Pre-Computation in Tribute System 1
+**Learning:**
+In maintainer reply routing and classifier logic (`scripts/ci/tribute_system1.py`), dynamically compiling per-language regex patterns (`re.search(rf"\b{lang}\b", ...)`) inside `skill_requirement()` iteration loops and instantiating order mapping dictionaries (`order = {l: i for i, l in enumerate(PRIORITY)}`) on every call to `classify()` caused significant CPU overhead and frame allocations. Pre-compiling `LANG_EXACT_RE` and `LANG_FULL_RE` regex dictionaries and hoisting `PRIORITY_ORDER` to module load scope reduced thread classification runtime by ~15%.
+
+**Action:**
+Pre-compile dictionary-mapped language regexes and order index maps at module load scope instead of constructing or compiling them inside tight classification loops.

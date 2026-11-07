@@ -101,5 +101,42 @@ jobs:
             --description "Filing admitted through QUE admission (dispatch-tiers v2)" || true
           gh label create deferred-by-tier --force --color D93F0B \
             --description "Filing deferred by QUE admission; drain re-evaluates" || true
+          # Admission labels are mutually exclusive. On reopen, remove the prior
+          # opposite decision before applying the new receipt label.
+          if [ "${{ steps.eval.outputs.label }}" = "swarm-admitted" ]; then
+            gh issue edit "${{ github.event.issue.number }}" --remove-label deferred-by-tier || true
+          else
+            gh issue edit "${{ github.event.issue.number }}" --remove-label swarm-admitted || true
+          fi
           gh issue comment "${{ github.event.issue.number }}" --body-file "$RUNNER_TEMP/stamp.md"
           gh issue edit "${{ github.event.issue.number }}" --add-label "${{ steps.eval.outputs.label }}"
+
+      - name: Write admission handoff
+        if: steps.eval.outcome == 'success'
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          MATCHED: ${{ steps.eval.outputs.matched }}
+          DECISION: ${{ steps.eval.outputs.decision }}
+          TEMPLATE: ${{ steps.eval.outputs.template }}
+          LABEL: ${{ steps.eval.outputs.label }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os
+          payload = {
+              "issue_number": int(os.environ["ISSUE_NUMBER"]),
+              "matched": os.environ.get("MATCHED", "false") == "true",
+              "decision": os.environ.get("DECISION", ""),
+              "template": os.environ.get("TEMPLATE", ""),
+              "label": os.environ.get("LABEL", ""),
+          }
+          with open(os.path.join(os.environ["RUNNER_TEMP"], "admission.json"), "w") as fh:
+              json.dump(payload, fh, sort_keys=True)
+          PYEOF
+
+      - name: Publish admission handoff
+        if: steps.eval.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue-admission
+          path: ${{ runner.temp }}/admission.json
+          retention-days: 1

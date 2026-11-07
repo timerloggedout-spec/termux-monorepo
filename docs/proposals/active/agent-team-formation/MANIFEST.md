@@ -57,7 +57,7 @@ The existing lane SSOT assigns MoneyBall and agent mail to the multi-agent orche
 - [x] Added scoped work items in `ITEMS.md`.
 - [x] Recorded the evidence and status discrepancy in `source.md`.
 - [x] Captured the #243 game-player label, specialist label map, PR #131 state, and Swarms/wallet reference evidence.
-- [x] Added the additive registry, game-player fleet, and wallet research backlog items (ATF-11 through ATF-13).
+- [x] Added the additive registry, game-player fleet, and wallet research backlog items (ATF-11 through ATF-13).\n- [x] Added Game Development & Production lane, nested specialist/tooling taxonomy, admission-gated task intake, context schema and proposed DoE specialist-evolution design (ATF-16; campaign not admitted or executed).
 - [ ] Obtain an Operator review and an independent security review.
 - [ ] Promote to `accepted` before implementing score, roster, or workflow changes.
 - [ ] Reconcile the `master-staging` branch requirement before opening an integration PR.
@@ -71,7 +71,7 @@ The existing lane SSOT assigns MoneyBall and agent mail to the multi-agent orche
 - [Evidence log](./source.md)
 - [Open questions](./DEBATE.md)
 - [Team-formation reconnaissance index](../../../recon/team-formation/README.md)
-- [Game Player Fleet and Genre Teams](../../../recon/team-formation/GAME_PLAYER_FLEET.md)
+- [Game Player Fleet and Genre Teams](../../../recon/team-formation/GAME_PLAYER_FLEET.md)\n- [Game Development & Autonomous Production Lanes](../../../recon/team-formation/GAME_DEVELOPMENT_LANES.md)\n- [Game Development Tool Profiles](../../../recon/team-formation/GAME_DEVELOPMENT_TOOL_PROFILES.json)\n- [Game Development Task Card](../../../recon/team-formation/GAME_DEVELOPMENT_TASK_CARD.yaml)\n- [Game Development Context Schema](../../../recon/team-formation/schemas/game-development-context.schema.json)
 - [Initial Target Register Template](../../../recon/team-formation/TARGET_REGISTER.md)
 - [Anchored Roster Context and Identity Schema](../../../recon/team-formation/ROSTER_CONTEXT_SCHEMA.md)
 - [Swarms Reference and Wallet Research](../../../recon/team-formation/SWARMS_WALLET_RESEARCH.md)

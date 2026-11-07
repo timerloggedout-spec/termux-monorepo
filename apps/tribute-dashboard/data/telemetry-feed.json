@@ -1,19 +1,19 @@
 {
  "schema": "telemetry-viz-feed/v1",
  "surface": "telemetry",
- "generated_at": "2026-11-02T14:23:13Z",
+ "generated_at": "2026-11-06T01:55:12Z",
  "sources": [
   {
    "path": "apps/tribute-dashboard/data/status.json",
-   "stamped_at": "2026-11-02T11:06:33Z"
+   "stamped_at": "2026-11-06T00:07:20Z"
   },
   {
    "path": "apps/tribute-dashboard/data/quota.json",
-   "stamped_at": "2026-11-02T08:16:06.415255+00:00"
+   "stamped_at": "2026-11-04T01:59:43.471356+00:00"
   },
   {
    "path": "apps/tribute-dashboard/data/quota-usage.json",
-   "stamped_at": "2026-11-02T08:20:44Z"
+   "stamped_at": "2026-11-04T02:00:11Z"
   },
   {
    "path": "scripts/dashboards/workflow_observations.json",
@@ -36,7 +36,7 @@
    "receipts_total": 3962,
    "actioned": 221,
    "skipped": 3741,
-   "quota_readings_total": 170,
+   "quota_readings_total": 172,
    "quota_measured_count": 0,
    "quota_saturation": null,
    "workflows_observed": 5,
@@ -151,7 +151,7 @@
      "followup_lesson": 18,
      "followup_skip_system1": 30
     },
-    "generated_at": "2026-11-02T11:06:33Z"
+    "generated_at": "2026-11-06T00:07:20Z"
    }
   },
   "actions": {
@@ -1762,7 +1762,7 @@
   "outcomes": {
    "lane": "help-wanted",
    "project": "help-wanted-with-tribute",
-   "generated_at": "2026-11-02T11:06:33Z",
+   "generated_at": "2026-11-06T00:07:20Z",
    "receipts": 3962,
    "kinds": {
     "upstream_pr": 12,
@@ -1781,30 +1781,31 @@
    },
    "outcome_semantics": "actioned/skipped/failed are operational receipt states, not successful tribute counts",
    "tribute_count": 132,
-   "foreign_open_count": 8,
+   "foreign_open_count": 7,
    "issues_tracked": 107
   },
   "quota": {
-   "generated_at": "2026-11-02T08:16:06.415255+00:00",
-   "readings_total": 170,
+   "generated_at": "2026-11-04T01:59:43.471356+00:00",
+   "readings_total": 172,
    "by_status": {
-    "unknown": 167,
-    "ok": 2,
-    "exhausted": 1
+    "unknown": 169,
+    "ok": 1,
+    "exhausted": 1,
+    "watch": 1
    },
    "by_horizon": {
-    "H1": 164,
+    "H1": 166,
     "H0": 6
    },
    "by_evidence_status": {
-    "attributed_claim": 152,
+    "attributed_claim": 153,
     "confirmed": 6,
-    "early_signal": 12
+    "early_signal": 13
    },
    "measured": [],
-   "unmeasured_count": 170,
+   "unmeasured_count": 172,
    "usage_pack": {
-    "generated_at": "2026-11-02T08:20:44Z",
+    "generated_at": "2026-11-04T02:00:11Z",
     "api_core": {
      "title": "GitHub API core \u2014 shared PAT bucket",
      "limit": 5000,
@@ -2169,6 +2170,6 @@
  "gaps": [
   "G3: executions are proxied from the checked-in observations snapshot (read_at 2026-10-27T12:29:50Z, 5 workflows) plus status.json lane receipts; the Neon lane_events table is not page-readable. The consolidated Actions corpus lives in the actions block (Slice 2, G1 partial).",
   "G1 partial: the Actions corpus is a budgeted stride-sample snapshot (read_at 2026-10-30T07:47:29Z, 300 runs sampled, pages [1, 50, 100]); it is not the full run history \u2014 that remains the locally reconstructed daily corpus (quota usage_pack.actions_corpus).",
-  "quota saturation NOT OBSERVED: 0 of 170 readings carry both used and limit; saturation renders as absent, never 0."
+  "quota saturation NOT OBSERVED: 0 of 172 readings carry both used and limit; saturation renders as absent, never 0."
  ]
 }

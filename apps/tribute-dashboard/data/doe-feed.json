@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "doe",
- "generated_at": "2026-11-02T14:23:13Z",
+ "generated_at": "2026-11-06T01:55:12Z",
  "sources": [
   "deepcli/deepcli/observatory/doe.py",
   ".agents/skills/multivariate-doe/SKILL.md",
@@ -181,7 +181,7 @@
      "factors": null,
      "design_type": null,
      "primary_outcome": null,
-     "runs": 3,
+     "runs": 4,
      "state": "executed",
      "results": null
     },
@@ -291,6 +291,18 @@
      "design_type": null,
      "primary_outcome": null,
      "runs": 6,
+     "state": "executed",
+     "results": null
+    },
+    {
+     "campaign_id": "phone-1-mcp-background-control",
+     "issue": null,
+     "kind": "campaign",
+     "design_record": "experiments/doe/phone-1-mcp-background-control/DESIGN.json",
+     "factors": null,
+     "design_type": null,
+     "primary_outcome": null,
+     "runs": 1,
      "state": "executed",
      "results": null
     },
@@ -452,7 +464,7 @@
     "factors": null,
     "design_type": null,
     "primary_outcome": null,
-    "runs": 3,
+    "runs": 4,
     "state": "executed",
     "results": null
    },
@@ -562,6 +574,18 @@
     "design_type": null,
     "primary_outcome": null,
     "runs": 6,
+    "state": "executed",
+    "results": null
+   },
+   {
+    "campaign_id": "phone-1-mcp-background-control",
+    "issue": null,
+    "kind": "campaign",
+    "design_record": "experiments/doe/phone-1-mcp-background-control/DESIGN.json",
+    "factors": null,
+    "design_type": null,
+    "primary_outcome": null,
+    "runs": 1,
     "state": "executed",
     "results": null
    },

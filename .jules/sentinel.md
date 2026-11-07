@@ -57,3 +57,8 @@
 **Vulnerability:** In `hub_mcp/cli.py` and `hub_mcp/runner.py`, command-line job envelope input files (`args.job`) and state directory arguments (`args.state_directory`) were parsed and read/written without path traversal (`..`) or symlink (`is_symlink()`) checks, allowing arbitrary file reading or local permission/file mutation outside intended worker boundaries.
 **Learning:** CLI entrypoints and payload executors accepting filesystem arguments must explicitly validate path components for traversal and verify symlinks on both target files and state parent directories before attempting file reads, directory creation, or permission adjustments.
 **Prevention:** Check `".." in path.parts` and `path.is_symlink()` / `path.parent.is_symlink()` prior to reading input JSON payloads or constructing replay stores.
+
+## 2026-10-16 - Path Traversal and Symlink Hijacking Prevention in Cookie File Parsing
+**Vulnerability:** In `multi-ai-cli/backends/deepseek.py`, `colab.py`, and `gemini_web.py`, provider cookie JSON files specified by configuration `cookie_path` were opened and parsed directly via `open(cookie_path)` without checking for path traversal (`..`) or symlink targets.
+**Learning:** Individual API backends often duplicate credential file loading logic. Decentralized `open()` calls on user-specified config paths bypass security checks unless wrapped in a central session manager method.
+**Prevention:** Centralize credential and cookie reading in `SessionManager.get_cookies()`, validating `".." not in Path(str_path).parts` and `not path.is_symlink()` before reading.

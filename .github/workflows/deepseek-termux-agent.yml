@@ -15,11 +15,9 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: write
-  actions: read
-  checks: read
 
 concurrency:
   group: dsa-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
@@ -32,19 +30,38 @@ concurrency:
 
 jobs:
   agent:
-    if: |
+    if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@deepseek')) ||
       (github.event_name == 'issues' && github.event.action == 'assigned') ||
-      (github.event_name == 'pull_request' && github.event.action == 'assigned')
+      (github.event_name == 'pull_request' && github.event.action == 'assigned') ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.sender.type == 'User' &&
+        github.event.comment.user.type == 'User' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
+        (
+          github.event.comment.body == '@deepseek' ||
+          startsWith(github.event.comment.body, '@deepseek ') ||
+          startsWith(github.event.comment.body, '@deepseek\n') ||
+          github.event.comment.body == '@deepseek-ci' ||
+          startsWith(github.event.comment.body, '@deepseek-ci ') ||
+          startsWith(github.event.comment.body, '@deepseek-ci\n') ||
+          github.event.comment.body == '@deepCore' ||
+          startsWith(github.event.comment.body, '@deepCore ') ||
+          startsWith(github.event.comment.body, '@deepCore\n')
+        )
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - name: Checkout repository
         timeout-minutes: 5
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Build agent payload
+        id: payload
         timeout-minutes: 5
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -65,7 +82,13 @@ jobs:
               TASK="$INPUT_TASK"; NUM=""
               ;;
             issue_comment)
-              TASK=$(printf '%s' "$COMMENT_BODY" | awk -F'@deepseek' '{print $2}' | sed 's/^[[:space:]]*//')
+              TASK=$(python3 - <<'PY'
+import os
+from deepcli.comment_gate import parse_comment_command
+parsed = parse_comment_command(os.environ.get("COMMENT_BODY", ""))
+print(parsed["request"] if parsed is not None else "")
+PY
+)
               NUM="$ISSUE_NUMBER"
               ;;
             issues)
@@ -78,6 +101,12 @@ jobs:
               ;;
             *) TASK="unknown trigger"; NUM="" ;;
           esac
+          if [ -z "$TASK" ]; then
+            echo "has_task=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No task text after the exact DeepSeek moniker; provider invocation skipped."
+            exit 0
+          fi
+          echo "has_task=true" >> "$GITHUB_OUTPUT"
           jq -n --arg task "$TASK" --arg repo "$REPO" --arg event "$EVENT_NAME" \
                 --arg actor "$ACTOR" --arg num "$NUM" --arg ref "$REF" --arg run "$RUN_URL" \
                 '{task:$task,source:("github:"+$event),context:{repo:$repo,event:$event,actor:$actor,number:$num,ref:$ref,run_url:$run,repo_path_local:"/data/data/com.termux/files/home"}}' \
@@ -124,6 +153,7 @@ jobs:
           retention-days: 14
       - name: Start agent
         id: start
+        if: steps.payload.outputs.has_task == 'true'
         timeout-minutes: 3
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
@@ -164,7 +194,7 @@ jobs:
           echo "invocation_id=$INV_ID" >> "$GITHUB_OUTPUT"
 
       - name: Poll for completion
-        if: steps.start.outputs.skipped == ''
+        if: steps.payload.outputs.has_task == 'true' && steps.start.outputs.skipped == ''
         timeout-minutes: 22
         env:
           AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
@@ -203,20 +233,20 @@ jobs:
           cat agent_summary.txt
 
       - name: Reply (issue_comment)
-        if: github.event_name == 'issue_comment' && steps.start.outputs.skipped == ''
+        if: github.event_name == 'issue_comment' && steps.payload.outputs.has_task == 'true' && steps.start.outputs.skipped == ''
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           BODY=$(cat agent_summary.txt)
-          printf '**@deepseek agent reply**\n\n```\n%s\n```\n\n_run: %s/%s/actions/runs/%s_\n' \
-            "$BODY" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}" > reply.md
+          printf '**@deepseek agent reply**\\n\\n%s\\n\\n_run: %s_\\n' "$BODY" "$RUN_URL" > reply.md
           gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
 
       - name: Reply (issue assigned)
-        if: github.event_name == 'issues' && steps.start.outputs.skipped == ''
+        if: github.event_name == 'issues' && steps.payload.outputs.has_task == 'true' && steps.start.outputs.skipped == ''
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -228,7 +258,7 @@ jobs:
           gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
 
       - name: Reply (PR assigned)
-        if: github.event_name == 'pull_request' && steps.start.outputs.skipped == ''
+        if: github.event_name == 'pull_request' && steps.payload.outputs.has_task == 'true' && steps.start.outputs.skipped == ''
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -242,13 +272,18 @@ jobs:
       - name: Failure diagnostics
         if: failure()
         timeout-minutes: 5
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ACTOR: ${{ github.actor }}
+          REF: ${{ github.ref }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -uo pipefail
           echo "::group::Workflow failure context"
-          echo "event: ${{ github.event_name }}"
-          echo "actor: ${{ github.actor }}"
-          echo "ref: ${{ github.ref }}"
-          echo "run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "event: $EVENT_NAME"
+          echo "actor: $ACTOR"
+          echo "ref: $REF"
+          echo "run_url: $RUN_URL"
           echo "::endgroup::"
           for f in agent_payload.json agent_start.json agent_status_final.json agent_tail.txt agent_summary.txt; do
             if [ -f "$f" ]; then

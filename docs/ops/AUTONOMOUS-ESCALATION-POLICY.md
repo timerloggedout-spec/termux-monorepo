@@ -30,6 +30,10 @@
 | ESCALATION_CYCLE | Route repeats without new evidence or executor/strategy change | Exclude cycle and arbitrate or terminate |
 | HIGH_IMPACT_RESULT | Consequential output requires independent challenge | Route to a distinct eligible verifier with independent-verification capability; otherwise do not certify success |
 
+## Controller classification aliases
+
+The pure controller normalizes packet trigger codes to stable decision classifications: CAPABILITY_MISMATCH → CAPABILITY_GAP; TOOL_FAILURE → TRANSIENT_FAILURE; PROVIDER_DEGRADATION → PROVIDER_UNAVAILABLE; RESOURCE_PRESSURE → RESOURCE_EXHAUSTED; MANAGER_REPLAN → CONTRADICTION. CONTEXT_SATURATION routes to local repair, then a clean specialist context; ESCALATION_CYCLE forbids another replay and permits only bounded manager arbitration or terminal stagnation.
+
 ## Deterministic decision order
 1. Validate task identity, immutable source revision, acceptance criteria, packet schema, and expiry.
 2. Enforce policy preflight before any dispatch. A denial cannot be repaired by routing.
@@ -54,7 +58,7 @@
 
 ## Compatibility and rollout
 - Preserve native orchestration IDs and receipts. Do not add graph-node events to the closed throughput schema without a versioned schema change and privacy tests.
-- The packet is a handoff contract, not a canonical execution log or checkpoint format.
+- The packet is a handoff contract, not a canonical execution log or checkpoint format. The pure controller returns a policy-decision projection; the orchestration adapter must attach decision_id, orchestration_id, cycle_id, attempt_id, and decided_at before serializing against ESCALATION-DECISION.schema.json.
 - Temporal remains the candidate owner for distributed durable execution; do not duplicate durable history in a second checkpointer without a tested ownership boundary.
 - Initial numerical limits belong in policy configuration and fixtures, not graph nodes. Calibrate production thresholds from measured cohort evidence.
 - This contract specifies behavior only. Runtime integration remains a separate implementation phase and must pass deterministic tests before provider/model wiring.

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Queue — Actions Runner Queue State</title>
+<!--
+  Renders ONLY data/queue-state-feed.json (schema queue-state-feed/v1,
+  collector scripts/dashboards/queue_state_collect.py). Owner's
+  queue-timers contract (2026-11-03): the feed carries counts and
+  created_at INSTANTS only; every age on this page is computed in
+  the browser from those instants and ticks live — never a
+  pre-computed duration. A value the feed does not hold renders as
+  absent. Nav registration follows the Web Design lane's canon pass.
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .big{font-size:44px;font-weight:700;line-height:1.1}
+  .red{color:var(--bad)} .green{color:var(--ok)} .amber{color:var(--gold)} .dim{color:var(--muted)}
+  .chip{display:inline-block;background:#21262d;border-radius:4px;padding:1px 6px;margin:2px 2px 2px 0;font-size:12px}
+  .cards{display:flex;gap:.7rem;flex-wrap:wrap}
+  .cards .card{flex:1 1 180px}
+</style>
+ <script src="./versioning.js" defer></script>
+</head>
+<body>
+<header>
+<div class="hero">
+<p class="eyebrow">Queue · Actions Runner State</p>
+<h1>Actions queue — who is waiting, and for how long</h1>
+<p class="lede">The account's GitHub Actions queue for the monorepo: how many runs are queued, how long the oldest has waited, which workflows hold the queue, and the critical-path runs pinned with live wait timers. This page consumes <code>data/queue-state-feed.json</code> (schema <code>queue-state-feed/v1</code>) and nothing else — ages are computed here, in your browser, from the feed's <code>created_at</code> instants, and tick every second.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading feed…</p>
+
+<section>
+<div class="cards">
+  <div class="card"><div class="dim">Queued runs</div><div class="big" id="q-count">—</div></div>
+  <div class="card"><div class="dim">In progress</div><div class="big" id="q-prog">—</div></div>
+  <div class="card"><div class="dim">Oldest wait (live)</div><div class="big amber" id="q-oldest">—</div><div class="dim" id="q-oldest-at"></div><div class="dim" id="q-wedged"></div></div>
+  <div class="card"><div class="dim">Feed age (live)</div><div class="big" id="q-feedage">—</div><div class="dim">the collector rides the same queue — a growing feed age is itself the flood signal</div></div>
+</div>
+</section>
+
+<section>
+<div class="head"><h2>Drain quality — last 100 completions</h2></div>
+<div class="card" id="q-mix"><span class="dim">—</span></div>
+</section>
+
+<section>
+<div class="head"><h2>Pinned — critical-path runs</h2></div>
+<div class="card"><div class="table-wrap"><table class="table" id="q-pinned"><thead><tr>
+  <th>Run</th><th>Workflow</th><th>Event</th><th>Status</th><th>Created (UTC)</th><th>Wait (live)</th>
+</tr></thead><tbody></tbody></table></div></div>
+</section>
+
+<section>
+<div class="head"><h2>Queue by workflow</h2></div>
+<div class="card"><div class="table-wrap"><table class="table" id="q-wf"><thead><tr>
+  <th>Workflow</th><th>Queued</th>
+</tr></thead><tbody></tbody></table></div></div>
+</section>
+</main>
+<script>
+function fmtAge(ms){
+  if(ms < 0) ms = 0;
+  const s = Math.floor(ms/1000), h = Math.floor(s/3600), m = Math.floor((s%3600)/60), ss = s%60;
+  return h > 0 ? h+"h "+String(m).padStart(2,"0")+"m" : m > 0 ? m+"m "+String(ss).padStart(2,"0")+"s" : ss+"s";
+}
+function tick(){
+  const now = Date.now();
+  document.querySelectorAll("[data-since]").forEach(el=>{
+    el.textContent = fmtAge(now - Date.parse(el.getAttribute("data-since")));
+  });
+}
+fetch("./data/queue-state-feed.json").then(r=>r.json()).then(f=>{
+  document.getElementById("meta").innerHTML =
+    "Feed generated <span data-since='"+f.generated_at+"'></span> ago · repo <code>"+f.repo+"</code> · schema <code>"+f.schema+"</code>";
+  document.getElementById("q-count").textContent = f.queued;
+  document.getElementById("q-prog").textContent = f.in_progress;
+  const feedEl = document.getElementById("q-feedage");
+  feedEl.setAttribute("data-since", f.generated_at); feedEl.textContent = "…";
+  if(f.oldest_queued_at){
+    const o = document.getElementById("q-oldest");
+    o.setAttribute("data-since", f.oldest_queued_at); o.textContent = "…";
+    document.getElementById("q-oldest-at").textContent = "oldest queued run created " + f.oldest_queued_at.replace("T"," ").replace("Z"," UTC")
+      + (f.oldest_queued_run ? " — " + f.oldest_queued_run.workflow + " · run " + f.oldest_queued_run.id : "");
+  } else {
+    document.getElementById("q-oldest").textContent = "0s";
+    document.getElementById("q-oldest-at").textContent = "queue empty at collection time";
+  }
+  if(f.wedged_ancient && f.wedged_ancient.length){
+    document.getElementById("q-wedged").innerHTML = "wedged ancients (hold no runner, resist cancel): "
+      + f.wedged_ancient.map(r=>r.workflow+" · run "+r.id+" · <span data-since='"+r.created_at+"'>…</span>").join(" · ");
+  }
+  const mix = f.recent_completions_mix || {};
+  document.getElementById("q-mix").innerHTML = Object.keys(mix).length
+    ? Object.entries(mix).map(([k,v])=>'<span class="chip">'+k+": <b>"+v+"</b></span>").join(" ")
+      + '<div class="dim" style="margin-top:.4rem">A healthy queue completes real work. A mix dominated by <b>skipped</b> is the churn signature: condition-gated fan-out runs occupying scheduler slots to do nothing.</div>'
+    : '<span class="dim">not in feed</span>';
+  const pb = document.querySelector("#q-pinned tbody");
+  pb.innerHTML = (f.pinned && f.pinned.length) ? f.pinned.map(r=>
+    "<tr><td><a href='"+r.url+"'>"+r.id+"</a></td><td>"+r.workflow+"</td><td>"+r.event+"</td><td>"+r.status+"</td><td>"+r.created_at.replace("T"," ").replace("Z","")+"</td><td data-since='"+r.created_at+"'>…</td></tr>"
+  ).join("") : '<tr><td colspan="6" class="dim">no critical-path runs waiting at collection time</td></tr>';
+  const wb = document.querySelector("#q-wf tbody");
+  wb.innerHTML = (f.by_workflow_queued || []).map(w=>
+    "<tr><td>"+w.workflow+"</td><td>"+w.queued+"</td></tr>"
+  ).join("");
+  tick();
+  setInterval(tick, 1000);
+}).catch(e=>{
+  document.getElementById("meta").textContent = "Queue feed unavailable: " + e.message + " (the collector's first refresh PR may still be in flight)";
+});
+</script>
+</body>
+</html>

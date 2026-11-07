@@ -166,11 +166,15 @@ Report commands actually run; never claim a gate passed from its existence or qu
 
 The source index [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph) is a discovery catalogue, not an endorsement or dependency manifest. Highest-value candidates to evaluate selectively:
 
-- Official `langgraph-supervisor` / `langgraph-swarm`: alternative coordination topologies; compare against the native manager treatment registry before adopting.
-- `langchain-mcp-adapters`: MCP tool bridge candidate; compare with the existing MCP catalog and adapter/foundry boundary.
-- `deepagents`: planning, context/filesystem, subagent, skill, and memory harness; use only where its built-ins solve a demonstrated gap.
-- `open_deep_research` / `open-swe`: reference architectures for research and coding agents; inspect code, licenses, dependencies, and security before any extraction.
-- Security references such as `aport-agent-guardrails` and `sidclawhq/platform`: research-only until threat model, enforcement boundary, maintenance, and license are independently verified.
+- `langgraph-swarm-py`: official handoff/swarm implementation; evaluate only as a bounded treatment against the native manager, with explicit attribution and useful-yield measurements.
+- `langgraph-supervisor-py`: **legacy/migration reference only** for new work; its own README now recommends the supervisor pattern directly via tools for most use cases.
+- `langchain-mcp-adapters`: **do not adopt this package**; its README says it is no longer actively maintained and directs users to `langchain[mcp]` / `langchain.mcp`. Reconcile with the existing MCP adapter/foundry boundary before using the replacement.
+- `deepagents`: higher-level harness for planning, context/filesystem, subagents, skills, and memory; use only where built-ins solve a demonstrated gap.
+- `open-swe`: Deep Agents-based software factory reference, but its README explicitly warns it is under active development and correctness/stability/compatibility are not guaranteed.
+- `open_deep_research`: research workflow reference; its README's visible update notes are from 2025, so verify maintenance and provider compatibility before reuse.
+- `Mediaeater/swarm-at-ledger`: hash-chain/audit pattern worth studying, but its README says its ledger records are synthetic seed data, not real agent interactions. Do not treat it as external fleet evidence.
+- `aporthq/aport-agent-guardrails`: promising pre-action authorization research; independently verify threat model, bypass resistance, enforcement placement, test corpus, maintenance, and license before integration.
+- `ac12644/langgraph-starter-kit`: community starter-kit reference only; inspect current dependencies, test coverage, and security before extraction.
 
 No repository forks, vendoring, submodules, dependencies, provider credentials, or deployments are created by reading this shortlist.
 

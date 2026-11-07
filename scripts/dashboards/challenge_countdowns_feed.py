@@ -68,7 +68,7 @@ def load_prizes(root):
     prizes = {}
     if path.exists():
         coord = json.loads(path.read_text(encoding="utf-8"))
-        for ev in coord.get("events", []):
+        for ev in (coord.get("events", []) + coord.get("candidate_events", [])):
             p = ev.get("prizes") or {}
             if not isinstance(p, dict):
                 continue  # non-object prizes record: not consumable here
@@ -89,9 +89,22 @@ def load_prizes(root):
     return prizes
 
 
+def load_event_urls(root):
+    """Official event pages from the coordinator, including candidate intake."""
+    path = root / COORD_REL
+    urls = {}
+    if path.exists():
+        coord = json.loads(path.read_text(encoding="utf-8"))
+        for ev in (coord.get("events", []) + coord.get("candidate_events", [])):
+            if ev.get("id") and ev.get("official_url"):
+                urls[ev["id"]] = ev["official_url"]
+    return urls
+
+
 def build_feed(root):
     mod = load_emitter(root)
     prizes = load_prizes(root)
+    event_urls = load_event_urls(root)
     text = (root / LOG_REL).read_text(encoding="utf-8")
     titles = {}
     for m in mod.HEADER_RE.finditer(text):
@@ -108,6 +121,7 @@ def build_feed(root):
             "id": e["id"],
             "title": titles.get(e["id"], e["id"]),
             "status": status if status else "ACTIVE",
+            "event_url": event_urls.get(e["id"]),
             "opens": e["opens"].isoformat() if e["opens"] else None,
             "closes": e["closes"].isoformat() if e["closes"] else None,
             "prizes": prizes.get(e["id"], {

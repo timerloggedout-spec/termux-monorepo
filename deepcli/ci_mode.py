@@ -76,6 +76,9 @@ def main():
     except json.JSONDecodeError as e:
         print(f"::warning::Invalid event JSON ({e}); using empty event")
         event = {}
+    if not isinstance(event, dict):
+        print("::warning::Event payload must be a JSON object; using empty event")
+        event = {}
 
     event_name = os.environ.get("GITHUB_EVENT_NAME", "")
     if not should_process_event(event, event_name):

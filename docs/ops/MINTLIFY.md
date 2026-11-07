@@ -58,7 +58,7 @@ See [Mintlify CLI](https://www.mintlify.com/docs/cli/index).
 ## Related
 
 - [Context7 + Mintlify MCP operating contract](CONTEXT7-MINTLIFY-INTEGRATION.md)
-- Issue #175 — operator priority matrix
+- Issue #175 — closed historical operator-priority snapshot (superseded; not a current control plane)
 - PR #323 — initial `docs.json`
 - Dashboard landing commit — bulk MDX seed (`Mintlify-Source: dashboard-editor`)
 - PR #326 — Notation Sets proposal page

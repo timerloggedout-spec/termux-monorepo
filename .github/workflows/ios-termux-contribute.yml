@@ -45,6 +45,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git
 
+      - name: Set defaults
+        id: defaults
+        run: |
+          # Set default values for when workflow is triggered by push (not workflow_dispatch)
+          echo "target_repo=${{ inputs.target_repo || 'credkellar/iOS-Termux' }}" >> $GITHUB_OUTPUT
+          echo "base_branch=${{ inputs.base_branch || 'main' }}" >> $GITHUB_OUTPUT
+          echo "pr_title=${{ inputs.pr_title || 'Enhance translations: add 22 new command pairs and 4 new path mappings' }}" >> $GITHUB_OUTPUT
+          echo "use_fork=${{ inputs.use_fork || 'false' }}" >> $GITHUB_OUTPUT
+
       - name: Prepare patch
         id: patch
         run: |
@@ -55,8 +64,9 @@ jobs:
       - name: Process target repo
         id: repo
         run: |
-          OWNER=$(echo "${{ inputs.target_repo }}" | cut -d'/' -f1)
-          REPO=$(echo "${{ inputs.target_repo }}" | cut -d'/' -f2)
+          TARGET_REPO="${{ steps.defaults.outputs.target_repo }}"
+          OWNER=$(echo "$TARGET_REPO" | cut -d'/' -f1)
+          REPO=$(echo "$TARGET_REPO" | cut -d'/' -f2)
           echo "owner=$OWNER" >> $GITHUB_OUTPUT
           echo "repo=$REPO" >> $GITHUB_OUTPUT
 
@@ -65,8 +75,9 @@ jobs:
         run: |
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
+          USE_FORK="${{ steps.defaults.outputs.use_fork }}"
           
-          if [ "${{ inputs.use_fork }}" = "true" ]; then
+          if [ "$USE_FORK" = "true" ]; then
             TARGET="timerloggedout-spec/${REPO}_fork"
           else
             TARGET="${OWNER}/${REPO}"
@@ -83,6 +94,8 @@ jobs:
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
           TARGET="${{ steps.target.outputs.target }}"
+          BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
+          PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
           PATCH_PATH="${{ steps.patch.outputs.patch_path }}"
           BRANCH="contribution-enhancements-$(date +%Y%m%d%H%M%S)"
           
@@ -104,7 +117,7 @@ jobs:
           git config user.name "timerloggedout-spec"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "${{ inputs.pr_title }}"
+          git commit -m "$PR_TITLE"
           
           git remote add target "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${TARGET}.git"
           git push target $BRANCH --force
@@ -121,15 +134,17 @@ jobs:
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
           TARGET="${{ steps.target.outputs.target }}"
+          BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
+          PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
           BRANCH="${{ steps.apply.outputs.branch }}"
           
           PR_BODY="This PR adds significant enhancements to the iOS-Termux project:\n\n\n## Changes\n- Add 22 new command translations (43 total, was 21)\n- Add 4 new path translations (9 total, was 5)\n- Add 30 new comprehensive tests (73 total, was 43)\n- All existing tests still pass\n- All 48 checks still pass\n- 100% backward compatible\n\n## New Command Translations\n- pkg upgrade, apt upgrade, pkg remove, pkg search\n- dpkg -l, apt search, xdg-open\n- termux-clipboard-set {text}, termux-tts-stop\n- termux-download, termux-download --timeout\n- termux-vibrate, termux-notification, termux-camera-photo, termux-sensor\n\n## New Path Translations\n- ~/storage/external-1, /sdcard\n- /storage/emulated/0, /storage/emulated/0/Download\n\nContribution from termux-monorepo collaboration.\n\nCo-authored-by: Vibe Code <vibe@mistral.ai>"
           
           PR_URL=$(gh pr create \
             --repo ${OWNER}/${REPO} \
-            --base ${{ inputs.base_branch }} \
+            --base $BASE_BRANCH \
             --head "${TARGET}:${BRANCH}" \
-            --title "${{ inputs.pr_title }}" \
+            --title "$PR_TITLE" \
             --body "$PR_BODY" 2>&1 || echo "")
           
           if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ] && [ "$PR_URL" != "existing-422" ]; then

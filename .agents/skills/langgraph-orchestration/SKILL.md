@@ -43,19 +43,43 @@ Prefer the existing direct CLI/tool path for simple linear tasks. Prefer Deep Ag
 
 ## Official upstream skill set
 
-The canonical upstream source is [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills). These are the best first-load skills for LangGraph implementation:
+The canonical upstream source is [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills). Its README currently labels the collection early-development and warns that APIs and skill content may change. Pin source blobs and re-check before implementation.
+
+### Framework selection and core graph implementation
 
 | Skill | Load when | Pinned source blob |
 |---|---|---|
+| `ecosystem-primer` | **First** for any LangChain/LangGraph/Deep Agents project; choose the correct layer and next skill | `88bc543c9a73c850ee507ec4b7fd09653f066d32` |
 | `langgraph-fundamentals` | Any LangGraph code: StateGraph, state, nodes, edges, Command, Send, invoke, streaming, errors | `adf7bff81897aa99d9505195a1196fced6047b97` |
 | `langgraph-human-in-the-loop` | Interrupts, approval, validation, pause/resume, recoverable errors | `d762f2a170c30310b5641642af3e19ce7866a28a` |
 | `langgraph-persistence` | Checkpointers, thread identity, cross-thread Store, history/time travel, subgraph checkpoint scope | `bbcf0ea77bf2b374a99e5d08cae147c12da03e82` |
 
+### Optional project lifecycle skills
+
+| Skill | Load when | Pinned source blob |
+|---|---|---|
+| `langgraph-python-quickstart` | A minimal new Python graph project is explicitly requested | `89aab024205b2bdfc6102f5bfd44141a65dd2ba7` |
+| `langgraph-typescript-quickstart` | A minimal new TypeScript graph project is explicitly requested | `9b756b39b3adc67d4d245078b59a97e08ba33de7` |
+| `langgraph-cli` | Scaffold, local dev, build, Docker Compose, or deployment lifecycle | `b63b16e9882e1a2533ddb92a70e4c4cc98415b03` |
+
+### Adjacent alternative: Deep Agents
+
+| Skill | Load when | Pinned source blob |
+|---|---|---|
+| `deep-agents-core` | Planning, filesystem context, skills, memory, and subagent harness are more valuable than hand-authored graph control flow | `841dbd59b4f0012ccf7d99fec3590ae5c3b119fb` |
+| `deep-agents-orchestration` | Deep Agents subagent delegation, task planning, or HITL is selected | `fbd57c8a1f163e8fac73765837d5bc427a4d63e6` |
+
 Read the source SKILL.md and its language reference from the pinned upstream repository before code changes. Do not copy an entire upstream skill into this repository; retain provenance and adapt only the invariants needed by this project.
 
+- Ecosystem primer: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/ecosystem-primer
 - Fundamentals: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-fundamentals
 - Human-in-the-loop: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-human-in-the-loop
 - Persistence: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-persistence
+- CLI: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-cli
+- Python quickstart: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-python-quickstart
+- TypeScript quickstart: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-typescript-quickstart
+- Deep Agents core: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/deep-agents-core
+- Deep Agents orchestration: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/deep-agents-orchestration
 - Upstream catalog: https://github.com/langchain-ai/langchain-skills
 
 ## Graph design contract

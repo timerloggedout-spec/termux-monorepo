@@ -11,7 +11,17 @@ name: repo-tracking-collect
 # VM = sandbox law: this workflow is the standing mechanism; no VM cron.
 
 on:
-  workflow_dispatch:
+  # PR-feed state is refreshed by the event that changes it, not by waiting
+  # for the daily anti-entropy pass.
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
+  # Refresh the cross-domain projection after the append-only lane-events
+  # recorder has finished writing its Neon batch.
+  workflow_run:
+    workflows: ["lane events recorder"]
+    types: [completed]
+  # Low-frequency anti-entropy remains only for external backup-repository
+  # metadata, which has no verified cross-repository webhook into this repo.
   schedule:
     - cron: '23 7 * * *'
   push:
@@ -45,6 +55,13 @@ permissions:
 
 jobs:
   collect:
+    if: >-
+      github.event_name != 'pull_request_target' ||
+      (
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -68,6 +85,7 @@ jobs:
           ref: master
           fetch-depth: 1
           token: ${{ steps.swarm-token.outputs.token }}
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -92,6 +110,8 @@ jobs:
             head -n 30 ops/tracking/tracking.md
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Commit generated artifacts to master (single-writer)
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
           git add ops/tracking/tracking.json ops/tracking/tracking.md \
@@ -111,8 +131,19 @@ jobs:
           git config user.name 'repo-tracking-collect'
           git config user.email 'actions@github.com'
           git commit -m 'ops(tracking): refresh repo tracking surface (auto-derived)'
-          git pull --rebase origin master
-          git push origin HEAD:master
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master || { git rebase --abort || true; exit 1; }
+            if git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin HEAD:master; then
+              exit 0
+            fi
+            if [[ "$attempt" -lt 3 ]]; then
+              echo "Push rejected during concurrent master update; retrying ($attempt/3)."
+              sleep "$attempt"
+            fi
+          done
+          echo 'Unable to publish repo-tracking snapshot after 3 attempts.' >&2
+          exit 1
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4

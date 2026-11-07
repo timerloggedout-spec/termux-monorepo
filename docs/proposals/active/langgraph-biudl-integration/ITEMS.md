@@ -10,3 +10,5 @@
 | LGB-006 | Extend existing OrchestratorTracer / ATES bridge with a versioned graph-event contract | backlog | Current schema has six event kinds and no node identity; add allowlisted fields + privacy tests; do not repurpose ACTION-EFFECT-EVENT |
 | LGB-007 | Compare native manager vs LangGraph treatments on same MVT cohort | backlog | Require task fingerprints, equal validation, cost/time/outcome measures |
 | LGB-008 | Run current-SHA dual gates and promote verified slice | backlog | Do not equate PR creation or queued checks with validation |
+| LGB-009 | Build the competitive orchestration treatment portfolio and benchmark corpus | **specified** | See COMPETITION-MATRIX.md; native control, LangGraph, Deep Agents, swarm/handoff, supervisor pattern, and hybrid |
+| LGB-010 | Synthesize and test hybrid patterns from independently validated strengths | backlog | Preserve attribution, authority boundaries, rollback, and no self-promotion |

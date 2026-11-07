@@ -1,7 +1,7 @@
 name: iOS-Termux Contribute
 
 # Workflow to contribute to credkellar/iOS-Termux
-# Uses pre-generated patch and creates PR directly
+# Uses pre-generated patch and creates PR via fork
 
 on:
   push:
@@ -24,7 +24,7 @@ on:
       use_fork:
         description: Use timerloggedout-spec fork as intermediate
         required: false
-        default: "false"
+        default: "true"
 
 permissions:
   contents: write
@@ -48,11 +48,10 @@ jobs:
       - name: Set defaults
         id: defaults
         run: |
-          # Set default values for when workflow is triggered by push (not workflow_dispatch)
           echo "target_repo=${{ inputs.target_repo || 'credkellar/iOS-Termux' }}" >> $GITHUB_OUTPUT
           echo "base_branch=${{ inputs.base_branch || 'main' }}" >> $GITHUB_OUTPUT
           echo "pr_title=${{ inputs.pr_title || 'Enhance translations: add 22 new command pairs and 4 new path mappings' }}" >> $GITHUB_OUTPUT
-          echo "use_fork=${{ inputs.use_fork || 'false' }}" >> $GITHUB_OUTPUT
+          echo "use_fork=${{ inputs.use_fork || 'true' }}" >> $GITHUB_OUTPUT
 
       - name: Prepare patch
         id: patch
@@ -88,7 +87,7 @@ jobs:
       - name: Clone and apply patch
         id: apply
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           OWNER="${{ steps.repo.outputs.owner }}"
@@ -99,7 +98,7 @@ jobs:
           PATCH_PATH="${{ steps.patch.outputs.patch_path }}"
           BRANCH="contribution-enhancements-$(date +%Y%m%d%H%M%S)"
           
-          git clone --depth 1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${OWNER}/${REPO}.git /tmp/target-repo
+          git clone --depth 1 https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git /tmp/target-repo
           cd /tmp/target-repo
           
           git checkout -b $BRANCH
@@ -119,7 +118,7 @@ jobs:
           git add -A
           git commit -m "$PR_TITLE"
           
-          git remote add target "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${TARGET}.git"
+          git remote add target "https://x-access-token:${GITHUB_TOKEN}@github.com/${TARGET}.git"
           git push target $BRANCH --force
           
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
@@ -128,7 +127,7 @@ jobs:
       - name: Create Pull Request
         id: pr
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           OWNER="${{ steps.repo.outputs.owner }}"

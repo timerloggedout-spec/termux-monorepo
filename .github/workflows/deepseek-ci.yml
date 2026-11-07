@@ -44,15 +44,8 @@ jobs:
         github.event.comment.user.type == 'User' &&
         contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
         (
-          github.event.comment.body == '@deepseek' ||
-          startsWith(github.event.comment.body, '@deepseek ') ||
-          startsWith(github.event.comment.body, '@deepseek\n') ||
-          github.event.comment.body == '@deepseek-ci' ||
-          startsWith(github.event.comment.body, '@deepseek-ci ') ||
-          startsWith(github.event.comment.body, '@deepseek-ci\n') ||
-          github.event.comment.body == '@deepCore' ||
-          startsWith(github.event.comment.body, '@deepCore ') ||
-          startsWith(github.event.comment.body, '@deepCore\n')
+          startsWith(github.event.comment.body, '@deepseek') ||
+          startsWith(github.event.comment.body, '@deepCore')
         )
       )
     permissions:

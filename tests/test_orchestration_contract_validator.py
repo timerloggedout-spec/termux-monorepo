@@ -193,6 +193,19 @@ class IssueCommentRouterContractTests(unittest.TestCase):
             errors = validate_issue_comment_router_contracts(root)
             self.assertTrue(any("Agent review route must remain" in error for error in errors), errors)
 
+    def test_reusable_target_rejects_expression_interpolation_in_script_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/agent-review-auto-jules.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "            const event = context.eventName;",
+                "            const unsafe = '${{ inputs.source_event }}';\\n            const event = context.eventName;",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("never inline script source" in error for error in errors), errors)
+
     def test_target_execution_must_depend_on_comment_revision_validation(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._fixture(Path(tmp))

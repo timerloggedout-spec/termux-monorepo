@@ -37,7 +37,8 @@ Manager / BIUDL policy
 LangGraph treatment (optional)
   StateGraph / nodes / edges
   reducers / Send / subgraphs
-  checkpoint / interrupt / stream
+  checkpoint / recover / stream
+  autonomous escalation / arbitration
         |
         +---- existing provider + MCP adapters
         |
@@ -78,7 +79,7 @@ The current `AGENT-THROUGHPUT-EVENT.schema.json` is closed and allows only six e
 - Thread IDs are opaque, stable, and non-identifying.
 - Checkpoint payloads are restricted data; no prompts, completions, tool arguments, or checkpoint blobs in Git, public artifacts, ATES, or receipts.
 - Production checkpointer choice requires an approved persistence/security item; in-memory is test-only.
-- Interrupts require checkpointing and same-thread resume. Nodes restart on resume, so pre-interrupt side effects must be idempotent.
+- Checkpointing is for automatic process/worker recovery, not approval pauses. Replayed work must be idempotent and side effects must be deduplicated.
 - Tool side effects must pass through existing authorization and allowlist checks. Use `ACTION-EFFECT-EVENT` only for its supported review/comment-to-commit correlation; it is not generic evidence for every tool side effect.
 - Provider/model routing remains with existing provider adapters and manager policy.
 
@@ -88,7 +89,6 @@ The official [LangChain Skills repository](https://github.com/langchain-ai/langc
 
 1. `ecosystem-primer` — first, to choose LangChain vs LangGraph vs Deep Agents.
 2. `langgraph-fundamentals` — mandatory for any graph code.
-3. `langgraph-human-in-the-loop` — mandatory for interrupt/approval/resume work.
 4. `langgraph-persistence` — mandatory for checkpointer, thread, Store, history, or subgraph persistence work.
 5. `langgraph-cli` — optional scaffold/dev/build/deploy lifecycle.
 6. Python/TypeScript quickstarts — only for explicit minimal new-project requests.
@@ -128,7 +128,11 @@ Items LGB-001–003 are the initial documentation/skill slice. LGB-004 onward re
 | `aport-agent-guardrails` | Security research only | Require independent bypass and threat-model validation |
 | `langgraph-starter-kit` | Community reference only | Inspect license, dependencies, test coverage, and security before extraction |
 
-## Autonomous escalation\n\nThe target is autonomous escalation across capability-matched specialists and manager tiers—not human-in-the-loop approval. See [AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md](AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md) for the E0–E5 ladder, typed triggers, handoff packet, permission invariant, recovery policy, benchmark redesign, rollout phases, and LGB-011–020. Human approval interrupts, approval queues, and human-resume workflows are explicitly excluded. Escalation changes executor, strategy, or scrutiny; it never broadens permissions.\n\n## Non-goals
+## Autonomous escalation
+
+The target is autonomous escalation across capability-matched specialists and manager tiers—not human-in-the-loop approval. See [AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md](AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md) for the E0–E5 ladder, typed triggers, handoff packet, permission invariant, recovery policy, benchmark redesign, rollout phases, and LGB-011–020. Human approval interrupts, approval queues, and human-resume workflows are explicitly excluded. Escalation changes executor, strategy, or scrutiny; it never broadens permissions.
+
+## Non-goals
 
 - No LangSmith-only observability requirement.
 - No replacement of Temporal for durable execution.

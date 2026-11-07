@@ -194,7 +194,7 @@ def _script_blocks(workflow: str) -> list[str]:
     lines = workflow.splitlines()
     blocks: list[str] = []
     for index, line in enumerate(lines):
-        match = re.match(r"^(\\s*)script:\\s*\\|\\s*$", line)
+        match = re.match(r"^(\s*)script:\s*\|\s*$", line)
         if not match:
             continue
         parent_indent = len(match.group(1))
@@ -203,9 +203,8 @@ def _script_blocks(workflow: str) -> list[str]:
             if candidate.strip() and len(candidate) - len(candidate.lstrip()) <= parent_indent:
                 break
             body.append(candidate)
-        blocks.append("\\n".join(body))
+        blocks.append("\n".join(body))
     return blocks
-
 
 def validate_issue_comment_router_contracts(root: Path = ROOT) -> list[str]:
     """Keep issue-comment fan-out centralized and every reusable target revision-bound."""

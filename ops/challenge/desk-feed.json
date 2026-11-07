@@ -4110,6 +4110,98 @@
         "sync": "na"
       },
       "stages_note": "live \u00b7 provider_usage stamp carrier (DoE intake); entries absorbed into this row, not a build pipeline \u2014 standard stage keys na by design, per AMD/DOMINO na-precedent"
+    },
+    {
+      "entry": "C17",
+      "project": "Game Off 2026 — SHIFT (candidate; owner review pending)",
+      "artifact_repo": null,
+      "status": "candidate — internal intake complete; owner review pending; not joined",
+      "stages": {
+        "spec": "done",
+        "desk": "done",
+        "builder": "na",
+        "pr": "na",
+        "ci": "na",
+        "merge": "na",
+        "sync": "na"
+      },
+      "stages_detail": {
+        "spec": "Official event page + FAQ + GitHub Blog reviewed 2026-11-07; requirements and dates recorded in coordinator candidate_events C17 and issue #5050.",
+        "desk": "Gantt and tiered deadline timebox filed in issue #5050; six private Google Calendar checkpoints created. External itch.io join not performed.",
+        "builder": "not authorized — owner review pending",
+        "submission": "not started"
+      },
+      "evidence": {
+        "issue": 5050,
+        "official_sources": [
+          "https://itch.io/jam/game-off-2026",
+          "https://itch.io/jam/game-off-2026/topic/7290154/frequently-asked-questions-faq",
+          "https://github.blog/open-source/gaming/game-off-2026-the-theme-is-shift/"
+        ],
+        "calendar_checkpoints": [
+          "https://www.google.com/calendar/event?eid=NWtncDY5dWpyZ2wxYmQ0cTZlZmE0OXU2aGcgdGltZXJsb2dnZWRvdXRAbQ",
+          "https://www.google.com/calendar/event?eid=NGdzYWs3MnAybzRlaTZidTcwNDY4OGswNGsgdGltZXJsb2dnZWRvdXRAbQ",
+          "https://www.google.com/calendar/event?eid=bmE5a3Brb2JraWt1bmtmMzhuNXIyY2dsbTggdGltZXJsb2dnZWRvdXRAbQ",
+          "https://www.google.com/calendar/event?eid=cnJyYms5NHByNWlxbjlmanFoajhjY3FrYmsgdGltZXJsb2dnZWRvdXRAbQ",
+          "https://www.google.com/calendar/event?eid=c2gxaGJsb2YwdGZ2dWxqbW0xZGkzcnE3cm8gdGltZXJsb2dnZWRvdXRAbQ",
+          "https://www.google.com/calendar/event?eid=aHV1YWRnM2g3aDkyYW1saDcxa25scDd0cGcgdGltZXJsb2dnZWRvdXRAbQ"
+        ]
+      },
+      "next": "Owner review: decide whether to join the jam and select a concept. Until approved, do not create the game repo or start build work.",
+      "provider_usage": [],
+      "resubmit_policy": "Official FAQ: game may be updated during the submission period; once voting begins, avoid changes except critical bug fixes and leave a note for any such fix.",
+      "priority_timebox": {
+        "owner_order": "2026-11-07 owner request — tiered deadline cushioning priority for Game Off 2026; official submission wall sourced from the jam page and FAQ.",
+        "wall": "2026-12-01T13:37:00-08:00",
+        "landing": "2026-11-29T13:37:00-08:00",
+        "tiers": [
+          {
+            "tier": 0,
+            "name": "BASE",
+            "from": "now",
+            "effect": "Candidate review and in-window prep; build begins only after owner approval."
+          },
+          {
+            "tier": 1,
+            "name": "CUSHION",
+            "at": "2026-11-28T13:37:00-08:00",
+            "reminder": "Google Calendar — CUSHION (-72h)",
+            "effect": "HIGH — admit ahead of routine slate work; close scope and missing assets."
+          },
+          {
+            "tier": 2,
+            "name": "WALL-DAY",
+            "at": "2026-12-01T00:00:00-08:00",
+            "reminder": "Google Calendar — WALL-DAY",
+            "effect": "CRITICAL — preempt non-critical work; validation and submission readiness only."
+          },
+          {
+            "tier": 3,
+            "name": "ESCALATION",
+            "at": "2026-12-01T09:37:00-08:00",
+            "reminder": "Google Calendar — ESCALATION (-4h)",
+            "effect": "MAX — freeze build work; verify repo push, playable artifact and AI-use disclosure."
+          },
+          {
+            "tier": 4,
+            "name": "FINAL",
+            "at": "2026-12-01T13:07:00-08:00",
+            "reminder": "Google Calendar — FINAL (-30m)",
+            "effect": "Last-call submission mechanics only."
+          }
+        ],
+        "step_down_cushion": [
+          {
+            "at": "wall+24h",
+            "tier": 1
+          },
+          {
+            "at": "wall+48h",
+            "tier": 0
+          }
+        ],
+        "note": "Internal landing is 48h before the hard wall. A separate Google Calendar event also marks the hard wall at 13:37 PT. Six private calendar events exist. The separate deadline-reminders/v1 Tracking register remains to be reconciled; do not claim that register integration is complete."
+      }
     }
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",

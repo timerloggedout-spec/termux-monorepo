@@ -2457,6 +2457,117 @@
      ]
     }
    }
+  },
+  {
+   "id": "C17",
+   "name": "Game Off 2026 — SHIFT",
+   "host": "GitHub",
+   "platform": "itch.io",
+   "official_url": "https://itch.io/jam/game-off-2026",
+   "status": "candidate — internal intake filed 2026-11-07; owner review pending; not joined",
+   "dates": {
+    "build_start": {
+     "at": "2026-11-01T13:37:27-08:00",
+     "tz": "America/Los_Angeles",
+     "source": "Official Game Off 2026 page: submissions open 2026-11-01 21:37:27 UTC; GitHub Blog announcement: Nov 1, 2026 13:37 PST."
+    },
+    "deadline": {
+     "at": "2026-12-01T13:37:00-08:00",
+     "tz": "America/Los_Angeles",
+     "source": "Official Game Off 2026 page and FAQ: submission deadline Dec 1, 2026 at 13:37 PST."
+    },
+    "voting_end": {
+     "at": "2027-01-01T13:37:00-08:00",
+     "tz": "America/Los_Angeles",
+     "source": "Official Game Off 2026 page and FAQ: voting ends Jan 1, 2027 at 13:37 PST."
+    },
+    "winners_at": "NOT_ESTABLISHED"
+   },
+   "theme": "SHIFT",
+   "prizes": {
+     "status": "ESTABLISHED",
+     "pool": "No cash or physical prizes; winning games are featured on the GitHub Blog and GitHub social channels; bragging rights.",
+     "tiers": [],
+     "source": "Official Game Off 2026 FAQ, read 2026-11-07: no physical or cash prizes; winners featured on GitHub Blog/social channels.",
+     "notes": "Non-monetary recognition only; do not invent a cash award."
+    },
+   "fit_angle": "Potential open-source showcase for an original playable game. Fit, concept, project identity and build commitment remain unscored pending owner review; no game concept is selected by this intake.",
+   "gates": "Public GitHub repository required; begin the game during the jam and complete the vast majority of development during the submission period; submit both source code and a playable game on itch.io before the hard wall; disclose AI use at submission. Any language, engine, framework and platform are allowed; solo or team; multiple games allowed.",
+   "screen": "OFFICIAL-RULES INTAKE (2026-11-07): event is live; theme SHIFT; public repository + separate playable itch.io submission required; AI allowed with disclosure; no cash/physical prizes. Candidate only — owner entry/concept decision pending.",
+   "submission_mechanics": "Create a public GitHub repository; push source before 2026-12-01 13:37 PST; separately submit a playable build through https://itch.io/jam/game-off-2026 by the same deadline. GitHub push does not automatically submit the itch.io entry. Include clear access/play instructions and disclose AI assistance. Voting by qualifying participants ends 2027-01-01 13:37 PST.",
+   "registration": {
+    "state": "not_joined",
+    "evidence": [
+     "Internal intake only: GitHub issue #5050 created 2026-11-07. No itch.io join confirmation or external registration was performed."
+    ]
+   },
+   "evidence": [
+    {
+     "url": "https://itch.io/jam/game-off-2026",
+     "fetched_at": "2026-11-07"
+    },
+    {
+     "url": "https://itch.io/jam/game-off-2026/topic/7290154/frequently-asked-questions-faq",
+     "fetched_at": "2026-11-07"
+    },
+    {
+     "url": "https://github.blog/open-source/gaming/game-off-2026-the-theme-is-shift/",
+     "fetched_at": "2026-11-07"
+    }
+   ],
+   "gantt_ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5050",
+      "priority_timebox": {
+    "wall": "2026-12-01T13:37:00-08:00",
+    "landing": "2026-11-29T13:37:00-08:00",
+    "tiers": [
+     {
+      "tier": 0,
+      "name": "BASE",
+      "from": "now through 2026-11-27",
+      "effect": "Normal in-window development; build starts only after owner review."
+     },
+     {
+      "tier": 1,
+      "name": "CUSHION",
+      "at": "2026-11-28T13:37:00-08:00",
+      "reminder_url": "https://www.google.com/calendar/event?eid=NWtncDY5dWpyZ2wxYmQ0cTZlZmE0OXU2aGcgdGltZXJsb2dnZWRvdXRAbQ",
+      "effect": "HIGH — admit ahead of routine slate work; resolve scope and missing assets."
+     },
+     {
+      "tier": 2,
+      "name": "WALL-DAY",
+      "at": "2026-12-01T00:00:00-08:00",
+      "reminder_url": "https://www.google.com/calendar/event?eid=bmE5a3Brb2JraWt1bmtmMzhuNXIyY2dsbTggdGltZXJsb2dnZWRvdXRAbQ",
+      "effect": "CRITICAL — preempt non-critical work; validation and submission readiness only."
+     },
+     {
+      "tier": 3,
+      "name": "ESCALATION",
+      "at": "2026-12-01T09:37:00-08:00",
+      "reminder_url": "https://www.google.com/calendar/event?eid=cnJyYms5NHByNWlxbjlmanFoajhjY3FrYmsgdGltZXJsb2dnZWRvdXRAbQ",
+      "effect": "MAX — freeze build work; verify repo push, playable artifact and AI-use disclosure."
+     },
+     {
+      "tier": 4,
+      "name": "FINAL",
+      "at": "2026-12-01T13:07:00-08:00",
+      "reminder_url": "https://www.google.com/calendar/event?eid=c2gxaGJsb2YwdGZ2dWxqbW0xZGkzcnE3cm8gdGltZXJsb2dnZWRvdXRAbQ",
+      "effect": "Last-call submission mechanics only."
+     }
+    ],
+    "wall_reminder_url": "https://www.google.com/calendar/event?eid=aHV1YWRnM2g3aDkyYW1saDcxa25scDd0cGcgdGltZXJsb2dnZWRvdXRAbQ",
+    "step_down_cushion": [
+     {
+      "at": "wall+24h",
+      "tier": 1
+     },
+     {
+      "at": "wall+48h",
+      "tier": 0
+     }
+    ],
+    "reminder_status": "Six private Google Calendar checkpoint events created; desk-feed projection recorded in the same PR; separate deadline-reminders/v1 Tracking register reconciliation remains pending."
+   }
   }
  ],
  "architecture": {

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "31f09905b5cea2b9baba8f3ab1525d70527e4a087da25f396ec56fbad23ec931",
-  "workflow_count": 295,
+  "source_fingerprint": "bbee26719f7d3bf604a76b5d2a96f1d2bd2216aeffc5b570815dbaa607f9b82d",
+  "workflow_count": 296,
   "workflows": [
     {
       "action_pins": [],
@@ -2836,6 +2836,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "contribute"
+      ],
+      "name": "iOS-Termux Contribute",
+      "path": ".github/workflows/ios-termux-contribute.yml",
+      "schedules": [],
+      "triggers": [
         "push",
         "workflow_dispatch"
       ]

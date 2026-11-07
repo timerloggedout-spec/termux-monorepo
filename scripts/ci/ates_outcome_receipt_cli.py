@@ -37,7 +37,7 @@ def main() -> None:
         task_boundary_outcome=args.task_boundary_outcome,
     )
     Path(args.output).write_text(
-        json.dumps(receipt, sort_keys=True, indent=2) + "\\n",
+        json.dumps(receipt, sort_keys=True, indent=2) + "\n",
         encoding="utf-8",
     )
 

@@ -46,7 +46,8 @@ def load_emitter(root):
 
 def display_title(header_rest):
     """'for C1, Workshop to Ship — IN PROGRESS (note)' -> 'for C1, Workshop to Ship'."""
-    rest = header_rest.strip().lstrip("—").strip()\n    rest = re.sub(r"^packet\\s*[—-]\\s*", "", rest, flags=re.I)
+    rest = header_rest.strip().lstrip("—").strip()
+    rest = re.sub(r"^packet\s*[—-]\s*", "", rest, flags=re.I)
     parts = [p.strip() for p in rest.split(" — ")]
     keep = []
     for p in parts:

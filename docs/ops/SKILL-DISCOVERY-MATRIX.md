@@ -21,6 +21,7 @@
 | Evaluation | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` | current-SHA evidence quality |
 | Evaluation | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` | controlled experiment lane |
 | Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
+| Graph orchestration | langgraph-orchestration | `.agents/skills/langgraph-orchestration/SKILL.md` | LangGraph state graphs, routing, fan-out, persistence, HITL, and BIUDL/ATES integration |
 
 ## Other repository-native skill files
 
@@ -74,3 +75,14 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 | Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
 
 External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.
+
+
+## LangGraph ecosystem discovery (2026-11-06)
+
+**Source index:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph) — curated discovery input, not an endorsement or adoption order.
+
+**Best official SKILL.md sources:** [langgraph-fundamentals](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-fundamentals), [langgraph-human-in-the-loop](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-human-in-the-loop), and [langgraph-persistence](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-persistence). Their source blob SHAs and load conditions are pinned in `.agents/skills/langgraph-orchestration/SKILL.md`.
+
+**Best ecosystem candidates to evaluate:** official supervisor/swarm packages, `langchain-mcp-adapters`, `deepagents`, `open_deep_research`, and `open-swe`. Guardrail/provenance projects such as `aport-agent-guardrails` and `sidclawhq/platform` remain research-only until their enforcement model, maintenance, license, and threat model are independently reviewed.
+
+**Adoption decision:** reuse native orchestration treatments, receipts, OTEL/ATES, Temporal, and provider/MCP adapters. The LangGraph integration is an optional orchestration treatment, not a replacement control plane. No dependency, fork, submodule, or deployment is implied by discovery.

@@ -11,7 +11,7 @@ from typing import Any
 
 TRUSTED_AUTHOR_ASSOCIATIONS = frozenset({"OWNER", "MEMBER", "COLLABORATOR"})
 COMMENT_EVENT_NAMES = frozenset({"issue_comment", "pull_request_review_comment"})
-_COMMAND_RE = re.compile(r"^@(deepseek-ci|deepseek|deepcore)\b", re.IGNORECASE)
+_COMMAND_RE = re.compile(r"^@(deepseek-ci|deepseek|deepcore)(?=$|\s)", re.IGNORECASE)
 
 
 def parse_comment_command(body: Any) -> dict[str, str] | None:

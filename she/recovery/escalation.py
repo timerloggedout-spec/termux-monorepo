@@ -15,7 +15,7 @@ TERMINAL_STATES = frozenset({
 })
 CLASSIFICATIONS = frozenset({
     "TRANSIENT_FAILURE", "CAPABILITY_GAP", "STAGNATION", "CONTRADICTION",
-    "VERIFIER_REJECTION", "PROVIDER_UNAVAILABLE", "SECURITY_ANOMALY",
+    "VERIFIER_REJECTION", "PROVIDER_UNAVAILABLE", "SECURITY_ANOMALY", "HIGH_IMPACT_RESULT",
     "RESOURCE_EXHAUSTED", "POLICY_DENIAL", "NO_PROGRESS", "UNKNOWN",
 })
 
@@ -157,8 +157,15 @@ def decide_escalation(
     if normalized in {"CONTRADICTION"} and budget.manager_replan_remaining > 0:
         return result("MANAGER_ARBITRATION", reason="CONFLICT_REQUIRES_ARBITRATION")
 
-    if normalized in {"VERIFIER_REJECTION", "CONTRADICTION"} and budget.verification_remaining > 0:
-        return result("INDEPENDENT_VERIFY", reason="INDEPENDENT_EVIDENCE_REQUIRED")
+    if normalized == "HIGH_IMPACT_RESULT" and budget.verification_remaining > 0:
+        verifier = _pick_candidate(
+            pool, required_capabilities=required | {"independent-verification"},
+            excluded_executors=attempted,
+        )
+        if verifier:
+            return result("INDEPENDENT_VERIFY", reason="ELIGIBLE_INDEPENDENT_VERIFIER_FOUND",
+                          target=verifier.executor_ref)
+        return result("TERMINATE", "UNKNOWN", "NO_INDEPENDENT_VERIFIER_AVAILABLE")
 
     if normalized in {"CAPABILITY_GAP", "STAGNATION", "NO_PROGRESS",
                       "VERIFIER_REJECTION", "TRANSIENT_FAILURE"}:

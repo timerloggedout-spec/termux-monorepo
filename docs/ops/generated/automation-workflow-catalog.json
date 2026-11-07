@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6b9f2c90c38bfc3cc21bec347fa178e03e1c9dfb1e5890d0fef310892e847142",
-  "workflow_count": 292,
+  "source_fingerprint": "0238f565d1f64e08cc3904b1e4abdc806d0d9975689796ccedd9ea80912b8a49",
+  "workflow_count": 294,
   "workflows": [
     {
       "action_pins": [],
@@ -851,6 +851,23 @@
       "path": ".github/workflows/cert-unit.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Validate Certification Requirements",
+      "path": ".github/workflows/certification-validation.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },
@@ -4404,6 +4421,25 @@
       ],
       "triggers": [
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "notify",
+        "sync"
+      ],
+      "name": "Sync Developer Roadmap",
+      "path": ".github/workflows/roadmap-sync.yml",
+      "schedules": [
+        "0 0 * * 1"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]

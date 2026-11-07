@@ -71,3 +71,17 @@ Therefore the right integration is a thin optional LangGraph treatment/adapter a
 - What existing manager treatment is the baseline for an equivalent cohort?
 
 These are explicitly assigned to LGB-004 through LGB-007 rather than silently answered by this documentation slice.
+
+
+## 7. Additional official skills and version posture
+
+A second pass over the official skills catalog expanded the best-fit set:
+
+- `ecosystem-primer` (blob `88bc543c9a73c850ee507ec4b7fd09653f066d32`) should run first to select between LangChain, LangGraph, Deep Agents, or a hybrid.
+- `langgraph-cli` (blob `b63b16e9882e1a2533ddb92a70e4c4cc98415b03`) covers scaffold/dev/build/up/deploy and `langgraph.json`; cloud deployment remains approval-gated and is not part of this slice.
+- `langgraph-python-quickstart` (blob `89aab024205b2bdfc6102f5bfd44141a65dd2ba7`) and `langgraph-typescript-quickstart` (blob `9b756b39b3adc67d4d245078b59a97e08ba33de7`) are only for explicitly requested new-project quickstarts.
+- `deep-agents-core` (blob `841dbd59b4f0012ccf7d99fec3590ae5c3b119fb`) and `deep-agents-orchestration` (blob `fbd57c8a1f163e8fac73765837d5bc427a4d63e6`) are adjacent alternative-layer skills, not LangGraph core skills.
+
+The upstream skills README identifies the collection as early development and warns that APIs/content may change. The repository-native skill therefore pins source blobs and requires live API inspection before coding.
+
+PyPI reported `langgraph==1.2.20` as the latest stable release on 2026-11-06, MIT licensed, Python `>=3.10`; the release wheel SHA-256 is `2b9fd01c3d5e0652e6c9b436dc0341413788010eb279ac8c46a733cf485d848b`. PyPI showed no provenance attestation for the release files. This is a version observation only: no package was installed and no project dependency was added. Re-verify release metadata and provenance before LGB-004.

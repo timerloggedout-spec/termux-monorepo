@@ -29,7 +29,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          for attempt in $(seq 1 24); do
+          for attempt in $(seq 1 72); do
             labels="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq '[.labels[].name] | join(",")')"
             case ",${labels}," in
               *,swarm-admitted,*)
@@ -44,7 +44,7 @@ jobs:
             esac
             sleep 5
           done
-          echo "No QUE admission receipt appeared within 120 seconds; failing closed."
+          echo "No QUE admission receipt appeared within 360 seconds; failing closed."
           exit 1
 
       - name: Parse and validate the project-task contract

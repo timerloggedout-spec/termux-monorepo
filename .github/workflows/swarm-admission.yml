@@ -101,5 +101,12 @@ jobs:
             --description "Filing admitted through QUE admission (dispatch-tiers v2)" || true
           gh label create deferred-by-tier --force --color D93F0B \
             --description "Filing deferred by QUE admission; drain re-evaluates" || true
+          # Admission labels are mutually exclusive. On reopen, remove the prior
+          # opposite decision before applying the new receipt label.
+          if [ "${{ steps.eval.outputs.label }}" = "swarm-admitted" ]; then
+            gh issue edit "${{ github.event.issue.number }}" --remove-label deferred-by-tier || true
+          else
+            gh issue edit "${{ github.event.issue.number }}" --remove-label swarm-admitted || true
+          fi
           gh issue comment "${{ github.event.issue.number }}" --body-file "$RUNNER_TEMP/stamp.md"
           gh issue edit "${{ github.event.issue.number }}" --add-label "${{ steps.eval.outputs.label }}"

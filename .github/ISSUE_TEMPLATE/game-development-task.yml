@@ -195,9 +195,3 @@ body:
         - human-only
     validations:
       required: true
-  - type: input
-    id: target-repo
-    attributes:
-      label: Target repo
-      description: Repository for this task.
-      value: timerloggedout-spec/termux-monorepo

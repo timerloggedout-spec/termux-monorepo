@@ -1,6 +1,7 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-30 22:00 UTC · **Master tip:** `fc22deb8`
+**Historical master snapshot:** 2026-09-30 22:00 UTC · **Master tip at snapshot:** `fc22deb8`
+**Branch context:** this PR adds `langgraph-orchestration`; that skill is not yet part of the master inventory.
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 

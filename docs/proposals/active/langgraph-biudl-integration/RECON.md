@@ -8,7 +8,7 @@
 
 ## 1. Source characterization
 
-The Awesome list describes itself as a lifecycle index for building, observing, evaluating, and deploying stateful tool-using agents. It includes LangChain, LangGraph, Deep Agents, LangSmith, official packages, community applications, integrations, research projects, security/governance references, and starter templates.
+The Awesome list describes itself as a lifecycle index for building, observing, evaluating, and deploying stateful tool-using agents. At inspection it was public, not archived, CC0-1.0, with 2,038 stars / 297 forks; last repository push observed 2026-10-15 (README blob `e54d875ae645a03100346e2997acb8cfc43b0a14`). It includes LangChain, LangGraph, Deep Agents, LangSmith, official packages, community applications, integrations, research projects, security/governance references, and starter templates. Stars/forks are discovery signals, not quality evidence.
 
 LangGraph capabilities surfaced by the source include state persistence/checkpointing, durable graph execution, streaming, interrupts, time travel, memory, subgraphs, testing, and observability. The index is a discovery surface; inclusion is not a production-readiness or security endorsement.
 

@@ -1,5 +1,9 @@
 import importlib.util
 import json
+import sqlite3
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -7,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("nomenclature_validator", ROOT / "scripts/ci/validate_nomenclature_matrix.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
+CROSSWALK_SPEC = importlib.util.spec_from_file_location("nomenclature_crosswalk", ROOT / "scripts/ci/build_nomenclature_crosswalk.py")
+CROSSWALK = importlib.util.module_from_spec(CROSSWALK_SPEC)
+CROSSWALK_SPEC.loader.exec_module(CROSSWALK)
 SEED = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json"
 
 class NomenclatureMatrixTests(unittest.TestCase):
@@ -42,11 +49,113 @@ class NomenclatureMatrixTests(unittest.TestCase):
         self.assertIn("hidden_search_alias", schema)
         self.assertIn("hidden_search_alias", MODULE.LABEL_TYPES)
 
+    def test_sqlite_schema_executes_and_has_evidence_table(self):
+        schema = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/schema.sql").read_text(encoding="utf-8")
+        connection = sqlite3.connect(":memory:")
+        try:
+            connection.executescript(schema)
+            columns = {row[1] for row in connection.execute("PRAGMA table_info(evidence_records)")}
+            self.assertTrue({"evidence_id", "source_id", "assertion_type", "assertion_id", "claim", "evidence_locator", "evidence_excerpt", "retrieved_on", "reviewer", "status"} <= columns)
+        finally:
+            connection.close()
+
     def test_expanded_seed_covers_colloquial_mapping_and_near_synonymy(self):
         concepts = {c["concept_id"] for c in self.data["concepts"]}
         self.assertIn("terminology.colloquial_to_formal_mapping", concepts)
         self.assertIn("linguistics.near_synonymy", concepts)
         self.assertGreaterEqual(len(self.data["sources"]), 8)
+
+    def test_evidence_records_have_source_locator_excerpt_and_date(self):
+        self.assertGreaterEqual(len(self.data["evidence_records"]), 1)
+        for evidence in self.data["evidence_records"]:
+            self.assertTrue(evidence["source_id"])
+            self.assertTrue(evidence["evidence_locator"])
+            self.assertTrue(evidence["evidence_excerpt"])
+            self.assertRegex(evidence["retrieved_on"], r"^\d{4}-\d{2}-\d{2}$")
+
+    def test_evidence_cannot_reference_unknown_assertion(self):
+        bad = json.loads(json.dumps(self.data))
+        bad["evidence_records"][0]["assertion_id"] = "missing-label"
+        self.assertTrue(any("unknown assertion" in e for e in MODULE.validate(bad)))
+
+    def test_retrieval_date_must_use_canonical_iso_format(self):
+        for retrieved_on in ("20261027", "2026-1-27", "2026-02-30"):
+            with self.subTest(retrieved_on=retrieved_on):
+                bad = json.loads(json.dumps(self.data))
+                bad["evidence_records"][0]["retrieved_on"] = retrieved_on
+                self.assertTrue(any("expected YYYY-MM-DD" in e for e in MODULE.validate(bad)))
+
+    def test_accepted_evidence_requires_reviewer(self):
+        bad = json.loads(json.dumps(self.data))
+        bad["evidence_records"][0].update(status="accepted", reviewer=None)
+        self.assertTrue(any("nonblank reviewer" in e for e in MODULE.validate(bad)))
+
+    def test_accepted_evidence_rejects_blank_reviewer(self):
+        for reviewer in (None, "", "   ", "\t"):
+            with self.subTest(reviewer=reviewer):
+                bad = json.loads(json.dumps(self.data))
+                bad["evidence_records"][0].update(status="accepted", reviewer=reviewer)
+                self.assertTrue(any("nonblank reviewer" in e for e in MODULE.validate(bad)))
+
+    def test_evidence_excerpt_must_not_be_whitespace(self):
+        for excerpt in ("", "   ", "\t"):
+            with self.subTest(excerpt=excerpt):
+                bad = json.loads(json.dumps(self.data))
+                bad["evidence_records"][0]["evidence_excerpt"] = excerpt
+                self.assertTrue(any("nonblank excerpt" in e for e in MODULE.validate(bad)))
+
+    def test_crosswalk_is_deterministic_and_covers_seed_labels(self):
+        first = CROSSWALK.render_crosswalk(self.data)
+        second = CROSSWALK.render_crosswalk(self.data)
+        self.assertEqual(first, second)
+        checked_in = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.md").read_text(encoding="utf-8")
+        self.assertEqual(first, checked_in)
+        for label in self.data["labels"]:
+            self.assertIn(label["text"].replace("|", r"\|"), first)
+        for concept in self.data["concepts"]:
+            self.assertIn(concept["concept_id"], first)
+        self.assertIn("functional_programming.left_to_right_composition", first)
+        self.assertIn("Semantic mapping candidates", first)
+        self.assertIn("Claim-level evidence", first)
+        self.assertIn("Candidate status is preserved", first)
+
+    def test_machine_crosswalk_is_deterministic_and_matches_checked_in_json(self):
+        first = CROSSWALK.render_machine_crosswalk(self.data)
+        second = CROSSWALK.render_machine_crosswalk(self.data)
+        self.assertEqual(first, second)
+        checked_in = json.loads((ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.json").read_text(encoding="utf-8"))
+        self.assertEqual(first, checked_in)
+        self.assertEqual(len(first["concepts"]), len(self.data["concepts"]))
+        self.assertEqual(sum(len(c["labels"]) for c in first["concepts"]), len(self.data["labels"]))
+        self.assertEqual(len(first["mappings"]), len(self.data["mappings"]))
+        self.assertEqual(len(first["evidence_records"]), len(self.data["evidence_records"]))
+        self.assertIn("not runtime authority", first["authority_boundary"])
+
+    def test_cli_generates_both_crosswalk_projections(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "crosswalk.md"
+            json_output = Path(directory) / "crosswalk.json"
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/ci/build_nomenclature_crosswalk.py"),
+                    "--seed", str(SEED),
+                    "--output", str(output),
+                    "--json-output", str(json_output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(
+                (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.md").read_text(encoding="utf-8"),
+                output.read_text(encoding="utf-8"),
+            )
+            self.assertEqual(
+                json.loads((ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.json").read_text(encoding="utf-8")),
+                json.loads(json_output.read_text(encoding="utf-8")),
+            )
 
     def test_unknown_label_type_rejected(self):
         bad = json.loads(json.dumps(self.data))

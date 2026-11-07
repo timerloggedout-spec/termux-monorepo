@@ -76,3 +76,7 @@ Every promoted rule requires rule_id + version + source + evidence + status + co
 - tests/test_domain_composition_matrix.py — structural/data contract tests.
 
 SQLite is the intended local research substrate; Postgres can become a shared service without changing the semantic contract.
+
+## Cross-matrix references
+
+The nomenclature proposal maintains a separate, typed candidate reference registry at [DOMAIN-COMPOSITION-LINKS.json](../notation-sets/nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json), governed by its [integration contract](../notation-sets/nomenclature-matrix/DOMAIN-COMPOSITION-INTEGRATION.md). This is a navigational/contextual integration only: it does not copy labels into this database, establish semantic equivalence, validate a composition rule, or confer runtime authority. Validate the references with `python scripts/ci/validate_nomenclature_domain_links.py`.

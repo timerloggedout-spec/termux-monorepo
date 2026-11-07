@@ -62,6 +62,14 @@ The canonical upstream source is [langchain-ai/langchain-skills](https://github.
 | `langgraph-typescript-quickstart` | A minimal new TypeScript graph project is explicitly requested | `9b756b39b3adc67d4d245078b59a97e08ba33de7` |
 | `langgraph-cli` | Scaffold, local dev, build, Docker Compose, or deployment lifecycle | `b63b16e9882e1a2533ddb92a70e4c4cc98415b03` |
 
+### Evaluation skill for BIUDL / MVT
+
+| Skill | Load when | Pinned source blob |
+|---|---|---|
+| `eval-engineering` | Design/audit agent benchmark tasks, harnesses, verifiers, controlled runs, calibration, or continuous benchmark maintenance | `c62557a7250cd2c3cf1ef5a8ea50fe97ddfcac3b` |
+
+This is not a LangGraph runtime skill. Use it as a companion to the repository's existing MVT/DoE and ATES contracts; retain independent deterministic verifiers and do not replace repository-specific experiment governance.
+
 ### Adjacent alternative: Deep Agents
 
 | Skill | Load when | Pinned source blob |
@@ -78,6 +86,7 @@ Read the source SKILL.md and its language reference from the pinned upstream rep
 - CLI: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-cli
 - Python quickstart: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-python-quickstart
 - TypeScript quickstart: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-typescript-quickstart
+- Evaluation engineering: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/eval-engineering
 - Deep Agents core: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/deep-agents-core
 - Deep Agents orchestration: https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/deep-agents-orchestration
 - Upstream catalog: https://github.com/langchain-ai/langchain-skills

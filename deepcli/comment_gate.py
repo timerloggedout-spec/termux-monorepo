@@ -18,7 +18,7 @@ def parse_comment_command(body: Any) -> dict[str, str] | None:
     """Parse an exact leading supported moniker; reject mentions embedded in prose."""
     if not isinstance(body, str):
         return None
-    text = body.lstrip()
+    text = body
     match = _COMMAND_RE.match(text)
     if match is None:
         return None

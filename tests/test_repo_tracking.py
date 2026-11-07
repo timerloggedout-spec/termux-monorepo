@@ -59,6 +59,9 @@ def test_next_priority():
 def test_desk_evidence_pr_number_is_shape_and_value_safe():
     assert _desk_evidence_pr_number({"pr": 2606}) == 2606
     assert _desk_evidence_pr_number({"pr": "2606"}) == 2606
+    assert _desk_evidence_pr_number({"pr": 2_147_483_647}) == 2_147_483_647
+    assert _desk_evidence_pr_number({"pr": 2_147_483_648}) is None
+    assert _desk_evidence_pr_number({"pr": "9" * 4301}) is None
     assert _desk_evidence_pr_number({"pr": 0}) is None
     assert _desk_evidence_pr_number({"pr": -1}) is None
     assert _desk_evidence_pr_number({"pr": True}) is None

@@ -73,13 +73,13 @@ jobs:
           
           # Add header
           cat > certifications/report.md << 'EOF'
-# Certification Eligibility Report
+          # Certification Eligibility Report
 
-**Generated:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
-**Workflow:** ${{ github.workflow }}
-**Run ID:** ${{ github.run_id }}
+          **Generated:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          **Workflow:** ${{ github.workflow }}
+          **Run ID:** ${{ github.run_id }}
 
-EOF
+          EOF
           
           cat /tmp/certification-report.md >> certifications/report.md
       

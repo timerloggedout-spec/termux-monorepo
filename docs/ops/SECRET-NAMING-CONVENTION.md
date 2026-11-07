@@ -2,7 +2,7 @@
 
 **Status:** live announcement 2026-09-19 20:55 PDT  
 **Owner:** Grok Administrator  
-**Related:** #184 (use credentials; last-used), #175 (priority matrix), #337 (team MVT)
+**Related:** #184 (use credentials; last-used), #175 (closed historical priority snapshot; no longer an authority), #337 (team MVT)
 
 Do **not** paste secret values into issues, PR bodies, or skill files. Record names and routing only.
 

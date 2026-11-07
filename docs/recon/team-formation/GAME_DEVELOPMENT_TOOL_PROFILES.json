@@ -1,0 +1,468 @@
+{
+  "schema": "game-development-tool-catalog/v1",
+  "status": "candidate_catalog",
+  "note": "Catalog membership is not installation, entitlement, availability or approval. Every use must resolve to a versioned tool profile and record evidence.",
+  "defaults": {
+    "availability_state": "not_established",
+    "version": "not_established",
+    "license_review": "review_required"
+  },
+  "contexts": [
+    {
+      "id": "game_design_systems",
+      "tools": [
+        {
+          "id": "mermaid",
+          "name": "Mermaid",
+          "role": "design-diagrams",
+          "source": "https://mermaid.js.org/",
+          "license": "MIT"
+        },
+        {
+          "id": "json-schema",
+          "name": "JSON Schema",
+          "role": "machine-readable-contracts",
+          "source": "https://json-schema.org/",
+          "license": "specification"
+        }
+      ]
+    },
+    {
+      "id": "gameplay_engineering",
+      "tools": [
+        {
+          "id": "godot",
+          "name": "Godot Engine",
+          "role": "engine-runtime",
+          "source": "https://godotengine.org/",
+          "license": "MIT"
+        },
+        {
+          "id": "unity",
+          "name": "Unity",
+          "role": "engine-runtime",
+          "source": "https://unity.com/",
+          "license": "commercial-terms-review"
+        },
+        {
+          "id": "unreal",
+          "name": "Unreal Engine",
+          "role": "engine-runtime",
+          "source": "https://www.unrealengine.com/",
+          "license": "commercial-terms-review"
+        },
+        {
+          "id": "phaser",
+          "name": "Phaser 4",
+          "role": "web-2d-engine",
+          "source": "https://www.phaser.io/oss/docs",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "id": "engine_runtime_architecture",
+      "tools": [
+        {
+          "id": "godot-cli",
+          "name": "Godot CLI",
+          "role": "headless-import-export",
+          "source": "https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html",
+          "license": "MIT"
+        },
+        {
+          "id": "unity-cli-mcp",
+          "name": "Unity CLI and MCP Mode",
+          "role": "editor-automation",
+          "source": "https://unity.com/features/ai",
+          "license": "commercial-terms-review"
+        },
+        {
+          "id": "unreal-automation",
+          "name": "Unreal Automation Framework",
+          "role": "engine-automation",
+          "source": "https://dev.epicgames.com/documentation/en-us/unreal-engine/automation-test-framework-in-unreal-engine",
+          "license": "engine-terms-review"
+        }
+      ]
+    },
+    {
+      "id": "graphics_rendering",
+      "tools": [
+        {
+          "id": "renderdoc",
+          "name": "RenderDoc",
+          "role": "gpu-frame-capture",
+          "source": "https://renderdoc.org/",
+          "license": "MIT"
+        },
+        {
+          "id": "pix",
+          "name": "PIX",
+          "role": "gpu-performance-capture",
+          "source": "https://devblogs.microsoft.com/pix/",
+          "license": "platform-terms-review"
+        }
+      ]
+    },
+    {
+      "id": "2d_art",
+      "tools": [
+        {
+          "id": "krita",
+          "name": "Krita",
+          "role": "raster-art",
+          "source": "https://krita.org/",
+          "license": "GPL-3.0"
+        },
+        {
+          "id": "aseprite",
+          "name": "Aseprite",
+          "role": "pixel-art-animation",
+          "source": "https://www.aseprite.org/",
+          "license": "commercial-or-GPL-2.0-review"
+        },
+        {
+          "id": "imagemagick",
+          "name": "ImageMagick",
+          "role": "batch-image-processing",
+          "source": "https://imagemagick.org/",
+          "license": "ImageMagick-license-review"
+        }
+      ]
+    },
+    {
+      "id": "3d_art_environment",
+      "tools": [
+        {
+          "id": "blender",
+          "name": "Blender",
+          "role": "3d-modeling-animation-batch-python",
+          "source": "https://docs.blender.org/api/main/info_advanced_blender_as_bpy.html",
+          "license": "GPL-3.0; asset outputs reviewed separately"
+        },
+        {
+          "id": "gltf",
+          "name": "glTF",
+          "role": "3d-asset-interchange",
+          "source": "https://www.khronos.org/gltf/",
+          "license": "specification"
+        }
+      ]
+    },
+    {
+      "id": "animation_rigging",
+      "tools": [
+        {
+          "id": "blender-animation",
+          "name": "Blender Animation",
+          "role": "rigging-and-animation",
+          "source": "https://www.blender.org/",
+          "license": "GPL-3.0"
+        },
+        {
+          "id": "engine-animation",
+          "name": "Engine-native animation graph",
+          "role": "runtime-animation",
+          "source": "https://docs.godotengine.org/en/stable/",
+          "license": "engine-specific"
+        }
+      ]
+    },
+    {
+      "id": "audio_engineering",
+      "tools": [
+        {
+          "id": "audacity",
+          "name": "Audacity",
+          "role": "audio-editing",
+          "source": "https://www.audacityteam.org/",
+          "license": "GPL-3.0"
+        },
+        {
+          "id": "ffmpeg",
+          "name": "FFmpeg",
+          "role": "media-transcode-and-validation",
+          "source": "https://ffmpeg.org/",
+          "license": "LGPL-or-GPL-build-review"
+        },
+        {
+          "id": "fmod",
+          "name": "FMOD Studio",
+          "role": "interactive-audio",
+          "source": "https://www.fmod.com/",
+          "license": "commercial-terms-review"
+        },
+        {
+          "id": "wwise",
+          "name": "Audiokinetic Wwise",
+          "role": "interactive-audio",
+          "source": "https://www.audiokinetic.com/",
+          "license": "commercial-terms-review"
+        }
+      ]
+    },
+    {
+      "id": "physics_simulation",
+      "tools": [
+        {
+          "id": "box2d",
+          "name": "Box2D",
+          "role": "2d-physics",
+          "source": "https://box2d.org/",
+          "license": "MIT"
+        },
+        {
+          "id": "jolt",
+          "name": "Jolt Physics",
+          "role": "3d-physics",
+          "source": "https://github.com/jrouwe/JoltPhysics",
+          "license": "MIT"
+        },
+        {
+          "id": "bullet",
+          "name": "Bullet Physics",
+          "role": "3d-physics",
+          "source": "https://github.com/bulletphysics/bullet3",
+          "license": "zlib"
+        }
+      ]
+    },
+    {
+      "id": "ai_npc_systems",
+      "tools": [
+        {
+          "id": "engine-navigation",
+          "name": "Engine navigation and behavior systems",
+          "role": "npc-navigation",
+          "source": "https://docs.godotengine.org/en/stable/",
+          "license": "engine-specific"
+        },
+        {
+          "id": "python",
+          "name": "Python experiment harness",
+          "role": "policy-evaluation",
+          "source": "https://www.python.org/",
+          "license": "PSF"
+        }
+      ]
+    },
+    {
+      "id": "networking_multiplayer",
+      "tools": [
+        {
+          "id": "enet",
+          "name": "ENet",
+          "role": "reliable-udp-networking",
+          "source": "https://github.com/lsalzman/enet",
+          "license": "MIT"
+        },
+        {
+          "id": "nakama",
+          "name": "Nakama",
+          "role": "multiplayer-server",
+          "source": "https://heroiclabs.com/nakama/",
+          "license": "Apache-2.0/community-and-enterprise-review"
+        },
+        {
+          "id": "colyseus",
+          "name": "Colyseus",
+          "role": "multiplayer-server",
+          "source": "https://colyseus.io/",
+          "license": "MIT"
+        },
+        {
+          "id": "wireshark",
+          "name": "Wireshark",
+          "role": "authorized-network-capture",
+          "source": "https://www.wireshark.org/",
+          "license": "GPL-2.0"
+        }
+      ]
+    },
+    {
+      "id": "ui_ux_accessibility",
+      "tools": [
+        {
+          "id": "playwright",
+          "name": "Playwright",
+          "role": "browser-interaction-tests",
+          "source": "https://playwright.dev/",
+          "license": "Apache-2.0"
+        },
+        {
+          "id": "axe-core",
+          "name": "axe-core",
+          "role": "web-accessibility-tests",
+          "source": "https://github.com/dequelabs/axe-core",
+          "license": "MPL-2.0"
+        }
+      ]
+    },
+    {
+      "id": "tools_content_pipeline",
+      "tools": [
+        {
+          "id": "blender-python",
+          "name": "Blender Python API",
+          "role": "procedural-assets-and-batch-conversion",
+          "source": "https://docs.blender.org/api/main/info_advanced_blender_as_bpy.html",
+          "license": "GPL-3.0"
+        },
+        {
+          "id": "python-cli",
+          "name": "Python CLI tooling",
+          "role": "asset-validation-and-build-tools",
+          "source": "https://www.python.org/",
+          "license": "PSF"
+        },
+        {
+          "id": "nodejs",
+          "name": "Node.js",
+          "role": "web-game-build-tooling",
+          "source": "https://nodejs.org/",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "id": "platform_performance",
+      "tools": [
+        {
+          "id": "perfetto",
+          "name": "Perfetto",
+          "role": "system-performance-tracing",
+          "source": "https://perfetto.dev/",
+          "license": "Apache-2.0"
+        },
+        {
+          "id": "tracy",
+          "name": "Tracy Profiler",
+          "role": "cpu-gpu-performance-profiling",
+          "source": "https://github.com/wolfpld/tracy",
+          "license": "BSD-3-Clause"
+        },
+        {
+          "id": "android-profiler",
+          "name": "Android Studio Profiler",
+          "role": "android-performance-profiling",
+          "source": "https://developer.android.com/studio/profile",
+          "license": "platform-terms-review"
+        }
+      ]
+    },
+    {
+      "id": "build_release_cicd",
+      "tools": [
+        {
+          "id": "github-actions",
+          "name": "GitHub Actions",
+          "role": "build-test-release-automation",
+          "source": "https://docs.github.com/en/actions",
+          "license": "hosted-service-terms-review"
+        },
+        {
+          "id": "godot-export",
+          "name": "Godot headless export",
+          "role": "reproducible-game-export",
+          "source": "https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "id": "ml_vision_telemetry",
+      "tools": [
+        {
+          "id": "unity-ml-agents",
+          "name": "Unity ML-Agents",
+          "role": "rl-imitation-learning-game-testing",
+          "source": "https://github.com/Unity-Technologies/ml-agents",
+          "license": "Apache-2.0; Unity project terms review"
+        },
+        {
+          "id": "gymnasium",
+          "name": "Gymnasium",
+          "role": "rl-environment-api",
+          "source": "https://gymnasium.farama.org/",
+          "license": "MIT"
+        },
+        {
+          "id": "stable-baselines3",
+          "name": "Stable-Baselines3",
+          "role": "rl-algorithms",
+          "source": "https://stable-baselines3.readthedocs.io/",
+          "license": "MIT"
+        },
+        {
+          "id": "pettingzoo",
+          "name": "PettingZoo",
+          "role": "multi-agent-rl-environments",
+          "source": "https://pettingzoo.farama.org/",
+          "license": "MIT"
+        },
+        {
+          "id": "opencv",
+          "name": "OpenCV",
+          "role": "computer-vision",
+          "source": "https://opencv.org/",
+          "license": "Apache-2.0"
+        },
+        {
+          "id": "onnx-runtime",
+          "name": "ONNX Runtime",
+          "role": "model-inference",
+          "source": "https://onnxruntime.ai/",
+          "license": "MIT"
+        },
+        {
+          "id": "huggingface",
+          "name": "Hugging Face Hub",
+          "role": "model-dataset-discovery",
+          "source": "https://huggingface.co/docs/hub/index",
+          "license": "per-model-dataset-license-review"
+        }
+      ]
+    },
+    {
+      "id": "interoperability_reverse_engineering",
+      "tools": [
+        {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "role": "authorized-binary-analysis",
+          "source": "https://ghidra-sre.org/",
+          "license": "Apache-2.0"
+        },
+        {
+          "id": "jadx",
+          "name": "JADX",
+          "role": "authorized-android-decompilation",
+          "source": "https://github.com/skylot/jadx",
+          "license": "GPL-3.0"
+        },
+        {
+          "id": "apktool",
+          "name": "Apktool",
+          "role": "authorized-apk-resource-analysis",
+          "source": "https://apktool.org/",
+          "license": "Apache-2.0"
+        },
+        {
+          "id": "frida",
+          "name": "Frida",
+          "role": "authorized-runtime-instrumentation",
+          "source": "https://frida.re/",
+          "license": "wxWindows-library-license-3.1"
+        },
+        {
+          "id": "mitmproxy",
+          "name": "mitmproxy",
+          "role": "authorized-test-traffic-inspection",
+          "source": "https://mitmproxy.org/",
+          "license": "MIT"
+        }
+      ]
+    }
+  ]
+}

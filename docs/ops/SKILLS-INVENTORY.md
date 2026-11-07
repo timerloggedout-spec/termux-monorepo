@@ -106,6 +106,7 @@ See `docs/ops/SKILL-DISCOVERY-MATRIX.md` for focused discovery and session-scope
 
 - orchestration-treatment-registry — comparable orchestration-pattern registry spanning TUI, CLI, GitHub, Devin, MCP, and agent surfaces.
 - Native schemas: `docs/ops/ORCHESTRATION-TREATMENT.schema.json` and `docs/ops/ORCHESTRATION-RECEIPT.schema.json`.
+- Project loop prompts: `LOOPS.md` — bounded reusable prompts mapped to the existing WAIT, evidence, and orchestration contracts; not an executable scheduler or second source of truth.
 - Architecture: `docs/ops/ORCHESTRATION-CONTRACTS.md`.
 
 The treatment registry composes existing evidence, wait, relationship, and workflow contracts; it does not replace them.

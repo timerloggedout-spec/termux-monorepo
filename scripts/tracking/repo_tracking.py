@@ -94,17 +94,18 @@ def pr_text(pr: dict) -> str:
 
 
 def _desk_evidence_pr_number(evidence):
-    """Return a valid PR number from desk evidence without assuming its shape."""
+    """Return a bounded GitHub PR number without assuming evidence shape."""
     if not isinstance(evidence, dict):
         return None
     value = evidence.get("pr")
     if isinstance(value, bool):
         return None
+    max_pr_number = 2_147_483_647  # GitHub API issue/PR number is a signed 32-bit integer.
     if isinstance(value, int):
-        return value if value > 0 else None
-    if isinstance(value, str) and value.isdecimal():
+        return value if 0 < value <= max_pr_number else None
+    if isinstance(value, str) and len(value) <= 10 and value.isdecimal():
         number = int(value)
-        return number if number > 0 else None
+        return number if 0 < number <= max_pr_number else None
     return None
 
 

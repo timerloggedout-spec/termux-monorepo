@@ -20,7 +20,7 @@ The initial integration is **skill + architecture + proposal-scoped**. It intent
 | `docs/ops/ORCHESTRATION-CONTRACTS.md` | Canonical identity, state, receipt, adapter boundary |
 | `ORCHESTRATION-TREATMENT.schema.json` | Describe a LangGraph graph as a comparable treatment |
 | `ORCHESTRATION-RECEIPT.schema.json` | Project sanitized graph lifecycle/outcome |
-| Existing `OrchestratorTracer` + ATES bridge | Existing metadata-first span capture and six whitelisted event mappings; extend only under a versioned schema change |
+| Existing `OrchestratorTracer` + ATES bridge | Reuse the tracer and six whitelisted event mappings; protect/sanitize raw trace labels and attributes before publication; bridge hashes labels and omits raw context |
 | OpenTelemetry + ATES JSONL | Canonical execution observations and throughput measures |
 | Evidence envelope + orchestration receipt | Sanitized graph-run outcome and SHA-bound provenance |
 | Action/effect event schema | PR discussion/review-to-commit follow-through only; not a generic graph-node ledger |
@@ -79,7 +79,7 @@ The current `AGENT-THROUGHPUT-EVENT.schema.json` is closed and allows only six e
 - Checkpoint payloads are restricted data; no prompts, completions, tool arguments, or checkpoint blobs in Git, public artifacts, ATES, or receipts.
 - Production checkpointer choice requires an approved persistence/security item; in-memory is test-only.
 - Interrupts require checkpointing and same-thread resume. Nodes restart on resume, so pre-interrupt side effects must be idempotent.
-- Tool side effects continue to pass through existing authorization, allowlists, and action/effect evidence.
+- Tool side effects must pass through existing authorization and allowlist checks. Use `ACTION-EFFECT-EVENT` only for its supported review/comment-to-commit correlation; it is not generic evidence for every tool side effect.
 - Provider/model routing remains with existing provider adapters and manager policy.
 
 ## Upstream skill shortlist

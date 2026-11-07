@@ -2,7 +2,7 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-07T03:55:24Z` UTC  
+**Generated:** `2026-11-07T10:59:03Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
 **Count:** 264 docs-lane branch(es)
@@ -140,7 +140,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/integration-graph-matrix-tensor`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-graph-matrix-tensor) | `f243ed561efd` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-poll-refresh-2026-10-22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-poll-refresh-2026-10-22) | `851d029b1571` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-refresh-2026-10-23`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-refresh-2026-10-23) | `bffa965f9f14` | — | — | orphan lane |
-| [`docs/integration-portfolio-expansion-20261105`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-portfolio-expansion-20261105) | `1ed5836fbfed` | [#5027](https://github.com/timerloggedout-spec/termux-monorepo/pull/5027)→`master` | — | PR without registry link |
+| [`docs/integration-portfolio-expansion-20261105`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-portfolio-expansion-20261105) | `0e805e6e6520` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/issue-192-action-integration-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/issue-192-action-integration-intake) | `b749928140f7` | — | — | orphan lane |
 | [`docs/kai9000-orchestrator-correlated`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-orchestrator-correlated) | `a92e6f15da7f` | — | — | orphan lane |
 | [`docs/kai9000-provenance-correct`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/kai9000-provenance-correct) | `73dad86dd7b2` | — | — | orphan lane |

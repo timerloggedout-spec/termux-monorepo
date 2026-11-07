@@ -13,9 +13,39 @@ Compare orchestration approaches as replaceable treatments, then combine indepen
 | Deep Agents | Higher-level harness reduces agent-loop implementation effort | Planning, filesystem context, subagents, skills, memory | Excess abstraction, token/cost overhead, reduced control |
 | Swarm / handoff | Peer or specialist handoffs improve parallel expertise | Specialization, delegation, task decomposition | Coordination overhead, loops, ownership ambiguity |
 | Supervisor / tool-routed | Central supervisor improves task allocation | Central policy, tool routing, bounded delegation | Bottleneck, supervisor bias, archived package risk |
+| Microsoft Agent Framework | Unified agent + workflow primitives reduce multi-framework glue | Graph/functional workflows, sequential/concurrent/handoff/group-chat/Magentic patterns, middleware, sessions, HITL | New platform surface, SDK maturity differs by language, overlap with native manager/Temporal |
+| OpenAI Agents SDK | A small agent-loop abstraction accelerates specialist delegation | Agent loop, handoffs, guardrails, sessions, tool integration, built-in tracing | Provider/runtime coupling, trace privacy and retention constraints, graph-level control may require another layer |
+| Google ADK | Workflow agents provide deterministic multi-agent composition | Sequential/parallel/loop agents, graph workflows, multi-language SDKs | Ecosystem/provider fit, SDK parity and runtime footprint require verification |
+| LlamaIndex Workflows | Event-driven typed steps simplify data/research pipelines | Typed events, async steps, concurrency, validation, streaming, human input and durable-workflow examples | Event bookkeeping, async requirements, integration with non-LlamaIndex retrieval/tool stack |
+| CrewAI | Role-based crews plus Flows simplify specialist team composition | Crews, start/listen/router, state, persistence/resume, guardrails and HITL | Role/agent overhead, hidden orchestration cost, external service dependencies to audit |
+| PydanticAI | Typed agent APIs plus pluggable durability simplify reliable Python agents | Typed dependencies/output, tool integration, OTEL instrumentation, Temporal/DBOS/Prefect/Restate durability | One durable engine per agent; overlap with existing Temporal; replay/idempotency and provider costs to validate |
 | Hybrid | Best-fit components outperform any single treatment | Graph control + native policy + specialized harness + durable execution | Integration complexity, duplicate state, unclear authority |
 
 Candidate rows describe patterns, not endorsements. Archived packages remain reference-only; candidate frameworks must pass current maintenance, license, security, and dependency review before execution.
+
+
+## Expanded ecosystem candidates (official-source recon)
+
+These candidates extend the original Awesome LangGraph shortlist. They are separate treatments, not dependencies to install together.
+
+| Candidate | Source-backed capability | Initial disposition / test question |
+|---|---|---|
+| [Microsoft Agent Framework](https://learn.microsoft.com/agent-framework/overview) | Combines agents, harness agents, integrations, and functional/graph workflows. Workflow docs describe sequential, concurrent, handoff, group-chat, and Magentic patterns, plus HITL and checkpoint/resume. | **High-priority comparison.** Test graph execution, multi-agent patterns, observability, language parity, and how cleanly it composes with the existing manager. Its Go SDK is public preview; Python functional workflows are experimental in current docs. |
+| [OpenAI Agents SDK](https://developers.openai.com/api/docs/guides/agents/sdk) | Agent loop, handoffs, guardrails, sessions, tool integration, and run tracing. Human review can pause execution before sensitive side effects. | **High-priority thin-runtime comparison.** Test specialist delegation, approval gates, guardrail coverage, trace export controls, and portability. Built-in tracing has a ZDR availability limitation; treat its traces as a source, not canonical project evidence. |
+| [Google ADK](https://google.github.io/adk-docs/) | Agent and workflow-agent primitives, including SequentialAgent, ParallelAgent, LoopAgent, and graph-based workflows. | **High-priority portability comparison.** Test multi-language support, graph control, provider neutrality, deterministic routing, and integration cost. |
+| [LlamaIndex Workflows](https://developers.llamaindex.ai/python/llamaagents/workflows/) | Event-driven typed steps, async execution, branching/loops/concurrency, workflow validation, streaming, human-input examples, and durable-workflow examples. | **Research/data-lane candidate.** Test evidence collection, document-heavy research, typed event contracts, and interop with the repository's existing retrieval/tool stack. |
+| [CrewAI](https://docs.crewai.com/) | Role-based crews and event-driven Flows with state, persistence/resume, guardrails, and human-in-the-loop triggers. | **Specialist-team candidate.** Test role decomposition and Flow control against native team orchestration; measure agent overhead, duplication, and hidden coordination cost. |
+| [PydanticAI](https://ai.pydantic.dev/) | Typed agent framework with OpenTelemetry instrumentation and durable execution integrations for Temporal, DBOS, Prefect, Restate, and other engines. | **High-priority Python / Temporal comparison.** Test whether typed contracts and durable wrappers add value without introducing a second durable engine. Docs specify one durable execution engine per agent; don't layer it over an already-durable graph run without a clear boundary. |
+| [Microsoft AutoGen](https://github.com/microsoft/autogen) | Historical multi-agent conversation and orchestration patterns. | **Archived / reference-only.** Microsoft says the repository is no longer maintained and directs new users to Microsoft Agent Framework. Do not start new production adoption from AutoGen. |
+
+### Source-selection notes
+
+- Microsoft Agent Framework explicitly combines agent, harness, and workflow capabilities; its docs recommend using ordinary functions before introducing agents and using workflows when execution order must be explicit.
+- OpenAI Agents SDK exposes built-in tracing for agent, generation, tool, guardrail, and handoff spans. Tracing can be disabled or redirected, but the documentation notes tracing is unavailable for organizations using API access under Zero Data Retention.
+- Google ADK documents deterministic workflow-agent types and multi-agent workflow composition; validate language feature parity rather than assuming all SDKs are identical.
+- LlamaIndex Workflows validates event producer/consumer relationships before execution and uses typed events to describe step edges. Its Python API is async-first.
+- CrewAI documents Flows as stateful event-driven orchestration around Crews, with persistence/resume and human-review capabilities.
+- PydanticAI documents durable execution through multiple workflow engines and explicitly distinguishes crash recovery from run persistence/resume. Its "one durable engine per agent" constraint is especially relevant to this repository's Temporal boundary.
 
 ## Benchmark corpus
 

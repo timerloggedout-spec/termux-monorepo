@@ -4,7 +4,7 @@ updated_by: ChatGPT
 proposals:
 
   - id: master-splinter
-    title: Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)
+    title: 'Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)'
     author: ChatGPT
     status: in_review
     priority: P1
@@ -1248,5 +1248,26 @@ proposals:
     related_branches:
       - feat/integration-intelligence-superpowers
     gates_required:
+      - repo-gate
+      - termux-smoke
+
+  - id: tak-common-operating-picture
+    title: 'T.A.K. — Taktikal Awareness Kit common operating picture and actor-network emergence'
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/tak-common-operating-picture/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 4496
+    related_prs:
+      - 5025
+    related_branches:
+      - tak-common-operating-picture-contract-v1
+    gates_required:
+      - proposal-lifecycle
       - repo-gate
       - termux-smoke

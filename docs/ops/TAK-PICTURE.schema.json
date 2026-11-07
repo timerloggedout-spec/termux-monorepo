@@ -1,0 +1,673 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/TAK-PICTURE.schema.json",
+  "title": "T.A.K. Common Operating Picture",
+  "description": "Evidence-backed, time-aware Taktikal Awareness Kit picture. Awareness projection only; not a scoring or decision record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "picture_id",
+    "generated_at",
+    "source_datasets",
+    "coverage",
+    "entities",
+    "relationships",
+    "observations",
+    "events",
+    "gaps"
+  ],
+  "properties": {
+    "schema": {
+      "const": "tak-picture/v1"
+    },
+    "picture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "detector_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_datasets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/dataset"
+      }
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/observation"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "version",
+        "snapshot_sha256",
+        "captured_at",
+        "source_class"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_class": {
+          "enum": [
+            "procurement",
+            "registration",
+            "award",
+            "contract",
+            "public_entity_record",
+            "operational_surface"
+          ]
+        },
+        "source_uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "dataset_version",
+        "record_id",
+        "captured_at",
+        "sha256",
+        "support"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dataset_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locator": {
+          "type": "string"
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "support": {
+          "enum": [
+            "observed",
+            "derived",
+            "unverified"
+          ]
+        },
+        "rule_id": {
+          "type": "string"
+        }
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "value"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "geographic",
+            "registry",
+            "administrative",
+            "workflow",
+            "unknown"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "source_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "dependentRequired": {
+        "latitude": [
+          "longitude"
+        ],
+        "longitude": [
+          "latitude"
+        ]
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "frame",
+        "readings"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unassessed",
+            "assessed"
+          ]
+        },
+        "frame": {
+          "enum": [
+            "competitive",
+            "non-competitive",
+            "other",
+            "unknown"
+          ]
+        },
+        "readings": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "threat",
+              "opportunity"
+            ]
+          }
+        },
+        "assessed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "unassessed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "readings": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "assessed"
+              },
+              "frame": {
+                "const": "competitive"
+              }
+            },
+            "required": [
+              "status",
+              "frame"
+            ]
+          },
+          "then": {
+            "properties": {
+              "readings": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "threat"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "opportunity"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_id",
+        "entity_type",
+        "display_name",
+        "first_seen_at",
+        "last_seen_at",
+        "position",
+        "state",
+        "assessment",
+        "evidence_refs"
+      ],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity_type": {
+          "enum": [
+            "organization",
+            "government_agency",
+            "actor_network",
+            "registration",
+            "award",
+            "contract",
+            "unknown"
+          ]
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identifiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value",
+              "evidence_ref"
+            ],
+            "properties": {
+              "scheme": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "first_seen_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "position": {
+          "$ref": "#/$defs/position"
+        },
+        "state": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "source_value",
+            "normalized_value",
+            "observed_at",
+            "evidence_ref"
+          ],
+          "properties": {
+            "source_value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "normalized_value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "evidence_ref": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "assessment": {
+          "$ref": "#/$defs/assessment"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relationship_id",
+        "source_entity_id",
+        "target_entity_id",
+        "relationship_type",
+        "first_observed_at",
+        "evidence_refs"
+      ],
+      "properties": {
+        "relationship_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relationship_type": {
+          "enum": [
+            "registered_with",
+            "awarded_to",
+            "contracted_with",
+            "parent_of",
+            "subsidiary_of",
+            "shared_public_identifier",
+            "located_at",
+            "member_of_network",
+            "other",
+            "unknown"
+          ]
+        },
+        "first_observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "support": {
+          "enum": [
+            "observed",
+            "derived",
+            "unverified"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id",
+        "entity_id",
+        "observed_at",
+        "field",
+        "value",
+        "evidence"
+      ],
+      "properties": {
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ],
+          "maxLength": 8192
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "supersedes_observation_id": {
+          "type": "string"
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "event_type",
+        "occurred_at",
+        "observed_at",
+        "subject_entity_id",
+        "evidence",
+        "idempotency_key"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_type": {
+          "enum": [
+            "first_seen",
+            "relationship_observed",
+            "source_value_changed",
+            "conflict_detected",
+            "state_changed",
+            "assessment_added",
+            "emergence_signal",
+            "superseded"
+          ]
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "subject_entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "related_entity_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "before_observation_id": {
+          "type": "string"
+        },
+        "after_observation_id": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "window_start",
+        "window_end",
+        "sources"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "unavailable"
+          ]
+        },
+        "window_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "window_end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dataset_id",
+              "status",
+              "read_at"
+            ],
+            "properties": {
+              "dataset_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "complete",
+                  "partial",
+                  "unavailable",
+                  "stale"
+                ]
+              },
+              "read_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "gap": {
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

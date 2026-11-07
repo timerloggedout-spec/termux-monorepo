@@ -270,7 +270,9 @@
         "alternate_family_remaining",
         "manager_replan_remaining",
         "verification_remaining",
-        "side_effect_budget"
+        "side_effect_budget",
+        "retry_remaining",
+        "same_strategy_replay_count"
       ],
       "properties": {
         "local_repair_remaining": {
@@ -300,6 +302,14 @@
         "deadline_at": {
           "type": "string",
           "format": "date-time"
+        },
+        "retry_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "same_strategy_replay_count": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },

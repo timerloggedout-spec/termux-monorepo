@@ -54,4 +54,3 @@ Issue #5053: https://github.com/timerloggedout-spec/termux-monorepo/issues/5053
 4. Execute controller tests and SHE integration tests.
 5. Implement the minimal framework-neutral LangGraph adapter only after tests and checkpointer ownership are resolved.
 6. Reconcile PR #5045 against current `master`, rerun current-SHA gates, and obtain fresh independent review.
-

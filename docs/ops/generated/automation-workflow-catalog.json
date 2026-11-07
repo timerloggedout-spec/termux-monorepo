@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "0238f565d1f64e08cc3904b1e4abdc806d0d9975689796ccedd9ea80912b8a49",
-  "workflow_count": 294,
+  "source_fingerprint": "f10653d9b1dc617236a6567c4fae2425c4f98d70518f3b983eb81d11155f87e1",
+  "workflow_count": 295,
   "workflows": [
     {
       "action_pins": [],
@@ -2333,6 +2333,21 @@
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: game-development-dispatch-${{ github.event.workflow_run.id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "game-development-dispatch",
+      "path": ".github/workflows/game-development-dispatch.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {

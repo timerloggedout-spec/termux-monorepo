@@ -1,11 +1,11 @@
 # LangGraph BIUDL Integration — Manifest
 
-**ID:** `langgraph-biudl-integration`  
-**Priority:** P1  
-**Status:** executing  
-**Owner / executor:** ChatGPT  
-**Operator authorization:** timerloggedout-spec (direct task instruction, 2026-11-06)  
-**Target:** `master`  
+**ID:** `langgraph-biudl-integration`
+**Priority:** P1
+**Status:** executing
+**Owner / executor:** ChatGPT
+**Operator authorization:** timerloggedout-spec (direct task instruction, 2026-11-06)
+**Target:** `master`
 **Branch:** `feat/langgraph-biudl-integration`
 
 ## Goal
@@ -20,6 +20,7 @@ Provision a repository-native LangGraph capability by extracting high-value prac
 - Mapping to existing orchestration treatment/receipt, OTEL, ATES, action/effect, evidence, Temporal, and SHE contracts.
 - Skill inventory and discovery index updates.
 - Follow-on runtime prototype, persistence/HITL, telemetry, and treatment comparison items.
+- Competitive treatment matrix and evidence-based pattern synthesis.
 
 ## Out of scope for this slice
 

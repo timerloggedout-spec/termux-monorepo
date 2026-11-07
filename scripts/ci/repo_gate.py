@@ -791,6 +791,30 @@ def check_ratchet(report: Report, index: list[IndexEntry]) -> dict[str, int]:
         if limit is None:
             report.note(f"ratchet: new counter {key}={value} (add it to the baseline)")
         elif value > limit:
+            if key == "invalid_control_plane_yaml":
+                # The ratchet is repo-wide, so a changed-file check cannot identify
+                # the inherited offender. Emit paths and line numbers without
+                # copying YAML values (which may contain sensitive configuration).
+                for entry in index:
+                    if (
+                        CONTROL_PLANE_YAML_RE.match(entry.path)
+                        and not entry.is_symlink
+                        and not entry.is_gitlink
+                    ):
+                        faults = yaml_structure_faults(
+                            blob(entry.sha).decode("utf-8", "replace")
+                        )
+                        if faults:
+                            line_numbers = sorted({
+                                match.group(1)
+                                for fault in faults
+                                if (match := re.match(r"line (\d+):", fault))
+                            })
+                            locations = ", ".join(line_numbers) if line_numbers else "unknown"
+                            report.note(
+                                f"ratchet detail: {entry.path}: structural YAML fault(s) "
+                                f"at line(s) {locations}"
+                            )
             report.fail(
                 "ratchet",
                 f"{key} rose {limit} -> {value}; this PR adds debt the repo is trying to shed",

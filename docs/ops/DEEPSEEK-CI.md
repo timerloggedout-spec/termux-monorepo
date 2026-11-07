@@ -67,12 +67,11 @@ Never use a GitHub PAT as DeepSeek model auth. Never use `DEEPSEEK_TOKEN` for `g
 4. Least privilege: checkout uses the read-only `github.token` with `persist-credentials: false`; workflow permissions are `contents: read`, `issues: write`, and `pull-requests: write`. Operator and DeepSeek provider secrets are scoped to the DeepSeek invocation step, not the whole job.
 5. Device route: the Termux agent uses `contents: read` plus issue/PR comment permissions; its agent token is scoped to the POST/poll steps and the GitHub token is scoped to reply steps. Existing assignment triggers remain unchanged.
 6. No schedule, provider route, automatic PR-review trigger, credential, or runtime activation was added by this hardening.
-
 7. Auth: model secret only for model — never reuse `GITHUB_TOKEN` / OPERATOR as model auth.
-2. Session: persistent browser-compatible session cache is intentional for the web-wrapper; it may retain `ds_session_id`, `aws-waf-token`, chat-session state, and PoW-compatible metadata under the existing permission-restricted cache path. The Actions cache key is scoped to the repository and exact Git ref; it has no cross-ref restore prefix.
-3. No cookies/tokens in Git or result artifacts; cache/session values are never logged. Cached WAF state wins on resume unless `DEEPSEEK_WAF_TOKEN_REFRESH=1` explicitly requests an environment-supplied replacement.
-4. Output JSON is **metadata only** (no model text).
-5. `pr_number` validated as positive decimal before any `gh pr` call.
+8. Session: persistent browser-compatible session cache is intentional for the web-wrapper; it may retain `ds_session_id`, `aws-waf-token`, chat-session state, and PoW-compatible metadata under the existing permission-restricted cache path. The Actions cache key is scoped to the repository and exact Git ref; it has no cross-ref restore prefix.
+9. No cookies/tokens in Git or result artifacts; cache/session values are never logged. Cached WAF state wins on resume unless `DEEPSEEK_WAF_TOKEN_REFRESH=1` explicitly requests an environment-supplied replacement.
+10. Output JSON is **metadata only** (no model text).
+11. `pr_number` validated as positive decimal before any `gh pr` call.
 
 ## What #134 did wrong (do not merge)
 

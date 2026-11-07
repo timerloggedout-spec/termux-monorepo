@@ -124,6 +124,7 @@ jobs:
             --max-commits "$MAX_COMMITS" \
             --max-files-per-pr 3000 \
             --max-commits-per-pr 250 \
+            --max-timeline-events-per-item 1000 \
             --max-comments-per-item 10 \
             --max-cochange-pairs-per-commit 100 \
             --full-refresh > /tmp/context-backfill-build-result.json

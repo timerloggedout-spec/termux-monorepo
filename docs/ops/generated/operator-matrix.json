@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 540,
-    "open_prs": 314,
+    "open_issues": 542,
+    "open_prs": 316,
     "pr_classes": {
-      "CANDIDATE": 147,
-      "EXTRACT": 13,
-      "NEED_EVIDENCE": 154,
+      "CANDIDATE": 142,
+      "EXTRACT": 14,
+      "NEED_EVIDENCE": 160,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 297,
+      "issues": 298,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 52,
-      "prs": 312,
+      "issues": 53,
+      "prs": 314,
       "unlabelled_numbers": [
         308,
         388,
@@ -103,11 +103,12 @@
         4977,
         4979,
         4994,
-        5032
+        5032,
+        5050
       ]
     }
   },
-  "generated_at": "2026-11-07T13:34:20Z",
+  "generated_at": "2026-11-07T16:23:56Z",
   "issues_unlabelled": [
     308,
     388,
@@ -160,7 +161,8 @@
     4977,
     4979,
     4994,
-    5032
+    5032,
+    5050
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -168,7 +170,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "7728f4e392"
+    "sha": "9bb08e42db"
   },
   "prs": [
     {
@@ -248,34 +250,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e2dd24e985",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-07T11:52:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "948ad48572",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-07T13:33:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -338,6 +312,48 @@
       "number": 4521,
       "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
       "updated_at": "2026-11-03T18:35:50Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4670c4625d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "updated_at": "2026-11-05T05:54:21Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "13fd71e99c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4969,
+      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+      "updated_at": "2026-11-05T05:15:53Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "dccd743e6c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5007,
+      "title": "feat(graph-studio): ship parallel graph explorer v0.1.0",
+      "updated_at": "2026-11-05T11:01:07Z"
     },
     {
       "class": "EXTRACT",
@@ -805,20 +821,6 @@
       "number": 1616,
       "title": "docs(flywheel): add capability overlap audit",
       "updated_at": "2026-10-24T03:11:37Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7b74e97ea7",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1627,
-      "title": "ci(context): wake page-one history coverage bootstrap",
-      "updated_at": "2026-10-24T06:19:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -2115,20 +2117,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4670c4625d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4901,
-      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-05T05:54:21Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "70aea43e8f",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2171,20 +2159,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "13fd71e99c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4969,
-      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-05T05:15:53Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "3c9fe3294a",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2199,23 +2173,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "dccd743e6c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5007,
-      "title": "feat(graph-studio): ship parallel graph explorer v0.1.0",
-      "updated_at": "2026-11-05T11:01:07Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "fa7ccb746c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 5008,
       "title": "Proposal: evidence-led polyglot build orchestration",
       "updated_at": "2026-11-07T11:13:29Z"
@@ -2229,7 +2189,7 @@
       },
       "head_sha": "9c56c5313b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5013,
       "title": "perf(peer-review): reuse one event snapshot and remove dead polling",
       "updated_at": "2026-11-05T17:01:10Z"
@@ -2341,7 +2301,7 @@
       },
       "head_sha": "e170bac7ec",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5035,
       "title": "feat(vultr-agent-rush): build Match Impact Desk for Challenge 2",
       "updated_at": "2026-11-06T15:42:38Z"
@@ -2403,20 +2363,6 @@
       "updated_at": "2026-11-07T08:51:17Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "1385287bf9",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5047,
-      "title": "docs(ops): reconcile Historical Corpus status to canonical manifest",
-      "updated_at": "2026-11-07T11:51:51Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2453,7 +2399,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2467,7 +2413,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2509,7 +2455,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -2663,7 +2609,7 @@
       },
       "head_sha": "61b2d94eb2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 1274,
       "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
       "updated_at": "2026-10-23T07:40:35Z"
@@ -2787,12 +2733,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8743136ff9",
+      "head_sha": "58b73e8826",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
-      "updated_at": "2026-11-06T15:15:36Z"
+      "updated_at": "2026-11-07T14:14:36Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2938,15 +2884,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "failure",
+        "smoke": "success"
       },
-      "head_sha": "0e0a60a112",
+      "head_sha": "193a94b23d",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-07T16:00:09Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "5afc4599ce",
+      "labels": [],
+      "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-07T11:49:07Z"
+      "updated_at": "2026-11-07T15:49:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3585,12 +3545,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "42d6ba7c06",
+      "head_sha": "3e43797d50",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-07T09:52:19Z"
+      "updated_at": "2026-11-07T16:13:24Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "10783f8d56",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-07T16:22:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3725,12 +3699,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "a82dfea9d0",
+      "head_sha": "5a9d92d178",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-07T10:59:37Z"
+      "updated_at": "2026-11-07T16:23:36Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4413,7 +4387,7 @@
       },
       "head_sha": "f304aeecd4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
       "updated_at": "2026-11-05T04:10:21Z"
@@ -4427,7 +4401,7 @@
       },
       "head_sha": "0eabbd6cf2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 5010,
       "title": "feat: add AgentRouter catalog and unified observability index",
       "updated_at": "2026-11-05T13:34:07Z"
@@ -4441,7 +4415,7 @@
       },
       "head_sha": "516de243e0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5014,
       "title": "perf(observer): bound scheduled and shared poller scans",
       "updated_at": "2026-11-05T17:58:11Z"
@@ -4455,7 +4429,7 @@
       },
       "head_sha": "cc7a4e3078",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 5016,
       "title": "feat: AgentRouter catalog and unified provider observability index",
       "updated_at": "2026-11-05T18:33:38Z"
@@ -4469,7 +4443,7 @@
       },
       "head_sha": "eff56f25ed",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 5017,
       "title": "feat: AgentRouter catalog and unified provider observability index",
       "updated_at": "2026-11-05T18:36:08Z"
@@ -4523,12 +4497,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "6b1b32c46a",
+      "head_sha": "9df9b694a9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5034,
       "title": "chore(dashboards): refresh dispatch-tree feed",
-      "updated_at": "2026-11-07T03:56:00Z"
+      "updated_at": "2026-11-07T13:56:03Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4539,7 +4513,7 @@
       },
       "head_sha": "6b243b40c0",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5036,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-06T15:24:16Z"
@@ -4553,7 +4527,7 @@
       },
       "head_sha": "9d5fb441f7",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5037,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-06T15:25:11Z"
@@ -4567,10 +4541,66 @@
       },
       "head_sha": "362bc4a000",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5038,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-06T15:30:16Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "0571040fda",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5051,
+      "title": "feat(challenge): register Game Off 2026 SHIFT opportunity + deadline timebox",
+      "updated_at": "2026-11-07T14:56:53Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "afdfa60a97",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5052,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-07T14:55:11Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "8f1d323665",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5054,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-07T14:56:48Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "e347e9a6b8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5056,
+      "title": "fix(context): preserve historical backfill page-size continuity",
+      "updated_at": "2026-11-07T16:06:08Z"
     }
   ],
   "schema": "operator-matrix/v1",

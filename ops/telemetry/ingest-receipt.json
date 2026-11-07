@@ -12,11 +12,11 @@
     "unit_id": "copilot-usage-metrics-api"
    }
   ],
-  "expected_providers": 172,
-  "ingested_providers": 172,
+  "expected_providers": 174,
+  "ingested_providers": 174,
   "missing": []
  },
- "generated_at": "2026-11-02T13:36:34Z",
+ "generated_at": "2026-11-07T16:13:03Z",
  "schema": "telemetry-ingest-receipt/v1",
  "sinks": {
   "hindsight": {
@@ -27,20 +27,20 @@
     "skipped_reason": "not requested"
    },
    "path": "ops/telemetry/hindsight-payloads.jsonl",
-   "payloads": 336
+   "payloads": 350
   },
   "provenance": {
    "path": "ops/telemetry/provenance-ledger.jsonl",
-   "records": 336
+   "records": 350
   }
  },
  "sources": [
   {
    "id": "quota_registry",
    "path": "ops/quota/registry.json",
-   "sha256": "f0092928e164130ce1ef7034f2e6ae3c0dee612a1a10ce463bea29a1ac6bc175",
+   "sha256": "457b2b9fce67497b17de006a8bda5b40c0f85af5c3b6a863b6d28ff10d532f1c",
    "status": "emitted",
-   "units": 170
+   "units": 172
   },
   {
    "id": "cadence_providers",
@@ -66,7 +66,7 @@
   {
    "id": "reviewer_metrics",
    "path": "docs/ops/generated/reviewer-metrics.json",
-   "sha256": "546711c71e0d3670fe07056b89bcdecf9c1b436fa0655ed8650cb4929bc7fa66",
+   "sha256": "2eddcac8b23a90c6357cb3bc89c88a4dc40076a5ee6cfc025d86cfada99ab508",
    "status": "emitted",
    "units": 1
   },
@@ -94,49 +94,49 @@
   {
    "id": "challenge_coordinator",
    "path": "ops/challenge/coordinator.json",
-   "sha256": "c1b7bbb2d451838a7ba3a28401ef9fbfc834e01a30d002628edcb7a979785916",
+   "sha256": "e073ea9643b3a3c1630e4f3774d08b7167ebbc9ee12a9cc322a63cda886f90fd",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "moneyball_plane",
    "path": "ops/moneyball/plane.json",
-   "sha256": "9cc1bd547068d20539bf432f1671b419928af9c3c84c2e5baafc6723b6e360eb",
+   "sha256": "e1e8d1cce1e4ca16256df66eb8d3f7671e870fc049dcf7ff51f49cc93c8eb80d",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/3l0-feed.json",
-   "sha256": "257ab8a2af66140171c9cf1f5913653ae80ab04f7cd07b5f245d4f60b7b29082",
+   "sha256": "cb3be68268791951f38e45a00aa6c071c8b74e95e62314f5e250ce5701addf98",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/allocation-verification.json",
-   "sha256": "972a49e09a047dd65217a50097037c0d1befea7b3beb60f120320baea7e0a497",
+   "sha256": "e57426b928bf4bb3b0b006aaa6fcaeb104c0d7b2b5b27db5767e36d8c9d4d1a8",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/ates-feed.json",
-   "sha256": "47fa4ee4c00043679fa88776209856130ff86f09bbed2f83f917d6ad10e12ff7",
+   "sha256": "541ff280309688c636169e4fd902a3bfc265c9bc054cbd823bf64705c479a9b0",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/backup-events-feed.jsonl",
-   "sha256": "00982809f52a2e9cf5a30c7c884761ffd71390e35ea326730da30c1a4b7bbaa9",
+   "sha256": "04e96c62aac69b236f97e4b1c27a170c6c06bd0fc273f18f2829ef4e60f83d9e",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/backup-state-feed.json",
-   "sha256": "ba36579818eb6db7bd0e044a6e7e21b9bb5136336a78b43947ed6b28fc902010",
+   "sha256": "b8757802d10f14e7a49c2136f630e4edafb8f08c89399d978bf6fc529b713505",
    "status": "emitted",
    "units": 1
   },
@@ -150,7 +150,7 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/challenge-countdowns-feed.json",
-   "sha256": "b1244f1914b79318e4d62302ff06de2a1a3fb6b1dba4695b7da7ef923230e32c",
+   "sha256": "57ce89c8f911c44e4d97edb0684b5eba7d7515c64dd53924eef2def2ad7f72a6",
    "status": "emitted",
    "units": 1
   },
@@ -178,7 +178,14 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/desk-feed.json",
-   "sha256": "289aa7cbf657c676297220fb0715ce5eb09df392db1ca328d44b3fe14befc51b",
+   "sha256": "0ff9fde763810e6a9f17af7bca6ce527ffa5d9ca0e5efcccfe5552a654e10e05",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/dispatch-state-feed.json",
+   "sha256": "c268a8cb9963e4d9d33a4d03268abfa69662fd67e6c98c66145a5011bc0f51b0",
    "status": "emitted",
    "units": 1
   },
@@ -192,7 +199,14 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/doe-feed.json",
-   "sha256": "6064f59e33e34cd75d751fac080056f437aa1f592e4b040a99440b42902bfa71",
+   "sha256": "999f97abe12e6d4b4349006a3b55e3f0862ec9f6bd82cfc6cf3672210b4d1021",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/doe-oversight-feed.json",
+   "sha256": "2bd78b36ad3143877f2b6ad2b378e5ae41338bdfaffeeb157ee59cf672bd1388",
    "status": "emitted",
    "units": 1
   },
@@ -212,29 +226,43 @@
   },
   {
    "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/governor.json",
+   "sha256": "92c482ff83ef77638821d981d7322fb5cb72bcec09ad4e2d2d000fa75534cbc0",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/linguist-panel-feed.json",
-   "sha256": "f1f5a31a36eb719ef81f29792d0b1730747ea6901c38c35bbc23c56a3d34f083",
+   "sha256": "f555e7304af1a4410b5264f71f28e003c627bfe6891a15971afee27d65507b22",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/marketing-gantt.json",
+   "sha256": "6790a82e8bd20200cde832720fc115946f5ba4c8c401be00c6db6ab024f7538c",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/moneyball-feed.json",
-   "sha256": "36a1c630aee9c337ef666d7a4d21ab5c4d29dc40d91ed488835fa2a18df3676b",
+   "sha256": "f2b2d48606b3f6c0850d9ec23522a7b9fe9d8e4319add38610c16484c9903c7f",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/mvt-feed.json",
-   "sha256": "4ead41ffc3f3624f25b02ce815afddbd2cac7353ecfcbbea248eb4d4d5d750c5",
+   "sha256": "5f299896ec26145ad5b79af5227108644790a83dcd0465189ff3ce49176270e1",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/nested-family-feed.json",
-   "sha256": "3450103bba34f33813e27bfdcad8432f134a2056581fd814beabb7fab9309c2b",
+   "sha256": "fb01cbcfecd7299734c3bf125c923bc3694b2ccaede049474f5c44c98f72be22",
    "status": "emitted",
    "units": 1
   },
@@ -247,64 +275,113 @@
   },
   {
    "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/pools-feed.json",
+   "sha256": "7388b08deddb28dcd0b3f235447ea5b0cf9a1fb15f539a93954b1510b0efef30",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/pr-lane-feed.json",
-   "sha256": "7b46471ab44b2bbff916cbec3134df9c8640ac0a99eed1f22c4af1583c9627ed",
+   "sha256": "a6474f0ca588e3d4aa62fc8e5ee610a9a8932347f99573e41d5cda5c5e699a8a",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/pr-lane-series.jsonl",
-   "sha256": "99290dfa00b14abfd12da9438d008fa7f04cf69805d6744c74dc3082d113a70f",
+   "sha256": "59d28c7f3275eaecad6313c5226ac45bb7e440f742aff1d5caa450f2d0cb3851",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/priority-windows.json",
+   "sha256": "3c7dc9baf09eb788e8fa61817492c41a4a74e3d16e66b87fdaf869f5284f5cc3",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/proposals-feed.json",
-   "sha256": "292ad852f715d491b067e71c61bc062d2d48b7822a076ff5043f13861a1f6f0b",
+   "sha256": "15928841d706bee4e0e521d016f363a7cf3d9ef1ee4218594cb7a37864c6e8d0",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/provider-quota-coverage.json",
-   "sha256": "74a119be69f8422093fc228ea3966b9466f57cc37309d6fd80f194b8fc8c30e9",
+   "sha256": "1aa9fd63c881b417ad30be8c75f597d93812bc02238500372705523997393cb1",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/que-governor.json",
+   "sha256": "92c482ff83ef77638821d981d7322fb5cb72bcec09ad4e2d2d000fa75534cbc0",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/que-priority-windows.json",
+   "sha256": "3c7dc9baf09eb788e8fa61817492c41a4a74e3d16e66b87fdaf869f5284f5cc3",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/que-queue-feed.json",
+   "sha256": "672a47f33fc0f42d4c766d0d0b80c338eb93552a36cf83147de8c66056e275d5",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/queue-by-tier.json",
+   "sha256": "6d5bdecc54c29a0661b48d634381a5c9acd57ebfcc3c7eea89a54f89bfe542b2",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/quota-allocations-feed.json",
-   "sha256": "09d701e17fe59022e1d6b07fa3e3e985877725d53362daf35c639e81515f31db",
+   "sha256": "d7e6e87addecc4811e53da370386343f1c6d005ee5b85a59d3ef2101036322af",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/quota-usage.json",
-   "sha256": "47a98361fe556bf2a12dd4e9ee2ff6c5426596d28e300c3b74c43879c9840576",
+   "sha256": "b7a8b17f393061e4ed2caef41916b602bf6d909ef6be41a9b3ac8ea670328908",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/quota.json",
-   "sha256": "9d6ac8b5d9a4be11de4a224e924cb24029ee32e20e97cd6564d52eb0941702b1",
+   "sha256": "567221c9a0bba2fe4736585a0af9b92b371bd24aa047d78c10f83d2c516f4d72",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/rate-limit-event-audits.json",
-   "sha256": "046a18f31f2552023af2b549d9435a34e356d1e37e58bb7a0c6d9f8ac816f393",
+   "sha256": "88abf2ee40ff347e832e06185924bd22ebb7e733155adb645b93a2b3f84dfa89",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/referral-census.json",
+   "sha256": "a2002d044ea0694081ea57ab1306db889d7a4d1740e8b540a48f914bf50ed995",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/referral-feed.json",
-   "sha256": "5830d2068c1d9a7714f8d8511bb3c6035b8dbaddacb0c8e9652fd57b29cf22b2",
+   "sha256": "887c611297cd1d400cc88d05f6cd5c24680d8d0982a74d464b66bcb667f1d051",
    "status": "emitted",
    "units": 1
   },
@@ -325,42 +402,49 @@
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/status.json",
-   "sha256": "d6efcfce673c69e8480645891a30186e859baa315ed0bfdd929871ae557d1fa9",
+   "sha256": "06b826e9696d4b73059fe9f4ee69091e75bfae6699b7ffeeebbc9e7913562e48",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/swarm-feed.json",
-   "sha256": "fede848a6a26e7232bda0ada57e8b729d31cb23b1c7ad66bfb6835e9cba38f43",
+   "sha256": "e003fba11875ca6c023ce7f77a9c8a7013a2cb74bb5188d12265f2b3e365bea1",
+   "status": "emitted",
+   "units": 1
+  },
+  {
+   "id": "dashboard_feeds",
+   "path": "apps/tribute-dashboard/data/telemetry-feed-series.jsonl",
+   "sha256": "40070e2f399bd1ce647644da54dae782000d1905350b26d970af2b6afeeb9870",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/telemetry-feed.json",
-   "sha256": "54faa9db8870d7ddd8ee6a0de4846278eb7a07710cd2ef964177271f2e7515b7",
+   "sha256": "d35c02a10ef6eeb0cde59bbfd7c46aa5ed7dfaadcc2c98d6ce0b5c998d229555",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/tracking-feed.json",
-   "sha256": "99e87c9aa231387dacb433bda81e7e5c7d73fd0bb536f980c1ba3737782e6fce",
+   "sha256": "8359a93f22bea6d69b79826679e878f3d8a3746f928f9500094dc833b3a56a1a",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/usage-series.json",
-   "sha256": "90c1fc2ddb54ed064e5d6fb1eb3492d80536bfb95a2215adc81dd354a64f7a18",
+   "sha256": "a3030e4300ed32b6d9cd27e20a29ebb794126d9f5f919ec11263d5768fb6fb57",
    "status": "emitted",
    "units": 1
   },
   {
    "id": "dashboard_feeds",
    "path": "apps/tribute-dashboard/data/wagering-book.json",
-   "sha256": "491999bb60806af960ecea34f4121b3142e509449f11f064c486fa4ac393f6d9",
+   "sha256": "18a3558fc488c2efec232964faec4acdcca8f46c72cfc808e598c3ec13c92035",
    "status": "emitted",
    "units": 1
   }

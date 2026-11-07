@@ -54,23 +54,16 @@ jobs:
       issues: write
 
     env:
-      # ARCHWIZ_GITHUB_TOKEN (4RCHW12) supersedes all other GH tokens
-      # Prefer dispatch payload when provided; otherwise use the real event
+      # Prefer dispatch payload when provided; otherwise use the real event.
       GITHUB_EVENT: ${{ github.event.inputs.event_payload != '' && github.event.inputs.event_payload || toJson(github.event) }}
-      # Account-1 / primary is PRIORITY default
       DEEPSEEK_ACCOUNT: ${{ github.event.inputs.account || 'account-1' }}
-      # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
-      # First non-empty wins inside session_manager._token_from_env.
-      # Cookies are primary auth path for the webWrapper (WASM + 🍪).
-      # Captured browser sessions include aws-waf-token alongside ds_session_id.
-      # The value is consumed only by session_manager and persists in the existing
-      # permission-restricted session cache; it is never logged or uploaded.
       DEEPSEEK_THINKING: "true"
       DEEPSEEK_EXPERT: "true"
       DEEPSEEK_CONNECT_TIMEOUT: "30"
       DEEPSEEK_READ_TIMEOUT: "1200"
       WASM_SOURCE_COMMIT: "ee1807049fd93d087bc14055b2ae6cbffb5dbf82"
       WASM_RAW_BASE: "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo"
+
 
     steps:
       - name: Checkout repository
@@ -160,6 +153,7 @@ jobs:
       - name: Run DeepSeek CI Agent (Account-1 priority)
         timeout-minutes: 40
         env:
+          # Provider and operator credentials are scoped to this invocation step only.
           OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
           DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_API_KEY }}

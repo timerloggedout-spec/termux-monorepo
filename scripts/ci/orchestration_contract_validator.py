@@ -190,11 +190,11 @@ def _has_workflow_call_input(on_block: str, name: str, required: bool = True) ->
 
 
 def _script_blocks(workflow: str) -> list[str]:
-    """Return literal YAML script-block bodies so expressions can be rejected there."""
+    """Return literal YAML script/run block bodies so expressions can be rejected there."""
     lines = workflow.splitlines()
     blocks: list[str] = []
     for index, line in enumerate(lines):
-        match = re.match(r"^(\s*)script:\s*\|\s*$", line)
+        match = re.match(r"^(\s*)(?:script|run):\s*\|\s*$", line)
         if not match:
             continue
         parent_indent = len(match.group(1))

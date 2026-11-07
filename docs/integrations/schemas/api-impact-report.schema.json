@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Termux Monorepo API Impact Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "repository", "pull_request", "base_sha", "head_sha", "state", "changed_files", "api_surface_files", "changes", "classifications", "impacts", "evidence", "missing_fields", "limitations", "errors", "provenance", "privacy"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "repository": {"type": "string"},
+    "pull_request": {"type": "integer", "minimum": 1},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{7,64}$"},
+    "head_sha": {"type": "string", "pattern": "^[0-9a-f]{7,64}$"},
+    "state": {"enum": ["not_applicable", "analysis_required", "partial", "validated"]},
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "api_surface_files": {"type": "array", "items": {"type": "string"}},
+    "changes": {"type": "array"},
+    "classifications": {"type": "array"},
+    "impacts": {"type": "array"},
+    "evidence": {"type": "array"},
+    "missing_fields": {"type": "array", "items": {"type": "string"}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "errors": {"type": "array"},
+    "provenance": {"type": "object", "required": ["provider", "capture_method", "attribution"]},
+    "privacy": {"type": "object", "required": ["contains_raw_prompt", "contains_secret"], "properties": {"contains_raw_prompt": {"const": false}, "contains_secret": {"const": false}}}
+  }
+}

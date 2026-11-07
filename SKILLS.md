@@ -6,6 +6,7 @@
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
+| **API Impact Review** | [`.agents/skills/api-impact-review/SKILL.md`](.agents/skills/api-impact-review/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
 | Superpowers engineering workflow | `.agents/skills/superpowers/SKILL.md` |
@@ -40,7 +41,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 
 | Role | Load first |
 |------|------------|
-| Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate |
+| Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate; load `api-impact-review` for API changes |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |

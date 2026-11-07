@@ -1250,3 +1250,20 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+  - id: api-impact-review
+    title: "API Impact Review — SHA-bound API evolution intelligence for pull requests"
+    author: ChatGPT
+    status: accepted
+    priority: P0
+    path: active/api-impact-review/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/api-impact-review-lane
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

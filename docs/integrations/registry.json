@@ -17,7 +17,7 @@
       "repo_adapter_state": "not_applicable",
       "authority": "methodology-only",
       "write_boundary": "No provider writes; repository changes remain governed by proposal, review, and dual-gate policy.",
-      "next_step": "Adopt the repository-local skill in collaborator workflows; verify the skill-quality lane on the current PR head.",
+      "next_step": "Maintain the repository-local methodology and refresh the pinned upstream reference during scheduled skill maintenance.",
       "sensitivity": "repository-metadata-only"
     },
     {
@@ -28,11 +28,12 @@
       "discovery_state": "tool_connected_in_session",
       "session_evidence": "extract_api_changes, classify_breaking_changes, and generate_impact_map tools are exposed in the current session.",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
+      "repo_adapter_state": "repo_adapter_implemented",
       "authority": "advisory-analysis-only",
       "write_boundary": "Consumes supplied diffs/specifications; no independent repository crawling, code mutation, or merge authority.",
-      "next_step": "Build a PR workflow adapter with fixtures and explicit consumer/test/documentation impact evidence.",
-      "sensitivity": "public-source-and-repository-diff"
+      "next_step": "Validate the read-only detector/normalizer workflow on real PRs; keep advisory until reliability is measured and a CI-callable provider interface is established.",
+      "sensitivity": "public-source-and-repository-diff",
+      "validation_state": "awaiting_ci_validation"
     },
     {
       "id": "domino-data-lab",

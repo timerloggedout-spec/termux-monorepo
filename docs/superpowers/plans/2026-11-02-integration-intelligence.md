@@ -64,7 +64,7 @@ Add the skill to the role-load matrix and explain that Superpowers supplements b
 | Phase | Lane | Deliverable | Exit evidence |
 |---|---|---|---|
 | A | Foundation | Registry, event schema, adapter contract, Superpowers skill | JSON/schema and skill-evaluation pass |
-| B | Engineering | API Impact Mapper PR workflow and Superpowers review/TDD adoption | PR fixture tests; impact report artifact; no blocking false positives |
+| B | Engineering | [API Impact Review lane](2026-11-02-api-impact-review.md) + Superpowers review/TDD adoption | SHA-bound report, mapper-result validator, focused tests, read-only PR workflow; advisory rollout |
 | C | Research | EmpirioLabs + Domino experiment adapters | Reproducible run manifests, dataset/model provenance, cost caps |
 | D | Efficiency | Cache Stats + ATES/WTCV measurement mapping | Cache/context metrics with privacy review and baseline comparison |
 | E | Visual cockpit | tldraw workspace + D3/SVG/Mermaid source alignment | Source-linked diagram export and accessibility checks |

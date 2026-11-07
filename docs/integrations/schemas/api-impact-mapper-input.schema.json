@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "API Impact Mapper Input Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repository", "pull_request", "base_sha", "head_sha", "privacy", "results"],
+  "properties": {
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "pull_request": {"type": "integer", "minimum": 1},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{7,64}$"},
+    "head_sha": {"type": "string", "pattern": "^[0-9a-f]{7,64}$"},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contains_raw_prompt", "contains_secret"],
+      "properties": {
+        "contains_raw_prompt": {"const": false},
+        "contains_secret": {"const": false},
+        "redaction_applied": {"type": "boolean"}
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extraction", "classification", "impact_map"],
+      "properties": {
+        "extraction": {"type": "object", "required": ["status", "api_changes_items", "missing_fields", "evidence", "errors"]},
+        "classification": {"type": "object", "required": ["status", "classifications", "unclassified_items", "missing_fields", "evidence", "errors"]},
+        "impact_map": {"type": "object", "required": ["status", "deliverable", "included_items", "missing_fields", "limitations", "evidence", "errors"]}
+      }
+    }
+  }
+}

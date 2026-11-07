@@ -1,0 +1,228 @@
+name: API Impact Review
+
+# Read-only contract review. The ChatGPT API Impact Mapper is not a CI endpoint;
+# workflow_dispatch accepts its structured result envelope for validation.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to review
+        required: true
+        type: string
+      mapper_input_json:
+        description: Optional SHA-bound API Impact Mapper JSON envelope
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: api-impact-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  resolve-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      pr_number: ${{ steps.event-meta.outputs.pr_number || steps.manual-meta.outputs.pr_number }}
+      base_sha: ${{ steps.event-meta.outputs.base_sha || steps.manual-meta.outputs.base_sha }}
+      base_ref: ${{ steps.event-meta.outputs.base_ref || steps.manual-meta.outputs.base_ref }}
+      head_sha: ${{ steps.event-meta.outputs.head_sha || steps.manual-meta.outputs.head_sha }}
+    steps:
+      - name: Resolve pull_request event metadata
+        if: github.event_name == 'pull_request'
+        id: event-meta
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_ref=$BASE_REF" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve manually requested PR metadata
+        if: github.event_name == 'workflow_dispatch'
+        id: manual
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const number = Number(process.env.PR_NUMBER);
+            if (!Number.isSafeInteger(number) || number < 1) throw new Error('Invalid PR number');
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: number
+            });
+            core.setOutput('pr_number', String(pr.number));
+            core.setOutput('base_sha', pr.base.sha);
+            core.setOutput('head_sha', pr.head.sha);
+            core.setOutput('base_ref', pr.base.ref);
+
+      - name: Publish manual metadata
+        if: github.event_name == 'workflow_dispatch'
+        id: manual-meta
+        env:
+          PR_NUMBER: ${{ steps.manual.outputs.pr_number }}
+          BASE_SHA: ${{ steps.manual.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.manual.outputs.head_sha }}
+          BASE_REF: ${{ steps.manual.outputs.base_ref }}
+        run: |
+          set -euo pipefail
+          test -n "$PR_NUMBER" && test -n "$BASE_SHA" && test -n "$HEAD_SHA"
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_ref=$BASE_REF" >> "$GITHUB_OUTPUT"
+
+  report:
+    needs: resolve-pr
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout trusted master branch analyzer
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Collect changed paths from public PR patch (never fetch or checkout PR objects)
+        id: changed-paths
+        env:
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
+        run: |
+          set -euo pipefail
+          patch="$RUNNER_TEMP/api-impact-pr.patch"
+          curl --fail --location --silent --show-error --max-filesize 20971520 \
+            "https://github.com/$GITHUB_REPOSITORY/pull/$PR_NUMBER.diff" -o "$patch"
+          python3 - <<'PY'
+          import json
+          import os
+          import shlex
+          from pathlib import Path
+
+          patch = Path(os.environ["RUNNER_TEMP"], "api-impact-pr.patch").read_text(encoding="utf-8", errors="strict")
+          paths = set()
+          for line in patch.splitlines():
+              if line.startswith("diff --git "):
+                  try:
+                      fields = shlex.split(line)
+                  except ValueError:
+                      fields = []
+                  if len(fields) == 3:
+                      for field in fields[1:]:
+                          if field.startswith(("a/", "b/")):
+                              paths.add(field[2:])
+              elif line.startswith("+++ b/"):
+                  paths.add(line[6:])
+              elif line.startswith("--- a/"):
+                  paths.add(line[6:])
+              elif line.startswith("rename from ") or line.startswith("rename to "):
+                  paths.add(line.split(" ", 2)[2])
+          target = Path(os.environ["RUNNER_TEMP"], "api-impact-changed-paths.json")
+          target.write_text(json.dumps(sorted(paths)), encoding="utf-8")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"path={target}\n")
+          PY
+
+      - name: Detect analyzer in base revision
+        id: analyzer
+        run: |
+          if [ -f scripts/integrations/api_impact/cli.py ] && [ -f config/integrations/api-impact-paths.json ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prepare optional mapper result
+        id: mapper
+        if: github.event_name == 'workflow_dispatch' && inputs.mapper_input_json != '' && steps.analyzer.outputs.available == 'true'
+        env:
+          MAPPER_INPUT_JSON: ${{ inputs.mapper_input_json }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          payload = os.environ.get("MAPPER_INPUT_JSON", "")
+          if not payload:
+              raise SystemExit("mapper input was requested but is empty")
+          target = Path(os.environ["RUNNER_TEMP"]) / "api-impact-mapper-input.json"
+          target.write_text(payload, encoding="utf-8")
+          print(f"Prepared mapper input at {target}")
+          PY
+          echo "path=$RUNNER_TEMP/api-impact-mapper-input.json" >> "$GITHUB_OUTPUT"
+
+      - name: Generate deterministic PR report
+        if: steps.analyzer.outputs.available == 'true'
+        env:
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
+          BASE_SHA: ${{ needs.resolve-pr.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.resolve-pr.outputs.head_sha }}
+          MAPPER_INPUT_PATH: ${{ steps.mapper.outputs.path }}
+          CHANGED_PATHS_PATH: ${{ steps.changed-paths.outputs.path }}
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/api-impact
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          paths = json.loads(Path(os.environ["CHANGED_PATHS_PATH"]).read_text(encoding="utf-8"))
+          args = [
+              sys.executable, "-m", "scripts.integrations.api_impact.cli",
+              "--repository", os.environ["REPOSITORY"],
+              "--pr-number", os.environ["PR_NUMBER"],
+              "--base", os.environ["BASE_SHA"],
+              "--head", os.environ["HEAD_SHA"],
+              "--output-json", "artifacts/api-impact/report.json",
+              "--output-markdown", "artifacts/api-impact/report.md",
+          ]
+          for path in paths:
+              args.extend(["--changed-path", path])
+          if os.environ.get("MAPPER_INPUT_PATH"):
+              args.extend(["--mapper-input", os.environ["MAPPER_INPUT_PATH"]])
+          subprocess.run(args, check=True)
+          report = json.loads(Path("artifacts/api-impact/report.json").read_text(encoding="utf-8"))
+          summary = Path("artifacts/api-impact/report.md").read_text(encoding="utf-8")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
+              handle.write(summary)
+          if report["state"] == "analysis_required":
+              print("::warning::API surface changed; submit a SHA-bound API Impact Mapper envelope using workflow_dispatch.")
+          elif report["state"] == "partial":
+              print("::warning::API Impact Mapper report is partial; unresolved findings remain open.")
+          PY
+
+      - name: Explain first-install bootstrap boundary
+        if: steps.analyzer.outputs.available != 'true'
+        run: |
+          echo "The analyzer is introduced by this pull request. This first run uses only base-branch code; report execution becomes available after the analyzer lands on the base branch."
+
+
+      - name: Upload API impact evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-impact-pr-${{ needs.resolve-pr.outputs.pr_number }}-${{ needs.resolve-pr.outputs.head_sha }}
+          path: artifacts/api-impact/
+          if-no-files-found: ignore
+          retention-days: 30

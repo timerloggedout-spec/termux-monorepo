@@ -19,7 +19,7 @@ Provision a repository-native LangGraph capability by extracting high-value prac
 - Explicit integration boundary in `docs/ops/LANGGRAPH-BIUDL-INTEGRATION.md`.
 - Mapping to existing orchestration treatment/receipt, OTEL, ATES, action/effect, evidence, Temporal, and SHE contracts.
 - Skill inventory and discovery index updates.
-- Follow-on runtime prototype, persistence/HITL, telemetry, and treatment comparison items.
+- Follow-on runtime prototype, automatic crash recovery, autonomous escalation, telemetry, and treatment comparison items.
 - Competitive treatment matrix and evidence-based pattern synthesis.
 
 ## Out of scope for this slice
@@ -30,7 +30,7 @@ Provision a repository-native LangGraph capability by extracting high-value prac
 - Vendoring, submodules, forks, copying complete external skills, or adopting all Awesome list projects.
 - Changes to existing manager routing, production workflows, or promotion authority.
 
-## Sources
+## Decision: autonomous escalation, not HITL\n\nThe target architecture excludes human approval interrupts, approval queues, and human-resume workflows. It escalates autonomously among capability-matched specialists, alternate executors, manager arbitration, and independent assurance. Escalation never expands permissions. The complete plan is `docs/ops/AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md`.\n\n## Sources
 
 - `vonzosten/awesome-LangGraph` README blob: `e54d875ae645a03100346e2997acb8cfc43b0a14`
 - `langchain-ai/langchain-skills` fundamentals blob: `adf7bff81897aa99d9505195a1196fced6047b97`

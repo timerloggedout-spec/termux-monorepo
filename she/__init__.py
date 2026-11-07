@@ -87,6 +87,12 @@ from she.recovery.actions_bridge import (
     filter_execution_plan_by_dispatch,
     plan_actions_commands,
 )
+from she.recovery.escalation import (
+    EscalationBudget,
+    EscalationDecision,
+    ExecutorCandidate,
+    decide_escalation,
+)
 from she.recovery.dispatcher import (
     CAPABILITIES,
     DispatchDecision,
@@ -171,6 +177,10 @@ __all__ = [
     "bridge_workflow_failure",
     "dispatch_then_bridge",
     "filter_execution_plan_by_dispatch",
+    "EscalationBudget",
+    "EscalationDecision",
+    "ExecutorCandidate",
+    "decide_escalation",
     "CAPABILITIES",
     "DispatchDecision",
     "rank_actions",

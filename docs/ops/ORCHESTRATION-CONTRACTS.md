@@ -45,6 +45,22 @@ External source patterns may include native managers, Wingman, Devin plugin/hook
 
 Each adapter emits the same normalized receipt vocabulary. Provider-specific adapters may add provider fields, but preserve canonical IDs, repository/ref/SHA, lifecycle state, outcome, promotion, evidence IDs, and timestamp.
 
+### LangGraph
+
+LangGraph is an optional graph-orchestration adapter/treatment for explicit state, conditional routing, fan-out, subgraphs, checkpointed crash recovery, autonomous escalation, and streaming.
+
+- Graph-local state/checkpoints are not canonical repository evidence and may contain restricted payloads.
+- Reuse `OrchestratorTracer` and the existing ATES bridge for currently supported task/tool/handoff events; emit sanitized run-level evidence through the evidence-envelope and orchestration receipt.
+- `AGENT-THROUGHPUT-EVENT.schema.json` is closed and does not yet support graph-node events. Extend it versionedly before emitting node/transition metadata.
+- `ACTION-EFFECT-EVENT.schema.json` models review/comment-to-commit follow-through; do not treat it as a generic graph action ledger.
+- Preserve stable orchestration/cycle/attempt/action/event identity and bind project evidence to repository/ref/SHA.
+- Keep provider/model routing in existing adapters and manager policy; keep MCP authorization in existing tool boundaries.
+- Use checkpointing for automatic process/worker recovery only; do not design human approval interrupts or human-resume queues. Replayed nodes may re-execute, so side effects must be idempotent.
+- Use Temporal when execution must survive worker/process loss across distributed workers. LangGraph may run inside a Temporal Activity; it does not replace Temporal history/replay.
+- Autonomous escalation moves work to capability-matched specialists, alternate executors, manager arbitration, or independent assurance without pausing for a person. It never broadens the permission envelope.
+- Handoff and controller outputs conform to ESCALATION-PACKET.schema.json and ESCALATION-DECISION.schema.json; AUTONOMOUS-ESCALATION-POLICY.md defines normative reason, routing, terminal-state, and budget semantics.
+- Compare LangGraph against native manager treatments using the same cohort and task acceptance criteria. Graph complexity or parallel worker count is not quality.
+
 ### Devin
 
 hook -> sanitized event -> native evidence envelope -> action/effect event -> relationship graph

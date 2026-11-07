@@ -1,0 +1,594 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/recon/team-formation/schemas/game-development-context.schema.json",
+  "title": "Game Development Context Manifest",
+  "description": "Versioned task, specialist, toolchain and evidence contract. Registry membership does not grant authority or prove tool availability.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "context_id",
+    "task_id",
+    "status",
+    "project_kind",
+    "authority",
+    "target",
+    "game_shape",
+    "platforms",
+    "engine",
+    "specialist_contexts",
+    "work_packages",
+    "verification",
+    "review_pair"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "game-development-context/v1"
+    },
+    "context_id": {
+      "type": "string",
+      "pattern": "^context:game-development:[a-z0-9][a-z0-9._:-]*$"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "admitted",
+        "claimed",
+        "in_progress",
+        "blocked",
+        "review",
+        "accepted",
+        "rejected",
+        "archived"
+      ]
+    },
+    "project_kind": {
+      "enum": [
+        "new_game",
+        "prototype",
+        "feature",
+        "bug_fix",
+        "port",
+        "migration",
+        "mod_extension",
+        "engine_tooling",
+        "research_prototype"
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis"
+      ],
+      "properties": {
+        "basis": {
+          "enum": [
+            "owned",
+            "internal",
+            "open_source",
+            "explicit_authorization"
+          ]
+        },
+        "reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scope": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_ref"
+      ],
+      "properties": {
+        "target_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "artifact_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "approval_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "game_shape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimensions",
+        "genres",
+        "session_model"
+      ],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "2d",
+              "2_5d",
+              "3d",
+              "mixed"
+            ]
+          }
+        },
+        "genres": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "session_model": {
+          "enum": [
+            "single_player",
+            "cooperative",
+            "competitive",
+            "asynchronous",
+            "mixed",
+            "not_decided"
+          ]
+        },
+        "time_model": {
+          "enum": [
+            "real_time",
+            "turn_based",
+            "simulation",
+            "narrative",
+            "mixed",
+            "not_decided"
+          ]
+        }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "web",
+          "android",
+          "ios",
+          "linux",
+          "windows",
+          "macos",
+          "vr_ar",
+          "console_authorized",
+          "cross_platform",
+          "not_decided"
+        ]
+      }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "version_state"
+      ],
+      "properties": {
+        "family": {
+          "enum": [
+            "godot",
+            "unity",
+            "unreal",
+            "phaser",
+            "custom",
+            "existing_engine",
+            "not_decided"
+          ]
+        },
+        "version_state": {
+          "enum": [
+            "pinned",
+            "to_be_pinned",
+            "not_applicable",
+            "not_established"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "renderer_or_runtime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selection_rationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "specialist_contexts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "game_design_systems",
+          "gameplay_engineering",
+          "engine_runtime_architecture",
+          "graphics_rendering",
+          "2d_art",
+          "3d_art_environment",
+          "animation_rigging",
+          "audio_engineering",
+          "physics_simulation",
+          "ai_npc_systems",
+          "networking_multiplayer",
+          "ui_ux_accessibility",
+          "tools_content_pipeline",
+          "platform_performance",
+          "build_release_cicd",
+          "ml_vision_telemetry",
+          "interoperability_reverse_engineering"
+        ]
+      }
+    },
+    "tool_profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tool_profile"
+      }
+    },
+    "work_packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/work_package"
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "levels",
+        "acceptance_evidence"
+      ],
+      "properties": {
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "V0",
+              "V1",
+              "V2",
+              "V3",
+              "V4",
+              "V5",
+              "V6"
+            ]
+          }
+        },
+        "acceptance_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "visual_runtime_required": {
+          "type": "boolean"
+        },
+        "fixed_seed": {
+          "type": [
+            "integer",
+            "string",
+            "null"
+          ]
+        },
+        "performance_budgets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "number",
+              "integer",
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "review_pair": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "doe": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "campaign_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pool_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generation": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "parent_candidate_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "experiment_record_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "status": {
+          "enum": [
+            "not_applicable",
+            "proposed",
+            "not_admitted",
+            "admitted",
+            "running",
+            "review",
+            "passed",
+            "failed",
+            "retired"
+          ]
+        },
+        "review_verdict_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_issue": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifest_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "created_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "tool_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool_profile_ref",
+        "purpose",
+        "version_state",
+        "availability_state",
+        "evidence_outputs"
+      ],
+      "properties": {
+        "tool_profile_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version_state": {
+          "enum": [
+            "pinned",
+            "to_be_pinned",
+            "not_established"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "availability_state": {
+          "enum": [
+            "available_verified",
+            "remote_only",
+            "needs_install",
+            "not_established",
+            "unavailable"
+          ]
+        },
+        "license_review": {
+          "enum": [
+            "approved",
+            "review_required",
+            "not_applicable",
+            "not_established"
+          ]
+        },
+        "environment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "invocation_profile_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence_outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "work_package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_id",
+        "specialist_context",
+        "owner_role",
+        "scope",
+        "dependencies",
+        "deliverables",
+        "verifiers"
+      ],
+      "properties": {
+        "package_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "specialist_context": {
+          "type": "string"
+        },
+        "owner_role": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tool_profile_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "interface_contract": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "deliverables": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "verifiers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "risk_tier": {
+          "enum": [
+            "standard",
+            "elevated",
+            "human_only"
+          ]
+        },
+        "parallel_safe": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

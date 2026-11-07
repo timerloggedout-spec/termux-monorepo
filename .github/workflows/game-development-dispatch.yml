@@ -1,0 +1,84 @@
+name: game-development-dispatch
+
+# Game Development issues enter only after swarm-admission stamps them.
+# This route is an intake/queue receipt; provider selection and execution
+# remain in the existing claim/dispatch machinery.
+on:
+  issues:
+    types: [opened, reopened]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: game-development-dispatch-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: contains(github.event.issue.labels.*.name, 'game-development')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for QUE admission decision (fail closed)
+        id: admission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          for attempt in $(seq 1 24); do
+            labels="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq '[.labels[].name] | join(",")')"
+            case ",${labels}," in
+              *,swarm-admitted,*)
+                echo "admitted=true" >> "$GITHUB_OUTPUT"
+                exit 0
+                ;;
+              *,deferred-by-tier,*)
+                echo "admitted=false" >> "$GITHUB_OUTPUT"
+                echo "QUE deferred this filing; no task is queued."
+                exit 0
+                ;;
+            esac
+            sleep 5
+          done
+          echo "No QUE admission receipt appeared within 120 seconds; failing closed."
+          exit 1
+
+      - name: Parse and validate the project-task contract
+        if: steps.admission.outputs.admitted == 'true'
+        id: parse
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          printf '%s' "$ISSUE_BODY" > "$RUNNER_TEMP/issue-body.md"
+          python3 scripts/dispatch/project_task.py \
+            --body-file "$RUNNER_TEMP/issue-body.md" \
+            --issue "$ISSUE_NUMBER" \
+            --comment-out "$RUNNER_TEMP/comment.md" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Queue the admitted task
+        if: steps.admission.outputs.admitted == 'true' && steps.parse.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh label create dispatch-queued --force --color 0E8A16 \
+            --description "Project task accepted into the system; selection pending/executing" || true
+          gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "$ISSUE_NUMBER" --add-label dispatch-queued
+
+      - name: Diagnose incomplete task intake
+        if: steps.admission.outputs.admitted == 'true' && steps.parse.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh label create intake-incomplete --force --color D93F0B \
+            --description "Game-development task intake is incomplete; see the diagnosis comment" || true
+          gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "$ISSUE_NUMBER" --add-label intake-incomplete

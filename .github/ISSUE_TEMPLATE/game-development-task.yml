@@ -1,0 +1,203 @@
+# SWARM-DISPATCH-BEGIN
+# schema: issue-dispatch/v1
+# lane: game-development
+# que_tier: 3
+# payload_class: game-development-task
+# route: game-development-dispatch.yml
+# after:
+# chain:
+# SWARM-DISPATCH-END
+name: Game Development Task
+description: Submit a bounded game-development task. Filing starts QUE admission; execution is queued only after admission and intake validation.
+title: "[game-dev] "
+labels: ["game-development"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Players Play && Devs Dev.
+        This form is for building, repairing, extending or tooling an owned, open-source or explicitly authorized game project.
+        The issue is an intake contract, not a provider selector. QUE admission runs first; the route waits for an admitted receipt before queueing.
+        Do not paste credentials, private user data, copyrighted assets without permission, or commands intended for blind execution.
+  - type: dropdown
+    id: entry
+    attributes:
+      label: Entry
+      options:
+        - Game Development
+        - Game Prototype
+        - Game Tooling
+        - Game Port / Migration
+        - Game Research Prototype
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task / spec
+      description: State the desired outcome, requirements, constraints and intended player experience.
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: Scope
+      description: Exact repository paths, project systems, assets, scenes or APIs that may be changed.
+    validations:
+      required: true
+  - type: textarea
+    id: done-evidence
+    attributes:
+      label: Done-evidence
+      description: Build/test/runtime/visual/replay/review evidence that proves completion.
+    validations:
+      required: true
+  - type: input
+    id: target-repo
+    attributes:
+      label: Target repo
+      description: Repository the task executes against.
+      value: timerloggedout-spec/termux-monorepo
+  - type: dropdown
+    id: project-kind
+    attributes:
+      label: Project kind
+      options:
+        - new-game
+        - prototype
+        - feature
+        - bug-fix
+        - port
+        - migration
+        - mod-extension
+        - engine-tooling
+        - research-prototype
+    validations:
+      required: true
+  - type: dropdown
+    id: authority
+    attributes:
+      label: Target authority
+      description: Select the basis that permits work on this target.
+      options:
+        - owned-or-internal
+        - open-source-license-recorded
+        - explicit-written-authorization
+    validations:
+      required: true
+  - type: input
+    id: authority-reference
+    attributes:
+      label: Authority reference
+      description: Ownership, license or written authorization reference; names/URLs only, no secrets.
+    validations:
+      required: true
+  - type: dropdown
+    id: dimensions
+    attributes:
+      label: Game dimensions
+      options:
+        - 2d
+        - 2.5d
+        - 3d
+        - mixed
+        - not-decided
+    validations:
+      required: true
+  - type: textarea
+    id: genre-facets
+    attributes:
+      label: Genre facets
+      description: Comma-separated facets, e.g. strategy-4x, action-arcade, simulation-builder, puzzle, RPG, multiplayer.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Target platform
+      options:
+        - web
+        - android
+        - ios
+        - linux
+        - windows
+        - macos
+        - vr-ar
+        - console-authorized
+        - cross-platform
+        - not-decided
+    validations:
+      required: true
+  - type: dropdown
+    id: engine
+    attributes:
+      label: Engine / framework
+      options:
+        - existing-engine
+        - godot
+        - unity
+        - unreal
+        - phaser
+        - custom
+        - not-decided
+    validations:
+      required: true
+  - type: input
+    id: engine-version
+    attributes:
+      label: Engine version
+      description: Exact version or NOT_ESTABLISHED; never infer a version.
+  - type: textarea
+    id: specialist-contexts
+    attributes:
+      label: Specialist contexts
+      description: Comma-separated contexts from GAME_DEVELOPMENT_LANES.md. Leave blank for classification by the planner.
+  - type: textarea
+    id: work-packages
+    attributes:
+      label: Work packages
+      description: Optional one per line: package-id | specialist context | exact scope | dependencies | verifier. Max three parallel packages by default.
+  - type: textarea
+    id: toolchain-constraints
+    attributes:
+      label: Toolchain constraints
+      description: Required tools/versions, license constraints, available runners, resource limits or tools to avoid.
+  - type: dropdown
+    id: verification-level
+    attributes:
+      label: Required verification
+      options:
+        - contract-and-unit
+        - engine-build-and-tests
+        - runtime-and-visual
+        - full-playtest-and-platform
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Requirement IDs and measurable pass/fail conditions; include visual/runtime evidence when relevant.
+    validations:
+      required: true
+  - type: input
+    id: review-pair
+    attributes:
+      label: Independent review pair
+      description: QA/accessibility/release reviewer or team; builder cannot self-certify.
+    validations:
+      required: true
+  - type: dropdown
+    id: risk-tier
+    attributes:
+      label: Risk tier
+      options:
+        - standard
+        - elevated
+        - human-only
+    validations:
+      required: true
+  - type: input
+    id: target-repo
+    attributes:
+      label: Target repo
+      description: Repository for this task.
+      value: timerloggedout-spec/termux-monorepo

@@ -13,7 +13,7 @@ All role assignment remains subject to the repository's dual gates, issue/PR coo
 | Team | Mission | Primary deliverables | Explicit boundary | Initial evidence source |
 |---|---|---|---|---|
 | **Research & Reconnaissance** | Convert uncertainty into cited, reproducible decision material. | Research briefs, source maps, benchmark plans, risk registers. | Does not merge production code or make security claims without review. | Issue #129 research intent; existing researcher candidates. |
-| **Development** | Implement scoped changes in isolated branches with focused tests. | Small commits, tests, migration notes, PRs. | Does not self-approve, bypass gates, or modify files claimed by another open agent PR. | Builder/reviewer policy. |
+| **Development** | Implement scoped changes in isolated branches with focused tests. | Small commits, tests, migration notes, PRs. | Does not self-approve, bypass gates, or modify files claimed by another open agent PR. | Builder/reviewer policy. |\n| **Game Development & Production** | Design, build, integrate and ship game systems, assets, engines, developer tools and reproducible builds. | GDD/contracts, source/assets, tool profiles, builds, runtime evidence and release manifests. | Does not operate the player fleet or self-certify QA/release outcomes; specialist promotion remains DoE-governed. | Issue #243; ATF-16; GAME_DEVELOPMENT_LANES.md. |
 | **Delivery Reliability (DevOps / CI-CD)** | Keep the dual-gate spine, workflows, and on-device compatibility reliable. | CI repairs, gate evidence, safe workflow changes, incident notes. | Does not broaden workflow credentials, alter app permissions, or write secrets. | Existing lanes 2 and 5. |
 | **Game Player Machines & Genre Teams** | Operate designated player machines against the approved game catalog and generate reproducible, genre-specific session evidence. | Game catalog records, machine profiles, session traces, genre scorecards, reset evidence. | Each game/build, test profile, telemetry policy, and reset procedure is registered before scoring. | Issue #243 and `Roster:Teams:Games:Players`. |
 | **Game QA & Accessibility** | Independently test and verify project-owned, open-source, or explicitly supplied game builds for quality and accessibility. | Reproduction steps, compatibility matrix, test fixtures, accessibility findings. | Reviews player-machine evidence and keeps QA verdicts separate from player performance. | Issue #243 game list and team-planning project. |
@@ -60,7 +60,7 @@ The current global ELO/3L0 field may remain as a **displayed aggregate**, but it
 | Team | Primary measures | Negative signals | Minimum evidence before score update |
 |---|---|---|---|
 | Research & Reconnaissance | Source quality and coverage; claim traceability; reproducibility; decision usefulness; forecast calibration where applicable. | Unsupported claims; stale or contradictory sources ignored; irreproducible methods. | Linked sources, method, uncertainty statement, and reviewer disposition. |
-| Development | Gate pass rate; post-review rework; defect escape rate; test relevance; diff focus. | Regressions; unrelated changes; unaddressed review findings; skipped required tests. | Commit/PR, targeted tests, gate output, and reviewer disposition. |
+| Development | Gate pass rate; post-review rework; defect escape rate; test relevance; diff focus. | Regressions; unrelated changes; unaddressed review findings; skipped required tests. | Commit/PR, targeted tests, gate output, and reviewer disposition. |\n| Game Development & Production | Requirement satisfaction; build/import/export pass; runtime and visual verification; integration/regression; asset/toolchain provenance; performance budgets. | Code-only acceptance for visual changes; unpinned tools; broken builds; scope drift; unreviewed assets/licenses. | Versioned context manifest, commit/build hash, tool-profile refs, test/runtime evidence, independent QA/release verdict. |
 | Delivery Reliability | Pipeline success rate; mean time to safe recovery; flaky-check reduction; Termux compatibility; least-privilege adherence. | Credential expansion; nondeterministic or unpinned changes; repeat incidents; broken smoke compatibility. | Workflow/job evidence, gate logs, rollback/recovery note, and reviewer disposition. |
 | Game Player Machines & Genre Teams | Approved scenario coverage; objective completion; session stability; telemetry completeness; reset correctness; genre-specific performance. | Missing session evidence; unregistered machine/build; incomplete reset; cross-genre score leakage. | Game catalog entry, machine profile, session trace, objective verdict, and reviewer disposition. |
 | Game QA & Accessibility | Unique reproducible defects; device/variant coverage; accessibility impact; fix verification quality. | Incomplete reproduction; duplicate reports without added evidence; player performance scored as QA evidence. | Catalog record, build identity, reproduction steps, expected/actual result, and reviewer verdict. |
@@ -82,6 +82,15 @@ The roster begins with an internal-points ledger for simulated bids and score-li
 | Internal-points simulation | Use deterministic, non-transferable ledger events for early incentive and bidding experiments; retain full event history. |
 | Wallet-stage promotion | Move from internal points to simulation/testnet, then to a future real-wallet architecture only through a separate decision record and security review. |
 | Protected roles | Security review, delivery controls, and roster governance require separation of duties and cannot be self-scored by the candidate. |
+
+
+## Game-development and production protocol
+
+Issue #243 remains the seed for the separate player fleet. **Game Development & Production** owns implementation work and uses the nested decision/tooling model in [GAME_DEVELOPMENT_LANES.md](../../../recon/team-formation/GAME_DEVELOPMENT_LANES.md). The model resolves project kind, authority, game shape, platform/engine, specialist contexts, tool profiles, bounded work packages and verification levels before dispatch.
+
+The game-development task form is a distinct QUE-admitted intake route. It does not name a provider; it emits a validated project-task receipt only after admission. Builders, player machines and independent QA retain separate task cards and score events.
+
+Specialist candidates are created, monitored and improved through DoE cohorts and versioned experiment records. No score or authorization transfers across roles or generations. The initial game-development specialist-evolution design is proposed only; DoE oversight must admit it and pre-register its decision rule before any designed run.
 
 ## Game-player fleet protocol
 

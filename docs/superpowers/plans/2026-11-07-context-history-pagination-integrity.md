@@ -38,10 +38,10 @@ The per-PR defaults respect GitHub's documented endpoint ceilings. Record the ef
 
 ## Validation
 
-1. RED: add a focused collector test that observes the per-endpoint limits independently of the history page size.
-2. GREEN: run `python -m pytest tests/test_context_relationship_github_collector.py -q`.
+1. A focused regression assertion was added to observe the per-endpoint limits independently of the history page size. A local RED run was **not observed** in this connector-only session; the Termux MCP/device and repository worktree are not exposed here, so no local test result is claimed.
+2. Run `python -m pytest tests/test_context_relationship_github_collector.py -q` in the owning CI/worktree.
 3. Run `python -m pytest tests/test_context_relationship_*.py -q`.
-4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`.
+4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py` on the device or an approved parity runner; CI jobs alone do not prove the local Termux gate.
 5. Run `python3 scripts/proposals/validate_registry.py`.
 6. Re-fetch PR head SHA and wait for the same-head context relationship, repo-gate, termux-smoke, proposal registry, and review results. Queued/cancelled checks are not passes.
 7. Keep the PR draft until required checks and independent review are terminal. Do not merge or claim a corpus page was executed as part of this code change.

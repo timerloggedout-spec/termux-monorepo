@@ -1,9 +1,9 @@
 # RECON — awesome-LangGraph × termux-monorepo
 
-**Date:** 2026-11-06 (America/Los_Angeles)  
-**Initial recon snapshot:** `master` at `94e674c9a334fc1bdda8fe3ec96d7db5bc4b3cb9`  
-**PR merge base / current base SHA:** `9376c8bee386022f90dd7a6407ad1664d2c6ecf1` (verified by GitHub compare; branch is 10 commits ahead, 0 behind)  
-**External source:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph)  
+**Date:** 2026-11-06 (America/Los_Angeles)
+**Initial recon snapshot:** `master` at `94e674c9a334fc1bdda8fe3ec96d7db5bc4b3cb9`
+**PR merge base / current base SHA:** `9376c8bee386022f90dd7a6407ad1664d2c6ecf1` (verified by GitHub compare; branch is 10 commits ahead, 0 behind)
+**External source:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph)
 **Official skills:** [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)
 
 ## 1. Source characterization

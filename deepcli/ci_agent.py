@@ -9,8 +9,10 @@ Artifact output is metadata only (no model text).
 
 Supports:
   - pull_request opened/synchronize/reopened → PR review comment
-  - issue_comment (created) with @deepcore/@deepseek triggers → issue reply
-  - pull_request_review_comment (created) with @deepcore/@deepseek triggers → threaded review reply
+  - issue_comment (created) with trusted exact @deepseek/@deepseek-ci/@deepCore prefix → issue reply
+  - pull_request_review_comment (created) with the same trusted prefix → threaded review reply
+
+Comment text and PR diffs are untrusted reference data, never policy or tool instructions.
 """
 import os
 import re

@@ -144,3 +144,17 @@ Represent task outcome as `PASS / FAIL + notes` when verification is possible, w
 12. **LOOP — repeat until the desired outcome is confirmed**, running multiple validation cycles and continuing to improve rather than stopping at the first green-looking signal.
 
 The skill is a living operational contract, not a frozen tutorial.
+
+
+## Bounded-loop pattern interoperability
+
+The user-supplied Loopy Skill's Observe → Choose → Act → Verify → Record → Repeat sequence is an adapted prompt pattern, not a replacement for this skill's continuous loop:
+
+- Observe maps to current-SHA and event/evidence reconstruction.
+- Choose maps to classification, proposal priority, and the next authorized action.
+- Act maps to one bounded implementation or steering change.
+- Verify maps to repeated current-SHA tests, integration checks, and task-outcome assessment.
+- Record maps to immutable event/run/evidence identity and feed-forward learning.
+- Repeat maps to the existing adaptive-wait state machine.
+
+Do not add a second scheduler, retry controller, receipt store, or provider router. Adaptive-wait owns asynchronous cadence and terminal states; this skill owns longitudinal learning and re-comparison. Preserve execution state, task outcome, and promotion as independent dimensions. The supplied Loopy JSON did not include a source commit/version or a verified published catalog entry; the local mapping is adapted, not upstream-adopted.

@@ -125,18 +125,20 @@ Retries must be informative, bounded, idempotent, and represented as distinct at
 
 ## Observability and ATES adapter
 
-Emit only sanitized metadata to existing contracts:
+Start from the existing `she/observability/orchestrator_trace.py` and `scripts/ci/bridge_ates_trace_to_events.py`; do not create a competing trace pipeline.
 
-- orchestration / cycle / attempt / action / event IDs;
-- graph name and version, node name, transition type, and sequence number;
-- repository, ref, immutable SHA, workflow/run identifiers where applicable;
-- actor/provider/model identifiers only when attributable;
-- start/end timestamps, duration, retry classification, and terminal state;
-- evidence IDs, validation outcome, and promotion classification.
+The current bridge accepts only these ATES event kinds: `task_started`, `task_completed`, `tool_call`, `tool_retry`, `handoff`, and `active_window`. It hashes free-text task/role/tool labels and omits raw context and fingerprints. Preserve those privacy semantics.
 
-Never export prompts, completions, message bodies, arbitrary graph state, tool payloads, secrets, tokens, checkpoint blobs, or raw user content. Reuse the existing OpenTelemetry, ATES JSONL, evidence-envelope, action/effect, and orchestration receipt contracts. Do not invent a second trace schema or score.
+Current contract boundaries:
 
-For parallel work, record fan-out count, completed/failed workers, useful accepted outputs, merge conflicts, duplicate effort, and integration outcome. `parallel yield` is not simply worker count.
+- `AGENT-THROUGHPUT-EVENT.schema.json` is closed (`additionalProperties: false`) and has no graph/node/transition fields. Map graph-run start/completion and actual tool/handoff events only when their semantics match an allowed event. Do not mislabel every graph node as a `tool_call`.
+- `ORCHESTRATION-RECEIPT.schema.json` and `EVIDENCE-ENVELOPE.schema.json` can carry sanitized graph-run-level state/outcome and SHA-bound provenance using their existing fields.
+- `ACTION-EFFECT-EVENT.schema.json` currently models issue comments/reviews and their later commit follow-through. It is not a generic graph-node event ledger; do not repurpose it.
+- Graph/node-level spans (graph version, node identity, transition, trace/span parentage, checkpoint/thread fingerprint) require an explicit versioned schema extension and privacy tests under LGB-006 before export.
+
+Never export prompts, completions, message bodies, arbitrary graph state, tool payloads, secrets, tokens, checkpoint blobs, or raw user content. Do not invent a second trace schema or score.
+
+For parallel work, record fan-out count, completed/failed workers, useful accepted outputs, merge conflicts, duplicate effort, and integration outcome only when the current schema can represent them. Extend the schema before emitting unrepresentable dimensions. `parallel yield` is not simply worker count.
 
 ## Testing contract
 

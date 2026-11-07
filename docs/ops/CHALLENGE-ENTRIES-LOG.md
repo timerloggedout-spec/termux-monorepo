@@ -247,6 +247,7 @@ credits each + 10 backpack draws (October pattern).
 > **PROVENANCE CORRECTION (2026-10-30, Contribution Desk):** PRs #2615/#2619/#2623 (AMD M4) + #2616 (D3 ListingLens) were authored by **desk-spawned Muse subagents**, ¬ provider lanes — the "builder lane / Jules-Bolt" labels are **retracted**. Route of record: provider-dispatch map (Jules primary via agent-jules-on-issues; Gemini/DeepSeek wired, action_required caveat; command-dispatch for polish); Desk reports name provider + session per PR; a Muse-authored PR = stop + report, ¬ merge. First proof: issue #2626 + `jules` label.
 
 ### C17 packet — Game Off 2026 (candidate; owner review pending)
+<!-- countdown-data:C17 opens=2026-11-01T13:37:27-08:00 closes=2026-12-01T13:37:00-08:00 -->
 
 - **Theme:** SHIFT. **Host:** GitHub. **Platform:** itch.io.
 - **Window:** Nov 1, 2026 13:37 PST – Dec 1, 2026 13:37 PST.

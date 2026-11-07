@@ -7,8 +7,9 @@ SSOT, parsed by the challenge lane's scripts/challenge_entries/
 countdowns.py) and writes apps/tribute-dashboard/data/
 challenge-countdowns-feed.json.
 
-The feed carries INSTANTS ONLY — never a computed state and never a
-remaining-seconds value. The dashboard page derives state and
+The feed's time fields carry INSTANTS ONLY — never a computed state
+and never a remaining-seconds value. Event URLs, prizes, and recorded
+submission facts remain separate source-derived metadata. The dashboard page derives state and
 time-remaining client-side from the instants on every tick
 (issue #1880 requirement 3), so a stale feed can never show a stale
 countdown; at worst it shows a stale deadline, which the log owns.

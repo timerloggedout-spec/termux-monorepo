@@ -1,6 +1,6 @@
 # Autonomous Escalation Policy Contract
 
-**Status:** normative P1 contract for the autonomous-escalation treatment  
+**Status:** normative P1 contract for the autonomous-escalation treatment
 **Schemas:** [ESCALATION-PACKET.schema.json](./ESCALATION-PACKET.schema.json), [ESCALATION-DECISION.schema.json](./ESCALATION-DECISION.schema.json)
 
 ## Invariants

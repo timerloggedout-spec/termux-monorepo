@@ -63,9 +63,9 @@ def should_process_event(event: Any, event_name: str) -> bool:
         return trusted_comment_request(event, event_name) is not None
     if event.get("comment"):
         return False
-    if event_name == "workflow_dispatch":
+    if event_name in {"pull_request", "workflow_dispatch", ""}:
         return (
             bool(event.get("pull_request"))
             and event.get("action") in {"opened", "synchronize", "reopened"}
         )
-    return True
+    return False

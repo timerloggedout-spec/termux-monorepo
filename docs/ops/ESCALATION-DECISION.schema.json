@@ -100,7 +100,8 @@
         "specialist_handoff_count",
         "alternate_family_count",
         "manager_replan_count",
-        "verification_count"
+        "verification_count",
+        "retry_remaining"
       ],
       "properties": {
         "same_strategy_replay_count": {
@@ -124,6 +125,10 @@
           "minimum": 0
         },
         "verification_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retry_remaining": {
           "type": "integer",
           "minimum": 0
         }

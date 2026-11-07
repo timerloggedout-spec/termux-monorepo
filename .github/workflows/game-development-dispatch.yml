@@ -80,6 +80,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
         run: |
+          gh label create game-development --force --color 1D76DB \
+            --description "Game Development & Production task intake" || true
+          gh issue edit "$ISSUE_NUMBER" --add-label game-development
           gh label create dispatch-queued --force --color 0E8A16 \
             --description "Project task accepted into the system; selection pending/executing" || true
           gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"

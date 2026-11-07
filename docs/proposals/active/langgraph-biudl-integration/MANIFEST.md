@@ -30,11 +30,14 @@ Provision a repository-native LangGraph capability by extracting high-value prac
 - Vendoring, submodules, forks, copying complete external skills, or adopting all Awesome list projects.
 - Changes to existing manager routing, production workflows, or promotion authority.
 
-## Decision: autonomous escalation, not HITL\n\nThe target architecture excludes human approval interrupts, approval queues, and human-resume workflows. It escalates autonomously among capability-matched specialists, alternate executors, manager arbitration, and independent assurance. Escalation never expands permissions. The complete plan is `docs/ops/AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md`.\n\n## Sources
+## Decision: autonomous escalation, not HITL
+
+The target architecture excludes human approval interrupts, approval queues, and human-resume workflows. It escalates autonomously among capability-matched specialists, alternate executors, manager arbitration, and independent assurance. Escalation never expands permissions. The complete plan is `docs/ops/AUTONOMOUS-ESCALATION-ORCHESTRATION-PLAN.md`.
+
+## Sources
 
 - `vonzosten/awesome-LangGraph` README blob: `e54d875ae645a03100346e2997acb8cfc43b0a14`
 - `langchain-ai/langchain-skills` fundamentals blob: `adf7bff81897aa99d9505195a1196fced6047b97`
-- Human-in-the-loop blob: `d762f2a170c30310b5641642af3e19ce7866a28a`
 - Persistence blob: `bbcf0ea77bf2b374a99e5d08cae147c12da03e82`
 
 ## Gates

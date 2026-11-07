@@ -145,8 +145,28 @@ def workflow_surfaces(text):
     return out
 
 
+def expected_future_path_filters(root):
+    """Load narrowly scoped, documented future workflow path filters."""
+    registry = root / "scripts" / "ci" / "dangle_expected_future_paths.json"
+    if not registry.is_file():
+        return set()
+    try:
+        payload = json.loads(registry.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()  # fail closed: malformed registry suppresses nothing
+    entries = payload.get("entries", []) if isinstance(payload, dict) else []
+    return {
+        (entry.get("workflow"), entry.get("path"))
+        for entry in entries
+        if isinstance(entry, dict)
+        and isinstance(entry.get("workflow"), str)
+        and isinstance(entry.get("path"), str)
+    }
+
+
 def check_workflows(root, old_ids=None):
     findings = []
+    expected_future = expected_future_path_filters(root)
     wf_dir = root / ".github" / "workflows"
     for p in iter_files(root, ".github/workflows"):
         if p.suffix not in (".yml", ".yaml"):
@@ -166,9 +186,13 @@ def check_workflows(root, old_ids=None):
                 findings.append(finding("dangling-run-script", rp, line,
                                         val, surface))
             if surface == "paths" and old_ids is None:
-                # path filters pointing at nothing are advisory in census
-                pat = val.rstrip("/")
-                if pat and "*" not in pat and not (root / pat).exists():
+                # GitHub Actions uses leading ! for negative path filters.
+                # Resolve the underlying path while preserving the original
+                # pattern in the diagnostic.
+                pat = val.lstrip("!").rstrip("/")
+                has_glob = any(ch in pat for ch in "*?[")
+                if (pat and not has_glob and not (root / pat).exists()
+                        and (rp, pat) not in expected_future):
                     findings.append(finding("dangling-path-filter", rp, line,
                                             val, surface))
         if old_ids:
@@ -194,6 +218,11 @@ def slugify(heading):
     s = heading.strip().lower()
     s = re.sub(r"[^\w\s-]", "", s)
     return re.sub(r"\s+", "-", s)
+
+
+def is_dynamic_reference(refv):
+    """Return True for URL/anchor values assembled by JavaScript at runtime."""
+    return bool(re.search(r"\$\{|['\"]\s*\+|\+\s*['\"]", refv))
 
 
 def check_links(root):
@@ -232,6 +261,10 @@ def check_links(root):
             refs = [(m.group(1), text[:m.start()].count("\n") + 1)
                     for m in HTML_REF.finditer(text)]
         for refv, line in refs:
+            # HTML files contain both static markup and JS-generated href/src
+            # strings. Runtime expressions are not literal repository paths.
+            if is_dynamic_reference(refv):
+                continue
             if re.match(r"^(https?:|mailto:|tel:|data:|#)", refv):
                 if refv.startswith("#") and len(refv) > 1:
                     anchors = (html_ids(p) if p.suffix == ".html"
@@ -276,6 +309,14 @@ def feed_refs(obj, out):
             feed_refs(v, out)
 
 
+def split_feed_refs(value):
+    """Split compound feed references and remove human section annotations."""
+    for part in re.split(r"\s+\+\s+", value):
+        candidate = re.sub(r"\s+\([^)]*\)$", "", part.strip())
+        if candidate:
+            yield candidate
+
+
 def check_feeds(root):
     findings = []
     for p in iter_files(root):
@@ -295,16 +336,17 @@ def check_feeds(root):
         strings = []
         feed_refs(data, strings)
         seen = set()
-        for s in strings:
-            cand = s.split("#")[0].split("?")[0]
-            if cand in seen:
-                continue
-            seen.add(cand)
-            if (cand.startswith(FEED_PREFIXES) and "/" in cand
-                    and re.search(r"\.[\w]{1,6}$", cand)
-                    and not (root / cand).exists()):
-                findings.append(finding("dangling-feed-ref", rp, 0, cand,
-                                        "feed"))
+        for value in strings:
+            for part in split_feed_refs(value):
+                cand = part.split("#")[0].split("?")[0].strip()
+                if cand in seen:
+                    continue
+                seen.add(cand)
+                if (cand.startswith(FEED_PREFIXES) and "/" in cand
+                        and re.search(r"\.[\w]{1,6}$", cand)
+                        and not (root / cand).exists()):
+                    findings.append(finding("dangling-feed-ref", rp, 0, cand,
+                                            "feed"))
     return findings
 
 

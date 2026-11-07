@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ESCALATION-DECISION.schema.json",
+  "title": "Autonomous Escalation Decision",
+  "description": "Deterministic controller output. A route is not proof of dispatch, invocation, completion, verification, or authorization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "decision_id",
+    "orchestration_id",
+    "cycle_id",
+    "attempt_id",
+    "classification",
+    "decision",
+    "terminal_state",
+    "authorization_preserved",
+    "budget_snapshot",
+    "decided_at"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orchestration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cycle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classification": {
+      "enum": [
+        "TRANSIENT_FAILURE",
+        "CAPABILITY_GAP",
+        "STAGNATION",
+        "CONTRADICTION",
+        "VERIFIER_REJECTION",
+        "PROVIDER_UNAVAILABLE",
+        "SECURITY_ANOMALY",
+        "RESOURCE_EXHAUSTED",
+        "POLICY_DENIAL",
+        "NO_PROGRESS",
+        "UNKNOWN",
+        "HIGH_IMPACT_RESULT",
+        "CONTEXT_SATURATION",
+        "ESCALATION_CYCLE"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "RETRY_WITH_BACKOFF",
+        "REPAIR_LOCAL",
+        "HANDOFF_SPECIALIST",
+        "HANDOFF_ALTERNATE_FAMILY",
+        "MANAGER_ARBITRATION",
+        "INDEPENDENT_VERIFY",
+        "CONTAIN_BRANCH",
+        "CONTINUE_SAFE_WORK",
+        "TERMINATE"
+      ]
+    },
+    "target_executor_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "terminal_state": {
+      "enum": [
+        "NON_TERMINAL",
+        "TASK_PASS",
+        "TASK_FAIL",
+        "BLOCKED_CAPABILITY",
+        "BLOCKED_PERMISSION",
+        "STAGNATED",
+        "BUDGET_EXHAUSTED",
+        "QUARANTINED",
+        "UNKNOWN"
+      ]
+    },
+    "authorization_preserved": {
+      "const": true
+    },
+    "budget_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "local_repair_remaining",
+        "retry_remaining",
+        "same_strategy_replay_count",
+        "specialist_handoff_remaining",
+        "alternate_family_remaining",
+        "manager_replan_remaining",
+        "verification_remaining"
+      ],
+      "properties": {
+        "local_repair_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retry_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "same_strategy_replay_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "specialist_handoff_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "alternate_family_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "manager_replan_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "verification_remaining": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

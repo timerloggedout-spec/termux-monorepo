@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "3c0f2165a5076e313995086140943f6270db4aeeacb299c663c38178a80eaf17",
-  "workflow_count": 291,
+  "source_fingerprint": "6b9f2c90c38bfc3cc21bec347fa178e03e1c9dfb1e5890d0fef310892e847142",
+  "workflow_count": 292,
   "workflows": [
     {
       "action_pins": [],
@@ -2786,6 +2786,23 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Integration portfolio validation",
+      "path": ".github/workflows/integration-portfolio.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },

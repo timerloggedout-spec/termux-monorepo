@@ -92,8 +92,8 @@ PyPI reported `langgraph==1.2.20` as the latest stable release on 2026-11-06, MI
 
 The initial broad shortlist was refined by reading the selected repositories themselves:
 
-- **Supervisor package:** `langchain-ai/langgraph-supervisor-py` explicitly says the tool-based supervisor pattern is now recommended for most new use cases; retain as migration/legacy reference, not a default dependency.
-- **MCP adapters:** `langchain-ai/langchain-mcp-adapters` explicitly says it is no longer actively maintained and MCP support moved into `langchain.mcp`; do not add the old package.
+- **Supervisor package:** `langchain-ai/langgraph-supervisor-py` is archived/read-only (2026-09-20) and its README recommends tool-based supervisor patterns for most new use cases; do not adopt it as a dependency.
+- **MCP adapters:** `langchain-ai/langchain-mcp-adapters` is archived/read-only (2026-09-17); MCP support moved into `langchain[mcp]` / `langchain.mcp`; do not add the old package.
 - **Swarm ledger:** `Mediaeater/swarm-at-ledger` describes SHA-256 hash chaining and independent verification, but states its sample ledger data is synthetic, not real agent interactions. Study integrity mechanics only.
 - **Open SWE:** its README labels it actively developing and says correctness, stability, and compatibility are not guaranteed. Treat as architecture research, not production base.
 - **Open Deep Research:** its visible README update notes are from 2025; keep as reference pending fresh maintenance and dependency checks.

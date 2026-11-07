@@ -20,8 +20,10 @@ The initial integration is **skill + architecture + proposal-scoped**. It intent
 | `docs/ops/ORCHESTRATION-CONTRACTS.md` | Canonical identity, state, receipt, adapter boundary |
 | `ORCHESTRATION-TREATMENT.schema.json` | Describe a LangGraph graph as a comparable treatment |
 | `ORCHESTRATION-RECEIPT.schema.json` | Project sanitized graph lifecycle/outcome |
+| Existing `OrchestratorTracer` + ATES bridge | Existing metadata-first span capture and six whitelisted event mappings; extend only under a versioned schema change |
 | OpenTelemetry + ATES JSONL | Canonical execution observations and throughput measures |
-| Evidence envelope + action/effect ledger | Stable evidence IDs and action-to-effect follow-through |
+| Evidence envelope + orchestration receipt | Sanitized graph-run outcome and SHA-bound provenance |
+| Action/effect event schema | PR discussion/review-to-commit follow-through only; not a generic graph-node ledger |
 | Context relationship graph | Link graph runs to repo SHA, PR, issue, workflow, and source paths |
 | Adaptive wait + production reconciliation | Wait, inspect, classify, re-fetch, compare |
 | Temporal self-host + LangSmith adapter | Optional durable execution / trajectory bridge |
@@ -64,6 +66,10 @@ LangGraph owns graph-local control flow and checkpoint state. Temporal owns dura
 | Long-running work surviving worker/process loss | Temporal | Durable execution and replay boundary |
 | Cross-run experiment comparison | Native MVT/DoE + ATES | Existing measurement contract |
 | Trace visualization / evaluation | OTEL + optional LangSmith/Langfuse/Phoenix | Adapter, not canonical evidence |
+
+## Telemetry contract gap
+
+The current `AGENT-THROUGHPUT-EVENT.schema.json` is closed and allows only six event kinds. The existing bridge in `scripts/ci/bridge_ates_trace_to_events.py` already hashes free-text labels and drops raw context. LangGraph can initially emit graph-run start/completion and true tool/handoff events through this adapter. It cannot safely emit graph node names, transition IDs, graph versions, or checkpoint/thread identifiers yet. LGB-006 must propose a versioned, allowlisted schema extension and regression/privacy tests before those fields are emitted. Do not overload `tool` or reuse `ACTION-EFFECT-EVENT.schema.json`, which currently models review/comment follow-through.
 
 ## State and security rules
 

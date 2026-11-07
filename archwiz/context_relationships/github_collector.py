@@ -322,6 +322,7 @@ def collect_github_seed(
     history_start_page: int = 1,
     max_files_per_pr: int = 3000,
     max_commits_per_pr: int = 250,
+    max_timeline_events_per_item: int = 1000,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Collect a bounded GitHub metadata window into a compiler-compatible seed."""
     collected_at = utc_now()
@@ -512,7 +513,7 @@ def collect_github_seed(
             report["permalink_references"] += 1
 
     def add_timeline_cross_references(parent_ref: str, number: int, parent_url: str, observed_at: str) -> None:
-        for event_item in client.paginate(f"/repos/{owner}/{repo}/issues/{number}/timeline", {}, max_items):
+        for event_item in client.paginate(f"/repos/{owner}/{repo}/issues/{number}/timeline", {}, max_timeline_events_per_item):
             if event_item.get("event") != "cross-referenced":
                 continue
             source_container = event_item.get("source")
@@ -792,6 +793,7 @@ def collect_github_seed(
         "max_comments_per_item": max_comments_per_item,
         "max_files_per_pr": max_files_per_pr,
         "max_commits_per_pr": max_commits_per_pr,
+        "max_timeline_events_per_item": max_timeline_events_per_item,
         "include_comments": include_comments,
         "history_window": {
             "start_page": history_start_page,
@@ -862,6 +864,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-comments-per-item", type=int, default=20)
     parser.add_argument("--max-files-per-pr", type=int, default=3000, help="Maximum changed files fetched for each PR (GitHub API cap: 3000)")
     parser.add_argument("--max-commits-per-pr", type=int, default=250, help="Maximum commits fetched for each PR (GitHub API cap: 250)")
+    parser.add_argument("--max-timeline-events-per-item", type=int, default=1000, help="Maximum timeline events fetched for each issue/PR")
     parser.add_argument("--max-cochange-pairs-per-commit", type=int, default=100)
     parser.add_argument(
         "--history-start-page",
@@ -895,6 +898,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.max_comments_per_item,
                 args.max_files_per_pr,
                 args.max_commits_per_pr,
+                args.max_timeline_events_per_item,
                 args.max_cochange_pairs_per_commit,
                 args.history_start_page,
             )
@@ -919,6 +923,7 @@ def main(argv: list[str] | None = None) -> int:
             args.history_start_page,
             args.max_files_per_pr,
             args.max_commits_per_pr,
+            args.max_timeline_events_per_item,
         )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.report.parent.mkdir(parents=True, exist_ok=True)

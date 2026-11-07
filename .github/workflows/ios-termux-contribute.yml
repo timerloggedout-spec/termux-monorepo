@@ -2,11 +2,15 @@ name: iOS-Termux Contribute
 
 # Workflow to contribute to credkellar/iOS-Termux
 # Uses pre-generated patch and creates PR via fork
+# Prevents duplicate PRs by checking existing PRs first
 
 on:
   push:
     branches:
       - master
+    paths:
+      - '.github/patches/ios-termux-contribution.patch'
+      - '.github/workflows/ios-termux-contribute.yml'
   workflow_dispatch:
     inputs:
       target_repo:
@@ -26,6 +30,10 @@ on:
         required: false
         default: "true"
 
+concurrency:
+  group: ios-termux-contribute
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -43,7 +51,7 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y git
+          sudo apt-get install -y git curl jq
 
       - name: Set defaults
         id: defaults
@@ -87,8 +95,31 @@ jobs:
           echo "target=$TARGET" >> $GITHUB_OUTPUT
           echo "fork_owner=$FORK_OWNER" >> $GITHUB_OUTPUT
 
+      - name: Check for existing PR
+        id: check_pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          OWNER="${{ steps.repo.outputs.owner }}"
+          REPO="${{ steps.repo.outputs.repo }}"
+          PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
+          
+          # Check if PR already exists with same title
+          EXISTING_PR=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
+            "https://api.github.com/repos/${OWNER}/${REPO}/pulls?state=open" | \
+            jq -r ".[] | select(.title == \"${PR_TITLE}\") | .number" | head -1)
+          
+          if [ -n "$EXISTING_PR" ]; then
+            echo "existing_pr=$EXISTING_PR" >> $GITHUB_OUTPUT
+            echo "::warning::PR already exists: #$EXISTING_PR - https://github.com/${OWNER}/${REPO}/pull/$EXISTING_PR"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Clone and apply patch
         id: apply
+        if: steps.check_pr.outputs.skip != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
@@ -96,11 +127,26 @@ jobs:
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
           TARGET="${{ steps.target.outputs.target }}"
+          FORK_OWNER="${{ steps.target.outputs.fork_owner }}"
           BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
           PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
           PATCH_PATH="${{ steps.patch.outputs.patch_path }}"
-          BRANCH="contribution-enhancements-$(date +%Y%m%d%H%M%S)"
           
+          # Use consistent branch name
+          BRANCH="contribution-enhancements"
+          
+          # Clean up old branches in fork
+          git clone --depth 1 https://x-access-token:${GITHUB_TOKEN}@github.com/${FORK_OWNER}/${REPO}_fork.git /tmp/fork-repo 2>/dev/null || true
+          if [ -d /tmp/fork-repo ]; then
+            cd /tmp/fork-repo
+            # Delete old contribution branches
+            git branch -r | grep "contribution-enhancements" | while read branch; do
+              branch_name=$(echo "$branch" | sed 's/origin\///')
+              git push origin --delete "$branch_name" 2>/dev/null || true
+            done
+          fi
+          
+          # Clone target repo
           git clone --depth 1 https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git /tmp/target-repo
           cd /tmp/target-repo
           
@@ -129,6 +175,7 @@ jobs:
 
       - name: Create Pull Request
         id: pr
+        if: steps.check_pr.outputs.skip != 'true' && steps.apply.outcome == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
@@ -136,7 +183,6 @@ jobs:
           OWNER="${{ steps.repo.outputs.owner }}"
           REPO="${{ steps.repo.outputs.repo }}"
           FORK_OWNER="${{ steps.target.outputs.fork_owner }}"
-          TARGET="${{ steps.target.outputs.target }}"
           BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
           PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
           BRANCH="${{ steps.apply.outputs.branch }}"
@@ -151,25 +197,22 @@ jobs:
             "https://api.github.com/repos/${OWNER}/${REPO}/pulls" 2>&1 || echo "")
           
           PR_URL=$(echo "$PR_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin).get('html_url', ''))")
+          PR_NUMBER=$(echo "$PR_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin).get('number', ''))")
           
           if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ]; then
             echo "::notice::PR created: $PR_URL"
             echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-            echo "PR created successfully: $PR_URL"
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "PR created successfully: #$PR_NUMBER - $PR_URL"
           else
             echo "PR creation may have failed"
             echo "PR_JSON: $PR_JSON"
-            echo "Try creating PR manually from ${TARGET}:${BRANCH}"
-            # Try with gh CLI as fallback
-            PR_URL=$(gh pr create \
-              --repo ${OWNER}/${REPO} \
-              --base ${BASE_BRANCH} \
-              --head "${FORK_OWNER}:${BRANCH}" \
-              --title "${PR_TITLE}" \
-              --body "$PR_BODY" 2>&1 || echo "")
-            
-            if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ]; then
-              echo "::notice::PR created (fallback): $PR_URL"
-              echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-            fi
+            echo "Try creating PR manually from ${FORK_OWNER}:${BRANCH}"
           fi
+
+      - name: Skip - PR already exists
+        if: steps.check_pr.outputs.skip == 'true'
+        run: |
+          EXISTING_PR="${{ steps.check_pr.outputs.existing_pr }}"
+          echo "::notice::Skipping - PR already exists: #$EXISTING_PR"
+          echo "Existing PR: https://github.com/${{ steps.repo.outputs.owner }}/${{ steps.repo.outputs.repo }}/pull/$EXISTING_PR"

@@ -29,9 +29,9 @@ on:
         type: string
         default: '50'
       max_commits:
-        description: 'Maximum commits in this explicit history window.'
+        description: 'Maximum commits in the repository-wide commit sample for this history window.'
         type: string
-        default: '100'
+        default: '50'
 
 permissions:
   contents: write

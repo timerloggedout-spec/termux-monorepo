@@ -27,7 +27,7 @@ forward from a previous feed.
   - Event identity is independent of presentation: `D*`, `C*`, and future event families share the same clock contract. A countdown is a time projection of an event, not a separate event registry.
   - The Wagering Book remains the canonical place for expectation records, positions, and settlements; this feed does not invent any of those.
   - `id` — the log's event id (any uppercase letter + digits, e.g. `D0`, `C17`).
-  - `title` — display title derived from the entry's §4 header
+  - `title` — display title derived from the event packet header
     (status segments stripped by the collector).
   - `status` — `COMPLETED` / `CLOSED` when the header records it,
     else `ACTIVE`.

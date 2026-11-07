@@ -196,7 +196,7 @@ class IssueCommentRouterContractTests(unittest.TestCase):
     def test_reusable_target_rejects_expression_interpolation_in_shell_run_block(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._fixture(Path(tmp))
-            target = root / ".github/workflows/agent-jules-on-issues.yml"
+            target = root / ".github/workflows/agent-review-auto-jules.yml"
             text = target.read_text(encoding="utf-8").replace(
                 "          mkdir -p .agent-context",
                 "          echo \" ${{ github.event.comment.body }}\"\n          mkdir -p .agent-context",

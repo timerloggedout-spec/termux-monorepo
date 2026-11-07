@@ -49,6 +49,9 @@ jobs:
       - name: Index-only scope regressions
         run: python3 -B -m unittest discover -s tests -p 'test_repo_gate_index_scope.py' -v
 
+      - name: ATES outcome receipt contracts
+        run: python3 -m unittest discover -s tests -p 'test_ates_*receipt*.py' -v
+
       - name: Run gate
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"
 

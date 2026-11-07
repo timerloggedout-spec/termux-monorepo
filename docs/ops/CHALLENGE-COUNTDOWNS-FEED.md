@@ -1,6 +1,6 @@
 # Challenge Countdowns Feed — contract
 
-Schema: `challenge-countdowns-feed/v1.2`
+Schema: `challenge-countdowns-feed/v1.3`
 File: `apps/tribute-dashboard/data/challenge-countdowns-feed.json`
 Collector: `scripts/dashboards/challenge_countdowns_feed.py`
 Refresh: `.github/workflows/challenge-countdowns-feed-collect.yml`
@@ -23,8 +23,8 @@ forward from a previous feed.
 - `source` — the log path the instants were derived from.
 - `prizes_source` — `ops/challenge/coordinator.json`, the SSOT the
   per-entry prizes were wired from.
-- `entries[]` — one per log entry, ordered by id:
-  - `id` — the log's entry id (`D0`…).
+- `entries[]` — one per recorded event in the log, ordered by numeric suffix:\n  - Event identity is independent of presentation: `D*`, `C*`, and future event families share the same clock contract. A countdown is a time projection of an event, not a separate event registry.\n  - The Wagering Book remains the canonical place for expectation records, positions, and settlements; this feed does not invent any of those.
+  - `id` — the log's event id (any uppercase letter + digits, e.g. `D0`, `C17`).
   - `title` — display title derived from the entry's §4 header
     (status segments stripped by the collector).
   - `status` — `COMPLETED` / `CLOSED` when the header records it,

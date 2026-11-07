@@ -39,14 +39,14 @@ def test_feed_matches_collector_rerun():
 
 def test_feed_schema_and_source():
     feed = _feed()
-    assert feed["schema"] == "challenge-countdowns-feed/v1.2"
+    assert feed["schema"] == "challenge-countdowns-feed/v1.3"
     assert feed["source"] == "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 
 
 def test_entries_carry_log_instants_verbatim():
     text = LOG.read_text(encoding="utf-8")
     recorded = {}
-    for m in re.finditer(r"<!-- countdown-data:(D\d+) opens=(\S+) closes=(\S+) -->", text):
+    for m in re.finditer(r"<!-- countdown-data:([A-Z]\d+) opens=(\S+) closes=(\S+) -->", text):
         recorded[m.group(1)] = (
             None if m.group(2) == "-" else m.group(2),
             None if m.group(3) == "-" else m.group(3))
@@ -62,7 +62,7 @@ def test_feed_never_bakes_state_or_remaining_seconds():
         assert "state" not in e
         assert "seconds_to_open" not in e
         assert "seconds_to_close" not in e
-        assert set(e) == {"id", "title", "status", "opens", "closes", "prizes"}
+        assert set(e) == {"id", "title", "status", "opens", "closes", "prizes", "submission"}
 
 
 def test_completed_entries_stay_listed():
@@ -86,3 +86,4 @@ def test_prizes_wired_from_coordinator_ssot():
         assert got == exp, eid
         if p["status"] == "NOT_ESTABLISHED":
             assert p["tiers"] == [], eid
+\n\ndef test_c17_game_off_is_a_first_class_event_clock():\n    entries = {e["id"]: e for e in _feed()["entries"]}\n    event = entries["C17"]\n    assert event["opens"] == "2026-11-01T13:37:27-08:00"\n    assert event["closes"] == "2026-12-01T13:37:00-08:00"\n    assert event["status"] == "ACTIVE"\n    assert event["prizes"]["status"] == "ESTABLISHED"\n    assert "cash" in event["prizes"]["pool"].lower()\n

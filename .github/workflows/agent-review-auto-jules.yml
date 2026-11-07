@@ -237,27 +237,27 @@ jobs:
             cat "$CTX_FILE"
             printf '%s\n' 'has_prior=true' >> "$GITHUB_OUTPUT"
             SID=$(python3 - "$CTX_FILE" <<'PY'
-import json, sys
-with open(sys.argv[1], encoding="utf-8") as handle:
-    print(json.load(handle).get("session_id", ""))
-PY
-)
+          import json, sys
+          with open(sys.argv[1], encoding="utf-8") as handle:
+              print(json.load(handle).get("session_id", ""))
+          PY
+          )
             printf 'session_id=%s\n' "$SID" >> "$GITHUB_OUTPUT"
           else
             echo "No prior context for $CONTEXT_KEY"
             printf '%s\n' 'has_prior=false' >> "$GITHUB_OUTPUT"
             printf '%s\n' 'session_id=' >> "$GITHUB_OUTPUT"
             python3 - "$CTX_FILE" "$CONTEXT_KEY" <<'PY'
-import datetime, json, sys
-with open(sys.argv[1], "w", encoding="utf-8") as handle:
-    json.dump({
-        "context_key": sys.argv[2],
-        "created": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        "continue_preferred": True,
-        "session_id": "",
-    }, handle)
-    handle.write("\\n")
-PY
+          import datetime, json, sys
+          with open(sys.argv[1], "w", encoding="utf-8") as handle:
+              json.dump({
+                  "context_key": sys.argv[2],
+                  "created": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                  "continue_preferred": True,
+                  "session_id": "",
+              }, handle)
+              handle.write("\n")
+          PY
           fi
 
       - name: Post @jules resolve (idempotent + continue-only + disposition-first)

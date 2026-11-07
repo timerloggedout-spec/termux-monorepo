@@ -37,8 +37,8 @@ forward from a previous feed.
     records no such instant (`-` in the log).
   - `prizes` — REQUIRED (owner rule 2026-10-28): `{status, pool,
     tiers[{place, award, source_url}]}` wired verbatim from
-    `ops/challenge/coordinator.json`. `status` is `ESTABLISHED`
-    (tiers published on the official page) or `NOT_ESTABLISHED`.
+    `ops/challenge/coordinator.json`. `status` is `ESTABLISHED` (official terms established, including non-cash recognition)
+    or `NOT_ESTABLISHED`.
   - `submission` — the entry's recorded submission, parsed from the
     log's `<!-- submission-data:<id> state=<STATE> at=<instant>
     ref=<url> -->` line: `{state, at, ref}`, or `null`
@@ -46,8 +46,8 @@ forward from a previous feed.
 
 ## Honesty rules
 
-1. **Instants only.** The feed NEVER carries a computed state or a
-   remaining-seconds value. The challenge lane's emitter computes
+1. **Instants only.** Time fields NEVER carry a computed state or a
+   remaining-seconds value. Other fields are source-derived event metadata. The challenge lane's emitter computes
    those for the log surface; for the dashboard they would go stale
    the second they are written. The page derives state and
    time-remaining from the instants, client-side, on every tick.

@@ -13,6 +13,7 @@ import json
 import argparse
 
 from .ci_agent import run_ci, is_soft_skippable_error
+from .comment_gate import should_process_event
 from .session_manager import ensure_session, normalize_account, _token_from_env
 
 
@@ -68,6 +69,27 @@ def main():
     os.environ["GITHUB_WORKSPACE"] = args.workspace
     account = normalize_account(args.account)
 
+    # Parse and reject untrusted/non-command comment events before reading any
+    # provider credentials or initializing a DeepSeek session/PoW challenge.
+    try:
+        event = json.loads(args.event)
+    except json.JSONDecodeError as e:
+        print(f"::warning::Invalid event JSON ({e}); using empty event")
+        event = {}
+
+    event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+    if not should_process_event(event, event_name):
+        result = {
+            "actions": [],
+            "event": event_name or event.get("action"),
+            "skipped": True,
+            "skip_reason": "untrusted_or_non_command_comment",
+        }
+        with open("deepseek_output.json", "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2)
+        print("::notice::Skipping untrusted or unsupported comment before provider session initialization.")
+        return 0
+
     operator_token = os.environ.get("OPERATOR_TOKEN") or ""
     if not operator_token:
         print("::error::OPERATOR_TOKEN is empty — set ARCHWIZ_GITHUB_TOKEN (preferred) / OPERATOR_GITHUB_TOKEN / OPERATOR_TOKEN")
@@ -121,12 +143,6 @@ def main():
             print("::notice::Soft-skipping DeepSeek CI run due to classified auth or connection failure.")
             sys.exit(0)
         sys.exit(1)
-
-    try:
-        event = json.loads(args.event)
-    except json.JSONDecodeError as e:
-        print(f"::warning::Invalid event JSON ({e}); using empty event")
-        event = {}
 
     peer = {"provider": "deepseek", "account": account}
 

@@ -22,15 +22,16 @@ Keep four independent controls:
 | `max_commits` | repository-wide commit sample | 50 |
 | `max_files_per_pr` | changed files fetched for each PR | 3,000 |
 | `max_commits_per_pr` | commits fetched for each PR | 250 |
+| `max_timeline_events_per_item` | timeline events fetched for each issue/PR | 1,000 |
 
 The per-PR defaults respect GitHub's documented endpoint ceilings. Record the effective values in the collector report. Preserve old Python call sites by appending optional parameters with defaults.
 
 ## Files
 
-- `archwiz/context_relationships/github_collector.py`: add independent per-PR arguments; use them only for the corresponding PR detail endpoints; report effective limits.
+- `archwiz/context_relationships/github_collector.py`: add independent per-PR and per-item timeline arguments; use them only for the corresponding detail endpoints; report effective limits.
 - `archwiz/context_relationships/build_index.py`: thread independent limits through the builder and CLI; validate positive values.
-- `.github/workflows/context-relationship-backfill.yml`: pass the independent PR detail caps; retain page-size 50 and repository commit sample 50; include the focused collector regression test in the workflow path filter.
-- `tests/test_context_relationship_github_collector.py`: assert a history page size of 1 does not constrain PR file/commit endpoints.
+- `.github/workflows/context-relationship-backfill.yml`: pass independent PR detail and timeline caps; retain page-size 50 and repository commit sample 50; include the focused collector regression test in the workflow path filter.
+- `tests/test_context_relationship_github_collector.py`: assert a history page size of 1 does not constrain PR file/commit or per-item timeline endpoints.
 - `docs/ops/HISTORICAL-CORPUS-BACKFILL-STATUS.md`: distinguish issue-endpoint result count from actual issue count and record all four limits.
 - `docs/ops/SHE-INTEGRATION-FINDINGS.md`: reconcile the current canonical manifest and accurately classify runtime/deployment evidence.
 - `docs/proposals/active/context-relationship-graph/ITEMS.md` and `MANIFEST.md`: register and track CRG-16.
@@ -52,6 +53,7 @@ The per-PR defaults respect GitHub's documented endpoint ceilings. Record the ef
 - Repository-wide commit sample remains 50.
 - Each PR's changed-file collection is independently bounded at 3,000.
 - Each PR's commit collection is independently bounded at 250.
+- Each issue/PR timeline collection is independently bounded at 1,000.
 - Collector report records both per-PR caps.
 - Regression test proves history page size does not truncate PR detail endpoints.
 - Current status docs distinguish endpoint records from actual issues.

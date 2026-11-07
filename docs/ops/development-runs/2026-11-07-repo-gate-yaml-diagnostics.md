@@ -39,3 +39,17 @@ Added `test_ratchet_reports_offending_control_plane_yaml_path` to `tests/test_re
 3. Correct the source or the structural heuristic, with a regression fixture.
 4. Require the current-head repo gate and Termux smoke to pass; do not change the baseline to mask the issue.
 5. Close issue #5053 only after a subsequent master run passes or the fix PR is linked and the failure is accurately classified with evidence.
+
+## Second pass — source identified and repaired
+
+The diagnostic build on PR #5059 identified the exact offender:
+
+- Path: `.github/workflows/certification-validation.yml`
+- Location: line 82
+- Fault: flush-left heredoc body and terminator escaped the YAML `run: |` block, so the structural scanner interpreted the heredoc payload as YAML structure.
+
+Corrected the workflow by indenting the heredoc body and `EOF` terminator to the YAML block-scalar indentation. YAML removes the common indentation when constructing the shell script, so the shell still receives a correctly positioned heredoc terminator.
+
+- Repair commit: `fe596ea7f28a5cb91b1ffa0ce9ec355f75778e55`
+- The repository baseline remains unchanged at zero.
+- Current-head CI is pending; no local test result is claimed.

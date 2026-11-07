@@ -1,9 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-11-07T20:47:53Z UTC · receipts=3962 · foreign_open=7 · tributes=132_
+_Generated 2026-11-07T22:04:03Z UTC · receipts=3962 · foreign_open=8 · tributes=134_
 
 ## Tributes (contributor ledger)
 
+- [credkellar/iOS-Termux#1](https://github.com/credkellar/iOS-Termux/pull/1) · state=closed · Enhance translations: add 22 new command pairs and 4 new path mappings
+- [credkellar/iOS-Termux#2](https://github.com/credkellar/iOS-Termux/pull/2) · state=open · Enhance translations: add 22 new command pairs and 4 new path mappings
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=closed · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -42,8 +44,6 @@ _Generated 2026-11-07T20:47:53Z UTC · receipts=3962 · foreign_open=7 · tribut
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=closed · docs(layout): refresh stale ponytail comments (flex + grid)
 - [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=closed · help-wanted: stake + contribute for #2627
 - [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=closed · help-wanted: stake + contribute for #16
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=closed · help-wanted: stake + contribute for #3713
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=closed · help-wanted: stake + contribute for #225
 
 ## Foreign open PRs
 
@@ -54,6 +54,7 @@ _Generated 2026-11-07T20:47:53Z UTC · receipts=3962 · foreign_open=7 · tribut
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — docs: complete the fork-PR CI approval guidance for #95
+- [credkellar/iOS-Termux#2](https://github.com/credkellar/iOS-Termux/pull/2) — Enhance translations: add 22 new command pairs and 4 new path mappings
 
 ## Operational outcomes · actioned=221 skipped=3741 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3675, 'followup_reengage': 51, 'followup_stale_nudge': 138, 'followup_changes': 2, 'followup_lesson': 18, 'followup_skip_system1': 30}`
 

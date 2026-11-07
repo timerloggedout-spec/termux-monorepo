@@ -83,12 +83,12 @@ jobs:
               ;;
             issue_comment)
               TASK=$(python3 - <<'PY'
-import os
-from deepcli.comment_gate import parse_comment_command
-parsed = parse_comment_command(os.environ.get("COMMENT_BODY", ""))
-print(parsed["request"] if parsed is not None else "")
-PY
-)
+          import os
+          from deepcli.comment_gate import parse_comment_command
+          parsed = parse_comment_command(os.environ.get("COMMENT_BODY", ""))
+          print(parsed["request"] if parsed is not None else "")
+          PY
+          )
               NUM="$ISSUE_NUMBER"
               ;;
             issues)
@@ -242,7 +242,7 @@ PY
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           BODY=$(cat agent_summary.txt)
-          printf '**@deepseek agent reply**\\n\\n%s\\n\\n_run: %s_\\n' "$BODY" "$RUN_URL" > reply.md
+          printf '**@deepseek agent reply**\n\n%s\n\n_run: %s_\n' "$BODY" "$RUN_URL" > reply.md
           gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file reply.md
 
       - name: Reply (issue assigned)

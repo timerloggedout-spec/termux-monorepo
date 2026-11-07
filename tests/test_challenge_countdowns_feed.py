@@ -7,6 +7,7 @@ never a computed state, never a remaining-seconds value.
 import importlib.util
 import json
 import re
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,8 +49,8 @@ def test_entries_carry_log_instants_verbatim():
     recorded = {}
     for m in re.finditer(r"<!-- countdown-data:([A-Z]\d+) opens=(\S+) closes=(\S+) -->", text):
         recorded[m.group(1)] = (
-            None if m.group(2) == "-" else m.group(2),
-            None if m.group(3) == "-" else m.group(3))
+            None if m.group(2) == "-" else datetime.fromisoformat(m.group(2)).isoformat(),
+            None if m.group(3) == "-" else datetime.fromisoformat(m.group(3)).isoformat())
     entries = {e["id"]: e for e in _feed()["entries"]}
     assert set(entries) == set(recorded)
     for eid, (opens, closes) in recorded.items():

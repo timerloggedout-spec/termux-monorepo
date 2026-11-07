@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ea7f9dbc3eceab2d12f2a87e7e22a385820d87fec0dbbb14cc6d98ef8e595d03",
+  "source_fingerprint": "9c07f26afa8a4cd4dbac20060472763373915791694441eeb4981c03f5ec30da",
   "workflow_count": 296,
   "workflows": [
     {
@@ -2843,7 +2843,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "",
+      "concurrency": "group: ios-termux-contribute cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "contribute"

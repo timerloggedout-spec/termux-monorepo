@@ -1,0 +1,222 @@
+name: Validate Certification Requirements
+
+on:
+  push:
+    paths:
+      - 'completions/**'
+      - 'roadmaps/metadata/certification-mapping.json'
+      - 'roadmaps/metadata/skill-mapping.json'
+      - 'roadmaps/content/**'
+    branches:
+      - master
+      - main
+  pull_request:
+    paths:
+      - 'completions/**'
+      - 'roadmaps/metadata/certification-mapping.json'
+  workflow_dispatch:
+    inputs:
+      user:
+        description: 'Specific user to validate'
+        required: false
+      certification:
+        description: 'Specific certification to check'
+        required: false
+
+jobs:
+  validate:
+    name: Validate Completions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install jsonschema
+      
+      - name: Validate completion schema
+        id: schema-validation
+        run: |
+          python scripts/roadmap/validate-completions.py --schema-only
+        continue-on-error: true
+      
+      - name: Check certification eligibility
+        id: eligibility
+        run: |
+          USER="${{ inputs.user || '' }}"
+          CERT="${{ inputs.certification || '' }}"
+          
+          if [ -n "$USER" ]; then
+            python scripts/roadmap/check-certification-eligibility.py --user "$USER"
+          elif [ -n "$CERT" ]; then
+            python scripts/roadmap/check-certification-eligibility.py --certification "$CERT"
+          else
+            python scripts/roadmap/check-certification-eligibility.py --all
+          fi
+        continue-on-error: true
+      
+      - name: Generate certification report
+        id: report
+        run: |
+          python scripts/roadmap/generate-certification-report.py > /tmp/certification-report.md
+          
+          # Add header
+          cat > certifications/report.md << 'EOF'
+# Certification Eligibility Report
+
+**Generated:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+**Workflow:** ${{ github.workflow }}
+**Run ID:** ${{ github.run_id }}
+
+EOF
+          
+          cat /tmp/certification-report.md >> certifications/report.md
+      
+      - name: Commit report
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add certifications/report.md
+          git commit -m "chore: update certification eligibility report [skip ci]"
+          git push
+      
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: certification-report
+          path: certifications/report.md
+          retention-days: 7
+      
+      - name: Create validation summary
+        run: |
+          echo "## Validation Summary" > /tmp/validation-summary.md
+          echo "" >> /tmp/validation-summary.md
+          echo "**Timestamp:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> /tmp/validation-summary.md
+          echo "**Workflow:** ${{ github.workflow }}" >> /tmp/validation-summary.md
+          echo "" >> /tmp/validation-summary.md
+          
+          echo "### Schema Validation" >> /tmp/validation-summary.md
+          if [ "${{ steps.schema-validation.outcome }}" = "success" ]; then
+            echo "✅ All completion records are valid" >> /tmp/validation-summary.md
+          else
+            echo "❌ Schema validation failed" >> /tmp/validation-summary.md
+          fi
+          echo "" >> /tmp/validation-summary.md
+          
+          echo "### Eligibility Check" >> /tmp/validation-summary.md
+          if [ "${{ steps.eligibility.outcome }}" = "success" ]; then
+            echo "✅ Eligibility check completed" >> /tmp/validation-summary.md
+          else
+            echo "❌ Eligibility check failed" >> /tmp/validation-summary.md
+          fi
+          echo "" >> /tmp/validation-summary.md
+          
+          echo "### Report Generation" >> /tmp/validation-summary.md
+          if [ "${{ steps.report.outcome }}" = "success" ]; then
+            echo "✅ Certification report generated" >> /tmp/validation-summary.md
+          else
+            echo "❌ Report generation failed" >> /tmp/validation-summary.md
+          fi
+          
+          # Get statistics from report
+          if [ -f /tmp/certification-report.md ]; then
+            echo "" >> /tmp/validation-summary.md
+            echo "### Statistics" >> /tmp/validation-summary.md
+            grep -E "^(# |\| )" /tmp/certification-report.md | head -20 >> /tmp/validation-summary.md
+          fi
+          
+          # Post as PR comment if applicable
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gh pr comment ${{ github.event.pull_request.number }} --body-file /tmp/validation-summary.md || true
+          fi
+      
+      - name: Upload validation summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-summary
+          path: /tmp/validation-summary.md
+          retention-days: 7
+
+  dashboard:
+    name: Update Dashboard
+    needs: validate
+    runs-on: ubuntu-latest
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Generate dashboard
+        run: |
+          python scripts/roadmap/generate-dashboard.py > docs/certifications/DASHBOARD.md
+      
+      - name: Commit dashboard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/certifications/DASHBOARD.md
+          git commit -m "chore: update certification dashboard [skip ci]"
+          git push
+
+  notify:
+    name: Send Notifications
+    needs: [validate, dashboard]
+    runs-on: ubuntu-latest
+    if: always() && needs.validate.result != 'skipped'
+    
+    steps:
+      - name: Get validation status
+        id: status
+        run: |
+          STATUS=${{ needs.validate.result }}
+          if [ "$STATUS" = "success" ]; then
+            echo "status=✅ Certification validation succeeded" >> $GITHUB_OUTPUT
+            echo "color=good" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Certification validation failed" >> $GITHUB_OUTPUT
+            echo "color=danger" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Count new certifications
+        id: count
+        run: |
+          # This would parse the report to count new certifications
+          COUNT=0
+          if [ -f certifications/report.md ]; then
+            # Simple count - in production, parse the report properly
+            COUNT=$(grep -c "🎉 New Certification" certifications/report.md || echo 0)
+          fi
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+      
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          COUNT=${{ steps.count.outputs.count }}
+          MESSAGE="${{ steps.status.outputs.status }}"
+          if [ "$COUNT" -gt 0 ]; then
+            MESSAGE="$MESSAGE | $COUNT new certifications awarded!"
+          fi
+          
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"$MESSAGE\",\"color\":\"${{ steps.status.outputs.color }}\"}" \
+            $SLACK_WEBHOOK_URL || true

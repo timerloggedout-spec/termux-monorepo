@@ -1,0 +1,945 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-11-07T00:00:00Z",
+  "certifications": {
+    "termux-developer-level-1": {
+      "id": "termux-dev-l1",
+      "name": "Termux Developer Level 1",
+      "description": "Foundational Termux and mobile development skills. Demonstrates proficiency in basic mobile development, scripting, and Termux environment setup.",
+      "category": "development",
+      "level": "beginner",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "bash-shell",
+            "min_completion": 0.7,
+            "min_topics": 15,
+            "weight": 0.4
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 0.6,
+            "min_topics": 20,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "git-github",
+            "min_completion": 0.8,
+            "min_topics": 10,
+            "weight": 0.3
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/termux-mcp-project-steward/SKILL.md",
+            "min_proficiency": 0.7
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation"]
+      },
+      "credential": {
+        "badge": "credentials/termux-dev-l1.svg",
+        "certificate": "certifications/termux-dev-l1.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Proficiency in Termux environment setup",
+        "Basic scripting and automation skills",
+        "Version control with Git/GitHub",
+        "Mobile development fundamentals",
+        "Python basics for automation"
+      ],
+      "next_level": "termux-developer-level-2"
+    },
+    "termux-developer-level-2": {
+      "id": "termux-dev-l2",
+      "name": "Termux Developer Level 2",
+      "description": "Intermediate Termux development with advanced scripting, package management, and mobile development capabilities.",
+      "category": "development",
+      "level": "intermediate",
+      "prerequisites": ["termux-developer-level-1"],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "bash-shell",
+            "min_completion": 0.9,
+            "min_topics": 25,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 0.8,
+            "min_topics": 40,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "linux",
+            "min_completion": 0.7,
+            "min_topics": 20,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "docker",
+            "min_completion": 0.6,
+            "min_topics": 15,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/termux-mcp-project-steward/SKILL.md",
+            "min_proficiency": 0.85
+          },
+          {
+            "skill": ".agents/skills/evidence-led-monorepo-ops/SKILL.md",
+            "min_proficiency": 0.7
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/termux-dev-l2.svg",
+        "certificate": "certifications/termux-dev-l2.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Advanced Termux environment configuration",
+        "Complex scripting and automation",
+        "Package management and deployment",
+        "Containerization with Docker",
+        "Linux system administration",
+        "Monorepo operations"
+      ],
+      "next_level": "termux-developer-level-3"
+    },
+    "termux-developer-level-3": {
+      "id": "termux-dev-l3",
+      "name": "Termux Developer Level 3",
+      "description": "Advanced Termux development with expertise in mobile-first development, automation, and system integration.",
+      "category": "development",
+      "level": "advanced",
+      "prerequisites": ["termux-developer-level-2"],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "bash-shell",
+            "min_completion": 1.0,
+            "min_topics": 30,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 1.0,
+            "min_topics": 60,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "linux",
+            "min_completion": 0.9,
+            "min_topics": 35,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "devops",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "android",
+            "min_completion": 0.6,
+            "min_topics": 20,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/termux-mcp-project-steward/SKILL.md",
+            "min_proficiency": 0.95
+          },
+          {
+            "skill": ".agents/skills/evidence-led-monorepo-ops/SKILL.md",
+            "min_proficiency": 0.85
+          },
+          {
+            "skill": ".agents/skills/wingman-project-integration/SKILL.md",
+            "min_proficiency": 0.75
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review", "video"]
+      },
+      "credential": {
+        "badge": "credentials/termux-dev-l3.svg",
+        "certificate": "certifications/termux-dev-l3.pdf",
+        "digital_badge": true,
+        "expiry": "3 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "3 years"
+      },
+      "outcomes": [
+        "Expert-level Termux development",
+        "Mobile-first automation",
+        "System integration and orchestration",
+        "Advanced DevOps practices",
+        "Android development",
+        "AI agent integration",
+        "Production-ready deployments"
+      ]
+    },
+    "ai-agent-engineer": {
+      "id": "ai-agent-engineer",
+      "name": "AI Agent Engineer",
+      "description": "AI agent development and deployment certification. Demonstrates expertise in building, testing, and deploying AI agents.",
+      "category": "ai",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "ai-agents",
+            "min_completion": 0.85,
+            "min_topics": 30,
+            "weight": 0.4
+          },
+          {
+            "roadmap": "ai-engineer",
+            "min_completion": 0.8,
+            "min_topics": 25,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.3
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/superpowers/SKILL.md",
+            "min_proficiency": 0.8
+          },
+          {
+            "skill": ".agents/skills/ml-pipeline-ops/SKILL.md",
+            "min_proficiency": 0.7
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "video"]
+      },
+      "credential": {
+        "badge": "credentials/ai-agent-engineer.svg",
+        "certificate": "certifications/ai-agent-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "AI agent architecture and design",
+        "Agent development lifecycle",
+        "Testing and validation of agents",
+        "Deployment and scaling",
+        "Monitoring and maintenance",
+        "Ethical considerations",
+        "Security best practices"
+      ],
+      "next_level": "senior-ai-agent-engineer"
+    },
+    "senior-ai-agent-engineer": {
+      "id": "senior-ai-agent-engineer",
+      "name": "Senior AI Agent Engineer",
+      "description": "Advanced AI agent engineering with expertise in multi-agent systems, orchestration, and production deployment.",
+      "category": "ai",
+      "level": "advanced",
+      "prerequisites": ["ai-agent-engineer"],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "ai-agents",
+            "min_completion": 1.0,
+            "min_topics": 40,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "ai-engineer",
+            "min_completion": 0.95,
+            "min_topics": 35,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "mlops",
+            "min_completion": 0.8,
+            "min_topics": 30,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "machine-learning",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/superpowers/SKILL.md",
+            "min_proficiency": 0.9
+          },
+          {
+            "skill": ".agents/skills/ml-pipeline-ops/SKILL.md",
+            "min_proficiency": 0.85
+          },
+          {
+            "skill": ".agents/skills/ml-command-center/SKILL.md",
+            "min_proficiency": 0.8
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "video", "review"]
+      },
+      "credential": {
+        "badge": "credentials/senior-ai-agent-engineer.svg",
+        "certificate": "certifications/senior-ai-agent-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "3 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "3 years"
+      },
+      "outcomes": [
+        "Multi-agent system architecture",
+        "Advanced agent orchestration",
+        "Production-grade deployment",
+        "Performance optimization",
+        "Cost management",
+        "Security and compliance",
+        "Ethical AI practices",
+        "Team leadership"
+      ]
+    },
+    "devops-engineer": {
+      "id": "devops-engineer",
+      "name": "DevOps Engineer",
+      "description": "DevOps engineering certification covering CI/CD, infrastructure, and automation.",
+      "category": "devops",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "git-github",
+            "min_completion": 0.9,
+            "min_topics": 25,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "devops",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.4
+          },
+          {
+            "roadmap": "docker",
+            "min_completion": 0.6,
+            "min_topics": 15,
+            "weight": 0.3
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/evidence-led-monorepo-ops/SKILL.md",
+            "min_proficiency": 0.8
+          },
+          {
+            "skill": ".agents/skills/production-reconciliation/SKILL.md",
+            "min_proficiency": 0.7
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/devops-engineer.svg",
+        "certificate": "certifications/devops-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "CI/CD pipeline design and implementation",
+        "Infrastructure as code",
+        "Containerization and orchestration",
+        "Monitoring and observability",
+        "Incident response",
+        "Security best practices",
+        "Performance optimization",
+        "Cost management"
+      ],
+      "next_level": "senior-devops-engineer"
+    },
+    "senior-devops-engineer": {
+      "id": "senior-devops-engineer",
+      "name": "Senior DevOps Engineer",
+      "description": "Advanced DevOps engineering with expertise in cloud platforms, scalability, and reliability.",
+      "category": "devops",
+      "level": "advanced",
+      "prerequisites": ["devops-engineer"],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "git-github",
+            "min_completion": 1.0,
+            "min_topics": 30,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "devops",
+            "min_completion": 0.95,
+            "min_topics": 50,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "kubernetes",
+            "min_completion": 0.8,
+            "min_topics": 25,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "aws",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "cloud-computing",
+            "min_completion": 0.7,
+            "min_topics": 25,
+            "weight": 0.1
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/evidence-led-monorepo-ops/SKILL.md",
+            "min_proficiency": 0.9
+          },
+          {
+            "skill": ".agents/skills/production-reconciliation/SKILL.md",
+            "min_proficiency": 0.85
+          },
+          {
+            "skill": ".github/skills/production-reconciliation/SKILL.md",
+            "min_proficiency": 0.8
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review", "video"]
+      },
+      "credential": {
+        "badge": "credentials/senior-devops-engineer.svg",
+        "certificate": "certifications/senior-devops-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "3 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "3 years"
+      },
+      "outcomes": [
+        "Cloud-native architecture",
+        "Scalable infrastructure",
+        "High availability systems",
+        "Disaster recovery",
+        "Security and compliance",
+        "Cost optimization",
+        "Team leadership",
+        "Best practices advocacy"
+      ]
+    },
+    "ml-engineer": {
+      "id": "ml-engineer",
+      "name": "Machine Learning Engineer",
+      "description": "Machine learning engineering certification covering model development, deployment, and MLOps.",
+      "category": "ai",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "python",
+            "min_completion": 0.8,
+            "min_topics": 40,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "machine-learning",
+            "min_completion": 0.8,
+            "min_topics": 40,
+            "weight": 0.4
+          },
+          {
+            "roadmap": "mlops",
+            "min_completion": 0.6,
+            "min_topics": 20,
+            "weight": 0.3
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/ml-pipeline-ops/SKILL.md",
+            "min_proficiency": 0.85
+          },
+          {
+            "skill": ".agents/skills/ml-command-center/SKILL.md",
+            "min_proficiency": 0.75
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/ml-engineer.svg",
+        "certificate": "certifications/ml-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Machine learning model development",
+        "Data preprocessing and feature engineering",
+        "Model training and optimization",
+        "Model deployment and serving",
+        "MLOps pipelines",
+        "Monitoring and maintenance",
+        "Ethical considerations",
+        "Performance optimization"
+      ],
+      "next_level": "senior-ml-engineer"
+    },
+    "senior-ml-engineer": {
+      "id": "senior-ml-engineer",
+      "name": "Senior Machine Learning Engineer",
+      "description": "Advanced machine learning engineering with expertise in large-scale systems, distributed training, and production ML.",
+      "category": "ai",
+      "level": "advanced",
+      "prerequisites": ["ml-engineer"],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "python",
+            "min_completion": 1.0,
+            "min_topics": 60,
+            "weight": 0.2
+          },
+          {
+            "roadmap": "machine-learning",
+            "min_completion": 0.95,
+            "min_topics": 60,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "mlops",
+            "min_completion": 0.9,
+            "min_topics": 40,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "data-engineer",
+            "min_completion": 0.8,
+            "min_topics": 30,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/ml-pipeline-ops/SKILL.md",
+            "min_proficiency": 0.95
+          },
+          {
+            "skill": ".agents/skills/ml-command-center/SKILL.md",
+            "min_proficiency": 0.9
+          },
+          {
+            "skill": ".agents/skills/superpowers/SKILL.md",
+            "min_proficiency": 0.85
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review", "video"]
+      },
+      "credential": {
+        "badge": "credentials/senior-ml-engineer.svg",
+        "certificate": "certifications/senior-ml-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "3 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "3 years"
+      },
+      "outcomes": [
+        "Large-scale ML system design",
+        "Distributed training",
+        "Model optimization at scale",
+        "Production ML pipelines",
+        "Advanced MLOps",
+        "Cost optimization",
+        "Performance tuning",
+        "Team leadership",
+        "Research and innovation"
+      ]
+    },
+    "backend-engineer": {
+      "id": "backend-engineer",
+      "name": "Backend Engineer",
+      "description": "Backend engineering certification covering server-side development, APIs, and databases.",
+      "category": "backend",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "backend",
+            "min_completion": 0.8,
+            "min_topics": 40,
+            "weight": 0.5
+          },
+          {
+            "roadmap": "api-design",
+            "min_completion": 0.7,
+            "min_topics": 15,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/web-adapter-foundry/SKILL.md",
+            "min_proficiency": 0.8
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/backend-engineer.svg",
+        "certificate": "certifications/backend-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Server-side application development",
+        "REST API design and implementation",
+        "Database design and optimization",
+        "Authentication and authorization",
+        "Performance optimization",
+        "Security best practices",
+        "Testing and quality assurance",
+        "Deployment and scaling"
+      ],
+      "next_level": "senior-backend-engineer"
+    },
+    "frontend-engineer": {
+      "id": "frontend-engineer",
+      "name": "Frontend Engineer",
+      "description": "Frontend engineering certification covering modern web development, frameworks, and UX.",
+      "category": "frontend",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "frontend",
+            "min_completion": 0.8,
+            "min_topics": 40,
+            "weight": 0.5
+          },
+          {
+            "roadmap": "javascript",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "react",
+            "min_completion": 0.6,
+            "min_topics": 20,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/frontend-engineer.svg",
+        "certificate": "certifications/frontend-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Modern web application development",
+        "Responsive design",
+        "State management",
+        "Performance optimization",
+        "Accessibility",
+        "Testing and quality assurance",
+        "UX/UI best practices",
+        "Framework expertise"
+      ],
+      "next_level": "senior-frontend-engineer"
+    },
+    "fullstack-engineer": {
+      "id": "fullstack-engineer",
+      "name": "Full Stack Engineer",
+      "description": "Full stack engineering certification covering both frontend and backend development.",
+      "category": "full-stack",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "full-stack",
+            "min_completion": 0.8,
+            "min_topics": 50,
+            "weight": 0.4
+          },
+          {
+            "roadmap": "frontend",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "backend",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.3
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/web-adapter-foundry/SKILL.md",
+            "min_proficiency": 0.75
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/fullstack-engineer.svg",
+        "certificate": "certifications/fullstack-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "End-to-end application development",
+        "Frontend and backend integration",
+        "Database design and management",
+        "API design and development",
+        "Deployment and DevOps",
+        "Performance optimization",
+        "Security best practices",
+        "Testing and quality assurance"
+      ],
+      "next_level": "senior-fullstack-engineer"
+    },
+    "data-engineer": {
+      "id": "data-engineer",
+      "name": "Data Engineer",
+      "description": "Data engineering certification covering data pipelines, ETL, and data infrastructure.",
+      "category": "data",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "data-engineer",
+            "min_completion": 0.8,
+            "min_topics": 40,
+            "weight": 0.5
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 0.7,
+            "min_topics": 30,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "sql",
+            "min_completion": 0.7,
+            "min_topics": 20,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/ml-pipeline-ops/SKILL.md",
+            "min_proficiency": 0.75
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/data-engineer.svg",
+        "certificate": "certifications/data-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Data pipeline design and implementation",
+        "ETL processes",
+        "Data warehouse design",
+        "Big data technologies",
+        "Data modeling",
+        "Data quality and validation",
+        "Performance optimization",
+        "Security and compliance"
+      ],
+      "next_level": "senior-data-engineer"
+    },
+    "qa-engineer": {
+      "id": "qa-engineer",
+      "name": "QA Engineer",
+      "description": "Quality assurance engineering certification covering testing, automation, and quality best practices.",
+      "category": "testing",
+      "level": "intermediate",
+      "prerequisites": [],
+      "requirements": {
+        "roadmap_completions": [
+          {
+            "roadmap": "qa",
+            "min_completion": 0.8,
+            "min_topics": 35,
+            "weight": 0.5
+          },
+          {
+            "roadmap": "code-review",
+            "min_completion": 0.7,
+            "min_topics": 15,
+            "weight": 0.3
+          },
+          {
+            "roadmap": "python",
+            "min_completion": 0.6,
+            "min_topics": 20,
+            "weight": 0.2
+          }
+        ],
+        "skill_demonstrations": [
+          {
+            "skill": ".agents/skills/review-loop/SKILL.md",
+            "min_proficiency": 0.8
+          },
+          {
+            "skill": ".agents/skills/minesweeper-ops/SKILL.md",
+            "min_proficiency": 0.7
+          }
+        ],
+        "evidence_required": true,
+        "evidence_types": ["project", "test", "documentation", "review"]
+      },
+      "credential": {
+        "badge": "credentials/qa-engineer.svg",
+        "certificate": "certifications/qa-engineer.pdf",
+        "digital_badge": true,
+        "expiry": "2 years"
+      },
+      "renewal": {
+        "required": true,
+        "method": "re-examination or continued learning",
+        "interval": "2 years"
+      },
+      "outcomes": [
+        "Test planning and strategy",
+        "Test automation",
+        "Manual testing techniques",
+        "Test framework development",
+        "CI/CD integration",
+        "Quality metrics and reporting",
+        "Defect tracking and management",
+        "Performance testing",
+        "Security testing",
+        "Accessibility testing"
+      ],
+      "next_level": "senior-qa-engineer"
+    }
+  },
+  "stats": {
+    "total_certifications": 15,
+    "by_category": {
+      "development": 3,
+      "ai": 4,
+      "devops": 2,
+      "backend": 1,
+      "frontend": 1,
+      "full-stack": 1,
+      "data": 1,
+      "testing": 1
+    },
+    "by_level": {
+      "beginner": 1,
+      "intermediate": 9,
+      "advanced": 5
+    }
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/schemas/roadmap-completion.schema.json",
+  "title": "Roadmap Completion Record",
+  "description": "Schema for tracking completion of roadmap topics in termux-monorepo",
+  "version": "1.0.0",
+  "type": "object",
+  "definitions": {
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["project", "test", "documentation", "review", "video", "article", "presentation", "other"],
+          "description": "Type of evidence"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the evidence (if applicable)"
+        },
+        "path": {
+          "type": "string",
+          "description": "Local path to the evidence (if applicable)"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "Description of the evidence"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the evidence was created"
+        },
+        "verified": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the evidence has been verified"
+        },
+        "verifier": {
+          "type": "string",
+          "description": "Who verified the evidence (GitHub username)"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Score or quality rating of the evidence"
+        }
+      },
+      "required": ["type", "timestamp"],
+      "additionalProperties": false
+    },
+    "completion_status": {
+      "type": "string",
+      "enum": ["not_started", "in_progress", "completed", "mastered"],
+      "description": "Current completion status of the topic"
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Schema version"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of this completion record",
+      "default": "1.0.0"
+    },
+    "user_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Unique identifier for the user (GitHub username or UUID)",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "user_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Display name for the user"
+    },
+    "roadmap_slug": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Slug of the roadmap (e.g., 'python', 'backend')",
+      "pattern": "^[a-zA-Z0-9-]+$"
+    },
+    "roadmap_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Human-readable name of the roadmap"
+    },
+    "topic_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Unique identifier for the topic (e.g., 'variables@1')",
+      "pattern": "^[a-zA-Z0-9@_-]+$"
+    },
+    "topic_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Human-readable name of the topic"
+    },
+    "topic_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the topic on roadmap.sh"
+    },
+    "completion_status": {
+      "$ref": "#/definitions/completion_status"
+    },
+    "completion_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Percentage of completion (0-100)"
+    },
+    "completion_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the topic was completed (if status is completed or mastered)"
+    },
+    "started_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the topic was first started"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the record was last updated"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/evidence"
+      },
+      "description": "List of evidence supporting the completion"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Additional notes or comments"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["beginner", "intermediate", "advanced", "expert"],
+      "description": "Difficulty level of the topic"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated hours to complete the topic"
+    },
+    "actual_hours": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Actual hours spent on the topic"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      },
+      "description": "Tags for categorization"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of topic IDs that are prerequisites"
+    },
+    "related_skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of related SKILL.md paths"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Additional metadata"
+    }
+  },
+  "required": [
+    "user_id",
+    "roadmap_slug",
+    "topic_id",
+    "completion_status",
+    "last_updated"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "user_id": "octocat",
+      "user_name": "Octo Cat",
+      "roadmap_slug": "python",
+      "roadmap_name": "Python Roadmap",
+      "topic_id": "variables@1",
+      "topic_name": "Variables and Data Types",
+      "topic_url": "https://roadmap.sh/python#variables-and-data-types",
+      "completion_status": "completed",
+      "completion_percentage": 100,
+      "completion_date": "2026-11-07T10:00:00Z",
+      "started_date": "2026-11-06T09:00:00Z",
+      "last_updated": "2026-11-07T10:00:00Z",
+      "evidence": [
+        {
+          "type": "project",
+          "url": "https://github.com/octocat/python-variables-demo",
+          "description": "Demo project showing variable usage",
+          "timestamp": "2026-11-07T10:00:00Z",
+          "verified": true,
+          "verifier": "admin-bot",
+          "score": 95
+        }
+      ],
+      "notes": "Completed with practical examples",
+      "difficulty": "beginner",
+      "estimated_hours": 2,
+      "actual_hours": 1.5,
+      "tags": ["python", "basics", "variables"],
+      "related_skills": [".agents/skills/python/SKILL.md"]
+    }
+  ]
+}

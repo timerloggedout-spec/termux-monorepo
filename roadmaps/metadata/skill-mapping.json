@@ -1,0 +1,571 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-11-07T00:00:00Z",
+  "mappings": {
+    ".agents/skills/superpowers/SKILL.md": {
+      "name": "Superpowers Engineering Methodology",
+      "primary_roadmap": "software-design-architecture",
+      "secondary_roadmaps": [
+        "computer-science",
+        "software-architect",
+        "software-design-architecture"
+      ],
+      "relevant_topics": [
+        "design-patterns",
+        "architecture-principles",
+        "system-design",
+        "clean-code",
+        "best-practices",
+        "code-quality",
+        "testing-strategies",
+        "debugging",
+        "refactoring",
+        "documentation"
+      ],
+      "weight": 0.95,
+      "description": "Core engineering methodology SKILL aligned with software architecture and design roadmaps"
+    },
+    ".agents/skills/evidence-led-monorepo-ops/SKILL.md": {
+      "name": "Evidence-Led Monorepo Operations",
+      "primary_roadmap": "devops",
+      "secondary_roadmaps": [
+        "git-github",
+        "backend",
+        "devops-beginner"
+      ],
+      "relevant_topics": [
+        "version-control",
+        "ci-cd",
+        "monorepo-management",
+        "evidence-tracking",
+        "provenance",
+        "mutation-discipline",
+        "promotion-workflow",
+        "branch-strategy",
+        "merge-strategy",
+        "artifact-management"
+      ],
+      "weight": 0.90,
+      "description": "Monorepo operations with evidence tracking aligned with DevOps and Git/GitHub roadmaps"
+    },
+    ".agents/skills/ml-pipeline-ops/SKILL.md": {
+      "name": "ML Pipeline Operations",
+      "primary_roadmap": "mlops",
+      "secondary_roadmaps": [
+        "ai-engineer",
+        "data-engineer",
+        "machine-learning",
+        "python",
+        "inference-engineering"
+      ],
+      "relevant_topics": [
+        "ml-pipelines",
+        "model-deployment",
+        "data-processing",
+        "experiment-tracking",
+        "model-versioning",
+        "data-versioning",
+        "feature-engineering",
+        "model-monitoring",
+        "pipeline-orchestration",
+        "scaling-ml"
+      ],
+      "weight": 0.98,
+      "description": "ML pipeline operations aligned with MLOps, AI Engineer, and Data Engineer roadmaps"
+    },
+    ".agents/skills/ml-command-center/SKILL.md": {
+      "name": "ML Command Center",
+      "primary_roadmap": "ai-engineer",
+      "secondary_roadmaps": [
+        "mlops",
+        "machine-learning",
+        "python",
+        "data-engineer"
+      ],
+      "relevant_topics": [
+        "ml-operations",
+        "model-management",
+        "experiment-tracking",
+        "hyperparameter-tuning",
+        "model-evaluation",
+        "data-preparation",
+        "feature-selection",
+        "model-serving",
+        "monitoring",
+        "governance"
+      ],
+      "weight": 0.95,
+      "description": "ML command center operations aligned with AI Engineer and MLOps roadmaps"
+    },
+    ".agents/skills/adaptive-feedback-cycle/SKILL.md": {
+      "name": "Adaptive Feedback Cycle",
+      "primary_roadmap": "software-design-architecture",
+      "secondary_roadmaps": [
+        "computer-science",
+        "qa",
+        "code-review"
+      ],
+      "relevant_topics": [
+        "feedback-loops",
+        "continuous-improvement",
+        "quality-assurance",
+        "testing",
+        "review-process",
+        "iteration",
+        "adaptive-systems",
+        "metrics",
+        "monitoring",
+        "evaluation"
+      ],
+      "weight": 0.85,
+      "description": "Adaptive feedback cycles aligned with software design and QA roadmaps"
+    },
+    ".agents/skills/plan-canvas/SKILL.md": {
+      "name": "Plan Canvas",
+      "primary_roadmap": "product-manager",
+      "secondary_roadmaps": [
+        "software-architect",
+        "engineering-manager",
+        "system-design"
+      ],
+      "relevant_topics": [
+        "planning",
+        "roadmapping",
+        "requirements-gathering",
+        "prioritization",
+        "stakeholder-management",
+        "risk-assessment",
+        "timeline-estimation",
+        "resource-allocation",
+        "dependency-management",
+        "milestone-tracking"
+      ],
+      "weight": 0.90,
+      "description": "Planning and roadmapping SKILL aligned with Product Manager and Architecture roadmaps"
+    },
+    ".agents/skills/termux-mcp-project-steward/SKILL.md": {
+      "name": "Termux MCP Project Steward",
+      "primary_roadmap": "bash-shell",
+      "secondary_roadmaps": [
+        "python",
+        "linux",
+        "devops",
+        "android"
+      ],
+      "relevant_topics": [
+        "termux-environment",
+        "mobile-development",
+        "scripting",
+        "automation",
+        "package-management",
+        "project-structure",
+        "build-systems",
+        "deployment",
+        "testing",
+        "debugging"
+      ],
+      "weight": 0.95,
+      "description": "Termux-specific project stewardship aligned with Bash/Shell, Python, and Linux roadmaps"
+    },
+    ".agents/skills/wingman-project-integration/SKILL.md": {
+      "name": "Wingman Project Integration",
+      "primary_roadmap": "ai-agents",
+      "secondary_roadmaps": [
+        "python",
+        "api-design",
+        "backend",
+        "software-architect"
+      ],
+      "relevant_topics": [
+        "agent-integration",
+        "api-design",
+        "system-architecture",
+        "workflow-automation",
+        "tool-integration",
+        "context-management",
+        "adaptation",
+        "orchestration",
+        "collaboration",
+        "coordination"
+      ],
+      "weight": 0.90,
+      "description": "Wingman integration SKILL aligned with AI Agents and API Design roadmaps"
+    },
+    ".agents/skills/context-relationship-graph/SKILL.md": {
+      "name": "Context Relationship Graph",
+      "primary_roadmap": "software-architect",
+      "secondary_roadmaps": [
+        "computer-science",
+        "system-design",
+        "software-design-architecture"
+      ],
+      "relevant_topics": [
+        "graph-theory",
+        "relationship-mapping",
+        "context-modeling",
+        "dependency-graphs",
+        "knowledge-representation",
+        "semantic-networks",
+        "data-modeling",
+        "metadata",
+        "provenance",
+        "lineage"
+      ],
+      "weight": 0.88,
+      "description": "Context and relationship modeling aligned with Architecture and System Design roadmaps"
+    },
+    ".agents/skills/tribute-lane/SKILL.md": {
+      "name": "Tribute Lane (External Contribution)",
+      "primary_roadmap": "devrel",
+      "secondary_roadmaps": [
+        "product-manager",
+        "engineering-manager",
+        "git-github"
+      ],
+      "relevant_topics": [
+        "open-source",
+        "community-management",
+        "contribution-guidelines",
+        "issue-management",
+        "pr-review",
+        "documentation",
+        "onboarding",
+        "engagement",
+        "evangelism",
+        "feedback-collection"
+      ],
+      "weight": 0.85,
+      "description": "External contribution SKILL aligned with DevRel and Product Manager roadmaps"
+    },
+    ".agents/skills/web-adapter-foundry/SKILL.md": {
+      "name": "Web Adapter Foundry",
+      "primary_roadmap": "api-design",
+      "secondary_roadmaps": [
+        "backend",
+        "frontend",
+        "nodejs",
+        "python"
+      ],
+      "relevant_topics": [
+        "api-design",
+        "web-services",
+        "rest-api",
+        "graphql",
+        "webhook",
+        "adapter-pattern",
+        "integration",
+        "interoperability",
+        "protocol-design",
+        "data-serialization"
+      ],
+      "weight": 0.92,
+      "description": "Web adapter development aligned with API Design and Backend roadmaps"
+    },
+    ".agents/skills/production-reconciliation/SKILL.md": {
+      "name": "Production Reconciliation",
+      "primary_roadmap": "devops",
+      "secondary_roadmaps": [
+        "kubernetes",
+        "docker",
+        "ci-cd",
+        "backend"
+      ],
+      "relevant_topics": [
+        "production-deployment",
+        "reconciliation",
+        "state-management",
+        "drift-detection",
+        "rollback",
+        "monitoring",
+        "logging",
+        "tracing",
+        "incident-response",
+        "disaster-recovery"
+      ],
+      "weight": 0.90,
+      "description": "Production reconciliation aligned with DevOps and Kubernetes roadmaps"
+    },
+    ".agents/skills/action-effectiveness-ledger/SKILL.md": {
+      "name": "Action Effectiveness Ledger",
+      "primary_roadmap": "data-analyst",
+      "secondary_roadmaps": [
+        "bi-analyst",
+        "data-engineer",
+        "product-manager"
+      ],
+      "relevant_topics": [
+        "metrics",
+        "analytics",
+        "effectiveness-measurement",
+        "data-collection",
+        "visualization",
+        "reporting",
+        "kpi-tracking",
+        "roi-analysis",
+        "impact-assessment",
+        "decision-making"
+      ],
+      "weight": 0.85,
+      "description": "Action effectiveness tracking aligned with Data Analyst and BI roadmaps"
+    },
+    ".agents/skills/minesweeper-ops/SKILL.md": {
+      "name": "Minesweeper Operations",
+      "primary_roadmap": "qa",
+      "secondary_roadmaps": [
+        "devops",
+        "backend",
+        "code-review"
+      ],
+      "relevant_topics": [
+        "testing",
+        "quality-assurance",
+        "collision-detection",
+        "concurrency-control",
+        "agent-coordination",
+        "conflict-resolution",
+        "synchronization",
+        "isolation",
+        "validation",
+        "verification"
+      ],
+      "weight": 0.80,
+      "description": "Minesweeper-style collision avoidance aligned with QA and DevOps roadmaps"
+    },
+    ".agents/skills/icm-cctv-ops/SKILL.md": {
+      "name": "ICM CCTV Operations",
+      "primary_roadmap": "cyber-security",
+      "secondary_roadmaps": [
+        "devops",
+        "system-design",
+        "software-architect"
+      ],
+      "relevant_topics": [
+        "monitoring",
+        "surveillance",
+        "observability",
+        "security-monitoring",
+        "threat-detection",
+        "incident-response",
+        "audit-trails",
+        "compliance",
+        "forensics",
+        "anomaly-detection"
+      ],
+      "weight": 0.88,
+      "description": "ICM CCTV monitoring aligned with Cyber Security and DevOps roadmaps"
+    },
+    ".agents/skills/stepie-stepwise-ops/SKILL.md": {
+      "name": "Stepie Stepwise Operations",
+      "primary_roadmap": "software-design-architecture",
+      "secondary_roadmaps": [
+        "system-design",
+        "software-architect",
+        "product-manager"
+      ],
+      "relevant_topics": [
+        "stepwise-refinement",
+        "incremental-development",
+        "progressive-elaboration",
+        "planning",
+        "execution",
+        "validation",
+        "iteration",
+        "milestone-management",
+        "dependency-tracking",
+        "risk-management"
+      ],
+      "weight": 0.90,
+      "description": "Stepie stepwise operations aligned with Architecture and Design roadmaps"
+    },
+    ".agents/skills/adaptive-wait/SKILL.md": {
+      "name": "Adaptive Wait",
+      "primary_roadmap": "software-design-architecture",
+      "secondary_roadmaps": [
+        "computer-science",
+        "system-design",
+        "devops"
+      ],
+      "relevant_topics": [
+        "asynchronous-processing",
+        "wait-strategies",
+        "polling",
+        "event-driven",
+        "timeout-management",
+        "retry-logic",
+        "backoff",
+        "scheduling",
+        "queue-management",
+        "resource-optimization"
+      ],
+      "weight": 0.85,
+      "description": "Adaptive waiting strategies aligned with Architecture and System Design roadmaps"
+    },
+    ".agents/skills/find-skills/SKILL.md": {
+      "name": "Find Skills",
+      "primary_roadmap": "software-architect",
+      "secondary_roadmaps": [
+        "software-design-architecture",
+        "product-manager",
+        "engineering-manager"
+      ],
+      "relevant_topics": [
+        "skill-discovery",
+        "capability-mapping",
+        "resource-allocation",
+        "team-building",
+        "knowledge-management",
+        "competency-frameworks",
+        "gap-analysis",
+        "training-planning",
+        "mentoring",
+        "career-development"
+      ],
+      "weight": 0.82,
+      "description": "Skill discovery and mapping aligned with Architecture and Management roadmaps"
+    },
+    ".agents/skills/review-loop/SKILL.md": {
+      "name": "Review Loop",
+      "primary_roadmap": "code-review",
+      "secondary_roadmaps": [
+        "qa",
+        "devops",
+        "backend"
+      ],
+      "relevant_topics": [
+        "code-review",
+        "quality-gates",
+        "feedback-cycles",
+        "approval-workflows",
+        "automated-review",
+        "static-analysis",
+        "peer-review",
+        "merge-strategies",
+        "validation",
+        "verification"
+      ],
+      "weight": 0.90,
+      "description": "Review loop operations aligned with Code Review and QA roadmaps"
+    },
+    ".agents/skills/github-pages-operator/SKILL.md": {
+      "name": "GitHub Pages Operator",
+      "primary_roadmap": "git-github",
+      "secondary_roadmaps": [
+        "devops",
+        "frontend",
+        "docker"
+      ],
+      "relevant_topics": [
+        "github-pages",
+        "static-sites",
+        "documentation",
+        "deployment",
+        "ci-cd",
+        "automation",
+        "content-management",
+        "versioning",
+        "hosting",
+        "custom-domains"
+      ],
+      "weight": 0.88,
+      "description": "GitHub Pages operations aligned with Git/GitHub and DevOps roadmaps"
+    },
+    ".agents/skills/multivariate-doe/SKILL.md": {
+      "name": "Multivariate DOE",
+      "primary_roadmap": "data-analyst",
+      "secondary_roadmaps": [
+        "data-engineer",
+        "machine-learning",
+        "statistics",
+        "bi-analyst"
+      ],
+      "relevant_topics": [
+        "design-of-experiments",
+        "multivariate-analysis",
+        "statistical-methods",
+        "hypothesis-testing",
+        "data-collection",
+        "experiment-design",
+        "factor-analysis",
+        "response-surface",
+        "optimization",
+        "modeling"
+      ],
+      "weight": 0.92,
+      "description": "Multivariate design of experiments aligned with Data Analyst and ML roadmaps"
+    },
+    ".agents/skills/blind-agent-evaluation/SKILL.md": {
+      "name": "Blind Agent Evaluation",
+      "primary_roadmap": "ai-agents",
+      "secondary_roadmaps": [
+        "ai-engineer",
+        "machine-learning",
+        "qa",
+        "devops"
+      ],
+      "relevant_topics": [
+        "agent-evaluation",
+        "blind-testing",
+        "benchmarking",
+        "performance-metrics",
+        "quality-assessment",
+        "bias-detection",
+        "fairness",
+        "robustness",
+        "reproducibility",
+        "validation"
+      ],
+      "weight": 0.90,
+      "description": "Blind agent evaluation aligned with AI Agents and ML roadmaps"
+    },
+    ".github/skills/production-reconciliation/SKILL.md": {
+      "name": "Production Reconciliation (CI)",
+      "primary_roadmap": "devops",
+      "secondary_roadmaps": [
+        "kubernetes",
+        "docker",
+        "ci-cd"
+      ],
+      "relevant_topics": [
+        "production-sync",
+        "reconciliation",
+        "state-management",
+        "drift-detection",
+        "deployment-verification",
+        "health-checks",
+        "rollback",
+        "monitoring",
+        "alerting",
+        "incident-management"
+      ],
+      "weight": 0.95,
+      "description": "CI production reconciliation aligned with DevOps and Kubernetes roadmaps"
+    },
+    ".github/skills/action-effectiveness-ledger/SKILL.md": {
+      "name": "Action Effectiveness Ledger (CI)",
+      "primary_roadmap": "data-analyst",
+      "secondary_roadmaps": [
+        "bi-analyst",
+        "data-engineer"
+      ],
+      "relevant_topics": [
+        "action-tracking",
+        "effectiveness-metrics",
+        "ledger-management",
+        "data-audit",
+        "impact-analysis",
+        "outcome-measurement",
+        "kpi-tracking",
+        "reporting",
+        "visualization",
+        "decision-support"
+      ],
+      "weight": 0.88,
+      "description": "CI action effectiveness tracking aligned with Data Analyst roadmaps"
+    }
+  },
+  "stats": {
+    "total_skills": 25,
+    "total_roadmaps_referenced": 50,
+    "average_weight": 0.89
+  }
+}

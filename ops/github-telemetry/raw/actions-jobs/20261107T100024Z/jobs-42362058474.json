@@ -1,0 +1,108 @@
+{
+  "collected_at": "2026-11-07T10:00:30.754365+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42362058474,
+    "endpoint": ".../runs/42362058474/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 128372334544,
+        "run_id": 42362058474,
+        "workflow_name": "Lane matrix event-driven inventory",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058474",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45Zf0A",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372334544",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058474/job/128372334544",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-07T10:00:15Z",
+        "started_at": "2026-11-07T10:00:28Z",
+        "completed_at": null,
+        "name": "validate event-driven classifier",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-07T10:00:28Z",
+            "completed_at": "2026-11-07T10:00:29Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 2,
+            "started_at": "2026-11-07T10:00:29Z",
+            "completed_at": null
+          },
+          {
+            "name": "Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "pending",
+            "conclusion": null,
+            "number": 3,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Validate classifier and cadence admission contract",
+            "status": "pending",
+            "conclusion": null,
+            "number": 4,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372334544",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000744775,
+        "runner_name": "GitHub Actions 1000744775",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 128372335555,
+        "run_id": 42362058474,
+        "workflow_name": "Lane matrix event-driven inventory",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058474",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45Zjww",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372335555",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058474/job/128372335555",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-07T10:00:15Z",
+        "started_at": "2026-11-07T10:00:15Z",
+        "completed_at": "2026-11-07T10:00:14Z",
+        "name": "event-driven PR disposition materialization",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372335555",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

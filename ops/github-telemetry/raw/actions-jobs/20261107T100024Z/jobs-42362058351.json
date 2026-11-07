@@ -1,0 +1,81 @@
+{
+  "collected_at": "2026-11-07T10:00:35.180375+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42362058351,
+    "endpoint": ".../runs/42362058351/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 128372335395,
+        "run_id": 42362058351,
+        "workflow_name": "PR Change Effectiveness Ledger",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058351",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45ZjIw",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372335395",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058351/job/128372335395",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-07T10:00:15Z",
+        "started_at": "2026-11-07T10:00:32Z",
+        "completed_at": null,
+        "name": "ledger",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-07T10:00:33Z",
+            "completed_at": "2026-11-07T10:00:33Z"
+          },
+          {
+            "name": "Checkout trusted control-plane",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 2,
+            "started_at": "2026-11-07T10:00:33Z",
+            "completed_at": null
+          },
+          {
+            "name": "Measure complete PR change history",
+            "status": "pending",
+            "conclusion": null,
+            "number": 3,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Publish evidence summary",
+            "status": "pending",
+            "conclusion": null,
+            "number": 4,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Checkout trusted control-plane",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372335395",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000744777,
+        "runner_name": "GitHub Actions 1000744777",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "collected_at": "2026-11-07T10:00:39.452115+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42362056315,
+    "endpoint": ".../runs/42362056315/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 128372357348,
+        "run_id": 42362056315,
+        "workflow_name": "Lane matrix event-driven inventory",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362056315",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45a45A",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372357348",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362056315/job/128372357348",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-07T10:00:20Z",
+        "started_at": "2026-11-07T10:00:20Z",
+        "completed_at": "2026-11-07T10:00:13Z",
+        "name": "event-driven PR disposition materialization",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372357348",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 128372363871,
+        "run_id": 42362056315,
+        "workflow_name": "Lane matrix event-driven inventory",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362056315",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45bSXw",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372363871",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362056315/job/128372363871",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-07T10:00:22Z",
+        "started_at": "2026-11-07T10:00:22Z",
+        "completed_at": "2026-11-07T10:00:13Z",
+        "name": "validate event-driven classifier",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372363871",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

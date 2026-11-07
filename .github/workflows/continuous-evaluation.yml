@@ -290,6 +290,16 @@ jobs:
           p.write_text(json.dumps({'schema':'team-evaluation/v6','run_id':os.environ['RUN_ID'],'lane':os.environ['LANE'],'manager':os.environ['MANAGER'],'provider':os.environ['PROVIDER'],'model':os.environ['MODEL'],'prompt_variant':os.environ['VARIANT'],'quota_class':os.environ['QUOTA_CLASS'],'epoch':epoch,'refs':refs.read_text().splitlines() if refs.exists() else []},indent=2)+'\n')
           PY
 
+      - name: Project observed usage into the Free-Tier Value Board contract
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/free-tier-value
+          python3 scripts/free_tier_value_projection.py \
+            --observations /tmp/model-performance/observations.ndjson \
+            --source-sha "$GITHUB_SHA" \
+            --out /tmp/free-tier-value/free-tier-value.json
+
       - name: Upload immutable evaluation ledger
         if: always()
         uses: actions/upload-artifact@v4
@@ -298,5 +308,6 @@ jobs:
           path: |
             /tmp/evaluation
             /tmp/model-performance/observations.ndjson
+            /tmp/free-tier-value
           if-no-files-found: ignore
 

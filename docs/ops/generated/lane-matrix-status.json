@@ -1,28 +1,33 @@
 {
   "schema": "lane-matrix-sweep/v2",
-  "observed_at": "2026-11-02T11:07:54Z",
+  "observed_at": "2026-11-07T19:50:20Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "eb8192d5fbbf0a79dc74f68f859068d0339fa4ab",
+  "master_sha": "0d66f2eda61ae5d117a76f42756a4795ebb2113d",
+  "freshness": {
+    "trigger": "pull_request_target",
+    "semantics": "event-driven snapshot; age buckets are informational at observed_at",
+    "polling": false
+  },
   "counts": {
-    "open_prs": 185,
+    "open_prs": 324,
     "by_lane": {
-      "SUPERSEDE": 103,
-      "NEED_EVIDENCE": 30,
-      "CANDIDATE": 48,
-      "EXTRACT": 4
+      "CANDIDATE": 93,
+      "NEED_EVIDENCE": 66,
+      "SUPERSEDE": 159,
+      "EXTRACT": 6
     },
     "by_age": {
-      "ancient": 21,
-      "stale": 6,
-      "mid": 46,
-      "fresh": 112
+      "ancient": 22,
+      "stale": 5,
+      "mid": 115,
+      "fresh": 182
     }
   },
   "oldest": {
     "number": 47,
-    "days_open": 88.81,
+    "days_open": 94.17,
     "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
-    "lane": "SUPERSEDE"
+    "lane": "CANDIDATE"
   },
   "prs": [
     {
@@ -39,11 +44,11 @@
       "changed_files": -1,
       "created_at": "2026-08-05T15:44:30Z",
       "updated_at": "2026-10-23T13:34:06Z",
-      "days_open": 88.81,
+      "days_open": 94.17,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/47"
     },
@@ -60,8 +65,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-05T16:39:27Z",
-      "updated_at": "2026-11-01T13:37:58Z",
-      "days_open": 88.77,
+      "updated_at": "2026-11-06T14:26:10Z",
+      "days_open": 94.13,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -83,11 +88,11 @@
       "changed_files": -1,
       "created_at": "2026-08-07T21:52:05Z",
       "updated_at": "2026-10-22T22:25:52Z",
-      "days_open": 86.55,
+      "days_open": 91.92,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/81"
     },
@@ -105,7 +110,7 @@
       "changed_files": -1,
       "created_at": "2026-08-08T14:48:06Z",
       "updated_at": "2026-10-21T04:40:31Z",
-      "days_open": 85.85,
+      "days_open": 91.21,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -126,12 +131,12 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-09T01:01:40Z",
-      "updated_at": "2026-11-01T13:37:52Z",
-      "days_open": 85.42,
+      "updated_at": "2026-11-06T14:26:17Z",
+      "days_open": 90.78,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/103"
     },
@@ -149,7 +154,7 @@
       "changed_files": -1,
       "created_at": "2026-08-09T22:42:25Z",
       "updated_at": "2026-10-24T23:34:10Z",
-      "days_open": 84.52,
+      "days_open": 89.88,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -171,7 +176,7 @@
       "changed_files": -1,
       "created_at": "2026-08-10T15:24:47Z",
       "updated_at": "2026-10-26T07:41:31Z",
-      "days_open": 83.82,
+      "days_open": 89.18,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -193,7 +198,7 @@
       "changed_files": -1,
       "created_at": "2026-08-21T18:47:02Z",
       "updated_at": "2026-10-21T03:23:04Z",
-      "days_open": 72.68,
+      "days_open": 78.04,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -215,7 +220,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T05:37:08Z",
       "updated_at": "2026-08-30T11:56:02Z",
-      "days_open": 66.23,
+      "days_open": 71.59,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -237,7 +242,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T06:20:05Z",
       "updated_at": "2026-09-03T22:51:06Z",
-      "days_open": 66.2,
+      "days_open": 71.56,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -259,7 +264,7 @@
       "changed_files": -1,
       "created_at": "2026-08-30T08:03:36Z",
       "updated_at": "2026-09-03T20:03:43Z",
-      "days_open": 64.13,
+      "days_open": 69.49,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -280,12 +285,12 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-15T07:56:20Z",
-      "updated_at": "2026-11-01T13:38:01Z",
-      "days_open": 48.13,
+      "updated_at": "2026-11-06T14:26:06Z",
+      "days_open": 53.5,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/527"
     },
@@ -303,7 +308,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T08:34:24Z",
       "updated_at": "2026-10-06T07:08:10Z",
-      "days_open": 46.11,
+      "days_open": 51.47,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -325,11 +330,11 @@
       "changed_files": -1,
       "created_at": "2026-09-18T17:54:07Z",
       "updated_at": "2026-10-23T07:40:01Z",
-      "days_open": 44.72,
+      "days_open": 50.08,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/605"
     },
@@ -347,11 +352,11 @@
       "changed_files": -1,
       "created_at": "2026-09-20T18:25:04Z",
       "updated_at": "2026-10-23T13:34:16Z",
-      "days_open": 42.7,
+      "days_open": 48.06,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/684"
     },
@@ -369,7 +374,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T13:05:01Z",
       "updated_at": "2026-10-25T00:44:19Z",
-      "days_open": 40.92,
+      "days_open": 46.28,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -391,7 +396,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:21:54Z",
       "updated_at": "2026-09-22T22:22:38Z",
-      "days_open": 40.53,
+      "days_open": 45.89,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -413,7 +418,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:23:38Z",
       "updated_at": "2026-09-23T03:24:12Z",
-      "days_open": 40.32,
+      "days_open": 45.69,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -435,7 +440,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:33:34Z",
       "updated_at": "2026-09-23T09:26:30Z",
-      "days_open": 40.32,
+      "days_open": 45.68,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -457,7 +462,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:42:32Z",
       "updated_at": "2026-09-23T04:00:16Z",
-      "days_open": 40.31,
+      "days_open": 45.67,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -479,11 +484,11 @@
       "changed_files": -1,
       "created_at": "2026-09-23T07:36:29Z",
       "updated_at": "2026-10-22T22:26:28Z",
-      "days_open": 40.15,
+      "days_open": 45.51,
       "age_bucket": "ancient",
-      "lane": "SUPERSEDE",
+      "lane": "CANDIDATE",
       "reasons": [
-        "ancient-no-auto-promote"
+        "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/769"
     },
@@ -501,8 +506,8 @@
       "changed_files": -1,
       "created_at": "2026-09-25T01:06:46Z",
       "updated_at": "2026-09-25T01:08:41Z",
-      "days_open": 38.42,
-      "age_bucket": "stale",
+      "days_open": 43.78,
+      "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -523,7 +528,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T01:04:39Z",
       "updated_at": "2026-10-01T01:05:40Z",
-      "days_open": 32.42,
+      "days_open": 37.78,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -545,7 +550,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T09:53:01Z",
       "updated_at": "2026-10-21T04:40:59Z",
-      "days_open": 32.05,
+      "days_open": 37.41,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -567,7 +572,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T12:03:18Z",
       "updated_at": "2026-10-01T12:22:22Z",
-      "days_open": 31.96,
+      "days_open": 37.32,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -589,7 +594,7 @@
       "changed_files": -1,
       "created_at": "2026-10-02T06:35:56Z",
       "updated_at": "2026-10-23T07:40:13Z",
-      "days_open": 31.19,
+      "days_open": 36.55,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -611,7 +616,7 @@
       "changed_files": -1,
       "created_at": "2026-10-03T12:53:32Z",
       "updated_at": "2026-10-23T07:40:17Z",
-      "days_open": 29.93,
+      "days_open": 35.29,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -633,35 +638,13 @@
       "changed_files": -1,
       "created_at": "2026-10-19T09:18:06Z",
       "updated_at": "2026-10-23T07:40:35Z",
-      "days_open": 14.08,
+      "days_open": 19.44,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1274"
-    },
-    {
-      "number": 1278,
-      "title": "ops(quota): consolidate planning-lane crons (~50 scheduled runs/day fewer) \u2014 REVIEW, do not auto-merge",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "b17afad0c3d2",
-      "head_ref": "hark/quota-consolidation",
-      "head_sha": "e650476044b3",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-19T09:43:58Z",
-      "updated_at": "2026-10-23T07:40:09Z",
-      "days_open": 14.06,
-      "age_bucket": "mid",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1278"
     },
     {
       "number": 1301,
@@ -677,7 +660,7 @@
       "changed_files": -1,
       "created_at": "2026-10-20T06:16:16Z",
       "updated_at": "2026-10-20T07:17:41Z",
-      "days_open": 13.2,
+      "days_open": 18.57,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -699,7 +682,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T06:36:50Z",
       "updated_at": "2026-10-21T10:53:39Z",
-      "days_open": 12.19,
+      "days_open": 17.55,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -722,7 +705,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T07:48:16Z",
       "updated_at": "2026-11-02T09:40:15Z",
-      "days_open": 12.14,
+      "days_open": 17.5,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -744,7 +727,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T13:05:14Z",
       "updated_at": "2026-10-23T13:34:01Z",
-      "days_open": 11.92,
+      "days_open": 17.28,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -766,7 +749,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T13:13:33Z",
       "updated_at": "2026-10-23T13:34:11Z",
-      "days_open": 11.91,
+      "days_open": 17.28,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -787,8 +770,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T23:38:29Z",
-      "updated_at": "2026-11-01T22:13:01Z",
-      "days_open": 11.48,
+      "updated_at": "2026-11-06T14:26:03Z",
+      "days_open": 16.84,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -810,7 +793,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T02:25:01Z",
       "updated_at": "2026-10-26T23:10:29Z",
-      "days_open": 11.36,
+      "days_open": 16.73,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -831,8 +814,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T06:38:59Z",
-      "updated_at": "2026-11-01T13:37:45Z",
-      "days_open": 11.19,
+      "updated_at": "2026-11-06T14:26:20Z",
+      "days_open": 16.55,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -854,7 +837,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T07:32:45Z",
       "updated_at": "2026-10-22T07:33:38Z",
-      "days_open": 11.15,
+      "days_open": 16.51,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -876,7 +859,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:00:00Z",
       "updated_at": "2026-10-22T13:58:29Z",
-      "days_open": 11.13,
+      "days_open": 16.49,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -898,7 +881,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:16:12Z",
       "updated_at": "2026-10-22T22:26:02Z",
-      "days_open": 11.12,
+      "days_open": 16.48,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -919,8 +902,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T08:18:59Z",
-      "updated_at": "2026-11-01T13:38:10Z",
-      "days_open": 11.12,
+      "updated_at": "2026-11-06T23:17:51Z",
+      "days_open": 16.48,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -942,7 +925,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:20:11Z",
       "updated_at": "2026-10-22T08:23:49Z",
-      "days_open": 11.12,
+      "days_open": 16.48,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -964,7 +947,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:23:03Z",
       "updated_at": "2026-10-22T08:24:30Z",
-      "days_open": 11.11,
+      "days_open": 16.48,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -986,7 +969,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:38:15Z",
       "updated_at": "2026-10-22T12:32:13Z",
-      "days_open": 11.1,
+      "days_open": 16.47,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1008,7 +991,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:00:52Z",
       "updated_at": "2026-10-22T09:02:48Z",
-      "days_open": 11.09,
+      "days_open": 16.45,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1030,7 +1013,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:04:40Z",
       "updated_at": "2026-10-22T09:07:25Z",
-      "days_open": 11.09,
+      "days_open": 16.45,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1052,7 +1035,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:36:17Z",
       "updated_at": "2026-10-22T11:38:12Z",
-      "days_open": 10.98,
+      "days_open": 16.34,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1074,7 +1057,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:44:27Z",
       "updated_at": "2026-10-22T12:50:29Z",
-      "days_open": 10.97,
+      "days_open": 16.34,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1096,7 +1079,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T17:16:26Z",
       "updated_at": "2026-10-22T22:08:16Z",
-      "days_open": 10.74,
+      "days_open": 16.11,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1118,7 +1101,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T22:18:51Z",
       "updated_at": "2026-10-22T22:19:32Z",
-      "days_open": 10.53,
+      "days_open": 15.9,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1139,8 +1122,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T23:21:39Z",
-      "updated_at": "2026-11-01T13:38:04Z",
-      "days_open": 10.49,
+      "updated_at": "2026-11-06T14:26:23Z",
+      "days_open": 15.85,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1162,7 +1145,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T01:03:39Z",
       "updated_at": "2026-10-23T18:28:41Z",
-      "days_open": 10.42,
+      "days_open": 15.78,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1184,7 +1167,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T07:32:36Z",
       "updated_at": "2026-10-23T07:33:19Z",
-      "days_open": 10.15,
+      "days_open": 15.51,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1206,7 +1189,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T07:49:25Z",
       "updated_at": "2026-10-24T04:02:40Z",
-      "days_open": 10.14,
+      "days_open": 15.5,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1228,7 +1211,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T08:06:51Z",
       "updated_at": "2026-10-23T08:07:29Z",
-      "days_open": 10.13,
+      "days_open": 15.49,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1250,7 +1233,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T17:14:33Z",
       "updated_at": "2026-10-23T17:14:48Z",
-      "days_open": 9.75,
+      "days_open": 15.11,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1272,7 +1255,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T22:32:05Z",
       "updated_at": "2026-10-23T22:37:54Z",
-      "days_open": 9.52,
+      "days_open": 14.89,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1293,8 +1276,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-23T23:36:59Z",
-      "updated_at": "2026-11-01T13:37:54Z",
-      "days_open": 9.48,
+      "updated_at": "2026-11-06T14:26:13Z",
+      "days_open": 14.84,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1316,7 +1299,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T01:09:43Z",
       "updated_at": "2026-10-25T02:39:40Z",
-      "days_open": 9.42,
+      "days_open": 14.78,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1338,7 +1321,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:02:24Z",
       "updated_at": "2026-10-24T03:24:07Z",
-      "days_open": 9.34,
+      "days_open": 14.7,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1360,7 +1343,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:10:50Z",
       "updated_at": "2026-10-24T03:11:37Z",
-      "days_open": 9.33,
+      "days_open": 14.69,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1382,7 +1365,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:18:20Z",
       "updated_at": "2026-10-25T02:25:16Z",
-      "days_open": 9.33,
+      "days_open": 14.69,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1404,35 +1387,13 @@
       "changed_files": -1,
       "created_at": "2026-10-24T06:10:56Z",
       "updated_at": "2026-10-24T06:36:09Z",
-      "days_open": 9.21,
+      "days_open": 14.57,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1626"
-    },
-    {
-      "number": 1627,
-      "title": "ci(context): wake page-one history coverage bootstrap",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "e6b68c93c6dd",
-      "head_ref": "fix/context-history-bootstrap-trigger-20261024",
-      "head_sha": "7b74e97ea7f0",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-24T06:18:41Z",
-      "updated_at": "2026-10-24T06:19:50Z",
-      "days_open": 9.2,
-      "age_bucket": "mid",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1627"
     },
     {
       "number": 1630,
@@ -1448,7 +1409,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T06:55:09Z",
       "updated_at": "2026-10-24T06:55:51Z",
-      "days_open": 9.18,
+      "days_open": 14.54,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1470,7 +1431,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T07:18:36Z",
       "updated_at": "2026-10-24T07:22:16Z",
-      "days_open": 9.16,
+      "days_open": 14.52,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1492,7 +1453,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T08:12:29Z",
       "updated_at": "2026-10-24T08:12:48Z",
-      "days_open": 9.12,
+      "days_open": 14.48,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1514,7 +1475,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T22:21:51Z",
       "updated_at": "2026-10-24T22:23:11Z",
-      "days_open": 8.53,
+      "days_open": 13.89,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1535,8 +1496,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-24T23:18:10Z",
-      "updated_at": "2026-11-01T13:38:45Z",
-      "days_open": 8.49,
+      "updated_at": "2026-11-06T14:27:09Z",
+      "days_open": 13.86,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1558,7 +1519,7 @@
       "changed_files": -1,
       "created_at": "2026-10-25T00:28:43Z",
       "updated_at": "2026-10-25T00:30:39Z",
-      "days_open": 8.44,
+      "days_open": 13.81,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1580,7 +1541,7 @@
       "changed_files": -1,
       "created_at": "2026-10-25T02:12:55Z",
       "updated_at": "2026-10-25T02:14:09Z",
-      "days_open": 8.37,
+      "days_open": 13.73,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1602,7 +1563,7 @@
       "changed_files": -1,
       "created_at": "2026-10-25T07:32:55Z",
       "updated_at": "2026-10-25T08:24:38Z",
-      "days_open": 8.15,
+      "days_open": 13.51,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1624,7 +1585,7 @@
       "changed_files": -1,
       "created_at": "2026-10-26T08:06:29Z",
       "updated_at": "2026-10-26T08:06:51Z",
-      "days_open": 7.13,
+      "days_open": 12.49,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1646,8 +1607,8 @@
       "changed_files": -1,
       "created_at": "2026-10-26T23:11:31Z",
       "updated_at": "2026-10-27T11:27:12Z",
-      "days_open": 6.5,
-      "age_bucket": "fresh",
+      "days_open": 11.86,
+      "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -1668,8 +1629,8 @@
       "changed_files": -1,
       "created_at": "2026-10-26T23:43:50Z",
       "updated_at": "2026-10-26T23:44:27Z",
-      "days_open": 6.48,
-      "age_bucket": "fresh",
+      "days_open": 11.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1690,8 +1651,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T01:28:39Z",
       "updated_at": "2026-10-27T11:24:02Z",
-      "days_open": 6.4,
-      "age_bucket": "fresh",
+      "days_open": 11.77,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -1712,8 +1673,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T07:35:43Z",
       "updated_at": "2026-10-27T07:51:53Z",
-      "days_open": 6.15,
-      "age_bucket": "fresh",
+      "days_open": 11.51,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1734,8 +1695,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T07:37:04Z",
       "updated_at": "2026-10-27T07:42:12Z",
-      "days_open": 6.15,
-      "age_bucket": "fresh",
+      "days_open": 11.51,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1756,8 +1717,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T08:07:14Z",
       "updated_at": "2026-10-27T08:11:49Z",
-      "days_open": 6.13,
-      "age_bucket": "fresh",
+      "days_open": 11.49,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1778,8 +1739,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T11:17:50Z",
       "updated_at": "2026-10-30T07:04:28Z",
-      "days_open": 5.99,
-      "age_bucket": "fresh",
+      "days_open": 11.36,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -1800,8 +1761,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T11:21:40Z",
       "updated_at": "2026-10-27T11:22:58Z",
-      "days_open": 5.99,
-      "age_bucket": "fresh",
+      "days_open": 11.35,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -1815,15 +1776,15 @@
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "a9a8d42a638a",
+      "base_sha": "bce3b7b47e77",
       "head_ref": "tribute-participation/auto-refresh",
-      "head_sha": "cc84ecf1b73b",
+      "head_sha": "58b73e882631",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-27T12:35:35Z",
-      "updated_at": "2026-11-01T14:26:28Z",
-      "days_open": 5.94,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-07T14:14:36Z",
+      "days_open": 11.3,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1844,8 +1805,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T18:05:01Z",
       "updated_at": "2026-10-27T18:05:20Z",
-      "days_open": 5.71,
-      "age_bucket": "fresh",
+      "days_open": 11.07,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1866,8 +1827,8 @@
       "changed_files": -1,
       "created_at": "2026-10-27T22:15:41Z",
       "updated_at": "2026-10-27T22:21:15Z",
-      "days_open": 5.54,
-      "age_bucket": "fresh",
+      "days_open": 10.9,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1887,9 +1848,9 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-27T23:32:58Z",
-      "updated_at": "2026-11-01T13:38:22Z",
-      "days_open": 5.48,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-06T14:25:55Z",
+      "days_open": 10.85,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1910,8 +1871,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T05:02:32Z",
       "updated_at": "2026-10-29T06:02:41Z",
-      "days_open": 5.25,
-      "age_bucket": "fresh",
+      "days_open": 10.62,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -1932,8 +1893,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T07:42:17Z",
       "updated_at": "2026-10-28T07:47:28Z",
-      "days_open": 5.14,
-      "age_bucket": "fresh",
+      "days_open": 10.51,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -1954,35 +1915,13 @@
       "changed_files": -1,
       "created_at": "2026-10-28T07:57:56Z",
       "updated_at": "2026-10-28T08:10:08Z",
-      "days_open": 5.13,
-      "age_bucket": "fresh",
+      "days_open": 10.49,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1988"
-    },
-    {
-      "number": 2167,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "71134856b1ca",
-      "head_ref": "reviewer-metrics/refresh",
-      "head_sha": "ccf30453d1d2",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-28T19:26:06Z",
-      "updated_at": "2026-11-02T11:07:53Z",
-      "days_open": 4.65,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2167"
     },
     {
       "number": 2175,
@@ -1998,8 +1937,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:45:38Z",
       "updated_at": "2026-10-28T19:50:08Z",
-      "days_open": 4.64,
-      "age_bucket": "fresh",
+      "days_open": 10.0,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2020,35 +1959,13 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:50:08Z",
       "updated_at": "2026-10-28T19:54:15Z",
-      "days_open": 4.64,
-      "age_bucket": "fresh",
+      "days_open": 10.0,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2181"
-    },
-    {
-      "number": 2182,
-      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "user": "github-actions[bot]",
-      "bot": true,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "c0d7685ca485",
-      "head_ref": "challenge-countdowns-feed/refresh",
-      "head_sha": "5607284d9604",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-28T19:50:24Z",
-      "updated_at": "2026-10-30T23:34:22Z",
-      "days_open": 4.64,
-      "age_bucket": "fresh",
-      "lane": "SUPERSEDE",
-      "reasons": [
-        "bot-no-auto-promote"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2182"
     },
     {
       "number": 2183,
@@ -2064,8 +1981,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:50:37Z",
       "updated_at": "2026-10-28T19:55:07Z",
-      "days_open": 4.64,
-      "age_bucket": "fresh",
+      "days_open": 10.0,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2086,8 +2003,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:53:59Z",
       "updated_at": "2026-10-28T19:56:43Z",
-      "days_open": 4.63,
-      "age_bucket": "fresh",
+      "days_open": 10.0,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2108,8 +2025,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:54:46Z",
       "updated_at": "2026-10-28T19:57:26Z",
-      "days_open": 4.63,
-      "age_bucket": "fresh",
+      "days_open": 10.0,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2130,8 +2047,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:57:16Z",
       "updated_at": "2026-10-28T19:59:25Z",
-      "days_open": 4.63,
-      "age_bucket": "fresh",
+      "days_open": 10.0,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2145,15 +2062,15 @@
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "761476645371",
+      "base_sha": "827def0ad892",
       "head_ref": "challenge-osint/refresh",
-      "head_sha": "e1d36f6c2f32",
+      "head_sha": "8223fe97b5a8",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-28T21:50:33Z",
-      "updated_at": "2026-10-31T05:01:05Z",
-      "days_open": 4.55,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-04T22:59:47Z",
+      "days_open": 9.92,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2174,8 +2091,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T22:19:49Z",
       "updated_at": "2026-10-28T22:19:49Z",
-      "days_open": 4.53,
-      "age_bucket": "fresh",
+      "days_open": 9.9,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2196,8 +2113,8 @@
       "changed_files": -1,
       "created_at": "2026-10-28T22:36:49Z",
       "updated_at": "2026-10-28T22:38:27Z",
-      "days_open": 4.52,
-      "age_bucket": "fresh",
+      "days_open": 9.88,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2211,15 +2128,15 @@
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "eb8192d5fbbf",
+      "base_sha": "0ba84babd043",
       "head_ref": "delphi-ledger-feed/refresh",
-      "head_sha": "e4db25222d78",
+      "head_sha": "673c9a9f855d",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-28T22:37:18Z",
-      "updated_at": "2026-11-02T11:06:14Z",
-      "days_open": 4.52,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-07T19:46:57Z",
+      "days_open": 9.88,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2239,9 +2156,9 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-28T23:34:39Z",
-      "updated_at": "2026-11-01T13:38:06Z",
-      "days_open": 4.48,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-06T14:25:52Z",
+      "days_open": 9.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2255,15 +2172,15 @@
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "eb8192d5fbbf",
+      "base_sha": "9a362c4fa194",
       "head_ref": "delphi-rfp-feed/refresh",
-      "head_sha": "572598317e24",
+      "head_sha": "dbfda332de48",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-29T05:02:25Z",
-      "updated_at": "2026-11-02T11:06:41Z",
-      "days_open": 4.25,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-07T18:53:15Z",
+      "days_open": 9.62,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2284,36 +2201,13 @@
       "changed_files": -1,
       "created_at": "2026-10-29T07:24:26Z",
       "updated_at": "2026-10-29T07:26:09Z",
-      "days_open": 4.16,
-      "age_bucket": "fresh",
+      "days_open": 9.52,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2330"
-    },
-    {
-      "number": 2340,
-      "title": "chore(dashboards): refresh dispatch-tree feed",
-      "user": "github-actions[bot]",
-      "bot": true,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "71134856b1ca",
-      "head_ref": "dispatch-tree-feed/refresh",
-      "head_sha": "fdff84bc9fa4",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-29T14:10:04Z",
-      "updated_at": "2026-11-02T11:07:47Z",
-      "days_open": 3.87,
-      "age_bucket": "fresh",
-      "lane": "EXTRACT",
-      "reasons": [
-        "bot-no-auto-promote",
-        "minesweeper-title"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2340"
     },
     {
       "number": 2343,
@@ -2329,8 +2223,8 @@
       "changed_files": -1,
       "created_at": "2026-10-29T22:36:32Z",
       "updated_at": "2026-10-29T22:37:14Z",
-      "days_open": 3.52,
-      "age_bucket": "fresh",
+      "days_open": 8.88,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2351,8 +2245,8 @@
       "changed_files": -1,
       "created_at": "2026-10-29T23:39:58Z",
       "updated_at": "2026-10-29T23:40:31Z",
-      "days_open": 3.48,
-      "age_bucket": "fresh",
+      "days_open": 8.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2373,8 +2267,8 @@
       "changed_files": -1,
       "created_at": "2026-10-29T23:51:35Z",
       "updated_at": "2026-10-29T23:51:50Z",
-      "days_open": 3.47,
-      "age_bucket": "fresh",
+      "days_open": 8.83,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2395,8 +2289,8 @@
       "changed_files": -1,
       "created_at": "2026-10-29T23:52:11Z",
       "updated_at": "2026-10-29T23:52:11Z",
-      "days_open": 3.47,
-      "age_bucket": "fresh",
+      "days_open": 8.83,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2417,8 +2311,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T01:30:23Z",
       "updated_at": "2026-10-30T01:30:56Z",
-      "days_open": 3.4,
-      "age_bucket": "fresh",
+      "days_open": 8.76,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2439,8 +2333,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T02:07:43Z",
       "updated_at": "2026-10-30T02:08:01Z",
-      "days_open": 3.38,
-      "age_bucket": "fresh",
+      "days_open": 8.74,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2461,8 +2355,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T02:08:45Z",
       "updated_at": "2026-10-30T02:09:00Z",
-      "days_open": 3.37,
-      "age_bucket": "fresh",
+      "days_open": 8.74,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2483,8 +2377,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T07:37:44Z",
       "updated_at": "2026-11-01T01:43:08Z",
-      "days_open": 3.15,
-      "age_bucket": "fresh",
+      "days_open": 8.51,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2505,8 +2399,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T08:06:15Z",
       "updated_at": "2026-10-30T08:11:42Z",
-      "days_open": 3.13,
-      "age_bucket": "fresh",
+      "days_open": 8.49,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2527,8 +2421,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T08:57:19Z",
       "updated_at": "2026-10-30T08:59:17Z",
-      "days_open": 3.09,
-      "age_bucket": "fresh",
+      "days_open": 8.45,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -2549,8 +2443,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T09:07:33Z",
       "updated_at": "2026-10-30T09:16:35Z",
-      "days_open": 3.08,
-      "age_bucket": "fresh",
+      "days_open": 8.45,
+      "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -2571,8 +2465,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T09:59:57Z",
       "updated_at": "2026-10-30T10:00:18Z",
-      "days_open": 3.05,
-      "age_bucket": "fresh",
+      "days_open": 8.41,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2593,8 +2487,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:02:06Z",
       "updated_at": "2026-10-30T10:02:21Z",
-      "days_open": 3.05,
-      "age_bucket": "fresh",
+      "days_open": 8.41,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2615,8 +2509,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:35:07Z",
       "updated_at": "2026-10-30T10:35:07Z",
-      "days_open": 3.02,
-      "age_bucket": "fresh",
+      "days_open": 8.39,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2637,8 +2531,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:43:28Z",
       "updated_at": "2026-10-30T10:43:43Z",
-      "days_open": 3.02,
-      "age_bucket": "fresh",
+      "days_open": 8.38,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2659,8 +2553,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T11:13:08Z",
       "updated_at": "2026-10-30T11:13:25Z",
-      "days_open": 3.0,
-      "age_bucket": "fresh",
+      "days_open": 8.36,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2681,8 +2575,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T22:24:11Z",
       "updated_at": "2026-10-30T22:25:33Z",
-      "days_open": 2.53,
-      "age_bucket": "fresh",
+      "days_open": 7.89,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2703,8 +2597,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:33:50Z",
       "updated_at": "2026-10-30T23:34:19Z",
-      "days_open": 2.48,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2725,8 +2619,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:40:29Z",
       "updated_at": "2026-10-30T23:40:58Z",
-      "days_open": 2.48,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2747,8 +2641,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:42:12Z",
       "updated_at": "2026-10-30T23:42:56Z",
-      "days_open": 2.48,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2769,8 +2663,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:42:53Z",
       "updated_at": "2026-10-30T23:43:50Z",
-      "days_open": 2.48,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2791,8 +2685,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:44:25Z",
       "updated_at": "2026-10-30T23:44:25Z",
-      "days_open": 2.47,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2813,8 +2707,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:45:46Z",
       "updated_at": "2026-10-30T23:46:02Z",
-      "days_open": 2.47,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2835,8 +2729,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:46:39Z",
       "updated_at": "2026-10-30T23:48:38Z",
-      "days_open": 2.47,
-      "age_bucket": "fresh",
+      "days_open": 7.84,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2857,8 +2751,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:49:12Z",
       "updated_at": "2026-10-30T23:49:52Z",
-      "days_open": 2.47,
-      "age_bucket": "fresh",
+      "days_open": 7.83,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2879,8 +2773,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:55:28Z",
       "updated_at": "2026-10-30T23:55:45Z",
-      "days_open": 2.47,
-      "age_bucket": "fresh",
+      "days_open": 7.83,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2901,8 +2795,8 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:59:02Z",
       "updated_at": "2026-10-30T23:59:17Z",
-      "days_open": 2.46,
-      "age_bucket": "fresh",
+      "days_open": 7.83,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2923,8 +2817,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:07:39Z",
       "updated_at": "2026-10-31T00:08:19Z",
-      "days_open": 2.46,
-      "age_bucket": "fresh",
+      "days_open": 7.82,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2945,8 +2839,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:08:12Z",
       "updated_at": "2026-10-31T00:08:27Z",
-      "days_open": 2.46,
-      "age_bucket": "fresh",
+      "days_open": 7.82,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2967,8 +2861,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:09:38Z",
       "updated_at": "2026-10-31T00:10:06Z",
-      "days_open": 2.46,
-      "age_bucket": "fresh",
+      "days_open": 7.82,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -2989,8 +2883,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:10:15Z",
       "updated_at": "2026-10-31T00:10:33Z",
-      "days_open": 2.46,
-      "age_bucket": "fresh",
+      "days_open": 7.82,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3011,8 +2905,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:14:41Z",
       "updated_at": "2026-10-31T00:23:36Z",
-      "days_open": 2.45,
-      "age_bucket": "fresh",
+      "days_open": 7.82,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3033,8 +2927,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:18:35Z",
       "updated_at": "2026-11-01T02:52:15Z",
-      "days_open": 2.45,
-      "age_bucket": "fresh",
+      "days_open": 7.81,
+      "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -3055,8 +2949,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T01:12:30Z",
       "updated_at": "2026-10-31T01:13:11Z",
-      "days_open": 2.41,
-      "age_bucket": "fresh",
+      "days_open": 7.78,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3077,8 +2971,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T01:14:28Z",
       "updated_at": "2026-10-31T01:14:50Z",
-      "days_open": 2.41,
-      "age_bucket": "fresh",
+      "days_open": 7.77,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3099,8 +2993,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T02:05:32Z",
       "updated_at": "2026-10-31T02:06:13Z",
-      "days_open": 2.38,
-      "age_bucket": "fresh",
+      "days_open": 7.74,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3121,8 +3015,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T04:58:05Z",
       "updated_at": "2026-10-31T04:58:22Z",
-      "days_open": 2.26,
-      "age_bucket": "fresh",
+      "days_open": 7.62,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3143,8 +3037,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:00:34Z",
       "updated_at": "2026-10-31T05:01:04Z",
-      "days_open": 2.26,
-      "age_bucket": "fresh",
+      "days_open": 7.62,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3165,8 +3059,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:01:39Z",
       "updated_at": "2026-10-31T05:01:53Z",
-      "days_open": 2.25,
-      "age_bucket": "fresh",
+      "days_open": 7.62,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3187,8 +3081,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:02:26Z",
       "updated_at": "2026-10-31T05:02:35Z",
-      "days_open": 2.25,
-      "age_bucket": "fresh",
+      "days_open": 7.62,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3209,8 +3103,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:33:53Z",
       "updated_at": "2026-10-31T05:34:17Z",
-      "days_open": 2.23,
-      "age_bucket": "fresh",
+      "days_open": 7.59,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3231,8 +3125,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:34:09Z",
       "updated_at": "2026-10-31T05:34:47Z",
-      "days_open": 2.23,
-      "age_bucket": "fresh",
+      "days_open": 7.59,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3253,8 +3147,8 @@
       "changed_files": -1,
       "created_at": "2026-10-31T16:16:02Z",
       "updated_at": "2026-10-31T16:17:00Z",
-      "days_open": 1.79,
-      "age_bucket": "fresh",
+      "days_open": 7.15,
+      "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
         "state:unknown",
@@ -3276,7 +3170,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T22:19:57Z",
       "updated_at": "2026-10-31T22:20:31Z",
-      "days_open": 1.53,
+      "days_open": 6.9,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3298,7 +3192,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T01:52:20Z",
       "updated_at": "2026-11-02T09:46:47Z",
-      "days_open": 1.39,
+      "days_open": 6.75,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3320,7 +3214,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T01:52:29Z",
       "updated_at": "2026-11-01T01:53:48Z",
-      "days_open": 1.39,
+      "days_open": 6.75,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3342,7 +3236,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T02:26:11Z",
       "updated_at": "2026-11-01T02:39:04Z",
-      "days_open": 1.36,
+      "days_open": 6.73,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3363,8 +3257,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-01T02:37:44Z",
-      "updated_at": "2026-11-01T20:35:02Z",
-      "days_open": 1.35,
+      "updated_at": "2026-11-03T07:55:22Z",
+      "days_open": 6.72,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3381,12 +3275,12 @@
       "base_ref": "master",
       "base_sha": "0b2bd97f73e7",
       "head_ref": "apk-doe/A-14411159720978764256",
-      "head_sha": "d128986b7c0e",
+      "head_sha": "2d0ab5288e4b",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-01T04:48:24Z",
-      "updated_at": "2026-11-01T07:21:31Z",
-      "days_open": 1.26,
+      "updated_at": "2026-11-02T15:21:30Z",
+      "days_open": 6.63,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3408,7 +3302,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T07:12:03Z",
       "updated_at": "2026-11-01T20:16:49Z",
-      "days_open": 1.16,
+      "days_open": 6.53,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3430,7 +3324,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T07:21:13Z",
       "updated_at": "2026-11-01T09:59:36Z",
-      "days_open": 1.16,
+      "days_open": 6.52,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3452,7 +3346,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T09:00:42Z",
       "updated_at": "2026-11-01T09:01:25Z",
-      "days_open": 1.09,
+      "days_open": 6.45,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3474,7 +3368,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T09:49:37Z",
       "updated_at": "2026-11-01T09:49:47Z",
-      "days_open": 1.05,
+      "days_open": 6.42,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3496,7 +3390,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T09:52:24Z",
       "updated_at": "2026-11-01T10:07:50Z",
-      "days_open": 1.05,
+      "days_open": 6.42,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3518,7 +3412,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:10:09Z",
       "updated_at": "2026-11-01T10:11:03Z",
-      "days_open": 1.04,
+      "days_open": 6.4,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3540,7 +3434,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:10:11Z",
       "updated_at": "2026-11-01T10:10:56Z",
-      "days_open": 1.04,
+      "days_open": 6.4,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3562,7 +3456,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:15:14Z",
       "updated_at": "2026-11-01T10:16:16Z",
-      "days_open": 1.04,
+      "days_open": 6.4,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3584,35 +3478,13 @@
       "changed_files": -1,
       "created_at": "2026-11-01T11:00:38Z",
       "updated_at": "2026-11-01T11:01:04Z",
-      "days_open": 1.01,
+      "days_open": 6.37,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3045"
-    },
-    {
-      "number": 3063,
-      "title": "viz(desk): adopt desk-feed v1.3 (dispatch.provider_catalog) \u2014 fixture + schema pins",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "0f41764f0d72",
-      "head_ref": "viz/desk-feed-v13-adoption",
-      "head_sha": "89202fe235c7",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-01T11:27:38Z",
-      "updated_at": "2026-11-01T11:28:45Z",
-      "days_open": 0.99,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3063"
     },
     {
       "number": 3113,
@@ -3628,7 +3500,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T12:08:58Z",
       "updated_at": "2026-11-01T12:09:07Z",
-      "days_open": 0.96,
+      "days_open": 6.32,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3643,14 +3515,14 @@
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "215cde142f7d",
+      "base_sha": "0b12155be553",
       "head_ref": "cadence-provider-onboarding/auto-extend",
-      "head_sha": "97af9ac4c88b",
+      "head_sha": "5790f0042ceb",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-01T15:24:44Z",
-      "updated_at": "2026-11-02T10:59:34Z",
-      "days_open": 0.82,
+      "updated_at": "2026-11-06T01:55:51Z",
+      "days_open": 6.18,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3672,7 +3544,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T17:32:45Z",
       "updated_at": "2026-11-01T17:41:47Z",
-      "days_open": 0.73,
+      "days_open": 6.1,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3693,8 +3565,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-01T20:33:32Z",
-      "updated_at": "2026-11-01T20:38:07Z",
-      "days_open": 0.61,
+      "updated_at": "2026-11-03T07:55:24Z",
+      "days_open": 5.97,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3716,7 +3588,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T21:08:53Z",
       "updated_at": "2026-11-01T21:10:12Z",
-      "days_open": 0.58,
+      "days_open": 5.95,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3738,7 +3610,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T23:43:06Z",
       "updated_at": "2026-11-01T23:44:38Z",
-      "days_open": 0.48,
+      "days_open": 5.84,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3760,35 +3632,13 @@
       "changed_files": -1,
       "created_at": "2026-11-02T00:56:40Z",
       "updated_at": "2026-11-02T01:09:20Z",
-      "days_open": 0.42,
+      "days_open": 5.79,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3437"
-    },
-    {
-      "number": 3442,
-      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "user": "github-actions[bot]",
-      "bot": true,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "eb8192d5fbbf",
-      "head_ref": "telemetry-ingest/refresh",
-      "head_sha": "fb6f8ff6a270",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-02T00:58:48Z",
-      "updated_at": "2026-11-02T11:07:17Z",
-      "days_open": 0.42,
-      "age_bucket": "fresh",
-      "lane": "SUPERSEDE",
-      "reasons": [
-        "bot-no-auto-promote"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3442"
     },
     {
       "number": 3500,
@@ -3804,7 +3654,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T04:29:26Z",
       "updated_at": "2026-11-02T04:29:45Z",
-      "days_open": 0.28,
+      "days_open": 5.64,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3826,7 +3676,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T04:31:46Z",
       "updated_at": "2026-11-02T04:32:03Z",
-      "days_open": 0.28,
+      "days_open": 5.64,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3848,101 +3698,13 @@
       "changed_files": -1,
       "created_at": "2026-11-02T05:15:42Z",
       "updated_at": "2026-11-02T05:16:56Z",
-      "days_open": 0.24,
+      "days_open": 5.61,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3502"
-    },
-    {
-      "number": 3640,
-      "title": "chore(proposals): refresh proposals-feed.json",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "12d1306cc76b",
-      "head_ref": "proposals-feed/refresh",
-      "head_sha": "8ada38da337e",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-02T08:22:46Z",
-      "updated_at": "2026-11-02T10:59:59Z",
-      "days_open": 0.11,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3640"
-    },
-    {
-      "number": 3675,
-      "title": "feat(ci): archwiz dangle_check \u2014 repo-side dangle_detector variant (Wave V verifier candidate)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "0f818f6f9e4f",
-      "head_ref": "archwiz/dangle-check",
-      "head_sha": "a24a2483c3e6",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-02T09:05:35Z",
-      "updated_at": "2026-11-02T09:08:15Z",
-      "days_open": 0.08,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3675"
-    },
-    {
-      "number": 3676,
-      "title": "feat(ci): archwiz build_repo_index \u2014 repo-side build_final_all_profile variant",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "04c8e5aad5ca",
-      "head_ref": "archwiz/repo-index",
-      "head_sha": "30ae007d4d64",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-02T09:06:19Z",
-      "updated_at": "2026-11-02T09:10:33Z",
-      "days_open": 0.08,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3676"
-    },
-    {
-      "number": 3707,
-      "title": "g4f smoke: global deadline + partial receipt (run 41323654390 hung to job timeout, no artifact)",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "868b4a704438",
-      "head_ref": "provisioning/g4f-smoke-deadline",
-      "head_sha": "4dadc44f6c30",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-02T09:37:34Z",
-      "updated_at": "2026-11-02T09:40:18Z",
-      "days_open": 0.06,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3707"
     },
     {
       "number": 3723,
@@ -3958,7 +3720,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T09:46:07Z",
       "updated_at": "2026-11-02T09:52:37Z",
-      "days_open": 0.06,
+      "days_open": 5.42,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3979,8 +3741,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-02T10:05:07Z",
-      "updated_at": "2026-11-02T10:22:10Z",
-      "days_open": 0.04,
+      "updated_at": "2026-11-02T13:42:32Z",
+      "days_open": 5.41,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4001,8 +3763,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-02T10:05:28Z",
-      "updated_at": "2026-11-02T10:15:49Z",
-      "days_open": 0.04,
+      "updated_at": "2026-11-02T13:40:44Z",
+      "days_open": 5.41,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4024,7 +3786,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T10:05:53Z",
       "updated_at": "2026-11-02T10:23:55Z",
-      "days_open": 0.04,
+      "days_open": 5.41,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4046,7 +3808,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T10:07:28Z",
       "updated_at": "2026-11-02T10:22:23Z",
-      "days_open": 0.04,
+      "days_open": 5.4,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4055,57 +3817,3361 @@
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3763"
     },
     {
-      "number": 3789,
-      "title": "docs(guides): Certifications Value Matrix \u2014 expectation records for all cert rows + INTAKE category index",
-      "user": "timerloggedout-spec",
+      "number": 3890,
+      "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "408dee441ae9",
+      "head_ref": "telemetry-ingest/refresh",
+      "head_sha": "3e43797d509a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-02T13:39:06Z",
+      "updated_at": "2026-11-07T16:13:24Z",
+      "days_open": 5.26,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890"
+    },
+    {
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "user": "termux-fleet-swarm[bot]",
       "bot": false,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "b1b932bfefdf",
-      "head_ref": "certs/value-matrix-2026-11-02",
-      "head_sha": "c4c5cfc19fc8",
+      "base_sha": "0d66f2eda61a",
+      "head_ref": "reviewer-metrics/refresh",
+      "head_sha": "544a2b0417a4",
       "mergeable_state": "unknown",
       "changed_files": -1,
-      "created_at": "2026-11-02T10:35:00Z",
-      "updated_at": "2026-11-02T10:45:40Z",
-      "days_open": 0.02,
+      "created_at": "2026-11-02T13:54:36Z",
+      "updated_at": "2026-11-07T19:47:56Z",
+      "days_open": 5.25,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3789"
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916"
     },
     {
-      "number": 3795,
+      "number": 3969,
+      "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "99d3f2672d61",
+      "head_ref": "ops/vercel-root-directory-sync",
+      "head_sha": "d01e2c211ea1",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-02T17:33:29Z",
+      "updated_at": "2026-11-02T17:38:36Z",
+      "days_open": 5.1,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3969"
+    },
+    {
+      "number": 3991,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "8c56a6c141de",
+      "head_ref": "q/provider-recon-06a2062c17d16fce1639",
+      "head_sha": "8294936e68af",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-02T21:45:32Z",
+      "updated_at": "2026-11-02T21:45:50Z",
+      "days_open": 4.92,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3991"
+    },
+    {
+      "number": 4005,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "844048f688fc",
+      "head_ref": "chore/countdowns-refresh-202611022323",
+      "head_sha": "896275319a42",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-02T23:23:57Z",
+      "updated_at": "2026-11-02T23:24:23Z",
+      "days_open": 4.85,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4005"
+    },
+    {
+      "number": 4006,
+      "title": "Implement Merged Branch Review Audit and Production Quota Engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "844048f688fc",
+      "head_ref": "ci-merged-branch-audit-quotas-11673799371963381829",
+      "head_sha": "658953af6942",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-02T23:30:07Z",
+      "updated_at": "2026-11-02T23:30:44Z",
+      "days_open": 4.85,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4006"
+    },
+    {
+      "number": 4007,
+      "title": "Wire invocation observations into Free-Tier Value evidence projection",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "844048f688fc",
+      "head_ref": "feat/free-tier-value-observation-projection",
+      "head_sha": "8a75972a4282",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-02T23:43:35Z",
+      "updated_at": "2026-11-03T01:35:09Z",
+      "days_open": 4.84,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4007"
+    },
+    {
+      "number": 4011,
+      "title": "docs(proposals): register external agent toolchain integration portfolio",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "77cfb59738ef",
+      "head_ref": "proposal/external-agent-toolchain-integration",
+      "head_sha": "93eb60aa9481",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T00:16:14Z",
+      "updated_at": "2026-11-03T00:17:49Z",
+      "days_open": 4.82,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4011"
+    },
+    {
+      "number": 4016,
+      "title": "security(issues): gate advisory triage through deterministic intake firewall",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "56c3105758ef",
+      "head_ref": "security/issue-intake-admission-firewall",
+      "head_sha": "2ae19e972182",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T00:54:04Z",
+      "updated_at": "2026-11-03T02:26:04Z",
+      "days_open": 4.79,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4016"
+    },
+    {
+      "number": 4017,
+      "title": "feat(ops): map federated AppIDs and independent release lanes",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "56c3105758ef",
+      "head_ref": "feat/federated-appid-release-registry",
+      "head_sha": "30f083a53895",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T01:05:41Z",
+      "updated_at": "2026-11-03T02:35:03Z",
+      "days_open": 4.78,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4017"
+    },
+    {
+      "number": 4018,
+      "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "56c3105758ef",
+      "head_ref": "research/visualization-renderer-lab-master",
+      "head_sha": "a6fc20f36fe3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T01:07:46Z",
+      "updated_at": "2026-11-03T02:28:11Z",
+      "days_open": 4.78,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4018"
+    },
+    {
+      "number": 4019,
+      "title": "feat(api-impact): add SHA-bound API evolution review lane",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "56c3105758ef",
+      "head_ref": "feat/api-impact-review-lane",
+      "head_sha": "af69c0cd662e",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T01:29:58Z",
+      "updated_at": "2026-11-06T23:17:54Z",
+      "days_open": 4.76,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4019"
+    },
+    {
+      "number": 4020,
+      "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "56c3105758ef",
+      "head_ref": "feat/mesh-resiliency-admission",
+      "head_sha": "bfc059bbe95d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T02:17:58Z",
+      "updated_at": "2026-11-03T02:19:08Z",
+      "days_open": 4.73,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4020"
+    },
+    {
+      "number": 4021,
+      "title": "feat(integrations): extend governed agent toolchain portfolio",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/api-impact-review-lane",
+      "base_sha": "af69c0cd662e",
+      "head_ref": "feat/agent-toolchain-portfolio",
+      "head_sha": "d8ea720788d5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T02:23:36Z",
+      "updated_at": "2026-11-03T02:27:20Z",
+      "days_open": 4.73,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/api-impact-review-lane"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4021"
+    },
+    {
+      "number": 4022,
+      "title": "docs(ops): record post-merge backfill remediation checkpoint",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "719b88d4d2f6",
+      "head_ref": "audit/post-merge-backfill-and-telemetry-followup-2026-11-02",
+      "head_sha": "deb2d68a51dc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T03:02:59Z",
+      "updated_at": "2026-11-03T03:13:16Z",
+      "days_open": 4.7,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4022"
+    },
+    {
+      "number": 4023,
+      "title": "docs: integrate competitive opportunities and quota reconciliation",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "719b88d4d2f6",
+      "head_ref": "feat/competitive-opportunities-quota-reconciliation",
+      "head_sha": "57669a24edb6",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T03:09:30Z",
+      "updated_at": "2026-11-03T20:39:18Z",
+      "days_open": 4.7,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4023"
+    },
+    {
+      "number": 4048,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "dd262ed63fb6",
+      "head_ref": "chore/countdowns-refresh-202611030327",
+      "head_sha": "87c1d03307e6",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T03:27:17Z",
+      "updated_at": "2026-11-03T03:28:17Z",
+      "days_open": 4.68,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4048"
+    },
+    {
+      "number": 4055,
+      "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "36c052b429e1",
+      "head_ref": "doe/apk-1-records-3",
+      "head_sha": "b4685fad1bad",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T03:33:13Z",
+      "updated_at": "2026-11-03T03:38:45Z",
+      "days_open": 4.68,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4055"
+    },
+    {
+      "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
       "user": "github-actions[bot]",
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "12d1306cc76b",
+      "base_sha": "a07d479c493f",
       "head_ref": "surface-feeds/refresh",
-      "head_sha": "72b4b6bec948",
+      "head_sha": "d8ab9cb5375f",
       "mergeable_state": "unknown",
       "changed_files": -1,
-      "created_at": "2026-11-02T11:00:13Z",
-      "updated_at": "2026-11-02T11:01:19Z",
-      "days_open": 0.01,
+      "created_at": "2026-11-03T04:16:54Z",
+      "updated_at": "2026-11-06T01:55:17Z",
+      "days_open": 4.65,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
         "bot-no-auto-promote",
         "minesweeper-title"
       ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3795"
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4069"
+    },
+    {
+      "number": 4083,
+      "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "3ee6aa45b7d6",
+      "head_ref": "feat/mesh-resiliency-admission-refresh",
+      "head_sha": "e3301f94e926",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T05:53:37Z",
+      "updated_at": "2026-11-03T06:01:07Z",
+      "days_open": 4.58,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4083"
+    },
+    {
+      "number": 4084,
+      "title": "docs(deploy): map Vercel alternatives and staged failover",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "3ee6aa45b7d6",
+      "head_ref": "docs/vercel-alternatives-failover-plan",
+      "head_sha": "d2a830738ca1",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T05:57:12Z",
+      "updated_at": "2026-11-03T05:58:36Z",
+      "days_open": 4.58,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4084"
+    },
+    {
+      "number": 4085,
+      "title": "docs(architecture): define visual architecture versioning and export standard",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "22eea2db3028",
+      "head_ref": "docs/visual-architecture-versioning",
+      "head_sha": "e48109e159ed",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T06:01:03Z",
+      "updated_at": "2026-11-03T06:02:22Z",
+      "days_open": 4.58,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4085"
+    },
+    {
+      "number": 4086,
+      "title": "feat(integrations): add read-only provider evidence adapters",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/agent-toolchain-portfolio",
+      "base_sha": "d8ea720788d5",
+      "head_ref": "feat/agent-toolchain-adapters",
+      "head_sha": "cc9bf9981059",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T06:07:18Z",
+      "updated_at": "2026-11-03T06:24:13Z",
+      "days_open": 4.57,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/agent-toolchain-portfolio"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4086"
+    },
+    {
+      "number": 4088,
+      "title": "fix(ci): distinguish dynamic references from dangling paths",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "59ac882baef7",
+      "head_ref": "fix/archwiz-dynamic-reference-detection",
+      "head_sha": "2426dae07d4f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T07:49:45Z",
+      "updated_at": "2026-11-03T17:00:35Z",
+      "days_open": 4.5,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4088"
+    },
+    {
+      "number": 4089,
+      "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "59ac882baef7",
+      "head_ref": "feat/mesh-resiliency-admission-v2",
+      "head_sha": "1f0e963aa53c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T07:59:38Z",
+      "updated_at": "2026-11-03T21:25:03Z",
+      "days_open": 4.49,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4089"
+    },
+    {
+      "number": 4148,
+      "title": "\u26a1 Bolt: fast-path comment stripping in cadence audit",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "0d78c460dd68",
+      "head_ref": "bolt-optimize-operations-cadence-audit-17766191055017106031",
+      "head_sha": "b0b3fb4674f3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T09:52:48Z",
+      "updated_at": "2026-11-03T10:16:00Z",
+      "days_open": 4.41,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4148"
+    },
+    {
+      "number": 4352,
+      "title": "Delphi gate P3 (EGM-2): vote profiles + collision flags on the board + quarantine guard",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "36878dbb58fd",
+      "head_ref": "feat/delphi-p3-profiles",
+      "head_sha": "4b1c02184901",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T14:18:40Z",
+      "updated_at": "2026-11-03T14:20:09Z",
+      "days_open": 4.23,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4352"
+    },
+    {
+      "number": 4353,
+      "title": "Delphi gate P1+P2 (EGM-2): scoreable verification records via oracle resolution",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3a71bb30439d",
+      "head_ref": "feat/delphi-p12-verification",
+      "head_sha": "b0c68fafe62b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T14:21:01Z",
+      "updated_at": "2026-11-03T14:21:59Z",
+      "days_open": 4.23,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4353"
+    },
+    {
+      "number": 4355,
+      "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "b018566e2dac",
+      "head_ref": "feat/delphi-p4-substance",
+      "head_sha": "83ad38a6ce1a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T14:22:30Z",
+      "updated_at": "2026-11-03T14:23:58Z",
+      "days_open": 4.23,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4355"
+    },
+    {
+      "number": 4390,
+      "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "d5deafdd6ad1",
+      "head_ref": "docs/swarm-research-template",
+      "head_sha": "740942b930cc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T14:54:03Z",
+      "updated_at": "2026-11-03T15:10:52Z",
+      "days_open": 4.21,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4390"
+    },
+    {
+      "number": 4424,
+      "title": "chore(proposals): refresh proposals-feed.json",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "9bb08e42db67",
+      "head_ref": "proposals-feed/refresh",
+      "head_sha": "5a9d92d17804",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T15:20:03Z",
+      "updated_at": "2026-11-07T16:23:38Z",
+      "days_open": 4.19,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4424"
+    },
+    {
+      "number": 4442,
+      "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "48157ea20bd1",
+      "head_ref": "feat/tui-pipx-packaging",
+      "head_sha": "8b446a9aef55",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T16:03:20Z",
+      "updated_at": "2026-11-03T16:05:10Z",
+      "days_open": 4.16,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4442"
+    },
+    {
+      "number": 4445,
+      "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "02cae2c3e5a8",
+      "head_ref": "docs/swarm-research-example-4276",
+      "head_sha": "ad6d7be39f20",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T16:07:21Z",
+      "updated_at": "2026-11-03T16:54:00Z",
+      "days_open": 4.15,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4445"
+    },
+    {
+      "number": 4473,
+      "title": "fix(web): FSRS receipt NaN \u2014 grade() passes epoch ms; surfaces 0.1.4 (#4461)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "da084786321d",
+      "head_ref": "fix/fsrs-receipt-nan-014",
+      "head_sha": "dfa872a1f513",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T16:49:22Z",
+      "updated_at": "2026-11-03T17:08:12Z",
+      "days_open": 4.13,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4473"
+    },
+    {
+      "number": 4474,
+      "title": "docs(ask): question-sending spec \u2014 compose-never-send, own-syllabus channel (#4462)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "61e0121eabe7",
+      "head_ref": "docs/ask-question-spec",
+      "head_sha": "5600546a95ed",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T16:53:03Z",
+      "updated_at": "2026-11-03T17:00:43Z",
+      "days_open": 4.12,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4474"
+    },
+    {
+      "number": 4477,
+      "title": "fix(smoke): recording start ladder \u2014 verified forms, REC_PATH pull (#4420)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "4d59a967fb21",
+      "head_ref": "fix/smoke-record-ladder",
+      "head_sha": "273ad085f11f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T16:53:56Z",
+      "updated_at": "2026-11-03T17:02:47Z",
+      "days_open": 4.12,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4477"
+    },
+    {
+      "number": 4483,
+      "title": "feat(web): app-package B \u2014 richer install, custom prompt + iOS fallback, update toast, offline page (#4437)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "fbd3df4701e7",
+      "head_ref": "feat/app-package-b-pwa",
+      "head_sha": "16676c890dd0",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:10:21Z",
+      "updated_at": "2026-11-03T18:00:50Z",
+      "days_open": 4.11,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4483"
+    },
+    {
+      "number": 4493,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "1c84e3abd1f0",
+      "head_ref": "chore/countdowns-refresh-202611031719",
+      "head_sha": "427d9493eca5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:19:17Z",
+      "updated_at": "2026-11-03T17:34:01Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4493"
+    },
+    {
+      "number": 4494,
+      "title": "feat(apk): app-package C \u2014 release trust (hardening \u2200false \u00b7 reproducible build \u00b7 versionCode 2) (#4438)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/parity-iteration1-calendar-geo",
+      "base_sha": "eb167c13b548",
+      "head_ref": "feat/app-package-c-apk-trust",
+      "head_sha": "3ac3ce95239e",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:19:52Z",
+      "updated_at": "2026-11-03T17:37:36Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/parity-iteration1-calendar-geo"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4494"
+    },
+    {
+      "number": 4502,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "b685afe63be1",
+      "head_ref": "chore/countdowns-refresh-202611031724",
+      "head_sha": "07c146e12a92",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:24:38Z",
+      "updated_at": "2026-11-03T17:39:49Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4502"
+    },
+    {
+      "number": 4503,
+      "title": "docs: app-package D \u2014 CHANGELOG discipline \u00b7 verification decision \u00b7 perf budgets + measured run (#4439)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/app-package-c-apk-trust",
+      "base_sha": "3ac3ce95239e",
+      "head_ref": "feat/app-package-d-docs-budgets",
+      "head_sha": "8dcc310fc9f4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:25:16Z",
+      "updated_at": "2026-11-03T18:05:42Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/app-package-c-apk-trust"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4503"
+    },
+    {
+      "number": 4506,
+      "title": "feat(pkg-e): 60-second three doors (live) \u00b7 video restructure note \u00b7 resilience evidence pack (#4440)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/app-package-d-docs-budgets",
+      "base_sha": "8dcc310fc9f4",
+      "head_ref": "feat/app-package-e-judge-path",
+      "head_sha": "58c6681baf8a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:27:45Z",
+      "updated_at": "2026-11-03T17:47:58Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/app-package-d-docs-budgets"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4506"
+    },
+    {
+      "number": 4508,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "43d3ffd0ec01",
+      "head_ref": "chore/countdowns-refresh-202611031721",
+      "head_sha": "038af2e00927",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:29:32Z",
+      "updated_at": "2026-11-03T17:52:12Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4508"
+    },
+    {
+      "number": 4509,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3d73480e3135",
+      "head_ref": "chore/countdowns-refresh-202611031729",
+      "head_sha": "a87d11d276aa",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:30:33Z",
+      "updated_at": "2026-11-03T17:52:46Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4509"
+    },
+    {
+      "number": 4511,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "ec2ce28ddef0",
+      "head_ref": "chore/countdowns-refresh-202611031732",
+      "head_sha": "c1519bba37d4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:32:24Z",
+      "updated_at": "2026-11-03T17:53:41Z",
+      "days_open": 4.1,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4511"
+    },
+    {
+      "number": 4516,
+      "title": "feat(schema): integration 5 \u2014 schema_version discipline, state stamped end-to-end (#4470)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/app-package-e-judge-path",
+      "base_sha": "58c6681baf8a",
+      "head_ref": "feat/schema-version-discipline",
+      "head_sha": "80756f238560",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:36:58Z",
+      "updated_at": "2026-11-03T18:01:32Z",
+      "days_open": 4.09,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/app-package-e-judge-path"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4516"
+    },
+    {
+      "number": 4521,
+      "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/schema-version-discipline",
+      "base_sha": "80756f238560",
+      "head_ref": "feat/ereader-epub-export",
+      "head_sha": "b7306c42b9f3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:45:43Z",
+      "updated_at": "2026-11-03T18:35:50Z",
+      "days_open": 4.09,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/schema-version-discipline"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4521"
+    },
+    {
+      "number": 4522,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3049ed05877d",
+      "head_ref": "chore/countdowns-refresh-202611031748",
+      "head_sha": "e953918d01c1",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:48:14Z",
+      "updated_at": "2026-11-03T18:14:35Z",
+      "days_open": 4.08,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4522"
+    },
+    {
+      "number": 4523,
+      "title": "docs(research): podium dataset & test systems \u2014 swarm research record",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "b3de0a49abad",
+      "head_ref": "docs/podium-research-2026-11-03",
+      "head_sha": "adaf74d40da0",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:53:14Z",
+      "updated_at": "2026-11-03T18:23:42Z",
+      "days_open": 4.08,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4523"
+    },
+    {
+      "number": 4526,
+      "title": "docs(osint): OSINT dispatch template + D2 worked example",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "fbd3df4701e7",
+      "head_ref": "docs/osint-dispatch-template",
+      "head_sha": "dee53f6f3e32",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T17:58:04Z",
+      "updated_at": "2026-11-04T22:55:53Z",
+      "days_open": 4.08,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4526"
+    },
+    {
+      "number": 4528,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "fbd3df4701e7",
+      "head_ref": "chore/countdowns-refresh-202611031802",
+      "head_sha": "683e746b1a2c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:02:05Z",
+      "updated_at": "2026-11-03T18:26:19Z",
+      "days_open": 4.08,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4528"
+    },
+    {
+      "number": 4533,
+      "title": "feat(doe): webApp variant B \u2014 doctrine-stripped chrome, same state, panel record (#4478)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "10bdba88aa1f",
+      "head_ref": "feat/doe-variant-b",
+      "head_sha": "6b395fd6c069",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:14:12Z",
+      "updated_at": "2026-11-03T18:40:48Z",
+      "days_open": 4.07,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4533"
+    },
+    {
+      "number": 4539,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "610789f7c708",
+      "head_ref": "chore/countdowns-refresh-202611031818",
+      "head_sha": "f1951f6ecbe2",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:25:57Z",
+      "updated_at": "2026-11-03T18:49:31Z",
+      "days_open": 4.06,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4539"
+    },
+    {
+      "number": 4543,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e03037e33564",
+      "head_ref": "chore/countdowns-refresh-202611031830",
+      "head_sha": "cdfe816c2d26",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:30:28Z",
+      "updated_at": "2026-11-03T18:30:37Z",
+      "days_open": 4.06,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4543"
+    },
+    {
+      "number": 4549,
+      "title": "docs(research): D0+D1 opportunity-spec cycle \u2014 atoms + gathered sets",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "89a5723612db",
+      "head_ref": "docs/research-cycle-d0-d1",
+      "head_sha": "4b456618acd7",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:35:46Z",
+      "updated_at": "2026-11-03T19:05:22Z",
+      "days_open": 4.05,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4549"
+    },
+    {
+      "number": 4552,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3bf37d093134",
+      "head_ref": "chore/countdowns-refresh-202611031842",
+      "head_sha": "24f3ca478de7",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:42:20Z",
+      "updated_at": "2026-11-03T19:08:52Z",
+      "days_open": 4.05,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4552"
+    },
+    {
+      "number": 4556,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "989a6f26ff95",
+      "head_ref": "chore/countdowns-refresh-202611031849",
+      "head_sha": "2a0d0ddd1caa",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:49:22Z",
+      "updated_at": "2026-11-03T19:20:31Z",
+      "days_open": 4.04,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4556"
+    },
+    {
+      "number": 4557,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c77a19a63577",
+      "head_ref": "chore/countdowns-refresh-202611031853",
+      "head_sha": "bc842d11ddeb",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:53:29Z",
+      "updated_at": "2026-11-03T19:23:17Z",
+      "days_open": 4.04,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4557"
+    },
+    {
+      "number": 4558,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c77a19a63577",
+      "head_ref": "chore/countdowns-refresh-202611031850",
+      "head_sha": "70fcb3bcc629",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T18:56:31Z",
+      "updated_at": "2026-11-03T19:24:47Z",
+      "days_open": 4.04,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4558"
+    },
+    {
+      "number": 4570,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "079825da4bd0",
+      "head_ref": "chore/countdowns-refresh-202611031909",
+      "head_sha": "3979927ea794",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:09:20Z",
+      "updated_at": "2026-11-03T19:46:50Z",
+      "days_open": 4.03,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4570"
+    },
+    {
+      "number": 4571,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "079825da4bd0",
+      "head_ref": "chore/countdowns-refresh-202611031914",
+      "head_sha": "60efc6a35f73",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:14:47Z",
+      "updated_at": "2026-11-03T19:46:49Z",
+      "days_open": 4.02,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4571"
+    },
+    {
+      "number": 4573,
+      "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "94fd1131fecb",
+      "head_ref": "docs/challenge-opportunity-pipeline",
+      "head_sha": "c0451e6ea6fd",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:23:26Z",
+      "updated_at": "2026-11-03T21:16:22Z",
+      "days_open": 4.02,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4573"
+    },
+    {
+      "number": 4575,
+      "title": "cadence: surface G1 saturation in dispatch tree (escalation axis 4)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "af9ed99e93c3",
+      "head_ref": "cadence/g1-saturation-surface",
+      "head_sha": "c3f82c9c810d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:31:58Z",
+      "updated_at": "2026-11-03T20:05:32Z",
+      "days_open": 4.01,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4575"
+    },
+    {
+      "number": 4578,
+      "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "997e992eba5a",
+      "head_ref": "cadence/onboarding-drift-fix",
+      "head_sha": "13482eb34c2e",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:34:49Z",
+      "updated_at": "2026-11-03T20:13:50Z",
+      "days_open": 4.01,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4578"
+    },
+    {
+      "number": 4589,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a4b4d85d0801",
+      "head_ref": "chore/countdowns-refresh-202611031947",
+      "head_sha": "4eb6d55d0ea9",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:47:44Z",
+      "updated_at": "2026-11-03T20:29:37Z",
+      "days_open": 4.0,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4589"
+    },
+    {
+      "number": 4596,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "8c67f3992b8b",
+      "head_ref": "chore/countdowns-refresh-202611031953",
+      "head_sha": "62788f5f0237",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T19:54:06Z",
+      "updated_at": "2026-11-03T20:38:54Z",
+      "days_open": 4.0,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4596"
+    },
+    {
+      "number": 4609,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a3f5ae647b4a",
+      "head_ref": "chore/countdowns-refresh-202611032025",
+      "head_sha": "4b47ba9f00f5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:26:15Z",
+      "updated_at": "2026-11-03T21:00:02Z",
+      "days_open": 3.98,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4609"
+    },
+    {
+      "number": 4615,
+      "title": "fix(ci): harden dangling-reference detection on current master",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "742c94241ac6",
+      "head_ref": "fix/archwiz-dangle-detector-precision-v2",
+      "head_sha": "173ad9eabad5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:39:07Z",
+      "updated_at": "2026-11-03T21:20:15Z",
+      "days_open": 3.97,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4615"
+    },
+    {
+      "number": 4617,
+      "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "42716473543e",
+      "head_ref": "feat/mesh-resiliency-admission-v3",
+      "head_sha": "062ba02ebd23",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:42:00Z",
+      "updated_at": "2026-11-03T21:24:25Z",
+      "days_open": 3.96,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4617"
+    },
+    {
+      "number": 4621,
+      "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "fa5a26f32abe",
+      "head_ref": "feat/queue-state-board",
+      "head_sha": "8bc1f98ff362",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:49:51Z",
+      "updated_at": "2026-11-03T21:36:33Z",
+      "days_open": 3.96,
+      "age_bucket": "fresh",
+      "lane": "EXTRACT",
+      "reasons": [
+        "state:unknown",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4621"
+    },
+    {
+      "number": 4623,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e79ef6c7b0a1",
+      "head_ref": "chore/countdowns-refresh-202611032053",
+      "head_sha": "5f58e4ea5673",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:54:04Z",
+      "updated_at": "2026-11-03T21:38:56Z",
+      "days_open": 3.96,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4623"
+    },
+    {
+      "number": 4624,
+      "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e79ef6c7b0a1",
+      "head_ref": "feat/que-system-spec",
+      "head_sha": "902688657177",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:55:11Z",
+      "updated_at": "2026-11-04T01:04:18Z",
+      "days_open": 3.95,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4624"
+    },
+    {
+      "number": 4626,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c0858bb6ec46",
+      "head_ref": "chore/countdowns-refresh-202611032051",
+      "head_sha": "ff39b00c75d4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:59:26Z",
+      "updated_at": "2026-11-03T21:48:55Z",
+      "days_open": 3.95,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4626"
+    },
+    {
+      "number": 4627,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c0858bb6ec46",
+      "head_ref": "chore/countdowns-refresh-202611032059",
+      "head_sha": "e63a489dbf0c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T20:59:45Z",
+      "updated_at": "2026-11-03T21:49:04Z",
+      "days_open": 3.95,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4627"
+    },
+    {
+      "number": 4630,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "1b5d0851b5d6",
+      "head_ref": "chore/countdowns-refresh-202611032101",
+      "head_sha": "eb5582a72593",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T21:09:51Z",
+      "updated_at": "2026-11-03T21:53:03Z",
+      "days_open": 3.94,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4630"
+    },
+    {
+      "number": 4631,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "5bf2a8013dd8",
+      "head_ref": "chore/countdowns-refresh-202611032131",
+      "head_sha": "9a3060f2b6c8",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T21:31:46Z",
+      "updated_at": "2026-11-03T22:01:21Z",
+      "days_open": 3.93,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4631"
+    },
+    {
+      "number": 4634,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "7c6732eda925",
+      "head_ref": "q/provider-recon-c8abc98496276a6bd580",
+      "head_sha": "fab182c9f26b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T21:54:28Z",
+      "updated_at": "2026-11-03T22:18:19Z",
+      "days_open": 3.91,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4634"
+    },
+    {
+      "number": 4635,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a0dd8cade292",
+      "head_ref": "chore/countdowns-refresh-202611032148",
+      "head_sha": "2f3e7753372d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T21:55:47Z",
+      "updated_at": "2026-11-03T22:18:47Z",
+      "days_open": 3.91,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4635"
+    },
+    {
+      "number": 4637,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "d836ae581288",
+      "head_ref": "chore/countdowns-refresh-202611032158",
+      "head_sha": "945a6b13de81",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T21:58:21Z",
+      "updated_at": "2026-11-03T22:19:17Z",
+      "days_open": 3.91,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4637"
+    },
+    {
+      "number": 4644,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f6853ab9b1ec",
+      "head_ref": "chore/countdowns-refresh-202611032207",
+      "head_sha": "6f0388f6a290",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T22:07:43Z",
+      "updated_at": "2026-11-03T22:26:45Z",
+      "days_open": 3.9,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4644"
+    },
+    {
+      "number": 4646,
+      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "4256c07b8726",
+      "head_ref": "challenge-countdowns-feed/refresh",
+      "head_sha": "b9ec529fbe40",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T22:14:46Z",
+      "updated_at": "2026-11-04T10:51:06Z",
+      "days_open": 3.9,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4646"
+    },
+    {
+      "number": 4663,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "6fbb3d73a309",
+      "head_ref": "chore/countdowns-refresh-202611032246",
+      "head_sha": "ed7de200b97d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T22:46:12Z",
+      "updated_at": "2026-11-03T22:50:52Z",
+      "days_open": 3.88,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4663"
+    },
+    {
+      "number": 4664,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "6fbb3d73a309",
+      "head_ref": "chore/countdowns-refresh-202611032247",
+      "head_sha": "d7c97fb81451",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T22:47:28Z",
+      "updated_at": "2026-11-03T22:51:04Z",
+      "days_open": 3.88,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4664"
+    },
+    {
+      "number": 4670,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "ed08583b2313",
+      "head_ref": "chore/countdowns-refresh-202611032253",
+      "head_sha": "fed92480f809",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T22:53:33Z",
+      "updated_at": "2026-11-03T22:57:08Z",
+      "days_open": 3.87,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4670"
+    },
+    {
+      "number": 4686,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3316a3747c8a",
+      "head_ref": "chore/countdowns-refresh-202611032324",
+      "head_sha": "09dae5e5cc07",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T23:24:04Z",
+      "updated_at": "2026-11-03T23:24:54Z",
+      "days_open": 3.85,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4686"
+    },
+    {
+      "number": 4690,
+      "title": "feat(ci): add merged branch review audit and quota engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "6afa6cd0782a",
+      "head_ref": "feat/merged-branch-audit-459622090442643015",
+      "head_sha": "a5d56fdac605",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T23:40:18Z",
+      "updated_at": "2026-11-03T23:53:40Z",
+      "days_open": 3.84,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4690"
+    },
+    {
+      "number": 4694,
+      "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "9e44978d4d95",
+      "head_ref": "feat/tribute-resume-prerequisites",
+      "head_sha": "a581e066ac48",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T23:44:26Z",
+      "updated_at": "2026-11-04T00:44:00Z",
+      "days_open": 3.84,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4694"
+    },
+    {
+      "number": 4699,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "5d81f636b7a9",
+      "head_ref": "chore/countdowns-refresh-202611032347",
+      "head_sha": "da4dea4119c8",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-03T23:48:13Z",
+      "updated_at": "2026-11-03T23:48:13Z",
+      "days_open": 3.83,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4699"
+    },
+    {
+      "number": 4730,
+      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3ed38decde65",
+      "head_ref": "linguist-steganography-cipher-notation-matrices-1674578949708845378",
+      "head_sha": "f66feb2976c5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T00:25:01Z",
+      "updated_at": "2026-11-04T00:36:03Z",
+      "days_open": 3.81,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4730"
+    },
+    {
+      "number": 4737,
+      "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a4b9089b48a8",
+      "head_ref": "feat/agentic-wallet-template",
+      "head_sha": "fc8f6d728f56",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T00:31:24Z",
+      "updated_at": "2026-11-04T00:32:22Z",
+      "days_open": 3.8,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4737"
+    },
+    {
+      "number": 4742,
+      "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f02224cea2c0",
+      "head_ref": "feat/pool-sync",
+      "head_sha": "481fc6c7d703",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T00:39:59Z",
+      "updated_at": "2026-11-04T00:52:14Z",
+      "days_open": 3.8,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4742"
+    },
+    {
+      "number": 4758,
+      "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "b05e96900bfb",
+      "head_ref": "feat/usage-consumption-stamps",
+      "head_sha": "1e1b0c5398dc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T01:05:55Z",
+      "updated_at": "2026-11-04T01:06:46Z",
+      "days_open": 3.78,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4758"
+    },
+    {
+      "number": 4780,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a90b7cc70020",
+      "head_ref": "chore/countdowns-refresh-202611040718",
+      "head_sha": "ac13ba9cb461",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T07:18:05Z",
+      "updated_at": "2026-11-04T07:19:00Z",
+      "days_open": 3.52,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4780"
+    },
+    {
+      "number": 4790,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "15332485e523",
+      "head_ref": "chore/countdowns-refresh-202611040721",
+      "head_sha": "ffed948d072d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T07:21:05Z",
+      "updated_at": "2026-11-04T07:21:15Z",
+      "days_open": 3.52,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4790"
+    },
+    {
+      "number": 4795,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f6e6f3a09e7d",
+      "head_ref": "chore/countdowns-refresh-202611040722",
+      "head_sha": "dde8f59570a2",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T07:22:41Z",
+      "updated_at": "2026-11-04T07:25:49Z",
+      "days_open": 3.52,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4795"
+    },
+    {
+      "number": 4801,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "b6af112e3e46",
+      "head_ref": "chore/countdowns-refresh-202611040728",
+      "head_sha": "44eaf9846bcc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T07:28:30Z",
+      "updated_at": "2026-11-04T07:29:59Z",
+      "days_open": 3.52,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4801"
+    },
+    {
+      "number": 4821,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "7b28d6b670b5",
+      "head_ref": "chore/countdowns-refresh-202611040853",
+      "head_sha": "187e7302a276",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T08:53:48Z",
+      "updated_at": "2026-11-04T08:55:23Z",
+      "days_open": 3.46,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4821"
+    },
+    {
+      "number": 4827,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "36be32470317",
+      "head_ref": "chore/countdowns-refresh-202611040900",
+      "head_sha": "e3a2b171a019",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T09:00:26Z",
+      "updated_at": "2026-11-04T09:00:56Z",
+      "days_open": 3.45,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4827"
+    },
+    {
+      "number": 4852,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c803bd98c194",
+      "head_ref": "chore/countdowns-refresh-202611040925",
+      "head_sha": "5431d67fff94",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T09:25:26Z",
+      "updated_at": "2026-11-04T09:26:22Z",
+      "days_open": 3.43,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4852"
+    },
+    {
+      "number": 4883,
+      "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3aac6ef6edaa",
+      "head_ref": "cadence/gated-spend-authorizations",
+      "head_sha": "bc80a03b713d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T11:33:39Z",
+      "updated_at": "2026-11-04T11:52:35Z",
+      "days_open": 3.34,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4883"
+    },
+    {
+      "number": 4898,
+      "title": "feat(dashboard): surfaces-map serve step \u2014 canon 39 + census rows",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f6d363794e79",
+      "head_ref": "surfaces-map-serve",
+      "head_sha": "43b6a94239b4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T12:38:39Z",
+      "updated_at": "2026-11-04T12:40:18Z",
+      "days_open": 3.3,
+      "age_bucket": "fresh",
+      "lane": "EXTRACT",
+      "reasons": [
+        "state:unknown",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4898"
+    },
+    {
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a5e9e72f34d1",
+      "head_ref": "cadence/continuous-ops-dependency-register",
+      "head_sha": "4670c4625d72",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T12:42:51Z",
+      "updated_at": "2026-11-05T05:54:21Z",
+      "days_open": 3.3,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4901"
+    },
+    {
+      "number": 4904,
+      "title": "viz(map): Bolt + Sentinel rows (owner query); linguist verified",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "ee1e5ec6a501",
+      "head_ref": "viz/surfaces-map-personas",
+      "head_sha": "70aea43e8f04",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T12:48:56Z",
+      "updated_at": "2026-11-04T13:00:50Z",
+      "days_open": 3.29,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4904"
+    },
+    {
+      "number": 4930,
+      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f4e065017381",
+      "head_ref": "secrets-remediation/doc",
+      "head_sha": "5db2ef8f6ca3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T14:43:18Z",
+      "updated_at": "2026-11-04T14:44:10Z",
+      "days_open": 3.21,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4930"
+    },
+    {
+      "number": 4931,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f4e065017381",
+      "head_ref": "chore/countdowns-refresh-202611041444",
+      "head_sha": "8d0236b47243",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T14:44:06Z",
+      "updated_at": "2026-11-04T14:44:06Z",
+      "days_open": 3.21,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4931"
+    },
+    {
+      "number": 4935,
+      "title": "feat(quota): add nested task-level usage attribution tree",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "9e6fad9ec69f",
+      "head_ref": "feat/quota-task-attribution-tree",
+      "head_sha": "c9e24b375654",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T16:14:41Z",
+      "updated_at": "2026-11-04T16:48:47Z",
+      "days_open": 3.15,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4935"
+    },
+    {
+      "number": 4936,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "827def0ad892",
+      "head_ref": "chore/countdowns-refresh-202611041626",
+      "head_sha": "154aa5a0247a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T16:26:54Z",
+      "updated_at": "2026-11-04T16:29:10Z",
+      "days_open": 3.14,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4936"
+    },
+    {
+      "number": 4954,
+      "title": "feat(ci): add merged branch review audit and quota engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3ac8ca231733",
+      "head_ref": "feat/merged-branch-audit-production-improvements-13339224639316671047",
+      "head_sha": "5738fefc2925",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-04T23:26:04Z",
+      "updated_at": "2026-11-04T23:31:43Z",
+      "days_open": 2.85,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4954"
+    },
+    {
+      "number": 4964,
+      "title": "QUE governor rule QUE-GOV-MEDIA-001: media-generation admission (PR #1967 as machinery)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "d699e98a88eb",
+      "head_ref": "cadence/que-gov-media-001",
+      "head_sha": "442d5864f45d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T02:13:51Z",
+      "updated_at": "2026-11-05T03:44:16Z",
+      "days_open": 2.73,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4964"
+    },
+    {
+      "number": 4969,
+      "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c85a037c68c9",
+      "head_ref": "cadence/que-records-hygiene",
+      "head_sha": "13fd71e99c5b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T03:43:41Z",
+      "updated_at": "2026-11-05T05:15:53Z",
+      "days_open": 2.67,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4969"
+    },
+    {
+      "number": 4972,
+      "title": "Records hygiene: sweep-thresholds values -> null (token never storable)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "6d146e8d0d77",
+      "head_ref": "cadence/sweep-thresholds-null-conversion",
+      "head_sha": "3c9fe3294a3a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T03:45:13Z",
+      "updated_at": "2026-11-05T03:46:33Z",
+      "days_open": 2.67,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4972"
+    },
+    {
+      "number": 4990,
+      "title": "chore(linguist): refresh linguist-panel-feed.json",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "fa800007eec1",
+      "head_ref": "linguist-panel-feed/refresh",
+      "head_sha": "f304aeecd46b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T04:06:59Z",
+      "updated_at": "2026-11-05T04:10:21Z",
+      "days_open": 2.66,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4990"
+    },
+    {
+      "number": 5007,
+      "title": "feat(graph-studio): ship parallel graph explorer v0.1.0",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "85023a044d85",
+      "head_ref": "feat/parallel-graph-explorer-v0.1.0",
+      "head_sha": "dccd743e6c42",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T08:10:46Z",
+      "updated_at": "2026-11-05T11:01:07Z",
+      "days_open": 2.49,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5007"
+    },
+    {
+      "number": 5008,
+      "title": "Proposal: evidence-led polyglot build orchestration",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "61be5ce83e65",
+      "head_ref": "proposal/build-orchestration-evaluation",
+      "head_sha": "fa7ccb746ce5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T10:40:33Z",
+      "updated_at": "2026-11-07T11:13:29Z",
+      "days_open": 2.38,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5008"
+    },
+    {
+      "number": 5009,
+      "title": "fix(graph-studio): independent review and GitHub Pages release",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "feat/parallel-graph-explorer-v0.1.0",
+      "base_sha": "dccd743e6c42",
+      "head_ref": "fix/graph-studio-review-pages-2026-11-05",
+      "head_sha": "c7bd34912356",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T11:00:36Z",
+      "updated_at": "2026-11-05T11:14:32Z",
+      "days_open": 2.37,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/parallel-graph-explorer-v0.1.0"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5009"
+    },
+    {
+      "number": 5010,
+      "title": "feat: add AgentRouter catalog and unified observability index",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "9581e13c1cee",
+      "head_ref": "feature/unified-provider-observability-index-2026-11-05",
+      "head_sha": "0eabbd6cf29f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T13:03:46Z",
+      "updated_at": "2026-11-05T13:34:07Z",
+      "days_open": 2.28,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5010"
+    },
+    {
+      "number": 5013,
+      "title": "perf(peer-review): reuse one event snapshot and remove dead polling",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "74049e95b57b",
+      "head_ref": "perf/peer-review-single-snapshot-2026-11-05",
+      "head_sha": "9c56c5313bfb",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T17:00:06Z",
+      "updated_at": "2026-11-05T17:01:10Z",
+      "days_open": 2.12,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5013"
+    },
+    {
+      "number": 5014,
+      "title": "perf(observer): bound scheduled and shared poller scans",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "6ad5e292d7e4",
+      "head_ref": "perf/observer-poller-bounded-history-2026-11-05",
+      "head_sha": "516de243e0d8",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T17:51:01Z",
+      "updated_at": "2026-11-05T17:58:11Z",
+      "days_open": 2.08,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5014"
+    },
+    {
+      "number": 5015,
+      "title": "feat: add AgentRouter catalog and unified provider observability index",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "6ad5e292d7e4",
+      "head_ref": "feature/unified-provider-observability-index-refresh-2026-11-05",
+      "head_sha": "d864f743065f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T17:58:21Z",
+      "updated_at": "2026-11-05T18:37:57Z",
+      "days_open": 2.08,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5015"
+    },
+    {
+      "number": 5016,
+      "title": "feat: AgentRouter catalog and unified provider observability index",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "7114ee6fb424",
+      "head_ref": "feature/unified-provider-observability-index-ci-2026-11-05",
+      "head_sha": "cc7a4e30788d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T18:06:05Z",
+      "updated_at": "2026-11-05T18:33:38Z",
+      "days_open": 2.07,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5016"
+    },
+    {
+      "number": 5017,
+      "title": "feat: AgentRouter catalog and unified provider observability index",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "7114ee6fb424",
+      "head_ref": "feature/unified-provider-observability-index-final-2026-11-05",
+      "head_sha": "eff56f25ed01",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T18:13:18Z",
+      "updated_at": "2026-11-05T18:36:08Z",
+      "days_open": 2.07,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5017"
+    },
+    {
+      "number": 5018,
+      "title": "feat: AgentRouter catalog and unified provider observability index",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "9f55c6763d30",
+      "head_ref": "feature/unified-provider-observability-index-validated-2026-11-05",
+      "head_sha": "17493652abfd",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T18:20:42Z",
+      "updated_at": "2026-11-05T18:47:05Z",
+      "days_open": 2.06,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5018"
+    },
+    {
+      "number": 5019,
+      "title": "feat: AgentRouter catalog and unified provider observability index",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "14532b5df411",
+      "head_ref": "feature/unified-provider-observability-index-final-check-2026-11-05",
+      "head_sha": "9774346d6991",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T18:25:14Z",
+      "updated_at": "2026-11-05T18:37:42Z",
+      "days_open": 2.06,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5019"
+    },
+    {
+      "number": 5021,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "291e094a6c77",
+      "head_ref": "q/provider-recon-2d79c94962f8176e4ff4",
+      "head_sha": "0085be04065d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T20:02:52Z",
+      "updated_at": "2026-11-05T20:03:31Z",
+      "days_open": 1.99,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5021"
+    },
+    {
+      "number": 5023,
+      "title": "Governance: Merged Branch Review Audit & Deployment Quota Engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3c140aa34b0d",
+      "head_ref": "governance/merged-branch-audit-quotas-9532454520949357404",
+      "head_sha": "d403a7b4bc7b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-05T23:37:39Z",
+      "updated_at": "2026-11-05T23:38:50Z",
+      "days_open": 1.84,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5023"
+    },
+    {
+      "number": 5024,
+      "title": "perf(actions): centralize issue-comment workflow fan-out",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "f867575afcfb",
+      "head_ref": "perf/issue-comment-router-fanout-2026-11-05",
+      "head_sha": "228446dd1280",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T00:00:18Z",
+      "updated_at": "2026-11-07T04:09:04Z",
+      "days_open": 1.83,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5024"
+    },
+    {
+      "number": 5025,
+      "title": "docs(tak): register proposal and establish common operating picture contract v1",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "e262a11d8094",
+      "head_ref": "tak-common-operating-picture-contract-v1",
+      "head_sha": "5a10e6e5c6e6",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T00:35:30Z",
+      "updated_at": "2026-11-06T00:42:45Z",
+      "days_open": 1.8,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5025"
+    },
+    {
+      "number": 5029,
+      "title": "docs(ridp): establish Repository Intelligence & Collaboration Data Plane",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "860d64c3c51f",
+      "head_ref": "feat/ridp-repository-intelligence-data-plane",
+      "head_sha": "0135dcd9c4ab",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T02:06:14Z",
+      "updated_at": "2026-11-06T03:24:25Z",
+      "days_open": 1.74,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5029"
+    },
+    {
+      "number": 5030,
+      "title": "docs(tak): define Taktikal Awareness Kit OODA/COP architecture",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "3102221dd7da",
+      "head_ref": "docs/taktikal-awareness-ooda-architecture",
+      "head_sha": "24012fb99b3f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T05:29:27Z",
+      "updated_at": "2026-11-06T05:30:36Z",
+      "days_open": 1.6,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5030"
+    },
+    {
+      "number": 5031,
+      "title": "fix(proposals): complete AppID control-plane registry contract",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "3102221dd7da",
+      "head_ref": "fix/proposal-registry-appid-control-plane-contract",
+      "head_sha": "12931c3078ab",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T05:30:21Z",
+      "updated_at": "2026-11-06T05:32:12Z",
+      "days_open": 1.6,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5031"
+    },
+    {
+      "number": 5034,
+      "title": "chore(dashboards): refresh dispatch-tree feed",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "49166344efd3",
+      "head_ref": "dispatch-tree-feed/refresh",
+      "head_sha": "9df9b694a98c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T14:57:55Z",
+      "updated_at": "2026-11-07T13:56:03Z",
+      "days_open": 1.2,
+      "age_bucket": "fresh",
+      "lane": "EXTRACT",
+      "reasons": [
+        "bot-no-auto-promote",
+        "minesweeper-title"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5034"
+    },
+    {
+      "number": 5035,
+      "title": "feat(vultr-agent-rush): build Match Impact Desk for Challenge 2",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "98881d1a4baa",
+      "head_ref": "feat/vultr-agent-rush-match-impact-desk",
+      "head_sha": "e170bac7ec72",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T15:19:18Z",
+      "updated_at": "2026-11-06T15:42:38Z",
+      "days_open": 1.19,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5035"
+    },
+    {
+      "number": 5036,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "df99be652915",
+      "head_ref": "chore/countdowns-refresh-202611061524",
+      "head_sha": "6b243b40c04f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T15:24:12Z",
+      "updated_at": "2026-11-06T15:24:16Z",
+      "days_open": 1.18,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5036"
+    },
+    {
+      "number": 5037,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "df99be652915",
+      "head_ref": "chore/countdowns-refresh-202611061525",
+      "head_sha": "9d5fb441f7ac",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T15:25:06Z",
+      "updated_at": "2026-11-06T15:25:11Z",
+      "days_open": 1.18,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5037"
+    },
+    {
+      "number": 5038,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "df99be652915",
+      "head_ref": "chore/countdowns-refresh-202611061530",
+      "head_sha": "362bc4a000c3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T15:30:11Z",
+      "updated_at": "2026-11-06T15:30:16Z",
+      "days_open": 1.18,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5038"
+    },
+    {
+      "number": 5041,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "2a92a3956dc1",
+      "head_ref": "governance/merged-branch-audit-quotas-9532454520949357404-17094578267706252219",
+      "head_sha": "7c565e6d5ce5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-06T23:34:15Z",
+      "updated_at": "2026-11-06T23:58:22Z",
+      "days_open": 0.84,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5041"
+    },
+    {
+      "number": 5043,
+      "title": "docs(wait): integrate bounded Loopy cycle with native WAIT",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "f867575afcfb",
+      "head_ref": "feat/adaptive-wait-loopy-integration-2026-11-06",
+      "head_sha": "2f77bc7039ad",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T03:53:29Z",
+      "updated_at": "2026-11-07T04:04:09Z",
+      "days_open": 0.66,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5043"
+    },
+    {
+      "number": 5045,
+      "title": "feat(langgraph): provision BIUDL orchestration skill and integration contract",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "9376c8bee386",
+      "head_ref": "feat/langgraph-biudl-integration",
+      "head_sha": "d850d8648c87",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T07:56:10Z",
+      "updated_at": "2026-11-07T17:11:03Z",
+      "days_open": 0.5,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5045"
+    },
+    {
+      "number": 5046,
+      "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Fix path traversal, symlink hijacking, and permissions in ConversationDAG",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3e9e21515b3f",
+      "head_ref": "jules-16239446616825067960-4761d4fc",
+      "head_sha": "6647595be3c7",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T08:25:29Z",
+      "updated_at": "2026-11-07T08:51:17Z",
+      "days_open": 0.48,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5046"
+    },
+    {
+      "number": 5051,
+      "title": "feat(challenge): register Game Off 2026 SHIFT opportunity + deadline timebox",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "c4eb9368a3a3",
+      "head_ref": "feat/challenge-game-off-2026-intake",
+      "head_sha": "0571040fdad3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T14:53:37Z",
+      "updated_at": "2026-11-07T14:56:53Z",
+      "days_open": 0.21,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5051"
+    },
+    {
+      "number": 5052,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "0ab95d3d2da6",
+      "head_ref": "chore/countdowns-refresh-202611071454",
+      "head_sha": "afdfa60a97b4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T14:55:01Z",
+      "updated_at": "2026-11-07T14:55:11Z",
+      "days_open": 0.21,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5052"
+    },
+    {
+      "number": 5054,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "f0990971ccae",
+      "head_ref": "chore/countdowns-refresh-202611071456",
+      "head_sha": "8f1d32366591",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T14:56:38Z",
+      "updated_at": "2026-11-07T14:56:48Z",
+      "days_open": 0.2,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5054"
+    },
+    {
+      "number": 5056,
+      "title": "fix(context): preserve historical backfill page-size continuity",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "314b8f8e81fe",
+      "head_ref": "fix/context-backfill-page-size-and-status-2026-11-07-v2",
+      "head_sha": "c6978a19f978",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T15:50:07Z",
+      "updated_at": "2026-11-07T19:32:45Z",
+      "days_open": 0.17,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5056"
+    },
+    {
+      "number": 5059,
+      "title": "fix(ci): expose paths behind YAML ratchet failures",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "314b8f8e81fe",
+      "head_ref": "fix/repo-gate-yaml-ratchet-diagnostics-2026-11-07",
+      "head_sha": "0a6c60ce65fc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T17:05:16Z",
+      "updated_at": "2026-11-07T17:18:59Z",
+      "days_open": 0.11,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5059"
+    },
+    {
+      "number": 5060,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "ef83f53b414e",
+      "head_ref": "chore/countdowns-refresh-202611071711",
+      "head_sha": "438d1bb811a0",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T17:11:21Z",
+      "updated_at": "2026-11-07T17:11:30Z",
+      "days_open": 0.11,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5060"
+    },
+    {
+      "number": 5061,
+      "title": "chore(ops): refresh computed countdown lines",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "ef83f53b414e",
+      "head_ref": "chore/countdowns-refresh-202611071712",
+      "head_sha": "7b9040235556",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T17:12:14Z",
+      "updated_at": "2026-11-07T17:12:23Z",
+      "days_open": 0.11,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5061"
+    },
+    {
+      "number": 5062,
+      "title": "feat(orchestration): autonomous escalation on current master",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "ef83f53b414e",
+      "head_ref": "feat/langgraph-biudl-integration-master-rebase-2026-11-07",
+      "head_sha": "c135486bf108",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T17:16:37Z",
+      "updated_at": "2026-11-07T17:21:20Z",
+      "days_open": 0.11,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5062"
+    },
+    {
+      "number": 5063,
+      "title": "feat(events): unify wagering book and countdown projections",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "feat/challenge-game-off-2026-intake",
+      "base_sha": "0571040fdad3",
+      "head_ref": "feat/unified-wager-event-projections",
+      "head_sha": "9885a012d681",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T17:19:30Z",
+      "updated_at": "2026-11-07T17:28:53Z",
+      "days_open": 0.1,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:feat/challenge-game-off-2026-intake"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5063"
+    },
+    {
+      "number": 5064,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "12bf5594dede",
+      "head_ref": "q/provider-recon-e72c115777f0a239b321",
+      "head_sha": "7780127d3e0a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T18:07:28Z",
+      "updated_at": "2026-11-07T18:07:38Z",
+      "days_open": 0.07,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5064"
+    },
+    {
+      "number": 5072,
+      "title": "chore(ops): regenerate operator matrix",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "b5335037e0bf",
+      "head_ref": "operator-matrix/auto",
+      "head_sha": "104f94ac2632",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T19:36:16Z",
+      "updated_at": "2026-11-07T19:36:25Z",
+      "days_open": 0.01,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5072"
+    },
+    {
+      "number": 5074,
+      "title": "fix(tracking): harden desk evidence parsing on master",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "0ba84babd043",
+      "head_ref": "fix/tracking-desk-evidence-shape-master-followup",
+      "head_sha": "565332d951c9",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T19:40:07Z",
+      "updated_at": "2026-11-07T19:48:03Z",
+      "days_open": 0.01,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5074"
+    },
+    {
+      "number": 5075,
+      "title": "fix(ci): resolve dangling reference census findings",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "0ba84babd043",
+      "head_ref": "fix/dangle-check-census-triage-current-master-2026-11-07",
+      "head_sha": "8c9da463b6d3",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-07T19:46:25Z",
+      "updated_at": "2026-11-07T19:47:08Z",
+      "days_open": 0.0,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5075"
     }
   ],
   "rules": {
     "promote": "dual-gate only (hygiene+portability + termux_smoke)",
     "age_alone": false,
     "vercel_rate_limit": "non-gate",
-    "session_pulses": "SUPERSEDE",
-    "issue_175_comments": "opt-in only",
+    "session_records": "SUPERSEDE",
+    "age_semantics": "informational snapshot only; never changes lane",
+    "refresh_mode": "pull_request_target lifecycle events; no polling",
     "valid_lanes": [
       "CANDIDATE",
       "EXTRACT",

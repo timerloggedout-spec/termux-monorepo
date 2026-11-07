@@ -196,3 +196,15 @@ Use the existing lifecycle:
 `RECON → PLAN → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT`
 
 Keep `COMMITTED`, `EXECUTED`, `VALIDATED`, and `PROMOTED` independent. LangGraph cannot self-approve, self-merge, or override repository promotion policy.
+
+## Competitive evaluation and pattern synthesis
+
+For comparative or best-approach work, load `docs/proposals/active/langgraph-biudl-integration/COMPETITION-MATRIX.md` before selecting a framework. Treat the native manager as the control and LangGraph, Deep Agents, swarm/handoff, supervisor-style routing, and hybrid compositions as separate treatments.
+
+- Freeze the task corpus, verifier, permissions, model/provider configuration, and resource budget before comparing treatments.
+- Compare equivalent tasks and report quality, reliability, latency, cost, governance, operability, and maintainability separately; do not rank on one blended score.
+- Any hard safety, privacy, authorization, or evidence-integrity failure disqualifies a treatment regardless of speed.
+- Extract patterns as keep / adapt / combine / defer / reject. Combine only independently validated patterns with compatible state and authority boundaries.
+- Preserve source attribution, adaptation rationale, benchmark evidence, rollback path, and upgrade watch for every adopted pattern.
+- The manager retains treatment-selection authority. A candidate cannot approve, score, or promote itself.
+- An inconclusive experiment retains the native control; a single successful demo is not promotion evidence.

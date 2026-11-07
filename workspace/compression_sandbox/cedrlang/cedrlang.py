@@ -22,6 +22,11 @@ import argparse
 from typing import Dict, List, Any, Tuple
 from pathlib import Path
 
+try:
+    from .phase_codec import ConversationalSteganographyCipher
+except ImportError:
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+
 SYMBOL_MAP = {
     " leads to ": " → ",
     " results in ": " → ",
@@ -95,6 +100,28 @@ MAPPINGS = [
     ("research", "r3534rch"),
     ("concepts", "c0nc3p7s"),
     ("concept", "c0nc3p7"),
+    ("time domain quantum states", "tdqss"),
+    ("time domain quantum state", "tdqs"),
+    ("time-domain quantum states", "tdqss"),
+    ("time-domain quantum state", "tdqs"),
+    ("agent efficiency telemetry", "ates"),
+    ("action effectiveness factors", "aefs"),
+    ("action effectiveness factor", "aef"),
+    ("triple loop operators", "3l0s"),
+    ("triple loop operator", "3l0"),
+    ("adaptive dynamic language mixings", "adlms"),
+    ("adaptive dynamic language mixing", "adlm"),
+    ("morphisms", "m0rphs"),
+    ("morphism", "m0rph"),
+    ("natural transformations", "n47_7r4n5s"),
+    ("natural transformation", "n47_7r4n5"),
+    ("opposite categories", "0pp_c47s"),
+    ("opposite category", "0pp_c47"),
+    ("exponential objects", "3xp_0bjs"),
+    ("exponential object", "3xp_0bj"),
+    ("monadic binds", "m0n_b1nds"),
+    ("monadic bind", "m0n_b1nd"),
+    ("category theory", "c47_7h30ry"),
 ]
 
 def capitalize_word(w: str) -> str:
@@ -237,11 +264,17 @@ def caveman(text: str, max_up: bool = False) -> str:
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
     return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
 
-def expand(cedr: str) -> str:
+def expand(cedr: str, key: str = "cedr") -> str:
     if not cedr:
         return ""
-    # Pre-computed module-scoped REV_SYMBOL_PAIRS with fast-path substring guards (~1.9x speedup)
     result = cedr
+    if ConversationalSteganographyCipher.has_payload(result):
+        payload, clean_text = ConversationalSteganographyCipher.decode(result, key=key)
+        if payload:
+            result = f"{payload} {clean_text}".strip() if clean_text else payload
+        else:
+            result = clean_text
+    # Pre-computed module-scoped REV_SYMBOL_PAIRS with fast-path substring guards (~1.9x speedup)
     for sym, replacement in REV_SYMBOL_PAIRS:
         if sym in result:
             result = result.replace(sym, replacement)

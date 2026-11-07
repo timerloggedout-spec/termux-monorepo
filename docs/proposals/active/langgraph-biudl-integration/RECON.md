@@ -85,3 +85,18 @@ A second pass over the official skills catalog expanded the best-fit set:
 The upstream skills README identifies the collection as early development and warns that APIs/content may change. The repository-native skill therefore pins source blobs and requires live API inspection before coding.
 
 PyPI reported `langgraph==1.2.20` as the latest stable release on 2026-11-06, MIT licensed, Python `>=3.10`; the release wheel SHA-256 is `2b9fd01c3d5e0652e6c9b436dc0341413788010eb279ac8c46a733cf485d848b`. PyPI showed no provenance attestation for the release files. This is a version observation only: no package was installed and no project dependency was added. Re-verify release metadata and provenance before LGB-004.
+
+
+## 8. Source-level corrections from candidate README inspection
+
+The initial broad shortlist was refined by reading the selected repositories themselves:
+
+- **Supervisor package:** `langchain-ai/langgraph-supervisor-py` explicitly says the tool-based supervisor pattern is now recommended for most new use cases; retain as migration/legacy reference, not a default dependency.
+- **MCP adapters:** `langchain-ai/langchain-mcp-adapters` explicitly says it is no longer actively maintained and MCP support moved into `langchain.mcp`; do not add the old package.
+- **Swarm ledger:** `Mediaeater/swarm-at-ledger` describes SHA-256 hash chaining and independent verification, but states its sample ledger data is synthetic, not real agent interactions. Study integrity mechanics only.
+- **Open SWE:** its README labels it actively developing and says correctness, stability, and compatibility are not guaranteed. Treat as architecture research, not production base.
+- **Open Deep Research:** its visible README update notes are from 2025; keep as reference pending fresh maintenance and dependency checks.
+- **Official swarm:** `langchain-ai/langgraph-swarm-py` is a candidate for handoff patterns, but adoption must be tested against the native manager baseline.
+- **APort guardrails:** interesting pre-action authorization approach, but self-reported CTF results are not independent validation. Require adversarial testing before adoption.
+
+These findings materially change selection: prefer direct tool-based supervisor patterns, use the maintained MCP integration path, and keep community security/ledger projects in the research tier.

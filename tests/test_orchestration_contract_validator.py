@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "ci"))
 
-from orchestration_contract_validator import validate_contracts
+from orchestration_contract_validator import validate_contracts, validate_issue_comment_router_contracts
 
 
 class OrchestrationContractValidatorTests(unittest.TestCase):
@@ -104,6 +104,159 @@ class OrchestrationContractValidatorTests(unittest.TestCase):
             (skill_dir / "SKILL.md").write_text(skill_source.read_text())
             errors = validate_contracts(fixture_root)
             self.assertTrue(any("outcome enum drifted" in error for error in errors))
+
+
+ROUTER_WORKFLOW_PATHS = (
+    ".github/workflows/issue-comment-router.yml",
+    ".github/workflows/agent-review-auto-jules.yml",
+    ".github/workflows/gemini-dispatch.yml",
+    ".github/workflows/agent-jules-on-issues.yml",
+)
+
+
+class IssueCommentRouterContractTests(unittest.TestCase):
+    def _fixture(self, root):
+        for relative in ROUTER_WORKFLOW_PATHS:
+            source = ROOT / relative
+            destination = root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+        return root
+
+    def test_repository_router_contracts_pass(self):
+        self.assertEqual(validate_issue_comment_router_contracts(ROOT), [])
+
+    def test_target_direct_issue_comment_subscription_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/gemini-dispatch.yml"
+            text = target.read_text(encoding="utf-8")
+            text = text.replace(
+                "  workflow_call:\n",
+                "  issue_comment:\n    types: [created]\n  workflow_call:\n",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must not directly subscribe to issue_comment" in error for error in errors), errors)
+
+    def test_missing_reusable_route_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace(
+                "uses: ./.github/workflows/gemini-dispatch.yml",
+                "uses: ./.github/workflows/missing-gemini-route.yml",
+                1,
+            )
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("missing reusable route: gemini-dispatch" in error for error in errors), errors)
+
+    def test_stale_comment_revision_guard_is_required(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/gemini-dispatch.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "comment.updated_at === expectedUpdatedAt",
+                "false",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must reject stale comment revisions" in error for error in errors), errors)
+
+    def test_jules_route_must_remain_non_pr_and_exact_prefix(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace("!isPullRequest", "isPullRequest", 1)
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("Jules route must remain" in error for error in errors), errors)
+
+    def test_gemini_route_must_preserve_all_exact_prefixes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace("body.startsWith('@sparkFlux') || ", "", 1)
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("Gemini route must remain" in error for error in errors), errors)
+
+    def test_agent_review_route_must_remain_provider_bot_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace("actor.type === 'Bot'", "actor.type === 'User'", 1)
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("Agent review route must remain" in error for error in errors), errors)
+
+    def test_reusable_target_rejects_expression_interpolation_in_shell_run_block(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/agent-review-auto-jules.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "          mkdir -p .agent-context",
+                "          echo \" ${{ github.event.comment.body }}\"\n          mkdir -p .agent-context",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("never inline script/run source" in error for error in errors), errors)
+
+    def test_reusable_target_rejects_expression_interpolation_in_script_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/agent-review-auto-jules.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "            const event = context.eventName;",
+                "            const unsafe = '${{ inputs.source_event }}';\n            const event = context.eventName;",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("never inline script/run source" in error for error in errors), errors)
+
+    def test_target_execution_must_depend_on_comment_revision_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            target = root / ".github/workflows/gemini-dispatch.yml"
+            text = target.read_text(encoding="utf-8").replace(
+                "    needs: validate-source-comment\n",
+                "",
+                1,
+            )
+            target.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("execution job must depend on source-comment validation" in error for error in errors), errors)
+
+    def test_router_must_not_inherit_all_repository_secrets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace(
+                "GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}",
+                "secrets: inherit",
+                1,
+            )
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must not inherit the entire repository secret set" in error for error in errors), errors)
+
+    def test_router_must_not_cancel_distinct_comment_revisions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._fixture(Path(tmp))
+            router = root / ".github/workflows/issue-comment-router.yml"
+            text = router.read_text(encoding="utf-8").replace(
+                "cancel-in-progress: false",
+                "cancel-in-progress: true",
+                1,
+            )
+            router.write_text(text, encoding="utf-8")
+            errors = validate_issue_comment_router_contracts(root)
+            self.assertTrue(any("must not cancel a distinct comment event" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

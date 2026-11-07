@@ -14,7 +14,7 @@ CARDS: list[dict[str, Any]] = [
     {"id": "skills", "title": "Skills inventory", "path": "docs/ops/SKILLS-INVENTORY.md", "parent": "entry"},
     {"id": "ml-skill", "title": "ml-pipeline-ops", "path": ".agents/skills/ml-pipeline-ops/SKILL.md", "parent": "skills"},
     {"id": "cctv-skill", "title": "icm-cctv-ops", "path": ".agents/skills/icm-cctv-ops/SKILL.md", "parent": "skills"},
-    {"id": "hub", "title": "Issue #175 hub", "path": "https://github.com/timerloggedout-spec/termux-monorepo/issues/175", "parent": "entry"},
+    {"id": "tracking", "title": "Repo tracking SSOT", "path": "docs/ops/REPO-TRACKING.md", "parent": "entry"},
 ]
 
 

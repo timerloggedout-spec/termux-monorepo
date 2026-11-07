@@ -57,7 +57,9 @@ LangGraph is an optional graph-orchestration adapter/treatment for explicit stat
 - Keep provider/model routing in existing adapters and manager policy; keep MCP authorization in existing tool boundaries.
 - Use checkpointing for automatic process/worker recovery only; do not design human approval interrupts or human-resume queues. Replayed nodes may re-execute, so side effects must be idempotent.
 - Use Temporal when execution must survive worker/process loss across distributed workers. LangGraph may run inside a Temporal Activity; it does not replace Temporal history/replay.
-- Autonomous escalation moves work to capability-matched specialists, alternate executors, manager arbitration, or independent assurance without pausing for a person. It never broadens the permission envelope.\n- Compare LangGraph against native manager treatments using the same cohort and task acceptance criteria. Graph complexity or parallel worker count is not quality.
+- Autonomous escalation moves work to capability-matched specialists, alternate executors, manager arbitration, or independent assurance without pausing for a person. It never broadens the permission envelope.
+- Handoff and controller outputs conform to ESCALATION-PACKET.schema.json and ESCALATION-DECISION.schema.json; AUTONOMOUS-ESCALATION-POLICY.md defines normative reason, routing, terminal-state, and budget semantics.
+- Compare LangGraph against native manager treatments using the same cohort and task acceptance criteria. Graph complexity or parallel worker count is not quality.
 
 ### Devin
 

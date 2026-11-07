@@ -246,6 +246,18 @@ credits each + 10 backpack draws (October pattern).
 > **ENTRY ANATOMY (owner rule, 2026-11-01):** build start ⇒ **new repo + new AppID** (via the AppID lane) for any competition entry; if no suitable competition exists in reasonable time, **BUILD anyway** — a competition gates claims only, ¬ construction. First application: Repo-Story (repo created 2026-11-01 ∈ C8 period; build #3018; AppID dispatched).
 > **PROVENANCE CORRECTION (2026-10-30, Contribution Desk):** PRs #2615/#2619/#2623 (AMD M4) + #2616 (D3 ListingLens) were authored by **desk-spawned Muse subagents**, ¬ provider lanes — the "builder lane / Jules-Bolt" labels are **retracted**. Route of record: provider-dispatch map (Jules primary via agent-jules-on-issues; Gemini/DeepSeek wired, action_required caveat; command-dispatch for polish); Desk reports name provider + session per PR; a Muse-authored PR = stop + report, ¬ merge. First proof: issue #2626 + `jules` label.
 
+### C17 packet — Game Off 2026 (candidate; owner review pending)
+
+- **Theme:** SHIFT. **Host:** GitHub. **Platform:** itch.io.
+- **Window:** Nov 1, 2026 13:37 PST – Dec 1, 2026 13:37 PST.
+- **Hard wall:** **Dec 1, 2026, 13:37 PST**. **Voting closes:** Jan 1, 2027, 13:37 PST.
+- **Rules (official):** start during the jam; vast majority of game development in-window; public GitHub repository + separate playable itch.io submission; any engine/language/platform; solo or team; AI assistance allowed with disclosure; multiple entries allowed.
+- **Evaluation:** Overall, Gameplay, Graphics, Audio, Innovation, Theme Interpretation. No cash or physical prizes; winners are featured on GitHub Blog/social channels.
+- **Registration:** internal candidate only. **NOT JOINED** on itch.io; no external registration or game submission performed.
+- **Gates:** owner entry/concept decision; public repository; in-window development; playable itch.io submission before wall; AI-use disclosure.
+- **Gantt + escalation:** proposed build plan, internal landing target **Nov 29 13:37 PST** (48h cushion), and tiered BASE → CUSHION (-72h) → LANDING (-48h) → WALL-DAY → ESCALATION (-4h) → FINAL (-30m) → WALL are tracked in [issue #5050](https://github.com/timerloggedout-spec/termux-monorepo/issues/5050). Six private Google Calendar checkpoint events created; the desk-feed projection is recorded in the draft PR. The separate `deadline-reminders/v1` Tracking register reconciliation remains pending with its owning lane.
+- **Official sources:** [Game Off 2026](https://itch.io/jam/game-off-2026) · [FAQ/rules](https://itch.io/jam/game-off-2026/topic/7290154/frequently-asked-questions-faq) · [GitHub Blog theme announcement](https://github.blog/open-source/gaming/game-off-2026-the-theme-is-shift/).
+
 ## 4. Entry packets
 
 **Owner decision (2026-10-26 23:41 PT): "ALL of them"** — D1, D2, D3, and D4

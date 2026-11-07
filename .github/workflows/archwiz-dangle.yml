@@ -12,6 +12,7 @@ on:
     paths:
       - 'scripts/ci/dangle_check.py'
       - 'scripts/ci/dangle_baseline.json'
+      - 'scripts/ci/dangle_expected_future_paths.json'
       - 'tests/test_dangle_check.py'
       - '.github/workflows/**'
       - 'apps/**'

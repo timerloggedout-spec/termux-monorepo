@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-08T13:52:50Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-08T17:14:40Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `ab61d9ed3a` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `39a7a26692` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 542 issues, 326 PRs. PR classes: EXTRACT 11 / CANDIDATE 152 / NEED_EVIDENCE 163 / SUPERSEDE 0.
+**Open inventory:** 542 issues, 325 PRs. PR classes: EXTRACT 11 / CANDIDATE 152 / NEED_EVIDENCE 162 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -202,7 +202,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1617 | NEED_EVIDENCE | unlabelled | `35c1f2bd5b` | not_reported | not_reported | unknown | docs: improve Mintlify agent discoverability and record integration recon |
 | #1626 | NEED_EVIDENCE | unlabelled | `7288447213` | not_reported | not_reported | unknown | docs(rfp): add first source-backed mesh provider evidence |
 | #1645 | NEED_EVIDENCE | unlabelled | `2dab66b406` | not_reported | not_reported | unknown | fix: harden Help-Wanted telemetry and evidence audits |
-| #1760 | NEED_EVIDENCE | unlabelled | `58b73e8826` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
+| #1760 | NEED_EVIDENCE | unlabelled | `ff3c4240a6` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -324,7 +324,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5018 | NEED_EVIDENCE | unlabelled | `17493652ab` | not_reported | not_reported | unknown | feat: AgentRouter catalog and unified provider observability index |
 | #5019 | NEED_EVIDENCE | unlabelled | `9774346d69` | not_reported | not_reported | unknown | feat: AgentRouter catalog and unified provider observability index |
 | #5021 | NEED_EVIDENCE | unlabelled | `0085be0406` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
-| #5034 | NEED_EVIDENCE | unlabelled | `9df9b694a9` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | NEED_EVIDENCE | unlabelled | `da7f2a979c` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #5036 | NEED_EVIDENCE | unlabelled | `6b243b40c0` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5037 | NEED_EVIDENCE | unlabelled | `9d5fb441f7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5038 | NEED_EVIDENCE | unlabelled | `362bc4a000` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -337,7 +337,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5061 | NEED_EVIDENCE | unlabelled | `7b90402355` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5062 | NEED_EVIDENCE | unlabelled | `c135486bf1` | failure | success | unknown | feat(orchestration): autonomous escalation on current master |
 | #5064 | NEED_EVIDENCE | unlabelled | `7780127d3e` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
-| #5072 | NEED_EVIDENCE | unlabelled | `104f94ac26` | not_reported | not_reported | unknown | chore(ops): regenerate operator matrix |
 | #5075 | NEED_EVIDENCE | unlabelled | `521f12ea01` | not_reported | not_reported | unknown | fix(ci): resolve dangling reference census findings |
 
 ## Families (open)
@@ -353,6 +352,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 54 | 324 |
+| unlabelled | 54 | 323 |
 
 **Unlabelled open issues (54):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3752, #4008, #4052, #4212, #4214, #4215, #4216, #4217, #4218, #4219, #4220, #4221, #4222, #4223, #4224, #4225, #4226, #4227, #4228, #4229, #4230, #4231, #4232, #4233, #4234, #4235, #4236, #4237, #4524, #4547, #4718, #4721, #4873, #4963, #4977, #4979, #4994, #5032, #5050, #5071 — worked oldest-first by the issue-lifecycle lane pass.

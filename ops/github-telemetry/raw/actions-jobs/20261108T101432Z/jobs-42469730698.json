@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-11-08T10:14:41.449891+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42469730698,
+    "endpoint": ".../runs/42469730698/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 128697458917,
+        "run_id": 42469730698,
+        "workflow_name": "Foresight Evidence Spine",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42469730698",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd9vdg5Q",
+        "head_sha": "a141a7c0c02b794b581f311e09c5c27c6fbbd5d7",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128697458917",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42469730698/job/128697458917",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-08T10:02:51Z",
+        "started_at": "2026-11-08T10:02:54Z",
+        "completed_at": "2026-11-08T10:03:09Z",
+        "name": "foresight registry tests",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T10:02:55Z",
+            "completed_at": "2026-11-08T10:02:56Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T10:02:56Z",
+            "completed_at": "2026-11-08T10:03:05Z"
+          },
+          {
+            "name": "Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T10:03:05Z",
+            "completed_at": "2026-11-08T10:03:05Z"
+          },
+          {
+            "name": "Unit tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T10:03:05Z",
+            "completed_at": "2026-11-08T10:03:05Z"
+          },
+          {
+            "name": "Registry validation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-08T10:03:05Z",
+            "completed_at": "2026-11-08T10:03:05Z"
+          },
+          {
+            "name": "Post Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-08T10:03:05Z",
+            "completed_at": "2026-11-08T10:03:06Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-08T10:03:06Z",
+            "completed_at": "2026-11-08T10:03:06Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-08T10:03:06Z",
+            "completed_at": "2026-11-08T10:03:06Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128697458917",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000847027,
+        "runner_name": "GitHub Actions 1000847027",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

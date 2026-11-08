@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-07T12:59:59Z` UTC  
+**Generated:** `2026-11-08T13:24:35Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 265 docs-lane branch(es)
+**Count:** 266 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -218,7 +218,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/readme-agents-reference`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-agents-reference) | `05ac94d4211f` | — | — | orphan lane |
 | [`docs/readme-ates-image-polish`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-ates-image-polish) | `ee0ffc2540b8` | — | — | orphan lane |
 | [`docs/readme-upgrade-claude-entry-ates-deploy`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-upgrade-claude-entry-ates-deploy) | `e1d997a85cac` | — | — | orphan lane |
-| [`docs/reconcile-historical-corpus-status-2026-11-07`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/reconcile-historical-corpus-status-2026-11-07) | `1385287bf916` | [#5047](https://github.com/timerloggedout-spec/termux-monorepo/pull/5047)→`master` (draft) | — | PR without registry link |
+| [`docs/reconcile-historical-corpus-status-2026-11-07`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/reconcile-historical-corpus-status-2026-11-07) | `1385287bf916` | — | — | orphan lane |
+| [`docs/reconcile-historical-corpus-status-2026-11-07-v2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/reconcile-historical-corpus-status-2026-11-07-v2) | `1c560cb7187e` | — | — | orphan lane |
 | [`docs/reconciliation-supplement-observatory-foresight`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/reconciliation-supplement-observatory-foresight) | `e102f415635b` | — | — | orphan lane |
 | [`docs/record-issue-192-promotion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/record-issue-192-promotion) | `64f2a4139a83` | — | — | orphan lane |
 | [`docs/refocus-do-framing-rfp-1643`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/refocus-do-framing-rfp-1643) | `30433bacf793` | — | — | orphan lane |

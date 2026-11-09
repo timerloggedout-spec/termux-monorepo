@@ -5,8 +5,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "muse",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_codes"
   },
@@ -15,8 +15,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "manus",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
@@ -25,8 +25,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "cue",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_codes"
   },
@@ -35,8 +35,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "migoo",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_codes"
   },
@@ -45,18 +45,18 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "cellcog",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
   {
-   "bucket": "pending",
+   "bucket": "no_public_programme",
    "cadence": "monthly-reverify",
    "feed_state": "no_public_programme",
    "id": "hark",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-12-07",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-12-09",
    "owner": "affiliate-referrals",
    "state_detail": "no_public_programme"
   },
@@ -65,8 +65,8 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "unorouter",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
   },
@@ -95,24 +95,74 @@
    "cadence": "weekly-sweep",
    "feed_state": "live",
    "id": "replit",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "owner": "affiliate-referrals",
    "state_detail": "active_link"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "pending",
+   "id": "mega",
+   "last_verified": "2026-11-06",
+   "next_due": "2026-12-06",
+   "owner": "affiliate-referrals",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "pending",
+   "id": "filen",
+   "last_verified": "2026-11-06",
+   "next_due": "2026-12-06",
+   "owner": "affiliate-referrals",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "pending",
+   "id": "pcloud",
+   "last_verified": "2026-11-06",
+   "next_due": "2026-12-06",
+   "owner": "affiliate-referrals",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "pending",
+   "id": "koofr",
+   "last_verified": "2026-11-08",
+   "next_due": "2026-12-08",
+   "owner": "affiliate-referrals",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly-reverify",
+   "feed_state": "pending",
+   "id": "proton",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-12-09",
+   "owner": "affiliate-referrals",
+   "state_detail": "programme_verified_not_enrolled"
   }
  ],
  "bucket_mapping_note": "Feed-verbatim per Oversight ruling 2026-11-04 (manus = live). 3-bucket Gantt schema: no_public_programme (hark) folds to pending (open monthly reverify watch). Result live 7 \u00b7 pending 2 \u00b7 not-established 1. The brief's 6/3/1 assumed manus->pending; superseded by the ruling.",
  "constraint": {
   "additional_tokens": {
-   "left": "86M",
-   "used_pct": 91
+   "left": "64M",
+   "used_pct": 94
   },
   "muse_free_weekly": {
    "resets": "2026-11-10",
    "used_pct": 100
   }
  },
- "generated_at": "2026-11-04T12:20:00Z",
+ "generated_at": "2026-11-09T17:12:30Z",
  "milestones": [
   {
    "date": "2026-11-07",

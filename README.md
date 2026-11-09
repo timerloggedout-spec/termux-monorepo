@@ -82,7 +82,8 @@ See [docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md](docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.m
   <a href="https://timerloggedout-spec.github.io/"><img src="https://img.shields.io/badge/Landing_page-GitHub_Pages-1e6fd9?style=for-the-badge&logo=github&logoColor=white" alt="Landing page on GitHub Pages"></a>
 </p>
 
-[runnable](https://runable.cloud/?refer_code=MVGL8T)
+[runable](https://runable.cloud/?refer_code=MVGL8T)
+[runable matrix](https://4200-iuk15d6un5sl52drlijwe.e2b.app/)
 
 > Built and operated with a fleet of AI collaborators across continuous integration, review, and engineering operations. See the [landing page](https://timerloggedout-spec.github.io/) and the [preview portal (WIP)](https://termux-monorepo.vercel.app/).
 >

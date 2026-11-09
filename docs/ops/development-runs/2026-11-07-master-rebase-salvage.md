@@ -55,3 +55,15 @@ The resulting branch compares as **1 commit ahead / 0 behind master**, with 20 c
 3. Re-run all required checks on the final successor head.
 4. Obtain fresh independent review and satisfy branch protection.
 5. Close PR #5045 as superseded only after the successor is established; merge the successor only when every repository requirement is satisfied.
+
+## Follow-up — inherited YAML gate repair
+
+The successor branch initially failed `repo gate` on the same inherited repository-wide `invalid_control_plane_yaml` counter found in the P0 investigation. The offending workflow is `.github/workflows/certification-validation.yml`: the certification report heredoc body and terminator were flush-left outside the YAML block scalar.
+
+Carried the exact indentation repair from the focused P0 branch into this successor:
+
+- Commit: `e6df4a3c38f8d5ef4ecafb5ca71a4eb57150fe00`
+- The heredoc body and terminator now share the YAML block-scalar indentation; YAML strips that indentation before the shell executes the script.
+- No baseline changes or gate bypass.
+- Validation on this successor head is pending. The focused P0 branch's repo gate and Termux smoke passed after the same repair, but that result is not substituted for this branch's own CI.
+

@@ -249,19 +249,20 @@ def test_paginate_keeps_page_size_stable_and_stops_at_limit():
 
 def test_collect_github_seed_rejects_invalid_detail_limits():
     """Reject invalid detail bounds before any GitHub collection can begin."""
-    for invalid in (0, -1, True, 1.5):
-        try:
-            collect_github_seed(
-                FakeGitHubClient(),
-                "example",
-                "repo",
-                "master",
-                Path("unused-scope-registry.json"),
-                max_files_per_pr=invalid,
-            )
-        except CompilationError:
-            continue
-        raise AssertionError(f"invalid detail limit was accepted: {invalid!r}")
+    for parameter in ("max_files_per_pr", "max_commits_per_pr", "max_timeline_events_per_item"):
+        for invalid in (0, -1, True, 1.5):
+            try:
+                collect_github_seed(
+                    FakeGitHubClient(),
+                    "example",
+                    "repo",
+                    "master",
+                    Path("unused-scope-registry.json"),
+                    **{parameter: invalid},
+                )
+            except CompilationError:
+                continue
+            raise AssertionError(f"invalid {parameter} was accepted: {invalid!r}")
 
 
 def test_detail_endpoint_caps_are_independent_from_history_page_size(tmp_path):

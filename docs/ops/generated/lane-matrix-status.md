@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-09T14:07:22Z)
+# Lane matrix status (2026-11-09T14:08:43Z)
 
-- Master: `a889456da06ca20f58fb73be7e16e1fc1084aa26`
+- Master: `58fcb334b32064248acf16d5035d75655c2617af`
 - Open PRs: **327**
 - Oldest: #47 (95.93d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,7 +27,7 @@
 | #4069 | 6.41 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 5.72 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 5.06 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 2.96 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 2.97 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 95.93 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 93.68 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 92.55 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
@@ -48,7 +48,7 @@
 | #1516 | 18.24 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 18.23 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 18.21 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 17.54 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1557 | 17.55 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 16.46 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 16.46 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 16.45 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

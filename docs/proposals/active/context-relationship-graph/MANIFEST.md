@@ -13,8 +13,8 @@ reviewers:
   - id: Manus
     role: author-executor
     status: executing
-related_prs: [232, 1286]
-related_branches: [manus/context-relationship-graph, docs/historical-corpus-explorer-proposal]
+related_prs: [232, 1286, 5084]
+related_branches: [manus/context-relationship-graph, docs/historical-corpus-explorer-proposal, fix/context-collector-detail-limits-2026-11-09]
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -51,6 +51,11 @@ The work extends the existing local context graph rather than treating it as aut
 
 - Disposition: accepted for CRG-14 implementation with AR-19 as the tightly coupled Issue #192 consumer.
 - Notes: The **Context Relationship Evidence Matrix** is a deterministic, metadata-only projection of the existing canonical graph and read-only lead/lag audit, not a second datastore, central orchestrator, or authorization surface. The scope includes a tested repair for `gh api --paginate` output normalization after live audit evidence exposed concatenated JSON parsing. The implementation must disclose bounded/stale graph coverage, keep verified and candidate relationships separate, persist no raw discussion bodies or secrets, and remain decision-support only. It cannot authorize provider commands, routing promotion, branch writes, generated-index hand edits, B3 retries, B4/B5, or PR #276.
+
+### 2026-11-09 — ChatGPT
+
+- Disposition: executing CRG-16 on PR #5084.
+- Notes: Recovered the stale 448-commit-behind PR #5056 by creating a clean branch from current canonical master and reapplying only independent GitHub detail endpoint bounds. The new contract separates issue/PR page size, repository commit sample, per-PR changed files, per-PR commits, and per-item timeline events. Generated corpus and checkpoint artifacts remain untouched pending validation.
 
 ## Checklist
 

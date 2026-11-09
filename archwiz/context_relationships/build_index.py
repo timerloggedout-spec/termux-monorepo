@@ -225,6 +225,9 @@ def build_index(
     max_retries: int,
     full_refresh: bool = False,
     history_start_page: int = 1,
+    max_files_per_pr: int = 3000,
+    max_commits_per_pr: int = 250,
+    max_timeline_events_per_item: int = 1000,
 ) -> dict[str, Any]:
     """Build a complete index, replacing canonical artifacts only after validation."""
     checkpoint_path = output / "checkpoint.json"
@@ -257,6 +260,9 @@ def build_index(
         include_comments=include_comments,
         max_cochange_pairs_per_commit=max_cochange_pairs_per_commit,
         history_start_page=history_start_page,
+        max_files_per_pr=max_files_per_pr,
+        max_commits_per_pr=max_commits_per_pr,
+        max_timeline_events_per_item=max_timeline_events_per_item,
     )
     github_report["retry_count"] = client.retry_count
     history_window = github_report.get(
@@ -399,6 +405,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-commits", type=int, default=25)
     parser.add_argument("--max-comments-per-item", type=int, default=20)
     parser.add_argument("--max-cochange-pairs-per-commit", type=int, default=100)
+    parser.add_argument("--max-files-per-pr", type=int, default=3000)
+    parser.add_argument("--max-commits-per-pr", type=int, default=250)
+    parser.add_argument("--max-timeline-events-per-item", type=int, default=1000)
     parser.add_argument(
         "--history-start-page",
         type=int,
@@ -426,6 +435,9 @@ def main(argv: list[str] | None = None) -> int:
                 args.max_comments_per_item,
                 args.max_cochange_pairs_per_commit,
                 args.history_start_page,
+                args.max_files_per_pr,
+                args.max_commits_per_pr,
+                args.max_timeline_events_per_item,
             )
         ) or args.max_retries < 0:
             raise CompilationError("collection limits must be positive and max retries must be zero or greater")

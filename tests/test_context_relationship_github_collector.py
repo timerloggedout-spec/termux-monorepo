@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from archwiz.context_relationships.compiler import compile_seed
-from archwiz.context_relationships.github_collector import collect_github_seed
+from archwiz.context_relationships.github_collector import CompilationError, GitHubClient, collect_github_seed
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "config/context_relationships/schema.json"
@@ -223,6 +223,45 @@ def test_collect_github_seed_preserves_evidence_without_persisting_discussion_bo
     assert report["unresolved_internal_reference_count"] == 0
 
 
+
+
+
+def test_paginate_keeps_page_size_stable_and_stops_at_limit():
+    """A short final page must not shift the next page's offset or duplicate records."""
+    client = GitHubClient("unused-token", max_retries=0)
+    requests = []
+
+    def fake_get_json(path, params=None):
+        requests.append(dict(params or {}))
+        page = (params or {}).get("page", 1)
+        start = (page - 1) * 100
+        payload = [{"number": number} for number in range(start, start + 100)]
+        return payload, ' <https://api.github.com/next>; rel="next"' if page < 3 else None
+
+    client.get_json = fake_get_json
+    records = list(client.paginate("/repos/example/repo/pulls/232/commits", limit=250))
+
+    assert [request["page"] for request in requests] == [1, 2, 3]
+    assert [request["per_page"] for request in requests] == [100, 100, 100]
+    assert len(records) == 250
+    assert [record["number"] for record in records] == list(range(250))
+
+
+def test_collect_github_seed_rejects_invalid_detail_limits():
+    """Reject invalid detail bounds before any GitHub collection can begin."""
+    for invalid in (0, -1, True, 1.5):
+        try:
+            collect_github_seed(
+                FakeGitHubClient(),
+                "example",
+                "repo",
+                "master",
+                Path("unused-scope-registry.json"),
+                max_files_per_pr=invalid,
+            )
+        except CompilationError:
+            continue
+        raise AssertionError(f"invalid detail limit was accepted: {invalid!r}")
 
 
 def test_detail_endpoint_caps_are_independent_from_history_page_size(tmp_path):

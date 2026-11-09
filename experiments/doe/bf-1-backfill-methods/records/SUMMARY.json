@@ -1,16 +1,16 @@
 {
  "campaign_id": "bf-1-backfill-methods",
- "compared_at": "2026-11-02T16:30:58.774219+00:00",
- "corpus_units": 84,
+ "compared_at": "2026-11-09T16:50:25.925909+00:00",
+ "corpus_units": 85,
  "methods": {
   "bf-strict v1": {
    "scored": 8,
-   "coverage": 0.0952,
+   "coverage": 0.0941,
    "distinct_keys": 4
   },
   "bf-partial v1": {
    "scored": 21,
-   "coverage": 0.25,
+   "coverage": 0.2471,
    "distinct_keys": 11,
    "collisions_on_gold": 0,
    "gold_units": 8
@@ -18,10 +18,10 @@
   "bf-join v1": {
    "scored": 8,
    "outcome_fills_recovered": 0,
-   "note": "feed outcome fields are null (in flight) on all current stamps"
+   "note": "15 filled feed stamps available"
   }
  },
- "outcome_completeness_in_corpus": 0.8214,
+ "outcome_completeness_in_corpus": 0.8118,
  "significance": "NOT_ESTABLISHED - corpus and per-class n far below the standing gate (n>=30/class, minority>=10, p<.05); candidates are watch-only, no cull/promote action.",
  "provenance_corpus": {
   "attribution/1": {

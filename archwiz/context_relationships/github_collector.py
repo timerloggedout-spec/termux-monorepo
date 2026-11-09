@@ -791,6 +791,9 @@ def collect_github_seed(
         "max_items": max_items,
         "max_commits": max_commits,
         "max_comments_per_item": max_comments_per_item,
+        "max_files_per_pr": max_files_per_pr,
+        "max_commits_per_pr": max_commits_per_pr,
+        "max_timeline_events_per_item": max_timeline_events_per_item,
         "include_comments": include_comments,
         "history_window": {
             "start_page": history_start_page,

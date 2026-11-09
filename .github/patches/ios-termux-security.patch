@@ -1,0 +1,64 @@
+diff --git a/ios2termux/brains.py b/ios2termux/brains.py
+index eb13ada..0000000 100644
+--- a/ios2termux/brains.py
++++ b/ios2termux/brains.py
+@@ -46,15 +46,9 @@
+-    has_auth = (request.get("auth") or request.get("key_auth")
+-                or request.get("use_key") or request.get("password_auth"))
+-    if public and not has_auth:
+-        gates.append(Gate(
+-            "sshd_public_no_auth",
+-            "Exposing sshd to the public internet with no auth / no key "
+-            "hands the shell to the whole internet. Keep sshd on LAN or "
+-            "Tailscale, or require key auth.",
+-        ))
+-    elif public and request.get("password_auth_only"):
+-        gates.append(Gate(
+-            "sshd_public_no_auth",
+-            "Password-only sshd on the public internet is brute-force "
+-            "bait. Require key auth, or keep sshd on LAN / Tailscale.",
+-        ))
++    has_key_auth = (request.get("key_auth") or request.get("use_key")
++                    or request.get("public_key_auth"))
++    if public and not has_key_auth:
++        gates.append(Gate(
++            "sshd_public_no_auth",
++            "Publicly exposed sshd requires explicit key-based authentication. "
++            "Password-only or unspecified authentication is refused. Keep "
++            "sshd on LAN or Tailscale, or configure SSH public-key auth.",
++        ))
+diff --git a/tests/test_security_regressions.py b/tests/test_security_regressions.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_security_regressions.py
+@@ -0,0 +1,30 @@
++import pytest
++
++from ios2termux.brains import evaluate
++
++
++@pytest.mark.parametrize("request", [
++    {"expose_sshd_public": True},
++    {"expose_sshd_public": True, "auth": True},
++    {"expose_sshd_public": True, "password_auth": True},
++    {"expose_sshd_public": True, "password_auth_only": True},
++    {"public_internet": True, "password_auth": True},
++    {"sshd_public": True, "auth": "password"},
++])
++def test_public_ssh_without_explicit_key_auth_is_held(request):
++    assert any(
++        gate.trigger == "sshd_public_no_auth"
++        for gate in evaluate(request)
++    )
++
++
++@pytest.mark.parametrize("request", [
++    {"expose_sshd_public": True, "key_auth": True},
++    {"expose_sshd_public": True, "use_key": True},
++    {"expose_sshd_public": True, "public_key_auth": True},
++])
++def test_public_ssh_with_explicit_key_auth_clears_this_gate(request):
++    assert not any(
++        gate.trigger == "sshd_public_no_auth"
++        for gate in evaluate(request)
++    )

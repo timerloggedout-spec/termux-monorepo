@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 542,
-    "open_prs": 325,
+    "open_issues": 544,
+    "open_prs": 329,
     "pr_classes": {
       "CANDIDATE": 152,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 162,
+      "NEED_EVIDENCE": 166,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 297,
+      "issues": 299,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 54,
-      "prs": 323,
+      "prs": 327,
       "unlabelled_numbers": [
         308,
         388,
@@ -109,7 +109,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-08T17:14:40Z",
+  "generated_at": "2026-11-09T16:52:45Z",
   "issues_unlabelled": [
     308,
     388,
@@ -172,7 +172,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "39a7a26692"
+    "sha": "0a99a2911e"
   },
   "prs": [
     {
@@ -2427,20 +2427,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "565332d951",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5074,
-      "title": "fix(tracking): harden desk evidence parsing on master",
-      "updated_at": "2026-11-07T20:04:54Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "f663033199",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2461,6 +2447,20 @@
       "number": 5077,
       "title": "feat(ci): implement merged branch review audit and deployment quota engine",
       "updated_at": "2026-11-07T23:43:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d35ca6d313",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5082,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "updated_at": "2026-11-08T23:23:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3617,12 +3617,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3adcbf7b38",
+      "head_sha": "f83c1b71d5",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-07T20:30:22Z"
+      "updated_at": "2026-11-08T17:15:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4650,20 +4650,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
-      },
-      "head_sha": "c6978a19f9",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5056,
-      "title": "fix(context): preserve historical backfill page-size continuity",
-      "updated_at": "2026-11-07T19:32:45Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -4692,15 +4678,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "c135486bf1",
+      "head_sha": "8b17fcb576",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5062,
       "title": "feat(orchestration): autonomous escalation on current master",
-      "updated_at": "2026-11-07T17:21:20Z"
+      "updated_at": "2026-11-09T14:14:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4720,6 +4706,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "9db39d1046",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5074,
+      "title": "fix(tracking): harden desk evidence parsing on master",
+      "updated_at": "2026-11-09T14:38:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -4729,6 +4729,62 @@
       "number": 5075,
       "title": "fix(ci): resolve dangling reference census findings",
       "updated_at": "2026-11-07T20:11:07Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "6f026b2c86",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5081,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-11-08T17:58:43Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "6174603e19",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5084,
+      "title": "fix(context): separate history pages from GitHub detail endpoint bounds",
+      "updated_at": "2026-11-09T14:10:54Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "f6f7964647",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5085,
+      "title": "feat(orchestration): autonomous escalation and recovery",
+      "updated_at": "2026-11-09T14:28:29Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "75bc10376d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5086,
+      "title": "feat(telemetry): join credential provenance to DoE instance identity",
+      "updated_at": "2026-11-09T14:40:45Z"
     }
   ],
   "schema": "operator-matrix/v1",

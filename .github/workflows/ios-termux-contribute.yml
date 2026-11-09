@@ -1,15 +1,15 @@
 name: iOS-Termux Contribute
 
-# Workflow to contribute to credkellar/iOS-Termux
-# Uses pre-generated patch and creates PR via fork
-# Prevents duplicate PRs by checking existing PRs first
+# Apply a reviewed patch from this repository to the upstream iOS-Termux
+# project, push a unique branch to the maintained fork, and open a PR.
+# The target repository never receives a direct default-branch write.
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
     paths:
-      - '.github/patches/ios-termux-contribution.patch'
+      - '.github/patches/ios-termux-security.patch'
+      - '.github/patches/ios-termux-security-pr.md'
       - '.github/workflows/ios-termux-contribute.yml'
   workflow_dispatch:
     inputs:
@@ -18,201 +18,154 @@ on:
         required: true
         default: "credkellar/iOS-Termux"
       base_branch:
-        description: Base branch in target repo
+        description: Target base branch
         required: true
         default: "main"
       pr_title:
-        description: PR title
+        description: Pull request title
         required: true
-        default: "Enhance translations: add 22 new command pairs and 4 new path mappings"
+        default: "Security: require explicit SSH key authentication for public sshd"
       use_fork:
-        description: Use timerloggedout-spec fork as intermediate
-        required: false
-        default: "true"
+        description: Push through timerloggedout-spec fork
+        required: true
+        type: boolean
+        default: true
 
 concurrency:
-  group: ios-termux-contribute
-  cancel-in-progress: true
+  group: ios-termux-contribute-${{ github.event.inputs.target_repo || 'credkellar/iOS-Termux' }}
+  cancel-in-progress: false
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 
 jobs:
   contribute:
-    name: Apply patch and create PR
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          persist-credentials: false
 
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git curl jq
-
-      - name: Set defaults
-        id: defaults
-        run: |
-          echo "target_repo=${{ inputs.target_repo || 'credkellar/iOS-Termux' }}" >> $GITHUB_OUTPUT
-          echo "base_branch=${{ inputs.base_branch || 'main' }}" >> $GITHUB_OUTPUT
-          echo "pr_title=${{ inputs.pr_title || 'Enhance translations: add 22 new command pairs and 4 new path mappings' }}" >> $GITHUB_OUTPUT
-          echo "use_fork=${{ inputs.use_fork || 'true' }}" >> $GITHUB_OUTPUT
-
-      - name: Prepare patch
-        id: patch
-        run: |
-          cp .github/patches/ios-termux-contribution.patch /tmp/ios-termux-contribution.patch
-          wc -l /tmp/ios-termux-contribution.patch
-          echo "patch_path=/tmp/ios-termux-contribution.patch" >> $GITHUB_OUTPUT
-
-      - name: Process target repo
-        id: repo
-        run: |
-          TARGET_REPO="${{ steps.defaults.outputs.target_repo }}"
-          OWNER=$(echo "$TARGET_REPO" | cut -d'/' -f1)
-          REPO=$(echo "$TARGET_REPO" | cut -d'/' -f2)
-          echo "owner=$OWNER" >> $GITHUB_OUTPUT
-          echo "repo=$REPO" >> $GITHUB_OUTPUT
-
-      - name: Determine push target
-        id: target
-        run: |
-          OWNER="${{ steps.repo.outputs.owner }}"
-          REPO="${{ steps.repo.outputs.repo }}"
-          USE_FORK="${{ steps.defaults.outputs.use_fork }}"
-          
-          if [ "$USE_FORK" = "true" ]; then
-            TARGET="timerloggedout-spec/${REPO}_fork"
-            FORK_OWNER="timerloggedout-spec"
-          else
-            TARGET="${OWNER}/${REPO}"
-            FORK_OWNER="$OWNER"
-          fi
-          
-          echo "target=$TARGET" >> $GITHUB_OUTPUT
-          echo "fork_owner=$FORK_OWNER" >> $GITHUB_OUTPUT
-
-      - name: Check for existing PR
-        id: check_pr
+      - name: Validate inputs and resolve destination
+        id: cfg
         env:
-          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          OWNER="${{ steps.repo.outputs.owner }}"
-          REPO="${{ steps.repo.outputs.repo }}"
-          PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
-          
-          # Check if PR already exists with same title
-          EXISTING_PR=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-            "https://api.github.com/repos/${OWNER}/${REPO}/pulls?state=open" | \
-            jq -r ".[] | select(.title == \"${PR_TITLE}\") | .number" | head -1)
-          
-          if [ -n "$EXISTING_PR" ]; then
-            echo "existing_pr=$EXISTING_PR" >> $GITHUB_OUTPUT
-            echo "::warning::PR already exists: #$EXISTING_PR - https://github.com/${OWNER}/${REPO}/pull/$EXISTING_PR"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Clone and apply patch
-        id: apply
-        if: steps.check_pr.outputs.skip != 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          TARGET_REPO_INPUT: ${{ inputs.target_repo }}
+          BASE_BRANCH_INPUT: ${{ inputs.base_branch }}
+          PR_TITLE_INPUT: ${{ inputs.pr_title }}
+          USE_FORK_INPUT: ${{ inputs.use_fork }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
         run: |
           set -euo pipefail
-          OWNER="${{ steps.repo.outputs.owner }}"
-          REPO="${{ steps.repo.outputs.repo }}"
-          TARGET="${{ steps.target.outputs.target }}"
-          FORK_OWNER="${{ steps.target.outputs.fork_owner }}"
-          BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
-          PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
-          PATCH_PATH="${{ steps.patch.outputs.patch_path }}"
-          
-          # Use consistent branch name
-          BRANCH="contribution-enhancements"
-          
-          # Clean up old branches in fork
-          git clone --depth 1 https://x-access-token:${GITHUB_TOKEN}@github.com/${FORK_OWNER}/${REPO}_fork.git /tmp/fork-repo 2>/dev/null || true
-          if [ -d /tmp/fork-repo ]; then
-            cd /tmp/fork-repo
-            # Delete old contribution branches
-            git branch -r | grep "contribution-enhancements" | while read branch; do
-              branch_name=$(echo "$branch" | sed 's/origin\///')
-              git push origin --delete "$branch_name" 2>/dev/null || true
-            done
-          fi
-          
-          # Clone target repo
-          git clone --depth 1 https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git /tmp/target-repo
-          cd /tmp/target-repo
-          
-          git checkout -b $BRANCH
-          
-          if git apply --check $PATCH_PATH 2>/dev/null; then
-            git apply $PATCH_PATH
+          target_repo="${TARGET_REPO_INPUT:-credkellar/iOS-Termux}"
+          base_branch="${BASE_BRANCH_INPUT:-main}"
+          pr_title="${PR_TITLE_INPUT:-Security: require explicit SSH key authentication for public sshd}"
+          use_fork="${USE_FORK_INPUT:-true}"
+          [[ "$target_repo" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || { echo "Invalid owner/repo"; exit 2; }
+          [[ "$base_branch" =~ ^[A-Za-z0-9._/-]+$ ]] || { echo "Invalid base branch"; exit 2; }
+          [[ "$use_fork" == "true" || "$use_fork" == "false" ]] || { echo "use_fork must be boolean"; exit 2; }
+          owner="${target_repo%%/*}"
+          name="${target_repo#*/}"
+          if [[ "$use_fork" == "true" ]]; then
+            push_owner="timerloggedout-spec"
+            push_repo="${name}_fork"
           else
-            echo "Patch does not apply cleanly, trying with index"
-            git apply --index $PATCH_PATH || {
-              echo "Patch application failed"
-              exit 1
-            }
+            push_owner="$owner"
+            push_repo="$name"
           fi
-          
+          branch="security-public-ssh-key-auth-${RUN_ID}"
+          {
+            echo "owner=$owner"
+            echo "repo=$name"
+            echo "base_branch=$base_branch"
+            echo "pr_title<<EOF"
+            echo "$pr_title"
+            echo "EOF"
+            echo "push_owner=$push_owner"
+            echo "push_repo=$push_repo"
+            echo "branch=$branch"
+            echo "head=$push_owner:$branch"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Require cross-repository token
+        env:
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${OPERATOR_TOKEN:-}" ]]; then
+            echo "::error::OPERATOR_GITHUB_TOKEN is required to push the fork and open an upstream PR."
+            exit 1
+          fi
+
+      - name: Verify patch and prepare target branch
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OWNER: ${{ steps.cfg.outputs.owner }}
+          REPO: ${{ steps.cfg.outputs.repo }}
+          PUSH_OWNER: ${{ steps.cfg.outputs.push_owner }}
+          PUSH_REPO: ${{ steps.cfg.outputs.push_repo }}
+          BASE_BRANCH: ${{ steps.cfg.outputs.base_branch }}
+          BRANCH: ${{ steps.cfg.outputs.branch }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s .github/patches/ios-termux-security.patch
+          test -s .github/patches/ios-termux-security-pr.md
+          git clone --depth 1 --branch "$BASE_BRANCH" "https://github.com/$OWNER/$REPO.git" /tmp/target
+          cd /tmp/target
+          git apply --check "$GITHUB_WORKSPACE/.github/patches/ios-termux-security.patch"
+          git apply "$GITHUB_WORKSPACE/.github/patches/ios-termux-security.patch"
+          git diff --check
           git config user.name "timerloggedout-spec"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "$PR_TITLE"
-          
-          git remote add target "https://x-access-token:${GITHUB_TOKEN}@github.com/${TARGET}.git"
-          git push target $BRANCH --force
-          
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "Committed to ${TARGET}:${BRANCH}"
+          git add ios2termux/brains.py tests/test_security_regressions.py
+          git diff --cached --check
+          git diff --cached --quiet && { echo "Patch produced no changes"; exit 3; }
+          git commit -m "Security: require key auth for public SSH"
+          git remote add contribution "https://x-access-token:${GH_TOKEN}@github.com/$PUSH_OWNER/$PUSH_REPO.git"
+          git push contribution "HEAD:refs/heads/$BRANCH"
 
-      - name: Create Pull Request
-        id: pr
-        if: steps.check_pr.outputs.skip != 'true' && steps.apply.outcome == 'success'
+      - name: Check for existing pull request
+        id: existing
         env:
-          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OWNER: ${{ steps.cfg.outputs.owner }}
+          REPO: ${{ steps.cfg.outputs.repo }}
+          HEAD_LABEL: ${{ steps.cfg.outputs.head }}
+          BASE_BRANCH: ${{ steps.cfg.outputs.base_branch }}
+        shell: bash
         run: |
           set -euo pipefail
-          OWNER="${{ steps.repo.outputs.owner }}"
-          REPO="${{ steps.repo.outputs.repo }}"
-          FORK_OWNER="${{ steps.target.outputs.fork_owner }}"
-          BASE_BRANCH="${{ steps.defaults.outputs.base_branch }}"
-          PR_TITLE="${{ steps.defaults.outputs.pr_title }}"
-          BRANCH="${{ steps.apply.outputs.branch }}"
-          
-          PR_BODY="This PR adds significant enhancements to the iOS-Termux project:\n\n\n## Changes\n- Add 22 new command translations (43 total, was 21)\n- Add 4 new path translations (9 total, was 5)\n- Add 30 new comprehensive tests (73 total, was 43)\n- All existing tests still pass\n- All 48 checks still pass\n- 100% backward compatible\n\n## New Command Translations\n- pkg upgrade, apt upgrade, pkg remove, pkg search\n- dpkg -l, apt search, xdg-open\n- termux-clipboard-set {text}, termux-tts-stop\n- termux-download, termux-download --timeout\n- termux-vibrate, termux-notification, termux-camera-photo, termux-sensor\n\n## New Path Translations\n- ~/storage/external-1, /sdcard\n- /storage/emulated/0, /storage/emulated/0/Download\n\nContribution from termux-monorepo collaboration.\n\nCo-authored-by: Vibe Code <vibe@mistral.ai>"
-          
-          # Use GitHub API directly for PR creation
-          PR_JSON=$(curl -s -X POST \
-            -H "Authorization: token ${GITHUB_TOKEN}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -d "{\"title\":\"${PR_TITLE}\",\"body\":\"${PR_BODY}\",\"head\":\"${FORK_OWNER}:${BRANCH}\",\"base\":\"${BASE_BRANCH}\"}" \
-            "https://api.github.com/repos/${OWNER}/${REPO}/pulls" 2>&1 || echo "")
-          
-          PR_URL=$(echo "$PR_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin).get('html_url', ''))")
-          PR_NUMBER=$(echo "$PR_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin).get('number', ''))")
-          
-          if [ -n "$PR_URL" ] && [ "$PR_URL" != "" ]; then
-            echo "::notice::PR created: $PR_URL"
-            echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
-            echo "PR created successfully: #$PR_NUMBER - $PR_URL"
-          else
-            echo "PR creation may have failed"
-            echo "PR_JSON: $PR_JSON"
-            echo "Try creating PR manually from ${FORK_OWNER}:${BRANCH}"
-          fi
+          prs="$(curl --fail-with-body --silent --show-error             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/$OWNER/$REPO/pulls?state=open&per_page=100")"
+          number="$(jq -r --arg head "$HEAD_LABEL" --arg base "$BASE_BRANCH"             '[.[] | select(.head.label == $head and .base.ref == $base)][0].number // empty' <<<"$prs")"
+          echo "number=$number" >> "$GITHUB_OUTPUT"
 
-      - name: Skip - PR already exists
-        if: steps.check_pr.outputs.skip == 'true'
+      - name: Create pull request
+        if: steps.existing.outputs.number == ''
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OWNER: ${{ steps.cfg.outputs.owner }}
+          REPO: ${{ steps.cfg.outputs.repo }}
+          HEAD_LABEL: ${{ steps.cfg.outputs.head }}
+          BASE_BRANCH: ${{ steps.cfg.outputs.base_branch }}
+          PR_TITLE: ${{ steps.cfg.outputs.pr_title }}
+        shell: bash
         run: |
-          EXISTING_PR="${{ steps.check_pr.outputs.existing_pr }}"
-          echo "::notice::Skipping - PR already exists: #$EXISTING_PR"
-          echo "Existing PR: https://github.com/${{ steps.repo.outputs.owner }}/${{ steps.repo.outputs.repo }}/pull/$EXISTING_PR"
+          set -euo pipefail
+          body="$(cat .github/patches/ios-termux-security-pr.md)"
+          jq -n --arg title "$PR_TITLE" --arg body "$body"             --arg head "$HEAD_LABEL" --arg base "$BASE_BRANCH"             '{title:$title, body:$body, head:$head, base:$base, maintainer_can_modify:true}' > /tmp/pr.json
+          response="$(curl --fail-with-body --silent --show-error             -X POST             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             -H "X-GitHub-Api-Version: 2022-11-28"             -d @/tmp/pr.json             "https://api.github.com/repos/$OWNER/$REPO/pulls")"
+          url="$(jq -r '.html_url // empty' <<<"$response")"
+          [[ -n "$url" ]] || { echo "::error::GitHub did not return a PR URL"; exit 4; }
+          echo "::notice::Created $url"
+          echo "PR_URL=$url" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report existing pull request
+        if: steps.existing.outputs.number != ''
+        env:
+          OWNER: ${{ steps.cfg.outputs.owner }}
+          REPO: ${{ steps.cfg.outputs.repo }}
+          NUMBER: ${{ steps.existing.outputs.number }}
+        run: echo "Existing PR: https://github.com/$OWNER/$REPO/pull/$NUMBER" >> "$GITHUB_STEP_SUMMARY"

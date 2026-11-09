@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-09T14:13:32Z)
+# Lane matrix status (2026-11-09T14:15:27Z)
 
-- Master: `c49dbd61fe1780a0a3baae1e397d4a23b091e882`
+- Master: `969c118111f8ae288c748e8acdce7a6b4c3efbcb`
 - Open PRs: **327**
 - Oldest: #47 (95.94d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -23,9 +23,9 @@
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
 | #1436 | 19.32 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
-| #2702 | 8.91 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 6.41 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 5.72 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #2702 | 8.92 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
+| #4069 | 6.42 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 5.73 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 5.07 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 2.97 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 95.94 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
@@ -61,6 +61,6 @@
 | #1966 | 12.38 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 10.22 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
 | #2577 | 9.58 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
-| #2856 | 8.51 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
+| #2856 | 8.52 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

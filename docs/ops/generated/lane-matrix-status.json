@@ -1,31 +1,31 @@
 {
   "schema": "lane-matrix-sweep/v2",
-  "observed_at": "2026-11-08T17:13:50Z",
+  "observed_at": "2026-11-09T13:52:01Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "c07ae7a1e2c449979a903eaba8b1d5419e441680",
+  "master_sha": "46c5baac4c9edb58d6aaa82396951f764ec06cd5",
   "freshness": {
     "trigger": "pull_request_target",
     "semantics": "event-driven snapshot; age buckets are informational at observed_at",
     "polling": false
   },
   "counts": {
-    "open_prs": 325,
+    "open_prs": 328,
     "by_lane": {
       "CANDIDATE": 94,
-      "NEED_EVIDENCE": 66,
-      "SUPERSEDE": 159,
+      "NEED_EVIDENCE": 67,
+      "SUPERSEDE": 161,
       "EXTRACT": 6
     },
     "by_age": {
       "ancient": 22,
-      "stale": 6,
-      "mid": 131,
-      "fresh": 166
+      "stale": 7,
+      "mid": 144,
+      "fresh": 155
     }
   },
   "oldest": {
     "number": 47,
-    "days_open": 95.06,
+    "days_open": 95.92,
     "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
     "lane": "CANDIDATE"
   },
@@ -44,7 +44,7 @@
       "changed_files": -1,
       "created_at": "2026-08-05T15:44:30Z",
       "updated_at": "2026-10-23T13:34:06Z",
-      "days_open": 95.06,
+      "days_open": 95.92,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -66,7 +66,7 @@
       "changed_files": -1,
       "created_at": "2026-08-05T16:39:27Z",
       "updated_at": "2026-11-06T14:26:10Z",
-      "days_open": 95.02,
+      "days_open": 95.88,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -88,7 +88,7 @@
       "changed_files": -1,
       "created_at": "2026-08-07T21:52:05Z",
       "updated_at": "2026-10-22T22:25:52Z",
-      "days_open": 92.81,
+      "days_open": 93.67,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -110,7 +110,7 @@
       "changed_files": -1,
       "created_at": "2026-08-08T14:48:06Z",
       "updated_at": "2026-10-21T04:40:31Z",
-      "days_open": 92.1,
+      "days_open": 92.96,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -132,7 +132,7 @@
       "changed_files": -1,
       "created_at": "2026-08-09T01:01:40Z",
       "updated_at": "2026-11-06T14:26:17Z",
-      "days_open": 91.68,
+      "days_open": 92.53,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -154,7 +154,7 @@
       "changed_files": -1,
       "created_at": "2026-08-09T22:42:25Z",
       "updated_at": "2026-10-24T23:34:10Z",
-      "days_open": 90.77,
+      "days_open": 91.63,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -176,7 +176,7 @@
       "changed_files": -1,
       "created_at": "2026-08-10T15:24:47Z",
       "updated_at": "2026-10-26T07:41:31Z",
-      "days_open": 90.08,
+      "days_open": 90.94,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -198,7 +198,7 @@
       "changed_files": -1,
       "created_at": "2026-08-21T18:47:02Z",
       "updated_at": "2026-10-21T03:23:04Z",
-      "days_open": 78.94,
+      "days_open": 79.8,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -220,7 +220,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T05:37:08Z",
       "updated_at": "2026-08-30T11:56:02Z",
-      "days_open": 72.48,
+      "days_open": 73.34,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -242,7 +242,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T06:20:05Z",
       "updated_at": "2026-09-03T22:51:06Z",
-      "days_open": 72.45,
+      "days_open": 73.31,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -264,7 +264,7 @@
       "changed_files": -1,
       "created_at": "2026-08-30T08:03:36Z",
       "updated_at": "2026-09-03T20:03:43Z",
-      "days_open": 70.38,
+      "days_open": 71.24,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -286,7 +286,7 @@
       "changed_files": -1,
       "created_at": "2026-09-15T07:56:20Z",
       "updated_at": "2026-11-06T14:26:06Z",
-      "days_open": 54.39,
+      "days_open": 55.25,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -308,7 +308,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T08:34:24Z",
       "updated_at": "2026-10-06T07:08:10Z",
-      "days_open": 52.36,
+      "days_open": 53.22,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -330,7 +330,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T17:54:07Z",
       "updated_at": "2026-10-23T07:40:01Z",
-      "days_open": 50.97,
+      "days_open": 51.83,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -352,7 +352,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T18:25:04Z",
       "updated_at": "2026-10-23T13:34:16Z",
-      "days_open": 48.95,
+      "days_open": 49.81,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -374,7 +374,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T13:05:01Z",
       "updated_at": "2026-10-25T00:44:19Z",
-      "days_open": 47.17,
+      "days_open": 48.03,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -396,7 +396,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:21:54Z",
       "updated_at": "2026-09-22T22:22:38Z",
-      "days_open": 46.79,
+      "days_open": 47.65,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -418,7 +418,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:23:38Z",
       "updated_at": "2026-09-23T03:24:12Z",
-      "days_open": 46.58,
+      "days_open": 47.44,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -440,7 +440,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:33:34Z",
       "updated_at": "2026-09-23T09:26:30Z",
-      "days_open": 46.57,
+      "days_open": 47.43,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -462,7 +462,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:42:32Z",
       "updated_at": "2026-09-23T04:00:16Z",
-      "days_open": 46.56,
+      "days_open": 47.42,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -484,7 +484,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T07:36:29Z",
       "updated_at": "2026-10-22T22:26:28Z",
-      "days_open": 46.4,
+      "days_open": 47.26,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -506,7 +506,7 @@
       "changed_files": -1,
       "created_at": "2026-09-25T01:06:46Z",
       "updated_at": "2026-09-25T01:08:41Z",
-      "days_open": 44.67,
+      "days_open": 45.53,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -528,7 +528,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T01:04:39Z",
       "updated_at": "2026-10-01T01:05:40Z",
-      "days_open": 38.67,
+      "days_open": 39.53,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -550,7 +550,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T09:53:01Z",
       "updated_at": "2026-10-21T04:40:59Z",
-      "days_open": 38.31,
+      "days_open": 39.17,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -572,7 +572,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T12:03:18Z",
       "updated_at": "2026-10-01T12:22:22Z",
-      "days_open": 38.22,
+      "days_open": 39.08,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -594,7 +594,7 @@
       "changed_files": -1,
       "created_at": "2026-10-02T06:35:56Z",
       "updated_at": "2026-10-23T07:40:13Z",
-      "days_open": 37.44,
+      "days_open": 38.3,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -616,7 +616,7 @@
       "changed_files": -1,
       "created_at": "2026-10-03T12:53:32Z",
       "updated_at": "2026-10-23T07:40:17Z",
-      "days_open": 36.18,
+      "days_open": 37.04,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -638,7 +638,7 @@
       "changed_files": -1,
       "created_at": "2026-10-19T09:18:06Z",
       "updated_at": "2026-10-23T07:40:35Z",
-      "days_open": 20.33,
+      "days_open": 21.19,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -660,8 +660,8 @@
       "changed_files": -1,
       "created_at": "2026-10-20T06:16:16Z",
       "updated_at": "2026-10-20T07:17:41Z",
-      "days_open": 19.46,
-      "age_bucket": "mid",
+      "days_open": 20.32,
+      "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -682,7 +682,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T06:36:50Z",
       "updated_at": "2026-10-21T10:53:39Z",
-      "days_open": 18.44,
+      "days_open": 19.3,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -705,7 +705,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T07:48:16Z",
       "updated_at": "2026-11-02T09:40:15Z",
-      "days_open": 18.39,
+      "days_open": 19.25,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -727,7 +727,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T13:05:14Z",
       "updated_at": "2026-10-23T13:34:01Z",
-      "days_open": 18.17,
+      "days_open": 19.03,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -749,7 +749,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T13:13:33Z",
       "updated_at": "2026-10-23T13:34:11Z",
-      "days_open": 18.17,
+      "days_open": 19.03,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -771,7 +771,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T23:38:29Z",
       "updated_at": "2026-11-06T14:26:03Z",
-      "days_open": 17.73,
+      "days_open": 18.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -793,7 +793,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T02:25:01Z",
       "updated_at": "2026-10-26T23:10:29Z",
-      "days_open": 17.62,
+      "days_open": 18.48,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -815,7 +815,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T06:38:59Z",
       "updated_at": "2026-11-06T14:26:20Z",
-      "days_open": 17.44,
+      "days_open": 18.3,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -837,7 +837,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T07:32:45Z",
       "updated_at": "2026-10-22T07:33:38Z",
-      "days_open": 17.4,
+      "days_open": 18.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -859,7 +859,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:00:00Z",
       "updated_at": "2026-10-22T13:58:29Z",
-      "days_open": 17.38,
+      "days_open": 18.24,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -881,7 +881,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:16:12Z",
       "updated_at": "2026-10-22T22:26:02Z",
-      "days_open": 17.37,
+      "days_open": 18.23,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -903,7 +903,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:18:59Z",
       "updated_at": "2026-11-06T23:17:51Z",
-      "days_open": 17.37,
+      "days_open": 18.23,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -925,7 +925,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:20:11Z",
       "updated_at": "2026-10-22T08:23:49Z",
-      "days_open": 17.37,
+      "days_open": 18.23,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -947,7 +947,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:23:03Z",
       "updated_at": "2026-10-22T08:24:30Z",
-      "days_open": 17.37,
+      "days_open": 18.23,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -969,7 +969,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:38:15Z",
       "updated_at": "2026-10-22T12:32:13Z",
-      "days_open": 17.36,
+      "days_open": 18.22,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -991,7 +991,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:00:52Z",
       "updated_at": "2026-10-22T09:02:48Z",
-      "days_open": 17.34,
+      "days_open": 18.2,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1013,7 +1013,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:04:40Z",
       "updated_at": "2026-10-22T09:07:25Z",
-      "days_open": 17.34,
+      "days_open": 18.2,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1035,7 +1035,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:36:17Z",
       "updated_at": "2026-10-22T11:38:12Z",
-      "days_open": 17.23,
+      "days_open": 18.09,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1057,7 +1057,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:44:27Z",
       "updated_at": "2026-10-22T12:50:29Z",
-      "days_open": 17.23,
+      "days_open": 18.09,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1079,7 +1079,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T17:16:26Z",
       "updated_at": "2026-10-22T22:08:16Z",
-      "days_open": 17.0,
+      "days_open": 17.86,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1101,7 +1101,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T22:18:51Z",
       "updated_at": "2026-10-22T22:19:32Z",
-      "days_open": 16.79,
+      "days_open": 17.65,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1123,7 +1123,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T23:21:39Z",
       "updated_at": "2026-11-06T14:26:23Z",
-      "days_open": 16.74,
+      "days_open": 17.6,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1145,7 +1145,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T01:03:39Z",
       "updated_at": "2026-10-23T18:28:41Z",
-      "days_open": 16.67,
+      "days_open": 17.53,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1167,7 +1167,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T07:32:36Z",
       "updated_at": "2026-10-23T07:33:19Z",
-      "days_open": 16.4,
+      "days_open": 17.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1189,7 +1189,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T07:49:25Z",
       "updated_at": "2026-10-24T04:02:40Z",
-      "days_open": 16.39,
+      "days_open": 17.25,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1211,7 +1211,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T08:06:51Z",
       "updated_at": "2026-10-23T08:07:29Z",
-      "days_open": 16.38,
+      "days_open": 17.24,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1233,7 +1233,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T17:14:33Z",
       "updated_at": "2026-10-23T17:14:48Z",
-      "days_open": 16.0,
+      "days_open": 16.86,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1255,7 +1255,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T22:32:05Z",
       "updated_at": "2026-10-23T22:37:54Z",
-      "days_open": 15.78,
+      "days_open": 16.64,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1277,7 +1277,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T23:36:59Z",
       "updated_at": "2026-11-06T14:26:13Z",
-      "days_open": 15.73,
+      "days_open": 16.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1299,7 +1299,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T01:09:43Z",
       "updated_at": "2026-10-25T02:39:40Z",
-      "days_open": 15.67,
+      "days_open": 16.53,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1321,7 +1321,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:02:24Z",
       "updated_at": "2026-10-24T03:24:07Z",
-      "days_open": 15.59,
+      "days_open": 16.45,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1343,7 +1343,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:10:50Z",
       "updated_at": "2026-10-24T03:11:37Z",
-      "days_open": 15.59,
+      "days_open": 16.45,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1365,7 +1365,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:18:20Z",
       "updated_at": "2026-10-25T02:25:16Z",
-      "days_open": 15.58,
+      "days_open": 16.44,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1387,7 +1387,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T06:10:56Z",
       "updated_at": "2026-10-24T06:36:09Z",
-      "days_open": 15.46,
+      "days_open": 16.32,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1409,7 +1409,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T06:55:09Z",
       "updated_at": "2026-10-24T06:55:51Z",
-      "days_open": 15.43,
+      "days_open": 16.29,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1431,7 +1431,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T07:18:36Z",
       "updated_at": "2026-10-24T07:22:16Z",
-      "days_open": 15.41,
+      "days_open": 16.27,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1453,7 +1453,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T08:12:29Z",
       "updated_at": "2026-10-24T08:12:48Z",
-      "days_open": 15.38,
+      "days_open": 16.24,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1475,7 +1475,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T22:21:51Z",
       "updated_at": "2026-10-24T22:23:11Z",
-      "days_open": 14.79,
+      "days_open": 15.65,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1497,7 +1497,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T23:18:10Z",
       "updated_at": "2026-11-06T14:27:09Z",
-      "days_open": 14.75,
+      "days_open": 15.61,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1519,7 +1519,7 @@
       "changed_files": -1,
       "created_at": "2026-10-25T00:28:43Z",
       "updated_at": "2026-10-25T00:30:39Z",
-      "days_open": 14.7,
+      "days_open": 15.56,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1541,7 +1541,7 @@
       "changed_files": -1,
       "created_at": "2026-10-25T02:12:55Z",
       "updated_at": "2026-10-25T02:14:09Z",
-      "days_open": 14.63,
+      "days_open": 15.49,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1563,7 +1563,7 @@
       "changed_files": -1,
       "created_at": "2026-10-25T07:32:55Z",
       "updated_at": "2026-10-25T08:24:38Z",
-      "days_open": 14.4,
+      "days_open": 15.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1585,7 +1585,7 @@
       "changed_files": -1,
       "created_at": "2026-10-26T08:06:29Z",
       "updated_at": "2026-10-26T08:06:51Z",
-      "days_open": 13.38,
+      "days_open": 14.24,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1607,7 +1607,7 @@
       "changed_files": -1,
       "created_at": "2026-10-26T23:11:31Z",
       "updated_at": "2026-10-27T11:27:12Z",
-      "days_open": 12.75,
+      "days_open": 13.61,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1629,7 +1629,7 @@
       "changed_files": -1,
       "created_at": "2026-10-26T23:43:50Z",
       "updated_at": "2026-10-26T23:44:27Z",
-      "days_open": 12.73,
+      "days_open": 13.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1651,7 +1651,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T01:28:39Z",
       "updated_at": "2026-10-27T11:24:02Z",
-      "days_open": 12.66,
+      "days_open": 13.52,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1673,7 +1673,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T07:35:43Z",
       "updated_at": "2026-10-27T07:51:53Z",
-      "days_open": 12.4,
+      "days_open": 13.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1695,7 +1695,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T07:37:04Z",
       "updated_at": "2026-10-27T07:42:12Z",
-      "days_open": 12.4,
+      "days_open": 13.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1717,7 +1717,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T08:07:14Z",
       "updated_at": "2026-10-27T08:11:49Z",
-      "days_open": 12.38,
+      "days_open": 13.24,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1739,7 +1739,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T11:17:50Z",
       "updated_at": "2026-10-30T07:04:28Z",
-      "days_open": 12.25,
+      "days_open": 13.11,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1761,7 +1761,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T11:21:40Z",
       "updated_at": "2026-10-27T11:22:58Z",
-      "days_open": 12.24,
+      "days_open": 13.1,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1783,7 +1783,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T12:35:35Z",
       "updated_at": "2026-11-08T14:26:09Z",
-      "days_open": 12.19,
+      "days_open": 13.05,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1805,7 +1805,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T18:05:01Z",
       "updated_at": "2026-10-27T18:05:20Z",
-      "days_open": 11.96,
+      "days_open": 12.82,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1827,7 +1827,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T22:15:41Z",
       "updated_at": "2026-10-27T22:21:15Z",
-      "days_open": 11.79,
+      "days_open": 12.65,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1849,7 +1849,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T23:32:58Z",
       "updated_at": "2026-11-06T14:25:55Z",
-      "days_open": 11.74,
+      "days_open": 12.6,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1871,7 +1871,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T05:02:32Z",
       "updated_at": "2026-10-29T06:02:41Z",
-      "days_open": 11.51,
+      "days_open": 12.37,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1893,7 +1893,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T07:42:17Z",
       "updated_at": "2026-10-28T07:47:28Z",
-      "days_open": 11.4,
+      "days_open": 12.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1915,7 +1915,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T07:57:56Z",
       "updated_at": "2026-10-28T08:10:08Z",
-      "days_open": 11.39,
+      "days_open": 12.25,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1937,7 +1937,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:45:38Z",
       "updated_at": "2026-10-28T19:50:08Z",
-      "days_open": 10.89,
+      "days_open": 11.75,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1959,7 +1959,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:50:08Z",
       "updated_at": "2026-10-28T19:54:15Z",
-      "days_open": 10.89,
+      "days_open": 11.75,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1981,7 +1981,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:50:37Z",
       "updated_at": "2026-10-28T19:55:07Z",
-      "days_open": 10.89,
+      "days_open": 11.75,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2003,7 +2003,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:53:59Z",
       "updated_at": "2026-10-28T19:56:43Z",
-      "days_open": 10.89,
+      "days_open": 11.75,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2025,7 +2025,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:54:46Z",
       "updated_at": "2026-10-28T19:57:26Z",
-      "days_open": 10.89,
+      "days_open": 11.75,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2047,7 +2047,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T19:57:16Z",
       "updated_at": "2026-10-28T19:59:25Z",
-      "days_open": 10.89,
+      "days_open": 11.75,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2069,7 +2069,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T21:50:33Z",
       "updated_at": "2026-11-04T22:59:47Z",
-      "days_open": 10.81,
+      "days_open": 11.67,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2091,7 +2091,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T22:19:49Z",
       "updated_at": "2026-10-28T22:19:49Z",
-      "days_open": 10.79,
+      "days_open": 11.65,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2113,7 +2113,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T22:36:49Z",
       "updated_at": "2026-10-28T22:38:27Z",
-      "days_open": 10.78,
+      "days_open": 11.64,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2135,7 +2135,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T22:37:18Z",
       "updated_at": "2026-11-07T21:10:06Z",
-      "days_open": 10.78,
+      "days_open": 11.64,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2157,7 +2157,7 @@
       "changed_files": -1,
       "created_at": "2026-10-28T23:34:39Z",
       "updated_at": "2026-11-06T14:25:52Z",
-      "days_open": 10.74,
+      "days_open": 11.6,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2179,7 +2179,7 @@
       "changed_files": -1,
       "created_at": "2026-10-29T05:02:25Z",
       "updated_at": "2026-11-07T21:16:07Z",
-      "days_open": 10.51,
+      "days_open": 11.37,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2201,7 +2201,7 @@
       "changed_files": -1,
       "created_at": "2026-10-29T07:24:26Z",
       "updated_at": "2026-10-29T07:26:09Z",
-      "days_open": 10.41,
+      "days_open": 11.27,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2223,7 +2223,7 @@
       "changed_files": -1,
       "created_at": "2026-10-29T22:36:32Z",
       "updated_at": "2026-10-29T22:37:14Z",
-      "days_open": 9.78,
+      "days_open": 10.64,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2245,7 +2245,7 @@
       "changed_files": -1,
       "created_at": "2026-10-29T23:39:58Z",
       "updated_at": "2026-10-29T23:40:31Z",
-      "days_open": 9.73,
+      "days_open": 10.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2267,7 +2267,7 @@
       "changed_files": -1,
       "created_at": "2026-10-29T23:51:35Z",
       "updated_at": "2026-10-29T23:51:50Z",
-      "days_open": 9.72,
+      "days_open": 10.58,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2289,7 +2289,7 @@
       "changed_files": -1,
       "created_at": "2026-10-29T23:52:11Z",
       "updated_at": "2026-10-29T23:52:11Z",
-      "days_open": 9.72,
+      "days_open": 10.58,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2311,7 +2311,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T01:30:23Z",
       "updated_at": "2026-10-30T01:30:56Z",
-      "days_open": 9.66,
+      "days_open": 10.52,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2333,7 +2333,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T02:07:43Z",
       "updated_at": "2026-10-30T02:08:01Z",
-      "days_open": 9.63,
+      "days_open": 10.49,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2355,7 +2355,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T02:08:45Z",
       "updated_at": "2026-10-30T02:09:00Z",
-      "days_open": 9.63,
+      "days_open": 10.49,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2377,7 +2377,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T07:37:44Z",
       "updated_at": "2026-11-01T01:43:08Z",
-      "days_open": 9.4,
+      "days_open": 10.26,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2399,7 +2399,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T08:06:15Z",
       "updated_at": "2026-10-30T08:11:42Z",
-      "days_open": 9.38,
+      "days_open": 10.24,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2421,7 +2421,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T08:57:19Z",
       "updated_at": "2026-10-30T08:59:17Z",
-      "days_open": 9.34,
+      "days_open": 10.2,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -2443,7 +2443,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T09:07:33Z",
       "updated_at": "2026-10-30T09:16:35Z",
-      "days_open": 9.34,
+      "days_open": 10.2,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -2465,7 +2465,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T09:59:57Z",
       "updated_at": "2026-10-30T10:00:18Z",
-      "days_open": 9.3,
+      "days_open": 10.16,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2487,7 +2487,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:02:06Z",
       "updated_at": "2026-10-30T10:02:21Z",
-      "days_open": 9.3,
+      "days_open": 10.16,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2509,7 +2509,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:35:07Z",
       "updated_at": "2026-10-30T10:35:07Z",
-      "days_open": 9.28,
+      "days_open": 10.14,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2531,7 +2531,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:43:28Z",
       "updated_at": "2026-10-30T10:43:43Z",
-      "days_open": 9.27,
+      "days_open": 10.13,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2553,7 +2553,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T11:13:08Z",
       "updated_at": "2026-10-30T11:13:25Z",
-      "days_open": 9.25,
+      "days_open": 10.11,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2575,7 +2575,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T22:24:11Z",
       "updated_at": "2026-10-30T22:25:33Z",
-      "days_open": 8.78,
+      "days_open": 9.64,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2597,7 +2597,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:33:50Z",
       "updated_at": "2026-10-30T23:34:19Z",
-      "days_open": 8.74,
+      "days_open": 9.6,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2619,7 +2619,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:40:29Z",
       "updated_at": "2026-10-30T23:40:58Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2641,7 +2641,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:42:12Z",
       "updated_at": "2026-10-30T23:42:56Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2663,7 +2663,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:42:53Z",
       "updated_at": "2026-10-30T23:43:50Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2685,7 +2685,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:44:25Z",
       "updated_at": "2026-10-30T23:44:25Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2707,7 +2707,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:45:46Z",
       "updated_at": "2026-10-30T23:46:02Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2729,7 +2729,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:46:39Z",
       "updated_at": "2026-10-30T23:48:38Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2751,7 +2751,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:49:12Z",
       "updated_at": "2026-10-30T23:49:52Z",
-      "days_open": 8.73,
+      "days_open": 9.59,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2773,7 +2773,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:55:28Z",
       "updated_at": "2026-10-30T23:55:45Z",
-      "days_open": 8.72,
+      "days_open": 9.58,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2795,7 +2795,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:59:02Z",
       "updated_at": "2026-10-30T23:59:17Z",
-      "days_open": 8.72,
+      "days_open": 9.58,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2817,7 +2817,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:07:39Z",
       "updated_at": "2026-10-31T00:08:19Z",
-      "days_open": 8.71,
+      "days_open": 9.57,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2839,7 +2839,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:08:12Z",
       "updated_at": "2026-10-31T00:08:27Z",
-      "days_open": 8.71,
+      "days_open": 9.57,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2861,7 +2861,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:09:38Z",
       "updated_at": "2026-10-31T00:10:06Z",
-      "days_open": 8.71,
+      "days_open": 9.57,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2883,7 +2883,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:10:15Z",
       "updated_at": "2026-10-31T00:10:33Z",
-      "days_open": 8.71,
+      "days_open": 9.57,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2905,7 +2905,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:14:41Z",
       "updated_at": "2026-10-31T00:23:36Z",
-      "days_open": 8.71,
+      "days_open": 9.57,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -2927,7 +2927,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T00:18:35Z",
       "updated_at": "2026-11-01T02:52:15Z",
-      "days_open": 8.71,
+      "days_open": 9.56,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -2949,7 +2949,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T01:12:30Z",
       "updated_at": "2026-10-31T01:13:11Z",
-      "days_open": 8.67,
+      "days_open": 9.53,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2971,7 +2971,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T01:14:28Z",
       "updated_at": "2026-10-31T01:14:50Z",
-      "days_open": 8.67,
+      "days_open": 9.53,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2993,7 +2993,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T02:05:32Z",
       "updated_at": "2026-10-31T02:06:13Z",
-      "days_open": 8.63,
+      "days_open": 9.49,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3015,7 +3015,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T04:58:05Z",
       "updated_at": "2026-10-31T04:58:22Z",
-      "days_open": 8.51,
+      "days_open": 9.37,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3037,7 +3037,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:00:34Z",
       "updated_at": "2026-10-31T05:01:04Z",
-      "days_open": 8.51,
+      "days_open": 9.37,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3059,7 +3059,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:01:39Z",
       "updated_at": "2026-10-31T05:01:53Z",
-      "days_open": 8.51,
+      "days_open": 9.37,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3081,7 +3081,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:02:26Z",
       "updated_at": "2026-10-31T05:02:35Z",
-      "days_open": 8.51,
+      "days_open": 9.37,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3103,7 +3103,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:33:53Z",
       "updated_at": "2026-10-31T05:34:17Z",
-      "days_open": 8.49,
+      "days_open": 9.35,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3125,7 +3125,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T05:34:09Z",
       "updated_at": "2026-10-31T05:34:47Z",
-      "days_open": 8.49,
+      "days_open": 9.35,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3147,7 +3147,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T16:16:02Z",
       "updated_at": "2026-10-31T16:17:00Z",
-      "days_open": 8.04,
+      "days_open": 8.9,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -3170,7 +3170,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T22:19:57Z",
       "updated_at": "2026-10-31T22:20:31Z",
-      "days_open": 7.79,
+      "days_open": 8.65,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3192,7 +3192,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T01:52:20Z",
       "updated_at": "2026-11-02T09:46:47Z",
-      "days_open": 7.64,
+      "days_open": 8.5,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3214,7 +3214,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T01:52:29Z",
       "updated_at": "2026-11-01T01:53:48Z",
-      "days_open": 7.64,
+      "days_open": 8.5,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3236,7 +3236,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T02:26:11Z",
       "updated_at": "2026-11-01T02:39:04Z",
-      "days_open": 7.62,
+      "days_open": 8.48,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3258,7 +3258,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T02:37:44Z",
       "updated_at": "2026-11-03T07:55:22Z",
-      "days_open": 7.61,
+      "days_open": 8.47,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3280,7 +3280,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T04:48:24Z",
       "updated_at": "2026-11-02T15:21:30Z",
-      "days_open": 7.52,
+      "days_open": 8.38,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3302,7 +3302,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T07:12:03Z",
       "updated_at": "2026-11-01T20:16:49Z",
-      "days_open": 7.42,
+      "days_open": 8.28,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3324,7 +3324,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T07:21:13Z",
       "updated_at": "2026-11-01T09:59:36Z",
-      "days_open": 7.41,
+      "days_open": 8.27,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3346,7 +3346,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T09:00:42Z",
       "updated_at": "2026-11-01T09:01:25Z",
-      "days_open": 7.34,
+      "days_open": 8.2,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3368,7 +3368,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T09:49:37Z",
       "updated_at": "2026-11-01T09:49:47Z",
-      "days_open": 7.31,
+      "days_open": 8.17,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3390,7 +3390,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T09:52:24Z",
       "updated_at": "2026-11-01T10:07:50Z",
-      "days_open": 7.31,
+      "days_open": 8.17,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3412,7 +3412,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:10:09Z",
       "updated_at": "2026-11-01T10:11:03Z",
-      "days_open": 7.29,
+      "days_open": 8.15,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3434,7 +3434,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:10:11Z",
       "updated_at": "2026-11-01T10:10:56Z",
-      "days_open": 7.29,
+      "days_open": 8.15,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3456,7 +3456,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:15:14Z",
       "updated_at": "2026-11-01T10:16:16Z",
-      "days_open": 7.29,
+      "days_open": 8.15,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3478,7 +3478,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T11:00:38Z",
       "updated_at": "2026-11-01T11:01:04Z",
-      "days_open": 7.26,
+      "days_open": 8.12,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3500,7 +3500,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T12:08:58Z",
       "updated_at": "2026-11-01T12:09:07Z",
-      "days_open": 7.21,
+      "days_open": 8.07,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3522,7 +3522,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T15:24:44Z",
       "updated_at": "2026-11-06T01:55:51Z",
-      "days_open": 7.08,
+      "days_open": 7.94,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3544,8 +3544,8 @@
       "changed_files": -1,
       "created_at": "2026-11-01T17:32:45Z",
       "updated_at": "2026-11-01T17:41:47Z",
-      "days_open": 6.99,
-      "age_bucket": "fresh",
+      "days_open": 7.85,
+      "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -3566,8 +3566,8 @@
       "changed_files": -1,
       "created_at": "2026-11-01T20:33:32Z",
       "updated_at": "2026-11-03T07:55:24Z",
-      "days_open": 6.86,
-      "age_bucket": "fresh",
+      "days_open": 7.72,
+      "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "draft"
@@ -3588,8 +3588,8 @@
       "changed_files": -1,
       "created_at": "2026-11-01T21:08:53Z",
       "updated_at": "2026-11-01T21:10:12Z",
-      "days_open": 6.84,
-      "age_bucket": "fresh",
+      "days_open": 7.7,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3610,8 +3610,8 @@
       "changed_files": -1,
       "created_at": "2026-11-01T23:43:06Z",
       "updated_at": "2026-11-01T23:44:38Z",
-      "days_open": 6.73,
-      "age_bucket": "fresh",
+      "days_open": 7.59,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3632,8 +3632,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T00:56:40Z",
       "updated_at": "2026-11-02T01:09:20Z",
-      "days_open": 6.68,
-      "age_bucket": "fresh",
+      "days_open": 7.54,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3654,8 +3654,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T04:29:26Z",
       "updated_at": "2026-11-02T04:29:45Z",
-      "days_open": 6.53,
-      "age_bucket": "fresh",
+      "days_open": 7.39,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3676,8 +3676,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T04:31:46Z",
       "updated_at": "2026-11-02T04:32:03Z",
-      "days_open": 6.53,
-      "age_bucket": "fresh",
+      "days_open": 7.39,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3698,8 +3698,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T05:15:42Z",
       "updated_at": "2026-11-02T05:16:56Z",
-      "days_open": 6.5,
-      "age_bucket": "fresh",
+      "days_open": 7.36,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3720,8 +3720,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T09:46:07Z",
       "updated_at": "2026-11-02T09:52:37Z",
-      "days_open": 6.31,
-      "age_bucket": "fresh",
+      "days_open": 7.17,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3742,8 +3742,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T10:05:07Z",
       "updated_at": "2026-11-02T13:42:32Z",
-      "days_open": 6.3,
-      "age_bucket": "fresh",
+      "days_open": 7.16,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3764,8 +3764,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T10:05:28Z",
       "updated_at": "2026-11-02T13:40:44Z",
-      "days_open": 6.3,
-      "age_bucket": "fresh",
+      "days_open": 7.16,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3786,8 +3786,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T10:05:53Z",
       "updated_at": "2026-11-02T10:23:55Z",
-      "days_open": 6.3,
-      "age_bucket": "fresh",
+      "days_open": 7.16,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3808,8 +3808,8 @@
       "changed_files": -1,
       "created_at": "2026-11-02T10:07:28Z",
       "updated_at": "2026-11-02T10:22:23Z",
-      "days_open": 6.3,
-      "age_bucket": "fresh",
+      "days_open": 7.16,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -3823,15 +3823,15 @@
       "bot": true,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "67ba72605c73",
+      "base_sha": "1de3b59ca841",
       "head_ref": "telemetry-ingest/refresh",
-      "head_sha": "3adcbf7b381c",
+      "head_sha": "f83c1b71d5f2",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-02T13:39:06Z",
-      "updated_at": "2026-11-07T20:30:22Z",
-      "days_open": 6.15,
-      "age_bucket": "fresh",
+      "updated_at": "2026-11-08T17:15:34Z",
+      "days_open": 7.01,
+      "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
@@ -3852,7 +3852,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T13:54:36Z",
       "updated_at": "2026-11-07T21:15:26Z",
-      "days_open": 6.14,
+      "days_open": 7.0,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3874,7 +3874,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T17:33:29Z",
       "updated_at": "2026-11-02T17:38:36Z",
-      "days_open": 5.99,
+      "days_open": 6.85,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3896,7 +3896,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T21:45:32Z",
       "updated_at": "2026-11-02T21:45:50Z",
-      "days_open": 5.81,
+      "days_open": 6.67,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3918,7 +3918,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T23:23:57Z",
       "updated_at": "2026-11-02T23:24:23Z",
-      "days_open": 5.74,
+      "days_open": 6.6,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3940,7 +3940,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T23:30:07Z",
       "updated_at": "2026-11-02T23:30:44Z",
-      "days_open": 5.74,
+      "days_open": 6.6,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3962,7 +3962,7 @@
       "changed_files": -1,
       "created_at": "2026-11-02T23:43:35Z",
       "updated_at": "2026-11-03T01:35:09Z",
-      "days_open": 5.73,
+      "days_open": 6.59,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -3984,7 +3984,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T00:16:14Z",
       "updated_at": "2026-11-03T00:17:49Z",
-      "days_open": 5.71,
+      "days_open": 6.57,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4006,7 +4006,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T00:54:04Z",
       "updated_at": "2026-11-03T02:26:04Z",
-      "days_open": 5.68,
+      "days_open": 6.54,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4028,7 +4028,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T01:05:41Z",
       "updated_at": "2026-11-03T02:35:03Z",
-      "days_open": 5.67,
+      "days_open": 6.53,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4050,7 +4050,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T01:07:46Z",
       "updated_at": "2026-11-03T02:28:11Z",
-      "days_open": 5.67,
+      "days_open": 6.53,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4072,7 +4072,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T01:29:58Z",
       "updated_at": "2026-11-06T23:17:54Z",
-      "days_open": 5.66,
+      "days_open": 6.52,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4094,7 +4094,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T02:17:58Z",
       "updated_at": "2026-11-03T02:19:08Z",
-      "days_open": 5.62,
+      "days_open": 6.48,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4116,7 +4116,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T02:23:36Z",
       "updated_at": "2026-11-03T02:27:20Z",
-      "days_open": 5.62,
+      "days_open": 6.48,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4138,7 +4138,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T03:02:59Z",
       "updated_at": "2026-11-03T03:13:16Z",
-      "days_open": 5.59,
+      "days_open": 6.45,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4160,7 +4160,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T03:09:30Z",
       "updated_at": "2026-11-03T20:39:18Z",
-      "days_open": 5.59,
+      "days_open": 6.45,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4182,7 +4182,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T03:27:17Z",
       "updated_at": "2026-11-03T03:28:17Z",
-      "days_open": 5.57,
+      "days_open": 6.43,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4204,7 +4204,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T03:33:13Z",
       "updated_at": "2026-11-03T03:38:45Z",
-      "days_open": 5.57,
+      "days_open": 6.43,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4226,7 +4226,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T04:16:54Z",
       "updated_at": "2026-11-06T01:55:17Z",
-      "days_open": 5.54,
+      "days_open": 6.4,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -4249,7 +4249,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T05:53:37Z",
       "updated_at": "2026-11-03T06:01:07Z",
-      "days_open": 5.47,
+      "days_open": 6.33,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4271,7 +4271,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T05:57:12Z",
       "updated_at": "2026-11-03T05:58:36Z",
-      "days_open": 5.47,
+      "days_open": 6.33,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4293,7 +4293,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T06:01:03Z",
       "updated_at": "2026-11-03T06:02:22Z",
-      "days_open": 5.47,
+      "days_open": 6.33,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4315,7 +4315,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T06:07:18Z",
       "updated_at": "2026-11-03T06:24:13Z",
-      "days_open": 5.46,
+      "days_open": 6.32,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4337,7 +4337,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T07:49:45Z",
       "updated_at": "2026-11-03T17:00:35Z",
-      "days_open": 5.39,
+      "days_open": 6.25,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4359,7 +4359,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T07:59:38Z",
       "updated_at": "2026-11-03T21:25:03Z",
-      "days_open": 5.38,
+      "days_open": 6.24,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4381,7 +4381,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T09:52:48Z",
       "updated_at": "2026-11-03T10:16:00Z",
-      "days_open": 5.31,
+      "days_open": 6.17,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4403,7 +4403,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T14:18:40Z",
       "updated_at": "2026-11-03T14:20:09Z",
-      "days_open": 5.12,
+      "days_open": 5.98,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4425,7 +4425,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T14:21:01Z",
       "updated_at": "2026-11-03T14:21:59Z",
-      "days_open": 5.12,
+      "days_open": 5.98,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4447,7 +4447,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T14:22:30Z",
       "updated_at": "2026-11-03T14:23:58Z",
-      "days_open": 5.12,
+      "days_open": 5.98,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4469,7 +4469,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T14:54:03Z",
       "updated_at": "2026-11-03T15:10:52Z",
-      "days_open": 5.1,
+      "days_open": 5.96,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4491,7 +4491,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T15:20:03Z",
       "updated_at": "2026-11-07T16:23:38Z",
-      "days_open": 5.08,
+      "days_open": 5.94,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4513,7 +4513,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T16:03:20Z",
       "updated_at": "2026-11-03T16:05:10Z",
-      "days_open": 5.05,
+      "days_open": 5.91,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4535,7 +4535,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T16:07:21Z",
       "updated_at": "2026-11-03T16:54:00Z",
-      "days_open": 5.05,
+      "days_open": 5.91,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4557,7 +4557,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T16:49:22Z",
       "updated_at": "2026-11-03T17:08:12Z",
-      "days_open": 5.02,
+      "days_open": 5.88,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4579,7 +4579,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T16:53:03Z",
       "updated_at": "2026-11-03T17:00:43Z",
-      "days_open": 5.01,
+      "days_open": 5.87,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4601,7 +4601,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T16:53:56Z",
       "updated_at": "2026-11-03T17:02:47Z",
-      "days_open": 5.01,
+      "days_open": 5.87,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4623,7 +4623,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:10:21Z",
       "updated_at": "2026-11-03T18:00:50Z",
-      "days_open": 5.0,
+      "days_open": 5.86,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4645,7 +4645,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:19:17Z",
       "updated_at": "2026-11-03T17:34:01Z",
-      "days_open": 5.0,
+      "days_open": 5.86,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4667,7 +4667,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:19:52Z",
       "updated_at": "2026-11-03T17:37:36Z",
-      "days_open": 5.0,
+      "days_open": 5.86,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4689,7 +4689,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:24:38Z",
       "updated_at": "2026-11-03T17:39:49Z",
-      "days_open": 4.99,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4711,7 +4711,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:25:16Z",
       "updated_at": "2026-11-03T18:05:42Z",
-      "days_open": 4.99,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4733,7 +4733,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:27:45Z",
       "updated_at": "2026-11-03T17:47:58Z",
-      "days_open": 4.99,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4755,7 +4755,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:29:32Z",
       "updated_at": "2026-11-03T17:52:12Z",
-      "days_open": 4.99,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4777,7 +4777,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:30:33Z",
       "updated_at": "2026-11-03T17:52:46Z",
-      "days_open": 4.99,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4799,7 +4799,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:32:24Z",
       "updated_at": "2026-11-03T17:53:41Z",
-      "days_open": 4.99,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4821,7 +4821,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:36:58Z",
       "updated_at": "2026-11-03T18:01:32Z",
-      "days_open": 4.98,
+      "days_open": 5.84,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4843,7 +4843,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:45:43Z",
       "updated_at": "2026-11-03T18:35:50Z",
-      "days_open": 4.98,
+      "days_open": 5.84,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4865,7 +4865,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:48:14Z",
       "updated_at": "2026-11-03T18:14:35Z",
-      "days_open": 4.98,
+      "days_open": 5.84,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4887,7 +4887,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:53:14Z",
       "updated_at": "2026-11-03T18:23:42Z",
-      "days_open": 4.97,
+      "days_open": 5.83,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4909,7 +4909,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:58:04Z",
       "updated_at": "2026-11-04T22:55:53Z",
-      "days_open": 4.97,
+      "days_open": 5.83,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4931,7 +4931,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:02:05Z",
       "updated_at": "2026-11-03T18:26:19Z",
-      "days_open": 4.97,
+      "days_open": 5.83,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4953,7 +4953,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:14:12Z",
       "updated_at": "2026-11-03T18:40:48Z",
-      "days_open": 4.96,
+      "days_open": 5.82,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4975,7 +4975,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:25:57Z",
       "updated_at": "2026-11-03T18:49:31Z",
-      "days_open": 4.95,
+      "days_open": 5.81,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4997,7 +4997,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:30:28Z",
       "updated_at": "2026-11-03T18:30:37Z",
-      "days_open": 4.95,
+      "days_open": 5.81,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5019,7 +5019,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:35:46Z",
       "updated_at": "2026-11-03T19:05:22Z",
-      "days_open": 4.94,
+      "days_open": 5.8,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5041,7 +5041,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:42:20Z",
       "updated_at": "2026-11-03T19:08:52Z",
-      "days_open": 4.94,
+      "days_open": 5.8,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5063,7 +5063,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:49:22Z",
       "updated_at": "2026-11-03T19:20:31Z",
-      "days_open": 4.93,
+      "days_open": 5.79,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5085,7 +5085,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:53:29Z",
       "updated_at": "2026-11-03T19:23:17Z",
-      "days_open": 4.93,
+      "days_open": 5.79,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5107,7 +5107,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:56:31Z",
       "updated_at": "2026-11-03T19:24:47Z",
-      "days_open": 4.93,
+      "days_open": 5.79,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5129,7 +5129,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:09:20Z",
       "updated_at": "2026-11-03T19:46:50Z",
-      "days_open": 4.92,
+      "days_open": 5.78,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5151,7 +5151,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:14:47Z",
       "updated_at": "2026-11-03T19:46:49Z",
-      "days_open": 4.92,
+      "days_open": 5.78,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5173,7 +5173,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:23:26Z",
       "updated_at": "2026-11-03T21:16:22Z",
-      "days_open": 4.91,
+      "days_open": 5.77,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5195,7 +5195,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:31:58Z",
       "updated_at": "2026-11-03T20:05:32Z",
-      "days_open": 4.9,
+      "days_open": 5.76,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5217,7 +5217,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:34:49Z",
       "updated_at": "2026-11-03T20:13:50Z",
-      "days_open": 4.9,
+      "days_open": 5.76,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5239,7 +5239,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:47:44Z",
       "updated_at": "2026-11-03T20:29:37Z",
-      "days_open": 4.89,
+      "days_open": 5.75,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5261,7 +5261,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:54:06Z",
       "updated_at": "2026-11-03T20:38:54Z",
-      "days_open": 4.89,
+      "days_open": 5.75,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5283,7 +5283,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:26:15Z",
       "updated_at": "2026-11-03T21:00:02Z",
-      "days_open": 4.87,
+      "days_open": 5.73,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5305,7 +5305,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:39:07Z",
       "updated_at": "2026-11-03T21:20:15Z",
-      "days_open": 4.86,
+      "days_open": 5.72,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5327,7 +5327,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:42:00Z",
       "updated_at": "2026-11-03T21:24:25Z",
-      "days_open": 4.86,
+      "days_open": 5.72,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -5349,7 +5349,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:49:51Z",
       "updated_at": "2026-11-03T21:36:33Z",
-      "days_open": 4.85,
+      "days_open": 5.71,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -5372,7 +5372,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:54:04Z",
       "updated_at": "2026-11-03T21:38:56Z",
-      "days_open": 4.85,
+      "days_open": 5.71,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5394,7 +5394,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:55:11Z",
       "updated_at": "2026-11-04T01:04:18Z",
-      "days_open": 4.85,
+      "days_open": 5.71,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5416,7 +5416,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:59:26Z",
       "updated_at": "2026-11-03T21:48:55Z",
-      "days_open": 4.84,
+      "days_open": 5.7,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5438,7 +5438,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:59:45Z",
       "updated_at": "2026-11-03T21:49:04Z",
-      "days_open": 4.84,
+      "days_open": 5.7,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5460,7 +5460,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T21:09:51Z",
       "updated_at": "2026-11-03T21:53:03Z",
-      "days_open": 4.84,
+      "days_open": 5.7,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5482,7 +5482,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T21:31:46Z",
       "updated_at": "2026-11-03T22:01:21Z",
-      "days_open": 4.82,
+      "days_open": 5.68,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5504,7 +5504,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T21:54:28Z",
       "updated_at": "2026-11-03T22:18:19Z",
-      "days_open": 4.81,
+      "days_open": 5.66,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5526,7 +5526,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T21:55:47Z",
       "updated_at": "2026-11-03T22:18:47Z",
-      "days_open": 4.8,
+      "days_open": 5.66,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5548,7 +5548,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T21:58:21Z",
       "updated_at": "2026-11-03T22:19:17Z",
-      "days_open": 4.8,
+      "days_open": 5.66,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5570,7 +5570,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T22:07:43Z",
       "updated_at": "2026-11-03T22:26:45Z",
-      "days_open": 4.8,
+      "days_open": 5.66,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5592,7 +5592,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T22:14:46Z",
       "updated_at": "2026-11-04T10:51:06Z",
-      "days_open": 4.79,
+      "days_open": 5.65,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5614,7 +5614,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T22:46:12Z",
       "updated_at": "2026-11-03T22:50:52Z",
-      "days_open": 4.77,
+      "days_open": 5.63,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5636,7 +5636,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T22:47:28Z",
       "updated_at": "2026-11-03T22:51:04Z",
-      "days_open": 4.77,
+      "days_open": 5.63,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5658,7 +5658,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T22:53:33Z",
       "updated_at": "2026-11-03T22:57:08Z",
-      "days_open": 4.76,
+      "days_open": 5.62,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5680,7 +5680,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T23:24:04Z",
       "updated_at": "2026-11-03T23:24:54Z",
-      "days_open": 4.74,
+      "days_open": 5.6,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5702,7 +5702,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T23:40:18Z",
       "updated_at": "2026-11-03T23:53:40Z",
-      "days_open": 4.73,
+      "days_open": 5.59,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5724,7 +5724,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T23:44:26Z",
       "updated_at": "2026-11-04T00:44:00Z",
-      "days_open": 4.73,
+      "days_open": 5.59,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5746,7 +5746,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T23:48:13Z",
       "updated_at": "2026-11-03T23:48:13Z",
-      "days_open": 4.73,
+      "days_open": 5.59,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5768,7 +5768,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T00:25:01Z",
       "updated_at": "2026-11-04T00:36:03Z",
-      "days_open": 4.7,
+      "days_open": 5.56,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5790,7 +5790,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T00:31:24Z",
       "updated_at": "2026-11-04T00:32:22Z",
-      "days_open": 4.7,
+      "days_open": 5.56,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5812,7 +5812,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T00:39:59Z",
       "updated_at": "2026-11-04T00:52:14Z",
-      "days_open": 4.69,
+      "days_open": 5.55,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5834,7 +5834,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T01:05:55Z",
       "updated_at": "2026-11-04T01:06:46Z",
-      "days_open": 4.67,
+      "days_open": 5.53,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5856,7 +5856,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T07:18:05Z",
       "updated_at": "2026-11-04T07:19:00Z",
-      "days_open": 4.41,
+      "days_open": 5.27,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5878,7 +5878,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T07:21:05Z",
       "updated_at": "2026-11-04T07:21:15Z",
-      "days_open": 4.41,
+      "days_open": 5.27,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5900,7 +5900,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T07:22:41Z",
       "updated_at": "2026-11-04T07:25:49Z",
-      "days_open": 4.41,
+      "days_open": 5.27,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5922,7 +5922,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T07:28:30Z",
       "updated_at": "2026-11-04T07:29:59Z",
-      "days_open": 4.41,
+      "days_open": 5.27,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5944,7 +5944,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T08:53:48Z",
       "updated_at": "2026-11-04T08:55:23Z",
-      "days_open": 4.35,
+      "days_open": 5.21,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5966,7 +5966,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T09:00:26Z",
       "updated_at": "2026-11-04T09:00:56Z",
-      "days_open": 4.34,
+      "days_open": 5.2,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5988,7 +5988,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T09:25:26Z",
       "updated_at": "2026-11-04T09:26:22Z",
-      "days_open": 4.33,
+      "days_open": 5.19,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6010,7 +6010,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T11:33:39Z",
       "updated_at": "2026-11-04T11:52:35Z",
-      "days_open": 4.24,
+      "days_open": 5.1,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6032,7 +6032,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T12:38:39Z",
       "updated_at": "2026-11-04T12:40:18Z",
-      "days_open": 4.19,
+      "days_open": 5.05,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -6055,7 +6055,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T12:42:51Z",
       "updated_at": "2026-11-05T05:54:21Z",
-      "days_open": 4.19,
+      "days_open": 5.05,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6077,7 +6077,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T12:48:56Z",
       "updated_at": "2026-11-04T13:00:50Z",
-      "days_open": 4.18,
+      "days_open": 5.04,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6099,7 +6099,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T14:43:18Z",
       "updated_at": "2026-11-04T14:44:10Z",
-      "days_open": 4.1,
+      "days_open": 4.96,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6121,7 +6121,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T14:44:06Z",
       "updated_at": "2026-11-04T14:44:06Z",
-      "days_open": 4.1,
+      "days_open": 4.96,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6143,7 +6143,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T16:14:41Z",
       "updated_at": "2026-11-04T16:48:47Z",
-      "days_open": 4.04,
+      "days_open": 4.9,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6165,7 +6165,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T16:26:54Z",
       "updated_at": "2026-11-04T16:29:10Z",
-      "days_open": 4.03,
+      "days_open": 4.89,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6187,7 +6187,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T23:26:04Z",
       "updated_at": "2026-11-04T23:31:43Z",
-      "days_open": 3.74,
+      "days_open": 4.6,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6209,7 +6209,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T02:13:51Z",
       "updated_at": "2026-11-05T03:44:16Z",
-      "days_open": 3.62,
+      "days_open": 4.48,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6231,7 +6231,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T03:43:41Z",
       "updated_at": "2026-11-05T05:15:53Z",
-      "days_open": 3.56,
+      "days_open": 4.42,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6253,7 +6253,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T03:45:13Z",
       "updated_at": "2026-11-05T03:46:33Z",
-      "days_open": 3.56,
+      "days_open": 4.42,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6275,7 +6275,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T04:06:59Z",
       "updated_at": "2026-11-05T04:10:21Z",
-      "days_open": 3.55,
+      "days_open": 4.41,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6297,7 +6297,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T08:10:46Z",
       "updated_at": "2026-11-05T11:01:07Z",
-      "days_open": 3.38,
+      "days_open": 4.24,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6319,7 +6319,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T10:40:33Z",
       "updated_at": "2026-11-07T11:13:29Z",
-      "days_open": 3.27,
+      "days_open": 4.13,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6341,7 +6341,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T11:00:36Z",
       "updated_at": "2026-11-05T11:14:32Z",
-      "days_open": 3.26,
+      "days_open": 4.12,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6363,7 +6363,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T13:03:46Z",
       "updated_at": "2026-11-05T13:34:07Z",
-      "days_open": 3.17,
+      "days_open": 4.03,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6385,7 +6385,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T17:00:06Z",
       "updated_at": "2026-11-05T17:01:10Z",
-      "days_open": 3.01,
+      "days_open": 3.87,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6407,7 +6407,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T17:51:01Z",
       "updated_at": "2026-11-05T17:58:11Z",
-      "days_open": 2.97,
+      "days_open": 3.83,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6429,7 +6429,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T17:58:21Z",
       "updated_at": "2026-11-05T18:37:57Z",
-      "days_open": 2.97,
+      "days_open": 3.83,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6451,7 +6451,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T18:06:05Z",
       "updated_at": "2026-11-05T18:33:38Z",
-      "days_open": 2.96,
+      "days_open": 3.82,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6473,7 +6473,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T18:13:18Z",
       "updated_at": "2026-11-05T18:36:08Z",
-      "days_open": 2.96,
+      "days_open": 3.82,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6495,7 +6495,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T18:20:42Z",
       "updated_at": "2026-11-05T18:47:05Z",
-      "days_open": 2.95,
+      "days_open": 3.81,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6517,7 +6517,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T18:25:14Z",
       "updated_at": "2026-11-05T18:37:42Z",
-      "days_open": 2.95,
+      "days_open": 3.81,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6539,7 +6539,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T20:02:52Z",
       "updated_at": "2026-11-05T20:03:31Z",
-      "days_open": 2.88,
+      "days_open": 3.74,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6561,7 +6561,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T23:37:39Z",
       "updated_at": "2026-11-05T23:38:50Z",
-      "days_open": 2.73,
+      "days_open": 3.59,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6583,7 +6583,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T00:00:18Z",
       "updated_at": "2026-11-07T04:09:04Z",
-      "days_open": 2.72,
+      "days_open": 3.58,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6605,7 +6605,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T00:35:30Z",
       "updated_at": "2026-11-06T00:42:45Z",
-      "days_open": 2.69,
+      "days_open": 3.55,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6627,7 +6627,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T02:06:14Z",
       "updated_at": "2026-11-06T03:24:25Z",
-      "days_open": 2.63,
+      "days_open": 3.49,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6649,7 +6649,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T05:29:27Z",
       "updated_at": "2026-11-06T05:30:36Z",
-      "days_open": 2.49,
+      "days_open": 3.35,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6671,7 +6671,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T05:30:21Z",
       "updated_at": "2026-11-06T05:32:12Z",
-      "days_open": 2.49,
+      "days_open": 3.35,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6693,7 +6693,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T14:57:55Z",
       "updated_at": "2026-11-08T14:15:52Z",
-      "days_open": 2.09,
+      "days_open": 2.95,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -6716,7 +6716,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T15:19:18Z",
       "updated_at": "2026-11-06T15:42:38Z",
-      "days_open": 2.08,
+      "days_open": 2.94,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6738,7 +6738,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T15:24:12Z",
       "updated_at": "2026-11-06T15:24:16Z",
-      "days_open": 2.08,
+      "days_open": 2.94,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6760,7 +6760,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T15:25:06Z",
       "updated_at": "2026-11-06T15:25:11Z",
-      "days_open": 2.08,
+      "days_open": 2.94,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6782,7 +6782,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T15:30:11Z",
       "updated_at": "2026-11-06T15:30:16Z",
-      "days_open": 2.07,
+      "days_open": 2.93,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6804,7 +6804,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T23:34:15Z",
       "updated_at": "2026-11-06T23:58:22Z",
-      "days_open": 1.74,
+      "days_open": 2.6,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6826,7 +6826,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T03:53:29Z",
       "updated_at": "2026-11-07T04:04:09Z",
-      "days_open": 1.56,
+      "days_open": 2.42,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6848,7 +6848,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T07:56:10Z",
       "updated_at": "2026-11-07T17:11:03Z",
-      "days_open": 1.39,
+      "days_open": 2.25,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6870,7 +6870,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T08:25:29Z",
       "updated_at": "2026-11-07T08:51:17Z",
-      "days_open": 1.37,
+      "days_open": 2.23,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6892,7 +6892,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T14:53:37Z",
       "updated_at": "2026-11-07T14:56:53Z",
-      "days_open": 1.1,
+      "days_open": 1.96,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6914,7 +6914,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T14:55:01Z",
       "updated_at": "2026-11-07T14:55:11Z",
-      "days_open": 1.1,
+      "days_open": 1.96,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6936,7 +6936,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T14:56:38Z",
       "updated_at": "2026-11-07T14:56:48Z",
-      "days_open": 1.1,
+      "days_open": 1.96,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6958,7 +6958,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T15:50:07Z",
       "updated_at": "2026-11-07T19:32:45Z",
-      "days_open": 1.06,
+      "days_open": 1.92,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6980,7 +6980,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T17:05:16Z",
       "updated_at": "2026-11-07T17:18:59Z",
-      "days_open": 1.01,
+      "days_open": 1.87,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -7002,7 +7002,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T17:11:21Z",
       "updated_at": "2026-11-07T17:11:30Z",
-      "days_open": 1.0,
+      "days_open": 1.86,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -7024,7 +7024,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T17:12:14Z",
       "updated_at": "2026-11-07T17:12:23Z",
-      "days_open": 1.0,
+      "days_open": 1.86,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -7046,7 +7046,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T17:16:37Z",
       "updated_at": "2026-11-07T17:21:20Z",
-      "days_open": 1.0,
+      "days_open": 1.86,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -7068,7 +7068,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T17:19:30Z",
       "updated_at": "2026-11-07T17:28:53Z",
-      "days_open": 1.0,
+      "days_open": 1.86,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -7090,7 +7090,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T18:07:28Z",
       "updated_at": "2026-11-07T18:07:38Z",
-      "days_open": 0.96,
+      "days_open": 1.82,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -7112,7 +7112,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T19:40:07Z",
       "updated_at": "2026-11-07T20:04:54Z",
-      "days_open": 0.9,
+      "days_open": 1.76,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -7134,7 +7134,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T19:46:25Z",
       "updated_at": "2026-11-07T20:11:07Z",
-      "days_open": 0.89,
+      "days_open": 1.75,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -7156,7 +7156,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T19:52:02Z",
       "updated_at": "2026-11-07T19:59:11Z",
-      "days_open": 0.89,
+      "days_open": 1.75,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -7178,13 +7178,79 @@
       "changed_files": -1,
       "created_at": "2026-11-07T23:37:36Z",
       "updated_at": "2026-11-07T23:43:00Z",
-      "days_open": 0.73,
+      "days_open": 1.59,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
         "bot-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5077"
+    },
+    {
+      "number": 5081,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "ee421637f5a9",
+      "head_ref": "q/provider-recon-b16dad113621616b944c",
+      "head_sha": "6f026b2c868a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-08T17:58:34Z",
+      "updated_at": "2026-11-08T17:58:43Z",
+      "days_open": 0.83,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5081"
+    },
+    {
+      "number": 5082,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "90bf3d39875b",
+      "head_ref": "governance/merged-branch-audit-quotas-engine-9764389369912437506-18151708161076019835",
+      "head_sha": "d35ca6d31373",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-08T23:22:25Z",
+      "updated_at": "2026-11-08T23:23:34Z",
+      "days_open": 0.6,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5082"
+    },
+    {
+      "number": 5084,
+      "title": "fix(context): separate history pages from GitHub detail endpoint bounds",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "46c5baac4c9e",
+      "head_ref": "fix/context-collector-detail-limits-2026-11-09",
+      "head_sha": "06f91c56dfd5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-09T13:51:32Z",
+      "updated_at": "2026-11-09T13:51:49Z",
+      "days_open": 0.0,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5084"
     }
   ],
   "rules": {

@@ -236,7 +236,7 @@ def test_detail_endpoint_caps_are_independent_from_history_page_size(tmp_path):
         "repo",
         "master",
         registry,
-        max_items=1,
+        max_items=10,
         max_commits=2,
         max_comments_per_item=3,
         include_comments=False,
@@ -245,13 +245,13 @@ def test_detail_endpoint_caps_are_independent_from_history_page_size(tmp_path):
         max_timeline_events_per_item=41,
     )
 
-    assert client.limits["/repos/example/repo/issues"] == 1
-    assert client.limits["/repos/example/repo/pulls"] == 1
+    assert client.limits["/repos/example/repo/issues"] == 10
+    assert client.limits["/repos/example/repo/pulls"] == 10
     assert client.limits["/repos/example/repo/pulls/232/files"] == 31
     assert client.limits["/repos/example/repo/pulls/232/commits"] == 37
     assert client.limits["/repos/example/repo/issues/236/timeline"] == 41
     assert client.limits["/repos/example/repo/commits"] == 2
-    assert report["max_items"] == 1
+    assert report["max_items"] == 10
     assert report["max_commits"] == 2
     assert report["max_files_per_pr"] == 31
     assert report["max_commits_per_pr"] == 37

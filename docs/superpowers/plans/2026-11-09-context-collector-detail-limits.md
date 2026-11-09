@@ -28,7 +28,8 @@ All limits must be positive integers. The collector report must persist the effe
 - Keep history pagination and repository commit sample limits independent.
 - Expose the limits through the collector CLI and `build_index` API/CLI.
 - Pass explicit bounds from `.github/workflows/context-relationship-backfill.yml`.
-- Add a regression test proving a small history page does not truncate PR files, PR commits, or timeline events.
+- Add regression tests proving a small history page does not truncate PR files, PR commits, or timeline events, and that multi-page requests keep a stable `per_page` size so page offsets cannot repeat records.
+- Reject non-integer, boolean, zero, and negative detail limits at the collector API boundary.
 - Record the effective values in the GitHub collector report.
 
 ## Acceptance

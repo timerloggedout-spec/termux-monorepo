@@ -3,16 +3,16 @@
   "live": 7,
   "no_public_programme": 1,
   "not-established": 1,
-  "pending": 1
+  "pending": 6
  },
- "generated_at": "2026-11-04T09:00:00Z",
+ "generated_at": "2026-11-09T17:12:30Z",
  "items": [
   {
    "bucket": "live",
    "cadence": "weekly",
    "id": "muse",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": "pool: 1 live code/0 reserve \u2014 replenishment owner-panel only; rotation @5 uses-left",
    "state_detail": "active_codes"
   },
@@ -20,8 +20,8 @@
    "bucket": "live",
    "cadence": "weekly",
    "id": "manus",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": "enrolment invitation-only (Tapfiliate) \u2014 no invitation held; link live, fleet enrolment NOT held",
    "state_detail": "active_link"
   },
@@ -29,8 +29,8 @@
    "bucket": "live",
    "cadence": "weekly",
    "id": "cue",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": null,
    "state_detail": "active_codes"
   },
@@ -38,8 +38,8 @@
    "bucket": "live",
    "cadence": "weekly",
    "id": "migoo",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": null,
    "state_detail": "active_codes"
   },
@@ -47,8 +47,8 @@
    "bucket": "live",
    "cadence": "weekly",
    "id": "cellcog",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": "visitor reward triggers on first PURCHASE (paid step) \u2014 revenue lane, not free-stack",
    "state_detail": "active_link"
   },
@@ -56,8 +56,8 @@
    "bucket": "no_public_programme",
    "cadence": "monthly",
    "id": "hark",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-12-07",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-12-09",
    "open_gate": "no programme exists (main-stamped 2026-11-03); monthly re-check",
    "state_detail": "no_public_programme"
   },
@@ -65,8 +65,8 @@
    "bucket": "live",
    "cadence": "weekly",
    "id": "unorouter",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": null,
    "state_detail": "active_link"
   },
@@ -92,13 +92,58 @@
    "bucket": "live",
    "cadence": "weekly",
    "id": "replit",
-   "last_verified": "2026-11-03",
-   "next_due": "2026-11-09",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-11-16",
    "open_gate": "referrer $20 paid-plan-gated (Core) \u2014 not claimable on free tier",
    "state_detail": "active_link"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly",
+   "id": "mega",
+   "last_verified": "2026-11-06",
+   "next_due": "2026-12-06",
+   "open_gate": "programme verified, NOT enrolled - enrolment = main's go",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly",
+   "id": "filen",
+   "last_verified": "2026-11-06",
+   "next_due": "2026-12-06",
+   "open_gate": "programme verified, NOT enrolled - enrolment = main's go",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly",
+   "id": "pcloud",
+   "last_verified": "2026-11-06",
+   "next_due": "2026-12-06",
+   "open_gate": "programme verified, NOT enrolled - enrolment = main's go",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly",
+   "id": "koofr",
+   "last_verified": "2026-11-08",
+   "next_due": "2026-12-08",
+   "open_gate": "programme verified, NOT enrolled - enrolment = main's go",
+   "state_detail": "programme_verified_not_enrolled"
+  },
+  {
+   "bucket": "pending",
+   "cadence": "monthly",
+   "id": "proton",
+   "last_verified": "2026-11-09",
+   "next_due": "2026-12-09",
+   "open_gate": "programme verified, NOT enrolled - enrolment = main's go",
+   "state_detail": "programme_verified_not_enrolled"
   }
  ],
- "reconciliation_note": "Feed of record = live 7 \u00b7 pending 1 \u00b7 not-established 1 \u00b7 no_public_programme 1 (hark own-state). Oversight chart 6/3/1 reconciles iff hark folds to pending AND one live folds to pending \u2014 candidate = manus (link live, enrolment invitation-gated, not held). Lane ships feed-verbatim; bucket ruling = Oversight/main.",
+ "reconciliation_note": "Feed of record = live 7 \u00b7 pending 6 \u00b7 not-established 1 \u00b7 no_public_programme 1 (hark own-state). Lane ships feed-verbatim; bucket ruling = Oversight/main.",
  "schema": "referral-census/1",
  "source": "config/referral_programs.json via apps/tribute-dashboard/data/referral-feed.json (viz-states verbatim, derived never hand-set)"
 }

@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9c07f26afa8a4cd4dbac20060472763373915791694441eeb4981c03f5ec30da",
+  "source_fingerprint": "9c1c4ab987e9c9e45dc0f70a4fb4f55e494dee0399b413631bffd08bded29265",
   "workflow_count": 296,
   "workflows": [
     {
@@ -2842,8 +2842,8 @@
     },
     {
       "action_pins": [],
-      "authority": "writer",
-      "concurrency": "group: ios-termux-contribute cancel-in-progress: true",
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: ios-termux-contribute-${{ github.event.inputs.target_repo || 'credkellar/iOS-Termux' }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "contribute"

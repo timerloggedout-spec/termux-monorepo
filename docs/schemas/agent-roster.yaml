@@ -93,7 +93,7 @@ agents:
           - "open PR"
           - "push commits"
           - "comment on PR/issue"
-    fallback_when_exhausted: human
+    on_exhaustion: "re-resolve live eligible candidate pool; if empty emit BLOCKED_CAPABILITY and continue unrelated safe work"
 
   - id: jules
     handle: "@jules"
@@ -215,20 +215,20 @@ agents:
         type: mcp
         commands:
           - "save_comment on issues/projects"
-    fallback_when_exhausted: human
+    on_exhaustion: "re-resolve live eligible candidate pool; if empty emit BLOCKED_CAPABILITY and continue unrelated safe work"
 
 # Cross-agent command etiquette (use in PR/issue comments)
 etiquette:
   - "Before burning a review slot: @coderabbitai rate limit"
   - "On cooldown: do not @coderabbitai full review; wait or use always-on agents"
   - "Gemini skip comments are green CI; re-run optimized admission across the candidate pool"
-  - "Tembo credit exhaustion → human or Jules; do not re-ping Tembo"
+  - "Tembo credit exhaustion → re-resolve eligible build candidates; do not re-ping Tembo while quota is exhausted"
   - "Auto-jules workflow already pings @jules on bot feedback — avoid duplicate pings"
 
 routing:
   invariant: "No provider/model is primary or secondary. Selection is evidence-driven and topology-aware."
   policy:
-    objective: "maximize integrated outcome subject to correctness, capability, quota, latency, context, conflict, retry, and human-intervention costs"
+    objective: "maximize integrated outcome subject to correctness, capability, quota, latency, context, conflict, retry, and blocked-work costs"
     topology_modes: [single, series, dynamic, parallel, nested, co-working, volley]
     admission_gates: [capability, credential, catalog, health, quota, task_independence, freshness, policy]
     selection_evidence: [success_matrix, live_catalog, availability_probe, invocation_telemetry, task_outcome, attribution]

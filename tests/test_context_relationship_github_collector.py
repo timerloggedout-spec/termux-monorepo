@@ -11,6 +11,7 @@ SCHEMA = ROOT / "config/context_relationships/schema.json"
 class FakeGitHubClient:
     def __init__(self):
         self.request_count = 0
+        self.limits = {}
         self.responses = {
             "/repos/example/repo/issues": [
                 {
@@ -134,6 +135,7 @@ class FakeGitHubClient:
 
     def paginate(self, path, params=None, limit=100, start_page=1):
         self.request_count += 1
+        self.limits[path] = limit
         return iter(self.responses.get(path, []))
 
     def get_json(self, path, params=None):
@@ -220,6 +222,40 @@ def test_collect_github_seed_preserves_evidence_without_persisting_discussion_bo
     assert report["counts"]["permalink_references"] == 3
     assert report["unresolved_internal_reference_count"] == 0
 
+
+
+
+def test_detail_endpoint_caps_are_independent_from_history_page_size(tmp_path):
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+    client = FakeGitHubClient()
+
+    _, report = collect_github_seed(
+        client,
+        "example",
+        "repo",
+        "master",
+        registry,
+        max_items=1,
+        max_commits=2,
+        max_comments_per_item=3,
+        include_comments=False,
+        max_files_per_pr=31,
+        max_commits_per_pr=37,
+        max_timeline_events_per_item=41,
+    )
+
+    assert client.limits["/repos/example/repo/issues"] == 1
+    assert client.limits["/repos/example/repo/pulls"] == 1
+    assert client.limits["/repos/example/repo/pulls/232/files"] == 31
+    assert client.limits["/repos/example/repo/pulls/232/commits"] == 37
+    assert client.limits["/repos/example/repo/issues/236/timeline"] == 41
+    assert client.limits["/repos/example/repo/commits"] == 2
+    assert report["max_items"] == 1
+    assert report["max_commits"] == 2
+    assert report["max_files_per_pr"] == 31
+    assert report["max_commits_per_pr"] == 37
+    assert report["max_timeline_events_per_item"] == 41
 
 
 def test_reference_targets_classifies_each_occurrence_independently():

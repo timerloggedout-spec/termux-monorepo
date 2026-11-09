@@ -1,10 +1,10 @@
 {
  "summary": {
   "campaign_id": "util-1-provider-rotation",
-  "audited_at": "2026-11-01T13:23:24.769856+00:00",
-  "bench_size": 110,
-  "scored": 3,
-  "flagged": 7
+  "audited_at": "2026-11-09T16:39:22.153417+00:00",
+  "bench_size": 118,
+  "scored": 5,
+  "flagged": 47
  },
  "scored": [
   {
@@ -12,15 +12,18 @@
    "campaign_id": "util-1-provider-rotation",
    "unit": "D1",
    "provider": "DeepSeek",
-   "in_registry": false,
+   "in_registry": true,
    "selection_reason": "Staged fix-class pick under the pre-FIX funnel (D1 seat order; fired 2026-11-01, run 41301295882). Per owner FIX via main (2026-11-01) the pick is NOT automatic going forward \u2014 any re-dispatch re-selects bench-wide by task fit.",
    "ts": "2026-11-01T11:18:21Z",
+   "instance_key": "challenge-entries-manager/d1-studysprint-v020-notes-deepseek/d88b4a1800bd",
    "responses": {
     "first_pass_success": null,
     "rework_cycles": null,
     "dispatch_to_pr_wall_time": null,
-    "stalled_action_required": null
+    "stalled_action_required": true
    },
+   "usage": {},
+   "provider_metrics": {},
    "status": "awaiting_outcome"
   },
   {
@@ -31,13 +34,16 @@
    "in_registry": false,
    "selection_reason": "Feature-class pick under the pre-FIX rotation (D1 seat order; issue #3050, run 41301369671). Per owner FIX via main (2026-11-01): NOT automatic going forward \u2014 follow-ups re-select bench-wide by task fit.",
    "ts": "2026-11-01T11:19:22Z",
+   "instance_key": "challenge-entries-manager/d1-studysprint-sr-module/31f915ff0169",
    "responses": {
-    "first_pass_success": null,
+    "first_pass_success": false,
     "rework_cycles": null,
     "dispatch_to_pr_wall_time": null,
     "stalled_action_required": null
    },
-   "status": "awaiting_outcome"
+   "usage": {},
+   "provider_metrics": {},
+   "status": "scored"
   },
   {
    "schema": "EXPERIMENT",
@@ -47,18 +53,105 @@
    "in_registry": false,
    "selection_reason": "Re-selection rule (owner FIX 2026-11-01): D1 next dispatch OUTSIDE {DeepSeek, Gemini} \u21d2 Jules = remaining proven build arm. Batch fan-out continues at PR stage via command-dispatch review lanes; provider-batch held on #2672.",
    "ts": "2026-11-01T11:44:17Z",
+   "instance_key": "challenge-entries-manager/d1-studysprint-reader-core/fcc968db0eed",
+   "responses": {
+    "first_pass_success": true,
+    "rework_cycles": 0,
+    "dispatch_to_pr_wall_time": "PT12M27S",
+    "stalled_action_required": false
+   },
+   "usage": {},
+   "provider_metrics": {},
+   "status": "scored"
+  },
+  {
+   "schema": "EXPERIMENT",
+   "campaign_id": "util-1-provider-rotation",
+   "unit": "D1",
+   "provider": "Command-dispatch (Devin)",
+   "in_registry": false,
+   "selection_reason": "re-selection: Gemini-CLI build leg OUT (Swarm via manager 2026-11-01); live arms {DeepSeek, command-dispatch}; D1 seat named command-dispatch for this leg",
+   "ts": "2026-11-01T14:08:57Z",
    "responses": {
     "first_pass_success": null,
     "rework_cycles": null,
     "dispatch_to_pr_wall_time": null,
     "stalled_action_required": null
    },
+   "usage": {},
+   "provider_metrics": {},
+   "status": "awaiting_outcome"
+  },
+  {
+   "schema": "EXPERIMENT",
+   "campaign_id": "util-1-provider-rotation",
+   "unit": "Repo-Story",
+   "provider": "Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch",
+   "in_registry": false,
+   "selection_reason": null,
+   "ts": "2026-11-02T13:41:00Z",
+   "responses": {
+    "first_pass_success": null,
+    "rework_cycles": null,
+    "dispatch_to_pr_wall_time": null,
+    "stalled_action_required": null
+   },
+   "usage": {},
+   "provider_metrics": {},
    "status": "awaiting_outcome"
   }
  ],
  "flagged": [
   {
    "unit": "D0",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "D1",
    "reason": "missing_stamp"
   },
   {
@@ -82,7 +175,119 @@
    "reason": "missing_stamp"
   },
   {
+   "unit": "C12",
+   "reason": "missing_stamp"
+  },
+  {
    "unit": "Repo-Story",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
+   "reason": "missing_stamp"
+  },
+  {
+   "unit": "routed-dispatch",
    "reason": "missing_stamp"
   }
  ]

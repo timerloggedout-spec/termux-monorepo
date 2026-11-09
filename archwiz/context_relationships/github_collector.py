@@ -192,13 +192,17 @@ class GitHubClient:
         limit: int = 100,
         start_page: int = 1,
     ) -> Iterable[Mapping[str, Any]]:
+        """Yield at most ``limit`` records using a stable page size and page offsets."""
         if start_page < 1:
             raise CompilationError("GitHub pagination start page must be positive")
+        if limit < 1:
+            raise CompilationError("GitHub pagination limit must be positive")
         page = start_page
         emitted = 0
+        page_size = min(100, limit)
         while emitted < limit:
             page_params = dict(params or {})
-            page_params.update({"per_page": min(100, limit - emitted), "page": page})
+            page_params.update({"per_page": page_size, "page": page})
             payload, link = self.get_json(path, page_params)
             if not isinstance(payload, list):
                 raise CompilationError(f"GitHub endpoint {path} did not return an array")
@@ -325,6 +329,19 @@ def collect_github_seed(
     max_timeline_events_per_item: int = 1000,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Collect a bounded GitHub metadata window into a compiler-compatible seed."""
+    detail_limits = {
+        "max_files_per_pr": max_files_per_pr,
+        "max_commits_per_pr": max_commits_per_pr,
+        "max_timeline_events_per_item": max_timeline_events_per_item,
+    }
+    invalid_limits = [
+        name for name, value in detail_limits.items()
+        if isinstance(value, bool) or not isinstance(value, int) or value < 1
+    ]
+    if invalid_limits:
+        raise CompilationError(
+            "detail limits must be positive integers: " + ", ".join(invalid_limits)
+        )
     collected_at = utc_now()
     nodes: dict[str, dict[str, Any]] = {}
     edges: list[dict[str, Any]] = []

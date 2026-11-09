@@ -1,7 +1,31 @@
 version: 1
-updated_at: '2026-11-02T00:00:00Z'
+updated_at: '2026-11-07T17:14:46.577Z'
 updated_by: ChatGPT
 proposals:
+  - id: langgraph-biudl-integration
+    title: 'LangGraph capability integration — skills, orchestration adapter, and evidence contract'
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/langgraph-biudl-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_repos:
+      - https://github.com/vonzosten/awesome-LangGraph
+      - https://github.com/langchain-ai/langgraph
+      - https://github.com/langchain-ai/langchain-skills
+    related_branches:
+      - feat/langgraph-biudl-integration
+      - feat/langgraph-biudl-integration-master-rebase-2026-11-07
+    gates_required:
+      - repo-gate
+      - termux-smoke
+
 
   - id: master-splinter
     title: 'Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)'

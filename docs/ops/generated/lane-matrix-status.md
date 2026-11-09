@@ -1,20 +1,20 @@
-# Lane matrix status (2026-11-09T13:53:22Z)
+# Lane matrix status (2026-11-09T13:53:57Z)
 
-- Master: `00197bfadea3758b022135969bf295c77ae8741b`
-- Open PRs: **328**
+- Master: `686b8c1fbd71a03d9c2f29d6c6f82c324eb05717`
+- Open PRs: **327**
 - Oldest: #47 (95.92d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
 | CANDIDATE | 94 |
 | EXTRACT | 6 |
-| NEED_EVIDENCE | 67 |
+| NEED_EVIDENCE | 66 |
 | SUPERSEDE | 161 |
 
 | Age bucket | Count |
 |------------|------:|
 | ancient | 22 |
-| fresh | 155 |
+| fresh | 154 |
 | mid | 144 |
 | stale | 7 |
 

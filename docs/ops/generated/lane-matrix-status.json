@@ -1,18 +1,18 @@
 {
   "schema": "lane-matrix-sweep/v2",
-  "observed_at": "2026-11-09T13:53:22Z",
+  "observed_at": "2026-11-09T13:53:57Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "00197bfadea3758b022135969bf295c77ae8741b",
+  "master_sha": "686b8c1fbd71a03d9c2f29d6c6f82c324eb05717",
   "freshness": {
     "trigger": "pull_request_target",
     "semantics": "event-driven snapshot; age buckets are informational at observed_at",
     "polling": false
   },
   "counts": {
-    "open_prs": 328,
+    "open_prs": 327,
     "by_lane": {
       "CANDIDATE": 94,
-      "NEED_EVIDENCE": 67,
+      "NEED_EVIDENCE": 66,
       "SUPERSEDE": 161,
       "EXTRACT": 6
     },
@@ -20,7 +20,7 @@
       "ancient": 22,
       "stale": 7,
       "mid": 144,
-      "fresh": 155
+      "fresh": 154
     }
   },
   "oldest": {
@@ -66,7 +66,7 @@
       "changed_files": -1,
       "created_at": "2026-08-05T16:39:27Z",
       "updated_at": "2026-11-06T14:26:10Z",
-      "days_open": 95.88,
+      "days_open": 95.89,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -220,7 +220,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T05:37:08Z",
       "updated_at": "2026-08-30T11:56:02Z",
-      "days_open": 73.34,
+      "days_open": 73.35,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -242,7 +242,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T06:20:05Z",
       "updated_at": "2026-09-03T22:51:06Z",
-      "days_open": 73.31,
+      "days_open": 73.32,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1277,7 +1277,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T23:36:59Z",
       "updated_at": "2026-11-06T14:26:13Z",
-      "days_open": 16.59,
+      "days_open": 16.6,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3434,7 +3434,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T10:10:11Z",
       "updated_at": "2026-11-01T10:10:56Z",
-      "days_open": 8.15,
+      "days_open": 8.16,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4182,7 +4182,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T03:27:17Z",
       "updated_at": "2026-11-03T03:28:17Z",
-      "days_open": 6.43,
+      "days_open": 6.44,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4601,7 +4601,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T16:53:56Z",
       "updated_at": "2026-11-03T17:02:47Z",
-      "days_open": 5.87,
+      "days_open": 5.88,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4821,7 +4821,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:36:58Z",
       "updated_at": "2026-11-03T18:01:32Z",
-      "days_open": 5.84,
+      "days_open": 5.85,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -5195,7 +5195,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:31:58Z",
       "updated_at": "2026-11-03T20:05:32Z",
-      "days_open": 5.76,
+      "days_open": 5.77,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5526,7 +5526,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T21:55:47Z",
       "updated_at": "2026-11-03T22:18:47Z",
-      "days_open": 5.66,
+      "days_open": 5.67,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5658,7 +5658,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T22:53:33Z",
       "updated_at": "2026-11-03T22:57:08Z",
-      "days_open": 5.62,
+      "days_open": 5.63,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6077,7 +6077,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T12:48:56Z",
       "updated_at": "2026-11-04T13:00:50Z",
-      "days_open": 5.04,
+      "days_open": 5.05,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6121,7 +6121,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T14:44:06Z",
       "updated_at": "2026-11-04T14:44:06Z",
-      "days_open": 4.96,
+      "days_open": 4.97,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6407,7 +6407,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T17:51:01Z",
       "updated_at": "2026-11-05T17:58:11Z",
-      "days_open": 3.83,
+      "days_open": 3.84,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -6945,28 +6945,6 @@
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5054"
     },
     {
-      "number": 5056,
-      "title": "fix(context): preserve historical backfill page-size continuity",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": true,
-      "base_ref": "master",
-      "base_sha": "314b8f8e81fe",
-      "head_ref": "fix/context-backfill-page-size-and-status-2026-11-07-v2",
-      "head_sha": "c6978a19f978",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-11-07T15:50:07Z",
-      "updated_at": "2026-11-07T19:32:45Z",
-      "days_open": 1.92,
-      "age_bucket": "fresh",
-      "lane": "NEED_EVIDENCE",
-      "reasons": [
-        "draft"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5056"
-    },
-    {
       "number": 5059,
       "title": "fix(ci): expose paths behind YAML ratchet failures",
       "user": "timerloggedout-spec",
@@ -7134,7 +7112,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T19:46:25Z",
       "updated_at": "2026-11-07T20:11:07Z",
-      "days_open": 1.75,
+      "days_open": 1.76,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -7222,7 +7200,7 @@
       "changed_files": -1,
       "created_at": "2026-11-08T23:22:25Z",
       "updated_at": "2026-11-08T23:23:34Z",
-      "days_open": 0.6,
+      "days_open": 0.61,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -7243,7 +7221,7 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-09T13:51:32Z",
-      "updated_at": "2026-11-09T13:53:12Z",
+      "updated_at": "2026-11-09T13:53:33Z",
       "days_open": 0.0,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",

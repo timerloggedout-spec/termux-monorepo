@@ -458,6 +458,9 @@ def main(argv: list[str] | None = None) -> int:
             args.max_retries,
             args.full_refresh,
             args.history_start_page,
+            args.max_files_per_pr,
+            args.max_commits_per_pr,
+            args.max_timeline_events_per_item,
         )
         print(json.dumps(summary, indent=2, sort_keys=True))
         return 0

@@ -2,7 +2,7 @@
 
 **Status:** COMPLETE & CONSOLIDATED
 **Auditor:** Jules (Automated Systems Engineer)
-**Date:** 2026-10-21 (Re-verified & Dual-Gate Verified)
+**Date:** 2026-11-07 (Re-verified & Dual-Gate Verified)
 **SSOT Reference:** `docs/ops/LANE_CONSOLIDATION_SSOT.md`
 
 ## 1. Executive Summary
@@ -75,10 +75,19 @@ This audit provides full production visibility into merged branches, open and cl
 - **Justification in Git/PR History:** Hard failure mode in early workflow triggers caused entire pipeline blocks on daily quota exhaustion.
 - **Remediation Action:** Configured `continue-on-error: true` for Gemini residual backups and model router soft-limit fallbacks.
 
+### [AUDIT-009] [GOVERNANCE] Automated Merged Branch Review Audit & Deployment Quota Engine
+- **Type:** Review Governance & Quota Verification
+- **Tag:** `[GOVERNANCE]`
+- **Description:** Production promotion paths must systematically verify merged PR reviews for unjustified dismissals and evaluate minimum cooldown intervals (300s default) between production deployment events.
+- **Justification in Git/PR History:** Implemented deterministic audit tool `scripts/ci/merged_branch_audit.py` to evaluate PR review state and emit structured GitHub issue payloads tagged `bug`, `skipped-review-audit`, and `governance`.
+- **Remediation Action:** Automated with test coverage in `tests/test_merged_branch_audit.py`.
+
 ## 4. Summary of Timing Quotas & Cooldown Enforcement
 - **Model Router Soft-Limits:** Elevated budgets (Omni: 400/250/400, OpenRouter free models: 80/80/80, Gemini backups: 450/450/450).
 - **GitHub Actions Debounces:** 480s max wait for peer bots, 45m autofix request throttle, 90s settle sleep, 20m auto-jules summon debounce, 90m continuous sweep window (max 8 PRs/run).
+- **Deployment Cooldown Policy:** Minimum 300s (5-minute) cooldown window enforced between production promotion and merge deployment events to eliminate resource contention and deployment stampedes.
 - **Lag Indexing Schema v2:** Disposition-based gating (`ack_pending` & `quota_cooldown` block premature summons).
 
 ## 5. Verification Log
 - **2026-10-21:** Automated audit verification completed by Jules. All dual-gate integration checks (`repo_gate.py` and `termux_smoke.py`) passed cleanly. SSOT aligned across active and closed development lanes.
+- **2026-11-07:** Integrated automated merged branch review audit and deployment cooldown evaluation engine (`scripts/ci/merged_branch_audit.py`) with 100% unit test coverage.

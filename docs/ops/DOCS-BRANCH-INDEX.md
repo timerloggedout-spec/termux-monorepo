@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-09T16:18:06Z` UTC  
+**Generated:** `2026-11-10T15:15:29Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 266 docs-lane branch(es)
+**Count:** 269 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -86,6 +86,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/claude-recon-before-relay`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-recon-before-relay) | `dbd492809a4b` | — | — | orphan lane |
 | [`docs/codespace-bifrost-006-run`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/codespace-bifrost-006-run) | `3edb2bd66392` | — | — | orphan lane |
 | [`docs/competition-import-d0-d1`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/competition-import-d0-d1) | `dcb96489663f` | — | — | orphan lane |
+| [`docs/condensa-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/condensa-correction-2026-11-10) | `70b6589f0db8` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
@@ -236,6 +237,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/she-p010-roadmap-catchup`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-p010-roadmap-catchup) | `231a3193d34f` | — | — | orphan lane |
 | [`docs/she-roadmap-p04-p05-status`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-roadmap-p04-p05-status) | `9c318f5c2307` | — | — | orphan lane |
 | [`docs/she-ui-ux-control-plane-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-ui-ux-control-plane-rebased) | `0f6db19e71b8` | — | — | orphan lane |
+| [`docs/siglary-brachy-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/siglary-brachy-correction-2026-11-10) | `c725da35f7af` | — | — | orphan lane |
+| [`docs/siglary-issuance-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/siglary-issuance-2026-11-10) | `47c7cbefd67f` | — | — | orphan lane |
 | [`docs/skill-ref-convention-class`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/skill-ref-convention-class) | `f9d31a29f957` | — | — | orphan lane |
 | [`docs/snapdeploy-confirmed-2026-11-04`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/snapdeploy-confirmed-2026-11-04) | `ed5bb8028c21` | — | — | orphan lane |
 | [`docs/spof-census-errata-app-keys`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/spof-census-errata-app-keys) | `5daa69260b41` | — | — | orphan lane |

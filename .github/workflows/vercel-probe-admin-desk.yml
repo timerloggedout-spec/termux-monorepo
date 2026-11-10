@@ -1,0 +1,47 @@
+name: vercel-probe-admin-desk
+
+# [MUSEai]@{role:{vercel-specialist}} READ-ONLY host identification probe
+# (QDesk operator call 2026-11-10; identification ONLY, no config change):
+# GET project + deployments + domains metadata for `admin-desk` and print
+# a sanitized extract to the job summary (no env values, no secrets).
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-probe-admin-desk
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+      PROJECT: admin-desk
+    steps:
+      - name: GET project, deployments, domains (read-only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "$VERCEL_TOKEN" ] || { echo "::error::VERCEL_TOKEN secret is not set"; exit 1; }
+          API="https://api.vercel.com"
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+          curl -fsS -H "$AUTH" "$API/v9/projects/$PROJECT?teamId=$SCOPE" > "$RUNNER_TEMP/proj.json"
+          PID=$(jq -r '.id' "$RUNNER_TEMP/proj.json")
+          curl -fsS -H "$AUTH" "$API/v6/deployments?projectId=$PID&teamId=$SCOPE&limit=10" > "$RUNNER_TEMP/deps.json"
+          curl -fsS -H "$AUTH" "$API/v9/projects/$PID/domains?teamId=$SCOPE" > "$RUNNER_TEMP/doms.json" || echo '{"domains":[]}' > "$RUNNER_TEMP/doms.json"
+          {
+            echo "## vercel-probe-admin-desk (read-only)"
+            echo '### project'
+            jq '{id, name, framework, rootDirectory, createdAt, updatedAt, ssoProtection, passwordProtection, link: (.link // null | if . then {type, repo, repoId, gitCredentialId} else null end), latestDeployments: [.latestDeployments[]? | {id, url, createdAt}]}' "$RUNNER_TEMP/proj.json"
+            echo '### deployments (newest first, max 10)'
+            jq '[.deployments[] | {id: .uid, url, state, readyState, target, createdAt, creator: (.creator.username // .creator.uid // null), meta: (.meta // {})}]' "$RUNNER_TEMP/deps.json"
+            echo '### domains'
+            jq '[.domains[] | {name, redirect, gitBranch}]' "$RUNNER_TEMP/doms.json"
+          } | tee "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "::notice::probe complete for $PID"

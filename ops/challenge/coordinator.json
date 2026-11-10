@@ -2414,7 +2414,7 @@
    "host": "Amazon Web Services / Amazon Research Awards (ARA)",
    "platform": "ARA proposal submission (amazon.science)",
    "official_url": "https://www.amazon.science/research-awards/call-for-proposals/aws-agentic-ai-call-for-proposals-fall-2026",
-   "status": "SCREENED OUT this cycle \u2014 FAIL eligibility (ARA Rules \u00a7I, read firsthand 2026-11-03); institution-gap entry, re-screen on trigger",
+   "status": "SCREENED OUT this cycle - FAIL eligibility in practice (ARA Rules \u00a7I): Amazon confirmed Model A CAN satisfy \u00a7I in principle (see institution_gap.rescreen_2026_11_10), but route decision still DEFERRED, no fiscal sponsor in place, and standing one up before the Nov 11 23:59 PT close is infeasible. Re-screened 2026-11-10.",
    "dates": {
     "submission_period": "2026-10-01 to 2026-11-11T23:59:00-08:00",
     "decisions": "February 2027"
@@ -2428,11 +2428,17 @@
    "institution_gap": {
     "classification": "INSTITUTION-GAP (owner reclassification 2026-11-03): the \u00a7I bar is temporary \u2014 the fleet is building the institution (Research-Astute line) that satisfies PI-class clauses.",
     "rescreen_trigger": {
-     "state": "NOT ARMED (main status 2026-11-03): route decision DEFERRED, no legal-status change in motion.",
+     "state": "TRIGGER (a) SATISFIED 2026-11-03 (Amazon answer received) - re-screen run 2026-11-10; trigger (b) still open for future cycles.",
      "reopening_triggers": [
       "Amazon's answer to the authorized \u00a7I fiscal-sponsorship clarification email (bare rules question, no project named \u2014 authorized by owner 2026-11-03, being sent)",
       "route-B sponsor identification (a collective sponsor offering assignees + donation payment management; Repo Org mgr identifying) maturing into a chosen route"
      ]
+    },
+    "rescreen_2026_11_10": {
+     "trigger": "Amazon answer (reopening trigger (a)) - reply 2026-11-03 13:21 PT, Gmail 1a1a3499e3838d9e, thread 1a1a19ab338ebf40; verified firsthand by entries lane 2026-11-10.",
+     "verdict": "YES - under \u00a7I, a PI who is a permanent researcher employed by a 501(c)(3) fiscal sponsor in a Model A arrangement CAN satisfy the eligibility clause (sponsor = NGO of record); PI must still meet all other \u00a7I requirements. Under \u00a7III the Award gift goes to the fiscal sponsor, which completes W-9 + Payee Central registration.",
+     "limits": "Route decision still DEFERRED; no fiscal sponsor in place; no PI employed by a sponsor. Standing a sponsor up before the Nov 11 23:59 PT close is infeasible - current-cycle FAIL stands.",
+     "next_trigger": "Route-B sponsor identification maturing into a chosen route (reopening trigger (b)) re-opens future ARA cycles; Model A reading now established for \u00a7I."
     }
    }
   },
@@ -2460,6 +2466,9 @@
       "Amazon's answer to the authorized \u00a7I fiscal-sponsorship clarification email (bare rules question, no project named \u2014 authorized by owner 2026-11-03, being sent)",
       "route-B sponsor identification (a collective sponsor offering assignees + donation payment management; Repo Org mgr identifying) maturing into a chosen route"
      ]
+    },
+    "rescreen_2026_11_10": {
+     "note": "Same Model A \u00a7I answer as C15 (Amazon reply 2026-11-03 13:21 PT, Gmail 1a1a3499e3838d9e) applies to \u00a7I generally, but C16 window closed 2026-11-04 23:59 PT - cycle over; future cycles re-open on trigger (b)."
     }
    }
   }

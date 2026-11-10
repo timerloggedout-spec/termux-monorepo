@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 547,
-    "open_prs": 334,
+    "open_issues": 549,
+    "open_prs": 333,
     "pr_classes": {
       "CANDIDATE": 152,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 171,
+      "NEED_EVIDENCE": 170,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 302,
+      "issues": 303,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 54,
-      "prs": 332,
+      "issues": 55,
+      "prs": 331,
       "unlabelled_numbers": [
         308,
         388,
@@ -105,11 +105,12 @@
         4994,
         5032,
         5050,
-        5071
+        5071,
+        5114
       ]
     }
   },
-  "generated_at": "2026-11-10T12:39:23Z",
+  "generated_at": "2026-11-10T12:48:44Z",
   "issues_unlabelled": [
     308,
     388,
@@ -164,15 +165,16 @@
     4994,
     5032,
     5050,
-    5071
+    5071,
+    5114
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "a971bb3bb6"
+    "sha": "62f7e55d79"
   },
   "prs": [
     {
@@ -2499,7 +2501,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2513,7 +2515,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2555,7 +2557,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -2709,7 +2711,7 @@
       },
       "head_sha": "61b2d94eb2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1274,
       "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
       "updated_at": "2026-10-23T07:40:35Z"
@@ -3745,10 +3747,10 @@
       },
       "head_sha": "b5eff79b60",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-10T12:39:04Z"
+      "updated_at": "2026-11-10T12:39:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4445,7 +4447,7 @@
       },
       "head_sha": "74eeb710af",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4969,
       "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
       "updated_at": "2026-11-10T12:37:37Z"
@@ -4459,7 +4461,7 @@
       },
       "head_sha": "19b625d09a",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
       "updated_at": "2026-11-10T12:38:39Z"
@@ -4841,20 +4843,6 @@
       "number": 5094,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-10T00:06:06Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "6a0a790c32",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5110,
-      "title": "[task] #5103 opportunity self-eval loop \u2014 prep gate + QUE priority + Delphi-rubric selection (#5096)",
-      "updated_at": "2026-11-10T12:38:53Z"
     }
   ],
   "schema": "operator-matrix/v1",

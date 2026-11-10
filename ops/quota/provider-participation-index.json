@@ -1,0 +1,4738 @@
+{
+  "schema": "provider-participation-index/v1",
+  "generated_at": "2026-11-10T14:45:39Z",
+  "generated_by": "scripts/provider_participation_index.py",
+  "sources": {
+    "registry": "ops/quota/registry.json",
+    "dispatch": "ops/challenge/desk-feed.json#dispatch.provider_catalog.inference_availability",
+    "participation": "ops/tracking/nested-family.json",
+    "role_contract": "docs/ops/PROVIDER-COLLABORATOR-CAPABILITY-MAP.md",
+    "tournament": "experiments/doe/util-1-provider-rotation/DESIGN.json"
+  },
+  "semantics": {
+    "provider_identity": "Registry provider strings are preserved; case-folding is used only for evidence joins.",
+    "model_identity": "Exact model IDs appear only where nested-family evidence supplies them; unknown labels become schema null.",
+    "roles": "Observed task roles come from nested-family evidence; declared role capabilities remain a separate contract.",
+    "inference": "Dispatch route/class is distinct from an actual passed inference-invoke receipt.",
+    "free_eligibility": "Null unless an exact account+model admission receipt exists; this generator does not infer eligibility.",
+    "quota": "Limits and reset fields are copied from the quota registry; null is not zero."
+  },
+  "summary": {
+    "registry_model_records": 98,
+    "distinct_provider_names": 96,
+    "id_prefix_families": 36,
+    "dispatch_mapped_records": 98,
+    "dispatch_unmapped_records": 0,
+    "dispatch_classes": {
+      "catalog-only": 1,
+      "inference-only": 65,
+      "proven": 7,
+      "triggerable": 2,
+      "wired-unproven": 23
+    },
+    "inference_dispatchable_records": 95,
+    "catalog_only_records": 1,
+    "providers_with_observed_roles": 6,
+    "providers_with_passed_inference_receipts": 3,
+    "free_eligibility_established_records": 0,
+    "free_eligibility_unknown_records": 98
+  },
+  "providers": [
+    {
+      "provider": "agentrouter",
+      "record_count": 1,
+      "record_ids": [
+        "agentrouter.models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "aion",
+      "record_count": 1,
+      "record_ids": [
+        "aion.free_tokens"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "baseten",
+      "record_count": 1,
+      "record_ids": [
+        "baseten.api"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "observed_models": [],
+      "task_count": 1,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "cerebras",
+      "record_count": 1,
+      "record_ids": [
+        "cerebras.free_tokens"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "Claude",
+      "record_count": 1,
+      "record_ids": [
+        "claude.seat_runtime"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "cloudflare",
+      "record_count": 1,
+      "record_ids": [
+        "cloudflare.workers_ai"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "cohere",
+      "record_count": 1,
+      "record_ids": [
+        "cohere.trial_calls"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "observed_models": [
+        "c4ai-aya-expanse-32b"
+      ],
+      "task_count": 4,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "deepinfra",
+      "record_count": 1,
+      "record_ids": [
+        "deepinfra.api"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "DeepSeek",
+      "record_count": 1,
+      "record_ids": [
+        "deepseek.api"
+      ],
+      "observed_roles": [
+        "builder",
+        "contribution-desk dispatch (per-dispatch)"
+      ],
+      "observed_models": [
+        "deepseek-chat"
+      ],
+      "task_count": 8,
+      "inference_invocations_passed": 6
+    },
+    {
+      "provider": "felo",
+      "record_count": 1,
+      "record_ids": [
+        "felo.api_credits"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "friendli",
+      "record_count": 1,
+      "record_ids": [
+        "friendli.api"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/AgentTools",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.agenttools"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Airforce",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.airforce"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Antigravity",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.antigravity"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Arena",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.arena"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/BingCreateImages",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.bingcreateimages"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/BlackboxPro",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.blackboxpro"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/BlackForestLabs_Flux1Dev",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.blackforestlabs_flux1dev"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/BlackForestLabs_Flux1KontextDev",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.blackforestlabs_flux1kontextdev"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/BraveSearch",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.bravesearch"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/CachedSearch",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.cachedsearch"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Cerebras",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.cerebras"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/ChatGPT",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.chatgpt"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Claude",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.claude"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Cloudflare",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.cloudflare"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/CohereForAI_C4AI_Command",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.cohereforai_c4ai_command"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Copilot",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.copilot"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/CopilotApp",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.copilotapp"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/DeepInfra",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.deepinfra"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/DeepSeek",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.deepseek"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/ElevenLabs",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.elevenlabs"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/G4FSpace",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.g4fspace"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Gemini",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.gemini"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/GeminiCLI",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.geminicli"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/GeminiPro",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.geminipro"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/GithubCopilot",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.githubcopilot"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/GLM",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.glm"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/GoogleAiMode",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.googleaimode"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/GoogleSearch",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.googlesearch"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Grok",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.grok"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Groq",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.groq"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/HailuoAI",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.hailuoai"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/HuggingChat",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.huggingchat"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/HuggingFace",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.huggingface"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/HuggingFaceMedia",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.huggingfacemedia"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/HuggingSpace",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.huggingspace"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/KiloCode",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.kilocode"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/LLM7",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.llm7"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/MarkItDown",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.markitdown"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/MetaAI",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.metaai"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/MetaAIAccount",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.metaaiaccount"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/MicrosoftDesigner",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.microsoftdesigner"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Nvidia",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.nvidia"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Ollama",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.ollama"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/OmniRoute",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.omniroute"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/OpenAIFM",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.openaifm"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/OpenRouterFree",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.openrouterfree"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/OperaAria",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.operaaria"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Perplexity",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.perplexity"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Pi",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.pi"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Pollinations",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.pollinations"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/PollinationsAudio",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.pollinationsaudio"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/PollinationsImage",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.pollinationsimage"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Puter",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.puter"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Qwen",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.qwen"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/RelayRouter",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.relayrouter"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/StabilityAI_SD35Large",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.stabilityai_sd35large"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/TeachAnything",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.teachanything"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/WhiteRabbitNeo",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.whiterabbitneo"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/You",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.you"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "g4f/Yqcloud",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.yqcloud"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "github",
+      "record_count": 1,
+      "record_ids": [
+        "github.copilot.free"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "google",
+      "record_count": 1,
+      "record_ids": [
+        "gemini.api_free"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "record_count": 1,
+      "record_ids": [
+        "g4f.vendors"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "groq",
+      "record_count": 1,
+      "record_ids": [
+        "groq.free_tier"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "huggingface",
+      "record_count": 1,
+      "record_ids": [
+        "huggingface.inference_providers"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "kilo",
+      "record_count": 1,
+      "record_ids": [
+        "kilo.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "llm7",
+      "record_count": 1,
+      "record_ids": [
+        "llm7.free_token"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "meta",
+      "record_count": 3,
+      "record_ids": [
+        "meta.llama_api",
+        "meta.model_api",
+        "meta.muse_code"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "mistral",
+      "record_count": 1,
+      "record_ids": [
+        "mistral.free_mode"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "observed_models": [
+        "mistral-small-latest",
+        "open-mistral-nemo"
+      ],
+      "task_count": 2,
+      "inference_invocations_passed": 2
+    },
+    {
+      "provider": "modelscope",
+      "record_count": 1,
+      "record_ids": [
+        "modelscope.api_inference"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "novita",
+      "record_count": 1,
+      "record_ids": [
+        "novita.api"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "nvidia",
+      "record_count": 1,
+      "record_ids": [
+        "nvidia.api_catalog"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "omni",
+      "record_count": 1,
+      "record_ids": [
+        "omni.gateway"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "openrouter",
+      "record_count": 1,
+      "record_ids": [
+        "openrouter.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "ovhcloud",
+      "record_count": 1,
+      "record_ids": [
+        "ovhcloud.ai_endpoints"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "requesty",
+      "record_count": 1,
+      "record_ids": [
+        "requesty.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "routeway",
+      "record_count": 1,
+      "record_ids": [
+        "routeway.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "sambanova",
+      "record_count": 1,
+      "record_ids": [
+        "sambanova.free_tier"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "sealion",
+      "record_count": 1,
+      "record_ids": [
+        "sealion.api"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "observed_models": [
+        "aisingapore/Llama-SEA-LION-v3-70B-IT"
+      ],
+      "task_count": 4,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "siliconflow",
+      "record_count": 1,
+      "record_ids": [
+        "siliconflow.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "typhoon",
+      "record_count": 1,
+      "record_ids": [
+        "typhoon.api"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "unorouter",
+      "record_count": 1,
+      "record_ids": [
+        "unorouter.free_models"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "observed_models": [],
+      "task_count": 1,
+      "inference_invocations_passed": 1
+    },
+    {
+      "provider": "xfyun",
+      "record_count": 1,
+      "record_ids": [
+        "xfyun.spark"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "xkiro",
+      "record_count": 1,
+      "record_ids": [
+        "xkiro.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    },
+    {
+      "provider": "zai",
+      "record_count": 1,
+      "record_ids": [
+        "zai.free_models"
+      ],
+      "observed_roles": [],
+      "observed_models": [],
+      "task_count": 0,
+      "inference_invocations_passed": 0
+    }
+  ],
+  "records": [
+    {
+      "id": "github.copilot.free",
+      "provider": "github",
+      "family": "github",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none (no usage API for Free)",
+      "quota": {
+        "limit": null,
+        "unit": "requests/month",
+        "window": "monthly",
+        "reset": "unverified",
+        "source": "https://docs.github.com/en/copilot/get-started/plans"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "openrouter.free_models",
+      "provider": "openrouter",
+      "family": "openrouter",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "openrouter production legs",
+        "provider-availability bounded inference leg"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "GET /api/v1/key -> data.free_model_daily_requests {used, limit, remaining} (OPENROUTER_API_KEY); ignore private credit/budget fields and openrouter_metadata",
+      "quota": {
+        "limit": null,
+        "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+        "window": "daily UTC",
+        "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
+        "source": "https://openrouter.ai/docs/api_reference/limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "gemini.api_free",
+      "provider": "google",
+      "family": "gemini",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "gemini-dispatch (event invoke)",
+        "provider-availability bounded inference leg"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
+      "quota": {
+        "limit": null,
+        "unit": "per-model",
+        "window": "daily (RPD)",
+        "reset": "midnight",
+        "source": "https://ai.google.dev/gemini-api/docs/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.vendors",
+      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "multi-ai-cli/vendors/README.md"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "aion.free_tokens",
+      "provider": "aion",
+      "family": "aion",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published (no rate-limit headers or usage endpoint documented)",
+      "quota": {
+        "limit": 20000,
+        "unit": "tokens/day",
+        "window": "daily",
+        "reset": "daily (schedule not published)",
+        "source": "https://api.aionlabs.ai/docs/rate-limits/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "cerebras.free_tokens",
+      "provider": "cerebras",
+      "family": "cerebras",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket",
+      "quota": {
+        "limit": 1000000,
+        "unit": "tokens/day",
+        "window": "daily",
+        "reset": "continuous token-bucket replenishment; no fixed reset",
+        "source": "https://inference-docs.cerebras.ai/support/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "cloudflare.workers_ai",
+      "provider": "cloudflare",
+      "family": "cloudflare",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published (no usage API); Workers AI dashboard only",
+      "quota": {
+        "limit": 10000,
+        "unit": "Neurons/day",
+        "window": "daily",
+        "reset": "daily at 00:00 UTC",
+        "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "cohere.trial_calls",
+      "provider": "cohere",
+      "family": "cohere",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
+      "quota": {
+        "limit": 1000,
+        "unit": "API calls/month",
+        "window": "monthly",
+        "reset": "monthly",
+        "source": "https://docs.cohere.com/docs/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [
+        "c4ai-aya-expanse-32b"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "participation": {
+        "task_count": 4,
+        "inference_invocations_passed": 0,
+        "evidence": [
+          {
+            "model_id": null,
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41375368014.json",
+            "run_id": 41375368014,
+            "session_id": null,
+            "outcome": "failed"
+          },
+          {
+            "model_id": "c4ai-aya-expanse-32b",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41364184062.json",
+            "run_id": 41364184062,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "c4ai-aya-expanse-32b",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367182742.json",
+            "run_id": 41367182742,
+            "session_id": null,
+            "outcome": "failed"
+          },
+          {
+            "model_id": "c4ai-aya-expanse-32b",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41376051120.json",
+            "run_id": 41376051120,
+            "session_id": null,
+            "outcome": "passed"
+          }
+        ]
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "felo.api_credits",
+      "provider": "felo",
+      "family": "felo",
+      "lane": "model",
+      "dispatch_class": "triggerable",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "provider-availability catalog probe",
+        "catalog endpoint in scripts/provider_model_catalog.py; batch admission missing"
+      ],
+      "inference_dispatchable": false,
+      "catalog_probe_declared": true,
+      "registry_live_field": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
+      "quota": {
+        "limit": 200,
+        "unit": "credits/day",
+        "window": "daily",
+        "reset": "daily refill",
+        "source": "https://openapi.felo.ai/pricing"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "groq.free_tier",
+      "provider": "groq",
+      "family": "groq",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-tokens, retry-after (passive adapter implemented)",
+      "quota": {
+        "limit": null,
+        "unit": "per-model requests/tokens",
+        "window": "per minute/day",
+        "reset": "x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers",
+        "source": "https://console.groq.com/docs/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "huggingface.inference_providers",
+      "provider": "huggingface",
+      "family": "huggingface",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
+      "quota": {
+        "limit": null,
+        "unit": "monthly credits",
+        "window": "monthly",
+        "reset": "monthly",
+        "source": "https://huggingface.co/docs/inference-providers/pricing"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "kilo.free_models",
+      "provider": "kilo",
+      "family": "kilo",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": 200,
+        "unit": "requests/hour",
+        "window": "hourly",
+        "reset": "per-hour window (per IP)",
+        "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "llm7.free_token",
+      "provider": "llm7",
+      "family": "llm7",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
+      "quota": {
+        "limit": 100000,
+        "unit": "tokens/day",
+        "window": "daily",
+        "reset": "daily",
+        "source": "https://docs.llm7.io/guides/models-api"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "mistral.free_mode",
+      "provider": "mistral",
+      "family": "mistral",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published (Admin Panel only; Admin API is Enterprise)",
+      "quota": {
+        "limit": null,
+        "unit": "included usage (per model, in-account)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://docs.mistral.ai/admin/billing-usage/usage-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [
+        "mistral-small-latest",
+        "open-mistral-nemo"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "participation": {
+        "task_count": 2,
+        "inference_invocations_passed": 2,
+        "evidence": [
+          {
+            "model_id": "mistral-small-latest",
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392653010.json",
+            "run_id": 41392653010,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "open-mistral-nemo",
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392966979.json",
+            "run_id": 41392966979,
+            "session_id": null,
+            "outcome": "passed"
+          }
+        ]
+      },
+      "invocation_proofs": [
+        {
+          "model_id": "mistral-small-latest",
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392653010.json",
+          "run_id": 41392653010,
+          "session_id": null,
+          "outcome": "passed"
+        },
+        {
+          "model_id": "open-mistral-nemo",
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41392966979.json",
+          "run_id": 41392966979,
+          "session_id": null,
+          "outcome": "passed"
+        }
+      ]
+    },
+    {
+      "id": "modelscope.api_inference",
+      "provider": "modelscope",
+      "family": "modelscope",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published (not established)",
+      "quota": {
+        "limit": 2000,
+        "unit": "requests/day",
+        "window": "daily",
+        "reset": "daily (per fleet recon claim)",
+        "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "nvidia.api_catalog",
+      "provider": "nvidia",
+      "family": "nvidia",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": null,
+        "unit": "per-model credits/limits (in-account)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://build.nvidia.com/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "omni.gateway",
+      "provider": "omni",
+      "family": "omni",
+      "lane": "model",
+      "dispatch_class": "triggerable",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "provider-availability catalog probe",
+        "catalog endpoint in scripts/provider_model_catalog.py; batch admission missing"
+      ],
+      "inference_dispatchable": false,
+      "catalog_probe_declared": true,
+      "registry_live_field": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
+      "quota": {
+        "limit": null,
+        "unit": "n/a (aggregates upstream free tiers)",
+        "window": "n/a",
+        "reset": "n/a",
+        "source": "https://github.com/crl33/omniroute"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "ovhcloud.ai_endpoints",
+      "provider": "ovhcloud",
+      "family": "ovhcloud",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "none published; consumption visible in the Control Panel",
+      "quota": {
+        "limit": 2,
+        "unit": "requests/minute",
+        "window": "per minute",
+        "reset": "per-minute window",
+        "source": "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-getting-started"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "requesty.free_models",
+      "provider": "requesty",
+      "family": "requesty",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
+      "quota": {
+        "limit": 200,
+        "unit": "requests/day",
+        "window": "daily",
+        "reset": "daily",
+        "source": "https://www.requesty.ai/free-models"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "routeway.free_models",
+      "provider": "routeway",
+      "family": "routeway",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
+      "quota": {
+        "limit": 200,
+        "unit": "requests/day",
+        "window": "daily",
+        "reset": "UTC midnight (X-RateLimit-Reset-Day)",
+        "source": "https://docs.routeway.ai/getting-started/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "sambanova.free_tier",
+      "provider": "sambanova",
+      "family": "sambanova",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratelimit-reset-requests-day (passive adapter implemented)",
+      "quota": {
+        "limit": 20,
+        "unit": "requests/day per model",
+        "window": "daily",
+        "reset": "daily (x-ratelimit-reset-requests-day header)",
+        "source": "https://sambanova-systems.mintlify.dev/docs/en/models/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "sealion.api",
+      "provider": "sealion",
+      "family": "sealion",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": 10,
+        "unit": "requests/minute per user",
+        "window": "per minute",
+        "reset": "per-minute window",
+        "source": "https://docs.sea-lion.ai/guides/inferencing/api"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [
+        "aisingapore/Llama-SEA-LION-v3-70B-IT"
+      ],
+      "observed_roles": [
+        "builder"
+      ],
+      "participation": {
+        "task_count": 4,
+        "inference_invocations_passed": 0,
+        "evidence": [
+          {
+            "model_id": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367701010.json",
+            "run_id": 41367701010,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367431291.json",
+            "run_id": 41367431291,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367410806.json",
+            "run_id": 41367410806,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41367453278.json",
+            "run_id": 41367453278,
+            "session_id": null,
+            "outcome": "passed"
+          }
+        ]
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "siliconflow.free_models",
+      "provider": "siliconflow",
+      "family": "siliconflow",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "endpoint+secret",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free values shown in the account console only",
+      "quota": {
+        "limit": null,
+        "unit": "requests/minute + tokens/minute (per model)",
+        "window": "per minute/day",
+        "reset": "per-window",
+        "source": "https://siliconflow-4a6a0801.mintlify.app/en/userguide/rate-limits/rate-limit-and-upgradation"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "typhoon.api",
+      "provider": "typhoon",
+      "family": "typhoon",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message",
+      "quota": {
+        "limit": 200,
+        "unit": "requests/minute",
+        "window": "per minute",
+        "reset": "per-minute window; 429 error body message carries the retry timestamp",
+        "source": "https://docs.opentyphoon.ai/en/rate-limits/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "unorouter.free_models",
+      "provider": "unorouter",
+      "family": "unorouter",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "Retry-After header on HTTP 429",
+      "quota": {
+        "limit": 1,
+        "unit": "requests/minute per free model per user",
+        "window": "per minute",
+        "reset": "per-minute window; Retry-After on 429",
+        "source": "http://unorouter.com/en/blog/free-models-aggregated"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [
+        "builder"
+      ],
+      "participation": {
+        "task_count": 1,
+        "inference_invocations_passed": 1,
+        "evidence": [
+          {
+            "model_id": null,
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41408357473.json",
+            "run_id": 41408357473,
+            "session_id": null,
+            "outcome": "passed"
+          }
+        ]
+      },
+      "invocation_proofs": [
+        {
+          "model_id": null,
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41408357473.json",
+          "run_id": 41408357473,
+          "session_id": null,
+          "outcome": "passed"
+        }
+      ]
+    },
+    {
+      "id": "xfyun.spark",
+      "provider": "xfyun",
+      "family": "xfyun",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published (not established)",
+      "quota": {
+        "limit": null,
+        "unit": "unknown",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "xkiro.free_models",
+      "provider": "xkiro",
+      "family": "xkiro",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (Quota class b, via provider-batch)",
+      "inference_route": [
+        "provider-batch",
+        "no availability coverage"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
+      "quota": {
+        "limit": 500000,
+        "unit": "tokens/day",
+        "window": "daily",
+        "reset": "daily reset; free-model requests blocked with 429 until the reset",
+        "source": "https://xkiro.com/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "zai.free_models",
+      "provider": "zai",
+      "family": "zai",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "secret-only",
+      "batch_route": "endpoint-wired",
+      "inference_route": [
+        "provider-batch",
+        "provider-availability catalog probe"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
+      "quota": {
+        "limit": null,
+        "unit": "per-account (unpublished)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://docs.z.ai/api-reference/api-code"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.agenttools",
+      "provider": "g4f/AgentTools",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 250,
+        "unit": "units",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://api.toolsforagents.tools/site/index.html"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.airforce",
+      "provider": "g4f/Airforce",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 1000,
+        "unit": "requests",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://api.airforce/docs/quickstart/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.antigravity",
+      "provider": "g4f/Antigravity",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://antigravity.google/docs/plans"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.arena",
+      "provider": "g4f/Arena",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://arena.ai/faq"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.bingcreateimages",
+      "provider": "g4f/BingCreateImages",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.microsoft.com/en-us/microsoft-365/microsoft-designer"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.blackforestlabs_flux1dev",
+      "provider": "g4f/BlackForestLabs_Flux1Dev",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 2,
+        "unit": "minutes of GPU time",
+        "window": "per day, resets exactly 24 hours after first GPU usage",
+        "reset": "unknown",
+        "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.blackforestlabs_flux1kontextdev",
+      "provider": "g4f/BlackForestLabs_Flux1KontextDev",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 2,
+        "unit": "minutes of GPU time",
+        "window": "per day, resets exactly 24 hours after first GPU usage",
+        "reset": "unknown",
+        "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.blackboxpro",
+      "provider": "g4f/BlackboxPro",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.blackbox.ai/pricing"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.bravesearch",
+      "provider": "g4f/BraveSearch",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://brave.com/ai/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.cachedsearch",
+      "provider": "g4f/CachedSearch",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://g4f.dev"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.cerebras",
+      "provider": "g4f/Cerebras",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://inference-docs.cerebras.ai/support/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.chatgpt",
+      "provider": "g4f/ChatGPT",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.claude",
+      "provider": "g4f/Claude",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://support.claude.com/en/articles/8114491-get-started-with-claude"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.cloudflare",
+      "provider": "g4f/Cloudflare",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.cohereforai_c4ai_command",
+      "provider": "g4f/CohereForAI_C4AI_Command",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://coherelabs-c4ai-command.hf.space"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.copilot",
+      "provider": "g4f/Copilot",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://copilot.com"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.copilotapp",
+      "provider": "g4f/CopilotApp",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.deepinfra",
+      "provider": "g4f/DeepInfra",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://deepinfra.com/blog/compare-models"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.deepseek",
+      "provider": "g4f/DeepSeek",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html?source=post_page-----895be7b853b0--------------------------------"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.elevenlabs",
+      "provider": "g4f/ElevenLabs",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 10000,
+        "unit": "credits",
+        "window": "per month",
+        "reset": "unknown",
+        "source": "https://elevenlabs.io/pricing"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.g4fspace",
+      "provider": "g4f/G4FSpace",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://g4f.dev"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.glm",
+      "provider": "g4f/GLM",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://chat.z.ai"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.gemini",
+      "provider": "g4f/Gemini",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://support.google.com/gemini/answer/16275805?hl=en-IN"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.geminicli",
+      "provider": "g4f/GeminiCLI",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 1000,
+        "unit": "requests",
+        "window": "per user per day",
+        "reset": "unknown",
+        "source": "https://geminicli.com/docs/resources/quota-and-pricing/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.geminipro",
+      "provider": "g4f/GeminiPro",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://ai.google.dev/gemini-api/docs/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.githubcopilot",
+      "provider": "g4f/GithubCopilot",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 50,
+        "unit": "premium requests (all chat interactions count as premium requests)",
+        "window": "per month",
+        "reset": "unknown",
+        "source": "https://docs.github.com/en/copilot/setting-up-github-copilot/setting-up-github-copilot-for-yourself"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.googleaimode",
+      "provider": "g4f/GoogleAiMode",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://support.google.com/websearch/answer/16011537?visit_id=639285178901396813-4034714809&p=aimode&rd=1"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.googlesearch",
+      "provider": "g4f/GoogleSearch",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://developers.google.com/custom-search/v1/overview.html"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.grok",
+      "provider": "g4f/Grok",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://docs.x.ai/grok/faq"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.groq",
+      "provider": "g4f/Groq",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 1000,
+        "unit": "requests per day (RPD) for openai/gpt-oss-120b",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://console.groq.com/docs/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.hailuoai",
+      "provider": "g4f/HailuoAI",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.minimax.io/news/minimax-hailuo-23"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.huggingchat",
+      "provider": "g4f/HuggingChat",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://huggingface.co/docs/api-inference/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.huggingface",
+      "provider": "g4f/HuggingFace",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://huggingface.co/docs/api-inference/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.huggingfacemedia",
+      "provider": "g4f/HuggingFaceMedia",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://huggingface.co/docs/api-inference/rate-limits"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.huggingspace",
+      "provider": "g4f/HuggingSpace",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 2,
+        "unit": "GPU-minutes (ZeroGPU)",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.kilocode",
+      "provider": "g4f/KiloCode",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 200,
+        "unit": "requests",
+        "window": "per hour per IP",
+        "reset": "unknown",
+        "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.llm7",
+      "provider": "g4f/LLM7",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 100000,
+        "unit": "tokens (input + output)",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://docs.llm7.io/guides/models-api"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.markitdown",
+      "provider": "g4f/MarkItDown",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://github.com/microsoft/markitdown"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.metaai",
+      "provider": "g4f/MetaAI",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.metaaiaccount",
+      "provider": "g4f/MetaAIAccount",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.microsoftdesigner",
+      "provider": "g4f/MicrosoftDesigner",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 15,
+        "unit": "boosts (fast AI creations/edits)",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://www.microsoft.com/en-us/copilot/blog/2024/07/17/new-ways-to-get-creative-with-microsoft-designer-powered-by-ai/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.nvidia",
+      "provider": "g4f/Nvidia",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 1000,
+        "unit": "API credits",
+        "window": "on sign-up (one-time trial grant)",
+        "reset": "unknown",
+        "source": "https://docs.nvidia.com/ace/ace-agent/4.0/sample-bots/rag-langchain-bot.html"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.ollama",
+      "provider": "g4f/Ollama",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://ollama.com/blog/transparent-pricing"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.omniroute",
+      "provider": "g4f/OmniRoute",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://github.com/diegosouzapw/OmniRoute"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.openaifm",
+      "provider": "g4f/OpenAIFM",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://developers.openai.com/api/docs/guides/text-to-speech"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.openrouterfree",
+      "provider": "g4f/OpenRouterFree",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 50,
+        "unit": "requests",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://openrouter.ai/pricing"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.operaaria",
+      "provider": "g4f/OperaAria",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 5,
+        "unit": "images",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://www.opera.com/gx/features/opera-ai"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.perplexity",
+      "provider": "g4f/Perplexity",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 3,
+        "unit": "Pro Searches",
+        "window": "per day",
+        "reset": "unknown",
+        "source": "https://www.perplexity.ai/hub/blog/ai-costs"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.pi",
+      "provider": "g4f/Pi",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://inflection.ai/blog/the-future-of-pi"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.pollinations",
+      "provider": "g4f/Pollinations",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://pollinations.ai/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.pollinationsaudio",
+      "provider": "g4f/PollinationsAudio",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://pollinations.ai"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.pollinationsimage",
+      "provider": "g4f/PollinationsImage",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://pollinations.ai"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.puter",
+      "provider": "g4f/Puter",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://docs.puter.com/user-pays-model/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.qwen",
+      "provider": "g4f/Qwen",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.alibabacloud.com/help/en/model-studio/model-pricing?utm_source=chatgpt.com"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.relayrouter",
+      "provider": "g4f/RelayRouter",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": 2000000,
+        "unit": "tokens",
+        "window": "per account total, with daily sub-caps resetting 00:00 UTC",
+        "reset": "unknown",
+        "source": "https://relayrouter.org/free-plan"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.stabilityai_sd35large",
+      "provider": "g4f/StabilityAI_SD35Large",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://stabilityai-stable-diffusion-3-5-large.hf.space"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.teachanything",
+      "provider": "g4f/TeachAnything",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.teach-anything.com"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.whiterabbitneo",
+      "provider": "g4f/WhiteRabbitNeo",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://www.whiterabbitneo.com"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.you",
+      "provider": "g4f/You",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://you.com/product/web-search-api"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "g4f.yqcloud",
+      "provider": "g4f/Yqcloud",
+      "family": "g4f",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+      "quota": {
+        "limit": null,
+        "unit": "unmetered / unknown (NOT ESTABLISHED)",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://chat9.yqcloud.top"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "meta.model_api",
+      "provider": "meta",
+      "family": "meta",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none (no usage API established; credential MODEL_API_KEY not provisioned — owner provisioning item, names-only)",
+      "quota": {
+        "limit": null,
+        "unit": "tokens (metered, public preview)",
+        "window": "n/a",
+        "reset": "unverified — no published rate-limit counter established 2026-10-30",
+        "source": "https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "meta.muse_code",
+      "provider": "meta",
+      "family": "meta",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none (auth = browser sign-in or META_API_KEY / muse auth set; credential not provisioned — owner item, names-only)",
+      "quota": {
+        "limit": null,
+        "unit": "tasks (subscription or Meta Model API PAYG)",
+        "window": "monthly (subscription) / metered (PAYG)",
+        "reset": "unverified",
+        "source": "https://developer.meta.com/ai/products/muse-code"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "meta.llama_api",
+      "provider": "meta",
+      "family": "meta",
+      "lane": "model",
+      "dispatch_class": "inference-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-wired",
+      "inference_route": [
+        "no wired route established (see promotion wiring)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none (retired; superseded by meta.model_api)",
+      "quota": {
+        "limit": 0,
+        "unit": "requests",
+        "window": "n/a",
+        "reset": "n/a (retired)",
+        "source": "https://www.promptfoo.dev/docs/providers/meta/"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "deepinfra.api",
+      "provider": "deepinfra",
+      "family": "deepinfra",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (extension surface, PR #3208)",
+      "inference_route": [
+        "llm_api_hub provider_extensions (PR #3208)",
+        "provider-invoke (Actions verdicts #3141)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": null,
+        "unit": "USD balance (prepaid)",
+        "window": "n/a",
+        "reset": "n/a",
+        "source": "https://deepinfra.com/docs"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "novita.api",
+      "provider": "novita",
+      "family": "novita",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (extension surface, PR #3214)",
+      "inference_route": [
+        "llm_api_hub provider_extensions (PR #3214)",
+        "provider-invoke (Actions verdicts #3141)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": null,
+        "unit": "USD balance (prepaid)",
+        "window": "n/a",
+        "reset": "n/a",
+        "source": "https://novita.ai/docs"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "friendli.api",
+      "provider": "friendli",
+      "family": "friendli",
+      "lane": "model",
+      "dispatch_class": "wired-unproven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (extension surface, PR #3224)",
+      "inference_route": [
+        "llm_api_hub provider_extensions (PR #3224)",
+        "provider-invoke (Actions verdicts #3141)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": null,
+        "unit": "USD balance (prepaid)",
+        "window": "n/a",
+        "reset": "n/a",
+        "source": "https://friendli.ai/docs"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "baseten.api",
+      "provider": "baseten",
+      "family": "baseten",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "wired (extension surface, PR #3235)",
+      "inference_route": [
+        "llm_api_hub provider_extensions (PR #3235)",
+        "provider-invoke (Actions verdicts #3141)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "none published",
+      "quota": {
+        "limit": null,
+        "unit": "USD credits (prepaid)",
+        "window": "n/a",
+        "reset": "n/a",
+        "source": "https://docs.baseten.co"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [
+        "builder"
+      ],
+      "participation": {
+        "task_count": 1,
+        "inference_invocations_passed": 0,
+        "evidence": [
+          {
+            "model_id": null,
+            "role": "builder",
+            "task_class": "certifications-unit",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41374860979.json",
+            "run_id": 41374860979,
+            "session_id": null,
+            "outcome": "failed"
+          }
+        ]
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "claude.seat_runtime",
+      "provider": "Claude",
+      "family": "claude",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "seat-runtime",
+      "batch_route": "not-applicable (seat-runtime; not provider-batch)",
+      "inference_route": [
+        "Muse seat runtime (Muse Spark 1.3)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": true,
+      "registry_live_field": "routed-dispatch stamps + nested-family carriers; usage-series model axis carries the activity-proxy counts; no passive quota reader",
+      "quota": {
+        "limit": null,
+        "unit": "dispatches (consumption NOT ESTABLISHED)",
+        "window": "seat plan window (not exposed)",
+        "reset": "not exposed",
+        "source": "Dispatch-proven 2026-11-01/02: experiments/doe/routed-dispatch stamps {provider: Claude, model: Muse Spark 1.3, quota: {cost_class: metered, pool: seat-runtime}} + nested-family carriers. Owner directive 2026-11-01: Claude as an endpoint in active use (via Swarm). Limits state: NOT ESTABLISHED until measured."
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    },
+    {
+      "id": "deepseek.api",
+      "provider": "DeepSeek",
+      "family": "deepseek",
+      "lane": "model",
+      "dispatch_class": "proven",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "not-covered",
+      "batch_route": "not-in-provider-batch (direct provider-invoke route)",
+      "inference_route": [
+        "provider-invoke (direct DeepSeek API; distinct from g4f.deepseek and deepseek.build_dispatch)"
+      ],
+      "inference_dispatchable": true,
+      "catalog_probe_declared": false,
+      "registry_live_field": "nested-family carriers + dispatch records; no passive quota reader",
+      "quota": {
+        "limit": null,
+        "unit": "requests/tokens (NOT ESTABLISHED)",
+        "window": "provider-side (not established)",
+        "reset": "not established",
+        "source": "Dispatch-proven: nested-family carriers (provider DeepSeek, tasks 2026-11-01) + provider capability map. Allocation census batch-2 did not establish a direct-route quota object. Owner directive 2026-11-01: DeepSeek as an endpoint in active use (via Swarm). Limits state: NOT ESTABLISHED until measured."
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [
+        "deepseek-chat"
+      ],
+      "observed_roles": [
+        "builder",
+        "contribution-desk dispatch (per-dispatch)"
+      ],
+      "participation": {
+        "task_count": 8,
+        "inference_invocations_passed": 6,
+        "evidence": [
+          {
+            "model_id": null,
+            "role": "contribution-desk dispatch (per-dispatch)",
+            "task_class": "desk-traversal",
+            "source": "desk-usage",
+            "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage",
+            "run_id": null,
+            "session_id": "41301295882",
+            "outcome": "STALLED — never invoked ×2 (runs 41301295882 + 41321691938: tunnel-unresolved skip at Start; Poll skipped; ∅ work product). Re-dispatch decision (desk, posture): ∅ further re-fires into a down tunnel; task submitted to the system as issue #3215; tunnel escalated ⇒ Swarm"
+          },
+          {
+            "model_id": null,
+            "role": null,
+            "task_class": null,
+            "source": "campaign-records",
+            "source_ref": "experiments/doe/apk-1-parallel-versioning/records/arm-C.json",
+            "run_id": null,
+            "session_id": null,
+            "outcome": null
+          },
+          {
+            "model_id": null,
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41411361651.json",
+            "run_id": 41411361651,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": null,
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41416686691.json",
+            "run_id": 41416686691,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": null,
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41418515925.json",
+            "run_id": 41418515925,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "deepseek-chat",
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41412826624.json",
+            "run_id": 41412826624,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "deepseek-chat",
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41413151771.json",
+            "run_id": 41413151771,
+            "session_id": null,
+            "outcome": "passed"
+          },
+          {
+            "model_id": "deepseek-chat",
+            "role": "builder",
+            "task_class": "inference-invoke",
+            "source": "records",
+            "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41418529472.json",
+            "run_id": 41418529472,
+            "session_id": null,
+            "outcome": "passed"
+          }
+        ]
+      },
+      "invocation_proofs": [
+        {
+          "model_id": null,
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41411361651.json",
+          "run_id": 41411361651,
+          "session_id": null,
+          "outcome": "passed"
+        },
+        {
+          "model_id": null,
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41416686691.json",
+          "run_id": 41416686691,
+          "session_id": null,
+          "outcome": "passed"
+        },
+        {
+          "model_id": null,
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41418515925.json",
+          "run_id": 41418515925,
+          "session_id": null,
+          "outcome": "passed"
+        },
+        {
+          "model_id": "deepseek-chat",
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41412826624.json",
+          "run_id": 41412826624,
+          "session_id": null,
+          "outcome": "passed"
+        },
+        {
+          "model_id": "deepseek-chat",
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41413151771.json",
+          "run_id": 41413151771,
+          "session_id": null,
+          "outcome": "passed"
+        },
+        {
+          "model_id": "deepseek-chat",
+          "role": "builder",
+          "task_class": "inference-invoke",
+          "source": "records",
+          "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41418529472.json",
+          "run_id": 41418529472,
+          "session_id": null,
+          "outcome": "passed"
+        }
+      ]
+    },
+    {
+      "id": "agentrouter.models",
+      "provider": "agentrouter",
+      "family": "agentrouter",
+      "lane": "model",
+      "dispatch_class": "catalog-only",
+      "dispatch_mapping_status": "mapped",
+      "availability_probe": "authenticated-catalog",
+      "batch_route": "not-admitted",
+      "inference_route": [],
+      "inference_dispatchable": false,
+      "catalog_probe_declared": true,
+      "registry_live_field": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/reset endpoint verified)",
+      "quota": {
+        "limit": null,
+        "unit": "provider-defined",
+        "window": "unknown",
+        "reset": "unknown",
+        "source": "https://co.agentrouter.org/portal/guide"
+      },
+      "free_eligibility": null,
+      "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
+      "observed_models": [],
+      "observed_roles": [],
+      "participation": {
+        "task_count": 0,
+        "inference_invocations_passed": 0,
+        "evidence": []
+      },
+      "invocation_proofs": []
+    }
+  ],
+  "tournament": {
+    "campaign_id": "util-1-provider-rotation",
+    "status": "admitted_implementing",
+    "assignment": "Desk's rotation rule assigns; this campaign observes and audits. Dispenses lacking a {provider, selection_reason, ts} stamp are OBSERVATIONAL only (rule 5).",
+    "window_rule": "first 24 stamped dispatches OR 2026-12-01, whichever first; per-arm reporting only at n>=4/arm",
+    "cull_rule": "arm with first-pass success < pooled - 0.25 at n>=8 is flagged; doe-expert proposes a desk-rule amendment (the desk owns its rule; this campaign issues the verdict, not the change)",
+    "provider_stamp_required": [
+      "provider",
+      "selection_reason",
+      "ts"
+    ],
+    "desk_rotation_rule": "Bench-wide TASK-FIT rotation (owner FIX via main, 2026-11-01; supersedes the no-2-consecutive rule): every dispatch selects from the FULL wired bench in this catalog — the surface whose class fits the task (build / fix / review / device / probe / inference arm) — with no fixed funnel and no automatic repeat of the previous pick. Stamps carry provider + selection reason + bench position (the provider's catalog class).",
+    "conditional_provider_arms": [
+      {
+        "provider": "agentrouter",
+        "status": "pre_registered_conditional_not_dispatchable",
+        "protocols": [
+          "openai-compatible",
+          "anthropic-compatible"
+        ],
+        "activation_gates": [
+          "AGENTROUTER_API_KEY is present in approved secret storage and is never exposed in records",
+          "authenticated account/resource-pool model discovery succeeds",
+          "native inference transport is separately reviewed and allowlisted; catalog registration is not inference admission",
+          "explicit spend ceiling and stop switch are approved",
+          "data classification and provider data-handling terms are reviewed"
+        ],
+        "activation_rule": "Activate only after every listed activation gate passes. The first real desk-stamped dispatch is required as post-activation evidence before the arm is counted or scored; a registry/catalog row alone is not an eligible inference arm."
+      }
+    ]
+  }
+}

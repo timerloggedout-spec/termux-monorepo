@@ -1228,8 +1228,8 @@
      "label": "Connect clip storage (Builder.io or S3-compatible backend) on the created Clips account",
      "blocks": "demo recording upload",
      "owner": "challenge-entries lane (in-app step on the account)",
-     "status": "open",
-     "evidence": "Clips account created 2026-10-27 (PR #1835 merged 264c5d9771); /record shows a Connect storage step; recordings cannot upload before it."
+     "status": "closed",
+     "evidence": "Clips account created 2026-10-27 (PR #1835 merged 264c5d9771); /record shows a Connect storage step; recordings cannot upload before it. SATISFIED 2026-11-10 (provisioning seat d77301ef executed; D3 seat record): Builder.io storage CONNECTED in Clips on the fleet session (\"Builder.io account created and connected\"; Library storage warning GONE; Record/Import available; no card, no B2)."
     }
    ],
    "prizes": {
@@ -1443,6 +1443,11 @@
     "projects": null,
     "projects_note": "builder.io/hackathon displays NO participant/project count ('No registration required', internal submission form only) \u2014 OPEN TASK, source may never be public pre-close",
     "fetched_at": "2026-10-28T22:05:00Z"
+   },
+   "clips": {
+    "storage": "CONNECTED - Builder.io (fleet session, 2026-11-10)",
+    "gate": "D3-CLIPS-STORAGE SATISFIED",
+    "upload": "PENDING - fleet-rendered ListingLens demo MP4 (file location to entries lane from D3/Desk); then public URL + no-login check; submit-once fires per Desk election on PASS."
    }
   },
   {

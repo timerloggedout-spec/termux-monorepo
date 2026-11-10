@@ -1,6 +1,6 @@
 {
   "counts": {
-    "open_issues": 549,
+    "open_issues": 551,
     "open_prs": 333,
     "pr_classes": {
       "CANDIDATE": 152,
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 303,
+      "issues": 305,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -110,7 +110,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-10T12:56:04Z",
+  "generated_at": "2026-11-10T13:05:30Z",
   "issues_unlabelled": [
     308,
     388,
@@ -171,10 +171,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "63223d3bae"
+    "sha": "26598c9972"
   },
   "prs": [
     {
@@ -2501,7 +2501,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2515,7 +2515,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2557,7 +2557,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -3745,12 +3745,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b5eff79b60",
+      "head_sha": "30560539dc",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-10T12:39:07Z"
+      "updated_at": "2026-11-10T13:05:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4372,15 +4372,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "60b9994260",
+      "head_sha": "e1b93f5f77",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-10T12:34:04Z"
+      "updated_at": "2026-11-10T13:04:10Z"
     },
     {
       "class": "NEED_EVIDENCE",

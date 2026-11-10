@@ -105,7 +105,7 @@ def build(root: Path, generated_at: str | None = None) -> dict:
         if not isinstance(inference_route, list):
             inference_route = []
         claim_text = " ".join(str(value or "") for value in (service.get("metric"), (service.get("planned_use") or {}).get("note")))
-        has_free_claim_text = bool(re.search(r"\\bfree\\b|no-auth", claim_text, re.IGNORECASE))
+        has_free_claim_text = bool(re.search(r"\bfree\b|no-auth", claim_text, re.IGNORECASE))
         records.append({
             "id": record_id,
             "provider": service.get("provider"),

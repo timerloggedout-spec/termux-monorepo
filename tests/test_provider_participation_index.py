@@ -44,6 +44,7 @@ def test_exhaustive_and_separates_evidence(tmp_path):
     assert records["agentrouter.models"]["dispatch_class"] == "catalog-only"
     assert records["agentrouter.models"]["inference_dispatchable"] is False
     assert records["agentrouter.models"]["free_eligibility"] is None
+    assert records["agentrouter.models"]["free_tier_claim_text_present"] is False
     assert records["unmapped.models"]["dispatch_mapping_status"] == "unmapped"
     assert records["deepseek.api"]["quota"]["limit"] is None
 
@@ -62,3 +63,16 @@ def test_duplicate_dispatch_ids_fail_closed(tmp_path):
     path.write_text(json.dumps(desk))
     with pytest.raises(ValueError, match="duplicate dispatch record"):
         build(tmp_path)
+
+
+def test_free_tier_claim_text_never_establishes_eligibility(tmp_path):
+    fixture(tmp_path)
+    path = tmp_path / "ops/quota/registry.json"
+    data = json.loads(path.read_text())
+    data["services"][0]["planned_use"] = {"note": "Public free-tier model listing"}
+    path.write_text(json.dumps(data))
+    doc = build(tmp_path)
+    row = next(r for r in doc["records"] if r["id"] == "deepseek.api")
+    assert row["free_tier_claim_text_present"] is True
+    assert row["free_eligibility"] is None
+    assert doc["summary"]["records_mentioning_free_tier_claim_text"] == 1

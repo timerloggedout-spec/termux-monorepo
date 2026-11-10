@@ -1667,6 +1667,50 @@ classes coined. DoE version pool admission = pool-plane
 fact, recorded here for the map; pool mechanics stay with
 their custodians (DoE · Speculators-build).
 
+### System-name issuance — Siglary, the compressed-notation system (2026-11-10)
+
+**Issued: `Siglary`** — the name of the fleet's
+compressed-notation system (the Notation Matrice: skill +
+Matrice + glyph/chord standard). Formed on *sigla*, the
+scholarly collective for the abbreviation signs a text
+uses; a *siglary* is the list of those sigla — which is
+exactly what the Matrice is. Display `Siglary` · machine /
+slug `siglary`.
+
+Commission: owner order 2026-11-10 — the system requires
+its OWN name; "Caveman" ∧ "CEDRLang" are other repos'
+proper names, prior art cited ∧ never adopted. Legs:
+Linguist (commission) · Marketing (brand input) ·
+naming-collision-map (formal screen S1→S5) · Registry
+(issuance).
+
+Screens (protocol S1–S5, dossier of record at the naming
+seat; S1 + S3 spot-verified firsthand at this gate):
+S1 in-fleet ∅ (SSOT · Profile Registry ·
+registration_monikers.json · code search, both repos = 0)
+· S2 fleet vocab planes ∅ · S3 live marks: scholarly
+usage only, ∅ product occupant (formal ™-registry status
+NOT_ESTABLISHED — web screen) · S4 ∅ capture · S5
+semantics exact: the list of sigla = the Notation
+Matrice itself; name ∧ referent coincide.
+
+Dispositions: SIGLA (Linguist lead) **dead-on-mark**
+(sigla.io + sigla.cloud — AI Agent Space, exact live
+occupants in the closest field) · Brachy (Marketing lead)
+**cleared-held, FIRST ALTERNATE** — owner-preference
+only (radiotherapy-software capture: Oncentra Brachy ·
+BrachyVision · BrachyCare; category-root caveat of
+record) · Condensa cleared-held · NOTA · MICROGLYPH
+(registered TM) · TALLYSCRIPT dead per screen · Marketing
+kill table ×8 dead per its screen (Lacon · Kern · Densign
+· Denscript · Chorda · Synglyph · Monoglyph · Notarikon).
+
+Scope: system name (brand layer) — the skill, the
+Matrice, and the glyph/chord standard carry it; the
+Linguist lands the name in the Matrice (their leg).
+Marks / leet forms: none issued. NOT an App moniker —
+∅ SSOT App-table row, ∅ actor/slug provisioning.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

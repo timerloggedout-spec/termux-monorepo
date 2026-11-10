@@ -243,3 +243,11 @@ Owner challenge sustained in main (2026-11-02): Repo-Story's build was hard-boun
 
 **Scout working model (owner, via main 2026-11-02):**
 15. **Managers request → Scout selects → Swarm dispatches.** Requests are a first-class intake on the execution side: a manager states the capability need; Scout selects the arm from the pool population (the DoE-governed feed, item 14); this lane's machinery dispatches. **No manager hand-picks an arm.** The dispatch stamp gains {requesting_manager · request_id} so every execution traces back to the request it served and the selection that filled it (machinery delta: fan-out stamp schema, additive fields).
+
+## 26. D-h pullable trigger + Opportunities self-eval loop (2026-11-10)
+
+- Owner order 2026-11-10 04:27 PT set the build priority: (1) D-h pullable trigger, (2) #5096 self-eval loop machinery, (3) QUE consumer continuity.
+- build-dispatch ported from timerloggedout-spec/repo-story (PR #5111, merged `98586a6c4bc3`): `.github/workflows/build-dispatch.yml` — Swarm App SEC-03 mint-before-checkout, run-gemini-cli builder (gemini-3.5-flash-lite), D-h receipt step {route, run_id, branch, fired_by, heartbeat_deadline}, failure surfacing.
+- Claimable-route registry: `ops/dispatch/claimable-routes.json` + `docs/ops/CLAIMABLE-ROUTES.md`; a route is claimable only if registered; claim stamps name {firing hand, route, run id, heartbeat deadline}.
+- Opportunities self-eval loop (issue #5096, PR #5110, merged `0ee3c56df289`): `scripts/opportunities/opportunity_cycle.py` + `.github/workflows/opportunity-cycle.yml`; prep-first gate (Stages 0-4 + submission-requirements census) fail-closed; QUE priority feed `ops/que/feeds/opportunity-priority.json`; cycle receipts `ops/opportunities/cycles/`.
+- This proving dispatch is the arm's first live exercise; its own receipt lands on this issue.

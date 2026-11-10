@@ -38,9 +38,9 @@ main's guide states it; this file records the v2 layer only.
    When a reading could mislead, the notation expands — length
    is never a defense of a wrong reading.
 
-## v-next glyph fold (owner order 2026-11-10 04:19 PT)
+## v-next fold (owner order 2026-11-10 04:19 PT)
 
-The owner's fold list re-issues the glyph categories of record:
+The owner's fold list re-issues the notation categories of record (classes per the taxonomy above):
 state dots {🟢 live · 🔴 down · 🟡 degraded} · 🧾 receipt · 📸
 snapshot · ❄ freeze · ⚖ ruling / ⚖✓ discharged · ≅ conforming
 · N∅ NOT_ESTABLISHED (chat-only, barred from data — see Usage
@@ -72,6 +72,24 @@ pending)".
   **schema nulls** where a fact is not established. A feed or
   ledger cell carrying `N∅` (or the long form as a stored
   value) is a defect, not a usage.
+
+## Notation classes (owner correction 2026-11-10 04:25 PT)
+
+Three classes, kept distinct — earlier "glyph-category"
+phrasing (incl. main's fold wording) is re-stamped by this
+taxonomy:
+
+| Class | Nature | Members of record |
+|---|---|---|
+| **GLYPHS** | pictographs — meaning read from the picture | 👁 🧐 🧾 📸 ❄ ⚖ ⚖✓ ⛔ 👆 ⤴ · state dots 🟢🔴🟡 |
+| **CHORDS** | letter codes, resolved in-domain | `ent` `qta` `mrg` `sgl` … (Shorthand Domains) |
+| **OPERATORS** | formal symbols — meaning fixed by a formal system, ¬ pictures | logic {∧ ¬ ∨ ⇒} · quantifiers {∀ ∃} · set {∅ ∈} · ∆ change · ≅ conforming |
+
+∧ ∀ ∆ ∅ and kin are **operators, never glyphs**. ≅ moves from
+the glyph table to OPERATORS (its meaning is the formal
+conformance/isomorphism relation, ¬ an icon). Compositions may
+mix classes (`N∅` = chord N + operator ∅; ⚖✓ = glyph ⚖ +
+check mark) — the classes classify the parts.
 
 ## Map (v2)
 

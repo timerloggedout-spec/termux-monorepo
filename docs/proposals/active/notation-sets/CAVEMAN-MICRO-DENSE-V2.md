@@ -1,4 +1,11 @@
-# Caveman Micro Dense 🧬 — v2 mapping (shorthand-derived)
+# Siglary — the compressed-notation system (Notation Matrice)
+
+**Name of record: Siglary** (ISSUED, Registry PR #5100,
+2026-11-10; slug `siglary` · chord `sgl`). Working title
+"Caveman Micro Dense 🧬 v2" superseded by issuance — "Caveman"
+∧ "CEDRLang" are other repos' proper names, prior art cited
+∧ never adopted. This file (path keeps its legacy name) is
+the Matrice: the siglary — the list of the system's sigla.
 
 **Status: LIVE — owned work of the Linguist lane** (owner
 handoff 2026-11-04 19:40 PT: "get it in the Linguist Lane now;
@@ -52,16 +59,27 @@ expressly: principle ④ (owner swaps override) governs, and the
 cap yields to the owner's enumeration. Chords `snp`/`dch`
 remain as alternates.
 
-## Naming — own name required (owner order 2026-11-10)
+## Naming — ISSUED: Siglary (2026-11-10)
 
+Owner order 2026-11-10 required the system's own name:
 "Caveman" and "CEDRLang" are **other repos' names — prior art,
-cited ¬ adopted**. This file's title is a working title only.
-The system (skill + Matrice + glyph/chord standard) takes its
-own name via the naming flow: Linguist + Marketing, screened
-under the naming-collision 💥 mapping protocol (Naming seat),
-issued via the Registry. Until issuance lands, references to
-the system read "the compressed-notation system (name
-pending)".
+cited ¬ adopted**. Naming flow ran: Linguist (commission +
+draft set) · Marketing (brand input + critique battery) ·
+Naming-Collision seat (formal screen S1–S5) · Registry
+(issuance, PR #5100 merged bd9450389a89; issuance block in
+docs/ops/AGENT-MONIKERS.md).
+
+**Issued: `Siglary`** — formed on *sigla*, the scholarly
+collective for abbreviation signs; a *siglary* is the list of
+those sigla, which is exactly what the Matrice is. Screens:
+zero flags S1–S5. Killed en route (stand in the record):
+SIGLA (dead-on-mark, sigla.cloud) · NOTA · CONDENSA ·
+MICROGLYPH (® TM) · TALLYSCRIPT · BREVIA + Marketing ×8.
+**First alternate of record: Brachy** (cleared-held —
+radiotherapy-software capture + category-root caveats;
+fleet-resolved per screens, ∅ owner gate). Internal seed
+ids keep the legacy `caveman_micro_dense` prefix as stable
+keys; the name of record is Siglary.
 
 ## Usage boundaries
 

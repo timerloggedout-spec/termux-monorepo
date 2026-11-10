@@ -104,3 +104,78 @@ Fleet Swarm App installation 177357774 SUSPENDED
 until unsuspend; PAT routes unaffected; the standard and
 this design are in force regardless (compliance is owed
 by authors now; measurement starts when machinery runs).
+
+## 6. Enforcement profile (Leg A — QUE #5116)
+
+Per-surface-class conformance. Severity: **HARD** =
+fail-closed at gates · **SOFT** = receipted finding,
+drift queue · **EST** = sampled estimate only (judgment
+stratum, §3).
+
+### 6.1 Skills files (`SKILL.md` · `*.SKILLS` · `SKILLS.md`)
+
+| Rule | Severity |
+|---|---|
+| Classes distinct in any notation the file teaches/uses | HARD |
+| Chords resolve in a named Shorthand Domain (or the file defines its domain inline) | HARD |
+| Glyph set ⊆ issued set (cap ⓪) | HARD |
+| N∅/NOT_ESTABLISHED stored as a value in any data block | HARD |
+| Receipt-adjacency for verdicts/state claims the skill prescribes | SOFT |
+| ⑤ misleading form | EST → HARD on Linguist ruling |
+
+### 6.2 ICM surfaces
+
+| Rule | Severity |
+|---|---|
+| Dispatch/context stamps in Siglary form (class-correct) | HARD |
+| Participant-facing instructions name their notation classes (¬ bare "glyphs" for operators) | SOFT |
+| N∅ boundary (chat-only marker; records carry schema nulls) | HARD |
+| ⑤ misleading form | EST → HARD on ruling |
+
+### 6.3 CLAUDE.md (root + nested)
+
+| Rule | Severity |
+|---|---|
+| Carries the standard by reference (this file + Matrice) | HARD (presence check) |
+| Its own notation usage class-correct (operators ¬ called glyphs) | HARD |
+| New notation introduced without Matrice registration | SOFT |
+
+### 6.4 DoE-dispatched participants' usage
+
+| Rule | Severity |
+|---|---|
+| Dispatch stamps + outcome records in Siglary form (classes distinct; chords in-domain) | SOFT (report-only until gate step) |
+| Verdicts carry adjacent receipt refs (nc-1 R3 class) | SOFT |
+| N∅ in any participant-emitted data record | HARD |
+| ⑤ misleading form in a stamp/record | EST → HARD on ruling |
+
+### 6.5 Exemption classes (of record)
+
+- **E1 sealed records**: hash-chained/historical ledgers
+  and merged records stand as written; enforcement is
+  forward-only.
+- **E2 quoted prior art**: quotations, prior-art citations
+  (incl. "Caveman"/CEDRLang material quoted as prior art),
+  and external text reproduced for analysis.
+- **E3 code**: identifiers, string literals, and syntax of
+  programming languages (a Lean `++` list-append in code
+  is code, ¬ a Siglary operator use).
+- **E4 fixtures**: test fixtures + seeded violation
+  examples, when stamped as fixtures.
+- **E5 generated artifacts**: conformance is enforced at
+  the generator/template, ¬ by hand-editing outputs;
+  violations route to the generator's owner.
+- **E6 chat exports / transcripts**: historical captures
+  stand; enforcement binds new authoring.
+
+### 6.6 Principle ⑤ binding (accuracy > compression)
+
+⑤ binds **every** surface class above, without exception:
+any participant may flag any form as ambiguous/misleading;
+a flagged form is **suspended** (expanded plain form is
+always compliant) pending a Linguist ruling; a ruling of
+"misleading" makes the form a HARD violation class-wide
+and the Matrice entry is re-issued or killed. Compression
+is never a defense. Rollout: report-only first, then
+gates bind per surface class in the order 6.3 → 6.1 →
+6.2 → 6.4, each step receipted on QUE #5116.

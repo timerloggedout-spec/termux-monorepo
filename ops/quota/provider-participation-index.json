@@ -1,6 +1,6 @@
 {
   "schema": "provider-participation-index/v1",
-  "generated_at": "2026-11-10T14:51:06Z",
+  "generated_at": "2026-11-10T14:55:10Z",
   "generated_by": "scripts/provider_participation_index.py",
   "sources": {
     "registry": "ops/quota/registry.json",
@@ -14,6 +14,7 @@
     "model_identity": "Exact model IDs appear only where nested-family evidence supplies them; unknown labels become schema null.",
     "roles": "Observed task roles come from nested-family evidence; declared role capabilities remain a separate contract.",
     "inference": "Dispatch route/class is distinct from an actual passed inference-invoke receipt.",
+    "free_tier_claims": "Text mentions in the quota registry are indexed as claims only; they do not establish account/model entitlement.",
     "free_eligibility": "Null unless an exact account+model admission receipt exists; this generator does not infer eligibility.",
     "quota": "Limits and resets are copied from the quota registry; null is not zero."
   },
@@ -34,6 +35,8 @@
     "catalog_only_records": 1,
     "providers_with_observed_roles": 6,
     "providers_with_passed_inference_receipts": 3,
+    "records_mentioning_free_tier_claim_text": 85,
+    "providers_mentioning_free_tier_claim_text": 85,
     "free_eligibility_established_records": 0,
     "free_eligibility_unknown_records": 98
   },
@@ -1632,6 +1635,8 @@
         "reset": "unverified",
         "source": "https://docs.github.com/en/copilot/get-started/plans"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1663,6 +1668,8 @@
         "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
         "source": "https://openrouter.ai/docs/api_reference/limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1694,6 +1701,8 @@
         "reset": "midnight",
         "source": "https://ai.google.dev/gemini-api/docs/rate-limits"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1724,6 +1733,8 @@
         "reset": "unknown",
         "source": "multi-ai-cli/vendors/README.md"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1755,6 +1766,8 @@
         "reset": "daily (schedule not published)",
         "source": "https://api.aionlabs.ai/docs/rate-limits/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1786,6 +1799,8 @@
         "reset": "continuous token-bucket replenishment; no fixed reset",
         "source": "https://inference-docs.cerebras.ai/support/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1817,6 +1832,8 @@
         "reset": "daily at 00:00 UTC",
         "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1848,6 +1865,8 @@
         "reset": "monthly",
         "source": "https://docs.cohere.com/docs/rate-limits"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [
@@ -1883,6 +1902,8 @@
         "reset": "daily refill",
         "source": "https://openapi.felo.ai/pricing"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1914,6 +1935,8 @@
         "reset": "x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers",
         "source": "https://console.groq.com/docs/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1945,6 +1968,8 @@
         "reset": "monthly",
         "source": "https://huggingface.co/docs/inference-providers/pricing"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -1976,6 +2001,8 @@
         "reset": "per-hour window (per IP)",
         "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2007,6 +2034,8 @@
         "reset": "daily",
         "source": "https://docs.llm7.io/guides/models-api"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2038,6 +2067,8 @@
         "reset": "unknown",
         "source": "https://docs.mistral.ai/admin/billing-usage/usage-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [
@@ -2074,6 +2105,8 @@
         "reset": "daily (per fleet recon claim)",
         "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2105,6 +2138,8 @@
         "reset": "unknown",
         "source": "https://build.nvidia.com/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2136,6 +2171,8 @@
         "reset": "n/a",
         "source": "https://github.com/crl33/omniroute"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2167,6 +2204,8 @@
         "reset": "per-minute window",
         "source": "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-getting-started"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2198,6 +2237,8 @@
         "reset": "daily",
         "source": "https://www.requesty.ai/free-models"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2229,6 +2270,8 @@
         "reset": "UTC midnight (X-RateLimit-Reset-Day)",
         "source": "https://docs.routeway.ai/getting-started/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2260,6 +2303,8 @@
         "reset": "daily (x-ratelimit-reset-requests-day header)",
         "source": "https://sambanova-systems.mintlify.dev/docs/en/models/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2291,6 +2336,8 @@
         "reset": "per-minute window",
         "source": "https://docs.sea-lion.ai/guides/inferencing/api"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [
@@ -2326,6 +2373,8 @@
         "reset": "per-window",
         "source": "https://siliconflow-4a6a0801.mintlify.app/en/userguide/rate-limits/rate-limit-and-upgradation"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2357,6 +2406,8 @@
         "reset": "per-minute window; 429 error body message carries the retry timestamp",
         "source": "https://docs.opentyphoon.ai/en/rate-limits/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2388,6 +2439,8 @@
         "reset": "per-minute window; Retry-After on 429",
         "source": "http://unorouter.com/en/blog/free-models-aggregated"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2421,6 +2474,8 @@
         "reset": "unknown",
         "source": "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2452,6 +2507,8 @@
         "reset": "daily reset; free-model requests blocked with 429 until the reset",
         "source": "https://xkiro.com/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2483,6 +2540,8 @@
         "reset": "unknown",
         "source": "https://docs.z.ai/api-reference/api-code"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2513,6 +2572,8 @@
         "reset": "unknown",
         "source": "https://api.toolsforagents.tools/site/index.html"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2543,6 +2604,8 @@
         "reset": "unknown",
         "source": "https://api.airforce/docs/quickstart/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2573,6 +2636,8 @@
         "reset": "unknown",
         "source": "https://antigravity.google/docs/plans"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2603,6 +2668,8 @@
         "reset": "unknown",
         "source": "https://arena.ai/faq"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2633,6 +2700,8 @@
         "reset": "unknown",
         "source": "https://www.microsoft.com/en-us/microsoft-365/microsoft-designer"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2663,6 +2732,8 @@
         "reset": "unknown",
         "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2693,6 +2764,8 @@
         "reset": "unknown",
         "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2723,6 +2796,8 @@
         "reset": "unknown",
         "source": "https://www.blackbox.ai/pricing"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2753,6 +2828,8 @@
         "reset": "unknown",
         "source": "https://brave.com/ai/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2783,6 +2860,8 @@
         "reset": "unknown",
         "source": "https://g4f.dev"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2813,6 +2892,8 @@
         "reset": "unknown",
         "source": "https://inference-docs.cerebras.ai/support/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2843,6 +2924,8 @@
         "reset": "unknown",
         "source": "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2873,6 +2956,8 @@
         "reset": "unknown",
         "source": "https://support.claude.com/en/articles/8114491-get-started-with-claude"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2903,6 +2988,8 @@
         "reset": "unknown",
         "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2933,6 +3020,8 @@
         "reset": "unknown",
         "source": "https://coherelabs-c4ai-command.hf.space"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2963,6 +3052,8 @@
         "reset": "unknown",
         "source": "https://copilot.com"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -2993,6 +3084,8 @@
         "reset": "unknown",
         "source": "https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3023,6 +3116,8 @@
         "reset": "unknown",
         "source": "https://deepinfra.com/blog/compare-models"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3053,6 +3148,8 @@
         "reset": "unknown",
         "source": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html?source=post_page-----895be7b853b0--------------------------------"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3083,6 +3180,8 @@
         "reset": "unknown",
         "source": "https://elevenlabs.io/pricing"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3113,6 +3212,8 @@
         "reset": "unknown",
         "source": "https://g4f.dev"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3143,6 +3244,8 @@
         "reset": "unknown",
         "source": "https://chat.z.ai"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3173,6 +3276,8 @@
         "reset": "unknown",
         "source": "https://support.google.com/gemini/answer/16275805?hl=en-IN"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3203,6 +3308,8 @@
         "reset": "unknown",
         "source": "https://geminicli.com/docs/resources/quota-and-pricing/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3233,6 +3340,8 @@
         "reset": "unknown",
         "source": "https://ai.google.dev/gemini-api/docs/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3263,6 +3372,8 @@
         "reset": "unknown",
         "source": "https://docs.github.com/en/copilot/setting-up-github-copilot/setting-up-github-copilot-for-yourself"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3293,6 +3404,8 @@
         "reset": "unknown",
         "source": "https://support.google.com/websearch/answer/16011537?visit_id=639285178901396813-4034714809&p=aimode&rd=1"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3323,6 +3436,8 @@
         "reset": "unknown",
         "source": "https://developers.google.com/custom-search/v1/overview.html"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3353,6 +3468,8 @@
         "reset": "unknown",
         "source": "https://docs.x.ai/grok/faq"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3383,6 +3500,8 @@
         "reset": "unknown",
         "source": "https://console.groq.com/docs/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3413,6 +3532,8 @@
         "reset": "unknown",
         "source": "https://www.minimax.io/news/minimax-hailuo-23"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3443,6 +3564,8 @@
         "reset": "unknown",
         "source": "https://huggingface.co/docs/api-inference/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3473,6 +3596,8 @@
         "reset": "unknown",
         "source": "https://huggingface.co/docs/api-inference/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3503,6 +3628,8 @@
         "reset": "unknown",
         "source": "https://huggingface.co/docs/api-inference/rate-limits"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3533,6 +3660,8 @@
         "reset": "unknown",
         "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3563,6 +3692,8 @@
         "reset": "unknown",
         "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3593,6 +3724,8 @@
         "reset": "unknown",
         "source": "https://docs.llm7.io/guides/models-api"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3623,6 +3756,8 @@
         "reset": "unknown",
         "source": "https://github.com/microsoft/markitdown"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3653,6 +3788,8 @@
         "reset": "unknown",
         "source": "https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3683,6 +3820,8 @@
         "reset": "unknown",
         "source": "https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3713,6 +3852,8 @@
         "reset": "unknown",
         "source": "https://www.microsoft.com/en-us/copilot/blog/2024/07/17/new-ways-to-get-creative-with-microsoft-designer-powered-by-ai/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3743,6 +3884,8 @@
         "reset": "unknown",
         "source": "https://docs.nvidia.com/ace/ace-agent/4.0/sample-bots/rag-langchain-bot.html"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3773,6 +3916,8 @@
         "reset": "unknown",
         "source": "https://ollama.com/blog/transparent-pricing"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3803,6 +3948,8 @@
         "reset": "unknown",
         "source": "https://github.com/diegosouzapw/OmniRoute"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3833,6 +3980,8 @@
         "reset": "unknown",
         "source": "https://developers.openai.com/api/docs/guides/text-to-speech"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3863,6 +4012,8 @@
         "reset": "unknown",
         "source": "https://openrouter.ai/pricing"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3893,6 +4044,8 @@
         "reset": "unknown",
         "source": "https://www.opera.com/gx/features/opera-ai"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3923,6 +4076,8 @@
         "reset": "unknown",
         "source": "https://www.perplexity.ai/hub/blog/ai-costs"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3953,6 +4108,8 @@
         "reset": "unknown",
         "source": "https://inflection.ai/blog/the-future-of-pi"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -3983,6 +4140,8 @@
         "reset": "unknown",
         "source": "https://pollinations.ai/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4013,6 +4172,8 @@
         "reset": "unknown",
         "source": "https://pollinations.ai"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4043,6 +4204,8 @@
         "reset": "unknown",
         "source": "https://pollinations.ai"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4073,6 +4236,8 @@
         "reset": "unknown",
         "source": "https://docs.puter.com/user-pays-model/"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4103,6 +4268,8 @@
         "reset": "unknown",
         "source": "https://www.alibabacloud.com/help/en/model-studio/model-pricing?utm_source=chatgpt.com"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4133,6 +4300,8 @@
         "reset": "unknown",
         "source": "https://relayrouter.org/free-plan"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4163,6 +4332,8 @@
         "reset": "unknown",
         "source": "https://stabilityai-stable-diffusion-3-5-large.hf.space"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4193,6 +4364,8 @@
         "reset": "unknown",
         "source": "https://www.teach-anything.com"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4223,6 +4396,8 @@
         "reset": "unknown",
         "source": "https://www.whiterabbitneo.com"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4253,6 +4428,8 @@
         "reset": "unknown",
         "source": "https://you.com/product/web-search-api"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4283,6 +4460,8 @@
         "reset": "unknown",
         "source": "https://chat9.yqcloud.top"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4313,6 +4492,8 @@
         "reset": "unverified — no published rate-limit counter established 2026-10-30",
         "source": "https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4343,6 +4524,8 @@
         "reset": "unverified",
         "source": "https://developer.meta.com/ai/products/muse-code"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4373,6 +4556,8 @@
         "reset": "n/a (retired)",
         "source": "https://www.promptfoo.dev/docs/providers/meta/"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4404,6 +4589,8 @@
         "reset": "n/a",
         "source": "https://deepinfra.com/docs"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4435,6 +4622,8 @@
         "reset": "n/a",
         "source": "https://novita.ai/docs"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4466,6 +4655,8 @@
         "reset": "n/a",
         "source": "https://friendli.ai/docs"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4497,6 +4688,8 @@
         "reset": "n/a",
         "source": "https://docs.baseten.co"
       },
+      "free_tier_claim_text_present": true,
+      "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note",
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4529,6 +4722,8 @@
         "reset": "not exposed",
         "source": "Dispatch-proven 2026-11-01/02: experiments/doe/routed-dispatch stamps {provider: Claude, model: Muse Spark 1.3, quota: {cost_class: metered, pool: seat-runtime}} + nested-family carriers. Owner directive 2026-11-01: Claude as an endpoint in active use (via Swarm). Limits state: NOT ESTABLISHED until measured."
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],
@@ -4559,6 +4754,8 @@
         "reset": "not established",
         "source": "Dispatch-proven: nested-family carriers (provider DeepSeek, tasks 2026-11-01) + provider capability map. Allocation census batch-2 did not establish a direct-route quota object. Owner directive 2026-11-01: DeepSeek as an endpoint in active use (via Swarm). Limits state: NOT ESTABLISHED until measured."
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [
@@ -4592,6 +4789,8 @@
         "reset": "unknown",
         "source": "https://co.agentrouter.org/portal/guide"
       },
+      "free_tier_claim_text_present": false,
+      "free_tier_claim_source": null,
       "free_eligibility": null,
       "free_eligibility_reason": "No exact account + model admission receipt is asserted by this index. Catalog price, public plan claims, configured credentials, and provider-family status are not sufficient.",
       "observed_models": [],

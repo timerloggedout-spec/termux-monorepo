@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -103,6 +104,8 @@ def build(root: Path, generated_at: str | None = None) -> dict:
         inference_route = route.get("inference_route", []) if route else []
         if not isinstance(inference_route, list):
             inference_route = []
+        claim_text = " ".join(str(value or "") for value in (service.get("metric"), (service.get("planned_use") or {}).get("note")))
+        has_free_claim_text = bool(re.search(r"\\bfree\\b|no-auth", claim_text, re.IGNORECASE))
         records.append({
             "id": record_id,
             "provider": service.get("provider"),
@@ -123,6 +126,8 @@ def build(root: Path, generated_at: str | None = None) -> dict:
             "registry_live_field": service.get("live"),
             "quota": {key: service.get(key)
                       for key in ("limit", "unit", "window", "reset", "source")},
+            "free_tier_claim_text_present": has_free_claim_text,
+            "free_tier_claim_source": "ops/quota/registry.json#services[id].metric|planned_use.note" if has_free_claim_text else None,
             "free_eligibility": None,
             "free_eligibility_reason": (
                 "No exact account + model admission receipt is asserted by this index. "
@@ -183,6 +188,8 @@ def build(root: Path, generated_at: str | None = None) -> dict:
         "providers_with_passed_inference_receipts": sum(
             provider["inference_invocations_passed"] > 0 for provider in providers
         ),
+        "records_mentioning_free_tier_claim_text": sum(record["free_tier_claim_text_present"] for record in records),
+        "providers_mentioning_free_tier_claim_text": len({record["provider"].casefold() for record in records if record["free_tier_claim_text_present"] and record["provider"]}),
         "free_eligibility_established_records": sum(record["free_eligibility"] is not None for record in records),
         "free_eligibility_unknown_records": sum(record["free_eligibility"] is None for record in records),
     }
@@ -208,6 +215,7 @@ def build(root: Path, generated_at: str | None = None) -> dict:
             "model_identity": "Exact model IDs appear only where nested-family evidence supplies them; unknown labels become schema null.",
             "roles": "Observed task roles come from nested-family evidence; declared role capabilities remain a separate contract.",
             "inference": "Dispatch route/class is distinct from an actual passed inference-invoke receipt.",
+            "free_tier_claims": "Text mentions in the quota registry are indexed as claims only; they do not establish account/model entitlement.",
             "free_eligibility": "Null unless an exact account+model admission receipt exists; this generator does not infer eligibility.",
             "quota": "Limits and resets are copied from the quota registry; null is not zero.",
         },

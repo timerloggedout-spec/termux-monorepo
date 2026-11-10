@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 546,
-    "open_prs": 333,
+    "open_issues": 547,
+    "open_prs": 334,
     "pr_classes": {
       "CANDIDATE": 152,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 170,
+      "NEED_EVIDENCE": 171,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 301,
+      "issues": 302,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 54,
-      "prs": 331,
+      "prs": 332,
       "unlabelled_numbers": [
         308,
         388,
@@ -109,7 +109,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-10T12:34:19Z",
+  "generated_at": "2026-11-10T12:39:23Z",
   "issues_unlabelled": [
     308,
     388,
@@ -172,7 +172,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "6be7c80d00"
+    "sha": "a971bb3bb6"
   },
   "prs": [
     {
@@ -3743,12 +3743,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "a01902cbf4",
+      "head_sha": "b5eff79b60",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-10T12:33:47Z"
+      "updated_at": "2026-11-10T12:39:04Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4375,10 +4375,10 @@
       },
       "head_sha": "60b9994260",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-10T12:33:03Z"
+      "updated_at": "2026-11-10T12:34:04Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4440,15 +4440,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "failure",
+        "smoke": "success"
       },
       "head_sha": "74eeb710af",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4969,
       "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-10T12:33:16Z"
+      "updated_at": "2026-11-10T12:37:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4457,12 +4457,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ddbfad3919",
+      "head_sha": "19b625d09a",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-11-10T12:32:49Z"
+      "updated_at": "2026-11-10T12:38:39Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4841,6 +4841,20 @@
       "number": 5094,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-10T00:06:06Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "6a0a790c32",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5110,
+      "title": "[task] #5103 opportunity self-eval loop \u2014 prep gate + QUE priority + Delphi-rubric selection (#5096)",
+      "updated_at": "2026-11-10T12:38:53Z"
     }
   ],
   "schema": "operator-matrix/v1",

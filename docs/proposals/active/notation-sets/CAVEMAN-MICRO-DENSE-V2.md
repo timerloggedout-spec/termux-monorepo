@@ -131,6 +131,19 @@ Seed registry: nomenclature-matrix domain `caveman_micro_dense`
 (13 concepts · 14 labels · 2 mappings, all candidate), incl. the
 ≅ register crosswalk to group_theory.isomorphism.
 
+## Enforcement (owner order 2026-11-10 04:54 PT)
+
+Siglary is **repo-wide enforced**: scope {repo skill files ·
+ICM · *.SKILLS|SKILLS.md · CLAUDE.md · DoE-dispatched
+participants' usage} with Validation ∧ Performance legs —
+compliance measured, ¬ assumed. Standard of record +
+validation/performance design:
+`docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`.
+The `++` operator add and the OPERATORS class stamp ride
+this same v-next. Machinery routes Desk QUE → Swarm
+(blocker of record: Swarm App installation suspended —
+see the standard §5).
+
 ## Shorthand Domains (owner addendum, 2026-11-04 19:36 PT)
 
 The matrice is structured by **Shorthand Domains** — the

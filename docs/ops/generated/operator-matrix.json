@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 544,
-    "open_prs": 329,
+    "open_issues": 545,
+    "open_prs": 333,
     "pr_classes": {
-      "CANDIDATE": 152,
+      "CANDIDATE": 153,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 166,
+      "NEED_EVIDENCE": 169,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 299,
+      "issues": 300,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 54,
-      "prs": 327,
+      "prs": 331,
       "unlabelled_numbers": [
         308,
         388,
@@ -109,7 +109,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-09T17:21:00Z",
+  "generated_at": "2026-11-10T12:25:40Z",
   "issues_unlabelled": [
     308,
     388,
@@ -172,7 +172,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "b8fe1e69ef"
+    "sha": "442b7db5ac"
   },
   "prs": [
     {
@@ -2119,20 +2119,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4670c4625d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4901,
-      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-05T05:54:21Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "70aea43e8f",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2461,6 +2447,34 @@
       "number": 5082,
       "title": "feat(ci): implement merged branch review audit and deployment quota engine",
       "updated_at": "2026-11-08T23:23:34Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e4e53d1a3a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5091,
+      "title": "Fix invalid YAML in ios-termux-contribute.yml",
+      "updated_at": "2026-11-09T22:04:53Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a570e84ab0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5093,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "updated_at": "2026-11-09T23:45:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2833,12 +2847,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ff3c4240a6",
+      "head_sha": "9c567e3992",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
-      "updated_at": "2026-11-08T14:26:09Z"
+      "updated_at": "2026-11-09T17:42:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3617,12 +3631,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f83c1b71d5",
+      "head_sha": "d4324bc18d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-08T17:15:34Z"
+      "updated_at": "2026-11-09T17:22:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4370,6 +4384,20 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "39cb98e9f9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "updated_at": "2026-11-10T12:25:21Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -4429,12 +4457,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f304aeecd4",
+      "head_sha": "eca35467bf",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-11-05T04:10:21Z"
+      "updated_at": "2026-11-10T12:24:54Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4541,12 +4569,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "da7f2a979c",
+      "head_sha": "9e99a55a01",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5034,
       "title": "chore(dashboards): refresh dispatch-tree feed",
-      "updated_at": "2026-11-08T14:15:52Z"
+      "updated_at": "2026-11-09T17:23:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4785,6 +4813,34 @@
       "number": 5086,
       "title": "feat(telemetry): join credential provenance to DoE instance identity",
       "updated_at": "2026-11-09T14:40:45Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "1c3b6e7f54",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5092,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-11-09T22:28:12Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "02a830cc50",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5094,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-10T00:06:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

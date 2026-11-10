@@ -60,7 +60,7 @@ def build(root):
         fams.setdefault(fam_of(rec["id"]), []).append(rec)
 
     providers = []
-    live_verified = 0
+    census_api_verified = 0
     for fam in sorted(fams):
         recs = sorted(fams[fam], key=lambda r: r["id"])
         cen = cen_by_fam.get(fam)
@@ -68,7 +68,7 @@ def build(root):
             cen = cen_by_fam.get("gemini") or cen_by_fam.get("google")
         verified = bool(cen and cen.get("evidence") == "api-verified")
         if verified:
-            live_verified += 1
+            census_api_verified += 1
         records = []
         for rec in recs:
             rd = read_by_id.get(rec["id"]) or {}
@@ -112,7 +112,7 @@ def build(root):
             "provider": fam,
             "record_count": len(records),
             "providers_distinct": len({r.get("provider") for r in recs}),
-            "live_verified": verified,
+            "census_api_verified": verified,
             "population": {
                 "state": "populated" if fam_bases else "gap",
                 "bases": sorted(fam_bases),
@@ -165,7 +165,7 @@ def build(root):
             "families": len(providers),
             "families_direct": len(providers) - (1 if "g4f" in fams else 0),
             "g4f_children": len(fams.get("g4f", [])),
-            "live_verified_families": live_verified,
+            "census_api_verified_families": census_api_verified,
             "rate_limit_events": len(events),
             "families_populated": len([p for p in providers
                                        if p["population"]["state"]
